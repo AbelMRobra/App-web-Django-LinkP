@@ -1,0 +1,61 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'css/estiloabel.css' %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LINK-P</title>
+</head>
+
+<body background="{% static 'img/fondo.jpg' %}">
+
+    <div class= "conteiner">
+
+        <div class="jumbotron">
+
+            <div class="boxlogin" style="width: 100%;">
+
+                <h1 class="display-3" > <b>LINK-</b><b style="color: #19C6C6 ;">P</b></h1>
+
+                <hr class="my-4">
+                
+                <h2>Iniciar sesión</h2>
+
+                <hr class="my-4">
+
+
+            <form method="POST" style="width: 100%">
+
+            
+                {% csrf_token %}
+
+                <div class="form-group">
+                    <label>  Usuario:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  </label>
+                    {{ form.username }}
+                </div>
+                <div class="form-group">
+                    <label>Contraseña:</label>
+                    {{ form.password }}
+                </div>
+                <hr class="my-4">
+                <button type="submit" class="btn btn-success">Login</button>
+            
+            </form>
+
+            {% block content %}
+            
+                {% endblock %}
+
+
+
+            </div>           
+          </div>
+    </div>
+</body>
+
+
+</html>
+

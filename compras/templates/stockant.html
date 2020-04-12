@@ -1,0 +1,80 @@
+{% extends "users/inicio.html" %}
+
+{% load static %}
+
+{% block content %}
+
+<div class = "jumbotron" style="background-color: white; margin-bottom: 0px;">
+
+    <h3 style="text-align: center; color: #17B5B5 ;">Stock de compras anticipadas</h3>
+     <b><hr class = "my-4" style="width: 75%; border-color: #17B5B5 ;"></b>
+
+     <form method="get" class="form-group" style="text-align: center;">
+        <div>
+
+        </div>
+
+        <div>
+            <button class="btn btn-info" type="submit">Buscar</button>
+            
+
+        </div>
+
+
+
+     </form>
+     
+     <b><hr class = "my-4" style="width: 100%; border-color: #17B5B5 ;"></b>
+
+     <a href="/compras/stockantingresar"><button class="btn btn-info">Ingresar</button></a>
+
+     <b><hr class = "my-4" style="width: 100%; border-color: #17B5B5 ;"></b>
+     
+
+     {% if datos %}  
+
+
+    <table class = "table table-hover" style="text-align: center;">
+        <thead>
+
+            <tr class = "table-info">
+                <th scope = "row"> <font style = "vertical-align: heredar; width: 10%;">OBRA </font></th>
+                <th scope = "row"> <font style = "vertical-align: heredar; width: 20%;">NOMBRE DE LA COMPRA</font></th>
+                <th scope = "row"> <font style = "vertical-align: heredar; width: 10%;">NOMBRE DEL PROVEEDOR</font></th>
+                <th scope = "row"> <font style = "vertical-align: heredar; width: 20%;">ARTICULO</font></th>
+                <th scope = "row"> <font style = "vertical-align: heredar; width: 20%;">CANTIDAD</font></th>
+                <th scope = "row"> <font style = "vertical-align: heredar; width: 10%;">FECHA</font></th>
+
+            </tr>
+        </thead>
+
+        <tbody>
+
+            
+
+            {% for i in datos %}
+            <tr class = "table-light">
+                <td style="width: 10%;"> <b>{{i.obra}}</b></td>
+                <td style="width: 20%;">{{i.name}}</td>
+                <td style="width: 10%;">{{i.proveedor}}</td>
+                <td style="width: 20%;">{{i.articulo}}</td>
+                <td style="width: 20%;">{{i.cantidad}}</td>
+                <td style="width: 10%;">{{i.fecha}}</td>
+                
+            </tr>
+        </tbody>
+
+            {% endfor %}
+
+     {% else %}
+            <div>
+                <h3>No existe registros actualmente</h3>
+            </div>
+            
+
+    {% endif %}
+
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,106 @@
+{% extends "users/inicio.html" %}
+
+{% load static %}
+
+{% block content %}
+
+        {{ datos_con }}
+      
+
+
+      <div class="jumbotron" style="background-color: rgba(96, 87, 84, 0.9); margin-bottom:0px;">
+
+        <h1 style="color:#FBF8F7"> ¿Comó funciona este espacio? </h1>
+
+        <hr class="my-4" >
+        <div style="text-align: center;">
+
+          <div class="card text-white bg-success mb-3" style="display: inline-block; width: 87%; text-align: center;  ">
+            <div class="card-body">
+              <img src="{% static 'img/grupo.png' %}" alt="" width="100" height="100" >
+              <h3 style="color:#FBF8F7">Todo lo necesario para trabajar</h3>
+  
+              <p style="color:#FBF8F7">En la sección de <b>Proj-P --> Procedimientos</b> podras encontrar toda la información para las distintas tareas que realizamos en el área</p>
+   
+            </div>
+          </div>
+
+          <hr class="my-4" >
+
+          <div style="text-align: center;">
+
+            <div class="card text-white bg-warning mb-3" style="display: inline-block; width: 87%; text-align: center;  ">
+              <div class="card-body">
+                <img src="{% static 'img/juntos.png' %}" alt="" width="100" height="100" >
+                <h3 style="color:#FBF8F7">Todos nuestros entregables en un mismo lugar</h3>
+    
+                <p style="color:#FBF8F7">En la sección de <b>informes</b> y <b>proyectos</b> están todos los informes y datos que el área pasa mensualemnte</p>
+     
+              </div>
+            </div>
+
+
+        </div>
+
+        <hr class="my-4" >
+
+          <div style="text-align: center;">
+
+            <div class="card text-white bg-info mb-3" style="display: inline-block; width: 87%; text-align: center;  ">
+              <div class="card-body">
+                <img src="{% static 'img/tarjeta-de-visita.png' %}" alt="" width="100" height="100" >
+                <h3 style="color:#FBF8F7">Conoce como trabajamos</h3>
+    
+                <p style="color:#FBF8F7">Siempre buscamos la mejor manera de trabajar y siempre estamos dispuestos a compartir nuestra experiencia! Recorre el sitio y cualquier duda estamos para ayudar!</p>
+     
+              </div>
+            </div>
+
+
+        </div>
+
+      </div>
+
+      
+
+
+      
+
+      
+
+        <div class= "container" >
+
+          <hr class="my-4" >
+  
+          <h2 style="color:#FBF8F7"> Avance del sitio </h2>
+  
+          <h4 style="color:#FBF8F7"> Fase 1 - Interfaz y capacidad de descargar información </h4>
+  
+          <div class="progress">
+            <div class="progress-bar progress-bar-striped bg-warning progress-bar-animated" role="progressbar" style="width: 50%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+          </div>
+  
+          <h4 style="color:#FBF8F7"> Fase 2 - Interfaz y capacidad de replicar el Soft/Carga de procedimientos </h4>
+          <div class="progress">
+            <div class="progress-bar progress-bar-striped bg-success progress-bar-animated" role="progressbar" style="width: 15%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+          </div>
+  
+          <h4 style="color:#FBF8F7"> Fase 3 - Aspectos de conectividad/permisos </h4>
+          <div class="progress">
+            <div class="progress-bar progress-bar-striped bg-info progress-bar-animated" role="progressbar" style="width: 2%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+          </div>
+
+          <hr class="my-4" >
+
+          
+          
+      </div>
+    
+
+  </div>
+        
+        
+
+
+
+        {% endblock %}

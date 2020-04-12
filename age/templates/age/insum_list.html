@@ -1,0 +1,90 @@
+{% extends "users/inicio.html" %}
+
+{% load static %}
+
+{% block content %}
+
+<div class = "jumbotron" style="background-color: white; margin-bottom: 0px;">
+
+    <h3 style="text-align: center; color: #17B5B5 ;">Listado de Articulos</h3>
+     <b><hr class = "my-4" style="width: 75%; border-color: #17B5B5 ;"></b>
+     <form method="get" class="form-group" style="text-align: center;">
+        <div>
+            {{ myfilter.form }}
+        </div>
+        <div>
+            <button class="btn btn-info" type="submit" style="margin-top: 1%;">Buscar</button>          
+        </div>
+     </form>
+     <b><hr class = "my-4" style="width: 100%; border-color: #17B5B5 ;"></b>
+     <div style="margin-bottom: 1%;">
+        <a href="/insumos/insumcreate"><button class="btn btn-info" type="submit">Crear articulo</button></a>  
+     </div>
+      
+
+    {% if agenda %} 
+
+    <table class = "table table-hover" style="text-align: center;">
+        <thead>
+
+            <tr class = "table-info">
+                <th scope = "row"> <font style = "vertical-align: heredar;"> CODIGO </font></th>
+                <th scope = "row"> <font style = "vertical-align: heredar;"> NOMBRE DEL ARTICULO </font></th>
+                <th scope = "row"> <font style = "vertical-align: heredar;"> UN </font></th>
+                <th scope = "row"> <font style = "vertical-align: heredar;"> VALOR </font></th>
+                <th scope = "row"> <font style = "vertical-align: heredar;"> FECHA DE CREACIÓN </font></th>
+                <th scope = "row"> <font style = "vertical-align: heredar;"> CONSTANTE </font></th> 
+                <th scope = "row"> <font style = "vertical-align: heredar;"> EDITAR </font></th>
+                <th scope = "row"> <font style = "vertical-align: heredar;">ELIMINAR </font></th>
+
+            </tr>
+        </thead>
+
+        <tbody>
+
+            
+
+            {% for i in agenda %}
+            <tr class = "table-light">
+                <td> <b>{{i.codigo}}</b> </td>
+                <td>{{i.nombre}}</td>
+                <td>{{i.Unidad}}</td>
+                <td>${{i.valor}}</td>
+                <td>{{i.created}}</td>
+                <td>{{i.constante}}</td>
+                <td> <a class = "btn btn-outline-info" href="{% url 'Editar_insumo' i.codigo %}">Editar</a>
+                
+                </td>
+                <td> <a class = "btn btn-outline-danger" href="{% url 'Eliminar_insumo' i.codigo %}">Eliminar</a>
+                
+                </td>
+            </tr>
+        </tbody>
+
+            {% endfor %}
+
+     {% else %}
+            <div>
+                <h3>No existe registros actualmente</h3>
+            </div>
+            
+
+    {% endif %}
+        
+
+    </table>
+
+                    
+</div>
+
+
+
+
+
+        
+
+
+   
+ 
+    
+{% endblock %}

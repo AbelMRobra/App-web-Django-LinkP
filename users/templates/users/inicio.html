@@ -1,0 +1,160 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LINK-P</title>
+</head>
+<body background="{% static 'img/fondo.jpg' %}">
+
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <a class="navbar-brand" href="/inicio">LINK-P</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="true" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="navbar-collapse collapse" id="navbarColor01">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="/inicio">Home <span class="sr-only">(current)</span></a>
+        </li>
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Informes
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="#">Informe "Desde"</a>
+            <a class="dropdown-item" href="#">Informe "Sigma"</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#">Otros informes</a>
+          </div>
+        </li>
+        
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="/projects" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Proyectos
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="#">Información - Venta</a>
+            <a class="dropdown-item" href="/projects">Información - Costo</a>
+            <a class="dropdown-item" href="#">Planificaciones</a>
+            <a class="dropdown-item" href="/projects/certificados">Certificados</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#">¿Comó funciona?</a>
+          </div>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Compras 
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="/compras/proveedores">Proveedores</a>
+            <a class="dropdown-item" href="/compras/stockant">Stock compras anticipadas</a>
+            <a class="dropdown-item" href="#">Registros</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#">¿Comó funciona?</a>
+          </div>
+        </li>   
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Proj-P 
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="/constantes">Constantes</a>
+            <a class="dropdown-item" href="/insumos/insum_list">Insumos</a>
+            <a class="dropdown-item" href="#">Analisis</a>
+            <a class="dropdown-item" href="#">Presupuestos</a>
+            <a class="dropdown-item" href="#">Procedimientos</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#">¿Comó funciona?</a>
+          </div>
+        </li>    
+      </li>
+      </ul>
+      
+        <a href="/logout" class="btn btn-outline-light">Cerrar sesión</a>
+      </form>
+    </div>
+  </nav>
+
+  {% block content %}
+
+        {{ datos_con }}
+      
+    <div>
+
+      <div class="jumbotron" style="background-color: rgba(96, 87, 84, 0.9); margin-bottom:0px;">
+
+        <h1 style="color:#FBF8F7"> <b>LINK-</b><b style="color: #19C6C6 ;">P</b> </h1>
+
+        <hr class="my-4" >
+
+        <h3 style="color:#FBF8F7">Un espacio de trabajo diferente</h3>
+
+        <p style="color:#FBF8F7">Toda la información y todas las facilidades en un mismo lugar</p>
+
+        <hr class="my-4" >
+
+        <a href="/guia"class="btn btn-info"> <b>Guia rapida!</b> </a>
+
+        <hr class="my-4" >
+
+        <div style=" text-align:center;">
+
+          <div class="card text-white bg-success mb-3" style="display: inline-block; width: 25%;  ">
+          
+
+            <div class="card-body">
+              <img src="{% static 'img/grupo.png' %}" alt="" width="100" height="100" >
+              <h4 class="card-title">¿Parte del equipo?</h4>
+              <p class="card-text">Puedes encontrar procedimientos, ejemplos, notas y mucho mas!</p>
+            </div>
+          </div>
+    
+          <div class="card text-white bg-warning mb-3"  style="display: inline-block; width: 25%; margin-left:2%;">
+          
+            <div class="card-body">
+              <img src="{% static 'img/juntos.png' %}" alt="" width="100" height="100" >
+              <h4 class="card-title">¿Trabajamos juntos?</h4>
+              <p class="card-text">Toda la información que creamos esta disponible para ti!</p>
+            </div>
+          </div>
+          <div class="card text-white bg-info mb-3" style="display: inline-block; width: 25%; margin-left:2%;">
+          
+            <div class="card-body">
+              <img src="{% static 'img/tarjeta-de-visita.png' %}" alt="" width="100" height="100" >
+              <h4 class="card-title">¿Eres un invitado?</h4>
+              <p class="card-text">Recorre el sitio! seguro encontraras cosas interesante</p>
+            </div>
+          </div>
+  
+        </div>
+
+        <div style="text-align: center;">
+          
+          Iconos diseñados por <a href="https://www.flaticon.es/autores/pixel-perfect" title="Pixel perfect">Pixel perfect</a> from <a href="https://www.flaticon.es/" title="Flaticon"> www.flaticon.es</a>
+
+
+        </div>
+
+        
+
+
+        </div>
+
+        
+    </div>
+    <div style=" background-color:rgba(213, 216, 220, 1);">
+       
+    </div>
+        {% endblock %}
+        <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+</body>
+</html>

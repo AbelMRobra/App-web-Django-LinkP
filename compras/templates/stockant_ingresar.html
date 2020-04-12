@@ -1,0 +1,100 @@
+{% extends "users/inicio.html" %}
+
+{% load static %}
+
+{% block content %}
+
+<script>
+
+    function myFunction() {
+
+        var fila = document.getElementById(1);
+        var clon = fila.cloneNode(true);
+        clon.id = fila.id+1;
+        var table = document.getElementsByTagName('tbody')[0];
+        table.appendChild(clon);
+
+    }
+    
+</script>
+
+<div class = "jumbotron" style="background-color: white; margin-bottom: 0px;" >
+
+    <h3 style="text-align: center; color: #17B5B5 ;">Cargar una compra</h3>
+     <b><hr class = "my-4" style="width: 75%; border-color: #17B5B5 ;"></b>
+
+    <div class = "jumbotron" style="width: 80%; margin-left: 10%;">
+
+        <div style="text-align: left; margin-bottom: 2%;">
+
+            <button class="btn btn-outline-success" onclick="myFunction()">Agregar mas campos</button>
+        
+        </div>
+
+<form id="formulario" method="POST">
+
+    {% csrf_token %}
+
+    <div>
+
+    </div>
+
+    <div style="text-align: center;">
+
+        <button type='submit' class = "btn btn-outline-success">Guardar</button>
+              
+    </div>  
+
+    <b><hr class = "my-4" style="width: 100%;"></b>
+
+    
+    
+    
+    
+    <table class = "table table-hover" style="text-align: center;">
+        <thead>
+    
+            <tr class = "table-info">
+                <th scope = "row"> <font style = "vertical-align: heredar;"> N° </font></th>
+                <th scope = "row"> <font style = "vertical-align: heredar;"> NOMBRE DEL ARTICULO </font></th>
+                <th scope = "row"> <font style = "vertical-align: heredar;"> UN </font></th>
+                <th scope = "row"> <font style = "vertical-align: heredar;"> CANTIDAD</font></th>
+            </tr>
+        </thead>
+    
+        <tbody>
+    
+            <tr class = "table-light" id= 1 method = "POST">
+                <td style="width: 10%;"> <b>*</b> </td>
+                <td style="width: 70%;"><select name="nombre" id="2">
+                    
+                    {%for i in datos_enviados %}
+                    
+                    
+                    <option value=0>{{i}}</option>
+                
+                    {% endfor %}
+                
+                </select></td>
+                <td style="width: 10%;">UN</td>
+                <td style="width: 10%;"></td>
+            </tr>
+        </tbody>
+    
+    </table>
+   
+</form>
+
+
+
+
+
+
+
+</div>
+</div>
+
+
+
+
+{% endblock %}

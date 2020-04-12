@@ -1,0 +1,77 @@
+{% extends "users/inicio.html" %}
+
+{% load static %}
+
+{% block content %}
+
+<div class = "jumbotron" style="background-color: white; margin-bottom: 0px;">
+
+    <h3 style="text-align: center; color: #17B5B5 ;">Listado de proveedores</h3>
+     <b><hr class = "my-4" style="width: 75%; border-color: #17B5B5 ;"></b>
+
+     <form method="get" class="form-group" style="text-align: center;">
+        <div>
+
+        </div>
+
+        <div>
+            <button class="btn btn-info" type="submit">Buscar</button>
+
+        </div>
+
+
+
+     </form>
+
+     <b><hr class = "my-4" style="width: 100%; border-color: #17B5B5 ;"></b>
+     
+
+     {% if datos %}  
+
+
+    <table class = "table table-hover" style="text-align: center;">
+        <thead>
+
+            <tr class = "table-info">
+                <th scope = "row"> <font style = "vertical-align: heredar; width: 10%;">ID </font></th>
+                <th scope = "row"> <font style = "vertical-align: heredar; width: 20%;">NOMBRE DEL PROVEEDOR</font></th>
+                <th scope = "row"> <font style = "vertical-align: heredar; width: 10%;">TELEFONO</font></th>
+                <th scope = "row"> <font style = "vertical-align: heredar; width: 20%;">ULTIMA ACTUALIZACIÓN</font></th>
+                <th scope = "row"> <font style = "vertical-align: heredar; width: 20%;">DESCRIPCIÓN AUXILIAR</font></th>
+                <th scope = "row"> <font style = "vertical-align: heredar; width: 10%;">EDITAR</font></th>
+                <th scope = "row"> <font style = "vertical-align: heredar; width: 10%;">ELIMINAR</font></th>
+
+            </tr>
+        </thead>
+
+        <tbody>
+
+            
+
+            {% for i in datos %}
+            <tr class = "table-light">
+                <td style="width: 10%;"> <b>{{i.id}}</b></td>
+                <td style="width: 20%;">{{i.name}}</td>
+                <td style="width: 10%;">{{i.phone}}</td>
+                <td style="width: 20%;">{{i.update}}</td>
+                <td style="width: 20%;">{{i.descrip}}</td>
+                <td style="width: 10%;">editar</td>
+                <td style="width: 10%;">eliminar</td>
+                
+            </tr>
+        </tbody>
+
+            {% endfor %}
+
+     {% else %}
+            <div>
+                <h3>No existe registros actualmente</h3>
+            </div>
+            
+
+    {% endif %}
+
+
+</div>
+
+{% endblock %}

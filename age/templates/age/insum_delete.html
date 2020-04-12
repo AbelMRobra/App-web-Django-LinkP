@@ -1,0 +1,34 @@
+
+{% extends "users/inicio.html" %}
+
+{% load static %}
+
+{% block content %}
+
+
+<div class = "jumbotron" style="background-color: white; margin-bottom: 0px;">
+
+    <div class = "jumbotron" style="width: 70%; text-align: center; margin-left: 15%;">
+
+        <h3> ¿Desea eliminar el registro <b>{{ agen.nombre }}</b>  ?</h3>
+        <b><hr class = "my-4" style="width: 100%;"></b>
+
+        <div>
+
+            <form method="post">
+                {% csrf_token %}
+        
+                <button type='submit' class = "btn btn-outline-danger">Eliminar</button>
+                <a class = "btn btn-outline-success" href="{% url 'Lista de insumos' %}">Volver</a>
+        
+            </form>
+
+
+        </div>
+
+        
+
+    </div>
+</div>
+
+{% endblock %}
