@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '6b!4-@r!zlpo@jm=bnl4#4#g8qv7pwkuivb_e2k4ut!nba_y!l'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = []
 
@@ -129,9 +129,9 @@ USE_TZ = True
 
 
 
-#MEDIA_URL = '/media/'
+MEDIA_URL = '/media/'
 
-#MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'static','media')
 
 STATIC_URL = '/static/'
 
@@ -147,7 +147,7 @@ if os.getcwd() == '/app':
 
     #Allow all host headers
     ALLOWED_HOSTS = ['linkpre.herokuapp.com']
-    DEBUG = True
+    DEBUG = False
 
     #Static asset configuration
     BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
