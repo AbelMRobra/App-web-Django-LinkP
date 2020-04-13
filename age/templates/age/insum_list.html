@@ -49,7 +49,7 @@
                 <td> <b>{{i.codigo}}</b> </td>
                 <td>{{i.nombre}}</td>
                 <td>{{i.Unidad}}</td>
-                <td>${{i.valor|floatformat}}</td>
+                <td>${{i.valor|floatformat:2}}</td>
                 <td>{{i.created}}</td>
                 <td>{{i.constante}}</td>
                 <td> <a class = "btn btn-outline-info" href="{% url 'Editar_insumo' i.codigo %}">Editar</a>
