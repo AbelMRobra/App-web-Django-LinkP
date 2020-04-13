@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .form import AgendaForm
 from .models import Agenda
+from constantes.models import Constantes
 from .filters import ArticulosFilter
 import sqlite3
 
@@ -65,36 +66,32 @@ def insum_create(request):
         
         #Me conecto a la base de datos y traigo el valor de la constante
 
-        query = 'SELECT valor FROM constantes_constantes WHERE id = (?)'
+        objetos_constante = Constantes.objects.all()
 
-        parametro = str(constante)
+        for i in objetos_constante:
 
-        conn = Conectar_db()
+            if float(i.id) == float(constante):
 
-        datos_con = conn.run_db(query, parametro)
+                valor_constante = float(i.valor)
 
-        for i in datos_con:
-            valor_constante = i
+                #Opero para sacar el valor auxiliar 
 
-        print(valor_constante[0])
+                valor_aux = (float(valor)/valor_constante)
 
-        #Opero para sacar el valor auxiliar 
+                objetos_insumos = Agenda.objects.all()
 
-        valor_aux = (int(valor)/(int(valor_constante[0])))
-        
+                for i in objetos_insumos:
 
-        #Me conecto a la base de datos y subo el valor auxiliar
+                    if int(i.codigo) == int(codigo):
 
-        query = 'UPDATE age_agenda SET valor_aux = (?) WHERE codigo = (?)'
+                        i.valor_aux = valor_aux
 
-        parametro = (valor_aux, codigo)
+                        print(i.valor_aux)
 
-        conn = Conectar_db()
+                        i.save()
 
-        datos_con = conn.run_db(query, parametro)
-
-        return redirect('Lista de insumos')
-        
+                        return redirect('Lista de insumos')
+         
     else:
         form = AgendaForm()
 

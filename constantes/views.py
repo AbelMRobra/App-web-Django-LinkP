@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .form import ConsForm
 from .models import Constantes
+from age.models import Agenda
 import sqlite3
 
 #Objeto que conecta a la base de datos
@@ -46,11 +47,12 @@ def cons_edit(request, id_cons):
         form = ConsForm(instance = cons)
     else:
         form = ConsForm(request.POST, instance = cons)
+        
         if form.is_valid():
 
             # Rescato el nombre y el valor nuevo de la constante
 
-            datos = request.POST.items()
+            datos = request.POST.items() 
 
             for key, value in datos:
 
@@ -60,72 +62,32 @@ def cons_edit(request, id_cons):
                     
                 if key == 'valor':
 
-                    valor_nuevo = (value)
+                    cons_valor_nuevo = (value)
 
-            #Me conecto a la base de datos y traigo el ID de la constante
+            datos_constante = Constantes.objects.all()
 
-            query = 'SELECT valor, id FROM constantes_constantes WHERE nombre = (?)'
+            for i in datos_constante:
+                if str(i.nombre) == str(nombre):
+                    
+                    cons_nombre = i.nombre
 
-            parametro = (str(nombre),)
+                    cons_valor = i.valor
 
-            conn = Conectar_db()
 
-            datos_con = conn.run_db(query, parametro)
+                    form.save()
 
-            for i in datos_con:
+            datos_insumos = Agenda.objects.all()
 
-                codigo_id = i[1]
-                valor_ant = i[0]
+            for i in datos_insumos:
 
-            # Guardo los datos del formulario
+                if str(i.constante) == str(cons_nombre):
+                    valor_actual = i.valor
 
-            form.save()
+                    valor_nuevo = valor_actual*(float(cons_valor_nuevo)/cons_valor) 
 
-            #Me conecto a la base de datos y traigo a todos los articulos que tengan ese codigo
+                    i.valor = valor_nuevo
 
-            query = 'SELECT * FROM age_agenda WHERE constante_id = (?)'
-
-            parametro = (codigo_id,)
-
-            conn = Conectar_db()
-
-            consulta = conn.run_db(query, parametro)
-
-            datos_con = []
-
-            for i in consulta:
-
-                datos_con.append(i)
-
-            for i in datos_con:
-
-                codigo = i[0]
-                valor_articulo_ant = i[2]
-
-                conn = Conectar_db()
-
-                #constantes para la operación
-                
-                valor1 = float(valor_articulo_ant)
-                valor2 = float(valor_nuevo)
-                valor3 = float(valor_ant)
-                valor_articulo_nuevo = valor1*(valor2/valor3)
-
-                # Armamos los parametros
-
-                parametro = (valor_articulo_nuevo, codigo) 
-
-                print(parametro)
-
-                #Mandamos la consulta para que cargue los datos
-
-                query = 'UPDATE age_agenda SET valor = (?) WHERE codigo = (?)'
-
-                conn = Conectar_db()
-           
-                datos_con = conn.run_db(query, parametro)
-
-                print("cargo el valor")
+                    i.save()
 
         return redirect('Cons_list')
     
