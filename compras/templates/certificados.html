@@ -1,0 +1,79 @@
+{% extends "users/inicio.html" %}
+
+{% load static %}
+
+{% block content %}
+
+<div class = "jumbotron" style="background-color: white; margin-bottom: 0px;">
+
+    <h3 style="text-align: center; color: #17B5B5 ;">Listado de certificados</h3>
+     <b><hr class = "my-4" style="width: 75%; border-color: #17B5B5 ;"></b>
+
+     <form method="get" class="form-group" style="text-align: center;">
+        <div>
+            {{ myfilter.form }}
+
+        </div>
+
+        <div>
+            <button class="btn btn-info" type="submit">Buscar</button>
+
+        </div>
+
+
+
+     </form>
+
+     <b><hr class = "my-4" style="width: 100%; border-color: #17B5B5 ;"></b>
+     
+
+     {% if datos %}  
+
+
+    <table class = "table table-hover" style="text-align: center;">
+        <thead>
+
+            <tr class = "table-info">
+                <th scope = "row"> <font style = "vertical-align: heredar; width: 10%;">OBRA </font></th>
+                <th scope = "row"> <font style = "vertical-align: heredar; width: 25%;">NOMBRE DEL CONTRATO</font></th>
+                <th scope = "row"> <font style = "vertical-align: heredar; width: 5%;">N°</font></th>
+                <th scope = "row"> <font style = "vertical-align: heredar; width: 30%;">DESCRIPCIÓN</font></th>
+                <th scope = "row"> <font style = "vertical-align: heredar; width: 15%;">ESTADO</font></th>
+                <th scope = "row"> <font style = "vertical-align: heredar; width: 15%;">ADJUNTO</th>
+
+            </tr>
+        </thead>
+
+        <tbody>
+
+            
+
+            {% for i in datos %}
+            <tr class = "table-light">
+                <td style="width: 10%;"> <b>{{i.proyecto.nombre}}</b></td>
+                <td style="width: 25%;">{{i.contrato.nombre}}</td>
+                <td style="width: 5%;">{{i.num_cer}}</td>
+                <td style="width: 30%;">{{i.descrip}}</td>
+                <td style="width: 15%;">Estado</td>
+                <td style="width: 15%;">  <a href="{{ i.adj.url }}"><button type="submit" class="badge badge-pill badge-success">Archivo</button></a></td>
+                
+            </tr>
+        </tbody>
+
+            {% endfor %}
+
+     {% else %}
+            <div>
+                <h3>No existe registros actualmente</h3>
+            </div>
+            
+
+    {% endif %}
+
+
+</div>
+
+
+
+{% endblock %}
+

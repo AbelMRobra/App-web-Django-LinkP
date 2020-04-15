@@ -22,8 +22,9 @@ from django.conf.urls.static import static
 urlpatterns = [
    
     path('', include('users.urls')),
-    path('insumos/', include('age.urls')),
-    path('constantes/', include('constantes.urls')),
+    path('presupuestos/', include('presupuestos.urls')),
+    path('proyectos/', include('proyectos.urls')),
+    path('computos/', include('computos.urls')),
     path('projects/', include('projects.urls')),
     path('compras/', include('compras.urls')),
     path('admin/', admin.site.urls),

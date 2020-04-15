@@ -1,0 +1,43 @@
+{% extends "users/inicio.html" %}
+
+{% load static %}
+
+{% block content %}
+
+
+  <div class = "jumbotron" style="background-color: white; margin-bottom: 0px;"> 
+
+     <h3 style="text-align: center; color: #17B5B5 ;">Listado de proyectos</h3>
+     <b><hr class = "my-4" style="width: 75%; border-color: #17B5B5 ;"></b>
+
+
+     {% for i in datos %}
+
+     <div class="row projects justify-content-center" style="margin: 2rem;">
+      <div class="content-project col-12 col-lg-4 col-md-4">
+        <a href="" data-toggle="modal" data-target="#modal">
+          <img src="{{i.img.url}}"  class="img-fluid" alt="...">
+        </a>
+      </div>
+      <div class="content-project col-12 col-lg-8 col-md-8">
+        <h4 class="title-project" style="color: #17B5B5 ;"> {{i.proyecto.nombre}}</h4>
+        <p>{{i.proyecto.descrip}}</p>
+        <p class="card-text"><small class="text-muted">Fecha de entrega: {{ i.proyecto.fecha_f}}</small></p>
+        <p class="card-text"><small class="text-success">Ultima actualización: {{ i.fecha_a}}</small></p>
+
+        <a href="{{ i.presup.url }}" class="btn btn-info">Presupuesto</a>
+        <a href="{{ i.exp.url }}" class="btn btn-info">Explosión de insumos</a>
+        <a href="{{ i.curva.url }}" class="btn btn-info">Curva de inversión</a>
+      </div>
+
+      </div>
+
+      {% endfor %}
+
+  </div>
+    
+
+{% endblock %}
+
+</body>
+</html>

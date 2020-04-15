@@ -1,8 +1,23 @@
 from django.shortcuts import render
-from .models import Proveedores
+from .models import Proveedores, Certificados
 from .models import StockComprasAnticipadas
 from .form import StockAntForm
+from .filters import CertificadoFilter
 import sqlite3
+
+
+def certificados(request):
+
+    datos = Certificados.objects.all()
+
+    myfilter = CertificadoFilter(request.GET, queryset=datos)
+
+    datos = myfilter.qs
+
+    datos_enviados = {'datos':datos, 'myfilter':myfilter}
+
+    return render(request, 'certificados.html', datos_enviados )
+
 
 # Esta es el objeto para conectar con la base de datos y hacer consultas
 

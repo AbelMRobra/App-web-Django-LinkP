@@ -1,0 +1,60 @@
+{% extends "users/inicio.html" %}
+
+{% load static %}
+
+{% block content %}
+
+<div class = "jumbotron" style="background-color: white; margin-bottom: 0px;">
+
+    <h3 style="text-align: center; color: #17B5B5 ;">Registros de proyectos</h3>
+
+     <b><hr class = "my-4" style="width: 100%; border-color: #17B5B5 ;"></b>
+
+    {% if datos %} 
+
+    <table class = "table table-hover" style="text-align: center;">
+        <thead>
+
+            <tr class = "table-info">
+                <th scope = "row"> <font style = "vertical-align: heredar;"> ID </font></th>
+                <th scope = "row"> <font style = "vertical-align: heredar;"> NOMBRE DEL PROYECTO</font></th>
+                <th scope = "row"> <font style = "vertical-align: heredar;"> DESCRIPCIÓN </font></th>
+                <th scope = "row"> <font style = "vertical-align: heredar;"> FECHA ENTREGA </font></th>
+                <th scope = "row"> <font style = "vertical-align: heredar;"> ULTIMA ACTUALIZACIÓN </font></th>
+                <th scope = "row"> <font style = "vertical-align: heredar;"> TAMAÑO </font></th> 
+
+            </tr>
+        </thead>
+
+        <tbody>   
+
+            {% for i in datos %}
+            <tr class = "table-light">
+                <td> <b>{{i.id}}</b> </td>
+                <td> <b>{{i.nombre}}</b> </td>
+                <td>{{i.descrip}}</td>
+                <td>{{i.fecha_f}}</td>
+                <td>{{i.fecha_a}}</td>
+                <td> <b>{{i.m2}}m2</b> </td>
+            </tr>
+        </tbody>
+
+            {% endfor %}
+
+     {% else %}
+
+            <div>
+                <h3>No existe registros actualmente</h3>
+            </div>
+            
+
+    {% endif %}
+        
+
+    </table>
+
+                    
+</div>
+ 
+    
+{% endblock %}

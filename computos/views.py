@@ -1,0 +1,79 @@
+from django.shortcuts import render, redirect
+from django.http import HttpResponse
+from .form import ComputosForm
+from .filters import ComputosFilter
+from proyectos.models import Proyectos
+from .models import Plantas, ListaRubros, Tipologias, Computos
+
+# Create your views here.
+
+def listacomputos(request):
+
+    datos = Computos.objects.all()
+
+    myfilter = ComputosFilter(request.GET, queryset=datos)
+
+    datos = myfilter.qs
+
+    c = {'datos':datos, 'myfilter':myfilter}
+
+    return render(request, 'lista_computos.html', c)
+
+def CrearListaComputos(request):
+
+    datos_proyectos = Proyectos.objects.all()
+
+    for i in datos_proyectos:
+
+        if i.nombre == "TORRE BLUE":
+
+            dato_proyecto_form = i
+
+            datos_plantas = Plantas.objects.all()
+
+            for i in datos_plantas:
+
+                dato_planta_form = i
+
+                datos_rubros = ListaRubros.objects.all()
+
+                for i in datos_rubros:
+
+                    nombre_rubro = i
+                    
+                    dato_rubro_form = i
+
+                    datos_tipologias = Tipologias.objects.all()
+
+                    for i in datos_tipologias:
+
+                        if str(nombre_rubro.nombre) == str(i.rubro):
+
+                            dato_tipologia_form = i
+
+                            print(dato_proyecto_form)
+                            print(dato_planta_form)
+                            print(dato_rubro_form)
+                            print(dato_tipologia_form)
+
+                            b = Computos(
+                                proyecto = dato_proyecto_form,
+                                planta = dato_planta_form, 
+                                rubro = dato_rubro_form, 
+                                tipologia = dato_tipologia_form, 
+                                valor_lleno = 0, 
+                                valor_vacio = 0,
+                                valor_total = 0, 
+                                valor_obra = 0, 
+                                )
+
+                            b.save()
+
+
+
+    return render(request, 'computos.html',)
+
+    #La idea es agregar un campo por cada cosa
+
+
+

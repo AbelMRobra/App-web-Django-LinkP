@@ -1,0 +1,67 @@
+{% extends "users/inicio.html" %}
+
+{% load static %}
+
+{% block content %}
+
+<div class = "jumbotron" style="background-color: white; margin-bottom: 0px;">
+
+    <h3 style="text-align: center; color: #17B5B5 ;">Indicador de precios</h3>
+     <b><hr class = "my-4" style="width: 75%; border-color: #17B5B5 ;"></b>
+
+     <div style="margin-bottom: 1%; text-align: center;">
+        <a href="/presupuestos/parametros"><button class="btn btn-info" type="submit">Ver parametros</button></a>  
+     </div>
+     
+     <b><hr class = "my-4" style="width: 100%; border-color: #17B5B5 ;"></b>
+    
+    {% if datos %} 
+
+    <table class = "table table-hover" style="text-align: center;">
+        <thead>
+
+            <tr class = "table-info">
+                <th scope = "row"> <font style = "vertical-align: heredar;"> PROYECTO</font></th>
+                <th scope = "row"> <font style = "vertical-align: heredar;"> VALOR COSTO </font></th>
+                <th scope = "row"> <font style = "vertical-align: heredar;"> VALOR COSTO USD </font></th>
+                <th scope = "row"> <font style = "vertical-align: heredar;"> VALOR FINAL </font></th>
+                <th scope = "row"> <font style = "vertical-align: heredar;"> VALOR FINAL USD </font></th>
+                <th scope = "row"> <font style = "vertical-align: heredar;"> FECHA DE ACTUALIZACIÓN </font></th>
+
+            </tr>
+        </thead>
+
+        <tbody>
+
+            
+
+            {% for i in datos %}
+            <tr class = "table-light">
+                <td> <b>{{i.parametros}}</b> </td>
+                <td>$ {{i.valor_costo|floatformat:2}}</td>
+                <td style="color: darkgreen;"> <b>U$A {{i.valor_costo_usd|floatformat:2}}</b> </td>
+                <td>$ {{i.valor_final|floatformat:2}}</td>
+                <td style="color: darkgreen;"> <b>U$A {{i.valor_final_usd|floatformat:2}}</b> </td>
+                <td>{{i.parametros.proyecto.fecha_a}}</td>
+            
+            </tr>
+        </tbody>
+
+            {% endfor %}
+
+     {% else %}
+            <div style="text-align: center;">
+                <h3>No existe registros actualmente</h3>
+            </div>
+            
+
+    {% endif %}
+        
+
+    </table>
+
+                    
+</div>
+ 
+    
+{% endblock %}

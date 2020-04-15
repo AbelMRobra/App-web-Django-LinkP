@@ -1,0 +1,76 @@
+{% extends "users/inicio.html" %}
+
+{% load static %}
+
+{% block content %}
+
+<div class = "jumbotron" style="background-color: white; margin-bottom: 0px;">
+
+    <h3 style="text-align: center; color: #17B5B5 ;">Parametros de los indicadores</h3>
+     <b><hr class = "my-4" style="width: 75%; border-color: #17B5B5 ;"></b>
+     
+     <b><hr class = "my-4" style="width: 100%; border-color: #17B5B5 ;"></b>
+    
+    {% if datos %} 
+
+    <table class = "table table-hover" style="text-align: center;">
+        <thead>
+
+            <tr class = "table-info">
+                <th scope = "row"> <font style = "vertical-align: heredar;"> PROYECTO</font></th>
+                <th scope = "row"> <font style = "vertical-align: heredar;"> DESCUENTO "PL"</font></th>
+                <th scope = "row"> <font style = "vertical-align: heredar;"> SOFT + IVA </font></th>
+                <th scope = "row"> <font style = "vertical-align: heredar;"> IMPREVISTO </font></th>
+                <th scope = "row"> <font style = "vertical-align: heredar;"> HON. TERRENO </font></th>
+                <th scope = "row"> <font style = "vertical-align: heredar;"> HON. LINK </font></th>
+                <th scope = "row"> <font style = "vertical-align: heredar;"> COMER </font></th>
+                <th scope = "row"> <font style = "vertical-align: heredar;"> TEM e IIBB </font></th>
+                <th scope = "row"> <font style = "vertical-align: heredar;"> GANANCIA </font></th>
+                <th scope = "row"> <font style = "vertical-align: heredar;"> EDITAR </font></th>
+
+
+            </tr>
+        </thead>
+
+        <tbody>
+
+            
+
+            {% for i in datos %}
+            <tr class = "table-light">
+                <td> <b>{{i.proyecto}}</b> </td>
+                <td>{{i.tasa_des_p}}</td>
+                <td>{{i.soft}}</td>
+                <td>{{i.imprevitso}}</td>
+                <td>{{i.terreno }} m2</td>
+                <td>{{i.link}} m2</td>
+                <td>{{i.comer}}</td>
+                <td>{{i.tem_iibb}}</td>
+                <td>{{i.ganancia}}</td>
+                <td><a class = "btn btn-outline-success" href="#">Editar</a>
+
+
+                </td>
+                
+            
+            </tr>
+        </tbody>
+
+            {% endfor %}
+
+     {% else %}
+            <div style="text-align: center;">
+                <h3>No existe registros actualmente</h3>
+            </div>
+            
+
+    {% endif %}
+        
+
+    </table>
+
+                    
+</div>
+ 
+    
+{% endblock %}
