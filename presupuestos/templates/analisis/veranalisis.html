@@ -1,0 +1,80 @@
+{% extends "users/inicio.html" %}
+
+{% load static %}
+
+{% block content %}
+
+<div class = "jumbotron" style="background-color: white; margin-bottom: 0px;">
+
+    <h3 style="text-align: center; color: #17B5B5 ;">{{ datos.analisis.nombre }}</h3>
+     <b><hr class = "my-4" style="width: 75%; border-color: #17B5B5 ;"></b>
+
+     <b><hr class = "my-4" style="width: 100%; border-color: #17B5B5 ;"></b>     
+
+    {% if datos %} 
+
+    <table class = "table table-hover" style="text-align: center;">
+        <thead>
+
+            <tr class = "table-info">
+                <th scope = "row"> <font style = "vertical-align: heredar;"> CODIGO </font></th>
+                <th scope = "row"> <font style = "vertical-align: heredar;"> NOMBRE DEL ARTICULO </font></th>
+                <th scope = "row"> <font style = "vertical-align: heredar;"> UN </font></th>
+                <th scope = "row"> <font style = "vertical-align: heredar;"> VALOR </font></th>
+                <th scope = "row"> <font style = "vertical-align: heredar;"> CANTIDAD </font></th>
+                <th scope = "row"> <font style = "vertical-align: heredar;"> TOTALES </font></th>
+                <th scope = "row"> <font style = "vertical-align: heredar;"> INC </font></th>
+
+
+                
+            </tr>
+        </thead>
+
+        <tbody>
+
+            
+
+            {% for i in datos.lista_final %}
+
+            <tr class = "table-light">
+                <td> <b>{{i.0.articulo.codigo}}</b> </td>
+                <td>{{i.0.articulo.nombre}} </td>
+                <td>{{i.0.articulo.unidad}}</td>
+                <td>${{i.0.articulo.valor|floatformat:2}}</td>
+                <td>{{i.0.cantidad}}</td>
+                <td>${{i.1|floatformat:2}}</td>
+                <td>{{i.2|floatformat:2}}%</td>
+
+                
+                
+            </tr>
+        </tbody>
+
+        {% endfor %}
+
+    </table>
+
+            
+
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <small>  <strong>TOTAL DEL ANALISIS: ${{datos.total|floatformat:2}}</strong> </small>
+            </div>
+
+            {% for i in datos.lista_final %}
+
+            <div >
+                <small> {{i.0.articulo.nombre}} --> {{i.0.articulo.descrip}} </small>
+            </div>
+            {% endfor %}
+            
+
+    {% endif %}
+        
+
+
+
+                    
+</div>
+ 
+    
+{% endblock %}

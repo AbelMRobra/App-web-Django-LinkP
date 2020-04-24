@@ -36,8 +36,9 @@
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
             <a class="dropdown-item" href="/presupuestos/cons_list">Constantes</a>
             <a class="dropdown-item" href="/presupuestos/insum_list">Articulos</a>
+            <a class="dropdown-item" href="/presupuestos/analisis_list">APU</a>
             <a class="dropdown-item" href="/computos/lista">Computos</a>
-            <a class="dropdown-item" href="#">Presupuestos</a>
+            <a class="dropdown-item" href="/presupuestos/presupuestos">Presupuestos</a>
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="/presupuestos/datos">Datos de proyectos</a>
             <a class="dropdown-item" href="/presupuestos/desde">Indicador de precios</a>
@@ -50,8 +51,12 @@
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
             <a class="dropdown-item" href="/compras/proveedores">Proveedores</a>
-            <a class="dropdown-item" href="#">Contratos</a>
-            <a class="dropdown-item" href="#">Stock - Proveedores</a>
+            <a class="dropdown-item" href="#">Contratos-<em>Proximamente</em></a>
+            <a class="dropdown-item" href="/compras/compras">Compras </a>
+            <a class="dropdown-item" href="/compras/listaretiros">Retiro de proveedores-<em>Construyendo</em></a>
+            <a class="dropdown-item" href="/compras/stockprov">Stock en proveedores</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="/compras/informe">Informe del área</a>
           </div>
         </li>
         <li class="nav-item dropdown">
@@ -98,26 +103,23 @@
           
 
             <div class="card-body">
-              <img src="{% static 'img/grupo.png' %}" alt="" width="100" height="100" >
+              <a href="/guia"><img src="{% static 'img/grupo.png' %}" alt="" width="100" height="100" ></a>         
               <h4 class="card-title">¿Parte del equipo?</h4>
-              <p class="card-text">Puedes encontrar procedimientos, ejemplos, notas y mucho mas!</p>
             </div>
           </div>
     
           <div class="card text-white bg-warning mb-3"  style="display: inline-block; width: 25%; margin-left:2%;">
           
             <div class="card-body">
-              <img src="{% static 'img/juntos.png' %}" alt="" width="100" height="100" >
+              <a href="/guia"><img src="{% static 'img/juntos.png' %}" alt="" width="100" height="100" ></a>
               <h4 class="card-title">¿Trabajamos juntos?</h4>
-              <p class="card-text">Toda la información que creamos esta disponible para ti!</p>
             </div>
           </div>
           <div class="card text-white bg-info mb-3" style="display: inline-block; width: 25%; margin-left:2%;">
           
             <div class="card-body">
-              <img src="{% static 'img/tarjeta-de-visita.png' %}" alt="" width="100" height="100" >
-              <h4 class="card-title">¿Eres un invitado?</h4>
-              <p class="card-text">Recorre el sitio! seguro encontraras cosas interesante</p>
+              <a href="/guia"><img src="{% static 'img/tarjeta-de-visita.png' %}" alt="" width="100" height="100" ></a>
+              <h4 class="card-title">¿Necesitas algo?</h4>
             </div>
           </div>
   
@@ -141,8 +143,14 @@
        
     </div>
         {% endblock %}
+
+
+  
         <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-</body>
+
+        
+
+      </body>
 </html>

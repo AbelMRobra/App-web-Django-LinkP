@@ -46,7 +46,6 @@ class Computos(models.Model):
     valor_total = models.FloatField(verbose_name="Valor total", blank=True, null=True)
     valor_obra = models.FloatField(verbose_name="Valor en obra", blank=True, null=True)
     fecha_a = models.DateField(blank=True, null=True, auto_now=True, verbose_name="Fecha de actualización")
-
     class Meta:
         verbose_name="Computo"
         verbose_name_plural="Computos"

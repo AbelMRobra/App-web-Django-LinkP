@@ -4,77 +4,126 @@
 
 {% block content %}
 
-<div class = "jumbotron" style="background-color: white; margin-bottom: 0px;">
 
-    <h3 style="text-align: center; color: #17B5B5 ;">Stock de compras anticipadas</h3>
-     <b><hr class = "my-4" style="width: 75%; border-color: #17B5B5 ;"></b>
 
-     <form method="get" class="form-group" style="text-align: center;">
-        <div>
+<div class = "jumbotron" style="background-color: white; margin-bottom: 0px;" > 
+
+    <div style="text-align: center;">
+        <h2>Informe Área de compras</h2>
+
+        <small>Responsable del área: </small><small><strong>JM</strong></small
+
+
+        <b><hr class = "my-4" style="width: 100%; border-color: black ;"></b>
+    
+    </div>
+
+    <div>
+        <div style="margin-bottom: 2rem;">
+
+            <h3>Datos generales</h3>
 
         </div>
+      
+        <h6>Estimación del valor de activos en proveedores: <small>${{ datos.stock_valorizado|floatformat:2 }} <strong>({{ datos.stock_valorizado_m|floatformat:2 }} millones)</strong></small></h6>
+        <h6 style="margin-top: 1rem;">Estimación dolarizada: <small>USD {{ datos.stock_valorizado_usd|floatformat:2 }} <strong>(USD {{ datos.stock_valorizado_usd_m|floatformat:2 }} millones)</strong></small></h6>
+        <p style="color: darkgreen; margin-top: 1rem;"> <small>*Se toma la cotización del dolar del Banco Nación {{ datos.constantes.valor}}</small> </p>       
+        <h6>El total de compras cargadas son: <small>{{ datos.lista_compras}}</small> </h6>
+        <h6>El valor nominal neto de las compras: <small>${{ datos.compras_nominal|floatformat:2}} Millones</small> </h6>
+        <h6>El valor actualizado de las compras: <small>${{ datos.compras_actualizado|floatformat:2}} Millones</small> </h6>
+        <b><hr class = "my-4" style="width: 100%; border-color: black ;"></b>
+    </div>
 
-        <div>
-            <button class="btn btn-info" type="submit">Buscar</button>
-            
+    <div>
 
+        <div style="margin-bottom: 2rem;">
+            <h3>Top 5 de proveedores con mas activos</h3>
         </div>
-
-
-
-     </form>
-     
-     <b><hr class = "my-4" style="width: 100%; border-color: #17B5B5 ;"></b>
-
-     <a href="/compras/stockantingresar"><button class="btn btn-info">Ingresar</button></a>
-
-     <b><hr class = "my-4" style="width: 100%; border-color: #17B5B5 ;"></b>
-     
-
-     {% if datos %}  
-
-
-    <table class = "table table-hover" style="text-align: center;">
-        <thead>
-
-            <tr class = "table-info">
-                <th scope = "row"> <font style = "vertical-align: heredar; width: 10%;">OBRA </font></th>
-                <th scope = "row"> <font style = "vertical-align: heredar; width: 20%;">NOMBRE DE LA COMPRA</font></th>
-                <th scope = "row"> <font style = "vertical-align: heredar; width: 10%;">NOMBRE DEL PROVEEDOR</font></th>
-                <th scope = "row"> <font style = "vertical-align: heredar; width: 20%;">ARTICULO</font></th>
-                <th scope = "row"> <font style = "vertical-align: heredar; width: 20%;">CANTIDAD</font></th>
-                <th scope = "row"> <font style = "vertical-align: heredar; width: 10%;">FECHA</font></th>
-
-            </tr>
-        </thead>
-
-        <tbody>
-
-            
-
-            {% for i in datos %}
-            <tr class = "table-light">
-                <td style="width: 10%;"> <b>{{i.obra}}</b></td>
-                <td style="width: 20%;">{{i.name}}</td>
-                <td style="width: 10%;">{{i.proveedor}}</td>
-                <td style="width: 20%;">{{i.articulo}}</td>
-                <td style="width: 20%;">{{i.cantidad}}</td>
-                <td style="width: 10%;">{{i.fecha}}</td>
-                
-            </tr>
-        </tbody>
+        <table class = "table table-hover" style="text-align: center;">
+            <thead>
+    
+                <tr class = "table-dark">
+                    <th scope = "row"> <font style = "vertical-align: heredar;"> PROVEEDOR</font></th>
+                    <th scope = "row"> <font style = "vertical-align: heredar;"> VALOR TOTAL DE LOS ACTIVOS </font></th>
+                   
+                </tr>
+            </thead>
+            {% for i in datos.listas|slice:"5" %}   
+            <tbody>
+    
+                <tr class = "table-light">
+                    <td style="width: 50%;"> <b>{{ i.0 }}</b> </td>
+                    <td style="width: 50%;"> {{ i.1|floatformat:2 }} Millones </td>                
+                </tr>
+            </tbody>
 
             {% endfor %}
+        </table> 
+        <b><hr class = "my-4" style="width: 100%; border-color: black ;"></b>   
+    </div>
 
-     {% else %}
-            <div>
-                <h3>No existe registros actualmente</h3>
-            </div>
-            
+    <div>
 
-    {% endif %}
+        <div style="margin-bottom: 2rem;">
+            <h3>Top 5 de articulos mas valorizados</h3>
+        </div>
+        <table class = "table table-hover" style="text-align: center;">
+            <thead>
+    
+                <tr class = "table-dark">
+                    <th scope = "row"> <font style = "vertical-align: heredar;"> ARTICULO</font></th>
+                    <th scope = "row"> <font style = "vertical-align: heredar;"> VALOR TOTAL DE LOS ACTIVOS </font></th>
+                   
+                </tr>
+            </thead>
+            {% for i in datos.listas_art|slice:"5" %}   
+            <tbody>
+    
+                <tr class = "table-light">
+                    <td style="width: 50%;"> <b>{{ i.0 }}</b> </td>
+                    <td style="width: 50%;"> {{ i.1|floatformat:2 }} Millones </td>                
+                </tr>
+            </tbody>
+
+            {% endfor %}
+        </table> 
+        <b><hr class = "my-4" style="width: 100%; border-color: black ;"></b>   
+    </div>
+
+    
+
+    <div>
+
+        <div style="margin-bottom: 2rem;">
+            <h3>Activo por proyecto</h3>
+        </div>
+        <table class = "table table-hover" style="text-align: center;">
+            <thead>
+    
+                <tr class = "table-dark">
+                    <th scope = "row"> <font style = "vertical-align: heredar;"> PROYECTO</font></th>
+                    <th scope = "row"> <font style = "vertical-align: heredar;"> VALOR TOTAL DE LOS ACTIVOS</font></th>
+                   
+                </tr>
+            </thead>
+            {% for i in datos.listas_pro %}   
+            <tbody>
+    
+                <tr class = "table-light">
+                    <td style="width: 50%;"> <b>{{ i.0 }}</b> </td>
+                    <td style="width: 50%;"> {{ i.1|floatformat:2 }} Millones </td>                
+                </tr>
+            </tbody>
+
+            {% endfor %}
+        </table> 
+        <b><hr class = "my-4" style="width: 100%; border-color: black ;"></b>   
+    </div>
+
+    <div style="text-align: center;">
+        <small>Trabajo en conjunto con el área de presupuestos</small>
+    </div>
 
 
 </div>
-
 {% endblock %}

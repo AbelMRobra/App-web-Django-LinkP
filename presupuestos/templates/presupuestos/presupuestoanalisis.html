@@ -1,0 +1,62 @@
+{% extends "users/inicio.html" %}
+
+{% load static %}
+
+{% block content %}
+
+<div class = "jumbotron" style="background-color: white; margin-bottom: 0px;">
+
+    <h3 style="text-align: center; color: #17B5B5 ;">Presupuesto de {{datos.proyecto}} - {{datos.capitulo}}</h3>
+     <b><hr class = "my-4" style="width: 75%; border-color: #17B5B5 ;"></b>
+ 
+    
+    {% if datos %} 
+
+    <table class = "table table-hover" style="text-align: center;">
+        <thead>
+
+            <tr class = "table-info">
+                <th scope = "row"> <font style = "vertical-align: heredar;"> ANALISIS </font></th>
+                <th scope = "row"> <font style = "vertical-align: heredar;"> VINCULACIÓN </font></th>
+                <th scope = "row"> <font style = "vertical-align: heredar;"> PRECIO DEL ANALISIS</font></th>
+                <th scope = "row"> <font style = "vertical-align: heredar;"> CANTIDAD</font></th>
+                <th scope = "row"> <font style = "vertical-align: heredar;"> TOTAL</font></th>   
+                <th scope = "row"> <font style = "vertical-align: heredar;"> INC</font></th>                  
+            </tr>
+        </thead>
+
+        <tbody>
+
+            
+
+            {% for i in datos.datos %}
+
+            <tr class = "table-light">
+                <td> <a href="{% url 'Composición Analisis' i.0.codigo %}" style="color: black;"> <b>{{i.0.nombre}}</b> </a> </td>
+                <td> {{i.5}}</td>
+                <td> ${{i.1|floatformat:2}}</td>
+                <td> {{i.2|floatformat:2}} ({{i.0.unidad}})</td>
+                <td> ${{i.3|floatformat:2}} Mil</td>  
+                <td> {{i.4|floatformat:2}}%</td>                           
+            </tr>
+        </tbody>
+
+            {% endfor %}
+
+        </table>
+
+     {% else %}
+            <div>
+                <h3>No existe registros actualmente</h3>
+            </div>
+        
+    {% endif %}
+        
+
+   
+                    
+</div>
+
+ 
+    
+{% endblock %}

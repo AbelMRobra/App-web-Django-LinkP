@@ -40,16 +40,38 @@ class Compras(models.Model):
             ANTICIPADA = "ANT"
             NORMAL = "NORMAL"
 
-
+    proyecto = models.ForeignKey(Proyectos, on_delete=models.CASCADE, verbose_name="Proyectos", blank=True, null=True)
     proveedor = models.ForeignKey(Proveedores, on_delete=models.CASCADE, verbose_name="Proveedor")
     nombre = models.CharField(max_length=200, verbose_name="Nombre de la compra")
     tipo = models.CharField(choices=estados.choices, max_length=20, verbose_name="Tipo", blank=True, null=True)
     articulo = models.ForeignKey(Articulos, on_delete=models.CASCADE, verbose_name="Articulo")
     cantidad = models.FloatField(verbose_name="Cantidad")
+    precio = models.FloatField(blank=True, null=True, verbose_name="Precio")
     fecha_c = models.DateField(auto_now_add=True, verbose_name="Fecha de compra")
     fecha_a = models.DateField(auto_now=True, verbose_name="Fecha de actualización")
     documento = models.CharField(max_length=200, verbose_name="Documento de referencia", blank=True, null=True)
 
+    class Meta:
+        verbose_name="Compra"
+        verbose_name_plural="Compras"
+
+    def __str__(self):
+        return self.nombre
+
+class Retiros(models.Model):
+    compra = models.ForeignKey(Compras, on_delete=models.CASCADE, verbose_name="Compra")
+    articulo = models.ForeignKey(Articulos, on_delete=models.CASCADE, verbose_name="Articulo")
+    cantidad = models.FloatField(verbose_name = "Cantidad")
+    fecha_c = models.DateField(auto_now_add=True, verbose_name="Fecha de retiro")
+    fecha_a = models.DateField(auto_now=True, verbose_name="Fecha de actualización")
+    documento = models.CharField(max_length=200, verbose_name="Documento de referencia")
+
+    class Meta:
+        verbose_name="Retiro"
+        verbose_name_plural="Retiros"
+
+    def __str__(self):
+        return '{}'.format(self.compra)
 
 class StockComprasAnticipadas(models.Model):
     obra = models.ForeignKey(Proyectos, on_delete=models.CASCADE)

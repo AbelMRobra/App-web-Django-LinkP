@@ -8,21 +8,37 @@
 
     <h3 style="text-align: center; color: #17B5B5 ;">Listado de Articulos</h3>
      <b><hr class = "my-4" style="width: 75%; border-color: #17B5B5 ;"></b>
-     <form method="get" class="form-group" style="text-align: center;">
-        <div>
-            {{ myfilter.form }}
+     <form method="POST" style="text-align: center;">
+
+        {% csrf_token %}
+
+        <div style="display: inline-block; margin-left: 1rem;">
+
+            <label for="palabra"><h6>Buscar</h6></label>
+
         </div>
+        
+        <div style="display: inline-block; margin-left: 1rem; ">
+
+            <input name="palabra" type="text" class="form-control form-control" placeholder="Buscar por palabra" list="art" style="width: 30rem;">
+
+        </div>
+        
         <div>
             <button class="btn btn-info" type="submit" style="margin-top: 1%;">Buscar</button>          
-        </div>
+        </div>       
+
      </form>
      <b><hr class = "my-4" style="width: 100%; border-color: #17B5B5 ;"></b>
-     <div style="margin-bottom: 1%;">
-        <a href="/presupuestos/insumcreate"><button class="btn btn-info" type="submit">Crear articulo</button></a>  
+     <div style="margin-bottom: 0.5rem; text-align: center;">
+        <a href="/presupuestos/insum_panel"><button class="btn btn-success" type="submit">Panel de cambios</button></a>  
      </div>
+     <div style="margin-bottom: 0.5rem; text-align: center;">
+        <small style="color: darkgreen;"> Solo miembros del área de presupuestos</small>
+    </div>
       
 
-    {% if articulos %} 
+    {% if datos %} 
 
     <table class = "table table-hover" style="text-align: center;">
         <thead>
@@ -34,9 +50,8 @@
                 <th scope = "row"> <font style = "vertical-align: heredar;"> VALOR </font></th>
                 <th scope = "row"> <font style = "vertical-align: heredar;"> FECHA DE CREACIÓN </font></th>
                 <th scope = "row"> <font style = "vertical-align: heredar;"> CONSTANTE </font></th> 
-                <th scope = "row"> <font style = "vertical-align: heredar;"> EDITAR </font></th>
-                <th scope = "row"> <font style = "vertical-align: heredar;">ELIMINAR </font></th>
-
+                <th scope = "row"> <font style = "vertical-align: heredar;"> ULTIMA ACTUALIZACIÓN </font></th>
+                
             </tr>
         </thead>
 
@@ -44,7 +59,7 @@
 
             
 
-            {% for i in articulos %}
+            {% for i in datos|slice:"20"  %}
             <tr class = "table-light">
                 <td> <b>{{i.codigo}}</b> </td>
                 <td>{{i.nombre}}</td>
@@ -52,12 +67,9 @@
                 <td>${{i.valor|floatformat:2}}</td>
                 <td>{{i.fecha_c}}</td>
                 <td>{{i.constante}}</td>
-                <td> <a class = "btn btn-outline-info" href="{% url 'Editar_insumo' i.codigo %}">Editar</a>
+                <td>{{i.fecha_a}}</td>
                 
-                </td>
-                <td> <a class = "btn btn-outline-danger" href="{% url 'Eliminar_insumo' i.codigo %}">Eliminar</a>
                 
-                </td>
             </tr>
         </tbody>
 
@@ -73,6 +85,9 @@
         
 
     </table>
+    <div>
+        <small>El listado puede continuar, el maximo de filas visibles es de 20-</small><small>  <strong>AR</strong> </small>
+    </div>
 
                     
 </div>

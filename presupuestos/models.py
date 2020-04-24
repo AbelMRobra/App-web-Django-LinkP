@@ -1,12 +1,26 @@
 from django.db import models
 from proyectos.models import Proyectos
+from computos.models import Tipologias
 
 # Modelo para constantes
+
+
+class Capitulos(models.Model):
+    nombre = models.CharField(max_length=200, verbose_name="Capitulo")
+    descrip = models.TextField(verbose_name="Descripción")
+
+    class Meta:
+        verbose_name="Capitulo"
+        verbose_name_plural="Capitulos"
+
+    def __str__(self):
+        return self.nombre
 
 class Constantes(models.Model):
     nombre = models.CharField(max_length=200)
     valor = models.FloatField()
     descrip = models.TextField()
+    fecha_a = models.DateField(auto_now=True, blank=True, null=True)
     
     class Meta:
         verbose_name="Constante"
@@ -18,6 +32,7 @@ class Constantes(models.Model):
 # Modelo para articulos
 
 class Articulos(models.Model):
+    id = models.IntegerField(null=True, blank=True)
     codigo = models.IntegerField(primary_key=True)
     nombre = models.CharField(max_length=200)
     constante = models.ForeignKey(Constantes, null=True, blank=True, on_delete=models.CASCADE)
@@ -34,6 +49,32 @@ class Articulos(models.Model):
 
     def __str__(self):
         return self.nombre
+
+class Analisis(models.Model):
+    id = models.IntegerField(auto_created=True)
+    codigo = models.IntegerField(primary_key=True, verbose_name="Codigo")
+    nombre = models.CharField(max_length=200, verbose_name="Nombre")
+    unidad = models.CharField(max_length=10, verbose_name="Unidad")
+
+    class Meta:
+        verbose_name="Analisis"
+        verbose_name_plural="Analisis"
+
+    def __str__(self):
+        return self.nombre
+
+class CompoAnalisis(models.Model):
+    id = models.IntegerField(primary_key=True, auto_created=True)
+    articulo = models.ForeignKey(Articulos, on_delete=models.CASCADE, verbose_name = "Articulo")
+    analisis = models.ForeignKey(Analisis, on_delete=models.CASCADE, verbose_name = "Analisis")
+    cantidad = models.FloatField(verbose_name="Cantidad")
+
+    class Meta:
+        verbose_name="Composición"
+        verbose_name_plural="Composición"
+
+    def __str__(self):
+        return '{}'.format(self.analisis)
 
 # Modelo para pasar datos
 
@@ -96,6 +137,7 @@ class Desde(models.Model):
     valor_costo_usd = models.FloatField(blank=True, null=True, verbose_name="Valor de costo en USD")
     valor_final = models.FloatField(blank=True, null=True, verbose_name="Valor final")
     valor_final_usd = models.FloatField(blank=True, null=True, verbose_name="Valor final en USD")
+    pricing = models.FloatField(blank=True, null=True, verbose_name="Pricing")
 
     class Meta:
         verbose_name = "Indicador de precio"
@@ -103,3 +145,18 @@ class Desde(models.Model):
 
     def __str__(self):
         return '{}'.format(self.parametros)
+
+class Modelopresupuesto(models.Model):
+    proyecto= models.ForeignKey(Proyectos, on_delete=models.CASCADE, verbose_name="Proyecto")
+    capitulo= models.ForeignKey(Capitulos, on_delete=models.CASCADE, verbose_name="Capitulo")
+    analisis= models.ForeignKey(Analisis, on_delete=models.CASCADE, verbose_name="Analisis")
+    vinculacion= models.ForeignKey(Tipologias, on_delete=models.CASCADE, null=True, blank=True, verbose_name="Vinculación")
+    cantidad= models.FloatField(verbose_name="Cantidad", null=True, blank=True)
+
+    class Meta:
+        verbose_name="Modelo presupuesto"
+        verbose_name_plural="Modelo presupuestos"
+
+    def __str__(self):
+        return '{}'.format(self.capitulo)
+

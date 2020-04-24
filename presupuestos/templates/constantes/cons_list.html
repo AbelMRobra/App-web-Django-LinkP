@@ -8,22 +8,12 @@
 
     <h3 style="text-align: center; color: #17B5B5 ;">Listado de Constantes</h3>
      <b><hr class = "my-4" style="width: 75%; border-color: #17B5B5 ;"></b>
-     <form method="get" class="form-group" style="text-align: center;">
-        <div>
 
+        <div style="text-align: center;">
+               <a href="/presupuestos/cons_panel" class="btn btn-success">Panel de cambios</a>          
+        </div>
 
-        </div>
-        <div>
-            <button class="btn btn-info" type="submit">Buscar</button>          
-        </div>
-     </form>
      <b><hr class = "my-4" style="width: 100%; border-color: #17B5B5 ;"></b>
-     <div style="margin-bottom: 1%;">
-
-        <a href="/presupuestos/cons_create"><button class="btn btn-info" type="submit">Crear constante</button></a>  
-     
-    </div>
-      
     {% if constantes %}  
 
         <table class = "table table-hover" style="text-align: center;">
@@ -33,8 +23,8 @@
                     <th scope = "row"> <font style = "vertical-align: heredar;">  NOMBRE </font> </th>
                     <th scope = "row"> <font style = "vertical-align: heredar;">  VALOR </font>  </th>
                     <th scope = "row"> <font style = "vertical-align: heredar;">  DESCRIPCIÓN </font>  </th>
-                    <th scope = "row"> <font style = "vertical-align: heredar;">  EDITAR </font> </th>
-                    <th scope = "row"> <font style = "vertical-align: heredar;"> ELIMINAR </font>  </th>
+                    <th scope = "row"> <font style = "vertical-align: heredar;">  ULTIMA ACTUALIZACIÓN </font>  </th>
+                    
     
                 </tr>
             </thead>
@@ -46,12 +36,7 @@
                     <td style="width: 20%;"> <b>{{i.nombre}}</b> </td>
                     <td style="width: 20%;"></tdstyle>${{i.valor}}</td>
                     <td style="width: 30%;"></tdstyle> <b>{{i.descrip}}</b> </td>
-                    <td style="width: 15%;"></tdstyle> <a class = "btn btn-outline-info" href="{% url 'Editar_cons' i.id %}">Editar</a>
-                    
-                    </td>
-                    <td style="width: 15%;"></tdstyle> <a class = "btn btn-outline-danger" href="{% url 'Eliminar_cons' i.id %}">Eliminar</a>
-                    
-                    </td>
+                    <td style="width: 30%;"></tdstyle> {{i.fecha_a}} </td>
                     
     
                 </tr>

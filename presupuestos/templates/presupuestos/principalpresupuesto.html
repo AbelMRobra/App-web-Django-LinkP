@@ -1,0 +1,57 @@
+{% extends "users/inicio.html" %}
+
+{% load static %}
+
+{% block content %}
+
+<div class = "jumbotron" style="background-color: white; margin-bottom: 0px;">
+
+    <h3 style="text-align: center; color: #17B5B5 ;">Panel de presupuestos</h3>
+     <b><hr class = "my-4" style="width: 75%; border-color: #17B5B5 ;"></b>
+ 
+    
+    {% if datos %} 
+
+    <table class = "table table-hover" style="text-align: center;">
+        <thead>
+
+            <tr class = "table-info">
+                <th scope = "row"> <font style = "vertical-align: heredar;"> PROYECTO </font></th>
+                <th scope = "row"> <font style = "vertical-align: heredar;"> TAMAÑO </font></th>
+                <th scope = "row"> <font style = "vertical-align: heredar;"> MONTO DEL PROYECTO </font></th>               
+            </tr>
+        </thead>
+
+        <tbody>
+
+            
+
+            {% for i in datos %}
+
+            <tr class = "table-light">
+                <td> <b><a href="{% url 'Panel de presupuestos por capitulo' i.0.id %}" style="color: black;">{{i.0.nombre}}</a></b>  </td>
+                <td> {{i.0.m2|floatformat:2}} M2</td>
+                <td> ${{i.1|floatformat:2}} Millones</td>
+
+                          
+            </tr>
+        </tbody>
+
+            {% endfor %}
+
+        </table>
+
+     {% else %}
+            <div>
+                <h3>No existe registros actualmente</h3>
+            </div>
+        
+    {% endif %}
+        
+
+   
+                    
+</div>
+ 
+    
+{% endblock %}

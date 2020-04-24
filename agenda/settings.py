@@ -44,6 +44,8 @@ INSTALLED_APPS = [
     'proyectos',
     'presupuestos',
     'computos',
+    'import_export',
+    'registro',
 ]
 
 MIDDLEWARE = [

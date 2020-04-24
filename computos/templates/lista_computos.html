@@ -17,6 +17,10 @@
         </div>
      </form>
      <b><hr class = "my-4" style="width: 100%; border-color: #17B5B5 ;"></b>
+
+     <div style="text-align: center; margin-bottom: 1rem;">
+        <a href="/computos/resumen"><button class="btn btn-info" style="margin-top: 1%;">Ver resumen</button></a>           
+    </div>
       
 
     {% if datos %} 
@@ -43,17 +47,17 @@
 
             
 
-            {% for i in datos|slice:":20" %}
+            {% for i in datos|slice:":50" %}
             <tr class = "table-light">
                 <td> <b>{{i.proyecto}}</b> </td>
                 <td>{{i.planta}}</td>
                 <td>{{i.rubro}}</td>
                 <td>{{i.tipologia.nombre}}</td>
                 <td>{{i.tipologia.un}}</td>
-                <td>{{i.valor_lleno}}</td>
-                <td>{{i.valor_vacio}}</td>
-                <td> <b>{{i.valor_total}}</b> </td>
-                <td>{{i.valor_obra}}</td>
+                <td>{{i.valor_lleno|floatformat:2}}</td>
+                <td>{{i.valor_vacio|floatformat:2}}</td>
+                <td> <b>{{i.valor_total|floatformat:2}}</b> </td>
+                <td>{{i.valor_obra|floatformat:2}}</td>
             </tr>
         </tbody>
 
@@ -69,6 +73,10 @@
         
 
     </table>
+
+    <div>
+        <small>El listado puede continuar, el maximo de filas visibles es de 50-</small><small>  <strong>AR</strong> </small>
+    </div>
 
                     
 </div>

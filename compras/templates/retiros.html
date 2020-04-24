@@ -1,0 +1,142 @@
+{% extends "users/inicio.html" %}
+
+{% load static %}
+
+{% block content %}
+
+<div class = "jumbotron" style="background-color: white; margin-bottom: 0px;">
+
+    <h3 style="text-align: center; color:  #138D75 ;">Cargar retiros</h3>
+     <b><hr class = "my-4" style="width: 75%; border-color:  #138D75 ;"></b>
+
+     <b><hr class = "my-4" style="width: 100%; border-color:  #138D75 ;"></b>
+
+     <div style="margin-top: 2rem; margin-bottom: 2rem; text-align: center; background-color: rgba(25, 111, 61, 0.3);">
+       
+        {% if datos %}
+
+        <form method="POST">
+        {% csrf_token %}    
+            <div style="display: inline-block; margin-left: 1rem; margin-bottom: 1rem; margin-top: 1rem;">
+
+                <label for="compra"><h6>Nombre de la compra</h6></label>
+          
+                <input name="compra" type="search" class="form-control form-control" placeholder="Nombre de la compra" list="compra" style="width: 30rem;">
+    
+            </div>
+            <div>
+                <button class="btn btn-success" type="submit" style="margin-bottom: 1rem;">Cargar retiros</button>
+
+            </div>
+        </form>
+
+        {% endif %}
+              
+
+    </div>
+
+    {% if datos %} 
+
+    <table class = "table table-hover" style="text-align: center;">
+        <thead>
+
+            <tr class = "table-success">
+                <th scope = "row"> <font style = "vertical-align: heredar;"> PROYECTO </font></th>
+                <th scope = "row"> <font style = "vertical-align: heredar;"> PROVEEDOR </font></th>
+                <th scope = "row"> <font style = "vertical-align: heredar;"> NOMBRE DE LA COMPRA </font></th>
+                <th scope = "row"> <font style = "vertical-align: heredar;"> DOCUMENTO </font></th>
+                
+            </tr>
+        </thead>
+
+        <tbody>
+           
+            {% for i in datos %}
+            
+            <tr class = "table-light" style="vertical-align: middle;">
+                <td style="vertical-align: middle;"> <b>{{i.1}}</b> </td>
+                <td style="vertical-align: middle;">{{i.2}}</td>
+                <td style="vertical-align: middle;"> <b>{{i.0}}</b> </td>
+                <td style="vertical-align: middle;">{{i.3}}</td>           
+                </tr>                 
+            
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+
+        <datalist id="compra"> 
+
+            {% for i in datos %}
+            
+            <option value="{{ i.0 }}"></option>
+    
+            {% endfor %}
+    
+        </datalist>
+
+    {% elif compra %}
+    <form method="POST" name="retiro">
+        {% csrf_token %} 
+        <div style="margin-top: 2rem; margin-bottom: 2rem; text-align: center; background-color: rgba(25, 111, 61, 0.3);">
+            <div style="display: inline-block; margin-bottom: 1rem; margin-top: 1rem; margin-left: 1rem;" > 
+                <label for="nomcompra"><h6>Nombre de la compra</h6></label>     
+                <input name="nomcompra" readonly="" type="text" value ="{{compra}}" class="form-control form-control" style="width: 30rem; text-align: center;">
+            </div>
+            <div style="display: inline-block; margin-bottom: 1rem; margin-top: 1rem; margin-left: 1rem;" > 
+                <label for="documento"><h6>Nombre del documento</h6></label>  
+                <input name="documento" type="text" class="form-control form-control" placeholder="Nombre del documento del retiro" style="width: 30rem; text-align: center;">
+            </div>
+            <div>
+                <small>Actualmente el nombre de la compra lo utilizo para algunas cosas, luego lo cambiare-</small><small>  <strong>AR</strong> </small>
+            </div>
+        </div>
+    {% for i in compra %}
+    <div style="margin-top: rem; margin-bottom: 2rem; background-color: rgba(25, 111, 61, 0.3);">          
+        <div class="campoarticulos">
+            <div class="campo">   
+                <div style="display: inline-block; margin-left: 1rem; margin-bottom: 1rem; margin-top: 1rem;">                   
+                    <div style="display: inline-block; margin-left: 1rem;">
+                        <label for="articulo{{i.id}}"><h6>Articulo</h6></label>
+                    </div>                   
+                    <div style="display: inline-block; margin-left: 1rem; ">
+                        <input name="articulo{{i.id}}" type="search" readonly="" class="form-control form-control" value="{{i.articulo.nombre}}({{i.articulo.unidad}})" style="width: 40rem;">
+                    </div>
+                    <div style="display: inline-block; margin-left: 1rem;">
+                        <label for="cantidad{{i.id}}"><h6>Cantidad</h6></label>
+                    </div>
+                    <div style="display: inline-block"> 
+                        <input name="cantidad{{i.id}}" type="number" step="any" class="form-control form-control" placeholder="{{i.cantidad|floatformat:2}}">
+                    </div>                            
+                </div>       
+            </div>        
+         </div>        
+    </div>
+    {% endfor %} 
+    
+    <div style="text-align: center;">
+        <button class="btn btn-success" type="submit" style="margin-top: 1%;">Cargar</button>          
+    </div> 
+    <div style="text-align: center;">
+        <small>Revisar bien antes de cargar-</small><small>  <strong>AR</strong> </small>
+    </div>
+    
+    </form>
+     {% else %}
+
+
+            <div style="text-align: center;">
+                <h3>No existe registros actualmente</h3>
+            </div>
+            
+
+    {% endif %}
+        
+
+    
+
+                    
+</div>
+ 
+{% endblock %}

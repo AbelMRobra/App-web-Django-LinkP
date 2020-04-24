@@ -7,7 +7,7 @@ class Proyectos(models.Model):
     descrip = models.CharField(max_length=200, verbose_name='Descripción')
     fecha_f = models.DateField(verbose_name="Fecha de entrega")
     fecha_a = models.DateField(auto_now=True, verbose_name="Fecha de actualización")
-    m2 =  models.IntegerField(verbose_name="Tamaño de la obra")
+    m2 =  models.FloatField(verbose_name="Tamaño de la obra")
 
     class Meta:
         verbose_name="Proyecto"

@@ -21,4 +21,6 @@ class CertificadoFilter(django_filters.FilterSet):
             'contrato':'Buscar por contrato' ,
             
         }
+
+
     
