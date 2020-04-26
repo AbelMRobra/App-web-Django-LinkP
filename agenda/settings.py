@@ -26,6 +26,7 @@ SECRET_KEY = '6b!4-@r!zlpo@jm=bnl4#4#g8qv7pwkuivb_e2k4ut!nba_y!l'
 DEBUG = True
 
 ALLOWED_HOSTS = []
+#ALLOWED_HOSTS = ["linkp.online"]
 
 
 # Application definition

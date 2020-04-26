@@ -343,6 +343,127 @@ def panelanalisis(request):
         datos.append((i, valor))
 
     return render(request, 'analisis/panelanalisis.html', {"datos":datos})
+    
+# ----------------------------------------------------- VISTAS PARA CREAR ANALISIS ----------------------------------------------
+
+def crearanalisis(request):
+
+    articulos = Articulos.objects.all()
+
+    mensaje = ""
+
+    datos = {'articulos':articulos}
+
+    if request.method == 'POST':
+
+        datos_p = request.POST.items()
+
+        resto = []
+
+        for i in datos_p:
+
+            if i[0] == "codigo":
+                
+                codigo = i[1]
+
+            elif i[0] == "nombre":
+                
+                nombre = i[1]
+
+            elif i[0] == "unidad":
+                
+                unidad = i[1]
+            
+            else:
+
+                resto.append(i)        
+
+        datos_analisis = Analisis.objects.all()
+        id_analisis = []
+
+        for i in datos_analisis:
+            id_analisis.append(i.id)
+            
+        id_num = 1
+
+        while id_num in id_analisis:
+            id_num = id_num + 1
+
+        try:
+
+            b = Analisis(
+                id = id_num,
+                codigo = codigo,
+                nombre = nombre,
+                unidad = unidad,
+                )
+
+            b.save()
+
+        except:
+
+            mensaje = "El analisis cargado tiene un error"
+
+            datos = {'articulos':articulos, 'mensaje':mensaje}
+
+        valor = 1
+
+        for i in resto:
+
+            try:
+
+                if i[0] == "csrfmiddlewaretoken":
+
+                    print("Basura")
+
+                elif valor == 1:
+
+                    valor = 2
+    
+                    nombre_articulo = i[1]
+
+                elif valor == 2:
+
+                    valor = 1
+
+                    cantidad = i[1]
+
+                    datos_compo = CompoAnalisis.objects.all()
+                    
+                    id_compo = []
+
+                    for i in datos_compo:
+                        id_compo.append(i.id)
+                        
+                    id_num_compo = 1
+
+                    while id_num_compo in id_compo:
+                        print("Si esta")
+                        id_num_compo = id_num_compo + 1
+            
+                    b = CompoAnalisis(
+                        id = id_num_compo,
+                        articulo = Articulos.objects.get(nombre=nombre_articulo),
+                        analisis = Analisis.objects.get(codigo=codigo),
+                        cantidad = cantidad,
+                    )
+
+                    b.save()
+           
+            except:
+
+                mensaje = "**Los datos ingresados no son correctos"
+
+                datos = {'articulos':articulos, 'mensaje':mensaje}
+
+        return redirect('Lista de analisis')
+    else:
+
+        datos = {'articulos':articulos,}
+
+
+    return render(request, 'analisis/crearanalisis.html', {'datos':datos})
+
 
 # ----------------------------------------------------- VISTAS PARA PARAMETROS----------------------------------------------
 

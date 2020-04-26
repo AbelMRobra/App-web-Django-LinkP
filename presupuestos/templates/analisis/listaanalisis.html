@@ -31,9 +31,13 @@
      </form>
      <b><hr class = "my-4" style="width: 100%; border-color: #17B5B5 ;"></b>
 
+     {% if perms.analisis.view %}
+
      <div style="margin-bottom: 0.5rem; text-align: center;">
         <a href="/presupuestos/panelanalisis"><button class="btn btn-success" type="submit">Panel de cambios</button></a>  
      </div>
+
+     {% endif %}
     
     {% if datos %} 
 

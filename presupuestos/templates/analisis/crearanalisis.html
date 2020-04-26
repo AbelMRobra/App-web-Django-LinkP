@@ -1,0 +1,150 @@
+{% extends "users/inicio.html" %}
+
+{% load static %}
+
+{% block content %}
+
+<div class = "jumbotron" style="background-color: white; margin-bottom: 0px;">
+
+    <h3 style="text-align: center; color: #138D75 ;">Crear Analisis de Precio Unitario</h3>
+     <b><hr class = "my-4" style="width: 75%; border-color: #138D75 ;"></b>
+
+     <b><hr class = "my-4" style="width: 100%; border-color: #138D75 ;"></b>
+
+     <form method="POST">
+
+        {% csrf_token %}
+
+        <h3 style="color: #138D75;"> Datos generales</h3>
+
+        <div>
+            <small> En caso que el analisis sea solo mano de obra escribir en el nombre </small><small>  <strong>(SOLO MANO DE OBRA)</strong> </small>
+        </div>
+
+        <div style="margin-top: 2rem; margin-bottom: 2rem; text-align: center; background-color: rgba(25, 111, 61, 0.3);">
+            
+
+
+    
+            <div style="display: inline-block; margin-left: 1rem; margin-bottom: 1rem; margin-top: 1rem;">
+    
+                <label for="codigo"> <h5>Codigo del analisis:</h5></label>
+          
+                <input type="number" name="codigo" class="form-control form-control" placeholder="Solo numeros">
+    
+            </div>
+
+            <div style="display: inline-block; margin-left: 1rem; margin-bottom: 1rem; margin-top: 1rem;">
+    
+                <label for="nombre"> <h5>Nombre del analisis:</h5></label>
+          
+                <input type="text" class="form-control form-control" name="nombre" placeholder="Nombre" style="width: 30rem;">
+    
+            </div>
+
+            <div style="display: inline-block; margin-left: 1rem; margin-bottom: 1rem; margin-top: 1rem;">
+    
+                <label for="unidad"> <h5>Unidad:</h5></label>
+          
+                <input type="text" class="form-control form-control" name="unidad" placeholder="UN/KG/M3">
+    
+            </div>
+
+            
+
+        </div>
+
+        
+
+        <h3 style="color: #138D75;"> Articulos</h3>
+
+        <div>
+            <small> Prestar atención a las unidades -</small><small>  <strong>AR</strong> </small>
+        </div>
+
+
+        <p class="text-danger">{{datos.mensaje}}</p>
+
+        <div style="margin-top: rem; margin-bottom: 2rem; background-color: rgba(25, 111, 61, 0.3);">          
+
+            <div class="campoarticulos">
+
+                <div class="campo">
+        
+                    <div style="display: inline-block; margin-left: 1rem; margin-bottom: 1rem; margin-top: 1rem;">
+                        
+                        <div style="display: inline-block; margin-left: 1rem;">
+
+                            <label for="articulo"><h6>Articulo</h6></label>
+
+                        </div>
+                        
+                        <div style="display: inline-block; margin-left: 1rem; ">
+
+                            <input name="articulo" type="search" class="form-control form-control" placeholder="Nombre del articulo" list="art" style="width: 30rem;">
+
+                        </div>
+
+                        <div style="display: inline-block; margin-left: 1rem;">
+
+                            <label for="cantidad"><h6>Cantidad</h6></label>
+
+                        </div>
+
+                        <div style="display: inline-block"> 
+
+                            <input name="cantidad" type="number" step="any" class="form-control form-control" placeholder="Cantidad">
+
+                        </div>
+                        
+                    </div>
+            
+                </div>
+        
+        
+             </div>        
+
+        </div>
+
+        <div style="text-align: center; margin-bottom: 2rem;">
+
+            <button type="submit" class="btn btn-success btn-lg">Cargar analisis</button>
+
+        </div>
+
+        <datalist id="art"> 
+
+            {% for i in datos.articulos %}
+            
+            <option value="{{ i.nombre }}">({{i.unidad}})</option>
+    
+            {% endfor %}
+    
+        </datalist>
+
+     </form>   
+
+
+     <button class="btn btn-outline-success" onclick="myFunction()">Agregar campos</button>
+
+</div>
+
+
+<script>
+
+    var i = 1;
+
+    function myFunction() {
+
+        i++
+            $(".campo").clone().appendTo(".campoarticulos").attr("class","campo-"+i);
+            $(".campoarticulos").last().find('.campo').find('input').each(function( index ) { 
+
+                    $(this).attr("name",$(this).attr("name")+i);
+            });
+        }
+    
+</script>
+
+      
+     {% endblock %}
