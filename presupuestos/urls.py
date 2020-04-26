@@ -18,6 +18,7 @@ urlpatterns = [
     url(r'^insum_eliminar/(?P<id_articulos>\d+)/$', login_required(views.insum_delete), name = 'Eliminar_insumo'),
     #----------------URL PARA ANALISIS -----------------------------------------  
     url(r'^analisis_list/$', login_required(views.analisis_list), name = 'Lista de analisis'),
+    url(r'^panelanalisis/$', login_required(views.panelanalisis), name = 'Panel de analisis'),
     url(r'^ver_analisis/(?P<id_analisis>\d+)/$', login_required(views.ver_analisis), name = 'Composición Analisis'),
     #----------------URL PARA PRESPUESTOS -----------------------------------------  
     url(r'^presupuestos/$', login_required(views.presupuestostotal), name = 'Panel de presupuestos'),

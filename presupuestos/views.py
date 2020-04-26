@@ -321,11 +321,28 @@ def analisis_list(request):
 
         datos.append((i, valor))
 
-    print(datos)
-
-
     return render(request, 'analisis/listaanalisis.html', {"datos":datos})
 
+# ----------------------------------------------------- VISTAS PARA PANEL DE ANALISIS----------------------------------------------
+
+def panelanalisis(request):
+
+    analisis = Analisis.objects.all()
+    composicion = CompoAnalisis.objects.all()
+    datos = []
+
+    for i in analisis:
+
+        valor = 0
+
+        for c in composicion:
+
+            if i == c.analisis:
+                valor = valor +c.articulo.valor*c.cantidad
+
+        datos.append((i, valor))
+
+    return render(request, 'analisis/panelanalisis.html', {"datos":datos})
 
 # ----------------------------------------------------- VISTAS PARA PARAMETROS----------------------------------------------
 

@@ -9,9 +9,13 @@
     <h3 style="text-align: center; color: #17B5B5 ;">Listado de Constantes</h3>
      <b><hr class = "my-4" style="width: 75%; border-color: #17B5B5 ;"></b>
 
+     {% if perms.constante.view %}
+
         <div style="text-align: center;">
                <a href="/presupuestos/cons_panel" class="btn btn-success">Panel de cambios</a>          
         </div>
+
+    {% endif %}
 
      <b><hr class = "my-4" style="width: 100%; border-color: #17B5B5 ;"></b>
     {% if constantes %}  

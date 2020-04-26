@@ -15,11 +15,6 @@ class ArticulosAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     search_fields = ('codigo', 'nombre',  'valor', 'constante')
     resources_class = ArticulosResource
 
-class ModelopresupuestoAdmin(admin.ModelAdmin):
-    list_display = ('proyecto', 'capitulo',  'analisis', 'vinculacion', 'cantidad')
-    search_fields = ('proyecto__nombre', 'capitulo__nombre',  'analisis__nombre')
-
-
 class AnalisisResource(resources.ModelResource):
     class Meta:
         model = Analisis
@@ -35,13 +30,37 @@ class CompoAnalisisResource(resources.ModelResource):
         model = CompoAnalisis
 
 class CompoAnalisisAdmin(ImportExportModelAdmin, admin.ModelAdmin):
-    list_display = ('articulo', 'analisis',  'cantidad')
+    list_display = ('analisis','articulo',   'cantidad')
     search_fields = ('articulo__nombre', 'analisis__nombre',  'cantidad')
     resources_class = CompoAnalisisResource
-    
 
-admin.site.register(Constantes)
-admin.site.register(Capitulos)
+class ConstantesResource(resources.ModelResource):
+    class Meta:
+        model = Constantes
+
+class ConstantesAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    list_display = ('nombre','valor', 'descrip')
+    search_fields = ('nombre','valor', 'descrip')
+    resources_class = ConstantesResource
+
+class ModeloPreResource(resources.ModelResource):
+    class Meta:
+        model = Modelopresupuesto
+
+class ModelopresupuestoAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    list_display = ('proyecto', 'capitulo',  'analisis', 'vinculacion', 'cantidad')
+    search_fields = ('proyecto__nombre', 'capitulo__nombre',  'analisis__nombre')
+    resources_class = ModeloPreResource
+
+class CapituloResource(resources.ModelResource):
+    class Meta:
+        model = Modelopresupuesto
+
+class CapituloAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    resources_class = ModeloPreResource
+
+admin.site.register(Constantes, ConstantesAdmin)
+admin.site.register(Capitulos, CapituloAdmin)
 admin.site.register(Articulos, ArticulosAdmin)
 admin.site.register(DatosProyectos)
 admin.site.register(Presupuestos)

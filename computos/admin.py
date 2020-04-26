@@ -32,8 +32,15 @@ class ComputosAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     search_fields = ('proyecto__nombre', 'planta__nombre', 'rubro__nombre', 'tipologia__nombre', 'fecha_a', 'valor_total', 'valor_obra')
     resources_class = ComputosResource
 
+class RubrosResource(resources.ModelResource):
+    class Meta:
+        model = ListaRubros
+
+class RubrosAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    resources_class = RubrosResource
+
 # Register your models here.
 admin.site.register(Computos, ComputosAdmin)
-admin.site.register(ListaRubros)
+admin.site.register(ListaRubros, RubrosAdmin)
 admin.site.register(Tipologias, TipologiasAdmin)
 admin.site.register(Plantas, PlantasAdmin)

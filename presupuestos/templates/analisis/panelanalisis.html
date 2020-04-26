@@ -6,7 +6,7 @@
 
 <div class = "jumbotron" style="background-color: white; margin-bottom: 0px;">
 
-    <h3 style="text-align: center; color: #17B5B5 ;">Listado de Articulos</h3>
+    <h3 style="text-align: center; color: #17B5B5 ;">Panel de Analisis de Precio Unitario</h3>
      <b><hr class = "my-4" style="width: 75%; border-color: #17B5B5 ;"></b>
      <form method="POST" style="text-align: center;">
 
@@ -23,7 +23,7 @@
             <input name="palabra" type="text" class="form-control form-control" placeholder="Buscar por palabra" list="art" style="width: 30rem;">
 
         </div>
-        
+
         <div>
             <button class="btn btn-info" type="submit" style="margin-top: 1%;">Buscar</button>          
         </div>       
@@ -31,26 +31,21 @@
      </form>
      <b><hr class = "my-4" style="width: 100%; border-color: #17B5B5 ;"></b>
 
-     {% if perms.articulos.view %}
-
      <div style="margin-bottom: 0.5rem; text-align: center;">
-        <a href="/presupuestos/insum_panel"><button class="btn btn-success" type="submit">Panel de cambios</button></a>  
+        <a href="/presupuestos/insum_panel"><button class="btn btn-success" type="submit">Crear analisis</button></a>  
      </div>
-      
-    {% endif %}
+    
     {% if datos %} 
 
     <table class = "table table-hover" style="text-align: center;">
         <thead>
 
-            <tr class = "table-info">
+            <tr class = "table-success">
                 <th scope = "row"> <font style = "vertical-align: heredar;"> CODIGO </font></th>
-                <th scope = "row"> <font style = "vertical-align: heredar;"> NOMBRE DEL ARTICULO </font></th>
+                <th scope = "row"> <font style = "vertical-align: heredar;"> NOMBRE DEL ANALISIS </font></th>
                 <th scope = "row"> <font style = "vertical-align: heredar;"> UN </font></th>
                 <th scope = "row"> <font style = "vertical-align: heredar;"> VALOR </font></th>
-                <th scope = "row"> <font style = "vertical-align: heredar;"> FECHA DE CREACIÓN </font></th>
-                <th scope = "row"> <font style = "vertical-align: heredar;"> CONSTANTE </font></th> 
-                <th scope = "row"> <font style = "vertical-align: heredar;"> ULTIMA ACTUALIZACIÓN </font></th>
+
                 
             </tr>
         </thead>
@@ -60,14 +55,12 @@
             
 
             {% for i in datos|slice:"20"  %}
+
             <tr class = "table-light">
-                <td> <b>{{i.codigo}}</b> </td>
-                <td>{{i.nombre}}</td>
-                <td>{{i.unidad}}</td>
-                <td>${{i.valor|floatformat:2}}</td>
-                <td>{{i.fecha_c}}</td>
-                <td>{{i.constante}}</td>
-                <td>{{i.fecha_a}}</td>
+                <td> <b>{{i.0.codigo}}</b> </td>
+                <td> <a href="{% url 'Composición Analisis' i.0.codigo %}">{{i.0.nombre}}</a> </td>
+                <td>{{i.0.unidad}}</td>
+                <td>${{i.1|floatformat:2}}</td>
                 
                 
             </tr>
