@@ -6,8 +6,15 @@
 
 <div class = "jumbotron" style="background-color: white; margin-bottom: 0px;">
 
-    <h3 style="text-align: center; color: #17B5B5 ;">Panel de presupuestos</h3>
+    <h3 style="text-align: center; color: #17B5B5 ;">Panel principal de presupuestos</h3>
      <b><hr class = "my-4" style="width: 75%; border-color: #17B5B5 ;"></b>
+
+     <div style="text-align: center;">
+        <p> <small>-- Elige un proyecto haciendo <strong>click</strong> sobre su nombre --</small> </p>
+
+     </div>
+
+     <b><hr class = "my-4" style="width: 100%; border-color: #17B5B5 ;"></b>
  
     
     {% if datos %} 
@@ -40,6 +47,12 @@
             {% endfor %}
 
         </table>
+        <div style="text-align: center;">
+            <p> <small>-- Link<strong>P</strong> --</small> </p>
+    
+         </div>
+
+        
 
      {% else %}
             <div>

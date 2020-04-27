@@ -6,7 +6,8 @@
 
 <div class = "jumbotron" style="background-color: white; margin-bottom: 0px;">
 
-    <h3 style="text-align: center; color: #17B5B5 ;">Computos</h3>
+    <h3 style="text-align: center; color: #17B5B5 ;">Listado de computos</h3>
+    <h6 style="text-align: center; color: #17B5B5 ;">Todos los computos de albañileria</h6>
      <b><hr class = "my-4" style="width: 75%; border-color: #17B5B5 ;"></b>
      <form method="get" class="form-group" style="text-align: center;">
         <div>
@@ -25,57 +26,65 @@
 
     {% if datos %} 
 
-    <table class = "table table-hover" style="text-align: center;">
-        <thead>
+    <div>
 
-            <tr class = "table-info">
-                <th scope = "row"> <font style = "vertical-align: heredar;"> PROYECTO </font></th>
-                <th scope = "row"> <font style = "vertical-align: heredar;"> PLANTA </font></th>
-                <th scope = "row"> <font style = "vertical-align: heredar;"> RUBRO </font></th>
-                <th scope = "row"> <font style = "vertical-align: heredar;"> TIPOLOGIA </font></th>
-                <th scope = "row"> <font style = "vertical-align: heredar;"> UN </font></th>
-                <th scope = "row"> <font style = "vertical-align: heredar;"> VALOR LLENO </font></th> 
-                <th scope = "row"> <font style = "vertical-align: heredar;"> VALOR VACIO </font></th>
-                <th scope = "row"> <font style = "vertical-align: heredar;">VALOR TOTAL</font></th>
-                <th scope = "row"> <font style = "vertical-align: heredar;">VALOR OBRA</font></th>
+        <table class = "table table-hover" style="text-align: center;">
+            <thead>
+    
+                <tr class = "table-info">
+                    <th scope = "row" style="width: 15%; vertical-align: middle;"> PROYECTO</th>
+                    <th scope = "row" style="width: 10%; vertical-align: middle;"> PLANTA </th>
+                    <th scope = "row" style="width: 15%; vertical-align: middle;">  RUBRO </th>
+                    <th scope = "row" style="width: 20%; vertical-align: middle;">  TIPOLOGIA </th>
+                    <th scope = "row" style="width: 10%; vertical-align: middle;">  VALOR LLENO </th> 
+                    <th scope = "row" style="width: 10%; vertical-align: middle;">  VALOR VACIO </th>
+                    <th scope = "row" style="width: 10%; vertical-align: middle;"> VALOR TOTAL</th>
+                    <th scope = "row" style="width: 10%; vertical-align: middle;"> VALOR OBRA</th>
+    
+    
+                </tr>
+            </thead>
+    
+            <tbody>
+    
+                
+    
+                {% for i in datos|slice:":50" %}
+                <tr class = "table-light">
+                    <td style="width: 15%;"> <b>{{i.proyecto}}</b> </td>
+                    <td style="width: 10%;">{{i.planta}}</td>
+                    <td style="width: 15%;">{{i.rubro}}</td>
+                    <td style="width: 15%;">{{i.tipologia.nombre}} ({{i.tipologia.un}})</td>
+                    <td style="width: 10%;">{{i.valor_lleno|floatformat:2}}</td>
+                    <td style="width: 10%;">{{i.valor_vacio|floatformat:2}}</td>
+                    <td style="width: 10%;"> <b>{{i.valor_total|floatformat:2}}</b> </td>
+                    <td style="width: 10%;">{{i.valor_obra|floatformat:2}}</td>
+                </tr>
+            </tbody>
+    
+                {% endfor %}
 
+            </table>
 
-            </tr>
-        </thead>
-
-        <tbody>
-
+                <div>
+                    <small>El listado puede continuar, el maximo de filas visibles es de 50</small>
+                </div>
             
-
-            {% for i in datos|slice:":50" %}
-            <tr class = "table-light">
-                <td> <b>{{i.proyecto}}</b> </td>
-                <td>{{i.planta}}</td>
-                <td>{{i.rubro}}</td>
-                <td>{{i.tipologia.nombre}}</td>
-                <td>{{i.tipologia.un}}</td>
-                <td>{{i.valor_lleno|floatformat:2}}</td>
-                <td>{{i.valor_vacio|floatformat:2}}</td>
-                <td> <b>{{i.valor_total|floatformat:2}}</b> </td>
-                <td>{{i.valor_obra|floatformat:2}}</td>
-            </tr>
-        </tbody>
-
-            {% endfor %}
-
-     {% else %}
-            <div style="text-align: center;">
-                <h3>No existen registros actualmente</h3>
-            </div>
+                <div style="text-align: center;">
+                    <p> <small>-- Link<strong>P</strong> --</small> </p>
             
-
-    {% endif %}
+                 </div>
+    
+         {% else %}
+                <div style="text-align: center;">
+                    <h3>No existen registros actualmente</h3>
+                </div>       
+    
         
 
-    </table>
+        {% endif %}
 
-    <div>
-        <small>El listado puede continuar, el maximo de filas visibles es de 50-</small><small>  <strong>AR</strong> </small>
+
     </div>
 
                     

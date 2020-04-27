@@ -7,6 +7,7 @@
 <div class = "jumbotron" style="background-color: white; margin-bottom: 0px;">
 
     <h3 style="text-align: center; color: #17B5B5 ;">Presupuesto de {{datos.proyecto}}</h3>
+    <h6 style="text-align: center; color: #17B5B5 ;"> Desglose por capitulo</h6>
      <b><hr class = "my-4" style="width: 75%; border-color: #17B5B5 ;"></b>
 
      <div style="text-align: center;">
@@ -50,6 +51,11 @@
         <div style="text-align: center;">
             <h6>Valor de reposición del proyecto: ${{datos.valor_proyecto_completo|floatformat:2}} <strong>(${{datos.valor_proyecto|floatformat:2}} Millones)</strong> </h6>
         </div>
+
+        <div style="text-align: center;">
+            <p> <small>-- Link<strong>P</strong> --</small> </p>
+    
+         </div>
 
      {% else %}
             <div>

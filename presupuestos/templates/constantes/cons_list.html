@@ -7,6 +7,7 @@
 <div class = "jumbotron" style="background-color: white; margin-bottom: 0px;">
 
     <h3 style="text-align: center; color: #17B5B5 ;">Listado de Constantes</h3>
+    <h6 style="text-align: center; color: #17B5B5 ;">Valores de divisas o indices</h6>
      <b><hr class = "my-4" style="width: 75%; border-color: #17B5B5 ;"></b>
 
      {% if perms.constante.view %}
@@ -38,8 +39,8 @@
                 {% for i in constantes %}
                 <tr class = "table-light">
                     <td style="width: 20%;"> <b>{{i.nombre}}</b> </td>
-                    <td style="width: 20%;"></tdstyle>${{i.valor}}</td>
-                    <td style="width: 30%;"></tdstyle> <b>{{i.descrip}}</b> </td>
+                    <td style="width: 10%;"></tdstyle>${{i.valor}}</td>
+                    <td style="width: 40%;"></tdstyle> <b>{{i.descrip}}</b> </td>
                     <td style="width: 30%;"></tdstyle> {{i.fecha_a}} </td>
                     
     
@@ -47,6 +48,13 @@
             </tbody>
     
                 {% endfor %}
+
+            </table>
+
+                <div style="text-align: center;">
+                    <p> <small>-- Link<strong>P</strong> --</small> </p>
+            
+                 </div>
     
          {% else %}
                 <div>
@@ -57,7 +65,8 @@
         {% endif %}
             
     
-        </table>
+        
+
     
 
 </div>

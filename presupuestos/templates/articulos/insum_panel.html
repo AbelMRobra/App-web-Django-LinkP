@@ -6,7 +6,12 @@
 
 <div class = "jumbotron" style="background-color: white; margin-bottom: 0px;">
 
-    <h3 style="text-align: center; color: #138D75  ;">Panel de cambios</h3>
+    <h3 style="text-align: center; color: #138D75  ;">Panel de cambios de Articulos</h3>
+    <div style="text-align: center;">
+
+        <p><small>Solo un miembro del área de <strong>Presupuestos/I+D</strong> puede ver esta pantalla</small> <br> <small><small>Si no eres de está área, notificar a <strong>AR</strong></small></small>  </p>
+
+    </div>
      <b><hr class = "my-4" style="width: 75%; border-color: #138D75  ;"></b>
      <form method="get" class="form-group" style="text-align: center;">
         <div>
@@ -44,7 +49,7 @@
 
             
 
-            {% for i in articulos %}
+            {% for i in articulos|slice:"20" %}
             <tr class = "table-light">
                 <td> <b>{{i.codigo}}</b> </td>
                 <td>{{i.nombre}}</td>
@@ -63,6 +68,16 @@
 
             {% endfor %}
 
+        </table>
+
+        <div>
+            <small>El listado puede continuar, el maximo de filas visibles es de 20</small>
+        </div>
+        <div style="text-align: center;">
+            <p> <small>-- Link<strong>P</strong> --</small> </p>
+    
+         </div>
+
      {% else %}
             <div>
                 <h3>No existe registros actualmente</h3>
@@ -72,7 +87,7 @@
     {% endif %}
         
 
-    </table>
+    
 
                     
 </div>

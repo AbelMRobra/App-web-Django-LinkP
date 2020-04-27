@@ -7,6 +7,7 @@
 <div class = "jumbotron" style="background-color: white; margin-bottom: 0px;">
 
     <h3 style="text-align: center; color: #17B5B5 ;">Listado de Analisis de Precio Unitario</h3>
+    <h6 style="text-align: center; color: #17B5B5 ;">La biblioteca de APU</h6>
      <b><hr class = "my-4" style="width: 75%; border-color: #17B5B5 ;"></b>
      <form method="POST" style="text-align: center;">
 
@@ -33,7 +34,7 @@
 
      {% if perms.analisis.view %}
 
-     <div style="margin-bottom: 0.5rem; text-align: center;">
+     <div style="margin-bottom: 1rem; text-align: center;">
         <a href="/presupuestos/panelanalisis"><button class="btn btn-success" type="submit">Panel de cambios</button></a>  
      </div>
 
@@ -62,7 +63,7 @@
 
             <tr class = "table-light">
                 <td> <b>{{i.0.codigo}}</b> </td>
-                <td> <a href="{% url 'Composición Analisis' i.0.codigo %}">{{i.0.nombre}}</a> </td>
+                <td> <a href="{% url 'Composición Analisis' i.0.codigo %}" style="color: black;">{{i.0.nombre}}</a> </td>
                 <td>{{i.0.unidad}}</td>
                 <td>${{i.1|floatformat:2}}</td>
                 
@@ -71,6 +72,8 @@
         </tbody>
 
             {% endfor %}
+
+        </table>
 
      {% else %}
             <div>
@@ -81,10 +84,15 @@
     {% endif %}
         
 
-    </table>
+    
     <div>
-        <small>El listado puede continuar, el maximo de filas visibles es de 20-</small><small>  <strong>AR</strong> </small>
+        <small>El listado puede continuar, el maximo de filas visibles es de 20</small>
     </div>
+
+    <div style="text-align: center;">
+        <p> <small>-- Link<strong>P</strong> --</small> </p>
+
+     </div>
 
                     
 </div>

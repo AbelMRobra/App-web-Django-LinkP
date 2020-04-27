@@ -9,38 +9,69 @@
     <h3 style="text-align: center; color: #17B5B5 ;">Explosión de insumos de {{datos.proyecto}}</h3>
      <b><hr class = "my-4" style="width: 75%; border-color: #17B5B5 ;"></b>
 
- 
- <b><hr class = "my-4" style="width: 100%; border-color: #17B5B5 ;"></b>
+     <form method="POST" style="text-align: center;">
+
+        {% csrf_token %}
+
+        <div style="display: inline-block; margin-left: 1rem;">
+
+            <label for="palabra"><h6>Buscar</h6></label>
+
+        </div>
+        
+        <div style="display: inline-block; margin-left: 1rem; ">
+
+            <input name="palabra" type="text" class="form-control form-control" placeholder="Buscar por palabra" list="art" style="width: 30rem;">
+
+        </div>
+
+        <div>
+            <button class="btn btn-info" type="submit" style="margin-top: 1%;">Buscar</button>          
+        </div>       
+
+     </form>
+     <hr class = "my-4" style="width: 100%; border-color: #17B5B5 ;"></b>
     {% if datos %} 
 
-    <table class = "table table-hover" style="text-align: center;">
-        <thead>
+    <div>
 
-            <tr class = "table-info">
-                <th scope = "row"> <font style = "vertical-align: heredar;"> ARTICULO </font></th>
-                <th scope = "row"> <font style = "vertical-align: heredar;"> CANTIDAD </font></th>
-                <th scope = "row"> <font style = "vertical-align: heredar;"> VALOR </font></th>
-                <th scope = "row"> <font style = "vertical-align: heredar;"> SALDO</font></th>            
-            </tr>
-        </thead>
+        <table class = "table table-hover" style="text-align: center;">
+            <thead>
+    
+                <tr class = "table-info">
+                    <th scope = "row"> <font style = "vertical-align: heredar;"> ARTICULO </font></th>
+                    <th scope = "row"> <font style = "vertical-align: heredar;"> CANTIDAD </font></th>
+                    <th scope = "row"> <font style = "vertical-align: heredar;"> VALOR </font></th>
+                    <th scope = "row"> <font style = "vertical-align: heredar;"> SALDO</font></th>            
+                </tr>
+            </thead>
+    
+            <tbody>
+    
+                
+    
+                {% for i in datos.datos %}
+    
+                <tr class = "table-light">
+                    <td style="width: 40%;"><b>{{i.0}}</b></td>
+                    <td style="width: 20%;"> {{i.1|floatformat:2}}</td>
+                    <td style="width: 20%;"> ${{i.2|floatformat:2}}</td>
+                    <td style="width: 20%;"> ${{i.3|floatformat:2}}</td>                         
+                </tr>
+            </tbody>
+    
+                {% endfor %}
+    
+            </table>
 
-        <tbody>
+    </div>
 
-            
+    <div style="text-align: center;">
+        <p> <small>-- Link<strong>P</strong> --</small> </p>
 
-            {% for i in datos.datos %}
+     </div>
 
-            <tr class = "table-light">
-                <td style="width: 40%;"><b>{{i.0}}</b></td>
-                <td style="width: 20%;"> {{i.1|floatformat:2}}</td>
-                <td style="width: 20%;"> ${{i.2|floatformat:2}}</td>
-                <td style="width: 20%;"> ${{i.3|floatformat:2}}</td>                         
-            </tr>
-        </tbody>
-
-            {% endfor %}
-
-        </table>
+    
 
 
      {% else %}

@@ -7,6 +7,7 @@
 <div class = "jumbotron" style="background-color: white; margin-bottom: 0px;">
 
     <h3 style="text-align: center; color: #17B5B5 ;">Registros de compras</h3>
+    <h6 style="text-align: center; color: #17B5B5 ;">Detalle las compras de todos los proyectos</h6>
      <b><hr class = "my-4" style="width: 75%; border-color: #17B5B5 ;"></b>
 
      <form method="POST" style="text-align: center;">
@@ -24,10 +25,6 @@
             <input name="palabra" type="text" class="form-control form-control" placeholder="Buscar por palabra" list="art" style="width: 30rem;">
 
         </div>
-        <div>
-            <small>No busca por el nombre de la compra o el tipo y la fecha se busca: "año-mes-dia" en numeros-</small><small>  <strong>AR</strong> </small>
-        </div>
-        
 
         <div>
             <button class="btn btn-info" type="submit" style="margin-top: 1%;">Buscar</button>          
@@ -47,15 +44,15 @@
         <thead>
 
             <tr class = "table-info">
-                <th scope = "row"> <font style = "vertical-align: heredar;"> PROYECTO </font></th>
-                <th scope = "row"> <font style = "vertical-align: heredar;"> PROVEEDOR </font></th>
-                <th scope = "row"> <font style = "vertical-align: heredar;"> NOMBRE DE LA COMPRA </font></th>
-                <th scope = "row"> <font style = "vertical-align: heredar;"> TIPO </font></th>
-                <th scope = "row"> <font style = "vertical-align: heredar;"> ARTICULO </font></th>
-                <th scope = "row"> <font style = "vertical-align: heredar;"> CANTIDAD </font></th>
-                <th scope = "row"> <font style = "vertical-align: heredar;"> PRECIO </font></th> 
-                <th scope = "row"> <font style = "vertical-align: heredar;"> FECHA </font></th>
-                <th scope = "row"> <font style = "vertical-align: heredar;"> DOCUMENTO </font></th>
+                <th scope = "row" style="vertical-align: middle;">PROYECTO</th>
+                <th scope = "row" style="vertical-align: middle;">PROVEEDOR</th>
+                <th scope = "row" style="vertical-align: middle;">NOMBRE DE LA COMPRA</th>
+                <th scope = "row" style="vertical-align: middle;">TIPO</th>
+                <th scope = "row" style="vertical-align: middle;">ARTICULO</th>
+                <th scope = "row" style="vertical-align: middle;">CANTIDAD</th>
+                <th scope = "row" style="vertical-align: middle;">PRECIO</th> 
+                <th scope = "row" style="vertical-align: middle;">FECHA</th>
+                <th scope = "row" style="vertical-align: middle;">DOCUMENTO</th>
                 
             </tr>
         </thead>
@@ -79,6 +76,17 @@
 
             {% endfor %}
 
+        </table>
+
+        <div>
+            <small>El listado puede continuar, el maximo de filas visibles es de 20</small>
+        </div>
+
+            <div style="text-align: center;">
+                <p> <small>-- Link<strong>P</strong> --</small> </p>
+        
+             </div>
+
      {% else %}
             <div style="text-align: center;">
                 <h3>No existe registros actualmente</h3>
@@ -87,11 +95,7 @@
 
     {% endif %}
         
-    </table>
-
-    <div>
-        <small>El listado puede continuar, el maximo de filas visibles es de 20-</small><small>  <strong>AR</strong> </small>
-    </div>
+    
 
                     
 </div>
