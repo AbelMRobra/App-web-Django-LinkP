@@ -8,8 +8,12 @@
 
     <h3 style="text-align: center; color: #17B5B5 ;">Presupuesto de {{datos.proyecto}}</h3>
      <b><hr class = "my-4" style="width: 75%; border-color: #17B5B5 ;"></b>
+
+     <div style="text-align: center;">
+        <a href="{% url 'Explosión de insumos' id_proyecto=datos.proyecto.id %}" class="btn btn-info">Explosión de insumos</a>          
+    </div>
  
-    
+ <b><hr class = "my-4" style="width: 100%; border-color: #17B5B5 ;"></b>
     {% if datos %} 
 
     <table class = "table table-hover" style="text-align: center;">

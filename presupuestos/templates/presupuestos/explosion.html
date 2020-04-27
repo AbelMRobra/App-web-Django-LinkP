@@ -1,0 +1,59 @@
+{% extends "users/inicio.html" %}
+
+{% load static %}
+
+{% block content %}
+
+<div class = "jumbotron" style="background-color: white; margin-bottom: 0px;">
+
+    <h3 style="text-align: center; color: #17B5B5 ;">Explosión de insumos de {{datos.proyecto}}</h3>
+     <b><hr class = "my-4" style="width: 75%; border-color: #17B5B5 ;"></b>
+
+ 
+ <b><hr class = "my-4" style="width: 100%; border-color: #17B5B5 ;"></b>
+    {% if datos %} 
+
+    <table class = "table table-hover" style="text-align: center;">
+        <thead>
+
+            <tr class = "table-info">
+                <th scope = "row"> <font style = "vertical-align: heredar;"> ARTICULO </font></th>
+                <th scope = "row"> <font style = "vertical-align: heredar;"> CANTIDAD </font></th>
+                <th scope = "row"> <font style = "vertical-align: heredar;"> VALOR </font></th>
+                <th scope = "row"> <font style = "vertical-align: heredar;"> SALDO</font></th>            
+            </tr>
+        </thead>
+
+        <tbody>
+
+            
+
+            {% for i in datos.datos %}
+
+            <tr class = "table-light">
+                <td style="width: 40%;"><b>{{i.0}}</b></td>
+                <td style="width: 20%;"> {{i.1|floatformat:2}}</td>
+                <td style="width: 20%;"> ${{i.2|floatformat:2}}</td>
+                <td style="width: 20%;"> ${{i.3|floatformat:2}}</td>                         
+            </tr>
+        </tbody>
+
+            {% endfor %}
+
+        </table>
+
+
+     {% else %}
+            <div>
+                <h6>No existe registros actualmente</h6>
+            </div>
+        
+    {% endif %}
+        
+
+   
+                    
+</div>
+ 
+    
+{% endblock %}

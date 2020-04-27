@@ -52,7 +52,7 @@
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
             <a class="dropdown-item" href="/compras/proveedores">Proveedores</a>
 
-            {% if perms.compras.view %}
+            {% if perms.compras.view_compras %}
 
             <a class="dropdown-item" href="#">Contratos-<em>Proximamente</em></a>
             <a class="dropdown-item" href="/compras/compras">Compras </a>
@@ -63,7 +63,7 @@
             <a class="dropdown-item" href="/compras/stockprov">Stock en proveedores</a>
             <div class="dropdown-divider"></div>
             
-            {% if perms.compras.view %}
+            {% if perms.compras.view_compras %}
 
             <a class="dropdown-item" href="/compras/informe">Informe del área</a>
 

@@ -9,6 +9,85 @@ import sqlite3
 
 
 
+# ----------------------------------------------------- VISTAS PARA PANEL PRESUPUESTOS - EXPLOSION ----------------------------------------------
+def explosion(request, id_proyecto):
+
+    proyecto = Proyectos.objects.get(id = id_proyecto)
+    articulos = Articulos.objects.all()
+    analisis = Analisis.objects.all()
+    modelo = Modelopresupuesto.objects.all()
+    compo = CompoAnalisis.objects.all()
+    computo = Computos.objects.all()
+
+    crudo = []
+
+    # AQUI VEMOS LA CANTIDAD DE ANALISIS Y LO SUMAMOS A UN CRUDO
+
+    for i in analisis:
+
+        nombre_analisis = i
+        cantidad_analisis = 0
+
+        for d in modelo:
+
+            if d.analisis == i:
+
+                if d.cantidad == None:
+
+                    if "SOLO MANO DE OBRA" in str(d.analisis):
+
+                        for h in computo:
+                            if h.proyecto == proyecto and h.tipologia == d.vinculacion:
+                                cantidad_analisis = cantidad_analisis + h.valor_vacio  
+
+
+                    else:
+
+                        for h in computo:
+                            if h.proyecto == proyecto and h.tipologia == d.vinculacion:
+                                cantidad_analisis = cantidad_analisis + h.valor_lleno                 
+                else:                            
+
+                    cantidad_analisis = cantidad_analisis + d.cantidad
+        
+        crudo.append((i, cantidad_analisis))
+
+    #USANDO LA CANTIDAD DE ANALISIS, VEMOS LA CANTIDAD DE ARTICULOS Y LO SUMAMOS A UN CRUDO
+
+    crudo_articulo = []
+
+    for c in articulos:
+
+        nombre_articulo = c.nombre
+        cantidad_articulo = 0
+        valor_articulo = c.valor
+        
+        for j in crudo:
+
+            for t in compo:
+
+                if t.analisis == j[0] and t.articulo == c:
+
+                    cantidad_articulo = cantidad_articulo + t.cantidad*j[1]
+
+        saldo_articulo = cantidad_articulo*valor_articulo
+
+        crudo_articulo.append((nombre_articulo, cantidad_articulo, valor_articulo, saldo_articulo))
+
+    datos = []
+
+    for u in crudo_articulo:
+        if u[1] != 0:
+            datos.append(u)
+
+    datos = {"datos":datos,
+    "proyecto":proyecto}
+
+
+    return render(request, 'presupuestos/explosion.html', {"datos":datos})
+
+
+
 # ----------------------------------------------------- VISTAS PARA PANEL PRESUPUESTOS - ANALISIS ----------------------------------------------
 def presupuestosanalisis(request, id_proyecto, id_capitulo):
 
@@ -321,6 +400,41 @@ def analisis_list(request):
 
         datos.append((i, valor))
 
+        #Aqui empieza el filtro
+
+    if request.method == 'POST':
+
+        palabra_buscar = request.POST.items()
+
+        datos_viejos = datos
+
+        datos = []   
+
+        for i in palabra_buscar:
+
+            if i[0] == "palabra":
+        
+                palabra_buscar = i[1]
+
+        if str(palabra_buscar) == "":
+
+            datos = datos_viejos
+
+        else:
+        
+            for i in datos_viejos:
+
+                palabra =(str(palabra_buscar))
+
+                buscador = (str(i[0].nombre)+str(i[0].codigo))
+
+                if palabra.lower() in buscador.lower():
+
+                    datos.append(i)
+
+
+    #Aqui termina el filtro
+
     return render(request, 'analisis/listaanalisis.html', {"datos":datos})
 
 # ----------------------------------------------------- VISTAS PARA PANEL DE ANALISIS----------------------------------------------
@@ -609,8 +723,6 @@ def cons_edit(request, id_cons):
                     cons_nombre = i.nombre
 
                     cons_valor = i.valor
-
-                    print(form)
 
                     form.save()
 
