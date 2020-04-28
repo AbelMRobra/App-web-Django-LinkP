@@ -152,8 +152,6 @@ def presupuestosanalisis(request, id_proyecto, id_capitulo):
 
     crudo = []
 
-    #No esta completo porque no esta resuleto si agregamos cantidad
-
     valor_capitulo = 0
 
     for d in modelo:
@@ -242,8 +240,6 @@ def presupuestoscapitulo(request, id_proyecto):
     modelo = Modelopresupuesto.objects.all()
 
     crudo = []
-
-    #No esta completo porque no esta resuleto si agregamos cantidad
 
     valor_proyecto = 0
 
@@ -390,7 +386,7 @@ def presupuestostotal(request):
 
                             if e.analisis == d.analisis:
 
-                                valor_analisis = valor_analisis + e.articulo.valor*e.cantidad/1000000
+                                valor_analisis = valor_analisis + e.articulo.valor*e.cantidad
 
                         valor_capitulo = valor_capitulo + valor_analisis*float(d.cantidad)
 
@@ -508,6 +504,41 @@ def panelanalisis(request):
                 valor = valor +c.articulo.valor*c.cantidad
 
         datos.append((i, valor))
+
+            #Aqui empieza el filtro
+
+    if request.method == 'POST':
+
+        palabra_buscar = request.POST.items()
+
+        datos_viejos = datos
+
+        datos = []   
+
+        for i in palabra_buscar:
+
+            if i[0] == "palabra":
+        
+                palabra_buscar = i[1]
+
+        if str(palabra_buscar) == "":
+
+            datos = datos_viejos
+
+        else:
+        
+            for i in datos_viejos:
+
+                palabra =(str(palabra_buscar))
+
+                buscador = (str(i[0].nombre)+str(i[0].codigo))
+
+                if palabra.lower() in buscador.lower():
+
+                    datos.append(i)
+
+
+    #Aqui termina el filtro
 
     return render(request, 'analisis/panelanalisis.html', {"datos":datos})
     
@@ -630,6 +661,30 @@ def crearanalisis(request):
 
 
     return render(request, 'analisis/crearanalisis.html', {'datos':datos})
+
+# ----------------------------------------------------- VISTAS PARA MODIFICAR ANALISIS ----------------------------------------------
+
+def modificaranalisis(request, id_analisis):
+
+    analisis = Analisis.objects.get(codigo = id_analisis)
+    articulos = Articulos.objects.all()
+    compo = CompoAnalisis.objects.all()
+
+    datos = []
+
+    for i in compo:
+
+        if i.analisis == analisis:
+
+            datos.append((i.articulo, i.cantidad, i.id))
+    
+
+    datos = {"analisis":analisis,
+    "articulos":articulos,
+    "datos":datos}
+
+    return render(request, 'analisis/modificaranalisis.html', {"datos":datos})
+
 
 
 # ----------------------------------------------------- VISTAS PARA PARAMETROS----------------------------------------------

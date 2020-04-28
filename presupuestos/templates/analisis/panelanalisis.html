@@ -6,8 +6,8 @@
 
 <div class = "jumbotron" style="background-color: white; margin-bottom: 0px;">
 
-    <h3 style="text-align: center; color: #17B5B5 ;">Panel de Analisis de Precio Unitario</h3>
-     <b><hr class = "my-4" style="width: 75%; border-color: #17B5B5 ;"></b>
+    <h3 style="text-align: center; color: #138D75  ;">Panel de Analisis de Precio Unitario</h3>
+     <b><hr class = "my-4" style="width: 75%; border-color: #138D75  ;"></b>
      <form method="POST" style="text-align: center;">
 
         {% csrf_token %}
@@ -25,11 +25,11 @@
         </div>
 
         <div>
-            <button class="btn btn-info" type="submit" style="margin-top: 1%;">Buscar</button>          
+            <button class="btn btn-success" type="submit" style="margin-top: 1%;">Buscar</button>          
         </div>       
 
      </form>
-     <b><hr class = "my-4" style="width: 100%; border-color: #17B5B5 ;"></b>
+     <b><hr class = "my-4" style="width: 100%; border-color: #138D75  ;"></b>
 
      <div style="margin-bottom: 0.5rem; text-align: center;">
         <a href="/presupuestos/crearanalisis"><button class="btn btn-success" type="submit">Crear analisis</button></a>  
@@ -41,10 +41,12 @@
         <thead>
 
             <tr class = "table-success">
-                <th scope = "row"> <font style = "vertical-align: heredar;"> CODIGO </font></th>
-                <th scope = "row"> <font style = "vertical-align: heredar;"> NOMBRE DEL ANALISIS </font></th>
-                <th scope = "row"> <font style = "vertical-align: heredar;"> UN </font></th>
-                <th scope = "row"> <font style = "vertical-align: heredar;"> VALOR </font></th>
+                <th scope = "row">CODIGO</th>
+                <th scope = "row">NOMBRE DEL ANALISIS</th>
+                <th scope = "row">UN</th>
+                <th scope = "row">VALOR</th>
+                <th scope = "row">EDITAR</th>
+                <th scope = "row">ELIMINAR</th>
 
                 
             </tr>
@@ -57,10 +59,14 @@
             {% for i in datos|slice:"20"  %}
 
             <tr class = "table-light">
-                <td> <b>{{i.0.codigo}}</b> </td>
-                <td> <a href="{% url 'Composición Analisis' i.0.codigo %}">{{i.0.nombre}}</a> </td>
-                <td>{{i.0.unidad}}</td>
-                <td>${{i.1|floatformat:2}}</td>
+                <td style="width: 20%;"> <b>{{i.0.codigo}}</b> </td>
+                <td style="width: 30%;"> <a href="{% url 'Composición Analisis' i.0.codigo %}" style="color: black;">{{i.0.nombre}}</a> </td>
+                <td style="width: 10%;">{{i.0.unidad}}</td>
+                <td style="width: 10%;">${{i.1|floatformat:2}}</td>
+                <td style="width: 15%;"><a class = "btn btn-outline-success" href="{% url 'Modificar analisis' i.0.codigo %}">Editar</a>
+                </td>
+                <td style="width: 15%;"><a class = "btn btn-outline-danger" href="#">Eliminar</a>
+                </td>
                 
                 
             </tr>
@@ -79,8 +85,13 @@
 
     </table>
     <div>
-        <small>El listado puede continuar, el maximo de filas visibles es de 20-</small><small>  <strong>AR</strong> </small>
+        <small>El listado puede continuar, el maximo de filas visibles es de 20</small>
     </div>
+
+    <div style="text-align: center;">
+        <p> <small>-- Link<strong>P</strong> --</small> </p>
+
+     </div>
 
                     
 </div>

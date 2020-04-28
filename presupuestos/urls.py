@@ -20,6 +20,7 @@ urlpatterns = [
     url(r'^analisis_list/$', login_required(views.analisis_list), name = 'Lista de analisis'),
     url(r'^panelanalisis/$', login_required(views.panelanalisis), name = 'Panel de analisis'),
     url(r'^crearanalisis/$', login_required(views.crearanalisis), name = 'Crear analisis'),
+    url(r'^crearanalisis/(?P<id_analisis>\d+)/$', login_required(views.modificaranalisis), name = 'Modificar analisis'),
     url(r'^ver_analisis/(?P<id_analisis>\d+)/$', login_required(views.ver_analisis), name = 'Composición Analisis'),
     #----------------URL PARA PRESPUESTOS -----------------------------------------  
     url(r'^presupuestos/$', login_required(views.presupuestostotal), name = 'Panel de presupuestos'),

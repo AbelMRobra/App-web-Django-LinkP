@@ -39,7 +39,13 @@
                     <th scope = "row" style="width: 10%; vertical-align: middle;">  VALOR LLENO </th> 
                     <th scope = "row" style="width: 10%; vertical-align: middle;">  VALOR VACIO </th>
                     <th scope = "row" style="width: 10%; vertical-align: middle;"> VALOR TOTAL</th>
-                    <th scope = "row" style="width: 10%; vertical-align: middle;"> VALOR OBRA</th>
+                    <th scope = "row" style="width: 10%; vertical-align: middle;"
+                    
+                    {% if perms.computos.change_computos %}
+                    colspan="2" 
+                    {% endif %}
+                    
+                    > VALOR OBRA</th>
     
     
                 </tr>
@@ -51,14 +57,18 @@
     
                 {% for i in datos|slice:":50" %}
                 <tr class = "table-light">
-                    <td style="width: 15%;"> <b>{{i.proyecto}}</b> </td>
-                    <td style="width: 10%;">{{i.planta}}</td>
-                    <td style="width: 15%;">{{i.rubro}}</td>
-                    <td style="width: 15%;">{{i.tipologia.nombre}} ({{i.tipologia.un}})</td>
-                    <td style="width: 10%;">{{i.valor_lleno|floatformat:2}}</td>
-                    <td style="width: 10%;">{{i.valor_vacio|floatformat:2}}</td>
-                    <td style="width: 10%;"> <b>{{i.valor_total|floatformat:2}}</b> </td>
-                    <td style="width: 10%;">{{i.valor_obra|floatformat:2}}</td>
+                    <td style="width: 15%; vertical-align: middle;"> <b>{{i.proyecto}}</b> </td>
+                    <td style="width: 10%; vertical-align: middle;">{{i.planta}}</td>
+                    <td style="width: 15%; vertical-align: middle;">{{i.rubro}}</td>
+                    <td style="width: 15%; vertical-align: middle;">{{i.tipologia.nombre}} ({{i.tipologia.un}})</td>
+                    <td style="width: 9%; vertical-align: middle;">{{i.valor_lleno|floatformat:2}}</td>
+                    <td style="width: 9%; vertical-align: middle;">{{i.valor_vacio|floatformat:2}}</td>
+                    <td style="width: 9%; vertical-align: middle;"> <b>{{i.valor_total|floatformat:2}}</b> </td>
+                    <td style="width: 9%; vertical-align: middle;">{{i.valor_obra|floatformat:2}}</td>
+                    {% if perms.computos.change_computos %}
+                    <td style="width: 6%; vertical-align: middle;"><a class = "btn btn-outline-success" href="#">S</a></td>
+                    {% endif %}
+                
                 </tr>
             </tbody>
     
