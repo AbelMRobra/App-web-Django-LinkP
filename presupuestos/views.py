@@ -4,6 +4,7 @@ from .filters import ArticulosFilter
 from .form import ConsForm, ArticulosForm
 from proyectos.models import Proyectos
 from computos.models import Computos
+from compras.models import Compras
 from .models import Articulos, Constantes, DatosProyectos, Prametros, Desde, Analisis, CompoAnalisis, Modelopresupuesto, Capitulos
 import sqlite3
 
@@ -79,6 +80,23 @@ def explosion(request, id_proyecto):
     for u in crudo_articulo:
         if u[1] != 0:
             datos.append(u)
+
+    compras = Compras.objects.all()
+
+    datos_viejos = datos
+    datos = []
+
+    for i in datos_viejos:
+        comprado = 0
+        for c in compras:
+            if c.proyecto == proyecto and c.articulo.nombre == i[0]:
+                comprado = comprado + c.cantidad
+        
+        cantidad_saldo = i[2] - comprado
+
+        saldo = cantidad_saldo * i[2]
+        
+        datos.append((i[0], i[1], i[2], comprado, cantidad_saldo, saldo ))
 
           #Aqui empieza el filtro
 
