@@ -92,7 +92,7 @@ def explosion(request, id_proyecto):
             if c.proyecto == proyecto and c.articulo.nombre == i[0]:
                 comprado = comprado + c.cantidad
         
-        cantidad_saldo = i[2] - comprado
+        cantidad_saldo = i[1] - comprado
 
         saldo = cantidad_saldo * i[2]
         
