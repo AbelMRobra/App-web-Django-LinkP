@@ -246,8 +246,6 @@ def compras(request):
 
                 buscar = (str(i.proyecto)+str(i.proveedor)+str(i.articulo)+str(i.cantidad)+str(i.fecha_c)+str(i.documento))
 
-                print(buscar)
-
                 if palabra.lower() in buscar.lower():
 
                     datos.append(i)
