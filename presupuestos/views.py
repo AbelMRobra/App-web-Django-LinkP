@@ -14,72 +14,74 @@ import sqlite3
 def explosion(request, id_proyecto):
 
     proyecto = Proyectos.objects.get(id = id_proyecto)
-    articulos = Articulos.objects.all()
-    analisis = Analisis.objects.all()
     modelo = Modelopresupuesto.objects.all()
-    compo = CompoAnalisis.objects.all()
-    computo = Computos.objects.all()
 
-    crudo = []
+    #Version 2 de explosión
+    
+    crudo_analisis = []
 
-    # AQUI VEMOS LA CANTIDAD DE ANALISIS Y LO SUMAMOS A UN CRUDO
+    for i in modelo:
 
-    for i in analisis:
+        if i.cantidad != None:
 
-        nombre_analisis = i
-        cantidad_analisis = 0
+            crudo_analisis.append((i.analisis, i.cantidad))
 
-        for d in modelo:
+        else:
 
-            if d.analisis == i:
+            if "SOLO MANO DE OBRA" in str(i.analisis.nombre):
 
-                if d.cantidad == None:
+                computos = Computos.objects.filter(tipologia = i.vinculacion)
 
-                    if "SOLO MANO DE OBRA" in str(d.analisis):
+                cantidad = 0
 
-                        for h in computo:
-                            if h.proyecto == proyecto and h.tipologia == d.vinculacion:
-                                cantidad_analisis = cantidad_analisis + h.valor_vacio  
+                for r in computos:
+                    cantidad = cantidad + r.valor_vacio
+
+                crudo_analisis.append((i.analisis, cantidad))
+
+            else:
+
+                computos = Computos.objects.filter(tipologia = i.vinculacion)
+
+                cantidad = 0
+
+                for r in computos:
+                    cantidad = cantidad + r.valor_lleno
+
+                crudo_analisis.append((i.analisis, cantidad))
+
+    crudo_articulos = []
 
 
-                    else:
+    for c in crudo_analisis:
 
-                        for h in computo:
-                            if h.proyecto == proyecto and h.tipologia == d.vinculacion:
-                                cantidad_analisis = cantidad_analisis + h.valor_lleno                 
-                else:                            
+        analisis = CompoAnalisis.objects.filter(analisis = c[0])
 
-                    cantidad_analisis = cantidad_analisis + d.cantidad
-        
-        crudo.append((i, cantidad_analisis))
+        for d in analisis:
 
-    #USANDO LA CANTIDAD DE ANALISIS, VEMOS LA CANTIDAD DE ARTICULOS Y LO SUMAMOS A UN CRUDO
+            cantidad = d.cantidad*c[1]
 
-    crudo_articulo = []
-
-    for c in articulos:
-
-        nombre_articulo = c.nombre
-        cantidad_articulo = 0
-        valor_articulo = c.valor
-        
-        for j in crudo:
-
-            for t in compo:
-
-                if t.analisis == j[0] and t.articulo == c:
-
-                    cantidad_articulo = cantidad_articulo + t.cantidad*j[1]
-
-        saldo_articulo = cantidad_articulo*valor_articulo
-
-        crudo_articulo.append((nombre_articulo, cantidad_articulo, valor_articulo, saldo_articulo))
+            crudo_articulos.append((d.articulo, cantidad))
 
     datos = []
 
-    for u in crudo_articulo:
-        if u[1] != 0:
-            datos.append(u)
+    for t in crudo_articulos:
+        datos.append(t[0])
+
+    print(len(datos))
+
+    datos = list(set(datos))
+
+    datos_viejos = datos
+    datos = []
+
+    for i in datos_viejos:
+        cantidad = 0
+        for c in crudo_articulos:
+            if i == c[0]:
+                cantidad = cantidad + c[1]
+        datos.append((i, cantidad))
+
 
     compras = Compras.objects.all()
 
@@ -89,14 +91,14 @@ def explosion(request, id_proyecto):
     for i in datos_viejos:
         comprado = 0
         for c in compras:
-            if c.proyecto == proyecto and c.articulo.nombre == i[0]:
+            if c.proyecto == proyecto and c.articulo == i[0]:
                 comprado = comprado + c.cantidad
         
         cantidad_saldo = i[1] - comprado
 
-        saldo = cantidad_saldo * i[2]
+        saldo = cantidad_saldo * i[0].valor
         
-        datos.append((i[0], i[1], i[2], comprado, cantidad_saldo, saldo ))
+        datos.append((i[0], i[1], comprado, cantidad_saldo, saldo ))
 
           #Aqui empieza el filtro
 
@@ -550,7 +552,7 @@ def crearanalisis(request):
 
     mensaje = ""
 
-    datos = {'articulos':articulos}
+    datos = {'articulos':articulos, "mensaje":mensaje}
 
     if request.method == 'POST':
 
@@ -558,103 +560,118 @@ def crearanalisis(request):
 
         resto = []
 
-        for i in datos_p:
+        for t in datos_p:
 
-            if i[0] == "codigo":
+            if t[0] == "codigo":
                 
-                codigo = i[1]
+                codigo = t[1]
 
-            elif i[0] == "nombre":
-                
-                nombre = i[1]
+                if Analisis.objects.get(codigo=codigo):
 
-            elif i[0] == "unidad":
-                
-                unidad = i[1]
-            
-            else:
+                    mensaje = "Este codigo ya existe"
 
-                resto.append(i)        
+                    datos = {'articulos':articulos, "mensaje":mensaje}
 
-        datos_analisis = Analisis.objects.all()
-        id_analisis = []
+                else:
 
-        for i in datos_analisis:
-            id_analisis.append(i.id)
-            
-        id_num = 1
+                    for i in datos_p:
 
-        while id_num in id_analisis:
-            id_num = id_num + 1
+                        if i[0] == "codigo":
+                            
+                            codigo = i[1]
 
-        try:
 
-            b = Analisis(
-                id = id_num,
-                codigo = codigo,
-                nombre = nombre,
-                unidad = unidad,
-                )
+                        elif i[0] == "nombre":
+                            
+                            nombre = i[1]
 
-            b.save()
-
-        except:
-
-            mensaje = "El analisis cargado tiene un error"
-
-            datos = {'articulos':articulos, 'mensaje':mensaje}
-
-        valor = 1
-
-        for i in resto:
-
-            try:
-
-                if i[0] == "csrfmiddlewaretoken":
-
-                    print("Basura")
-
-                elif valor == 1:
-
-                    valor = 2
-    
-                    nombre_articulo = i[1]
-
-                elif valor == 2:
-
-                    valor = 1
-
-                    cantidad = i[1]
-
-                    datos_compo = CompoAnalisis.objects.all()
-                    
-                    id_compo = []
-
-                    for i in datos_compo:
-                        id_compo.append(i.id)
+                        elif i[0] == "unidad":
+                            
+                            unidad = i[1]
                         
-                    id_num_compo = 1
+                        else:
 
-                    while id_num_compo in id_compo:
-                        print("Si esta")
-                        id_num_compo = id_num_compo + 1
-            
-                    b = CompoAnalisis(
-                        id = id_num_compo,
-                        articulo = Articulos.objects.get(nombre=nombre_articulo),
-                        analisis = Analisis.objects.get(codigo=codigo),
-                        cantidad = cantidad,
-                    )
+                            resto.append(i)        
+
+                datos_analisis = Analisis.objects.all()
+                id_analisis = []
+
+                for i in datos_analisis:
+                    id_analisis.append(i.id)
+                    
+                id_num = 1
+
+                while id_num in id_analisis:
+                    id_num = id_num + 1
+
+                try:
+
+                    b = Analisis(
+                        id = id_num,
+                        codigo = codigo,
+                        nombre = nombre,
+                        unidad = unidad,
+                        )
 
                     b.save()
-           
-            except:
 
-                mensaje = "**Los datos ingresados no son correctos"
+                except:
 
-                datos = {'articulos':articulos, 'mensaje':mensaje}
+                    mensaje = "El analisis cargado tiene un error"
 
-        return redirect('Lista de analisis')
+                    datos = {'articulos':articulos, 'mensaje':mensaje}
+
+                valor = 1
+
+                for i in resto:
+
+                    try:
+
+                        if i[0] == "csrfmiddlewaretoken":
+
+                            print("Basura")
+
+                        elif valor == 1:
+
+                            valor = 2
+            
+                            nombre_articulo = i[1]
+
+                        elif valor == 2:
+
+                            valor = 1
+
+                            cantidad = i[1]
+
+                            datos_compo = CompoAnalisis.objects.all()
+                            
+                            id_compo = []
+
+                            for i in datos_compo:
+                                id_compo.append(i.id)
+                                
+                            id_num_compo = 1
+
+                            while id_num_compo in id_compo:
+                                print("Si esta")
+                                id_num_compo = id_num_compo + 1
+                    
+                            b = CompoAnalisis(
+                                id = id_num_compo,
+                                articulo = Articulos.objects.get(nombre=nombre_articulo),
+                                analisis = Analisis.objects.get(codigo=codigo),
+                                cantidad = cantidad,
+                            )
+
+                            b.save()
+                
+                    except:
+
+                        mensaje = "**Los datos ingresados no son correctos"
+
+                        datos = {'articulos':articulos, 'mensaje':mensaje}
+
+                return redirect('Lista de analisis')
     else:
 
         datos = {'articulos':articulos,}
