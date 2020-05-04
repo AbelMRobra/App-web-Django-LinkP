@@ -558,124 +558,116 @@ def crearanalisis(request):
 
         datos_p = request.POST.items()
 
-        resto = []
+        datos_post = []
 
         for t in datos_p:
 
-            if t[0] == "codigo":
+            datos_post.append(t)
+
+        tupla = datos_post[1]
+
+        codigo_tupla = tupla[1]
+
+        if len(Analisis.objects.filter(codigo = codigo_tupla)) > 0:
+
+            print("Esta")
+
+            mensaje = "Este codigo ya se encuentra en la base"
+
+            datos = {'articulos':articulos, "mensaje":mensaje}
+
+        else:
+
+            resto = []
+
+            datos_p = request.POST.items()
+
+            for i in datos_p:
+
+                if i[0] == "codigo":
+                    
+                    codigo_analisis = i[1]
+
+                elif i[0] == "nombre":
+                    
+                    nombre = i[1]
+
+                elif i[0] == "unidad":
+                    
+                    unidad = i[1]
                 
-                codigo = t[1]
-
-                if Analisis.objects.get(codigo=codigo):
-
-                    mensaje = "Este codigo ya existe"
-
-                    datos = {'articulos':articulos, "mensaje":mensaje}
-
                 else:
 
-                    for i in datos_p:
+                    resto.append(i)        
+                
+            id_num = 1
 
-                        if i[0] == "codigo":
-                            
-                            codigo = i[1]
+            while Analisis.objects.filter(id = id_num):
+                id_num = id_num + 1
+                print(id_num)
 
+           
+            b = Analisis(
+                id = id_num,
+                codigo = codigo_analisis,
+                nombre = nombre,
+                unidad = unidad,
+                )
 
-                        elif i[0] == "nombre":
-                            
-                            nombre = i[1]
+            b.save()
 
-                        elif i[0] == "unidad":
-                            
-                            unidad = i[1]
-                        
-                        else:
+            print("Se cargo el analisis")
 
-                            resto.append(i)        
+            valor = 1
 
-                datos_analisis = Analisis.objects.all()
-                id_analisis = []
-
-                for i in datos_analisis:
-                    id_analisis.append(i.id)
-                    
-                id_num = 1
-
-                while id_num in id_analisis:
-                    id_num = id_num + 1
+            for i in resto:
 
                 try:
 
-                    b = Analisis(
-                        id = id_num,
-                        codigo = codigo,
-                        nombre = nombre,
-                        unidad = unidad,
+                    if i[0] == "csrfmiddlewaretoken":
+                        pass
+
+                    elif valor == 1:
+
+                        valor = 2
+        
+                        nombre_articulo = i[1]
+
+                    elif valor == 2:
+
+                        valor = 1
+
+                        cantidad = i[1]
+
+                        datos_compo = CompoAnalisis.objects.all()
+                        
+                        id_compo = []
+
+                        for i in datos_compo:
+                            id_compo.append(i.id)
+                            
+                        id_num_compo = 1
+
+                        while id_num_compo in id_compo:
+                            print("Si esta")
+                            id_num_compo = id_num_compo + 1
+                
+                        b = CompoAnalisis(
+                            id = id_num_compo,
+                            articulo = Articulos.objects.get(nombre=nombre_articulo),
+                            analisis = Analisis.objects.get(codigo=codigo),
+                            cantidad = cantidad,
                         )
 
-                    b.save()
-
+                        b.save()
+            
                 except:
 
-                    mensaje = "El analisis cargado tiene un error"
+                    mensaje = "**Los datos ingresados no son correctos"
 
                     datos = {'articulos':articulos, 'mensaje':mensaje}
 
-                valor = 1
-
-                for i in resto:
-
-                    try:
-
-                        if i[0] == "csrfmiddlewaretoken":
-
-                            print("Basura")
-
-                        elif valor == 1:
-
-                            valor = 2
-            
-                            nombre_articulo = i[1]
-
-                        elif valor == 2:
-
-                            valor = 1
-
-                            cantidad = i[1]
-
-                            datos_compo = CompoAnalisis.objects.all()
-                            
-                            id_compo = []
-
-                            for i in datos_compo:
-                                id_compo.append(i.id)
-                                
-                            id_num_compo = 1
-
-                            while id_num_compo in id_compo:
-                                print("Si esta")
-                                id_num_compo = id_num_compo + 1
-                    
-                            b = CompoAnalisis(
-                                id = id_num_compo,
-                                articulo = Articulos.objects.get(nombre=nombre_articulo),
-                                analisis = Analisis.objects.get(codigo=codigo),
-                                cantidad = cantidad,
-                            )
-
-                            b.save()
-                
-                    except:
-
-                        mensaje = "**Los datos ingresados no son correctos"
-
-                        datos = {'articulos':articulos, 'mensaje':mensaje}
-
                 return redirect('Lista de analisis')
-    else:
-
-        datos = {'articulos':articulos,}
-
 
     return render(request, 'analisis/crearanalisis.html', {'datos':datos})
 
