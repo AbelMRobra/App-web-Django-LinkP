@@ -604,10 +604,10 @@ def crearanalisis(request):
 
             while Analisis.objects.filter(id = id_num):
                 id_num = id_num + 1
-                print(id_num)
 
            
             b = Analisis(
+
                 id = id_num,
                 codigo = codigo_analisis,
                 nombre = nombre,
@@ -616,58 +616,51 @@ def crearanalisis(request):
 
             b.save()
 
-            print("Se cargo el analisis")
-
             valor = 1
 
-            for i in resto:
+            for t in resto:
 
-                try:
+                if t[0] != "csrfmiddlewaretoken" and valor == 1:
 
-                    if i[0] == "csrfmiddlewaretoken":
-                        pass
+                    valor = 2
+    
+                    nombre_articulo = t[1]
 
-                    elif valor == 1:
+                    print(nombre_articulo)
 
-                        valor = 2
-        
-                        nombre_articulo = i[1]
+                elif t[0] != "csrfmiddlewaretoken" and valor == 2:
 
-                    elif valor == 2:
+                    valor = 1
 
-                        valor = 1
+                    cantidad = t[1]
 
-                        cantidad = i[1]
+                    print(cantidad)
 
-                        datos_compo = CompoAnalisis.objects.all()
+                    datos_compo = CompoAnalisis.objects.all()
+                    
+                    id_compo = []
+
+                    for c in datos_compo:
+
+                        id_compo.append(c.id)
                         
-                        id_compo = []
+                    id_num_compo = 1
 
-                        for i in datos_compo:
-                            id_compo.append(i.id)
-                            
-                        id_num_compo = 1
-
-                        while id_num_compo in id_compo:
-                            print("Si esta")
-                            id_num_compo = id_num_compo + 1
-                
-                        b = CompoAnalisis(
-                            id = id_num_compo,
-                            articulo = Articulos.objects.get(nombre=nombre_articulo),
-                            analisis = Analisis.objects.get(codigo=codigo),
-                            cantidad = cantidad,
-                        )
-
-                        b.save()
+                    while id_num_compo in id_compo:
+                        print("Si esta")
+                        id_num_compo = id_num_compo + 1
             
-                except:
+                    b = CompoAnalisis(
+                        id = id_num_compo,
+                        articulo = Articulos.objects.get(nombre=nombre_articulo),
+                        analisis = Analisis.objects.get(codigo=codigo_analisis),
+                        cantidad = cantidad,
+                    )
 
-                    mensaje = "**Los datos ingresados no son correctos"
+                    b.save()
 
-                    datos = {'articulos':articulos, 'mensaje':mensaje}
 
-                return redirect('Lista de analisis')
+            return redirect('Lista de analisis')
 
     return render(request, 'analisis/crearanalisis.html', {'datos':datos})
 
