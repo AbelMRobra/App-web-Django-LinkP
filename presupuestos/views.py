@@ -9,6 +9,49 @@ from .models import Articulos, Constantes, DatosProyectos, Prametros, Desde, Ana
 import sqlite3
 
 
+
+# ----------------------------------------------------- VISTAS PARA PANEL PRESUPUESTOS----------------------------------------------
+
+def presupuestostotal(request):
+    
+    proyectos = Proyectos.objects.all()
+
+    datos = []
+
+    for proyecto in proyectos:
+
+        datos_presupuesto = PresupuestoPorCapitulo(proyecto.id)
+        datos_saldo = Saldoporcapitulo(proyecto.id)
+
+        valor_reposicion = 0
+
+        for p in datos_presupuesto:
+
+            for articulo_cantidad in p[2]:
+
+                valor_reposicion = (valor_reposicion + articulo_cantidad[0].valor*articulo_cantidad[1])
+
+        valor_reposicion = valor_reposicion/1000000
+        
+        valor_saldo = 0
+
+        for s in datos_saldo:
+
+            for articulo_cantidad in s[2]:
+
+                valor_saldo = (valor_saldo + articulo_cantidad[0].valor*articulo_cantidad[1])
+
+        valor_saldo = valor_saldo/1000000
+        avance = 0
+
+        if valor_reposicion != 0:
+            avance = (1 - (valor_saldo/valor_reposicion))*100
+
+        datos.append((proyecto, valor_reposicion, valor_saldo, avance))    
+
+    return render(request, 'presupuestos/principalpresupuesto.html', {"datos":datos})
+
+
 # ----------------------------------------------------- VISTAS PARA PANEL PRESUPUESTOS - SALDO CAPITULO ----------------------------------------------
 def saldocapitulo(request):
 
@@ -369,44 +412,6 @@ def presupuestoscapitulo(request, id_proyecto):
     datos = {"datos":datos, "proyecto":proyecto, "valor_proyecto":valor_proyecto,"valor_proyecto_completo":valor_proyecto_completo}
 
     return render(request, 'presupuestos/presupuestocapitulo.html', {"datos":datos})
-
-# ----------------------------------------------------- VISTAS PARA PANEL PRESUPUESTOS----------------------------------------------
-
-def presupuestostotal(request):
-    
-    proyectos = Proyectos.objects.all()
-
-    datos = []
-
-    for proyecto in proyectos:
-
-        datos_presupuesto = PresupuestoPorCapitulo(proyecto.id)
-        datos_saldo = Saldoporcapitulo(proyecto.id)
-
-        valor_reposicion = 0
-
-        for p in datos_presupuesto:
-
-            for articulo_cantidad in p[2]:
-
-                valor_reposicion = (valor_reposicion + articulo_cantidad[0].valor*articulo_cantidad[1])/1000000
-
-        valor_saldo = 0
-
-        for s in datos_saldo:
-
-            for articulo_cantidad in s[2]:
-
-                valor_saldo = (valor_saldo + articulo_cantidad[0].valor*articulo_cantidad[1])/1000000
-
-        avance = 0
-
-        if valor_reposicion != 0:
-            avance = (1 - (valor_saldo/valor_reposicion))*100
-
-        datos.append((proyecto, valor_reposicion, valor_saldo, avance))    
-
-    return render(request, 'presupuestos/principalpresupuesto.html', {"datos":datos})
 
 
 
@@ -1088,7 +1093,7 @@ def PresupuestoPorCapitulo(id_proyecto):
 
                         for comp in computo:
 
-                            cantidad_computo = cantidad_computo + comp.valor_total
+                            cantidad_computo = cantidad_computo + comp.valor_lleno
 
                         articulos_analisis = CompoAnalisis.objects.filter(analisis = mod.analisis)
 
