@@ -570,8 +570,6 @@ def crearanalisis(request):
 
         if len(Analisis.objects.filter(codigo = codigo_tupla)) > 0:
 
-            print("Esta")
-
             mensaje = "Este codigo ya se encuentra en la base"
 
             datos = {'articulos':articulos, "mensaje":mensaje}
@@ -626,15 +624,11 @@ def crearanalisis(request):
     
                     nombre_articulo = t[1]
 
-                    print(nombre_articulo)
-
                 elif t[0] != "csrfmiddlewaretoken" and valor == 2:
 
                     valor = 1
 
                     cantidad = t[1]
-
-                    print(cantidad)
 
                     datos_compo = CompoAnalisis.objects.all()
                     
@@ -647,7 +641,6 @@ def crearanalisis(request):
                     id_num_compo = 1
 
                     while id_num_compo in id_compo:
-                        print("Si esta")
                         id_num_compo = id_num_compo + 1
             
                     b = CompoAnalisis(
