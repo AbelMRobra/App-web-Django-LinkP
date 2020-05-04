@@ -314,7 +314,7 @@ def proveedores(request):
  
 def stockproveedores(request):
 
-    compras = Compras.objects.all()
+    compras = Compras.objects.filter(tipo = "ANT")
     retiros = Retiros.objects.all()   
 
     for i in compras:
