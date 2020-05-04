@@ -25,7 +25,9 @@
             <tr class = "table-info">
                 <th scope = "row"> <font style = "vertical-align: heredar;"> PROYECTO </font></th>
                 <th scope = "row"> <font style = "vertical-align: heredar;"> TAMAÑO </font></th>
-                <th scope = "row"> <font style = "vertical-align: heredar;"> MONTO DEL PROYECTO </font></th>               
+                <th scope = "row"> <font style = "vertical-align: heredar;"> VALOR REPOSICIÓN </font></th>
+                <th scope = "row"> <font style = "vertical-align: heredar;"> SALDO </font></th>
+                <th scope = "row"> <font style = "vertical-align: heredar;"> AVANCE </font></th>                  
             </tr>
         </thead>
 
@@ -39,6 +41,8 @@
                 <td> <b><a href="{% url 'Panel de presupuestos por capitulo' i.0.id %}" style="color: black;">{{i.0.nombre}}</a></b>  </td>
                 <td> {{i.0.m2|floatformat:2}} M2</td>
                 <td> ${{i.1|floatformat:2}} Millones</td>
+                <td> ${{i.2|floatformat:2}} Millones</td>
+                <td> {{i.3|floatformat:2}}%</td>
 
                           
             </tr>

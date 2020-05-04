@@ -9,6 +9,56 @@ from .models import Articulos, Constantes, DatosProyectos, Prametros, Desde, Ana
 import sqlite3
 
 
+# ----------------------------------------------------- VISTAS PARA PANEL PRESUPUESTOS - SALDO CAPITULO ----------------------------------------------
+def saldocapitulo(request):
+
+    #Armamos los datos para ver el presupuesto por capitulo
+
+    datos = PresupuestoPorCapitulo(1)
+
+    datos_viejos = datos
+
+    datos_presupuesto = []
+
+    for componentes in datos_viejos:
+
+        valor_capitulo = 0
+
+        for articulos in componentes[2]:
+
+            valor_capitulo = valor_capitulo + articulos[0].valor*articulos[1]
+        
+        datos_presupuesto.append((componentes[0], componentes[1], valor_capitulo ))
+
+    #Armamos el saldo de cada capitulo
+
+    saldo = Saldoporcapitulo(1)
+
+    datos_viejos = saldo
+
+    datos_saldo = []
+
+    for componentes in datos_viejos:
+
+        saldo_capitulo = 0
+
+        for articulos in componentes[2]:
+
+            saldo_capitulo = saldo_capitulo + articulos[0].valor*articulos[1]
+        
+        datos_saldo.append((componentes[0], componentes[1], saldo_capitulo ))
+
+    #Combinamos ambos
+
+    datos = []
+
+    for p in datos_presupuesto:
+        for s in datos_saldo:
+            if p[0] == s[0]:
+                datos.append((p[0], p[1], p[2], s[2]))
+
+    return render(request, 'presupuestos/saldocapitulo.html', {"datos":datos})
+
 
 # ----------------------------------------------------- VISTAS PARA PANEL PRESUPUESTOS - EXPLOSION ----------------------------------------------
 def explosion(request, id_proyecto):
@@ -323,80 +373,38 @@ def presupuestoscapitulo(request, id_proyecto):
 # ----------------------------------------------------- VISTAS PARA PANEL PRESUPUESTOS----------------------------------------------
 
 def presupuestostotal(request):
-    proyecto = Proyectos.objects.all()
-    capitulo = Capitulos.objects.all()
-    compo = CompoAnalisis.objects.all()
-    computo = Computos.objects.all()
-    modelo = Modelopresupuesto.objects.all()
+    
+    proyectos = Proyectos.objects.all()
 
     datos = []
 
-    for i in proyecto:
+    for proyecto in proyectos:
 
-        valor_proyecto = 0
+        datos_presupuesto = PresupuestoPorCapitulo(proyecto.id)
+        datos_saldo = Saldoporcapitulo(proyecto.id)
 
-        for c in capitulo:
+        valor_reposicion = 0
 
-            valor_capitulo = 0
+        for p in datos_presupuesto:
 
-            for d in modelo:
+            for articulo_cantidad in p[2]:
 
-                if d.capitulo == c and d.proyecto == i:
+                valor_reposicion = (valor_reposicion + articulo_cantidad[0].valor*articulo_cantidad[1])/1000000
 
-                    if d.cantidad == None:
+        valor_saldo = 0
 
-                        if "SOLO MANO DE OBRA" in str(d.analisis):
+        for s in datos_saldo:
 
-                            valor_analisis = 0
+            for articulo_cantidad in s[2]:
 
-                            for e in compo:
+                valor_saldo = (valor_saldo + articulo_cantidad[0].valor*articulo_cantidad[1])/1000000
 
-                                if e.analisis == d.analisis:
+        avance = 0
 
-                                    valor_analisis = valor_analisis + e.articulo.valor*e.cantidad
+        if valor_reposicion != 0:
+            avance = (1 - (valor_saldo/valor_reposicion))*100
 
-                            cantidad = 0
-
-                            for h in computo:
-                                if h.proyecto == i and h.tipologia == d.vinculacion:
-                                    cantidad = cantidad + h.valor_vacio   
-
-                            valor_capitulo = valor_capitulo + valor_analisis*cantidad
-
-                        else:
-                            valor_analisis = 0
-
-                            for e in compo:
-
-                                if e.analisis == d.analisis:
-
-                                    valor_analisis = valor_analisis + e.articulo.valor*e.cantidad
-
-                            cantidad = 0
-
-                            for h in computo:
-                                if h.proyecto == i and h.tipologia == d.vinculacion:
-                                    cantidad = cantidad + h.valor_lleno  
-
-                            valor_capitulo = valor_capitulo + valor_analisis*cantidad
-
-                    else:
-
-                        valor_analisis = 0
-
-                        for e in compo:
-
-                            if e.analisis == d.analisis:
-
-                                valor_analisis = valor_analisis + e.articulo.valor*e.cantidad
-
-                        valor_capitulo = valor_capitulo + valor_analisis*float(d.cantidad)
-
-        
-            valor_proyecto = valor_proyecto + valor_capitulo/1000000
-        
-        datos.append((i, valor_proyecto))
-      
+        datos.append((proyecto, valor_reposicion, valor_saldo, avance))    
 
     return render(request, 'presupuestos/principalpresupuesto.html', {"datos":datos})
 
@@ -1024,6 +1032,180 @@ def insum_delete(request, id_articulos):
         return redirect('Panel de cambios')
 
     return render(request, 'articulos/insum_delete.html', {'art':art})
+
+
+# --------------------------------> FUNCIONES USADAS EN LA VISTA <------------------------------------------------------
+
+def PresupuestoPorCapitulo(id_proyecto):
+
+    #Modelos que seran necesarios recorrer completos
+
+    proyecto = Proyectos.objects.get(id = id_proyecto)
+    capitulo = Capitulos.objects.all()    
+
+    #La lista datos tiene que tener 37 Arrays por cada capitulo
+
+    datos = []
+    
+    # Vamos a recorrer todos los capitulos y armar una array
+
+    numero_capitulo = 1
+    
+    for cap in capitulo:
+
+        capitulo = [] 
+
+        modelo = Modelopresupuesto.objects.filter(proyecto = proyecto, capitulo = cap)
+
+        for mod in modelo:
+
+                if mod.cantidad == None:
+
+                    if "SOLO MANO DE OBRA" in str(mod.analisis):
+
+                        computo = Computos.objects.filter(proyecto = proyecto, tipologia = mod.vinculacion)
+
+                        cantidad_computo = 0
+
+                        for comp in computo:
+
+                            cantidad_computo = cantidad_computo + comp.valor_vacio
+
+                        articulos_analisis = CompoAnalisis.objects.filter(analisis = mod.analisis)
+
+                        for compo in articulos_analisis:
+
+                            articulo_cantidad = (compo.articulo, compo.cantidad*cantidad_computo)
+
+                            capitulo.append(articulo_cantidad)
+
+
+                    else:
+
+                        computo = Computos.objects.filter(proyecto = proyecto, tipologia = mod.vinculacion)
+
+                        cantidad_computo = 0
+
+                        for comp in computo:
+
+                            cantidad_computo = cantidad_computo + comp.valor_total
+
+                        articulos_analisis = CompoAnalisis.objects.filter(analisis = mod.analisis)
+
+                        for compo in articulos_analisis:
+
+                            articulo_cantidad = (compo.articulo, compo.cantidad*cantidad_computo)
+
+                            capitulo.append(articulo_cantidad)
+
+    
+                else:
+
+                    articulos_analisis = CompoAnalisis.objects.filter(analisis = mod.analisis)
+
+                    for compo in articulos_analisis:
+
+                        articulo_cantidad = (compo.articulo, compo.cantidad*mod.cantidad )
+
+                        capitulo.append(articulo_cantidad)
+
+        datos.append((numero_capitulo, cap, capitulo))
+
+        numero_capitulo += 1
+
+
+    #Devuelve el numero del capitulo, el nombre y una lista de todos los insumos y la cantidad de cada uno
+
+    return datos
+
+def Saldoporcapitulo(id_proyecto):
+
+    #Traemos las compras y el presupuesto
+    proyecto = Proyectos.objects.get(id = id_proyecto)
+    compras = Compras.objects.filter(proyecto = proyecto)
+    presupuesto_capitulo = PresupuestoPorCapitulo(id_proyecto)
+
+    #Ordenamos la compra para que sea una sola lista
+
+    articulos_comprados = []
+
+    for compra in compras:
+        articulos_comprados.append(compra.articulo)
+
+    articulos_comprados = list(set(articulos_comprados))
+
+    #Armamos el stock con todas las compras realizadas de este proyecto
+
+    stock_articulos = []
+
+    for articulo in articulos_comprados:
+
+        compras_articulo = Compras.objects.filter(proyecto = proyecto, articulo = articulo)
+
+        cantidad = 0
+
+        for compra in compras_articulo:
+            cantidad = cantidad + compra.cantidad
+
+        stock_articulos.append((articulo, cantidad))
+
+    #Armamos el saldo
+
+    saldo_capitulo = []
+
+    for capitulo_presupuesto in presupuesto_capitulo:
+
+        articulos_saldo = []
+
+        for articulos_presupuesto in capitulo_presupuesto[2]:
+
+            if articulos_presupuesto[0] in articulos_comprados:
+
+                for articulos_stock in stock_articulos:
+
+                    #Si encontramos el articulo del capitulo en el stock, activamos una de las 3 posibilidades
+
+                    if articulos_stock[0] == articulos_presupuesto[0]:
+
+                        articulos_stock = list(articulos_stock)
+
+                        if articulos_stock[1] > articulos_presupuesto[1]:
+
+                            articulos_stock[1] = float(articulos_stock[1]) - float(articulos_presupuesto[1])
+
+                        elif articulos_stock[1] == articulos_presupuesto[1]:
+
+                            articulos_stock[1] = 0
+
+                        elif articulos_stock[1] < articulos_presupuesto[1]:
+
+                            cantidad_saldo = float(articulos_presupuesto[1]) - float(articulos_stock[1])
+
+                            articulos_stock[1] = 0
+
+                            articulos_saldo.append((articulos_presupuesto[0], cantidad_saldo))
+
+                            articulos_stock = tuple(articulos_stock)
+
+            else:
+                articulos_saldo.append(articulos_presupuesto)
+
+        #Modificado con el saldo
+                
+        saldo_capitulo.append((capitulo_presupuesto[0], capitulo_presupuesto[1], articulos_saldo))
+
+
+    return saldo_capitulo
+
+    
+
+
+
+
+
+
+
+
 
 
 

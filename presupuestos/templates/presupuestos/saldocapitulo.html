@@ -1,0 +1,73 @@
+{% extends "users/inicio.html" %}
+
+{% load static %}
+
+{% block content %}
+
+<div class = "jumbotron" style="background-color: white; margin-bottom: 0px;">
+
+    <h3 style="text-align: center; color: #17B5B5 ;">Saldo por capitulo</h3>
+    <h6 style="text-align: center; color: #17B5B5 ;"> Desglose por capitulo</h6>
+     <b><hr class = "my-4" style="width: 75%; border-color: #17B5B5 ;"></b>
+
+     <div style="text-align: center;">
+        <a href="#" class="btn btn-info">Explosión de insumos</a>          
+    </div>
+ 
+ <b><hr class = "my-4" style="width: 100%; border-color: #17B5B5 ;"></b>
+
+    <table class = "table table-hover" style="text-align: center;">
+        <thead>
+
+            <tr class = "table-info">
+                <th scope = "row"> <font style = "vertical-align: heredar;"> Nº </font></th>
+                <th scope = "row"> <font style = "vertical-align: heredar;"> CAPITULO </font></th>
+                <th scope = "row"> <font style = "vertical-align: heredar;"> VALOR </font></th>
+                <th scope = "row"> <font style = "vertical-align: heredar;"> MONTO DEL CAPITULO</font></th>
+                <th scope = "row"> <font style = "vertical-align: heredar;"> INC</font></th>               
+            </tr>
+        </thead>
+
+        <tbody>
+
+            
+
+
+        {% for i in datos %}
+
+            <tr class = "table-light">
+                <td style="width: 5%;"><b>{{i.0}}</b></td>
+                <td style="width: 25%;">{{i.1}}</td>
+                <td style="width: 40%;"> {{i.2}} </td>
+                <td style="width: 15%;"> {{i.3}} </td>
+                <td style="width: 15%;"> </td>                         
+            </tr>
+
+        {% endfor %}
+        </tbody>
+
+
+        </table>
+
+        <div style="text-align: center;">
+            <h6>Valor de reposición del proyecto:  <strong>($ Millones)</strong> </h6>
+        </div>
+
+        <div style="text-align: center;">
+            <p> <small>-- Link<strong>P</strong> --</small> </p>
+    
+         </div>
+
+            <div>
+                <h6>No existe registros actualmente</h6>
+            </div>
+        
+
+        
+
+   
+                    
+</div>
+ 
+    
+{% endblock %}
