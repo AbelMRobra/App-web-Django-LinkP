@@ -6,12 +6,12 @@
 
 <div class = "jumbotron" style="background-color: white; margin-bottom: 0px;">
 
-    <h3 style="text-align: center; color: #17B5B5 ;">Saldo por capitulo</h3>
-    <h6 style="text-align: center; color: #17B5B5 ;"> Desglose por capitulo</h6>
+    <h3 style="text-align: center; color: #17B5B5 ;">Detalle de Saldo proyecto {{datos.proyecto.nombre}}</h3>
+    <h6 style="text-align: center; color: #17B5B5 ;"> Avance/Incidencia/Saldo</h6>
      <b><hr class = "my-4" style="width: 75%; border-color: #17B5B5 ;"></b>
 
      <div style="text-align: center;">
-        <a href="#" class="btn btn-info">Explosión de insumos</a>          
+        <a href="{% url 'Explosión de insumos' id_proyecto=datos.proyecto.id %}" class="btn btn-info">Explosión de insumos</a>          
     </div>
  
  <b><hr class = "my-4" style="width: 100%; border-color: #17B5B5 ;"></b>
@@ -20,11 +20,12 @@
         <thead>
 
             <tr class = "table-info">
-                <th scope = "row"> <font style = "vertical-align: heredar;"> Nº </font></th>
-                <th scope = "row"> <font style = "vertical-align: heredar;"> CAPITULO </font></th>
-                <th scope = "row"> <font style = "vertical-align: heredar;"> VALOR </font></th>
-                <th scope = "row"> <font style = "vertical-align: heredar;"> MONTO DEL CAPITULO</font></th>
-                <th scope = "row"> <font style = "vertical-align: heredar;"> INC</font></th>               
+                <th scope = "row">Nº</th>
+                <th scope = "row">CAPITULO</th>
+                <th scope = "row">VALOR DEL CAPITULO</th>
+                <th scope = "row">SALDO</th>
+                <th scope = "row">AVANCE</th>
+                <th scope = "row">INC</th>                
             </tr>
         </thead>
 
@@ -33,14 +34,15 @@
             
 
 
-        {% for i in datos %}
+        {% for i in datos.datos %}
 
             <tr class = "table-light">
                 <td style="width: 5%;"><b>{{i.0}}</b></td>
-                <td style="width: 25%;">{{i.1}}</td>
-                <td style="width: 40%;"> {{i.2}} </td>
-                <td style="width: 15%;"> {{i.3}} </td>
-                <td style="width: 15%;"> </td>                         
+                <td style="width: 25%;"> <b>{{i.1}}</b></td>
+                <td style="width: 15%;"> ${{i.2|floatformat:2}} </td>
+                <td style="width: 15%;"> ${{i.3|floatformat:2}} </td>
+                <td style="width: 15%;"> {{i.4|floatformat:2}}% </td>
+                <td style="width: 15%;"> <b>{{i.5|floatformat:2}}% </b> </td>                         
             </tr>
 
         {% endfor %}
@@ -50,21 +52,9 @@
         </table>
 
         <div style="text-align: center;">
-            <h6>Valor de reposición del proyecto:  <strong>($ Millones)</strong> </h6>
-        </div>
-
-        <div style="text-align: center;">
             <p> <small>-- Link<strong>P</strong> --</small> </p>
     
          </div>
-
-            <div>
-                <h6>No existe registros actualmente</h6>
-            </div>
-        
-
-        
-
    
                     
 </div>

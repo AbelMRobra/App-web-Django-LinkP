@@ -10,7 +10,7 @@
      <b><hr class = "my-4" style="width: 75%; border-color: #17B5B5 ;"></b>
 
      <div style="text-align: center;">
-        <p> <small>-- Elige un proyecto haciendo <strong>click</strong> sobre su nombre --</small> </p>
+        <p> <small>-- Elige un proyecto haciendo <strong>click</strong> sobre el valor de reposición o el saldo --</small> </p>
 
      </div>
 
@@ -38,11 +38,11 @@
             {% for i in datos %}
 
             <tr class = "table-light">
-                <td> <b><a href="{% url 'Panel de presupuestos por capitulo' i.0.id %}" style="color: black;">{{i.0.nombre}}</a></b>  </td>
+                <td> <b>{{i.0.nombre}}</b></td>
                 <td> {{i.0.m2|floatformat:2}} M2</td>
-                <td> ${{i.1|floatformat:2}} Millones</td>
-                <td> ${{i.2|floatformat:2}} Millones</td>
-                <td> {{i.3|floatformat:2}}%</td>
+                <td>  <a href="{% url 'Panel de presupuestos por capitulo' i.0.id %}" style="color: black;">${{i.1|floatformat:2}} Millones</a></td>
+                <td> <a href="{% url 'Saldo por capitulo' i.0.id %}" style="color: black;">${{i.2|floatformat:2}} Millones</a> </td>
+                <td> <b>{{i.3|floatformat:2}}%</b> </td>
 
                           
             </tr>

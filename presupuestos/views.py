@@ -53,15 +53,17 @@ def presupuestostotal(request):
 
 
 # ----------------------------------------------------- VISTAS PARA PANEL PRESUPUESTOS - SALDO CAPITULO ----------------------------------------------
-def saldocapitulo(request):
+def saldocapitulo(request, id_proyecto):
 
     #Armamos los datos para ver el presupuesto por capitulo
 
-    datos = PresupuestoPorCapitulo(1)
+    datos = PresupuestoPorCapitulo(id_proyecto)
 
     datos_viejos = datos
 
     datos_presupuesto = []
+
+    valor_reposicion = 0
 
     for componentes in datos_viejos:
 
@@ -72,6 +74,8 @@ def saldocapitulo(request):
             valor_capitulo = valor_capitulo + articulos[0].valor*articulos[1]
         
         datos_presupuesto.append((componentes[0], componentes[1], valor_capitulo ))
+
+        valor_reposicion = valor_reposicion + valor_capitulo
 
     #Armamos el saldo de cada capitulo
 
@@ -98,7 +102,27 @@ def saldocapitulo(request):
     for p in datos_presupuesto:
         for s in datos_saldo:
             if p[0] == s[0]:
-                datos.append((p[0], p[1], p[2], s[2]))
+
+                avance = 0
+
+                if s[2] != 0:
+
+                    avance = (1 - s[2]/p[2])*100               
+
+                inc = 0
+
+                if p[2] != 0:
+
+                    inc = (s[2]/valor_reposicion)*100  
+
+                datos.append((p[0], p[1], p[2], s[2], avance, inc))
+
+    
+    proyecto = Proyectos.objects.get(id = id_proyecto)
+
+    datos = {"proyecto":proyecto, "datos":datos}
+
+                
 
     return render(request, 'presupuestos/saldocapitulo.html', {"datos":datos})
 
