@@ -18,7 +18,7 @@ import matplotlib.pyplot as plt
 
 def funcionstock():
 
-    compras = Compras.objects.all()
+    compras = Compras.objects.filter(tipo = "ANT")
     retiros = Retiros.objects.all()   
 
     for i in compras:
@@ -378,6 +378,7 @@ def informe(request):
     # --> Modelos necesarios
 
     compras = Compras.objects.all()
+    compras_ant = Compras.objects.filter(tipo = "ANT")
     retiros = Retiros.objects.all() 
     constantes = Constantes.objects.get(nombre="USD")  
     proveedores = Proveedores.objects.all()
@@ -416,7 +417,7 @@ def informe(request):
 
     # --> Metodo para calcular el stock
 
-    stock = compras
+    stock = compras_ant
 
     for i in stock:
 
@@ -432,7 +433,7 @@ def informe(request):
     
     # --> Metodo para valorizar el stock
 
-    for i in compras:
+    for i in stock:
 
         valor = i.articulo.valor
         cantidad = i.cantidad
