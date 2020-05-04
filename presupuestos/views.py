@@ -63,8 +63,6 @@ def saldocapitulo(request, id_proyecto):
 
     datos_presupuesto = []
 
-    valor_reposicion = 0
-
     for componentes in datos_viejos:
 
         valor_capitulo = 0
@@ -75,7 +73,6 @@ def saldocapitulo(request, id_proyecto):
         
         datos_presupuesto.append((componentes[0], componentes[1], valor_capitulo ))
 
-        valor_reposicion = valor_reposicion + valor_capitulo
 
     #Armamos el saldo de cada capitulo
 
@@ -84,6 +81,8 @@ def saldocapitulo(request, id_proyecto):
     datos_viejos = saldo
 
     datos_saldo = []
+
+    valor_saldo = 0
 
     for componentes in datos_viejos:
 
@@ -94,6 +93,8 @@ def saldocapitulo(request, id_proyecto):
             saldo_capitulo = saldo_capitulo + articulos[0].valor*articulos[1]
         
         datos_saldo.append((componentes[0], componentes[1], saldo_capitulo ))
+
+        valor_saldo = valor_saldo + saldo_capitulo
 
     #Combinamos ambos
 
@@ -113,7 +114,7 @@ def saldocapitulo(request, id_proyecto):
 
                 if p[2] != 0:
 
-                    inc = (s[2]/valor_reposicion)*100  
+                    inc = (s[2]/valor_saldo)*100  
 
                 datos.append((p[0], p[1], p[2], s[2], avance, inc))
 
