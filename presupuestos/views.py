@@ -105,15 +105,11 @@ def saldocapitulo(request, id_proyecto):
             if p[0] == s[0]:
 
                 avance = 0
-
-                if s[2] != 0:
-
-                    avance = (1 - s[2]/p[2])*100               
-
                 inc = 0
 
                 if p[2] != 0:
 
+                    avance = (1 - s[2]/p[2])*100               
                     inc = (s[2]/valor_saldo)*100  
 
                 datos.append((p[0], p[1], p[2], s[2], avance, inc))
@@ -122,9 +118,7 @@ def saldocapitulo(request, id_proyecto):
     proyecto = Proyectos.objects.get(id = id_proyecto)
 
     datos = {"proyecto":proyecto, "datos":datos}
-
                 
-
     return render(request, 'presupuestos/saldocapitulo.html', {"datos":datos})
 
 

@@ -433,15 +433,31 @@ def informe(request):
     
     # --> Metodo para valorizar el stock
 
+    stock_pesos = 0
+    stock_horm = 0
+    stock_usd = 0
+
     for i in stock:
 
         valor = i.articulo.valor
         cantidad = i.cantidad
 
         valor_act = valor*cantidad
+
+        if "USD" in str(i.articulo.constante):
+            stock_usd = stock_usd + valor_act
+
+        elif "HORMIG" in str(i.articulo.nombre):
+            stock_horm = stock_horm + valor_act
+        else:
+            stock_pesos = stock_pesos + valor_act
         
         stock_valorizado = stock_valorizado + valor_act
         stock_valorizado_m = stock_valorizado/1000000
+
+    stock_pesos = (stock_pesos/1000000)/stock_valorizado_m*100
+    stock_horm = (stock_horm/1000000)/stock_valorizado_m*100
+    stock_usd = (stock_usd/1000000)/stock_valorizado_m*100
 
     # --> Metodo para valorizar en USD el stock
 
@@ -530,7 +546,10 @@ def informe(request):
     "listas_art":listas_art,
     "listas_pro":listas_pro,
     "compras_nominal":compras_nominal,
-    "compras_actualizado":compras_actualizado
+    "compras_actualizado":compras_actualizado,
+    "stock_pesos":stock_pesos,
+    "stock_usd":stock_usd,
+    "stock_horm":stock_horm,
 
     }
 
