@@ -796,6 +796,7 @@ def desde(request):
     datos_costo = 0
     datos_sugerido = 0
     proyecto = 0
+    ventas_realizadas = 0
 
     if request.method == 'POST':
 
