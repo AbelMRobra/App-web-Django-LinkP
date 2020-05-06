@@ -851,8 +851,8 @@ def desde(request):
                 datos_sugerido.append(valor_final)
 
             except:
-                datos_costo.append(0)
-                datos_sugerido.append(0)
+                datos_costo.append("")
+                datos_sugerido.append("")
 
         #Promedio de venta y canitdad
 
