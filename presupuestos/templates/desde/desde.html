@@ -6,23 +6,20 @@
 
 <div class = "jumbotron" style="background-color: white; margin-bottom: 0px;">
     <div style="text-align: center;">
-        <h3>Indicador de precios</h3>
+        <h2>Panel de control - Precios</h2>
         <smal>Trabajo en conjunto </small><small><strong>PRESUPUESTO - DIRECCIÓN - FINANZAS</strong></small>  
     </div>
 
-    <b><hr class = "my-4" style="width: 75%; border-color: black ;"></b>
+    <b><hr class = "my-4" style="width: 100%; border-color: black ;"></b>
 
-     <div style="margin-bottom: 1%; text-align: center;">
-        <a href="/presupuestos/parametros"><button class="btn btn-success" type="submit">Ver parametros</button></a>  
-     </div>
-     
-     <b><hr class = "my-4" style="width: 100%; border-color: black ;"></b>
-    
+    <div style="margin-bottom: 2rem;">
+
+        <h3>Precio de referencia </h3>
+        <small> El precio de referencia se calcula a partir del costo de obra y parametros fijos</small>
+
+    </div>   
+       
     {% if datos %} 
-
-    <div>
-        <h6 style="color: darkgreen;"><small>Valor del USD_BLUE: USD {{datos.usd_blue.valor}}</small></h6>
-    </div>
 
     <table class = "table table-hover" style="text-align: center;">
         <thead>
@@ -70,6 +67,179 @@
         
 
     </table>
+    <div>
+        <small style="color: darkgreen;"> El valor de dolar usado es: ${{datos.usd_blue.valor}}</small>
+        <h6 ><small></small></h6>
+    </div>
+    <div style="margin-bottom: 1%; text-align: center;">
+        <a href="/presupuestos/parametros"><button class="btn btn-success" type="submit">Ver parametros</button></a>  
+     </div>
+
+    <b><hr class = "my-4" style="width: 100%; border-color: black ;"></b>
+    
+    <div style="margin-bottom: 2rem;">
+
+        <h3>Analisis historico de ventas {% if datos.graficos %} {{ datos.proyecto.nombre }} {% endif %}</h3>
+        <small> Se compara el historico de venta con el estimado de precio de venta</small>
+
+    </div>
+    
+    <div style="text-align: center;">
+        <form method="POST">
+
+            {% csrf_token %}
+
+            <select name="proyecto" class="custom-select" style="width: 15%;">
+
+                {% for i in datos.proyectos %}
+                <option value="{{i.id}}">{{i.nombre}}</option>
+
+                {% endfor %}
+
+
+              </select>
+              <div>
+                <small> Seleccione el proyecto</small>
+              </div>
+              
+
+              <div>
+                <button class="btn btn-dark" type="submit" style="margin-top: 1%;">Analizar</button>          
+            </div>
+            
+        </form>
+
+        
+    </div>
+
+    {% if datos.graficos %}
+
+    <div style="margin-top: 2rem;">
+
+        <div style= "text-align: center;">
+            <small><strong>-- Analisis de precios --</strong></small>
+        </div>
+
+        <canvas id="myChart" width="400" height="150rem"></canvas>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    <script>
+        var ctx = document.getElementById('myChart').getContext('2d');
+        var chart = new Chart(ctx, {
+            // The type of chart we want to create
+            type: 'line',
+
+            // The data for our dataset
+            data: {
+                labels: [
+                    {% for i in datos.pricing %}
+                    '{{i.fecha}}',                   
+                    {% endfor %}
+                    ],
+                datasets: [{
+                    label: 'Promedio de la venta',
+                    backgroundColor: 'rgb(9, 10, 9)',
+                    borderColor: 'rgb(9, 10, 9)',
+                    fill: false,
+                    showLine: false,
+                    data: [
+                    {% for i in datos.ventas %}
+                    {{i.1|floatformat:0}},                   
+                    {% endfor %}
+                    ]
+                },
+                {
+                    label: 'Precio minimo',
+                    backgroundColor: 'rgb(199, 65, 49)',
+                    borderColor: 'rgb(199, 65, 49)',
+                    fill: false,
+                    data: [
+                    {% for i in datos.costo %}
+                    {{i|floatformat:0}},                   
+                    {% endfor %}
+                    ]
+                },
+                {
+                    label: 'Precio Sugerido',
+                    backgroundColor: 'rgb(79, 199, 49)',
+                    borderColor: 'rgb(79, 199, 49)',
+                    fill: false,
+                    data: [
+                    {% for i in datos.sugerido %}
+                    {{i|floatformat:0}},                   
+                    {% endfor %}
+                    ]
+                },
+                {
+                    
+                    label: 'Pricing',
+                    backgroundColor: 'rgb(126, 128, 125)',
+                    borderColor: 'rgb(126, 128, 125)',
+                    fill: false,
+                    data: [
+                    {% for i in datos.pricing %}
+                    {{i.precio_prom_contado|floatformat:0}},                   
+                    {% endfor %}
+                    ]
+                }],
+
+            },
+
+            // Configuration options go here
+            options: {}
+        });
+    </script>
+
+
+    </div>
+
+    <div style="margin-top: 10rem;">
+        <div style= "text-align: center;">
+            
+            <small><strong>-- Analisis de cantidad --</strong></small>
+         </div>
+
+        <canvas id="myChart2" width="400" height="100rem"></canvas>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    <script>
+        var ctx = document.getElementById('myChart2').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: [{% for i in datos.pricing %}
+                    '{{i.fecha}}',                   
+                    {% endfor %}],
+                datasets: [{
+                    label: 'Total de ventas',
+                    data: [{% for i in datos.ventas %}
+                    {{i.0}},                   
+                    {% endfor %}],
+                    backgroundColor: 'rgba(72, 110, 195, 0.2)',
+                    borderColor: 'rgba(72, 110, 195, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+</script>
+    </script>
+
+
+    </div>
+
+    {% endif %}
+
+    <div style="text-align: center;">
+        <p> <small>-- Link<strong>P</strong> --</small> </p>
+
+     </div>
 
                     
 </div>

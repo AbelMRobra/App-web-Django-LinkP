@@ -5,9 +5,12 @@ from .form import ConsForm, ArticulosForm
 from proyectos.models import Proyectos
 from computos.models import Computos
 from compras.models import Compras
+from ventas.models import PricingResumen, VentasRealizadas
+from registro.models import RegistroValorProyecto
 from .models import Articulos, Constantes, DatosProyectos, Prametros, Desde, Analisis, CompoAnalisis, Modelopresupuesto, Capitulos
 import sqlite3
-
+import numpy as np
+from datetime import date
 
 
 # ----------------------------------------------------- VISTAS PARA PANEL PRESUPUESTOS----------------------------------------------
@@ -180,8 +183,6 @@ def explosion(request, id_proyecto):
     for t in crudo_articulos:
         datos.append(t[0])
 
-    print(len(datos))
-
     datos = list(set(datos))
 
     datos_viejos = datos
@@ -250,10 +251,7 @@ def explosion(request, id_proyecto):
     datos = {"datos":datos,
     "proyecto":proyecto}
 
-
     return render(request, 'presupuestos/explosion.html', {"datos":datos})
-
-
 
 # ----------------------------------------------------- VISTAS PARA PANEL PRESUPUESTOS - ANALISIS ----------------------------------------------
 def presupuestosanalisis(request, id_proyecto, id_capitulo):
@@ -329,7 +327,6 @@ def presupuestosanalisis(request, id_proyecto, id_capitulo):
                 crudo.append((d.analisis, valor_analisis, d.cantidad, total_parcial, 0.0, d.vinculacion))
                 
                 valor_capitulo = valor_capitulo + valor_analisis*float(d.cantidad)
-
     datos =[]
 
     for i in crudo:
@@ -337,8 +334,6 @@ def presupuestosanalisis(request, id_proyecto, id_capitulo):
         i[4] = i[3]/valor_capitulo*100000
         i = tuple(i)
         datos.append(i)
-
-
 
     datos = {"datos":datos, "proyecto":proyecto, "capitulo":capitulo}
 
@@ -431,8 +426,6 @@ def presupuestoscapitulo(request, id_proyecto):
     datos = {"datos":datos, "proyecto":proyecto, "valor_proyecto":valor_proyecto,"valor_proyecto_completo":valor_proyecto_completo}
 
     return render(request, 'presupuestos/presupuestocapitulo.html', {"datos":datos})
-
-
 
 # ----------------------------------------------------- VISTAS PARA VER ANALISIS----------------------------------------------
 
@@ -732,9 +725,28 @@ def desde(request):
 
     usd_blue = Constantes.objects.get(nombre = "USD_BLUE")
 
+
     for i in datos:
 
         costo = i.presupuesto.valor
+
+        datos_presupuesto = PresupuestoPorCapitulo(i.presupuesto.proyecto.id)
+        datos_saldo = Saldoporcapitulo(i.presupuesto.proyecto.id)
+
+        valor_reposicion = 0
+
+        #Aqui evaluo si se puede usar el presupuesto como valor de costo para calcular el precio min y sugerido
+
+        for p in datos_presupuesto:
+
+            for articulo_cantidad in p[2]:
+
+                valor_reposicion = (valor_reposicion + articulo_cantidad[0].valor*articulo_cantidad[1])
+
+        if valor_reposicion != 0:
+            costo = valor_reposicion
+
+        #Aqui calculo el precio min y sugerido
 
         costo = (costo/(1 + i.parametros.tasa_des_p))*(1 + i.parametros.soft)
         
@@ -752,6 +764,8 @@ def desde(request):
         valor_costo = costo/m2
         
         valor_final = valor_costo*(1 + i.parametros.ganancia)
+
+        # Valorizo en dolares el precio de costo y sugerido
 
         valor_costo_usd = 0
 
@@ -772,9 +786,117 @@ def desde(request):
 
         i.save()
 
-    
+    # Programa para graficos
 
-    datos = {'datos':datos, 'usd_blue':usd_blue}
+    proyectos = Proyectos.objects.all()
+
+    graficos = 0
+
+    datos_pricing = 0
+    datos_costo = 0
+    datos_sugerido = 0
+    proyecto = 0
+
+    if request.method == 'POST':
+
+        #Trae el proyecto elegido
+        proyecto_elegido = request.POST.items()
+
+        #Crea los datos del pricing
+
+        for i in proyecto_elegido:
+
+            if i[0] == "proyecto":
+                proyecto = Proyectos.objects.get(id = i[1])
+
+        fechas = []
+                
+        datos_pricing = PricingResumen.objects.filter(proyecto = proyecto)
+
+        for i in datos_pricing:
+            fechas.append(i.fecha)
+
+        #Crea los datos de costo y de sugerido
+
+        datos_costo = []
+        datos_sugerido = []
+
+        for fecha in fechas:
+
+            try:
+                valor_proyecto = RegistroValorProyecto.objects.get(proyecto = proyecto, fecha = fecha)
+                parametros_proyecto = Prametros.objects.get(proyecto = proyecto)
+
+                costo = valor_proyecto.precio_proyecto
+
+                costo = (costo/(1 + parametros_proyecto.tasa_des_p))*(1 + parametros_proyecto.soft)
+        
+                costo = costo*(1 + parametros_proyecto.imprevitso)
+
+                aumento_tem = parametros_proyecto.tem_iibb*parametros_proyecto.por_temiibb*(1+parametros_proyecto.ganancia)
+
+                aumento_comer = parametros_proyecto.comer*(1+parametros_proyecto.comer)
+
+                costo = costo/(1-aumento_tem- aumento_comer)
+                
+                m2 = (parametros_proyecto.proyecto.m2 - parametros_proyecto.terreno - parametros_proyecto.link)
+
+                valor_costo = costo/m2 
+
+                datos_costo.append(valor_costo)
+
+                valor_final = valor_costo*(1 + parametros_proyecto.ganancia)
+
+                datos_sugerido.append(valor_final)
+
+            except:
+                datos_costo.append(0)
+                datos_sugerido.append(0)
+
+        #Promedio de venta y canitdad
+
+        ventas_realizadas = []
+
+        for fecha in fechas:
+            compras_mes = []
+            ventas = VentasRealizadas.objects.filter(proyecto = proyecto)
+            for venta in ventas:
+                if fecha.month == venta.fecha.month and fecha.year == venta.fecha.year and venta.asignacion != "LINK":
+                    
+                    if venta.anticipo != venta.precio_venta:
+                        valor_p_ant = -np.pv(fv=0, rate=(0.82/100), nper=venta.cuotas_pend, pmt=((venta.precio_venta - venta.anticipo)/venta.cuotas_pend))                 
+                        valor_m2 = valor_p_ant + venta.anticipo
+                        compras_mes.append((valor_m2, venta.m2))
+                    else:
+                        valor_m2 = venta.precio_venta
+                        compras_mes.append((valor_m2, venta.m2))
+
+            cantidad = len(compras_mes)
+
+            total_venta = 0
+            total_m2 = 0
+
+            for op in compras_mes:
+
+                total_venta = total_venta + op[0]
+                total_m2 = total_m2 + op[1]
+
+            if total_m2 != 0:
+                precio_prom = total_venta/total_m2
+            else:
+                precio_prom = ""
+
+            ventas_realizadas.append((cantidad, precio_prom))
+                   
+        #Habilito los graficos
+        graficos = 1
+
+  
+    datos = {'datos':datos, 'usd_blue':usd_blue, 
+    "proyectos":proyectos, "proyecto":proyecto, 
+    "graficos":graficos, "pricing":datos_pricing, 
+    "costo":datos_costo, "sugerido":datos_sugerido,
+    "ventas":ventas_realizadas}
 
     return render(request, 'desde/desde.html', {'datos':datos})
 
@@ -1031,7 +1153,7 @@ def insum_list(request):
 
     return render(request, 'articulos/insum_list.html', c )
 
-# VISTA -- > EDITAR ARTICULOS 
+# --------------------------------> VISTA PARA EDITIAR ARTICULOS <------------------------------------------------------
 
 def insum_edit(request, id_articulos):
 
@@ -1046,6 +1168,8 @@ def insum_edit(request, id_articulos):
         return redirect('Panel de cambios')
 
     return render(request, 'articulos/insum_create.html', {'form':form})
+
+# --------------------------------> VISTA PARA CONFIRMAR SI ELIMINA ARTICULOS <------------------------------------------------------
 
 def insum_delete(request, id_articulos):
 
