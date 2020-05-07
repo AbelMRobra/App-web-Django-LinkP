@@ -41,7 +41,13 @@
             <a class="dropdown-item" href="/presupuestos/presupuestos">Presupuestos</a>
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="/presupuestos/datos">Datos de proyectos</a>
+            {% if perms.ventas.view_ventasrealizadas %}
+
             <a class="dropdown-item" href="/presupuestos/desde">Indicador de precios</a>
+
+            {% endif %}
+
+            
           </div>
         </li>  
 
