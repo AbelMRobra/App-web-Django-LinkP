@@ -26,7 +26,6 @@
                 <th scope = "row"> <font style = "vertical-align: heredar;"> COMER </font></th>
                 <th scope = "row"> <font style = "vertical-align: heredar;"> TEM e IIBB </font></th>
                 <th scope = "row"> <font style = "vertical-align: heredar;"> GANANCIA </font></th>
-                <th scope = "row"> <font style = "vertical-align: heredar;"> EDITAR </font></th>
 
 
             </tr>
@@ -38,16 +37,15 @@
 
             {% for i in datos %}
             <tr class = "table-light">
-                <td> <b>{{i.proyecto}}</b> </td>
-                <td>{{i.tasa_des_p}}</td>
-                <td>{{i.soft}}</td>
-                <td>{{i.imprevitso}}</td>
-                <td>{{i.terreno }} m2</td>
-                <td>{{i.link}} m2</td>
-                <td>{{i.comer}}</td>
-                <td>{{i.tem_iibb}}</td>
-                <td>{{i.ganancia}}</td>
-                <td><a class = "btn btn-outline-success" href="#">Editar</a>
+                <td> <b>{{i.0.proyecto}}</b> </td>
+                <td>{{i.0.tasa_des_p}}</td>
+                <td>{{i.0.soft}}</td>
+                <td>{{i.0.imprevitso}}</td>
+                <td>{{i.0.terreno }} m2 - <b>{{i.1|floatformat:0}}%</b></td>
+                <td>{{i.0.link}} m2 - <b>{{i.2|floatformat:0}}%</b></td>
+                <td>{{i.0.comer}}</td>
+                <td>{{i.0.tem_iibb}}</td>
+                <td>{{i.0.ganancia}}</td>
 
 
                 </td>

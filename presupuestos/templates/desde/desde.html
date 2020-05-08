@@ -7,7 +7,7 @@
 <div class = "jumbotron" style="background-color: white; margin-bottom: 0px;">
     <div style="text-align: center;">
         <h2>Panel de control - Precios</h2>
-        <smal>Trabajo en conjunto </small><small><strong>PRESUPUESTO - DIRECCIÓN - FINANZAS</strong></small>  
+        <smal>Trabajo en conjunto </small><small><strong>PRESUPUESTO - DIRECCIÓN - FINANZAS - VENTAS</strong></small>  
     </div>
 
     <b><hr class = "my-4" style="width: 100%; border-color: black ;"></b>
@@ -114,7 +114,7 @@
 
     {% if datos.graficos %}
 
-    <div style="margin-top: 2rem;">
+    <div style="margin-top: 0.5rem; display: inline-block; width: 100%;">
 
         <div style= "text-align: center;">
             <small><strong>-- Analisis de precios --</strong></small>
@@ -192,7 +192,9 @@
 
     </div>
 
-    <div style="margin-top: 10rem;">
+    
+
+    <div style="margin-top: 0.5rem; display: inline-block; width: 100%;">
         <div style= "text-align: center;">
             
             <small><strong>-- Analisis de cantidad --</strong></small>
@@ -231,12 +233,80 @@
 </script>
     </script>
 
+</div>
+
+    
+
+    <div style="text-align: center ;">
+
+        <div style="margin-top: 0.5rem; width: 20%; display: inline-block; margin-left: 0.5rem;">
+            <div style= "text-align: center;">
+                
+                <small><strong>-- Porcentaje de ganancia: 20%--</strong></small>
+             </div>
+    
+            <canvas id="myChart4" width="40rem" height="40rem"></canvas>
+        
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+        <script>
+            var ctx = document.getElementById('myChart4').getContext('2d');
+            var myChart = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: ["Perfomance"],
+                    datasets: [{
+                        label: 'Total de ventas',
+                        data: [0.2, 0.8],
+                        backgroundColor: ['rgba(58, 231, 60 , 0.8)', 'rgba(27, 29, 27 , 0.8)'],
+                        borderColor: ['rgba(72, 195, 74 , 1)', 'rgba(27, 29, 27 , 1)'],
+                        borderWidth: 1
+                        
+                    }]
+                },
+    
+            });
+    </script>
+        </script>
+    
+    
+        </div>
+
+        <div style="margin-top: 0.5rem; width: 20%; display: inline-block; margin-left: 2rem;">
+            <div style= "text-align: center;">
+                
+                <small><strong>-- M2 Vendidos: 80%--</strong></small>
+             </div>
+    
+            <canvas id="myChart3" width="40rem" height="40rem"></canvas>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+        <script>
+            var ctx = document.getElementById('myChart3').getContext('2d');
+            var myChart = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: ["vendido"],
+                    datasets: [{
+                        label: 'Total de ventas',
+                        data: [0.3, 0.7],
+                        backgroundColor: ['rgba(72, 110, 195 , 0.8)', 'rgba(27, 29, 27 , 0.8)'],
+                        borderColor: ['rgba(72, 110, 195, 1)', 'rgba(72, 110, 195 , 1)'],
+                        borderWidth: 1
+                    }]
+                },
+            });
+        </script>
+        </script>
+    
+    
+        </div>
+
 
     </div>
 
+
     {% endif %}
 
-    <div style="text-align: center;">
+    <div style="text-align: center; margin-top: 2rem;">
         <p> <small>-- Link<strong>P</strong> --</small> </p>
 
      </div>

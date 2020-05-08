@@ -711,7 +711,21 @@ def modificaranalisis(request, id_analisis):
 
 def parametros(request):
 
-    datos = Prametros.objects.all()
+    proyectos = Proyectos.objects.all()
+
+    datos = []
+
+    for proyecto in proyectos:
+
+        try:
+
+            parametros = Prametros.objects.get(proyecto = proyecto)
+            porc_terreno = parametros.terreno/proyecto.m2*100
+            porc_link = parametros.link/proyecto.m2*100
+            datos.append((parametros, porc_terreno, porc_link))
+
+        except: 
+            print("No esta cargado el parametro de ese proyecto")
 
     return render(request, 'desde/parametros.html', {'datos': datos})
 
@@ -854,7 +868,7 @@ def desde(request):
                 datos_costo.append("")
                 datos_sugerido.append("")
 
-        #Promedio de venta y canitdad
+        #Promedio de venta y cantidad
 
         ventas_realizadas = []
 
