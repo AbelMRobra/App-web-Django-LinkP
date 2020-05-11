@@ -47,3 +47,18 @@ class VentasRealizadas(models.Model):
     def __str__(self):
         return '{}'.format(self.proyecto)
 
+class EstudioMercado(models.Model):
+    fecha = models.DateField(verbose_name="Fecha del estudio")
+    zona = models.CharField(max_length=100, verbose_name="Zona del estudio")
+    empresa = models.CharField(max_length=100, verbose_name="Empresa")
+    proyecto = models.CharField(max_length=100, verbose_name="Nombre del proyecto")
+    meses = models.IntegerField(verbose_name="Meses a la entrega")
+    precio = models.FloatField(verbose_name="Precio")
+
+    class Meta:
+        verbose_name="Estudio de mercado"
+        verbose_name_plural="Estudios de mercado"
+
+    def __str__(self):
+        return self.empresa
+

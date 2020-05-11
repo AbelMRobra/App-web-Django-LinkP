@@ -7,7 +7,7 @@
 <div class = "jumbotron" style="background-color: white; margin-bottom: 0px;">
     <div style="text-align: center;">
         <h2>Panel de control - Precios</h2>
-        <smal>Trabajo en conjunto </small><small><strong>PRESUPUESTO - DIRECCIÓN - FINANZAS - VENTAS</strong></small>  
+        <small>Trabajo en conjunto: </small><small><strong>PRESUPUESTO - DIRECCIÓN - FINANZAS - VENTAS</strong></small>  
     </div>
 
     <b><hr class = "my-4" style="width: 100%; border-color: black ;"></b>
@@ -274,7 +274,7 @@
         <div style="margin-top: 0.5rem; width: 20%; display: inline-block; margin-left: 2rem;">
             <div style= "text-align: center;">
                 
-                <small><strong>-- M2 Vendidos: 80%--</strong></small>
+                <small><strong>-- M2 Vendidos: {{datos.porc_m2|floatformat:0}}%--</strong></small>
              </div>
     
             <canvas id="myChart3" width="40rem" height="40rem"></canvas>
@@ -284,10 +284,10 @@
             var myChart = new Chart(ctx, {
                 type: 'pie',
                 data: {
-                    labels: ["vendido"],
+                    labels: ["Vendido"],
                     datasets: [{
                         label: 'Total de ventas',
-                        data: [0.3, 0.7],
+                        data: [{{datos.porc_m2|floatformat:0}}, {{datos.porc_no_vendido|floatformat:0}}],
                         backgroundColor: ['rgba(72, 110, 195 , 0.8)', 'rgba(27, 29, 27 , 0.8)'],
                         borderColor: ['rgba(72, 110, 195, 1)', 'rgba(72, 110, 195 , 1)'],
                         borderWidth: 1

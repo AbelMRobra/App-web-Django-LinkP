@@ -811,6 +811,8 @@ def desde(request):
     datos_sugerido = 0
     proyecto = 0
     ventas_realizadas = 0
+    porc_m2 = 0
+    porc_no_vendido = 0
 
     if request.method == 'POST':
 
@@ -906,12 +908,35 @@ def desde(request):
         #Habilito los graficos
         graficos = 1
 
-  
+        # Calcula los m2 vendidos y el perfomance
+      
+        try:
+            ventas = VentasRealizadas.objects.filter(proyecto = proyecto)
+
+            m2_vendidos = 0
+
+            for venta in ventas:
+
+                if venta.asignacion != "LINK":
+
+                    m2_vendidos = m2_vendidos + venta.m2
+
+
+            porc_m2 = m2_vendidos/proyecto.m2*100
+            porc_no_vendido = 100 - porc_m2
+
+        except:
+
+            porc_m2 = 0
+            porc_no_vendido = 100
+        
     datos = {'datos':datos, 'usd_blue':usd_blue, 
     "proyectos":proyectos, "proyecto":proyecto, 
     "graficos":graficos, "pricing":datos_pricing, 
     "costo":datos_costo, "sugerido":datos_sugerido,
-    "ventas":ventas_realizadas}
+    "ventas":ventas_realizadas,
+    "porc_m2":porc_m2,
+    "porc_no_vendido":porc_no_vendido}
 
     return render(request, 'desde/desde.html', {'datos':datos})
 
