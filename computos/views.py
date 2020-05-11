@@ -40,7 +40,7 @@ def resumencomputos(request):
                
                 if i == d.rubro and c == d.tipologia:
                     total_presupuesto = total_presupuesto + d.valor_total
-                    total_obra = float(total_obra) + d.valor_obra
+                    total_obra = float(total_obra) + float(d.valor_obra)
             
             if total_presupuesto != 0:
                 datos.append((i, c , total_presupuesto, total_obra))
