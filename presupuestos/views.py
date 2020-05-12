@@ -1462,7 +1462,13 @@ class ReporteExplosion(TemplateView):
 
         compras = Compras.objects.all()
 
+        comprado_aux = ""
+
+        for dato in datos:
+            comprado_aux = comprado_aux + str(dato[0])
+
         datos_viejos = datos
+        
         datos = []
 
         for i in datos_viejos:
@@ -1476,6 +1482,16 @@ class ReporteExplosion(TemplateView):
             saldo = cantidad_saldo * i[0].valor
             
             datos.append((i[0], i[1], comprado, cantidad_saldo, saldo ))
+
+        #Esta parte ve los articulos que no estan en el presupuesto
+
+        mat_no_presup = []
+
+        for compra in compras:
+            if str(compra.articulo.nombre) not in comprado_aux:
+                mat_no_presup.append((compra.articulo.nombre, compra.articulo.valor, compra.cantidad))
+
+
         cont = 1
         for d in datos:
 
@@ -1548,7 +1564,37 @@ class ReporteExplosion(TemplateView):
                 ws["I"+str(cont)].number_format = '"$"#,##0.00_-'
 
                 cont += 1
+        cont = 1
+        for m in mat_no_presup:
 
+            if cont == 1:
+                ws = wb.create_sheet('Art-no-pre')
+                ws["A"+str(cont)] = "ARTICULO"
+                ws["B"+str(cont)] = "VALOR"
+                ws["C"+str(cont)] = "CANTIDAD"
+
+                ws["A"+str(cont)].alignment = Alignment(horizontal = "center")
+                ws["B"+str(cont)].alignment = Alignment(horizontal = "center")
+                ws["C"+str(cont)].alignment = Alignment(horizontal = "center")
+
+                ws["A"+str(cont)].font = Font(bold = True)
+                ws["B"+str(cont)].font = Font(bold = True)
+                ws["C"+str(cont)].font = Font(bold = True)
+
+                ws.column_dimensions['A'].width = 58.57
+                ws.column_dimensions['B'].width = 13
+                ws.column_dimensions['C'].width = 13
+
+                cont += 1
+
+            else:
+                
+                ws = wb['Art-no-pre']
+                ws["A"+str(cont)] = m[0]
+                ws["B"+str(cont)] = m[1]
+                ws["C"+str(cont)] = m[2]
+
+                cont += 1
 
         #Establecer el nombre del archivo
         nombre_archivo = "Explosion-{0}.xls".format(str(proyecto.nombre))
