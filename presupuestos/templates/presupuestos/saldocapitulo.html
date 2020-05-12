@@ -38,7 +38,7 @@
 
             <tr class = "table-light">
                 <td style="width: 5%;"><b>{{i.0}}</b></td>
-                <td style="width: 25%;"> <b>{{i.1}}</b></td>
+                <td style="width: 25%;"> <b><a href="{% url 'Articulos saldo de presupuesto' id_proyecto=datos.proyecto.id id_capitulo=i.1.id %}" style="color: black;">{{i.1}}</a></b></td>
                 <td style="width: 15%;"> ${{i.2|floatformat:2}} </td>
                 <td style="width: 15%;"> ${{i.3|floatformat:2}} </td>
                 <td style="width: 15%;"> {{i.4|floatformat:2}}% </td>

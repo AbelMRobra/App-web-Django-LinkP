@@ -30,10 +30,12 @@ urlpatterns = [
     url(r'^des_explosion/(?P<id_proyecto>\d+)/$', login_required(ReporteExplosion.as_view()), name = 'Descarga Exp'),
     url(r'^presupuestos_cap/(?P<id_proyecto>\d+)/$', login_required(views.presupuestoscapitulo), name = 'Panel de presupuestos por capitulo'),
     url(r'^presupuestos_cap/(?P<id_proyecto>\d+)/(?P<id_capitulo>\d+)/$', login_required(views.presupuestosanalisis), name = 'Panel de presupuestos por analisis'),
+    url(r'^art_saldo_cap/(?P<id_proyecto>\d+)/(?P<id_capitulo>\d+)/$', login_required(views.SaldoCapArticulos), name = 'Articulos saldo de presupuesto'),
     
     #----------------OTROS URL -----------------------------------------    
     url(r'^datos/$', login_required(views.proyectos), name = 'Datos de proyectos'),
     url(r'^desde/$', login_required(views.desde), name = 'Indicador de precios'),
+    url(r'^informe/$', login_required(views.InformeArea), name = 'Informe de área'),
     url(r'^parametros/$', login_required(views.parametros), name = 'Parametros'),
     
     

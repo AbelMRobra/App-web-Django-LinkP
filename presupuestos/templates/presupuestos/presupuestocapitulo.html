@@ -6,16 +6,18 @@
 
 <div class = "jumbotron" style="background-color: white; margin-bottom: 0px;">
 
-    <h3 style="text-align: center; color: #17B5B5 ;">Presupuesto de {{datos.proyecto}}</h3>
+    <h3 style="text-align: center; color: #17B5B5 ;">Presupuesto de {{datos.proyecto.nombre}}</h3>
     <h6 style="text-align: center; color: #17B5B5 ;"> Desglose por capitulo</h6>
      <b><hr class = "my-4" style="width: 75%; border-color: #17B5B5 ;"></b>
+
+     {% if datos.datos %}
 
      <div style="text-align: center;">
         <a href="{% url 'Explosión de insumos' id_proyecto=datos.proyecto.id %}" class="btn btn-info">Explosión de insumos</a>          
     </div>
  
  <b><hr class = "my-4" style="width: 100%; border-color: #17B5B5 ;"></b>
-    {% if datos %} 
+     
 
     <table class = "table table-hover" style="text-align: center;">
         <thead>
@@ -58,9 +60,20 @@
          </div>
 
      {% else %}
-            <div>
-                <h6>No existe registros actualmente</h6>
-            </div>
+     
+     <div style="text-align: center;">
+        <h6> Este presupuesto aun no esta cargado! </h6>
+        <small> Para mas información consulte a <b>AR</b></small>
+    </div>
+
+    <div style="text-align: center; margin-top: 2%; margin-bottom: 10%;">
+        <img src="{% static 'img/comunicaciones.png' %}" style="width: 10%; height: 10%;">
+    </div>
+
+    <div style="text-align: center;">
+        <p> <small>-- Link<strong>P</strong> --</small> </p>
+
+     </div>
         
     {% endif %}
         

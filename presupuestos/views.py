@@ -16,7 +16,291 @@ from openpyxl import Workbook
 from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
 
 
-# ----------------------------------------------------- VISTAS PARA PANEL PRESUPUESTOS----------------------------------------------
+# Vistas para articulos desde linea 26 a 200
+# Vistas para constantes desde linea 200 a 300
+
+
+
+
+
+
+# --------------------------------> VISTA PARA LISTADO DE ARTICULOS <------------------------------------------------------
+
+
+def insum_list(request):
+
+    datos = Articulos.objects.all()
+
+    #Aqui empieza el filtro
+
+    if request.method == 'POST':
+
+        palabra_buscar = request.POST.items()
+
+        datos_viejos = datos
+
+        datos = []   
+
+        for i in palabra_buscar:
+
+            if i[0] == "palabra":
+        
+                palabra_buscar = i[1]
+
+        if str(palabra_buscar) == "":
+
+            datos = datos_viejos
+
+        else:
+        
+            for i in datos_viejos:
+
+                palabra =(str(palabra_buscar))
+
+                codigo = (str(i.codigo))
+
+                nombre = (str(i.nombre))
+
+                constante = (str(i.constante))
+
+                valor = (str(i.valor))
+
+
+                if palabra.lower() in codigo.lower() or palabra.lower() in nombre.lower() or palabra.lower() in constante.lower() or palabra.lower() in valor.lower():
+
+                    datos.append(i)
+
+
+    #Aqui termina el filtro
+
+    c = {'datos':datos}
+
+    return render(request, 'articulos/insum_list.html', c )
+
+# --------------------------------> VISTA PARA PANEL DE MODIFICIACIÓN DE ARTICULOS <------------------------------------------------------
+
+
+def insum_panel(request):
+
+    art_actuales = Articulos.objects.all()
+
+    myfilter = ArticulosFilter(request.GET, queryset=art_actuales)
+
+    art_actuales = myfilter.qs
+
+    c = {'articulos':art_actuales, 'myfilter':myfilter}
+
+    return render(request, 'articulos/insum_panel.html', c )
+
+# ----------------------------------> VISTAS PARA CREAR ARTICULOS <----------------------------------------------
+    
+def insum_create(request):
+
+    #Si el metodo es POST activa la funciones para guardar los datos del formulario
+
+    mensaje = ""
+
+    if request.method == 'POST':
+
+        try:
+
+            #Aqui guardo los datos para ingresar el formulario
+
+            form = ArticulosForm(request.POST)
+
+            #Aqui guardo los datos de los inputs
+
+            datos = request.POST.items()
+
+            for key, value in datos:
+
+                if key == 'codigo':
+
+                    #Aqui solamente me quedo con el codigo
+                    codigo = (value)
+
+                if key == 'constante':
+
+                    #Aqui solamente me quedo con el codigo
+                    constante = (value)
+
+                if key == 'valor':
+
+                    #Aqui solamente me quedo con el codigo
+                    valor = (value)
+
+            #Aqui pruebo si el formulario es correcto
+
+            if form.is_valid():
+                
+                form.save()
+            
+            #Me conecto a la base de datos y traigo el valor de la constante
+
+            objetos_constante = Constantes.objects.all()
+
+            for i in objetos_constante:
+
+                if float(i.id) == float(constante):
+
+                    valor_constante = float(i.valor)
+
+                    #Opero para sacar el valor auxiliar 
+
+                    valor_aux = (float(valor)/valor_constante)
+
+                    objetos_insumos = Articulos.objects.all()
+
+                    for i in objetos_insumos:
+
+                        if int(i.codigo) == int(codigo):
+
+                            i.valor_aux = valor_aux
+
+                            i.save()
+
+                            return redirect('Panel de cambios')
+        except:
+
+             mensaje = "Hay un error al cargar, cuidado con los puntos y comas"   
+    else:
+        form = ArticulosForm()
+
+    f = {'form':form, 'mensaje':mensaje}
+
+    return render(request, 'articulos/insum_create.html', f )
+
+# --------------------------------> VISTA PARA EDITAR ARTICULOS <------------------------------------------------------
+
+def insum_edit(request, id_articulos):
+
+    art = Articulos.objects.get(codigo=id_articulos)
+
+    if request.method == 'GET':
+        form = ArticulosForm(instance = art)
+    else:
+        form = ArticulosForm(request.POST, instance = art)
+        if form.is_valid():
+            form.save()
+        return redirect('Panel de cambios')
+
+    return render(request, 'articulos/insum_create.html', {'form':form})
+
+# --------------------------------> VISTA PARA CONFIRMAR SI SE ELIMINA UN ARTICULO <------------------------------------------------------
+
+def insum_delete(request, id_articulos):
+
+    art = Articulos.objects.get(codigo=id_articulos)
+
+    if request.method == 'POST':
+        art.delete()
+        return redirect('Panel de cambios')
+
+    return render(request, 'articulos/insum_delete.html', {'art':art})
+
+# ----------------------------------------------------- VISTAS PARA CONSTANTES ----------------------------------------------
+
+# VISTA --> Crear constante
+
+def cons_create(request):
+
+    if request.method == 'POST':
+        form = ConsForm(request.POST)
+        if form.is_valid():
+            form.save()
+        return redirect('Cons_panel')
+        
+    else:
+        form = ConsForm()
+
+    f = {'form':form}
+    return render(request, 'constantes/cons_create.html', f )
+
+# ----------------------------------------------------- VISTAS PARA PANEL DE CAMBIOS CONSTANTES ----------------------------------------------
+
+def cons_list(request):
+
+    cons_actuales = Constantes.objects.all()
+
+    c = {'constantes':cons_actuales}
+
+    return render(request, 'constantes/cons_list.html', c )
+
+def cons_panel(request):
+
+    cons_actuales = Constantes.objects.all()
+
+    c = {'constantes':cons_actuales}
+
+    return render(request, 'constantes/cons_panel.html', c )
+
+# --------------------------------> VISTA PARA EDITAR CONSTANTES <------------------------------------------------------
+
+def cons_edit(request, id_cons):
+
+    cons = Constantes.objects.get(id=id_cons)
+
+    if request.method == 'GET':
+        form = ConsForm(instance = cons)
+    else:
+        form = ConsForm(request.POST, instance = cons)
+        
+        if form.is_valid():
+
+            # Rescato el nombre y el valor nuevo de la constante
+
+            datos = request.POST.items() 
+
+            for key, value in datos:
+
+                if key == 'nombre':
+
+                    nombre = (value)
+                    
+                if key == 'valor':
+
+                    cons_valor_nuevo = (value)
+
+            datos_constante = Constantes.objects.all()
+
+            for i in datos_constante:
+                if str(i.nombre) == str(nombre):
+                    
+                    cons_nombre = i.nombre
+
+                    cons_valor = i.valor
+
+                    form.save()
+
+            datos_insumos = Articulos.objects.all()
+
+            for i in datos_insumos:
+
+                if str(i.constante) == str(cons_nombre):
+                    valor_actual = i.valor
+
+                    valor_nuevo = valor_actual*(float(cons_valor_nuevo)/cons_valor) 
+
+                    i.valor = valor_nuevo
+
+                    i.save()
+
+        return redirect('Cons_panel')
+    
+    return render(request, 'constantes/cons_create.html', {'form':form})
+
+# --------------------------------> VISTA PARA ELIMINAR CONSTANTE <------------------------------------------------------
+
+def cons_delete(request, id_cons):
+
+    cons = Constantes.objects.get(id=id_cons)
+
+    if request.method == 'POST':
+        cons.delete()
+        return redirect('Cons_panel')
+    return render(request, 'constantes/cons_delete.html', {'cons':cons})
+
+# ---------------------------------> VISTAS PARA PANEL PRESUPUESTOS <----------------------------------------------
 
 def presupuestostotal(request):
     
@@ -58,7 +342,8 @@ def presupuestostotal(request):
     return render(request, 'presupuestos/principalpresupuesto.html', {"datos":datos})
 
 
-# ----------------------------------------------------- VISTAS PARA PANEL PRESUPUESTOS - SALDO CAPITULO ----------------------------------------------
+# ---------------------------------> VISTAS PARA PANEL PRESUPUESTOS - SALDO CAPITULO ----------------------------------------------
+
 def saldocapitulo(request, id_proyecto):
 
     #Armamos los datos para ver el presupuesto por capitulo
@@ -82,7 +367,7 @@ def saldocapitulo(request, id_proyecto):
 
     #Armamos el saldo de cada capitulo
 
-    saldo = Saldoporcapitulo(1)
+    saldo = Saldoporcapitulo(id_proyecto)
 
     datos_viejos = saldo
 
@@ -263,7 +548,7 @@ def presupuestosanalisis(request, id_proyecto, id_capitulo):
     capitulo = Capitulos.objects.get(id = id_capitulo)
     compo = CompoAnalisis.objects.all()
     computo = Computos.objects.all()
-    modelo = Modelopresupuesto.objects.all()
+    modelo = Modelopresupuesto.objects.filter(proyecto = proyecto)
 
     crudo = []
 
@@ -342,92 +627,148 @@ def presupuestosanalisis(request, id_proyecto, id_capitulo):
 
     return render(request, 'presupuestos/presupuestoanalisis.html', {"datos":datos})
 
+# ----------------------------------------------------- VISTAS PARA ARTICULOS SALDO - CAPITULO ----------------------------------------------
+
+def SaldoCapArticulos(request, id_proyecto, id_capitulo):
+
+    #Armamos el saldo de cada capitulo
+
+    saldo = Saldoporcapitulo(id_proyecto)
+
+    datos_viejos = saldo
+
+    datos_saldo = []
+    capitulo = []
+
+    for componentes in datos_viejos:
+        if int(componentes[1].id) == int(id_capitulo):
+            
+            datos_saldo.append(componentes[2])
+            capitulo.append(componentes[1])
+
+    saldo_cap = 0
+
+    datos_viejos = datos_saldo
+    datos_saldo = []
+    
+
+    for dato in datos_viejos[0]:
+        saldo_cap = saldo_cap + dato[0].valor*dato[1]
+        datos_saldo.append((dato, float(dato[0].valor*dato[1])))
+
+    datos_viejos = datos_saldo
+    datos_saldo = []
+
+    for dato in datos_viejos:
+        inc = float(dato[1])/float(saldo_cap)*100
+        datos_saldo.append((dato, inc))
+
+
+    if len(datos_saldo) == 0:
+        datos_saldo = 0
+
+    proyecto = Proyectos.objects.get(id = id_proyecto)
+
+    datos = {"proyecto":proyecto,
+     "datos_saldo":datos_saldo, "capitulo":capitulo,
+     "saldo":saldo_cap}
+
+    return render(request, 'presupuestos/saldoartcapitulo.html', {"datos":datos})
+
 
 # ----------------------------------------------------- VISTAS PARA PANEL PRESUPUESTOS - CAPITULO ----------------------------------------------
+
 def presupuestoscapitulo(request, id_proyecto):
+
     proyecto = Proyectos.objects.get(id = id_proyecto)
     capitulo = Capitulos.objects.all()
     compo = CompoAnalisis.objects.all()
     computo = Computos.objects.all()
-    modelo = Modelopresupuesto.objects.all()
+    modelo = Modelopresupuesto.objects.filter(proyecto = proyecto)
 
-    crudo = []
-
-    valor_proyecto = 0
-
-    for c in capitulo:
-
-        valor_capitulo = 0
-
-        for d in modelo:
-
-            if d.capitulo == c and d.proyecto == proyecto:
-
-                if d.cantidad == None:
-
-                    if "SOLO MANO DE OBRA" in str(d.analisis):
-
-                        valor_analisis = 0
-
-                        for e in compo:
-
-                            if e.analisis == d.analisis:
-
-                                valor_analisis = valor_analisis + e.articulo.valor*e.cantidad/1000000
-
-                        cantidad = 0
-
-                        for h in computo:
-                            if h.proyecto == proyecto and h.tipologia == d.vinculacion:
-                                cantidad = cantidad + h.valor_vacio   
-
-                        valor_capitulo = valor_capitulo + valor_analisis*cantidad
-
-                    else:
-                        valor_analisis = 0
-
-                        for e in compo:
-
-                            if e.analisis == d.analisis:
-
-                                valor_analisis = valor_analisis + e.articulo.valor*e.cantidad/1000000
-
-                        cantidad = 0
-
-                        for h in computo:
-                            if h.proyecto == proyecto and h.tipologia == d.vinculacion:
-                                cantidad = cantidad + h.valor_lleno  
-
-                        valor_capitulo = valor_capitulo + valor_analisis*cantidad
+    if len(modelo) == 0:
+        datos = 0
     
-                else:
+    else:
 
-                    valor_analisis = 0
+        crudo = []
 
-                    for e in compo:
+        valor_proyecto = 0
 
-                        if e.analisis == d.analisis:
+        for c in capitulo:
 
-                            valor_analisis = valor_analisis + e.articulo.valor*e.cantidad/1000000
+            valor_capitulo = 0
 
-                    valor_capitulo = valor_capitulo + valor_analisis*float(d.cantidad)
+            for d in modelo:
 
-        valor_proyecto = valor_proyecto + valor_capitulo
+                if d.capitulo == c and d.proyecto == proyecto:
+
+                    if d.cantidad == None:
+
+                        if "SOLO MANO DE OBRA" in str(d.analisis):
+
+                            valor_analisis = 0
+
+                            for e in compo:
+
+                                if e.analisis == d.analisis:
+
+                                    valor_analisis = valor_analisis + e.articulo.valor*e.cantidad/1000000
+
+                            cantidad = 0
+
+                            for h in computo:
+                                if h.proyecto == proyecto and h.tipologia == d.vinculacion:
+                                    cantidad = cantidad + h.valor_vacio   
+
+                            valor_capitulo = valor_capitulo + valor_analisis*cantidad
+
+                        else:
+                            valor_analisis = 0
+
+                            for e in compo:
+
+                                if e.analisis == d.analisis:
+
+                                    valor_analisis = valor_analisis + e.articulo.valor*e.cantidad/1000000
+
+                            cantidad = 0
+
+                            for h in computo:
+                                if h.proyecto == proyecto and h.tipologia == d.vinculacion:
+                                    cantidad = cantidad + h.valor_lleno  
+
+                            valor_capitulo = valor_capitulo + valor_analisis*cantidad
         
-        crudo.append((c, valor_capitulo, 0.0))
+                    else:
 
-    datos =[]
+                        valor_analisis = 0
 
-    for i in crudo:
-        i = list(i)
-        i[2] = i[1]/valor_proyecto*100
-        i = tuple(i)
-        datos.append(i)
+                        for e in compo:
 
-    valor_proyecto_completo = valor_proyecto*1000000
+                            if e.analisis == d.analisis:
 
-    datos = {"datos":datos, "proyecto":proyecto, "valor_proyecto":valor_proyecto,"valor_proyecto_completo":valor_proyecto_completo}
+                                valor_analisis = valor_analisis + e.articulo.valor*e.cantidad/1000000
 
+                        valor_capitulo = valor_capitulo + valor_analisis*float(d.cantidad)
+
+            valor_proyecto = valor_proyecto + valor_capitulo
+            
+            crudo.append((c, valor_capitulo, 0.0))
+
+        datos =[]
+
+        for i in crudo:
+            i = list(i)
+            i[2] = i[1]/valor_proyecto*100
+            i = tuple(i)
+            datos.append(i)
+
+        valor_proyecto_completo = valor_proyecto*1000000
+
+        datos = {"datos":datos, "proyecto":proyecto, "valor_proyecto":valor_proyecto,"valor_proyecto_completo":valor_proyecto_completo}
+
+    datos = {"datos":datos, "proyecto":proyecto}
     return render(request, 'presupuestos/presupuestocapitulo.html', {"datos":datos})
 
 # ----------------------------------------------------- VISTAS PARA VER ANALISIS----------------------------------------------
@@ -952,278 +1293,12 @@ def proyectos(request):
     return render(request, 'datos/projects.html', {'datos':datos})
 
 
-# ----------------------------------------------------- VISTAS PARA CONSTANTES ----------------------------------------------
 
-# VISTA --> Crear constante
+# --------------------------------> VISTA PARA INFORME PRESUPUESTO <------------------------------------------------------
 
-def cons_create(request):
+def InformeArea(request):
 
-    if request.method == 'POST':
-        form = ConsForm(request.POST)
-        if form.is_valid():
-            form.save()
-        return redirect('Cons_panel')
-        
-    else:
-        form = ConsForm()
-
-    f = {'form':form}
-    return render(request, 'constantes/cons_create.html', f )
-
-# ----------------------------------------------------- VISTAS PARA PANEL DE CAMBIOS CONSTANTES ----------------------------------------------
-
-def cons_list(request):
-
-    cons_actuales = Constantes.objects.all()
-
-    c = {'constantes':cons_actuales}
-
-    return render(request, 'constantes/cons_list.html', c )
-
-def cons_panel(request):
-
-    cons_actuales = Constantes.objects.all()
-
-    c = {'constantes':cons_actuales}
-
-    return render(request, 'constantes/cons_panel.html', c )
-
-# VISTA --> Editar constantes
-
-def cons_edit(request, id_cons):
-
-    cons = Constantes.objects.get(id=id_cons)
-
-    if request.method == 'GET':
-        form = ConsForm(instance = cons)
-    else:
-        form = ConsForm(request.POST, instance = cons)
-        
-        if form.is_valid():
-
-            # Rescato el nombre y el valor nuevo de la constante
-
-            datos = request.POST.items() 
-
-            for key, value in datos:
-
-                if key == 'nombre':
-
-                    nombre = (value)
-                    
-                if key == 'valor':
-
-                    cons_valor_nuevo = (value)
-
-            datos_constante = Constantes.objects.all()
-
-            for i in datos_constante:
-                if str(i.nombre) == str(nombre):
-                    
-                    cons_nombre = i.nombre
-
-                    cons_valor = i.valor
-
-                    form.save()
-
-            datos_insumos = Articulos.objects.all()
-
-            for i in datos_insumos:
-
-                if str(i.constante) == str(cons_nombre):
-                    valor_actual = i.valor
-
-                    valor_nuevo = valor_actual*(float(cons_valor_nuevo)/cons_valor) 
-
-                    i.valor = valor_nuevo
-
-                    i.save()
-
-        return redirect('Cons_panel')
-    
-    return render(request, 'constantes/cons_create.html', {'form':form})
-
-# VISTA --> Eliminar constantes
-
-def cons_delete(request, id_cons):
-
-    cons = Constantes.objects.get(id=id_cons)
-
-    if request.method == 'POST':
-        cons.delete()
-        return redirect('Cons_panel')
-    return render(request, 'constantes/cons_delete.html', {'cons':cons})
-
-# ----------------------------------------------------- VISTAS PARA ARTICULOS ----------------------------------------------
-    
-def insum_create(request):
-
-    #Si el metodo es POST activa la funciones para guardar los datos del formulario
-
-    mensaje = ""
-
-    if request.method == 'POST':
-
-        try:
-
-            #Aqui guardo los datos para ingresar el formulario
-
-            form = ArticulosForm(request.POST)
-
-            #Aqui guardo los datos de los inputs
-
-            datos = request.POST.items()
-
-            for key, value in datos:
-
-                if key == 'codigo':
-
-                    #Aqui solamente me quedo con el codigo
-                    codigo = (value)
-
-                if key == 'constante':
-
-                    #Aqui solamente me quedo con el codigo
-                    constante = (value)
-
-                if key == 'valor':
-
-                    #Aqui solamente me quedo con el codigo
-                    valor = (value)
-
-            #Aqui pruebo si el formulario es correcto
-
-            if form.is_valid():
-                
-                form.save()
-            
-            #Me conecto a la base de datos y traigo el valor de la constante
-
-            objetos_constante = Constantes.objects.all()
-
-            for i in objetos_constante:
-
-                if float(i.id) == float(constante):
-
-                    valor_constante = float(i.valor)
-
-                    #Opero para sacar el valor auxiliar 
-
-                    valor_aux = (float(valor)/valor_constante)
-
-                    objetos_insumos = Articulos.objects.all()
-
-                    for i in objetos_insumos:
-
-                        if int(i.codigo) == int(codigo):
-
-                            i.valor_aux = valor_aux
-
-                            i.save()
-
-                            return redirect('Panel de cambios')
-        except:
-
-             mensaje = "Hay un error al cargar, cuidado con los puntos y comas"   
-    else:
-        form = ArticulosForm()
-
-    f = {'form':form, 'mensaje':mensaje}
-
-    return render(request, 'articulos/insum_create.html', f )
-
-# VISTA --> LISTADO DE ARTICULOS/ PANEL DE CAMBIOS
-
-def insum_panel(request):
-
-    art_actuales = Articulos.objects.all()
-
-    myfilter = ArticulosFilter(request.GET, queryset=art_actuales)
-
-    art_actuales = myfilter.qs
-
-    c = {'articulos':art_actuales, 'myfilter':myfilter}
-
-    return render(request, 'articulos/insum_panel.html', c )
-
-def insum_list(request):
-
-    datos = Articulos.objects.all()
-
-    #Aqui empieza el filtro
-
-    if request.method == 'POST':
-
-        palabra_buscar = request.POST.items()
-
-        datos_viejos = datos
-
-        datos = []   
-
-        for i in palabra_buscar:
-
-            if i[0] == "palabra":
-        
-                palabra_buscar = i[1]
-
-        if str(palabra_buscar) == "":
-
-            datos = datos_viejos
-
-        else:
-        
-            for i in datos_viejos:
-
-                palabra =(str(palabra_buscar))
-
-                codigo = (str(i.codigo))
-
-                nombre = (str(i.nombre))
-
-                constante = (str(i.constante))
-
-                valor = (str(i.valor))
-
-
-                if palabra.lower() in codigo.lower() or palabra.lower() in nombre.lower() or palabra.lower() in constante.lower() or palabra.lower() in valor.lower():
-
-                    datos.append(i)
-
-
-    #Aqui termina el filtro
-
-    c = {'datos':datos}
-
-    return render(request, 'articulos/insum_list.html', c )
-
-# --------------------------------> VISTA PARA EDITIAR ARTICULOS <------------------------------------------------------
-
-def insum_edit(request, id_articulos):
-
-    art = Articulos.objects.get(codigo=id_articulos)
-
-    if request.method == 'GET':
-        form = ArticulosForm(instance = art)
-    else:
-        form = ArticulosForm(request.POST, instance = art)
-        if form.is_valid():
-            form.save()
-        return redirect('Panel de cambios')
-
-    return render(request, 'articulos/insum_create.html', {'form':form})
-
-# --------------------------------> VISTA PARA CONFIRMAR SI ELIMINA ARTICULOS <------------------------------------------------------
-
-def insum_delete(request, id_articulos):
-
-    art = Articulos.objects.get(codigo=id_articulos)
-
-    if request.method == 'POST':
-        art.delete()
-        return redirect('Panel de cambios')
-
-    return render(request, 'articulos/insum_delete.html', {'art':art})
-
+    return render(request, 'presupuestos/informearea.html')
 
 # --------------------------------> FUNCIONES Y CLASES USADAS EN LAS VISTAS <------------------------------------------------------
 

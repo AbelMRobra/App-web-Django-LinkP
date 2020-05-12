@@ -1,0 +1,81 @@
+{% extends "users/inicio.html" %}
+
+{% load static %}
+
+{% block content %}
+
+<div class = "jumbotron" style="background-color: white; margin-bottom: 0px;">
+
+    <h3 style="text-align: center; color: #17B5B5 ;">Articulos pendientes del capitulo {{datos.capitulo.0.nombre}}</h3>
+    <h6 style="text-align: center; color: #17B5B5 ;"> Proyecto {{datos.proyecto.nombre}}</h6>
+     <b><hr class = "my-4" style="width: 75%; border-color: #17B5B5 ;"></b>
+
+    {% if datos.datos_saldo %}
+ 
+ <b><hr class = "my-4" style="width: 100%; border-color: #17B5B5 ;"></b>
+
+    <table class = "table table-hover" style="text-align: center;">
+        <thead>
+
+            <tr class = "table-info">
+                <th scope = "row">ARTICULO</th>
+                <th scope = "row">VALOR</th>
+                <th scope = "row">CANTIDAD</th>
+                <th scope = "row">SALDO</th>
+                <th scope = "row">INC</th>                
+            </tr>
+        </thead>
+
+        <tbody>
+
+            
+
+
+        {% for i in datos.datos_saldo %}
+
+            <tr class = "table-light">
+                <td style="width: 40%;"><b>{{i.0.0.0.nombre}} ({{i.0.0.0.unidad}})</b></td>
+                <td style="width: 15%;">${{i.0.0.0.valor|floatformat:2}}</td>
+                <td style="width: 15%;">{{i.0.0.1|floatformat:2}}</td>
+                <td style="width: 20%;"> ${{i.0.1|floatformat:2}} </td>
+                <td style="width: 10%;"> <b>{{i.1|floatformat:2}}% </b> </td>                         
+            </tr>
+
+        {% endfor %}
+        </tbody>
+
+
+        </table>
+
+        <div style="text-align: center;">
+            <h6>El saldo del capitulo es ${{datos.saldo|floatformat:2}}</h6>
+        </div>
+
+        <div style="text-align: center;">
+            <p> <small>-- Link<strong>P</strong> --</small> </p>
+    
+         </div>
+
+    {% else %}
+
+    <div style="text-align: center;">
+        <h6> No existen articulos pendientes en este capitulo! </h6>
+        <small> Si esto es un error o es necesario hacer modificaciones, envie un mail a <b>lg@linkinversiones.com.ar</b></small>
+    </div>
+
+    <div style="text-align: center; margin-top: 2%; margin-bottom: 10%;">
+        <img src="{% static 'img/comunicaciones.png' %}" style="width: 10%; height: 10%;">
+    </div>
+
+    <div style="text-align: center;">
+        <p> <small>-- Link<strong>P</strong> --</small> </p>
+
+     </div>
+
+    {% endif %}
+   
+                    
+</div>
+ 
+    
+{% endblock %}

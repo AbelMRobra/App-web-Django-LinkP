@@ -36,14 +36,20 @@
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
             <a class="dropdown-item" href="/presupuestos/cons_list">Constantes</a>
             <a class="dropdown-item" href="/presupuestos/insum_list">Articulos</a>
-            <a class="dropdown-item" href="/presupuestos/analisis_list">APU</a>
+            <a class="dropdown-item" href="/presupuestos/analisis_list">Biblioteca - APU</a>
             <a class="dropdown-item" href="/computos/lista">Computos</a>
             <a class="dropdown-item" href="/presupuestos/presupuestos">Presupuestos</a>
             <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="/presupuestos/datos">Datos de proyectos</a>
+            <!-- <a class="dropdown-item" href="/presupuestos/datos">Datos de proyectos</a> -->
             {% if perms.ventas.view_ventasrealizadas %}
 
             <a class="dropdown-item" href="/presupuestos/desde">Indicador de precios</a>
+
+            {% endif %}
+
+            {% if perms.presupuestos.view_modelopresupuesto %}
+
+            <a class="dropdown-item" href="/presupuestos/informe">Informe del área</a>
 
             {% endif %}
 

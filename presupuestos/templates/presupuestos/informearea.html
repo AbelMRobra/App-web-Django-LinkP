@@ -1,0 +1,157 @@
+{% extends "users/inicio.html" %}
+
+{% load static %}
+
+{% block content %}
+
+
+
+<div class = "jumbotron" style="background-color: white; margin-bottom: 0px;" > 
+
+    <div style="text-align: center;">
+        <h2>Panel de control - Área de presupuestos</h2>
+
+        <small>Responsable del panel: </small><small><strong>AR</strong></small>
+
+
+        <b><hr class = "my-4" style="width: 100%; border-color: black ;"></b>
+    
+    </div>
+
+    <div style="margin-bottom: 2rem;">
+
+        <h3>Información general</h3>
+
+    </div>
+
+    <div style="display: inline-block; width: 50%; vertical-align: top;">
+             
+        <h6>Valor estimado del stock en proveedores: <small>${{ datos.stock_valorizado|floatformat:2 }} <strong>({{ datos.stock_valorizado_m|floatformat:2 }} millones)</strong></small></h6>
+        <h6 style="margin-top: 1rem;">Valor en dolares: <small>USD {{ datos.stock_valorizado_usd|floatformat:2 }} <strong>(USD {{ datos.stock_valorizado_usd_m|floatformat:2 }} millones)</strong></small></h6>          
+        <h6 style="margin-top: 1rem;">Cantidad de compras cargadas: <small>{{ datos.lista_compras}}</small> </h6>
+        <h6 style="margin-top: 1rem;">Valor nominal de las compras cargadas: <small>${{ datos.compras_nominal|floatformat:2}} Millones</small> </h6>
+        <h6 style="margin-top: 1rem;">Valor actualizado de las compras cargadas: <small>${{ datos.compras_actualizado|floatformat:2}} Millones</small> </h6>
+        <p style="color: darkgreen; margin-top: 1rem;"> <small>*Se toma la cotización del dolar del Banco Nación {{ datos.constantes.valor}}</small> </p>
+    </div>
+    
+    <div style="display: inline-block; width: 40%;">
+
+        <canvas id="myChart"></canvas>
+
+    </div>
+       
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    <script>
+
+        var ctx = document.getElementById('myChart').getContext('2d');
+        var chart = new Chart(ctx, {
+            // The type of chart we want to create
+            type: 'polarArea',
+            // The data for our dataset
+            data: {
+            datasets: [{        
+                data: [{{datos.stock_pesos|floatformat:0}}, {{datos.stock_usd|floatformat:0}}, {{datos.stock_horm|floatformat:0}}],
+                backgroundColor: ['rgba(76, 119, 218, 0.5)', 'rgba(98, 227, 72, 0.5)', 'rgba(152, 165, 194, 0.5)' ],    
+            }],
+
+            labels: ['Pesos', 'Dolar', 'Hormigon']}
+        });
+
+    </script>
+
+    <b><hr class = "my-4" style="width: 100%; border-color: black ;"></b>
+
+    <div>
+
+        <div style="margin-bottom: 2rem;">
+            <h3>Proveedores con mayor valores del stock</h3>
+        </div>
+        <table class = "table table-hover" style="text-align: center;">
+            <thead>
+    
+                <tr class = "table-dark">
+                    <th scope = "row"> <font style = "vertical-align: heredar;"> PROVEEDOR</font></th>
+                    <th scope = "row"> <font style = "vertical-align: heredar;"> VALOR DEL STOCK </font></th>
+                   
+                </tr>
+            </thead>
+            {% for i in datos.listas|slice:"5" %}   
+            <tbody>
+    
+                <tr class = "table-light">
+                    <td style="width: 50%;"> <b>{{ i.0 }}</b> </td>
+                    <td style="width: 50%;"> {{ i.1|floatformat:2 }} Millones </td>                
+                </tr>
+            </tbody>
+
+            {% endfor %}
+        </table> 
+        <b><hr class = "my-4" style="width: 100%; border-color: black ;"></b>   
+    </div>
+
+    <div>
+
+        <div style="margin-bottom: 2rem;">
+            <h3>Articulos de mayor valor en stock</h3>
+        </div>
+        <table class = "table table-hover" style="text-align: center;">
+            <thead>
+    
+                <tr class = "table-dark">
+                    <th scope = "row"> ARTICULO </th>
+                    <th scope = "row"> VALOR TOTAL  </th>
+                   
+                </tr>
+            </thead>
+            {% for i in datos.listas_art|slice:"5" %}   
+            <tbody>
+    
+                <tr class = "table-light">
+                    <td style="width: 50%;"> <b>{{ i.0 }}</b> </td>
+                    <td style="width: 50%;"> {{ i.1|floatformat:2 }} Millones </td>                
+                </tr>
+            </tbody>
+
+            {% endfor %}
+        </table> 
+        <b><hr class = "my-4" style="width: 100%; border-color: black ;"></b>   
+    </div>
+
+    
+
+    <div>
+
+        <div style="margin-bottom: 2rem;">
+            <h3>Valor del stock por proyecto</h3>
+        </div>
+        <table class = "table table-hover" style="text-align: center;">
+            <thead>
+    
+                <tr class = "table-dark">
+                    <th scope = "row"> <font style = "vertical-align: heredar;"> PROYECTO</font></th>
+                    <th scope = "row"> <font style = "vertical-align: heredar;"> VALOR DE SU STOCK</font></th>
+                   
+                </tr>
+            </thead>
+            {% for i in datos.listas_pro %}   
+            <tbody>
+    
+                <tr class = "table-light">
+                    <td style="width: 50%;"> <b>{{ i.0 }}</b> </td>
+                    <td style="width: 50%;"> {{ i.1|floatformat:2 }} Millones </td>                
+                </tr>
+            </tbody>
+
+            {% endfor %}
+        </table> 
+        <b><hr class = "my-4" style="width: 100%; border-color: black ;"></b>   
+    </div>
+
+    <div style="text-align: center;">
+        <p> <small>-- Link<strong>P</strong> --</small> </p>
+
+     </div>
+
+
+</div>
+{% endblock %}
