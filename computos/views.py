@@ -23,6 +23,7 @@ def listacomputos(request):
 #----------------------------------------------- VISTA PARA EL RESUMEN DE COMPUTOS -----------------------------------------------------------
 
 def resumencomputos(request):
+    
     rubros = ListaRubros.objects.all()
     tipologia = Tipologias.objects.all()
     computo = Computos.objects.all()

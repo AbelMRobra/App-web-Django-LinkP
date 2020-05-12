@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
+from django.views.generic.base import TemplateView  
 from .filters import ArticulosFilter
 from .form import ConsForm, ArticulosForm
 from proyectos.models import Proyectos
@@ -11,6 +12,8 @@ from .models import Articulos, Constantes, DatosProyectos, Prametros, Desde, Ana
 import sqlite3
 import numpy as np
 from datetime import date
+from openpyxl import Workbook
+from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
 
 
 # ----------------------------------------------------- VISTAS PARA PANEL PRESUPUESTOS----------------------------------------------
@@ -1222,7 +1225,7 @@ def insum_delete(request, id_articulos):
     return render(request, 'articulos/insum_delete.html', {'art':art})
 
 
-# --------------------------------> FUNCIONES USADAS EN LA VISTA <------------------------------------------------------
+# --------------------------------> FUNCIONES Y CLASES USADAS EN LAS VISTAS <------------------------------------------------------
 
 def PresupuestoPorCapitulo(id_proyecto):
 
@@ -1384,6 +1387,132 @@ def Saldoporcapitulo(id_proyecto):
 
 
     return saldo_capitulo
+
+class ReporteExplosion(TemplateView):
+    def get(self, request, id_proyecto, *args, **kwargs):
+        wb = Workbook()
+
+        proyecto = Proyectos.objects.get(id = id_proyecto)
+        modelo = Modelopresupuesto.objects.all()
+
+        #Version 2 de explosión
+        
+        crudo_analisis = []
+
+        for i in modelo:
+
+            if i.cantidad != None:
+
+                crudo_analisis.append((i.analisis, i.cantidad))
+
+            else:
+
+                if "SOLO MANO DE OBRA" in str(i.analisis.nombre):
+
+                    computos = Computos.objects.filter(tipologia = i.vinculacion)
+
+                    cantidad = 0
+
+                    for r in computos:
+                        cantidad = cantidad + r.valor_vacio
+
+                    crudo_analisis.append((i.analisis, cantidad))
+
+                else:
+
+                    computos = Computos.objects.filter(tipologia = i.vinculacion)
+
+                    cantidad = 0
+
+                    for r in computos:
+                        cantidad = cantidad + r.valor_lleno
+
+                    crudo_analisis.append((i.analisis, cantidad))
+
+        crudo_articulos = []
+
+
+        for c in crudo_analisis:
+
+            analisis = CompoAnalisis.objects.filter(analisis = c[0])
+
+            for d in analisis:
+
+                cantidad = d.cantidad*c[1]
+
+                crudo_articulos.append((d.articulo, cantidad))
+
+        datos = []
+
+        for t in crudo_articulos:
+            datos.append(t[0])
+
+        datos = list(set(datos))
+
+        datos_viejos = datos
+        datos = []
+
+        for i in datos_viejos:
+            cantidad = 0
+            for c in crudo_articulos:
+                if i == c[0]:
+                    cantidad = cantidad + c[1]
+            datos.append((i, cantidad))
+
+
+        compras = Compras.objects.all()
+
+        datos_viejos = datos
+        datos = []
+
+        for i in datos_viejos:
+            comprado = 0
+            for c in compras:
+                if c.proyecto == proyecto and c.articulo == i[0]:
+                    comprado = comprado + c.cantidad
+            
+            cantidad_saldo = i[1] - comprado
+
+            saldo = cantidad_saldo * i[0].valor
+            
+            datos.append((i[0], i[1], comprado, cantidad_saldo, saldo ))
+        cont = 1
+        for d in datos:
+
+            if cont == 1:
+                ws = wb.active
+                ws["A"+str(cont)] = "CODIGO"
+                ws["B"+str(cont)] = "ARTICULO"
+                ws["C"+str(cont)] = "UNIDAD"
+                ws["D"+str(cont)] = "VALOR"
+                ws["E"+str(cont)] = "CANT. PRESPUESTO"
+                ws["F"+str(cont)] = "COMPRADO"
+                ws["G"+str(cont)] = "PENDIENTE"
+                ws["H"+str(cont)] = "SALDO PENDIENTE"
+                cont += 1
+
+            else: 
+                ws = wb.active
+                ws["A"+str(cont)] = d[0].codigo
+                ws["B"+str(cont)] = d[0].nombre
+                ws["C"+str(cont)] = d[0].unidad
+                ws["D"+str(cont)] = d[0].valor
+                ws["E"+str(cont)] = d[1]
+                ws["F"+str(cont)] = d[2]
+                ws["G"+str(cont)] = d[3]
+                ws["H"+str(cont)] = d[4]
+
+                cont += 1
+
+
+        #Establecer el nombre del archivo
+        nombre_archivo = "Explosion.xls"
+        #Definir tipo de respuesta que se va a dar
+        response = HttpResponse(content_type = "application/ms-excel")
+        contenido = "attachment; filename = {0}".format(nombre_archivo)
+        response["Content-Disposition"] = contenido
+        wb.save(response)
+        return response
 
     
 
