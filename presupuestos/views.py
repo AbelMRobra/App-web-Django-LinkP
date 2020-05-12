@@ -1488,7 +1488,7 @@ class ReporteExplosion(TemplateView):
         mat_no_presup = []
 
         for compra in compras:
-            if str(compra.articulo.nombre) not in comprado_aux:
+            if str(compra.articulo.nombre) not in comprado_aux and compra.proyecto == proyecto:
                 mat_no_presup.append((compra.articulo.nombre, compra.articulo.valor, compra.cantidad))
 
 
