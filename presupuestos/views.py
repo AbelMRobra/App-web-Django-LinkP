@@ -1481,6 +1481,7 @@ class ReporteExplosion(TemplateView):
 
             if cont == 1:
                 ws = wb.active
+                ws.title = "Explosion"
                 ws["A"+str(cont)] = "CODIGO"
                 ws["B"+str(cont)] = "ARTICULO"
                 ws["C"+str(cont)] = "UNIDAD"
@@ -1489,6 +1490,34 @@ class ReporteExplosion(TemplateView):
                 ws["F"+str(cont)] = "COMPRADO"
                 ws["G"+str(cont)] = "PENDIENTE"
                 ws["H"+str(cont)] = "SALDO PENDIENTE"
+
+                ws["A"+str(cont)].alignment = Alignment(horizontal = "center")
+                ws["B"+str(cont)].alignment = Alignment(horizontal = "center")
+                ws["C"+str(cont)].alignment = Alignment(horizontal = "center")
+                ws["D"+str(cont)].alignment = Alignment(horizontal = "center")
+                ws["E"+str(cont)].alignment = Alignment(horizontal = "center")
+                ws["F"+str(cont)].alignment = Alignment(horizontal = "center")
+                ws["G"+str(cont)].alignment = Alignment(horizontal = "center")
+                ws["H"+str(cont)].alignment = Alignment(horizontal = "center")
+
+                ws["A"+str(cont)].font = Font(bold = True)
+                ws["B"+str(cont)].font = Font(bold = True)
+                ws["C"+str(cont)].font = Font(bold = True)
+                ws["D"+str(cont)].font = Font(bold = True)
+                ws["E"+str(cont)].font = Font(bold = True)
+                ws["F"+str(cont)].font = Font(bold = True)
+                ws["G"+str(cont)].font = Font(bold = True)
+                ws["H"+str(cont)].font = Font(bold = True)
+
+                ws.column_dimensions['A'].width = 15
+                ws.column_dimensions['B'].width = 30
+                ws.column_dimensions['C'].width = 10
+                ws.column_dimensions['D'].width = 10
+                ws.column_dimensions['E'].width = 20
+                ws.column_dimensions['F'].width = 20
+                ws.column_dimensions['G'].width = 20
+                ws.column_dimensions['H'].width = 20
+
                 cont += 1
 
             else: 
@@ -1502,11 +1531,21 @@ class ReporteExplosion(TemplateView):
                 ws["G"+str(cont)] = d[3]
                 ws["H"+str(cont)] = d[4]
 
+                ws["A"+str(cont)].font = Font(bold = True)
+                ws["A"+str(cont)].alignment = Alignment(horizontal = "center")
+                ws["D"+str(cont)].number_format = '"$"#,##0.00_-'
+                ws["C"+str(cont)].alignment = Alignment(horizontal = "center")
+                ws["E"+str(cont)].number_format = '#,##0.00_-'
+                ws["F"+str(cont)].number_format = '#,##0.00_-'
+                ws["G"+str(cont)].number_format = '#,##0.00_-'
+                ws["H"+str(cont)].font = Font(bold = True)
+                ws["H"+str(cont)].number_format = '"$"#,##0.00_-'
+
                 cont += 1
 
 
         #Establecer el nombre del archivo
-        nombre_archivo = "Explosion.xls"
+        nombre_archivo = "Explosion-{0}.xls".format(str(proyecto.nombre))
         #Definir tipo de respuesta que se va a dar
         response = HttpResponse(content_type = "application/ms-excel")
         contenido = "attachment; filename = {0}".format(nombre_archivo)
