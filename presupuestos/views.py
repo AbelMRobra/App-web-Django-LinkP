@@ -1487,9 +1487,10 @@ class ReporteExplosion(TemplateView):
                 ws["C"+str(cont)] = "UNIDAD"
                 ws["D"+str(cont)] = "VALOR"
                 ws["E"+str(cont)] = "CANT. PRESPUESTO"
-                ws["F"+str(cont)] = "COMPRADO"
-                ws["G"+str(cont)] = "PENDIENTE"
-                ws["H"+str(cont)] = "SALDO PENDIENTE"
+                ws["F"+str(cont)] = "PRESUPUESTO"
+                ws["G"+str(cont)] = "COMPRADO"
+                ws["H"+str(cont)] = "PENDIENTE"
+                ws["I"+str(cont)] = "SALDO PENDIENTE"
 
                 ws["A"+str(cont)].alignment = Alignment(horizontal = "center")
                 ws["B"+str(cont)].alignment = Alignment(horizontal = "center")
@@ -1499,6 +1500,7 @@ class ReporteExplosion(TemplateView):
                 ws["F"+str(cont)].alignment = Alignment(horizontal = "center")
                 ws["G"+str(cont)].alignment = Alignment(horizontal = "center")
                 ws["H"+str(cont)].alignment = Alignment(horizontal = "center")
+                ws["I"+str(cont)].alignment = Alignment(horizontal = "center")
 
                 ws["A"+str(cont)].font = Font(bold = True)
                 ws["B"+str(cont)].font = Font(bold = True)
@@ -1508,15 +1510,17 @@ class ReporteExplosion(TemplateView):
                 ws["F"+str(cont)].font = Font(bold = True)
                 ws["G"+str(cont)].font = Font(bold = True)
                 ws["H"+str(cont)].font = Font(bold = True)
+                ws["I"+str(cont)].font = Font(bold = True)
 
-                ws.column_dimensions['A'].width = 15
-                ws.column_dimensions['B'].width = 30
-                ws.column_dimensions['C'].width = 10
-                ws.column_dimensions['D'].width = 10
-                ws.column_dimensions['E'].width = 20
-                ws.column_dimensions['F'].width = 20
-                ws.column_dimensions['G'].width = 20
-                ws.column_dimensions['H'].width = 20
+                ws.column_dimensions['A'].width = 11.29
+                ws.column_dimensions['B'].width = 58.57
+                ws.column_dimensions['C'].width = 8.57
+                ws.column_dimensions['D'].width = 12.14
+                ws.column_dimensions['E'].width = 18.57
+                ws.column_dimensions['F'].width = 17.57
+                ws.column_dimensions['G'].width = 12
+                ws.column_dimensions['H'].width = 11.86
+                ws.column_dimensions['I'].width = 17.57
 
                 cont += 1
 
@@ -1527,19 +1531,21 @@ class ReporteExplosion(TemplateView):
                 ws["C"+str(cont)] = d[0].unidad
                 ws["D"+str(cont)] = d[0].valor
                 ws["E"+str(cont)] = d[1]
-                ws["F"+str(cont)] = d[2]
-                ws["G"+str(cont)] = d[3]
-                ws["H"+str(cont)] = d[4]
+                ws["F"+str(cont)] = "=D"+str(cont)+"*E"+str(cont)
+                ws["G"+str(cont)] = d[2]
+                ws["H"+str(cont)] = d[3]
+                ws["I"+str(cont)] = d[4]
 
                 ws["A"+str(cont)].font = Font(bold = True)
                 ws["A"+str(cont)].alignment = Alignment(horizontal = "center")
                 ws["D"+str(cont)].number_format = '"$"#,##0.00_-'
                 ws["C"+str(cont)].alignment = Alignment(horizontal = "center")
                 ws["E"+str(cont)].number_format = '#,##0.00_-'
-                ws["F"+str(cont)].number_format = '#,##0.00_-'
+                ws["F"+str(cont)].number_format = '"$"#,##0.00_-'
                 ws["G"+str(cont)].number_format = '#,##0.00_-'
-                ws["H"+str(cont)].font = Font(bold = True)
-                ws["H"+str(cont)].number_format = '"$"#,##0.00_-'
+                ws["H"+str(cont)].number_format = '#,##0.00_-'
+                ws["I"+str(cont)].font = Font(bold = True)
+                ws["I"+str(cont)].number_format = '"$"#,##0.00_-'
 
                 cont += 1
 
