@@ -1451,6 +1451,8 @@ def Saldoporcapitulo(id_proyecto):
 
             if articulos_presupuesto[0] in articulos_comprados and articulos_presupuesto[1]>=0:
 
+                contador = 0
+
                 for articulos_stock in stock_articulos:
 
                     #Si encontramos el articulo del capitulo en el stock, activamos una de las 3 posibilidades
@@ -1461,15 +1463,22 @@ def Saldoporcapitulo(id_proyecto):
 
                         if articulos_stock[1] > articulos_presupuesto[1]:
 
-                            articulos_stock[1] = float(articulos_stock[1]) - float(articulos_presupuesto[1])
+                            articulos_stock[1] = float(articulos_stock[1]) - float(articulos_presupuesto[1])                           
+
+                            stock_articulos[contador] = list(stock_articulos[contador])
+                            stock_articulos[contador][1] = articulos_stock[1]
 
                             articulos_stock = tuple(articulos_stock)
+                            stock_articulos[contador] = tuple(stock_articulos[contador])
 
                         elif articulos_stock[1] == articulos_presupuesto[1]:
 
                             articulos_stock[1] = 0
+                            stock_articulos[contador] = list(stock_articulos[contador])
+                            stock_articulos[contador][1] = articulos_stock[1]
 
                             articulos_stock = tuple(articulos_stock)
+                            stock_articulos[contador] = tuple(stock_articulos[contador])
 
                         elif articulos_stock[1] < articulos_presupuesto[1]:
 
@@ -1477,10 +1486,14 @@ def Saldoporcapitulo(id_proyecto):
 
                             articulos_stock[1] = 0
 
+                            stock_articulos[contador] = list(stock_articulos[contador])
+                            stock_articulos[contador][1] = articulos_stock[1]
+
                             articulos_saldo.append((articulos_presupuesto[0], cantidad_saldo))
 
                             articulos_stock = tuple(articulos_stock)
-
+                            stock_articulos[contador] = tuple(stock_articulos[contador])
+                    contador += 1
             else:
                 articulos_saldo.append(articulos_presupuesto)
 
