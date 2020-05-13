@@ -416,6 +416,72 @@ def saldocapitulo(request, id_proyecto):
                 
     return render(request, 'presupuestos/saldocapitulo.html', {"datos":datos})
 
+# ----------------------------------------------------- VISTAS PARA ARTICULOS SALDO - CAPITULO ----------------------------------------------
+
+def SaldoCapArticulos(request, id_proyecto, id_capitulo):
+
+    #Armamos el saldo de cada capitulo
+
+    saldo = Saldoporcapitulo(id_proyecto)
+
+    datos_viejos = saldo
+
+    datos_saldo = []
+    capitulo = []
+
+    for componentes in datos_viejos:
+        if int(componentes[1].id) == int(id_capitulo):
+            
+            datos_saldo.append(componentes[2])
+            capitulo.append(componentes[1])
+
+    articulos = []
+
+    for articulo in datos_saldo[0]:
+        articulos.append(articulo[0])
+
+    articulos = list(set(articulos))
+
+    articulos_cant = []
+
+    for articulo in articulos:
+
+        cantidad = 0
+
+        for art_can in datos_saldo[0]:
+
+            if articulo == art_can[0] and art_can[1]>0:
+                cantidad = cantidad + art_can[1]
+        articulos_cant.append((articulo, cantidad))
+    
+    saldo_cap = 0
+
+    datos_viejos = articulos_cant
+    datos_saldo = []
+
+    for dato in datos_viejos:
+        saldo_cap = saldo_cap + dato[0].valor*dato[1]
+        datos_saldo.append((dato[0], dato[1], float(dato[0].valor*dato[1])))
+
+    datos_viejos = datos_saldo
+    datos_saldo = []
+
+    for dato in datos_viejos:
+        inc = float(dato[1])/float(saldo_cap)*100
+        datos_saldo.append((dato[0], dato[1], dato[2], inc))
+
+
+    if len(datos_saldo) == 0:
+        datos_saldo = 0
+
+    proyecto = Proyectos.objects.get(id = id_proyecto)
+
+    datos = {"proyecto":proyecto,
+     "datos_saldo":datos_saldo, "capitulo":capitulo,
+     "saldo":saldo_cap}
+
+    return render(request, 'presupuestos/saldoartcapitulo.html', {"datos":datos})
+
 
 # ----------------------------------------------------- VISTAS PARA PANEL PRESUPUESTOS - EXPLOSION ----------------------------------------------
 def explosion(request, id_proyecto):
@@ -437,7 +503,7 @@ def explosion(request, id_proyecto):
 
             if "SOLO MANO DE OBRA" in str(i.analisis.nombre):
 
-                computos = Computos.objects.filter(tipologia = i.vinculacion)
+                computos = Computos.objects.filter(tipologia = i.vinculacion, proyecto = proyecto)
 
                 cantidad = 0
 
@@ -448,7 +514,7 @@ def explosion(request, id_proyecto):
 
             else:
 
-                computos = Computos.objects.filter(tipologia = i.vinculacion)
+                computos = Computos.objects.filter(tipologia = i.vinculacion, proyecto = proyecto)
 
                 cantidad = 0
 
@@ -488,7 +554,7 @@ def explosion(request, id_proyecto):
         datos.append((i, cantidad))
 
 
-    compras = Compras.objects.all()
+    compras = Compras.objects.filter(proyecto = proyecto)
 
     datos_viejos = datos
     datos = []
@@ -630,72 +696,6 @@ def presupuestosanalisis(request, id_proyecto, id_capitulo):
     datos = {"datos":datos, "proyecto":proyecto, "capitulo":capitulo}
 
     return render(request, 'presupuestos/presupuestoanalisis.html', {"datos":datos})
-
-# ----------------------------------------------------- VISTAS PARA ARTICULOS SALDO - CAPITULO ----------------------------------------------
-
-def SaldoCapArticulos(request, id_proyecto, id_capitulo):
-
-    #Armamos el saldo de cada capitulo
-
-    saldo = Saldoporcapitulo(id_proyecto)
-
-    datos_viejos = saldo
-
-    datos_saldo = []
-    capitulo = []
-
-    for componentes in datos_viejos:
-        if int(componentes[1].id) == int(id_capitulo):
-            
-            datos_saldo.append(componentes[2])
-            capitulo.append(componentes[1])
-
-    articulos = []
-
-    for articulo in datos_saldo[0]:
-        articulos.append(articulo[0])
-
-    articulos = list(set(articulos))
-
-    articulos_cant = []
-
-    for articulo in articulos:
-
-        cantidad = 0
-
-        for art_can in datos_saldo[0]:
-
-            if articulo == art_can[0]:
-                cantidad = cantidad + art_can[1]
-        articulos_cant.append((articulo, cantidad))
-    
-    saldo_cap = 0
-
-    datos_viejos = articulos_cant
-    datos_saldo = []
-
-    for dato in datos_viejos:
-        saldo_cap = saldo_cap + dato[0].valor*dato[1]
-        datos_saldo.append((dato[0], dato[1], float(dato[0].valor*dato[1])))
-
-    datos_viejos = datos_saldo
-    datos_saldo = []
-
-    for dato in datos_viejos:
-        inc = float(dato[1])/float(saldo_cap)*100
-        datos_saldo.append((dato[0], dato[1], dato[2], inc))
-
-
-    if len(datos_saldo) == 0:
-        datos_saldo = 0
-
-    proyecto = Proyectos.objects.get(id = id_proyecto)
-
-    datos = {"proyecto":proyecto,
-     "datos_saldo":datos_saldo, "capitulo":capitulo,
-     "saldo":saldo_cap}
-
-    return render(request, 'presupuestos/saldoartcapitulo.html', {"datos":datos})
 
 
 # ----------------------------------------------------- VISTAS PARA PANEL PRESUPUESTOS - CAPITULO ----------------------------------------------
@@ -1492,7 +1492,7 @@ class ReporteExplosion(TemplateView):
         wb = Workbook()
 
         proyecto = Proyectos.objects.get(id = id_proyecto)
-        modelo = Modelopresupuesto.objects.all()
+        modelo = Modelopresupuesto.objects.filter(proyecto = proyecto)
 
         #Version 2 de explosión
         
@@ -1508,7 +1508,7 @@ class ReporteExplosion(TemplateView):
 
                 if "SOLO MANO DE OBRA" in str(i.analisis.nombre):
 
-                    computos = Computos.objects.filter(tipologia = i.vinculacion)
+                    computos = Computos.objects.filter(tipologia = i.vinculacion, proyecto = proyecto)
 
                     cantidad = 0
 
@@ -1519,7 +1519,7 @@ class ReporteExplosion(TemplateView):
 
                 else:
 
-                    computos = Computos.objects.filter(tipologia = i.vinculacion)
+                    computos = Computos.objects.filter(tipologia = i.vinculacion, proyecto = proyecto)
 
                     cantidad = 0
 
@@ -1559,7 +1559,7 @@ class ReporteExplosion(TemplateView):
             datos.append((i, cantidad))
 
 
-        compras = Compras.objects.all()
+        compras = Compras.objects.filter(proyecto = proyecto)
 
         comprado_aux = ""
 
