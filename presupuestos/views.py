@@ -329,7 +329,9 @@ def presupuestostotal(request):
 
             for articulo_cantidad in s[2]:
 
-                valor_saldo = (valor_saldo + articulo_cantidad[0].valor*articulo_cantidad[1])
+                if articulo_cantidad[1] > 0:
+
+                    valor_saldo = (valor_saldo + articulo_cantidad[0].valor*articulo_cantidad[1])
 
         valor_saldo = valor_saldo/1000000
         avance = 0
@@ -381,7 +383,9 @@ def saldocapitulo(request, id_proyecto):
 
         for articulos in componentes[2]:
 
-            saldo_capitulo = saldo_capitulo + articulos[0].valor*articulos[1]
+            if articulos[1] > 0:
+
+                saldo_capitulo = saldo_capitulo + articulos[0].valor*articulos[1]
         
         datos_saldo.append((componentes[0], componentes[1], saldo_capitulo ))
 
@@ -408,7 +412,7 @@ def saldocapitulo(request, id_proyecto):
     
     proyecto = Proyectos.objects.get(id = id_proyecto)
 
-    datos = {"proyecto":proyecto, "datos":datos}
+    datos = {"proyecto":proyecto, "datos":datos, "saldo":valor_saldo}
                 
     return render(request, 'presupuestos/saldocapitulo.html', {"datos":datos})
 
