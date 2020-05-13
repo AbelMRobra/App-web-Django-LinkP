@@ -1808,10 +1808,9 @@ def debugsaldo(id_proyecto):
                     cantidad = cantidad + articulo2[1]
 
             if cantidad<0:
-                
-                Mensaje = "El articulo " + str(articulo.nombre) + " del capitulo " + str(dato[1]) + " es negativo por " + str(articulo.valor*cantidad)
+            
 
-                mensaje.append(Mensaje)  
+                mensaje.append((articulo.nombre, dato[1], articulo.valor*cantidad ))  
         
 
         contador += 1
