@@ -1404,7 +1404,7 @@ def PresupuestoPorCapitulo(id_proyecto):
         numero_capitulo += 1
 
 
-    #Devuelve el numero del capitulo, el nombre y una lista de todos los insumos y la cantidad de cada uno
+    #Devuelve el numero del capitulo, el nombre y una lista de todos los insumos y la cantidad de cada uno             
 
     return datos
 
@@ -1414,6 +1414,49 @@ def Saldoporcapitulo(id_proyecto):
     proyecto = Proyectos.objects.get(id = id_proyecto)
     compras = Compras.objects.filter(proyecto = proyecto)
     presupuesto_capitulo = PresupuestoPorCapitulo(id_proyecto)
+
+    print(presupuesto_capitulo[8])
+
+
+    #Ordenamos cada capitulo con una lista donde no se repitan los articulos
+
+    datos_viejos = presupuesto_capitulo
+    presupuesto_capitulo = []
+
+    contador = 0
+
+    for i in range(37):
+
+        dato = datos_viejos[contador]
+
+        nuevo_art_cant = []
+
+        lista_art_cap = []
+
+        for art_cant in dato[2]:
+
+            lista_art_cap.append(art_cant[0])
+
+        lista_art_cap = list(set(lista_art_cap))
+        
+        for articulo in lista_art_cap:
+
+            cantidad = 0
+
+            for articulo2 in dato[2]:
+
+                if articulo == articulo2[0]:
+                    cantidad = cantidad + articulo2[1]
+
+            nuevo_art_cant.append((articulo, cantidad))
+
+        presupuesto_capitulo.append((dato[0], dato[1], nuevo_art_cant))    
+        
+
+        contador += 1
+  
+    print("Nuevo")        
+    print(presupuesto_capitulo[8])
 
     #Ordenamos la compra para que sea una sola lista
 
@@ -1439,7 +1482,7 @@ def Saldoporcapitulo(id_proyecto):
 
         stock_articulos.append((articulo, cantidad))
 
-    #Armamos el saldo
+    #Armamos el saldo --> Hay un error ya que al descartar menores a 0, olvidamos que restan consumo
 
     saldo_capitulo = []
 
@@ -1451,9 +1494,9 @@ def Saldoporcapitulo(id_proyecto):
 
             if articulos_presupuesto[0] in articulos_comprados and articulos_presupuesto[1]>=0:
 
-                contador = 0
-
                 for articulos_stock in stock_articulos:
+
+                    contador = 0
 
                     #Si encontramos el articulo del capitulo en el stock, activamos una de las 3 posibilidades
 
