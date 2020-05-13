@@ -688,6 +688,8 @@ def presupuestoscapitulo(request, id_proyecto):
 
     if len(modelo) == 0:
         datos = 0
+
+        datos = {"datos":datos, "proyecto":proyecto}
     
     else:
 
@@ -768,7 +770,7 @@ def presupuestoscapitulo(request, id_proyecto):
 
         datos = {"datos":datos, "proyecto":proyecto, "valor_proyecto":valor_proyecto,"valor_proyecto_completo":valor_proyecto_completo}
 
-    datos = {"datos":datos, "proyecto":proyecto}
+    
     return render(request, 'presupuestos/presupuestocapitulo.html', {"datos":datos})
 
 # ----------------------------------------------------- VISTAS PARA VER ANALISIS----------------------------------------------
