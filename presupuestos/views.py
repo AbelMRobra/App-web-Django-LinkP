@@ -1810,7 +1810,7 @@ def debugsaldo(id_proyecto):
             if cantidad<0:
             
 
-                mensaje.append((articulo.nombre, dato[1], articulo.valor*cantidad ))  
+                mensaje.append((articulo.nombre, dato[1]))  
         
 
         contador += 1
