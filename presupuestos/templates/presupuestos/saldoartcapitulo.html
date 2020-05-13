@@ -34,11 +34,11 @@
         {% for i in datos.datos_saldo %}
 
             <tr class = "table-light">
-                <td style="width: 40%;"><b>{{i.0.0.0.nombre}} ({{i.0.0.0.unidad}})</b></td>
-                <td style="width: 15%;">${{i.0.0.0.valor|floatformat:2}}</td>
-                <td style="width: 15%;">{{i.0.0.1|floatformat:2}}</td>
-                <td style="width: 20%;"> ${{i.0.1|floatformat:2}} </td>
-                <td style="width: 10%;"> <b>{{i.1|floatformat:2}}% </b> </td>                         
+                <td style="width: 40%;"><b>{{i.0.nombre}} ({{i.0.unidad}})</b></td>
+                <td style="width: 15%;">${{i.0.valor|floatformat:2}}</td>
+                <td style="width: 15%;">{{i.1|floatformat:2}}</td>
+                <td style="width: 20%;"> ${{i.2|floatformat:2}} </td>
+                <td style="width: 10%;"> <b>{{i.3|floatformat:2}}% </b> </td>                         
             </tr>
 
         {% endfor %}

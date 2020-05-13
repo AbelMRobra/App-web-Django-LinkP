@@ -417,7 +417,7 @@ def saldocapitulo(request, id_proyecto):
 def explosion(request, id_proyecto):
 
     proyecto = Proyectos.objects.get(id = id_proyecto)
-    modelo = Modelopresupuesto.objects.all()
+    modelo = Modelopresupuesto.objects.filter(proyecto = proyecto)
 
     #Version 2 de explosión
     
@@ -646,22 +646,40 @@ def SaldoCapArticulos(request, id_proyecto, id_capitulo):
             datos_saldo.append(componentes[2])
             capitulo.append(componentes[1])
 
+    articulos = []
+
+    for articulo in datos_saldo[0]:
+        articulos.append(articulo[0])
+
+    articulos = list(set(articulos))
+
+    articulos_cant = []
+
+    for articulo in articulos:
+
+        cantidad = 0
+
+        for art_can in datos_saldo[0]:
+
+            if articulo == art_can[0]:
+                cantidad = cantidad + art_can[1]
+        articulos_cant.append((articulo, cantidad))
+    
     saldo_cap = 0
 
-    datos_viejos = datos_saldo
+    datos_viejos = articulos_cant
     datos_saldo = []
-    
 
-    for dato in datos_viejos[0]:
+    for dato in datos_viejos:
         saldo_cap = saldo_cap + dato[0].valor*dato[1]
-        datos_saldo.append((dato, float(dato[0].valor*dato[1])))
+        datos_saldo.append((dato[0], dato[1], float(dato[0].valor*dato[1])))
 
     datos_viejos = datos_saldo
     datos_saldo = []
 
     for dato in datos_viejos:
         inc = float(dato[1])/float(saldo_cap)*100
-        datos_saldo.append((dato, inc))
+        datos_saldo.append((dato[0], dato[1], dato[2], inc))
 
 
     if len(datos_saldo) == 0:
