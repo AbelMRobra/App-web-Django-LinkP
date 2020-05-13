@@ -1415,9 +1415,6 @@ def Saldoporcapitulo(id_proyecto):
     compras = Compras.objects.filter(proyecto = proyecto)
     presupuesto_capitulo = PresupuestoPorCapitulo(id_proyecto)
 
-    print(presupuesto_capitulo[8])
-
-
     #Ordenamos cada capitulo con una lista donde no se repitan los articulos
 
     datos_viejos = presupuesto_capitulo
@@ -1454,9 +1451,6 @@ def Saldoporcapitulo(id_proyecto):
         
 
         contador += 1
-  
-    print("Nuevo")        
-    print(presupuesto_capitulo[8])
 
     #Ordenamos la compra para que sea una sola lista
 
