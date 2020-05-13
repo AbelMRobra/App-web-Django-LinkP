@@ -1445,7 +1445,7 @@ def Saldoporcapitulo(id_proyecto):
 
         for articulos_presupuesto in capitulo_presupuesto[2]:
 
-            if articulos_presupuesto[0] in articulos_comprados:
+            if articulos_presupuesto[0] in articulos_comprados and articulos_presupuesto[1]>0:
 
                 for articulos_stock in stock_articulos:
 
