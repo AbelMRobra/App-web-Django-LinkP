@@ -562,7 +562,7 @@ def explosion(request, id_proyecto):
     for i in datos_viejos:
         comprado = 0
         for c in compras:
-            if c.proyecto == proyecto and c.articulo == i[0]:
+            if c.articulo == i[0]:
                 comprado = comprado + c.cantidad
         
         cantidad_saldo = i[1] - comprado
@@ -1449,7 +1449,7 @@ def Saldoporcapitulo(id_proyecto):
 
         for articulos_presupuesto in capitulo_presupuesto[2]:
 
-            if articulos_presupuesto[0] in articulos_comprados and articulos_presupuesto[1]>0:
+            if articulos_presupuesto[0] in articulos_comprados and articulos_presupuesto[1]>=0:
 
                 for articulos_stock in stock_articulos:
 
@@ -1466,6 +1466,8 @@ def Saldoporcapitulo(id_proyecto):
                         elif articulos_stock[1] == articulos_presupuesto[1]:
 
                             articulos_stock[1] = 0
+
+                            articulos_stock = tuple(articulos_stock)
 
                         elif articulos_stock[1] < articulos_presupuesto[1]:
 
