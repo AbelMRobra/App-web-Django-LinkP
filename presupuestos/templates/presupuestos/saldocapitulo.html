@@ -13,6 +13,14 @@
      <div style="text-align: center;">
         <a href="{% url 'Explosión de insumos' id_proyecto=datos.proyecto.id %}" class="btn btn-info">Explosión de insumos</a>          
     </div>
+
+    {% if perms.constante.view %}
+
+    <div style="text-align: center; margin-top: 1%;">
+        <a href="{% url 'Debug Saldo' id_proyecto=datos.proyecto.id %}" class="btn btn-success">DEBUG</a>          
+    </div>
+
+    {% endif %}
  
  <b><hr class = "my-4" style="width: 100%; border-color: #17B5B5 ;"></b>
 

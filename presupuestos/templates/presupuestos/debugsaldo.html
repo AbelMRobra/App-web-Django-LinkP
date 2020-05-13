@@ -1,0 +1,42 @@
+{% extends "users/inicio.html" %}
+
+{% load static %}
+
+{% block content %}
+
+
+<div class = "jumbotron" style="background-color: white; margin-bottom: 0px;">
+
+    <h3 style="text-align: center; color: #17B5B5 ;">DEBUG </h3>
+    <h6 style="text-align: center; color: #17B5B5 ;"> Àrea Presupuesto</h6>
+     <b><hr class = "my-4" style="width: 75%; border-color: #17B5B5 ;"></b>
+
+     {% for i in datos %}
+
+     <div>
+        <small><b>{{i}}</b></small>
+
+     </div>
+
+     
+
+     {% endfor %}
+
+     <div style="text-align: center; margin-top: 20%;">
+        <h6> Si aparecen mensajes, cuidado que afectan el saldo </h6>
+        <small><b>AR</b></small>
+    </div>
+
+    <div style="text-align: center; margin-top: 2%; margin-bottom: 10%;">
+        <img src="{% static 'img/comunicaciones.png' %}" style="width: 10%; height: 10%;">
+    </div>
+
+    <div style="text-align: center;">
+        <p> <small>-- Link<strong>P</strong> --</small> </p>
+    </div>
+   
+                    
+</div>
+ 
+    
+{% endblock %}

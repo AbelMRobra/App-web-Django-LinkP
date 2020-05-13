@@ -482,6 +482,14 @@ def SaldoCapArticulos(request, id_proyecto, id_capitulo):
 
     return render(request, 'presupuestos/saldoartcapitulo.html', {"datos":datos})
 
+# ----------------------------------------------------- VISTAS PARA ARTICULOS SALDO - CAPITULO ----------------------------------------------
+
+def debugsa(request, id_proyecto):
+
+    datos = debugsaldo(id_proyecto)
+
+    return render(request, 'presupuestos/debugsaldo.html', {"datos":datos})
+
 
 # ----------------------------------------------------- VISTAS PARA PANEL PRESUPUESTOS - EXPLOSION ----------------------------------------------
 def explosion(request, id_proyecto):
@@ -1446,7 +1454,6 @@ def Saldoporcapitulo(id_proyecto):
                     cantidad = cantidad + articulo2[1]
 
             if cantidad<0:
-
                 
                 print("Hay un articulo negativo completamente")
 
@@ -1763,6 +1770,53 @@ class ReporteExplosion(TemplateView):
         wb.save(response)
         return response
 
+def debugsaldo(id_proyecto):
+
+    #Traemos las compras y el presupuesto
+    proyecto = Proyectos.objects.get(id = id_proyecto)
+    compras = Compras.objects.filter(proyecto = proyecto)
+    presupuesto_capitulo = PresupuestoPorCapitulo(id_proyecto)
+
+    #Ordenamos cada capitulo con una lista donde no se repitan los articulos
+
+    datos_viejos = presupuesto_capitulo
+    presupuesto_capitulo = []
+
+    contador = 0
+
+    mensaje = []
+
+    for i in range(37):
+
+        dato = datos_viejos[contador]
+
+        lista_art_cap = []
+
+        for art_cant in dato[2]:
+
+            lista_art_cap.append(art_cant[0])
+
+        lista_art_cap = list(set(lista_art_cap))
+        
+        for articulo in lista_art_cap:
+
+            cantidad = 0
+
+            for articulo2 in dato[2]:
+
+                if articulo == articulo2[0]:
+                    cantidad = cantidad + articulo2[1]
+
+            if cantidad<0:
+                
+                Mensaje = "El articulo " + str(articulo.nombre) + " del capitulo " + str(dato[1]) + " es negativo por " + str(articulo.valor*cantidad)
+
+                mensaje.append(Mensaje)  
+        
+
+        contador += 1
+
+        return mensaje
     
 
 
