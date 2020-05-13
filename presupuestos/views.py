@@ -1463,6 +1463,8 @@ def Saldoporcapitulo(id_proyecto):
 
                             articulos_stock[1] = float(articulos_stock[1]) - float(articulos_presupuesto[1])
 
+                            articulos_stock = tuple(articulos_stock)
+
                         elif articulos_stock[1] == articulos_presupuesto[1]:
 
                             articulos_stock[1] = 0
