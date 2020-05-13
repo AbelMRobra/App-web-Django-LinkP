@@ -1445,6 +1445,9 @@ def Saldoporcapitulo(id_proyecto):
                 if articulo == articulo2[0]:
                     cantidad = cantidad + articulo2[1]
 
+            if cantidad<0:
+                print("El Articulo %s en el capitulo %s es negativo" % (str(articulo.nombre), str(dato[0])))
+
             nuevo_art_cant.append((articulo, cantidad))
 
         presupuesto_capitulo.append((dato[0], dato[1], nuevo_art_cant))    
