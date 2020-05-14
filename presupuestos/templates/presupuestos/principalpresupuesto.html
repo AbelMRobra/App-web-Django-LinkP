@@ -6,65 +6,156 @@
 
 <div class = "jumbotron" style="background-color: white; margin-bottom: 0px;">
 
-    <h3 style="text-align: center; color: #17B5B5 ;">Panel principal de presupuestos</h3>
+    <h3 style="text-align: center; color: #17B5B5 ;">Panel principal de presupuestos {{datos.0.0.nombre}}</h3>
+    
+    {% if datos %}
+
+    <div style="text-align: center;">
+
+        <small style="color: #17B5B5 ;"> <b>Un proyecto de {{datos.0.0.m2|floatformat:2}}m2</b> </small>
+      
+    </div>
+
+    {% endif %}
+    
+    
      <b><hr class = "my-4" style="width: 75%; border-color: #17B5B5 ;"></b>
 
+     {% if datos %}
+
      <div style="text-align: center;">
-        <p> <small>-- Elige un proyecto haciendo <strong>click</strong> sobre el valor de reposición o el saldo --</small> </p>
+        <p> <small>-- Accede a la información haciendo <strong>click</strong> sobre el valor de reposición o el saldo --</small> </p>
 
      </div>
 
-     <b><hr class = "my-4" style="width: 100%; border-color: #17B5B5 ;"></b>
- 
-    
-    {% if datos %} 
+     {% endif %}
 
-    <table class = "table table-hover" style="text-align: center;">
-        <thead>
+     {% if proyectos %}
 
-            <tr class = "table-info">
-                <th scope = "row"> <font style = "vertical-align: heredar;"> PROYECTO </font></th>
-                <th scope = "row"> <font style = "vertical-align: heredar;"> TAMAÑO </font></th>
-                <th scope = "row"> <font style = "vertical-align: heredar;"> VALOR REPOSICIÓN </font></th>
-                <th scope = "row"> <font style = "vertical-align: heredar;"> SALDO </font></th>
-                <th scope = "row"> <font style = "vertical-align: heredar;"> AVANCE </font></th>                  
-            </tr>
-        </thead>
+     <div style="text-align: center; margin-bottom: 20%;">
+        <form method="POST">
 
-        <tbody>
+            {% csrf_token %}
 
+            <select name="proyecto" class="custom-select" style="width: 20%;">
+
+                {% for i in proyectos %}
+                <option value="{{i.id}}">{{i.nombre}}</option>
+
+                {% endfor %}
+
+
+              </select>
+              <div>
+                <small> Seleccione un proyecto del listado para acceder los a los datos</small>
+              </div>
+              
+
+              <div>
+                <button class="btn btn-info" type="submit" style="margin-top: 1%;">Buscar datos</button>          
+            </div>
             
-
-            {% for i in datos %}
-
-            <tr class = "table-light">
-                <td> <b>{{i.0.nombre}}</b></td>
-                <td> {{i.0.m2|floatformat:2}} M2</td>
-                <td>  <a href="{% url 'Panel de presupuestos por capitulo' i.0.id %}" style="color: black;">${{i.1|floatformat:2}} Millones</a></td>
-                <td> <a href="{% url 'Saldo por capitulo' i.0.id %}" style="color: black;">${{i.2|floatformat:2}} Millones</a> </td>
-                <td> <b>{{i.3|floatformat:2}}%</b> </td>
-
-                          
-            </tr>
-        </tbody>
-
-            {% endfor %}
-
-        </table>
-        <div style="text-align: center;">
-            <p> <small>-- Link<strong>P</strong> --</small> </p>
-    
-         </div>
+        </form>
 
         
+        
+    </div>
 
-     {% else %}
-            <div>
-                <h3>No existe registros actualmente</h3>
+    {% endif %}
+
+    {% if datos %}
+
+     <b><hr class = "my-4" style="width: 100%; border-color: #17B5B5 ;"></b>
+
+     <a href="{% url 'Panel de presupuestos por capitulo' datos.0.0.id %}" style="color: black;">
+     <div style="text-align: center;">
+
+        <div class="card text-white bg-info mb-3" style="display: inline-block; width: 25%; height: 25%;  ">
+          
+            <div class="card-body">
+              <h4 class="card-title">Valor de reposición</h4>
+              <h6>${{datos.0.1|floatformat:2}} Millones</h6>
+              <small>El valor del proyecto neto actualizado</small>
             </div>
+          </div>
+    
+        </a>
+
+    <a href="{% url 'Saldo por capitulo' datos.0.0.id %}" style="color: black;">
+    
+        <div class="card text-white bg-info mb-3" style="display: inline-block; width: 25%; margin-left:2%;">
+              
+            <div class="card-body">
+                <h4 class="card-title">Saldo del proyecto</h4>
+                <h6>${{datos.0.2|floatformat:2}} Millones</h6>
+                <small>Todas las partidas pendientes</small>
+            </div>
+          </div>
+
+        </a>
+    
+        </div>
+    
+
+     <div style="text-align: center; margin-top: 3%; margin-bottom: 1.5%;">
+
+        <h6> Avance del presupuesto: {{datos.0.3|floatformat:2}}% </h6>
+     </div>
+
+     <div class="progress" style="margin-bottom: 2%;">
+        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="0.{{datos.0.3|floatformat:0}}" aria-valuemin="0" aria-valuemax="100" style="width: {{datos.0.3|floatformat:0}}%"></div>
+      </div>
+
+      <div style="text-align: center; margin-top: 3%; margin-bottom: 1.5%;">
+
+        <h6> Variación del presupuesto del proyecto </h6>
+        <small>Precio expresado en millones de pesos</small>
+     </div>
+
+      <canvas id="myChart" width="400" height="150rem"></canvas>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    <script>
+        var ctx = document.getElementById('myChart').getContext('2d');
+        var chart = new Chart(ctx, {
+            // The type of chart we want to create
+            type: 'line',
+
+            // The data for our dataset
+            data: {
+                labels: [
+                    {% for i in valor %}
+                    '{{i.0}}',                   
+                    {% endfor %}
+                    'Hoy',],
+                datasets: [
+                {
+                    label: 'Valor de reposición mes a mes',
+                    backgroundColor: 'rgb(79, 199, 49)',
+                    borderColor: 'rgb(79, 199, 49)',
+                    fill: false,
+                    data: [
+                    {% for i in valor %}
+                    {{i.1|floatformat:0}},                   
+                    {% endfor %}{{datos.0.1|floatformat:0}},
+                    ]
+                },
+                ],
+
+            },
+
+            // Configuration options go here
+            options: {}
+        });
+    </script>
+
+        
+    
         
     {% endif %}
-        
+    <div style="text-align: center; margin-top: 2%;">
+        <p> <small>-- Link<strong>P</strong> --</small> </p>
+
+     </div>
 
    
                     

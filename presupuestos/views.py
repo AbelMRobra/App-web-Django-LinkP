@@ -306,12 +306,26 @@ def presupuestostotal(request):
     
     proyectos = Proyectos.objects.all()
 
-    datos = []
+    datos = 0
 
-    for proyecto in proyectos:
+    registro = 0
 
-        datos_presupuesto = PresupuestoPorCapitulo(proyecto.id)
-        datos_saldo = Saldoporcapitulo(proyecto.id)
+    if request.method == 'POST':
+
+        #Trae el proyecto elegido
+        proyecto_elegido = request.POST.items()
+
+        #Crea los datos del pricing
+
+        for i in proyecto_elegido:
+
+            if i[0] == "proyecto":
+                proyectos = Proyectos.objects.get(id = i[1])
+
+        datos = []
+
+        datos_presupuesto = PresupuestoPorCapitulo(proyectos.id)
+        datos_saldo = Saldoporcapitulo(proyectos.id)
 
         valor_reposicion = 0
 
@@ -339,9 +353,21 @@ def presupuestostotal(request):
         if valor_reposicion != 0:
             avance = (1 - (valor_saldo/valor_reposicion))*100
 
-        datos.append((proyecto, valor_reposicion, valor_saldo, avance))    
+        datos.append((proyectos, valor_reposicion, valor_saldo, avance))
 
-    return render(request, 'presupuestos/principalpresupuesto.html', {"datos":datos})
+        valor_proyecto = RegistroValorProyecto.objects.filter(proyecto = proyectos)
+
+        registro = []
+
+        for valor in valor_proyecto:
+
+
+            registro.append((valor.fecha, valor.precio_proyecto/1000000))
+
+        proyectos = 0
+        
+
+    return render(request, 'presupuestos/principalpresupuesto.html', {"datos":datos, "proyectos":proyectos, "valor":registro,})
 
 
 # ---------------------------------> VISTAS PARA PANEL PRESUPUESTOS - SALDO CAPITULO ----------------------------------------------
