@@ -91,17 +91,17 @@ def panelunidades(request):
             elif contador == 1:
                 proyecto = Proyectos.objects.get(id = dato[1])
                 contador += 1
-                print(proyecto)
+
             elif contador == 2:
                 estado = dato[1]
                 contador += 1
-                print(estado)
+
             elif contador == 3:
                 asig = dato[1]
-                print(asig)
+
         
         try:
-            unidades = Unidades.objects.filter(proyecto = proyecto, asig = asig, estado = estado )
+            unidades = Unidades.objects.filter(proyecto = proyecto, asig__contains = asig, estado = estado )
 
             if len(unidades) == 0:
                 mensaje = 1
@@ -144,8 +144,6 @@ def panelunidades(request):
 
         except:
             mensaje = 1
-
-        print(datos)
 
     datos = {"proyectos":proyectos, "datos":datos, "mensaje":mensaje, "datos_unidades":datos_unidades, "otros_datos":otros_datos}
 
