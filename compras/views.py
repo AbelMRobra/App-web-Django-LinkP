@@ -244,9 +244,21 @@ def compras(request):
 
                 palabra =(str(palabra_buscar))
 
+                lista_palabra = palabra.split()
+
                 buscar = (str(i.proyecto)+str(i.proveedor)+str(i.articulo)+str(i.cantidad)+str(i.fecha_c)+str(i.documento))
 
-                if palabra.lower() in buscar.lower():
+                contador = 0
+
+                for palabra in lista_palabra:
+
+                    contador2 = 0
+
+                    if palabra.lower() in buscar.lower():
+  
+                        contador += 1
+
+                if contador == len(lista_palabra):
 
                     datos.append(i)
 
@@ -360,9 +372,21 @@ def stockproveedores(request):
 
                 palabra =(str(palabra_buscar))
 
+                lista_palabra = palabra.split()
+
                 buscar = (str(i.proyecto)+str(i.proveedor)+str(i.articulo)+str(i.cantidad))
 
-                if palabra.lower() in buscar.lower():
+                contador = 0
+
+                for palabra in lista_palabra:
+
+                    contador2 = 0
+
+                    if palabra.lower() in buscar.lower():
+  
+                        contador += 1
+
+                if contador == len(lista_palabra):
 
                     datos.append(i)
 
