@@ -19,7 +19,7 @@ class ComprasResource(resources.ModelResource):
 
 class ComprasAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = ('proyecto', 'nombre',  'proveedor', 'articulo', 'cantidad', 'documento' )
-    search_fields = ('proyecto','nombre',  'proveedor__nombre', 'articulo__nombre', 'cantidad', 'documento' )
+    search_fields = ('proyecto__nombre','nombre',  'proveedor__name', 'articulo__nombre', 'cantidad', 'documento' )
     resources_class = ComprasResource
 
 class RetirosResource(resources.ModelResource):

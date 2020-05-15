@@ -4,6 +4,7 @@ from . import views
 from django.contrib.auth.decorators import login_required
 
 urlpatterns = [
-    url(r'^$', login_required(views.proyectos), name = 'Proyectos')
+    url(r'^$', login_required(views.proyectos), name = 'Proyectos'),
+    url(r'^unidades$', login_required(views.unidades), name = 'Unidades')
 
 ]
