@@ -45,6 +45,7 @@
             {% if perms.ventas.view_ventasrealizadas %}
 
             <a class="dropdown-item" href="/presupuestos/desde">Indicador de precios</a>
+            
 
             {% endif %}
 
@@ -62,7 +63,10 @@
             Ventas
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            {% if perms.ventas.view_ventasrealizadas %}
             <a class="dropdown-item" href="/ventas/estmerc">Estudios de mercado</a>
+            <a class="dropdown-item" href="/ventas/panelunidades">Información de unidades</a>
+            {% endif %}
           </div>
         </li>  
 

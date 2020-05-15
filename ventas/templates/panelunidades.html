@@ -1,0 +1,169 @@
+{% extends "users/inicio.html" %}
+
+{% load static %}
+
+{% block content %}
+
+<div class = "jumbotron" style="background-color: white; margin-bottom: 0px;">
+    <div style="text-align: center;">
+        <h2>Panel de control - Unidades</h2>
+        <small>Trabajo en conjunto: </small><small><strong>FINANZAS - VENTAS</strong></small>  
+    </div>
+
+    <b><hr class = "my-4" style="width: 100%; border-color: black ;"></b>
+    
+    <div style="margin-bottom: 2rem;">
+
+        <h3>Analisis de unidades {% if datos.graficos %} {{ datos.proyecto.nombre }} {% endif %}</h3>
+        <small> Se busca datos de las unidades pendientes de venta</small>
+
+    </div>
+    
+    <div style="text-align: center;">
+        <form method="POST">
+
+            {% csrf_token %}
+
+            <div style="display: inline-block; width: 20%;">
+
+                <select name="proyecto" class="custom-select" style="width: 70%;">
+
+                    {% for i in datos.proyectos %}
+                    <option value="{{i.id}}">{{i.nombre}}</option>
+    
+                    {% endfor %}
+    
+    
+                  </select>
+                  <div>
+                    <small> Seleccione el proyecto</small>
+                  </div>
+
+
+            </div>
+
+            <div style="display: inline-block; margin-left: 2%; width: 20%;">
+
+                <select name="estado" class="custom-select" style="width: 70%;">
+
+                    <option value="DISPONIBLE">DISPONIBLE</option>
+                    <option value="VENDIDA">VENDIDA</option>
+      
+                  </select>
+                  <div>
+                    <small> Seleccione el estado de la unidad</small>
+                  </div>
+
+
+            </div>
+
+            <div style="display: inline-block; margin-left: 2%; width: 20%;">
+
+                <select name="Asignacion" class="custom-select" style="width: 70%;">
+
+                    <option value="PROYECTO">PROYECTO</option>
+                    <option value="HON. TERRENO">HON. TERRENO</option>
+                    <option value="HON. LINK">HON. LINK</option>
+    
+     
+                  </select>
+                  <div>
+                    <small> Seleccione la asignación</small>
+                  </div>
+
+
+            </div>
+
+            
+
+              <div>
+                <button class="btn btn-dark" type="submit" style="margin-top: 1%;">Buscar</button>          
+            </div>
+            
+        </form>
+
+        
+    </div>
+
+    {% if datos.datos_unidades %}
+
+    <b><hr class = "my-4" style="width: 100%; border-color: black ;"></b>
+
+    <h3>Resumen de datos</h3>
+
+    <div>
+
+        <h6>Cantidad de unidades: <small>{{datos.otros_datos.1}}</small> </h6>
+    <h6>Departamentos: <small>{{datos.otros_datos.2}}</small> </h6>
+    <h6>Cocheras: <small>{{datos.otros_datos.3}} </small></h6>
+    <h6>Superficie total de las unidades: <small>{{datos.otros_datos.0|floatformat:2}}m2</small> </h6>
+
+
+    </div>
+
+
+
+    <b><hr class = "my-4" style="width: 100%; border-color: black ;"></b>
+
+    <h3>Listado de unidades</h3>
+
+    <table class = "table table-hover" style="text-align: center; margin-top: 2%;">
+        <thead>
+
+            <tr class = "table-dark">
+                <th scope = "row"> <font style = "vertical-align: heredar;"> PROYECTO </font></th>
+                <th scope = "row"> <font style = "vertical-align: heredar;"> PISO</font></th>
+                <th scope = "row"> <font style = "vertical-align: heredar;"> NOM </font></th>
+                <th scope = "row"> <font style = "vertical-align: heredar;"> TIPO </font></th>
+                <th scope = "row"> <font style = "vertical-align: heredar;"> SUP </font></th>
+                <th scope = "row"> <font style = "vertical-align: heredar;"> ESTADO </font></th>
+                <th scope = "row"> <font style = "vertical-align: heredar;"> ASIGNACIÓN </font></th>
+                 
+
+            </tr>
+        </thead>
+
+        <tbody>   
+
+            {% for i in datos.datos %}
+            <tr class = "table-light">
+                <td> <b>{{i.0.proyecto}}</b></td>
+                <td> <b>{{i.0.piso_unidad}}</b> </td>
+                <td> <b>{{i.0.nombre_unidad}}</b> </td>
+                <td> <b>{{i.0.tipo}}</b> </td>
+                <td> <b>{{i.1|floatformat:2}}m2</b> </td>
+                <td> <b>{{i.0.estado}}</b> </td>
+                <td> <b>{{i.0.asig}}</b> </td>
+
+            </tr>
+            {% endfor %}
+        </tbody>
+     
+
+
+    </table>
+
+
+
+    {% endif %}
+
+    {% if datos.mensaje %}
+
+    <div style="text-align: center; margin-top: 10%;">
+    
+        <h6>No hay unidades que cumplan esas condiciones!</h6>
+    
+    </div>
+
+    {% endif %}
+
+    <div style="text-align: center; margin-top: 2rem;">
+        <p> <small>-- Link<strong>P</strong> --</small> </p>
+
+     </div>
+
+                    
+</div>
+ 
+    
+{% endblock %}
