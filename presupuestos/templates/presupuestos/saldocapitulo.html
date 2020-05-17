@@ -4,7 +4,7 @@
 
 {% block content %}
 
-<div class = "jumbotron" style="background-color: white; margin-bottom: 0px;">
+<div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;">
 
     <h3 style="text-align: center; color: #17B5B5 ;">Detalle de Saldo proyecto {{datos.proyecto.nombre}}</h3>
     <h6 style="text-align: center; color: #17B5B5 ;"> Avance/Incidencia/Saldo</h6>
@@ -17,7 +17,10 @@
 
     <div style="text-align: center; margin-top: 1%;">
         <a href="{% url 'Descarga Exp Cap' id_proyecto=datos.proyecto.id %}" class="btn btn-outline-info">Descargar Saldo por Capitulo</a>          
+
     </div>
+
+    <small> <strong>--Esta descarga puede durar algunos minutos--</strong>   </small>
 
 
  

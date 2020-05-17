@@ -1900,14 +1900,24 @@ class ReporteExplosionCap(TemplateView):
 
                 proyecto = Proyectos.objects.get(id = id_proyecto)
 
+                ws = wb.active
+                ws.title = "ADVERTENCIA"
+
+                ws.merge_cells("B2:K2")
+                ws["B2"] = "LEER ATENTAMENTE ANTES DE USAR ESTE DOCUMENTO"
+
+                ws["B2"].alignment = Alignment(horizontal = "center")
+                ws["B2"].font = Font(bold = True, color= "CF433F", size = 20)
+
+                ws.merge_cells("B5:K25")
+                ws["B5"] = "Este documento contiene informción --> PRIVADA <-- del área de presupuestos, \n la misma es solo para uso interno de LINK INVERSIONES y no debe ser compartida sin previa autorización. Compartir este archivo puede ser considerado como divulgar información confidencial. Si usted esta utilizando este archivo en una computadora que no pertenezca a la empresa, al finalizar --> ELIMINE <-- el archivo. Gracias --AR"
+                ws["B5"].alignment = Alignment(horizontal = "center", vertical = "center", wrap_text=True)
+                ws["B5"].font = Font(bold = True)
                 cont = 1
                 for d in datos_saldo:
 
                     if cont == 1:
-                        if contador_cap == 1:
-                            ws = wb.active
-                        else:
-                            ws = wb.create_sheet("My sheet")
+                        ws = wb.create_sheet("My sheet")
                         ws.title = "CAP{0}".format(str(contador_cap))
                         ws["A"+str(cont)] = "CODIGO"
                         ws["B"+str(cont)] = "ARTICULO"
@@ -1971,10 +1981,7 @@ class ReporteExplosionCap(TemplateView):
                         cont += 1
 
                     else:
-                        if contador_cap == 1: 
-                            ws = wb.active
-                        else:
-                            ws = wb["CAP{0}".format(str(contador_cap))]
+                        ws = wb["CAP{0}".format(str(contador_cap))]
                         ws["A"+str(cont+1)] = d[0].codigo
                         ws["B"+str(cont+1)] = d[0].nombre
                         ws["C"+str(cont+1)] = d[0].unidad

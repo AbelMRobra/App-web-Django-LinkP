@@ -4,64 +4,99 @@
 
 {% block content %}
 
-        {{ datos_con }}
-      
 
-
-      <div class="jumbotron" style="background-color: rgba(96, 87, 84, 0.9); margin-bottom:0px;">
+      <div class="jumbotron" style="background-color: rgba(11, 32, 68, 0.8); margin-top: 2%;">
 
         <div style="text-align: center;">
-          <h1 style="color:#FBF8F7;"> ¿Qué buscamos con este espacio? </h1>
+          <h3 style="color:#F3EAE5;"> Guia rapida </h3>
         </div>       
-        <hr class="my-4" >
-        <div style="text-align: center;">
+        <hr class="my-4" style="background-color: #F3EAE5; width: 75%; ">
 
-          <div class="card text-white bg-success mb-3" style="display: inline-block; width: 87%; text-align: center;  ">
-            <div class="card-body">
-              <img src="{% static 'img/grupo.png' %}" alt="" width="100" height="100" >
-              <h3 style="color:#FBF8F7">Un espacio, muchas herramientas</h3>
-  
-              <p style="color:#FBF8F7">Buscamos construir un lugar donde todas las herramientas esten juntas, evitando que tengas que crear planillas o guardar datos en otro lugar</p>
-   
-            </div>
-          </div>
+        			<!--Slider -->
+			<div class="row slider">
+				<div class="col">
+					<div class="carousel slide" id="slider" data-ride="carousel">
+						<ol class="carousel-indicators">
+							<li data-target="#slider" data-slide-to="0" class="active"></li>
+							<li data-target="#slider" data-slide-to="1"></li>
+							<li data-target="#slider" data-slide-to="2"></li>
+						</ol>
+						<div class="carousel-inner">
+              
+              <div class="carousel-item  active" style="width: 60%; margin-left: 20%; text-align: center;">
+                
+                <h6 style="color: #F3EAE5">Funcionamiento de la APP</h6>
+                  <div style="display: inline-block; width: 100%; text-align: center; margin-bottom: 1%;">
+
+                    <small style="color: #F3EAE5"> Está app fue desarrollada completamente de forma particular en un servidor privado</small>
+                    <small style="color: #F3EAE5">Funciona con una unica gran base de datos estructurada que facilita el manejo y control de datos  </small>
+                  
+                  </div>   
+								<img src="{% static 'img/car2.jpg' %}" width="20%" height="20%"  class="d-block w-100" alt="Slide#1">
+							</div>
+              <div class="carousel-item" style="width: 60%; margin-left: 20%; text-align: center;">
+                
+                <h6 style="color: #F3EAE5">Accesibilidad y disponibilidad</h6>
+                  <div style="display: inline-block; width: 100%; text-align: center; margin-bottom: 1%;">
+
+                    <small style="color: #F3EAE5"> Cada grupo de usuarios tienen permisos distintos, por lo que no se debe compartir la información de logeo</small>
+                    <small style="color: #F3EAE5">Para obtener un usuario escriba a <strong>AR</strong>. La app esta activa de Lunes a Viernes de 8:00 a 20:00 hs</small>
+                  
+                  </div> 
+								<img src="{% static 'img/car3.jpg' %}" width="20%" height="20%"  class="d-block w-100" alt="Slide#1">
+              </div>
+              
+              <div class="carousel-item" style="width: 60%; margin-left: 20%;">
+                <div style="text-align: center; margin-bottom: 2%; " >
+
+                  <h6 style="color: #F3EAE5">Equipo del área de presupuesto</h6>
+                  <div style="display: inline-block; width: 40%; text-align: center; margin-bottom: 1%;">
+
+                    <small style="color: #F3EAE5"> <b>ING. ROBRA ABEL - RESPONSABLE DEL ÁREA</b></small>
+                    <small style="color: #F3EAE5">Informes, consultas generales del área y de la app</small>
+                  
+                  </div>
+                  <div style="display: inline-block; width: 40%; text-align: center; margin-left: 5%;">
+
+                    <small style="color: #F3EAE5"> <b>ING. GALINDEZ LUCIANO - AUXILIAR DEL ÁREA</b></small>
+                    <small style="color: #F3EAE5">Computos y consultas sobre presupuesto</small>
+                  
+                  </div>
+                  
+                </div>  
+                      
+                <img src="{% static 'img/car1.jpg' %}"class="d-block w-100" alt="Slide#1">
+
+              </div>
+						</div>
+
+						<a class="carousel-control-prev" href="#slider" role="button" data-slide="prev">
+							<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+							<span class="sr-only">Anterior</span>
+						</a>
+						<a class="carousel-control-next" href="#slider" role="button" data-slide="next">
+							<span class="carousel-control-next-icon" aria-hidden="true"></span>
+							<span class="sr-only">Siguiente</span>
+						</a>
+					</div>
+				</div>
+			</div>
+        
+
+
 
           <hr class="my-4" >
 
-          <div style="text-align: center;">
 
-            <div class="card text-white bg-warning mb-3" style="display: inline-block; width: 87%; text-align: center;  ">
-              <div class="card-body">
-                <img src="{% static 'img/juntos.png' %}" alt="" width="100" height="100" >
-                <h3 style="color:#FBF8F7">Mi información, tus datos</h3>
-    
-                <p style="color:#FBF8F7">Se construye este lugar con la idea de no repetir nuestros trabajos, todos estamos conectados</p>
-     
-              </div>
-            </div>
-
-
-        </div>
-
-        <hr class="my-4" >
-
-          <div style="text-align: center;">
-
-            <div class="card text-white bg-info mb-3" style="display: inline-block; width: 87%; text-align: center;  ">
-              <div class="card-body">
-                <img src="{% static 'img/tarjeta-de-visita.png' %}" alt="" width="100" height="100" >
-                <h3 style="color:#FBF8F7">Transparencia y accesibilidad</h3>
-    
-                <p style="color:#FBF8F7">En este pacio se busca que la información sea lo mas libre posible, <strong>informate</strong> y toma la mejor decisión </p>
-     
-              </div>
-            </div>
-
-
-        </div>
+        <div style="text-align: center;">
+          <p> <small style="color:#F3EAE5;">-- Link<strong>P</strong> --</small> </p>
+  
+       </div>
 
       </div>
-  </div>
+
+      
+
         
         
 

@@ -10,21 +10,21 @@
     <title>LINK-P</title>
 </head>
 
-<body background="{% static 'img/fondo.jpg' %}">
+<body background="{% static 'img/dark_wood.png' %}">
 
     <div class= "conteiner">
 
-        <div class="jumbotron">
+        <div class="jumbotron" style="margin-top: 5%; background-color: rgba(11, 32, 68, 0.8);">
 
             <div class="boxlogin" style="width: 100%;">
 
-                <h1 class="display-3" > <b>LINK-</b><b style="color: #19C6C6 ;">P</b></h1>
+                <h1 class="display-3" style="color: #F3EAE5 ;" > <b>LINK-</b><b style="color: #19C6C6 ;">P</b></h1>
 
-                <hr class="my-4">
+                <hr class="my-4" style="background-color: #F3EAE5; width: 50%;">
                 
-                <h2>Iniciar sesión</h2>
+                <h2 style="color: #F3EAE5 ;">Iniciar sesión</h2>
 
-                <hr class="my-4">
+                <hr class="my-4" style="background-color: #F3EAE5; width: 50%">
 
 
             <form method="POST" style="width: 100%">
@@ -33,15 +33,15 @@
                 {% csrf_token %}
 
                 <div class="form-group">
-                    <label>  Usuario:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  </label>
+                    <label style="color: #F3EAE5 ;">  Usuario:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  </label>
                     {{ form.username }}
                 </div>
                 <div class="form-group">
-                    <label>Contraseña:</label>
+                    <label style="color: #F3EAE5 ;">Contraseña:</label>
                     {{ form.password }}
                 </div>
                 <hr class="my-4">
-                <button type="submit" class="btn btn-success">Login</button>
+                <button type="submit" class="btn btn-success">Log in</button>
             
             </form>
 
