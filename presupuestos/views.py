@@ -1833,6 +1833,8 @@ class ReporteExplosionCap(TemplateView):
 
         for i in range(37):
 
+            print("Paso")
+
             saldo = Saldoporcapitulo(id_proyecto)
 
             datos_viejos = saldo
