@@ -494,7 +494,10 @@ def SaldoCapArticulos(request, id_proyecto, id_capitulo):
     datos_saldo = []
 
     for dato in datos_viejos:
-        inc = float(dato[2])/float(saldo_cap)*100
+        if saldo_cap != 0:
+            inc = float(dato[2])/float(saldo_cap)*100
+        else:
+            inc = 0
         datos_saldo.append((dato[0], dato[1], dato[2], inc))
 
 
@@ -1833,8 +1836,6 @@ class ReporteExplosionCap(TemplateView):
 
         for i in range(37):
 
-            print("Paso")
-
             saldo = Saldoporcapitulo(id_proyecto)
 
             datos_viejos = saldo
@@ -1883,7 +1884,10 @@ class ReporteExplosionCap(TemplateView):
             datos_saldo = []
 
             for dato in datos_viejos:
-                inc = float(dato[2])/float(saldo_cap)*100
+                if saldo_cap != 0:
+                    inc = float(dato[2])/float(saldo_cap)*100
+                else:
+                    inc = 0
                 datos_saldo.append((dato[0], dato[1], dato[2], inc))
 
 
