@@ -313,6 +313,7 @@ def presupuestostotal(request):
     if request.method == 'POST':
 
         #Trae el proyecto elegido
+
         proyecto_elegido = request.POST.items()
 
         #Crea los datos del pricing
@@ -493,12 +494,16 @@ def SaldoCapArticulos(request, id_proyecto, id_capitulo):
     datos_saldo = []
 
     for dato in datos_viejos:
-        inc = float(dato[1])/float(saldo_cap)*100
+        inc = float(dato[2])/float(saldo_cap)*100
         datos_saldo.append((dato[0], dato[1], dato[2], inc))
 
 
     if len(datos_saldo) == 0:
         datos_saldo = 0
+
+    else:
+
+        datos_saldo.sort(key=lambda tup: tup[3], reverse=True)
 
     proyecto = Proyectos.objects.get(id = id_proyecto)
 
@@ -1580,13 +1585,14 @@ def Saldoporcapitulo(id_proyecto):
     return saldo_capitulo
 
 class ReporteExplosion(TemplateView):
+
     def get(self, request, id_proyecto, *args, **kwargs):
         wb = Workbook()
 
         proyecto = Proyectos.objects.get(id = id_proyecto)
         modelo = Modelopresupuesto.objects.filter(proyecto = proyecto)
 
-        #Version 2 de explosión
+        #Con el siguiente conjunto de formulas creamos la explosión de insumos
         
         crudo_analisis = []
 
@@ -1674,14 +1680,13 @@ class ReporteExplosion(TemplateView):
             
             datos.append((i[0], i[1], comprado, cantidad_saldo, saldo ))
 
-        #Esta parte ve los articulos que no estan en el presupuesto
+        #Esta parte arma los articulos que no estan en el presupuesto
 
         mat_no_presup = []
 
         for compra in compras:
             if str(compra.articulo.nombre) not in comprado_aux and compra.proyecto == proyecto:
                 mat_no_presup.append((compra.articulo.nombre, compra.articulo.valor, compra.cantidad))
-
 
         cont = 1
         for d in datos:
@@ -1729,30 +1734,51 @@ class ReporteExplosion(TemplateView):
                 ws.column_dimensions['H'].width = 11.86
                 ws.column_dimensions['I'].width = 17.57
 
+                ws["A"+str(cont+1)] = d[0].codigo
+                ws["B"+str(cont+1)] = d[0].nombre
+                ws["C"+str(cont+1)] = d[0].unidad
+                ws["D"+str(cont+1)] = d[0].valor
+                ws["E"+str(cont+1)] = d[1]
+                ws["F"+str(cont+1)] = "=D"+str(cont)+"*E"+str(cont)
+                ws["G"+str(cont+1)] = d[2]
+                ws["H"+str(cont+1)] = d[3]
+                ws["I"+str(cont+1)] = d[4]
+
+                ws["A"+str(cont+1)].font = Font(bold = True)
+                ws["A"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["D"+str(cont+1)].number_format = '"$"#,##0.00_-'
+                ws["C"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["E"+str(cont+1)].number_format = '#,##0.00_-'
+                ws["F"+str(cont+1)].number_format = '"$"#,##0.00_-'
+                ws["G"+str(cont+1)].number_format = '#,##0.00_-'
+                ws["H"+str(cont+1)].number_format = '#,##0.00_-'
+                ws["I"+str(cont+1)].font = Font(bold = True)
+                ws["I"+str(cont+1)].number_format = '"$"#,##0.00_-'
+
                 cont += 1
 
             else: 
                 ws = wb.active
-                ws["A"+str(cont)] = d[0].codigo
-                ws["B"+str(cont)] = d[0].nombre
-                ws["C"+str(cont)] = d[0].unidad
-                ws["D"+str(cont)] = d[0].valor
-                ws["E"+str(cont)] = d[1]
-                ws["F"+str(cont)] = "=D"+str(cont)+"*E"+str(cont)
-                ws["G"+str(cont)] = d[2]
-                ws["H"+str(cont)] = d[3]
-                ws["I"+str(cont)] = d[4]
+                ws["A"+str(cont+1)] = d[0].codigo
+                ws["B"+str(cont+1)] = d[0].nombre
+                ws["C"+str(cont+1)] = d[0].unidad
+                ws["D"+str(cont+1)] = d[0].valor
+                ws["E"+str(cont+1)] = d[1]
+                ws["F"+str(cont+1)] = "=D"+str(cont)+"*E"+str(cont)
+                ws["G"+str(cont+1)] = d[2]
+                ws["H"+str(cont+1)] = d[3]
+                ws["I"+str(cont+1)] = d[4]
 
-                ws["A"+str(cont)].font = Font(bold = True)
-                ws["A"+str(cont)].alignment = Alignment(horizontal = "center")
-                ws["D"+str(cont)].number_format = '"$"#,##0.00_-'
-                ws["C"+str(cont)].alignment = Alignment(horizontal = "center")
-                ws["E"+str(cont)].number_format = '#,##0.00_-'
-                ws["F"+str(cont)].number_format = '"$"#,##0.00_-'
-                ws["G"+str(cont)].number_format = '#,##0.00_-'
-                ws["H"+str(cont)].number_format = '#,##0.00_-'
-                ws["I"+str(cont)].font = Font(bold = True)
-                ws["I"+str(cont)].number_format = '"$"#,##0.00_-'
+                ws["A"+str(cont+1)].font = Font(bold = True)
+                ws["A"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["D"+str(cont+1)].number_format = '"$"#,##0.00_-'
+                ws["C"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["E"+str(cont+1)].number_format = '#,##0.00_-'
+                ws["F"+str(cont+1)].number_format = '"$"#,##0.00_-'
+                ws["G"+str(cont+1)].number_format = '#,##0.00_-'
+                ws["H"+str(cont+1)].number_format = '#,##0.00_-'
+                ws["I"+str(cont+1)].font = Font(bold = True)
+                ws["I"+str(cont+1)].number_format = '"$"#,##0.00_-'
 
                 cont += 1
         cont = 1
@@ -1795,6 +1821,183 @@ class ReporteExplosion(TemplateView):
         response["Content-Disposition"] = contenido
         wb.save(response)
         return response
+
+class ReporteExplosionCap(TemplateView):
+
+    def get(self, request, id_proyecto, *args, **kwargs):
+        wb = Workbook()
+
+        #Aqui coloco la formula para calcular
+
+        contador_cap = 0
+
+        for i in range(37):
+
+            saldo = Saldoporcapitulo(id_proyecto)
+
+            datos_viejos = saldo
+
+            datos_saldo = []
+            capitulo = []
+
+            contador_cap += 1
+
+            for componentes in datos_viejos:
+
+                if int(componentes[1].id) == int(contador_cap):
+                    
+                    datos_saldo.append(componentes[2])
+                    capitulo.append(componentes[1])
+
+            articulos = []
+
+            for articulo in datos_saldo[0]:
+                articulos.append(articulo[0])
+
+            articulos = list(set(articulos))
+
+            articulos_cant = []
+
+            for articulo in articulos:
+
+                cantidad = 0
+
+                for art_can in datos_saldo[0]:
+
+                    if articulo == art_can[0] and art_can[1]>0:
+                        cantidad = cantidad + art_can[1]
+                articulos_cant.append((articulo, cantidad))
+            
+            saldo_cap = 0
+
+            datos_viejos = articulos_cant
+            datos_saldo = []
+
+            for dato in datos_viejos:
+                saldo_cap = saldo_cap + dato[0].valor*dato[1]
+                datos_saldo.append((dato[0], dato[1], float(dato[0].valor*dato[1])))
+
+            datos_viejos = datos_saldo
+            datos_saldo = []
+
+            for dato in datos_viejos:
+                inc = float(dato[2])/float(saldo_cap)*100
+                datos_saldo.append((dato[0], dato[1], dato[2], inc))
+
+
+            if len(datos_saldo) == 0:
+                datos_saldo = 0
+
+            else:
+
+                datos_saldo.sort(key=lambda tup: tup[3], reverse=True)
+
+                proyecto = Proyectos.objects.get(id = id_proyecto)
+
+                cont = 1
+                for d in datos_saldo:
+
+                    if cont == 1:
+                        if contador_cap == 1:
+                            ws = wb.active
+                        else:
+                            ws = wb.create_sheet("My sheet")
+                        ws.title = "CAP{0}".format(str(contador_cap))
+                        ws["A"+str(cont)] = "CODIGO"
+                        ws["B"+str(cont)] = "ARTICULO"
+                        ws["C"+str(cont)] = "UNIDAD"
+                        ws["D"+str(cont)] = "VALOR"
+                        ws["E"+str(cont)] = "PENDIENTE"
+                        ws["F"+str(cont)] = "SALDO PENDIENTE"
+                        ws["G"+str(cont)] = "INC"
+
+
+                        ws["A"+str(cont)].alignment = Alignment(horizontal = "center")
+                        ws["B"+str(cont)].alignment = Alignment(horizontal = "center")
+                        ws["C"+str(cont)].alignment = Alignment(horizontal = "center")
+                        ws["D"+str(cont)].alignment = Alignment(horizontal = "center")
+                        ws["E"+str(cont)].alignment = Alignment(horizontal = "center")
+                        ws["F"+str(cont)].alignment = Alignment(horizontal = "center")
+                        ws["G"+str(cont)].alignment = Alignment(horizontal = "center")
+
+
+                        ws["A"+str(cont)].font = Font(bold = True, color= "FDFFFF")
+                        ws["A"+str(cont)].fill =  PatternFill("solid", fgColor= "159ABB")
+                        ws["B"+str(cont)].font = Font(bold = True, color= "FDFFFF")
+                        ws["B"+str(cont)].fill =  PatternFill("solid", fgColor= "159ABB")
+                        ws["C"+str(cont)].font = Font(bold = True, color= "FDFFFF")
+                        ws["C"+str(cont)].fill =  PatternFill("solid", fgColor= "159ABB")
+                        ws["D"+str(cont)].font = Font(bold = True, color= "FDFFFF")
+                        ws["D"+str(cont)].fill =  PatternFill("solid", fgColor= "159ABB")
+                        ws["E"+str(cont)].font = Font(bold = True, color= "FDFFFF")
+                        ws["E"+str(cont)].fill =  PatternFill("solid", fgColor= "159ABB")
+                        ws["F"+str(cont)].font = Font(bold = True, color= "FDFFFF")
+                        ws["F"+str(cont)].fill =  PatternFill("solid", fgColor= "159ABB")
+                        ws["G"+str(cont)].font = Font(bold = True, color= "FDFFFF")
+                        ws["G"+str(cont)].fill =  PatternFill("solid", fgColor= "159ABB")
+
+
+                        ws.column_dimensions['A'].width = 11.29
+                        ws.column_dimensions['B'].width = 58.57
+                        ws.column_dimensions['C'].width = 8.57
+                        ws.column_dimensions['D'].width = 12.14
+                        ws.column_dimensions['E'].width = 18.57
+                        ws.column_dimensions['F'].width = 17.57
+                        ws.column_dimensions['G'].width = 12
+
+                        ws["A"+str(cont+1)] = d[0].codigo
+                        ws["B"+str(cont+1)] = d[0].nombre
+                        ws["C"+str(cont+1)] = d[0].unidad
+                        ws["D"+str(cont+1)] = d[0].valor
+                        ws["E"+str(cont+1)] = d[1]
+                        ws["F"+str(cont+1)] = d[2]
+                        ws["G"+str(cont+1)] = d[3]
+
+
+                        ws["A"+str(cont+1)].font = Font(bold = True)
+                        ws["B"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                        ws["C"+str(cont+1)].number_format = '"$"#,##0.00_-'
+                        ws["D"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                        ws["E"+str(cont+1)].number_format = '#,##0.00_-'
+                        ws["F"+str(cont+1)].number_format = '"$"#,##0.00_-'
+                        ws["G"+str(cont+1)].number_format = '#,##0.00_-"%"'
+
+                        cont += 1
+
+                    else:
+                        if contador_cap == 1: 
+                            ws = wb.active
+                        else:
+                            ws = wb["CAP{0}".format(str(contador_cap))]
+                        ws["A"+str(cont+1)] = d[0].codigo
+                        ws["B"+str(cont+1)] = d[0].nombre
+                        ws["C"+str(cont+1)] = d[0].unidad
+                        ws["D"+str(cont+1)] = d[0].valor
+                        ws["E"+str(cont+1)] = d[1]
+                        ws["F"+str(cont+1)] = d[2]
+                        ws["G"+str(cont+1)] = d[3]
+
+
+                        ws["A"+str(cont+1)].font = Font(bold = True)
+                        ws["B"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                        ws["C"+str(cont+1)].number_format = '"$"#,##0.00_-'
+                        ws["D"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                        ws["E"+str(cont+1)].number_format = '#,##0.00_-'
+                        ws["F"+str(cont+1)].number_format = '"$"#,##0.00_-'
+                        ws["G"+str(cont+1)].number_format = '#,##0.00_-"%"'
+        
+
+                        cont += 1
+
+        #Establecer el nombre del archivo
+        nombre_archivo = "ExplosionCap-{0}.xls".format(str(proyecto.nombre))
+        #Definir tipo de respuesta que se va a dar
+        response = HttpResponse(content_type = "application/ms-excel")
+        contenido = "attachment; filename = {0}".format(nombre_archivo)
+        response["Content-Disposition"] = contenido
+        wb.save(response)
+        return response
+
 
 def debugsaldo(id_proyecto):
 
