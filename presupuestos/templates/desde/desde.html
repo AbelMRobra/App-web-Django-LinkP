@@ -1,6 +1,7 @@
 {% extends "users/inicio.html" %}
 
 {% load static %}
+{% load humanize %}
 
 {% block content %}
 
@@ -44,11 +45,11 @@
             {% for i in datos.datos %}
             <tr class = "table-light">
                 <td> <b>{{i.parametros}}</b> </td>
-                <td>$ {{i.valor_costo|floatformat:2}}</td>
-                <td style="color: darkgreen;"> <b>U$A {{i.valor_costo_usd|floatformat:2}}</b> </td>
-                <td>$ {{i.valor_final|floatformat:2}}</td>
-                <td style="color: darkgreen;"> <b>U$A {{i.valor_final_usd|floatformat:2}}</b> </td>
-                <td>$ {{i.pricing|floatformat:2}}</td>
+                <td>$ {{i.valor_costo|floatformat:0|intcomma}}</td>
+                <td style="color: darkgreen;"> <b>U$A {{i.valor_costo_usd|floatformat:0|intcomma}}</b> </td>
+                <td>$ {{i.valor_final|floatformat:0|intcomma}}</td>
+                <td style="color: darkgreen;"> <b>U$A {{i.valor_final_usd|floatformat:0|intcomma}}</b> </td>
+                <td>$ {{i.pricing|floatformat:0|intcomma}}</td>
                 <td>{{i.parametros.proyecto.fecha_a}}</td>
                 
             

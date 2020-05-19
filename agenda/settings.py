@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'import_export',
     'registro',
     'ventas',
+    'django.contrib.humanize',
 ]
 
 MIDDLEWARE = [

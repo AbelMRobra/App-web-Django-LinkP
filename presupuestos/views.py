@@ -1364,7 +1364,50 @@ def proyectos(request):
 
 def InformeArea(request):
 
-    return render(request, 'presupuestos/informearea.html')
+    proyectos = Proyectos.objects.all()
+
+    #Armamos la lista de proyectos y presupuesto de reposición
+
+    proy_presup = []
+
+    for proyecto in proyectos:
+
+        datos = PresupuestoPorCapitulo(proyecto.id)
+
+        datos_viejos = datos
+
+        datos_presupuesto = []
+
+        for componentes in datos_viejos:
+
+            valor_capitulo = 0
+
+            for articulos in componentes[2]:
+
+                valor_capitulo = valor_capitulo + articulos[0].valor*articulos[1]
+            
+            datos_presupuesto.append((componentes[0], componentes[1], valor_capitulo ))
+
+        valor_proyecto = 0
+
+        for dato in datos_presupuesto:
+
+            valor_proyecto = valor_proyecto + dato[2]
+
+        if valor_proyecto > 0:
+
+            vr_M2 = valor_proyecto/proyecto.m2
+
+            proy_presup.append((proyecto, valor_proyecto, vr_M2))
+
+    print(proy_presup)
+
+    cant_proy_act = len(proy_presup)
+
+    datos = {"cantidad":cant_proy_act,
+    "datos":proy_presup}
+
+    return render(request, 'presupuestos/informearea.html', {"datos":datos})
 
 # --------------------------------> FUNCIONES Y CLASES USADAS EN LAS VISTAS <------------------------------------------------------
 
@@ -1767,7 +1810,7 @@ class ReporteExplosion(TemplateView):
                 ws["C"+str(cont+1)] = d[0].unidad
                 ws["D"+str(cont+1)] = d[0].valor
                 ws["E"+str(cont+1)] = d[1]
-                ws["F"+str(cont+1)] = "=D"+str(cont)+"*E"+str(cont)
+                ws["F"+str(cont+1)] = "=D"+str(cont+1)+"*E"+str(cont+1)
                 ws["G"+str(cont+1)] = d[2]
                 ws["H"+str(cont+1)] = d[3]
                 ws["I"+str(cont+1)] = d[4]

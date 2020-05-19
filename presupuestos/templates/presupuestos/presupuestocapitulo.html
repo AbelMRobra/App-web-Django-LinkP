@@ -1,5 +1,7 @@
 {% extends "users/inicio.html" %}
 
+{% load humanize %}
+
 {% load static %}
 
 {% block content %}
@@ -42,7 +44,7 @@
                 <td style="width: 25%;"> <b><a href="{% url 'Panel de presupuestos por analisis' id_proyecto=datos.proyecto.id id_capitulo=i.0.id %}" style="color: black;">{{i.0.nombre}}</a></b>  </td>
                 <td style="width: 40%;"> <small>{{i.0.descrip}}</small> </td>
                 <td style="width: 15%;"> ${{i.1|floatformat:2}} Millones</td>
-                <td style="width: 15%;"> {{i.2|floatformat:2}}%</td>                         
+                <td style="width: 15%;"> {{i.2|floatformat:0|intcomma}}%</td>                         
             </tr>
         </tbody>
 
@@ -51,7 +53,7 @@
         </table>
 
         <div style="text-align: center;">
-            <h6>Valor de reposición del proyecto: ${{datos.valor_proyecto_completo|floatformat:2}} <strong>(${{datos.valor_proyecto|floatformat:2}} Millones)</strong> </h6>
+            <h6>Valor de reposición del proyecto: ${{datos.valor_proyecto_completo|floatformat:0|intcomma}} <strong>(${{datos.valor_proyecto|floatformat:2}} Millones)</strong> </h6>
         </div>
 
         <div style="text-align: center;">

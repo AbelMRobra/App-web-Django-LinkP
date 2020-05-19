@@ -1,5 +1,7 @@
 {% extends "users/inicio.html" %}
 
+{% load humanize %}
+
 {% load static %}
 
 {% block content %}
@@ -35,10 +37,10 @@
 
             <tr class = "table-light">
                 <td style="width: 40%;"><b>{{i.0.nombre}} ({{i.0.unidad}})</b></td>
-                <td style="width: 15%;">${{i.0.valor|floatformat:2}}</td>
-                <td style="width: 15%;">{{i.1|floatformat:2}}</td>
-                <td style="width: 20%;"> ${{i.2|floatformat:2}} </td>
-                <td style="width: 10%;"> <b>{{i.3|floatformat:2}}% </b> </td>                         
+                <td style="width: 15%;">${{i.0.valor|floatformat:0|intcomma}}</td>
+                <td style="width: 15%;">{{i.1|floatformat:0|intcomma}}</td>
+                <td style="width: 20%;"> ${{i.2|floatformat:0|intcomma}} </td>
+                <td style="width: 10%;"> <b>{{i.3|floatformat:0|intcomma}}% </b> </td>                         
             </tr>
 
         {% endfor %}
@@ -48,7 +50,7 @@
         </table>
 
         <div style="text-align: center;">
-            <h6>El saldo del capitulo es ${{datos.saldo|floatformat:2}}</h6>
+            <h6>El saldo del capitulo es ${{datos.saldo|floatformat:0|intcomma}}</h6>
         </div>
 
         <div style="text-align: center;">
