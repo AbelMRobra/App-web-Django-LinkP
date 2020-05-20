@@ -37,7 +37,7 @@
 
             
 
-            {% for i in datos.datos %}
+            {% for i in datos.datos|slice:"20" %}
 
             <tr class = "table-light">
                 <td style="width: 10%;"><b>{{i.0.num_inv}}</b></td>
