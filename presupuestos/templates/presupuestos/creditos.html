@@ -7,7 +7,7 @@
 
 <div class = "jumbotron" style="background-color: white; margin-bottom: 0px;">
 
-    <h3 style="text-align: center; color: #17B5B5 ;">Explosión de insumos de {{datos.proyecto}}</h3>
+    <h3 style="text-align: center; color: #17B5B5 ;">Creditos del proyecto {{datos.proyecto}}</h3>
      <b><hr class = "my-4" style="width: 75%; border-color: #17B5B5 ;"></b>
 
      <form method="POST" style="text-align: center;">
@@ -32,17 +32,8 @@
 
      </form>
 
-     
-
-     {% if perms.presupuestos.view_modelopresupuesto%}
-
-     <div style="text-align:center">
-        <a href= "{% url 'Descarga Exp' id_proyecto=datos.proyecto.id %}" class="btn btn-outline-info" style="margin-top: 1%;" > Descargar</a>          
-    </div>  
-
-    {% endif %}
      <hr class = "my-4" style="width: 100%; border-color: #17B5B5 ;"></b>
-    {% if datos %} 
+    {% if datos.datos %} 
 
     <div>
 
@@ -50,12 +41,11 @@
             <thead>
     
                 <tr class = "table-info">
-                    <th scope = "row" style="vertical-align: middle;">ARTICULO</th>
-                    <th scope = "row" style="vertical-align: middle;">CANTIDAD PRESUPUESTO</th>
+                    <th scope = "row" style="vertical-align: middle;">ARTICULO</th>                    
                     <th scope = "row" style="vertical-align: middle;">VALOR </th>
-                    <th scope = "row" style="vertical-align: middle;">COMPRADO</th>
-                    <th scope = "row" style="vertical-align: middle;">CANTIDAD PENDIENTE</th>
-                    <th scope = "row" style="vertical-align: middle;">SALDO </th>            
+                    <th scope = "row" style="vertical-align: middle;">REQUERIDO </th>
+                    <th scope = "row" style="vertical-align: middle;">COMPRADO</th>                    
+                    <th scope = "row" style="vertical-align: middle;">CREDITO</th>            
                 </tr>
             </thead>
     
@@ -63,14 +53,13 @@
     
                 
     
-                {% for i in datos.datos|slice:"30" %}
+                {% for i in datos.datos %}
     
                 <tr class = "table-light">
-                    <td style="width: 30%;"><b>{{i.0}}</b></td>
-                    <td style="width: 15%;"> {{i.1|floatformat:0|intcomma}} ({{i.0.unidad}})</td>
-                    <td style="width: 10%;"> ${{i.0.valor|floatformat:0|intcomma}}</td>
-                    <td style="width: 15%;"> {{i.2|floatformat:0|intcomma}} ({{i.0.unidad}})</td> 
-                    <td style="width: 15%;"> {{i.3|floatformat:0|intcomma}} ({{i.0.unidad}})</td>
+                    <td style="width: 40%;"><b>{{i.0}}</b></td>                    
+                    <td style="width: 15%;"> ${{i.0.valor|floatformat:0|intcomma}}</td>
+                    <td style="width: 15%;"> ${{i.1|floatformat:0|intcomma}} ({{i.0.unidad}})</td>
+                    <td style="width: 15%;"> {{i.2|floatformat:0|intcomma}} ({{i.0.unidad}})</td>                     
                     <td style="width: 15%;"> ${{i.4|floatformat:0|intcomma}}</td>                        
                 </tr>
             </tbody>
@@ -81,9 +70,7 @@
 
     </div>
 
-    <div>
-        <small>El listado puede continuar, el maximo de filas visibles es de 30</small>
-    </div>
+
     <div style="text-align: center;">
         <p> <small>-- Link<strong>P</strong> --</small> </p>
 
@@ -93,9 +80,14 @@
 
 
      {% else %}
-            <div>
-                <h6>No existe registros actualmente</h6>
-            </div>
+     <div style="text-align: center;">
+        <h6> Este proyecto no tiene creditos </h6>
+        <small> Sigue asi</small>
+    </div>
+
+    <div style="text-align: center; margin-top: 2%; margin-bottom: 10%;">
+        <img src="{% static 'img/comunicaciones.png' %}" style="width: 10%; height: 10%;">
+    </div>
         
     {% endif %}
         

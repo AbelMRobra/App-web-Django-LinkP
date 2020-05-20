@@ -526,6 +526,55 @@ def debugsa(request, id_proyecto):
 
 
 # ----------------------------------------------------- VISTAS PARA PANEL PRESUPUESTOS - EXPLOSION ----------------------------------------------
+def creditos(request, id_proyecto):
+
+    proyecto = Proyectos.objects.get(id = id_proyecto)
+
+    datos = Creditocapitulo(id_proyecto)
+
+     #Aqui empieza el filtro
+
+    if request.method == 'POST':
+
+        palabra_buscar = request.POST.items()
+
+        datos_viejos = datos
+
+        datos = []   
+
+        for i in palabra_buscar:
+
+            if i[0] == "palabra":
+        
+                palabra_buscar = i[1]
+
+        if str(palabra_buscar) == "":
+
+            datos = datos_viejos
+
+        else:
+        
+            for i in datos_viejos:
+
+                palabra =(str(palabra_buscar))
+
+                buscador = (str(i[0]))
+
+                if palabra.lower() in buscador.lower():
+
+                    datos.append(i)
+
+
+    #Aqui termina el filtro
+
+    datos = {"datos":datos,
+    "proyecto":proyecto}
+
+  
+    return render(request, 'presupuestos/creditos.html', {"datos":datos})
+
+
+# ----------------------------------------------------- VISTAS PARA PANEL PRESUPUESTOS - EXPLOSION ----------------------------------------------
 def explosion(request, id_proyecto):
 
     proyecto = Proyectos.objects.get(id = id_proyecto)
@@ -1406,10 +1455,8 @@ def InformeArea(request):
 
             datos_viejos = saldo
 
-            datos_saldo = []
-
             valor_saldo = 0
-            saldo_mat = 0
+            valor_proyecto_materiales = 0
 
             for componentes in datos_viejos:
 
@@ -1422,31 +1469,13 @@ def InformeArea(request):
                         saldo_capitulo = saldo_capitulo + articulos[0].valor*articulos[1]
 
                         if str(articulos[0].codigo)[0] == "3":
-                            saldo_mat = saldo_mat + articulos[0].valor*articulos[1]
-                
-                datos_saldo.append((componentes[0], componentes[1], saldo_capitulo, saldo_mat ))
+                            valor_proyecto_materiales = valor_proyecto_materiales + articulos[0].valor*articulos[1]               
 
                 valor_saldo = valor_saldo + saldo_capitulo
 
-            #Combinamos ambos
-
-            datos = []
-
-            for p in datos_presupuesto:
-                for s in datos_saldo:
-                    if p[0] == s[0]:
-
-                        datos.append((p[0], p[1], p[2], s[2]))
-
-            valor_saldo = 0
-
-            for dato in datos:
-                valor_saldo = valor_saldo + dato[2]
-                valor_proyecto_materiales = valor_proyecto_materiales + dato[3]
 
             valor_proyecto_mo = valor_saldo - valor_proyecto_materiales
                 
-
             vr_M2 = valor_proyecto/proyecto.m2
 
             creditos = Creditocapitulo(proyecto.id)
@@ -1456,7 +1485,9 @@ def InformeArea(request):
             for credito in creditos:
                 total_creditos =  total_creditos + credito[4]
 
-            proy_presup.append((proyecto, valor_proyecto, vr_M2, valor_proyecto_materiales, valor_proyecto_mo, total_creditos))
+            saldo_total = valor_proyecto_materiales + valor_proyecto_mo + total_creditos
+
+            proy_presup.append((proyecto, valor_proyecto, vr_M2, valor_proyecto_materiales, valor_proyecto_mo, total_creditos, saldo_total))
 
     cant_proy_act = len(proy_presup)
 
