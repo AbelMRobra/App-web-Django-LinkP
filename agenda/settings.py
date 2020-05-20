@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'registro',
     'ventas',
     'django.contrib.humanize',
+    'sigma',
 ]
 
 MIDDLEWARE = [

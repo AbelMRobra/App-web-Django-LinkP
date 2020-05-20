@@ -1,0 +1,90 @@
+{% extends "users/inicio.html" %}
+
+{% load humanize %}
+
+{% load static %}
+
+{% block content %}
+
+<div class = "jumbotron" style="background-color: white; margin-bottom: 0px;">
+
+    <h3 style="text-align: center; color: #17B5B5 ;">Inventario de SIGMA</h3>
+    <h6 style="text-align: center; color: #17B5B5 ;"> Equipos y herramientas - Valor actual ${{datos.total|floatformat:0|intcomma}}</h6>
+     <b><hr class = "my-4" style="width: 75%; border-color: #17B5B5 ;"></b>
+
+     {% if datos %}
+
+ 
+ <b><hr class = "my-4" style="width: 100%; border-color: #17B5B5 ;"></b>
+     
+
+    <table class = "table table-hover" style="text-align: center;">
+        <thead>
+
+            <tr class = "table-info">
+                <th scope = "row" style="vertical-align: middle;"> <font style = "vertical-align: heredar;"> NUMERO INVENTARIO </font></th>
+                <th scope = "row" style="vertical-align: middle;"> <font style = "vertical-align: heredar;"> ARTICULO </font></th>
+                <th scope = "row" style="vertical-align: middle;"> <font style = "vertical-align: heredar;"> VALOR </font></th>
+                <th scope = "row" style="vertical-align: middle;"> <font style = "vertical-align: heredar;"> FECHA COMPRA </font></th>
+                <th scope = "row" style="vertical-align: middle;"> <font style = "vertical-align: heredar;"> AMORT.</font></th>
+                <th scope = "row" style="vertical-align: middle;"> <font style = "vertical-align: heredar;"> VALOR AMORT.</font></th>
+                <th scope = "row" style="vertical-align: middle;"> <font style = "vertical-align: heredar;"> FECHA AMORT</font></th>
+                              
+            </tr>
+        </thead>
+
+        <tbody>
+
+            
+
+            {% for i in datos.datos %}
+
+            <tr class = "table-light">
+                <td style="width: 10%;"><b>{{i.0.num_inv}}</b></td>
+                <td style="width: 25%;"> <b><a href="#" style="color: black;">{{i.0.articulo.nombre}}</a></b>  </td>
+                <td style="width: 10%;">${{i.0.articulo.valor|floatformat:0|intcomma}}</td>
+                <td style="width: 10%;"> {{i.0.fecha_compra}}</td>
+                <td style="width: 10%;"> {{i.0.amortizacion}} años</td>
+                <td style="width: 10%;"> ${{i.1|floatformat:0|intcomma}}</td>
+                <td style="width: 15%;">{{i.2}}</td>                         
+            </tr>
+        </tbody>
+
+            {% endfor %}
+
+        </table>
+
+        <div style="text-align: center;">
+            <h6>Valor de reposición del proyecto: ${{datos.valor_proyecto_completo|floatformat:0|intcomma}} <strong>(${{datos.valor_proyecto|floatformat:2}} Millones)</strong> </h6>
+        </div>
+
+        <div style="text-align: center;">
+            <p> <small>-- Link<strong>P</strong> --</small> </p>
+    
+         </div>
+
+     {% else %}
+     
+     <div style="text-align: center;">
+        <h6> Este presupuesto aun no esta cargado! </h6>
+        <small> Para mas información consulte a <b>AR</b></small>
+    </div>
+
+    <div style="text-align: center; margin-top: 2%; margin-bottom: 10%;">
+        <img src="{% static 'img/comunicaciones.png' %}" style="width: 10%; height: 10%;">
+    </div>
+
+    <div style="text-align: center;">
+        <p> <small>-- Link<strong>P</strong> --</small> </p>
+
+     </div>
+        
+    {% endif %}
+        
+
+   
+                    
+</div>
+ 
+    
+{% endblock %}
