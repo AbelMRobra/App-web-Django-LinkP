@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import RegistroConstantes, RegistroValorProyecto
+from .models import RegistroConstantes, RegistroValorProyecto, RegistroLeccionesAprendidasPresup
 from import_export import resources
 from import_export.admin import ImportExportModelAdmin
 
@@ -23,6 +23,16 @@ class RegistroValorProyectoAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     search_fields = ('proyecto__nombre',  'fecha', 'precio_proyecto')
     resources_class = RegistroValorProyectoResource
 
+class RegistroLecAprenPresupResource(resources.ModelResource):
+    class Meta:
+        model = RegistroLeccionesAprendidasPresup
+
+class RegistroLecAprenPresupAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    list_display = ('area', 'nombre', 'confeciona', 'tema', 'fecha_actualizacion')
+    search_fields = ('area', 'nombre', 'confeciona', 'tema', 'fecha_actualizacion')
+    resources_class = RegistroLecAprenPresupResource
+
 
 admin.site.register(RegistroConstantes, RegistrosConstanteAdmin)
 admin.site.register(RegistroValorProyecto, RegistroValorProyectoAdmin)
+admin.site.register(RegistroLeccionesAprendidasPresup, RegistroLecAprenPresupAdmin)

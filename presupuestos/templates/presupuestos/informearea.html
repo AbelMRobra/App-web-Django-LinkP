@@ -63,16 +63,16 @@
             <tbody>
     
                 <tr class = "table-light">
-                    <td style="width: 20%;"> <b>{{ i.0 }}</b> </td>
-                    <td style="width: 10%;"> ${{ i.1|floatformat:0|intcomma }} </td> 
-                    <td style="width: 10%;"> ${{ i.2|floatformat:0|intcomma }} </td> 
-                    <td style="width: 50%;">  </td> 
-                    <td style="width: 50%;">  </td> 
-                    <td style="width: 50%;">  </td> 
-                    <td style="width: 50%;">  </td> 
-                    <td style="width: 50%;">  </td> 
-                    <td style="width: 50%;">  </td> 
-                    <td style="width: 50%;">  </td> 
+                    <td style="width: 15%;"> <b>{{ i.0 }}</b> </td>
+                    <td style="width: 10%;"> ${{ i.1|floatformat:0|intcomma }}</td> 
+                    <td style="width: 5%;"> ${{ i.2|floatformat:0|intcomma }}</td> 
+                    <td style="width: 10%;">${{ i.3|floatformat:0|intcomma }}</td> 
+                    <td style="width: 10%;">${{ i.5|floatformat:0|intcomma }}</td> 
+                    <td style="width: 10%;">  </td> 
+                    <td style="width: 10%;">${{ i.4|floatformat:0|intcomma }}</td> 
+                    <td style="width: 10%;">  </td> 
+                    <td style="width: 10%;">  </td> 
+                    <td style="width: 10%;">  </td> 
               
                 </tr>
             </tbody>
@@ -81,6 +81,12 @@
         </table> 
 
     <small>* V.R --> Valor de reposición del proyecto NETO</small>
+    <div>
+
+        <small>* Para ver conocer el saldo ingrese al panel de presupuestos en presupuestos </small> 
+
+    </div>
+    
         <b><hr class = "my-4" style="width: 100%; border-color: black ;"></b>   
     </div>
 

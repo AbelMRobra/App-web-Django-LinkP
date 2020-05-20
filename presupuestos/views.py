@@ -1366,7 +1366,7 @@ def InformeArea(request):
 
     proyectos = Proyectos.objects.all()
 
-    #Armamos la lista de proyectos y presupuesto de reposición
+    #Armamos la lista de proyectos y presupuesto de reposición !Corregir porque calcula Mat y Mo del Valor Repo no Saldo
 
     proy_presup = []
 
@@ -1386,25 +1386,81 @@ def InformeArea(request):
 
                 valor_capitulo = valor_capitulo + articulos[0].valor*articulos[1]
             
-            datos_presupuesto.append((componentes[0], componentes[1], valor_capitulo ))
+            datos_presupuesto.append((componentes[0], componentes[1], valor_capitulo))
 
         valor_proyecto = 0
+        valor_proyecto_materiales = 0
+        valor_proyecto_mo = 0
+
 
         for dato in datos_presupuesto:
 
             valor_proyecto = valor_proyecto + dato[2]
 
+
         if valor_proyecto > 0:
+            
+            #Armamos el saldo de cada capitulo
+
+            saldo = Saldoporcapitulo(proyecto.id)
+
+            datos_viejos = saldo
+
+            datos_saldo = []
+
+            valor_saldo = 0
+            saldo_mat = 0
+
+            for componentes in datos_viejos:
+
+                saldo_capitulo = 0
+
+                for articulos in componentes[2]:
+
+                    if articulos[1] > 0:
+
+                        saldo_capitulo = saldo_capitulo + articulos[0].valor*articulos[1]
+
+                        if str(articulos[0].codigo)[0] == "3":
+                            saldo_mat = saldo_mat + articulos[0].valor*articulos[1]
+                
+                datos_saldo.append((componentes[0], componentes[1], saldo_capitulo, saldo_mat ))
+
+                valor_saldo = valor_saldo + saldo_capitulo
+
+            #Combinamos ambos
+
+            datos = []
+
+            for p in datos_presupuesto:
+                for s in datos_saldo:
+                    if p[0] == s[0]:
+
+                        datos.append((p[0], p[1], p[2], s[2]))
+
+            valor_saldo = 0
+
+            for dato in datos:
+                valor_saldo = valor_saldo + dato[2]
+                valor_proyecto_materiales = valor_proyecto_materiales + dato[3]
+
+            valor_proyecto_mo = valor_saldo - valor_proyecto_materiales
+                
 
             vr_M2 = valor_proyecto/proyecto.m2
 
-            proy_presup.append((proyecto, valor_proyecto, vr_M2))
+            creditos = Creditocapitulo(proyecto.id)
 
-    print(proy_presup)
+            total_creditos = 0
+
+            for credito in creditos:
+                total_creditos =  total_creditos + credito[4]
+
+            proy_presup.append((proyecto, valor_proyecto, vr_M2, valor_proyecto_materiales, valor_proyecto_mo, total_creditos))
 
     cant_proy_act = len(proy_presup)
 
-    datos = {"cantidad":cant_proy_act,
+    datos = {"cantidad":cant_proy_act,   
     "datos":proy_presup}
 
     return render(request, 'presupuestos/informearea.html', {"datos":datos})
@@ -1629,6 +1685,112 @@ def Saldoporcapitulo(id_proyecto):
 
 
     return saldo_capitulo
+
+def Creditocapitulo(id_proyecto):
+
+    proyecto = Proyectos.objects.get(id = id_proyecto)
+    modelo = Modelopresupuesto.objects.filter(proyecto = proyecto)
+
+    #Con el siguiente conjunto de formulas creamos la explosión de insumos
+    
+    crudo_analisis = []
+
+    for i in modelo:
+
+        if i.cantidad != None:
+
+            crudo_analisis.append((i.analisis, i.cantidad))
+
+        else:
+
+            if "SOLO MANO DE OBRA" in str(i.analisis.nombre):
+
+                computos = Computos.objects.filter(tipologia = i.vinculacion, proyecto = proyecto)
+
+                cantidad = 0
+
+                for r in computos:
+                    cantidad = cantidad + r.valor_vacio
+
+                crudo_analisis.append((i.analisis, cantidad))
+
+            else:
+
+                computos = Computos.objects.filter(tipologia = i.vinculacion, proyecto = proyecto)
+
+                cantidad = 0
+
+                for r in computos:
+                    cantidad = cantidad + r.valor_lleno
+
+                crudo_analisis.append((i.analisis, cantidad))
+
+    crudo_articulos = []
+
+
+    for c in crudo_analisis:
+
+        analisis = CompoAnalisis.objects.filter(analisis = c[0])
+
+        for d in analisis:
+
+            cantidad = d.cantidad*c[1]
+
+            crudo_articulos.append((d.articulo, cantidad))
+
+    datos = []
+
+    for t in crudo_articulos:
+        datos.append(t[0])
+
+    datos = list(set(datos))
+
+    datos_viejos = datos
+    datos = []
+
+    for i in datos_viejos:
+        cantidad = 0
+        for c in crudo_articulos:
+            if i == c[0]:
+                cantidad = cantidad + c[1]
+        datos.append((i, cantidad))
+
+
+    compras = Compras.objects.filter(proyecto = proyecto)
+
+    comprado_aux = ""
+
+    for dato in datos:
+        comprado_aux = comprado_aux + str(dato[0])
+
+    datos_viejos = datos
+    
+    datos = []
+
+    for i in datos_viejos:
+        comprado = 0
+        for c in compras:
+            if c.proyecto == proyecto and c.articulo == i[0]:
+                comprado = comprado + c.cantidad
+        
+        cantidad_saldo = i[1] - comprado
+
+        saldo = cantidad_saldo * i[0].valor
+
+        if saldo < 0:
+        
+            datos.append((i[0], i[1], comprado, cantidad_saldo, saldo ))
+
+    #Esta parte arma los articulos que no estan en el presupuesto
+
+
+    for compra in compras:
+        if str(compra.articulo.nombre) not in comprado_aux and compra.proyecto == proyecto:
+            saldo = compra.articulo.valor*compra.cantidad
+            datos.append((compra.articulo, 0, compra.cantidad, -compra.cantidad, -saldo))
+
+    return datos
+
 
 class ReporteExplosion(TemplateView):
 
