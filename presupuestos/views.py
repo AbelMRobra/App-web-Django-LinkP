@@ -532,6 +532,11 @@ def creditos(request, id_proyecto):
 
     datos = Creditocapitulo(id_proyecto)
 
+    valor_saldo = 0
+
+    for dato in datos:
+        valor_saldo = valor_saldo + dato[4]
+
      #Aqui empieza el filtro
 
     if request.method == 'POST':
@@ -568,7 +573,8 @@ def creditos(request, id_proyecto):
     #Aqui termina el filtro
 
     datos = {"datos":datos,
-    "proyecto":proyecto}
+    "proyecto":proyecto,
+    "valor_saldo":valor_saldo}
 
   
     return render(request, 'presupuestos/creditos.html', {"datos":datos})
@@ -1478,6 +1484,8 @@ def InformeArea(request):
                 
             vr_M2 = valor_proyecto/proyecto.m2
 
+            #Aqui sacamos los creditos
+
             creditos = Creditocapitulo(proyecto.id)
 
             total_creditos = 0
@@ -1485,9 +1493,20 @@ def InformeArea(request):
             for credito in creditos:
                 total_creditos =  total_creditos + credito[4]
 
-            saldo_total = valor_proyecto_materiales + valor_proyecto_mo + total_creditos
+            #Aqui sacamos los fdr
 
-            proy_presup.append((proyecto, valor_proyecto, vr_M2, valor_proyecto_materiales, valor_proyecto_mo, total_creditos, saldo_total))
+            fdr = Fondosdereparo(proyecto.id)
+
+            print(fdr)
+
+            total_fdr = 0
+
+            for f in fdr:
+                total_fdr = total_fdr + f[1]
+
+            saldo_total = valor_proyecto_materiales + valor_proyecto_mo + total_creditos - total_fdr
+
+            proy_presup.append((proyecto, valor_proyecto, vr_M2, valor_proyecto_materiales, valor_proyecto_mo, total_creditos, saldo_total, total_fdr))
 
     cant_proy_act = len(proy_presup)
 
@@ -1497,6 +1516,32 @@ def InformeArea(request):
     return render(request, 'presupuestos/informearea.html', {"datos":datos})
 
 # --------------------------------> FUNCIONES Y CLASES USADAS EN LAS VISTAS <------------------------------------------------------
+
+def Fondosdereparo(id_proyecto):
+    proyecto = Proyectos.objects.get(id = id_proyecto)
+    articulo = Articulos.objects.get(codigo = 9998005201)
+    datos = Compras.objects.filter(proyecto = proyecto, articulo = articulo)
+
+    datos_viejos = datos
+    proveedores = []
+    for dato in datos:
+        proveedores.append(dato.proveedor)
+
+    proveedores = list(set(proveedores))
+
+    datos = []
+
+    for proveedor in proveedores:
+        monto_fdr = 0
+        for dato in datos_viejos:
+            if dato.proveedor == proveedor:
+                monto_fdr = monto_fdr + articulo.valor*dato.cantidad
+        datos.append((proveedor, monto_fdr))
+
+    return datos
+
+
+
 
 def PresupuestoPorCapitulo(id_proyecto):
 
@@ -1816,7 +1861,7 @@ def Creditocapitulo(id_proyecto):
 
 
     for compra in compras:
-        if str(compra.articulo.nombre) not in comprado_aux and compra.proyecto == proyecto:
+        if str(compra.articulo.nombre) not in comprado_aux and compra.proyecto == proyecto and str(compra.articulo.nombre)!="FONDO DE REPARO ACT. UOCRA" :
             saldo = compra.articulo.valor*compra.cantidad
             datos.append((compra.articulo, 0, compra.cantidad, -compra.cantidad, -saldo))
 

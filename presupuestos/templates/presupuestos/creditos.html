@@ -44,7 +44,8 @@
                     <th scope = "row" style="vertical-align: middle;">ARTICULO</th>                    
                     <th scope = "row" style="vertical-align: middle;">VALOR </th>
                     <th scope = "row" style="vertical-align: middle;">REQUERIDO </th>
-                    <th scope = "row" style="vertical-align: middle;">COMPRADO</th>                    
+                    <th scope = "row" style="vertical-align: middle;">COMPRADO</th>
+                    <th scope = "row" style="vertical-align: middle;">SOBRANTE</th>                      
                     <th scope = "row" style="vertical-align: middle;">CREDITO</th>            
                 </tr>
             </thead>
@@ -59,7 +60,8 @@
                     <td style="width: 40%;"><b>{{i.0}}</b></td>                    
                     <td style="width: 15%;"> ${{i.0.valor|floatformat:0|intcomma}}</td>
                     <td style="width: 15%;"> ${{i.1|floatformat:0|intcomma}} ({{i.0.unidad}})</td>
-                    <td style="width: 15%;"> {{i.2|floatformat:0|intcomma}} ({{i.0.unidad}})</td>                     
+                    <td style="width: 15%;"> {{i.2|floatformat:0|intcomma}} ({{i.0.unidad}})</td>
+                    <td style="width: 15%;"> {{i.3|floatformat:0|intcomma}} ({{i.0.unidad}})</td>                     
                     <td style="width: 15%;"> ${{i.4|floatformat:0|intcomma}}</td>                        
                 </tr>
             </tbody>
@@ -68,6 +70,10 @@
     
             </table>
 
+    </div>
+
+    <div style="text-align: center;">
+        <h6>Valor de reposición del proyecto: ${{datos.valor_saldo|floatformat:0|intcomma}} <strong>(${{datos.valor_proyecto|floatformat:2}} Millones)</strong> </h6>
     </div>
 
 
