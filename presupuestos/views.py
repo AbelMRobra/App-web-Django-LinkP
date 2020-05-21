@@ -525,7 +525,7 @@ def debugsa(request, id_proyecto):
     return render(request, 'presupuestos/debugsaldo.html', {"datos":datos})
 
 
-# ----------------------------------------------------- VISTAS PARA PANEL PRESUPUESTOS - EXPLOSION ----------------------------------------------
+# ----------------------------------------------------- VISTAS PARA PANEL PRESUPUESTOS - CREDITOS ----------------------------------------------
 def creditos(request, id_proyecto):
 
     proyecto = Proyectos.objects.get(id = id_proyecto)
@@ -578,6 +578,62 @@ def creditos(request, id_proyecto):
 
   
     return render(request, 'presupuestos/creditos.html', {"datos":datos})
+
+
+# ----------------------------------------------------- VISTAS PARA PANEL PRESUPUESTOS - FONDES DE REPARO ----------------------------------------------
+def fdr(request, id_proyecto):
+
+    proyecto = Proyectos.objects.get(id = id_proyecto)
+
+    datos = Fondosdereparo(id_proyecto)
+
+    valor_fdr = 0
+
+    for dato in datos:
+        valor_fdr = valor_fdr + dato[1]
+
+     #Aqui empieza el filtro
+
+    if request.method == 'POST':
+
+        palabra_buscar = request.POST.items()
+
+        datos_viejos = datos
+
+        datos = []   
+
+        for i in palabra_buscar:
+
+            if i[0] == "palabra":
+        
+                palabra_buscar = i[1]
+
+        if str(palabra_buscar) == "":
+
+            datos = datos_viejos
+
+        else:
+        
+            for i in datos_viejos:
+
+                palabra =(str(palabra_buscar))
+
+                buscador = (str(i[0]))
+
+                if palabra.lower() in buscador.lower():
+
+                    datos.append(i)
+
+
+    #Aqui termina el filtro
+
+    datos = {"datos":datos,
+    "proyecto":proyecto,
+    "valor_fdr":valor_fdr}
+
+  
+    return render(request, 'presupuestos/fdr.html', {"datos":datos})
+
 
 
 # ----------------------------------------------------- VISTAS PARA PANEL PRESUPUESTOS - EXPLOSION ----------------------------------------------

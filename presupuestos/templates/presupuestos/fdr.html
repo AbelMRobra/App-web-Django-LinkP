@@ -1,0 +1,101 @@
+{% extends "users/inicio.html" %}
+
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+
+<div class = "jumbotron" style="background-color: white; margin-bottom: 0px;">
+
+    <h3 style="text-align: center; color: #17B5B5 ;">Fondos de reparo {{datos.proyecto}}</h3>
+
+     <b><hr class = "my-4" style="width: 75%; border-color: #17B5B5 ;"></b>
+
+     <form method="POST" style="text-align: center;">
+
+        {% csrf_token %}
+
+        <div style="display: inline-block; margin-left: 1rem;">
+
+            <label for="palabra"><h6>Buscar</h6></label>
+
+        </div>
+        
+        <div style="display: inline-block; margin-left: 1rem; ">
+
+            <input name="palabra" type="text" class="form-control form-control" placeholder="Buscar por palabra" list="art" style="width: 30rem;">
+
+        </div>
+
+        <div>
+            <button class="btn btn-info" type="submit" style="margin-top: 1%;">Buscar</button>          
+        </div>       
+
+     </form>
+
+     <hr class = "my-4" style="width: 100%; border-color: #17B5B5 ;"></b>
+    {% if datos.datos %} 
+
+    <div>
+
+        <table class = "table table-hover" style="text-align: center;">
+            <thead>
+    
+                <tr class = "table-info">
+                    <th scope = "row" style="vertical-align: middle;">PROVEEDOR</th>
+                    <th scope = "row" style="vertical-align: middle;">DESCRPCIÓN</th>
+                    <th scope = "row" style="vertical-align: middle;">CONTACTO</th>                       
+                    <th scope = "row" style="vertical-align: middle;">MONDO ADEUDADO</th>           
+                </tr>
+            </thead>
+    
+            <tbody>
+  
+                {% for i in datos.datos %}
+    
+                <tr class = "table-light">
+                    <td style="width: 20%;"><b>{{i.0.name}}</b></td>                    
+                    <td style="width: 30%;"> {{i.0.descrip}}</td>
+                    <td style="width: 30%;"> {{i.0.phone}}</td>
+                    <td style="width: 20%;"> ${{i.1|floatformat:0|intcomma}}</td>                     
+                </tr>
+            </tbody>
+    
+                {% endfor %}
+    
+            </table>
+
+    </div>
+
+    <div style="text-align: center;">
+        <h6>Valor de reposición del proyecto: ${{datos.valor_fdr|floatformat:0|intcomma}}</h6>
+    </div>
+
+
+    <div style="text-align: center;">
+        <p> <small>-- Link<strong>P</strong> --</small> </p>
+
+     </div>
+
+    
+
+
+     {% else %}
+     <div style="text-align: center;">
+        <h6> Este proyecto no tiene creditos </h6>
+        <small> Sigue asi</small>
+    </div>
+
+    <div style="text-align: center; margin-top: 2%; margin-bottom: 10%;">
+        <img src="{% static 'img/comunicaciones.png' %}" style="width: 10%; height: 10%;">
+    </div>
+        
+    {% endif %}
+        
+
+   
+                    
+</div>
+ 
+    
+{% endblock %}

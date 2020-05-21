@@ -29,6 +29,7 @@ urlpatterns = [
     url(r'^debugsa/(?P<id_proyecto>\d+)/$', login_required(views.debugsa), name = 'Debug Saldo'),
     url(r'^explosion/(?P<id_proyecto>\d+)/$', login_required(views.explosion), name = 'Explosión de insumos'),
     url(r'^creditos/(?P<id_proyecto>\d+)/$', login_required(views.creditos), name = 'Creditos de proyectos'),
+    url(r'^fdr/(?P<id_proyecto>\d+)/$', login_required(views.fdr), name = 'Fondos de reparo'),
     url(r'^des_explosion/(?P<id_proyecto>\d+)/$', login_required(ReporteExplosion.as_view()), name = 'Descarga Exp'),
     url(r'^des_explosion_cap/(?P<id_proyecto>\d+)/$', login_required(ReporteExplosionCap.as_view()), name = 'Descarga Exp Cap'),
     url(r'^presupuestos_cap/(?P<id_proyecto>\d+)/$', login_required(views.presupuestoscapitulo), name = 'Panel de presupuestos por capitulo'),
