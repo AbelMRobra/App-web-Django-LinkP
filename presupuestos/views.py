@@ -1553,16 +1553,23 @@ def InformeArea(request):
 
             fdr = Fondosdereparo(proyecto.id)
 
-            print(fdr)
-
             total_fdr = 0
 
             for f in fdr:
                 total_fdr = total_fdr + f[1]
 
-            saldo_total = valor_proyecto_materiales + valor_proyecto_mo + total_creditos - total_fdr
+            #Aqui sacamos anticipos
 
-            proy_presup.append((proyecto, valor_proyecto, vr_M2, valor_proyecto_materiales, valor_proyecto_mo, total_creditos, saldo_total, total_fdr))
+            ant = AnticiposFinan(proyecto.id)
+
+            total_ant = 0
+
+            for a in ant:
+                total_ant = total_ant + a[1]
+
+            saldo_total = valor_proyecto_materiales + valor_proyecto_mo + total_creditos - total_fdr - total_ant
+
+            proy_presup.append((proyecto, valor_proyecto, vr_M2, valor_proyecto_materiales, valor_proyecto_mo, total_creditos, saldo_total, total_fdr, total_ant))
 
     cant_proy_act = len(proy_presup)
 
@@ -1572,6 +1579,30 @@ def InformeArea(request):
     return render(request, 'presupuestos/informearea.html', {"datos":datos})
 
 # --------------------------------> FUNCIONES Y CLASES USADAS EN LAS VISTAS <------------------------------------------------------
+
+def AnticiposFinan(id_proyecto):
+    proyecto = Proyectos.objects.get(id = id_proyecto)
+    articulo = Articulos.objects.get(codigo = 9998005250)
+    datos = Compras.objects.filter(proyecto = proyecto, articulo = articulo)
+
+    datos_viejos = datos
+    proveedores = []
+    for dato in datos:
+        proveedores.append(dato.proveedor)
+
+    proveedores = list(set(proveedores))
+
+    datos = []
+
+    for proveedor in proveedores:
+        monto_fdr = 0
+        for dato in datos_viejos:
+            if dato.proveedor == proveedor:
+                monto_fdr = monto_fdr + articulo.valor*dato.cantidad
+        datos.append((proveedor, monto_fdr))
+
+    return datos
+
 
 def Fondosdereparo(id_proyecto):
     proyecto = Proyectos.objects.get(id = id_proyecto)
