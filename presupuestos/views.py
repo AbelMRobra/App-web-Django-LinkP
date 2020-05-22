@@ -635,6 +635,61 @@ def fdr(request, id_proyecto):
     return render(request, 'presupuestos/fdr.html', {"datos":datos})
 
 
+# ----------------------------------------------------- VISTAS PARA PANEL PRESUPUESTOS - ANTICIPOS ----------------------------------------------
+def anticiposf(request, id_proyecto):
+
+    proyecto = Proyectos.objects.get(id = id_proyecto)
+
+    datos = AnticiposFinan(id_proyecto)
+
+    valor_ant = 0
+
+    for dato in datos:
+        valor_ant = valor_ant + dato[1]
+
+     #Aqui empieza el filtro
+
+    if request.method == 'POST':
+
+        palabra_buscar = request.POST.items()
+
+        datos_viejos = datos
+
+        datos = []   
+
+        for i in palabra_buscar:
+
+            if i[0] == "palabra":
+        
+                palabra_buscar = i[1]
+
+        if str(palabra_buscar) == "":
+
+            datos = datos_viejos
+
+        else:
+        
+            for i in datos_viejos:
+
+                palabra =(str(palabra_buscar))
+
+                buscador = (str(i[0]))
+
+                if palabra.lower() in buscador.lower():
+
+                    datos.append(i)
+
+
+    #Aqui termina el filtro
+
+    datos = {"datos":datos,
+    "proyecto":proyecto,
+    "valor_fdr":valor_ant}
+
+  
+    return render(request, 'presupuestos/anticiposf.html', {"datos":datos})
+
+
 
 # ----------------------------------------------------- VISTAS PARA PANEL PRESUPUESTOS - EXPLOSION ----------------------------------------------
 def explosion(request, id_proyecto):
@@ -1948,7 +2003,7 @@ def Creditocapitulo(id_proyecto):
 
 
     for compra in compras:
-        if str(compra.articulo.nombre) not in comprado_aux and compra.proyecto == proyecto and str(compra.articulo.nombre)!="FONDO DE REPARO ACT. UOCRA" :
+        if str(compra.articulo.nombre) not in comprado_aux and compra.proyecto == proyecto and str(compra.articulo.nombre)!="FONDO DE REPARO ACT. UOCRA" and str(compra.articulo.nombre)!="ANTICIPO FINANCIERO ACT. UOCRA" :
             saldo = compra.articulo.valor*compra.cantidad
             datos.append((compra.articulo, 0, compra.cantidad, -compra.cantidad, -saldo))
 
