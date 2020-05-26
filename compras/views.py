@@ -438,7 +438,6 @@ def informe(request):
         compras_actualizado = compras_actualizado + (articulo.valor*i.cantidad)/1000000
         
 
-
     # --> Metodo para calcular el stock
 
     stock = compras_ant
@@ -559,7 +558,6 @@ def informe(request):
     
     listas_pro = sorted(listas_pro, key=lambda tup: tup[1], reverse=True)
     
-
     datos = {"stock_valorizado":stock_valorizado,
     "stock_valorizado_m":stock_valorizado_m,
     "stock_valorizado_usd":stock_valorizado_usd,

@@ -99,6 +99,7 @@ class DatosProyectos(models.Model):
 class Presupuestos(models.Model):
     proyecto = models.ForeignKey(Proyectos, on_delete=models.CASCADE, verbose_name = "Proyectos")
     valor = models.FloatField(verbose_name= "Valor del proyecto")
+    imprevisto = models.FloatField(verbose_name= "Saldo del imprevisto", null=True, blank=True)
     fecha_a = models.DateField(auto_now=True, verbose_name= "Fecha de actualización")
 
     class Meta:

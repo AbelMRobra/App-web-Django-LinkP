@@ -1,5 +1,8 @@
 {% extends "users/inicio.html" %}
 
+
+{% load humanize %}
+
 {% load static %}
 
 {% block content %}
@@ -17,13 +20,13 @@
         <thead>
 
             <tr class = "table-info">
-                <th scope = "row"> <font style = "vertical-align: heredar;"> CODIGO </font></th>
-                <th scope = "row"> <font style = "vertical-align: heredar;"> NOMBRE DEL ARTICULO </font></th>
-                <th scope = "row"> <font style = "vertical-align: heredar;"> UN </font></th>
-                <th scope = "row"> <font style = "vertical-align: heredar;"> VALOR </font></th>
-                <th scope = "row"> <font style = "vertical-align: heredar;"> CANTIDAD </font></th>
-                <th scope = "row"> <font style = "vertical-align: heredar;"> TOTALES </font></th>
-                <th scope = "row"> <font style = "vertical-align: heredar;"> INC </font></th>
+                <th scope = "row" style="vertical-align: middle;"> CODIGO </th>
+                <th scope = "row" style="vertical-align: middle;">NOMBRE DEL ARTICULO</th>
+                <th scope = "row" style="vertical-align: middle;">UN </th>
+                <th scope = "row" style="vertical-align: middle;">VALOR </th>
+                <th scope = "row" style="vertical-align: middle;">CANTIDAD </th>
+                <th scope = "row" style="vertical-align: middle;">TOTALES </th>
+                <th scope = "row" style="vertical-align: middle;">INC </th>
 
 
                 
@@ -40,9 +43,9 @@
                 <td> <b>{{i.0.articulo.codigo}}</b> </td>
                 <td>{{i.0.articulo.nombre}} </td>
                 <td>{{i.0.articulo.unidad}}</td>
-                <td>${{i.0.articulo.valor|floatformat:2}}</td>
+                <td>${{i.0.articulo.valor|floatformat:0|intcomma}}</td>
                 <td>{{i.0.cantidad}}</td>
-                <td>${{i.1|floatformat:2}}</td>
+                <td>${{i.1|floatformat:0|intcomma}}</td>
                 <td>{{i.2|floatformat:2}}%</td>
 
                 
@@ -57,7 +60,7 @@
             
 
             <div style="text-align: center; margin-bottom: 2rem;">
-                <small>  <strong>TOTAL DEL ANALISIS: ${{datos.total|floatformat:2}}</strong> </small>
+                <small>  <strong>TOTAL DEL ANALISIS: ${{datos.total|floatformat:0|intcomma}}</strong> </small>
             </div>
 
             {% for i in datos.lista_final %}

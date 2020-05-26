@@ -689,8 +689,6 @@ def anticiposf(request, id_proyecto):
   
     return render(request, 'presupuestos/anticiposf.html', {"datos":datos})
 
-
-
 # ----------------------------------------------------- VISTAS PARA PANEL PRESUPUESTOS - EXPLOSION ----------------------------------------------
 def explosion(request, id_proyecto):
 
@@ -854,7 +852,7 @@ def presupuestosanalisis(request, id_proyecto, id_capitulo):
                         if h.proyecto == proyecto and h.tipologia == d.vinculacion:
                             cantidad = cantidad + h.valor_vacio  
 
-                    total_parcial = valor_analisis*cantidad/1000
+                    total_parcial = valor_analisis*cantidad
                     crudo.append((d.analisis, valor_analisis, cantidad, total_parcial, 0.0)) 
 
                     valor_capitulo = valor_capitulo + valor_analisis*cantidad
@@ -874,7 +872,7 @@ def presupuestosanalisis(request, id_proyecto, id_capitulo):
                         if h.proyecto == proyecto and h.tipologia == d.vinculacion:
                             cantidad = cantidad + h.valor_lleno 
 
-                    total_parcial = valor_analisis*cantidad/1000
+                    total_parcial = valor_analisis*cantidad
                     crudo.append((d.analisis, valor_analisis, cantidad, total_parcial, 0.0, d.vinculacion)) 
 
                     valor_capitulo = valor_capitulo + valor_analisis*cantidad
@@ -888,7 +886,7 @@ def presupuestosanalisis(request, id_proyecto, id_capitulo):
 
                         valor_analisis = valor_analisis + e.articulo.valor*e.cantidad
                 
-                total_parcial = valor_analisis*float(d.cantidad)/1000
+                total_parcial = valor_analisis*float(d.cantidad)
                 
                 crudo.append((d.analisis, valor_analisis, d.cantidad, total_parcial, 0.0, d.vinculacion))
                 
@@ -897,9 +895,11 @@ def presupuestosanalisis(request, id_proyecto, id_capitulo):
 
     for i in crudo:
         i = list(i)
-        i[4] = i[3]/valor_capitulo*100000
+        i[4] = i[3]/valor_capitulo*100
         i = tuple(i)
         datos.append(i)
+
+    datos.sort(key=lambda tup: tup[4], reverse=True)
 
     datos = {"datos":datos, "proyecto":proyecto, "capitulo":capitulo}
 

@@ -1,5 +1,7 @@
 {% extends "users/inicio.html" %}
 
+{% load humanize %}
+
 {% load static %}
 
 {% block content %}
@@ -16,12 +18,12 @@
         <thead>
 
             <tr class = "table-info">
-                <th scope = "row"> <font style = "vertical-align: heredar;"> ANALISIS </font></th>
-                <th scope = "row"> <font style = "vertical-align: heredar;"> VINCULACIÓN </font></th>
-                <th scope = "row"> <font style = "vertical-align: heredar;"> PRECIO DEL ANALISIS</font></th>
-                <th scope = "row"> <font style = "vertical-align: heredar;"> CANTIDAD</font></th>
-                <th scope = "row"> <font style = "vertical-align: heredar;"> TOTAL</font></th>   
-                <th scope = "row"> <font style = "vertical-align: heredar;"> INC</font></th>                  
+                <th scope = "row" style="vertical-align: middle;">ANALISIS </th>
+                <th scope = "row" style="vertical-align: middle;"> VINCULACIÓN</th>
+                <th scope = "row" style="vertical-align: middle;"> PRECIO DEL ANALISIS</th>
+                <th scope = "row" style="vertical-align: middle;"> CANTIDAD</th>
+                <th scope = "row" style="vertical-align: middle;"> TOTAL</th>   
+                <th scope = "row" style="vertical-align: middle;">INC</th>                  
             </tr>
         </thead>
 
@@ -34,9 +36,9 @@
             <tr class = "table-light">
                 <td> <a href="{% url 'Composición Analisis' i.0.codigo %}" style="color: black;"> <b>{{i.0.nombre}}</b> </a> </td>
                 <td> {{i.5}}</td>
-                <td> ${{i.1|floatformat:2}}</td>
+                <td> ${{i.1|floatformat:0|intcomma}}</td>
                 <td> {{i.2|floatformat:2}} ({{i.0.unidad}})</td>
-                <td> ${{i.3|floatformat:2}} Mil</td>  
+                <td> ${{i.3|floatformat:0|intcomma}}</td>  
                 <td> {{i.4|floatformat:2}}%</td>                           
             </tr>
         </tbody>
