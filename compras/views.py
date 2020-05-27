@@ -553,10 +553,30 @@ def informe(request):
 
     for i in lista_proyectos:
 
-        listas_pro.append((str(i.nombre), float(i.m2)))
+        if i.m2 != 0:
+
+            listas_pro.append((str(i.nombre), float(i.m2)))
 
     
     listas_pro = sorted(listas_pro, key=lambda tup: tup[1], reverse=True)
+
+    # --> Comprasas Nominales por fideicomiso
+
+    compras_fidei = []
+
+    for i in lista_proyectos:
+        datos_compras = Compras.objects.filter(proyecto = i)
+        
+        valor_nominal_compras = 0
+
+        for dato in datos_compras:
+            if str(dato.articulo.nombre) != "FONDO DE REPARO ACT. UOCRA" and str(dato.articulo.nombre) != "ANTICIPO FINANCIERO ACT. UOCRA":
+                valor_nominal_compras = valor_nominal_compras + dato.precio*dato.cantidad
+
+        if valor_nominal_compras != 0:
+        
+            compras_fidei.append((i, valor_nominal_compras))
+
     
     datos = {"stock_valorizado":stock_valorizado,
     "stock_valorizado_m":stock_valorizado_m,
@@ -572,6 +592,7 @@ def informe(request):
     "stock_pesos":stock_pesos,
     "stock_usd":stock_usd,
     "stock_horm":stock_horm,
+    "compras_fidei":compras_fidei
 
     }
 

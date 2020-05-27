@@ -1,6 +1,7 @@
 {% extends "users/inicio.html" %}
 
 {% load static %}
+{% load humanize %}
 
 {% block content %}
 
@@ -26,8 +27,8 @@
 
     <div style="display: inline-block; width: 50%; vertical-align: top;">
              
-        <h6>Valor estimado del stock en proveedores: <small>${{ datos.stock_valorizado|floatformat:2 }} <strong>({{ datos.stock_valorizado_m|floatformat:2 }} millones)</strong></small></h6>
-        <h6 style="margin-top: 1rem;">Valor en dolares: <small>USD {{ datos.stock_valorizado_usd|floatformat:2 }} <strong>(USD {{ datos.stock_valorizado_usd_m|floatformat:2 }} millones)</strong></small></h6>          
+        <h6>Valor estimado del stock en proveedores: <small>${{ datos.stock_valorizado|floatformat:0|intcomma }} <strong>({{ datos.stock_valorizado_m|floatformat:2 }} millones)</strong></small></h6>
+        <h6 style="margin-top: 1rem;">Valor en dolares: <small>USD {{ datos.stock_valorizado_usd|floatformat:0|intcomma }} <strong>(USD {{ datos.stock_valorizado_usd_m|floatformat:2 }} millones)</strong></small></h6>          
         <h6 style="margin-top: 1rem;">Cantidad de compras cargadas: <small>{{ datos.lista_compras}}</small> </h6>
         <h6 style="margin-top: 1rem;">Valor nominal de las compras cargadas: <small>${{ datos.compras_nominal|floatformat:2}} Millones</small> </h6>
         <h6 style="margin-top: 1rem;">Valor actualizado de las compras cargadas: <small>${{ datos.compras_actualizado|floatformat:2}} Millones</small> </h6>
@@ -60,6 +61,34 @@
     </script>
 
     <b><hr class = "my-4" style="width: 100%; border-color: black ;"></b>
+
+    <div>
+
+        <div style="margin-bottom: 2rem;">
+            <h3>Compras por fideicomiso</h3>
+        </div>
+        <table class = "table table-hover" style="text-align: center;">
+            <thead>
+    
+                <tr class = "table-dark">
+                    <th scope = "row"> <font style = "vertical-align: heredar;"> PROYECTO</font></th>
+                    <th scope = "row"> <font style = "vertical-align: heredar;"> VALOR NOMINAL DE COMPRAS</font></th>
+                   
+                </tr>
+            </thead>
+            {% for i in datos.compras_fidei%}   
+            <tbody>
+    
+                <tr class = "table-light">
+                    <td style="width: 50%;"> <b>{{ i.0 }}</b> </td>
+                    <td style="width: 50%;"> {{ i.1|floatformat:0|intcomma }}</td>                
+                </tr>
+            </tbody>
+
+            {% endfor %}
+        </table> 
+        <b><hr class = "my-4" style="width: 100%; border-color: black ;"></b>   
+    </div>
 
     <div>
 
