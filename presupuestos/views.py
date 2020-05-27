@@ -8,7 +8,7 @@ from computos.models import Computos
 from compras.models import Compras
 from ventas.models import PricingResumen, VentasRealizadas
 from registro.models import RegistroValorProyecto
-from .models import Articulos, Constantes, DatosProyectos, Prametros, Desde, Analisis, CompoAnalisis, Modelopresupuesto, Capitulos
+from .models import Articulos, Constantes, DatosProyectos, Prametros, Desde, Analisis, CompoAnalisis, Modelopresupuesto, Capitulos, Presupuestos
 import sqlite3
 import numpy as np
 from datetime import date
@@ -431,8 +431,14 @@ def saldocapitulo(request, id_proyecto):
 
                 if p[2] != 0:
 
-                    avance = (1 - s[2]/p[2])*100               
-                    inc = (s[2]/valor_saldo)*100  
+                    avance = (1 - s[2]/p[2])*100
+
+                    if valor_saldo != 0:
+
+                        inc = (s[2]/valor_saldo)*100  
+                    
+                    else:
+                        inc = 100
 
                 datos.append((p[0], p[1], p[2], s[2], avance, inc))
 
@@ -1525,7 +1531,6 @@ def proyectos(request):
     return render(request, 'datos/projects.html', {'datos':datos})
 
 
-
 # --------------------------------> VISTA PARA INFORME PRESUPUESTO <------------------------------------------------------
 
 def InformeArea(request):
@@ -1590,7 +1595,6 @@ def InformeArea(request):
 
                 valor_saldo = valor_saldo + saldo_capitulo
 
-
             valor_proyecto_mo = valor_saldo - valor_proyecto_materiales
                 
             vr_M2 = valor_proyecto/proyecto.m2
@@ -1622,9 +1626,20 @@ def InformeArea(request):
             for a in ant:
                 total_ant = total_ant + a[1]
 
-            saldo_total = valor_proyecto_materiales + valor_proyecto_mo + total_creditos - total_fdr - total_ant
+            imprevisto = 0
 
-            proy_presup.append((proyecto, valor_proyecto, vr_M2, valor_proyecto_materiales, valor_proyecto_mo, total_creditos, saldo_total, total_fdr, total_ant))
+            try:
+                datos_imprevisto = Presupuestos.objects.get(proyecto = proyecto)
+
+                if datos_imprevisto.imprevisto != None:
+                    imprevisto = datos_imprevisto.imprevisto
+            except:
+                imprevisto = 0
+
+
+            saldo_total = valor_proyecto_materiales + valor_proyecto_mo + total_creditos - total_fdr - total_ant + imprevisto
+
+            proy_presup.append((proyecto, valor_proyecto, vr_M2, valor_proyecto_materiales, valor_proyecto_mo, total_creditos, saldo_total, total_fdr, total_ant, imprevisto))
 
     cant_proy_act = len(proy_presup)
 
@@ -1681,9 +1696,6 @@ def Fondosdereparo(id_proyecto):
         datos.append((proveedor, monto_fdr))
 
     return datos
-
-
-
 
 def PresupuestoPorCapitulo(id_proyecto):
 
@@ -1770,6 +1782,7 @@ def PresupuestoPorCapitulo(id_proyecto):
 def Saldoporcapitulo(id_proyecto):
 
     #Traemos las compras y el presupuesto
+
     proyecto = Proyectos.objects.get(id = id_proyecto)
     compras = Compras.objects.filter(proyecto = proyecto)
     presupuesto_capitulo = PresupuestoPorCapitulo(id_proyecto)
@@ -1802,22 +1815,20 @@ def Saldoporcapitulo(id_proyecto):
             for articulo2 in dato[2]:
 
                 if articulo == articulo2[0]:
-                    cantidad = cantidad + articulo2[1]
 
-            if cantidad<0:
-                
-                print("Hay un articulo negativo completamente")
+                    cantidad = cantidad + articulo2[1]
 
             nuevo_art_cant.append((articulo, cantidad))
 
         presupuesto_capitulo.append((dato[0], dato[1], nuevo_art_cant))    
         
-
         contador += 1
+
 
     #Ordenamos la compra para que sea una sola lista
 
     articulos_comprados = []
+
 
     for compra in compras:
         articulos_comprados.append(compra.articulo)
