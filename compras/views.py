@@ -409,7 +409,7 @@ def analisiscompras(request):
 
     #Establecemos el periodo de tiempo
 
-    inicio_fecha = date.today() - datetime.timedelta(days = (6*30))
+    inicio_fecha = date.today() - datetime.timedelta(days = (12*30))
 
     fechas = []
 
