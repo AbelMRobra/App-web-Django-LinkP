@@ -409,22 +409,23 @@ def analisiscompras(request):
 
     #Establecemos el periodo de tiempo
 
-    inicio_fecha = date.today() - datetime.timedelta(days = (12*30))
+    inicio_fecha = date.today() - datetime.timedelta(days = 365)
 
     fechas = []
 
     contador = 0
-    for fecha in range(12):
-        fecha_agregar = inicio_fecha + datetime.timedelta(days = (30*contador))
+    for fecha in range(15):
+        fecha_agregar = inicio_fecha + datetime.timedelta(days = ((365*contador/12)))
         fechas.append(fecha_agregar)
         contador +=1 
 
+    print(len(fechas))
 
     fechas_compras = []
 
     contador = 0
 
-    for dato in range(12):
+    for dato in range(14):
 
         volumen_comprado = 0
         volumen_presupuesto = 0
