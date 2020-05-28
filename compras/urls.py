@@ -13,5 +13,6 @@ urlpatterns = [
     url(r'^certificados$', login_required(views.certificados), name = 'Certificados'),
     url(r'^informe$', login_required(views.informe), name = 'Informe de área'),
     url(r'^stockprov$', login_required(views.stockproveedores), name = 'Stock Proveedores'),
+    url(r'^analisiscompras$', login_required(views.analisiscompras), name = 'Analisis Compras'),
 
 ]

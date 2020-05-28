@@ -10,6 +10,10 @@ from .filters import CertificadoFilter
 from presupuestos.models import Articulos, Constantes
 import sqlite3
 import operator
+import datetime
+import dateutil.parser
+from datetime import date
+from dateutil.relativedelta import relativedelta
 import matplotlib.pyplot as plt 
 
 
@@ -394,6 +398,59 @@ def stockproveedores(request):
     #Aqui termina el filtro
 
     return render(request, 'stockprov.html', {'datos':datos})
+
+# ----------------------------------------------------- VISTAS PARA ANALISIS DE COMPRA ----------------------------------------------
+ 
+def analisiscompras(request):
+
+    #Traemos los datos de las compras
+
+    datos = Compras.objects.filter(documento__startswith="O")
+
+    #Establecemos el periodo de tiempo
+
+    inicio_fecha = date.today() - datetime.timedelta(days = (6*30))
+
+    fechas = []
+
+    contador = 0
+    for fecha in range(12):
+        fecha_agregar = inicio_fecha + datetime.timedelta(days = (30*contador))
+        fechas.append(fecha_agregar)
+        contador +=1 
+
+
+    fechas_compras = []
+
+    contador = 0
+
+    for dato in range(12):
+
+        volumen_comprado = 0
+        volumen_presupuesto = 0
+        rendimiento = 1
+
+        for compra in datos:
+
+            date_object = datetime.datetime.strptime(str(compra.fecha_c), '%Y-%m-%d')
+            date_object = dateutil.parser.parse(str(date_object)).date()
+
+            if date_object > fechas[contador] and date_object < fechas[contador +1]:
+                volumen_comprado = volumen_comprado + compra.cantidad*compra.precio
+
+                if compra.precio_presup != None:
+                    volumen_presupuesto = volumen_presupuesto + compra.cantidad*compra.precio_presup
+        
+        
+        if volumen_presupuesto != 0:
+            rendimiento = volumen_comprado/volumen_presupuesto
+
+        fechas_compras.append((fechas[contador], volumen_comprado, volumen_presupuesto, rendimiento))
+        contador += 1
+
+    datos = {"datos":fechas_compras}
+
+    return render(request, 'analisiscompras.html', {"datos":datos} )
 
 # ----------------------------------------------------- VISTAS PARA INFORME ----------------------------------------------
  

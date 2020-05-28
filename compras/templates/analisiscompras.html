@@ -1,0 +1,135 @@
+{% extends "users/inicio.html" %}
+
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+
+<div class = "jumbotron" style="background-color: white; margin-bottom: 0px;">
+    <div style="text-align: center;">
+        <h2>Panel de control - Analisis de compras</h2>
+        <small>Responsable de área: </small><small><strong>JM</strong></small>  
+    </div>
+
+    <b><hr class = "my-4" style="width: 100%; border-color: black ;"></b>
+
+    <div style="margin-bottom: 2rem;">
+
+        <h3>Analisis historico de compras</h3>
+        <p><<small> En el analisis de precio el punto negro muestra la desviación porcentual con respecto al precio del presupuesto</small>/p>
+        <p><small> En el analisis de cantidad se puede ver el volumen operado</small></p>
+
+    </div>
+
+
+    <div style="margin-top: 0.5rem; display: inline-block; width: 100%;">
+
+        <div style= "text-align: center;">
+            <small><strong>-- Analisis de precios --</strong></small>
+        </div>
+
+        <canvas id="myChart" width="400" height="150rem"></canvas>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    <script>
+        var ctx = document.getElementById('myChart').getContext('2d');
+        var chart = new Chart(ctx, {
+            // The type of chart we want to create
+            type: 'line',
+
+            // The data for our dataset
+            data: {
+                labels: [
+                    {% for i in datos.datos %}
+                    '{{i.0}}',                   
+                    {% endfor %}
+                    ],
+                datasets: [{
+                    label: 'Desviación',
+                    backgroundColor: 'rgb(9, 10, 9)',
+                    borderColor: 'rgb(9, 10, 9)',
+                    fill: false,
+                    showLine: false,
+                    data: [
+                    {% for i in datos.datos %}
+                    {{i.3|floatformat:0}},                   
+                    {% endfor %}
+                    ]
+                }],
+
+            },
+
+            // Configuration options go here
+            options: {}
+        });
+    </script>
+
+
+    </div>
+
+    
+
+    <div style="margin-top: 0.5rem; display: inline-block; width: 100%;">
+        <div style= "text-align: center;">
+            
+            <small><strong>-- Analisis de cantidad --</strong></small>
+         </div>
+
+        <canvas id="myChart2" width="400" height="100rem"></canvas>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    <script>
+        var ctx = document.getElementById('myChart2').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: [{% for i in datos.datos%}
+                    '{{i.0}}',                   
+                    {% endfor %}],
+                datasets: [{
+                    label: 'V. Comprado',
+                    data: [{% for i in datos.datos %}
+                    {{i.1|floatformat:0}},                   
+                    {% endfor %}],
+                    backgroundColor: 'rgba(72, 110, 195, 0.2)',
+                    borderColor: 'rgba(72, 110, 195, 1)',
+                    borderWidth: 1
+                },
+                {
+                    label: 'V. Presupuesto',
+                    data: [{% for i in datos.datos %}
+                    {{i.2|floatformat:0}},                   
+                    {% endfor %}],
+                    backgroundColor: 'rgba(72, 110, 195, 0.2)',
+                    borderColor: 'rgba(72, 110, 195, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+</script>
+    </script>
+
+</div>
+
+    
+
+
+
+
+    <div style="text-align: center; margin-top: 2rem;">
+        <p> <small>-- Link<strong>P</strong> --</small> </p>
+
+     </div>
+
+                    
+</div>
+ 
+    
+{% endblock %}

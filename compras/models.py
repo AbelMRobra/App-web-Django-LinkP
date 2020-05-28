@@ -47,6 +47,7 @@ class Compras(models.Model):
     articulo = models.ForeignKey(Articulos, on_delete=models.CASCADE, verbose_name="Articulo")
     cantidad = models.FloatField(verbose_name="Cantidad")
     precio = models.FloatField(blank=True, null=True, verbose_name="Precio")
+    precio_presup = models.FloatField(blank=True, null=True, verbose_name="Precio de presupuesto")
     fecha_c = models.DateField(auto_now_add=True, verbose_name="Fecha de compra")
     fecha_a = models.DateField(auto_now=True, verbose_name="Fecha de actualización")
     documento = models.CharField(max_length=200, verbose_name="Documento de referencia", blank=True, null=True)

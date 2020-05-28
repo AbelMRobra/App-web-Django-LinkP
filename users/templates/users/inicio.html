@@ -79,9 +79,9 @@
 
             {% if perms.compras.view_compras %}
 
-            <a class="dropdown-item" href="#">Contratos-<em>Proximamente</em></a>
+            <!-- <a class="dropdown-item" href="#">Contratos-<em>Proximamente</em></a> -->
             <a class="dropdown-item" href="/compras/compras">Registros de compras </a>
-            <a class="dropdown-item" href="/compras/listaretiros">Retiro de proveedores-<em>Construyendo</em></a>
+            <!-- <a class="dropdown-item" href="/compras/listaretiros">Retiro de proveedores-<em>Construyendo</em></a> -->
 
             {% endif %}
 
@@ -90,6 +90,7 @@
             
             {% if perms.compras.view_compras %}
 
+            <a class="dropdown-item" href="/compras/analisiscompras">Analisis de compras</a>
             <a class="dropdown-item" href="/compras/informe">Informe del área</a>
 
             {% endif %}
