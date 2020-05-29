@@ -414,14 +414,17 @@ def analisiscompras(request):
     fechas = []
 
     contador = 0
+
     for fecha in range(15):
         fecha_agregar = inicio_fecha + datetime.timedelta(days = ((365*contador/12)))
         fechas.append(fecha_agregar)
         contador +=1 
 
-    print(len(fechas))
 
     fechas_compras = []
+
+    monto_compras = 0
+    monto_presupuesto = 1
 
     contador = 0
 
@@ -438,9 +441,11 @@ def analisiscompras(request):
 
             if date_object > fechas[contador] and date_object < fechas[contador +1]:
                 volumen_comprado = volumen_comprado + compra.cantidad*compra.precio
+                monto_compras = monto_compras + compra.cantidad*compra.precio
 
                 if compra.precio_presup != None:
                     volumen_presupuesto = volumen_presupuesto + compra.cantidad*compra.precio_presup
+                    monto_presupuesto = monto_presupuesto + compra.cantidad*compra.precio_presup
         
         
         if volumen_presupuesto != 0:
@@ -449,7 +454,11 @@ def analisiscompras(request):
         fechas_compras.append((fechas[contador], volumen_comprado, volumen_presupuesto, rendimiento))
         contador += 1
 
-    datos = {"datos":fechas_compras}
+    inc_total = monto_compras/monto_presupuesto
+
+    datos = {"datos":fechas_compras,
+    "montocompras":monto_compras,
+    "inc":inc_total}
 
     return render(request, 'analisiscompras.html', {"datos":datos} )
 

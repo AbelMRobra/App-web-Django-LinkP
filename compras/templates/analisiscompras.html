@@ -16,8 +16,12 @@
     <div style="margin-bottom: 2rem;">
 
         <h3>Analisis historico de compras</h3>
-        <p><<small> En el analisis de precio el punto negro muestra la desviación porcentual con respecto al precio del presupuesto</small>/p>
-        <p><small> En el analisis de cantidad se puede ver el volumen operado</small></p>
+
+        <h6>El monto de compras analizado es de: ${{ datos.montocompras|floatformat:0|intcomma}}</h6>
+        <h6>Relación compras/presupuesto: {{ datos.inc|floatformat:2}}</h6>
+        <p><small> En el analisis de precio el punto negro muestra la desviación porcentual con respecto al precio del presupuesto</small></p>
+        
+
 
     </div>
 
@@ -66,7 +70,7 @@
 
     </div>
 
-    
+    <p><small> En el analisis de cantidad se puede ver el volumen operado</small></p>
 
     <div style="margin-top: 0.5rem; display: inline-block; width: 100%;">
         <div style= "text-align: center;">
