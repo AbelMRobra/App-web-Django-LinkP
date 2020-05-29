@@ -439,7 +439,7 @@ def analisiscompras(request):
             date_object = datetime.datetime.strptime(str(compra.fecha_c), '%Y-%m-%d')
             date_object = dateutil.parser.parse(str(date_object)).date()
 
-            if date_object > fechas[contador] and date_object < fechas[contador +1]:
+            if date_object >= fechas[contador] and date_object < fechas[contador +1]:
                 volumen_comprado = volumen_comprado + compra.cantidad*compra.precio
                 monto_compras = monto_compras + compra.cantidad*compra.precio
 
