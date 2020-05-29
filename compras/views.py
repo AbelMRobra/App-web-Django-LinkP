@@ -424,7 +424,7 @@ def analisiscompras(request):
     fechas_compras = []
 
     monto_compras = 0
-    monto_presupuesto = 1
+    monto_presupuesto = 0
 
     contador = 0
 
@@ -432,7 +432,7 @@ def analisiscompras(request):
 
         volumen_comprado = 0
         volumen_presupuesto = 0
-        rendimiento = 1
+        rendimiento = 100
 
         for compra in datos:
 
@@ -449,12 +449,12 @@ def analisiscompras(request):
         
         
         if volumen_presupuesto != 0:
-            rendimiento = volumen_comprado/volumen_presupuesto
+            rendimiento = (volumen_comprado/volumen_presupuesto)*100
 
         fechas_compras.append((fechas[contador], volumen_comprado, volumen_presupuesto, rendimiento))
         contador += 1
 
-    inc_total = monto_compras/monto_presupuesto
+    inc_total = (monto_compras/monto_presupuesto)*100
 
     datos = {"datos":fechas_compras,
     "montocompras":monto_compras,
