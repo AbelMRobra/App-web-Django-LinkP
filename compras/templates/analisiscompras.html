@@ -13,11 +13,14 @@
 
     <b><hr class = "my-4" style="width: 100%; border-color: black ;"></b>
 
+
+
+
     <div style="margin-bottom: 2rem;">
 
         <h3>Analisis historico de compras</h3>
 
-        <h6>El monto de compras analizado es de: ${{ datos.montocompras|floatformat:0|intcomma}}</h6>
+        <h6>El monto de compras analizado es de: ${{ datos.montocompras|floatformat:0|intcomma}} Millones</h6>
         <h6>Relación compras/presupuesto: {{ datos.inc|floatformat:0}}</h6>
         <p><small> En el analisis de precio el punto negro muestra la desviación porcentual con respecto al precio del presupuesto</small></p>
         
@@ -121,6 +124,38 @@
     </script>
 
 </div>
+
+<b><hr class = "my-4" style="width: 100%; border-color: black ;"></b>
+
+<div style="text-align: center;">
+    <form method="POST">
+
+        {% csrf_token %}
+
+        <select name="proyecto" class="custom-select" style="width: 15%;">
+
+            {% for i in datos.proyectos %}
+            <option value="{{i.id}}">{{i.nombre}}</option>
+
+            {% endfor %}
+
+
+          </select>
+          <div>
+            <small> Seleccione el proyecto</small>
+          </div>
+          
+
+          <div>
+            <button class="btn btn-dark" type="submit" style="margin-top: 1%;">Filtrar</button>          
+        </div>
+        
+    </form>
+
+    
+</div>
+
+
 
     
 

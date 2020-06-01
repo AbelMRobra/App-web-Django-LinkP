@@ -406,6 +406,16 @@ def analisiscompras(request):
     #Traemos los datos de las compras
 
     datos = Compras.objects.filter(documento__startswith="O")
+    proyectos = Proyectos.objects.all()
+
+    if request.method == 'POST':
+
+        palabra_buscar = request.POST.items()
+
+        for i in palabra_buscar:
+            if i[0] != "csrfmiddlewaretoken":
+                pro = i[1]
+        datos = Compras.objects.filter(documento__startswith="O", proyecto = pro)
 
     #Establecemos el periodo de tiempo
 
@@ -440,12 +450,12 @@ def analisiscompras(request):
             date_object = dateutil.parser.parse(str(date_object)).date()
 
             if date_object >= fechas[contador] and date_object < fechas[contador +1]:
-                volumen_comprado = volumen_comprado + compra.cantidad*compra.precio
-                monto_compras = monto_compras + compra.cantidad*compra.precio
+                volumen_comprado = volumen_comprado + (compra.cantidad*compra.precio)/1000000
+                monto_compras = monto_compras + (compra.cantidad*compra.precio)/1000000
 
                 if compra.precio_presup != None:
-                    volumen_presupuesto = volumen_presupuesto + compra.cantidad*compra.precio_presup
-                    monto_presupuesto = monto_presupuesto + compra.cantidad*compra.precio_presup
+                    volumen_presupuesto = volumen_presupuesto + (compra.cantidad*compra.precio_presup)/1000000
+                    monto_presupuesto = monto_presupuesto + (compra.cantidad*compra.precio_presup)/1000000
         
         
         if volumen_presupuesto != 0:
@@ -458,7 +468,8 @@ def analisiscompras(request):
 
     datos = {"datos":fechas_compras,
     "montocompras":monto_compras,
-    "inc":inc_total}
+    "inc":inc_total,
+    "proyectos":proyectos}
 
     return render(request, 'analisiscompras.html', {"datos":datos} )
 

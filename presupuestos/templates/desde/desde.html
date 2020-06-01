@@ -15,8 +15,8 @@
 
     <div style="margin-bottom: 2rem;">
 
-        <h3>Precio de referencia </h3>
-        <small> El precio de referencia se calcula a partir del costo de obra y parametros fijos</small>
+        <h3>Precio de referencia de los proyectos</h3>
+        <p><small> El precio de referencia se calcula a partir del costo de obra y los parametros fijos desginados por la dirección y/o departamento financiero</small></p>
 
     </div>   
        
@@ -27,10 +27,10 @@
 
             <tr class = "table-dark">
                 <th scope = "row"> <font style = "vertical-align: heredar;"> PROYECTO</font></th>
-                <th scope = "row"> <font style = "vertical-align: heredar;"> VALOR COSTO </font></th>
-                <th scope = "row"> <font style = "vertical-align: heredar;"> VALOR COSTO USD </font></th>
-                <th scope = "row"> <font style = "vertical-align: heredar;"> VALOR FINAL </font></th>
-                <th scope = "row"> <font style = "vertical-align: heredar;"> VALOR FINAL USD </font></th>
+                <th scope = "row"> <font style = "vertical-align: heredar;"> MINIMO </font></th>
+                <th scope = "row"> <font style = "vertical-align: heredar;"> MINIMO USD </font></th>
+                <th scope = "row"> <font style = "vertical-align: heredar;"> OBJETIVO </font></th>
+                <th scope = "row"> <font style = "vertical-align: heredar;"> OBJETIVO USD </font></th>
                 <th scope = "row"> <font style = "vertical-align: heredar;"> ULTIMO PRICING</font></th>
                 <th scope = "row"> <font style = "vertical-align: heredar;"> ULT. ACTUALIZACIÓN </font></th>
                 
@@ -58,6 +58,8 @@
 
             {% endfor %}
 
+        
+
      {% else %}
             <div style="text-align: center;">
                 <h3>No existe registros actualmente</h3>
@@ -69,7 +71,9 @@
 
     </table>
     <div>
-        <small style="color: darkgreen;"> El valor de dolar usado es: ${{datos.usd_blue.valor}}</small>
+        <p><small> <strong>Minimo</strong> es el valor para cubrir los costos</small></p>
+        <p><small><strong>Objetivo</strong> es el valor por el cual se consigue los beneficios establecidos en parametros</small></p>
+        <p><small style="color: darkgreen;"> El valor de dolar usado es el dolar BLUE publicado en ambito el cual cotiza a ${{datos.usd_blue.valor}}</small></p>
         <h6 ><small></small></h6>
     </div>
     <div style="margin-bottom: 1%; text-align: center;">
