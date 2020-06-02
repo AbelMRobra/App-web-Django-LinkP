@@ -8,6 +8,52 @@ def inventario(request):
 
     datos = Inventario.objects.all()
 
+    #Aqui empieza el filtro
+
+    if request.method == 'POST':
+
+        palabra_buscar = request.POST.items()
+
+        datos_viejos = datos
+
+        datos = []   
+
+        for i in palabra_buscar:
+
+            if i[0] == "palabra":
+        
+                palabra_buscar = i[1]
+
+        if str(palabra_buscar) == "":
+
+            datos = datos_viejos
+
+        else:
+        
+            for i in datos_viejos:
+
+                palabra =(str(palabra_buscar))
+
+                lista_palabra = palabra.split()
+
+                buscar = (str(i.num_inv)+str(i.articulo))
+
+                contador = 0
+
+                for palabra in lista_palabra:
+
+                    contador2 = 0
+
+                    if palabra.lower() in buscar.lower():
+  
+                        contador += 1
+
+                if contador == len(lista_palabra):
+
+                    datos.append(i)
+
+    #Aqui termina el filtro
+
     datos_viejos = datos
     datos = []
 
