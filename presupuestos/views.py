@@ -304,7 +304,7 @@ def cons_delete(request, id_cons):
 
 def presupuestostotal(request):
     
-    proyectos = Proyectos.objects.all()
+    proyectos = Proyectos.objects.order_by("nombre")
 
     datos = 0
 

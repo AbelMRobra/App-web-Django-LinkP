@@ -220,7 +220,7 @@ def cargacompras(request):
 
 def compras(request):
 
-    datos = Compras.objects.all()
+    datos = Compras.objects.order_by("-fecha_c")
 
        #Aqui empieza el filtro
 

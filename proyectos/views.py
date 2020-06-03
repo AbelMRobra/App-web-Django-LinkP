@@ -5,7 +5,8 @@ from .models import Proyectos, Unidades, ProyectosTerceros
 
 def proyectos(request):
 
-    datos = Proyectos.objects.all()
+    datos = Proyectos.objects.order_by("nombre")
+
 
     return render(request, 'proyectos.html', {'datos':datos})
 

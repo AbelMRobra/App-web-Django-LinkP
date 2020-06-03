@@ -17,7 +17,6 @@
         <thead>
 
             <tr class = "table-info">
-                <th scope = "row" style="vertical-align: middle;"> ID</th>
                 <th scope = "row" style="vertical-align: middle;"> NOMBRE DEL PROYECTO</th>
                 <th scope = "row" style="vertical-align: middle;">DESCRIPCIÓN </th>
                 <th scope = "row" style="vertical-align: middle;">FECHA ENTREGA </th>
@@ -34,7 +33,7 @@
             {% for i in datos %}
 
             <tr class = "table-light">
-                <td> <b>{{i.id}}</b> </td>
+
                 <td> <b>{{i.nombre}}</b> </td>
                 <td>{{i.descrip}}</td>
                 <td>{{i.fecha_f}}</td>
@@ -52,7 +51,7 @@
 
             {% if i.nombre == "DIANCO - LAMADRID 1137" %}
             <tr class = "table-light">
-                <td> <b>{{i.id}}</b> </td>
+ 
                 <td> <b>{{i.nombre}}</b> </td>
                 <td>{{i.descrip}}</td>
                 <td>{{i.fecha_f}}</td>
