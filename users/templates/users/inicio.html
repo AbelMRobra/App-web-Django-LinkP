@@ -58,6 +58,9 @@
             
           </div>
         </li>
+
+        {% if request.user.username != "HC" %}
+
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Ventas
@@ -69,6 +72,8 @@
             {% endif %}
           </div>
         </li>  
+
+        {% endif %}
 
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -105,6 +110,9 @@
             <a class="dropdown-item" href="/compras/certificados">Contratistas</a>
           </div>
         </li>
+
+        {% if request.user.username != "HC" %}
+
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Sigma
@@ -114,6 +122,8 @@
 
           </div>
         </li>
+
+        {% endif %}
         
       </ul>
       

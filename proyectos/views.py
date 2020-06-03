@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import Proyectos, Unidades
+from .models import Proyectos, Unidades, ProyectosTerceros
 
 # Create your views here.
 

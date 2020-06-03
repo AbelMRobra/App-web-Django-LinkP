@@ -17,19 +17,22 @@
         <thead>
 
             <tr class = "table-info">
-                <th scope = "row"> <font style = "vertical-align: heredar;"> ID </font></th>
-                <th scope = "row"> <font style = "vertical-align: heredar;"> NOMBRE DEL PROYECTO</font></th>
-                <th scope = "row"> <font style = "vertical-align: heredar;"> DESCRIPCIÓN </font></th>
-                <th scope = "row"> <font style = "vertical-align: heredar;"> FECHA ENTREGA </font></th>
-                <th scope = "row"> <font style = "vertical-align: heredar;"> ULTIMA ACTUALIZACIÓN </font></th>
-                <th scope = "row"> <font style = "vertical-align: heredar;"> TAMAÑO </font></th> 
+                <th scope = "row" style="vertical-align: middle;"> ID</th>
+                <th scope = "row" style="vertical-align: middle;"> NOMBRE DEL PROYECTO</th>
+                <th scope = "row" style="vertical-align: middle;">DESCRIPCIÓN </th>
+                <th scope = "row" style="vertical-align: middle;">FECHA ENTREGA </th>
+                <th scope = "row" style="vertical-align: middle;">ULTIMA ACTUALIZACIÓN </th>
+                <th scope = "row" style="vertical-align: middle;">TAMAÑO</th> 
 
             </tr>
         </thead>
 
-        <tbody>   
+        <tbody>
 
+            {% if request.user.username != "HC" %}
+            
             {% for i in datos %}
+
             <tr class = "table-light">
                 <td> <b>{{i.id}}</b> </td>
                 <td> <b>{{i.nombre}}</b> </td>
@@ -38,9 +41,29 @@
                 <td>{{i.fecha_a}}</td>
                 <td> <b>{{i.m2}}m2</b> </td>
             </tr>
-        </tbody>
 
-        {% endfor %}
+            {% endfor %}
+            {% endif %}
+
+
+            {% if request.user.username == "HC" %}
+
+            {% for i in datos %}
+
+            {% if i.nombre == "DIANCO - LAMADRID 1137" %}
+            <tr class = "table-light">
+                <td> <b>{{i.id}}</b> </td>
+                <td> <b>{{i.nombre}}</b> </td>
+                <td>{{i.descrip}}</td>
+                <td>{{i.fecha_f}}</td>
+                <td>{{i.fecha_a}}</td>
+                <td> <b>{{i.m2}}m2</b> </td>
+            </tr>
+            {% endif %}
+            {% endfor %}
+            {% endif %}
+
+    </tbody>
 
 
     </table>

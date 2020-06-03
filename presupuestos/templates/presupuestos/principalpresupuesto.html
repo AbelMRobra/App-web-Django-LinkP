@@ -39,10 +39,26 @@
 
             <select name="proyecto" class="custom-select" style="width: 20%;">
 
+                {% if request.user.username != "HC" %}
+
                 {% for i in proyectos %}
                 <option value="{{i.id}}">{{i.nombre}}</option>
 
                 {% endfor %}
+
+                {% else %}
+
+                {% for i in proyectos %}
+
+                {% if "DIANCO" in i.nombre %}
+                <option value="{{i.id}}">{{i.nombre}}</option>
+
+                {% endif %}
+
+                {% endfor %}
+
+                
+                {% endif %}
 
 
               </select>

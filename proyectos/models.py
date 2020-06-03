@@ -16,6 +16,21 @@ class Proyectos(models.Model):
     def __str__(self):
         return self.nombre
 
+class ProyectosTerceros(models.Model):
+    nombre = models.CharField(max_length=200, verbose_name='Nombre del proyecto')
+    descrip = models.CharField(max_length=200, verbose_name='Descripción')
+    fecha_f = models.DateField(verbose_name="Fecha de entrega")
+    fecha_a = models.DateField(auto_now=True, verbose_name="Fecha de actualización")
+    m2 =  models.FloatField(verbose_name="Tamaño de la obra")
+
+    class Meta:
+        verbose_name="Proyecto de tercero"
+        verbose_name_plural="Proyectos de terceros"
+
+    def __str__(self):
+        return self.nombre
+
+
 class Unidades(models.Model):
 
     class tipos(models.TextChoices):
