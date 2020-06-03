@@ -11,6 +11,7 @@ from registro.models import RegistroValorProyecto
 from .models import Articulos, Constantes, DatosProyectos, Prametros, Desde, Analisis, CompoAnalisis, Modelopresupuesto, Capitulos, Presupuestos
 import sqlite3
 import numpy as np
+import datetime
 from datetime import date
 from openpyxl import Workbook
 from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
@@ -1395,6 +1396,8 @@ def desde(request):
     ventas_realizadas = 0
     porc_m2 = 0
     porc_no_vendido = 0
+    perfomance = 0
+    no_perfomance = 0
 
     if request.method == 'POST':
 
@@ -1496,6 +1499,8 @@ def desde(request):
             ventas = VentasRealizadas.objects.filter(proyecto = proyecto)
 
             m2_vendidos = 0
+            total_operado = 0
+            total_minimo = 0
 
             for venta in ventas:
 
@@ -1503,14 +1508,52 @@ def desde(request):
 
                     m2_vendidos = m2_vendidos + venta.m2
 
+                    if venta.anticipo != venta.precio_venta:
+                        valor_p_ant = -np.pv(fv=0, rate=(0.82/100), nper=venta.cuotas_pend, pmt=((venta.precio_venta - venta.anticipo)/venta.cuotas_pend))  + venta.anticipo               
 
-            porc_m2 = m2_vendidos/proyecto.m2*100
+                    else:
+                        valor_p_ant = venta.precio_venta
+
+                    total_operado = total_operado + valor_p_ant
+                    date_object = datetime.datetime.strptime(str(venta.fecha), '%Y-%m-%d')
+                    reg_valor_pro = RegistroValorProyecto.objects.filter(proyecto = proyecto, fecha = datetime.date(date_object.year, date_object.month, 1))
+                    
+
+                    for r in reg_valor_pro:
+
+                        parametros_proyecto = Prametros.objects.get(proyecto = proyecto)
+
+                        costo = r.precio_proyecto
+
+                        costo = (costo/(1 + parametros_proyecto.tasa_des_p))*(1 + parametros_proyecto.soft)
+                
+                        costo = costo*(1 + parametros_proyecto.imprevitso)
+
+                        aumento_tem = parametros_proyecto.tem_iibb*parametros_proyecto.por_temiibb*(1+parametros_proyecto.ganancia)
+
+                        aumento_comer = parametros_proyecto.comer*(1+parametros_proyecto.comer)
+
+                        costo = costo/(1-aumento_tem- aumento_comer)
+                        
+                        m2 = (parametros_proyecto.proyecto.m2 - parametros_proyecto.terreno - parametros_proyecto.link)
+
+                        valor_costo = costo/m2
+
+                        total_minimo = total_minimo + valor_costo*venta.m2
+
+
+            porc_m2 = m2_vendidos/(proyecto.m2 - parametros_proyecto.terreno - parametros_proyecto.link)*100
             porc_no_vendido = 100 - porc_m2
-
+            perfomance = ((total_operado/total_minimo)-1)*100
+            no_perfomance = 100 - perfomance
+        
         except:
 
             porc_m2 = 0
             porc_no_vendido = 100
+            perfomance = 0
+            no_perdomance = 100
+
         
     datos = {'datos':datos, 'usd_blue':usd_blue, 
     "proyectos":proyectos, "proyecto":proyecto, 
@@ -1518,7 +1561,9 @@ def desde(request):
     "costo":datos_costo, "sugerido":datos_sugerido,
     "ventas":ventas_realizadas,
     "porc_m2":porc_m2,
-    "porc_no_vendido":porc_no_vendido}
+    "porc_no_vendido":porc_no_vendido,
+    "perfomance":perfomance,
+    "no_perfomance":no_perfomance}
 
     return render(request, 'desde/desde.html', {'datos':datos})
 
