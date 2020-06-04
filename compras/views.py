@@ -271,7 +271,7 @@ def compras(request):
     for dato in datos:
         if dato.precio_presup > dato.precio:
             total = dato.cantidad*dato.precio
-            v = 1 - (dato.precio/dato.precio_presup) 
+            v = (1 - (dato.precio/dato.precio_presup))*100 
             compras.append((0,dato, total, -v ))
 
         elif dato.precio_presup == dato.precio:
@@ -280,7 +280,7 @@ def compras(request):
 
         else:
             total = dato.cantidad*dato.precio
-            v = (dato.precio/dato.precio_presup) - 1
+            v = ((dato.precio/dato.precio_presup) - 1)*100
             compras.append((2,dato, total, v))
 
 
