@@ -1303,9 +1303,15 @@ def parametros(request):
         try:
 
             parametros = Prametros.objects.get(proyecto = proyecto)
+            tasa_pl = parametros.tasa_des_p*100
+            soft = parametros.soft*100
+            imp = parametros.imprevitso*100
+            comer = parametros.comer*100
+            tem = parametros.tem_iibb*100
+            ganan = parametros.ganancia*100
             porc_terreno = parametros.terreno/proyecto.m2*100
             porc_link = parametros.link/proyecto.m2*100
-            datos.append((parametros, porc_terreno, porc_link))
+            datos.append((parametros, porc_terreno, porc_link, tasa_pl, soft, imp, comer, tem, ganan))
 
         except: 
             print("No esta cargado el parametro de ese proyecto")

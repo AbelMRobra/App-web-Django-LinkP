@@ -6,26 +6,26 @@
 
 <div class = "jumbotron" style="background-color: white; margin-bottom: 0px;">
 
-    <h3 style="text-align: center; color: #138D75;">Parametros de los indicadores</h3>
+    <h3 style="text-align: center; color: #138D75;">Parametros del indicador del precio</h3>
+    <h6 style="text-align: center; color: #138D75;">Estos parametros se aplican sobre el costo de construcción</h6>
+
      <b><hr class = "my-4" style="width: 75%; border-color: #138D75 ;"></b>
-     
-     <b><hr class = "my-4" style="width: 100%; border-color:#138D75 ;"></b>
-    
+
     {% if datos %} 
 
     <table class = "table table-hover" style="text-align: center;">
         <thead>
 
             <tr class = "table-success">
-                <th scope = "row"> <font style = "vertical-align: heredar;"> PROYECTO</font></th>
-                <th scope = "row"> <font style = "vertical-align: heredar;"> DESCUENTO "PL"</font></th>
-                <th scope = "row"> <font style = "vertical-align: heredar;"> SOFT + IVA </font></th>
-                <th scope = "row"> <font style = "vertical-align: heredar;"> IMPREVISTO </font></th>
-                <th scope = "row"> <font style = "vertical-align: heredar;"> HON. TERRENO </font></th>
-                <th scope = "row"> <font style = "vertical-align: heredar;"> HON. LINK </font></th>
-                <th scope = "row"> <font style = "vertical-align: heredar;"> COMER </font></th>
-                <th scope = "row"> <font style = "vertical-align: heredar;"> TEM e IIBB </font></th>
-                <th scope = "row"> <font style = "vertical-align: heredar;"> GANANCIA </font></th>
+                <th scope = "row" style="vertical-align: middle;">  PROYECTO</th>
+                <th scope = "row" style="vertical-align: middle;"> DESCUENTO "PL"</th>
+                <th scope = "row" style="vertical-align: middle;"> SOFT + IVA </th>
+                <th scope = "row" style="vertical-align: middle;"> IMPREVISTO </th>
+                <th scope = "row" style="vertical-align: middle;"> TERRENO </th>
+                <th scope = "row" style="vertical-align: middle;"> HONORARIOS LINK </th>
+                <th scope = "row" style="vertical-align: middle;"> COMER </th>
+                <th scope = "row" style="vertical-align: middle;"> TEM e IIBB </th>
+                <th scope = "row" style="vertical-align: middle;">GANANCIA </th>
 
 
             </tr>
@@ -38,14 +38,14 @@
             {% for i in datos %}
             <tr class = "table-light">
                 <td> <b>{{i.0.proyecto}}</b> </td>
-                <td>{{i.0.tasa_des_p}}</td>
-                <td>{{i.0.soft}}</td>
-                <td>{{i.0.imprevitso}}</td>
+                <td>{{i.3|floatformat:0}}%</td>
+                <td>{{i.4|floatformat:0}}%</td>
+                <td>{{i.5|floatformat:0}}%</td>
                 <td>{{i.0.terreno }} m2 - <b>{{i.1|floatformat:0}}%</b></td>
                 <td>{{i.0.link}} m2 - <b>{{i.2|floatformat:0}}%</b></td>
-                <td>{{i.0.comer}}</td>
-                <td>{{i.0.tem_iibb}}</td>
-                <td>{{i.0.ganancia}}</td>
+                <td>{{i.6|floatformat:0}}%</td>
+                <td>{{i.7|floatformat:0}}%</td>
+                <td> <strong>{{i.8|floatformat:0}}%</strong> </td>
 
 
                 </td>
@@ -56,7 +56,18 @@
 
             {% endfor %}
 
-     {% else %}
+        </table>
+        <b><hr class = "my-4" style="width: 100%; border-color: #138D75 ;"></b>
+
+
+        <p><small>DESCUENTO PL: Supone que, en el general de las compras, seimpre se conseguira al menos un 5% de descuento sobre valor de presupuesto</small></p>
+        <p><small>SOFT + IVA/TEM e IIBB: Aquellos costos calculados por el área administrastiva o impositivos</small></p>
+        <p><small>IMPREVISTO: Este porcentaje se aplica sobre el costo de construcción incluido el descuento PL y el SOFT + IVA</small></p>
+        <p><small>TERRENO/HON. LINK: Aquellos m2 destinados a pagar la adquisición del terreno o los servicios de la desarrolladora</small></p>
+        <p><small>COMER: Hace referencia a los honorarios pagados a la comercializadora</small></p>
+        <p><small>GANANCIA: Es el margen de ganancia que asume el inversor por el riesgo que se adquiere al invertir en el proyecto</small></p>
+     
+        {% else %}
             <div style="text-align: center;">
                 <h3>No existe registros actualmente</h3>
             </div>
@@ -65,7 +76,7 @@
     {% endif %}
         
 
-    </table>
+    
 
                     
 </div>
