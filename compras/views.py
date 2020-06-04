@@ -269,13 +269,19 @@ def compras(request):
     compras = []
 
     for dato in datos:
-        if dato.precio_presup >= dato.precio:
+        if dato.precio_presup > dato.precio:
             total = dato.cantidad*dato.precio
-            compras.append((0,dato, total))
+            v = 1 - (dato.precio/dato.precio_presup) 
+            compras.append((0,dato, total, -v ))
+
+        elif dato.precio_presup == dato.precio:
+            total = dato.cantidad*dato.precio
+            compras.append((1,dato, total, 0))
 
         else:
             total = dato.cantidad*dato.precio
-            compras.append((1,dato, total))
+            v = (dato.precio/dato.precio_presup) - 1
+            compras.append((2,dato, total, v))
 
 
     return render(request, 'compras.html', {'compras':compras})

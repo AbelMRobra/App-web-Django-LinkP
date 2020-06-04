@@ -50,7 +50,8 @@
                 <th scope = "row" style="vertical-align: middle;"> <small> <strong>ARTICULO (UNIDAD)</strong> </small></th>
                 <th scope = "row" style="vertical-align: middle;"> <small> <strong>CANTIDAD</strong> </small> </th>
                 <th scope = "row" style="vertical-align: middle;"> <small> <strong>PRECIO</strong> </small> </th>
-                <th scope = "row" style="vertical-align: middle;"> <small> <strong>TOTAL</strong> </small> </th>  
+                <th scope = "row" style="vertical-align: middle;"> <small> <strong>TOTAL</strong> </small> </th>
+                <th scope = "row" style="vertical-align: middle;"> <small> <strong>V</strong> </small> </th>  
                 <th scope = "row" style="vertical-align: middle;"> <small> <strong>FECHA DE LA OC</strong> </small> </th>
                 <th scope = "row" style="vertical-align: middle;"> <small> <strong>DOCUMENTO</strong> </small> </th>
                 
@@ -68,11 +69,22 @@
                 <td style="width: 5%;"> <small>{{i.1.cantidad|floatformat:2}}</small></td>
                 <td style="width: 5%;"> <small>${{i.1.precio|floatformat:2}}</small></td>
                 
-                {% if i.0 %}
+                {% if i.0 == 0 %}
 
                 <td style="width: 5%; color: #DE3521;"> <span class="hint--top hint--error" aria-label="Precio objetivo era: ${{i.1.precio_presup|floatformat:2}}"> <small> <strong>${{i.2|floatformat:0|intcomma}}</strong> </small></span> </td>
+                <td style="width: 3%; color: #DE3521;"> <span class="hint--top hint--error" aria-label="Precio objetivo era: ${{i.1.precio_presup|floatformat:2}}"> <small> <strong>↑{{i.3|floatformat:2}}%</strong> </small></span> </td>
+                
+                {% elif i.0 == 1 %}
+
+                <td style="width: 5%;"> <span class="hint--top hint--error" aria-label="Precio objetivo era: ${{i.1.precio_presup|floatformat:2}}"> <small> <strong>${{i.2|floatformat:0|intcomma}}</strong> </small></span> </td>
+                <td style="width: 3%;"> <span class="hint--top hint--error" aria-label="Precio objetivo era: ${{i.1.precio_presup|floatformat:2}}"> <small> <strong>={{i.3|floatformat:2}}%</strong> </small></span> </td>
+                
+                
                 {% else %}
                 <td style="width: 5%; color: #4FA429 ;"><span class="hint--top hint--success" aria-label="Bien comprado!"><small> <strong>${{i.2|floatformat:0|intcomma}}</strong> </small></span></td>
+                <td style="width: 3%; color: #4FA429 ;"> <span class="hint--top hint--error" aria-label="Precio objetivo era: ${{i.1.precio_presup|floatformat:2}}"> <small> <strong>↓{{i.3|floatformat:2}}%</strong> </small></span> </td>
+                
+                
                 {% endif %}
                 
                 <td style="width: 10%;"> <small>{{i.1.fecha_c}}</small> </td>
