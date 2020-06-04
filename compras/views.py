@@ -266,7 +266,19 @@ def compras(request):
 
                     datos.append(i)
 
-    return render(request, 'compras.html', {'datos':datos})
+    compras = []
+
+    for dato in datos:
+        if dato.precio_presup >= dato.precio:
+            total = dato.cantidad*dato.precio
+            compras.append((0,dato, total))
+
+        else:
+            total = dato.cantidad*dato.precio
+            compras.append((1,dato, total))
+
+
+    return render(request, 'compras.html', {'compras':compras})
 
 # ----------------------------------------------------- VISTAS PARA CERTIFICADOS ----------------------------------------------
  

@@ -1,6 +1,7 @@
 {% extends "users/inicio.html" %}
 
 {% load static %}
+{% load humanize %}
 
 {% block content %}
 
@@ -36,40 +37,46 @@
      <div style="margin-bottom: 1%; text-align: center;">
         <a href="/compras/cargacompras"><button class="btn btn-success" type="submit">Cargar compras</button></a>  
      </div>
-      
 
-    {% if datos %} 
+    {% if compras %} 
 
     <table class = "table table-hover" style="text-align: center;">
         <thead>
 
             <tr class = "table-info">
-                <th scope = "row" style="vertical-align: middle;">PROYECTO</th>
-                <th scope = "row" style="vertical-align: middle;">PROVEEDOR</th>
-                <th scope = "row" style="vertical-align: middle;">NOMBRE DE LA COMPRA</th>
-                <th scope = "row" style="vertical-align: middle;">TIPO</th>
-                <th scope = "row" style="vertical-align: middle;">ARTICULO</th>
-                <th scope = "row" style="vertical-align: middle;">CANTIDAD</th>
-                <th scope = "row" style="vertical-align: middle;">PRECIO</th> 
-                <th scope = "row" style="vertical-align: middle;">FECHA</th>
-                <th scope = "row" style="vertical-align: middle;">DOCUMENTO</th>
+                <th scope = "row" style="vertical-align: middle;"> <small> <strong>PROYECTO</strong> </small> </th>
+                <th scope = "row" style="vertical-align: middle;"><small> <strong>PROVEEDOR</strong> </small> </th>
+                <th scope = "row" style="vertical-align: middle;"> <small> <strong>TIPO</strong> </small></th>
+                <th scope = "row" style="vertical-align: middle;"> <small> <strong>ARTICULO (UNIDAD)</strong> </small></th>
+                <th scope = "row" style="vertical-align: middle;"> <small> <strong>CANTIDAD</strong> </small> </th>
+                <th scope = "row" style="vertical-align: middle;"> <small> <strong>PRECIO</strong> </small> </th>
+                <th scope = "row" style="vertical-align: middle;"> <small> <strong>TOTAL</strong> </small> </th>  
+                <th scope = "row" style="vertical-align: middle;"> <small> <strong>FECHA DE LA OC</strong> </small> </th>
+                <th scope = "row" style="vertical-align: middle;"> <small> <strong>DOCUMENTO</strong> </small> </th>
                 
             </tr>
         </thead>
 
         <tbody>
            
-            {% for i in datos|slice:"20" %}
+            {% for i in compras|slice:"20" %}
             <tr class = "table-light">
-                <td style="width: 12%;"> <b>{{i.proyecto}}</b> </td>
-                <td style="width: 15%;">{{i.proveedor}}</td>
-                <td style="width: 15%;">{{i.nombre}}</td>
-                <td style="width: 8%;">{{i.tipo}}</td>
-                <td style="width: 20%;">{{i.articulo}} ({{i.articulo.unidad}})</td>
-                <td>{{i.cantidad}}</td>
-                <td>${{i.precio}}</td>
-                <td> <small>{{i.fecha_c}}</small> </td>
-                <td> <small>{{i.documento}}</small> </td>
+                <td style="width: 8%;"> <small> <strong>{{i.1.proyecto}}</strong></small></td>              
+                <td style="width: 8%;"> <small>{{i.1.proveedor}}</small></td>
+                <td style="width: 5%;"> <small>{{i.1.tipo}}</small></td>
+                <td style="width: 20%;"><small>{{i.1.articulo}} ({{i.1.articulo.unidad}})</small> </td>
+                <td style="width: 5%;"> <small>{{i.1.cantidad|floatformat:2}}</small></td>
+                <td style="width: 5%;"> <small>${{i.1.precio|floatformat:2}}</small></td>
+                
+                {% if i.0 %}
+
+                <td style="width: 5%; color: #DE3521;"> <span class="hint--top hint--error" aria-label="Precio objetivo era: ${{i.1.precio_presup|floatformat:2}}"> <small> <strong>${{i.2|floatformat:0|intcomma}}</strong> </small></span> </td>
+                {% else %}
+                <td style="width: 5%; color: #4FA429 ;"><span class="hint--top hint--success" aria-label="Bien comprado!"><small> <strong>${{i.2|floatformat:0|intcomma}}</strong> </small></span></td>
+                {% endif %}
+                
+                <td style="width: 10%;"> <small>{{i.1.fecha_c}}</small> </td>
+                <td style="width: 15%;"> <small>{{i.1.documento}}</small> </td>
                           
             </tr>
         </tbody>
