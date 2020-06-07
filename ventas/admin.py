@@ -1,9 +1,18 @@
 from django.contrib import admin
-from .models import PricingResumen, VentasRealizadas, EstudioMercado
+from .models import PricingResumen, VentasRealizadas, EstudioMercado, Pricing
 from import_export import resources
 from import_export.admin import ImportExportModelAdmin
 
 # Register your models here.
+
+class PricingResource(resources.ModelResource):
+    class Meta:
+        model = Pricing
+        
+class PricingAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    list_display = ('unidad', 'frente',  'piso_intermedio', 'cocina_separada')
+    search_fields = ('unidad', 'frente',  'piso_intermedio', 'cocina_separada')
+    resources_class = PricingResource
 
 class PricingResumenResource(resources.ModelResource):
     class Meta:
@@ -33,5 +42,6 @@ class EstudioMercadoAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     resources_class = EstudioMercadoResource
 
 admin.site.register(PricingResumen, PricingResumenAdmin)
+admin.site.register(Pricing, PricingAdmin)
 admin.site.register(VentasRealizadas, VentasRealizadasAdmin)
 admin.site.register(EstudioMercado, EstudioMercadoAdmin)

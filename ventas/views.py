@@ -83,67 +83,52 @@ def panelunidades(request):
         #Trae los datos elegidos
         datos_elegidos = request.POST.items()
 
-        contador = 0
+        list_proyectos = []
+        aisgnacion = []
+        disponibilidad = []
 
         for dato in datos_elegidos:
-            if contador == 0:
-                contador += 1
-            elif contador == 1:
-                proyecto = Proyectos.objects.get(id = dato[1])
-                contador += 1
 
-            elif contador == 2:
-                estado = dato[1]
-                contador += 1
+            if "Asig" in str(dato[0]):
+                aisgnacion.append(dato[1])
 
-            elif contador == 3:
-                asig = dato[1]
+            elif "Disp" in str(dato[0]):
+                disponibilidad.append(dato[1])
 
-        
-        try:
-            unidades = Unidades.objects.filter(proyecto = proyecto, asig__contains = asig, estado = estado )
+            elif str(dato[0]) == "csrfmiddlewaretoken":
+                print("basura")
 
-            if len(unidades) == 0:
-                mensaje = 1
             else:
-                datos_unidades = 1
+                list_proyectos.append(dato[0])
 
-                datos = []
-                otros_datos = []
-
-                m2_totales = 0
-                
-                cantidad = len(unidades)
-
-                departamentos = 0
-
-                cocheras = cantidad - departamentos
-
-                for dato in unidades:
-
-                    if dato.sup_balcon == None:
-                        dato.sup_balcon = 0
-
-                    if dato.sup_patio == None:
-                        dato.sup_patio = 0
-
-                    m2 = dato.sup_propia + dato.sup_balcon + dato.sup_comun + dato.sup_patio
-                    m2_totales = m2_totales + m2
-                    datos.append((dato, m2))
-
-                    if dato.tipo == "DEPARTAMENTO":
-                        departamentos = departamentos + 1
-
-                cocheras = cantidad - departamentos
-                
-                otros_datos.append(m2_totales)
-                otros_datos.append(cantidad)
-                otros_datos.append(departamentos)
-                otros_datos.append(cocheras)
-                
-
-        except:
+        if len(list_proyectos)==0 or len(aisgnacion)==0 or len(disponibilidad)==0:
             mensaje = 1
+
+        else:
+            mensaje = 2
+            otros_datos = []
+            datos_tabla_unidad = []
+            m2_totales = 0
+            cocheras = 0
+
+            for proy in list_proyectos:
+                for asig in aisgnacion:
+                    for disp in disponibilidad:
+                        datos_unidades = Unidades.objects.filter(proyecto__nombre = proy, asig = asig, estado=disp)
+                        for dato in datos_unidades:
+                            m2 = dato.sup_propia + dato.sup_balcon + dato.sup_comun + dato.sup_patio
+                            datos_tabla_unidad.append((dato, m2))
+                            m2_totales = m2_totales + m2
+                            if dato.tipo == "COCHERA":
+                                cocheras += 1
+
+            cantidad = len(datos_tabla_unidad)
+
+            departamentos = cantidad - cocheras
+
+            otros_datos.append((m2_totales, cantidad, departamentos, cocheras))
+
+            datos_unidades = datos_tabla_unidad
 
     datos = {"proyectos":proyectos, "datos":datos, "mensaje":mensaje, "datos_unidades":datos_unidades, "otros_datos":otros_datos}
 

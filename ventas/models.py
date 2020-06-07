@@ -1,7 +1,27 @@
 from django.db import models
-from proyectos.models import Proyectos
+from proyectos.models import Proyectos, Unidades
 
 # Create your models here.
+
+class Pricing(models.Model):
+
+    class SioNo(models.TextChoices):
+        SI = "SI"
+        NO = "NO"
+    unidad = models.ForeignKey(Unidades, on_delete=models.CASCADE, verbose_name = "Unidades")
+    frente = models.CharField(choices=SioNo.choices, max_length=20, verbose_name="Frente")
+    piso_intermedio = models.CharField(choices=SioNo.choices, max_length=20, verbose_name="Piso intermedio")
+    cocina_separada = models.CharField(choices=SioNo.choices, max_length=20, verbose_name="Cocina Separada")
+    local = models.CharField(choices=SioNo.choices, max_length=20, verbose_name="Local Comercial")
+    menor_50_m2 = models.CharField(choices=SioNo.choices, max_length=20, verbose_name="Menor a 50 m2")
+
+    class Meta:
+        verbose_name="Pricing por unidad"
+        verbose_name_plural="Pricing por unidades"
+
+    def __str__(self):
+        return '{}'.format(self.unidad)
+
 
 class PricingResumen(models.Model):
     proyecto = models.ForeignKey(Proyectos, on_delete=models.CASCADE, verbose_name = "Proyecto")

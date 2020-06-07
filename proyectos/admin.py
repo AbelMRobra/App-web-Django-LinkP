@@ -19,8 +19,8 @@ class UnidadesResource(resources.ModelResource):
         model = Unidades
 
 class UnidadesAdmin(ImportExportModelAdmin, admin.ModelAdmin):
-    list_display = ('proyecto','piso_unidad', 'nombre_unidad')
-    search_fields = ('proyecto__nombre','piso_unidad', 'nombre_unidad')
+    list_display = ('proyecto','piso_unidad', 'nombre_unidad', 'asig')
+    search_fields = ('proyecto__nombre','piso_unidad', 'nombre_unidad', 'asig')
     resources_class = UnidadesResource
 
 admin.site.register(Proyectos, ProyectosAdmin)

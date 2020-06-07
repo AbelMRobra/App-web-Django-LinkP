@@ -46,7 +46,7 @@ class Unidades(models.Model):
     class asignacion(models.TextChoices):
 
             PROYECTO = "PROYECTO"
-            HON_TERRENO = "HON. TERRENO"
+            TERRENO = "TERRENO"
             HON_LINK = "HON. LINK"
 
 
