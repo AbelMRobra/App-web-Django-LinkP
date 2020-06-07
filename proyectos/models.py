@@ -8,6 +8,7 @@ class Proyectos(models.Model):
     fecha_f = models.DateField(verbose_name="Fecha de entrega")
     fecha_a = models.DateField(auto_now=True, verbose_name="Fecha de actualización")
     m2 =  models.FloatField(verbose_name="Tamaño de la obra")
+    desde = models.FloatField(null=True, blank=True, verbose_name="Precio desde")
 
     class Meta:
         verbose_name="Proyecto"
@@ -22,7 +23,6 @@ class ProyectosTerceros(models.Model):
     fecha_f = models.DateField(verbose_name="Fecha de entrega")
     fecha_a = models.DateField(auto_now=True, verbose_name="Fecha de actualización")
     m2 =  models.FloatField(verbose_name="Tamaño de la obra")
-
     class Meta:
         verbose_name="Proyecto de tercero"
         verbose_name_plural="Proyectos de terceros"
