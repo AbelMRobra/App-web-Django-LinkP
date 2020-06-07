@@ -1,6 +1,7 @@
 {% extends "users/inicio.html" %}
 
 {% load static %}
+{% load humanize %}
 
 {% block content %}
 
@@ -127,8 +128,9 @@
                 <th scope = "row"> <font style = "vertical-align: heredar;"> PISO</font></th>
                 <th scope = "row"> <font style = "vertical-align: heredar;"> NOM </font></th>
                 <th scope = "row"> <font style = "vertical-align: heredar;"> TIPO </font></th>
-                <th scope = "row"> <font style = "vertical-align: heredar;"> SUP </font></th>
+                <th scope = "row"> <font style = "vertical-align: heredar;"> SUPERFICIE </font></th>
                 <th scope = "row"> <font style = "vertical-align: heredar;"> ESTADO </font></th>
+                <th scope = "row"> <font style = "vertical-align: heredar;"> P. CONTADO </font></th>
                 <th scope = "row"> <font style = "vertical-align: heredar;"> ASIGNACIÓN </font></th>
                  
 
@@ -145,6 +147,7 @@
                 <td> <b>{{i.0.tipo}}</b> </td>
                 <td> <b>{{i.1|floatformat:2}}m2</b> </td>
                 <td> <b>{{i.0.estado}}</b> </td>
+                <td> <b>{{i.2}}</b> </td>
                 <td> <b>{{i.0.asig}}</b> </td>
 
             </tr>

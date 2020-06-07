@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from .models import EstudioMercado
 from proyectos.models import Unidades, Proyectos
+from ventas.models import Pricing
 from datetime import date
 
 # Create your views here.
@@ -117,10 +118,40 @@ def panelunidades(request):
                         datos_unidades = Unidades.objects.filter(proyecto__nombre = proy, asig = asig, estado=disp)
                         for dato in datos_unidades:
                             m2 = dato.sup_propia + dato.sup_balcon + dato.sup_comun + dato.sup_patio
-                            datos_tabla_unidad.append((dato, m2))
+                            
+                            try:
+                                param_uni = Pricing.objects.get(unidad = dato)
+                                desde = dato.proyecto.desde
+
+                                if param_uni.frente == "SI":
+                                    desde = desde*1.03
+
+                                if param_uni.piso_intermedio == "SI":
+                                    desde =desde*1.02
+
+                                if param_uni.cocina_separada == "SI":
+                                    desde = desde*1.03
+
+                                if param_uni.local == "SI":
+                                    desde = desde*1.75
+
+                                if param_uni.menor_50_m2 == "SI":
+                                    desde = desde*1.03
+
+                            except:
+
+                                if dato.tipo == "COCHERA":
+                                    desde = dato.proyecto.desde*(1-0.24)
+
+                                else:
+                                    desde = "NO DEFINIDO"
+
+                            datos_tabla_unidad.append((dato, m2, desde))
                             m2_totales = m2_totales + m2
                             if dato.tipo == "COCHERA":
                                 cocheras += 1
+                            
+
 
             cantidad = len(datos_tabla_unidad)
 
