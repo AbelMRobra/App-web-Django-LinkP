@@ -147,7 +147,14 @@
                 <td> <b>{{i.0.tipo}}</b> </td>
                 <td> <b>{{i.1|floatformat:2}}m2</b> </td>
                 <td> <b>{{i.0.estado}}</b> </td>
+                {% if i.2 >= 0 %}
+                <td> <b>${{i.2|floatformat:0|intcomma}}</b> </td>
+
+                {% else %}
+
                 <td> <b>{{i.2}}</b> </td>
+
+                {% endif %}
                 <td> <b>{{i.0.asig}}</b> </td>
 
             </tr>
