@@ -7,6 +7,5 @@ urlpatterns = [
     #----------------URL PARA CONSTANTES -----------------------------------------
     url(r'^inventario/$', login_required(views.inventario), name = 'Inventario'),
 
-  
 
 ]

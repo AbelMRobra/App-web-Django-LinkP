@@ -8,6 +8,24 @@ def inventario(request):
 
     datos = Inventario.objects.all()
 
+    listado_articulos = []
+
+    for dato in datos:
+        listado_articulos.append(dato.articulo.nombre)
+
+    listado_articulos = set(listado_articulos)
+    
+    listado_art_cant = []
+
+    for art in listado_articulos:
+        contador = 0
+        for dato in datos:
+            if dato.articulo.nombre == art:
+                contador += 1
+        listado_art_cant.append((art, contador))
+
+    print(listado_art_cant)
+
     #Aqui empieza el filtro
 
     if request.method == 'POST':
@@ -72,7 +90,10 @@ def inventario(request):
         datos.append((dato, valor_amort, fecha_amort))
 
     datos = {"datos":datos,
-    "total":total_inventario}
+    "total":total_inventario,
+    "listado":listado_art_cant}
 
 
     return render(request, 'inventario.html', {"datos":datos})
+
+

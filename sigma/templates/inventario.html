@@ -15,6 +15,17 @@
 
      {% if datos %}
 
+     <h6>Resumen de articulos</h6>
+
+     {% for i in datos.listado %}
+
+     <h8> <small>{{i.0}} - unidades: <b>{{i.1}}</b></small></h8>
+
+    {% endfor %}
+
+     <b><hr class = "my-4" style="width: 100%; border-color: #17B5B5 ;"></b>
+
+     <h6>Listado detallado</h6>
 
 
      <form method="POST" style="text-align: center;">
@@ -39,12 +50,9 @@
 
      </form>
  
- <b><hr class = "my-4" style="width: 100%; border-color: #17B5B5 ;"></b>
-
-
      
 
-    <table class = "table table-hover" style="text-align: center;">
+    <table class = "table table-hover" style="text-align: center; margin-top: 1%;">
         <thead>
 
             <tr class = "table-info">
