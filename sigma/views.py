@@ -13,7 +13,9 @@ def inventario(request):
     for dato in datos:
         listado_articulos.append(dato.articulo.nombre)
 
+    listado_articulos.sort()
     listado_articulos = set(listado_articulos)
+    
     
     listado_art_cant = []
 
@@ -24,7 +26,6 @@ def inventario(request):
                 contador += 1
         listado_art_cant.append((art, contador))
 
-    print(listado_art_cant)
 
     #Aqui empieza el filtro
 
