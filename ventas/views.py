@@ -141,7 +141,10 @@ def panelunidades(request):
                             except:
 
                                 if dato.tipo == "COCHERA":
-                                    desde = dato.proyecto.desde*(1-0.24)
+                                    try:
+                                        desde = dato.proyecto.desde*(1-0.24)
+                                    except:
+                                        desde = "NO DEFINIDO"
 
                                 else:
                                     desde = "NO DEFINIDO"
