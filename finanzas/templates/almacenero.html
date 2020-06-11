@@ -1,0 +1,99 @@
+{% extends "users/inicio.html" %}
+
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+
+
+
+<div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;" > 
+
+    <div style="text-align: center;">
+        <h2>Panel de control - Almacenero</h2>
+
+        <small>Responsable del panel: </small><small><strong>VI</strong></small>
+
+
+        <b><hr class = "my-4" style="width: 75%; border-color: black ;"></b>
+    
+    </div>
+
+    <div style="margin-bottom: 2rem;">
+
+        <h3>Evaluación del "PROYECTO"</h3>
+
+    </div>
+
+    <hr class = "my-4" style="width: 100%; border-color: #A5AAA4;">
+
+    <div  style="text-align: left;">
+
+    <h4 style="margin-bottom: 2rem;"> Resumen de los datos </h4>
+
+    <h6>Saldo de caja a la fecha: <small>$1.000.000 </small>  </h6>
+    <h6>Total de salidas: <small>$1.000.000 </small>  </h6>
+    <h6>Total de ingresos: <small>$1.000.000 </small>  </h6>
+    <h6>Rentabilidad: <small>10% </small>  </h6>
+
+    </div>
+
+    
+
+    <hr class = "my-4" style="width: 100%; border-color: #A5AAA4;">
+
+    <h4 style="text-align: left; margin-bottom: 2rem;"> Detalle de salida e ingresos </h4>
+
+    <div style="display: inline-block; width: 45%; vertical-align: top;">
+             
+        <h5>Salidas</h5>
+        <h6>Cheques emitidos: $1.000.000  </h6>
+        <h6>Gasto a la fecha: $1.000.000  </h6>
+        <h6>Pendiente de gastar: $1.000.000  </h6>
+        <h6><small>Administración: $1.000.000  </small></h6>
+        <h6><small>Comisión: $1.000.000  </small></h6>
+        <h6><small>Materiales: $1.000.000  </small></h6>
+        <h6><small>Mano de obra y subcontratos: $1.000.000  </small></h6>
+        <h6><small>Imprevistos: $1.000.000  </small></h6>
+        <h6><small>Creditos de materiales: $1.000.000  </small></h6>
+        <h6><small>Fondos de reparo: $1.000.000  </small></h6>
+        <h6><small>Adelanto a Sigma: $1.000.000  </small></h6>
+        <h6><small>I.V.A sobre ventas: $1.000.000  </small></h6>
+        <h6><small>II.BB + T.E.M: $1.000.000  </small></h6>
+        
+    </div>
+
+    <div style="display: inline-block; width: 45%; vertical-align: top;">
+             
+        <h5>Ingresos</h5>
+        <h6>Prestamos a cobrar: $1.000.000  </h6>
+        <h6><small>Prestamos a proyectos: $1.000.000  </small></h6>
+        <h6><small>Prestamos a otros: $1.000.000  </small></h6>
+        <h6>Cuotas cobradas: $1.000.000  </h6>
+        <h6>Cuotas a cobrar: $1.000.000  </h6>
+        <h6>Ingreso por unid. en venta: $1.000.000 </h6>
+        
+    </div>
+
+    <div style="display: inline-block; width: 45%; vertical-align: top;">
+        <h6 style="color: #E12B20 ; vertical-align: bottom;" >Total del costo: $ 10.000.000</h6>
+
+    </div>
+
+    <div style="display: inline-block; width: 45%; vertical-align: top;">
+        <h6 style="color: #32A41B;">Ingresos totales: $ 10.000.000</h6>
+
+    </div >
+
+    
+    
+
+
+    <div style="text-align: center; margin-top: 10%;">
+        <p> <small>-- Link<strong>P</strong> --</small> </p>
+
+     </div>
+
+
+</div>
+{% endblock %}

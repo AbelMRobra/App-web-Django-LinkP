@@ -99,8 +99,12 @@ class DatosProyectos(models.Model):
 class Presupuestos(models.Model):
     proyecto = models.ForeignKey(Proyectos, on_delete=models.CASCADE, verbose_name = "Proyectos")
     valor = models.FloatField(verbose_name= "Valor del proyecto")
+    saldo = models.FloatField(verbose_name= "Saldo del proyecto", blank=True, null=True)
+    credito = models.FloatField(verbose_name= "Credito", blank=True, null=True)
+    fdr =  models.FloatField(verbose_name= "Fdr", blank=True, null=True)
     imprevisto = models.FloatField(verbose_name= "Saldo del imprevisto", null=True, blank=True)
     fecha_a = models.DateField(auto_now=True, verbose_name= "Fecha de actualización")
+
 
     class Meta:
         verbose_name = "Presupuesto"
@@ -122,6 +126,7 @@ class Prametros(models.Model):
     por_temiibb = models.FloatField(verbose_name="Porcentaje de aplicación TEM e IIBB")
     ganancia = models.FloatField(verbose_name="Ganancia")
     tasa_des = models.FloatField(verbose_name="Tasa descuento")
+    
 
     class Meta:
         verbose_name = "Parametro"

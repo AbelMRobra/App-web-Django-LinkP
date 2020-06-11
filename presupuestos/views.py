@@ -350,6 +350,19 @@ def presupuestostotal(request):
                     valor_saldo = (valor_saldo + articulo_cantidad[0].valor*articulo_cantidad[1])
 
         valor_saldo = valor_saldo/1000000
+
+        try:
+
+            Saldo_act = Presupuestos.objects.get(proyecto = proyectos)
+
+            Saldo_act.saldo = valor_saldo*1000000
+
+            Saldo_act.save()
+
+        except:
+            pass
+
+
         avance = 0
 
         if valor_reposicion != 0:
@@ -1358,22 +1371,6 @@ def desde(request):
     for i in datos:
 
         costo = i.presupuesto.valor
-
-        datos_presupuesto = PresupuestoPorCapitulo(i.presupuesto.proyecto.id)
-        datos_saldo = Saldoporcapitulo(i.presupuesto.proyecto.id)
-
-        valor_reposicion = 0
-
-        #Aqui evaluo si se puede usar el presupuesto como valor de costo para calcular el precio min y sugerido
-
-        for p in datos_presupuesto:
-
-            for articulo_cantidad in p[2]:
-
-                valor_reposicion = (valor_reposicion + articulo_cantidad[0].valor*articulo_cantidad[1])
-
-        if valor_reposicion != 0:
-            costo = valor_reposicion
 
         #Aqui calculo el precio min y sugerido
 

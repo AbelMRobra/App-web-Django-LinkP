@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'ventas',
     'django.contrib.humanize',
     'sigma',
+    'finanzas',
 ]
 
 MIDDLEWARE = [
