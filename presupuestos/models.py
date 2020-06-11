@@ -100,9 +100,12 @@ class Presupuestos(models.Model):
     proyecto = models.ForeignKey(Proyectos, on_delete=models.CASCADE, verbose_name = "Proyectos")
     valor = models.FloatField(verbose_name= "Valor del proyecto")
     saldo = models.FloatField(verbose_name= "Saldo del proyecto", blank=True, null=True)
+    saldo_mat = models.FloatField(verbose_name= "Saldo del proyecto - Materiales", blank=True, null=True)
+    saldo_mo = models.FloatField(verbose_name= "Saldo del proyecto - Mano de obra", blank=True, null=True)
     credito = models.FloatField(verbose_name= "Credito", blank=True, null=True)
     fdr =  models.FloatField(verbose_name= "Fdr", blank=True, null=True)
     imprevisto = models.FloatField(verbose_name= "Saldo del imprevisto", null=True, blank=True)
+    anticipos = models.FloatField(verbose_name= "Anticipos", null=True, blank=True)
     fecha_a = models.DateField(auto_now=True, verbose_name= "Fecha de actualización")
 
 

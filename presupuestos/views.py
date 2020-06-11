@@ -341,13 +341,24 @@ def presupuestostotal(request):
         
         valor_saldo = 0
 
-        for s in datos_saldo:
+        valor_proyecto_materiales = 0
 
-            for articulo_cantidad in s[2]:
+        for componentes in datos_saldo:
 
-                if articulo_cantidad[1] > 0:
+            saldo_capitulo = 0
 
-                    valor_saldo = (valor_saldo + articulo_cantidad[0].valor*articulo_cantidad[1])
+            for articulos in componentes[2]:
+
+                if articulos[1] > 0:
+
+                    saldo_capitulo = saldo_capitulo + articulos[0].valor*articulos[1]
+
+                    if str(articulos[0].codigo)[0] == "3":
+                        valor_proyecto_materiales = valor_proyecto_materiales + articulos[0].valor*articulos[1]               
+
+            valor_saldo = valor_saldo + saldo_capitulo
+
+        valor_proyecto_mo = valor_saldo - valor_proyecto_materiales
 
         valor_saldo = valor_saldo/1000000
 
@@ -356,6 +367,8 @@ def presupuestostotal(request):
             Saldo_act = Presupuestos.objects.get(proyecto = proyectos)
 
             Saldo_act.saldo = valor_saldo*1000000
+            Saldo_act.saldo_mat = valor_proyecto_materiales
+            Saldo_act.saldo_mo = valor_proyecto_mo
 
             Saldo_act.save()
 
@@ -572,6 +585,19 @@ def creditos(request, id_proyecto):
     for dato in datos:
         valor_saldo = valor_saldo + dato[4]
 
+    #Guardamos el valor del credito en la base de presupuestos
+
+    try:
+
+        Cred_act = Presupuestos.objects.get(proyecto = proyecto)
+
+        Cred_act.credito = valor_saldo
+
+        Cred_act.save()
+
+    except:
+        pass
+
      #Aqui empieza el filtro
 
     if request.method == 'POST':
@@ -627,6 +653,17 @@ def fdr(request, id_proyecto):
     for dato in datos:
         valor_fdr = valor_fdr + dato[1]
 
+    try:
+
+        Fdr_act = Presupuestos.objects.get(proyecto = proyecto)
+
+        Fdr_act.fdr = -valor_fdr
+
+        Fdr_act.save()
+
+    except:
+        pass
+
      #Aqui empieza el filtro
 
     if request.method == 'POST':
@@ -681,6 +718,17 @@ def anticiposf(request, id_proyecto):
 
     for dato in datos:
         valor_ant = valor_ant + dato[1]
+
+    try:
+
+        Ant_act = Presupuestos.objects.get(proyecto = proyecto)
+
+        Ant_act.anticipos = -valor_and
+
+        Ant_act.save()
+
+    except:
+        pass
 
      #Aqui empieza el filtro
 
@@ -1611,109 +1659,29 @@ def InformeArea(request):
 
     proyectos = Proyectos.objects.all()
 
-    #Armamos la lista de proyectos y presupuesto de reposición !Corregir porque calcula Mat y Mo del Valor Repo no Saldo
-
     proy_presup = []
 
     for proyecto in proyectos:
 
-        datos = PresupuestoPorCapitulo(proyecto.id)
+        try:
 
-        datos_viejos = datos
+            datos_presup = Presupuestos.objects.get(proyecto = proyecto)
 
-        datos_presupuesto = []
-
-        for componentes in datos_viejos:
-
-            valor_capitulo = 0
-
-            for articulos in componentes[2]:
-
-                valor_capitulo = valor_capitulo + articulos[0].valor*articulos[1]
-            
-            datos_presupuesto.append((componentes[0], componentes[1], valor_capitulo))
-
-        valor_proyecto = 0
-        valor_proyecto_materiales = 0
-        valor_proyecto_mo = 0
-
-
-        for dato in datos_presupuesto:
-
-            valor_proyecto = valor_proyecto + dato[2]
-
-
-        if valor_proyecto > 0:
-            
-            #Armamos el saldo de cada capitulo
-
-            saldo = Saldoporcapitulo(proyecto.id)
-
-            datos_viejos = saldo
-
-            valor_saldo = 0
-            valor_proyecto_materiales = 0
-
-            for componentes in datos_viejos:
-
-                saldo_capitulo = 0
-
-                for articulos in componentes[2]:
-
-                    if articulos[1] > 0:
-
-                        saldo_capitulo = saldo_capitulo + articulos[0].valor*articulos[1]
-
-                        if str(articulos[0].codigo)[0] == "3":
-                            valor_proyecto_materiales = valor_proyecto_materiales + articulos[0].valor*articulos[1]               
-
-                valor_saldo = valor_saldo + saldo_capitulo
-
-            valor_proyecto_mo = valor_saldo - valor_proyecto_materiales
-                
+            valor_proyecto = datos_presup.valor
             vr_M2 = valor_proyecto/proyecto.m2
+            valor_proyecto_materiales = datos_presup.saldo_mat
+            valor_proyecto_mo = datos_presup.saldo_mo
+            total_creditos = datos_presup.credito
+            total_fdr = datos_presup.fdr
+            total_ant = datos_presup.anticipos
+            imprevisto = datos_presup.imprevisto
 
-            #Aqui sacamos los creditos
-
-            creditos = Creditocapitulo(proyecto.id)
-
-            total_creditos = 0
-
-            for credito in creditos:
-                total_creditos =  total_creditos + credito[4]
-
-            #Aqui sacamos los fdr
-
-            fdr = Fondosdereparo(proyecto.id)
-
-            total_fdr = 0
-
-            for f in fdr:
-                total_fdr = total_fdr + f[1]
-
-            #Aqui sacamos anticipos
-
-            ant = AnticiposFinan(proyecto.id)
-
-            total_ant = 0
-
-            for a in ant:
-                total_ant = total_ant + a[1]
-
-            imprevisto = 0
-
-            try:
-                datos_imprevisto = Presupuestos.objects.get(proyecto = proyecto)
-
-                if datos_imprevisto.imprevisto != None:
-                    imprevisto = datos_imprevisto.imprevisto
-            except:
-                imprevisto = 0
-
-
-            saldo_total = valor_proyecto_materiales + valor_proyecto_mo + total_creditos - total_fdr - total_ant + imprevisto
+            saldo_total = valor_proyecto_materiales + valor_proyecto_mo + total_creditos + total_fdr + total_ant + imprevisto
 
             proy_presup.append((proyecto, valor_proyecto, vr_M2, valor_proyecto_materiales, valor_proyecto_mo, total_creditos, saldo_total, total_fdr, total_ant, imprevisto))
+        except:
+            print("No esta cargado el presupuesto del proyecto")
+  
 
     cant_proy_act = len(proy_presup)
 
