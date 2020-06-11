@@ -723,7 +723,7 @@ def anticiposf(request, id_proyecto):
 
         Ant_act = Presupuestos.objects.get(proyecto = proyecto)
 
-        Ant_act.anticipos = -valor_and
+        Ant_act.anticipos = -valor_ant
 
         Ant_act.save()
 
