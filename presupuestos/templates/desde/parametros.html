@@ -1,6 +1,7 @@
 {% extends "users/inicio.html" %}
 
 {% load static %}
+{% load humanize %}
 
 {% block content %}
 
@@ -37,7 +38,7 @@
 
             {% for i in datos %}
             <tr class = "table-light">
-                <td> <b>{{i.0.proyecto}}</b> </td>
+                <td rowspan="2" style="vertical-align: middle;" > <b>{{i.0.proyecto}}</b> </td>
                 <td>{{i.3|floatformat:0}}%</td>
                 <td>{{i.4|floatformat:0}}%</td>
                 <td>{{i.5|floatformat:0}}%</td>
@@ -46,11 +47,17 @@
                 <td>{{i.6|floatformat:0}}%</td>
                 <td>{{i.7|floatformat:0}}%</td>
                 <td> <strong>{{i.8|floatformat:0}}%</strong> </td>
-
-
-                </td>
-                
             
+            </tr>
+            <tr>
+                <td>$ {{i.9|floatformat:0|intcomma}}</td>
+                <td>$ {{i.10|floatformat:0|intcomma}}</td>
+                <td>$ {{i.11|floatformat:0|intcomma}}</td>
+                <td>$ {{i.12|floatformat:0|intcomma}}</td>
+                <td>$ {{i.13|floatformat:0|intcomma}}</td>
+                <td>$ {{i.14|floatformat:0|intcomma}}</td>
+                <td>$ {{i.15|floatformat:0|intcomma}}</td>
+                <td>$ {{i.16|floatformat:0|intcomma}}</td>
             </tr>
         </tbody>
 

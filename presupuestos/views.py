@@ -366,7 +366,22 @@ def presupuestostotal(request):
 
             registro.append((valor.fecha, valor.precio_proyecto/1000000))
 
+        try:
+
+            Presup_act = Presupuestos.objects.get(proyecto = proyectos)
+
+            Presup_act.valor = valor_reposicion*1000000
+
+            Presup_act.save()
+
+        except:
+            pass
+
         proyectos = 0
+
+        
+
+        
         
 
     return render(request, 'presupuestos/principalpresupuesto.html', {"datos":datos, "proyectos":proyectos, "valor":registro,})
@@ -1311,7 +1326,18 @@ def parametros(request):
             ganan = parametros.ganancia*100
             porc_terreno = parametros.terreno/proyecto.m2*100
             porc_link = parametros.link/proyecto.m2*100
-            datos.append((parametros, porc_terreno, porc_link, tasa_pl, soft, imp, comer, tem, ganan))
+
+            presupuesto = Presupuestos.objects.get(proyecto = proyecto)
+            costo_m2 = (presupuesto.valor/(1+(tasa_pl/100)))/proyecto.m2
+            costo_soft_m2 = costo_m2*(1+(soft/100))
+            costo_imp = costo_soft_m2*(1+(imp/100))
+            costo_terreno = (costo_imp*proyecto.m2)/(proyecto.m2-parametros.terreno)
+            costo_hon = (costo_imp*proyecto.m2)/(proyecto.m2-parametros.terreno-parametros.link)
+            costo_comer = costo_hon/(1 - (parametros.comer*(1+parametros.comer)))
+            costo_tem = costo_hon/(1 - (parametros.comer*(1+parametros.comer)) - (parametros.tem_iibb*parametros.por_temiibb*(1+parametros.ganancia)))
+            ganancia = costo_tem * (1+(ganan/100))
+
+            datos.append((parametros, porc_terreno, porc_link, tasa_pl, soft, imp, comer, tem, ganan, costo_m2, costo_soft_m2, costo_imp, costo_terreno, costo_hon, costo_comer, costo_tem, ganancia ))
 
         except: 
             print("No esta cargado el parametro de ese proyecto")
