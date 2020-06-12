@@ -5,6 +5,8 @@ from django.db import models
 class Proyectos(models.Model):
     nombre = models.CharField(max_length=200, verbose_name='Nombre del proyecto')
     descrip = models.CharField(max_length=200, verbose_name='Descripción')
+    iamgen = models.ImageField(verbose_name="Logo del proyecto", blank=True, null=True)
+    color = models.TextField(verbose_name="Color del proyecto", blank=True, null=True)
     fecha_f = models.DateField(verbose_name="Fecha de entrega")
     fecha_a = models.DateField(auto_now=True, verbose_name="Fecha de actualización")
     m2 =  models.FloatField(verbose_name="Tamaño de la obra")

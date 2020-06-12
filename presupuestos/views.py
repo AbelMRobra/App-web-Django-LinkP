@@ -11,6 +11,7 @@ from registro.models import RegistroValorProyecto
 from .models import Articulos, Constantes, DatosProyectos, Prametros, Desde, Analisis, CompoAnalisis, Modelopresupuesto, Capitulos, Presupuestos
 import sqlite3
 import numpy as np
+import json
 import datetime
 from datetime import date
 from openpyxl import Workbook
@@ -406,10 +407,7 @@ def presupuestostotal(request):
         proyectos = 0
 
         
-
-        
-        
-
+    
     return render(request, 'presupuestos/principalpresupuesto.html', {"datos":datos, "proyectos":proyectos, "valor":registro,})
 
 
@@ -2029,6 +2027,8 @@ def Creditocapitulo(id_proyecto):
 
     compras = Compras.objects.filter(proyecto = proyecto)
 
+    #Este auxiliar arma una cadena de texto de todos los articulos necesarios
+
     comprado_aux = ""
 
     for dato in datos:
@@ -2052,7 +2052,7 @@ def Creditocapitulo(id_proyecto):
         
             datos.append((i[0], i[1], comprado, cantidad_saldo, saldo ))
 
-    #Esta parte arma los articulos que no estan en el presupuesto
+    #Esta parte arma los articulos que no estan en el presupuesto, compara el nombre si esta adentro de la cadena auxiliar 
 
 
     for compra in compras:

@@ -106,6 +106,7 @@ class Presupuestos(models.Model):
     fdr =  models.FloatField(verbose_name= "Fdr", blank=True, null=True)
     imprevisto = models.FloatField(verbose_name= "Saldo del imprevisto", null=True, blank=True)
     anticipos = models.FloatField(verbose_name= "Anticipos", null=True, blank=True)
+    saldo_cap = models.FileField(verbose_name="Archivo Saldo Capitulo", null=True, blank=True)
     fecha_a = models.DateField(auto_now=True, verbose_name= "Fecha de actualización")
 
 

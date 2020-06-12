@@ -19,17 +19,75 @@
     
     </div>
 
+    {% if datos.proyectos %}
+
+    <div style="text-align: center; margin-bottom: 20%;">
+       <form method="POST">
+
+           {% csrf_token %}
+
+           <select name="proyecto" class="custom-select" style="width: 20%;">
+
+               {% if request.user.username != "HC" %}
+
+               {% for i in datos.proyectos %}
+
+               {% if not "DIANCO" in i.nombre %}
+
+               <option value="{{i.id}}">{{i.nombre}}</option>
+
+               {% endif %}
+
+               {% endfor %}
+
+               {% else %}
+
+               {% for i in datos.proyectos %}
+
+               {% if "DIANCO" in i.nombre %}
+               <option value="{{i.id}}">{{i.nombre}}</option>
+
+               {% endif %}
+
+               {% endfor %}
+
+               
+               {% endif %}
+
+
+             </select>
+             <div>
+               <small> Seleccione un proyecto del listado para acceder a los datos</small>
+             </div>
+             
+
+             <div>
+               <button class="btn btn-dark" type="submit" style="margin-top: 1%;">Buscar datos</button>          
+           </div>
+           
+       </form>
+
+       
+       
+   </div>
+
+   
+
+   {% endif %}
+
+   {% if datos.proyectos == 0 %}
+
     <div style="margin-bottom: 2rem;">
 
-        <h3>Evaluación del "PROYECTO"</h3>
+    <h3 style="color: rgb({{datos.datos.0.color}})">Evaluación de {{datos.datos.0.nombre}}</h3>
 
     </div>
 
-    <hr class = "my-4" style="width: 100%; border-color: #A5AAA4;">
+    <hr class = "my-4" style="width: 100%; border-color: rgba({{datos.datos.0.color}}, 0.5);">
 
     <div  style="text-align: left;">
 
-    <h4 style="margin-bottom: 2rem;"> Resumen de los datos </h4>
+    <h4 style="margin-bottom: 2rem; color: rgb({{datos.datos.0.color}})"> Resumen de los datos </h4>
 
     <h6>Saldo de caja a la fecha: <small>$1.000.000 </small>  </h6>
     <h6>Total de salidas: <small>$1.000.000 </small>  </h6>
@@ -40,23 +98,24 @@
 
     
 
-    <hr class = "my-4" style="width: 100%; border-color: #A5AAA4;">
+    <hr class = "my-4" style="width: 100%; border-color: rgba({{datos.datos.0.color}}, 0.5);">
 
-    <h4 style="text-align: left; margin-bottom: 2rem;"> Detalle de salida e ingresos </h4>
+    <h4 style="text-align: left; margin-bottom: 2rem; color: rgb({{datos.datos.0.color}})"> Desglose completo </h4>
 
     <div style="display: inline-block; width: 45%; vertical-align: top;">
              
-        <h5>Salidas</h5>
+        <h5>Costos del proyecto</h5>
+        <hr class = "my-4" style="width: 45%; border-color: rgba({{datos.datos.0.color}}, 0.3);">
         <h6>Cheques emitidos: $1.000.000  </h6>
         <h6>Gasto a la fecha: $1.000.000  </h6>
         <h6>Pendiente de gastar: $1.000.000  </h6>
         <h6><small>Administración: $1.000.000  </small></h6>
         <h6><small>Comisión: $1.000.000  </small></h6>
-        <h6><small>Materiales: $1.000.000  </small></h6>
-        <h6><small>Mano de obra y subcontratos: $1.000.000  </small></h6>
-        <h6><small>Imprevistos: $1.000.000  </small></h6>
-        <h6><small>Creditos de materiales: $1.000.000  </small></h6>
-        <h6><small>Fondos de reparo: $1.000.000  </small></h6>
+        <h6><small>Materiales: $ {{datos.datos.1.saldo_mat|floatformat:0|intcomma}}  </small></h6>
+        <h6><small>Mano de obra y subcontratos: $ {{datos.datos.1.saldo_mo|floatformat:0|intcomma}}  </small></h6>
+        <h6><small>Imprevistos: $ {{datos.datos.1.imprevisto|floatformat:0|intcomma}}  </small></h6>
+        <h6><small>Creditos de materiales: $ {{datos.datos.1.credito|floatformat:0|intcomma}}  </small></h6>
+        <h6><small>Fondos de reparo: $ ${{datos.datos.1.fdr|floatformat:0|intcomma}}  </small></h6>
         <h6><small>Adelanto a Sigma: $1.000.000  </small></h6>
         <h6><small>I.V.A sobre ventas: $1.000.000  </small></h6>
         <h6><small>II.BB + T.E.M: $1.000.000  </small></h6>
@@ -65,7 +124,8 @@
 
     <div style="display: inline-block; width: 45%; vertical-align: top;">
              
-        <h5>Ingresos</h5>
+        <h5>Ingresos del proyecto</h5>
+        <hr class = "my-4" style="width: 45%; border-color: rgba({{datos.datos.0.color}}, 0.3);">
         <h6>Prestamos a cobrar: $1.000.000  </h6>
         <h6><small>Prestamos a proyectos: $1.000.000  </small></h6>
         <h6><small>Prestamos a otros: $1.000.000  </small></h6>
@@ -84,6 +144,8 @@
         <h6 style="color: #32A41B;">Ingresos totales: $ 10.000.000</h6>
 
     </div >
+
+    {% endif %}
 
     
     
