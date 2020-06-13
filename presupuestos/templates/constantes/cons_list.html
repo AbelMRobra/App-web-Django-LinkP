@@ -4,27 +4,19 @@
 
 {% block content %}
 
-<div class = "jumbotron" style="background-color: white; margin-bottom: 0px;">
+<div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;">
 
-    <h3 style="text-align: center; color: #17B5B5 ;">Listado de Constantes</h3>
-    <h6 style="text-align: center; color: #17B5B5 ;">Valores de divisas o indices</h6>
-     <b><hr class = "my-4" style="width: 75%; border-color: #17B5B5 ;"></b>
+    <h3>Listado de Constantes</h3>
+    <h6 > <small>Indices y divisas que actualizan datos</small> </h6>
+     <b><hr class = "my-4" style="width: 100%;"></b>
 
-     {% if perms.constante.view %}
 
-        <div style="text-align: center;">
-               <a href="/presupuestos/cons_panel" class="btn btn-success">Panel de cambios</a>          
-        </div>
-
-    {% endif %}
-
-     <b><hr class = "my-4" style="width: 100%; border-color: #17B5B5 ;"></b>
     {% if constantes %}  
 
-        <table class = "table table-hover" style="text-align: center;">
+        <table class = "table table-hover">
             <thead>
     
-                <tr class = "table-info">
+                <tr class = "table-dark">
                     <th scope = "row"> <font style = "vertical-align: heredar;">  NOMBRE </font> </th>
                     <th scope = "row"> <font style = "vertical-align: heredar;">  VALOR </font>  </th>
                     <th scope = "row"> <font style = "vertical-align: heredar;">  DESCRIPCIÓN </font>  </th>
@@ -45,30 +37,42 @@
                     
     
                 </tr>
-            </tbody>
-    
                 {% endfor %}
+
+            </tbody>
+ 
 
             </table>
 
-                <div style="text-align: center;">
-                    <p> <small>-- Link<strong>P</strong> --</small> </p>
             
-                 </div>
+
+            {% if perms.constante.view %}
+
+            <b><hr class = "my-4" style="width: 100%; "></b>
+
+            <div>
+                   <a href="/presupuestos/cons_panel" class="btn btn-success">Acceso al panel de cambios</a>          
+            </div>
+    
+            {% endif %}
+
+
+
     
          {% else %}
+
                 <div>
-                    <h3>No existe registros actualmente</h3>
+                    <h3>Aun no se han cargado constantes</h3>
                 </div>
                 
     
         {% endif %}
+
+        <div style="margin-top: 2rem;">
+            <p> <small>-- Link<strong>P</strong> --</small> </p>
+    
+            </div>
             
-    
-        
-
-    
-
 </div>
 
 

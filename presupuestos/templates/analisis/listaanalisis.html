@@ -4,11 +4,11 @@
 
 {% block content %}
 
-<div class = "jumbotron" style="background-color: white; margin-bottom: 0px;">
+<div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;">
 
-    <h3 style="text-align: center; color: #17B5B5 ;">Listado de Analisis de Precio Unitario</h3>
-    <h6 style="text-align: center; color: #17B5B5 ;">La biblioteca de APU</h6>
-     <b><hr class = "my-4" style="width: 75%; border-color: #17B5B5 ;"></b>
+    <h3>Biblioteca de Analisis de Precio Unitario</h3>
+    <h6> <small>Composición por unidad de medida</small> </h6>
+     <b><hr class = "my-4" style="width: 75%;"></b>
      <form method="POST" style="text-align: center;">
 
         {% csrf_token %}
@@ -26,26 +26,20 @@
         </div>
 
         <div>
-            <button class="btn btn-info" type="submit" style="margin-top: 1%;">Buscar</button>          
+            <button class="btn btn-dark" type="submit" style="margin-top: 1%;">Buscar</button>          
         </div>       
 
      </form>
-     <b><hr class = "my-4" style="width: 100%; border-color: #17B5B5 ;"></b>
+     <b><hr class = "my-4" style="width: 100%; "></b>
 
-     {% if perms.analisis.view %}
-
-     <div style="margin-bottom: 1rem; text-align: center;">
-        <a href="/presupuestos/panelanalisis"><button class="btn btn-success" type="submit">Panel de cambios</button></a>  
-     </div>
-
-     {% endif %}
+    
     
     {% if datos %} 
 
     <table class = "table table-hover" style="text-align: center;">
         <thead>
 
-            <tr class = "table-info">
+            <tr class = "table-dark">
                 <th scope = "row"> <font style = "vertical-align: heredar;"> CODIGO </font></th>
                 <th scope = "row"> <font style = "vertical-align: heredar;"> NOMBRE DEL ANALISIS </font></th>
                 <th scope = "row"> <font style = "vertical-align: heredar;"> UN </font></th>
@@ -75,6 +69,12 @@
 
         </table>
 
+        <b><hr class = "my-4" style="width: 100%; "></b>
+
+        <div>
+            <small>El listado puede continuar, el maximo de filas visibles es de 20</small>
+        </div>
+
      {% else %}
             <div>
                 <h3>No existe registros actualmente</h3>
@@ -84,12 +84,18 @@
     {% endif %}
         
 
-    
-    <div>
-        <small>El listado puede continuar, el maximo de filas visibles es de 20</small>
-    </div>
 
-    <div style="text-align: center;">
+    {% if perms.analisis.view %}
+
+     <b><hr class = "my-4" style="width: 100%; "></b>
+
+     <div style="margin-bottom: 1rem; text-align: center;">
+        <a href="/presupuestos/panelanalisis"><button class="btn btn-success" type="submit">Acceso al panel de cambios</button></a>  
+     </div>
+
+     {% endif %}
+
+    <div style="margin-top: 2rem;">
         <p> <small>-- Link<strong>P</strong> --</small> </p>
 
      </div>
