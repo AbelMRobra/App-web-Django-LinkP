@@ -4,10 +4,10 @@
 
 {% block content %}
 
-<div class = "jumbotron" style="background-color: white; margin-bottom: 0px;">
+<div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;">
 
-    <h3 style="text-align: center; color: #17B5B5 ;">Stock en proveedores</h3>
-     <b><hr class = "my-4" style="width: 75%; border-color: #17B5B5 ;"></b>
+    <h3>Material acopiado en proveedores</h3>
+     <b><hr class = "my-4" style="width: 75%;"></b>
 
      <form method="POST" style="text-align: center;">
 
@@ -26,16 +26,12 @@
         </div>
 
         <div>
-            <small>No busca por el nombre de la compra o el tipo y la fecha se busca: "año-mes-dia" en numeros-</small><small>  <strong>AR</strong> </small>
-        </div>
-
-        <div>
-            <button class="btn btn-info" type="submit" style="margin-top: 1%;">Buscar</button>          
+            <button class="btn btn-dark" type="submit" style="margin-top: 1%;">Buscar</button>          
         </div>
 
      </form>
 
-     <b><hr class = "my-4" style="width: 100%; border-color: #17B5B5 ;"></b>
+     <b><hr class = "my-4" style="width: 100%;"></b>
      <div>
         <small>Por favor prestar atención a la unidad-</small><small>  <strong>AR</strong> </small>
     </div>
@@ -45,13 +41,13 @@
     <table class = "table table-hover" style="text-align: center;">
         <thead>
 
-            <tr class = "table-info">
-                <th scope = "row"> <font style = "vertical-align: heredar;"> PROYECTO </font></th>
-                <th scope = "row"> <font style = "vertical-align: heredar;"> PROVEEDOR </font></th>
-                <th scope = "row"> <font style = "vertical-align: heredar;"> NOMBRE DE LA COMPRA </font></th>
-                <th scope = "row"> <font style = "vertical-align: heredar;"> ARTICULO </font></th>
-                <th scope = "row"> <font style = "vertical-align: heredar;"> UNIDAD </font></th>
-                <th scope = "row"> <font style = "vertical-align: heredar;"> CANTIDAD </font></th>
+            <tr class = "table-dark">
+                <th scope = "row"> PROYECTO </th>
+                <th scope = "row"> PROVEEDOR </th>
+                <th scope = "row"> NOMBRE DE LA COMPRA </th>
+                <th scope = "row"> ARTICULO </th>
+                <th scope = "row"> UNIDAD </th>
+                <th scope = "row"> CANTIDAD </th>
                 
             </tr>
         </thead>
@@ -72,8 +68,10 @@
 
             {% endfor %}
 
+        </table>
+
      {% else %}
-            <div style="text-align: center;">
+            <div>
                 <h3>No existe registros actualmente</h3>
             </div>
             
@@ -81,9 +79,9 @@
     {% endif %}
         
 
-    </table>
     
-    <div style="text-align: center;">
+    
+    <div style="margin-top: 2rem;">
         <p> <small>-- Link<strong>P</strong> --</small> </p>
 
      </div>
