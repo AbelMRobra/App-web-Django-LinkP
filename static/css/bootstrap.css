@@ -60,7 +60,12 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
   display: block;
 }
 
+.tableconteiner {
 
+  display: block;
+  overflow-x: scroll;
+
+}
 
 body {
   margin: 0;

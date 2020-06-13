@@ -1,0 +1,13 @@
+.tableconteinerabel {
+
+    max-width: 100%;
+
+  
+  }
+
+@media (max-width: 740px) {
+    .tableconteinerabel {
+        display: block;
+        overflow-x: scroll;
+    }
+}
