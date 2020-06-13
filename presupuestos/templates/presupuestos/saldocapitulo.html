@@ -9,30 +9,28 @@
 
 <div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;">
 
-    <h3 style="text-align: center; color: #17B5B5 ;">Detalle de Saldo proyecto {{datos.proyecto.nombre}}</h3>
-    <h6 style="text-align: center; color: #17B5B5 ;"> Avance/Incidencia/Saldo</h6>
-     <b><hr class = "my-4" style="width: 75%; border-color: #17B5B5 ;"></b>
+    <h3 style="color: rgb({{datos.proyecto.color}}) ;">Saldo del proyecto {{datos.proyecto.nombre}}</h3>
+    <img src="{{datos.0.0.iamgen.url}}"  class="img-fluid" alt="..." style="max-width:20%;width:auto;height:auto; margin-top: 1rem;">
+  
+     <b><hr class = "my-4" style="width: 75%; border-color: rgba({{datos.proyecto.color}}, 0.5) ;"></b>
 
      <div style="text-align: center;">
-        <a href="{% url 'Explosión de insumos' id_proyecto=datos.proyecto.id %}" class="btn btn-info">Explosión de insumos</a>          
+        <a href="{% url 'Explosión de insumos' id_proyecto=datos.proyecto.id %}" class="btn btn-dark">Explosión de insumos</a>          
+        <h6 style="color: rgb({{datos.proyecto.color}}) ;"> <small> <strong>Detalle de todos los articulos</strong> </small> </h6>
+    
     </div>
 
 
-    <div style="text-align: center; margin-top: 1%;">
-        <a href="{% url 'Descarga Exp Cap' id_proyecto=datos.proyecto.id %}" class="btn btn-outline-info">Descargar Saldo por Capitulo</a>          
-
-    </div>
-
-    <small> <strong>--Esta descarga puede durar algunos minutos--</strong>   </small>
+    
 
 
  
- <b><hr class = "my-4" style="width: 100%; border-color: #17B5B5 ;"></b>
+ <b><hr class = "my-4" style="width: 100%; border-color: rgba({{datos.proyecto.color}}, 0.5) ;"></b>
 
     <table class = "table table-hover" style="text-align: center; width: 100%;">
         <thead>
 
-            <tr class = "table-info">
+            <tr class = "table-dark">
                 <th scope = "row">Nº</th>
                 <th scope = "row">CAPITULO</th>
                 <th scope = "row">VALOR DEL CAPITULO</th>
@@ -48,7 +46,7 @@
         {% for i in datos.datos %}
 
             <tr class = "table-light">
-                <td style="width: 5%;"><b>{{i.0}}</b></td>
+                <td style="width: 5%; color: rgb({{datos.proyecto.color}})"><b>{{i.0}}</b></td>
                 <td style="width: 30%;"> <b><a href="{% url 'Articulos saldo de presupuesto' id_proyecto=datos.proyecto.id id_capitulo=i.1.id %}" style="color: black;">{{i.1}}</a></b></td>
                 <td style="width: 15%;"> ${{i.2|floatformat:0|intcomma}} </td>
                 <td style="width: 15%;"> ${{i.3|floatformat:0|intcomma}} </td>
@@ -63,10 +61,17 @@
         </table>
 
         <div style="text-align: center;">
-            <h6>Valor de reposición del proyecto: ${{datos.saldo|floatformat:0|intcomma}}</h6>
+            <h6 style="color: rgb({{datos.proyecto.color}})">Saldo del proyecto a la fecha: ${{datos.saldo|floatformat:0|intcomma}}</h6>
         </div>
 
-        <div style="text-align: center;">
+        <div style="text-align: center; margin-top: 3%;">
+            <a href="{% url 'Descarga Exp Cap' id_proyecto=datos.proyecto.id %}" class="btn btn-outline-dark">Descargar Saldo por Capitulo</a>          
+    
+        </div>
+    
+        <small> <strong>--Esta descarga puede durar algunos minutos--</strong>   </small>
+
+        <div style="text-align: center; margin-top: 2rem;">
             <p> <small>-- Link<strong>P</strong> --</small> </p>
     
          </div>
