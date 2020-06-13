@@ -6,20 +6,24 @@
 
 <div class = "jumbotron" style="background-color: white; margin-bottom: 0px;">
 
-    <h3 style="text-align: center; color: #17B5B5 ;">Panel principal de presupuestos {{datos.0.0.nombre}}</h3>
-    
-    {% if datos %}
-
     <div style="text-align: center;">
 
-        <small style="color: #17B5B5 ;"> <b>Un proyecto de {{datos.0.0.m2|floatformat:2}}m2</b> </small>
+      <h3 style="color:  rgb({{datos.0.0.color}})">Panel principal de presupuestos {{datos.0.0.nombre}}</h3>
+    
+      {% if datos %}
+  
+      <img src="{{datos.datos.0.0.iamgen.url}}"  class="img-fluid" alt="..." style="max-width:20%;width:auto;height:auto; margin-top: 1rem;">
+  
+  
+      <p><small style="color: rgb({{datos.0.0.color}});"> <b>Un proyecto de {{datos.0.0.m2|floatformat:0}}m2</b> </small></p>
+        
       
     </div>
 
     {% endif %}
     
     
-     <b><hr class = "my-4" style="width: 75%; border-color: #17B5B5 ;"></b>
+     <b><hr class = "my-4" style="width: 75%; border-color: rgba({{datos.0.0.color}}, 0.5) ;"></b>
 
      {% if datos %}
 
@@ -81,7 +85,7 @@
 
     {% if datos %}
 
-     <b><hr class = "my-4" style="width: 100%; border-color: #17B5B5 ;"></b>
+     <b><hr class = "my-4" style="width: 100%; border-color: rgba({{datos.0.0.color}}, 0.5) ;"></b>
 
      <div style="text-align: center; margin-top: 3%; margin-bottom: 1.5%;">
 
@@ -95,7 +99,7 @@
      <a href="{% url 'Panel de presupuestos por capitulo' datos.0.0.id %}" style="color: black;">
      <div style="text-align: center;">
 
-        <div class="card text-white bg-info mb-3" style="display: inline-block; width: 25%; height: 25%;  ">
+        <div class="card text-white bg-dark mb-3" style="display: inline-block; width: 25%; height: 25%;  ">
           
             <div class="card-body">
               <h4 class="card-title">Valor de reposición</h4>
@@ -108,7 +112,7 @@
 
     <a href="{% url 'Saldo por capitulo' datos.0.0.id %}" style="color: black;">
     
-        <div class="card text-white bg-info mb-3" style="display: inline-block; width: 25%; margin-left:2%;">
+        <div class="card text-white bg-dark mb-3" style="display: inline-block; width: 25%; margin-left:2%;">
               
             <div class="card-body">
                 <h4 class="card-title">Saldo del proyecto</h4>
@@ -122,16 +126,16 @@
         </div>
         <div style="text-align: center;">
 
-        <a href="{% url 'Creditos de proyectos' datos.0.0.id %}" class="btn btn-outline-info">Creditos varios</a>
-        <a href="{% url 'Fondos de reparo' datos.0.0.id %}" class="btn btn-outline-info">Fondos de reparo</a>
-        <a href="{% url 'Anticipos' datos.0.0.id %}"  class="btn btn-outline-info">Anticipos Finan</a>
+        <a href="{% url 'Creditos de proyectos' datos.0.0.id %}" class="btn btn-outline-dark">Creditos varios</a>
+        <a href="{% url 'Fondos de reparo' datos.0.0.id %}" class="btn btn-outline-dark">Fondos de reparo</a>
+        <a href="{% url 'Anticipos' datos.0.0.id %}"  class="btn btn-outline-dark">Anticipos Finan</a>
         
         </div>
 
         
     
 
-        <b><hr class = "my-4" style="width: 100%; border-color: #17B5B5 ;"></b>
+        <b><hr class = "my-4" style="width: 100%; border-color: rgba({{datos.0.0.color}}, 0.5) ;"></b>
 
       <div style="text-align: center; margin-top: 3%; margin-bottom: 1.5%;">
 
@@ -157,8 +161,8 @@
                 datasets: [
                 {
                     label: 'Valor de reposición mes a mes',
-                    backgroundColor: 'rgb(79, 199, 49)',
-                    borderColor: 'rgb(79, 199, 49)',
+                    backgroundColor: 'rgb({{datos.0.0.color}})',
+                    borderColor: 'rgb({{datos.0.0.color}})',
                     fill: false,
                     data: [
                     {% for i in valor %}
