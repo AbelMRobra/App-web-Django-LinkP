@@ -5,11 +5,11 @@
 
 {% block content %}
 
-<div class = "jumbotron" style="background-color: white; margin-bottom: 0px;">
+<div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;">
 
-    <h3 style="text-align: center; color: #17B5B5 ;">Registros de compras</h3>
-    <h6 style="text-align: center; color: #17B5B5 ;">Detalle las compras de todos los proyectos</h6>
-     <b><hr class = "my-4" style="width: 75%; border-color: #17B5B5 ;"></b>
+    <h3>Registros de compras</h3>
+    <h6>Registro de las compras realizadas</h6>
+     <b><hr class = "my-4" style="width: 75%;"></b>
 
      <form method="POST" style="text-align: center;">
 
@@ -28,17 +28,14 @@
         </div>
 
         <div>
-            <button class="btn btn-info" type="submit" style="margin-top: 1%;">Buscar</button>          
+            <button class="btn btn-dark" type="submit" style="margin-top: 1%;">Buscar</button>          
         </div>       
 
      </form>
 
-     <b><hr class = "my-4" style="width: 100%; border-color: #17B5B5 ;"></b>
-     <div style="margin-bottom: 1%; text-align: center;">
-        <a href="/compras/cargacompras"><button class="btn btn-success" type="submit">Cargar compras</button></a>  
-     </div>
-
     {% if compras %} 
+
+    <b><hr class = "my-4" style="width: 100%;"></b>
 
     <div class = "tableconteinerabel">
         <table class = "table table-hover" style="text-align: center;" >
@@ -102,23 +99,32 @@
 
     </div>
 
+    <b><hr class = "my-4" style="width: 100%;"></b>
+
 
         <div>
             <small>El listado puede continuar, el maximo de filas visibles es de 20</small>
         </div>
 
-            <div style="text-align: center;">
-                <p> <small>-- Link<strong>P</strong> --</small> </p>
-        
-             </div>
+        <b><hr class = "my-4" style="width: 100%;"></b>
+     <div style="margin-bottom: 1%;">
+        <a href="/compras/cargacompras"><button class="btn btn-success" type="submit">Cargar una compra</button></a>  
+     </div>
+
+
 
      {% else %}
-            <div style="text-align: center;">
+            <div>
                 <h3>No existe registros actualmente</h3>
             </div>
             
 
     {% endif %}
+
+    <div style="margin-top: 2rem;">
+        <p> <small>-- Link<strong>P</strong> --</small> </p>
+
+     </div>
         
     
 
