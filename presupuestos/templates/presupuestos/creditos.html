@@ -5,12 +5,18 @@
 
 {% block content %}
 
-<div class = "jumbotron" style="background-color: white; margin-bottom: 0px;">
+<div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;">
 
-    <h3 style="text-align: center; color: #17B5B5 ;">Creditos del proyecto {{datos.proyecto}}</h3>
-     <b><hr class = "my-4" style="width: 75%; border-color: #17B5B5 ;"></b>
+    <h3 style="color: rgb({{datos.proyecto.color}}) ;">Creditos del proyecto {{datos.proyecto}}</h3>
 
-     <form method="POST" style="text-align: center;">
+    <img src="{{datos.proyecto.iamgen.url}}"  class="img-fluid" alt="..." style="max-width:20%;width:auto;height:auto; margin-top: 1rem;">
+  
+     <b><hr class = "my-4" style="width: 75%; border-color: rgba({{datos.proyecto.color}}, 0.5);"></b>
+
+     
+    {% if datos.datos %} 
+
+    <form method="POST" style="text-align: center;">
 
         {% csrf_token %}
 
@@ -27,20 +33,19 @@
         </div>
 
         <div>
-            <button class="btn btn-info" type="submit" style="margin-top: 1%;">Buscar</button>          
+            <button class="btn btn-dark" type="submit" style="margin-top: 1%;">Buscar</button>          
         </div>       
 
      </form>
 
-     <hr class = "my-4" style="width: 100%; border-color: #17B5B5 ;"></b>
-    {% if datos.datos %} 
+     <hr class = "my-4" style="width: 100%; border-color: rgba({{datos.proyecto.color}}, 0.5) ;"></b>
 
     <div>
 
         <table class = "table table-hover" style="text-align: center;">
             <thead>
     
-                <tr class = "table-info">
+                <tr class = "table-dark">
                     <th scope = "row" style="vertical-align: middle;">ARTICULO</th>                    
                     <th scope = "row" style="vertical-align: middle;">VALOR </th>
                     <th scope = "row" style="vertical-align: middle;">REQUERIDO </th>
@@ -72,30 +77,27 @@
 
     </div>
 
-    <div style="text-align: center;">
-        <h6>Valor de reposición del proyecto: ${{datos.valor_saldo|floatformat:0|intcomma}} <strong>(${{datos.valor_proyecto|floatformat:2}} Millones)</strong> </h6>
+    <div>
+        <h6 style=" color: rgb({{datos.proyecto.color}}) ;">Valor total en creditos: ${{datos.valor_saldo|floatformat:0|intcomma}} <strong>(${{datos.valor_proyecto|floatformat:2}} Millones)</strong> </h6>
     </div>
 
 
-    <div style="text-align: center;">
-        <p> <small>-- Link<strong>P</strong> --</small> </p>
-
-     </div>
-
-    
-
-
      {% else %}
-     <div style="text-align: center;">
+     <div>
         <h6> Este proyecto no tiene creditos </h6>
         <small> Sigue asi</small>
     </div>
 
-    <div style="text-align: center; margin-top: 2%; margin-bottom: 10%;">
-        <img src="{% static 'img/comunicaciones.png' %}" style="width: 10%; height: 10%;">
+    <div style="margin-top: 2%; margin-bottom: 10%;">
+        <img src="{% static 'img/comunicaciones.png' %}" style="max-width:10%;width:auto;height:auto; margin-top: 1rem;">
     </div>
         
     {% endif %}
+
+    <div style="margin-top: 2rem;">
+        <p> <small>-- Link<strong>P</strong> --</small> </p>
+
+     </div>
         
 
    
