@@ -10,19 +10,20 @@
 <div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;">
 
     <h3 style="color: rgb({{datos.proyecto.color}}) ;">Saldo del proyecto {{datos.proyecto.nombre}}</h3>
-    <img src="{{datos.0.0.iamgen.url}}"  class="img-fluid" alt="..." style="max-width:20%;width:auto;height:auto; margin-top: 1rem;">
+    <img src="{{datos.proyecto.iamgen.url}}"  class="img-fluid" alt="..." style="max-width:20%;width:auto;height:auto; margin-top: 1rem;">
   
      <b><hr class = "my-4" style="width: 75%; border-color: rgba({{datos.proyecto.color}}, 0.5) ;"></b>
 
      <div style="text-align: center;">
         <a href="{% url 'Explosión de insumos' id_proyecto=datos.proyecto.id %}" class="btn btn-dark">Explosión de insumos</a>          
-        <h6 style="color: rgb({{datos.proyecto.color}}) ;"> <small> <strong>Detalle de todos los articulos</strong> </small> </h6>
-    
+        
     </div>
 
-
+    <div style="margin-top: 1rem;">
+        <h6 style="color: rgb({{datos.proyecto.color}}) ;"> <small> <strong>Detalle de todos los articulos</strong> </small> </h6>
     
 
+    </div>
 
  
  <b><hr class = "my-4" style="width: 100%; border-color: rgba({{datos.proyecto.color}}, 0.5) ;"></b>

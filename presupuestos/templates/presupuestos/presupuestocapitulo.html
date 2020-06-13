@@ -6,30 +6,36 @@
 
 {% block content %}
 
-<div class = "jumbotron" style="background-color: white; margin-bottom: 0px;">
+<div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;">
 
-    <h3 style="text-align: center; color: #17B5B5 ;">Presupuesto de {{datos.proyecto.nombre}}</h3>
-    <h6 style="text-align: center; color: #17B5B5 ;"> Desglose por capitulo</h6>
-     <b><hr class = "my-4" style="width: 75%; border-color: #17B5B5 ;"></b>
+    <h3 style="text-align: center; color: rgb({{datos.proyecto.color}}) ;">Presupuesto de reposición {{datos.proyecto.nombre}}</h3>
+    <img src="{{datos.proyecto.iamgen.url}}"  class="img-fluid" alt="..." style="max-width:20%;width:auto;height:auto; margin-top: 1rem;">
+  
+    
+     <b><hr class = "my-4" style="width: 75%; border-color: rgba({{datos.proyecto.color}}, 0.5;"></b>
 
      {% if datos.datos %}
 
      <div style="text-align: center;">
-        <a href="{% url 'Explosión de insumos' id_proyecto=datos.proyecto.id %}" class="btn btn-info">Explosión de insumos</a>          
+        <a href="{% url 'Explosión de insumos' id_proyecto=datos.proyecto.id %}" class="btn btn-dark">Explosión de insumos</a>          
+    </div>
+    <div style="margin-top: 1rem;">
+        <h6 style="color: rgb({{datos.proyecto.color}}) ;"> <small> <strong>Detalle de todos los articulos</strong> </small> </h6>
+    
     </div>
  
- <b><hr class = "my-4" style="width: 100%; border-color: #17B5B5 ;"></b>
+ <b><hr class = "my-4" style="width: 100%; border-color: rgba({{datos.proyecto.color}}, 0.5 ;"></b>
      
 
     <table class = "table table-hover" style="text-align: center;">
         <thead>
 
-            <tr class = "table-info">
-                <th scope = "row"> <font style = "vertical-align: heredar;"> Nº </font></th>
-                <th scope = "row"> <font style = "vertical-align: heredar;"> CAPITULO </font></th>
-                <th scope = "row"> <font style = "vertical-align: heredar;"> DESCRIPCIÓN </font></th>
-                <th scope = "row"> <font style = "vertical-align: heredar;"> MONTO DEL CAPITULO</font></th>
-                <th scope = "row"> <font style = "vertical-align: heredar;"> INC</font></th>               
+            <tr class = "table-dark">
+                <th scope = "row">  Nº </th>
+                <th scope = "row">  CAPITULO </th>
+                <th scope = "row">  DESCRIPCIÓN </th>
+                <th scope = "row">  MONTO DEL CAPITULO </th>
+                <th scope = "row">  INC </th>               
             </tr>
         </thead>
 
@@ -40,7 +46,7 @@
             {% for i in datos.datos %}
 
             <tr class = "table-light">
-                <td style="width: 5%;"><b>{{i.0.id}}</b></td>
+                <td style="width: 5%; ; color: rgb({{datos.proyecto.color}})"><b>{{i.0.id}}</b></td>
                 <td style="width: 25%;"> <b><a href="{% url 'Panel de presupuestos por analisis' id_proyecto=datos.proyecto.id id_capitulo=i.0.id %}" style="color: black;">{{i.0.nombre}}</a></b>  </td>
                 <td style="width: 40%;"> <small>{{i.0.descrip}}</small> </td>
                 <td style="width: 15%;"> ${{i.1|floatformat:2}} Millones</td>
@@ -53,7 +59,7 @@
         </table>
 
         <div style="text-align: center;">
-            <h6>Valor de reposición del proyecto: ${{datos.valor_proyecto_completo|floatformat:0|intcomma}} <strong>(${{datos.valor_proyecto|floatformat:2}} Millones)</strong> </h6>
+            <h6 style="color: rgb({{datos.proyecto.color}})">Valor de reposición del proyecto: ${{datos.valor_proyecto_completo|floatformat:0|intcomma}} <strong>(${{datos.valor_proyecto|floatformat:2}} Millones)</strong> </h6>
         </div>
 
         <div style="text-align: center;">
