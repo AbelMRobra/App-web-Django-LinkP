@@ -4,19 +4,19 @@
 
 {% block content %}
 
-<div class = "jumbotron" style="background-color: white; margin-bottom: 0px;">
+<div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;">
 
-    <h3 style="text-align: center; color: #17B5B5 ;">Proyectos de LINK INVERSIONES</h3>
-    <h6 style="text-align: center; color: #17B5B5 ;">Nuestros proyectos </h6>
+    <h3>Panel - Proyectos</h3>
+    <h6> <small>Todos tus proyectos</small> </h6>
 
-     <b><hr class = "my-4" style="width: 100%; border-color: #17B5B5 ;"></b>
+     <b><hr class = "my-4" style="width: 100%;"></b>
 
     {% if datos %} 
 
     <table class = "table table-hover" style="text-align: center;">
         <thead>
 
-            <tr class = "table-info">
+            <tr class = "table-dark">
                 <th scope = "row" style="vertical-align: middle;"> NOMBRE DEL PROYECTO</th>
                 <th scope = "row" style="vertical-align: middle;">DESCRIPCIÓN </th>
                 <th scope = "row" style="vertical-align: middle;">FECHA ENTREGA </th>
@@ -70,22 +70,18 @@
 
      {% else %}
 
-            <div style="text-align: center;">
+            <div>
                 <h6>Todavia no hay proyectos cargados!</h6>
             </div>
             
 
     {% endif %}
 
-    <div style="text-align: center;">
+    <div style="margin-top: 2rem;">
         <p> <small>-- Link<strong>P</strong> --</small> </p>
 
      </div>
-        
-
-    
-
-                    
+                          
 </div>
  
     
