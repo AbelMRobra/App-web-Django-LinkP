@@ -75,6 +75,23 @@
 
    {% endif %}
 
+   {% if datos.mensaje == 1 %}
+
+   <div  style="margin-top: -15%;">
+    <h6> Este proyecto no tiene todos los requerimientos cargados </h6>
+    <small> Contactar con AR/VI</small>
+</div>
+
+<div style="text-align: center; margin-top: 2%; margin-bottom: 10%;">
+    
+    <img src="{% static 'img/comunicaciones.png' %}" style="max-width:10%;width:auto;height:auto; margin-top: 1rem;">
+
+</div>
+
+   {% endif %}
+
+
+
    {% if datos.proyectos == 0 %}
 
     <div style="margin-bottom: 2rem;">

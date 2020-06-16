@@ -8,8 +8,9 @@
 
 <div class = "jumbotron" style="background-color: white; margin-bottom: 0px;">
 
-    <h3 style="text-align: center; color: #17B5B5 ;">Presupuesto de {{datos.proyecto}} - {{datos.capitulo}}</h3>
-     <b><hr class = "my-4" style="width: 75%; border-color: #17B5B5 ;"></b>
+    <h3 style="text-align: center; color: rgb({{datos.proyecto.color}}) ;">Composición del capitulo {{datos.capitulo}}</h3>
+    <h6 style="text-align: center; color: rgb({{datos.proyecto.color}}) ;">{{datos.proyecto}}</h6>
+     <b><hr class = "my-4" style="width: 75%; border-color: rgba({{datos.proyecto.color}}, 0.5)  ;"></b>
  
     
     {% if datos %} 
@@ -17,7 +18,7 @@
     <table class = "table table-hover" style="text-align: center;">
         <thead>
 
-            <tr class = "table-info">
+            <tr class = "table-dark">
                 <th scope = "row" style="vertical-align: middle;">ANALISIS </th>
                 <th scope = "row" style="vertical-align: middle;"> VINCULACIÓN</th>
                 <th scope = "row" style="vertical-align: middle;"> PRECIO DEL ANALISIS</th>
