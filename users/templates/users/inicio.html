@@ -30,7 +30,12 @@
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
             <a class="dropdown-item" href="/proyectos">Listado de proyectos</a>
+
+            {% if request.user.username != "HC" %}
             <a class="dropdown-item" href="/proyectos/unidades">Detalle de superficie</a>
+
+            {% endif %}
+
           </div>
         </li>
 
@@ -99,7 +104,14 @@
             Compras
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+
+
+            {% if request.user.username != "HC" %}
+
+
             <a class="dropdown-item" href="/compras/proveedores">Proveedores</a>
+
+            {% endif %}
 
             {% if perms.compras.view_compras %}
 
@@ -109,13 +121,18 @@
 
             {% endif %}
 
+            {% if request.user.username != "HC" %}
+
             <a class="dropdown-item" href="/compras/stockprov">Stock en proveedores</a>
+            <a class="dropdown-item" href="/compras/comparativas">Comparativas</a>
             <div class="dropdown-divider"></div>
             
             {% if perms.compras.view_compras %}
 
             <a class="dropdown-item" href="/compras/analisiscompras">Analisis de compras</a>
             <a class="dropdown-item" href="/compras/informe">Informe del área</a>
+
+            {% endif %}
 
             {% endif %}
 

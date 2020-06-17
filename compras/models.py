@@ -4,6 +4,8 @@ from presupuestos.models import Articulos
 
 # Create your models here.
 
+
+
 class Proveedores(models.Model):
     name = models.CharField(max_length=200, verbose_name="Nombre")
     descrip = models.TextField(verbose_name="Descripción")
@@ -18,6 +20,25 @@ class Proveedores(models.Model):
 
     def __str__(self):
         return self.name
+
+class Comparativas(models.Model):
+
+    class estados(models.TextChoices):
+
+            ESPERA = "ESPERA"
+            AUTORIZADA = "AUTORIZADA"
+            NO_AUTORIZADA = "NO AUTORIZADA"
+
+
+    proveedor = models.ForeignKey(Proveedores, on_delete=models.CASCADE, verbose_name="Nombre del contratista")
+    monto = models.IntegerField(verbose_name="Monto de la compra")
+    estado = models.CharField(choices=estados.choices, max_length=20, verbose_name="Estado", blank=True, null=True)
+    adjunto = models.ImageField(verbose_name="Imagen adjunta")
+    fecha_c = models.DateField(auto_now_add=True, verbose_name="Fecha de carga")
+
+    class Meta:
+        verbose_name = "Comparativa"
+        verbose_name_plural = "Comparativas"
 
 
 class Contratos(models.Model):

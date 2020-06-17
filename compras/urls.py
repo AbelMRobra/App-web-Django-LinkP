@@ -7,6 +7,7 @@ urlpatterns = [
     url(r'^proveedores$', login_required(views.proveedores), name = 'Proveedores'),
     url(r'^cargacompras$', login_required(views.cargacompras), name = 'Carga compras'),
     url(r'^compras$', login_required(views.compras), name = 'Compras'),
+    url(r'^comparativas$', login_required(views.comparativas), name = 'Comparativas'),
     url(r'^listaretiros$', login_required(views.listaretiros), name = 'Lista de retiros'),
     url(r'^listacomprasretiros$', login_required(views.comprasdisponibles), name = 'Compras para retirar'),
     url(r'^cargaretiro/(?P<nombre>\d+)/$', login_required(views.cargaretiro), name = 'Carga de retiros'),

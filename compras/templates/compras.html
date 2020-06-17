@@ -55,10 +55,71 @@
                     
                 </tr>
             </thead>
+
+                {% if request.user.username == "HC" %}
+
+                    
+            <tbody>
+
+                
+               
+                {% for i in compras %}
+
+                {% if "DIANCO" in i.1.proyecto.nombre %}
+
+
+
+                <tr class = "table-light">
+                    <td style="width: 8%;"> <small> <strong>{{i.1.proyecto}}</strong></small></td>              
+                    <td style="width: 8%;"> <small>{{i.1.proveedor}}</small></td>
+                    <td style="width: 5%;"> <small>{{i.1.tipo}}</small></td>
+                    <td style="width: 20%;"><small>{{i.1.articulo}} ({{i.1.articulo.unidad}})</small> </td>
+                    <td style="width: 5%;"> <small>{{i.1.cantidad|floatformat:2}}</small></td>
+                    <td style="width: 5%;"> <small>${{i.1.precio|floatformat:2}}</small></td>
+                    
+                    {% if i.0 == 2 %}
+    
+                    <td style="width: 5%; color: #DE3521;"> <span class="hint--top hint--error" aria-label="Precio objetivo era: ${{i.1.precio_presup|floatformat:2}}"> <small> <strong>${{i.2|floatformat:0|intcomma}}</strong> </small></span> </td>
+                    <td style="width: 3%; color: #DE3521;"> <span class="hint--top hint--error" aria-label="Precio objetivo era: ${{i.1.precio_presup|floatformat:2}}"> <small> <strong>↑{{i.3|floatformat:2}}%</strong> </small></span> </td>
+                    
+                    {% elif i.0 == 1 %}
+    
+                    <td style="width: 5%;"> <span class="hint--top hint--info" aria-label="Mismo precio que la base!"> <small> <strong>${{i.2|floatformat:0|intcomma}}</strong> </small></span> </td>
+                    <td style="width: 3%;"> <span class="hint--top hint--info" aria-label="Mismo precio que la base!"> <small> <strong>={{i.3|floatformat:2}}%</strong> </small></span> </td>
+                    
+                    
+                    {% else %}
+                    <td style="width: 5%; color: #4FA429 ;"><span class="hint--top hint--success" aria-label="Bien comprado! Precio objetivo era: ${{i.1.precio_presup|floatformat:2}}"><small> <strong>${{i.2|floatformat:0|intcomma}}</strong> </small></span></td>
+                    <td style="width: 3%; color: #4FA429 ;"> <span class="hint--top hint--success" aria-label="Precio objetivo era: ${{i.1.precio_presup|floatformat:2}}"> <small> <strong>↓{{i.3|floatformat:2}}%</strong> </small></span> </td>
+                    
+                    
+                    {% endif %}
+                    
+                    <td style="width: 10%;"> <small>{{i.1.fecha_c}}</small> </td>
+                    <td style="width: 15%;"> <small>{{i.1.documento}}</small> </td>
+                              
+                </tr>
+
+                {% endif %}
+
+                {% endfor %}
+
+            </tbody>
+
+
+            {% else %}
+
     
             <tbody>
+
+                
                
-                {% for i in compras|slice:"20" %}
+                {% for i in compras|slice:"40" %}
+
+                {% if not "DIANCO" in i.1.proyecto.nombre %}
+
+
+
                 <tr class = "table-light">
                     <td style="width: 8%;"> <small> <strong>{{i.1.proyecto}}</strong></small></td>              
                     <td style="width: 8%;"> <small>{{i.1.proveedor}}</small></td>
@@ -89,9 +150,15 @@
                     <td style="width: 15%;"> <small>{{i.1.documento}}</small> </td>
                               
                 </tr>
-            </tbody>
-    
+
+                {% endif %}
+
                 {% endfor %}
+            </tbody>
+
+            {% endif %}
+    
+                
     
             </table>
     
@@ -103,7 +170,7 @@
 
 
         <div>
-            <small>El listado puede continuar, el maximo de filas visibles es de 20</small>
+            <small>El listado puede continuar, se limita el numero de filas visibles</small>
         </div>
 
         <b><hr class = "my-4" style="width: 100%;"></b>

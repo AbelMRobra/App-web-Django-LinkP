@@ -4,7 +4,7 @@ from random import sample
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .models import Proveedores, Certificados
-from .models import StockComprasAnticipadas, Compras, Proyectos, Proveedores, Retiros
+from .models import StockComprasAnticipadas, Compras, Proyectos, Proveedores, Retiros, Comparativas
 from .form import StockAntForm
 from .filters import CertificadoFilter
 from presupuestos.models import Articulos, Constantes
@@ -215,14 +215,45 @@ def cargacompras(request):
 
     return render(request, 'cargacompras.html', {'datos':datos})
 
-
 # ----------------------------------------------------- VISTAS PARA LISTAR COMPRAS ----------------------------------------------
+
+
+def comparativas(request):
+    datos  = Comparativas.objects.order_by("-fecha_c")
+
+    if request.method == 'POST':
+
+        datos_post = request.POST.items()
+
+        for d in datos_post:
+
+
+            if d[0] == 'APROBADA':
+                id_selec = d[1]
+
+                comparativa = Comparativas.objects.get(id = id_selec)
+
+                comparativa.estado = "AUTORIZADA"
+
+                comparativa.save()
+
+            if d[0] == 'NO APROBADA':
+                id_selec = d[1]
+
+                comparativa = Comparativas.objects.get(id = id_selec)
+
+                comparativa.estado = "NO AUTORIZADA"
+
+                comparativa.save()
+
+    return render(request, 'comparativas.html', {'datos':datos})
+
 
 def compras(request):
 
     datos = Compras.objects.order_by("-fecha_c")
 
-       #Aqui empieza el filtro
+    #Aqui empieza el filtro
 
     if request.method == 'POST':
 

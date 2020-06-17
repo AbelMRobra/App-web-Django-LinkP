@@ -1,0 +1,133 @@
+{% extends "users/inicio.html" %}
+
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+
+<div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;">
+
+    <h3>Comparativas de compras</h3>
+    <h6>Comparativas entre proveedores</h6>
+     <b><hr class = "my-4" style="width: 75%;"></b>
+
+
+    {% if datos %} 
+
+
+    <div class = "tableconteinerabel">
+        <table class = "table table-hover" style="text-align: center;" >
+            <thead>
+    
+                <tr class = "table-dark">
+                    <th scope = "row" style="vertical-align: middle;"><strong>PROVEEDOR</strong></th>
+                    <th scope = "row" style="vertical-align: middle;"><strong>MONTO</strong></th>
+                    <th scope = "row" style="vertical-align: middle;"><strong>ESTADO</strong></th>
+                    <th scope = "row" style="vertical-align: middle;"><strong>FECHA</strong></th>
+                    <th scope = "row" style="vertical-align: middle;"><strong>ARCHIVO</strong></th>
+
+                    {% if request.user.username == "PL" or request.user.username == "ar" %}
+
+                    <th scope = "row" style="vertical-align: middle;" colspan="2"><strong>AUTORIZAR</strong></th>
+                    
+                    {% endif %}
+
+                </tr>
+            </thead>
+
+               
+    
+            <tbody>
+
+                
+               
+                {% for i in datos|slice:"40" %}
+
+                <tr class = "table-light">
+                    <td style="width: 8%;"><strong>{{i.proveedor.name}}</td>              
+                    <td style="width: 8%;">${{i.monto|floatformat:0|intcomma}}</td>
+
+                    {% if i.estado == "ESPERA" %}
+                    <td style="width: 5%; color: rgb(192, 188, 50);" > <strong>{{i.estado}}</strong></td>
+
+                    {% endif %}
+
+                    {% if i.estado == "AUTORIZADA" %}
+                    <td style="width: 5%; color: rgb(50, 192, 74 );" > <strong>{{i.estado}}</strong></td>
+
+                    {% endif %}
+
+                    {% if i.estado == "NO AUTORIZADA" %}
+                    <td style="width: 5%; color: rgb(192, 63, 50 );" > <strong>{{i.estado}}</strong></td>
+
+                    {% endif %}
+                    <td style="width: 5%;">{{i.fecha_c}}</td>
+                    <td style="width: 10%;"><a href="{{ i.adjunto.url }}" class="btn btn-info">Ver Adjunto</a></td>
+                    
+                    
+                    {% if request.user.username == "PL" or request.user.username == "ar" %}
+
+                    <td style="width: 7%;">
+                        
+                        <form action="" method="POST">
+                            {% csrf_token %}
+
+                            <button class="btn btn-success" type="submit"  name = "APROBADA" value="{{i.id}}">Aprobar</button>
+
+
+                        </form>
+                        
+                    <td style="width: 7%;">
+                        <form action="" method="POST">
+                            {% csrf_token %}
+
+                            <button class="btn btn-danger" type="submit" name = "NO APROBADA" value="{{i.id}}">Rechazar</button>
+
+
+                        </form>
+                    </td>
+
+                    {% endif %}
+                    
+                {% endfor %}
+            </tbody>
+             
+    
+            </table>
+    
+
+
+    </div>
+
+    <b><hr class = "my-4" style="width: 100%;"></b>
+
+
+        <div>
+            <small>El listado puede continuar, se limita el numero de filas visibles</small>
+        </div>
+
+        <b><hr class = "my-4" style="width: 100%;"></b>
+
+
+
+
+     {% else %}
+            <div>
+                <h3>No existe registros actualmente</h3>
+            </div>
+            
+
+    {% endif %}
+
+    <div style="margin-top: 2rem;">
+        <p> <small>-- Link<strong>P</strong> --</small> </p>
+
+     </div>
+        
+    
+
+                    
+</div>
+ 
+    
+{% endblock %}
