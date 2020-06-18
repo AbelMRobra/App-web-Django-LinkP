@@ -96,9 +96,11 @@
             <a class="dropdown-item" href="/ventas/estmerc">Estudios de mercado</a>
             
             
-            {% endif %}
+            
           </div>
-        </li>  
+        </li> 
+        
+        {% endif %}
 
         {% endif %}
 
@@ -119,7 +121,9 @@
             {% if perms.compras.view_compras %}
 
             <!-- <a class="dropdown-item" href="#">Contratos-<em>Proximamente</em></a> -->
+            
             <a class="dropdown-item" href="/compras/compras">Registros de compras </a>
+            
             <!-- <a class="dropdown-item" href="/compras/listaretiros">Retiro de proveedores-<em>Construyendo</em></a> -->
 
             {% endif %}
@@ -137,11 +141,11 @@
 
             {% endif %}
 
-          </div>
+          
 
             {% endif %}
 
-          
+          </div> 
         </li>
         {% if perms.compras.view_certificados %}
 
