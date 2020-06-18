@@ -64,8 +64,8 @@
             <h6 style="color: rgb({{datos.proyecto.color}})">Saldo del proyecto a la fecha: ${{datos.saldo|floatformat:0|intcomma}}</h6>
         </div>
 
-        <div style="text-align: center; margin-top: 3%;">
-            <a href="{% url 'Descarga Exp Cap' id_proyecto=datos.proyecto.id %}" class="btn btn-outline-dark">Descargar Saldo por Capitulo</a>          
+        <div style="text-align: center; margin-top: 3%; margin-bottom: 2%;">
+            <a href="{% url 'Descarga Exp Cap' id_proyecto=datos.proyecto.id %}" class="btn btn-success">Excel de saldo por capitulos</a>          
     
         </div>
     
