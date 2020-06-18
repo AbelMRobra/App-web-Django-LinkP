@@ -1,10 +1,48 @@
 from django.shortcuts import render
-from .models import EstudioMercado
+from .models import EstudioMercado, PricingResumen
 from proyectos.models import Unidades, Proyectos
 from ventas.models import Pricing
 from datetime import date
+import datetime
 
 # Create your views here.
+
+def resumenprecio(request):
+
+    busqueda = 1
+    datos_pricing = PricingResumen.objects.all()
+    datos = 0
+
+    fechas = []
+
+    for dato in datos_pricing:
+        fechas.append((dato.fecha, str(dato.fecha)))
+
+    fechas = list(set(fechas))
+
+    fechas.sort( reverse=True)
+
+    if request.method == 'POST':
+
+        #Trae los datos elegidos
+        datos_elegidos = request.POST.items()
+
+        for dato in datos_elegidos:
+            if dato[0] == "fecha":
+                datos = PricingResumen.objects.filter(fecha = dato[1])
+                busqueda = 0
+
+
+
+    datos = {"fechas":fechas,
+    "busqueda":busqueda,
+    "datos":datos}
+
+    return render(request, 'resumenprecio.html', {"datos":datos})
+
+
+
+
 
 def estmercado(request):
 

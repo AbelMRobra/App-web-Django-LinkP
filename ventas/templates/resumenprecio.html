@@ -1,0 +1,92 @@
+{% extends "users/inicio.html" %}
+
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+
+
+
+<div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;" > 
+
+    <div style="text-align: center;">
+        <h2>Resumen de precio</h2>
+
+        <small>Responsable del panel: </small><small><strong>IC</strong></small>
+
+
+        <b><hr class = "my-4" style="width: 75%; border-color: black ;"></b>
+    
+    </div>
+
+    {% if datos.busqueda %}
+
+    <div style="text-align: center; margin-bottom: 20%;">
+       <form method="POST">
+
+           {% csrf_token %}
+
+           <select name="fecha" class="custom-select" style="width: 20%;">
+
+
+               {% for i in datos.fechas %}
+
+               <option value="{{i.1}}">{{i.0}}</option>
+
+               {% endfor %}
+
+
+
+             </select>
+             <div>
+               <small> Seleccione una fecha para cargar el listado</small>
+             </div>
+             
+
+             <div>
+               <button class="btn btn-dark" type="submit" style="margin-top: 1%;">Buscar datos</button>          
+           </div>
+           
+       </form>
+
+       
+       
+   </div>
+
+   
+
+   {% endif %}
+
+   {% if datos %}
+
+   {% for i in datos.datos %}
+
+
+<div style=" display: inline-block; text-align: center; margin-top: 2%; margin-bottom: 10%; background-color: rgba({{i.proyecto.color}}, 0.2) ;">
+    
+    <img src="{{i.proyecto.iamgen.url}}" style="max-width:30%;width:auto;height:auto; margin-top: 1rem;">
+    <h6 style="color: rgb({{i.proyecto.color}}) ;">Precio Base: </h6>
+    <h6>Precio prom. contado: ${{i.precio_prom_contado|floatformat:0|intcomma}} </h6>
+    <h6>Precio prom. financiado: ${{i.precio_prom_financiado|floatformat:0|intcomma}} </h6>
+    
+
+</div>
+
+    {% endfor %}
+
+   {% endif %}
+
+
+
+    
+    
+
+
+    <div style="text-align: center; margin-top: 10%;">
+        <p> <small>-- Link<strong>P</strong> --</small> </p>
+
+     </div>
+
+
+</div>
+{% endblock %}
