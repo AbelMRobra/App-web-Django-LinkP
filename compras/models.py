@@ -31,8 +31,10 @@ class Comparativas(models.Model):
 
 
     proveedor = models.ForeignKey(Proveedores, on_delete=models.CASCADE, verbose_name="Nombre del contratista")
+    proyecto = models.CharField(verbose_name="Proyecto", blank=True, null=True, max_length=200)
+    numero = models.CharField(verbose_name="Codigo", blank=True, null=True, max_length=200)
     monto = models.IntegerField(verbose_name="Monto de la compra")
-    estado = models.CharField(choices=estados.choices, max_length=20, verbose_name="Estado", blank=True, null=True)
+    estado = models.CharField(choices=estados.choices, default=estados.ESPERA, editable=False, max_length=20, verbose_name="Estado", blank=True, null=True)
     adjunto = models.ImageField(verbose_name="Imagen adjunta")
     fecha_c = models.DateField(auto_now_add=True, verbose_name="Fecha de carga")
 

@@ -20,7 +20,9 @@
             <thead>
     
                 <tr class = "table-dark">
+                    <th scope = "row" style="vertical-align: middle;"><strong>Nº</strong></th>
                     <th scope = "row" style="vertical-align: middle;"><strong>PROVEEDOR</strong></th>
+                    <th scope = "row" style="vertical-align: middle;"><strong>PROYECTO</strong></th>
                     <th scope = "row" style="vertical-align: middle;"><strong>MONTO</strong></th>
                     <th scope = "row" style="vertical-align: middle;"><strong>ESTADO</strong></th>
                     <th scope = "row" style="vertical-align: middle;"><strong>FECHA</strong></th>
@@ -44,7 +46,9 @@
                 {% for i in datos|slice:"40" %}
 
                 <tr class = "table-light">
-                    <td style="width: 8%;"><strong>{{i.proveedor.name}}</td>              
+                    <td style="width: 5%;"><strong>{{i.numero}}</td>
+                    <td style="width: 8%;"><strong>{{i.proveedor.name}}</td>
+                        <td style="width: 8%;"><strong>{{i.proyecto}}</td>              
                     <td style="width: 8%;">${{i.monto|floatformat:0|intcomma}}</td>
 
                     {% if i.estado == "ESPERA" %}
