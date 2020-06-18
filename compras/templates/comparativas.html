@@ -20,7 +20,7 @@
             <thead>
     
                 <tr class = "table-dark">
-                    <th scope = "row" style="vertical-align: middle;"><strong>Nº</strong></th>
+                    <th scope = "row" style="vertical-align: middle;"><strong>REFERENCIA</strong></th>
                     <th scope = "row" style="vertical-align: middle;"><strong>PROVEEDOR</strong></th>
                     <th scope = "row" style="vertical-align: middle;"><strong>PROYECTO</strong></th>
                     <th scope = "row" style="vertical-align: middle;"><strong>MONTO</strong></th>
@@ -28,7 +28,7 @@
                     <th scope = "row" style="vertical-align: middle;"><strong>FECHA</strong></th>
                     <th scope = "row" style="vertical-align: middle;"><strong>ARCHIVO</strong></th>
 
-                    {% if request.user.username == "PL" or request.user.username == "AR" %}
+                    {% if request.user.username == "PL" or request.user.username == "ar" %}
 
                     <th scope = "row" style="vertical-align: middle;" colspan="2"><strong>AUTORIZAR</strong></th>
                     
@@ -66,10 +66,10 @@
 
                     {% endif %}
                     <td style="width: 8%;"><small>{{i.fecha_c}}</small> </td>
-                    <td style="width: 7%;"><a href="{{ i.adjunto.url }}" class="btn btn-sm btn-info disabled">Ver Adjunto</a></td>
+                    <td style="width: 7%;"><a href="{{ i.adjunto.url }}" class="btn btn-sm btn-info">Ver Adjunto</a></td>
                     
                     
-                    {% if request.user.username == "PL" or request.user.username == "AR" %}
+                    {% if request.user.username == "PL" or request.user.username == "ar" %}
 
                     <td style="width: 5%;">
                         
