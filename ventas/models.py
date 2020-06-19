@@ -28,6 +28,7 @@ class PricingResumen(models.Model):
     fecha = models.DateField(verbose_name = "Fecha que corresponde")
     precio_prom_contado = models.FloatField(verbose_name="Precio promedio contado")
     precio_prom_financiado = models.FloatField(verbose_name="Precio promedio financiado")
+    base_precio = models.FloatField(verbose_name="Base de precio", null=True, blank=True)
     anticipo = models.FloatField(verbose_name="Anticipo")
     cuotas_pend = models.IntegerField(verbose_name="Cuotas pendientes") 
 

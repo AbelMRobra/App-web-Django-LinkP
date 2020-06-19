@@ -12,6 +12,12 @@
     <div style="text-align: center;">
         <h2>Resumen de precio</h2>
 
+        {% if datos.fecha %}
+
+        <h6>Fecha del resumen: {{datos.fecha}}</h6>
+
+        {% endif %}
+
         <small>Responsable del panel: </small><small><strong>IC</strong></small>
 
 
@@ -64,12 +70,12 @@
 
 <div style="text-align: center; margin-top: 2%; margin-bottom: 3%;">
     
-    <b><hr class = "my-4" style="width: 50%; border-color: rgba({{1.proyecto.color}}, 0.5) ;"></b>
+    <b><hr class = "my-4" style="width: 50%; border-color: rgba({{i.proyecto.color}}, 0.5) ;"></b>
     
     
     <img src="{{i.proyecto.iamgen.url}}" style="max-width:20%;width:auto;height:auto; margin-top: 1rem; margin-bottom: 1%;">
     
-    <h6 style="color: rgb({{i.proyecto.color}}) ">Precio Base: </h6>
+    <h6 style="color: rgb({{i.proyecto.color}}) ">Precio Base: ${{i.base_precio|floatformat:0|intcomma}}  </h6>
     
     <h6>Precio prom. contado: ${{i.precio_prom_contado|floatformat:0|intcomma}} </h6>
     

@@ -12,6 +12,7 @@ def resumenprecio(request):
     busqueda = 1
     datos_pricing = PricingResumen.objects.all()
     datos = 0
+    fecha = 0
 
     fechas = []
 
@@ -31,12 +32,14 @@ def resumenprecio(request):
             if dato[0] == "fecha":
                 datos = PricingResumen.objects.filter(fecha = dato[1])
                 busqueda = 0
+                fecha = dato[1]
 
 
 
     datos = {"fechas":fechas,
     "busqueda":busqueda,
-    "datos":datos}
+    "datos":datos,
+    "fecha":fecha}
 
     return render(request, 'resumenprecio.html', {"datos":datos})
 
