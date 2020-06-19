@@ -126,46 +126,84 @@
     <h4 style="text-align: left; margin-bottom: 2rem; color: rgb({{datos.datos.0.color}})"> Desglose completo </h4>
 
     <div style="display: inline-block; width: 45%; vertical-align: top;">
-             
         <h5>Costos del proyecto</h5>
-        <hr class = "my-4" style="width: 45%; border-color: rgba({{datos.datos.0.color}}, 0.3);">
-        <h6>Cheques emitidos: $ {{datos.datos.2.cheques_emitidos|floatformat:0|intcomma}}  </h6>
-        <h6>Gastos a la fecha: $ {{datos.datos.2.gastos_fecha|floatformat:0|intcomma}}  </h6>
-        <h6>Pendiente de gastar: $ {{datos.datos.3.0|floatformat:0|intcomma}}   </h6>
-        <h6><small>Administración: $ {{datos.datos.2.pendiente_admin|floatformat:0|intcomma}}   </small></h6>
-        <h6><small>Comisión: $ {{datos.datos.2.pendiente_comision|floatformat:0|intcomma}}   </small></h6>
-        <h6><small>Materiales: $ {{datos.datos.1.saldo_mat|floatformat:0|intcomma}}  </small></h6>
-        <h6><small>Mano de obra y subcontratos: $ {{datos.datos.1.saldo_mo|floatformat:0|intcomma}}  </small></h6>
-        <h6><small>Imprevistos: $ {{datos.datos.1.imprevisto|floatformat:0|intcomma}}  </small></h6>
-        <h6><small>Creditos de materiales: $ {{datos.datos.1.credito|floatformat:0|intcomma}}  </small></h6>
-        <h6><small>Fondos de reparo: ${{datos.datos.1.fdr|floatformat:0|intcomma}} ${{datos.datos.1.fdr|floatformat:0|intcomma}}  </small></h6>
-        <h6><small>Adelantos: $ {{datos.datos.2.pendiente_adelantos|floatformat:0|intcomma}}   </small></h6>
-        <h6><small>I.V.A sobre ventas: $ {{datos.datos.2.pendiente_iva_ventas|floatformat:0|intcomma}}   </small></h6>
-        <h6><small>II.BB + T.E.M: $ {{datos.datos.2.pendiente_iibb_tem|floatformat:0|intcomma}}</small></h6>
-        <h6>Prestamos dados: $ {{datos.datos.2.Prestamos_dados|floatformat:0|intcomma}}  </h6>
-        
+        <hr class = "my-4" style="width: 70%; border-color: rgba({{datos.datos.0.color}}, 0.3);">
     </div>
 
     <div style="display: inline-block; width: 45%; vertical-align: top;">
-             
         <h5>Ingresos del proyecto</h5>
-        <hr class = "my-4" style="width: 45%; border-color: rgba({{datos.datos.0.color}}, 0.3);">
-        <h6>Prestamos a cobrar: $ {{datos.datos.3.1|floatformat:0|intcomma}}   </h6>
-        <h6><small>Prestamos a proyectos: $ {{datos.datos.2.prestamos_proyecto|floatformat:0|intcomma}}  </small></h6>
-        <h6><small>Prestamos a otros: $ {{datos.datos.2.prestamos_otros|floatformat:0|intcomma}}</small></h6>
-        <h6>Cuotas cobradas: $ {{datos.datos.2.cuotas_cobradas|floatformat:0|intcomma}}  </h6>
-        <h6>Cuotas a cobrar: $ {{datos.datos.2.cuotas_a_cobrar|floatformat:0|intcomma}}  </h6>
-        <h6>Ingreso por unid. en venta: $ {{datos.datos.2.ingreso_ventas|floatformat:0|intcomma}}  </h6>
+        <hr class = "my-4" style="width: 70%; border-color: rgba({{datos.datos.0.color}}, 0.3);">
+
+    </div >
+    
+    <div style="display: inline-block; width: 15%; vertical-align: top; text-align: left;">
+        <h6>Cheques emitidos:</h6>
+               
+        <h6>Pendiente de gastar: </h6>
+        <h6><small>Administración:</small></h6>
+        <h6><small>Comisión:</small></h6>
+        <h6><small>Materiales:</small></h6>
+        <h6><small>Mano de obra y subcontratos:</small></h6>
+        <h6><small>Imprevistos:</small></h6>
+        <h6><small>Creditos de materiales:</small></h6>
+        <h6><small>Fondos de reparo:</small></h6>
+        <h6><small>Adelantos: </small></h6>
+        <h6><small>I.V.A sobre compras: </small></h6>
+        <h6><small>II.BB + T.E.M:</small></h6>
+        <h6>Prestamos dados:</h6>
         
     </div>
 
-    <div style="display: inline-block; width: 45%; vertical-align: top;">
-        <h6 style="color: #E12B20 ; vertical-align: bottom;" >Total del costo: ${{datos.datos.3.2|floatformat:0|intcomma}}</h6>
+    <div style="display: inline-block; width: 15%; vertical-align: top; text-align: right;">
+
+        <h6>$ {{datos.datos.2.cheques_emitidos|floatformat:0|intcomma}} </h6>
+               
+        <h6>$ {{datos.datos.3.0|floatformat:0|intcomma}}   </h6>
+        <h6><small>$ {{datos.datos.2.pendiente_admin|floatformat:0|intcomma}}   </small></h6>
+        <h6><small>$ {{datos.datos.2.pendiente_comision|floatformat:0|intcomma}}   </small></h6>
+        <h6><small>$ {{datos.datos.1.saldo_mat|floatformat:0|intcomma}}  </small></h6>
+        <h6><small>$ {{datos.datos.1.saldo_mo|floatformat:0|intcomma}}  </small></h6>
+        <h6><small>$ {{datos.datos.1.imprevisto|floatformat:0|intcomma}}  </small></h6>
+        <h6><small>$ {{datos.datos.1.credito|floatformat:0|intcomma}}  </small></h6>
+        <h6><small>${{datos.datos.1.fdr|floatformat:0|intcomma}}</small></h6>
+        <h6><small>$ {{datos.datos.2.pendiente_adelantos|floatformat:0|intcomma}}   </small></h6>
+        <h6><small>$ {{datos.datos.2.pendiente_iva_ventas|floatformat:0|intcomma}}   </small></h6>
+        <h6><small>$ {{datos.datos.2.pendiente_iibb_tem|floatformat:0|intcomma}}</small></h6>
+        <h6>$ {{datos.datos.2.Prestamos_dados|floatformat:0|intcomma}}  </h6>
+        
+    </div>
+
+    <div style="display: inline-block; width: 15%; vertical-align: top; text-align: left;  margin-left: 15%; ">
+             
+
+        <h6>Prestamos a cobrar:</h6>
+        <h6><small>Prestamos a proyectos:</small></h6>
+        <h6><small>Prestamos a otros:</small></h6>
+        <h6>Cuotas cobradas:</h6>
+        <h6>Cuotas a cobrar:</h6>
+        <h6>Ingreso por unid. en venta:</h6>
+        
+    </div>
+
+    <div style="display: inline-block; width: 15%; vertical-align: top; text-align: right;">
+             
+
+        <h6>$ {{datos.datos.3.1|floatformat:0|intcomma}}   </h6>
+        <h6><small>$ {{datos.datos.2.prestamos_proyecto|floatformat:0|intcomma}}  </small></h6>
+        <h6><small>$ {{datos.datos.2.prestamos_otros|floatformat:0|intcomma}}</small></h6>
+        <h6>$ {{datos.datos.2.cuotas_cobradas|floatformat:0|intcomma}}  </h6>
+        <h6>$ {{datos.datos.2.cuotas_a_cobrar|floatformat:0|intcomma}}  </h6>
+        <h6>$ {{datos.datos.2.ingreso_ventas|floatformat:0|intcomma}}  </h6>
+        
+    </div>
+
+    <div style="display: inline-block; width: 45%; vertical-align: top; margin-top: 2%;">
+        <h6 style="color: #B3513F ; vertical-align: bottom;" >Total del costo: ${{datos.datos.3.2|floatformat:0|intcomma}}</h6>
 
     </div>
 
     <div style="display: inline-block; width: 45%; vertical-align: top;">
-        <h6 style="color: #32A41B;">Ingresos totales: ${{datos.datos.3.3|floatformat:0|intcomma}}</h6>
+        <h6 style="color: #3FB360;">Ingresos totales: ${{datos.datos.3.3|floatformat:0|intcomma}}</h6>
 
     </div >
 
