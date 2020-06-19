@@ -62,13 +62,21 @@
    {% for i in datos.datos %}
 
 
-<div style=" display: inline-block; text-align: center; margin-top: 2%; margin-bottom: 10%; background-color: rgba({{i.proyecto.color}}, 0.2) ;">
+<div style="text-align: center; margin-top: 2%; margin-bottom: 10%; background-color: rgba({{i.proyecto.color}}, 0.2) ;">
     
-    <img src="{{i.proyecto.iamgen.url}}" style="max-width:30%;width:auto;height:auto; margin-top: 1rem;">
-    <h6 style="color: rgb({{i.proyecto.color}}) ;">Precio Base: </h6>
+    <b><hr class = "my-4" style="width: 50%; border-color: rgba({{1.proyecto.color}}, 0.5) ;"></b>
+    
+    
+    <img src="{{i.proyecto.iamgen.url}}" style="max-width:30%;width:auto;height:auto; margin-top: 1rem; margin-bottom: 1%;">
+    
+    <h6 style="color: rgb({{i.proyecto.color}}) ">Precio Base: </h6>
+    
     <h6>Precio prom. contado: ${{i.precio_prom_contado|floatformat:0|intcomma}} </h6>
+    
     <h6>Precio prom. financiado: ${{i.precio_prom_financiado|floatformat:0|intcomma}} </h6>
     
+    
+    <b><hr class = "my-4" style="width: 50%; border-color: rgba({{i.proyecto.color}}, 0.5) ;"></b>
 
 </div>
 
