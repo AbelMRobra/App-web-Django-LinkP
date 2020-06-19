@@ -40,7 +40,7 @@ def almacenero(request):
 
                     #Aqui calculo el IVA sobre compras
 
-                    iva_compras = (presupuesto.saldo_mat + presupuesto.saldo_mo + presupuesto.credito + presupuesto.fdr + presupuesto.credito)*0.0789209928265611
+                    iva_compras = (presupuesto.imprevisto+ presupuesto.saldo_mat + presupuesto.saldo_mo + presupuesto.credito + presupuesto.fdr + presupuesto.credito)*0.0789209928265611
 
                     almacenero.pendiente_iva_ventas = iva_compras
 
