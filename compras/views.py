@@ -456,6 +456,7 @@ def analisiscompras(request):
 
     datos = Compras.objects.filter(documento__startswith="O")
     proyectos = Proyectos.objects.all()
+    proyecto = 0
 
     if request.method == 'POST':
 
@@ -466,6 +467,8 @@ def analisiscompras(request):
                 pro = i[1]
         datos = Compras.objects.filter(documento__startswith="O", proyecto = pro)
 
+        proyecto = Proyectos.objects.get(id = pro)
+
     #Establecemos el periodo de tiempo
 
     inicio_fecha = date.today() - datetime.timedelta(days = 365)
@@ -474,7 +477,7 @@ def analisiscompras(request):
 
     contador = 0
 
-    for fecha in range(15):
+    for fecha in range(14):
         fecha_agregar = inicio_fecha + datetime.timedelta(days = ((365*contador/12)))
         fechas.append(fecha_agregar)
         contador +=1 
@@ -487,7 +490,7 @@ def analisiscompras(request):
 
     contador = 0
 
-    for dato in range(14):
+    for dato in range(13):
 
         volumen_comprado = 0
         volumen_presupuesto = 0
@@ -499,12 +502,12 @@ def analisiscompras(request):
             date_object = dateutil.parser.parse(str(date_object)).date()
 
             if date_object >= fechas[contador] and date_object < fechas[contador +1]:
-                volumen_comprado = volumen_comprado + (compra.cantidad*compra.precio)/1000000
-                monto_compras = monto_compras + (compra.cantidad*compra.precio)/1000000
+                volumen_comprado = volumen_comprado + (compra.cantidad*compra.precio)/1000
+                monto_compras = monto_compras + (compra.cantidad*compra.precio)/1000
 
                 if compra.precio_presup != None:
-                    volumen_presupuesto = volumen_presupuesto + (compra.cantidad*compra.precio_presup)/1000000
-                    monto_presupuesto = monto_presupuesto + (compra.cantidad*compra.precio_presup)/1000000
+                    volumen_presupuesto = volumen_presupuesto + (compra.cantidad*compra.precio_presup)/1000
+                    monto_presupuesto = monto_presupuesto + (compra.cantidad*compra.precio_presup)/1000
         
         
         if volumen_presupuesto != 0:
@@ -518,7 +521,8 @@ def analisiscompras(request):
     datos = {"datos":fechas_compras,
     "montocompras":monto_compras,
     "inc":inc_total,
-    "proyectos":proyectos}
+    "proyectos":proyectos,
+    "proyecto":proyecto}
 
     return render(request, 'analisiscompras.html', {"datos":datos} )
 

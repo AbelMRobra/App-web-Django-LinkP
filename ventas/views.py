@@ -1,11 +1,49 @@
 from django.shortcuts import render
 from .models import EstudioMercado, PricingResumen
 from proyectos.models import Unidades, Proyectos
-from ventas.models import Pricing
+from ventas.models import Pricing, ArchivosAreaVentas
 from datetime import date
 import datetime
 
 # Create your views here.
+
+def radiografia(request):
+
+    busqueda = 1
+    datos_pricing = ArchivosAreaVentas.objects.all()
+    datos = 0
+    fecha = 0
+
+    fechas = []
+
+    for dato in datos_pricing:
+        fechas.append((dato.fecha, str(dato.fecha)))
+
+    fechas = list(set(fechas))
+
+    fechas.sort( reverse=True)
+
+    if request.method == 'POST':
+
+        #Trae los datos elegidos
+        datos_elegidos = request.POST.items()
+
+        for dato in datos_elegidos:
+
+            if dato[0] == "fecha":
+                datos = ArchivosAreaVentas.objects.get(fecha = dato[1])
+                busqueda = 0
+                fecha = dato[1]
+
+
+
+
+    datos = {"fechas":fechas,
+    "busqueda":busqueda,
+    "datos":datos,
+    "fecha":fecha}
+
+    return render(request, 'radiografiaclientes.html', {"datos":datos})
 
 def resumenprecio(request):
 
@@ -85,11 +123,6 @@ def estmercado(request):
                             datos_link.append(i)
                         else:
                             datos_otros.append(i)
-
-
-    print(meses)
-    print(datos_link)
-
 
     datos = {
         "link":datos_link,

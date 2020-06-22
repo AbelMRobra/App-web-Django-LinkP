@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import PricingResumen, VentasRealizadas, EstudioMercado, Pricing
+from .models import PricingResumen, VentasRealizadas, EstudioMercado, Pricing, ArchivosAreaVentas
 from import_export import resources
 from import_export.admin import ImportExportModelAdmin
 
@@ -41,7 +41,15 @@ class EstudioMercadoAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     search_fields = ('fecha', 'empresa', 'proyecto', 'precio')
     resources_class = EstudioMercadoResource
 
+class ArchivosResource(resources.ModelResource):
+    class Meta:
+        model = ArchivosAreaVentas
+        
+class ArchivosAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    resources_class = ArchivosResource
+
 admin.site.register(PricingResumen, PricingResumenAdmin)
 admin.site.register(Pricing, PricingAdmin)
 admin.site.register(VentasRealizadas, VentasRealizadasAdmin)
 admin.site.register(EstudioMercado, EstudioMercadoAdmin)
+admin.site.register(ArchivosAreaVentas, ArchivosAdmin)

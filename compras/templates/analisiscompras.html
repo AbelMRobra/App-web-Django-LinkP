@@ -18,7 +18,19 @@
 
     <div style="margin-bottom: 2rem;">
 
-        <h3>Analisis historico de compras</h3>
+        <h3>Analisis historico de compras  
+            
+        {% if datos.proyecto == 0 %}
+
+        - GENERAL </h3> 
+
+        {% else %}
+
+        - {{ datos.proyecto.nombre }} </h3> 
+
+        {% endif %}
+        
+        
 
         <h6>El monto de compras analizado es de: ${{ datos.montocompras|floatformat:0|intcomma}} Millones</h6>
         <h6>Relación compras/presupuesto: {{ datos.inc|floatformat:0}}</h6>
@@ -79,6 +91,7 @@
         <div style= "text-align: center;">
             
             <small><strong>-- Analisis de cantidad --</strong></small>
+            <p><small>Precio expresado en miles</small></p>
          </div>
 
         <canvas id="myChart2" width="400" height="100rem"></canvas>

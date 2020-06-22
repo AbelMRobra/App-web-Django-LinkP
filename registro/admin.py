@@ -1,9 +1,17 @@
 from django.contrib import admin
-from .models import RegistroConstantes, RegistroValorProyecto, RegistroLeccionesAprendidasPresup
+from .models import RegistroConstantes, RegistroValorProyecto, RegistroLeccionesAprendidasPresup, RegistroInformeRedes
 from import_export import resources
 from import_export.admin import ImportExportModelAdmin
 
 # Register your models here.
+
+class RegistroInformeRedesResource(resources.ModelResource):
+    class Meta:
+        model = RegistroInformeRedes
+
+class RegistroInformeRedesAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    resources_class = RegistroInformeRedesResource
+
 
 class RegistrosConstanteResource(resources.ModelResource):
     class Meta:
@@ -34,5 +42,6 @@ class RegistroLecAprenPresupAdmin(ImportExportModelAdmin, admin.ModelAdmin):
 
 
 admin.site.register(RegistroConstantes, RegistrosConstanteAdmin)
+admin.site.register(RegistroInformeRedes, RegistroInformeRedesAdmin)
 admin.site.register(RegistroValorProyecto, RegistroValorProyectoAdmin)
 admin.site.register(RegistroLeccionesAprendidasPresup, RegistroLecAprenPresupAdmin)

@@ -4,6 +4,14 @@ from proyectos.models import Proyectos
 
 # Create your models here.
 
+class RegistroInformeRedes(models.Model):
+    fecha = models.DateField(verbose_name="Fecha")
+    archivo = models.FileField(verbose_name="Archivo Adjunto")
+
+    class Meta:
+        verbose_name="Registro informe redes"
+        verbose_name_plural="Registros de informes de redes"
+
 class RegistroLeccionesAprendidasPresup(models.Model):
 
     class areas(models.TextChoices):

@@ -83,3 +83,14 @@ class EstudioMercado(models.Model):
     def __str__(self):
         return self.empresa
 
+class ArchivosAreaVentas(models.Model):
+    fecha = models.DateField(verbose_name="Fecha que corresponde")
+    radiografia_cliente = models.FileField(verbose_name="Radiografia del cliente", blank=True, null=True)
+    informe_redes = models.FileField(verbose_name="Informe de redes", blank=True, null=True)
+    encuesta_postventa = models.FileField(verbose_name="Encuesta de postventa", blank=True, null=True)
+
+    class Meta:
+        verbose_name = "Archivos Área Ventas"
+        verbose_name_plural = "Archivos Área Ventas"
+
+
