@@ -150,8 +150,27 @@
                     
                     {% endif %}
 
-                    <td style="width: 8%;"> <small>${{i.1.partida|floatformat:0|intcomma}}</small> </td>
-                    <td style="width: 8%;"> <small>{{i.1.imprevisto}}</small> </td>
+                    {% if i.1.partida >= 0 %}
+
+                    <td style="width: 8%; color: #4FA429"> <small>${{i.1.partida|floatformat:0|intcomma}}</small> </td>
+
+                    {% else %}
+
+                    <td style="width: 8%; color: #DE3521"> <small>${{i.1.partida|floatformat:0|intcomma}}</small> </td>
+                    
+                    {% endif %}
+                    {% if i.1.imprevisto == "PREVISTO" %}
+                    
+                    <td style="width: 8%; color: #4FA429"> <small>{{i.1.imprevisto}}</small> </td>
+
+                    {% else %}
+
+                    <td style="width: 8%; color: #DE3521"> <small>{{i.1.imprevisto}}</small> </td>
+                    
+                    {% endif %}
+
+                    
+                    
                     <td style="width: 10%;"> <small>{{i.1.fecha_c}}</small> </td>
                     <td style="width: 15%;"> <small>{{i.1.documento}}</small> </td>
                               
