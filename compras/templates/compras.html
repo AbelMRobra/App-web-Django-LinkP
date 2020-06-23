@@ -49,7 +49,9 @@
                     <th scope = "row" style="vertical-align: middle;"> <small> <strong>CANTIDAD</strong> </small> </th>
                     <th scope = "row" style="vertical-align: middle;"> <small> <strong>PRECIO</strong> </small> </th>
                     <th scope = "row" style="vertical-align: middle;"> <small> <strong>TOTAL</strong> </small> </th>
-                    <th scope = "row" style="vertical-align: middle;"> <small> <strong>VAR.</strong> </small> </th>  
+                    <th scope = "row" style="vertical-align: middle;"> <small> <strong>VAR.</strong> </small> </th>
+                    <th scope = "row" style="vertical-align: middle;"> <small> <strong>PARTIDA</strong> </small> </th>
+                    <th scope = "row" style="vertical-align: middle;"> <small> <strong>I/P</strong> </small> </th>  
                     <th scope = "row" style="vertical-align: middle;"> <small> <strong>FECHA DE LA OC</strong> </small> </th>
                     <th scope = "row" style="vertical-align: middle;"> <small> <strong>DOCUMENTO</strong> </small> </th>
                     
@@ -95,8 +97,10 @@
                     
                     {% endif %}
                     
-                    <td style="width: 10%;"> <small>{{i.1.fecha_c}}</small> </td>
-                    <td style="width: 15%;"> <small>{{i.1.documento}}</small> </td>
+                    <td style="width: 8%;"> <small>${{i.1.partida|floatformat:0|intcomma}}</small> </td>
+                    <td style="width: 8%;"> <small>{{i.1.imprevisto}}</small> </td>
+                    <td style="width: 8%;"> <small>{{i.1.fecha_c}}</small> </td>
+                    <td style="width: 8%;"> <small>{{i.1.documento}}</small> </td>
                               
                 </tr>
 
@@ -145,7 +149,9 @@
                     
                     
                     {% endif %}
-                    
+
+                    <td style="width: 8%;"> <small>${{i.1.partida|floatformat:0|intcomma}}</small> </td>
+                    <td style="width: 8%;"> <small>{{i.1.imprevisto}}</small> </td>
                     <td style="width: 10%;"> <small>{{i.1.fecha_c}}</small> </td>
                     <td style="width: 15%;"> <small>{{i.1.documento}}</small> </td>
                               

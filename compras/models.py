@@ -63,6 +63,10 @@ class Compras(models.Model):
             ANTICIPADA = "ANT"
             NORMAL = "NORMAL"
 
+    class imprevisto(models.TextChoices):
+        IMPREVISTO = "IMPREVISTO"
+        PREVISTO = "PREVISTO"
+
     proyecto = models.ForeignKey(Proyectos, on_delete=models.CASCADE, verbose_name="Proyectos", blank=True, null=True)
     proveedor = models.ForeignKey(Proveedores, on_delete=models.CASCADE, verbose_name="Proveedor")
     nombre = models.CharField(max_length=200, verbose_name="Nombre de la compra")
@@ -74,6 +78,9 @@ class Compras(models.Model):
     fecha_c = models.DateField(auto_now_add=True, verbose_name="Fecha de compra")
     fecha_a = models.DateField(auto_now=True, verbose_name="Fecha de actualización")
     documento = models.CharField(max_length=200, verbose_name="Documento de referencia", blank=True, null=True)
+    partida = models.FloatField(blank=True, null=True, verbose_name="Partida")
+    imprevisto = models.CharField(choices=imprevisto.choices, max_length=200, verbose_name="Imprevisto", blank=True, null=True)
+
 
     class Meta:
         verbose_name="Compra"
