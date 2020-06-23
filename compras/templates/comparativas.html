@@ -28,7 +28,7 @@
                     <th scope = "row" style="vertical-align: middle;"><strong>FECHA</strong></th>
                     <th scope = "row" style="vertical-align: middle;"><strong>ARCHIVO</strong></th>
 
-                    {% if request.user.username == "PL" or request.user.username == "AR" %}
+                    {% if request.user.username == "PL" or request.user.username == "ar" %}
 
                     <th scope = "row" style="vertical-align: middle;"><strong>AUTORIZAR</strong></th>
                     
@@ -116,7 +116,7 @@
                     <td style="width: 7%;"><a href="{{ i.adjunto.url }}" class="btn btn-sm btn-info">Ver Adjunto</a></td>
                     
                     
-                    {% if request.user.username == "PL" or request.user.username == "AR" %}
+                    {% if request.user.username == "PL" or request.user.username == "ar" %}
 
                     <td style="width: 5%;" >
                         
