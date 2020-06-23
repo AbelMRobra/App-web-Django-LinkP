@@ -37,6 +37,7 @@ class Comparativas(models.Model):
     estado = models.CharField(choices=estados.choices, default=estados.ESPERA, editable=False, max_length=20, verbose_name="Estado", blank=True, null=True)
     adjunto = models.ImageField(verbose_name="Imagen adjunta")
     fecha_c = models.DateField(auto_now_add=True, verbose_name="Fecha de carga")
+    comentario = models.TextField(blank=True, null=True, verbose_name="Comentario", editable=False)
 
     class Meta:
         verbose_name = "Comparativa"

@@ -225,7 +225,11 @@ def comparativas(request):
 
         datos_post = request.POST.items()
 
+        id_selec = 0
+
         for d in datos_post:
+
+            print(d)
 
 
             if d[0] == 'APROBADA':
@@ -245,6 +249,18 @@ def comparativas(request):
                 comparativa.estado = "NO AUTORIZADA"
 
                 comparativa.save()
+
+            if d[0] != 'csrfmiddlewaretoken' and d[0] != 'NO APROBADA' and d[0] != 'APROBADA':
+                
+
+                comparativa = Comparativas.objects.get(id = id_selec)
+
+                comparativa.comentario = str(d[0]) + ": " + str(d[1])
+
+                print(comparativa.comentario)
+
+                comparativa.save()
+
 
     return render(request, 'comparativas.html', {'datos':datos})
 
