@@ -4,6 +4,7 @@ from proyectos.models import Unidades, Proyectos
 from ventas.models import Pricing, ArchivosAreaVentas
 from datetime import date
 import datetime
+import operator
 
 # Create your views here.
 
@@ -223,7 +224,7 @@ def panelunidades(request):
                                 else:
                                     desde = "NO DEFINIDO"
 
-                            datos_tabla_unidad.append((dato, m2, desde))
+                            datos_tabla_unidad.append((dato, m2, desde, dato.id))
                             m2_totales = m2_totales + m2
                             if dato.tipo == "COCHERA":
                                 cocheras += 1
@@ -237,6 +238,9 @@ def panelunidades(request):
             otros_datos.append((m2_totales, cantidad, departamentos, cocheras))
 
             datos_unidades = datos_tabla_unidad
+
+            datos_unidades.sort(key=lambda datos_unidades: datos_unidades[3], reverse=False)
+
 
     datos = {"proyectos":proyectos, "datos":datos, "mensaje":mensaje, "datos_unidades":datos_unidades, "otros_datos":otros_datos}
 
