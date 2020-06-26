@@ -6,11 +6,15 @@
 {% block content %}
 
 <div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;">
-    <div style="text-align: center;">
+    <div>
         <h2 style="color: rgb({{datos.proyecto.color}});" >Pricing - {{ datos.proyecto.nombre }} </h2>
+        <div>
+            <img src="{{datos.proyecto.iamgen.url}}"  class="img-fluid" alt="..." style="max-width:20%;width:auto;height:auto; margin-bottom: 2rem;">
 
-        <img src="{{datos.proyecto.iamgen.url}}"  class="img-fluid" alt="..." style="max-width:20%;width:auto;height:auto; margin-bottom: 2rem;">
 
+        </div>
+
+        
 
         <small>Trabajo en conjunto: </small><small><strong>FINANZAS - VENTAS</strong></small>  
     </div>
