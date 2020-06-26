@@ -214,11 +214,16 @@ def panelunidades(request):
                                 if param_uni.menor_50_m2 == "SI":
                                     desde = desde*1.03
 
+                                desde = desde*m2
+
                             except:
 
                                 if dato.tipo == "COCHERA":
                                     try:
                                         desde = dato.proyecto.desde*(1-0.24)
+
+                                        desde = desde*m2
+
                                     except:
                                         desde = "NO DEFINIDO"
 
@@ -286,8 +291,6 @@ def pricing(request):
                 desde = desde*1.03
             
             contado = desde*m2
-
-            print(dato.estado)
 
             if dato.estado == "DISPONIBLE":
                 ingreso_ventas = ingreso_ventas + contado
