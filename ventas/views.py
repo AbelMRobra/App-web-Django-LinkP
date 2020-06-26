@@ -287,6 +287,8 @@ def pricing(request):
             
             contado = desde*m2
 
+            print(dato.estado)
+
             if dato.estado == "DISPONIBLE":
                 ingreso_ventas = ingreso_ventas + contado
 
@@ -314,20 +316,20 @@ def pricing(request):
             cocheras += 1
                             
 
-            almacenero = Almacenero.objects.get(proyecto = proyecto)
+    almacenero = Almacenero.objects.get(proyecto = proyecto)
 
-            almacenero.ingreso_ventas = ingreso_ventas
-            almacenero.save()
+    almacenero.ingreso_ventas = ingreso_ventas
+    almacenero.save()
 
-            cantidad = len(datos_tabla_unidad)
+    cantidad = len(datos_tabla_unidad)
 
-            departamentos = cantidad - cocheras
+    departamentos = cantidad - cocheras
 
-            otros_datos.append((m2_totales, cantidad, departamentos, cocheras))
+    otros_datos.append((m2_totales, cantidad, departamentos, cocheras))
 
-            datos_unidades = datos_tabla_unidad
+    datos_unidades = datos_tabla_unidad
 
-            datos_unidades.sort(key=lambda datos_unidades: datos_unidades[3], reverse=False)
+    datos_unidades.sort(key=lambda datos_unidades: datos_unidades[3], reverse=False)
 
 
     datos = {"proyecto":proyecto, "datos":datos, "mensaje":mensaje, "datos_unidades":datos_unidades, "otros_datos":otros_datos}
