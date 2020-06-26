@@ -1385,6 +1385,7 @@ def parametros(request):
             ganan = parametros.ganancia*100
             porc_terreno = parametros.terreno/proyecto.m2*100
             porc_link = parametros.link/proyecto.m2*100
+            tasa_des = parametros.tasa_des*100
 
             presupuesto = Presupuestos.objects.get(proyecto = proyecto)
             costo_m2 = (presupuesto.valor/(1+(tasa_pl/100)))/proyecto.m2
@@ -1394,9 +1395,30 @@ def parametros(request):
             costo_hon = (costo_imp*proyecto.m2)/(proyecto.m2-parametros.terreno-parametros.link)
             costo_comer = costo_hon/(1 - (parametros.comer*(1+parametros.comer)))
             costo_tem = costo_hon/(1 - (parametros.comer*(1+parametros.comer)) - (parametros.tem_iibb*parametros.por_temiibb*(1+parametros.ganancia)))
-            ganancia = costo_tem * (1+(ganan/100))
+            
+            #Aqui se incorpora la tasa de descuento
 
-            datos.append((parametros, porc_terreno, porc_link, tasa_pl, soft, imp, comer, tem, ganan, costo_m2, costo_soft_m2, costo_imp, costo_terreno, costo_hon, costo_comer, costo_tem, ganancia ))
+            fecha_entrega =  datetime.datetime.strptime(str(proyecto.fecha_f), '%Y-%m-%d')
+            ahora = datetime.datetime.utcnow()
+            fecha_inicial = ahora + datetime.timedelta(days = (365*2))
+
+            if fecha_entrega > fecha_inicial:
+                y = fecha_entrega.year - fecha_inicial.year
+                n = fecha_entrega.month - fecha_inicial.month
+                meses = y*12 + n
+
+                costo_desc = -np.pv(fv=costo_tem, rate=parametros.tasa_des, nper=meses, pmt=0)
+
+            else:
+                costo_desc = costo_tem
+
+                meses = 0
+
+
+            
+            ganancia = costo_desc * (1+(ganan/100))
+
+            datos.append((parametros, porc_terreno, porc_link, tasa_pl, soft, imp, comer, tem, ganan, costo_m2, costo_soft_m2, costo_imp, costo_terreno, costo_hon, costo_comer, costo_tem, ganancia, tasa_des, costo_desc, meses ))
 
         except: 
             print("No esta cargado el parametro de ese proyecto")
@@ -1434,8 +1456,30 @@ def desde(request):
         m2 = (i.parametros.proyecto.m2 - i.parametros.terreno - i.parametros.link)
 
         valor_costo = costo/m2
+
+        #Aqui coloco la tasa de descuento
+
+
+        fecha_entrega =  datetime.datetime.strptime(str(i.presupuesto.proyecto.fecha_f), '%Y-%m-%d')
+        ahora = datetime.datetime.utcnow()
+        fecha_inicial = ahora + datetime.timedelta(days = (365*2))
+
+        if fecha_entrega > fecha_inicial:
+            y = fecha_entrega.year - fecha_inicial.year
+            n = fecha_entrega.month - fecha_inicial.month
+
+            meses = y*12 + n
+
+            valor_costo = -np.pv(fv=valor_costo, rate=i.parametros.tasa_des, nper=meses, pmt=0)
+
+
+        #Calculo el valor final
         
         valor_final = valor_costo*(1 + i.parametros.ganancia)
+
+
+
+ 
 
         # Valorizo en dolares el precio de costo y sugerido
 

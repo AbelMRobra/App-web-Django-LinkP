@@ -1,0 +1,203 @@
+{% extends "users/inicio.html" %}
+
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+
+<div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;">
+    <div style="text-align: center;">
+        <h2 style="color: rgb({{datos.proyecto.color}});" >Pricing - {{ datos.proyecto.nombre }} </h2>
+
+        <img src="{{datos.proyecto.iamgen.url}}"  class="img-fluid" alt="..." style="max-width:20%;width:auto;height:auto; margin-bottom: 2rem;">
+
+
+        <small>Trabajo en conjunto: </small><small><strong>FINANZAS - VENTAS</strong></small>  
+    </div>
+
+    {% if datos.mensaje == 0 or datos.mensaje == 1 %}
+
+    <b><hr class = "my-4" style="width: 100%; border-color: black ;"></b>
+
+    
+    
+    <div style="margin-bottom: 2rem;">
+
+        <h3>Analisis de unidades {% if datos.graficos %} {{ datos.proyecto.nombre }} {% endif %}</h3>
+        <small> Seleccione las preferencias para buscar un listado de unidades que cumplan ese requerimiento</small>
+
+    </div>
+
+    
+    
+    <div style="text-align: center;" >
+        <form method="POST">
+
+            {% csrf_token %}
+
+            <div style="text-align: left; display: inline-block; vertical-align: top;">
+
+            <h6>Proyectos</h6>
+
+            {% for i in datos.proyectos %}
+
+
+            <div class="custom-control custom-checkbox">           
+                <input type="checkbox" name="{{i.nombre}}" class="custom-control-input" id="customCheck{{i.id}}" checked="">
+                <label class="custom-control-label" for="customCheck{{i.id}}">{{i.nombre}}</label>
+        
+              </div>
+
+              {% endfor %}
+            </div>
+
+            <div style="text-align: left; display: inline-block; margin-left: 15%; vertical-align: top;">
+
+                <h6>Asignación</h6>
+
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" name="Asignacion1" value="PROYECTO" class="custom-control-input" id="customCheckProyecto" checked="">
+                    <label class="custom-control-label" for="customCheckProyecto">PROYECTO</label>
+    
+                  </div>
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" name="Asignacion2" value="HON. LINK" class="custom-control-input" id="customCheckLink" checked="">
+                    <label class="custom-control-label" for="customCheckLink">HONOR. LINK</label>
+    
+                  </div>
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" name="Asignacion3" value="TERRENO" class="custom-control-input" id="customCheckTerreno" checked="">
+                    <label class="custom-control-label" for="customCheckTerreno">TERRENO</label>
+    
+                  </div>
+
+
+            </div>
+
+            <div style="text-align: left; display: inline-block; margin-left: 15%; vertical-align: top;">
+
+                <h6>Disponibilidad</h6>
+
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" name="Disponibilidad" class="custom-control-input" id="customCheckDisp" value="DISPONIBLE" checked="">
+                    <label class="custom-control-label" for="customCheckDisp">DISPONIBLE</label>
+    
+                  </div>
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" name="Disponibilidad2" class="custom-control-input" id="customCheckVend" value="VENDIDA" checked="">
+                    <label class="custom-control-label" for="customCheckVend">VENDIDA</label>
+    
+                  </div>
+ 
+            </div>
+
+              <div>
+                <button class="btn btn-dark" type="submit" style="margin-top: 1%;">Buscar</button>          
+            </div>
+            
+        </form>
+
+        
+    </div>
+
+    {% endif %}
+
+    {% if datos.datos_unidades %}
+
+
+
+    <h3 style="margin-top: 5%; text-align: left;">Listado de unidades</h3>
+
+    <b><hr class = "my-4" style="width: 100%; border-color: rgba({{datos.proyecto.color}}, 0.5);"></b>
+
+    <div style="overflow-x: scroll;">
+
+        <table class = "table table-hover" style="text-align: center;">
+            <thead>
+    
+                <tr class = "table-dark">
+                    <th scope = "row" style="vertical-align: middle;"> <small>PISO</small> </th>
+                    <th scope = "row"style="vertical-align: middle;"> <small>NOM</small></th>
+                    <th scope = "row"style="vertical-align: middle;"> <small>TIPO</small>  </th>
+                    <th scope = "row"style="vertical-align: middle;"> <small> T</small></th>
+                    <th scope = "row"style="vertical-align: middle;"> <small>SUPERFICIE</small> </th>
+                    <th scope = "row"style="vertical-align: middle;"> <small>ASIGNACIÓN</small> </th>
+                    <th scope = "row"style="vertical-align: middle;"> <small>ESTADO</small> </th>
+                    <th scope = "row"style="vertical-align: middle;"> <small>P.CONTADO</small> </th>
+                    <th scope = "row"style="vertical-align: middle;"> <small>CONT./M2</small> </th>
+                    
+                    <th scope = "row"style="vertical-align: middle;"> <small>FINANCIADO</small> </th>
+                    <th scope = "row"style="vertical-align: middle;"> <small>FINAN./M2</small> </th>
+                    <th scope = "row"style="vertical-align: middle;"> <small>ANTICIPO</small> </th>
+                    <th scope = "row"style="vertical-align: middle;"> <small>CUOTAS</small> </th>
+                    <th scope = "row"style="vertical-align: middle;"> <small>PUEDO</small> </th>
+                    <th scope = "row"style="vertical-align: middle;"> <small>PUEDO/M2</small> </th>
+                    <th scope = "row"style="vertical-align: middle;"> <small>ANTICIPO</small> </th>
+                    <th scope = "row"style="vertical-align: middle;"> <small>CUOTA ESPERA</small> </th>
+                    <th scope = "row"style="vertical-align: middle;"> <small>APORTE</small> </th>
+                    <th scope = "row"style="vertical-align: middle;"> <small>CUOTA POSESION</small> </th>
+                     
+    
+                </tr>
+            </thead>
+    
+            <tbody>   
+    
+                {% for i in datos.datos_unidades %}
+                <tr class = "table-light">
+                    <td style="width: 2%;"> <b> <small>{{i.0.piso_unidad}}</small></b> </td>
+                    <td style="width: 2%;"> <b> <small>{{i.0.nombre_unidad}}</small> </b> </td>
+                    <td style="width: 5%;"> <b> <small>{{i.0.tipo}}</small> </b> </td>
+                    <td style="width: 3%;"> <b> <small>****</small> </b> </td>
+                    <td style="width: 5%;"> <b> <small>{{i.1|floatformat:2}}m2</small></b> </td>
+                    <td style="width: 5%;"> <b> <small> {{i.0.asig}} </small> </b> </td>
+                    <td style="width: 5%;"> <b> <small>{{i.0.estado}}</small> </b> </td>
+                    {% if i.2 >= 0 %}
+                    <td style="width: 5%;"> <b> <small>${{i.2|floatformat:0|intcomma}}</small> </b> </td>
+                    <td style="width: 5%;"> <b> <small>${{i.4|floatformat:0|intcomma}}</small> </b> </td>
+                    {% else %}
+    
+                    <td style="width: 5%;"> <b> <small>{{i.2}}</small> </b> </td>
+                    <td style="width: 5%;"> <b> <small>{{i.4}}</small> </b> </td>
+    
+                    {% endif %}
+                    
+                    
+    
+                </tr>
+                {% endfor %}
+            </tbody>
+         
+    
+    
+        </table>
+
+
+    </div>
+
+    
+
+
+
+    {% endif %}
+
+    {% if datos.mensaje == 1 %}
+
+    <div style="text-align: center; margin-top: 10%;">
+    
+        <h6>No hay unidades que cumplan esas condiciones!</h6>
+    
+    </div>
+
+    {% endif %}
+
+    <div style="text-align: center; margin-top: 2rem;">
+        <p> <small>-- Link<strong>P</strong> --</small> </p>
+
+     </div>
+
+                    
+</div>
+ 
+    
+{% endblock %}

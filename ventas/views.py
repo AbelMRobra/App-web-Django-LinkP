@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from .models import EstudioMercado, PricingResumen
 from proyectos.models import Unidades, Proyectos
+from finanzas.models import Almacenero
 from ventas.models import Pricing, ArchivosAreaVentas
 from datetime import date
 import datetime
@@ -245,5 +246,92 @@ def panelunidades(request):
     datos = {"proyectos":proyectos, "datos":datos, "mensaje":mensaje, "datos_unidades":datos_unidades, "otros_datos":otros_datos}
 
     return render(request, 'panelunidades.html', {"datos":datos})
+
+def pricing(request):
+
+    proyecto = Proyectos.objects.get(id = 1)
+
+    datos = Unidades.objects.filter(proyecto = proyecto)
+
+    mensaje = 0
+    otros_datos = 0
+
+    mensaje = 2
+    otros_datos = []
+    datos_tabla_unidad = []
+    m2_totales = 0
+    cocheras = 0
+    ingreso_ventas = 0
+    
+    for dato in datos:
+        m2 = dato.sup_propia + dato.sup_balcon + dato.sup_comun + dato.sup_patio
+        
+        try:
+            param_uni = Pricing.objects.get(unidad = dato)
+            desde = dato.proyecto.desde
+
+            if param_uni.frente == "SI":
+                desde = desde*1.03
+
+            if param_uni.piso_intermedio == "SI":
+                desde =desde*1.02
+
+            if param_uni.cocina_separada == "SI":
+                desde = desde*1.03
+
+            if param_uni.local == "SI":
+                desde = desde*1.75
+
+            if param_uni.menor_50_m2 == "SI":
+                desde = desde*1.03
+            
+            contado = desde*m2
+
+            if dato.estado == "DISPONIBLE":
+                ingreso_ventas = ingreso_ventas + contado
+
+        except:
+
+            if dato.tipo == "COCHERA":
+                try:
+                    desde = dato.proyecto.desde*(1-0.24)
+                    contado = desde*m2
+
+                    if dato.estado == "DISPONIBLE":
+                        ingreso_ventas = ingreso_ventas + contado
+
+                except:
+                    desde = "NO DEFINIDO"
+                    contado = "NO DEFINIDO"
+
+            else:
+                desde = "NO DEFINIDO"
+                contado = "NO DEFINIDO"
+
+        datos_tabla_unidad.append((dato, m2, desde, dato.id, contado))
+        m2_totales = m2_totales + m2
+        if dato.tipo == "COCHERA":
+            cocheras += 1
+                            
+
+            almacenero = Almacenero.objects.get(proyecto = proyecto)
+
+            almacenero.ingreso_ventas = ingreso_ventas
+            almacenero.save()
+
+            cantidad = len(datos_tabla_unidad)
+
+            departamentos = cantidad - cocheras
+
+            otros_datos.append((m2_totales, cantidad, departamentos, cocheras))
+
+            datos_unidades = datos_tabla_unidad
+
+            datos_unidades.sort(key=lambda datos_unidades: datos_unidades[3], reverse=False)
+
+
+    datos = {"proyecto":proyecto, "datos":datos, "mensaje":mensaje, "datos_unidades":datos_unidades, "otros_datos":otros_datos}
+
+    return render(request, 'pricing.html', {"datos":datos})
 
 

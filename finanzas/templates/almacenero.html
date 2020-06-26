@@ -125,18 +125,45 @@
 
     <h4 style="text-align: left; margin-bottom: 2rem; color: rgb({{datos.datos.0.color}})"> Desglose completo </h4>
 
-    <div style="display: inline-block; width: 45%; vertical-align: top;">
-        <h5>Costos del proyecto</h5>
-        <hr class = "my-4" style="width: 70%; border-color: rgba({{datos.datos.0.color}}, 0.3);">
-    </div>
 
     <div style="display: inline-block; width: 45%; vertical-align: top;">
         <h5>Ingresos del proyecto</h5>
         <hr class = "my-4" style="width: 70%; border-color: rgba({{datos.datos.0.color}}, 0.3);">
 
     </div >
-    
+
+    <div style="display: inline-block; width: 45%; vertical-align: top;">
+        <h5>Costos del proyecto</h5>
+        <hr class = "my-4" style="width: 70%; border-color: rgba({{datos.datos.0.color}}, 0.3);">
+    </div>
+
+   
+
     <div style="display: inline-block; width: 15%; vertical-align: top; text-align: left;">
+             
+
+        <h6>Prestamos a cobrar:</h6>
+        <h6><small>Prestamos a proyectos:</small></h6>
+        <h6><small>Prestamos a otros:</small></h6>
+        <h6>Cuotas cobradas:</h6>
+        <h6>Cuotas a cobrar:</h6>
+        <h6>Ingreso por unid. en venta:</h6>
+        
+    </div>
+
+    <div style="display: inline-block; width: 15%; vertical-align: top; text-align: right;">
+             
+
+        <h6>$ {{datos.datos.3.1|floatformat:0|intcomma}}   </h6>
+        <h6><small>$ {{datos.datos.2.prestamos_proyecto|floatformat:0|intcomma}}  </small></h6>
+        <h6><small>$ {{datos.datos.2.prestamos_otros|floatformat:0|intcomma}}</small></h6>
+        <h6>$ {{datos.datos.2.cuotas_cobradas|floatformat:0|intcomma}}  </h6>
+        <h6>$ {{datos.datos.2.cuotas_a_cobrar|floatformat:0|intcomma}}  </h6>
+        <h6>$ {{datos.datos.2.ingreso_ventas|floatformat:0|intcomma}}  </h6>
+        
+    </div>
+    
+    <div style="display: inline-block; width: 15%; vertical-align: top; text-align: left;   margin-left: 15%; ">
         <h6>Cheques emitidos:</h6>
                
         <h6>Pendiente de gastar: </h6>
@@ -173,40 +200,25 @@
         
     </div>
 
-    <div style="display: inline-block; width: 15%; vertical-align: top; text-align: left;  margin-left: 15%; ">
-             
 
-        <h6>Prestamos a cobrar:</h6>
-        <h6><small>Prestamos a proyectos:</small></h6>
-        <h6><small>Prestamos a otros:</small></h6>
-        <h6>Cuotas cobradas:</h6>
-        <h6>Cuotas a cobrar:</h6>
-        <h6>Ingreso por unid. en venta:</h6>
-        
-    </div>
-
-    <div style="display: inline-block; width: 15%; vertical-align: top; text-align: right;">
-             
-
-        <h6>$ {{datos.datos.3.1|floatformat:0|intcomma}}   </h6>
-        <h6><small>$ {{datos.datos.2.prestamos_proyecto|floatformat:0|intcomma}}  </small></h6>
-        <h6><small>$ {{datos.datos.2.prestamos_otros|floatformat:0|intcomma}}</small></h6>
-        <h6>$ {{datos.datos.2.cuotas_cobradas|floatformat:0|intcomma}}  </h6>
-        <h6>$ {{datos.datos.2.cuotas_a_cobrar|floatformat:0|intcomma}}  </h6>
-        <h6>$ {{datos.datos.2.ingreso_ventas|floatformat:0|intcomma}}  </h6>
-        
-    </div>
-
-    <div style="display: inline-block; width: 45%; vertical-align: top; margin-top: 2%;">
-        <h6 style="color: #B3513F ; vertical-align: bottom;" >Total del costo: ${{datos.datos.3.2|floatformat:0|intcomma}}</h6>
-
-    </div>
 
     <div style="display: inline-block; width: 45%; vertical-align: top; margin-top: 2%;">
         <h6 style="color: #3FB360;">Ingresos totales: ${{datos.datos.3.3|floatformat:0|intcomma}}</h6>
 
     </div >
 
+
+    <div style="display: inline-block; width: 45%; vertical-align: top; margin-top: 2%;">
+        <h6 style="color: #B3513F ; vertical-align: bottom;" >Total del costo: ${{datos.datos.3.2|floatformat:0|intcomma}}</h6>
+
+    </div>
+
+    <div style="margin-top: 5%;">
+        <h3 style="color: rgb({{datos.datos.0.color}})">SALDO DEL PROYECTO: $ {{datos.datos.3.6|floatformat:0|intcomma}}</h3>
+        <h2 style="margin-top: 1%; color: rgb({{datos.datos.0.color}})">RENTABILIDAD: {{datos.datos.3.4|floatformat:0|intcomma}}%</h2>
+    </div>
+
+    
     {% endif %}
 
     

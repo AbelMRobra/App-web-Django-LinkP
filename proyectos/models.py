@@ -62,6 +62,7 @@ class Unidades(models.Model):
     sup_comun = models.FloatField(verbose_name="Sup. Comun")
     estado = models.CharField(choices=estados.choices, max_length=20, verbose_name="Estado")
     asig = models.CharField(choices=asignacion.choices, max_length=20, verbose_name="Asignacion")
+    sup_equiv = models.FloatField(verbose_name="Sup. Equivalente", blank=True, null=True)
 
     class Meta:
         verbose_name="Unidad"

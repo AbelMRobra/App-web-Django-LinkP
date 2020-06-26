@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 urlpatterns = [
     url(r'^estmerc$', views.estmercado, name = 'Estudio de mercado'),
     url(r'^panelunidades$', views.panelunidades, name = 'Panel de unidades'),
+    url(r'^pricing$', views.pricing, name = 'Pricing'),
     url(r'^radiografia$', views.radiografia, name = 'Radiografia del cliente'),
     url(r'^resumenprecio$', views.resumenprecio, name = 'Resumen de precio'),
 
