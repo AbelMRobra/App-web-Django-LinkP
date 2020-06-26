@@ -6,6 +6,7 @@ from ventas.models import Pricing, ArchivosAreaVentas
 from datetime import date
 import datetime
 import operator
+import numpy as np
 
 # Create your views here.
 
@@ -289,10 +290,42 @@ def pricing(request):
 
             if param_uni.menor_50_m2 == "SI":
                 desde = desde*1.03
+
+            #Aqui calculamos el contado/financiado
             
             contado = desde*m2
 
-            if dato.estado == "DISPONIBLE":
+            fecha_entrega =  datetime.datetime.strptime(str(dato.proyecto.fecha_f), '%Y-%m-%d')
+
+            ahora = datetime.datetime.utcnow()
+
+            y = fecha_entrega.year - ahora.year
+            n = fecha_entrega.month - ahora.month
+            meses = y*12 + n
+
+            values = [0]
+
+            for m in range((meses)):
+                values.append(1)
+
+            anticipo = 0.4
+
+            valor_auxiliar = np.npv(rate=(0.82/100), values=values)
+
+            incremento = (meses/(1-anticipo)/(((anticipo/(1-anticipo))*meses)+valor_auxiliar))
+
+
+            financiado = contado*incremento
+
+            financiado_m2 = financiado/m2
+            
+            fin_ant = financiado*anticipo
+
+            valor_cuotas = (financiado - fin_ant)/meses
+
+            #Aqui actualizamos los datos del almacenero
+
+            if dato.estado == "DISPONIBLE" and dato.asig == "PROYECTO" :
                 ingreso_ventas = ingreso_ventas + contado
 
         except:
@@ -300,9 +333,41 @@ def pricing(request):
             if dato.tipo == "COCHERA":
                 try:
                     desde = dato.proyecto.desde*(1-0.24)
+
+                    #Aqui calculamos el contado/financiado
+
                     contado = desde*m2
 
-                    if dato.estado == "DISPONIBLE":
+                    fecha_entrega =  datetime.datetime.strptime(str(dato.proyecto.fecha_f), '%Y-%m-%d')
+
+                    ahora = datetime.datetime.utcnow()
+
+                    y = fecha_entrega.year - ahora.year
+                    n = fecha_entrega.month - ahora.month
+                    meses = y*12 + n
+
+                    values = [0]
+
+                    for m in range((meses)):
+                        values.append(1)
+
+                    anticipo = 0.4
+
+                    valor_auxiliar = np.npv(rate=(0.82/100), values=values)
+
+                    incremento = (meses/(1-anticipo)/(((anticipo/(1-anticipo))*meses)+valor_auxiliar))
+
+                    financiado = contado*incremento
+
+                    financiado_m2 = financiado/m2
+
+                    fin_ant = financiado*anticipo
+
+                    valor_cuotas = (financiado - fin_ant)/meses
+
+                    #Aqui actualizamos los datos del almacenero
+
+                    if dato.estado == "DISPONIBLE" and dato.asig == "PROYECTO" :
                         ingreso_ventas = ingreso_ventas + contado
 
                 except:
@@ -313,7 +378,7 @@ def pricing(request):
                 desde = "NO DEFINIDO"
                 contado = "NO DEFINIDO"
 
-        datos_tabla_unidad.append((dato, m2, desde, dato.id, contado))
+        datos_tabla_unidad.append((dato, m2, desde, dato.id, contado, financiado, financiado_m2, fin_ant, valor_cuotas))
         m2_totales = m2_totales + m2
         if dato.tipo == "COCHERA":
             cocheras += 1
@@ -331,6 +396,59 @@ def pricing(request):
     otros_datos.append((m2_totales, cantidad, departamentos, cocheras))
 
     datos_unidades = datos_tabla_unidad
+    
+    #Aqui empieza el filtro
+
+    if request.method == 'POST':
+
+        palabra_buscar = request.POST.items()
+
+        datos_viejos = datos_unidades
+
+        datos = []   
+
+        for i in palabra_buscar:
+
+            if i[0] == "palabra":
+        
+                palabra_buscar = i[1]
+
+        if str(palabra_buscar) == "":
+
+            datos = datos_viejos
+
+        else:
+        
+            for i in datos_viejos:
+
+                print(i)
+
+                palabra =(str(palabra_buscar))
+
+                lista_palabra = palabra.split()
+
+                buscar = (str(i[0].tipo)+str(i[0].asig)+str(i[0].piso_unidad)+str(i[0].nombre_unidad)+str(i[0].estado))
+
+                contador = 0
+
+                for palabra in lista_palabra:
+
+                    contador2 = 0
+
+                    if palabra.lower() in buscar.lower():
+  
+                        contador += 1
+
+                if contador == len(lista_palabra):
+
+                    datos.append(i)
+
+        datos_unidades = datos
+    
+    #Aqui termina el filtro
+
+    
+
 
     datos_unidades.sort(key=lambda datos_unidades: datos_unidades[3], reverse=False)
 
