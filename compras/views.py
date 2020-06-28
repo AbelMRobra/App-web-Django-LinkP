@@ -229,9 +229,6 @@ def comparativas(request):
 
         for d in datos_post:
 
-            print(d)
-
-
             if d[0] == 'APROBADA':
                 id_selec = d[1]
 
@@ -257,10 +254,7 @@ def comparativas(request):
 
                 comparativa.comentario = str(d[0]) + ": " + str(d[1])
 
-                print(comparativa.comentario)
-
                 comparativa.save()
-
 
     return render(request, 'comparativas.html', {'datos':datos})
 
