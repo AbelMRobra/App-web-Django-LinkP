@@ -285,7 +285,7 @@ def pricing(request, id_proyecto):
     
     for dato in datos:
 
-        if dato.sup_equiv > 0 and != None:
+        if dato.sup_equiv > 0:
 
             m2 = dato.sup_equiv
 
