@@ -7,7 +7,12 @@ from .models import Almacenero
 
 def almacenero(request):
 
-    proyectos = Almacenero.objects.all()
+    datos = Almacenero.objects.all()
+
+    proyectos = []
+
+    for dato in datos:
+        proyectos.append((dato.proyecto.id, dato.proyecto.nombre))
 
     proyectos = list(set(proyectos))
 
