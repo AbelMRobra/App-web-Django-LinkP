@@ -272,6 +272,9 @@ def pricing(request, id_proyecto):
     meses = y*12 + n
 
     financiado = 0
+    financiado_m2 = 0
+    fin_ant = 0
+    valor_cuotas = 0
 
     mensaje = 2
     otros_datos = []
@@ -281,11 +284,15 @@ def pricing(request, id_proyecto):
     ingreso_ventas = 0
     
     for dato in datos:
+
         m2 = dato.sup_propia + dato.sup_balcon + dato.sup_comun + dato.sup_patio
         
         try:
             param_uni = Pricing.objects.get(unidad = dato)
             desde = dato.proyecto.desde
+
+            if dato.tipo == "COCHERA":
+                desde = dato.proyecto.desde*(1-0.24)
 
             if param_uni.frente == "SI":
                 desde = desde*1.03
@@ -299,14 +306,21 @@ def pricing(request, id_proyecto):
             if param_uni.local == "SI":
                 desde = desde*1.75
 
-            if param_uni.menor_50_m2 == "SI":
+            if param_uni.menor_45_m2 == "SI":
+                desde = desde*1.05
+
+            if param_uni.menor_50_m2 == "SI" and dato.proyecto.nombre == "ZOE":
+                desde = desde*1.05
+            
+            if param_uni.menor_50_m2 == "SI" and dato.proyecto.nombre != "ZOE":
                 desde = desde*1.03
+
+            if param_uni.otros == "SI":
+                desde = desde*1.1   
 
             #Aqui calculamos el contado/financiado
             
-            contado = desde*m2
-
-            
+            contado = desde*m2           
 
             values = [0]
 
@@ -335,46 +349,17 @@ def pricing(request, id_proyecto):
 
         except:
 
-            if dato.tipo == "COCHERA":
-                try:
-                    desde = dato.proyecto.desde*(1-0.24)
+            desde = "NO DEFINIDO"
+            contado = "NO DEFINIDO"
 
-                    #Aqui calculamos el contado/financiado
-
-                    contado = desde*m2
-
-                    values = [0]
-
-                    for m in range((meses)):
-                        values.append(1)
-
-                    valor_auxiliar = np.npv(rate=(0.82/100), values=values)
-
-                    incremento = (meses/(1-anticipo)/(((anticipo/(1-anticipo))*meses)+valor_auxiliar))
-
-                    financiado = contado*incremento
-
-                    financiado_m2 = financiado/m2
-
-                    fin_ant = financiado*anticipo
-
-                    valor_cuotas = (financiado - fin_ant)/meses
-
-                    #Aqui actualizamos los datos del almacenero
-
-                    if dato.estado == "DISPONIBLE" and dato.asig == "PROYECTO" :
-                        ingreso_ventas = ingreso_ventas + contado
-
-                except:
-                    desde = "NO DEFINIDO"
-                    contado = "NO DEFINIDO"
-
-            else:
-                desde = "NO DEFINIDO"
-                contado = "NO DEFINIDO"
-
+        #Aqui sumamos los datos
+        
         datos_tabla_unidad.append((dato, m2, desde, dato.id, contado, financiado, financiado_m2, fin_ant, valor_cuotas))
+        
+        #Aqui vamos armando los m2 totales y los m2 de cocheras
+
         m2_totales = m2_totales + m2
+        
         if dato.tipo == "COCHERA":
             cocheras += 1
                             

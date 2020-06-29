@@ -14,6 +14,8 @@ class Pricing(models.Model):
     cocina_separada = models.CharField(choices=SioNo.choices, max_length=20, verbose_name="Cocina Separada")
     local = models.CharField(choices=SioNo.choices, max_length=20, verbose_name="Local Comercial")
     menor_50_m2 = models.CharField(choices=SioNo.choices, max_length=20, verbose_name="Menor a 50 m2")
+    menor_45_m2 = models.CharField(choices=SioNo.choices, max_length=20, verbose_name="Menor a 45 m2", blank=True, null=True)
+    otros = models.CharField(choices=SioNo.choices, max_length=20, verbose_name="Otros", blank=True, null=True)
 
     class Meta:
         verbose_name="Pricing por unidad"
