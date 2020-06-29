@@ -292,7 +292,12 @@ def pricing(request, id_proyecto):
             desde = dato.proyecto.desde
 
             if dato.tipo == "COCHERA":
-                desde = dato.proyecto.desde*(1-0.24)
+
+                if dato.proyecto.nombre == "TORRE BLUE":
+                    desde = dato.proyecto.desde*(1-0.24)
+
+                if dato.proyecto.nombre == "ZOE":
+                    desde = dato.proyecto.desde*(1-0.23)  
 
             if param_uni.frente == "SI":
                 desde = desde*1.03
