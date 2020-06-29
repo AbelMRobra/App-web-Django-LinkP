@@ -80,13 +80,13 @@
     
                 {% for i in datos.datos_unidades %}
                 <tr class = "table-light">
-                    <td style="width: 2%;"> <b> <small>{{i.0.piso_unidad}}</small></b> </td>
+                    <td style="width: 2%;"> <b> <small> <b>{{i.0.piso_unidad}}</b> </small></b> </td>
                     <td style="width: 2%;"> <b> <small>{{i.0.nombre_unidad}}</small> </b> </td>
                     <td style="width: 5%;"> <b> <small>{{i.0.tipo}}</small> </b> </td>
                     <td style="width: 3%;"> <b> <small>{{i.0.tipologia}}</small> </b> </td>
                     <td style="width: 5%;"> <b> <small>{{i.1|floatformat:2}}m2</small></b> </td>
                     <td style="width: 5%;"> <b> <small> {{i.0.asig}} </small> </b> </td>
-                    <td style="width: 5%;"> <b> <small>{{i.0.estado}}</small> </b> </td>
+                    <td style="width: 5%;"> <b> <small> <b>{{i.0.estado}}</b> </small> </b> </td>
                     {% if i.2 >= 0 %}
                     <td style="width: 5%;"> <b> <small>${{i.4|floatformat:0|intcomma}}</small> </b> </td>
                     <td style="width: 5%;"> <b> <small>${{i.2|floatformat:0|intcomma}}</small> </b> </td>
