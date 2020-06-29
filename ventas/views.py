@@ -261,6 +261,14 @@ def pricing(request, id_proyecto):
 
     mensaje = 0
     otros_datos = 0
+    anticipo = 0.4
+    fecha_entrega =  datetime.datetime.strptime(str(proyecto.fecha_f), '%Y-%m-%d')
+
+    ahora = datetime.datetime.utcnow()
+
+    y = fecha_entrega.year - ahora.year
+    n = fecha_entrega.month - ahora.month
+    meses = y*12 + n
 
     mensaje = 2
     otros_datos = []
@@ -295,13 +303,7 @@ def pricing(request, id_proyecto):
             
             contado = desde*m2
 
-            fecha_entrega =  datetime.datetime.strptime(str(dato.proyecto.fecha_f), '%Y-%m-%d')
-
-            ahora = datetime.datetime.utcnow()
-
-            y = fecha_entrega.year - ahora.year
-            n = fecha_entrega.month - ahora.month
-            meses = y*12 + n
+            
 
             values = [0]
 
@@ -338,20 +340,10 @@ def pricing(request, id_proyecto):
 
                     contado = desde*m2
 
-                    fecha_entrega =  datetime.datetime.strptime(str(dato.proyecto.fecha_f), '%Y-%m-%d')
-
-                    ahora = datetime.datetime.utcnow()
-
-                    y = fecha_entrega.year - ahora.year
-                    n = fecha_entrega.month - ahora.month
-                    meses = y*12 + n
-
                     values = [0]
 
                     for m in range((meses)):
                         values.append(1)
-
-                    anticipo = 0.4
 
                     valor_auxiliar = np.npv(rate=(0.82/100), values=values)
 
@@ -447,13 +439,13 @@ def pricing(request, id_proyecto):
     
     #Aqui termina el filtro
 
-    
+    anticipo = anticipo*100
 
 
     datos_unidades.sort(key=lambda datos_unidades: datos_unidades[3], reverse=False)
 
 
-    datos = {"proyecto":proyecto, "datos":datos, "mensaje":mensaje, "datos_unidades":datos_unidades, "otros_datos":otros_datos}
+    datos = {"proyecto":proyecto, "datos":datos, "mensaje":mensaje, "datos_unidades":datos_unidades, "otros_datos":otros_datos, "anticipo":anticipo, "meses":meses}
 
     return render(request, 'pricing.html', {"datos":datos})
 
