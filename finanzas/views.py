@@ -7,7 +7,9 @@ from .models import Almacenero
 
 def almacenero(request):
 
-    proyectos = Proyectos.objects.order_by("nombre")
+    proyectos = Almacenero.objects.all()
+
+    proyectos = list(set(proyectos))
 
     usd_blue = Constantes.objects.get(nombre = "USD_BLUE")
 

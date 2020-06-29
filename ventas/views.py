@@ -271,6 +271,8 @@ def pricing(request, id_proyecto):
     n = fecha_entrega.month - ahora.month
     meses = y*12 + n
 
+    financiado = 0
+
     mensaje = 2
     otros_datos = []
     datos_tabla_unidad = []
