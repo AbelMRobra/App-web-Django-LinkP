@@ -253,9 +253,9 @@ def panelunidades(request):
 
     return render(request, 'panelunidades.html', {"datos":datos})
 
-def pricing(request):
+def pricing(request, id_proyecto):
 
-    proyecto = Proyectos.objects.get(id = 1)
+    proyecto = Proyectos.objects.get(id = id_proyecto)
 
     datos = Unidades.objects.filter(proyecto = proyecto)
 
