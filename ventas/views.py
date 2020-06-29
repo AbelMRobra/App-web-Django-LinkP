@@ -285,7 +285,13 @@ def pricing(request, id_proyecto):
     
     for dato in datos:
 
-        m2 = dato.sup_propia + dato.sup_balcon + dato.sup_comun + dato.sup_patio
+        if dato.sup_equiv > 0 and != None:
+
+            m2 = dato.sup_equiv
+
+        else:
+
+            m2 = dato.sup_propia + dato.sup_balcon + dato.sup_comun + dato.sup_patio
         
         try:
             param_uni = Pricing.objects.get(unidad = dato)
