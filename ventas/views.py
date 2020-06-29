@@ -4,6 +4,7 @@ from proyectos.models import Unidades, Proyectos
 from finanzas.models import Almacenero
 from ventas.models import Pricing, ArchivosAreaVentas
 from datetime import date
+from django.shortcuts import redirect
 import datetime
 import operator
 import numpy as np
@@ -448,5 +449,43 @@ def pricing(request, id_proyecto):
     datos = {"proyecto":proyecto, "datos":datos, "mensaje":mensaje, "datos_unidades":datos_unidades, "otros_datos":otros_datos, "anticipo":anticipo, "meses":meses}
 
     return render(request, 'pricing.html', {"datos":datos})
+
+def panelpricing(request):
+
+    proyectos = Unidades.objects.all()
+
+
+    datos  = []
+
+    for proyecto in proyectos:
+        datos.append(proyecto.proyecto.nombre)
+
+    datos = list(set(datos))
+
+    if request.method == 'POST':
+
+        palabra_buscar = request.POST.items()
+
+        contador = 1
+
+        for dato in palabra_buscar:
+
+            print(dato)
+
+            if contador == 1:
+                contador += 1
+            
+            
+            if dato[0] == "proyecto":
+
+
+                proyecto = Proyectos.objects.get(nombre = dato[1])
+
+                id_proyecto = proyecto.id
+                
+                return redirect( 'Pricing', id_proyecto = id_proyecto )
+
+
+    return render(request, 'panelpricing.html', {"datos":datos})
 
 
