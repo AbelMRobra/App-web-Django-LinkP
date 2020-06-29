@@ -412,13 +412,11 @@ def pricing(request, id_proyecto):
         
             for i in datos_viejos:
 
-                print(i)
-
                 palabra =(str(palabra_buscar))
 
                 lista_palabra = palabra.split()
 
-                buscar = (str(i[0].tipo)+str(i[0].asig)+str(i[0].piso_unidad)+str(i[0].nombre_unidad)+str(i[0].estado))
+                buscar = (str(i[0].tipo)+str(i[0].asig)+str(i[0].piso_unidad)+str(i[0].nombre_unidad)+str(i[0].estado+str(i[0].tipologia)))
 
                 contador = 0
 
