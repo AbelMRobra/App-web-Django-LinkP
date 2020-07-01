@@ -292,6 +292,19 @@ def pricing(request, id_proyecto):
         else:
 
             m2 = dato.sup_propia + dato.sup_balcon + dato.sup_comun + dato.sup_patio
+
+        try:
+            venta = VentasRealizadas.objects.get(unidad = dato.id)
+
+            venta.m2 = m2
+
+            venta.asignacion = dato.asig
+
+            venta.save()
+        
+        except:
+
+            print("Esta unidad no esta vendida")
         
         try:
             param_uni = Pricing.objects.get(unidad = dato)
@@ -486,8 +499,6 @@ def panelpricing(request):
 
         for dato in palabra_buscar:
 
-            print(dato)
-
             if contador == 1:
                 contador += 1
             
@@ -503,5 +514,12 @@ def panelpricing(request):
 
 
     return render(request, 'panelpricing.html', {"datos":datos})
+
+def cargarventa(request):
+
+    datos = VentasRealizadas.objects.order_by("-fecha")
+
+
+    return render(request, 'cargarventas.html', {'datos':datos})
 
 

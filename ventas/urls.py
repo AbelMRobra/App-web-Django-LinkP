@@ -11,5 +11,6 @@ urlpatterns = [
     url(r'^panelpricing$', views.panelpricing, name = 'Panel de pricing'),
     url(r'^radiografia$', views.radiografia, name = 'Radiografia del cliente'),
     url(r'^resumenprecio$', views.resumenprecio, name = 'Resumen de precio'),
+    url(r'^cargarventa$', views.cargarventa, name = 'Cargar Venta'),
 
 ]
