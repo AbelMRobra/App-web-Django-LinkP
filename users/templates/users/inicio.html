@@ -103,20 +103,34 @@
 
         {% if request.user.username != "HC" %}
 
-        {% if perms.ventas.view_ventasrealizadas %}
+        {% if perms.ventas.view_pricingresumen %}
 
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Ventas
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+
+            {% if perms.ventas.view_pricing %}
+
             <div class="dropdown-divider"></div>
+
+            
             <div style="margin-left: 5%;"><h6><small> <strong>  Información de unidades</strong> </small></h6> </div>
              
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="/ventas/panelpricing">Pricing de unidades</a>
 
+            {% if perms.ventas.view_ventasrealizadas%}
+
+            <a class="dropdown-item" href="/ventas/panelpricing">Modificar precio base</a>
+            <a class="dropdown-item" href="/ventas/panelpricing">Cargar venta</a>
+
+            {% endif %}
+
             <div class="dropdown-divider"></div>
+
+            {% endif %}
 
             <div style="margin-left: 5%;"><h6><small> <strong>  Información recurrente</strong> </small></h6> </div>
              

@@ -2,7 +2,7 @@ from django.shortcuts import render
 from .models import EstudioMercado, PricingResumen
 from proyectos.models import Unidades, Proyectos
 from finanzas.models import Almacenero
-from ventas.models import Pricing, ArchivosAreaVentas
+from ventas.models import Pricing, ArchivosAreaVentas, VentasRealizadas
 from datetime import date
 from django.shortcuts import redirect
 import datetime
@@ -363,9 +363,29 @@ def pricing(request, id_proyecto):
             desde = "NO DEFINIDO"
             contado = "NO DEFINIDO"
 
+        venta = 0
+
+
+        try:
+  
+            venta= VentasRealizadas.objects.filter(unidad = dato.id)
+
+            contador = 0
+
+            for v in venta:
+                contador += 1
+
+            if contador == 0:
+                venta = 0
+    
+
+        except:
+            venta = 0
+
+
         #Aqui sumamos los datos
         
-        datos_tabla_unidad.append((dato, m2, desde, dato.id, contado, financiado, financiado_m2, fin_ant, valor_cuotas))
+        datos_tabla_unidad.append((dato, m2, desde, dato.id, contado, financiado, financiado_m2, fin_ant, valor_cuotas, venta))
         
         #Aqui vamos armando los m2 totales y los m2 de cocheras
 

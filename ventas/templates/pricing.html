@@ -86,7 +86,18 @@
                     <td style="width: 3%;"> <b> <small>{{i.0.tipologia}}</small> </b> </td>
                     <td style="width: 5%;"> <b> <small>{{i.1|floatformat:2}}m2</small></b> </td>
                     <td style="width: 5%;"> <b> <small> {{i.0.asig}} </small> </b> </td>
+                    
+                    {% if i.9 != 0 and perms.ventas.view_ventasrealizadas %}
+
+                    <td style="width: 5%; color: #3F89B3;"> <b> <small> <span class="hint--top hint--info" aria-label= " {% for d in i.9 %} {{d.tipo_venta}} el {{d.fecha}} a {{d.comprador}} -- {% endfor %}"> <b>{{i.0.estado}}</b> </small> </b> </span> </td>
+
+                    {% else %}
+
                     <td style="width: 5%;"> <b> <small> <b>{{i.0.estado}}</b> </small> </b> </td>
+
+                    {% endif %}
+
+
                     {% if i.2 >= 0 %}
                     <td style="width: 5%;"> <b> <small>${{i.4|floatformat:0|intcomma}}</small> </b> </td>
                     <td style="width: 5%;"> <b> <small>${{i.2|floatformat:0|intcomma}}</small> </b> </td>
