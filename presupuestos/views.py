@@ -1445,9 +1445,12 @@ def desde(request):
         
         costo = costo*(1 + i.parametros.imprevitso)
 
+        porc_terreno = i.parametros.terreno/i.parametros.proyecto.m2*100
+        porc_link = i.parametros.link/i.parametros.proyecto.m2*100
+
         aumento_tem = i.parametros.tem_iibb*i.parametros.por_temiibb*(1+i.parametros.ganancia)
 
-        aumento_comer = i.parametros.comer*(1+i.parametros.ganancia)
+        aumento_comer = i.parametros.comer*(1+(porc_terreno + porc_link)/100)*(1+i.parametros.ganancia)
         
 
         costo = costo/(1-aumento_tem- aumento_comer)
