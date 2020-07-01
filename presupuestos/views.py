@@ -1392,8 +1392,8 @@ def parametros(request):
             costo_imp = costo_soft_m2*(1+(imp/100))
             costo_terreno = (costo_imp*proyecto.m2)/(proyecto.m2-parametros.terreno)
             costo_hon = (costo_imp*proyecto.m2)/(proyecto.m2-parametros.terreno-parametros.link)
-            costo_comer = costo_hon/(1 - (parametros.comer*(1+parametros.ganancia)))
-            costo_tem = costo_hon/(1 - (parametros.comer*(1+parametros.ganancia)) - (parametros.tem_iibb*parametros.por_temiibb*(1+parametros.ganancia)))
+            costo_comer = costo_hon/(1 - (parametros.comer*(1+(porc_terreno + porc_link)/100)*(1+parametros.ganancia)))
+            costo_tem = costo_hon/(1 - (parametros.comer*(1+(porc_terreno + porc_link)/100)*(1+parametros.ganancia)) - (parametros.tem_iibb*parametros.por_temiibb*(1+parametros.ganancia)))
             
             #Aqui se incorpora la tasa de descuento
 
