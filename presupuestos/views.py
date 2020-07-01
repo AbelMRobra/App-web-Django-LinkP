@@ -1386,15 +1386,14 @@ def parametros(request):
             porc_terreno = parametros.terreno/proyecto.m2*100
             porc_link = parametros.link/proyecto.m2*100
             tasa_des = parametros.tasa_des*100
-
             presupuesto = Presupuestos.objects.get(proyecto = proyecto)
             costo_m2 = (presupuesto.valor/(1+(tasa_pl/100)))/proyecto.m2
             costo_soft_m2 = costo_m2*(1+(soft/100))
             costo_imp = costo_soft_m2*(1+(imp/100))
             costo_terreno = (costo_imp*proyecto.m2)/(proyecto.m2-parametros.terreno)
             costo_hon = (costo_imp*proyecto.m2)/(proyecto.m2-parametros.terreno-parametros.link)
-            costo_comer = costo_hon/(1 - (parametros.comer*(1+parametros.comer)))
-            costo_tem = costo_hon/(1 - (parametros.comer*(1+parametros.comer)) - (parametros.tem_iibb*parametros.por_temiibb*(1+parametros.ganancia)))
+            costo_comer = costo_hon/(1 - (parametros.comer*(1+parametros.ganancia)))
+            costo_tem = costo_hon/(1 - (parametros.comer*(1+parametros.ganancia)) - (parametros.tem_iibb*parametros.por_temiibb*(1+parametros.ganancia)))
             
             #Aqui se incorpora la tasa de descuento
 
@@ -1448,7 +1447,7 @@ def desde(request):
 
         aumento_tem = i.parametros.tem_iibb*i.parametros.por_temiibb*(1+i.parametros.ganancia)
 
-        aumento_comer = i.parametros.comer*(1+i.parametros.comer)
+        aumento_comer = i.parametros.comer*(1+i.parametros.ganancia)
         
 
         costo = costo/(1-aumento_tem- aumento_comer)
