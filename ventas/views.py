@@ -335,8 +335,11 @@ def pricing(request, id_proyecto):
 
             if param_uni.menor_50_m2 == "SI" and dato.proyecto.nombre == "ZOE":
                 desde = desde*1.05
+
+            elif param_uni.menor_50_m2 == "SI" and dato.proyecto.nombre == "TORRE RED":
+                desde = desde*1.00
             
-            if param_uni.menor_50_m2 == "SI" and dato.proyecto.nombre != "ZOE":
+            else:
                 desde = desde*1.03
 
             if param_uni.otros == "SI":
