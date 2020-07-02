@@ -89,11 +89,27 @@
                     
                     {% if i.9 != 0 and perms.ventas.view_ventasrealizadas %}
 
+                    {% if i.0.estado == "DISPONIBLE" %}
+
                     <td style="width: 5%; color: #3F89B3;"> <b> <small> <span class="hint--top hint--info" aria-label= " {% for d in i.9 %} {{d.tipo_venta}} el {{d.fecha}} a {{d.comprador}} -- {% endfor %}"> <b>{{i.0.estado}}</b> </small> </b> </span> </td>
+                    
+                    {% else %}
+
+                    <td style="width: 5%; color: #3F89B3;"> <b> <small> <span class="hint--top hint--info" aria-label= " {% for d in i.9 %} {{d.tipo_venta}} el {{d.fecha}} a {{d.comprador}} -- {% endfor %}"> <b>NO DISPONIBLE</b> </small> </b> </span> </td>
+                    
+                    {% endif %}
 
                     {% else %}
 
+                    {% if i.0.estado == "DISPONIBLE" %}
+
                     <td style="width: 5%;"> <b> <small> <b>{{i.0.estado}}</b> </small> </b> </td>
+                    
+                    {% else %}
+
+                    <td style="width: 5%;"> <b> <small> <b>NO DISPONIBLE</b> </small> </b> </td>
+
+                    {% endif %}
 
                     {% endif %}
 
