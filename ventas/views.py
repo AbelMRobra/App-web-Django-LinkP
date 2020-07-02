@@ -452,7 +452,11 @@ def pricing(request, id_proyecto):
 
                 lista_palabra = palabra.split()
 
-                buscar = (str(i[0].tipo)+str(i[0].asig)+str(i[0].piso_unidad)+str(i[0].nombre_unidad)+str(i[0].estado+str(i[0].tipologia)))
+                if i[0].estado == "VENDIDA":
+
+                    buscar = (str(i[0].tipo)+str(i[0].asig)+str(i[0].piso_unidad)+str(i[0].nombre_unidad)+"AGOTADO"+str(i[0].tipologia))
+                else:
+                    buscar = (str(i[0].tipo)+str(i[0].asig)+str(i[0].piso_unidad)+str(i[0].nombre_unidad)+str(i[0].estado)+str(i[0].tipologia))
 
                 contador = 0
 
