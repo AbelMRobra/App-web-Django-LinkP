@@ -1,0 +1,70 @@
+{% extends "users/inicio.html" %}
+
+{% load static %}
+
+{% block content %}
+
+<div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;">
+
+    <h3 >Editar asignación</h3>
+
+    <b><hr class = "my-4" style="width: 100%; border-color: black ;"></b>
+
+
+     <form method="POST">
+
+        {% csrf_token %}
+
+        <h3 > Unidad: {{datos.piso_unidad}}-{{datos.nombre_unidad}}-{{datos.proyecto}}</h3>
+        <div>
+            <small> Al cambiar la asignación se modificara el CBA y el pricing </small>
+        </div>
+
+        <div style="margin-top: 2rem; margin-bottom: 2rem; background-color: rgba(63, 95, 179, 0.3); width: 50%; margin-left: 25%;">
+            
+
+            <div style="display: inline-block; margin-bottom: 1rem; margin-top: 1rem;" > 
+
+                <label for="asignacion"> <h5>Asignación:</h5></label>
+          
+                <select name="asignacion" class="custom-select">
+    
+                    <option value=1>Proyecto</option>
+
+                    <option value=2>Terreno</option>
+                    
+                    <option value=3>Honor. Link</option>
+                    
+                    <option value=4>Socios</option>
+                
+                </select>
+
+                <button class="btn btn-success" style="margin-top: 2%;" type="submit">Aceptar </button>
+    
+            </div>
+
+            
+
+    
+
+
+            
+
+        </div>
+
+
+
+     </form> 
+     
+     <a class="btn btn-info" href="{% url 'Panel de unidades' %}">Volver al panel</a>
+     
+     <div style="text-align: center; margin-top: 2rem;">
+        <p> <small>-- Link<strong>P</strong> --</small> </p>
+
+     </div>
+
+
+</div>
+
+      
+     {% endblock %}

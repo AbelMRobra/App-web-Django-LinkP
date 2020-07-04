@@ -50,6 +50,7 @@ class Unidades(models.Model):
             PROYECTO = "PROYECTO"
             TERRENO = "TERRENO"
             HON_LINK = "HON. LINK"
+            SOCIOS = "SOCIOS"
 
 
     proyecto = models.ForeignKey(Proyectos, on_delete=models.CASCADE, verbose_name = "Proyecto")

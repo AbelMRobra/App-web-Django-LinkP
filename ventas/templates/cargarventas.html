@@ -13,23 +13,38 @@
 
     <b><hr class = "my-4" style="width: 100%; border-color: black ;"></b>
 
+    <div style="text-align: center;">
     
-    <h3>Operaciones realizadas</h3>
+    <h6>Cargar una venta</h6>
+
+
+    <button type="button" class="btn btn-primary">Registrar una venta</button>
+    
+    </div>
+
+
+    <b><hr class = "my-4" style="width: 100%; border-color: black ;"></b>
+
+
+    
+    <h6>Operaciones realizadas</h6>
 
     <table class = "table table-hover" style="text-align: center; margin-top: 2%;">
         <thead>
 
             <tr class = "table-dark">
-                <th scope = "row"> FECHA</th>
-                <th scope = "row"> PROYECTO </th>
-                <th scope = "row"> COMPRADOR </th>
-                <th scope = "row"> PISO </th>
-                <th scope = "row"> NOM </th>
-                <th scope = "row"> TIPO </th>
-                <th scope = "row"> SUPERFICIE </th>
-                <th scope = "row">  ASIGNACION </th>
-                <th scope = "row">  PRECIO DE VENTA </th>
-                <th scope = "row"> ANOTACIONES </th>
+                <th scope = "row"> <small>FECHA</small></th>
+                <th scope = "row"> <small>PROYECTO</small></th>
+                <th scope = "row"> <small>COMPRADOR</small></th>
+                <th scope = "row"> <small>PISO</small></th>
+                <th scope = "row"> <small> NOM </small></th>
+                <th scope = "row"> <small> TIPO </small></th>
+                <th scope = "row"> <small> SUPERFICIE </small></th>
+                <th scope = "row"> <small>  ASIGNACION </small></th>
+                <th scope = "row"> <small>PRECIO DE VENTA</small>   </th>
+                <th scope = "row"> <small> ANOTACIONES </small></th>
+                <th scope = "row"> <small> EDITAR </small></th>
+                <th scope = "row"> <small> ELIMINAR </small></th>
                  
 
             </tr>
@@ -37,18 +52,23 @@
 
         <tbody>   
 
-            {% for i in datos %}
+            {% for i in datos|slice:"40" %}
             <tr class = "table-light">
-                <td> <b>{{i.fecha}}</b></td>
-                <td> <b>{{i.unidad.proyecto.nombre}}</b></td>       
-                <td> <b>{{i.comprador}}</b> </td>
-                <td> <b>{{i.unidad.piso_unidad}}</b> </td>
-                <td> <b>{{i.unidad.nombre_unidad}}</b> </td>
-                <td> <b>{{i.unidad.tipologia}}</b> </td>
-                <td> <b>{{i.m2|floatformat:2}}m2</b> </td>
-                <td> <b>{{i.asignacion}}</b> </td>
-                <td> <b>${{i.precio_venta|floatformat:0|intcomma}}</b> </td>
-                <td> <b> VER DETALLES </b> </td>
+                <td> <b> <small>{{i.fecha}}</small> </b></td>
+                <td> <b> <small>{{i.unidad.proyecto.nombre}}</small> </b></td>       
+                <td> <b> <small>{{i.comprador}}</small> </b> </td>
+                <td> <b> <small>{{i.unidad.piso_unidad}}</small> </b> </td>
+                <td> <b> <small>{{i.unidad.nombre_unidad}}</small> </b> </td>
+                <td> <b> <small>{{i.unidad.tipologia}}</small> </b> </td>
+                <td> <b> <small>{{i.m2|floatformat:2}}m2</small> </b> </td>
+                <td> <b> <small>{{i.asignacion}}</small></b> </td>
+                <td> <b>  <small>${{i.precio_venta|floatformat:0|intcomma}}</small></b> </td>
+                <td> <b><button class="btn btn-sm btn-info disabled" type="submit"  name = "APROBADA" value="{{i.id}}">Ver detalles</button>
+                </b> </td>
+                <td> <b> <button class="btn btn-sm btn-success disabled" type="submit"  name = "APROBADA" value="{{i.id}}">Editar</button>
+                </b> </td>
+                <td> <b> <button class="btn btn-sm btn-danger disabled" type="submit"  name = "APROBADA" value="{{i.id}}">Eliminar</button>
+                </b> </td>
 
 
             </tr>
@@ -58,6 +78,13 @@
 
 
     </table>
+
+    <b><hr class = "my-4" style="width: 100%;"></b>
+
+
+    <div style="text-align: center;">
+        <small>El listado puede continuar, se limita el numero de filas visibles</small>
+    </div>
 
 
 

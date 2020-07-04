@@ -67,6 +67,12 @@
     
                   </div>
 
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" name="Asignacion4" value="SOCIOS" class="custom-control-input" id="customCheckSocios" checked="">
+                    <label class="custom-control-label" for="customCheckTerreno">SOCIOS</label>
+    
+                  </div>
+
 
             </div>
 
@@ -110,6 +116,7 @@
     <h6>Departamentos: <small>{{datos.otros_datos.0.2}}</small> </h6>
     <h6>Cocheras: <small>{{datos.otros_datos.0.3}} </small></h6>
     <h6>Superficie total de las unidades: <small>{{datos.otros_datos.0.0|floatformat:2}}m2</small> </h6>
+    <h6>Monto total de las unidades: <small>$ {{datos.otros_datos.0.4|floatformat:0|intcomma}}</small> </h6>
 
 
     </div>
@@ -124,14 +131,15 @@
         <thead>
 
             <tr class = "table-dark">
-                <th scope = "row"> <font style = "vertical-align: heredar;"> PROYECTO </font></th>
-                <th scope = "row"> <font style = "vertical-align: heredar;"> PISO</font></th>
-                <th scope = "row"> <font style = "vertical-align: heredar;"> NOM </font></th>
-                <th scope = "row"> <font style = "vertical-align: heredar;"> TIPO </font></th>
-                <th scope = "row"> <font style = "vertical-align: heredar;"> SUPERFICIE </font></th>
-                <th scope = "row"> <font style = "vertical-align: heredar;"> ESTADO </font></th>
-                <th scope = "row"> <font style = "vertical-align: heredar;"> P. CONTADO </font></th>
-                <th scope = "row"> <font style = "vertical-align: heredar;"> ASIGNACIÓN </font></th>
+                <th scope = "row"> PROYECTO </th>
+                <th scope = "row"> PISO </th>
+                <th scope = "row"> NOM </th>
+                <th scope = "row"> TIPO </th>
+                <th scope = "row"> SUPERFICIE </th>
+                <th scope = "row"> ESTADO </th>
+                <th scope = "row"> P. CONTADO </th>
+                <th scope = "row">ASIGNACIÓN </th>
+                <th scope = "row">EDITAR </th>
                  
 
             </tr>
@@ -142,11 +150,19 @@
             {% for i in datos.datos_unidades %}
             <tr class = "table-light">
                 <td> <b>{{i.0.proyecto}}</b></td>
-                <td> <b>{{i.0.piso_unidad}}</b> </td>
-                <td> <b>{{i.0.nombre_unidad}}</b> </td>
-                <td> <b>{{i.0.tipo}}</b> </td>
-                <td> <b>{{i.1|floatformat:2}}m2</b> </td>
-                <td> <b>{{i.0.estado}}</b> </td>
+                <td> {{i.0.piso_unidad}} </td>
+                <td> {{i.0.nombre_unidad}} </td>
+                <td> {{i.0.tipo}} </td>
+                <td> {{i.1|floatformat:2}}m2 </td>
+
+                {% if i.0.estado == "VENDIDA" %}
+                <td> AGOTADO </td>
+
+                {% else %}
+
+                <td> {{i.0.estado}} </td>
+
+                {% endif %}
                 {% if i.2 >= 0 %}
                 <td> <b>${{i.2|floatformat:0|intcomma}}</b> </td>
 
@@ -156,6 +172,8 @@
 
                 {% endif %}
                 <td> <b>{{i.0.asig}}</b> </td>
+
+                <td> <a class="btn btn-sm btn-success" href="{% url 'Editar asignacion' i.0.id %}">Editar</a> </td>
 
             </tr>
             {% endfor %}

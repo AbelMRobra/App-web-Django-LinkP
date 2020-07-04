@@ -188,18 +188,35 @@ def panelunidades(request):
             otros_datos = []
             datos_tabla_unidad = []
             m2_totales = 0
+            monto_total = 0
             cocheras = 0
 
             for proy in list_proyectos:
                 for asig in aisgnacion:
                     for disp in disponibilidad:
+                        
                         datos_unidades = Unidades.objects.filter(proyecto__nombre = proy, asig = asig, estado=disp)
+                        
                         for dato in datos_unidades:
-                            m2 = dato.sup_propia + dato.sup_balcon + dato.sup_comun + dato.sup_patio
+                            if dato.sup_equiv > 0:
+
+                                m2 = dato.sup_equiv
+
+                            else:
+
+                                m2 = dato.sup_propia + dato.sup_balcon + dato.sup_comun + dato.sup_patio
                             
                             try:
                                 param_uni = Pricing.objects.get(unidad = dato)
                                 desde = dato.proyecto.desde
+
+                                if dato.tipo == "COCHERA":
+
+                                    if dato.proyecto.nombre != "ZOE":
+                                        desde = dato.proyecto.desde*(1-0.24)
+
+                                    if dato.proyecto.nombre == "ZOE":
+                                        desde = dato.proyecto.desde*(1-0.23)  
 
                                 if param_uni.frente == "SI":
                                     desde = desde*1.03
@@ -213,27 +230,37 @@ def panelunidades(request):
                                 if param_uni.local == "SI":
                                     desde = desde*1.75
 
-                                if param_uni.menor_50_m2 == "SI":
+                                if param_uni.menor_45_m2 == "SI":
+                                    desde = desde*1.05
+
+                                if param_uni.menor_50_m2 == "SI" and dato.proyecto.nombre == "ZOE":
+                                    desde = desde*1.05
+
+                                if param_uni.menor_50_m2 == "SI" and dato.proyecto.nombre == "TORRE RED":
+                                    desde = desde*1.00
+                                
+                                if param_uni.menor_50_m2 == "SI" and dato.proyecto.nombre == "TORRE BLUE":
                                     desde = desde*1.03
 
-                                desde = desde*m2
+                                if param_uni.otros == "SI":
+                                    desde = desde*1.1 
+
+                                desde = desde*m2 
+                                monto_total = monto_total + desde 
+
+                                m2 = dato.sup_propia + dato.sup_balcon + dato.sup_comun + dato.sup_patio
+
 
                             except:
+                                
+                                desde = "NO DEFINIDO"
 
-                                if dato.tipo == "COCHERA":
-                                    try:
-                                        desde = dato.proyecto.desde*(1-0.24)
 
-                                        desde = desde*m2
-
-                                    except:
-                                        desde = "NO DEFINIDO"
-
-                                else:
-                                    desde = "NO DEFINIDO"
 
                             datos_tabla_unidad.append((dato, m2, desde, dato.id))
+                            
                             m2_totales = m2_totales + m2
+                            
                             if dato.tipo == "COCHERA":
                                 cocheras += 1
                             
@@ -243,7 +270,7 @@ def panelunidades(request):
 
             departamentos = cantidad - cocheras
 
-            otros_datos.append((m2_totales, cantidad, departamentos, cocheras))
+            otros_datos.append((m2_totales, cantidad, departamentos, cocheras, monto_total))
 
             datos_unidades = datos_tabla_unidad
 
@@ -253,6 +280,46 @@ def panelunidades(request):
     datos = {"proyectos":proyectos, "datos":datos, "mensaje":mensaje, "datos_unidades":datos_unidades, "otros_datos":otros_datos}
 
     return render(request, 'panelunidades.html', {"datos":datos})
+
+def editarasignacion(request, id_unidad):
+
+    id_unidad = id_unidad
+
+    datos = Unidades.objects.get(id = id_unidad)
+
+    if request.method == 'POST':
+
+        valor_elegido = request.POST.items()
+
+        for valor in valor_elegido:
+            
+            if valor[0] == "asignacion":
+
+                if valor[1] == "1":
+                    datos.asig = "PROYECTO"
+
+                    datos.save()
+
+                if valor[1] == "2":
+                    datos.asig = "TERRENO"
+
+                    datos.save()
+
+                if valor[1] == "3":
+                    datos.asig = "HON. LINK"
+
+                    datos.save()
+
+                if valor[1] == "4":
+
+                    datos.asig = "SOCIOS"
+
+                    datos.save()
+
+
+                return redirect ('Panel de unidades')
+
+    return render(request, 'editarasig.html', {"datos":datos} )
 
 def pricing(request, id_proyecto):
 
@@ -371,7 +438,7 @@ def pricing(request, id_proyecto):
 
             #Aqui actualizamos los datos del almacenero
 
-            if dato.estado == "DISPONIBLE" and dato.asig == "PROYECTO" :
+            if dato.estado == "DISPONIBLE" and dato.asig == "PROYECTO" or dato.estado == "DISPONIBLE" and dato.asig == "SOCIOS"  :
                 ingreso_ventas = ingreso_ventas + contado
 
         except:
@@ -400,6 +467,8 @@ def pricing(request, id_proyecto):
 
 
         #Aqui sumamos los datos
+
+        m2 = dato.sup_propia + dato.sup_balcon + dato.sup_comun + dato.sup_patio
         
         datos_tabla_unidad.append((dato, m2, desde, dato.id, contado, financiado, financiado_m2, fin_ant, valor_cuotas, venta))
         
