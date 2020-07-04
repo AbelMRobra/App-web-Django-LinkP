@@ -438,7 +438,8 @@ def pricing(request, id_proyecto):
 
             #Aqui actualizamos los datos del almacenero
 
-            if dato.estado == "DISPONIBLE" and dato.asig == "PROYECTO" or dato.estado == "DISPONIBLE" and dato.asig == "SOCIOS"  :
+            if (dato.estado == "DISPONIBLE" and dato.asig == "PROYECTO") or (dato.asig == "SOCIOS"):
+                
                 ingreso_ventas = ingreso_ventas + contado
 
         except:
