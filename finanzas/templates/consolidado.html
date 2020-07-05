@@ -1,0 +1,74 @@
+{% extends "users/inicio.html" %}
+
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+
+
+
+<div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;" > 
+
+    <div >
+        <h2>Panel de control - Consolidado de los CBA</h2>
+
+        <small>Panel integral</small>
+
+
+        <b><hr class = "my-4" style="width: 100%; border-color: black ;"></b>
+    
+    </div>
+
+
+    <div>
+
+        <div style="margin-bottom: 2rem;">
+            <h5>Detalle por proyecto</h5>
+        </div>
+        <table class = "table table-hover" style="text-align: center;">
+            <thead>
+    
+                <tr class = "table-dark">
+                    <th scope = "row" colspan="2">  PROYECTO </th>
+                    <th scope = "row"> INGRESOS</th>
+                    <th scope = "row"> COSTOS</th>
+                    <th scope = "row"> BENEFICIOS</th>
+                    <th scope = "row"> RENDIMIENTO</th>
+                    <th scope = "row"> PRICING</th>
+                    <th scope = "row"> PRESUPUESTO</th>
+
+                   
+                </tr>
+            </thead>
+            {% for i in datos_completos %}   
+            <tbody>
+    
+                <tr class = "table-light">
+                    <td style="width: 15%;"> <img src="{{i.0.proyecto.iamgen.url}}"  class="img-fluid" alt="..." style="max-width:10%;width:auto;height:auto; margin-bottom: 2rem;"> </td>
+                    <td style="width: 10%; color: rgb({{i.0.proyecto.color}});"> {{ i.0.proyecto.nombre}}</td> 
+                    <td style="width: 5%;"> ${{ i.2|floatformat:0|intcomma }}</td> 
+                    <td style="width: 10%;">${{ i.1|floatformat:0|intcomma }}</td> 
+                    <td style="width: 10%;">${{ i.3|floatformat:0|intcomma }}</td> 
+                    <td style="width: 10%;">{{ i.4|floatformat:0|intcomma }}%  </td> 
+                    <td style="width: 10%;">{{ i.6 }}</td> 
+                    <td style="width: 10%;">{{ i.5 }}</td> 
+
+                </tr>
+            </tbody>
+
+            {% endfor %}
+        </table> 
+
+
+        <b><hr class = "my-4" style="width: 100%; border-color: black ;"></b>   
+    </div>
+
+
+    <div>
+        <p> <small>-- Link<strong>P</strong> --</small> </p>
+
+     </div>
+
+
+</div>
+{% endblock %}

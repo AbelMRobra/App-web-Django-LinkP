@@ -1,8 +1,68 @@
 from django.shortcuts import render
-from presupuestos.models import Proyectos, Presupuestos, Constantes
+from presupuestos.models import Proyectos, Presupuestos, Constantes, Modelopresupuesto
 from .models import Almacenero
+from ventas.models import Pricing
 
 # Create your views here.
+
+def consolidado(request):
+
+    datos = Almacenero.objects.all()
+
+    datos_completos = []
+
+    for dato in datos:
+
+        presupuesto = "NO"
+
+        pricing = "NO"
+
+        almacenero = dato
+
+        presupuesto = Presupuestos.objects.get(proyecto = dato.proyecto)
+
+        #Aqui calculo el IVA sobre compras
+
+        iva_compras = (presupuesto.imprevisto+ presupuesto.saldo_mat + presupuesto.saldo_mo + presupuesto.credito + presupuesto.fdr + presupuesto.credito)*0.0789209928265611
+
+        almacenero.pendiente_iva_ventas = iva_compras
+
+        #Calculo el resto de las cosas
+        
+        pend_gast = almacenero.pendiente_admin + almacenero.pendiente_comision + presupuesto.saldo_mat + presupuesto.saldo_mo + presupuesto.imprevisto + presupuesto.credito + presupuesto.fdr + almacenero.pendiente_adelantos + almacenero.pendiente_iva_ventas + almacenero.pendiente_iibb_tem
+        prest_cobrar = almacenero.prestamos_proyecto + almacenero.prestamos_otros
+        total_costo = almacenero.cheques_emitidos + almacenero.gastos_fecha + pend_gast + almacenero.Prestamos_dados
+        total_ingresos = prest_cobrar + almacenero.cuotas_cobradas + almacenero.cuotas_a_cobrar + almacenero.ingreso_ventas
+        saldo_caja = almacenero.cuotas_cobradas - almacenero.gastos_fecha - almacenero.Prestamos_dados
+        saldo_proyecto = total_ingresos - total_costo
+        rentabilidad = (saldo_proyecto/total_ingresos)*100
+
+        try:
+
+            modelo = Modelopresupuesto.objects.filter(proyecto = dato.proyecto)
+
+            presupuesto = len(modelo)
+
+        except:
+
+            pass
+
+        try:
+
+            pricing = Pricing.objects.filter(unidad__proyecto = dato.proyecto)
+
+            pricing = len(pricing)
+
+        except:
+
+            pass
+
+
+
+
+        datos_completos.append((dato, total_costo, total_ingresos, saldo_proyecto, rentabilidad, presupuesto, pricing))
+
+    return render(request, 'consolidado.html', {"datos_completos":datos_completos})
 
 
 def almacenero(request):

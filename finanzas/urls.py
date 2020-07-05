@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 urlpatterns = [
     #----------------URL PARA FIANANZAS -----------------------------------------
     url(r'^almacenero/$', login_required(views.almacenero), name = 'Almacenero'),
+    url(r'^consolidado/$', login_required(views.consolidado), name = 'Consolidado'),
 
 
 ]
