@@ -44,8 +44,8 @@
             <tbody>
     
                 <tr class = "table-light">
-                    <td style="width: 15%;"> <img src="{{i.0.proyecto.iamgen.url}}"  class="img-fluid" alt="..." style="max-width:10%;width:auto;height:auto; margin-bottom: 2rem;"> </td>
-                    <td style="width: 10%; color: rgb({{i.0.proyecto.color}});"> {{ i.0.proyecto.nombre}}</td> 
+                    <td style="width: 15%;"> <img src="{{i.0.proyecto.iamgen.url}}"  class="img-fluid" alt="..." style="max-width:50%;width:auto;height:auto; margin-bottom: 2rem;"> </td>
+                    <td style="width: 10%; color: rgb({{i.0.proyecto.color}});"> <b>{{ i.0.proyecto.nombre}}</b> </td> 
                     <td style="width: 5%;"> ${{ i.2|floatformat:0|intcomma }}</td> 
                     <td style="width: 10%;">${{ i.1|floatformat:0|intcomma }}</td> 
                     <td style="width: 10%;">${{ i.3|floatformat:0|intcomma }}</td> 
