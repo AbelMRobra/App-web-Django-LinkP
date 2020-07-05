@@ -44,12 +44,12 @@
             <tbody>
     
                 <tr class = "table-light">
-                    <td style="width: 15%; vertical-align: middle;"> <img src="{{i.0.proyecto.iamgen.url}}"  class="img-fluid" alt="..." style="max-width:50%;width:auto;height:auto; margin-bottom: 2rem;"> </td>
+                    <td style="width: 15%; vertical-align: middle;"> <img src="{{i.0.proyecto.iamgen.url}}"  class="img-fluid" alt="..." style="max-width:50%;width:auto;height:auto;"> </td>
                     <td style="width: 10%; color: rgb({{i.0.proyecto.color}}); vertical-align: middle;"> <b>{{ i.0.proyecto.nombre}}</b> </td> 
                     <td style="width: 5%; vertical-align: middle;"> ${{ i.2|floatformat:0|intcomma }}</td> 
                     <td style="width: 10%; vertical-align: middle;">${{ i.1|floatformat:0|intcomma }}</td> 
                     <td style="width: 10%; vertical-align: middle; vertical-align: middle;">${{ i.3|floatformat:0|intcomma }}</td> 
-                    <td style="width: 10%;">{{ i.4|floatformat:0|intcomma }}%  </td> 
+                    <td style="width: 10%; vertical-align: middle;">{{ i.4|floatformat:0|intcomma }}%  </td> 
                     <td style="width: 10%; vertical-align: middle;">{{ i.6 }}</td> 
                     <td style="width: 10%; vertical-align: middle;">{{ i.5 }}</td> 
 
