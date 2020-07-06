@@ -167,6 +167,7 @@
     </div>
     
     <div style="display: inline-block; width: 15%; vertical-align: top; text-align: left;   margin-left: 15%; ">
+        <h6>Gastado a la fecha:</h6>
         <h6>Cheques emitidos:</h6>
                
         <h6>Pendiente de gastar: </h6>
@@ -185,7 +186,8 @@
     </div>
 
     <div style="display: inline-block; width: 15%; vertical-align: top; text-align: right;">
-
+        
+        <h6>$ {{datos.datos.2.gastos_fechas|floatformat:0|intcomma}} </h6>
         <h6>$ {{datos.datos.2.cheques_emitidos|floatformat:0|intcomma}} </h6>
                
         <h6>$ {{datos.datos.3.0|floatformat:0|intcomma}}   </h6>
