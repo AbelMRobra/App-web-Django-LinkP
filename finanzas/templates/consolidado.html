@@ -50,8 +50,31 @@
                     <td style="width: 10%; vertical-align: middle;">${{ i.1|floatformat:0|intcomma }}</td> 
                     <td style="width: 10%; vertical-align: middle; vertical-align: middle;">${{ i.3|floatformat:0|intcomma }}</td> 
                     <td style="width: 10%; vertical-align: middle;">{{ i.4|floatformat:0|intcomma }}%  </td> 
-                    <td style="width: 10%; vertical-align: middle;">{{ i.6 }}</td> 
-                    <td style="width: 10%; vertical-align: middle;">{{ i.5 }}</td> 
+                    
+                    {% if i.6 > 0 %}
+                    
+                    <td style="width: 10%; vertical-align: middle; color: #3FB360;"><b>CARGADO</b></td> 
+                    
+                    {% else %}
+
+                    <td style="width: 10%; vertical-align: middle; color: #B3513F ;"> <b>NO CARGADO</b></td> 
+
+                    {% endif %}
+
+                    {% if i.5 > 200 %}
+                    
+                    <td style="width: 10%; vertical-align: middle; color: #3FB360;"><b>CALCULADO</b></td> 
+
+                    
+                    {% if i.5 > 100 %}
+                    
+                    <td style="width: 10%; vertical-align: middle; color: #DBCD23 ;"><b>SEMI-CALCULADO</b></td> 
+                    
+                    {% else %}
+
+                    <td style="width: 10%; vertical-align: middle; color: #B3513F ;"> <b>EXTRAPOLADO</b></td> 
+
+                    {% endif %}
 
                 </tr>
             </tbody>
@@ -61,7 +84,7 @@
 
 
         <b><hr class = "my-4" style="width: 100%; border-color: black ;"></b>   
-        <p style="text-align: left;"><small> <b>Presupuesto:</b> Ese valor indica si el proyecto tiene calculos realizados, lo normal es mas de 200</small></p>
+        <p style="text-align: left;"><small> <b>Presupuesto:</b> Ese valor indica si el proyecto tiene calculos realizados </small></p>
         <p style="text-align: left;"><small> <b>Pricing:</b> Ese valor indica las unidades que tienen un pricing asociado</small></p>
     </div>
 
