@@ -443,7 +443,7 @@ def pricing(request, id_proyecto):
                 
                 ingreso_ventas = ingreso_ventas + contado
 
-                if dato.asi == "SOCIOS":
+                if dato.asig == "SOCIOS":
 
                     unidades_socios = unidades_socios + contado
 
@@ -491,7 +491,9 @@ def pricing(request, id_proyecto):
     #Aqui resto el 6% 
 
     almacenero.ingreso_ventas = ingreso_ventas - ingreso_ventas*0.06
+    almacenero.save()
     almacenero.unidades_socios = unidades_socios - unidades_socios*0.06
+    print(unidades_socios)
     almacenero.save()
 
     cantidad = len(datos_tabla_unidad)
