@@ -150,7 +150,9 @@
         <h6><small>Prestamos a otros:</small></h6>
         <h6>Cuotas cobradas:</h6>
         <h6>Cuotas a cobrar:</h6>
-        <h6>Ingreso por unid. en venta:</h6>
+        <h6>Ingreso por ventas:</h6>
+        <h6> <small>(Unidades de Socios):</small> </h6>
+
         
     </div>
 
@@ -163,6 +165,7 @@
         <h6>$ {{datos.datos.2.cuotas_cobradas|floatformat:0|intcomma}}  </h6>
         <h6>$ {{datos.datos.2.cuotas_a_cobrar|floatformat:0|intcomma}}  </h6>
         <h6>$ {{datos.datos.2.ingreso_ventas|floatformat:0|intcomma}}  </h6>
+        <h6> <small> $ {{datos.datos.2.unidades_socios|floatformat:0|intcomma}}  </small></h6>
         
     </div>
     
@@ -222,6 +225,10 @@
         <h5 style="color: rgb({{datos.datos.0.color}})">BENEFICIO: $ {{datos.datos.3.6|floatformat:0|intcomma}}</h3>
         <h4 style="margin-top: 1%; color: rgb({{datos.datos.0.color}})">RENDIMIENTO: {{datos.datos.3.4|floatformat:0|intcomma}}%</h2>
     </div>
+
+    <div>
+        <h6 style="text-align: left;"> <small> *Las unidades estan reducidas un 6% del pricing</small> </h6>
+    </div>  
 
     
     {% endif %}

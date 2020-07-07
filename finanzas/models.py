@@ -18,6 +18,7 @@ class Almacenero(models.Model):
     cuotas_a_cobrar = models.FloatField(null=True, blank=True, verbose_name="Cuotas a cobrar")
     ingreso_ventas = models.FloatField(null=True, blank=True, verbose_name="Ingreso por unidades a vender")
     Prestamos_dados = models.FloatField(null=True, blank=True, verbose_name="Prestamos otorgados")
+    unidades_socios = models.FloatField(null=True, blank=True, verbose_name="Unidades de Socios", editable=False)
 
 
     class Meta:

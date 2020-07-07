@@ -349,6 +349,7 @@ def pricing(request, id_proyecto):
     m2_totales = 0
     cocheras = 0
     ingreso_ventas = 0
+    unidades_socios = 0
     
     for dato in datos:
 
@@ -442,6 +443,10 @@ def pricing(request, id_proyecto):
                 
                 ingreso_ventas = ingreso_ventas + contado
 
+                if dato.asi == "SOCIOS":
+
+                    unidades_socios = unidades_socios + contado
+
         except:
 
             desde = "NO DEFINIDO"
@@ -483,7 +488,10 @@ def pricing(request, id_proyecto):
 
     almacenero = Almacenero.objects.get(proyecto = proyecto)
 
-    almacenero.ingreso_ventas = ingreso_ventas
+    #Aqui resto el 6% 
+
+    almacenero.ingreso_ventas = ingreso_ventas - ingreso_ventas*0.06
+    almacenero.unidades_socios = unidades_socios - unidades_socios*0.06
     almacenero.save()
 
     cantidad = len(datos_tabla_unidad)
