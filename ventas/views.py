@@ -606,6 +606,53 @@ def cargarventa(request):
 
     datos = VentasRealizadas.objects.order_by("-fecha")
 
+    if request.method == 'GET':
+
+        palabra_buscar = request.GET.items()
+
+        datos_viejos = datos
+
+        datos = []   
+
+        for i in palabra_buscar:
+
+            if i[0] == "palabra":
+        
+                palabra_buscar = i[1]
+
+        if str(palabra_buscar) == "":
+
+            datos = datos_viejos
+
+        else:
+        
+            for i in datos_viejos:
+
+                palabra =(str(palabra_buscar))
+
+                lista_palabra = palabra.split()
+
+                buscar = (str(i.unidad.proyecto.nombre)+str(i.comprador)+str(i.unidad.piso_unidad)+str(i.unidad.nombre_unidad)+str(i.unidad.tipologia)+str(i.asignacion))
+
+                contador = 0
+
+                for palabra in lista_palabra:
+
+                    contador2 = 0
+
+                    if palabra.lower() in buscar.lower():
+  
+                        contador += 1
+
+                if contador == len(lista_palabra):
+
+                    datos.append(i)
+
+        datos_unidades = datos
+    
+    #Aqui termina el filtro
+
+
 
     return render(request, 'cargarventas.html', {'datos':datos})
 
