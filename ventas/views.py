@@ -606,9 +606,9 @@ def cargarventa(request):
 
     datos = VentasRealizadas.objects.order_by("-fecha")
 
-    if request.method == 'GET':
+    if request.method == 'POST':
 
-        palabra_buscar = request.GET.items()
+        palabra_buscar = request.POST.items()
 
         datos_viejos = datos
 
