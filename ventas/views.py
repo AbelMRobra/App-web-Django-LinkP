@@ -439,7 +439,7 @@ def pricing(request, id_proyecto):
 
             #Aqui actualizamos los datos del almacenero
 
-            if (dato.estado == "DISPONIBLE" and dato.asig == "PROYECTO") or (dato.asig == "SOCIOS"):
+            if (dato.estado == "DISPONIBLE" and dato.asig == "PROYECTO") or (dato.asig == "SOCIOS") or (dato.estado == "SEÑADA" and dato.asig == "PROYECTO")  :
                 
                 ingreso_ventas = ingreso_ventas + contado
 
@@ -655,5 +655,151 @@ def cargarventa(request):
 
 
     return render(request, 'cargarventas.html', {'datos':datos})
+
+def cargar_venta(request):
+
+    datos = Unidades.objects.all()
+
+    mensaje = 0
+
+    if request.method == 'POST':
+
+        datos_formulario = request.POST.items()
+
+        comprador = "Nadie"
+        precio_venta = 0
+        anticipo = 0
+        cuotas_pend = 0
+        tipo_venta = "Ninguna"
+        unidad = 0
+        fecha = 0
+        proyecto = 0
+        observaciones = ""
+
+        for dato in datos_formulario:
+
+            if dato[0] == "unidad":
+                unidad = Unidades.objects.get(id = int(dato[1]))
+                proyecto = Proyectos.objects.get(id = unidad.proyecto.id)
+
+            if dato[0] == "comprador":
+                comprador = dato[1]
+
+            if dato[0] == "anticipo":
+                anticipo = dato[1]
+
+            if dato[0] == "precio_venta":
+                precio_venta = dato[1]
+
+            if dato[0] == "cuotas":
+                cuotas_pend = dato[1]
+
+            if dato[0] == "tipo_venta":
+                tipo_venta = dato[1]
+
+            if dato[0] == "fecha":
+                fecha = dato[1]
+
+            if dato[0] == "observaciones":
+                observaciones = dato[1]
+
+        operaciones = VentasRealizadas.objects.filter(unidad = unidad)
+
+        if len(operaciones) > 0:
+            mensaje = "Esta unidad se encuentra asignada"
+
+        else:
+        
+            b = VentasRealizadas(
+
+                comprador = comprador,
+                fecha = fecha,
+                tipo_venta = tipo_venta,
+                unidad = unidad,
+                tipo_unidad = "n",
+                proyecto = proyecto,
+                m2 = 0,
+                asignacion = "n",
+                precio_venta = precio_venta,
+                anticipo = anticipo,
+                cuotas_pend = cuotas_pend,
+                observaciones = observaciones,
+
+
+            )
+
+            b.save()
+
+            unidad.estado = "SEÑADA"
+            unidad.save()
+
+            return redirect( 'Cargar Venta' )
+
+
+
+    return render(request, 'cargar_venta.html', {'datos':datos, 'mensaje':mensaje})
+
+def editarventa(request, id_venta):
+
+    datos = VentasRealizadas.objects.get(id = id_venta)
+
+    if request.method == 'POST':
+
+        datos_formulario = request.POST.items()
+
+        comprador = "Nadie"
+        precio_venta = 0
+        anticipo = 0
+        cuotas_pend = 0
+        tipo_venta = "Ninguna"
+        unidad = 0
+        fecha = 0
+        proyecto = 0
+        observaciones = ""
+
+        for dato in datos_formulario:
+
+            print(dato)
+
+            if dato[0] == "comprador":
+                comprador = dato[1]
+                datos.comprador = comprador
+                datos.save()
+
+            if dato[0] == "anticipo" and dato[1] != "":
+                anticipo = dato[1]
+                datos.anticipo = anticipo
+                datos.save()
+
+            if dato[0] == "precio_venta" and dato[1] != "":
+                precio_venta = dato[1]
+                datos.precio_venta = precio_venta
+                datos.save()
+
+            if dato[0] == "cuotas" and dato[1] != "":
+                cuotas_pend = dato[1]
+                datos.cuotas_pend = cuotas_pend
+                datos.save()
+
+            if dato[0] == "tipo_venta":
+                tipo_venta = dato[1]
+                datos.tipo_venta = tipo_venta
+                datos.save()
+
+            if dato[0] == "fecha" and dato[1] != "":
+                fecha = dato[1]
+                datos.fecha = fecha
+                datos.save()
+
+            if dato[0] == "observaciones":
+                observaciones = dato[1]
+                datos.observaciones = observaciones
+                datos.save()
+
+        return redirect( 'Cargar Venta' )
+
+
+    return render(request, 'editar_venta.html', {'datos':datos})
+
 
 

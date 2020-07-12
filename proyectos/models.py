@@ -44,6 +44,7 @@ class Unidades(models.Model):
 
             VENDIDA = "VENDIDA"
             DISPONIBLE = "DISPONIBLE"
+            SEÑADA = "SEÑADA"
 
     class asignacion(models.TextChoices):
 

@@ -51,7 +51,7 @@ class VentasRealizadas(models.Model):
         DTO = "DTO"
         COCHERA = "COCHERA"
 
-    comprador = models.CharField(max_length=100, verbose_name="Nombre del comprador")
+    comprador = models.CharField(max_length=100, verbose_name = "Nombre del comprador")
     fecha = models.DateField(verbose_name = "Fecha de venta")
     tipo_venta = models.CharField(choices=ModoVenda.choices, max_length=20, verbose_name="Tipo de venta", blank=True, null=True)
     unidad = models.ForeignKey(Unidades, on_delete=models.CASCADE, verbose_name = "Unidades", blank=True, null=True)
@@ -61,7 +61,9 @@ class VentasRealizadas(models.Model):
     m2 = models.FloatField(verbose_name="Metros cuadrados")
     precio_venta = models.FloatField(verbose_name="Precio de venta")
     anticipo = models.FloatField(verbose_name="Anticipo")
-    cuotas_pend = models.IntegerField(verbose_name="Cuotas pendientes") 
+    cuotas_pend = models.IntegerField(verbose_name="Cuotas pendientes")
+    observaciones = models.TextField(verbose_name="Observaciones", null=True, blank=True)
+
     
     class Meta:
         verbose_name="Venta"

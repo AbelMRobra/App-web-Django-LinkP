@@ -1,0 +1,162 @@
+{% extends "users/inicio.html" %}
+
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+
+<div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;">
+    <div>
+        <h2>Editar una venta</h2>
+        <small>Modifique los campos</small>  
+    </div>
+
+    <b><hr class = "my-4" style="width: 75%; border-color: black ;"></b>
+
+    <div style=" background-color: rgba(63, 95, 179, 0.3); width: 50%; margin-left: 25%;">
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            <div style="display: inline-block;">
+
+                <label for="unidad"><h6>Nombre de la unidad</h6></label>
+    
+            </div>
+    
+            <div style="margin-bottom: 2%; width: 80%; margin-left: 10%;">
+    
+                <input name="unidad" type="text" class="form-control form-control" placeholder="{{datos.proyecto.nombre}} - {{datos.unidad.piso_unidad}} - {{datos.unidad.nombre_unidad}}" readonly=True>
+    
+            </div>
+    
+            
+            <div style="display: inline-block;">
+    
+                <label for="comprador"><h6>Comprador</h6></label>
+    
+            </div>
+    
+            <div style="margin-bottom: 2%; width: 70%; margin-left: 15%;">
+    
+                <input name="comprador" type="text" class="form-control form-control" value="{{datos.comprador}}">
+    
+            </div>
+    
+            <div style="display: inline-block;">
+    
+                <label for="precio_venta"><h6>Precio de venta</h6></label>
+    
+            </div>
+    
+            <div class="input-group mb-3" style="margin-bottom: 2%; width: 50%; margin-left: 25%;">
+
+                <div class="input-group-prepend">
+
+                    <span class="input-group-text">$</span>
+
+                </div>
+
+                <input name="precio_venta" type="number" class="form-control form-control" aria-label="Amount" placeholder="{{datos.precio_venta}}">
+                
+            </div>
+    
+            <div style="display: inline-block;">
+    
+                <label for="anticipo"><h6>Anticipo</h6></label>
+    
+            </div>
+
+    
+            <div class="input-group mb-3" style="margin-bottom: 2%; width: 50%; margin-left: 25%;">
+
+                <div class="input-group-prepend">
+
+                    <span class="input-group-text">$</span>
+
+                </div>
+
+                <input name="anticipo" type="number" class="form-control form-control" placeholder="{{datos.anticipo}}">
+            
+            </div>
+    
+    
+            <div style="display: inline-block;">
+    
+                <label for="cuotas"><h6>Cuotas restantes</h6></label>
+    
+            </div>
+    
+            <div style="margin-bottom: 2%; width: 30%; margin-left: 35%;">
+    
+                <input name="cuotas" type="number" class="form-control form-control" placeholder="{{datos.cuotas_pend}}">
+    
+            </div>
+
+            <div style="display: inline-block;">
+    
+                <label for="fecha"><h6>Fecha de la operación</h6></label>
+    
+            </div>
+    
+            <div style="margin-bottom: 2%; width: 30%; margin-left: 35%;">
+    
+                <input name="fecha" type="date" class="form-control form-control">
+
+                
+    
+            </div>
+
+            <small>Fecha actual {{datos.fecha}} </small>
+
+                
+            <div class="form-group" style="width: 80%; margin-left: 10%; margin-bottom: 2%;">
+                <label for="observaciones"> <h6>Observaciones de la operación</h6></label>
+                <textarea name="observaciones" class="form-control"  rows="3">{{datos.observaciones}}</textarea>
+              </div>
+    
+            <div class="custom-control custom-radio">
+                <input type="radio" id="customRadio1" name="tipo_venta" class="custom-control-input" value="VENTA" {% if datos.tipo_venta == "VENTA" %} checked="" {% endif %}>
+                <label class="custom-control-label" for="customRadio1">VENTA</label>
+              </div>
+
+              <div class="custom-control custom-radio">
+                <input type="radio" id="customRadio2" name="tipo_venta" class="custom-control-input" value="CANJE"  {% if datos.tipo_venta == "CANJE" %} checked="" {% endif %}>
+                <label class="custom-control-label" for="customRadio2">CANJE</label>
+              </div>
+
+
+
+
+                  
+              <div style="margin-top: 2%; margin-bottom: 5%;">
+    
+                <button type="submit" class="btn btn-primary" >Cargar venta</button>
+    
+              </div>
+        
+
+        </form>
+
+
+        
+        
+    
+    </div>
+
+
+    <b><hr class = "my-4" style="width: 75%; border-color: black ;"></b>
+
+
+
+    <div style="text-align: center; margin-top: 2rem;">
+        <p> <small>-- Link<strong>P</strong> --</small> </p>
+
+     </div>
+
+                    
+</div>
+ 
+    
+{% endblock %}

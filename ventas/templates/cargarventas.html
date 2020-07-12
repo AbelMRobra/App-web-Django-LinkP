@@ -18,7 +18,7 @@
     <h6>Cargar una venta</h6>
 
 
-    <button type="button" class="btn btn-primary">Registrar una venta</button>
+    <a href="{% url 'Cargar una Venta' %}" class="btn btn-primary">Registrar una venta</a>
     
     </div>
 
@@ -90,8 +90,8 @@
                 <td> <b>  <small>${{i.precio_venta|floatformat:0|intcomma}}</small></b> </td>
                 <td> <b><button class="btn btn-sm btn-info disabled" type="submit"  name = "APROBADA" value="{{i.id}}">Ver detalles</button>
                 </b> </td>
-                <td> <b> <button class="btn btn-sm btn-success disabled" type="submit"  name = "APROBADA" value="{{i.id}}">Editar</button>
-                </b> </td>
+                <td> <a href="{% url 'Editar venta' i.id %}" class="btn btn-sm btn-success" >Editar</a>
+                </td>
                 <td> <b> <button class="btn btn-sm btn-danger disabled" type="submit"  name = "APROBADA" value="{{i.id}}">Eliminar</button>
                 </b> </td>
 

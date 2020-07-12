@@ -1,0 +1,182 @@
+{% extends "users/inicio.html" %}
+
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+
+<div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;">
+    <div>
+        <h2>Registrar una venta</h2>
+        <small>Completar el formulario</small>  
+    </div>
+
+    <b><hr class = "my-4" style="width: 75%; border-color: black ;"></b>
+
+    <div style=" background-color: rgba(63, 95, 179, 0.3); width: 50%; margin-left: 25%;">
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            <div style="display: inline-block;">
+
+                <label for="unidad"><h6>Nombre de la unidad</h6></label>
+    
+            </div>
+    
+            <div style="margin-bottom: 2%; width: 80%; margin-left: 10%;">
+    
+                <input name="unidad" type="search" class="form-control form-control" placeholder="Ej: TORRE BLUE PISO 3 A" list="unidades">
+    
+            </div>
+    
+            
+            <div style="display: inline-block;">
+    
+                <label for="comprador"><h6>Comprador</h6></label>
+    
+            </div>
+    
+            <div style="margin-bottom: 2%; width: 70%; margin-left: 15%;">
+    
+                <input name="comprador" type="text" class="form-control form-control" placeholder="Nombre del comprador">
+    
+            </div>
+    
+            <div style="display: inline-block;">
+    
+                <label for="precio_venta"><h6>Precio de venta</h6></label>
+    
+            </div>
+    
+            <div class="input-group mb-3" style="margin-bottom: 2%; width: 50%; margin-left: 25%;">
+
+                <div class="input-group-prepend">
+
+                    <span class="input-group-text">$</span>
+
+                </div>
+
+                <input name="precio_venta" type="number" class="form-control form-control" aria-label="Amount">
+                
+            </div>
+    
+            <div style="display: inline-block;">
+    
+                <label for="anticipo"><h6>Anticipo</h6></label>
+    
+            </div>
+
+    
+            <div class="input-group mb-3" style="margin-bottom: 2%; width: 50%; margin-left: 25%;">
+
+                <div class="input-group-prepend">
+
+                    <span class="input-group-text">$</span>
+
+                </div>
+
+                <input name="anticipo" type="number" class="form-control form-control">
+            
+            </div>
+    
+    
+            <div style="display: inline-block;">
+    
+                <label for="cuotas"><h6>Cuotas restantes</h6></label>
+    
+            </div>
+    
+            <div style="margin-bottom: 2%; width: 30%; margin-left: 35%;">
+    
+                <input name="cuotas" type="number" class="form-control form-control" placeholder="Cuotas/pagos" list="art">
+    
+            </div>
+
+            <div style="display: inline-block;">
+    
+                <label for="fecha"><h6>Fecha de la operación</h6></label>
+    
+            </div>
+    
+            <div style="margin-bottom: 2%; width: 30%; margin-left: 35%;">
+    
+                <input name="fecha" type="date" class="form-control form-control">
+    
+            </div>
+
+                
+            <div class="form-group" style="width: 80%; margin-left: 10%; margin-bottom: 2%;">
+                <label for="exampleTextarea"> <h6>Observaciones de la operación</h6></label>
+                <textarea class="form-control" id="exampleTextarea" rows="3"></textarea>
+              </div>
+    
+            <div class="custom-control custom-radio">
+                <input type="radio" id="customRadio1" name="tipo_venta" class="custom-control-input" value="VENTA" checked="">
+                <label class="custom-control-label" for="customRadio1">VENTA</label>
+              </div>
+
+              <div class="custom-control custom-radio">
+                <input type="radio" id="customRadio2" name="tipo_venta" class="custom-control-input" value="CANJE">
+                <label class="custom-control-label" for="customRadio2">CANJE</label>
+              </div>
+
+
+
+
+                  
+              <div style="margin-top: 2%; margin-bottom: 5%;">
+    
+                <button type="submit" class="btn btn-primary" >Cargar venta</button>
+    
+              </div>
+
+              {% if mensaje %}
+
+              <div>
+                  <p style="color: red;"> {{ mensaje }}</p>
+              </div>
+
+              {% endif %}
+        
+
+        </form>
+
+
+        
+        
+    
+    </div>
+
+    <datalist id="unidades"> 
+
+        {% for i in datos %}
+        
+        <option value="{{ i.id}}" id="{{ i.id}}">{{i.proyecto}} - {{i.piso_unidad}} - {{i.nombre_unidad}}</option>
+
+        {% endfor %}
+
+    </datalist>
+
+
+
+   
+    
+
+
+
+    <b><hr class = "my-4" style="width: 75%; border-color: black ;"></b>
+
+
+
+    <div style="text-align: center; margin-top: 2rem;">
+        <p> <small>-- Link<strong>P</strong> --</small> </p>
+
+     </div>
+
+                    
+</div>
+ 
+    
+{% endblock %}
