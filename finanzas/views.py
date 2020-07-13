@@ -11,6 +11,11 @@ def consolidado(request):
     datos = Almacenero.objects.all()
 
     datos_completos = []
+    datos_finales = []
+
+    costo_total = 0
+    ingresos_total = 0
+
 
     for dato in datos:
 
@@ -33,10 +38,16 @@ def consolidado(request):
         pend_gast = almacenero.pendiente_admin + almacenero.pendiente_comision + presupuesto.saldo_mat + presupuesto.saldo_mo + presupuesto.imprevisto + presupuesto.credito + presupuesto.fdr - almacenero.pendiente_adelantos + almacenero.pendiente_iva_ventas + almacenero.pendiente_iibb_tem
         prest_cobrar = almacenero.prestamos_proyecto + almacenero.prestamos_otros
         total_costo = almacenero.cheques_emitidos + almacenero.gastos_fecha + pend_gast + almacenero.Prestamos_dados
+        
+        costo_total = costo_total + total_costo
+        
         total_ingresos = prest_cobrar + almacenero.cuotas_cobradas + almacenero.cuotas_a_cobrar + almacenero.ingreso_ventas
+        
+        ingresos_total = ingresos_total + total_ingresos
+
         saldo_caja = almacenero.cuotas_cobradas - almacenero.gastos_fecha - almacenero.Prestamos_dados
         saldo_proyecto = total_ingresos - total_costo
-        rentabilidad = (saldo_proyecto/total_ingresos)*100
+        rentabilidad = (saldo_proyecto/total_costo)*100
 
         try:
 
@@ -63,7 +74,12 @@ def consolidado(request):
 
         datos_completos.append((dato, total_costo, total_ingresos, saldo_proyecto, rentabilidad, presupuesto, pricing))
 
-    return render(request, 'consolidado.html', {"datos_completos":datos_completos})
+    beneficio_total = ingresos_total - costo_total
+    rendimiento_total = beneficio_total/costo_total*100
+
+    datos_finales.append((ingresos_total, costo_total, beneficio_total, rendimiento_total))
+
+    return render(request, 'consolidado.html', {"datos_completos":datos_completos, 'datos_finales':datos_finales})
 
 
 def almacenero(request):
