@@ -7,19 +7,19 @@
 
 <div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;">
     <div>
-        <h2>Editar una venta</h2>
+        <h2>Editar un registro</h2>
         <small>Modifique los campos</small>  
     </div>
 
-    <b><hr class = "my-4" style="width: 75%; border-color: black ;"></b>
+    <b><hr class = "my-4" style="width: 75%; "></b>
 
     <div style=" background-color: rgba(63, 95, 179, 0.3); width: 50%; margin-left: 25%;">
 
-        <form method="POST">
+        <form method="POST" >
 
             {% csrf_token %}
 
-            <div style="display: inline-block;">
+            <div style="display: inline-block; margin-top: 5%;">
 
                 <label for="unidad"><h6>Nombre de la unidad</h6></label>
     
@@ -130,9 +130,9 @@
 
 
                   
-              <div style="margin-top: 2%; margin-bottom: 5%;">
+              <div style="margin-top: 2%;">
     
-                <button type="submit" class="btn btn-primary" >Cargar venta</button>
+                <button type="submit" class="btn btn-primary" style="margin-bottom: 5%;" >Editar registro</button>
     
               </div>
         
@@ -146,7 +146,7 @@
     </div>
 
 
-    <b><hr class = "my-4" style="width: 75%; border-color: black ;"></b>
+    <b><hr class = "my-4" style="width: 50%; "></b>
 
 
 

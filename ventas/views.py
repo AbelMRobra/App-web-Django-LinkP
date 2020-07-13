@@ -759,8 +759,6 @@ def editarventa(request, id_venta):
 
         for dato in datos_formulario:
 
-            print(dato)
-
             if dato[0] == "comprador":
                 comprador = dato[1]
                 datos.comprador = comprador
@@ -800,6 +798,26 @@ def editarventa(request, id_venta):
 
 
     return render(request, 'editar_venta.html', {'datos':datos})
+
+def eliminarventa(request, id_venta):
+
+    datos = VentasRealizadas.objects.get(id = id_venta)
+
+    if request.method == 'POST':
+
+        unidad = Unidades.objects.get(id = datos.unidad.id)
+
+        unidad.estado = "DISPONIBLE"
+
+        unidad.save()
+
+        datos.delete()
+
+        return redirect( 'Cargar Venta' )
+
+    return render(request, 'eliminar_venta.html', {'datos':datos})
+
+
 
 
 

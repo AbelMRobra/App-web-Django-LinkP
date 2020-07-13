@@ -1,0 +1,47 @@
+{% extends "users/inicio.html" %}
+
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+
+<div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;">
+    <div>
+        <h2>Eliminar el registro {{ datos.unidad.proyecto }} - {{ datos.unidad.piso_unidad }} - {{ datos.unidad.nombre_unidad }} a {{ datos.comprador }}  </h2>
+        <small>Esta operación elimina toda la información del registro</small>  
+    </div>
+
+    <b><hr class = "my-4" style="width: 75%;" ></b>
+
+    <form method="POST">
+
+        {% csrf_token %}
+
+        <div style="display: inline-block;">
+            <a href="{% url 'Cargar Venta' %}" class="btn btn-primary">Volver al panel</a>
+        </div>
+        <div style="display: inline-block; margin-left: 5%;">
+
+            <button class="btn btn-danger" type="submit">Eliminar registro</button>
+
+        </div>
+    
+    </form>
+
+
+
+
+    <b><hr class = "my-4" style="width: 50%; "></b>
+
+
+
+    <div style="text-align: center; margin-top: 2rem;">
+        <p> <small>-- Link<strong>P</strong> --</small> </p>
+
+     </div>
+
+                    
+</div>
+ 
+    
+{% endblock %}

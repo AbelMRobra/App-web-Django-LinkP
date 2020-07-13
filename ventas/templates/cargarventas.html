@@ -11,7 +11,8 @@
         <small>Responsable del panel: </small><small><strong>Área de ventas</strong></small>  
     </div>
 
-    <b><hr class = "my-4" style="width: 100%; border-color: black ;"></b>
+    <b><hr class = "my-4" style="width: 100%; "></b>
+    
 
     <div style="text-align: center;">
     
@@ -23,7 +24,7 @@
     </div>
 
 
-    <b><hr class = "my-4" style="width: 100%; border-color: black ;"></b>
+    <b><hr class = "my-4" style="width: 100%; "></b>
 
 
     <form method="POST">
@@ -51,7 +52,9 @@
 
     </form>
 
-     
+    <div class = "tableconteinerabel">
+
+             
 
 
     <table class = "table table-hover" style="text-align: center; margin-top: 2%;">
@@ -92,7 +95,7 @@
                 </b> </td>
                 <td> <a href="{% url 'Editar venta' i.id %}" class="btn btn-sm btn-success" >Editar</a>
                 </td>
-                <td> <b> <button class="btn btn-sm btn-danger disabled" type="submit"  name = "APROBADA" value="{{i.id}}">Eliminar</button>
+                <td> <a href="{% url 'Eliminar venta' i.id %}" class="btn btn-sm btn-danger">Eliminar</a>
                 </b> </td>
 
 
@@ -103,6 +106,10 @@
 
 
     </table>
+
+    </div>
+
+
 
     <b><hr class = "my-4" style="width: 100%;"></b>
 
