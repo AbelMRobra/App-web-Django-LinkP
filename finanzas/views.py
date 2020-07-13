@@ -139,7 +139,7 @@ def almacenero(request):
                     total_ingresos = prest_cobrar + almacenero.cuotas_cobradas + almacenero.cuotas_a_cobrar + almacenero.ingreso_ventas
                     saldo_caja = almacenero.cuotas_cobradas - almacenero.gastos_fecha - almacenero.Prestamos_dados
                     saldo_proyecto = total_ingresos - total_costo
-                    rentabilidad = (saldo_proyecto/total_ingresos)*100
+                    rentabilidad = (saldo_proyecto/total_costo)*100
 
                     #Cargo todo a datos
 
