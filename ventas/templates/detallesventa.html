@@ -1,0 +1,45 @@
+{% extends "users/inicio.html" %}
+
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+
+<div class = "jumbotron" style="background-color: white; margin-bottom: 0px;">
+    <div style="text-align: center;">
+        <h2>Detalle de la venta: {{datos.unidad.proyecto}}-{{datos.unidad.piso_unidad}}-{{datos.unidad.nombre_unidad}}</h2>
+        <small>Detalles de la operación registrado por el área de ventas</small>  
+    </div>
+
+    <b><hr class = "my-4" style="width: 100%; "></b>
+
+    <h6>Proyecto: <small>{{datos.unidad.proyecto}}</small> </h6> 
+    <h6>Piso: <small>{{datos.unidad.piso_unidad}}</small> </h6>
+    <h6>Unidad: <small>{{datos.unidad.nombre_unidad}}</small> </h6>
+    <h6>Comprador: <small>{{datos.comprador}}</small> </h6>
+    <h6>Precio de venta:<small>${{datos.precio_venta|floatformat:0|intcomma}}</small></h6>
+    <h6>Anticipo:<small>${{datos.anticipo|floatformat:0|intcomma}}</small></h6>
+    <h6>Fecha: <small>{{datos.fecha}}</small></h6>
+    <h6>Detalles:</h6>
+    <b><hr class = "my-4" style="width: 100%; "></b>
+    <p style="text-align: center;">{{datos.observaciones}}</p>
+    <b><hr class = "my-4" style="width: 100%; "></b>
+    
+
+
+
+
+ 
+
+
+
+    <div style="text-align: center; margin-top: 2rem;">
+        <p> <small>-- Link<strong>P</strong> --</small> </p>
+
+     </div>
+
+                    
+</div>
+ 
+    
+{% endblock %}

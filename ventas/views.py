@@ -823,6 +823,12 @@ def eliminarventa(request, id_venta):
 
     return render(request, 'eliminar_venta.html', {'datos':datos})
 
+def detalleventa(request, id_venta):
+
+    datos = VentasRealizadas.objects.get(id = id_venta)
+
+
+    return render(request, 'detallesventa.html', {'datos':datos})
 
 
 

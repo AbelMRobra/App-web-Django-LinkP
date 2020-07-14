@@ -91,7 +91,7 @@
                 <td> <b> <small>{{i.m2|floatformat:2}}m2</small> </b> </td>
                 <td> <b> <small>{{i.asignacion}}</small></b> </td>
                 <td> <b>  <small>${{i.precio_venta|floatformat:0|intcomma}}</small></b> </td>
-                <td> <b><button class="btn btn-sm btn-info disabled" type="submit"  name = "APROBADA" value="{{i.id}}">Ver detalles</button>
+                <td> <b><a href="{% url 'Detalle venta' i.id %}" class="btn btn-sm btn-info" >Ver detalles</a>
                 </b> </td>
                 <td> <a href="{% url 'Editar venta' i.id %}" class="btn btn-sm btn-success" >Editar</a>
                 </td>
