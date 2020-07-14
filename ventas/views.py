@@ -241,6 +241,8 @@ def panelunidades(request):
                                 
                                 if param_uni.menor_50_m2 == "SI" and dato.proyecto.nombre == "TORRE BLUE":
                                     desde = desde*1.03
+                                if param_uni.menor_50_m2 == "SI" and dato.proyecto.nombre == "TORRE GREEN":
+                                    desde = desde*1.05
 
                                 if param_uni.otros == "SI":
                                     desde = desde*1.1 
@@ -409,6 +411,9 @@ def pricing(request, id_proyecto):
             
             if param_uni.menor_50_m2 == "SI" and dato.proyecto.nombre == "TORRE BLUE":
                 desde = desde*1.03
+
+            if param_uni.menor_50_m2 == "SI" and dato.proyecto.nombre == "TORRE GREEN":
+                desde = desde*1.05
 
             if param_uni.otros == "SI":
                 desde = desde*1.1   

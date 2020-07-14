@@ -2,9 +2,31 @@ from django.shortcuts import render
 from presupuestos.models import Proyectos, Presupuestos, Constantes, Modelopresupuesto
 from .models import Almacenero
 from proyectos.models import Unidades
-from ventas.models import Pricing
+from ventas.models import Pricing, VentasRealizadas
 
 # Create your views here.
+
+def ingresounidades(request):
+
+    datos = VentasRealizadas.objects.filter(unidad__estado = "SEÑADA")
+
+
+    if request.method == 'POST':
+
+        proyecto_elegido = request.POST.items()
+
+        for i in proyecto_elegido:
+
+            if i[0] == 'ingresar':
+
+                unidad = Unidades.objects.get(id = i[1])
+
+                unidad.estado = "VENDIDA"
+
+                unidad.save()
+
+
+    return render(request, 'ingresounidades.html',{'datos':datos})
 
 def consolidado(request):
 
