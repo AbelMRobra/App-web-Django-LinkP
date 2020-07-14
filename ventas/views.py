@@ -703,6 +703,7 @@ def cargar_venta(request):
             if dato[0] == "observaciones":
                 observaciones = dato[1]
 
+
         operaciones = VentasRealizadas.objects.filter(unidad = unidad)
 
         if len(operaciones) > 0:
