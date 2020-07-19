@@ -211,41 +211,28 @@ def panelunidades(request):
                                 desde = dato.proyecto.desde
 
                                 if dato.tipo == "COCHERA":
-
-                                    if dato.proyecto.nombre != "ZOE":
-                                        desde = dato.proyecto.desde*(1-0.24)
-
-                                    if dato.proyecto.nombre == "ZOE":
-                                        desde = dato.proyecto.desde*(1-0.23)  
+                                    desde = dato.proyecto.desde*dato.proyecto.descuento_cochera
 
                                 if param_uni.frente == "SI":
-                                    desde = desde*1.03
+                                    desde = desde*dato.proyecto.recargo_frente
 
                                 if param_uni.piso_intermedio == "SI":
-                                    desde =desde*1.02
+                                    desde =desde*dato.proyecto.recargo_piso_intermedio
 
                                 if param_uni.cocina_separada == "SI":
-                                    desde = desde*1.03
+                                    desde = desde*dato.proyecto.recargo_cocina_separada
 
                                 if param_uni.local == "SI":
-                                    desde = desde*1.75
+                                    desde = desde*dato.proyecto.recargo_local
 
                                 if param_uni.menor_45_m2 == "SI":
-                                    desde = desde*1.05
+                                    desde = desde*dato.proyecto.recargo_menor_45
 
-                                if param_uni.menor_50_m2 == "SI" and dato.proyecto.nombre == "ZOE":
-                                    desde = desde*1.05
-
-                                if param_uni.menor_50_m2 == "SI" and dato.proyecto.nombre == "TORRE RED":
-                                    desde = desde*1.00
-                                
-                                if param_uni.menor_50_m2 == "SI" and dato.proyecto.nombre == "TORRE BLUE":
-                                    desde = desde*1.03
-                                if param_uni.menor_50_m2 == "SI" and dato.proyecto.nombre == "TORRE GREEN":
-                                    desde = desde*1.05
+                                if param_uni.menor_50_m2 == "SI":
+                                    desde = desde*dato.proyecto.recargo_menor_50
 
                                 if param_uni.otros == "SI":
-                                    desde = desde*1.1 
+                                    desde = desde*dato.proyecto.recargo_otros 
 
                                 desde = desde*m2 
                                 monto_total = monto_total + desde 
@@ -352,6 +339,11 @@ def pricing(request, id_proyecto):
     cocheras = 0
     ingreso_ventas = 0
     unidades_socios = 0
+
+    #Datos resumenes de arriba
+
+    sumatoria_contado = 0
+    sumatoria_financiado = 0
     
     for dato in datos:
 
@@ -415,7 +407,7 @@ def pricing(request, id_proyecto):
 
             anticipo = 0.4
 
-            valor_auxiliar = np.npv(rate=(0.82/100), values=values)
+            valor_auxiliar = np.npv(rate=(dato.proyecto.tasa_f/100), values=values)
 
             incremento = (meses/(1-anticipo)/(((anticipo/(1-anticipo))*meses)+valor_auxiliar))
 
@@ -472,6 +464,8 @@ def pricing(request, id_proyecto):
         #Aqui vamos armando los m2 totales y los m2 de cocheras
 
         m2_totales = m2_totales + m2
+        sumatoria_contado = sumatoria_contado + contado
+        sumatoria_financiado = sumatoria_financiado + financiado
         
         if dato.tipo == "COCHERA":
             cocheras += 1
@@ -491,7 +485,12 @@ def pricing(request, id_proyecto):
 
     departamentos = cantidad - cocheras
 
-    otros_datos.append((m2_totales, cantidad, departamentos, cocheras))
+    #Aqui calculo promedio contado y promedio financiado
+
+    promedio_contado = sumatoria_contado/m2_totales
+    promedio_financiado = sumatoria_financiado/m2_totales
+
+    otros_datos.append((m2_totales, cantidad, departamentos, cocheras, promedio_contado, promedio_financiado))
 
     datos_unidades = datos_tabla_unidad
     
@@ -813,15 +812,7 @@ def detalleventa(request, id_venta):
 
     datos = VentasRealizadas.objects.get(id = id_venta)
 
-
     return render(request, 'detallesventa.html', {'datos':datos})
-
-
-def modificarpreciobase(request):
-
-    datos = []
-
-    proyectos = Proyectos.objects.all()
 
 
 
