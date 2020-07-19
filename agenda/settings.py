@@ -26,7 +26,8 @@ SECRET_KEY = '6b!4-@r!zlpo@jm=bnl4#4#g8qv7pwkuivb_e2k4ut!nba_y!l'
 DEBUG = True
 
 ALLOWED_HOSTS = []
-#ALLOWED_HOSTS = ["www.linkp.online"]
+#ALLOWED_HOSTS = ["www.linkp.online", "linkp.online"]
+
 
 
 # Application definition
@@ -159,3 +160,9 @@ if os.getcwd() == '/app':
 
     #Static asset configuration
     BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+
+# Configuración de la sesión del usuario
+
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+SESSION_COOKIE_AGE = 3600 
