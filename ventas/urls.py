@@ -9,6 +9,7 @@ urlpatterns = [
     url(r'^panelunidades$', views.panelunidades, name = 'Panel de unidades'),
     url(r'^pricing/(?P<id_proyecto>\d+)/$', views.pricing, name = 'Pricing'),
     url(r'^editarasig/(?P<id_unidad>\d+)/$', views.editarasignacion, name = 'Editar asignacion'),
+    url(r'^cotizador/(?P<id_unidad>\d+)/$', views.cotizador, name = 'Cotizador'),
     url(r'^editarventa/(?P<id_venta>\d+)/$', views.editarventa, name = 'Editar venta'),
     url(r'^detalleventa/(?P<id_venta>\d+)/$', views.detalleventa, name = 'Detalle venta'),
     url(r'^eliminarventa/(?P<id_venta>\d+)/$', views.eliminarventa, name = 'Eliminar venta'),

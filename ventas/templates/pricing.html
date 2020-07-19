@@ -77,8 +77,7 @@
             <thead>
     
                 <tr class = "table-dark">
-                    <th scope = "row" style="vertical-align: middle;"> <small>PISO</small> </th>
-                    <th scope = "row"style="vertical-align: middle;"> <small>NOM</small></th>
+                    <th scope = "row" style="vertical-align: middle;"> <small>PISO/NOM</small> </th>
                     <th scope = "row"style="vertical-align: middle;" colspan="2"> <small>TIPOLOGIA</small>  </th>
                     <th scope = "row"style="vertical-align: middle;"> <small>SUPERFICIE</small> </th>
                     <th scope = "row"style="vertical-align: middle;"> <small>ASIGNACIÓN</small> </th>
@@ -100,8 +99,7 @@
     
                 {% for i in datos.datos_unidades %}
                 <tr class = "table-light">
-                    <td style="width: 2%;"> <b> <small> <b>{{i.0.piso_unidad}}</b> </small></b> </td>
-                    <td style="width: 2%;"> <b> <small>{{i.0.nombre_unidad}}</small> </b> </td>
+                    <td style="width: 2%;"> <a href=" {% url 'Cotizador' i.0.id %}" style="color: rgb({{datos.proyecto.color}};"> <small> <b>{{i.0.piso_unidad}} - {{i.0.nombre_unidad}}</b> </small></a> </td>
                     <td style="width: 5%;"> <b> <small>{{i.0.tipo}}</small> </b> </td>
                     <td style="width: 3%;"> <b> <small>{{i.0.tipologia}}</small> </b> </td>
                     <td style="width: 5%;"> <b> <small>{{i.1|floatformat:2}}m2</small></b> </td>
@@ -111,15 +109,15 @@
 
                     {% if i.0.estado == "DISPONIBLE" %}
 
-                    <td style="width: 5%; color: #6EC82D ;"> <b> <small> <span class="hint--top hint--success" aria-label= " {% for d in i.9 %} {{d.tipo_venta}} el {{d.fecha}} a {{d.comprador}} {% endfor %}"> <b><u>{{i.0.estado}}</u></b></small> </b> </span> </td>
+                    <td style="width: 5%; color: #1CB433  ;"> <b> <small> <span class="hint--top hint--success" aria-label= " {% for d in i.9 %} {{d.tipo_venta}} el {{d.fecha}} a {{d.comprador}} {% endfor %}"> <b><u>{{i.0.estado}}</u></b></small> </b> </span> </td>
                     
                     {% elif i.0.estado == "SEÑADA" %}
 
-                    <td style="width: 5%; color: #C5C82D;"> <b> <small> <span class="hint--top hint--warning" aria-label= " {% for d in i.9 %} {{d.tipo_venta}} el {{d.fecha}} a {{d.comprador}} {% endfor %}"><b><u>{{i.0.estado}}</u></b></small> </b> </span> </td>
+                    <td style="width: 5%; color: #DADA1B ;"> <b> <small> <span class="hint--top hint--warning" aria-label= " {% for d in i.9 %} {{d.tipo_venta}} el {{d.fecha}} a {{d.comprador}} {% endfor %}"><b><u>{{i.0.estado}}</u></b></small> </b> </span> </td>
                              
                     {% else %}
 
-                    <td style="width: 5%; color: #C8442D;"> <b> <small> <span class="hint--top hint--danger" aria-label= " {% for d in i.9 %} {{d.tipo_venta}} el {{d.fecha}} a {{d.comprador}} {% endfor %}"><b><u>{{i.0.estado}}</u></b></small> </b> </span> </td>
+                    <td style="width: 5%; "> <b> <small> <span class="hint--top hint--info" aria-label= " {% for d in i.9 %} {{d.tipo_venta}} el {{d.fecha}} a {{d.comprador}} {% endfor %}"><b><u>{{i.0.estado}}</u></b></small> </b> </span> </td>
                     
                     {% endif %}
 
@@ -127,15 +125,15 @@
 
                     {% if i.0.estado == "DISPONIBLE" %}
 
-                    <td style="width: 5%; color: #6EC82D ;"> <b> <small> <b>{{i.0.estado}}</b> </small> </b> </td>
+                    <td style="width: 5%; color: #1CB433  ;"> <b> <small> <b>{{i.0.estado}}</b> </small> </b> </td>
 
                     {% elif i.0.estado == "SEÑADA" %}
 
-                    <td style="width: 5%; color: #C5C82D;"> <b> <small> <b>{{i.0.estado}}</b> </small> </b> </td>
+                    <td style="width: 5%; color: #DADA1B ;"> <b> <small> <b>{{i.0.estado}}</b> </small> </b> </td>
                     
                     {% else %}
 
-                    <td style="width: 5%; color: #C8442D;"> <b> <small> <b>{{i.0.estado}}</b> </small> </b> </td>
+                    <td style="width: 5%; "> <b> <small> <b>{{i.0.estado}}</b> </small> </b> </td>
 
                     {% endif %}
 

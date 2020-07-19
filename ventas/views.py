@@ -311,7 +311,7 @@ def editarasignacion(request, id_unidad):
     return render(request, 'editarasig.html', {"datos":datos} )
 
 def pricing(request, id_proyecto):
-    
+
 
     #Aqui empieza para cambiar el precio base
 
@@ -831,6 +831,12 @@ def detalleventa(request, id_venta):
     datos = VentasRealizadas.objects.get(id = id_venta)
 
     return render(request, 'detallesventa.html', {'datos':datos})
+
+def cotizador(request, id_unidad):
+
+    datos = Unidades.objects.get(id = id_unidad)
+
+    return render(request, 'cotizador.html', {'datos':datos})
 
 
 
