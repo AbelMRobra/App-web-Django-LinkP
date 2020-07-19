@@ -311,8 +311,25 @@ def editarasignacion(request, id_unidad):
     return render(request, 'editarasig.html', {"datos":datos} )
 
 def pricing(request, id_proyecto):
+    
+
+    #Aqui empieza para cambiar el precio base
+
+    if request.method == 'GET':
+
+        nuevo_precio = request.GET.items()
+
+        for precio in nuevo_precio:
+
+            datos_modificar = Proyectos.objects.get(id = id_proyecto)
+            
+            datos_modificar.desde = precio[1]
+
+            datos_modificar.save()
+
 
     proyecto = Proyectos.objects.get(id = id_proyecto)
+
 
     datos = Unidades.objects.filter(proyecto = proyecto)
 
@@ -546,6 +563,8 @@ def pricing(request, id_proyecto):
     #Aqui termina el filtro
 
     anticipo = anticipo*100
+
+
 
 
     datos_unidades.sort(key=lambda datos_unidades: datos_unidades[3], reverse=False)

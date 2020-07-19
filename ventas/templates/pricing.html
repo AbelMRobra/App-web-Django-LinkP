@@ -40,12 +40,38 @@
     {% if datos.datos_unidades %}
 
 
+    <b><hr class = "my-4" style="width: 100%; border-color: rgba({{datos.proyecto.color}}, 0.5);"></b>
+
+    <div style="display: inline-block; vertical-align: middle;">
+
+        <h6>Modificar precio base:</h6>
+    
+    </div>
+
+    <form method="GET">
+
+    <div class="input-group mb-3" style="width: 40%; margin-left: 30%;">
+
+            <div class="input-group-prepend">
+
+                <span class="input-group-text">$</span>
+    
+            </div>
+    
+            <input name="precio_venta" type="number" class="form-control form-control" aria-label="Amount" >
+         
+    </div>
+
+</form>
+
 
     <b><hr class = "my-4" style="width: 100%; border-color: rgba({{datos.proyecto.color}}, 0.5);"></b>
 
     <h6 style="text-align: left;">Precio base: ${{datos.proyecto.desde|floatformat:0|intcomma}} - Promedio contado: ${{datos.otros_datos.0.4|floatformat:0|intcomma}} - Promedio financiado: ${{datos.otros_datos.0.5|floatformat:0|intcomma}} </h6>
 
-    <div style="overflow-x: scroll;">
+
+    
+    <div class = "tableconteinerabel">
 
         <table class = "table table-hover" style="text-align: center;">
             <thead>
