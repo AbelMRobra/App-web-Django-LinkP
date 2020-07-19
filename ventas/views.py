@@ -464,8 +464,11 @@ def pricing(request, id_proyecto):
         #Aqui vamos armando los m2 totales y los m2 de cocheras
 
         m2_totales = m2_totales + m2
-        sumatoria_contado = sumatoria_contado + contado
-        sumatoria_financiado = sumatoria_financiado + financiado
+        try:
+            sumatoria_contado = sumatoria_contado + contado
+            sumatoria_financiado = sumatoria_financiado + financiado
+        except:
+            print("Unidades sin pricing")
         
         if dato.tipo == "COCHERA":
             cocheras += 1
@@ -522,11 +525,7 @@ def pricing(request, id_proyecto):
 
                 lista_palabra = palabra.split()
 
-                if i[0].estado == "VENDIDA":
-
-                    buscar = (str(i[0].tipo)+str(i[0].asig)+str(i[0].piso_unidad)+str(i[0].nombre_unidad)+"AGOTADO"+str(i[0].tipologia))
-                else:
-                    buscar = (str(i[0].tipo)+str(i[0].asig)+str(i[0].piso_unidad)+str(i[0].nombre_unidad)+str(i[0].estado)+str(i[0].tipologia))
+                buscar = (str(i[0].tipo)+str(i[0].asig)+str(i[0].piso_unidad)+str(i[0].nombre_unidad)+str(i[0].estado)+str(i[0].tipologia))
 
                 contador = 0
 

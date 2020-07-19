@@ -6,52 +6,54 @@
 {% block content %}
 
 <div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;">
-    <div style="margin-bottom: 2%;">
-        <h2 style="color: rgb({{datos.proyecto.color}});" >Pricing de unidades - {{ datos.proyecto.nombre }} </h2>
-        <div style="margin-top: 1%;">
-            <img src="{{datos.proyecto.iamgen.url}}"  class="img-fluid" alt="..." style="max-width:20%;width:auto;height:auto; margin-bottom: 2rem;">
+    <div style="text-align: left;">
+
+        <div style="margin-top: 1%; display: inline-block; vertical-align: middle;">
+            <img src="{{datos.proyecto.iamgen.url}}"  class="img-fluid" alt="..." style="max-width:20%;width:auto;height:auto; ">
 
 
         </div>
 
-        
+        <div style="display: inline-block; vertical-align: middle;">
+            <h4 style="color: rgb({{datos.proyecto.color}}); " >Pricing del proyecto {{ datos.proyecto.nombre }} </h4>
 
-        <small>Trabajo en conjunto: </small><small><strong>FINANZAS - VENTAS</strong></small>  
+        </div>
+
+        <form method="POST" style="display: inline-block; vertical-align: middle;">
+
+            {% csrf_token %}
+    
+    
+            
+            <div style="display: inline-block; ">
+    
+                <input name="palabra" type="text" class="form-control form-control" placeholder="Buscar por palabra" list="art" style="width: 30rem;">
+    
+            </div>
+    
+         </form>
+       
+
+
+    
     </div>
 
 
 
     {% if datos.datos_unidades %}
 
-    <form method="POST" style="text-align: center;">
-
-        {% csrf_token %}
-
-        <div style="display: inline-block; margin-left: 1rem;">
-
-            <label for="palabra"><h6>Buscar</h6></label>
-
-        </div>
-        
-        <div style="display: inline-block; margin-left: 1rem; ">
-
-            <input name="palabra" type="text" class="form-control form-control" placeholder="Buscar por palabra" list="art" style="width: 30rem;">
-
-        </div>
-
-        <div>
-            <button class="btn btn-dark" type="submit" style="margin-top: 1%;">Buscar</button>          
-        </div>       
-
-     </form>
 
 
 
-    <h4 style="margin-top: 5%; text-align: left;">Listado de unidades</h4>
+   
 
-    <h6 style="text-align: left;">Precio base: ${{datos.proyecto.desde|floatformat:0|intcomma}} - Promedio contado: ${{datos.otros_datos.4|floatformat:0|intcomma}} - Promedio financiado: ${{datos.otros_datos.5|floatformat:0|intcomma}} </h6>
 
     <b><hr class = "my-4" style="width: 100%; border-color: rgba({{datos.proyecto.color}}, 0.5);"></b>
+
+    <h6 style="text-align: left;">Precio base: ${{datos.proyecto.desde|floatformat:0|intcomma}} - Promedio contado: ${{datos.otros_datos.0.4|floatformat:0|intcomma}} - Promedio financiado: ${{datos.otros_datos.0.5|floatformat:0|intcomma}} </h6>
+
+
+    
 
     <div style="overflow-x: scroll;">
 
@@ -93,15 +95,15 @@
 
                     {% if i.0.estado == "DISPONIBLE" %}
 
-                    <td style="width: 5%; color: #6EC82D ;"> <b> <small> <span class="hint--top hint--success" aria-label= " {% for d in i.9 %} {{d.tipo_venta}} el {{d.fecha}} a {{d.comprador}} -- {% endfor %}"> <b>{{i.0.estado}}*</b> </small> </b> </span> </td>
+                    <td style="width: 5%; color: #6EC82D ;"> <b> <small> <span class="hint--top hint--success" aria-label= " {% for d in i.9 %} {{d.tipo_venta}} el {{d.fecha}} a {{d.comprador}} {% endfor %}"> <b><u>{{i.0.estado}}</u></b></small> </b> </span> </td>
                     
                     {% elif i.0.estado == "SEÑADA" %}
 
-                    <td style="width: 5%; color: #C5C82D;"> <b> <small> <span class="hint--top hint--warning" aria-label= " {% for d in i.9 %} {{d.tipo_venta}} el {{d.fecha}} a {{d.comprador}} -- {% endfor %}"> <b>{{i.0.estado}}*</b> </small> </b> </span> </td>
+                    <td style="width: 5%; color: #C5C82D;"> <b> <small> <span class="hint--top hint--warning" aria-label= " {% for d in i.9 %} {{d.tipo_venta}} el {{d.fecha}} a {{d.comprador}} {% endfor %}"><b><u>{{i.0.estado}}</u></b></small> </b> </span> </td>
                              
                     {% else %}
 
-                    <td style="width: 5%; color: #C8442D;"> <b> <small> <span class="hint--top hint--danger" aria-label= " {% for d in i.9 %} {{d.tipo_venta}} el {{d.fecha}} a {{d.comprador}} -- {% endfor %}"> <b>AGOTADO*</b> </small> </b> </span> </td>
+                    <td style="width: 5%; color: #C8442D;"> <b> <small> <span class="hint--top hint--danger" aria-label= " {% for d in i.9 %} {{d.tipo_venta}} el {{d.fecha}} a {{d.comprador}} {% endfor %}"><b><u>{{i.0.estado}}</u></b></small> </b> </span> </td>
                     
                     {% endif %}
 
@@ -117,7 +119,7 @@
                     
                     {% else %}
 
-                    <td style="width: 5%; color: #C8442D;"> <b> <small> <b>AGOTADO</b> </small> </b> </td>
+                    <td style="width: 5%; color: #C8442D;"> <b> <small> <b>{{i.0.estado}}</b> </small> </b> </td>
 
                     {% endif %}
 

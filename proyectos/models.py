@@ -11,7 +11,7 @@ class Proyectos(models.Model):
     fecha_a = models.DateField(auto_now=True, verbose_name="Fecha de actualización")
     m2 =  models.FloatField(verbose_name="Tamaño de la obra")
     desde = models.FloatField(null=True, blank=True, verbose_name="Precio desde")
-    tasa_f = models.FloatField(null=True, blank=True, verbose_name="Precio desde")
+    tasa_f = models.FloatField(null=True, blank=True, verbose_name="Tasa de finan.")
     descuento_cochera = models.FloatField(null=True, blank=True, verbose_name="Descuento cochera")
     recargo_frente = models.FloatField(null=True, blank=True, verbose_name="Recargo por frente")
     recargo_piso_intermedio = models.FloatField(null=True, blank=True, verbose_name="Recargo por piso intermedio")
