@@ -381,42 +381,28 @@ def pricing(request, id_proyecto):
             desde = dato.proyecto.desde
 
             if dato.tipo == "COCHERA":
-
-                if dato.proyecto.nombre != "ZOE":
-                    desde = dato.proyecto.desde*(1-0.24)
-
-                if dato.proyecto.nombre == "ZOE":
-                    desde = dato.proyecto.desde*(1-0.23)  
+                desde = dato.proyecto.desde*dato.proyecto.descuento_cochera
 
             if param_uni.frente == "SI":
-                desde = desde*1.03
+                desde = desde*dato.proyecto.recargo_frente
 
             if param_uni.piso_intermedio == "SI":
-                desde =desde*1.02
+                desde =desde*dato.proyecto.recargo_piso_intermedio
 
             if param_uni.cocina_separada == "SI":
-                desde = desde*1.03
+                desde = desde*dato.proyecto.recargo_cocina_separada
 
             if param_uni.local == "SI":
-                desde = desde*1.75
+                desde = desde*dato.proyecto.recargo_local
 
             if param_uni.menor_45_m2 == "SI":
-                desde = desde*1.05
+                desde = desde*dato.proyecto.recargo_menor_45
 
-            if param_uni.menor_50_m2 == "SI" and dato.proyecto.nombre == "ZOE":
-                desde = desde*1.05
-
-            if param_uni.menor_50_m2 == "SI" and dato.proyecto.nombre == "TORRE RED":
-                desde = desde*1.00
-            
-            if param_uni.menor_50_m2 == "SI" and dato.proyecto.nombre == "TORRE BLUE":
-                desde = desde*1.03
-
-            if param_uni.menor_50_m2 == "SI" and dato.proyecto.nombre == "TORRE GREEN":
-                desde = desde*1.05
+            if param_uni.menor_50_m2 == "SI":
+                desde = desde*dato.proyecto.recargo_menor_50
 
             if param_uni.otros == "SI":
-                desde = desde*1.1   
+                desde = desde*dato.proyecto.recargo_otros 
 
             #Aqui calculamos el contado/financiado
             
@@ -829,6 +815,15 @@ def detalleventa(request, id_venta):
 
 
     return render(request, 'detallesventa.html', {'datos':datos})
+
+
+def modificarpreciobase(request):
+
+    datos = []
+
+    proyectos = Proyectos.objects.all()
+
+
 
 
 
