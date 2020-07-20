@@ -836,7 +836,15 @@ def cotizador(request, id_unidad):
 
     datos = Unidades.objects.get(id = id_unidad)
 
-    return render(request, 'cotizador.html', {'datos':datos})
+    resultados = []
+
+    if request.method == 'POST':
+
+        resultados = 1
+
+        datos_formulario = request.POST.items()
+
+    return render(request, 'cotizador.html', {'datos':datos, 'resultados':resultados})
 
 
 

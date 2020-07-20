@@ -19,34 +19,108 @@
 
             {% csrf_token %}
 
+            
+
             <div style="display: inline-block; margin-top: 5%;">
 
-                <label for="unidad"><h6>Nombre de la unidad</h6></label>
+                <h5>Datos de la unidad</h5>
     
             </div>
+
+            <b><hr class = "my-4" style="width: 100%;"></b>
     
-            <div style="margin-bottom: 2%; width: 80%; margin-left: 10%;">
+            <div style="margin-top: 2%; width: 80%; margin-left: 2%; text-align: left;">
     
-                <input name="unidad" type="search" class="form-control form-control" placeholder="Ej: TORRE BLUE PISO 3 A" list="unidades">
-    
-            </div>
-    
+                <p> <b>Proyecto:</b> {{datos.proyecto.nombre}}</p>
+                <p> <b>Piso:</b> {{datos.piso_unidad}}</p>
+                <p> <b>Unidad:</b> {{datos.nombre_unidad}}</p>
+                <p> <b>Superficie:</b> m2</p>
+                <p> <b>Precio de contado:</b> $</p>
             
+            </div>
+
+            {% if resultados %}
+
+            <b><hr class = "my-4" style="width: 100%;"></b>
+
+            <h5>Resultados de la simulación</h5>
+
+            <b><hr class = "my-4" style="width: 100%;"></b>
+
+            <div style="margin-left: 1%; margin-right: 1%;">
+
+                <table class = "table table-hover" style="text-align: center;">
+                    <thead>
+            
+                        <tr class = "table-dark">
+                            <th scope = "row" style="vertical-align: middle;"> <small>CONCEPTO</small> </th>
+                            <th scope = "row" style="vertical-align: middle;"> <small>CANTIDAD</small> </th>
+                            <th scope = "row"style="vertical-align: middle;" > <small>MONTO EN PESOS</small>  </th>
+                            <th scope = "row"style="vertical-align: middle;"> <small>MONTO EN Hº</small> </th>
+    
+                        </tr>
+                    </thead>
+            
+                    <tbody>   
+            
+                        <tr class = "table-light">
+                            <td style="width: 30%;"> <b> <small>ANTICIPO</small> </b> </td>
+                            <td style="width: 20%;"> <b> <small>1</small> </b> </td>
+                            <td style="width: 20%;"> <b> <small>{{i.0.tipologia}}</small> </b> </td>
+                            <td style="width: 30%;"> <b> <small>{{i.1|floatformat:2}}m2</small></b> </td>
+    
+                        </tr>
+
+                        <tr class = "table-light">
+                            <td style="width: 30%;"> <b> <small>CUOTAS ESPERA</small> </b> </td>
+                            <td style="width: 20%;"> <b> <small>{{i.0.tipo}}</small> </b> </td>
+                            <td style="width: 20%;"> <b> <small>{{i.0.tipologia}}</small> </b> </td>
+                            <td style="width: 30%;"> <b> <small>{{i.1|floatformat:2}}m2</small></b> </td>
+    
+                        </tr>
+    
+                        <tr class = "table-light">
+                            <td style="width: 30%;"> <b> <small>APORTE CE</small> </b> </td>
+                            <td style="width: 20%;"> <b> <small>{{i.0.tipo}}</small> </b> </td>
+                            <td style="width: 20%;"> <b> <small>{{i.0.tipologia}}</small> </b> </td>
+                            <td style="width: 30%;"> <b> <small>{{i.1|floatformat:2}}m2</small></b> </td>
+    
+                        </tr>
+    
+
+                        <tr class = "table-light">
+                            <td style="width: 30%;"> <b> <small>CUOTAS POSESIÓN</small> </b> </td>
+                            <td style="width: 20%;"> <b> <small>{{i.0.tipo}}</small> </b> </td>
+                            <td style="width: 20%;"> <b> <small>{{i.0.tipologia}}</small> </b> </td>
+                            <td style="width: 30%;"> <b> <small>{{i.1|floatformat:2}}m2</small></b> </td>
+    
+                        </tr>
+    
+    
+                    </tbody>
+                 
+            
+            
+                </table>
+
+
+            </div>
+
+            {% endif %}
+
+
+    
+
+            <b><hr class = "my-4" style="width: 100%;"></b>
+
+                <h5>Datos para simular</h5>
+
+            <b><hr class = "my-4" style="width: 100%;"></b>
+    
+    
             <div style="display: inline-block;">
     
-                <label for="comprador"><h6>Comprador</h6></label>
-    
-            </div>
-    
-            <div style="margin-bottom: 2%; width: 70%; margin-left: 15%;">
-    
-                <input name="comprador" type="text" class="form-control form-control" placeholder="Nombre del comprador">
-    
-            </div>
-    
-            <div style="display: inline-block;">
-    
-                <label for="precio_venta"><h6>Precio de venta</h6></label>
+                <label for="precio_venta"><h6>Anticipo a entregar</h6></label>
     
             </div>
     
@@ -61,10 +135,22 @@
                 <input name="precio_venta" type="number" class="form-control form-control" aria-label="Amount">
                 
             </div>
+
+            <div style="display: inline-block;">
+    
+                <label for="cuotas"><h6>Cuotas esperas</h6></label>
+    
+            </div>
+    
+            <div style="margin-bottom: 2%; width: 30%; margin-left: 35%;">
+    
+                <input name="cuotas" type="number" class="form-control form-control" list="art">
+    
+            </div>
     
             <div style="display: inline-block;">
     
-                <label for="anticipo"><h6>Anticipo</h6></label>
+                <label for="anticipo"><h6>Aporte CE</h6></label>
     
             </div>
 
@@ -84,51 +170,24 @@
     
             <div style="display: inline-block;">
     
-                <label for="cuotas"><h6>Cuotas restantes</h6></label>
+                <label for="cuotas"><h6>Cuotas Posesión</h6></label>
     
             </div>
     
             <div style="margin-bottom: 2%; width: 30%; margin-left: 35%;">
     
-                <input name="cuotas" type="number" class="form-control form-control" placeholder="Cuotas/pagos" list="art">
+                <input name="cuotas" type="number" class="form-control form-control" list="art">
     
             </div>
 
-            <div style="display: inline-block;">
-    
-                <label for="fecha"><h6>Fecha de la operación</h6></label>
-    
-            </div>
-    
-            <div style="margin-bottom: 2%; width: 30%; margin-left: 35%;">
-    
-                <input name="fecha" type="date" class="form-control form-control">
-    
-            </div>
+            <b><hr class = "my-4" style="width: 100%;"></b>
 
-                
-            <div class="form-group" style="width: 80%; margin-left: 10%; margin-bottom: 2%;">
-                <label for="observaciones"> <h6>Observaciones de la operación</h6></label>
-                <textarea class="form-control" name="observaciones" rows="3"></textarea>
-              </div>
-    
-            <div class="custom-control custom-radio">
-                <input type="radio" id="customRadio1" name="tipo_venta" class="custom-control-input" value="VENTA" checked="">
-                <label class="custom-control-label" for="customRadio1">VENTA</label>
-              </div>
-
-              <div class="custom-control custom-radio">
-                <input type="radio" id="customRadio2" name="tipo_venta" class="custom-control-input" value="CANJE">
-                <label class="custom-control-label" for="customRadio2">CANJE</label>
-              </div>
-
-
-
+            
 
                   
               <div style="margin-top: 2%; margin-bottom: 5%;">
     
-                <button type="submit" class="btn btn-primary" style="margin-bottom: 5%;" >Cargar venta</button>
+                <button type="submit" class="btn btn-primary" style="margin-bottom: 5%;" >Simular</button>
     
               </div>
 

@@ -99,7 +99,7 @@
     
                 {% for i in datos.datos_unidades %}
                 <tr class = "table-light">
-                    <td style="width: 2%;"> <a href=" {% url 'Cotizador' i.0.id %}" style="color: rgb({{datos.proyecto.color}};"> <small> <b>{{i.0.piso_unidad}} - {{i.0.nombre_unidad}}</b> </small></a> </td>
+                    <td style="width: 2%;"> <a href=" {% url 'Cotizador' i.0.id %}" style="color: rgb({{datos.proyecto.color}});"> <small> <b>{{i.0.piso_unidad}} - {{i.0.nombre_unidad}}</b> </small></a> </td>
                     <td style="width: 5%;"> <b> <small>{{i.0.tipo}}</small> </b> </td>
                     <td style="width: 3%;"> <b> <small>{{i.0.tipologia}}</small> </b> </td>
                     <td style="width: 5%;"> <b> <small>{{i.1|floatformat:2}}m2</small></b> </td>
