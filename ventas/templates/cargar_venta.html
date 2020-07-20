@@ -1,3 +1,4 @@
+{% if perms.ventas.view_pricing %} 
 {% extends "users/inicio.html" %}
 
 {% load static %}
@@ -180,3 +181,5 @@
  
     
 {% endblock %}
+
+{% endif %} 
