@@ -104,7 +104,7 @@
 
         {% if request.user.username != "HC" %}
 
-        {% if perms.ventas.view_pricingresumen %}
+        {% if perms.ventas.view_archivosareaventas %}
 
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -122,11 +122,9 @@
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="/ventas/panelpricing">Pricing de unidades</a>
 
-            {% if perms.ventas.view_ventasrealizadas%}
 
             <a class="dropdown-item" href="/ventas/cargarventa">Panel de ventas</a>
 
-            {% endif %}
 
             <div class="dropdown-divider"></div>
 
