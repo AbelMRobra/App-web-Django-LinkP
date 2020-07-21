@@ -910,7 +910,7 @@ def cotizador(request, id_unidad):
             if dato[0] == "cuotas_p":
                 cuotas_p = dato[1]
 
-        precio_finan = (float(precio_contado - float(anticipo))*(1 + datos.proyecto.tasa_f)) + float(anticipo)
+        precio_finan = (float(precio_contado - float(anticipo))*(1 + (datos.proyecto.tasa_f/100))) + float(anticipo)
         total_cuotas = float(cuota_esp) + float(cuotas_p)*1.65 + float(aporte)
         importe_cuota_esp = (precio_finan-float(anticipo))/total_cuotas
         importe_aporte = importe_cuota_esp*float(aporte)
