@@ -933,11 +933,6 @@ def cotizador(request, id_unidad):
         for d in range(int(cuotas_p)):
             cuotas_pose.append(1.65)
 
-        print(cuotas_espera)
-        print(cuotas_pose)
-        print(aporte_va)
-
-
         valor_auxiliar_espera = np.npv(rate=(datos.proyecto.tasa_f/100), values=cuotas_espera)
 
         valor_auxiliar_pose = np.npv(rate=(datos.proyecto.tasa_f/100), values=cuotas_pose)
@@ -947,11 +942,13 @@ def cotizador(request, id_unidad):
 
         factor = valor_auxiliar_aporte + valor_auxiliar_espera + valor_auxiliar_pose
 
-        print(factor)
-
         incremento = (total_cuotas/factor) - 1
 
-        precio_finan = (float(precio_contado - float(anticipo))*(1 + incremento)) + float(anticipo)
+        print(incremento)
+
+        precio_finan = ((precio_contado - float(anticipo))*(1 + incremento)) + float(anticipo)
+
+        print(precio_finan)
         
         importe_cuota_esp = (precio_finan-float(anticipo))/total_cuotas
         importe_aporte = importe_cuota_esp*float(aporte)
