@@ -910,14 +910,56 @@ def cotizador(request, id_unidad):
             if dato[0] == "cuotas_p":
                 cuotas_p = dato[1]
 
-        precio_finan = (float(precio_contado - float(anticipo))*(1 + (datos.proyecto.tasa_f/100))) + float(anticipo)
         total_cuotas = float(cuota_esp) + float(cuotas_p)*1.65 + float(aporte)
+
+        cuotas_espera = []
+        cuotas_pose = []
+        aporte_va = []
+
+        for i in range(1):
+            cuotas_espera.append(0)
+            cuotas_pose.append(0)
+            aporte_va.append(0)
+
+        for i in range(int(cuota_esp)):
+            cuotas_espera.append(1)
+            cuotas_pose.append(0)
+            aporte_va.append(0)
+
+        if int(aporte) > 0:
+            aporte_va.pop()
+            aporte_va.append(int(aporte))
+
+        for d in range(int(cuotas_p)):
+            cuotas_pose.append(1.65)
+
+        print(cuotas_espera)
+        print(cuotas_pose)
+        print(aporte_va)
+
+
+        valor_auxiliar_espera = np.npv(rate=(datos.proyecto.tasa_f/100), values=cuotas_espera)
+
+        valor_auxiliar_pose = np.npv(rate=(datos.proyecto.tasa_f/100), values=cuotas_pose)
+
+        valor_auxiliar_aporte = np.npv(rate=(datos.proyecto.tasa_f/100), values=aporte_va)
+
+
+        factor = valor_auxiliar_aporte + valor_auxiliar_espera + valor_auxiliar_pose
+
+        print(factor)
+
+        incremento = (total_cuotas/factor) - 1
+
+        precio_finan = (float(precio_contado - float(anticipo))*(1 + incremento)) + float(anticipo)
+        
         importe_cuota_esp = (precio_finan-float(anticipo))/total_cuotas
         importe_aporte = importe_cuota_esp*float(aporte)
         importe_cuota_p = importe_cuota_esp*1.65
         importe_cuota_p_h = importe_cuota_p/hormigon.valor
         importe_aporte_h = importe_aporte/hormigon.valor
         importe_cuota_esp_h = importe_cuota_esp/hormigon.valor
+
 
         resultados.append(precio_finan)
         resultados.append(cuota_esp)
