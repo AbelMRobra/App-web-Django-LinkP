@@ -34,8 +34,8 @@
                 <p> <b>Proyecto:</b> {{datos.proyecto.nombre}}</p>
                 <p> <b>Piso:</b> {{datos.piso_unidad}}</p>
                 <p> <b>Unidad:</b> {{datos.nombre_unidad}}</p>
-                <p> <b>Superficie:</b> m2</p>
-                <p> <b>Precio de contado:</b> $</p>
+                <p> <b>Superficie:</b> {{m2|floatformat:2}}m2</p>
+                <p> <b>Precio de contado:</b> ${{precio_contado|floatformat:0|intcomma}}</p>
             
             </div>
 
@@ -66,33 +66,33 @@
                         <tr class = "table-light">
                             <td style="width: 30%;"> <b> <small>ANTICIPO</small> </b> </td>
                             <td style="width: 20%;"> <b> <small>1</small> </b> </td>
-                            <td style="width: 20%;"> <b> <small>{{i.0.tipologia}}</small> </b> </td>
-                            <td style="width: 30%;"> <b> <small>{{i.1|floatformat:2}}m2</small></b> </td>
+                            <td style="width: 20%;"> <b> <small>${{resultados.0|floatformat:0|intcomma}}</small> </b> </td>
+                            <td style="width: 30%;"> <b> <small>{{resultados.1|floatformat:2}}m3</small></b> </td>
     
                         </tr>
 
                         <tr class = "table-light">
                             <td style="width: 30%;"> <b> <small>CUOTAS ESPERA</small> </b> </td>
-                            <td style="width: 20%;"> <b> <small>{{i.0.tipo}}</small> </b> </td>
-                            <td style="width: 20%;"> <b> <small>{{i.0.tipologia}}</small> </b> </td>
-                            <td style="width: 30%;"> <b> <small>{{i.1|floatformat:2}}m2</small></b> </td>
+                            <td style="width: 20%;"> <b> <small>{{resultados.3|floatformat:0}}</small> </b> </td>
+                            <td style="width: 20%;"> <b> <small>${{resultados.6|floatformat:0|intcomma}}</small> </b> </td>
+                            <td style="width: 30%;"> <b> <small>{{resultados.10|floatformat:2}}m3</small></b> </td>
     
                         </tr>
     
                         <tr class = "table-light">
                             <td style="width: 30%;"> <b> <small>APORTE CE</small> </b> </td>
-                            <td style="width: 20%;"> <b> <small>{{i.0.tipo}}</small> </b> </td>
-                            <td style="width: 20%;"> <b> <small>{{i.0.tipologia}}</small> </b> </td>
-                            <td style="width: 30%;"> <b> <small>{{i.1|floatformat:2}}m2</small></b> </td>
+                            <td style="width: 20%;"> <b> <small>{{resultados.7|floatformat:0}}</small> </b> </td>
+                            <td style="width: 20%;"> <b> <small>${{resultados.4|floatformat:0|intcomma}}</small> </b> </td>
+                            <td style="width: 30%;"> <b> <small>{{resultados.11|floatformat:2}}m3</small></b> </td>
     
                         </tr>
     
 
                         <tr class = "table-light">
                             <td style="width: 30%;"> <b> <small>CUOTAS POSESIÓN</small> </b> </td>
-                            <td style="width: 20%;"> <b> <small>{{i.0.tipo}}</small> </b> </td>
-                            <td style="width: 20%;"> <b> <small>{{i.0.tipologia}}</small> </b> </td>
-                            <td style="width: 30%;"> <b> <small>{{i.1|floatformat:2}}m2</small></b> </td>
+                            <td style="width: 20%;"> <b> <small>{{resultados.5|floatformat:0}}</small> </b> </td>
+                            <td style="width: 20%;"> <b> <small>${{resultados.8|floatformat:0|intcomma}}</small> </b> </td>
+                            <td style="width: 30%;"> <b> <small>{{resultados.9|floatformat:2}}m3</small></b> </td>
     
                         </tr>
     
@@ -102,6 +102,8 @@
             
             
                 </table>
+
+                *Precio financiado es ${{resultados.2|floatformat:0|intcomma}}
 
 
             </div>
@@ -120,7 +122,7 @@
     
             <div style="display: inline-block;">
     
-                <label for="precio_venta"><h6>Anticipo a entregar</h6></label>
+                <label for="anticipo"><h6>Anticipo a entregar</h6></label>
     
             </div>
     
@@ -132,25 +134,25 @@
 
                 </div>
 
-                <input name="precio_venta" type="number" class="form-control form-control" aria-label="Amount">
+                <input name="anticipo" type="number" class="form-control form-control" aria-label="Amount" value="0">
                 
             </div>
 
             <div style="display: inline-block;">
     
-                <label for="cuotas"><h6>Cuotas esperas</h6></label>
+                <label for="cuotas_esp"><h6>Cuotas esperas</h6></label>
     
             </div>
     
             <div style="margin-bottom: 2%; width: 30%; margin-left: 35%;">
     
-                <input name="cuotas" type="number" class="form-control form-control" list="art">
+                <input name="cuotas_esp" type="number" class="form-control form-control" list="art" value="0">
     
             </div>
     
             <div style="display: inline-block;">
     
-                <label for="anticipo"><h6>Aporte CE</h6></label>
+                <label for="aporte"><h6>Aporte CE</h6></label>
     
             </div>
 
@@ -163,20 +165,20 @@
 
                 </div>
 
-                <input name="anticipo" type="number" class="form-control form-control">
+                <input name="aporte" type="number" class="form-control form-control" value="0">
             
             </div>
     
     
             <div style="display: inline-block;">
     
-                <label for="cuotas"><h6>Cuotas Posesión</h6></label>
+                <label for="cuotas_p"><h6>Cuotas Posesión</h6></label>
     
             </div>
     
             <div style="margin-bottom: 2%; width: 30%; margin-left: 35%;">
     
-                <input name="cuotas" type="number" class="form-control form-control" list="art">
+                <input name="cuotas_p" type="number" class="form-control form-control" list="art" value="0">
     
             </div>
 

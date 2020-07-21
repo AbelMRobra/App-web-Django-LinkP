@@ -3,6 +3,7 @@ from .models import EstudioMercado, PricingResumen
 from proyectos.models import Unidades, Proyectos
 from finanzas.models import Almacenero
 from ventas.models import Pricing, ArchivosAreaVentas, VentasRealizadas
+from presupuestos.models import Constantes
 from datetime import date
 from django.shortcuts import redirect
 import datetime
@@ -836,15 +837,100 @@ def cotizador(request, id_unidad):
 
     datos = Unidades.objects.get(id = id_unidad)
 
+    hormigon = Constantes.objects.get(id = 7)
+
+    m2 = 0
+
+    desde = 0
+
+    if datos.sup_equiv > 0:
+
+        m2 = datos.sup_equiv
+
+    else:
+
+        m2 = datos.sup_propia + datos.sup_balcon + datos.sup_comun + datos.sup_patio
+
+
+    try:
+        param_uni = Pricing.objects.get(unidad = datos)
+        desde = datos.proyecto.desde
+
+        if datos.tipo == "COCHERA":
+            desde = datos.proyecto.desde*datos.proyecto.descuento_cochera
+
+        if param_uni.frente == "SI":
+            desde = desde*datos.proyecto.recargo_frente
+
+        if param_uni.piso_intermedio == "SI":
+            desde =desde*datos.proyecto.recargo_piso_intermedio
+
+        if param_uni.cocina_separada == "SI":
+            desde = desde*datos.proyecto.recargo_cocina_separada
+
+        if param_uni.local == "SI":
+            desde = desde*datos.proyecto.recargo_local
+
+        if param_uni.menor_45_m2 == "SI":
+            desde = desde*datos.proyecto.recargo_menor_45
+
+        if param_uni.menor_50_m2 == "SI":
+            desde = desde*datos.proyecto.recargo_menor_50
+
+        if param_uni.otros == "SI":
+            desde = desde*datos.proyecto.recargo_otros 
+
+    except:
+
+        pass
+
+    precio_contado = desde*m2
+
     resultados = []
 
     if request.method == 'POST':
 
-        resultados = 1
-
         datos_formulario = request.POST.items()
 
-    return render(request, 'cotizador.html', {'datos':datos, 'resultados':resultados})
+        for dato in datos_formulario:
+            
+            if dato[0] == "anticipo":
+                
+                anticipo = dato[1]
+
+                anticipo_h = float(anticipo)/hormigon.valor
+
+                resultados.append(anticipo)
+                resultados.append(anticipo_h)
+
+            if dato[0] == "cuotas_esp":
+                cuota_esp = dato[1]
+            if dato[0] == "aporte":
+                aporte = dato[1]
+            if dato[0] == "cuotas_p":
+                cuotas_p = dato[1]
+
+        precio_finan = (float(precio_contado - float(anticipo))*(1 + datos.proyecto.tasa_f)) + float(anticipo)
+        total_cuotas = float(cuota_esp) + float(cuotas_p)*1.65 + float(aporte)
+        importe_cuota_esp = (precio_finan-float(anticipo))/total_cuotas
+        importe_aporte = importe_cuota_esp*float(aporte)
+        importe_cuota_p = importe_cuota_esp*1.65
+        importe_cuota_p_h = importe_cuota_p/hormigon.valor
+        importe_aporte_h = importe_aporte/hormigon.valor
+        importe_cuota_esp_h = importe_cuota_esp/hormigon.valor
+
+        resultados.append(precio_finan)
+        resultados.append(cuota_esp)
+        resultados.append(importe_aporte)
+        resultados.append(cuotas_p)
+        resultados.append(importe_cuota_esp)
+        resultados.append(aporte)
+        resultados.append(importe_cuota_p)
+        resultados.append(importe_cuota_p_h)
+        resultados.append(importe_cuota_esp_h)
+        resultados.append(importe_aporte_h)
+
+    return render(request, 'cotizador.html', {'datos':datos, 'resultados':resultados, 'precio_contado':precio_contado, 'm2':m2})
 
 
 
