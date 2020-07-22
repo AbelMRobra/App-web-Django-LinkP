@@ -46,16 +46,16 @@
             <thead>
     
                 <tr class = "table-dark">
-                    <th scope = "row"> <font style = "vertical-align: heredar;"> PROYECTO</font></th>
-                    <th scope = "row"> <font style = "vertical-align: heredar;"> V.R </font></th>
-                    <th scope = "row"> <font style = "vertical-align: heredar;"> V:R/M2  </font></th>
-                    <th scope = "row"> <font style = "vertical-align: heredar;"> SALDO MAT  </font></th>
-                    <th scope = "row"> <font style = "vertical-align: heredar;"> CREDITO  </font></th>
-                    <th scope = "row"> <font style = "vertical-align: heredar;"> IMPREVISTO  </font></th>
-                    <th scope = "row"> <font style = "vertical-align: heredar;"> SALDO MO </font></th>
-                    <th scope = "row"> <font style = "vertical-align: heredar;"> FDR </font></th>
-                    <th scope = "row"> <font style = "vertical-align: heredar;"> ANTICIPO </font></th>
-                    <th scope = "row"> <font style = "vertical-align: heredar;"> SALDO TOTAL </font></th>
+                    <th scope = "row" colspan="2">PROYECTO</th>
+                    <th scope = "row">V.R</th>
+                    <th scope = "row">V:R/M2</th>
+                    <th scope = "row">SALDO MAT</th>
+                    <th scope = "row">CREDITO</th>
+                    <th scope = "row">IMPREVISTO</th>
+                    <th scope = "row">SALDO MO</th>
+                    <th scope = "row">FDR </th>
+                    <th scope = "row">ANTICIPO </th>
+                    <th scope = "row">SALDO TOTAL </th>
                    
                 </tr>
             </thead>
@@ -63,16 +63,17 @@
             <tbody>
     
                 <tr class = "table-light">
-                    <td style="width: 15%;"> <b>{{ i.0 }}</b> </td>
-                    <td style="width: 10%;"> ${{ i.1|floatformat:0|intcomma }}</td> 
-                    <td style="width: 5%;"> ${{ i.2|floatformat:0|intcomma }}</td> 
-                    <td style="width: 10%;">${{ i.3|floatformat:0|intcomma }}</td> 
-                    <td style="width: 10%;">${{ i.5|floatformat:0|intcomma }}</td> 
-                    <td style="width: 10%;">${{ i.9|floatformat:0|intcomma }}  </td> 
-                    <td style="width: 10%;">${{ i.4|floatformat:0|intcomma }}</td> 
-                    <td style="width: 10%;">${{ i.7|floatformat:0|intcomma }}</td> 
-                    <td style="width: 10%;">${{ i.8|floatformat:0|intcomma }}</td> 
-                    <td style="width: 10%;">${{ i.6|floatformat:0|intcomma }}</td> 
+                    <td style="width: 15%;  vertical-align: middle;"> <img src="{{i.0.iamgen.url}}"  class="img-fluid" alt="..." style="max-width:100%;width:auto;height:auto;"> </td>
+                    <td style="width: 15%; color: rgb({{i.0.color}}); vertical-align: middle;"> <small>{{ i.0.nombre }}</small></b> </td>
+                    <td style="width: 10%;"> <small> ${{ i.1|floatformat:0|intcomma }}</small></td> 
+                    <td style="width: 5%;"> <small> <b>${{ i.2|floatformat:0|intcomma }}</b> </small> </td> 
+                    <td style="width: 10%;"> <small>${{ i.3|floatformat:0|intcomma }}</small> </td> 
+                    <td style="width: 10%;"> <small>${{ i.5|floatformat:0|intcomma }}</small> </td> 
+                    <td style="width: 10%;"> <small>${{ i.9|floatformat:0|intcomma }}</small>   </td> 
+                    <td style="width: 10%;"> <small>${{ i.4|floatformat:0|intcomma }}</small> </td> 
+                    <td style="width: 10%;"> <small>${{ i.7|floatformat:0|intcomma }}</small> </td> 
+                    <td style="width: 10%;"> <small>${{ i.8|floatformat:0|intcomma }}</small></td> 
+                    <td style="width: 10%;"> <small> <b>${{ i.6|floatformat:0|intcomma }} </b></small> </td> 
               
                 </tr>
             </tbody>
