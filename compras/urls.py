@@ -1,6 +1,7 @@
 from django.urls import path, re_path
 from django.conf.urls import url
 from . import views
+from .views import Reegistrodecompras
 from django.contrib.auth.decorators import login_required
 
 urlpatterns = [  
@@ -15,5 +16,6 @@ urlpatterns = [
     url(r'^informe$', login_required(views.informe), name = 'Informe de área'),
     url(r'^stockprov$', login_required(views.stockproveedores), name = 'Stock Proveedores'),
     url(r'^analisiscompras$', login_required(views.analisiscompras), name = 'Analisis Compras'),
+    url(r'^registrodecompras/$', login_required(Reegistrodecompras.as_view()), name = 'Descargar compras'),
 
 ]
