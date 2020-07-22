@@ -1705,27 +1705,68 @@ def InformeArea(request):
 
     proy_presup = []
 
+    contador = 0
+
+    proyecto_300 = 0
+    m2_300 = 0
+
+    valor_proyecto_300 = 0
+    vr_M2_300 = 0
+    valor_proyecto_materiales_300 = 0
+    valor_proyecto_mo_300 = 0
+    total_creditos_300 = 0
+    total_fdr_300 = 0
+    total_ant_300 = 0
+    imprevisto_300 = 0
+    saldo_total_300 = 0
+
     for proyecto in proyectos:
 
-        try:
+        if "300" in proyecto.nombre:
+            m2_300 = m2_300 + proyecto.m2
 
-            datos_presup = Presupuestos.objects.get(proyecto = proyecto)
+            try:
 
-            valor_proyecto = datos_presup.valor
-            vr_M2 = valor_proyecto/proyecto.m2
-            valor_proyecto_materiales = datos_presup.saldo_mat
-            valor_proyecto_mo = datos_presup.saldo_mo
-            total_creditos = datos_presup.credito
-            total_fdr = datos_presup.fdr
-            total_ant = datos_presup.anticipos
-            imprevisto = datos_presup.imprevisto
+                proyecto_300 = proyecto
 
-            saldo_total = valor_proyecto_materiales + valor_proyecto_mo + total_creditos + total_fdr + total_ant + imprevisto
+                datos_presup = Presupuestos.objects.get(proyecto = proyecto)
 
-            proy_presup.append((proyecto, valor_proyecto, vr_M2, valor_proyecto_materiales, valor_proyecto_mo, total_creditos, saldo_total, total_fdr, total_ant, imprevisto))
-        except:
-            print("No esta cargado el presupuesto del proyecto")
-  
+                valor_proyecto_300 = valor_proyecto_300 + datos_presup.valor
+                vr_M2_300 = vr_M2_300 + valor_proyecto_300/proyecto.m2
+                valor_proyecto_materiales_300 = valor_proyecto_materiales_300 + datos_presup.saldo_mat
+                valor_proyecto_mo_300 = valor_proyecto_mo_300 + datos_presup.saldo_mo
+                total_creditos_300  = total_creditos_300 + datos_presup.credito
+                total_fdr_300 = total_fdr_300 + datos_presup.fdr
+                total_ant_300  =  total_ant_300 + datos_presup.anticipos
+                imprevisto_300 = imprevisto_300 + datos_presup.imprevisto
+
+                saldo_total_300 = saldo_total_300 + valor_proyecto_materiales_300 + valor_proyecto_mo_300 + total_creditos_300 + total_fdr_300 + total_ant_300 + imprevisto_300
+
+            except:
+                print("No esta cargado el presupuesto del proyecto")
+
+        else:
+
+            try:
+
+                datos_presup = Presupuestos.objects.get(proyecto = proyecto)
+
+                valor_proyecto = datos_presup.valor
+                vr_M2 = valor_proyecto/proyecto.m2
+                valor_proyecto_materiales = datos_presup.saldo_mat
+                valor_proyecto_mo = datos_presup.saldo_mo
+                total_creditos = datos_presup.credito
+                total_fdr = datos_presup.fdr
+                total_ant = datos_presup.anticipos
+                imprevisto = datos_presup.imprevisto
+
+                saldo_total = valor_proyecto_materiales + valor_proyecto_mo + total_creditos + total_fdr + total_ant + imprevisto
+
+                proy_presup.append((proyecto, valor_proyecto, vr_M2, valor_proyecto_materiales, valor_proyecto_mo, total_creditos, saldo_total, total_fdr, total_ant, imprevisto))
+            except:
+                print("No esta cargado el presupuesto del proyecto")
+    
+    proy_presup.append((proyecto_300, valor_proyecto_300, vr_M2_300, valor_proyecto_materiales_300, valor_proyecto_mo_300, total_creditos_300, saldo_total_300, total_fdr_300, total_ant_300, imprevisto_300))
 
     cant_proy_act = len(proy_presup)
 

@@ -46,16 +46,16 @@
             <thead>
     
                 <tr class = "table-dark">
-                    <th scope = "row" colspan="2">PROYECTO</th>
-                    <th scope = "row">V.R</th>
-                    <th scope = "row">V:R/M2</th>
-                    <th scope = "row">SALDO MAT</th>
-                    <th scope = "row">CREDITO</th>
-                    <th scope = "row">IMPREVISTO</th>
-                    <th scope = "row">SALDO MO</th>
-                    <th scope = "row">FDR </th>
-                    <th scope = "row">ANTICIPO </th>
-                    <th scope = "row">SALDO TOTAL </th>
+                    <th scope = "row" colspan="2" style="  vertical-align: middle;">PROYECTO</th>
+                    <th scope = "row" style="  vertical-align: middle;">V.R</th>
+                    <th scope = "row" style="  vertical-align: middle;">V:R/M2</th>
+                    <th scope = "row" style="  vertical-align: middle;">SALDO MAT</th>
+                    <th scope = "row" style="  vertical-align: middle;">CREDITO</th>
+                    <th scope = "row" style="  vertical-align: middle;">IMPREVISTO</th>
+                    <th scope = "row" style="  vertical-align: middle;">SALDO MO</th>
+                    <th scope = "row" style="  vertical-align: middle;">FDR </th>
+                    <th scope = "row" style="  vertical-align: middle;">ANTICIPO </th>
+                    <th scope = "row" style="  vertical-align: middle;">SALDO TOTAL </th>
                    
                 </tr>
             </thead>
@@ -64,16 +64,29 @@
     
                 <tr class = "table-light">
                     <td style="width: 15%;  vertical-align: middle;"> <img src="{{i.0.iamgen.url}}"  class="img-fluid" alt="..." style="max-width:100%;width:auto;height:auto;"> </td>
-                    <td style="width: 15%; color: rgb({{i.0.color}}); vertical-align: middle;"> <small>{{ i.0.nombre }}</small></b> </td>
-                    <td style="width: 10%;"> <small> ${{ i.1|floatformat:0|intcomma }}</small></td> 
-                    <td style="width: 5%;"> <small> <b>${{ i.2|floatformat:0|intcomma }}</b> </small> </td> 
-                    <td style="width: 10%;"> <small>${{ i.3|floatformat:0|intcomma }}</small> </td> 
-                    <td style="width: 10%;"> <small>${{ i.5|floatformat:0|intcomma }}</small> </td> 
-                    <td style="width: 10%;"> <small>${{ i.9|floatformat:0|intcomma }}</small>   </td> 
-                    <td style="width: 10%;"> <small>${{ i.4|floatformat:0|intcomma }}</small> </td> 
-                    <td style="width: 10%;"> <small>${{ i.7|floatformat:0|intcomma }}</small> </td> 
-                    <td style="width: 10%;"> <small>${{ i.8|floatformat:0|intcomma }}</small></td> 
-                    <td style="width: 10%;"> <small> <b>${{ i.6|floatformat:0|intcomma }} </b></small> </td> 
+
+                    {% if "300" in i.0.nombre  %}
+
+                    <td style="width: 15%; color: rgb({{i.0.color}}); vertical-align: middle;"> <small><b>#300</b> </small></b> </td>
+
+
+
+
+                    {% else  %}
+
+                    <td style="width: 15%; color: rgb({{i.0.color}}); vertical-align: middle;"> <small><b>{{ i.0.nombre }}</b> </small></b> </td>
+
+                    {% endif  %}
+                    
+                    <td style="width: 10%; vertical-align: middle;"> <small> ${{ i.1|floatformat:0|intcomma }}</small></td> 
+                    <td style="width: 5%; vertical-align: middle;"> <small> <b>${{ i.2|floatformat:0|intcomma }}</b> </small> </td> 
+                    <td style="width: 10%; vertical-align: middle; "> <small>${{ i.3|floatformat:0|intcomma }}</small> </td> 
+                    <td style="width: 10%; vertical-align: middle;"> <small>${{ i.5|floatformat:0|intcomma }}</small> </td> 
+                    <td style="width: 10%; vertical-align: middle;"> <small>${{ i.9|floatformat:0|intcomma }}</small>   </td> 
+                    <td style="width: 10%; vertical-align: middle;"> <small>${{ i.4|floatformat:0|intcomma }}</small> </td> 
+                    <td style="width: 10%; vertical-align: middle;"> <small>${{ i.7|floatformat:0|intcomma }}</small> </td> 
+                    <td style="width: 10%; vertical-align: middle;"> <small>${{ i.8|floatformat:0|intcomma }}</small></td> 
+                    <td style="width: 10%; vertical-align: middle;"> <small> <b>${{ i.6|floatformat:0|intcomma }} </b></small> </td> 
               
                 </tr>
             </tbody>
