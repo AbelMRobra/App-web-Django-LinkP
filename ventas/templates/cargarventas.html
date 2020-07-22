@@ -1,10 +1,12 @@
-{% if perms.ventas.view_pricing %} 
+
 {% extends "users/inicio.html" %}
 
 {% load static %}
 {% load humanize %}
 
 {% block content %}
+
+{% if perms.ventas.view_pricing %} 
 
 <div class = "jumbotron" style="background-color: white; margin-bottom: 0px;">
     <div style="text-align: center;">
@@ -128,8 +130,9 @@
 
                     
 </div>
+
+{% endif %}
  
     
 {% endblock %}
 
-{% endif %}
