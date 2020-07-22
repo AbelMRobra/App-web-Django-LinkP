@@ -830,9 +830,9 @@ class Reegistrodecompras(TemplateView):
                 ws.column_dimensions['C'].width = 7.57
                 ws.column_dimensions['D'].width = 12.14
                 ws.column_dimensions['E'].width = 18.57
-                ws.column_dimensions['F'].width = 17.57
+                ws.column_dimensions['F'].width = 46.71
                 ws.column_dimensions['G'].width = 12
-                ws.column_dimensions['H'].width = 12
+                ws.column_dimensions['H'].width = 31
 
                 ws["A"+str(cont+1)] = d.proyecto.nombre
                 ws["B"+str(cont+1)] = d.articulo.nombre
@@ -871,6 +871,7 @@ class Reegistrodecompras(TemplateView):
 
 
                 ws["A"+str(cont+1)].font = Font(bold = True)
+                ws["A"+str(cont+1)].alignment = Alignment(horizontal = "center")
                 ws["B"+str(cont+1)].alignment = Alignment(horizontal = "center")
                 ws["C"+str(cont+1)].alignment = Alignment(horizontal = "center")
                 ws["D"+str(cont+1)].number_format = '"$"#,##0.00_-'
