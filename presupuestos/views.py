@@ -1723,7 +1723,12 @@ def InformeArea(request):
     for proyecto in proyectos:
 
         if "300" in proyecto.nombre:
+
             m2_300 = m2_300 + proyecto.m2
+
+    for proyecto in proyectos:
+
+        if "300" in proyecto.nombre:
 
             try:
 
@@ -1732,7 +1737,7 @@ def InformeArea(request):
                 datos_presup = Presupuestos.objects.get(proyecto = proyecto)
 
                 valor_proyecto_300 = valor_proyecto_300 + datos_presup.valor
-                vr_M2_300 = vr_M2_300 + valor_proyecto_300/proyecto.m2
+                vr_M2_300 = vr_M2_300 + valor_proyecto_300/m2_300
                 valor_proyecto_materiales_300 = valor_proyecto_materiales_300 + datos_presup.saldo_mat
                 valor_proyecto_mo_300 = valor_proyecto_mo_300 + datos_presup.saldo_mo
                 total_creditos_300  = total_creditos_300 + datos_presup.credito
