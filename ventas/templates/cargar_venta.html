@@ -1,12 +1,14 @@
 
 {% extends "users/inicio.html" %}
 
-{% if perms.ventas.view_pricing %} 
+
 
 {% load static %}
 {% load humanize %}
 
 {% block content %}
+
+{% if perms.ventas.view_pricing %} 
 
 <div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;">
     <div>
