@@ -46,6 +46,7 @@ class ArchivosResource(resources.ModelResource):
         model = ArchivosAreaVentas
         
 class ArchivosAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    list_display = ('fecha',)
     resources_class = ArchivosResource
 
 admin.site.register(PricingResumen, PricingResumenAdmin)
