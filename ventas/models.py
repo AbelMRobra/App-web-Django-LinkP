@@ -99,4 +99,7 @@ class ArchivosAreaVentas(models.Model):
         verbose_name = "Archivos Área Ventas"
         verbose_name_plural = "Archivos Área Ventas"
 
+    def __str__(self):
+        return self.fecha
+
 

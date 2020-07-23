@@ -18,14 +18,14 @@
 
         {% endif %}
 
-        <small>Responsable del panel: </small><small><strong>IC</strong></small>
+        <small>Estudio de precios de el mercado por zona y por producto</small>
 
 
-        <b><hr class = "my-4" style="width: 75%; border-color: black ;"></b>
+        <b><hr class = "my-4" style="width: 75%;"></b>
     
     </div>
 
-    <div style="text-align: center; margin-bottom: 20%;">
+    <div style="text-align: center;">
        <form method="POST">
 
            {% csrf_token %}
@@ -49,20 +49,22 @@
 
 
              <div>
-               <button class="btn btn-dark" type="submit" style="margin-top: 1%;">Buscar datos</button>          
+               <button class="btn btn-dark" type="submit" style="margin-top: 1%;">Buscar</button>          
            </div>
            
        </form>
 
+      </div>
+
        {% if datos.datos %}
 
        <div>
-          <a href="{{ datos.datos.invest_mercado.url }}" class="btn btn-info" style="margin-top: 1%;">Ver Archivo!</a>
+          <a href="{{ datos.datos.invest_mercado.url }}" class="btn btn-info" style="margin-top: 1%;">Ver Informe!</a>
        </div>
 
        {% endif %}
        
-       <div style="text-align: center; margin-top: 2rem;">
+       <div style="text-align: center; margin-top: 10%;">
         <p> <small>-- Link<strong>P</strong> --</small> </p>
 
      </div>
