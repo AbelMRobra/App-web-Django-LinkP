@@ -92,6 +92,8 @@ class ArchivosAreaVentas(models.Model):
     radiografia_cliente = models.FileField(verbose_name="Radiografia del cliente", blank=True, null=True)
     informe_redes = models.FileField(verbose_name="Informe de redes", blank=True, null=True)
     encuesta_postventa = models.FileField(verbose_name="Encuesta de postventa", blank=True, null=True)
+    caja_area = models.FileField(verbose_name="Caja area", blank=True, null=True)
+    invest_mercado = models.FileField(verbose_name="Investigacion de mercado", blank=True, null=True)
 
     class Meta:
         verbose_name = "Archivos Área Ventas"

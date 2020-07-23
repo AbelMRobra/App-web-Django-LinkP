@@ -20,6 +20,7 @@ class Proyectos(models.Model):
     recargo_menor_45 = models.FloatField(null=True, blank=True, verbose_name="Recargo unid. menor 45m2")
     recargo_menor_50 = models.FloatField(null=True, blank=True, verbose_name="Recargo unid. menor 50m2")
     recargo_otros = models.FloatField(null=True, blank=True, verbose_name="Otros recargos")
+    folleto = models.FileField(verbose_name="Folleto", blank=True, null=True)
 
     class Meta:
         verbose_name="Proyecto"

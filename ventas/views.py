@@ -12,6 +12,136 @@ import numpy as np
 
 # Create your views here.
 
+def folleto(request):
+
+    datos = Proyectos.objects.filter(folleto__isnull = False)
+
+    proyecto = 0
+
+    if request.method == 'POST':
+
+        #Trae los datos elegidos
+        datos_elegidos = request.POST.items()
+
+        for dato in datos_elegidos:
+
+            if dato[0] == "fecha":
+                proyecto = Proyectos.objects.get(nombre = dato[1])
+ 
+
+    return render(request, 'folleto.html', {"datos":datos, "proyecto":proyecto})
+
+
+
+def encuestapostventa(request):
+
+    busqueda = 1
+    datos_pricing = ArchivosAreaVentas.objects.filter(encuesta_postventa__isnull = False)
+    datos = 0
+    fecha = 0
+
+    fechas = []
+
+    for dato in datos_pricing:
+        fechas.append((dato.fecha, str(dato.fecha)))
+
+    fechas = list(set(fechas))
+
+    fechas.sort( reverse=True)
+
+    if request.method == 'POST':
+
+        #Trae los datos elegidos
+        datos_elegidos = request.POST.items()
+
+        for dato in datos_elegidos:
+
+            if dato[0] == "fecha":
+                datos = ArchivosAreaVentas.objects.get(fecha = dato[1])
+                busqueda = 0
+                fecha = dato[1]
+
+
+    datos = {"fechas":fechas,
+    "busqueda":busqueda,
+    "datos":datos,
+    "fecha":fecha}
+
+    return render(request, 'encuestapostventa.html', {"datos":datos})
+
+
+def invmer(request):
+
+    busqueda = 1
+    datos_pricing = ArchivosAreaVentas.objects.all()
+    datos = 0
+    fecha = 0
+
+    fechas = []
+
+    for dato in datos_pricing:
+        fechas.append((dato.fecha, str(dato.fecha)))
+
+    fechas = list(set(fechas))
+
+    fechas.sort( reverse=True)
+
+    if request.method == 'POST':
+
+        #Trae los datos elegidos
+        datos_elegidos = request.POST.items()
+
+        for dato in datos_elegidos:
+
+            if dato[0] == "fecha":
+                datos = ArchivosAreaVentas.objects.get(fecha = dato[1])
+                busqueda = 0
+                fecha = dato[1]
+
+
+    datos = {"fechas":fechas,
+    "busqueda":busqueda,
+    "datos":datos,
+    "fecha":fecha}
+
+    return render(request, 'inv_merc.html', {"datos":datos})
+
+def cajaarea(request):
+
+    busqueda = 1
+    datos_pricing = ArchivosAreaVentas.objects.all()
+    datos = 0
+    fecha = 0
+
+    fechas = []
+
+    for dato in datos_pricing:
+        fechas.append((dato.fecha, str(dato.fecha)))
+
+    fechas = list(set(fechas))
+
+    fechas.sort( reverse=True)
+
+    if request.method == 'POST':
+
+        #Trae los datos elegidos
+        datos_elegidos = request.POST.items()
+
+        for dato in datos_elegidos:
+
+            if dato[0] == "fecha":
+                datos = ArchivosAreaVentas.objects.get(fecha = dato[1])
+                busqueda = 0
+                fecha = dato[1]
+
+
+    datos = {"fechas":fechas,
+    "busqueda":busqueda,
+    "datos":datos,
+    "fecha":fecha}
+
+    return render(request, 'caja_area.html', {"datos":datos})
+
 def radiografia(request):
 
     busqueda = 1
@@ -499,7 +629,6 @@ def pricing(request, id_proyecto):
     almacenero.ingreso_ventas = ingreso_ventas - ingreso_ventas*0.06
     almacenero.save()
     almacenero.unidades_socios = unidades_socios - unidades_socios*0.06
-    print(unidades_socios)
     almacenero.save()
 
     cantidad = len(datos_tabla_unidad)

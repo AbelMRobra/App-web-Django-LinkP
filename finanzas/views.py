@@ -125,7 +125,6 @@ def almacenero(request):
     if request.method == 'POST':
 
         
-
         try:
 
             #Trae el proyecto elegido
