@@ -94,6 +94,7 @@ class ArchivosAreaVentas(models.Model):
     encuesta_postventa = models.FileField(verbose_name="Encuesta de postventa", blank=True, null=True)
     caja_area = models.FileField(verbose_name="Caja area", blank=True, null=True)
     invest_mercado = models.FileField(verbose_name="Investigacion de mercado", blank=True, null=True)
+    evo_usd = models.FileField(verbose_name="Evolución USD/m2", blank=True, null=True)
 
     class Meta:
         verbose_name = "Archivos Área Ventas"

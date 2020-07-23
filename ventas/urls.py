@@ -19,6 +19,7 @@ urlpatterns = [
     url(r'^invmer$', login_required(views.invmer), name = 'Investigacion de mercado'),
     url(r'^encuestapostventa$', login_required(views.encuestapostventa), name = 'Encuesta de postventa'),
     url(r'^folleto$', login_required(views.folleto), name = 'Folleto'),
+    url(r'^evo_usd$', login_required(views.evousd), name = 'Evolucion USD/m2'),
     url(r'^resumenprecio$', login_required(views.resumenprecio), name = 'Resumen de precio'),
     url(r'^cargarventa$', login_required(views.cargarventa), name = 'Cargar Venta'),
     url(r'^cargar_venta$', login_required(views.cargar_venta), name = 'Cargar una Venta'),
