@@ -70,6 +70,14 @@ def informecompras(request):
         cantidad_doc = []
         proyectos = []
 
+        #Listado d rubros
+
+        materiales_electricos = 0
+        materiales_electricos_estimado = 0
+        materiales_sanitarios = 0
+        materiales_sanitarios_esimado = 0
+
+
         monto_total = 0
 
         monto_estimado = 0
@@ -86,6 +94,26 @@ def informecompras(request):
                 monto_total = monto_total + d.precio*d.cantidad
                 monto_estimado = monto_estimado + d.precio_presup*d.cantidad
 
+                #Listado de los rubros mas importantes
+
+                if "30900" in str(d.articulo.nombre):
+                    materiales_electricos = materiales_electricos + d.precio*d.cantidad
+                    materiales_electricos_estimado = materiales_electricos_estimado + d.precio_presup*d.cantidad
+
+                
+                if "31400" in str(d.articulo.nombre):
+                    materiales_sanitarios = materiales_sanitarios + d.precio*d.cantidad
+                    materiales_sanitarios_esimado = materiales_sanitarios_esimado + d.precio_presup*d.cantidad
+
+        
+        #Aqui terminamos de armar la lista
+
+        materiales_rubros = []
+
+        materiales_rubros.append(("Materiales electricos", materiales_electricos, materiales_electricos_estimado, 0))
+        materiales_rubros.append(("Materiales sanitarios", materiales_sanitarios, materiales_sanitarios_esimado, 0))
+        
+        
         cantidad_doc = len(set(cantidad_doc))
 
         datos_proyecto = []
@@ -130,14 +158,26 @@ def informecompras(request):
                             monto_mo_p_est = monto_mo_p_est + d.cantidad*d.precio_presup
 
 
+            
+
+
             datos_proyecto.append((proyecto, monto_total_p, monto_total_p_est, monto_mat_p, monto_mat_p_est, monto_mo_p, monto_mo_p_est))
 
+
+        try:
+            diferencia = (monto_total/monto_estimado-1)*100
+            diferencia_plata = monto_estimado - monto_total
+
+        except:
+            diferencia = 0
+            diferencia_plata = 0
 
         cantidad_compras = len(datos_compra)
 
         datos = {"cantidad_compras":cantidad_compras, "cantidad_doc":cantidad_doc, "monto_total":monto_total,
         "fechafinal":fechafinal, "fechainicial":fechainicial, "monto_estimado":monto_estimado,
-        "datos_proyecto":datos_proyecto}
+        "datos_proyecto":datos_proyecto, "diferencia":diferencia, "diferencia_plata":diferencia_plata,
+        "materiales_rubros":materiales_rubros}
 
     return render(request, 'informe_compra_semana.html', {"datos":datos})
 

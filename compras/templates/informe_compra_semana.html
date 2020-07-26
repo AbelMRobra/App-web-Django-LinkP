@@ -13,7 +13,7 @@
 <div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;">
     <div>
         <h2>Informe del rendimiento de compras</h2>
-        <small>Completar la fecha inicial y final</small>  
+        <small>Analisis de las compras/certificados en un periodo</small>  
     </div>
 
     {% if datos %}
@@ -27,9 +27,15 @@
         <h6>Cantidad de compras/certificados cargados: <small>{{datos.cantidad_doc}}</small></h6>
         <h6>Monto total: <small>${{datos.monto_total|floatformat:0|intcomma}}</small></h6>
         <h6>Monto estimado: <small>${{datos.monto_estimado|floatformat:0|intcomma}}</small></h6>
+        <h6>Diferencia: <small>${{datos.diferencia_plata|floatformat:0|intcomma}} ({{datos.diferencia|floatformat:2}}%)</small></h6>
     </div>
 
-    <div class = "tableconteinerabel" style="margin-top: 5%;">
+    <b><hr class = "my-4" style="width: 100%;"></b>
+
+    <div class = "tableconteinerabel" style="margin-top: 2%; text-align: left;">
+
+        <h5>Resumen de compras por proyecto</h5>
+
         <table class = "table table-hover" style="text-align: center;" >
             <thead>
                 <tr class = "table-dark">
@@ -89,6 +95,56 @@
 
 
     </div>
+
+    <b><hr class = "my-4" style="width: 100%;"></b>
+
+    <div class = "tableconteinerabel" style="margin-top: 2%; text-align: left;">
+
+        <h5>Resumen de compras por rubro</h5>
+
+        <table class = "table table-hover" style="text-align: center;" >
+            <thead>
+    
+                <tr class = "table-dark">
+
+                    <th scope = "row" style="vertical-align: middle;"><small> RUBRO </small> </th>
+                    <th scope = "row" style="vertical-align: middle;"> <small> GASTADO</small></th>
+                    <th scope = "row" style="vertical-align: middle;"> <small> ESTIMADO</small></th>
+                    <th scope = "row" style="vertical-align: middle;"><small> DESVIACIÓN</small> </th>
+
+
+                    
+                </tr>
+            </thead>
+
+
+                    
+            <tbody>
+
+                       
+                {% for i in datos.materiales_rubros %}
+
+
+
+                <tr class = "table-light">
+                    <td style="width: 10%;"> <small> <strong>{{i.0}}</strong></small></td>              
+                    <td style="width: 10%;"> <small>${{i.1|floatformat:0|intcomma}}</small></td>
+                    <td style="width: 10%;"> <small>${{i.2|floatformat:0|intcomma}}</small></td>
+                    <td style="width: 10%;"> <small>{{i.3|floatformat:2}}%</small> </td>
+
+                                
+                </tr>
+
+
+                {% endfor %}
+
+            </tbody>
+
+            </table>
+    
+    </div>
+
+    <b><hr class = "my-4" style="width: 100%;"></b>
 
     {% endif %}
 
