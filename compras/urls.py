@@ -17,5 +17,6 @@ urlpatterns = [
     url(r'^stockprov$', login_required(views.stockproveedores), name = 'Stock Proveedores'),
     url(r'^analisiscompras$', login_required(views.analisiscompras), name = 'Analisis Compras'),
     url(r'^registrodecompras/$', login_required(Reegistrodecompras.as_view()), name = 'Descargar compras'),
+    url(r'^informecompras/$', login_required(views.informecompras), name = 'Informe compras'),
 
 ]

@@ -47,6 +47,103 @@ def funcionstock():
     
     return stock
 
+# ----------------------------------------------------- VISTAS PARA INFORME DE COMPRAS ---------------------------------------------- 
+
+def informecompras(request):
+
+    datos = 0
+
+    if request.method == "POST":
+
+        datos = request.POST.items()
+
+        for dato in datos:
+
+            if dato[0] == "fechainicial":
+                fechainicial = dato[1]
+
+            if dato[0] == "fechafinal":
+                fechafinal = dato[1]
+
+        datos_compra = Compras.objects.filter(fecha_c__range=(fechainicial, fechafinal))
+
+        cantidad_doc = []
+        proyectos = []
+
+        monto_total = 0
+
+        monto_estimado = 0
+
+        for d in datos_compra:
+
+            if "FONDO DE REPARO" in str(d.articulo.nombre) or "ANTICIPO" in str(d.articulo.nombre):
+                print("No sumar")
+
+            else:
+
+                cantidad_doc.append((d.proyecto, d.proveedor, d.documento))
+                proyectos.append(d.proyecto)
+                monto_total = monto_total + d.precio*d.cantidad
+                monto_estimado = monto_estimado + d.precio_presup*d.cantidad
+
+        cantidad_doc = len(set(cantidad_doc))
+
+        datos_proyecto = []
+
+        lista_proyectos = set(proyectos)
+
+        for proyecto in lista_proyectos:
+
+            monto_mat_p = 0
+            monto_mo_p = 0
+            monto_total_p = 0
+
+            monto_mat_p_est = 0
+            monto_mo_p_est = 0
+            monto_total_p_est = 0
+
+            for d in datos_compra:
+
+                if proyecto == d.proyecto:
+
+                    if "FONDO DE REPARO" in str(d.articulo.nombre) or "ANTICIPO" in str(d.articulo.nombre):
+                        print("No sumar")
+
+                    else:
+
+                        monto_total_p = monto_total_p + d.cantidad*d.precio
+                        monto_total_p_est= monto_total_p_est + d.cantidad*d.precio_presup
+
+                    if str(d.articulo.codigo)[0] == "3":
+                        monto_mat_p = monto_mat_p + d.cantidad*d.precio
+                        monto_mat_p_est = monto_mat_p_est + d.cantidad*d.precio_presup
+
+                    else:
+
+                        if "FONDO DE REPARO" in str(d.articulo.nombre) or "ANTICIPO" in str(d.articulo.nombre):
+
+                            print("No sumar")
+
+                        else:
+
+                            monto_mo_p = monto_mo_p + d.cantidad*d.precio
+                            monto_mo_p_est = monto_mo_p_est + d.cantidad*d.precio_presup
+
+
+            datos_proyecto.append((proyecto, monto_total_p, monto_total_p_est, monto_mat_p, monto_mat_p_est, monto_mo_p, monto_mo_p_est))
+
+
+        cantidad_compras = len(datos_compra)
+
+        datos = {"cantidad_compras":cantidad_compras, "cantidad_doc":cantidad_doc, "monto_total":monto_total,
+        "fechafinal":fechafinal, "fechainicial":fechainicial, "monto_estimado":monto_estimado,
+        "datos_proyecto":datos_proyecto}
+
+    return render(request, 'informe_compra_semana.html', {"datos":datos})
+
+
+
+
 # ----------------------------------------------------- VISTAS PARA RETIROS ---------------------------------------------- 
 
 def listaretiros(request):

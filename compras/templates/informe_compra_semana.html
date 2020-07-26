@@ -1,0 +1,171 @@
+
+{% extends "users/inicio.html" %}
+
+
+
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+
+{% if perms.ventas.view_pricing %} 
+
+<div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;">
+    <div>
+        <h2>Informe del rendimiento de compras</h2>
+        <small>Completar la fecha inicial y final</small>  
+    </div>
+
+    {% if datos %}
+  
+
+    <b><hr class = "my-4" style="width: 100%;"></b>
+
+    <div style="text-align: left;">
+        <h6>Periodo del informe: <small>{{datos.fechainicial}} a {{datos.fechafinal}}</small></h6>
+        <h6>Cantidad de articulos cargados: <small>{{datos.cantidad_compras}}</small></h6>
+        <h6>Cantidad de compras/certificados cargados: <small>{{datos.cantidad_doc}}</small></h6>
+        <h6>Monto total: <small>${{datos.monto_total|floatformat:0|intcomma}}</small></h6>
+        <h6>Monto estimado: <small>${{datos.monto_estimado|floatformat:0|intcomma}}</small></h6>
+    </div>
+
+    <div class = "tableconteinerabel" style="margin-top: 5%;">
+        <table class = "table table-hover" style="text-align: center;" >
+            <thead>
+                <tr class = "table-dark">
+                    <th scope = "row" style="vertical-align: middle;" rowspan="2"> <small> <strong>PROYECTO</strong> </small> </th>
+                    <th scope = "row" style="vertical-align: middle;" colspan="3"><small> <strong>COMPRADO</strong> </small> </th>
+                    <th scope = "row" style="vertical-align: middle;" colspan="3"> <small> <strong>ESTIMADO</strong> </small></th>
+
+                    
+                </tr>
+    
+                <tr class = "table-dark">
+
+                    <th scope = "row" style="vertical-align: middle;"><small> MONTO MAT. </small> </th>
+                    <th scope = "row" style="vertical-align: middle;"> <small> MONTO MO</small></th>
+                    <th scope = "row" style="vertical-align: middle;"> <small> TOTAL</small></th>
+                    <th scope = "row" style="vertical-align: middle;"><small> MONTO MAT.</small> </th>
+                    <th scope = "row" style="vertical-align: middle;"> <small> MONTO MO </small></th>
+                    <th scope = "row" style="vertical-align: middle;"> <small> TOTAL </small></th>
+
+                    
+                </tr>
+            </thead>
+
+
+                    
+            <tbody>
+
+                
+               
+                {% for i in datos.datos_proyecto %}
+
+
+
+                <tr class = "table-light">
+                    <td style="width: 10%;"> <small> <strong>{{i.0}}</strong></small></td>              
+                    <td style="width: 10%;"> <small>${{i.3|floatformat:0|intcomma}}</small></td>
+                    <td style="width: 10%;"> <small>${{i.5|floatformat:0|intcomma}}</small></td>
+                    <td style="width: 10%;"> <small>${{i.1|floatformat:0|intcomma}}</small> </td>
+                    <td style="width: 10%;"> <small>${{i.4|floatformat:0|intcomma}}</small></td>
+                    <td style="width: 10%;"> <small>${{i.6|floatformat:0|intcomma}}</small></td>
+                    <td style="width: 10%;"> <small>${{i.2|floatformat:0|intcomma}}</small></td>
+                    
+
+                              
+                </tr>
+
+
+                {% endfor %}
+
+            </tbody>
+
+
+                
+    
+            </table>
+    
+
+
+    </div>
+
+    {% endif %}
+
+    <b><hr class = "my-4" style="width: 75%;"></b>
+
+    <div style=" background-color: rgba(63, 95, 179, 0.3); width: 50%; margin-left: 25%;">
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            <div style="display: inline-block; margin-top: 2%; margin-bottom: 2%;">
+
+                <div style="display: inline-block;">
+    
+                    <label for="fechainicial"><h6>Fecha Inicial</h6></label>
+        
+                </div>
+        
+                <div style="margin-bottom: 2%; width: 100%; ">
+        
+                    <input name="fechainicial" type="date" class="form-control form-control">
+        
+                </div>
+
+            </div>
+
+            <div style="display: inline-block; margin-top: 2%; margin-bottom: 2%;">
+
+                <div style="display: inline-block;">
+    
+                    <label for="fechafinal"><h6>Fecha Final</h6></label>
+        
+                </div>
+        
+                <div style="margin-bottom: 2%; width: 100%; ">
+        
+                    <input name="fechafinal" type="date" class="form-control form-control">
+        
+                </div>
+
+            </div>
+
+            <div>
+                <button class="btn btn-dark" type="submit" style="margin-top: 1%; margin-bottom: 2%;">Buscar datos</button>          
+            </div>
+
+
+
+                  
+
+        
+
+        </form>
+
+
+        
+        
+    
+    </div>
+
+
+
+
+    <b><hr class = "my-4" style="width: 50%;"></b>
+
+
+
+    <div style="text-align: center; margin-top: 2rem;">
+        <p> <small>-- Link<strong>P</strong> --</small> </p>
+
+     </div>
+
+                    
+</div>
+
+{% endif %} 
+ 
+    
+{% endblock %}
