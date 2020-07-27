@@ -539,9 +539,12 @@ def pricing(request, id_proyecto):
             m2 = dato.sup_propia + dato.sup_balcon + dato.sup_comun + dato.sup_patio
 
         try:
+
+            m2_panel = dato.sup_propia + dato.sup_balcon + dato.sup_comun + dato.sup_patio
+
             venta = VentasRealizadas.objects.get(unidad = dato.id)
 
-            venta.m2 = m2
+            venta.m2 = m2_panel
 
             venta.asignacion = dato.asig
 

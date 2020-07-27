@@ -1,0 +1,127 @@
+
+{% extends "users/inicio.html" %}
+
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+
+{% if perms.ventas.view_pricing %} 
+
+<div class = "jumbotron" style="background-color: white; margin-bottom: 0px;">
+    <div style="text-align: center;">
+        <h2>Panel de control - Admin de unidades</h2>
+        <small>Responsable del panel: </small><small><strong>Área Técnica</strong></small>  
+    </div>
+
+    <b><hr class = "my-4" style="width: 100%; "></b>
+
+    <div style="text-align: left;">
+
+        <h6>Total de unidades: <small>{{total_unidades|floatformat:0}}</small></h6>
+        <h6>Total de superficie propia: <small>{{total_propia|floatformat:2}}m2</small></h6>
+        <h6>Total de superficie patio: <small>{{total_patio|floatformat:2}}m2</small></h6>
+        <h6>Total de superficie balcon: <small>{{total_balcon|floatformat:2}}m2</small></h6>
+        <h6>Total de superficie común: <small>{{total_comun|floatformat:2}}m2</small></h6>
+        <h6>Total de superficie total: <small>{{total_total|floatformat:2}}m2</small></h6>
+        <h6>Proporción común sobre total: <small>{{comun_total|floatformat:0}}%</small></h6>
+
+
+    </div>
+
+    
+
+
+
+
+    <b><hr class = "my-4" style="width: 100%; "></b>
+
+
+
+
+    <div class = "tableconteinerabel">
+
+             
+
+
+    <table class = "table table-hover" style="text-align: center; margin-top: 2%;">
+        <thead>
+
+            <tr class = "table-dark">
+                <th scope = "row"> <small>PISO</small></th>
+                <th scope = "row"> <small>NOMENC.</small></th>
+                <th scope = "row"> <small>TIPO</small></th>
+                <th scope = "row"> <small>TIPOLOGIA</small></th>
+                <th scope = "row"> <small> SUP. PROPIA </small></th>
+                <th scope = "row"> <small> SUP. PATIO  </small></th>
+                <th scope = "row"> <small> SUP. BALCON </small></th>
+                <th scope = "row"> <small>  SUP. COMÚN </small></th>
+                <th scope = "row"> <small> SUP. TOTAL</small>   </th>
+                <th scope = "row"> <small> ESTADO </small></th>
+                <th scope = "row"> <small> EDITAR </small></th>
+                <th scope = "row"> <small> ELIMINAR </small></th>
+                 
+
+            </tr>
+        </thead>
+
+        <tbody>   
+
+            {% for i in datos_completo %}
+            <tr class = "table-light">
+                <td> <b> <small>{{i.0.piso_unidad}}</small> </b></td>
+                <td> <b> <small>{{i.0.nombre_unidad}}</small> </b></td>       
+                <td> <b> <small>{{i.0.tipo}}</small> </b> </td>
+                <td> <b> <small>{{i.0.tipologia}}</small> </b> </td>
+                <td> <b> <small>{{i.0.sup_propia|floatformat:2}}m2</small> </b> </td>
+                <td> <b> <small>{{i.0.sup_patio|floatformat:2}}m2</small> </b> </td>
+                <td> <b> <small>{{i.0.sup_balcon|floatformat:2}}m2</small> </b> </td>
+                <td> <b> <small>{{i.0.sup_comun|floatformat:2}}m2</small> </b> </td>
+
+                {% if i.1 == "NO COMPLETO" %}
+
+                <td> <b> <small>{{i.1}}</small></b> </td>
+
+                {% else %}
+
+                <td> <small><b> {{i.1|floatformat:2}}m2</b> </small></td>
+
+                {% endif %}
+
+
+                <td> <small><b> {{i.0.estado}}</b></small></td>
+                <td> <a href="" class="btn btn-sm btn-success" >Editar</a>
+                </td>
+                <td> <a href="" class="btn btn-sm btn-danger">Eliminar</a>
+                </b> </td>
+
+
+            </tr>
+            {% endfor %}
+        </tbody>
+     
+
+
+    </table>
+
+    </div>
+
+
+
+    <b><hr class = "my-4" style="width: 100%;"></b>
+
+
+
+
+    <div style="text-align: center; margin-top: 2rem;">
+        <p> <small>-- Link<strong>P</strong> --</small> </p>
+
+     </div>
+
+                    
+</div>
+
+{% endif %}
+ 
+    
+{% endblock %}

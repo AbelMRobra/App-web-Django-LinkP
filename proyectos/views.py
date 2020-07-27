@@ -3,6 +3,49 @@ from .models import Proyectos, Unidades, ProyectosTerceros
 
 # Create your views here.
 
+def adminunidades(request):
+
+    datos = Unidades.objects.filter(proyecto__id = 1)
+
+    total_unidades = len(datos)
+
+    datos_completo = []
+
+    total_propia = 0
+    total_balcon = 0
+    total_patio = 0
+    total_comun = 0
+    total_total = 0
+
+    for dato in datos:
+
+        try:
+            total_propia = total_propia + dato.sup_propia
+            total_balcon = total_balcon + dato.sup_balcon
+            total_patio = total_patio + dato.sup_patio
+            total_comun = total_comun + dato.sup_comun
+
+
+            sup_total = dato.sup_balcon + dato.sup_comun + dato.sup_propia + dato.sup_patio
+
+            total_total = total_total + sup_total
+
+            datos_completo.append((dato, sup_total))
+
+        except:
+
+            datos_completo.append((dato, "NO COMPLETO"))
+
+    comun_total = (total_comun/total_total)*100
+
+
+
+
+    return render(request, 'adminunidades.html', {'datos_completo':datos_completo, 'total_propia':total_propia, 'total_balcon':total_balcon, 'total_patio':total_patio, 'total_comun':total_comun, 'total_total':total_total,
+     'total_unidades':total_unidades, 'comun_total':comun_total})
+
+
+
 def proyectos(request):
 
     datos = Proyectos.objects.order_by("nombre")
