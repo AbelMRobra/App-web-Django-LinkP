@@ -76,6 +76,8 @@ def informecompras(request):
         materiales_electricos_estimado = 0
         materiales_sanitarios = 0
         materiales_sanitarios_esimado = 0
+        materiales_pintura = 0
+        materiales_pintura_esimado = 0
 
 
         monto_total = 0
@@ -105,6 +107,10 @@ def informecompras(request):
                     materiales_sanitarios = materiales_sanitarios + d.precio*d.cantidad
                     materiales_sanitarios_esimado = materiales_sanitarios_esimado + d.precio_presup*d.cantidad
 
+                if "30700" in str(d.articulo.nombre):
+                    materiales_pintura = materiales_pintura + d.precio*d.cantidad
+                    materiales_pintura_esimado = materiales_pintura_esimado + d.precio_presup*d.cantidad
+
         
         #Aqui terminamos de armar la lista
 
@@ -112,6 +118,7 @@ def informecompras(request):
 
         materiales_rubros.append(("Materiales electricos", materiales_electricos, materiales_electricos_estimado, 0))
         materiales_rubros.append(("Materiales sanitarios", materiales_sanitarios, materiales_sanitarios_esimado, 0))
+        materiales_rubros.append(("Pintura y afines", materiales_pintura, materiales_pintura_esimado, 0))
         
         
         cantidad_doc = len(set(cantidad_doc))
