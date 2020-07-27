@@ -98,16 +98,16 @@ def informecompras(request):
 
                 #Listado de los rubros mas importantes
 
-                if "30900" in str(d.articulo.nombre):
+                if "30900" in str(d.articulo.codigo):
                     materiales_electricos = materiales_electricos + d.precio*d.cantidad
                     materiales_electricos_estimado = materiales_electricos_estimado + d.precio_presup*d.cantidad
 
                 
-                if "31400" in str(d.articulo.nombre):
+                if "31400" in str(d.articulo.codigo):
                     materiales_sanitarios = materiales_sanitarios + d.precio*d.cantidad
                     materiales_sanitarios_esimado = materiales_sanitarios_esimado + d.precio_presup*d.cantidad
 
-                if "30700" in str(d.articulo.nombre):
+                if "30700" in str(d.articulo.codigo):
                     materiales_pintura = materiales_pintura + d.precio*d.cantidad
                     materiales_pintura_esimado = materiales_pintura_esimado + d.precio_presup*d.cantidad
 
