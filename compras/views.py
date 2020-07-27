@@ -84,7 +84,7 @@ def informecompras(request):
 
         for d in datos_compra:
 
-            if "FONDO DE REPARO" in str(d.articulo.nombre) or "ANTICIPO" in str(d.articulo.nombre):
+            if "FONDO DE REPARO" in str(d.articulo.nombre) or "ANTICIPO" in str(d.articulo.nombre) or "DIANCO" in str(d.proyecto.nombre):
                 print("No sumar")
 
             else:
