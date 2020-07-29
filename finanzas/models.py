@@ -1,5 +1,6 @@
 from django.db import models
 from proyectos.models import Proyectos
+from ventas.models import VentasRealizadas
 
 # Create your models here.
 
@@ -27,3 +28,13 @@ class Almacenero(models.Model):
 
     def __str__(self):
         return '{}'.format(self.proyecto)
+
+class CuentaCorriente(models.Model):
+    venta = models.ForeignKey(VentasRealizadas, on_delete=models.CASCADE, verbose_name = "Venta Realizada")
+
+    class Meta:
+        verbose_name="Cuenta corriente"
+        verbose_name_plural="Cuentas corrientes"
+
+    def __str__(self):
+        return self.venta.comprador

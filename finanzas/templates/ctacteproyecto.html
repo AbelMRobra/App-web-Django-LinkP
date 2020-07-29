@@ -6,12 +6,20 @@
 
 {% block content %}
 
-{% if perms.ventas.view_pricing %} 
 
 <div class = "jumbotron" style="background-color: white; margin-bottom: 0px;">
     <div style="text-align: center;">
-        <h2>Panel de control - Ventas de unidades</h2>
-        <small>Responsable del panel: </small><small><strong>Área de ventas</strong></small>  
+        <h2 style="color: rgb({{proyecto.color}})">Cuentas corrientes de {{ proyecto.nombre }}</h2>
+        <small>Responsable del panel: </small><small><strong>Área de administración</strong></small>
+        
+        <div>
+
+            <img src="{{proyecto.iamgen.url}}"  class="img-fluid" alt="..." style="max-width:20%;width:auto;height:auto; margin-top: 1rem;">
+  
+
+        </div>
+        
+        
     </div>
 
     <b><hr class = "my-4" style="width: 100%; "></b>
@@ -19,10 +27,10 @@
 
     <div style="text-align: center;">
     
-    <h6>Cargar una venta</h6>
+    <h6>Nueva cuenta corriente</h6>
 
 
-    <a href="{% url 'Cargar una Venta' %}" class="btn btn-primary">Registrar una venta</a>
+    <a href="{% url 'Cargar una Venta' %}" class="btn btn-primary">Crear cuenta</a>
     
     </div>
 
@@ -36,7 +44,7 @@
 
         <div style="display: inline-block;  vertical-align: middle;">
 
-            <h6>Operaciones realizadas</h6>
+            <h6>Cuentas corrientes activas</h6>
     
     
         </div>
@@ -65,7 +73,6 @@
 
             <tr class = "table-dark">
                 <th scope = "row"> <small>FECHA</small></th>
-                <th scope = "row"> <small>PROYECTO</small></th>
                 <th scope = "row"> <small>COMPRADOR</small></th>
                 <th scope = "row"> <small>PISO</small></th>
                 <th scope = "row"> <small> NOM </small></th>
@@ -73,9 +80,9 @@
                 <th scope = "row"> <small> SUPERFICIE </small></th>
                 <th scope = "row"> <small>  ASIGNACION </small></th>
                 <th scope = "row"> <small>PRECIO DE VENTA</small>   </th>
-                <th scope = "row"> <small> ANOTACIONES </small></th>
-                <th scope = "row"> <small> EDITAR </small></th>
-                <th scope = "row"> <small> ELIMINAR </small></th>
+                <th scope = "row"> <small> ANOTACIONES (VENTAS) </small></th>
+                <th scope = "row"> <small> DETALLE DE CUENTA </small></th>
+
                  
 
             </tr>
@@ -83,32 +90,30 @@
 
         <tbody>   
 
-            {% for i in datos|slice:"200" %}
+            {% for i in datos %}
             <tr class = "table-light">
-                <td> <b> <small>{{i.fecha}}</small> </b></td>
-                <td> <b> <small>{{i.unidad.proyecto.nombre}}</small> </b></td>       
-                <td> <b> <small>{{i.comprador}}</small> </b> </td>
-                <td> <b> <small>{{i.unidad.piso_unidad}}</small> </b> </td>
+                <td> <b> <small>{{i.venta.fecha}}</small> </b></td>    
+                <td> <b> <small>{{i.venta.comprador}}</small> </b> </td>
+                <td> <b> <small>{{i.venta.unidad.piso_unidad}}</small> </b> </td>
 
                 {% if "0" in i.unidad.nombre_unidad %}
 
-                <td> <b> <small>{{i.unidad.nombre_unidad|floatformat:0}}</small> </b> </td>
+                <td> <b> <small>{{i.venta.unidad.nombre_unidad|floatformat:0}}</small> </b> </td>
 
                 {% else %}
 
-                <td> <b> <small>{{i.unidad.nombre_unidad}}</small> </b> </td>
+                <td> <b> <small>{{i.venta.unidad.nombre_unidad}}</small> </b> </td>
 
                 {% endif %}
-                <td> <b> <small>{{i.unidad.tipologia}}</small> </b> </td>
-                <td> <b> <small>{{i.m2|floatformat:2}}m2</small> </b> </td>
-                <td> <b> <small>{{i.asignacion}}</small></b> </td>
-                <td> <b>  <small>${{i.precio_venta|floatformat:0|intcomma}}</small></b> </td>
-                <td> <b><a href="{% url 'Detalle venta' i.id %}" class="btn btn-sm btn-info" >Ver detalles</a>
+                <td> <b> <small>{{i.venta.unidad.tipologia}}</small> </b> </td>
+                <td> <b> <small>{{i.venta.m2|floatformat:2}}m2</small> </b> </td>
+                <td> <b> <small>{{i.venta.asignacion}}</small></b> </td>
+                <td> <b>  <small>${{i.venta.precio_venta|floatformat:0|intcomma}}</small></b> </td>
+                <td> <b><a href="{% url 'Detalle venta' i.venta.id %}" class="btn btn-sm btn-info" >Ver detalles</a>
                 </b> </td>
-                <td> <a href="{% url 'Editar venta' i.id %}" class="btn btn-sm btn-success" >Editar</a>
-                </td>
-                <td> <a href="{% url 'Eliminar venta' i.id %}" class="btn btn-sm btn-danger">Eliminar</a>
+                <td> <b><a href="" class="btn btn-sm btn-success" >Ingresar</a>
                 </b> </td>
+
 
 
             </tr>
@@ -126,16 +131,6 @@
     <b><hr class = "my-4" style="width: 100%;"></b>
 
 
-    <div style="text-align: center;">
-        <small>El listado puede continuar, se limita el numero de filas visibles</small>
-    </div>
-
-    <div style="text-align:center">
-        <a href= "{% url 'Descargar ventas' %}" class="btn btn-success" style="margin-top: 1%;" > Descargar Excel</a>          
-    </div> 
-
-
-
     <div style="text-align: center; margin-top: 2rem;">
         <p> <small>-- Link<strong>P</strong> --</small> </p>
 
@@ -144,8 +139,6 @@
                     
 </div>
 
-{% endif %}
  
     
 {% endblock %}
-

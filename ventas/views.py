@@ -9,6 +9,10 @@ from django.shortcuts import redirect
 import datetime
 import operator
 import numpy as np
+from openpyxl import Workbook
+from openpyxl.styles import Alignment, Border, Font, PatternFill, Side 
+from django.views.generic.base import TemplateView 
+from django.http import HttpResponse 
 
 # Create your views here.
 
@@ -608,7 +612,7 @@ def pricing(request, id_proyecto):
 
             #Aqui actualizamos los datos del almacenero
 
-            if (dato.estado == "DISPONIBLE" and dato.asig == "PROYECTO") or (dato.asig == "SOCIOS") or (dato.estado == "SEÑADA" and dato.asig == "PROYECTO")  :
+            if (dato.estado == "DISPONIBLE" and dato.asig == "PROYECTO") or (dato.asig == "SOCIOS") or (dato.estado == "SEÑADA" and dato.asig == "PROYECTO"):
                 
                 ingreso_ventas = ingreso_ventas + contado
 
@@ -1152,7 +1156,167 @@ def cotizador(request, id_unidad):
     return render(request, 'cotizador.html', {'datos':datos, 'resultados':resultados, 'precio_contado':precio_contado, 'm2':m2})
 
 
+class descargadeventas(TemplateView):
 
+    def get(self, request, *args, **kwargs):
+        
+        wb = Workbook()
+
+        #Aqui coloco la formula para calcular
+
+        datos = VentasRealizadas.objects.order_by("fecha")
+
+        ws = wb.active
+        ws.title = "ADVERTENCIA"
+
+        ws.merge_cells("B2:K2")
+        ws["B2"] = "LEER ATENTAMENTE ANTES DE USAR ESTE DOCUMENTO"
+
+        ws["B2"].alignment = Alignment(horizontal = "center")
+        ws["B2"].font = Font(bold = True, color= "CF433F", size = 20)
+
+        ws.merge_cells("B5:K25")
+        ws["B5"] = "Este documento contiene informción --> PRIVADA <-- del área de ventas, \n la misma es solo para uso interno de LINK INVERSIONES y no debe ser compartida sin previa autorización. Compartir este archivo puede ser considerado como divulgar información confidencial. Si usted esta utilizando este archivo en una computadora que no pertenezca a la empresa, al finalizar --> ELIMINE <-- el archivo. Gracias"
+        ws["B5"].alignment = Alignment(horizontal = "center", vertical = "center", wrap_text=True)
+        ws["B5"].font = Font(bold = True)
+        
+        cont = 1
+        
+        for d in datos:
+
+            if cont == 1:
+                ws = wb.create_sheet("My sheet")
+                ws.title = "Registrodeventas"
+                ws["A"+str(cont)] = "FECHA"
+                ws["B"+str(cont)] = "PROYECTO"
+                ws["C"+str(cont)] = "COMPRADOR"
+                ws["D"+str(cont)] = "PISO"
+                ws["E"+str(cont)] = "NOM"
+                ws["F"+str(cont)] = "TIPO"
+                ws["G"+str(cont)] = "TIPOLOGIA"
+                ws["H"+str(cont)] = "SUPERFICIE"
+                ws["I"+str(cont)] = "ASIGNACIÓN"
+                ws["J"+str(cont)] = "PRECIO DE VENTA"
+                ws["K"+str(cont)] = "ANOTACIONES"
+
+
+                ws["A"+str(cont)].alignment = Alignment(horizontal = "center")
+                ws["B"+str(cont)].alignment = Alignment(horizontal = "center")
+                ws["C"+str(cont)].alignment = Alignment(horizontal = "center")
+                ws["D"+str(cont)].alignment = Alignment(horizontal = "center")
+                ws["E"+str(cont)].alignment = Alignment(horizontal = "center")
+                ws["F"+str(cont)].alignment = Alignment(horizontal = "center")
+                ws["G"+str(cont)].alignment = Alignment(horizontal = "center")
+                ws["H"+str(cont)].alignment = Alignment(horizontal = "center")
+                ws["I"+str(cont)].alignment = Alignment(horizontal = "center")
+                ws["J"+str(cont)].alignment = Alignment(horizontal = "center")
+                ws["K"+str(cont)].alignment = Alignment(horizontal = "center")
+
+
+                ws["A"+str(cont)].font = Font(bold = True, color= "FDFFFF")
+                ws["A"+str(cont)].fill =  PatternFill("solid", fgColor= "159ABB")
+                ws["B"+str(cont)].font = Font(bold = True, color= "FDFFFF")
+                ws["B"+str(cont)].fill =  PatternFill("solid", fgColor= "159ABB")
+                ws["C"+str(cont)].font = Font(bold = True, color= "FDFFFF")
+                ws["C"+str(cont)].fill =  PatternFill("solid", fgColor= "159ABB")
+                ws["D"+str(cont)].font = Font(bold = True, color= "FDFFFF")
+                ws["D"+str(cont)].fill =  PatternFill("solid", fgColor= "159ABB")
+                ws["E"+str(cont)].font = Font(bold = True, color= "FDFFFF")
+                ws["E"+str(cont)].fill =  PatternFill("solid", fgColor= "159ABB")
+                ws["F"+str(cont)].font = Font(bold = True, color= "FDFFFF")
+                ws["F"+str(cont)].fill =  PatternFill("solid", fgColor= "159ABB")
+                ws["G"+str(cont)].font = Font(bold = True, color= "FDFFFF")
+                ws["G"+str(cont)].fill =  PatternFill("solid", fgColor= "159ABB")
+                ws["H"+str(cont)].font = Font(bold = True, color= "FDFFFF")
+                ws["H"+str(cont)].fill =  PatternFill("solid", fgColor= "159ABB")
+                ws["I"+str(cont)].font = Font(bold = True, color= "FDFFFF")
+                ws["I"+str(cont)].fill =  PatternFill("solid", fgColor= "159ABB")
+                ws["J"+str(cont)].font = Font(bold = True, color= "FDFFFF")
+                ws["J"+str(cont)].fill =  PatternFill("solid", fgColor= "159ABB")
+                ws["K"+str(cont)].font = Font(bold = True, color= "FDFFFF")
+                ws["K"+str(cont)].fill =  PatternFill("solid", fgColor= "159ABB")
+
+
+                ws.column_dimensions['A'].width = 10
+                ws.column_dimensions['B'].width = 10.71
+                ws.column_dimensions['C'].width = 22
+                ws.column_dimensions['D'].width = 6.86
+                ws.column_dimensions['E'].width = 5
+                ws.column_dimensions['F'].width = 15
+                ws.column_dimensions['G'].width = 10
+                ws.column_dimensions['H'].width = 10.29
+                ws.column_dimensions['I'].width = 11.86
+                ws.column_dimensions['J'].width = 16
+                ws.column_dimensions['K'].width = 40
+
+                ws["A"+str(cont+1)] = d.fecha
+                ws["B"+str(cont+1)] = d.proyecto.nombre
+                ws["C"+str(cont+1)] = d.comprador
+                ws["D"+str(cont+1)] = d.unidad.piso_unidad
+                ws["E"+str(cont+1)] = d.unidad.nombre_unidad
+                ws["F"+str(cont+1)] = d.unidad.tipo
+                ws["G"+str(cont+1)] = d.unidad.tipologia
+                ws["H"+str(cont+1)] = d.m2
+                ws["I"+str(cont+1)] = d.asignacion
+                ws["J"+str(cont+1)] = d.precio_venta
+                ws["K"+str(cont+1)] = d.observaciones
+
+
+                ws["A"+str(cont+1)].font = Font(bold = True)
+                ws["A"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["B"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["C"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["D"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["E"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["F"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["G"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["H"+str(cont+1)].number_format = '#,##0.00_-'
+                ws["I"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["J"+str(cont+1)].number_format = '"$"#,##0.00_-'
+                ws["K"+str(cont+1)].alignment = Alignment(horizontal = "center")
+  
+
+                cont += 1
+
+            else:
+                ws = wb["Registrodeventas"]
+
+                ws["A"+str(cont+1)] = d.fecha
+                ws["B"+str(cont+1)] = d.proyecto.nombre
+                ws["C"+str(cont+1)] = d.comprador
+                ws["D"+str(cont+1)] = d.unidad.piso_unidad
+                ws["E"+str(cont+1)] = d.unidad.nombre_unidad
+                ws["F"+str(cont+1)] = d.unidad.tipo
+                ws["G"+str(cont+1)] = d.unidad.tipologia
+                ws["H"+str(cont+1)] = d.m2
+                ws["I"+str(cont+1)] = d.asignacion
+                ws["J"+str(cont+1)] = d.precio_venta
+                ws["K"+str(cont+1)] = d.observaciones
+
+
+                ws["A"+str(cont+1)].font = Font(bold = True)
+                ws["A"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["B"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["C"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["D"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["E"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["F"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["G"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["H"+str(cont+1)].number_format = '#,##0.00_-'
+                ws["I"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["J"+str(cont+1)].number_format = '"$"#,##0.00_-'
+                ws["K"+str(cont+1)].alignment = Alignment(horizontal = "center")
+
+                cont += 1
+
+        #Establecer el nombre del archivo
+        nombre_archivo = "RegistroVentas.xls"
+        #Definir tipo de respuesta que se va a dar
+        response = HttpResponse(content_type = "application/ms-excel")
+        contenido = "attachment; filename = {0}".format(nombre_archivo)
+        response["Content-Disposition"] = contenido
+        wb.save(response)
+        return response
 
 
 

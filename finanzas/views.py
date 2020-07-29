@@ -1,10 +1,43 @@
 from django.shortcuts import render
+from django.shortcuts import redirect
 from presupuestos.models import Proyectos, Presupuestos, Constantes, Modelopresupuesto
-from .models import Almacenero
+from .models import Almacenero, CuentaCorriente
 from proyectos.models import Unidades
 from ventas.models import Pricing, VentasRealizadas
 
 # Create your views here.
+
+def ctacteproyecto(request, id_proyecto):
+
+    proyecto = Proyectos.objects.get(id = id_proyecto)
+
+    datos = CuentaCorriente.objects.filter(venta__proyecto = proyecto)
+
+    return render(request, 'ctacteproyecto.html', {"proyecto":proyecto, "datos":datos})
+
+def panelctacote(request):
+
+    datos_ventas = VentasRealizadas.objects.all()
+
+    datos = []
+
+    for dato in datos_ventas:
+
+        datos.append((dato.proyecto.id, dato.proyecto.nombre))
+
+    datos = set(datos)
+
+    if request.method == 'POST':
+
+        proyecto_elegido = request.POST.items()
+
+        for i in proyecto_elegido:
+
+            if i[0] == 'proyecto':
+
+                return redirect('Cuenta corriente proyecto', id_proyecto=i[1])
+
+    return render(request, 'panelctacte.html', {"datos":datos})
 
 def ingresounidades(request):
 
