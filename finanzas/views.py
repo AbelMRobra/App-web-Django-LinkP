@@ -50,8 +50,6 @@ def crearcuenta(request):
                 if i[1] == "USD":
                     constante = Constantes.objects.get(nombre = "USD"),
 
-                print(constante)
-
                 precio_pesos = float(precio)/constante[0].valor
 
                 for i in range(int(cuotas)):
@@ -85,8 +83,6 @@ def ctactecliente(request, id_cliente):
     ctacte = CuentaCorriente.objects.get(id = id_cliente)
 
     cuotas = Cuota.objects.filter(cuenta_corriente = ctacte)
-
-    print(cuotas)
 
     pagos = Pago.objects.all()
 
