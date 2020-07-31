@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Almacenero, CuentaCorriente
+from .models import Almacenero, CuentaCorriente, Cuota
 from import_export import resources
 from import_export.admin import ImportExportModelAdmin
 
@@ -15,5 +15,9 @@ class AlmaceneroAdmin(ImportExportModelAdmin, admin.ModelAdmin):
 class CuentaCorrienteAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = ('venta', )
 
+class CuotaAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    list_display = ('fecha', )
+
 admin.site.register(Almacenero, AlmaceneroAdmin)
 admin.site.register(CuentaCorriente, CuentaCorrienteAdmin)
+admin.site.register(Cuota, CuotaAdmin)

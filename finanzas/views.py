@@ -26,6 +26,48 @@ def crearcuenta(request):
 
                 b.save()
 
+            if  'fecha' in i[0]:
+
+                fecha = i[1]
+
+            if  'concepto' in i[0]:
+
+                concepto = i[1]
+
+            if  'precio' in i[0]:
+
+                precio = i[1]
+
+            if  'cuotas' in i[0]:
+
+                cuotas = i[1]
+
+            if  'tipo_venta' in i[0]:
+
+                if i[1] == "HORM":
+                    constante = Constantes.objects.get(nombre = "Hº VIVIENDA"),
+
+                if i[1] == "USD":
+                    constante = Constantes.objects.get(nombre = "USD"),
+
+                print(constante)
+
+                precio_pesos = float(precio)/constante[0].valor
+
+                for i in range(int(cuotas)):
+
+                    c = Cuota(
+
+                        cuenta_corriente = b,
+                        fecha = fecha,
+                        precio = float(precio),
+                        constante = constante[0],
+                        precio_pesos = precio_pesos,                        
+                        concepto = concepto,
+                        )
+
+                    c.save()
+
 
     return render(request, 'crearcuenta.html', {"datos":datos})
 
@@ -43,6 +85,8 @@ def ctactecliente(request, id_cliente):
     ctacte = CuentaCorriente.objects.get(id = id_cliente)
 
     cuotas = Cuota.objects.filter(cuenta_corriente = ctacte)
+
+    print(cuotas)
 
     pagos = Pago.objects.all()
 
@@ -63,8 +107,9 @@ def ctactecliente(request, id_cliente):
                 pagos_realizados.append(pago)
 
         saldo_cuota = cuota.precio - pago_cuota
+        saldo_pesos = saldo_cuota*cuota.constante.valor
 
-        datos_cuenta.append((cuota, pago_cuota, saldo_cuota, pagos_realizados))
+        datos_cuenta.append((cuota, pago_cuota, saldo_cuota, saldo_pesos, pagos_realizados))
 
 
     return render(request, 'ctacte.html', {"ctacte":ctacte, "datos_cuenta":datos_cuenta})

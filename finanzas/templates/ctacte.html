@@ -37,11 +37,13 @@
                 <tr class = "table-dark">
                     <th scope = "row"> <small>FECHA CUOTA</small></th>
                     <th scope = "row"> <small>CONCEPTO</small></th>
-                    <th scope = "row"> <small>MONEDA</small></th>
-                    <th scope = "row"> <small> VALOR </small></th>
-                    <th scope = "row"> <small> PAGADO </small></th>
-                    <th scope = "row"> <small> SALDO </small></th>
+                    <th scope = "row"> <small>MONEDA (MD) </small></th>
+                    <th scope = "row"> <small> VALOR EN (MD) </small></th>
+                    <th scope = "row"> <small> PAGADO EN (MD) </small></th>
+                    <th scope = "row"> <small> SALDO EN (MD) </small></th>
+                    <th scope = "row"> <small> VALOR DE MD</small></th>
                     <th scope = "row"> <small> SALDO EN PESOS </small></th>
+                    <th scope = "row"> <small> INGRESAR PAGO </small></th>
 
                 </tr>
             </thead>
@@ -50,15 +52,18 @@
     
                 {% for i in datos_cuenta %}
                 <tr class = "table-light">
-                    <td> <b> <small>{{i.0.fecha}}</small> </b></td>    
+                    <td> <b> <small> <b>{{i.0.fecha}}</b> </small> </b></td>    
                     <td> <b> <small>{{i.0.concepto}}</small> </b> </td>
                     <td> <b> <small>{{i.0.constante.nombre}}</small> </b> </td>
 
-                    <td> <b> <small>a</small> </b> </td>
+                    <td> <b> <small>{{i.0.precio}}</small> </b> </td>
 
-                    <td> <b> <small>a</small> </b> </td>
-                    <td> <b> <small>a</small> </b> </td>
-                    <td> <b> <small>a</small></b> </td>
+                    <td> <b> <small>{{i.1}}</small> </b> </td>
+                    <td> <b> <small>{{i.2}}</small> </b> </td>
+                    <td> <b> <small>${{i.0.constante.valor|floatformat:0|intcomma}}</small> </b> </td>
+                    <td> <b> <small> <b>${{i.3|floatformat:0|intcomma}}</b> </small></b> </td>
+                    <td> <b><a href="" class="btn btn-sm btn-success" >Ingresar</a>
+                    </b> </td>
                    
     
     
@@ -72,15 +77,22 @@
         </table>
     
         </div>
-    
 
+    <div style="text-align: left; margin-top: 5%;">
 
+        <small>*Toque el valor de pago para ver detalles</small>
+
+    </div>
 
     <div style="text-align: center; margin-top: 10%;">
         <p> <small>-- Link<strong>P</strong> --</small> </p>
 
      </div>
 
+    
+    
 
 </div>
+
+    
 {% endblock %}

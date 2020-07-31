@@ -52,8 +52,6 @@ class Cuota(models.Model):
         verbose_name="Cuota"
         verbose_name_plural="Cuotas"
 
-    def __str__(self):
-        return self.fecha
 
 class Pago(models.Model):
     cuota = models.ForeignKey(Cuota, on_delete=models.CASCADE, verbose_name = "Cuota")
