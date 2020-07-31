@@ -306,7 +306,22 @@ def cons_delete(request, id_cons):
 
 def presupuestostotal(request):
     
-    proyectos = Proyectos.objects.order_by("nombre")
+    proyectos_inicial = Proyectos.objects.order_by("nombre")
+
+    proyectos = []
+
+    for proyecto in proyectos_inicial:
+
+        try:
+            prueba = Modelopresupuesto.objects.filter(proyecto = proyecto)
+
+            if len(prueba) > 0:
+
+                proyectos.append(proyecto)
+
+        except:
+
+            print("No tiene cargado nada")
 
     datos = 0
 
