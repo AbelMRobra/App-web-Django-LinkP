@@ -30,7 +30,7 @@
     <h6>Nueva cuenta corriente</h6>
 
 
-    <a href="{% url 'Cargar una Venta' %}" class="btn btn-primary">Crear cuenta</a>
+    <a href="{% url 'Crear cuenta corriente' %}" class="btn btn-primary">Crear cuenta</a>
     
     </div>
 
@@ -111,7 +111,7 @@
                 <td> <b>  <small>${{i.venta.precio_venta|floatformat:0|intcomma}}</small></b> </td>
                 <td> <b><a href="{% url 'Detalle venta' i.venta.id %}" class="btn btn-sm btn-info" >Ver detalles</a>
                 </b> </td>
-                <td> <b><a href="" class="btn btn-sm btn-success" >Ingresar</a>
+                <td> <b><a href="{% url 'Cuenta corriente venta' i.id %}" class="btn btn-sm btn-success" >Ingresar</a>
                 </b> </td>
 
 

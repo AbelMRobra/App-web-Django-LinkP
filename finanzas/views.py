@@ -1,11 +1,34 @@
 from django.shortcuts import render
 from django.shortcuts import redirect
 from presupuestos.models import Proyectos, Presupuestos, Constantes, Modelopresupuesto
-from .models import Almacenero, CuentaCorriente
+from .models import Almacenero, CuentaCorriente, Cuota, Pago
 from proyectos.models import Unidades
 from ventas.models import Pricing, VentasRealizadas
 
 # Create your views here.
+
+def crearcuenta(request):
+
+    datos = VentasRealizadas.objects.all()
+
+    if request.method == 'POST':
+
+        datos_crear = request.POST.items()
+
+        for i in datos_crear:
+
+            if i[0] == 'ventas':
+
+                b = CuentaCorriente(
+                    venta = VentasRealizadas.objects.get(id=i[1]),
+
+                    )
+
+                b.save()
+
+
+    return render(request, 'crearcuenta.html', {"datos":datos})
+
 
 def ctacteproyecto(request, id_proyecto):
 
@@ -14,6 +37,37 @@ def ctacteproyecto(request, id_proyecto):
     datos = CuentaCorriente.objects.filter(venta__proyecto = proyecto)
 
     return render(request, 'ctacteproyecto.html', {"proyecto":proyecto, "datos":datos})
+
+def ctactecliente(request, id_cliente):
+
+    ctacte = CuentaCorriente.objects.get(id = id_cliente)
+
+    cuotas = Cuota.objects.filter(cuenta_corriente = ctacte)
+
+    pagos = Pago.objects.all()
+
+    datos_cuenta = []
+
+    for cuota in cuotas:
+
+        pago_cuota = 0
+        saldo_cuota = 0
+        pagos_realizados = []
+
+        for pago in pagos:
+
+            if pago.cuota == cuota:
+
+                pago_cuota = pago_cuota + pago.pago
+
+                pagos_realizados.append(pago)
+
+        saldo_cuota = cuota.precio - pago_cuota
+
+        datos_cuenta.append((cuota, pago_cuota, saldo_cuota, pagos_realizados))
+
+
+    return render(request, 'ctacte.html', {"ctacte":ctacte, "datos_cuenta":datos_cuenta})
 
 def panelctacote(request):
 
