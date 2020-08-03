@@ -170,3 +170,13 @@ class Modelopresupuesto(models.Model):
     def __str__(self):
         return '{}'.format(self.capitulo)
 
+
+class Registrodeconstantes(models.Model):
+    constante = models.ForeignKey(Constantes, on_delete=models.CASCADE, verbose_name = "Constante")
+    valor = models.FloatField(verbose_name="Valor")
+    fecha = models.DateField(verbose_name="Fecha")
+
+    class Meta:
+        verbose_name="Registro de contantes ultimo"
+        verbose_name_plural="Registros de constantes ultimo"
+

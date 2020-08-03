@@ -95,6 +95,8 @@ class ArchivosAreaVentas(models.Model):
     caja_area = models.FileField(verbose_name="Caja area", blank=True, null=True)
     invest_mercado = models.FileField(verbose_name="Investigacion de mercado", blank=True, null=True)
     evo_usd = models.FileField(verbose_name="Evolución USD/m2", blank=True, null=True)
+    informe_venta = models.FileField(verbose_name="Informe de venta", blank=True, null=True)
+    historial_venta = models.FileField(verbose_name="Historial de venta", blank=True, null=True)
 
     class Meta:
         verbose_name = "Archivos Área Ventas"

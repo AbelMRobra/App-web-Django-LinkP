@@ -4,6 +4,9 @@ from presupuestos.models import Proyectos, Presupuestos, Constantes, Modelopresu
 from .models import Almacenero, CuentaCorriente, Cuota, Pago
 from proyectos.models import Unidades
 from ventas.models import Pricing, VentasRealizadas
+import datetime
+from datetime import date
+
 
 # Create your views here.
 
@@ -65,6 +68,26 @@ def crearcuenta(request):
                         )
 
                     c.save()
+
+                    fecha_objeto = datetime.datetime.strptime(str(fecha), '%Y-%m-%d')
+
+                    fecha_dia = fecha_objeto.day
+
+                    if fecha_objeto.month == 12:
+
+                        fecha_mes = 1
+
+                        fecha_ano = (fecha_objeto.year + 1)
+
+                    else:
+
+                        fecha_mes = (fecha_objeto.month + 1)
+
+                        fecha_ano = fecha_objeto.year
+
+                    hoy = date.today()
+
+                    fecha = hoy.replace(fecha_ano, fecha_mes, fecha_dia)
 
 
     return render(request, 'crearcuenta.html', {"datos":datos})
@@ -220,9 +243,6 @@ def consolidado(request):
 
             pass
 
-
-
-
         datos_completos.append((dato, total_costo, total_ingresos, saldo_proyecto, rentabilidad, presupuesto, pricing))
 
     beneficio_total = ingresos_total - costo_total
@@ -286,7 +306,10 @@ def almacenero(request):
                     pend_gast = almacenero.pendiente_admin + almacenero.pendiente_comision + presupuesto.saldo_mat + presupuesto.saldo_mo + presupuesto.imprevisto + presupuesto.credito + presupuesto.fdr + almacenero.pendiente_adelantos + almacenero.pendiente_iva_ventas + almacenero.pendiente_iibb_tem
                     prest_cobrar = almacenero.prestamos_proyecto + almacenero.prestamos_otros
                     total_costo = almacenero.cheques_emitidos + almacenero.gastos_fecha + pend_gast + almacenero.Prestamos_dados
-                    total_ingresos = prest_cobrar + almacenero.cuotas_cobradas + almacenero.cuotas_a_cobrar + almacenero.ingreso_ventas
+                    
+                    descuento = almacenero.ingreso_ventas*0.06 
+                    
+                    total_ingresos = prest_cobrar + almacenero.cuotas_cobradas + almacenero.cuotas_a_cobrar + almacenero.ingreso_ventas - descuento
                     saldo_caja = almacenero.cuotas_cobradas - almacenero.gastos_fecha - almacenero.Prestamos_dados
                     saldo_proyecto = total_ingresos - total_costo
                     rentabilidad = (saldo_proyecto/total_costo)*100
@@ -297,7 +320,7 @@ def almacenero(request):
                     datos.append(presupuesto)
                     datos.append(almacenero)
 
-                    datos.append((pend_gast, prest_cobrar, total_costo, total_ingresos, rentabilidad, saldo_caja, saldo_proyecto))
+                    datos.append((pend_gast, prest_cobrar, total_costo, total_ingresos, rentabilidad, saldo_caja, saldo_proyecto, descuento))
 
             proyectos = 0
 

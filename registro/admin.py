@@ -19,7 +19,7 @@ class RegistrosConstanteResource(resources.ModelResource):
 
 class RegistrosConstanteAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = ('constante', 'valor',  'fecha')
-    search_fields = ('constante', 'valor',  'fecha')
+    search_fields = ( 'valor',  'fecha')
     resources_class = RegistrosConstanteResource
 
 class RegistroValorProyectoResource(resources.ModelResource):

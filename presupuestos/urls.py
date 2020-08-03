@@ -11,6 +11,7 @@ urlpatterns = [
     url(r'^cons_create/$', login_required(views.cons_create), name = 'Cons_create'),
     url(r'^cons_editar/(?P<id_cons>\d+)/$', login_required(views.cons_edit), name = 'Editar_cons'),
     url(r'^cons_eliminar/(?P<id_cons>\d+)/$', login_required(views.cons_delete), name = 'Eliminar_cons'),
+    url(r'^registro/$', login_required(views.registroconstante), name = 'Registro'),
     #----------------URL PARA ARTICULOS -----------------------------------------    
     url(r'^insum_list/$', login_required(views.insum_list), name = 'Lista de insumos'),   
     url(r'^insum_panel/$', login_required(views.insum_panel), name = 'Panel de cambios'),

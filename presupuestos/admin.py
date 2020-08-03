@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Constantes, Articulos, DatosProyectos, Presupuestos, Prametros, Desde, Analisis, CompoAnalisis, Capitulos, Modelopresupuesto
+from .models import Constantes, Articulos, DatosProyectos, Presupuestos, Prametros, Desde, Analisis, CompoAnalisis, Capitulos, Modelopresupuesto, Registrodeconstantes
 from import_export import resources
 from import_export.admin import ImportExportModelAdmin
 
@@ -59,7 +59,15 @@ class CapituloResource(resources.ModelResource):
 class CapituloAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     resources_class = ModeloPreResource
 
+class RegistrodeConstanteResource(resources.ModelResource):
+    class Meta:
+        model = Registrodeconstantes
+
+class RegistrodeConstanteAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    resources_class = RegistrodeConstanteResource
+
 admin.site.register(Constantes, ConstantesAdmin)
+admin.site.register(Registrodeconstantes, RegistrodeConstanteAdmin)
 admin.site.register(Capitulos, CapituloAdmin)
 admin.site.register(Articulos, ArticulosAdmin)
 admin.site.register(DatosProyectos)

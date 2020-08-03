@@ -7,8 +7,8 @@ from proyectos.models import Proyectos
 from computos.models import Computos
 from compras.models import Compras
 from ventas.models import PricingResumen, VentasRealizadas
-from registro.models import RegistroValorProyecto
-from .models import Articulos, Constantes, DatosProyectos, Prametros, Desde, Analisis, CompoAnalisis, Modelopresupuesto, Capitulos, Presupuestos
+from registro.models import RegistroValorProyecto, RegistroConstantes
+from .models import Articulos, Constantes, DatosProyectos, Prametros, Desde, Analisis, CompoAnalisis, Modelopresupuesto, Capitulos, Presupuestos, Registrodeconstantes
 import sqlite3
 import numpy as np
 import json
@@ -301,6 +301,61 @@ def cons_delete(request, id_cons):
         cons.delete()
         return redirect('Cons_panel')
     return render(request, 'constantes/cons_delete.html', {'cons':cons})
+
+# --------------------------------> REGISTRO DE CONSTANTE <------------------------------------------------------
+
+def registroconstante(request):
+
+    datos_constante = Constantes.objects.all()
+
+    datos = []
+    fecha = []
+
+    for dato in datos_constante:
+
+        try:
+            registro_constante = Registrodeconstantes.objects.filter(constante = dato)
+
+            datos.append(registro_constante)
+
+            for registro in registro_constante:
+                fecha.append(registro.fecha)
+
+        except:
+
+            mensaje = "No hay registros de esta constanre"
+
+    fecha = set(fecha)
+
+    fecha = sorted(fecha)
+
+    datos_finales = []
+
+    registro_una = []
+
+    for dato in datos:
+
+        for f in fecha:
+
+            for d in dato:
+
+                if d.fecha == f:
+                    registro_una.append(d.valor)
+
+                else:
+                    registro_una.append(0)
+
+        datos_finales.append((d.constante, registro_una))
+
+    print(datos_finales)
+
+
+
+
+        
+    return render(request, 'constantes/historico.html', {'datos_finales':datos_finales, "fecha":fecha})
+
+        
 
 # ---------------------------------> VISTAS PARA PANEL PRESUPUESTOS <----------------------------------------------
 

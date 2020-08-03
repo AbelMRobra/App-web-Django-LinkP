@@ -17,118 +17,122 @@
 
     <div style=" background-color: rgba(63, 95, 179, 0.3); width: 50%; margin-left: 25%;">
 
-        <form method="POST">
-
-            {% csrf_token %}
-
-            <div style="display: inline-block; margin-top: 5%;">
-
-                <label for="unidad"><h6>Venta para asociar</h6></label>
-    
-            </div>
-    
-            <div style="margin-bottom: 2%; width: 80%; margin-left: 10%;">
-    
-                <input name="ventas" type="search" class="form-control form-control" placeholder="Ej: TORRE BLUE PISO 3 A" list="ventas">
-    
-            </div>
-
-            <b><hr class = "my-4" style="width: 100%; "></b>
-
-            <div style="display: inline-block;">
-    
-                <label for="concepto1"><h6>Concepto de la cuota</h6></label>
-    
-            </div>
-    
-            <div class="input-group mb-3" style="margin-bottom: 2%; width: 50%; margin-left: 25%;">
 
 
-                <input name="concepto1" type="text" class="form-control form-control" aria-label="Amount" placeholder="Cuota espera/Anticipo/Otros">
-                
-            </div>
-    
-    
-            <div style="display: inline-block;">
-    
-                <label for="precio1"><h6>Precio de venta en moneda dura</h6></label>
-    
-            </div>
-    
-            <div class="input-group mb-3" style="margin-bottom: 2%; width: 50%; margin-left: 25%;">
+                <form method="POST">
+        
+                    {% csrf_token %}
+        
+                    <div style="display: inline-block; margin-top: 5%;">
+        
+                        <label for="unidad"><h6>Venta para asociar</h6></label>
+            
+                    </div>
+            
+                    <div style="margin-bottom: 2%; width: 80%; margin-left: 10%;">
+            
+                        <input name="ventas" type="search" class="form-control form-control" placeholder="Ej: TORRE BLUE PISO 3 A" list="ventas">
+            
+                    </div>
+        
+                    <b><hr class = "my-4" style="width: 100%; "></b>
 
-                <div class="input-group-prepend">
+                    <div class = "campoctacte">
 
-                    <span class="input-group-text">$</span>
+                        <div class = "campo">
+        
+                    <div style="display: inline-block;">
+            
+                        <label for="concepto1"><h6>Concepto de la cuota</h6></label>
+            
+                    </div>
+            
+                    <div class="input-group mb-3" style="margin-bottom: 2%; width: 50%; margin-left: 25%;">
+        
+        
+                        <input name="concepto1" type="text" class="form-control form-control" aria-label="Amount" placeholder="Cuota espera/Anticipo/Otros">
+                        
+                    </div>
+            
+            
+                    <div style="display: inline-block;">
+            
+                        <label for="precio1"><h6>Precio de venta en moneda dura</h6></label>
+            
+                    </div>
+            
+                    <div class="input-group mb-3" style="margin-bottom: 2%; width: 50%; margin-left: 25%;">
+        
+                        <div class="input-group-prepend">
+        
+                            <span class="input-group-text">$</span>
+        
+                        </div>
+        
+                        <input name="precio1" type="number" class="form-control form-control" aria-label="Amount">
+                        
+                    </div>
+        
+        
+        
+        
+                    <div style="display: inline-block;">
+            
+                        <label for="fecha1"><h6>Fecha de inicio de las cuotas</h6></label>
+            
+                    </div>
+            
+                    <div style="margin-bottom: 2%; width: 30%; margin-left: 35%;">
+            
+                        <input name="fecha1" type="date" class="form-control form-control">
+            
+                    </div>
+        
+                    <div style="display: inline-block;">
+            
+                        <label for="cuotas1"><h6>Cantidad de cuotas</h6></label>
+            
+                    </div>
+            
+                    <div style="margin-bottom: 2%; width: 30%; margin-left: 35%;">
+            
+                        <input name="cuotas1" type="number" class="form-control form-control" list="art">
+            
+                    </div>
+        
+            
+                    <div class="custom-control custom-radio">
+                        <input type="radio" id="customRadio1" name="tipo_venta" class="custom-control-input" value="HORM" checked="">
+                        <label class="custom-control-label" for="customRadio1">HORMIGÓN</label>
+                      </div>
+        
+                      <div class="custom-control custom-radio">
+                        <input type="radio" id="customRadio2" name="tipo_venta" class="custom-control-input" value="USD">
+                        <label class="custom-control-label" for="customRadio2">DOLAR</label>
+                      </div>
+        
+                      <b><hr class = "my-4" style="width: 100%; "></b>
 
-                </div>
+        </div>
+        
+    </div>
 
-                <input name="precio1" type="number" class="form-control form-control" aria-label="Amount">
-                
-            </div>
-
-
-
-
-            <div style="display: inline-block;">
-    
-                <label for="fecha1"><h6>Fecha de inicio de las cuotas</h6></label>
-    
-            </div>
-    
-            <div style="margin-bottom: 2%; width: 30%; margin-left: 35%;">
-    
-                <input name="fecha1" type="date" class="form-control form-control">
-    
-            </div>
-
-            <div style="display: inline-block;">
-    
-                <label for="cuotas1"><h6>Cantidad de cuotas</h6></label>
-    
-            </div>
-    
-            <div style="margin-bottom: 2%; width: 30%; margin-left: 35%;">
-    
-                <input name="cuotas1" type="number" class="form-control form-control" list="art">
-    
-            </div>
-
-    
-            <div class="custom-control custom-radio">
-                <input type="radio" id="customRadio1" name="tipo_venta" class="custom-control-input" value="HORM" checked="">
-                <label class="custom-control-label" for="customRadio1">HORMIGÓN</label>
-              </div>
-
-              <div class="custom-control custom-radio">
-                <input type="radio" id="customRadio2" name="tipo_venta" class="custom-control-input" value="USD">
-                <label class="custom-control-label" for="customRadio2">DOLAR</label>
-              </div>
-
-              <b><hr class = "my-4" style="width: 100%; "></b>
-
-
+   
                   
-              <div style="margin-top: 2%; margin-bottom: 5%;">
+              <div style="margin-top: 2%; ">
     
-                <button type="submit" class="btn btn-primary" style="margin-bottom: 5%;" >Armar cuenta corriente</button>
+                <button type="submit" class="btn btn-primary" >Armar cuenta corriente</button>
     
               </div>
-
-              {% if mensaje %}
-
-              <div>
-                  <p style="color: red;"> {{ mensaje }}</p>
-              </div>
-
-              {% endif %}
         
 
         </form>
 
+        <b><hr class = "my-4" style="width: 100%; "></b>
 
-        
-        
+        <button onclick="myFunction()" class="btn btn-danger" style="margin-bottom: 5%;" >Agregar campos de cuotas</button>
+
+ 
     
     </div>
 
@@ -143,12 +147,6 @@
     </datalist>
 
 
-
-   
-    
-
-
-
     <b><hr class = "my-4" style="width: 50%;"></b>
 
 
@@ -160,6 +158,22 @@
 
                     
 </div>
+
+<script>
+
+    var i = 1;
+
+    function myFunction() {
+
+        i++
+            $(".campo").clone().appendTo(".campoctacte").attr("class","campo-"+i);
+            $(".campoctacte").last().find('.campo').find('input').each(function( index ) { 
+
+                    $(this).attr("name",$(this).attr("name")+i);
+            });
+        }
+    
+</script>
 
 {% endif %} 
  

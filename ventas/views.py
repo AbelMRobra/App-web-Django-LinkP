@@ -16,6 +16,78 @@ from django.http import HttpResponse
 
 # Create your views here.
 
+def informeventa(request):
+
+    busqueda = 1
+    datos_pricing = ArchivosAreaVentas.objects.filter(informe_venta__isnull = False)
+    datos = 0
+    fecha = 0
+
+    fechas = []
+
+    for dato in datos_pricing:
+        fechas.append((dato.fecha, str(dato.fecha)))
+
+    fechas = list(set(fechas))
+
+    fechas.sort( reverse=True)
+
+    if request.method == 'POST':
+
+        #Trae los datos elegidos
+        datos_elegidos = request.POST.items()
+
+        for dato in datos_elegidos:
+
+            if dato[0] == "fecha":
+                datos = ArchivosAreaVentas.objects.get(fecha = dato[1])
+                busqueda = 0
+                fecha = dato[1]
+
+
+    datos = {"fechas":fechas,
+    "busqueda":busqueda,
+    "datos":datos,
+    "fecha":fecha}
+
+    return render(request, 'informe_venta.html', {"datos":datos})
+
+def historialventa(request):
+
+    busqueda = 1
+    datos_pricing = ArchivosAreaVentas.objects.filter(historial_venta__isnull = False)
+    datos = 0
+    fecha = 0
+
+    fechas = []
+
+    for dato in datos_pricing:
+        fechas.append((dato.fecha, str(dato.fecha)))
+
+    fechas = list(set(fechas))
+
+    fechas.sort( reverse=True)
+
+    if request.method == 'POST':
+
+        #Trae los datos elegidos
+        datos_elegidos = request.POST.items()
+
+        for dato in datos_elegidos:
+
+            if dato[0] == "fecha":
+                datos = ArchivosAreaVentas.objects.get(fecha = dato[1])
+                busqueda = 0
+                fecha = dato[1]
+
+
+    datos = {"fechas":fechas,
+    "busqueda":busqueda,
+    "datos":datos,
+    "fecha":fecha}
+
+    return render(request, 'historial_venta.html', {"datos":datos})
+
 def folleto(request):
 
     datos = Proyectos.objects.filter(folleto__isnull = False)
@@ -112,7 +184,7 @@ def encuestapostventa(request):
 def invmer(request):
 
     busqueda = 1
-    datos_pricing = ArchivosAreaVentas.objects.all()
+    datos_pricing = ArchivosAreaVentas.objects.filter(invest_mercado__isnull = False)
     datos = 0
     fecha = 0
 
@@ -148,7 +220,7 @@ def invmer(request):
 def cajaarea(request):
 
     busqueda = 1
-    datos_pricing = ArchivosAreaVentas.objects.all()
+    datos_pricing = ArchivosAreaVentas.objects.filter(caja_area__isnull = False)
     datos = 0
     fecha = 0
 
@@ -184,7 +256,7 @@ def cajaarea(request):
 def radiografia(request):
 
     busqueda = 1
-    datos_pricing = ArchivosAreaVentas.objects.all()
+    datos_pricing = ArchivosAreaVentas.objects.filter(radiografia_cliente__isnull = False)
     datos = 0
     fecha = 0
 
@@ -208,9 +280,6 @@ def radiografia(request):
                 datos = ArchivosAreaVentas.objects.get(fecha = dato[1])
                 busqueda = 0
                 fecha = dato[1]
-
-
-
 
     datos = {"fechas":fechas,
     "busqueda":busqueda,
@@ -254,9 +323,6 @@ def resumenprecio(request):
     "fecha":fecha}
 
     return render(request, 'resumenprecio.html', {"datos":datos})
-
-
-
 
 
 def estmercado(request):
@@ -668,9 +734,9 @@ def pricing(request, id_proyecto):
 
     #Aqui resto el 6% 
 
-    almacenero.ingreso_ventas = ingreso_ventas - ingreso_ventas*0.06
+    almacenero.ingreso_ventas = ingreso_ventas - ingreso_ventas*0.00
     almacenero.save()
-    almacenero.unidades_socios = unidades_socios - unidades_socios*0.06
+    almacenero.unidades_socios = unidades_socios - unidades_socios*0.00
     almacenero.save()
 
     cantidad = len(datos_tabla_unidad)
@@ -1104,11 +1170,6 @@ def cotizador(request, id_unidad):
         for d in range(int(cuotas_p)):
             cuotas_pose.append(1.65)
 
-        print(cuotas_espera)
-        print(cuotas_pose)
-        print(aporte_va)
-
-
         valor_auxiliar_espera = np.npv(rate=(datos.proyecto.tasa_f/100), values=cuotas_espera)
 
         valor_auxiliar_pose = np.npv(rate=(datos.proyecto.tasa_f/100), values=cuotas_pose)
@@ -1120,12 +1181,8 @@ def cotizador(request, id_unidad):
 
         incremento = (total_cuotas/factor) - 1
 
-        print(incremento)
-
         precio_finan = ((precio_contado - float(anticipo))*(1 + incremento)) + float(anticipo)
 
-        print(precio_finan)
-        
         importe_cuota_esp = (precio_finan-float(anticipo))/total_cuotas
         importe_aporte = importe_cuota_esp*float(aporte)
 

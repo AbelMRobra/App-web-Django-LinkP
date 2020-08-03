@@ -31,13 +31,22 @@ class RegistroLeccionesAprendidasPresup(models.Model):
         verbose_name_plural="Lecciones aprendidas presupuesto"
 
 class RegistroConstantes(models.Model):
-    constante = models.CharField(max_length=200)
+    constante = models.CharField(max_length=200, verbose_name = "Nombre")
     valor = models.FloatField(verbose_name="Valor")
     fecha = models.DateField(verbose_name="Fecha")
 
     class Meta:
         verbose_name="Registro de contantes"
         verbose_name_plural="Registros de constantes"
+
+class RegistroConstantesUltimo(models.Model):
+    constante = models.ForeignKey(Constantes, on_delete=models.CASCADE, verbose_name = "Constante")
+    valor = models.FloatField(verbose_name="Valor")
+    fecha = models.DateField(verbose_name="Fecha")
+
+    class Meta:
+        verbose_name="Registro de contantes ultimo"
+        verbose_name_plural="Registros de constantes ultimo"
 
 class RegistroValorProyecto(models.Model):
     proyecto = models.ForeignKey(Proyectos, on_delete=models.CASCADE, verbose_name = "Proyecto")

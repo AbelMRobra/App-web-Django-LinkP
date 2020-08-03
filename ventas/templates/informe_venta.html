@@ -10,7 +10,7 @@
 <div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;" > 
 
     <div style="text-align: center;">
-        <h2>Evolución del USD/m2</h2>
+        <h2>Informe de venta</h2>
 
         {% if datos.fecha %}
 
@@ -18,7 +18,7 @@
 
         {% endif %}
 
-        <small>Evolucón del valor real del m2</small>
+        <small>Área comercial</small>
 
 
         <b><hr class = "my-4" style="width: 75%;"></b>
@@ -43,7 +43,7 @@
 
              </select>
              <div>
-               <small> Seleccione una fecha para cargar el archivo</small>
+               <small> Seleccione una fecha para cargar el listado</small>
              </div>
 
 
@@ -59,7 +59,7 @@
        {% if datos.datos %}
 
        <div>
-          <a href="{{ datos.datos.evo_usd.url }}" class="btn btn-info" style="margin-top: 1%;">Ver Informe!</a>
+          <a href="{{ datos.datos.informe_venta.url }}" class="btn btn-info" style="margin-top: 1%;">Ver Informe!</a>
        </div>
 
        {% endif %}
