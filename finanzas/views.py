@@ -214,8 +214,10 @@ def consolidado(request):
         
         
         costo_total = costo_total + total_costo
+
+        descuento = almacenero.ingreso_ventas*0.06
         
-        total_ingresos = prest_cobrar + almacenero.cuotas_cobradas + almacenero.cuotas_a_cobrar + almacenero.ingreso_ventas
+        total_ingresos = prest_cobrar + almacenero.cuotas_cobradas + almacenero.cuotas_a_cobrar + almacenero.ingreso_ventas - descuento
         
         ingresos_total = ingresos_total + total_ingresos
 
