@@ -12,7 +12,7 @@
     <div style="text-align: center;">
         <h2>Cost benefits analysis (CBA)</h2>
 
-        <small>Responsable del panel: </small><small><strong>VI</strong></small>
+        <small>Responsable del panel: </small><small><strong>Finanzas/Administración</strong></small>
 
 
         <b><hr class = "my-4" style="width: 75%; "></b>
@@ -107,11 +107,26 @@
     
     </div>
 
-    <hr class = "my-4" style="width: 100%; border-color: rgba({{datos.datos.0.color}}, 0.5);">
+    
+
+    <div style="background-color: rgba({{datos.datos.0.color}}, 0.2) ;">
+
+        <hr class = "my-4" style="width: 100%; border-color: rgba({{datos.datos.0.color}}, 0.5);">
+
+        <h5> Resumen de los datos </h5>
+
+        <hr class = "my-4" style="width: 100%; border-color: rgba({{datos.datos.0.color}}, 0.5);">
+
+
+    </div>
+
+    
+
+    
+
+    
 
     <div  style="text-align: left;">
-
-    <h4 style="margin-bottom: 2rem; color: rgb({{datos.datos.0.color}})"> Resumen de los datos </h4>
 
     <h6>Saldo de caja a la fecha: <small>$ {{datos.datos.3.5|floatformat:0|intcomma}}</small>  </h6>
     <h6>Costos del proyecto: <small>$ {{datos.datos.3.2|floatformat:0|intcomma}}</small>  </h6>
@@ -124,9 +139,16 @@
 
     
 
-    <hr class = "my-4" style="width: 100%; border-color: rgba({{datos.datos.0.color}}, 0.5);">
+    <div style="background-color: rgba({{datos.datos.0.color}}, 0.2) ;">
 
-    <h4 style="text-align: left; margin-bottom: 2rem; color: rgb({{datos.datos.0.color}})"> Desglose completo </h4>
+        <hr class = "my-4" style="width: 100%; border-color: rgba({{datos.datos.0.color}}, 0.5);">
+
+        <h5> Desglose completo </h5>
+
+        <hr class = "my-4" style="width: 100%; border-color: rgba({{datos.datos.0.color}}, 0.5);">
+
+
+    </div>
 
 
     <div style="display: inline-block; width: 45%; vertical-align: top;">
@@ -152,7 +174,7 @@
         <h6>Cuotas a cobrar:</h6>
         <h6>Ingreso por ventas:</h6>
         <h6> <small>(Unidades de Socios):</small> </h6>
-        <h6>Descuento en ventas:</h6>
+        
 
         
     </div>
@@ -167,7 +189,7 @@
         <h6>$ {{datos.datos.2.cuotas_a_cobrar|floatformat:0|intcomma}}  </h6>
         <h6>$ {{datos.datos.2.ingreso_ventas|floatformat:0|intcomma}}  </h6>
         <h6> <small> $ {{datos.datos.2.unidades_socios|floatformat:0|intcomma}}  </small></h6>
-        <h6>- $ {{datos.datos.3.7|floatformat:0|intcomma}}  </h6>
+        
         
     </div>
     
@@ -223,14 +245,35 @@
 
     </div>
 
-    <div style="margin-top: 5%;">
-        <h5 style="color: rgb({{datos.datos.0.color}})">BENEFICIO: $ {{datos.datos.3.6|floatformat:0|intcomma}}</h3>
-        <h4 style="margin-top: 1%; color: rgb({{datos.datos.0.color}})">RENDIMIENTO: {{datos.datos.3.4|floatformat:0|intcomma}}%</h2>
+    <div style="margin-top: 5%; margin-bottom: 5%;">
+        <h6 style="color: rgb({{datos.datos.0.color}})">BENEFICIO: $ {{datos.datos.3.6|floatformat:0|intcomma}}</h6>
+        <h5 style="margin-top: 1%; color: rgb({{datos.datos.0.color}})">RENDIMIENTO: {{datos.datos.3.4|floatformat:0|intcomma}}%</h5>
     </div>
 
-    <div>
-        <h6 style="text-align: left;"> <small> *Las unidades estan reducidas un 6% del pricing</small> </h6>
-    </div>  
+    <div style="background-color: rgba({{datos.datos.0.color}}, 0.2);">
+
+        <hr class = "my-4" style="width: 100%; border-color: rgba({{datos.datos.0.color}}, 0.5);">
+
+        <h5> Escenario pesimista </h5>
+
+        <hr class = "my-4" style="width: 100%; border-color: rgba({{datos.datos.0.color}}, 0.5);">
+
+
+    </div>
+
+    <div style="text-align: left;">
+        <h6>Descuento de sobre unidades en venta/socios (6%): - ${{datos.datos.3.7|floatformat:0|intcomma}} </h6>
+    </div>
+
+
+    <div style="margin-top: 5%; margin-bottom: 5%;">
+        <h6 style="color: rgb({{datos.datos.0.color}})">BENEFICIO DESPUES DE DESCUENTO: $ {{datos.datos.3.8|floatformat:0|intcomma}}</h6>
+        <h5 style="margin-top: 1%; color: rgb({{datos.datos.0.color}})">RENDIMIENTO: {{datos.datos.3.9|floatformat:0|intcomma}}%</h5>
+    </div>
+
+    <hr class = "my-4" style="width: 50%; border-color: rgba({{datos.datos.0.color}}, 0.5);">
+
+   
 
     
     {% endif %}

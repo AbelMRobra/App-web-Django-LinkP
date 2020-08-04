@@ -83,12 +83,40 @@
 
             <tbody>
     
-                <tr class = "table-light">
+                <tr class = "table-dark">
                     <td style="width: 15%; vertical-align: middle;" colspan="2"> <b>RESULTADO CONJUNTO DE PROYECTOS</b> </td>
                     <td style="width: 5%; vertical-align: middle;"> <b>${{ datos_finales.0.0|floatformat:0|intcomma }}</b> </td> 
                     <td style="width: 10%; vertical-align: middle;"> <b>${{  datos_finales.0.1|floatformat:0|intcomma }}</b></td> 
                     <td style="width: 10%; vertical-align: middle; vertical-align: middle;"> <b>${{  datos_finales.0.2|floatformat:0|intcomma }}</b></td> 
                     <td style="width: 10%; vertical-align: middle;"> <b>{{  datos_finales.0.3|floatformat:0|intcomma }}%</b>  </td> 
+                    
+
+
+                </tr>
+            </tbody>
+
+            <tbody>
+    
+                <tr class = "table-dark">
+                    <td style="width: 15%; vertical-align: middle;" colspan="2"> <b>DESCUENTO DEL 6% SOBRE UNIDADES</b> </td>
+                    <td style="width: 5%; vertical-align: middle;"> <b> - ${{ datos_finales.0.4|floatformat:0|intcomma }}</b> </td> 
+                    <td style="width: 10%; vertical-align: middle;"></td> 
+                    <td style="width: 10%; vertical-align: middle; vertical-align: middle;"></td> 
+                    <td style="width: 10%; vertical-align: middle;"></td> 
+                    
+
+
+                </tr>
+            </tbody>
+
+            <tbody>
+    
+                <tr class = "table-dark">
+                    <td style="width: 15%; vertical-align: middle;" colspan="2"> <b>RESULTADO CONSIDERANDO DESCUENTO</b> </td>
+                    <td style="width: 5%; vertical-align: middle;"></td> 
+                    <td style="width: 10%; vertical-align: middle;"></td> 
+                    <td style="width: 10%; vertical-align: middle; vertical-align: middle;"> <b>${{datos_finales.0.6|floatformat:0|intcomma }}</b></td> 
+                    <td style="width: 10%; vertical-align: middle;"> <b>{{  datos_finales.0.5|floatformat:0|intcomma }}%</b>  </td> 
                     
 
 

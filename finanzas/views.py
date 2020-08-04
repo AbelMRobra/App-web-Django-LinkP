@@ -202,6 +202,7 @@ def consolidado(request):
 
     costo_total = 0
     ingresos_total = 0
+    descuento_total = 0
 
 
     for dato in datos:
@@ -230,14 +231,20 @@ def consolidado(request):
         costo_total = costo_total + total_costo
 
         descuento = almacenero.ingreso_ventas*0.06
+        descuento_total = descuento_total + descuento
         
-        total_ingresos = prest_cobrar + almacenero.cuotas_cobradas + almacenero.cuotas_a_cobrar + almacenero.ingreso_ventas - descuento
+        total_ingresos = prest_cobrar + almacenero.cuotas_cobradas + almacenero.cuotas_a_cobrar + almacenero.ingreso_ventas
         
         ingresos_total = ingresos_total + total_ingresos
 
         saldo_caja = almacenero.cuotas_cobradas - almacenero.gastos_fecha - almacenero.Prestamos_dados
         saldo_proyecto = total_ingresos - total_costo
         rentabilidad = (saldo_proyecto/total_costo)*100
+
+
+        total_ingresos_pesimista = total_ingresos - descuento
+        saldo_proyecto_pesimista = total_ingresos_pesimista - total_costo
+        rentabilidad_pesimista = (saldo_proyecto_pesimista/total_costo)*100
 
         try:
 
@@ -259,12 +266,14 @@ def consolidado(request):
 
             pass
 
-        datos_completos.append((dato, total_costo, total_ingresos, saldo_proyecto, rentabilidad, presupuesto, pricing))
+        datos_completos.append((dato, total_costo, total_ingresos, saldo_proyecto, rentabilidad, presupuesto, pricing, saldo_proyecto_pesimista, rentabilidad_pesimista))
 
     beneficio_total = ingresos_total - costo_total
+    beneficio_total_pesimista = beneficio_total - descuento_total
     rendimiento_total = beneficio_total/costo_total*100
+    rendimiento_total_pesimista = beneficio_total_pesimista/costo_total*100
 
-    datos_finales.append((ingresos_total, costo_total, beneficio_total, rendimiento_total))
+    datos_finales.append((ingresos_total, costo_total, beneficio_total, rendimiento_total, descuento_total, rendimiento_total_pesimista, beneficio_total_pesimista))
 
     return render(request, 'consolidado.html', {"datos_completos":datos_completos, 'datos_finales':datos_finales})
 
@@ -325,10 +334,14 @@ def almacenero(request):
                     
                     descuento = almacenero.ingreso_ventas*0.06 
                     
-                    total_ingresos = prest_cobrar + almacenero.cuotas_cobradas + almacenero.cuotas_a_cobrar + almacenero.ingreso_ventas - descuento
+                    total_ingresos = prest_cobrar + almacenero.cuotas_cobradas + almacenero.cuotas_a_cobrar + almacenero.ingreso_ventas
                     saldo_caja = almacenero.cuotas_cobradas - almacenero.gastos_fecha - almacenero.Prestamos_dados
                     saldo_proyecto = total_ingresos - total_costo
                     rentabilidad = (saldo_proyecto/total_costo)*100
+
+                    total_ingresos_pesimista = total_ingresos - descuento
+                    saldo_proyecto_pesimista = total_ingresos_pesimista - total_costo
+                    rentabilidad_pesimista = (saldo_proyecto_pesimista/total_costo)*100
 
                     #Cargo todo a datos
 
@@ -336,7 +349,7 @@ def almacenero(request):
                     datos.append(presupuesto)
                     datos.append(almacenero)
 
-                    datos.append((pend_gast, prest_cobrar, total_costo, total_ingresos, rentabilidad, saldo_caja, saldo_proyecto, descuento))
+                    datos.append((pend_gast, prest_cobrar, total_costo, total_ingresos, rentabilidad, saldo_caja, saldo_proyecto, descuento, saldo_proyecto_pesimista, rentabilidad_pesimista))
 
             proyectos = 0
 
