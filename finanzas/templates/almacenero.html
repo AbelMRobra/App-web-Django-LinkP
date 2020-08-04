@@ -34,7 +34,15 @@
 
                {% if not "DIANCO" in i.nombre %}
 
+               {% if "#300" in i.nombre %}
+
+               <option value="{{i.0}}">#300 (COMPLETO)</option>
+
+               {% else %}
+
                <option value="{{i.0}}">{{i.1}}</option>
+
+               {% endif %}
 
                {% endif %}
 
