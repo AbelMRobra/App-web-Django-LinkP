@@ -18,21 +18,17 @@
 
         </div>
         
-        <h2 style="color: rgb({{ctacte.venta.unidad.proyecto.color}})" >Cuenta corriente cliente: {{ctacte.venta.comprador}} </h2>
+        <div style="text-align: left;">
 
-        <small><strong>{{ctacte.venta.unidad.proyecto.nombre}} - {{ctacte.venta.unidad.piso_unidad}} - {{ctacte.venta.unidad.nombre_unidad}}</strong></small>
+            <h6>Fecha:</h6>
+            <h6>Cliente:</h6>
+            <h6>Unidad:</h6>
+            <h6>Tamaño de la unidad:</h6> 
 
+
+        </div>
         <b><hr class = "my-4" style="width: 100%; "></b>
     
-
-        <div style="text-align: center;">
-        
-        <h6>Resumen de la cuenta</h6>
-    
-    
-        <a href="{% url 'Crear cuenta corriente' %}" class="btn btn-primary">Ver resumen</a>
-
-        <b><hr class = "my-4" style="width: 75%; "></b>
     
     </div>
 
@@ -46,17 +42,14 @@
             <thead>
     
                 <tr class = "table-dark">
-                    <th scope = "row"> <small>FECHA CUOTA</small></th>
                     <th scope = "row"> <small>CONCEPTO</small></th>
-                    <th scope = "row"> <small>MONEDA (MD) </small></th>
-                    <th scope = "row"> <small> VALOR EN (MD) </small></th>
-                    <th scope = "row"> <small> PAGADO EN (MD) </small></th>
-                    <th scope = "row"> <small> SALDO EN (MD) </small></th>
-                    <th scope = "row"> <small> VALOR DE MD</small></th>
-                    <th scope = "row"> <small> SALDO EN PESOS </small></th>
-                    <th scope = "row"> <small> INGRESAR PAGO </small></th>
-                    <th scope = "row"> <small> EDITAR </small></th>
-                    <th scope = "row"> <small> ELIMINAR </small></th>
+                    <th scope = "row"> <small>MONEDA</small></th>
+                    <th scope = "row"> <small>TOTAL</small></th>
+                    <th scope = "row"> <small>CUOTAS</small></th>
+                    <th scope = "row"> <small> PAGADO </small></th>
+                    <th scope = "row"> <small> SALDO</small></th>
+                    <th scope = "row"> <small> SALDO (PESOS) </small></th>
+
 
                 </tr>
             </thead>
@@ -95,11 +88,16 @@
     
         </div>
 
-    <div style="text-align: left; margin-top: 5%;">
+        <b><hr class = "my-4" style="width: 100%; "></b>
 
-        <small>*Toque el valor de pago para ver detalles</small>
+        <div style="text-align: left;">
 
-    </div>
+            <h6>Datos de la cuota a vencer</h6>
+
+
+        </div>
+
+
 
     <div style="text-align: center; margin-top: 10%;">
         <p> <small>-- Link<strong>P</strong> --</small> </p>

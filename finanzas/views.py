@@ -95,11 +95,25 @@ def crearcuenta(request):
 
 def ctacteproyecto(request, id_proyecto):
 
+
     proyecto = Proyectos.objects.get(id = id_proyecto)
 
     datos = CuentaCorriente.objects.filter(venta__proyecto = proyecto)
 
     return render(request, 'ctacteproyecto.html', {"proyecto":proyecto, "datos":datos})
+
+    ### Armando resumen de cuenta corriente
+
+def resumenctacte(request):
+
+    id_cliente = 1
+
+    ctacte = CuentaCorriente.objects.get(id = id_cliente)
+
+    cuotas = Cuota.objects.filter(cuenta_corriente = ctacte)
+
+
+    return render(request, 'resumencta.html', {"ctacte":ctacte})
 
 def ctactecliente(request, id_cliente):
 
@@ -305,7 +319,7 @@ def almacenero(request):
                     #Calculo el resto de las cosas
                     
 
-                    pend_gast = almacenero.pendiente_admin + almacenero.pendiente_comision + presupuesto.saldo_mat + presupuesto.saldo_mo + presupuesto.imprevisto + presupuesto.credito + presupuesto.fdr + almacenero.pendiente_adelantos + almacenero.pendiente_iva_ventas + almacenero.pendiente_iibb_tem
+                    pend_gast = almacenero.pendiente_admin + almacenero.pendiente_comision + presupuesto.saldo_mat + presupuesto.saldo_mo + presupuesto.imprevisto + presupuesto.credito + presupuesto.fdr - almacenero.pendiente_adelantos + almacenero.pendiente_iva_ventas + almacenero.pendiente_iibb_tem
                     prest_cobrar = almacenero.prestamos_proyecto + almacenero.prestamos_otros
                     total_costo = almacenero.cheques_emitidos + almacenero.gastos_fecha + pend_gast + almacenero.Prestamos_dados
                     
