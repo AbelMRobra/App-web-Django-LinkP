@@ -168,18 +168,6 @@
                     'Hoy'
                     ],
                 datasets: [{
-                    label: 'Ingresos del proyecto',
-                    backgroundColor: 'rgb(28, 180, 51, 0.5)',
-                    borderColor: 'rgb(28, 180, 51)',
-                    fill: true,
-                    data: [
-                    {% for i in datos_registro %}
-                    {{i.1.0.0|floatformat:0}},                   
-                    {% endfor %}
-                    {{ datos_finales.0.0 }}
-                    ]
-                },
-                {
                     label: 'Costo del proyecto',
                     backgroundColor: 'rgb(225, 40, 28 , 0.5)',
                     borderColor: 'rgb(225, 40, 28 )',
@@ -189,6 +177,18 @@
                     {{i.1.0.1|floatformat:0}},  
                     {{ datos_finales.0.1 }}                 
                     {% endfor %}
+                    ]
+                },
+                {
+                    label: 'Ingresos del proyecto',
+                    backgroundColor: 'rgb(28, 180, 51, 0.5)',
+                    borderColor: 'rgb(28, 180, 51)',
+                    fill: true,
+                    data: [
+                    {% for i in datos_registro %}
+                    {{i.1.0.0|floatformat:0}},                   
+                    {% endfor %}
+                    {{ datos_finales.0.0 }}
                     ]
                 }],
 
