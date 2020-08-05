@@ -176,9 +176,10 @@
                     lineTension: 0,
                     data: [
                     {% for i in datos_registro  %}
-                    {{i.1.0.6|floatformat:0}}/1000000,  
-                    {{ datos_finales.0.6|floatformat:0 }}/1000000,                 
+                    Math.round({{i.1.0.6|floatformat:0}}/1000000),  
+                                     
                     {% endfor %}
+                    Math.round({{ datos_finales.0.6|floatformat:0 }}/1000000),
                     ]
                 },
                 {
@@ -205,12 +206,14 @@
                     xAxes: [
                         {
 
-                            stacked: true
+                            stacked: true,
+
                         }
                     ],
                     yAxes: [
                         {
                             ticks: {
+                                mon: 0,
                                 callback: function(label, index, labels) {
                                     return '$ '+label+ ' M';
                                     
@@ -296,12 +299,14 @@
                     xAxes: [
                         {
 
-                            stacked: true
+                            stacked: true,
+
                         }
                     ],
                     yAxes: [
                         {
                             ticks: {
+                                min: 0,
                                 callback: function(label, index, labels) {
                                     return '$ '+label + ' M';
                                     
