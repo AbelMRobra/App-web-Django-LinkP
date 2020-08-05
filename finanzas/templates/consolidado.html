@@ -161,6 +161,7 @@
 
             // The data for our dataset
             data: {
+
                 labels: [
                     {% for i in fechas %}
                     '{{i}}',                   
@@ -172,6 +173,7 @@
                     backgroundColor: 'rgb(225, 213, 28  , 0.5)',
                     borderColor: 'rgb(225, 213, 28  )',
                     fill: true,
+                    lineTension: 0,
                     data: [
                     {% for i in datos_registro  %}
                     {{i.1.0.6|floatformat:0}},  
@@ -184,6 +186,7 @@
                     backgroundColor: 'rgb(28, 180, 51, 0.5)',
                     borderColor: 'rgb(28, 180, 51)',
                     fill: true,
+                    lineTension: 0,
                     data: [
                     {% for i in datos_registro %}
                     {{i.1.0.2|floatformat:0}},                   
@@ -222,7 +225,8 @@
                         }
                     ],
                 },
-                }
+            }
+
         });
         
 
@@ -259,6 +263,7 @@
                     backgroundColor: 'rgb(225, 40, 28 , 0.5)',
                     borderColor: 'rgb(225, 40, 28 )',
                     fill: true,
+                    lineTension: 0,
                     data: [
                     {% for i in datos_registro  %}
                     {{i.1.0.1|floatformat:0}},  
@@ -271,6 +276,7 @@
                     backgroundColor: 'rgb(28, 180, 51, 0.5)',
                     borderColor: 'rgb(28, 180, 51)',
                     fill: true,
+                    lineTension: 0,
                     data: [
                     {% for i in datos_registro %}
                     {{i.1.0.0|floatformat:0}},                   
