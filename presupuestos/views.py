@@ -349,9 +349,6 @@ def registroconstante(request):
 
     print(datos_finales)
 
-
-
-
         
     return render(request, 'constantes/historico.html', {'datos_finales':datos_finales, "fecha":fecha})
 

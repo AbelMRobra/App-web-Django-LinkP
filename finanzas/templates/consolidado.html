@@ -145,6 +145,82 @@
         <p style="text-align: left;"><small> <b>Pricing:</b> Ese valor indica las unidades que tienen un pricing asociado</small></p>
     </div>
 
+    <div style="margin-top: 0.5rem; display: inline-block; width: 100%;">
+
+        <div style= "text-align: center;">
+            <small><strong>-- Historico del resultado conjunto de proyectos --</strong></small>
+        </div>
+
+        <canvas id="myChart" width="400" height="150rem"></canvas>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    <script>
+        var ctx = document.getElementById('myChart').getContext('2d');
+        var chart = new Chart(ctx, {
+            // The type of chart we want to create
+            type: 'line',
+
+            // The data for our dataset
+            data: {
+                labels: [
+                    {% for i in fechas %}
+                    '{{i}}',                   
+                    {% endfor %}
+                    'Hoy'
+                    ],
+                datasets: [{
+                    label: 'Resultado de proyectos',
+                    backgroundColor: 'rgb(28, 180, 51)',
+                    borderColor: 'rgb(28, 180, 51)',
+                    fill: false,
+                    data: [
+                    {% for i in datos_registro %}
+                    {{i.1.0.2|floatformat:0}},                   
+                    {% endfor %}
+                    {{ datos_finales.0.2 }}
+                    ]
+                },
+                {
+                    label: 'Resultado considerando descuento',
+                    backgroundColor: 'rgb(225, 213, 28)',
+                    borderColor: 'rgb(225, 213, 28)',
+                    fill: false,
+                    data: [
+                    {% for i in datos_registro  %}
+                    {{i.1.0.6|floatformat:0}},  
+                    {{ datos_finales.0.6 }}                 
+                    {% endfor %}
+                    ]
+                }],
+
+            },
+
+            // Configuration options go here
+            options: {
+
+                scales: {
+                    yAxes: [
+                        {
+                            ticks: {
+                                callback: function(label, index, labels) {
+                                    return '$ '+label/1000000 + 'kk';
+                                }
+                            },
+                            scaleLabel: {
+                                display: true,
+                                labelString: '1kk = $1.000.000'
+                            }
+                        }
+                    ],
+                },
+                }
+        });
+        
+
+        
+    </script>
+
+
+    </div>
 
     <div>
         <p> <small>-- Link<strong>P</strong> --</small> </p>
