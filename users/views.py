@@ -17,7 +17,7 @@ def inicio(request):
 
     date = datetime.date.today()
 
-    if date.weekday() == 2:
+    if date.weekday() == 1:
 
         Registros = RegistroAlmacenero.objects.filter(fecha =date)
 
