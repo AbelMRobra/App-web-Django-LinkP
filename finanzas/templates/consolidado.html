@@ -213,7 +213,8 @@
                     yAxes: [
                         {
                             ticks: {
-                                mon: 0,
+                                min: 0,
+                                stepSize: 50,
                                 callback: function(label, index, labels) {
                                     return '$ '+label+ ' M';
                                     
@@ -307,6 +308,7 @@
                         {
                             ticks: {
                                 min: 0,
+                                stepSize: 800,
                                 callback: function(label, index, labels) {
                                     return '$ '+label + ' M';
                                     
