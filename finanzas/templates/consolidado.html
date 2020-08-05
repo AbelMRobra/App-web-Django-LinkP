@@ -148,7 +148,7 @@
     <div style="margin-top: 0.5rem; display: inline-block; width: 100%;">
 
         <div style= "text-align: center;">
-            <small><strong>-- Historico del resultado conjunto de proyectos --</strong></small>
+            <small><strong>-- Historico del ingreso/costo conjunto --</strong></small>
         </div>
 
         <canvas id="myChart" width="400" height="150rem"></canvas>
@@ -168,26 +168,26 @@
                     'Hoy'
                     ],
                 datasets: [{
-                    label: 'Resultado de proyectos',
-                    backgroundColor: 'rgb(28, 180, 51)',
+                    label: 'Ingresos del proyecto',
+                    backgroundColor: 'rgb(28, 180, 51, 0.5)',
                     borderColor: 'rgb(28, 180, 51)',
-                    fill: false,
+                    fill: true,
                     data: [
                     {% for i in datos_registro %}
-                    {{i.1.0.2|floatformat:0}},                   
+                    {{i.1.0.0|floatformat:0}},                   
                     {% endfor %}
-                    {{ datos_finales.0.2 }}
+                    {{ datos_finales.0.0 }}
                     ]
                 },
                 {
-                    label: 'Resultado considerando descuento',
-                    backgroundColor: 'rgb(225, 213, 28)',
-                    borderColor: 'rgb(225, 213, 28)',
-                    fill: false,
+                    label: 'Costo del proyecto',
+                    backgroundColor: 'rgb(225, 40, 28 , 0.5)',
+                    borderColor: 'rgb(225, 40, 28 )',
+                    fill: true,
                     data: [
                     {% for i in datos_registro  %}
-                    {{i.1.0.6|floatformat:0}},  
-                    {{ datos_finales.0.6 }}                 
+                    {{i.1.0.1|floatformat:0}},  
+                    {{ datos_finales.0.1 }}                 
                     {% endfor %}
                     ]
                 }],
@@ -198,17 +198,27 @@
             options: {
 
                 scales: {
+
+                    xAxes: [
+                        {
+
+                            stacked: true
+                        }
+                    ],
                     yAxes: [
                         {
                             ticks: {
                                 callback: function(label, index, labels) {
                                     return '$ '+label/1000000 + 'kk';
+                                    
                                 }
                             },
                             scaleLabel: {
                                 display: true,
                                 labelString: '1kk = $1.000.000'
-                            }
+                            },
+
+                            stacked: false
                         }
                     ],
                 },
