@@ -31,7 +31,7 @@ class Almacenero(models.Model):
         return '{}'.format(self.proyecto)
 
 class RegistroAlmacenero(models.Model):
-    fecha = models.DateField(verbose_name="Fecha de guardado", blank=True, null=True)
+    fecha = models.DateField(verbose_name="Fecha de guardado", blank=True, null=True,)
     proyecto = models.ForeignKey(Proyectos, on_delete=models.CASCADE, verbose_name = "Proyecto")
     cheques_emitidos = models.FloatField(null=True, blank=True, verbose_name="Cheques emitidos")
     gastos_fecha = models.FloatField(null=True, blank=True, verbose_name="Gastos a la fecha")

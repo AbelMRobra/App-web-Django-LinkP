@@ -10,6 +10,7 @@ class RegistroAlmaceneroResource(resources.ModelResource):
 class RegistroAlmaceneroAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = ('proyecto', 'ingreso_ventas')
     search_fields = ('proyecto_nombre' , 'ingreso_ventas')
+    readonly_fields = ('fecha', 'proyecto', 'cheques_emitidos', 'gastos_fecha', 'pendiente_admin', 'pendiente_comision', 'pendiente_adelantos', 'pendiente_iva_ventas', 'pendiente_iibb_tem', 'prestamos_proyecto', 'prestamos_otros', 'cuotas_cobradas', 'cuotas_a_cobrar', 'ingreso_ventas', 'Prestamos_dados', 'unidades_socios', 'saldo_mat', 'saldo_mo', 'imprevisto', 'credito', 'fdr')
     resources_class = RegistroAlmaceneroResource
 
 class AlmaceneroResource(resources.ModelResource):
