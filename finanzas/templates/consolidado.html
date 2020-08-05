@@ -176,8 +176,8 @@
                     lineTension: 0,
                     data: [
                     {% for i in datos_registro  %}
-                    {{i.1.0.6|floatformat:0}},  
-                    {{ datos_finales.0.6 }}                 
+                    {{i.1.0.6|floatformat:0}}/1000000,  
+                    {{ datos_finales.0.6|floatformat:0 }}/1000000,                 
                     {% endfor %}
                     ]
                 },
@@ -189,9 +189,9 @@
                     lineTension: 0,
                     data: [
                     {% for i in datos_registro %}
-                    {{i.1.0.2|floatformat:0}},                   
+                    Math.round({{i.1.0.2|floatformat:0}}/1000000),                   
                     {% endfor %}
-                    {{ datos_finales.0.2 }}
+                    Math.round({{ datos_finales.0.2|floatformat:0 }}/1000000),
                     ]
                 }],
 
@@ -212,13 +212,13 @@
                         {
                             ticks: {
                                 callback: function(label, index, labels) {
-                                    return '$ '+label/1000000 + 'kk';
+                                    return '$ '+label+ ' M';
                                     
                                 }
                             },
                             scaleLabel: {
                                 display: true,
-                                labelString: '1kk = $1.000.000'
+                                labelString: '1M = $1.000.000'
                             },
 
                             stacked: false
@@ -266,9 +266,10 @@
                     lineTension: 0,
                     data: [
                     {% for i in datos_registro  %}
-                    {{i.1.0.1|floatformat:0}},  
-                    {{ datos_finales.0.1 }}                 
-                    {% endfor %}
+                    Math.round({{i.1.0.1|floatformat:0}}/1000000),
+                    {% endfor %}  
+                    Math.round({{ datos_finales.0.1|floatformat:0 }}/1000000),                 
+                    
                     ]
                 },
                 {
@@ -279,9 +280,9 @@
                     lineTension: 0,
                     data: [
                     {% for i in datos_registro %}
-                    {{i.1.0.0|floatformat:0}},                   
+                    Math.round({{i.1.0.0|floatformat:0}}/1000000),                   
                     {% endfor %}
-                    {{ datos_finales.0.0 }}
+                    Math.round({{ datos_finales.0.0|floatformat:0 }}/1000000),
                     ]
                 }],
 
@@ -302,13 +303,13 @@
                         {
                             ticks: {
                                 callback: function(label, index, labels) {
-                                    return '$ '+label/1000000 + 'kk';
+                                    return '$ '+label + ' M';
                                     
                                 }
                             },
                             scaleLabel: {
                                 display: true,
-                                labelString: '1kk = $1.000.000'
+                                labelString: '1 M = $1.000.000'
                             },
 
                             stacked: false
