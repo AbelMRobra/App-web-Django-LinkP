@@ -104,16 +104,54 @@ def ctacteproyecto(request, id_proyecto):
 
     ### Armando resumen de cuenta corriente
 
-def resumenctacte(request):
-
-    id_cliente = 1
+def resumenctacte(request, id_cliente):
 
     ctacte = CuentaCorriente.objects.get(id = id_cliente)
 
     cuotas = Cuota.objects.filter(cuenta_corriente = ctacte)
 
+    nombre_conceptos = []
 
-    return render(request, 'resumencta.html', {"ctacte":ctacte})
+    datos = []
+
+    for cuota in cuotas:
+
+        nombre_conceptos.append(cuota.concepto)
+
+    nombre_conceptos = set(nombre_conceptos)
+
+    for nombre in nombre_conceptos:
+
+        moneda = 0
+        total_moneda = 0
+        cuotas_t = 0
+        total_pagado = 0
+
+
+        for cuota in cuotas:
+
+            if nombre == cuota.concepto:
+
+                moneda = cuota.constante
+                total_moneda = total_moneda + cuota.precio
+
+                cuotas_t = (cuotas_t + 1)
+
+                pagos = Pago.objects.filter(cuota = cuota)
+
+                for pago in pagos:
+
+                    total_pagado = total_pagado + pago.pago
+
+        saldo_moneda = total_moneda - total_pagado
+        saldo_pesos = saldo_moneda*moneda.valor
+
+        datos.append((nombre, moneda, total_moneda, cuotas_t, total_pagado, saldo_moneda, saldo_pesos))
+
+
+    print(datos)
+
+    return render(request, 'resumencta.html', {"ctacte":ctacte, "datos":datos})
 
 def ctactecliente(request, id_cliente):
 

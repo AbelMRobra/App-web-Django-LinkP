@@ -20,10 +20,10 @@
         
         <div style="text-align: left;">
 
-            <h6>Fecha:</h6>
-            <h6>Cliente:</h6>
-            <h6>Unidad:</h6>
-            <h6>Tamaño de la unidad:</h6> 
+            <h6>Fecha: {{ctacte.venta.fecha}}</h6>
+            <h6>Cliente: {{ctacte.venta.comprador}}</h6>
+            <h6>Unidad: {{ctacte.venta.unidad.piso_unidad}} - {{ctacte.venta.unidad.nombre_unidad}} - {{ctacte.venta.unidad.tipo}} - {{ctacte.venta.unidad.tipologia}}</h6>
+            <h6>Tamaño de la unidad: *este es un calculo </h6> 
 
 
         </div>
@@ -56,24 +56,18 @@
     
             <tbody>   
     
-                {% for i in datos_cuenta %}
+                {% for i in datos %}
                 <tr class = "table-light">
-                    <td> <b> <small> <b>{{i.0.fecha}}</b> </small> </b></td>    
-                    <td> <b> <small>{{i.0.concepto}}</small> </b> </td>
-                    <td> <b> <small>{{i.0.constante.nombre}}</small> </b> </td>
-
-                    <td> <b> <small>{{i.0.precio}}</small> </b> </td>
-
-                    <td> <b> <small>{{i.1}}</small> </b> </td>
+                    <td> <b> <small> <b>{{i.0}}</b> </small> </b></td>    
+                    <td> <b> <small>{{i.1.nombre}}</small> </b> </td>
                     <td> <b> <small>{{i.2}}</small> </b> </td>
-                    <td> <b> <small>${{i.0.constante.valor|floatformat:0|intcomma}}</small> </b> </td>
+
+                    <td> <b> <small>{{i.3}}</small> </b> </td>
+
+                    <td> <b> <small>{{i.4}}</small> </b> </td>
+                    <td> <b> <small>{{i.5}}</small> </b> </td>
                     <td> <b> <small> <b>${{i.3|floatformat:0|intcomma}}</b> </small></b> </td>
-                    <td> <b><a href="" class="btn btn-sm btn-success" >Ingresar</a>
-                    </b> </td>
-                    <td> <b><a href="" class="btn btn-sm btn-info" >Editar</a>
-                    </b> </td>
-                    <td> <b><a href="" class="btn btn-sm btn-danger" >Eliminar</a>
-                    </b> </td>
+
                    
     
     
