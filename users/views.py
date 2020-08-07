@@ -17,44 +17,42 @@ def inicio(request):
 
     date = datetime.date.today()
 
-    if date.weekday() == 1:
+    Registros = RegistroAlmacenero.objects.filter(fecha =date)
 
-        Registros = RegistroAlmacenero.objects.filter(fecha =date)
+    if len(Registros) == 0:
+    
+        almacenero = Almacenero.objects.all()
 
-        if len(Registros) == 0:
-        
-            almacenero = Almacenero.objects.all()
+        for alma in almacenero:
 
-            for alma in almacenero:
+            presupuesto = Presupuestos.objects.get(proyecto = alma.proyecto)
 
-                presupuesto = Presupuestos.objects.get(proyecto = alma.proyecto)
+            b = RegistroAlmacenero(
+                fecha = date,
+                proyecto = alma.proyecto,
+                cheques_emitidos = alma.cheques_emitidos,
+                gastos_fecha = alma.gastos_fecha,
+                pendiente_admin = alma.pendiente_admin,
+                pendiente_comision = alma.pendiente_comision,
+                pendiente_adelantos = alma.pendiente_adelantos,
+                pendiente_iva_ventas = alma.pendiente_iva_ventas,
+                pendiente_iibb_tem = alma.pendiente_iibb_tem,
+                prestamos_proyecto = alma.prestamos_proyecto,
+                prestamos_otros = alma.prestamos_otros,
+                cuotas_cobradas = alma.cuotas_cobradas,
+                cuotas_a_cobrar = alma.cuotas_a_cobrar,
+                ingreso_ventas = alma.ingreso_ventas,
+                Prestamos_dados = alma.Prestamos_dados,
+                unidades_socios = alma.unidades_socios,
+                saldo_mat = presupuesto.saldo_mat,
+                saldo_mo = presupuesto.saldo_mo,
+                imprevisto = presupuesto.imprevisto,
+                credito = presupuesto.credito, 
+                fdr = presupuesto.fdr 
 
-                b = RegistroAlmacenero(
-                    fecha = date,
-                    proyecto = alma.proyecto,
-                    cheques_emitidos = alma.cheques_emitidos,
-                    gastos_fecha = alma.gastos_fecha,
-                    pendiente_admin = alma.pendiente_admin,
-                    pendiente_comision = alma.pendiente_comision,
-                    pendiente_adelantos = alma.pendiente_adelantos,
-                    pendiente_iva_ventas = alma.pendiente_iva_ventas,
-                    pendiente_iibb_tem = alma.pendiente_iibb_tem,
-                    prestamos_proyecto = alma.prestamos_proyecto,
-                    prestamos_otros = alma.prestamos_otros,
-                    cuotas_cobradas = alma.cuotas_cobradas,
-                    cuotas_a_cobrar = alma.cuotas_a_cobrar,
-                    ingreso_ventas = alma.ingreso_ventas,
-                    Prestamos_dados = alma.Prestamos_dados,
-                    unidades_socios = alma.unidades_socios,
-                    saldo_mat = presupuesto.saldo_mat,
-                    saldo_mo = presupuesto.saldo_mo,
-                    imprevisto = presupuesto.imprevisto,
-                    credito = presupuesto.credito, 
-                    fdr = presupuesto.fdr 
+            )
 
-                )
-
-                b.save()
+            b.save()
 
     
     return render(request, "users/inicio.html")
