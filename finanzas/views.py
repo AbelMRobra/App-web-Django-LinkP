@@ -316,15 +316,15 @@ def consolidado(request):
 
     #Esta es la parte del historico
 
-    datos_historicos = RegistroAlmacenero.objects.all()
+    datos_historicos = RegistroAlmacenero.objects.order_by("fecha")
 
     fechas = []
 
     for d in datos_historicos:
 
-        fechas.append(d.fecha)
+        if not str(d.fecha) in str(fechas):
 
-    fechas = set(fechas)
+            fechas.append(d.fecha)
 
     datos_registro = []
 
