@@ -316,7 +316,7 @@ def consolidado(request):
 
     #Esta es la parte del historico
 
-    datos_historicos = RegistroAlmacenero.objects.order_by("fecha")
+    datos_historicos = RegistroAlmacenero.objects.order_by("-fecha")
 
     fechas = []
 
