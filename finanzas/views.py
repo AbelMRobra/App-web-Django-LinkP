@@ -322,7 +322,7 @@ def consolidado(request):
 
     for d in datos_historicos:
 
-        if not str(d.fecha) in str(fechas):
+        if not d.fecha in fechas:
 
             fechas.append(d.fecha)
 
