@@ -589,6 +589,8 @@ def pricing(request, id_proyecto):
 
     #Aqui empieza para cambiar el precio base
 
+    precio_nuevo = 0
+
     if request.method == 'GET':
 
         nuevo_precio = request.GET.items()
