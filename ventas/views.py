@@ -7,6 +7,7 @@ from presupuestos.models import Constantes
 from datetime import date
 from django.shortcuts import redirect
 import datetime
+from datetime import date
 import operator
 import numpy as np
 from openpyxl import Workbook
@@ -251,7 +252,7 @@ def informe_redes(request):
     "datos":datos,
     "fecha":fecha}
 
-    return render(request, 'caja_area.html', {"datos":datos})
+    return render(request, 'informe_redes.html', {"datos":datos})
 
 
 def cajaarea(request):
@@ -784,6 +785,23 @@ def pricing(request, id_proyecto):
 
     promedio_contado = sumatoria_contado/m2_totales
     promedio_financiado = sumatoria_financiado/m2_totales
+
+    if request.method == 'GET':
+
+        nuevo_precio = request.GET.items()
+
+        date = datetime.date.today()
+
+        b = PricingResumen(
+            proyecto = proyecto,
+            fecha = date,
+            precio_prom_contado = promedio_contado,
+            precio_prom_financiado = promedio_financiado,
+            base_precio = nuevo_precio[0][1],
+            anticipo = 0.4)
+        b.save()
+
+
 
     otros_datos.append((m2_totales, cantidad, departamentos, cocheras, promedio_contado, promedio_financiado))
 
