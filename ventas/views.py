@@ -792,18 +792,25 @@ def pricing(request, id_proyecto):
 
     if request.method == 'GET':
 
-        date = datetime.date.today()
+        nuevo_precio = request.GET.items()
 
-        b = PricingResumen(
-            proyecto = proyecto,
-            fecha = date,
-            precio_prom_contado = promedio_contado,
-            precio_prom_financiado = promedio_financiado,
-            base_precio = precio_nuevo,
-            anticipo = 0.4,
-            cuotas_pend = meses,
-        )
-        b.save()
+        for precio in nuevo_precio:
+
+            precio_nuevo = precio[1]
+
+            date = datetime.date.today()
+
+            b = PricingResumen(
+                proyecto = proyecto,
+                fecha = date,
+                precio_prom_contado = promedio_contado,
+                precio_prom_financiado = promedio_financiado,
+                base_precio = precio_nuevo,
+                anticipo = 0.4,
+                cuotas_pend = meses,
+            )
+            
+            b.save()
 
 
 
