@@ -800,7 +800,9 @@ def pricing(request, id_proyecto):
             precio_prom_contado = promedio_contado,
             precio_prom_financiado = promedio_financiado,
             base_precio = precio_nuevo,
-            anticipo = 0.4)
+            anticipo = 0.4,
+            cuotas_pend = meses,
+        )
         b.save()
 
 
