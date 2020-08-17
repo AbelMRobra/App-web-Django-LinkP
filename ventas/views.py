@@ -217,6 +217,43 @@ def invmer(request):
 
     return render(request, 'inv_merc.html', {"datos":datos})
 
+def informe_redes(request):
+
+    busqueda = 1
+    datos_pricing = ArchivosAreaVentas.objects.filter(informe_redes__isnull = False)
+    datos = 0
+    fecha = 0
+
+    fechas = []
+
+    for dato in datos_pricing:
+        fechas.append((dato.fecha, str(dato.fecha)))
+
+    fechas = list(set(fechas))
+
+    fechas.sort( reverse=True)
+
+    if request.method == 'POST':
+
+        #Trae los datos elegidos
+        datos_elegidos = request.POST.items()
+
+        for dato in datos_elegidos:
+
+            if dato[0] == "fecha":
+                datos = ArchivosAreaVentas.objects.get(fecha = dato[1])
+                busqueda = 0
+                fecha = dato[1]
+
+
+    datos = {"fechas":fechas,
+    "busqueda":busqueda,
+    "datos":datos,
+    "fecha":fecha}
+
+    return render(request, 'caja_area.html', {"datos":datos})
+
+
 def cajaarea(request):
 
     busqueda = 1
