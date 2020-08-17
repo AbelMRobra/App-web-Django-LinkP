@@ -89,6 +89,8 @@ def crearcuenta(request):
 
                     fecha = hoy.replace(fecha_ano, fecha_mes, fecha_dia)
 
+        return redirect('Cuenta corriente venta', b.id)
+
 
     return render(request, 'crearcuenta.html', {"datos":datos})
 
