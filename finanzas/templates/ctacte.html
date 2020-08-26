@@ -13,7 +13,7 @@
 
         <div>
 
-            <img src="{{ctacte.venta.unidad.proyecto.iamgen.url}}"  class="img-fluid" alt="..." style="max-width:20%;width:auto;height:auto; margin-top: 1rem;">
+            <img src="{{ctacte.venta.unidad.proyecto.iamgen.url}}"  class="img-fluid" alt="..." style="max-width:20%;width:auto;height:auto; margin-top: 1rem; margin-bottom: 3%;">
   
 
         </div>
@@ -39,8 +39,11 @@
 
     <div class = "tableconteinerabel">
 
-             
+        <div style="text-align: left;">
 
+            <a href="{% url 'Agregar cuota' ctacte.id %}" class="btn btn-info">Agregar cuota</a>
+
+        </div>
 
         <table class = "table table-hover" style="text-align: center; margin-top: 2%;">
             <thead>
@@ -77,9 +80,9 @@
                     <td> <b> <small> <b>${{i.3|floatformat:0|intcomma}}</b> </small></b> </td>
                     <td> <b><a href="" class="btn btn-sm btn-success" >Ingresar</a>
                     </b> </td>
-                    <td> <b><a href="" class="btn btn-sm btn-info" >Editar</a>
+                    <td> <b><a href="{% url 'Editar cuota' i.0.id %}" class="btn btn-sm btn-info" >Editar</a>
                     </b> </td>
-                    <td> <b><a href="" class="btn btn-sm btn-danger" >Eliminar</a>
+                    <td> <b><a href="{% url 'Eliminar cuota' i.0.id %}" class="btn btn-sm btn-danger" >Eliminar</a>
                     </b> </td>
                    
     

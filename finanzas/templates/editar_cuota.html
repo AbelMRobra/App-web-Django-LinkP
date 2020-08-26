@@ -8,9 +8,26 @@
 {% if perms.ventas.view_pricing %} 
 
 <div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;">
+
     <div>
-        <h2>Crear una cuenta corriente</h2>
-        <small>Completar el formulario</small>  
+        <div>
+
+            <img src="{{cuota.cuenta_corriente.venta.unidad.proyecto.iamgen.url}}"  class="img-fluid" alt="..." style="max-width:20%;width:auto;height:auto; margin-top: 1rem; margin-bottom: 3%;">
+  
+
+        </div>
+        
+        <h2 style="color: rgb({{cuota.cuenta_corriente.venta.unidad.proyecto.color}})" >Cuenta corriente cliente: {{cuota.cuenta_corriente.venta.comprador}} </h2>
+
+        <small><strong>{{cuota.cuenta_corriente.venta.unidad.proyecto.nombre}} - {{cuota.cuenta_corriente.venta.unidad.piso_unidad}} - {{cuota.cuenta_corriente.venta.unidad.nombre_unidad}}</strong></small>
+
+    </div>
+
+    <b><hr class = "my-4" style="width: 75%;"></b>
+
+    <div>
+        <h6>Editar cuota</h6>
+
     </div>
 
     <b><hr class = "my-4" style="width: 75%;"></b>
@@ -23,17 +40,6 @@
         
                     {% csrf_token %}
         
-                    <div style="display: inline-block; margin-top: 5%;">
-        
-                        <label for="unidad"><h6>Venta para asociar</h6></label>
-            
-                    </div>
-            
-                    <div style="margin-bottom: 2%; width: 80%; margin-left: 10%;">
-            
-                        <input name="ventas" type="search" class="form-control form-control" placeholder="Ej: TORRE BLUE PISO 3 A" list="ventas">
-            
-                    </div>
         
                     <b><hr class = "my-4" style="width: 100%; "></b>
 
@@ -50,7 +56,7 @@
                     <div class="input-group mb-3" style="margin-bottom: 2%; width: 50%; margin-left: 25%;">
         
         
-                        <input name="concepto1" type="text" class="form-control form-control" aria-label="Amount" placeholder="Cuota espera/Anticipo/Otros">
+                        <input name="concepto1" type="text" class="form-control form-control" aria-label="Amount" placeholder= {{cuota.concepto}}>
                         
                     </div>
             
@@ -69,7 +75,7 @@
         
                         </div>
         
-                        <input name="precio1" type="number" step="0.01" class="form-control form-control" aria-label="Amount">
+                        <input name="precio1" type="number" step="0.01" class="form-control form-control" aria-label="Amount" placeholder= {{cuota.precio}}>
                         
                     </div>
         
@@ -85,20 +91,13 @@
                     <div style="margin-bottom: 2%; width: 30%; margin-left: 35%;">
             
                         <input name="fecha1" type="date" class="form-control form-control">
+
+                        <small><b>Fecha actual: {{cuota.fecha}}</b></small>
             
                     </div>
+
+                    
         
-                    <div style="display: inline-block;">
-            
-                        <label for="cuotas1"><h6>Cantidad de cuotas</h6></label>
-            
-                    </div>
-            
-                    <div style="margin-bottom: 2%; width: 30%; margin-left: 35%;">
-            
-                        <input name="cuotas1" type="number" class="form-control form-control" list="art">
-            
-                    </div>
         
             
                     <div class="custom-control custom-radio">
@@ -116,12 +115,10 @@
         </div>
         
     </div>
-
-   
                   
               <div style="margin-top: 2%; ">
     
-                <button type="submit" class="btn btn-primary" >Armar cuenta corriente</button>
+                <button type="submit" class="btn btn-primary" >Editar cuota</button>
     
               </div>
         
@@ -130,21 +127,9 @@
 
         <b><hr class = "my-4" style="width: 100%; "></b>
 
-        <button onclick="myFunction()" class="btn btn-danger" style="margin-bottom: 5%;" >Agregar campos de cuotas</button>
-
- 
     
     </div>
 
-    <datalist id="ventas"> 
-
-        {% for i in datos %}
-        
-        <option value="{{ i.id}}" id="{{ i.id}}">{{i.unidad.proyecto}} - {{i.unidad.piso_unidad}} - {{i.unidad.nombre_unidad}} - {{i.comprador}}</option>
-
-        {% endfor %}
-
-    </datalist>
 
 
     <b><hr class = "my-4" style="width: 50%;"></b>
@@ -159,21 +144,6 @@
                     
 </div>
 
-<script>
-
-    var i = 1;
-
-    function myFunction() {
-
-        i++
-            $(".campo").clone().appendTo(".campoctacte").attr("class","campo-"+i);
-            $(".campoctacte").last().find('.campo').find('input').each(function( index ) { 
-
-                    $(this).attr("name",$(this).attr("name")+i);
-            });
-        }
-    
-</script>
 
 {% endif %} 
  

@@ -10,6 +10,85 @@ from datetime import date
 
 # Create your views here.
 
+def editar_cuota(request, id_cuota):
+
+    cuota = Cuota.objects.get(id = id_cuota)
+
+
+    return render(request, 'editar_cuota.html', {"cuota":cuota})
+
+def agregar_cuota(request, id_cuenta):
+
+    cuenta = CuentaCorriente.objects.get(id = id_cuenta)
+
+    if request.method == 'POST':
+
+        datos = request.POST.items()
+
+        for i in datos:
+
+
+            if  'fecha' in i[0]:
+
+                fecha = i[1]
+
+            if  'concepto' in i[0]:
+
+                concepto = i[1]
+
+            if  'precio' in i[0]:
+
+                precio = i[1]
+
+            if  'tipo_venta' in i[0]:
+
+                if i[1] == "HORM":
+                    constante = Constantes.objects.get(nombre = "Hº VIVIENDA"),
+
+                if i[1] == "USD":
+                    constante = Constantes.objects.get(nombre = "USD"),
+
+                precio_pesos = float(precio)/constante[0].valor
+
+                try:
+
+                    c = Cuota(
+
+                        cuenta_corriente = cuenta,
+                        fecha = fecha,
+                        precio = float(precio),
+                        constante = constante[0],
+                        precio_pesos = precio_pesos,                        
+                        concepto = concepto,
+                        )
+
+                    c.save()
+
+                    return redirect('Cuenta corriente venta', id_cliente = cuenta.id)
+
+                except:
+
+                    print("Hay un error")
+
+    return render(request, 'agregar_cuota.html', {"cuenta":cuenta})
+
+
+
+
+def eliminar_cuota(request, id_cuota):
+
+    cuota = Cuota.objects.get(id = id_cuota)
+
+    if request.method == 'POST':
+
+        cuota.delete()
+
+        return redirect('Cuenta corriente venta', id_cliente = cuota.cuenta_corriente.id)
+
+    return render(request, 'eliminar_cuota.html', {"cuota":cuota})
+
+
+
 def crearcuenta(request):
 
     datos = VentasRealizadas.objects.all()
@@ -149,9 +228,6 @@ def resumenctacte(request, id_cliente):
         saldo_pesos = saldo_moneda*moneda.valor
 
         datos.append((nombre, moneda, total_moneda, cuotas_t, total_pagado, saldo_moneda, saldo_pesos))
-
-
-    print(datos)
 
     return render(request, 'resumencta.html', {"ctacte":ctacte, "datos":datos})
 

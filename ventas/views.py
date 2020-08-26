@@ -27,7 +27,8 @@ def informeventa(request):
     fechas = []
 
     for dato in datos_pricing:
-        fechas.append((dato.fecha, str(dato.fecha)))
+        if dato.informe_venta: 
+            fechas.append((dato.fecha, str(dato.fecha)))
 
     fechas = list(set(fechas))
 
@@ -63,7 +64,9 @@ def historialventa(request):
     fechas = []
 
     for dato in datos_pricing:
-        fechas.append((dato.fecha, str(dato.fecha)))
+
+        if dato.historial_venta: 
+            fechas.append((dato.fecha, str(dato.fecha)))
 
     fechas = list(set(fechas))
 
@@ -119,7 +122,8 @@ def evousd(request):
     fechas = []
 
     for dato in datos_pricing:
-        fechas.append((dato.fecha, str(dato.fecha)))
+        if dato.evo_usd: 
+            fechas.append((dato.fecha, str(dato.fecha)))
 
     fechas = list(set(fechas))
 
@@ -155,7 +159,8 @@ def encuestapostventa(request):
     fechas = []
 
     for dato in datos_pricing:
-        fechas.append((dato.fecha, str(dato.fecha)))
+        if dato.encuesta_postventa: 
+            fechas.append((dato.fecha, str(dato.fecha)))
 
     fechas = list(set(fechas))
 
@@ -192,7 +197,8 @@ def invmer(request):
     fechas = []
 
     for dato in datos_pricing:
-        fechas.append((dato.fecha, str(dato.fecha)))
+        if dato.invest_mercado: 
+            fechas.append((dato.fecha, str(dato.fecha)))
 
     fechas = list(set(fechas))
 
