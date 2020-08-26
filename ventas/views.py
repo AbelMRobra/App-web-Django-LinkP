@@ -234,7 +234,8 @@ def informe_redes(request):
     fechas = []
 
     for dato in datos_pricing:
-        fechas.append((dato.fecha, str(dato.fecha)))
+        if dato.informe_redes: 
+            fechas.append((dato.fecha, str(dato.fecha)))
 
     fechas = list(set(fechas))
 
@@ -271,7 +272,8 @@ def cajaarea(request):
     fechas = []
 
     for dato in datos_pricing:
-        fechas.append((dato.fecha, str(dato.fecha)))
+        if dato.caja_area: 
+            fechas.append((dato.fecha, str(dato.fecha)))
 
     fechas = list(set(fechas))
 
