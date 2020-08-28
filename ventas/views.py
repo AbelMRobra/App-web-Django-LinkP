@@ -1118,7 +1118,7 @@ def cargar_venta(request):
 
                 meses = y*12 + n
 
-                valor_costo = -np.pv(fv=valor_costo, rate=i.parametros.tasa_des, nper=meses, pmt=0)
+                valor_costo = -np.pv(fv=valor_costo, rate=desde.parametros.tasa_des, nper=meses, pmt=0)
 
 
             #Calculo el valor final
@@ -1147,7 +1147,6 @@ def cargar_venta(request):
                 cuotas_pend = cuotas_pend,
                 observaciones = observaciones,
 
-
             )
 
             b.save()
@@ -1156,8 +1155,6 @@ def cargar_venta(request):
             unidad.save()
 
             return redirect( 'Cargar Venta' )
-
-
 
     return render(request, 'cargar_venta.html', {'datos':datos, 'mensaje':mensaje})
 
