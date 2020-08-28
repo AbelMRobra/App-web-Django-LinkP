@@ -3,7 +3,7 @@ from .models import EstudioMercado, PricingResumen
 from proyectos.models import Unidades, Proyectos
 from finanzas.models import Almacenero
 from ventas.models import Pricing, ArchivosAreaVentas, VentasRealizadas
-from presupuestos.models import Constantes
+from presupuestos.models import Constantes, Desde
 from datetime import date
 from django.shortcuts import redirect
 import datetime
@@ -309,7 +309,8 @@ def radiografia(request):
     fechas = []
 
     for dato in datos_pricing:
-        fechas.append((dato.fecha, str(dato.fecha)))
+        if dato.radiografia_cliente: 
+            fechas.append((dato.fecha, str(dato.fecha)))
 
     fechas = list(set(fechas))
 
@@ -1030,7 +1031,105 @@ def cargar_venta(request):
             mensaje = "Esta unidad se encuentra asignada"
 
         else:
-        
+
+            #Aqui calculo el precio pricing
+
+            precio_pricing = 0
+
+            if unidad.sup_equiv > 0:
+
+                m2 = unidad.sup_equiv
+
+            else:
+
+                m2 = unidad.sup_propia + unidad.sup_balcon + unidad.sup_comun + unidad.sup_patio
+
+            param_uni = Pricing.objects.get(unidad = unidad)
+
+            desde = unidad.proyecto.desde
+
+            if unidad.tipo == "COCHERA":
+                desde = unidad.proyecto.desde*unidad.proyecto.descuento_cochera
+
+            if param_uni.frente == "SI":
+                desde = desde*unidad.proyecto.recargo_frente
+
+            if param_uni.piso_intermedio == "SI":
+                desde =desde*unidad.proyecto.recargo_piso_intermedio
+
+            if param_uni.cocina_separada == "SI":
+                desde = desde*unidad.proyecto.recargo_cocina_separada
+
+            if param_uni.local == "SI":
+                desde = desde*unidad.proyecto.recargo_local
+
+            if param_uni.menor_45_m2 == "SI":
+                desde = desde*unidad.proyecto.recargo_menor_45
+
+            if param_uni.menor_50_m2 == "SI":
+                desde = desde*unidad.proyecto.recargo_menor_50
+
+            if param_uni.otros == "SI":
+                desde = desde*unidad.proyecto.recargo_otros 
+
+            #Aqui calculamos el contado/financiado
+            
+            contado = desde*m2           
+
+            precio_pricing = contado
+
+            #Aqui calculo el precio desde --------------------->
+
+            precio_desde = 0
+
+            desde = Desde.objects.get(presupuesto__proyecto = unidad.proyecto)
+
+            costo = desde.presupuesto.valor
+
+            #Aqui calculo el precio min y sugerido
+
+            costo = (costo/(1 + desde.parametros.tasa_des_p))*(1 + desde.parametros.soft)
+            
+            costo = costo*(1 + desde.parametros.imprevitso)
+
+            porc_terreno = desde.parametros.terreno/desde.parametros.proyecto.m2*100
+
+            porc_link = desde.parametros.link/desde.parametros.proyecto.m2*100
+
+            aumento_tem = desde.parametros.tem_iibb*desde.parametros.por_temiibb*(1+desde.parametros.ganancia)
+
+            aumento_comer = desde.parametros.comer*(1+(porc_terreno + porc_link)/100)*(1+desde.parametros.ganancia)
+            
+            costo = costo/(1-aumento_tem- aumento_comer)
+            
+            m2_proyecto = (desde.parametros.proyecto.m2 - desde.parametros.terreno - desde.parametros.link)
+
+            valor_costo = costo/m2_proyecto
+
+            #Aqui coloco la tasa de descuento
+
+            fecha_entrega =  datetime.datetime.strptime(str(desde.presupuesto.proyecto.fecha_f), '%Y-%m-%d')
+            ahora = datetime.datetime.utcnow()
+            fecha_inicial = ahora + datetime.timedelta(days = (365*2))
+
+            if fecha_entrega > fecha_inicial:
+                y = fecha_entrega.year - fecha_inicial.year
+                n = fecha_entrega.month - fecha_inicial.month
+
+                meses = y*12 + n
+
+                valor_costo = -np.pv(fv=valor_costo, rate=i.parametros.tasa_des, nper=meses, pmt=0)
+
+
+            #Calculo el valor final
+            
+            valor_final = valor_costo*(1 + desde.parametros.ganancia)
+
+            precio_desde = valor_final*m2
+
+            print(precio_desde)
+            print(precio_pricing)
+
             b = VentasRealizadas(
 
                 comprador = comprador,
@@ -1042,6 +1141,8 @@ def cargar_venta(request):
                 m2 = 0,
                 asignacion = "n",
                 precio_venta = precio_venta,
+                precio_pricing = precio_pricing,
+                precio_desde = precio_desde,
                 anticipo = anticipo,
                 cuotas_pend = cuotas_pend,
                 observaciones = observaciones,

@@ -73,6 +73,8 @@
                 <th scope = "row"> <small> SUPERFICIE </small></th>
                 <th scope = "row"> <small>  ASIGNACION </small></th>
                 <th scope = "row"> <small>PRECIO DE VENTA</small>   </th>
+                <th scope = "row"> <small>PRICING</small>   </th>
+                <th scope = "row"> <small>DESDE</small>   </th>
                 <th scope = "row"> <small> ANOTACIONES </small></th>
                 <th scope = "row"> <small> EDITAR </small></th>
                 <th scope = "row"> <small> ELIMINAR </small></th>
@@ -103,6 +105,8 @@
                 <td> <b> <small>{{i.m2|floatformat:2}}m2</small> </b> </td>
                 <td> <b> <small>{{i.asignacion}}</small></b> </td>
                 <td> <b>  <small>${{i.precio_venta|floatformat:0|intcomma}}</small></b> </td>
+                <td> <b>  <small>${{i.precio_pricing|floatformat:0|intcomma}}</small></b> </td>
+                <td> <b>  <small>${{i.precio_desde|floatformat:0|intcomma}}</small></b> </td>
                 <td> <b><a href="{% url 'Detalle venta' i.id %}" class="btn btn-sm btn-info" >Ver detalles</a>
                 </b> </td>
                 <td> <a href="{% url 'Editar venta' i.id %}" class="btn btn-sm btn-success" >Editar</a>
