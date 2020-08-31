@@ -18,12 +18,12 @@
 
         </div>
         
-        <div style="text-align: left;">
+        <div style="text-align: left; margin-top: 2%;">
 
-            <h6>Fecha: {{ctacte.venta.fecha}}</h6>
+            <h6>Fecha de la venta: {{ctacte.venta.fecha}}</h6>
             <h6>Cliente: {{ctacte.venta.comprador}}</h6>
             <h6>Unidad: {{ctacte.venta.unidad.piso_unidad}} - {{ctacte.venta.unidad.nombre_unidad}} - {{ctacte.venta.unidad.tipo}} - {{ctacte.venta.unidad.tipologia}}</h6>
-            <h6>Tamaño de la unidad: *este es un calculo </h6> 
+            <h6>Tamaño de la unidad: {{ctacte.venta.m2}} </h6> 
 
 
         </div>
@@ -44,10 +44,11 @@
                 <tr class = "table-dark">
                     <th scope = "row"> <small>CONCEPTO</small></th>
                     <th scope = "row"> <small>MONEDA</small></th>
-                    <th scope = "row"> <small>TOTAL</small></th>
+                    <th scope = "row"> <small>VALOR MONEDA</small></th>
+                    <th scope = "row"> <small>TOTAL (MD)</small></th>
                     <th scope = "row"> <small>CUOTAS</small></th>
-                    <th scope = "row"> <small> PAGADO </small></th>
-                    <th scope = "row"> <small> SALDO</small></th>
+                    <th scope = "row"> <small> PAGADO (MD)</small></th>
+                    <th scope = "row"> <small> SALDO (MD)</small></th>
                     <th scope = "row"> <small> SALDO (PESOS) </small></th>
 
 
@@ -60,20 +61,17 @@
                 <tr class = "table-light">
                     <td> <b> <small> <b>{{i.0}}</b> </small> </b></td>    
                     <td> <b> <small>{{i.1.nombre}}</small> </b> </td>
-                    <td> <b> <small>{{i.2}}</small> </b> </td>
-
+                    <td> <b> <small>${{i.1.valor|floatformat:2}}</small> </b> </td>
+                    <td> <b> <small>{{i.2|floatformat:2}}</small> </b> </td>
                     <td> <b> <small>{{i.3}}</small> </b> </td>
-
-                    <td> <b> <small>{{i.4}}</small> </b> </td>
-                    <td> <b> <small>{{i.5}}</small> </b> </td>
+                    <td> <b> <small>{{i.4|floatformat:2}}</small> </b> </td>
+                    <td> <b> <small>{{i.5|floatformat:2}}</small> </b> </td>
                     <td> <b> <small> <b>${{i.3|floatformat:0|intcomma}}</b> </small></b> </td>
 
-                   
-    
-    
-    
+
                 </tr>
                 {% endfor %}
+            
             </tbody>
          
     
@@ -81,6 +79,8 @@
         </table>
     
         </div>
+
+        <small>*MD. Moneda dura de referencia para las cuotas </small>
 
         <b><hr class = "my-4" style="width: 100%; "></b>
 
