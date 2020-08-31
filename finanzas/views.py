@@ -302,10 +302,6 @@ def resumenctacte(request, id_cliente):
 
         cuotas = Cuota.objects.filter(fecha = fecha, cuenta_corriente  = ctacte)
 
-        print(cuotas)
-
-        print("Hasta aqui")
-
         for cuota in cuotas:
             pagos = Pago.objects.filter(cuota = cuota)
 
@@ -349,6 +345,8 @@ def ctactecliente(request, id_cliente):
         saldo_pesos = saldo_cuota*cuota.constante.valor
 
         datos_cuenta.append((cuota, pago_cuota, saldo_cuota, saldo_pesos, pagos_realizados))
+
+    datos_cuenta = sorted(datos_cuenta, key=lambda datos: datos[0].fecha)
 
     return render(request, 'ctacte.html', {"ctacte":ctacte, "datos_cuenta":datos_cuenta})
 

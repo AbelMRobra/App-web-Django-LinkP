@@ -74,8 +74,8 @@
 
                     <td> <b> <small>{{i.0.precio}}</small> </b> </td>
 
-                    <td> <b> <small>{{i.1}}</small> </b> </td>
-                    <td> <b> <small>{{i.2}}</small> </b> </td>
+                    <td> <b> <small>{{i.1|floatformat:2}}</small> </b> </td>
+                    <td> <b> <small>{{i.2|floatformat:2}}</small> </b> </td>
                     <td> <b> <small>${{i.0.constante.valor|floatformat:0|intcomma}}</small> </b> </td>
                     <td> <b> <small> <b>${{i.3|floatformat:0|intcomma}}</b> </small></b> </td>
                     <td> <b><a href="{% url 'Pagos' i.0.id %}" class="btn btn-sm btn-success" >Ingresar</a>
