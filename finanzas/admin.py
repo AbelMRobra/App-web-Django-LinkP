@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Almacenero, CuentaCorriente, Cuota, RegistroAlmacenero
+from .models import Almacenero, CuentaCorriente, Cuota, RegistroAlmacenero, Pago
 from import_export import resources
 from import_export.admin import ImportExportModelAdmin
 
@@ -28,7 +28,19 @@ class CuentaCorrienteAdmin(ImportExportModelAdmin, admin.ModelAdmin):
 class CuotaAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = ('fecha', )
 
+class PagoResource(resources.ModelResource):
+    class Meta:
+        model = Pago
+
+class PagoAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    list_display = ('fecha', 'pago')
+    search_fields = ('fecha' , 'pago')
+    resources_class = PagoResource
+
+
+
 admin.site.register(RegistroAlmacenero, RegistroAlmaceneroAdmin)
 admin.site.register(Almacenero, AlmaceneroAdmin)
 admin.site.register(CuentaCorriente, CuentaCorrienteAdmin)
 admin.site.register(Cuota, CuotaAdmin)
+admin.site.register(Pago, PagoAdmin)

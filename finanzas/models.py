@@ -97,5 +97,5 @@ class Pago(models.Model):
         verbose_name_plural="Pagos"
 
     def __str__(self):
-        return self.fecha
+        return self.documento_1
 
