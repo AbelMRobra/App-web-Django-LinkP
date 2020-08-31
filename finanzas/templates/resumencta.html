@@ -91,6 +91,41 @@
 
         </div>
 
+        <div class = "tableconteinerabel">
+
+             
+
+
+            <table class = "table table-hover" style="text-align: center; margin-top: 2%; width: 50%;">
+                <thead>
+        
+                    <tr class = "table-dark">
+                        <th scope = "row"> <small>FECHA</small></th>
+                        <th scope = "row"> <small>SALDO EN PESOS</small></th>
+
+    
+    
+                    </tr>
+                </thead>
+        
+                <tbody>   
+        
+                    {% for i in datos_cuotas|slice:"10" %}
+                    <tr class = "table-light">
+                        <td> <b> <small> <b>{{i.0}}</b> </small> </b></td>    
+                        <td> <b> <small>${{i.1|floatformat:0|intcomma}}</small> </b> </td>  
+    
+                    </tr>
+                    {% endfor %}
+                
+                </tbody>
+             
+        
+        
+            </table>
+        
+            </div>
+
 
 
     <div style="text-align: center; margin-top: 10%;">

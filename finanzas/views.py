@@ -280,7 +280,46 @@ def resumenctacte(request, id_cliente):
 
         datos.append((nombre, moneda, total_moneda, cuotas_t, total_pagado, saldo_moneda, saldo_pesos))
 
-    return render(request, 'resumencta.html', {"ctacte":ctacte, "datos":datos})
+    #Aqui creo la curva de ingresos por mes
+
+    fechas = []
+
+    for cuota in cuotas:
+
+        fecha_nueva = date(cuota.fecha.year, cuota.fecha.month, 1 )
+        fechas.append(fecha_nueva)
+
+    fechas = list(set(fechas))
+
+    fechas.sort()
+
+    datos_cuotas = []
+
+    deuda_md = 0
+    pago_md = 0
+
+    for fecha in fechas:
+
+        cuotas = Cuota.objects.filter(fecha = fecha, cuenta_corriente  = ctacte)
+
+        print(cuotas)
+
+        print("Hasta aqui")
+
+        for cuota in cuotas:
+            pagos = Pago.objects.filter(cuota = cuota)
+
+            for pago in pagos:
+                pago_md = pago_md + pago.pago*pago.cuota.constante.valor 
+
+            deuda_md = deuda_md + cuota.precio*cuota.constante.valor 
+
+        saldo_md = deuda_md - pago_md
+
+        datos_cuotas.append((fecha, saldo_md))
+        
+
+    return render(request, 'resumencta.html', {"ctacte":ctacte, "datos":datos, "datos_cuotas":datos_cuotas})
 
 def ctactecliente(request, id_cliente):
 
@@ -489,8 +528,7 @@ def consolidado(request):
 
             pend_gast = almacenero.pendiente_admin + almacenero.pendiente_comision + presupuesto.saldo_mat + presupuesto.saldo_mo + presupuesto.imprevisto + presupuesto.credito + presupuesto.fdr - almacenero.pendiente_adelantos + almacenero.pendiente_iva_ventas + almacenero.pendiente_iibb_tem
             prest_cobrar = almacenero.prestamos_proyecto + almacenero.prestamos_otros
-            total_costo = almacenero.cheques_emitidos + almacenero.gastos_fecha + pend_gast + almacenero.Prestamos_dados        
-            
+            total_costo = almacenero.cheques_emitidos + almacenero.gastos_fecha + pend_gast + almacenero.Prestamos_dados                    
             
             costo_total = costo_total + total_costo
 
@@ -504,7 +542,6 @@ def consolidado(request):
             saldo_caja = almacenero.cuotas_cobradas - almacenero.gastos_fecha - almacenero.Prestamos_dados
             saldo_proyecto = total_ingresos - total_costo
             rentabilidad = (saldo_proyecto/total_costo)*100
-
 
             total_ingresos_pesimista = total_ingresos - descuento
             saldo_proyecto_pesimista = total_ingresos_pesimista - total_costo
@@ -562,7 +599,6 @@ def almacenero(request):
     mensaje = 0
 
     if request.method == 'POST':
-
         
         try:
 
@@ -593,7 +629,6 @@ def almacenero(request):
 
                     #Calculo el resto de las cosas
                     
-
                     pend_gast = almacenero.pendiente_admin + almacenero.pendiente_comision + presupuesto.saldo_mat + presupuesto.saldo_mo + presupuesto.imprevisto + presupuesto.credito + presupuesto.fdr - almacenero.pendiente_adelantos + almacenero.pendiente_iva_ventas + almacenero.pendiente_iibb_tem
                     prest_cobrar = almacenero.prestamos_proyecto + almacenero.prestamos_otros
                     total_costo = almacenero.cheques_emitidos + almacenero.gastos_fecha + pend_gast + almacenero.Prestamos_dados
@@ -622,8 +657,6 @@ def almacenero(request):
         except:
 
             mensaje = 1
-
-        
 
     datos = {"proyectos":proyectos,
     'datos':datos,
@@ -787,6 +820,7 @@ class DescargarCuentacorriente(TemplateView):
 
         #Establecer el nombre del archivo
         nombre_archivo = "Cuenta.-{0}.xls".format(str(cuenta.venta.comprador))
+        
         #Definir tipo de respuesta que se va a dar
         response = HttpResponse(content_type = "application/ms-excel")
         contenido = "attachment; filename = {0}".format(nombre_archivo)
