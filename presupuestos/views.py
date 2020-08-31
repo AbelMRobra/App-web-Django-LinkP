@@ -1547,9 +1547,6 @@ def desde(request):
         valor_final = valor_costo*(1 + i.parametros.ganancia)
 
 
-
- 
-
         # Valorizo en dolares el precio de costo y sugerido
 
         valor_costo_usd = 0
@@ -1653,8 +1650,10 @@ def desde(request):
             for venta in ventas:
                 if fecha.month == venta.fecha.month and fecha.year == venta.fecha.year and venta.asignacion != "LINK":
                     
-                    if venta.anticipo != venta.precio_venta:
+                    if venta.anticipo != venta.precio_venta and venta.cuotas_pend != 0:
+
                         valor_p_ant = -np.pv(fv=0, rate=(0.82/100), nper=venta.cuotas_pend, pmt=((venta.precio_venta - venta.anticipo)/venta.cuotas_pend))                 
+
                         valor_m2 = valor_p_ant + venta.anticipo
                         compras_mes.append((valor_m2, venta.m2))
                     else:
