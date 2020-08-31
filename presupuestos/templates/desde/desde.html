@@ -197,7 +197,35 @@
             },
 
             // Configuration options go here
-            options: {}
+            options: {
+                scales: {
+
+                        xAxes: [
+                            {
+
+                                stacked: true,
+
+                            }
+                        ],
+                        yAxes: [
+                            {
+                                ticks: {
+                                    min: 0,
+                                    stepSize: 800,
+                                    callback: function(label, index, labels) {
+                                        return '$ '+label;
+                                        
+                                    }
+                                },
+
+
+                                stacked: false
+    }
+],
+},
+
+
+            }
         });
     </script>
 
