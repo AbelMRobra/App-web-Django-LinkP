@@ -25,6 +25,7 @@ class Pricing(models.Model):
         return '{}'.format(self.unidad)
 
 
+
 class PricingResumen(models.Model):
     proyecto = models.ForeignKey(Proyectos, on_delete=models.CASCADE, verbose_name = "Proyecto")
     fecha = models.DateField(verbose_name = "Fecha que corresponde")

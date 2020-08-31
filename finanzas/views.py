@@ -1,11 +1,15 @@
 from django.shortcuts import render
 from django.shortcuts import redirect
+from django.http import HttpResponse
+from django.views.generic.base import TemplateView  
 from presupuestos.models import Proyectos, Presupuestos, Constantes, Modelopresupuesto
 from .models import Almacenero, CuentaCorriente, Cuota, Pago, RegistroAlmacenero
 from proyectos.models import Unidades
 from ventas.models import Pricing, VentasRealizadas
 import datetime
 from datetime import date
+from openpyxl import Workbook
+from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
 
 
 # Create your views here.
@@ -13,7 +17,6 @@ from datetime import date
 def editar_cuota(request, id_cuota):
 
     cuota = Cuota.objects.get(id = id_cuota)
-
 
     return render(request, 'editar_cuota.html', {"cuota":cuota})
 
@@ -72,8 +75,59 @@ def agregar_cuota(request, id_cuenta):
 
     return render(request, 'agregar_cuota.html', {"cuenta":cuenta})
 
+def pagos(request, id_cuota):
 
+    cuota = Cuota.objects.get(id = id_cuota)
 
+    datos = Pago.objects.filter(cuota = cuota)
+
+    return render(request, 'pagos.html', {'datos':datos, 'cuota':cuota})
+
+def agregar_pagos(request, id_cuota):
+
+    cuota = Cuota.objects.get(id = id_cuota)
+
+    if request.method == 'POST':
+
+        datos_crear = request.POST.items()
+
+        for i in datos_crear:
+
+            if  'fecha' in i[0]:
+
+                fecha = i[1]
+
+            if  'documento1' in i[0]:
+
+                documento1 = i[1]
+
+            if  'documento2' in i[0]:
+
+                documento2 = i[1]
+
+            if  'precio1' in i[0]:
+
+                precio1 = i[1]
+
+            if  'precio2' in i[0]:
+
+                precio2 = i[1]
+
+        c = Pago(
+
+            cuota = cuota,
+            fecha = fecha,
+            pago = float(precio1),
+            pago_pesos = float(precio2),                       
+            documento_1 = documento1,
+            documento_2 = documento2,
+            )
+
+        c.save()
+
+        return redirect('Pagos', id_cuota = cuota.id)
+
+    return render(request, 'agregar_pagos.html', {'cuota':cuota})
 
 def eliminar_cuota(request, id_cuota):
 
@@ -86,8 +140,6 @@ def eliminar_cuota(request, id_cuota):
         return redirect('Cuenta corriente venta', id_cliente = cuota.cuenta_corriente.id)
 
     return render(request, 'eliminar_cuota.html', {"cuota":cuota})
-
-
 
 def crearcuenta(request):
 
@@ -176,7 +228,6 @@ def crearcuenta(request):
 
 def ctacteproyecto(request, id_proyecto):
 
-
     proyecto = Proyectos.objects.get(id = id_proyecto)
 
     datos = CuentaCorriente.objects.filter(venta__proyecto = proyecto)
@@ -259,7 +310,6 @@ def ctactecliente(request, id_cliente):
         saldo_pesos = saldo_cuota*cuota.constante.valor
 
         datos_cuenta.append((cuota, pago_cuota, saldo_cuota, saldo_pesos, pagos_realizados))
-
 
     return render(request, 'ctacte.html', {"ctacte":ctacte, "datos_cuenta":datos_cuenta})
 
@@ -581,3 +631,165 @@ def almacenero(request):
     "mensaje":mensaje}
 
     return render(request, 'almacenero.html', {"datos":datos} )
+
+class DescargarCuentacorriente(TemplateView):
+
+    def get(self, request, id_cuenta, *args, **kwargs):
+        wb = Workbook()
+
+        cuenta = CuentaCorriente.objects.get(id = id_cuenta)
+        cuota = Cuota.objects.filter(cuenta_corriente = cuenta)
+        pagos = Pago.objects.filter(cuota__cuenta_corriente = cuenta)
+
+        cont = 1
+
+        for c in cuota:
+
+            if cont == 1:
+                ws = wb.active
+                ws.title = "Cuotas"
+                ws["A"+str(cont)] = "FECHA"
+                ws["B"+str(cont)] = "PRECIO"
+                ws["C"+str(cont)] = "CONSTANTE"
+                ws["D"+str(cont)] = "CONCEPTO"
+                ws["E"+str(cont)] = "PRECIO PESOS"
+
+
+                ws["A"+str(cont)].alignment = Alignment(horizontal = "center")
+                ws["B"+str(cont)].alignment = Alignment(horizontal = "center")
+                ws["C"+str(cont)].alignment = Alignment(horizontal = "center")
+                ws["D"+str(cont)].alignment = Alignment(horizontal = "center")
+                ws["E"+str(cont)].alignment = Alignment(horizontal = "center")
+
+                ws["A"+str(cont)].font = Font(bold = True)
+                ws["B"+str(cont)].font = Font(bold = True)
+                ws["C"+str(cont)].font = Font(bold = True)
+                ws["D"+str(cont)].font = Font(bold = True)
+                ws["E"+str(cont)].font = Font(bold = True)
+
+
+                ws.column_dimensions['A'].width = 11
+                ws.column_dimensions['B'].width = 9
+                ws.column_dimensions['C'].width = 12
+                ws.column_dimensions['D'].width = 20
+                ws.column_dimensions['E'].width = 14
+
+
+                ws["A"+str(cont+1)] = c.fecha
+                ws["B"+str(cont+1)] = c.precio
+                ws["C"+str(cont+1)] = c.constante.nombre
+                ws["D"+str(cont+1)] = c.concepto
+                ws["E"+str(cont+1)] = c.precio*c.constante.valor
+
+                ws["A"+str(cont+1)].font = Font(bold = True)
+                ws["A"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["B"+str(cont+1)].number_format = '#,##0.00_-'
+                ws["C"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["D"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["E"+str(cont+1)].number_format = '"$"#,##0.00_-'
+
+                cont += 1
+
+            else: 
+                ws = wb.active
+                ws["A"+str(cont+1)] = c.fecha
+                ws["B"+str(cont+1)] = c.precio
+                ws["C"+str(cont+1)] = c.constante.nombre
+                ws["D"+str(cont+1)] = c.concepto
+                ws["E"+str(cont+1)] = c.precio*c.constante.valor
+
+                ws["A"+str(cont+1)].font = Font(bold = True)
+                ws["A"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["B"+str(cont+1)].number_format = '#,##0.00_-'
+                ws["C"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["D"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["E"+str(cont+1)].number_format = '"$"#,##0.00_-'
+
+                cont += 1
+        cont = 1
+        for p in pagos:
+
+            if cont == 1:
+                ws = wb.create_sheet('Pagos')
+                ws["A"+str(cont)] = "CUOTA FECHA"
+                ws["B"+str(cont)] = "FECHA"
+                ws["C"+str(cont)] = "PAGO (MD)"
+                ws["D"+str(cont)] = "MONEDA"
+                ws["E"+str(cont)] = "PAGO PESOS"
+                ws["F"+str(cont)] = "DOCUMENTO 1"
+                ws["G"+str(cont)] = "DOCUMENTO 2"
+
+                ws["A"+str(cont)].alignment = Alignment(horizontal = "center")
+                ws["B"+str(cont)].alignment = Alignment(horizontal = "center")
+                ws["C"+str(cont)].alignment = Alignment(horizontal = "center")
+                ws["D"+str(cont)].alignment = Alignment(horizontal = "center")
+                ws["E"+str(cont)].alignment = Alignment(horizontal = "center")
+                ws["F"+str(cont)].alignment = Alignment(horizontal = "center")
+                ws["G"+str(cont)].alignment = Alignment(horizontal = "center")
+
+                ws["A"+str(cont)].font = Font(bold = True)
+                ws["B"+str(cont)].font = Font(bold = True)
+                ws["C"+str(cont)].font = Font(bold = True)
+                ws["D"+str(cont)].font = Font(bold = True)
+                ws["E"+str(cont)].font = Font(bold = True)
+                ws["F"+str(cont)].font = Font(bold = True)
+                ws["G"+str(cont)].font = Font(bold = True)
+
+                ws.column_dimensions['A'].width = 12
+                ws.column_dimensions['B'].width = 11
+                ws.column_dimensions['C'].width = 11
+                ws.column_dimensions['D'].width = 12
+                ws.column_dimensions['E'].width = 20
+                ws.column_dimensions['F'].width = 25
+                ws.column_dimensions['G'].width = 25
+
+                ws["A"+str(cont+1)] = p.cuota.fecha
+                ws["B"+str(cont+1)] = p.fecha
+                ws["C"+str(cont+1)] = p.pago
+                ws["D"+str(cont+1)] = p.cuota.constante.nombre
+                ws["E"+str(cont+1)] = p.pago_pesos
+                ws["F"+str(cont+1)] = p.documento_1
+                ws["G"+str(cont+1)] = p.documento_2
+
+                ws["A"+str(cont+1)].font = Font(bold = True)
+                ws["A"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["B"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["C"+str(cont+1)].number_format = '#,##0.00_-'
+                ws["D"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["E"+str(cont+1)].number_format = '"$"#,##0.00_-'
+                ws["F"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["G"+str(cont+1)].alignment = Alignment(horizontal = "center")
+
+                cont += 1
+
+            else:
+                
+                ws = wb["Pagos"]
+
+                ws["A"+str(cont+1)] = p.cuota.fecha
+                ws["B"+str(cont+1)] = p.fecha
+                ws["C"+str(cont+1)] = p.pago
+                ws["D"+str(cont+1)] = p.cuota.constante.nombre
+                ws["E"+str(cont+1)] = p.pago_pesos
+                ws["F"+str(cont+1)] = p.documento_1
+                ws["G"+str(cont+1)] = p.documento_2
+
+                ws["A"+str(cont+1)].font = Font(bold = True)
+                ws["A"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["B"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["C"+str(cont+1)].number_format = '#,##0.00_-'
+                ws["D"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["E"+str(cont+1)].number_format = '"$"#,##0.00_-'
+                ws["F"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["G"+str(cont+1)].alignment = Alignment(horizontal = "center")
+
+                cont += 1
+
+        #Establecer el nombre del archivo
+        nombre_archivo = "Cuenta.-{0}.xls".format(str(cuenta.venta.comprador))
+        #Definir tipo de respuesta que se va a dar
+        response = HttpResponse(content_type = "application/ms-excel")
+        contenido = "attachment; filename = {0}".format(nombre_archivo)
+        response["Content-Disposition"] = contenido
+        wb.save(response)
+        return response

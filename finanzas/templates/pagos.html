@@ -1,0 +1,112 @@
+{% extends "users/inicio.html" %}
+
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+
+
+
+<div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;" > 
+
+    <div style="text-align: center;">
+
+        <div>
+
+            <img src="{{cuota.cuenta_corriente.venta.unidad.proyecto.iamgen.url}}"  class="img-fluid" alt="..." style="max-width:20%;width:auto;height:auto; margin-top: 1rem; margin-bottom: 3%;">
+  
+
+        </div>
+        
+        <h2 style="color: rgb({{cuota.cuenta_corriente.venta.unidad.proyecto.color}})" >Cuenta corriente cliente: {{cuota.cuenta_corriente.venta.comprador}} </h2>
+
+        <small><strong>{{cuota.cuenta_corriente.venta.unidad.proyecto.nombre}}: {{cuota.cuenta_corriente.venta.unidad.piso_unidad}} - {{cuota.cuenta_corriente.venta.unidad.nombre_unidad}}</strong></small>
+
+        <div>
+
+            <small> Cuota del mes: {{cuota.fecha}}</small>
+
+
+        </div>
+
+        <div style="margin-top: 2%;" >
+
+            <a href="{% url 'Cuenta corriente venta' cuota.cuenta_corriente.id %}" class="btn btn-info btn-sm">Regresar al panel del cliente</a>
+    
+        </div>
+        
+
+
+        <b><hr class = "my-4" style="width: 100%; "></b>
+    
+    
+    </div>
+
+
+
+
+    <div class = "tableconteinerabel">
+
+        <table class = "table table-hover" style="text-align: center; margin-top: 2%;">
+            <thead>
+    
+                <tr class = "table-dark">
+                    <th scope = "row"> <small>FECHA PAGO</small></th>
+                    <th scope = "row"> <small>MONEDA (MD) </small></th>
+                    <th scope = "row"> <small>MONTO PESOS</small></th>                    
+                    <th scope = "row"> <small> DOCUMENTO 1 </small></th>
+                    <th scope = "row"> <small> DOCUMENTO 2 </small></th>
+                    <th scope = "row"> <small> EDITAR </small></th>
+                    <th scope = "row"> <small> ELIMINAR </small></th>
+
+                </tr>
+            </thead>
+    
+            <tbody>   
+    
+                {% for i in datos %}
+                <tr class = "table-light">
+                    <td> <b> <small> <b>{{i.fecha}}</b> </small> </b></td>    
+                    <td> <b> <small>{{i.pago}}</small> </b> </td>
+                    <td> <b> <small>${{i.pago_pesos|floatformat:0|intcomma}}</small> </b> </td>
+                    <td> <b> <small>{{i.documento_1}}</small> </b> </td>
+                    <td> <b> <small>{{i.documento_2}}</small> </b> </td>
+
+                    <td> <b><a href="#" class="btn btn-sm btn-info" >Editar</a>
+                    </b> </td>
+                    <td> <b><a href="#" class="btn btn-sm btn-danger" >Eliminar</a>
+                    </b> </td>
+                   
+    
+    
+    
+                </tr>
+                {% endfor %}
+            </tbody>
+         
+    
+    
+        </table>
+    
+        </div>
+
+        <b><hr class = "my-4" style="width: 100%; "></b>
+
+        <div >
+
+            <a href="{% url 'Agregar pagos' cuota.id %}" class="btn btn-info">Agregar pago</a>
+
+        </div>
+
+    <div style="text-align: center; margin-top: 10%;">
+        <p> <small>-- Link<strong>P</strong> --</small> </p>
+
+     </div>
+
+    
+    
+
+</div>
+
+    
+{% endblock %}

@@ -1,6 +1,7 @@
 from django.urls import path, re_path
 from django.conf.urls import url
 from . import views
+from .views import DescargarCuentacorriente
 from django.contrib.auth.decorators import login_required
 
 urlpatterns = [
@@ -16,6 +17,9 @@ urlpatterns = [
     url(r'^agregarcuota/(?P<id_cuenta>\d+)/$', login_required(views.agregar_cuota), name = 'Agregar cuota'),
     url(r'^eliminarcuota/(?P<id_cuota>\d+)/$', login_required(views.eliminar_cuota), name = 'Eliminar cuota'),
     url(r'^editarcuota/(?P<id_cuota>\d+)/$', login_required(views.editar_cuota), name = 'Editar cuota'),
+    url(r'^pagos/(?P<id_cuota>\d+)/$', login_required(views.pagos), name = 'Pagos'),
+    url(r'^agregarpagos/(?P<id_cuota>\d+)/$', login_required(views.agregar_pagos), name = 'Agregar pagos'),
+    url(r'^des_ctacte/(?P<id_cuenta>\d+)/$', login_required(DescargarCuentacorriente.as_view()), name = 'Descargar cuenta'),
 
 
 ]
