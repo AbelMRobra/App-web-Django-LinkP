@@ -35,7 +35,6 @@
     <div style=" background-color: rgba(63, 95, 179, 0.3); width: 50%; margin-left: 25%;">
 
 
-
                 <form method="POST">
         
                     {% csrf_token %}
@@ -79,12 +78,9 @@
                         
                     </div>
         
-        
-        
-        
                     <div style="display: inline-block;">
             
-                        <label for="fecha1"><h6>Fecha de inicio de las cuotas</h6></label>
+                        <label for="fecha1"><h6>Fecha de la cuota</h6></label>
             
                     </div>
             
@@ -92,15 +88,14 @@
             
                         <input name="fecha1" type="date" class="form-control form-control">
 
-                        <small><b>Fecha actual: {{cuota.fecha}}</b></small>
+                      
             
                     </div>
 
-                    
-        
-        
+                    <small><b>Fecha actual: {{cuota.fecha}}</b></small>
+
             
-                    <div class="custom-control custom-radio">
+                    <div class="custom-control custom-radio" style="margin-top: 1%;">
                         <input type="radio" id="customRadio1" name="tipo_venta" class="custom-control-input" value="HORM" checked="">
                         <label class="custom-control-label" for="customRadio1">HORMIGÓN</label>
                       </div>

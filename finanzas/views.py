@@ -14,9 +14,62 @@ from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
 
 # Create your views here.
 
+def eliminar_pago(request, id_pago):
+
+    pago = Pago.objects.get(id = id_pago)
+
+    if request.method == 'POST':
+
+        pago.delete()
+
+        return redirect('Pagos', id_cuota = pago.cuota.id)
+
+    return render(request, 'eliminar_pago.html', {"pago":pago})
+
+
 def editar_cuota(request, id_cuota):
 
     cuota = Cuota.objects.get(id = id_cuota)
+
+    if request.method == 'POST':
+
+        datos = request.POST.items()
+
+        for i in datos:
+
+            if  'fecha' in i[0] and i[1] != "":
+
+                cuota.fecha = str(i[1])
+
+                cuota.save()
+
+            if  'concepto' in i[0] and i[1] != "":
+
+                cuota.concepto = str(i[1])
+
+                cuota.save()
+
+            if  'precio' in i[0] and i[1] != "":
+
+                cuota.precio = float(i[1])
+
+                cuota.save()
+
+            if  'tipo_venta' in i[0]:
+
+                if i[1] == "HORM":
+
+                    cuota.constante = Constantes.objects.get(nombre = "Hº VIVIENDA")
+                    
+                    cuota.save()
+
+                if i[1] == "USD":
+
+                    cuota.constante = Constantes.objects.get(nombre = "USD")
+
+                    cuota.save()
+
+        return redirect('Cuenta corriente venta', id_cliente = cuota.cuenta_corriente.id)
 
     return render(request, 'editar_cuota.html', {"cuota":cuota})
 
@@ -91,6 +144,8 @@ def agregar_pagos(request, id_cuota):
 
         datos_crear = request.POST.items()
 
+        pagado = 0
+
         for i in datos_crear:
 
             if  'fecha' in i[0]:
@@ -107,17 +162,21 @@ def agregar_pagos(request, id_cuota):
 
             if  'precio1' in i[0]:
 
-                precio1 = i[1]
+                cotizacion = i[1]
+
+                precio1 = float(pagado)/float(cotizacion)
 
             if  'precio2' in i[0]:
 
                 precio2 = i[1]
 
+                pagado = precio2
+
         c = Pago(
 
             cuota = cuota,
             fecha = fecha,
-            pago = float(precio1),
+            pago = precio1,
             pago_pesos = float(precio2),                       
             documento_1 = documento1,
             documento_2 = documento2,
