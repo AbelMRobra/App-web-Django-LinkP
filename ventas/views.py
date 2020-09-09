@@ -115,13 +115,13 @@ def folleto(request):
 def evousd(request):
 
     busqueda = 1
-    datos_pricing = ArchivosAreaVentas.objects.filter(evo_usd__isnull = False)
+    datos_almacenados = ArchivosAreaVentas.objects.filter(resumen_credito_inv__isnull = False)
     datos = 0
     fecha = 0
 
     fechas = []
 
-    for dato in datos_pricing:
+    for dato in datos_almacenados:
         if dato.evo_usd: 
             fechas.append((dato.fecha, str(dato.fecha)))
 

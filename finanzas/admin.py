@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Almacenero, CuentaCorriente, Cuota, RegistroAlmacenero, Pago
+from .models import Almacenero, CuentaCorriente, Cuota, RegistroAlmacenero, Pago, ArchivosAdmFin
 from import_export import resources
 from import_export.admin import ImportExportModelAdmin
 
@@ -37,6 +37,15 @@ class PagoAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     search_fields = ('fecha' , 'pago')
     resources_class = PagoResource
 
+class ArchivosAdmFinResource(resources.ModelResource):
+    class Meta:
+        model = ArchivosAdmFin
+
+class ArchivosAdmFinAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    list_display = ['fecha']
+    search_fields = ['fecha']
+    resources_class = ArchivosAdmFinResource
+
 
 
 admin.site.register(RegistroAlmacenero, RegistroAlmaceneroAdmin)
@@ -44,3 +53,4 @@ admin.site.register(Almacenero, AlmaceneroAdmin)
 admin.site.register(CuentaCorriente, CuentaCorrienteAdmin)
 admin.site.register(Cuota, CuotaAdmin)
 admin.site.register(Pago, PagoAdmin)
+admin.site.register(ArchivosAdmFin, ArchivosAdmFinAdmin)

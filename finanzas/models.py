@@ -99,3 +99,10 @@ class Pago(models.Model):
     def __str__(self):
         return self.documento_1
 
+class ArchivosAdmFin(models.Model):
+    fecha = models.DateField(verbose_name = "Fecha de los archivos")
+    resumen_credito_inv = models.FileField(verbose_name="Resumen credito inversiones", blank=True, null=True)
+
+    class Meta:
+        verbose_name="Archivo ADM/FINAN"
+        verbose_name_plural="Archivos ADM/FINAN"

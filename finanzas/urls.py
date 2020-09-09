@@ -21,6 +21,7 @@ urlpatterns = [
     url(r'^agregarpagos/(?P<id_cuota>\d+)/$', login_required(views.agregar_pagos), name = 'Agregar pagos'),
     url(r'^des_ctacte/(?P<id_cuenta>\d+)/$', login_required(DescargarCuentacorriente.as_view()), name = 'Descargar cuenta'),
     url(r'^eliminarpago/(?P<id_pago>\d+)/$', login_required(views.eliminar_pago), name = 'Eliminar pago'),
+    url(r'^resumencredinv/$', login_required(views.resumencredinv), name = 'Resumen de creditos e inversiones'),
 
 
 ]

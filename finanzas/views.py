@@ -3,7 +3,7 @@ from django.shortcuts import redirect
 from django.http import HttpResponse
 from django.views.generic.base import TemplateView  
 from presupuestos.models import Proyectos, Presupuestos, Constantes, Modelopresupuesto
-from .models import Almacenero, CuentaCorriente, Cuota, Pago, RegistroAlmacenero
+from .models import Almacenero, CuentaCorriente, Cuota, Pago, RegistroAlmacenero, ArchivosAdmFin
 from proyectos.models import Unidades
 from ventas.models import Pricing, VentasRealizadas
 import datetime
@@ -13,6 +13,44 @@ from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
 
 
 # Create your views here.
+
+def resumencredinv(request):
+
+    busqueda = 1
+    datos_almacenados = ArchivosAdmFin.objects.filter(resumen_credito_inv__isnull = False)
+    datos = 0
+    fecha = 0
+
+    fechas = []
+
+    for dato in datos_almacenados:
+        if dato.resumen_credito_inv: 
+            fechas.append((dato.fecha, str(dato.fecha)))
+
+    fechas = list(set(fechas))
+
+    fechas.sort( reverse=True)
+
+    if request.method == 'POST':
+
+        #Trae los datos elegidos
+        datos_elegidos = request.POST.items()
+
+        for dato in datos_elegidos:
+
+            if dato[0] == "fecha":
+                datos = ArchivosAdmFin.objects.get(fecha = dato[1])
+                busqueda = 0
+                fecha = dato[1]
+
+
+    datos = {"fechas":fechas,
+        "busqueda":busqueda,
+        "datos":datos,
+        "fecha":fecha}
+
+    return render(request, 'resumencredinv.html', {"datos":datos})
+
 
 def eliminar_pago(request, id_pago):
 
