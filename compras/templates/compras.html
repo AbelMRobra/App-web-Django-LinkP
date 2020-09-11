@@ -182,13 +182,9 @@
             </tbody>
 
             {% endif %}
-    
-                
+              
     
             </table>
-    
-
-
     </div>
 
     <b><hr class = "my-4" style="width: 100%;"></b>
@@ -199,19 +195,16 @@
         </div>
 
         <b><hr class = "my-4" style="width: 100%;"></b>
+
+        {% if perms.compras.add_compras %}
+
+
      <div style="margin-bottom: 1%;">
         <a href="/compras/cargacompras"><button class="btn btn-success" type="submit">Cargar una compra</button></a>  
      </div>
 
+        {% endif %}
 
-
-     {% else %}
-            <div>
-                <h3>No existe registros actualmente</h3>
-            </div>
-            
-
-    {% endif %}
 
     <div style="text-align:center">
         <a href= "{% url 'Descargar compras' %}" class="btn btn-success" style="margin-top: 1%;" > Descargar Excel</a>          

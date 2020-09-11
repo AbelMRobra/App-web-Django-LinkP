@@ -16,9 +16,6 @@
         {% csrf_token %}
 
         <h3 style="color: #138D75;"> Datos generales</h3>
-        <div>
-            <small> El nombre de la compra tiene que ser <strong>unico</strong>, recomiendo poner un nombre asi 2020.04.18.HIERRO.BLUE  -</small><small>  <strong>AR</strong> </small>
-        </div>
 
         <div style="margin-top: 2rem; margin-bottom: 2rem; text-align: center; background-color: rgba(25, 111, 61, 0.3);">
             
@@ -40,16 +37,12 @@
     
             <div style="display: inline-block; margin-left: 1rem; margin-bottom: 1rem; margin-top: 1rem;" >
     
-                <label for="obra"> <h5>Proveedor:</h5></label>
+                <label for="proveedores"> <h5>Proveedor:</h5></label>
+
+
+                <input name="proveedores" type="search" class="form-control form-control" placeholder="Nombre del proveedor" list="provee" style="width: 30rem;">
+
           
-                <select name="proveedores" class="custom-select">
-    
-                    {% for i in datos.proveedores %}
-                    <option value="{{ i.id }}">{{ i.name}}</option>
-    
-                    {% endfor %}
-                
-                </select>
     
             </div>
 
@@ -67,20 +60,21 @@
     
             </div>
 
-    
-            <div style="display: inline-block; margin-left: 1rem; margin-bottom: 1rem; margin-top: 1rem;">
-    
-                <label for="nombre"> <h5>Nombre de la compra:</h5></label>
-          
-                <input type="text" name="nombre" class="form-control form-control" placeholder="Nombre unico">
-    
-            </div>
+
 
             <div style="display: inline-block; margin-left: 1rem; margin-bottom: 1rem; margin-top: 1rem;">
     
                 <label for="doc"> <h5>Documento asociado:</h5></label>
           
                 <input type="text" class="form-control form-control" name="doc" placeholder="Preferentemente OC">
+    
+            </div>
+
+            <div style="display: inline-block; margin-left: 1rem; margin-bottom: 1rem; margin-top: 1rem;">
+    
+                <label for="fecha"> <h5>Fecha de la OC:</h5></label>
+          
+                <input type="date" class="form-control form-control" name="fecha">
     
             </div>
 
@@ -93,7 +87,7 @@
         <h3 style="color: #138D75;"> Articulos</h3>
 
         <div>
-            <small> Prestar atención a las unidades -</small><small>  <strong>AR</strong> </small>
+            <small> Prestar atención a las unidades</small>
         </div>
 
 
@@ -115,7 +109,7 @@
                         
                         <div style="display: inline-block; margin-left: 1rem; ">
 
-                            <input name="articulo" type="search" class="form-control form-control" placeholder="Nombre del articulo" list="art" style="width: 30rem;">
+                            <input name="articulo" type="search" class="form-control form-control" placeholder="Nombre del articulo" list="art" style="width: 20rem;">
 
                         </div>
 
@@ -127,7 +121,7 @@
 
                         <div style="display: inline-block"> 
 
-                            <input name="cantidad" type="number" step="any" class="form-control form-control" placeholder="Cantidad">
+                            <input name="cantidad" type="number" step="0.01" class="form-control form-control" placeholder="Cantidad" style="width: 8rem;">
 
                         </div>
                         
@@ -139,15 +133,26 @@
 
                         <div style="display: inline-block"> 
 
-                            <input name="precio" step="any" type="number" class="form-control form-control" placeholder="Cantidad">
+                            <input name="precio" step="0.01" type="number" class="form-control form-control" placeholder="$" style="width: 8rem;">
 
-                        </div>   
+                        </div>
+                        
+                        <div style="display: inline-block; margin-left: 1rem;">
+
+                            <label for="partida"><h6>Partida</h6></label>
+
+                        </div>
+
+                        <div style="display: inline-block"> 
+
+                            <input name="partida" step="0.01" type="number" class="form-control form-control" placeholder="$">
+
+                        </div>  
             
                     </div>
             
                 </div>
-        
-        
+
              </div>        
 
         </div>
@@ -163,6 +168,17 @@
             {% for i in datos.articulos %}
             
             <option value="{{ i.nombre }}">({{i.unidad}})</option>
+    
+            {% endfor %}
+    
+        </datalist>
+
+
+        <datalist id="provee"> 
+
+            {% for i in datos.proveedores %}
+            
+            <option value="{{ i.name }}">({{i.id}})</option>
     
             {% endfor %}
     
@@ -191,6 +207,21 @@
         }
     
 </script>
+
+<script>
+
+    $(function () {
+        
+        function deleteRow(){
+            $(this).parents('tr').remove();
+        }
+    
+    });
+
+
+</script>
+
+
 
       
      {% endblock %}

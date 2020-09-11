@@ -298,6 +298,12 @@ def cargacompras(request):
             elif i[0] == "doc":
                 
                 doc = i[1]
+
+            
+            elif i[0] == "fecha":
+                
+                fecha = i[1]
+            
             
             else:
 
@@ -319,42 +325,65 @@ def cargacompras(request):
 
                     valor = 2
     
-                    articulo = i[1]
+                    articulo = Articulos.objects.get(nombre=i[1])
 
                 elif valor == 2:
 
                     valor = 3
 
                     cantidad = i[1]
+                    
                 
                 elif valor == 3:
 
-                    valor = 1
+                    valor = 4
 
                     precio = i[1]
 
-                    prueba = Articulos.objects.get(nombre=articulo)
-                    print(prueba)
+
+                elif valor == 4:
+
+                    valor = 1
+
+                    partida= i[1]
+
+                    if float(partida) > 0:
+
+                        imprevisto = "PREVISTO"
+
+                    else:
+
+                        imprevisto = "IMPREVISTO"
+
+
+                    print("Llegue a la parte de cargas")
 
                     b = Compras(
                         proyecto = Proyectos.objects.get(id=proyecto),
-                        proveedor = Proveedores.objects.get(id=proveedor),
-                        nombre = nombre,
+                        proveedor = Proveedores.objects.get(name=proveedor),
+                        nombre = doc,
                         tipo = tipo,
                         documento = doc,
-                        articulo = Articulos.objects.get(nombre=articulo),
-                        cantidad = cantidad,
-                        precio = precio,
-                    )
+                        articulo = articulo,
+                        cantidad = float(cantidad),
+                        precio = float(precio),
+                        precio_presup = articulo.valor,
+                        fecha_c = fecha,
+                        fecha_a = fecha,
+                        partida = float(partida),
+                        imprevisto = imprevisto,
+                        )
 
                     b.save()
+
+                    return redirect('Compras')
            
             except:
 
                 mensaje = "**Los datos ingresados no son correctos"
 
                 datos = {'proyectos': proyectos, 'proveedores':proveedores, 'compras':compras, 'articulos':articulos, 'mensaje':mensaje}
-        return redirect('Compras')
+        
     else:
 
         datos = {'proyectos': proyectos, 'proveedores':proveedores, 'compras':compras, 'articulos':articulos, 'mensaje':mensaje}
