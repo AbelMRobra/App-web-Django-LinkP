@@ -28,14 +28,17 @@ class Comparativas(models.Model):
             ESPERA = "ESPERA"
             AUTORIZADA = "AUTORIZADA"
             NO_AUTORIZADA = "NO AUTORIZADA"
+            ADJ_AUTORIZADA = "ADJUNTO ✓"
 
 
     proveedor = models.ForeignKey(Proveedores, on_delete=models.CASCADE, verbose_name="Nombre del contratista")
     proyecto = models.CharField(verbose_name="Proyecto", blank=True, null=True, max_length=200)
     numero = models.CharField(verbose_name="Codigo", blank=True, null=True, max_length=200)
+    o_c = models.CharField(verbose_name="Nº orden de compra", blank=True, null=True, max_length=200)
     monto = models.IntegerField(verbose_name="Monto de la compra")
     estado = models.CharField(choices=estados.choices, default=estados.ESPERA, editable=False, max_length=20, verbose_name="Estado", blank=True, null=True)
     adjunto = models.ImageField(verbose_name="Imagen adjunta")
+    adj_oc = models.FileField(verbose_name="Orden de compra", blank=True, null=True)
     fecha_c = models.DateField(auto_now_add=True, verbose_name="Fecha de carga")
     comentario = models.TextField(blank=True, null=True, verbose_name="Comentario", editable=False)
 

@@ -211,8 +211,6 @@ def comprasdisponibles(request):
 
         for i in datos:
         
-            print(i)
-
             if i[0] == "compra":
 
                 compra_c = i
@@ -423,7 +421,33 @@ def cargacompras(request):
 
 
 def comparativas(request):
-    datos  = Comparativas.objects.order_by("-fecha_c")
+
+
+    datos = Comparativas.objects.order_by("-fecha_c")
+    fechafinal = date.today()
+    fechainicial = date.today()
+
+    if request.method == 'GET':
+
+        palabra_buscar = request.GET.items()
+
+        datos_viejos = datos
+
+        datos = []   
+
+        for i in palabra_buscar:
+
+            if i[0] == "fechai":
+        
+                fechainicial = i[1]
+
+            if i[0] == "fechaf":
+        
+                fechafinal = i[1]
+
+
+        datos  = Comparativas.objects.filter(fecha_c__range=(fechainicial, fechafinal))
+
 
     if request.method == 'POST':
 
@@ -451,6 +475,15 @@ def comparativas(request):
 
                 comparativa.save()
 
+            if d[0] == 'ADJAPROB':
+                id_selec = d[1]
+
+                comparativa = Comparativas.objects.get(id = id_selec)
+
+                comparativa.estado = "ADJUNTO ✓"
+
+                comparativa.save()
+
             if d[0] != 'csrfmiddlewaretoken' and d[0] != 'NO APROBADA' and d[0] != 'APROBADA':
                 
 
@@ -459,6 +492,14 @@ def comparativas(request):
                 comparativa.comentario = str(d[0]) + ": " + str(d[1])
 
                 comparativa.save()
+
+
+        #Aqui empieza el filtro
+
+
+        
+
+    #Aqui termina el filtro
 
     return render(request, 'comparativas.html', {'datos':datos})
 
