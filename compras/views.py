@@ -348,11 +348,25 @@ def cargacompras(request):
 
                     partida= i[1]
 
+                    partida_original = i[1]
+
                     partida = float(partida) - float(cantidad)*articulo.valor
 
                     if float(partida) > 0:
 
                         imprevisto = "PREVISTO"
+
+                    elif float(partida) == 0:
+
+                        imprevisto = "IMPREVISTO"
+
+                        presupuesto_imprevisto = Presupuestos.objects.get(proyecto__id = proyecto)
+
+                        partida = presupuesto_imprevisto.imprevisto - float(cantidad)*float(precio)
+
+                        presupuesto_imprevisto.imprevisto = partida
+
+                        presupuesto_imprevisto.save()
 
                     else:
 
@@ -360,7 +374,7 @@ def cargacompras(request):
 
                         presupuesto_imprevisto = Presupuestos.objects.get(proyecto__id = proyecto)
 
-                        partida = presupuesto_imprevisto.imprevisto - float(cantidad)*float(precio)
+                        partida = presupuesto_imprevisto.imprevisto - float(cantidad)*float(precio) + partida_original
 
                         presupuesto_imprevisto.imprevisto = partida
 
