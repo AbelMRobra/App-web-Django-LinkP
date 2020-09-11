@@ -7,7 +7,7 @@ from .models import Proveedores, Certificados
 from .models import StockComprasAnticipadas, Compras, Proyectos, Proveedores, Retiros, Comparativas
 from .form import StockAntForm
 from .filters import CertificadoFilter
-from presupuestos.models import Articulos, Constantes
+from presupuestos.models import Articulos, Constantes, Presupuestos
 import sqlite3
 import operator
 import datetime
@@ -312,9 +312,10 @@ def cargacompras(request):
         valor = 1
 
 
-        for i in resto:
+        try:
 
-            try:
+
+            for i in resto:
 
                 if i[0] == "csrfmiddlewaretoken":
 
@@ -347,6 +348,8 @@ def cargacompras(request):
 
                     partida= i[1]
 
+                    partida = float(partida) - float(cantidad)*articulo.valor
+
                     if float(partida) > 0:
 
                         imprevisto = "PREVISTO"
@@ -355,8 +358,13 @@ def cargacompras(request):
 
                         imprevisto = "IMPREVISTO"
 
+                        presupuesto_imprevisto = Presupuestos.objects.get(proyecto__id = proyecto)
 
-                    print("Llegue a la parte de cargas")
+                        partida = presupuesto_imprevisto.imprevisto - float(cantidad)*float(precio)
+
+                        presupuesto_imprevisto.imprevisto = partida
+
+                        presupuesto_imprevisto.save()
 
                     b = Compras(
                         proyecto = Proyectos.objects.get(id=proyecto),
@@ -370,20 +378,20 @@ def cargacompras(request):
                         precio_presup = articulo.valor,
                         fecha_c = fecha,
                         fecha_a = fecha,
-                        partida = float(partida),
+                        partida = partida,
                         imprevisto = imprevisto,
                         )
 
                     b.save()
 
-                    return redirect('Compras')
+            return redirect('Compras')
            
-            except:
+        except:
 
-                mensaje = "**Los datos ingresados no son correctos"
+            mensaje = "**Los datos ingresados no son correctos"
 
-                datos = {'proyectos': proyectos, 'proveedores':proveedores, 'compras':compras, 'articulos':articulos, 'mensaje':mensaje}
-        
+            datos = {'proyectos': proyectos, 'proveedores':proveedores, 'compras':compras, 'articulos':articulos, 'mensaje':mensaje}
+    
     else:
 
         datos = {'proyectos': proyectos, 'proveedores':proveedores, 'compras':compras, 'articulos':articulos, 'mensaje':mensaje}
