@@ -914,7 +914,7 @@ class DescargarCuentacorriente(TemplateView):
         
         #Definir tipo de respuesta que se va a dar
         response = HttpResponse(content_type = "application/ms-excel")
-        contenido = "attachment; filename = {0}".format(nombre_archivo)
+        contenido = "attachment; filename = {0}".format(nombre_archivo).replace(',', '_')
         response["Content-Disposition"] = contenido
         wb.save(response)
         return response
