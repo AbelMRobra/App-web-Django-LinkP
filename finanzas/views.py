@@ -248,6 +248,8 @@ def crearcuenta(request):
 
         for i in datos_crear:
 
+            print(i)
+
             if i[0] == 'ventas':
 
                 b = CuentaCorriente(
@@ -273,15 +275,9 @@ def crearcuenta(request):
 
                 cuotas = i[1]
 
-            if  'tipo_venta' in i[0]:
+                constante = Constantes.objects.get(nombre = "Hº VIVIENDA")
 
-                if i[1] == "HORM":
-                    constante = Constantes.objects.get(nombre = "Hº VIVIENDA"),
-
-                if i[1] == "USD":
-                    constante = Constantes.objects.get(nombre = "USD"),
-
-                precio_pesos = float(precio)/constante[0].valor
+                precio_pesos = float(precio)/constante.valor
 
                 for i in range(int(cuotas)):
 
@@ -290,7 +286,7 @@ def crearcuenta(request):
                         cuenta_corriente = b,
                         fecha = fecha,
                         precio = float(precio),
-                        constante = constante[0],
+                        constante = constante,
                         precio_pesos = precio_pesos,                        
                         concepto = concepto,
                         )

@@ -57,7 +57,7 @@
             
                     <div style="display: inline-block;">
             
-                        <label for="precio1"><h6>Precio de venta en moneda dura</h6></label>
+                        <label for="precio1"><h6>Precio de venta en Hº</h6></label>
             
                     </div>
             
@@ -99,42 +99,44 @@
                         <input name="cuotas1" type="number" class="form-control form-control" list="art">
             
                     </div>
-        
-            
-                    <div class="custom-control custom-radio">
-                        <input type="radio" id="customRadioH1" name="tipo_venta" class="custom-control-input" value="HORM" checked="">
-                        <label class="custom-control-label" for="customRadioH1">HORMIGÓN</label>
-                      </div>
-        
-                      <div class="custom-control custom-radio">
-                        <input type="radio" id="customRadioD1" name="tipo_venta" class="custom-control-input" value="USD">
-                        <label class="custom-control-label" for="customRadioD1">DOLAR</label>
-                      </div>
-        
-                      <b><hr class = "my-4" style="width: 100%; "></b>
+
+
+                    <b><hr class = "my-4" style="width: 100%; "></b>
 
         </div>
         
     </div>
 
-   
-                  
-              <div style="margin-top: 2%; ">
-    
-                <button type="submit" class="btn btn-primary" >Armar cuenta corriente</button>
-    
-              </div>
-        
+        <div>
+            <button type="submit" class="btn btn-success disabled"  >Armar cuenta corriente</button>
+
+        </div>  
 
         </form>
 
         <b><hr class = "my-4" style="width: 100%; "></b>
+        <div>
 
-        <button onclick="myFunction()" class="btn btn-danger" style="margin-bottom: 5%;" >Agregar campos de cuotas</button>
+            <button onclick="myFunction()" class="btn btn-info disabled" style="margin-bottom: 5%;">Agregar campos</button>
 
- 
+
+
+        </div>
+
+        
+
+        
+
+        
+        
+
+
+
     
     </div>
+
+
+    <div style="margin-top: 2%; ">
 
     <datalist id="ventas"> 
 
@@ -170,6 +172,7 @@
             $(".campoctacte").last().find('.campo').find('input').each(function( index ) { 
 
                     $(this).attr("name",$(this).attr("name")+i);
+
             });
         }
     
