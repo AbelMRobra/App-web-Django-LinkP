@@ -7,67 +7,10 @@
 
 <div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;">
 
-    <h3>Comparativas/Ordenes de compras</h3>
-    <h6>Comparativas entre proveedores y ordenes para autorizar</h6>
+    <h3>Panel de autorización comparativas/O.C</h3>
+    <h6>Panel exclusivo de PL</h6>
      <b><hr class = "my-4" style="width: 75%;"></b>
 
-
-     {% if request.user.username == "PL" or request.user.username == "ar" %}
-
-
-     <h6>Panel de autorización</h6>
-
-     <div style="margin-top: 2%;">
-
-     
-
-         <a class="btn btn-sm btn-warning" href="{% url 'Panel de comparativas' 1 %}" >COMPARATIVAS</a>
-                     
-         <a class="btn btn-sm btn-success" href="{% url 'Panel de comparativas' 2 %}" >OORDENES DE COMPRA</a>
-                     
-         <a class="btn btn-sm btn-danger" href="{% url 'Panel de comparativas' 3 %}" >RECHAZADOS</a>
-          
-         <b><hr class = "my-4" style="width: 100%;"></b>
-    
-     </div>
-
-     
-
-
-     
-
-{% endif %}
-
-
-     <form method="GET" style="text-align: center;">
-
-        {% csrf_token %}
-
-        <div style="display: inline-block; margin-left: 1rem;">
-
-            <label for="fechai"><h6>Fecha Inicial</h6></label>
-
-            <input name="fechai" type="date" class="form-control form-control" list="art" style="width: 15rem;">
-
-
-        </div>
-
-        <div style="display: inline-block; margin-left: 1rem;">
-
-            <label for="fechaf"><h6>Fecha Final</h6></label>
-
-            <input name="fechaf" type="date" class="form-control form-control" list="art" style="width: 15rem;">
-
-
-        </div>
-        
-
-
-        <div>
-            <button class="btn btn-dark" type="submit" style="margin-top: 1%;">Buscar</button>          
-        </div>       
-
-     </form>
 
 
     {% if datos %} 
@@ -77,14 +20,6 @@
 
 
     <div class = "tableconteinerabel" style="margin-top: 2%;">
-
-        <div style="text-align: left;">
-
-            <small> Comparativas/O.C desde {{ fechai }} al {{ fechaf }} </small>
-
-        </div>
-
-        
         <table class = "table table-hover" style="text-align: center;" >
             <thead>
     
@@ -288,13 +223,19 @@
 
 
      {% else %}
+
             <div style="margin-top: 2rem;">
-                <h7>Indique fechas para iniciar la busqueda</h7>
+                <h7>No quedan pendientes a autorizar!</h7>
             </div>
 
-            {% endif %}
+ 
+    {% endif %}
 
+    <div style="margin-top: 5%;">
 
+        <a class="btn btn-sm btn-info" href="{% url 'Comparativas' %}" >VOLVER A COMPARATIVAS</a>
+    
+    </div>
 
     <div style="margin-top: 2rem;">
         <p> <small>-- Link<strong>P</strong> --</small> </p>

@@ -419,9 +419,72 @@ def cargacompras(request):
 
 # ----------------------------------------------------- VISTAS PARA LISTAR COMPRAS ----------------------------------------------
 
+def comparativas_pl(request, estado):
+
+    datos = 0
+
+    if estado == "1":
+
+
+        datos = Comparativas.objects.filter(estado = "ESPERA")
+
+    if estado == "2":
+
+        datos = Comparativas.objects.filter(estado = "ADJUNTO ✓")
+
+    if estado == "3":
+
+        datos = Comparativas.objects.filter(estado = "NO AUTORIZADA")
+
+
+    if request.method == 'POST':
+
+        datos_post = request.POST.items()
+
+        id_selec = 0
+
+        for d in datos_post:
+
+            if d[0] == 'APROBADA':
+                id_selec = d[1]
+
+                comparativa = Comparativas.objects.get(id = id_selec)
+
+                comparativa.estado = "AUTORIZADA"
+
+                comparativa.save()
+
+            if d[0] == 'NO APROBADA':
+                id_selec = d[1]
+
+                comparativa = Comparativas.objects.get(id = id_selec)
+
+                comparativa.estado = "NO AUTORIZADA"
+
+                comparativa.save()
+
+            if d[0] == 'ADJAPROB':
+                id_selec = d[1]
+
+                comparativa = Comparativas.objects.get(id = id_selec)
+
+                comparativa.estado = "ADJUNTO ✓"
+
+                comparativa.save()
+
+            if d[0] != 'csrfmiddlewaretoken' and d[0] != 'NO APROBADA' and d[0] != 'APROBADA':
+                
+
+                comparativa = Comparativas.objects.get(id = id_selec)
+
+                comparativa.comentario = str(d[0]) + ": " + str(d[1])
+
+                comparativa.save()
+
+
+    return render(request, 'comparativas_pl.html', {'datos':datos})
 
 def comparativas(request):
-
 
     datos = Comparativas.objects.order_by("-fecha_c")
     fechafinal = date.today()
@@ -501,7 +564,7 @@ def comparativas(request):
 
     #Aqui termina el filtro
 
-    return render(request, 'comparativas.html', {'datos':datos})
+    return render(request, 'comparativas.html', {'datos':datos, 'fechai':fechainicial, 'fechaf':fechafinal})
 
 
 def compras(request):

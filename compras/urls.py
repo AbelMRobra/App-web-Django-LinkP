@@ -9,6 +9,7 @@ urlpatterns = [
     url(r'^cargacompras$', login_required(views.cargacompras), name = 'Carga compras'),
     url(r'^compras$', login_required(views.compras), name = 'Compras'),
     url(r'^comparativas$', login_required(views.comparativas), name = 'Comparativas'),
+    url(r'^comparativaspl/(?P<estado>\d+)/$', login_required(views.comparativas_pl), name = 'Panel de comparativas'),
     url(r'^listaretiros$', login_required(views.listaretiros), name = 'Lista de retiros'),
     url(r'^listacomprasretiros$', login_required(views.comprasdisponibles), name = 'Compras para retirar'),
     url(r'^cargaretiro/(?P<nombre>\d+)/$', login_required(views.cargaretiro), name = 'Carga de retiros'),
