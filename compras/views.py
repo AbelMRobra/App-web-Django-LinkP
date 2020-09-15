@@ -1196,3 +1196,138 @@ class Reegistrodecompras(TemplateView):
         response["Content-Disposition"] = contenido
         wb.save(response)
         return response
+
+
+class CompOCestado(TemplateView):
+
+    def get(self, request, *args, **kwargs):
+        
+        wb = Workbook()
+
+        #Aqui coloco la formula para calcular
+
+        datos = Comparativas.objects.filter(fecha_c__gte="2020-09-13").order_by("-fecha_c")
+
+        ws = wb.active
+        ws.title = "ADVERTENCIA"
+
+        ws.merge_cells("B2:K2")
+        ws["B2"] = "LEER ATENTAMENTE ANTES DE USAR ESTE DOCUMENTO"
+
+        ws["B2"].alignment = Alignment(horizontal = "center")
+        ws["B2"].font = Font(bold = True, color= "CF433F", size = 20)
+
+        ws.merge_cells("B5:K25")
+        ws["B5"] = "Este documento contiene informción --> PRIVADA <-- del área de presupuestos, \n la misma es solo para uso interno de LINK INVERSIONES y no debe ser compartida sin previa autorización. Compartir este archivo puede ser considerado como divulgar información confidencial. Si usted esta utilizando este archivo en una computadora que no pertenezca a la empresa, al finalizar --> ELIMINE <-- el archivo. Gracias --AR"
+        ws["B5"].alignment = Alignment(horizontal = "center", vertical = "center", wrap_text=True)
+        ws["B5"].font = Font(bold = True)
+        
+        cont = 1
+        
+        for d in datos:
+
+            if cont == 1:
+                ws = wb.create_sheet("My sheet")
+                ws.title = "Listado"
+                ws["A"+str(cont)] = "FECHA"
+                ws["B"+str(cont)] = "PROYECTO"
+                ws["C"+str(cont)] = "PROVEEDOR"
+                ws["D"+str(cont)] = "REFERENCIA"
+                ws["E"+str(cont)] = "OC"
+                ws["F"+str(cont)] = "MONTO"
+                ws["G"+str(cont)] = "ESTADO"
+                ws["H"+str(cont)] = "OBSERVACION PL"
+
+
+                ws["A"+str(cont)].alignment = Alignment(horizontal = "center")
+                ws["B"+str(cont)].alignment = Alignment(horizontal = "center")
+                ws["C"+str(cont)].alignment = Alignment(horizontal = "center")
+                ws["D"+str(cont)].alignment = Alignment(horizontal = "center")
+                ws["E"+str(cont)].alignment = Alignment(horizontal = "center")
+                ws["F"+str(cont)].alignment = Alignment(horizontal = "center")
+                ws["G"+str(cont)].alignment = Alignment(horizontal = "center")
+                ws["H"+str(cont)].alignment = Alignment(horizontal = "center")
+
+
+                ws["A"+str(cont)].font = Font(bold = True, color= "FDFFFF")
+                ws["A"+str(cont)].fill =  PatternFill("solid", fgColor= "159ABB")
+                ws["B"+str(cont)].font = Font(bold = True, color= "FDFFFF")
+                ws["B"+str(cont)].fill =  PatternFill("solid", fgColor= "159ABB")
+                ws["C"+str(cont)].font = Font(bold = True, color= "FDFFFF")
+                ws["C"+str(cont)].fill =  PatternFill("solid", fgColor= "159ABB")
+                ws["D"+str(cont)].font = Font(bold = True, color= "FDFFFF")
+                ws["D"+str(cont)].fill =  PatternFill("solid", fgColor= "159ABB")
+                ws["E"+str(cont)].font = Font(bold = True, color= "FDFFFF")
+                ws["E"+str(cont)].fill =  PatternFill("solid", fgColor= "159ABB")
+                ws["F"+str(cont)].font = Font(bold = True, color= "FDFFFF")
+                ws["F"+str(cont)].fill =  PatternFill("solid", fgColor= "159ABB")
+                ws["G"+str(cont)].font = Font(bold = True, color= "FDFFFF")
+                ws["G"+str(cont)].fill =  PatternFill("solid", fgColor= "159ABB")
+                ws["H"+str(cont)].font = Font(bold = True, color= "FDFFFF")
+                ws["H"+str(cont)].fill =  PatternFill("solid", fgColor= "159ABB")
+
+
+                ws.column_dimensions['A'].width = 15
+                ws.column_dimensions['B'].width = 15
+                ws.column_dimensions['C'].width = 40
+                ws.column_dimensions['D'].width = 12
+                ws.column_dimensions['E'].width = 12
+                ws.column_dimensions['F'].width = 15
+                ws.column_dimensions['G'].width = 17
+                ws.column_dimensions['H'].width = 40
+
+                ws["A"+str(cont+1)] = d.fecha_c
+                ws["B"+str(cont+1)] = d.proyecto
+                ws["C"+str(cont+1)] = d.proveedor.name
+                ws["D"+str(cont+1)] = d.numero
+                ws["E"+str(cont+1)] = d.o_c
+                ws["F"+str(cont+1)] = d.monto
+                ws["G"+str(cont+1)] = d.estado
+                ws["H"+str(cont+1)] = d.comentario
+
+
+                ws["A"+str(cont+1)].font = Font(bold = True)
+                ws["A"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["B"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["C"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["F"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["G"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["F"+str(cont+1)].number_format = '"$"#,##0.00_-'
+                ws["H"+str(cont+1)].alignment = Alignment(horizontal = "center")
+  
+
+                cont += 1
+
+            else:
+                ws = wb["Listado"]
+
+                ws["A"+str(cont+1)] = d.fecha_c
+                ws["B"+str(cont+1)] = d.proyecto
+                ws["C"+str(cont+1)] = d.proveedor.name
+                ws["D"+str(cont+1)] = d.numero
+                ws["E"+str(cont+1)] = d.o_c
+                ws["F"+str(cont+1)] = d.monto
+                ws["G"+str(cont+1)] = d.estado
+                ws["H"+str(cont+1)] = d.comentario
+
+
+                ws["A"+str(cont+1)].font = Font(bold = True)
+                ws["A"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["B"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["C"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["F"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["G"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["F"+str(cont+1)].number_format = '"$"#,##0.00_-'
+                ws["H"+str(cont+1)].alignment = Alignment(horizontal = "center")
+
+
+                cont += 1
+
+        #Establecer el nombre del archivo
+        nombre_archivo = "EstadoOcComparativas.xls"
+        #Definir tipo de respuesta que se va a dar
+        response = HttpResponse(content_type = "application/ms-excel")
+        contenido = "attachment; filename = {0}".format(nombre_archivo)
+        response["Content-Disposition"] = contenido
+        wb.save(response)
+        return response
