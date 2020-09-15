@@ -1290,9 +1290,21 @@ class CompOCestado(TemplateView):
                 ws["A"+str(cont+1)].alignment = Alignment(horizontal = "center")
                 ws["B"+str(cont+1)].alignment = Alignment(horizontal = "center")
                 ws["C"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["D"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["E"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["E"+str(cont+1)].font = Font(bold = True)
                 ws["F"+str(cont+1)].alignment = Alignment(horizontal = "center")
-                ws["G"+str(cont+1)].alignment = Alignment(horizontal = "center")
                 ws["F"+str(cont+1)].number_format = '"$"#,##0.00_-'
+                ws["G"+str(cont+1)].alignment = Alignment(horizontal = "center")
+
+                if d.estado == "AUTORIZADA":
+
+                    ws["G"+str(cont+1)].font = Font(bold = True, color= "49AD26")
+
+                elif d.estado == "ADJUNTO ✓":
+
+                    ws["G"+str(cont+1)].font = Font(bold = True, color= "CAC32E")
+                    
                 ws["H"+str(cont+1)].alignment = Alignment(horizontal = "center")
   
 
@@ -1315,9 +1327,25 @@ class CompOCestado(TemplateView):
                 ws["A"+str(cont+1)].alignment = Alignment(horizontal = "center")
                 ws["B"+str(cont+1)].alignment = Alignment(horizontal = "center")
                 ws["C"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["D"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["E"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["E"+str(cont+1)].font = Font(bold = True)
                 ws["F"+str(cont+1)].alignment = Alignment(horizontal = "center")
-                ws["G"+str(cont+1)].alignment = Alignment(horizontal = "center")
                 ws["F"+str(cont+1)].number_format = '"$"#,##0.00_-'
+                ws["G"+str(cont+1)].alignment = Alignment(horizontal = "center")
+
+                if d.estado == "AUTORIZADA":
+
+                    ws["G"+str(cont+1)].font = Font(bold = True, color= "49AD26")
+
+                elif d.estado == "ADJUNTO ✓":
+
+                    ws["G"+str(cont+1)].font = Font(bold = True, color= "CAC32E")
+
+                elif d.estado == "NO AUTORIZADA":
+
+                    ws["G"+str(cont+1)].font = Font(bold = True, color= "CA522E")
+                    
                 ws["H"+str(cont+1)].alignment = Alignment(horizontal = "center")
 
 
