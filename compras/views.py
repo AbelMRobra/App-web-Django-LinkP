@@ -1270,7 +1270,7 @@ class CompOCestado(TemplateView):
                 ws.column_dimensions['A'].width = 15
                 ws.column_dimensions['B'].width = 15
                 ws.column_dimensions['C'].width = 40
-                ws.column_dimensions['D'].width = 12
+                ws.column_dimensions['D'].width = 40
                 ws.column_dimensions['E'].width = 12
                 ws.column_dimensions['F'].width = 15
                 ws.column_dimensions['G'].width = 17
