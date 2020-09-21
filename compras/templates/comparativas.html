@@ -12,7 +12,7 @@
      <b><hr class = "my-4" style="width: 75%;"></b>
 
 
-     {% if request.user.username == "PL" or request.user.username == "ar" %}
+     {% if request.user.username == "PL" or request.user.username == "AR" %}
 
 
      <h6>Panel de autorización</h6>
@@ -21,11 +21,13 @@
 
      
 
-         <a class="btn btn-sm btn-warning" href="{% url 'Panel de comparativas' 1 %}" >COMPARATIVAS</a>
+         <a class="btn btn-sm btn-dark" href="{% url 'Panel de comparativas' 1 %}" >NEWS</a>
                      
-         <a class="btn btn-sm btn-success" href="{% url 'Panel de comparativas' 2 %}" >OORDENES DE COMPRA</a>
+         <a class="btn btn-sm btn-warning" href="{% url 'Panel de comparativas' 2 %}" >ADJ ✓</a>
                      
-         <a class="btn btn-sm btn-danger" href="{% url 'Panel de comparativas' 3 %}" >RECHAZADOS</a>
+         <a class="btn btn-sm btn-success" href="{% url 'Panel de comparativas' 4 %}" >O.C ✓</a>
+
+         <a class="btn btn-sm btn-danger" href="{% url 'Panel de comparativas' 3 %}" >X</a>
           
          <b><hr class = "my-4" style="width: 100%;"></b>
     

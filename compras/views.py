@@ -426,15 +426,19 @@ def comparativas_pl(request, estado):
     if estado == "1":
 
 
-        datos = Comparativas.objects.filter(estado = "ESPERA")
+        datos = Comparativas.objects.filter(estado = "ESPERA").order_by("-fecha_c")
 
     if estado == "2":
 
-        datos = Comparativas.objects.filter(estado = "ADJUNTO ✓")
+        datos = Comparativas.objects.filter(estado = "ADJUNTO ✓").order_by("-fecha_c")
 
     if estado == "3":
 
-        datos = Comparativas.objects.filter(estado = "NO AUTORIZADA")
+        datos = Comparativas.objects.filter(estado = "NO AUTORIZADA").order_by("-fecha_c")
+
+    if estado == "4":
+
+        datos = Comparativas.objects.filter(estado = "AUTORIZADA").order_by("-fecha_c")
 
 
     if request.method == 'POST':
@@ -472,7 +476,7 @@ def comparativas_pl(request, estado):
 
                 comparativa.save()
 
-            if d[0] != 'csrfmiddlewaretoken' and d[0] != 'NO APROBADA' and d[0] != 'APROBADA':
+            if d[0] != 'csrfmiddlewaretoken' and d[0] != 'NO APROBADA' and d[0] != 'APROBADA' and d[0] != 'ADJAPROB':
                 
 
                 comparativa = Comparativas.objects.get(id = id_selec)
