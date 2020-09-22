@@ -7,7 +7,7 @@ from .models import Almacenero, CuentaCorriente, Cuota, Pago, RegistroAlmacenero
 from proyectos.models import Unidades
 from ventas.models import Pricing, VentasRealizadas
 import datetime
-from datetime import date
+from datetime import date, timedelta
 from openpyxl import Workbook
 from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
 
@@ -393,7 +393,21 @@ def resumenctacte(request, id_cliente):
 
     for fecha in fechas:
 
-        cuotas = Cuota.objects.filter(fecha = fecha, cuenta_corriente  = ctacte)
+        if fecha.month == 12:
+
+            año = fecha.year + 1
+
+            fecha_final = date(año, 1, fecha.day)
+
+        else:
+
+            mes = fecha.month + 1
+
+            fecha_final = date(fecha.year, mes, fecha.day)
+
+        fecha_final = fecha_final + timedelta(days = -1)
+
+        cuotas = Cuota.objects.filter(fecha__range = (fecha, fecha_final), cuenta_corriente  = ctacte)
 
         for cuota in cuotas:
             pagos = Pago.objects.filter(cuota = cuota)

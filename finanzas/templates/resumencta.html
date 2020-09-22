@@ -20,10 +20,12 @@
         
         <div style="text-align: left; margin-top: 2%;">
 
-            <h6>Fecha de la venta: {{ctacte.venta.fecha}}</h6>
-            <h6>Cliente: {{ctacte.venta.comprador}}</h6>
-            <h6>Unidad: {{ctacte.venta.unidad.piso_unidad}} - {{ctacte.venta.unidad.nombre_unidad}} - {{ctacte.venta.unidad.tipo}} - {{ctacte.venta.unidad.tipologia}}</h6>
-            <h6>Tamaño de la unidad: {{ctacte.venta.m2}} </h6> 
+            <h6>Fecha de la venta: <small>{{ctacte.venta.fecha}}</small> </h6>
+            <h6>Cliente: <small>{{ctacte.venta.comprador}}</small> </h6>
+            <h6>Nombre de la unidad: <small>{{ctacte.venta.unidad.piso_unidad}} - {{ctacte.venta.unidad.nombre_unidad}}</small></h6>
+            <h6>Tipo: <small> {{ctacte.venta.unidad.tipo}} </small></h6>
+            <h6>Tipologia: <small> {{ctacte.venta.unidad.tipologia}} </small></h6>
+            <h6>Tamaño de la unidad: <small> {{ctacte.venta.m2}} </small></h6> 
 
 
         </div>
@@ -42,14 +44,14 @@
             <thead>
     
                 <tr class = "table-dark">
-                    <th scope = "row"> <small>CONCEPTO</small></th>
-                    <th scope = "row"> <small>MONEDA</small></th>
-                    <th scope = "row"> <small>VALOR MONEDA</small></th>
-                    <th scope = "row"> <small>TOTAL (MD)</small></th>
-                    <th scope = "row"> <small>CUOTAS</small></th>
-                    <th scope = "row"> <small> PAGADO (MD)</small></th>
-                    <th scope = "row"> <small> SALDO (MD)</small></th>
-                    <th scope = "row"> <small> SALDO (PESOS) </small></th>
+                    <th scope = "row"> CONCEPTO </th>
+                    <th scope = "row"> MONEDA</th>
+                    <th scope = "row"> VALOR MONEDA</th>
+                    <th scope = "row"> TOTAL (MD)</th>
+                    <th scope = "row"> CUOTAS</th>
+                    <th scope = "row"> PAGADO (MD)</th>
+                    <th scope = "row"> SALDO (MD)</th>
+                    <th scope = "row"> SALDO (PESOS)</th>
 
 
                 </tr>
@@ -59,7 +61,7 @@
     
                 {% for i in datos %}
                 <tr class = "table-light">
-                    <td> <b> <small> <b>{{i.0}}</b> </small> </b></td>    
+                    <td> <b> <small> <b>{{i.0|upper}}</b> </small> </b></td>    
                     <td> <b> <small>{{i.1.nombre}}</small> </b> </td>
                     <td> <b> <small>${{i.1.valor|floatformat:2}}</small> </b> </td>
                     <td> <b> <small>{{i.2|floatformat:2}}</small> </b> </td>
@@ -71,6 +73,13 @@
 
                 </tr>
                 {% endfor %}
+
+                <tr class = "table-light">
+                    <td colspan="7"> <b> <b>TOTAL</b></b></td>    
+                    <td> <b> <b>$XX</b></b> </td>
+
+
+                </tr>
             
             </tbody>
          
@@ -100,23 +109,31 @@
                 <thead>
         
                     <tr class = "table-dark">
-                        <th scope = "row"> <small>FECHA</small></th>
-                        <th scope = "row"> <small>SALDO EN PESOS</small></th>
+                        <th scope = "row"> FECHA </th>
 
-    
-    
+                        {% for i in datos_cuotas|slice:"3" %}
+
+                        <th scope = "row"> {{i.0|date:"F Y" }}</th>
+
+                        {% endfor %}
+
                     </tr>
                 </thead>
         
                 <tbody>   
         
-                    {% for i in datos_cuotas|slice:"10" %}
+                    
                     <tr class = "table-light">
-                        <td> <b> <small> <b>{{i.0}}</b> </small> </b></td>    
+                        <td> <b> <small> <b>MONTO</b> </small> </b></td>   
+                        
+                        {% for i in datos_cuotas|slice:"3" %}
+
                         <td> <b> <small>${{i.1|floatformat:0|intcomma}}</small> </b> </td>  
+
+                        {% endfor %}
     
                     </tr>
-                    {% endfor %}
+                    
                 
                 </tbody>
              
@@ -125,6 +142,9 @@
             </table>
         
             </div>
+
+
+            <b><hr class = "my-4" style="width: 75%; "></b>
 
 
 
