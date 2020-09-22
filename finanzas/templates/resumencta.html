@@ -105,15 +105,15 @@
              
 
 
-            <table class = "table table-hover" style="text-align: center; margin-top: 2%; width: 50%;">
+            <table class = "table table-hover" style="text-align: center; margin-top: 2%; width: 100%;">
                 <thead>
         
                     <tr class = "table-dark">
-                        <th scope = "row"> FECHA </th>
+                        <th scope = "row" style="width: 10%; vertical-align: middle;"> FECHA </th>
 
-                        {% for i in datos_cuotas|slice:"6" %}
+                        {% for i in datos_cuotas|slice:"9" %}
 
-                        <th scope = "row"> {{i.0|date:"F Y" }}</th>
+                        <th scope = "row" style="width: 10%;  vertical-align: middle;"> {{i.0|date:"F Y" }}</th>
 
                         {% endfor %}
 
@@ -124,11 +124,11 @@
         
                     
                     <tr class = "table-light">
-                        <td> <b> <small> <b>MONTO</b> </small> </b></td>   
+                        <td style="width: 10%;"> <b> <small> <b>MONTO</b> </small> </b></td>   
                         
-                        {% for i in datos_cuotas|slice:"6" %}
+                        {% for i in datos_cuotas|slice:"9" %}
 
-                        <td> <b> <small>${{i.1|floatformat:0|intcomma}}</small> </b> </td>  
+                        <td style="width: 10%;">  <b> <small>${{i.1|floatformat:0|intcomma}}</small> </b> </td>  
 
                         {% endfor %}
     
