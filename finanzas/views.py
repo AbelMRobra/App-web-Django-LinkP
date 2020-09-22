@@ -345,6 +345,8 @@ def resumenctacte(request, id_cliente):
 
     nombre_conceptos = set(nombre_conceptos)
 
+    saldo_total_pesos = 0
+
     for nombre in nombre_conceptos:
 
         moneda = 0
@@ -370,6 +372,7 @@ def resumenctacte(request, id_cliente):
 
         saldo_moneda = total_moneda - total_pagado
         saldo_pesos = saldo_moneda*moneda.valor
+        saldo_total_pesos = saldo_total_pesos + saldo_pesos
 
         datos.append((nombre, moneda, total_moneda, cuotas_t, total_pagado, saldo_moneda, saldo_pesos))
 
@@ -393,36 +396,44 @@ def resumenctacte(request, id_cliente):
 
     for fecha in fechas:
 
-        if fecha.month == 12:
+        hoy = datetime.date.today()
 
-            año = fecha.year + 1
+        if fecha < hoy:
 
-            fecha_final = date(año, 1, fecha.day)
+            print("viejo")
 
         else:
 
-            mes = fecha.month + 1
+            if fecha.month == 12:
 
-            fecha_final = date(fecha.year, mes, fecha.day)
+                año = fecha.year + 1
 
-        fecha_final = fecha_final + timedelta(days = -1)
+                fecha_final = date(año, 1, fecha.day)
 
-        cuotas = Cuota.objects.filter(fecha__range = (fecha, fecha_final), cuenta_corriente  = ctacte)
+            else:
 
-        for cuota in cuotas:
-            pagos = Pago.objects.filter(cuota = cuota)
+                mes = fecha.month + 1
 
-            for pago in pagos:
-                pago_md = pago_md + pago.pago*pago.cuota.constante.valor 
+                fecha_final = date(fecha.year, mes, fecha.day)
 
-            deuda_md = deuda_md + cuota.precio*cuota.constante.valor 
+            fecha_final = fecha_final + timedelta(days = -1)
 
-        saldo_md = deuda_md - pago_md
+            cuotas = Cuota.objects.filter(fecha__range = (fecha, fecha_final), cuenta_corriente  = ctacte)
 
-        datos_cuotas.append((fecha, saldo_md))
+            for cuota in cuotas:
+                pagos = Pago.objects.filter(cuota = cuota)
+
+                for pago in pagos:
+                    pago_md = pago_md + pago.pago*pago.cuota.constante.valor 
+
+                deuda_md = deuda_md + cuota.precio*cuota.constante.valor 
+
+            saldo_md = deuda_md - pago_md
+
+            datos_cuotas.append((fecha, saldo_md))
         
 
-    return render(request, 'resumencta.html', {"ctacte":ctacte, "datos":datos, "datos_cuotas":datos_cuotas})
+    return render(request, 'resumencta.html', {"ctacte":ctacte, "datos":datos, "datos_cuotas":datos_cuotas, "saldo_total_pesos":saldo_total_pesos})
 
 def ctactecliente(request, id_cliente):
 

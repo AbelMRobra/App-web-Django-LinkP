@@ -76,7 +76,7 @@
 
                 <tr class = "table-light">
                     <td colspan="7"> <b> <b>TOTAL</b></b></td>    
-                    <td> <b> <b>$XX</b></b> </td>
+                    <td> <b> <b>${{saldo_total_pesos|floatformat:0|intcomma}}</b></b> </td>
 
 
                 </tr>
@@ -111,7 +111,7 @@
                     <tr class = "table-dark">
                         <th scope = "row"> FECHA </th>
 
-                        {% for i in datos_cuotas|slice:"3" %}
+                        {% for i in datos_cuotas|slice:"6" %}
 
                         <th scope = "row"> {{i.0|date:"F Y" }}</th>
 
@@ -126,7 +126,7 @@
                     <tr class = "table-light">
                         <td> <b> <small> <b>MONTO</b> </small> </b></td>   
                         
-                        {% for i in datos_cuotas|slice:"3" %}
+                        {% for i in datos_cuotas|slice:"6" %}
 
                         <td> <b> <small>${{i.1|floatformat:0|intcomma}}</small> </b> </td>  
 
