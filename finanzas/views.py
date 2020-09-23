@@ -238,17 +238,17 @@ def eliminar_cuota(request, id_cuota):
 
     return render(request, 'eliminar_cuota.html', {"cuota":cuota})
 
-def crearcuenta(request):
+def crearcuenta(request, id_proyecto):
 
-    datos = VentasRealizadas.objects.all()
+    proyecto = Proyectos.objects.get(id = id_proyecto)
+
+    datos = VentasRealizadas.objects.filter(proyecto = proyecto )
 
     if request.method == 'POST':
 
         datos_crear = request.POST.items()
 
         for i in datos_crear:
-
-            print(i)
 
             if i[0] == 'ventas':
 
@@ -316,7 +316,7 @@ def crearcuenta(request):
         return redirect('Cuenta corriente venta', b.id)
 
 
-    return render(request, 'crearcuenta.html', {"datos":datos})
+    return render(request, 'crearcuenta.html', {"datos":datos, "proyecto":proyecto})
 
 
 def ctacteproyecto(request, id_proyecto):
