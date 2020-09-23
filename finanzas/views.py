@@ -428,6 +428,121 @@ def totalcuentacte(request):
 
         datos_segundos.append(datos_terceros)
 
+        print(datos_segundos)
+        
+
+    return render(request, 'totalcuentas.html')
+
+
+
+def resumenctacte(request, id_cliente):
+
+    ctacte = CuentaCorriente.objects.get(id = id_cliente)
+
+    cuotas = Cuota.objects.filter(cuenta_corriente = ctacte)
+
+    nombre_conceptos = []
+
+    datos = []
+
+    for cuota in cuotas:
+
+        nombre_conceptos.append(cuota.concepto)
+
+    nombre_conceptos = set(nombre_conceptos)
+
+    saldo_total_pesos = 0
+
+    for nombre in nombre_conceptos:
+
+        moneda = 0
+        total_moneda = 0
+        cuotas_t = 0
+        total_pagado = 0
+
+
+        for cuota in cuotas:
+
+            if nombre == cuota.concepto:
+
+                moneda = cuota.constante
+                total_moneda = total_moneda + cuota.precio
+
+                cuotas_t = (cuotas_t + 1)
+
+                pagos = Pago.objects.filter(cuota = cuota)
+
+                for pago in pagos:
+
+                    total_pagado = total_pagado + pago.pago
+
+        saldo_moneda = total_moneda - total_pagado
+        saldo_pesos = saldo_moneda*moneda.valor
+        saldo_total_pesos = saldo_total_pesos + saldo_pesos
+
+        datos.append((nombre, moneda, total_moneda, cuotas_t, total_pagado, saldo_moneda, saldo_pesos))
+
+    #Aqui creo la curva de ingresos por mes
+
+    fechas = []
+
+    for cuota in cuotas:
+
+        fecha_nueva = date(cuota.fecha.year, cuota.fecha.month, 1 )
+        fechas.append(fecha_nueva)
+
+    fechas = list(set(fechas))
+
+    fechas.sort()
+
+    datos_cuotas = []
+
+    deuda_md = 0
+    pago_md = 0
+
+    for fecha in fechas:
+
+        deuda_md = 0
+        pago_md = 0
+
+        hoy = datetime.date.today()
+
+        if fecha < hoy:
+
+            print("viejo")
+
+        else:
+
+            if fecha.month == 12:
+
+                año = fecha.year + 1
+
+                fecha_final = date(año, 1, fecha.day)
+
+            else:
+
+                mes = fecha.month + 1
+
+                fecha_final = date(fecha.year, mes, fecha.day)
+
+            fecha_final = fecha_final + timedelta(days = -1)
+
+            cuotas = Cuota.objects.filter(fecha__range = (fecha, fecha_final), cuenta_corriente  = ctacte)
+
+            for cuota in cuotas:
+
+                pagos = Pago.objects.filter(cuota = cuota)
+
+                for pago in pagos:
+
+                    pago_md = pago_md + pago.pago*pago.cuota.constante.valor 
+
+                deuda_md = deuda_md + cuota.precio*cuota.constante.valor 
+
+            saldo_md = deuda_md - pago_md
+
+            datos_cuotas.append((fecha, saldo_md))
+        
 
     return render(request, 'resumencta.html', {"ctacte":ctacte, "datos":datos, "datos_cuotas":datos_cuotas, "saldo_total_pesos":saldo_total_pesos})
 
