@@ -242,7 +242,7 @@ def crearcuenta(request, id_proyecto):
 
     proyecto = Proyectos.objects.get(id = id_proyecto)
 
-    datos = VentasRealizadas.objects.filter(proyecto = proyecto )
+    datos = VentasRealizadas.objects.filter(proyecto = id_proyecto)
 
     if request.method == 'POST':
 
