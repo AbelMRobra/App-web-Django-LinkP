@@ -329,114 +329,105 @@ def ctacteproyecto(request, id_proyecto):
 
     ### Armando resumen de cuenta corriente
 
-def resumenctacte(request, id_cliente):
 
-    ctacte = CuentaCorriente.objects.get(id = id_cliente)
+def totalcuentacte(request):
 
-    cuotas = Cuota.objects.filter(cuenta_corriente = ctacte)
+    proyectos = Proyectos.objects.all()
 
-    nombre_conceptos = []
+    datos_primeros = []
 
-    datos = []
+    for proyecto in proyectos:
 
-    for cuota in cuotas:
+        cuotas = Cuota.objects.filter(cuenta_corriente__venta__proyecto = proyecto)
 
-        nombre_conceptos.append(cuota.concepto)
+        if len(cuotas)>0:
+            datos_primeros.append(proyecto)
 
-    nombre_conceptos = set(nombre_conceptos)
+    #Hasta aqui tenemos todos los proyectos y todas las cuotas quitando a los proyectos en 0
 
-    saldo_total_pesos = 0
-
-    for nombre in nombre_conceptos:
-
-        moneda = 0
-        total_moneda = 0
-        cuotas_t = 0
-        total_pagado = 0
-
-
-        for cuota in cuotas:
-
-            if nombre == cuota.concepto:
-
-                moneda = cuota.constante
-                total_moneda = total_moneda + cuota.precio
-
-                cuotas_t = (cuotas_t + 1)
-
-                pagos = Pago.objects.filter(cuota = cuota)
-
-                for pago in pagos:
-
-                    total_pagado = total_pagado + pago.pago
-
-        saldo_moneda = total_moneda - total_pagado
-        saldo_pesos = saldo_moneda*moneda.valor
-        saldo_total_pesos = saldo_total_pesos + saldo_pesos
-
-        datos.append((nombre, moneda, total_moneda, cuotas_t, total_pagado, saldo_moneda, saldo_pesos))
-
-    #Aqui creo la curva de ingresos por mes
+    
+    #Establecemos un rango para hacer el cash de ingreso
+    
+    fecha_inicial = datetime.date.today()
 
     fechas = []
 
-    for cuota in cuotas:
+    contador = 0
+    contador_year = 1
 
-        fecha_nueva = date(cuota.fecha.year, cuota.fecha.month, 1 )
-        fechas.append(fecha_nueva)
+    for f in range(26):
 
-    fechas = list(set(fechas))
 
-    fechas.sort()
+        if (fecha_inicial.month + contador) == 13:
+            
+            year = fecha_inicial.year + contador_year
+            
+            fecha_cargar = date(year, 1, fecha_inicial.day)
 
-    datos_cuotas = []
+            fechas.append(fecha_cargar)
+            
+            contador_year += 1
 
-    deuda_md = 0
-    pago_md = 0
-
-    for fecha in fechas:
-
-        deuda_md = 0
-        pago_md = 0
-
-        hoy = datetime.date.today()
-
-        if fecha < hoy:
-
-            print("viejo")
+            contador = - (12 - contador)
 
         else:
 
-            if fecha.month == 12:
+            mes = fecha_inicial.month + contador
 
-                año = fecha.year + 1
+            year = fecha_inicial.year + contador_year - 1
 
-                fecha_final = date(año, 1, fecha.day)
+            fecha_cargar = date(year, mes, fecha_inicial.day)
+
+            fechas.append(fecha_cargar)
+
+        contador += 1
+
+
+    #Aqui buscamos agrupar proyecto - sumatorias de cuotas y pagos - mes
+    
+    datos_segundos = []
+
+    fecha_inicial = 0
+
+    for f in fechas:
+
+        datos_terceros = []
+
+        for p in datos_primeros:
+
+            if fecha_inicial == 0:
+
+                fecha_inicial = f
 
             else:
+                cuotas = Cuota.objects.filter(fecha__range = (fecha_inicial, f))
+                
+                pagos = Pago.objects.filter(fecha__range = (fecha_inicial, f))
 
-                mes = fecha.month + 1
+                total_cuotas = 0
+                total_pagado = 0
+                saldo = 0
 
-                fecha_final = date(fecha.year, mes, fecha.day)
+                if len(cuotas)>0:
 
-            fecha_final = fecha_final + timedelta(days = -1)
+                    for c in cuotas:
 
-            cuotas = Cuota.objects.filter(fecha__range = (fecha, fecha_final), cuenta_corriente  = ctacte)
+                        total_cuotas = total_cuotas + c.precio*c.constante.valor
 
-            for cuota in cuotas:
+                if len(pagos)>0:
 
-                pagos = Pago.objects.filter(cuota = cuota)
+                    for p in pagos:
 
-                for pago in pagos:
+                        total_pagado = total_pagado + p.pago*p.cuota.constante.valor
 
-                    pago_md = pago_md + pago.pago*pago.cuota.constante.valor 
+                saldo = total_cuotas-total_pagado
 
-                deuda_md = deuda_md + cuota.precio*cuota.constante.valor 
+                
+                dato = (p, f, saldo)
+                datos_terceros.append(dato)
 
-            saldo_md = deuda_md - pago_md
+        datos_segundos.append(datos_terceros)
 
-            datos_cuotas.append((fecha, saldo_md))
-        
 
     return render(request, 'resumencta.html', {"ctacte":ctacte, "datos":datos, "datos_cuotas":datos_cuotas, "saldo_total_pesos":saldo_total_pesos})
 

@@ -67,7 +67,7 @@
                 {% for i in datos %}
                 <tr class = "table-light">
                     <td> <b> <small> <b>{{i.fecha}}</b> </small> </b></td>    
-                    <td> <b> <small>{{i.pago}}</small> </b> </td>
+                    <td> <b> <small>{{i.pago|floatformat:2}}</small> </b> </td>
                     <td> <b> <small>${{i.pago_pesos|floatformat:0|intcomma}}</small> </b> </td>
                     <td> <b> <small>{{i.documento_1}}</small> </b> </td>
                     <td> <b> <small>{{i.documento_2}}</small> </b> </td>
