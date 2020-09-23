@@ -115,7 +115,7 @@ def folleto(request):
 def evousd(request):
 
     busqueda = 1
-    datos_almacenados = ArchivosAreaVentas.objects.filter(resumen_credito_inv__isnull = False)
+    datos_almacenados = ArchivosAreaVentas.objects.filter(evo_usd__isnull = False)
     datos = 0
     fecha = 0
 
