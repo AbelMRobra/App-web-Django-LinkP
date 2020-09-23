@@ -396,6 +396,9 @@ def resumenctacte(request, id_cliente):
 
     for fecha in fechas:
 
+        deuda_md = 0
+        pago_md = 0
+
         hoy = datetime.date.today()
 
         if fecha < hoy:
@@ -421,9 +424,11 @@ def resumenctacte(request, id_cliente):
             cuotas = Cuota.objects.filter(fecha__range = (fecha, fecha_final), cuenta_corriente  = ctacte)
 
             for cuota in cuotas:
+
                 pagos = Pago.objects.filter(cuota = cuota)
 
                 for pago in pagos:
+
                     pago_md = pago_md + pago.pago*pago.cuota.constante.valor 
 
                 deuda_md = deuda_md + cuota.precio*cuota.constante.valor 

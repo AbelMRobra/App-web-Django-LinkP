@@ -95,7 +95,7 @@
 
         <div style="text-align: left;">
 
-            <h6>Datos de la cuota a vencer</h6>
+            <h6>Datos de cuotas a vencer:</h6>
 
 
         </div>
@@ -111,11 +111,20 @@
                     <tr class = "table-dark">
                         <th scope = "row" style="width: 10%; vertical-align: middle;"> FECHA </th>
 
+                        {% if datos_cuotas %}
+
                         {% for i in datos_cuotas|slice:"9" %}
 
                         <th scope = "row" style="width: 10%;  vertical-align: middle;"> {{i.0|date:"F Y" }}</th>
 
                         {% endfor %}
+
+                        {% else %}
+
+                        <th scope = "row" style="width: 10%;  vertical-align: middle;"> PAGOS COMPLETADOS</th>
+
+
+                        {% endif %}
 
                     </tr>
                 </thead>
@@ -124,13 +133,22 @@
         
                     
                     <tr class = "table-light">
-                        <td style="width: 10%;"> <b> <small> <b>MONTO</b> </small> </b></td>   
+                        <td style="width: 10%;"> <b> <small> <b>MONTO</b> </small> </b></td>
+                        
+                        {% if datos_cuotas %}
                         
                         {% for i in datos_cuotas|slice:"9" %}
 
                         <td style="width: 10%;">  <b> <small>${{i.1|floatformat:0|intcomma}}</small> </b> </td>  
 
                         {% endfor %}
+
+                        {% else %}
+
+                        <td style="width: 10%;">  <b> <small>NO HAY MONTO ADEUDADO</small> </b> </td>  
+
+
+                        {% endif %}
     
                     </tr>
                     
