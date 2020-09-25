@@ -431,7 +431,7 @@ def totalcuentacte(request):
         print(datos_segundos)
         
 
-    return render(request, 'totalcuentas.html')
+    return render(request, 'totalcuentas.html', {"fechas":fechas, "datos":datos_segundos, "datos_primero":datos_primeros})
 
 
 

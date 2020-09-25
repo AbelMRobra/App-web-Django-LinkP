@@ -1,0 +1,99 @@
+{% extends "users/inicio.html" %}
+
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+
+
+
+<div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;" > 
+
+    <div style="text-align: center;">
+
+
+        <h2 style="color: rgb({{ctacte.venta.unidad.proyecto.color}})" >Ingresos por cuotas a cobrar</h2>
+
+        <b><hr class = "my-4" style="width: 100%; "></b>
+    
+
+        <div style="text-align: center;">
+        
+        <h6>Resumen mes a mes</h6>
+
+
+        <b><hr class = "my-4" style="width: 75%; "></b>
+    
+    </div>
+
+
+    <div class = "tableconteinerabel">
+
+
+        <table class = "table table-hover" style="text-align: center; margin-top: 2%;">
+            <thead>
+    
+                <tr class = "table-dark">
+
+                    <th scope = "row"> <small>FECHA</small></th>
+
+                    {% for i in datos_primero %}
+
+                    <th scope = "row"> <small>{{i.nombre}}</small></th>
+
+
+                    {% endfor %}
+
+                </tr>
+
+
+            
+            
+            
+            
+            </thead>
+
+
+    
+            <tbody>  
+                
+                {% for i in datos %}
+    
+                <tr class = "table-light">
+
+                    <td> <b> <small> <b>{{i.0.1}}</b> </small> </b></td>
+                    
+                    {% for d in i %}
+
+                    <td> <b> <small> <b>${{d.2|floatformat:0|intcomma}}</b> </small> </b></td>
+
+                    {% endfor %}
+                    
+    
+                </tr>
+
+                {% endfor %}
+
+
+
+            </tbody>
+         
+    
+    
+        </table>
+    
+        </div>
+
+
+    <div style="text-align: center; margin-top: 10%;">
+        <p> <small>-- Link<strong>P</strong> --</small> </p>
+
+     </div>
+
+    
+    
+
+</div>
+
+    
+{% endblock %}
