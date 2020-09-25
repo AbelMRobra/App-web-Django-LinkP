@@ -436,9 +436,10 @@ def totalcuentacte(request):
                 datos_terceros.append(dato)
 
         fecha_inicial = f
-        total_fecha.append(total)
 
-        datos_segundos.append((datos_terceros, total))
+        horm = Constantes.objects.get(nombre = "Hº VIVIENDA")
+        total_horm = total/horm.valor
+        datos_segundos.append((datos_terceros, total, total_horm))
 
         print(datos_segundos)
         

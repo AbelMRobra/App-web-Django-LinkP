@@ -35,13 +35,15 @@
     
                 <tr class = "table-dark">
 
-                    <th scope = "row"> <small>FECHA</small></th>
+                    <th scope = "row"> <b><small>FECHA</small></b> </th>
 
-                    <th scope = "row"> <small>TOTAL INGRESOS</small></th>
+                    <th scope = "row"> <b><small>TOTAL INGRESOS Hº</small></b> </th>
+
+                    <th scope = "row"> <b><small>TOTAL INGRESOS</small></b> </th>
 
                     {% for i in datos_primero %}
 
-                    <th scope = "row"> <small>{{i.nombre}}</small></th>
+                    <th scope = "row"> <b><small>{{i.nombre}}</small></b> </th>
 
 
                     {% endfor %}
@@ -64,6 +66,8 @@
                 <tr class = "table-light">
 
                     <td> <b> <small> <b>{{i.0.0.1}}</b> </small> </b></td>
+
+                    <td> <b> <small> <b>{{i.2|floatformat:3}} M3</b> </small> </b></td>
 
                     <td> <b> <small> <b>${{i.1|floatformat:0|intcomma}}</b> </small> </b></td>
 
