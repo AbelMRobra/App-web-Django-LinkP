@@ -37,6 +37,8 @@
 
                     <th scope = "row"> <small>FECHA</small></th>
 
+                    <th scope = "row"> <small>TOTAL INGRESOS</small></th>
+
                     {% for i in datos_primero %}
 
                     <th scope = "row"> <small>{{i.nombre}}</small></th>
@@ -61,11 +63,14 @@
     
                 <tr class = "table-light">
 
-                    <td> <b> <small> <b>{{i.0.1}}</b> </small> </b></td>
-                    
-                    {% for d in i %}
+                    <td> <b> <small> <b>{{i.0.0.1}}</b> </small> </b></td>
 
-                    <td> <b> <small> <b>${{d.2|floatformat:0|intcomma}}</b> </small> </b></td>
+                    <td> <b> <small> <b>${{i.1|floatformat:0|intcomma}}</b> </small> </b></td>
+
+                    
+                    {% for d in i.0 %}
+
+                    <td> <b> <small> ${{d.2|floatformat:0|intcomma}}</small> </b></td>
 
                     {% endfor %}
                     

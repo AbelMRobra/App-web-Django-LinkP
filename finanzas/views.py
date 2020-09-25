@@ -387,9 +387,13 @@ def totalcuentacte(request):
     
     datos_segundos = []
 
+    total_fecha = []
+
     fecha_inicial = 0
 
     for f in fechas:
+
+        total = 0
 
         datos_terceros = []
 
@@ -399,10 +403,13 @@ def totalcuentacte(request):
 
                 fecha_inicial = f
 
+                dato = (p, f, 0)
+                datos_terceros.append(dato)
+
             else:
-                cuotas = Cuota.objects.filter(fecha__range = (fecha_inicial, f))
+                cuotas = Cuota.objects.filter(fecha__range = (fecha_inicial, f), cuenta_corriente__venta__proyecto = p)
                 
-                pagos = Pago.objects.filter(fecha__range = (fecha_inicial, f))
+                pagos = Pago.objects.filter(fecha__range = (fecha_inicial, f), cuota__cuenta_corriente__venta__proyecto = p)
 
                 total_cuotas = 0
                 total_pagado = 0
@@ -422,16 +429,21 @@ def totalcuentacte(request):
 
                 saldo = total_cuotas-total_pagado
 
+                total = total + saldo
+
                 
                 dato = (p, f, saldo)
                 datos_terceros.append(dato)
 
-        datos_segundos.append(datos_terceros)
+        fecha_inicial = f
+        total_fecha.append(total)
+
+        datos_segundos.append((datos_terceros, total))
 
         print(datos_segundos)
         
 
-    return render(request, 'totalcuentas.html', {"fechas":fechas, "datos":datos_segundos, "datos_primero":datos_primeros})
+    return render(request, 'totalcuentas.html', {"fechas":fechas, "datos":datos_segundos, "datos_primero":datos_primeros, "total_fechas":total_fecha})
 
 
 
