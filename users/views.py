@@ -6,6 +6,7 @@ from django.contrib.auth import login as do_login
 from django.contrib.auth.forms import UserCreationForm
 from finanzas.models import Almacenero, RegistroAlmacenero
 from presupuestos.models import Presupuestos
+from registro.models import RegistroValorProyecto
 import datetime
 from datetime import date
 
@@ -53,6 +54,24 @@ def inicio(request):
             )
 
             b.save()
+
+    Registro_presupuestos = RegistroValorProyecto.objects.filter(fecha =date)
+
+    if len(Registro_presupuestos) == 0:
+
+        presupuestos = Presupuestos.objects.all()
+
+        for p in presupuestos:
+
+            b = RegistroValorProyecto(
+
+                proyecto = p.proyecto,
+                fecha = date,
+                precio_proyecto = p.valor,
+
+
+            )
+        
 
     
     return render(request, "users/inicio.html")
