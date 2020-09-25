@@ -69,8 +69,10 @@ def inicio(request):
                 fecha = date,
                 precio_proyecto = p.valor,
 
-
             )
+
+            b.save()
+
         
 
     
