@@ -642,6 +642,7 @@ def pricing(request, id_proyecto):
     m2_totales = 0
     cocheras = 0
     ingreso_ventas = 0
+    ingreso_ventas_link = 0
     unidades_socios = 0
 
     #Datos resumenes de arriba
@@ -737,6 +738,13 @@ def pricing(request, id_proyecto):
 
                     unidades_socios = unidades_socios + contado
 
+            elif (dato.estado == "DISPONIBLE" and dato.asig == "HON. LINK") or (dato.estado == "DISPONIBLE" and dato.asig == "TERRENO"):
+
+                ingreso_ventas_link = ingreso_ventas_link + contado 
+
+            else:
+                print("Esta unidad no cumple ninguna condicion")
+
         except:
 
             desde = "NO DEFINIDO"
@@ -783,11 +791,13 @@ def pricing(request, id_proyecto):
 
     almacenero = Almacenero.objects.get(proyecto = proyecto)
 
-    #Aqui resto el 6% 
+    #Aqui resto el 6%  --> Ya no resto el 6%, solo guardo los cambios en la BBDD
 
     almacenero.ingreso_ventas = ingreso_ventas - ingreso_ventas*0.00
     almacenero.save()
     almacenero.unidades_socios = unidades_socios - unidades_socios*0.00
+    almacenero.save()
+    almacenero.ingreso_ventas_link = ingreso_ventas_link
     almacenero.save()
 
     cantidad = len(datos_tabla_unidad)

@@ -14,11 +14,13 @@ class Almacenero(models.Model):
     pendiente_adelantos = models.FloatField(null=True, blank=True, verbose_name="Adelantos realizados")
     pendiente_iva_ventas = models.FloatField(null=True, blank=True, verbose_name="IVA sobre ventas")
     pendiente_iibb_tem = models.FloatField(null=True, blank=True, verbose_name="IIBB + TEM")
+    pendiente_iibb_tem_link = models.FloatField(null=True, blank=True, verbose_name="Cuotas a cobrar de LINK") #Esto en teoria se completa con Ctas Ctes, ahora a mano
     prestamos_proyecto = models.FloatField(null=True, blank=True, verbose_name="Prestamos a proyectos")
     prestamos_otros = models.FloatField(null=True, blank=True, verbose_name="Prestamos a otros")
     cuotas_cobradas = models.FloatField(null=True, blank=True, verbose_name="Cuotas cobradas")
     cuotas_a_cobrar = models.FloatField(null=True, blank=True, verbose_name="Cuotas a cobrar")
     ingreso_ventas = models.FloatField(null=True, blank=True, verbose_name="Ingreso por unidades a vender")
+    ingreso_ventas_link = models.FloatField(null=True, blank=True, verbose_name="Ingreso por unidades a vender de LINK") #Esto solo es para el calculo de IIBB
     Prestamos_dados = models.FloatField(null=True, blank=True, verbose_name="Prestamos otorgados")
     unidades_socios = models.FloatField(null=True, blank=True, verbose_name="Unidades de Socios", editable=False)
 
@@ -40,11 +42,13 @@ class RegistroAlmacenero(models.Model):
     pendiente_adelantos = models.FloatField(null=True, blank=True, verbose_name="Adelantos realizados")
     pendiente_iva_ventas = models.FloatField(null=True, blank=True, verbose_name="IVA sobre ventas")
     pendiente_iibb_tem = models.FloatField(null=True, blank=True, verbose_name="IIBB + TEM")
+    pendiente_iibb_tem_link = models.FloatField(null=True, blank=True, verbose_name="Cuotas a cobrar de LINK") #Esto en teoria se completa con Ctas Ctes, ahora a mano
     prestamos_proyecto = models.FloatField(null=True, blank=True, verbose_name="Prestamos a proyectos")
     prestamos_otros = models.FloatField(null=True, blank=True, verbose_name="Prestamos a otros")
     cuotas_cobradas = models.FloatField(null=True, blank=True, verbose_name="Cuotas cobradas")
     cuotas_a_cobrar = models.FloatField(null=True, blank=True, verbose_name="Cuotas a cobrar")
     ingreso_ventas = models.FloatField(null=True, blank=True, verbose_name="Ingreso por unidades a vender")
+    ingreso_ventas_link = models.FloatField(null=True, blank=True, verbose_name="Ingreso por unidades a vender de LINK") #Esto solo es para el calculo de IIBB
     Prestamos_dados = models.FloatField(null=True, blank=True, verbose_name="Prestamos otorgados")
     unidades_socios = models.FloatField(null=True, blank=True, verbose_name="Unidades de Socios", editable=False)
     saldo_mat = models.FloatField(null=True, blank=True, verbose_name="Saldo de materiales")

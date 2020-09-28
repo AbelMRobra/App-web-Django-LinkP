@@ -862,6 +862,13 @@ def almacenero(request):
 
                     almacenero.pendiente_iva_ventas = iva_compras
 
+
+                    #Aqui vamos a calcular los IIBB --> (Ingreso por ventas de LINK + cuotas por cobrar de LINK + Ingreso por ventas del proyecto + cuotas por cobrar del proyecto)*0.02235
+
+                    II_BB = almacenero.ingreso_ventas + almacenero.cuotas_a_cobrar + almacenero.ingreso_ventas_link + almacenero.pendiente_iibb_tem_link
+
+                    almacenero.pendiente_iibb_tem = II_BB
+
                     almacenero.save()
 
                     #Calculo el resto de las cosas
