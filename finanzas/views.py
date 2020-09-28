@@ -440,10 +440,7 @@ def totalcuentacte(request):
         horm = Constantes.objects.get(nombre = "Hº VIVIENDA")
         total_horm = total/horm.valor
         datos_segundos.append((datos_terceros, total, total_horm))
-
-        print(datos_segundos)
         
-
     return render(request, 'totalcuentas.html', {"fechas":fechas, "datos":datos_segundos, "datos_primero":datos_primeros, "total_fechas":total_fecha})
 
 
@@ -660,13 +657,13 @@ def consolidado(request):
 
         presupuesto = Presupuestos.objects.get(proyecto = dato.proyecto)
 
-        #Aqui calculo el IVA sobre compras
+        # Aqui calculo el IVA sobre compras
 
-        iva_compras = (presupuesto.imprevisto+ presupuesto.saldo_mat + presupuesto.saldo_mo + presupuesto.credito + presupuesto.fdr + presupuesto.credito)*0.0789209928265611
+        iva_compras = (presupuesto.imprevisto + presupuesto.saldo_mat + presupuesto.saldo_mo + presupuesto.credito + presupuesto.fdr)*0.07875
 
         almacenero.pendiente_iva_ventas = iva_compras
 
-        #Calculo el resto de las cosas
+        # Calculo el resto de las cosas
 
         pend_gast = almacenero.pendiente_admin + almacenero.pendiente_comision + presupuesto.saldo_mat + presupuesto.saldo_mo + presupuesto.imprevisto + presupuesto.credito + presupuesto.fdr - almacenero.pendiente_adelantos + almacenero.pendiente_iva_ventas + almacenero.pendiente_iibb_tem
         prest_cobrar = almacenero.prestamos_proyecto + almacenero.prestamos_otros

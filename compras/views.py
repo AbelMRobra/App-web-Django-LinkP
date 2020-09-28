@@ -456,6 +456,10 @@ def comparativas_pl(request, estado):
 
                 comparativa.estado = "AUTORIZADA"
 
+                date = datetime.date.today()
+
+                comparativa.fecha_c = date
+
                 comparativa.save()
 
             if d[0] == 'NO APROBADA':
