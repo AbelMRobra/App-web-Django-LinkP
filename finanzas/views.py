@@ -663,6 +663,15 @@ def consolidado(request):
 
         almacenero.pendiente_iva_ventas = iva_compras
 
+
+        #Aqui vamos a calcular los IIBB --> (Ingreso por ventas de LINK + cuotas por cobrar de LINK + Ingreso por ventas del proyecto + cuotas por cobrar del proyecto)*0.02235
+
+        II_BB = (almacenero.ingreso_ventas + almacenero.cuotas_a_cobrar + almacenero.ingreso_ventas_link + almacenero.pendiente_iibb_tem_link)*0.02235
+
+        almacenero.pendiente_iibb_tem = II_BB
+
+        almacenero.save()
+
         # Calculo el resto de las cosas
 
         pend_gast = almacenero.pendiente_admin + almacenero.pendiente_comision + presupuesto.saldo_mat + presupuesto.saldo_mo + presupuesto.imprevisto + presupuesto.credito + presupuesto.fdr - almacenero.pendiente_adelantos + almacenero.pendiente_iva_ventas + almacenero.pendiente_iibb_tem
@@ -760,6 +769,7 @@ def consolidado(request):
             iva_compras = (presupuesto.imprevisto + presupuesto.saldo_mat + presupuesto.saldo_mo + presupuesto.credito + presupuesto.fdr)*0.07875
 
             almacenero.pendiente_iva_ventas = iva_compras
+
 
             #Calculo el resto de las cosas
 
