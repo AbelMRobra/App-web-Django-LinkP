@@ -53,6 +53,7 @@
                 <tr class = "table-dark">
                     <th scope = "row"> <small>FECHA PAGO</small></th>
                     <th scope = "row"> <small>MONEDA (MD) </small></th>
+                    <th scope = "row"> <small>COTIZACIÓN</small></th> 
                     <th scope = "row"> <small>MONTO PESOS</small></th>                    
                     <th scope = "row"> <small> DOCUMENTO 1 </small></th>
                     <th scope = "row"> <small> DOCUMENTO 2 </small></th>
@@ -68,6 +69,31 @@
                 <tr class = "table-light">
                     <td> <b> <small> <b>{{i.fecha}}</b> </small> </b></td>    
                     <td> <b> <small>{{i.pago|floatformat:2}}</small> </b> </td>
+
+                    <td> <b> <small>
+
+                    <script>
+
+
+                        var pago_pesos;
+                        pago_pesos = {{i.pago_pesos}};
+
+                        var pago;
+                        pago = {{i.pago}};
+
+                        var cotizacion;
+
+                        cotizacion = pago_pesos/pago;
+
+                        document.write("$");
+                        
+                        document.write(cotizacion);
+
+
+                    </script>
+
+                    </small> </b> </td>
+
                     <td> <b> <small>${{i.pago_pesos|floatformat:0|intcomma}}</small> </b> </td>
                     <td> <b> <small>{{i.documento_1}}</small> </b> </td>
                     <td> <b> <small>{{i.documento_2}}</small> </b> </td>
