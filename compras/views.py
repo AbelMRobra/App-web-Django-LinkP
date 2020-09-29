@@ -421,7 +421,7 @@ def cargacompras(request):
 
 def panelvisto(request):
 
-    datos = Comparativas.objects.filter(estado = "AUTORIZADA").order_by("-fecha_c")
+    datos = Comparativas.objects.filter(estado = "AUTORIZADA", adj_oc__isnull = False).order_by("-fecha_c")
 
     return render(request, 'ocautorizadas.html', {'datos':datos})
 
