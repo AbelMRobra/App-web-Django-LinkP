@@ -7,31 +7,37 @@
 
 <div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;">
 
-    <h3>Panel de autorización de solicitudes de compra</h3>
-    <h6><small>Este panel es de uso exclusivo de PL</small></h6>
+    <h3>Ordenes de compra autorizadas</h3>
+    <h6> <small>Autororizadas por PL</small> </h6>
      <b><hr class = "my-4" style="width: 75%;"></b>
 
 
 
     {% if datos %} 
 
+
     <div class = "tableconteinerabel" style="margin-top: 2%;">
+
+
+        
         <table class = "table table-hover" style="text-align: center;" >
             <thead>
     
                 <tr class = "table-dark">
                     <th scope = "row" style="vertical-align: middle;"><strong>Nº O.C</strong></th>
-                    <th scope = "row" style="vertical-align: middle;"><strong>PROVEEDOR</strong></th>
+
                     <th scope = "row" style="vertical-align: middle;"><strong>PROYECTO</strong></th>
+                    <th scope = "row" style="vertical-align: middle;"><strong>PROVEEDOR</strong></th>
+                    
                     <th scope = "row" style="vertical-align: middle;"><strong>MONTO</strong></th>
                     <th scope = "row" style="vertical-align: middle;"><strong>ESTADO</strong></th>
                     <th scope = "row" style="vertical-align: middle;"><strong>FECHA</strong></th>
                     <th scope = "row" style="vertical-align: middle;"><strong>ARCHIVO</strong></th>
                     <th scope = "row" style="vertical-align: middle;"><strong>O.C</strong></th>
 
-                    {% if request.user.username == "PL" or request.user.username == "ar" or request.user.username == "AR" %}
+                    {% if request.user.username == "SP" or request.user.username == "AR" %}
 
-                    <th scope = "row" style="vertical-align: middle;"><strong>AUTORIZAR</strong></th>
+                    <th scope = "row" style="vertical-align: middle;"><strong>CHECK</strong></th>
                     
                     {% endif %}
 
@@ -54,13 +60,15 @@
 
                     {% else %}
 
-                    <td style="width: 3%;"><small>S/C</small> </td>
+                    <td style="width: 5%;"><small>S/C</small> </td>
                     
 
                     {% endif %}
 
+                    <td style="width: 5%;" > <small><strong>{{i.proyecto|upper}}</strong></small></td>
+
                     <td style="width: 8%;" > <small>{{i.proveedor.name}}</small> </td>
-                        <td style="width: 5%;" > <small><strong>{{i.proyecto|upper}}</strong></small></td>              
+                                      
                     <td style="width: 5%;" ><small>${{i.monto|floatformat:0|intcomma}}</small> </td>
 
                     {% if i.estado == "ESPERA" %}
@@ -78,7 +86,6 @@
                     {% if i.comentario %}
                         
                         
-                    <span class="hint--left hint--danger" aria-label="{{i.comentario}}">
 
                     {% endif %}
                     
@@ -88,8 +95,7 @@
                     <small><strong>{{i.estado}}</strong></small>
 
                     {% if i.comentario %}
-                    
-                </span>
+
 
                 {% endif %}
                 
@@ -108,7 +114,7 @@
                         {% if i.comentario %}
                         
                         
-                        <span class="hint--left hint--danger" aria-label="{{i.comentario}}">
+
 
                             {% endif %}
                         
@@ -117,7 +123,7 @@
 
                         {% if i.comentario %}
                     
-                            </span>
+   
 
                             {% endif %}
                     
@@ -131,8 +137,7 @@
 
                         {% if i.comentario %}
                         
-                        
-                        <span class="hint--left hint--danger" aria-label="{{i.comentario}}">
+       
 
                             {% endif %}
                         
@@ -141,19 +146,19 @@
 
                         {% if i.comentario %}
                     
-                            </span>
+   
 
                             {% endif %}
                     
                     </td>
 
                     {% endif %}
-                    <td style="width: 9%;"><small>{{i.fecha_c}}</small> </td>
-                    <td style="width: 5%;"><a href="{{ i.adjunto.url }}" class="btn btn-sm btn-warning">ADJUNTOS</a></td>
+                    <td style="width: 8%;"><small>{{i.fecha_c}}</small> </td>
+                    <td style="width: 5%;"><a href="{{ i.adjunto.url }}" class="btn btn-sm btn-warning"><span class="hint--left hint--warning" aria-label="Es una imagen de comparativas o remitos!">ADJUNTOS</span></a></td>
                     
                     {% if i.adj_oc %}
                     
-                    <td style="width: 3%;"><a href="{{ i.adj_oc.url }}" class="btn btn-sm btn-success">O.C</a></td>
+                    <td style="width: 3%;"><a href="{{ i.adj_oc.url }}" class="btn btn-sm btn-success"><span class="hint--left hint--success" aria-label="Una copia de la O.C!, puedes buscarla en TANGO tambien!">O.C</span></a></td>
                     
                     {% else %}
 
@@ -162,42 +167,27 @@
 
                     {% endif %}
 
-                    {% if request.user.username == "PL" or request.user.username == "ar" or request.user.username == "AR" %}
+                    {% if request.user.username == "PL" or request.user.username == "AR" %}
 
-                    <td style="width: 8%;" >
+                    <td style="width: 5%;" >
                         
                         <form action="" method="POST">
                             {% csrf_token %}
 
-                            <div style="display: inline-block; max-width: 45%;">
-
-                                <button class="btn btn-sm btn-warning" type="submit"  name = "ADJAPROB" value="{{i.id}}"><span class="hint--left hint--warning" aria-label="El adjunto esta Ok!">✓</span></button>
-
-                            </div>
+                            
 
                             <div style="display: inline-block; max-width: 45%;">
 
-                                <button class="btn btn-sm btn-success" type="submit"  name = "APROBADA" value="{{i.id}}"><span class="hint--left hint--success" aria-label="Esta todo listo para el pago!">✓</span></button>
+                                <button class="btn btn-sm btn-success" type="submit"  name = "APROBADA" value="{{i.id}}"><span class="hint--left hint--success" aria-label="Todo OK!">✓</span></button>
 
                             </div>
 
                             <div style="display: inline-block; max-width: 45%;">
 
-                                <button class="btn btn-sm btn-danger" type="submit" name = "NO APROBADA" value="{{i.id}}"><span class="hint--left hint--danger" aria-label="Deja un comentario para que revisen!">X</span></button>
-                            
-                            </div>
-
-                            
-                        
-                            
-                            
-                            <div class="form-group" style="margin-top: 10%;">
-
-
-                                <input type="text" name="{{request.user.username}}" class="form-control form-control-sm" placeholder="Comentario" id="inputDefault">
-                        
+                                <button class="btn btn-sm btn-warning" type="submit"  name = "ADJAPROB" value="{{i.id}}"><span class="hint--left hint--warning" aria-label="Puedes dejar una consulta!, esta acción no frenara el circuito de pago!">?</span></button>
 
                             </div>
+
 
                         </form>
                         
@@ -218,20 +208,12 @@
     <b><hr class = "my-4" style="width: 100%;"></b>
 
 
-     {% else %}
+            {% endif %}
 
-            <div style="margin-top: 2rem;">
-                <h7>No quedan pendientes a autorizar!</h7>
-            </div>
 
- 
-    {% endif %}
 
-    <div style="margin-top: 5%;">
 
-        <a class="btn btn-sm btn-info" href="{% url 'Comparativas' %}" >VOLVER A COMPARATIVAS</a>
-    
-    </div>
+
 
     <div style="margin-top: 2rem;">
         <p> <small>-- Link<strong>P</strong> --</small> </p>

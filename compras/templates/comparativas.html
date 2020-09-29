@@ -7,12 +7,12 @@
 
 <div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;">
 
-    <h3>Comparativas/Ordenes de compras</h3>
-    <h6>Comparativas entre proveedores y ordenes para autorizar</h6>
+    <h3>Solicitud de compras</h3>
+    <h6> <small>Comparativas entre proveedores y O.C para autorizar</small> </h6>
      <b><hr class = "my-4" style="width: 75%;"></b>
 
 
-     {% if request.user.username == "PL" or request.user.username == "ar" %}
+     {% if request.user.username == "PL" or request.user.username == "ar" or request.user.username == "AR" %}
 
 
      <h6>Panel de autorización</h6>
@@ -151,7 +151,7 @@
                     {% if i.comentario %}
                         
                         
-                    <span class="hint--top hint--info" aria-label="{{i.comentario}}">
+                    <span class="hint--left hint--danger"aria-label="{{i.comentario}}">
 
                     {% endif %}
                     
@@ -175,13 +175,13 @@
                     {% endif %}
 
                     {% if i.estado == "NO AUTORIZADA" %}
-                    <td style="width: 5%; color: rgb(192, 63, 50 );" >
+                    <td style="width: 4%; color: rgb(192, 63, 50 );" >
 
 
                         {% if i.comentario %}
                         
                         
-                        <span class="hint--top hint--info" aria-label="{{i.comentario}}">
+                        <span class="hint--left hint--danger" aria-label="{{i.comentario}}">
 
                             {% endif %}
                         
@@ -199,13 +199,13 @@
                     {% endif %}
 
                     {% if i.estado == "ADJUNTO ✓" %}
-                    <td style="width: 5%; color: rgb(218, 207, 38);" >
+                    <td style="width: 4%; color: rgb(218, 207, 38);" >
 
 
                         {% if i.comentario %}
                         
                         
-                        <span class="hint--top hint--info" aria-label="{{i.comentario}}">
+                        <span class="hint--left hint--danger" aria-label="{{i.comentario}}">
 
                             {% endif %}
                         
@@ -221,21 +221,21 @@
                     </td>
 
                     {% endif %}
-                    <td style="width: 5%;"><small>{{i.fecha_c}}</small> </td>
+                    <td style="width: 9%;"><small>{{i.fecha_c}}</small> </td>
                     <td style="width: 5%;"><a href="{{ i.adjunto.url }}" class="btn btn-sm btn-warning">ADJUNTOS</a></td>
                     
                     {% if i.adj_oc %}
                     
-                    <td style="width: 5%;"><a href="{{ i.adj_oc.url }}" class="btn btn-sm btn-success">O.C</a></td>
+                    <td style="width: 3%;"><a href="{{ i.adj_oc.url }}" class="btn btn-sm btn-success">O.C</a></td>
                     
                     {% else %}
 
-                    <td style="width: 5%;"><small>S/C</small> </td>
+                    <td style="width: 3%;"><small>S/C</small> </td>
                     
 
                     {% endif %}
 
-                    {% if request.user.username == "PL" or request.user.username == "AR" %}
+                    {% if request.user.username == "PL" or request.user.username == "AR" or request.user.username == "ar" %}
 
                     <td style="width: 8%;" >
                         
@@ -244,19 +244,19 @@
 
                             <div style="display: inline-block; max-width: 45%;">
 
-                                <button class="btn btn-sm btn-warning disabled" type="submit"  name = "ADJAPROB" value="{{i.id}}">✓</button>
+                                <button class="btn btn-sm btn-warning" type="submit"  name = "ADJAPROB" value="{{i.id}}"><span class="hint--left hint--warning" aria-label="El adjunto esta Ok!">✓</span></button>
 
                             </div>
 
                             <div style="display: inline-block; max-width: 45%;">
 
-                                <button class="btn btn-sm btn-success disabled" type="submit"  name = "APROBADA" value="{{i.id}}">✓</button>
+                                <button class="btn btn-sm btn-success" type="submit"  name = "APROBADA" value="{{i.id}}"><span class="hint--left hint--success" aria-label="Esta todo listo para el pago!">✓</span></button>
 
                             </div>
 
                             <div style="display: inline-block; max-width: 45%;">
 
-                                <button class="btn btn-sm btn-danger disabled" type="submit" name = "NO APROBADA" value="{{i.id}}">X</button>
+                                <button class="btn btn-sm btn-danger" type="submit" name = "NO APROBADA" value="{{i.id}}"><span class="hint--left hint--danger" aria-label="Deja un comentario para que revisen!">X</span></button>
                             
                             </div>
 
@@ -296,9 +296,11 @@
 
             {% endif %}
 
+            <b><hr class = "my-4" style="width: 75%;"></b>
+
 
             <div style="text-align:center">
-                <a href= "{% url 'Descargar estado' %}" class="btn btn-success" style="margin-top: 1%;" > Descargar Excel</a>          
+                <a href= "{% url 'Descargar estado' %}" class="btn btn-success" style="margin-top: 1%;" > Reporte en Excel</a>          
             </div> 
 
 

@@ -38,7 +38,7 @@ class ComparativasResource(resources.ModelResource):
 class ComparativasAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = ('proveedor', 'proyecto','numero', 'monto', 'estado')
     search_fields = ('proveedor__name', 'proyecto','numero',  'estado', 'monto')
-    readonly_fields = ('fecha_c', 'fecha_autorizacion')
+    readonly_fields = ('fecha_c', 'fecha_autorizacion', 'visto')
     resources_class = Comparativas
 
 admin.site.register(Proveedores, ProveedoresAdmin)

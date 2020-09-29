@@ -419,6 +419,13 @@ def cargacompras(request):
 
 # ----------------------------------------------------- VISTAS PARA LISTAR COMPRAS ----------------------------------------------
 
+def panelvisto(request):
+
+    datos = Comparativas.objects.filter(estado = "AUTORIZADA").order_by("-fecha_c")
+
+    return render(request, 'ocautorizadas.html', {'datos':datos})
+
+
 def comparativas_pl(request, estado):
 
     datos = 0
@@ -485,7 +492,13 @@ def comparativas_pl(request, estado):
 
                 comparativa = Comparativas.objects.get(id = id_selec)
 
-                comparativa.comentario = str(d[0]) + ": " + str(d[1])
+                if len(d[1]) == 0:
+
+                    comparativa.comentario = str(d[0]) + ": Sin comentarios!"
+
+                else:
+
+                    comparativa.comentario = str(d[0]) + ": " + str(d[1])
 
                 comparativa.save()
 

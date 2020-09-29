@@ -244,12 +244,21 @@
             
             
             {% if perms.compras.change_comparativas %}
-            <a class="dropdown-item" href="/compras/comparativas">Comparativas y OC</a>
-            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="/compras/comparativas">Solicitudes de compras</a>
+            
+            {% endif %}
+
+            {% if request.user.username == "AR" or request.user.username == "ar" or request.user.username == "SP" %}
+
+            <a class="dropdown-item" href="/compras/ocautorizadas">Ordenes de compras autorizadas</a>
+
 
             {% endif %}
 
             {% if perms.compras.change_compras %}
+
+            <div class="dropdown-divider"></div>
+
 
             <div style="margin-left: 5%;"><h6><small> <strong>  Paneles e informes</strong> </small></h6> </div>
              
