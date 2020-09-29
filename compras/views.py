@@ -458,7 +458,7 @@ def comparativas_pl(request, estado):
 
                 date = datetime.date.today()
 
-                comparativa.fecha_c = date
+                comparativa.fecha_autorizacion = date
 
                 comparativa.save()
 
@@ -495,8 +495,8 @@ def comparativas_pl(request, estado):
 def comparativas(request):
 
     datos = Comparativas.objects.order_by("-fecha_c")
-    fechafinal = date.today()
-    fechainicial = date.today()
+    fechafinal = datetime.date.today()
+    fechainicial = datetime.date.today()
 
     if request.method == 'GET':
 
@@ -534,6 +534,12 @@ def comparativas(request):
                 comparativa = Comparativas.objects.get(id = id_selec)
 
                 comparativa.estado = "AUTORIZADA"
+
+                date = datetime.date.today()
+
+                print(date)
+
+                comparativa.fecha_autorizacion = date
 
                 comparativa.save()
 
@@ -1244,7 +1250,8 @@ class CompOCestado(TemplateView):
                 ws["E"+str(cont)] = "OC"
                 ws["F"+str(cont)] = "MONTO"
                 ws["G"+str(cont)] = "ESTADO"
-                ws["H"+str(cont)] = "OBSERVACION PL"
+                ws["H"+str(cont)] = "AUTORIZADO EL"
+                ws["I"+str(cont)] = "OBSERVACION PL"
 
 
                 ws["A"+str(cont)].alignment = Alignment(horizontal = "center")
@@ -1255,6 +1262,7 @@ class CompOCestado(TemplateView):
                 ws["F"+str(cont)].alignment = Alignment(horizontal = "center")
                 ws["G"+str(cont)].alignment = Alignment(horizontal = "center")
                 ws["H"+str(cont)].alignment = Alignment(horizontal = "center")
+                ws["I"+str(cont)].alignment = Alignment(horizontal = "center")
 
 
                 ws["A"+str(cont)].font = Font(bold = True, color= "FDFFFF")
@@ -1273,6 +1281,8 @@ class CompOCestado(TemplateView):
                 ws["G"+str(cont)].fill =  PatternFill("solid", fgColor= "159ABB")
                 ws["H"+str(cont)].font = Font(bold = True, color= "FDFFFF")
                 ws["H"+str(cont)].fill =  PatternFill("solid", fgColor= "159ABB")
+                ws["I"+str(cont)].font = Font(bold = True, color= "FDFFFF")
+                ws["I"+str(cont)].fill =  PatternFill("solid", fgColor= "159ABB")
 
 
                 ws.column_dimensions['A'].width = 15
@@ -1282,7 +1292,8 @@ class CompOCestado(TemplateView):
                 ws.column_dimensions['E'].width = 12
                 ws.column_dimensions['F'].width = 15
                 ws.column_dimensions['G'].width = 17
-                ws.column_dimensions['H'].width = 40
+                ws.column_dimensions['H'].width = 15
+                ws.column_dimensions['I'].width = 40
 
                 ws["A"+str(cont+1)] = d.fecha_c
                 ws["B"+str(cont+1)] = d.proyecto
@@ -1291,7 +1302,8 @@ class CompOCestado(TemplateView):
                 ws["E"+str(cont+1)] = d.o_c
                 ws["F"+str(cont+1)] = d.monto
                 ws["G"+str(cont+1)] = d.estado
-                ws["H"+str(cont+1)] = d.comentario
+                ws["H"+str(cont+1)] = d.fecha_autorizacion
+                ws["I"+str(cont+1)] = d.comentario
 
 
                 ws["A"+str(cont+1)].font = Font(bold = True)
@@ -1314,6 +1326,7 @@ class CompOCestado(TemplateView):
                     ws["G"+str(cont+1)].font = Font(bold = True, color= "CAC32E")
                     
                 ws["H"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["I"+str(cont+1)].alignment = Alignment(horizontal = "center")
   
 
                 cont += 1
@@ -1328,7 +1341,8 @@ class CompOCestado(TemplateView):
                 ws["E"+str(cont+1)] = d.o_c
                 ws["F"+str(cont+1)] = d.monto
                 ws["G"+str(cont+1)] = d.estado
-                ws["H"+str(cont+1)] = d.comentario
+                ws["H"+str(cont+1)] = d.fecha_autorizacion
+                ws["I"+str(cont+1)] = d.comentario
 
 
                 ws["A"+str(cont+1)].font = Font(bold = True)
@@ -1349,12 +1363,10 @@ class CompOCestado(TemplateView):
                 elif d.estado == "ADJUNTO ✓":
 
                     ws["G"+str(cont+1)].font = Font(bold = True, color= "CAC32E")
-
-                elif d.estado == "NO AUTORIZADA":
-
-                    ws["G"+str(cont+1)].font = Font(bold = True, color= "CA522E")
                     
                 ws["H"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["I"+str(cont+1)].alignment = Alignment(horizontal = "center")
+  
 
 
                 cont += 1

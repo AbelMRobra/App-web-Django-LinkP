@@ -40,6 +40,7 @@ class Comparativas(models.Model):
     adjunto = models.ImageField(verbose_name="Imagen adjunta")
     adj_oc = models.FileField(verbose_name="Orden de compra", blank=True, null=True)
     fecha_c = models.DateField(auto_now_add=True, verbose_name="Fecha de carga")
+    fecha_autorizacion = models.DateField(blank=True, null=True, verbose_name="Fecha de aturorizacion")
     comentario = models.TextField(blank=True, null=True, verbose_name="Comentario", editable=False)
 
     class Meta:
