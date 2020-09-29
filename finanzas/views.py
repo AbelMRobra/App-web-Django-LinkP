@@ -638,23 +638,57 @@ def panelctacote(request):
 
     return render(request, 'panelctacte.html', {"datos":datos})
 
-def ingresounidades(request, estado):
+def ingresounidades(request, estado, proyecto):
 
-    if estado == "0":
+    estado_marcado = estado
 
-        datos = VentasRealizadas.objects.all().exclude(unidad__estado_iibb = "SI", unidad__estado_comision = "SI")
+    proyecto_marcado = proyecto
 
-    if estado == "1":
+    listado = []
 
-        datos = VentasRealizadas.objects.filter(unidad__estado = "SEÑADA")
+    datos_proyectos = datos = VentasRealizadas.objects.all().exclude(unidad__estado_iibb = "SI", unidad__estado_comision = "SI")
 
-    if estado == "2":
+    for d in datos_proyectos:
 
-        datos = VentasRealizadas.objects.filter(unidad__estado_iibb = "NO")
+        listado.append(d.proyecto)
 
-    if estado == "3":
+    listado = set(list(listado))
 
-        datos = VentasRealizadas.objects.filter(unidad__estado_comision = "NO")
+    if proyecto == "0":
+
+        if estado == "0":
+
+            datos = VentasRealizadas.objects.all().exclude(unidad__estado_iibb = "SI", unidad__estado_comision = "SI")
+
+        if estado == "1":
+
+            datos = VentasRealizadas.objects.filter(unidad__estado = "SEÑADA")
+
+        if estado == "2":
+
+            datos = VentasRealizadas.objects.filter(unidad__estado_iibb = "NO")
+
+        if estado == "3":
+
+            datos = VentasRealizadas.objects.filter(unidad__estado_comision = "NO")
+
+    else:
+
+        if estado == "0":
+
+            datos = VentasRealizadas.objects.all().exclude(unidad__estado_iibb = "SI", unidad__estado_comision = "SI", proyecto__id = proyecto)
+
+        if estado == "1":
+
+            datos = VentasRealizadas.objects.filter(unidad__estado = "SEÑADA", proyecto__id = proyecto)
+
+        if estado == "2":
+
+            datos = VentasRealizadas.objects.filter(unidad__estado_iibb = "NO", proyecto__id = proyecto)
+
+        if estado == "3":
+
+            datos = VentasRealizadas.objects.filter(unidad__estado_comision = "NO", proyecto__id = proyecto)
 
 
     if request.method == 'POST':
@@ -688,7 +722,7 @@ def ingresounidades(request, estado):
                 unidad.save()
 
 
-    return render(request, 'ingresounidades.html',{'datos':datos})
+    return render(request, 'ingresounidades.html',{'datos':datos, 'estado':estado_marcado, 'proyecto':proyecto_marcado, 'listado':listado})
 
 def consolidado(request):
 

@@ -15,18 +15,35 @@
 
     <div style="text-align: left;">
 
-        <a class="badge badge-secondary" href="{% url 'Unidades señadas' 0 %}" >Todas</a>
+        <a class="badge badge-secondary" href="{% url 'Unidades señadas' 0 proyecto %}" >Todas</a>
 
-        <a class="badge badge-warning" href="{% url 'Unidades señadas' 1 %}" >Señadas (S)</a>
+        <a class="badge badge-warning" href="{% url 'Unidades señadas' 1 proyecto %}" >Señadas (S)</a>
 
-        <a class="badge badge-dark" href="{% url 'Unidades señadas' 3 %}" >Pend. Comisión (C)</a>
+        <a class="badge badge-dark" href="{% url 'Unidades señadas' 3 proyecto %}" >Pend. Comisión (C)</a>
 
-        <a class="badge badge-dark" href="{% url 'Unidades señadas' 2 %}" >Pend. IIBB (IB)</a>
+        <a class="badge badge-dark" href="{% url 'Unidades señadas' 2 proyecto %}" >Pend. IIBB (IB)</a>
 
         
 
     
         </div>
+
+        <div style="text-align: left; margin-top: 0.5%;">
+
+            <a class="badge badge-secondary" href="{% url 'Unidades señadas' estado 0 %}" >Todos los proyectos</a>
+
+            {% for i in listado %}
+    
+            <a class="badge badge-warning" style="background-color: rgb({{i.color}});" href="{% url 'Unidades señadas' estado i.id %}" >{{i.nombre}}</a>
+    
+
+
+            {% endfor %}
+    
+            
+    
+        
+            </div>
     
 
 
@@ -57,7 +74,7 @@
 
         <tbody>   
 
-            {% for i in datos|slice:"40" %}
+            {% for i in datos|slice:"100" %}
             <tr class = "table-light">
                 <td> <b> <small>{{i.fecha}}</small> </b></td>
                 <td> <b> <small>{{i.unidad.proyecto.nombre}}</small> </b></td>       
