@@ -7,8 +7,59 @@
 
 <div class = "jumbotron" style="background-color: white; margin-bottom: 0px;">
     <div style="text-align: center;">
-        <h2>Panel de control - Ingreso de unidades</h2>
-        <small>Ingresa unidades señadas por el área de ventas</small>  
+        <h2>Panel de control de unidades Administración</h2>
+
+        <div>
+
+            <small>
+
+
+                {% if estado == "0" %}
+                
+                
+                
+                Estado: TODOS 
+    
+                {% elif estado == "1" %}
+    
+    
+                Estado: Unidades SEÑADAS
+    
+                {% elif estado == "2" %}
+    
+                Estado: Unidades con IIBB no pagados
+    
+                {% elif estado == "3" %}
+    
+                Estado: Unidades con comisiones no pagadas
+    
+                {% endif %}        
+            
+            
+            </small>  
+
+
+        </div>
+
+        <div>
+
+            <small>
+
+
+                {% if proyecto == "0" %}
+                
+                
+                
+                Proyecto: TODOS 
+
+                {% endif %}        
+            
+            
+            </small>  
+
+
+        </div>
+        
     </div>
 
     <b><hr class = "my-4" style="width: 100%; "></b>
