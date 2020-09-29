@@ -12,14 +12,14 @@
     <div style="text-align: center;">
 
 
-        <h2 style="color: rgb({{ctacte.venta.unidad.proyecto.color}})" >Ingresos por cuotas a cobrar</h2>
+        <h2 style="color: rgb({{ctacte.venta.unidad.proyecto.color}})" >Resumen de cuentas corrientes</h2>
 
         <b><hr class = "my-4" style="width: 100%; "></b>
     
 
         <div style="text-align: center;">
         
-        <h6>Resumen mes a mes</h6>
+        <h6>Ingreso mes a mes</h6>
 
 
         <b><hr class = "my-4" style="width: 75%; "></b>
@@ -37,9 +37,13 @@
 
                     <th scope = "row"> <b><small>FECHA</small></b> </th>
 
+                    <th scope = "row"> <b><small>TOTAL INGRESOS</small></b> </th>
+
                     <th scope = "row"> <b><small>TOTAL INGRESOS Hº</small></b> </th>
 
-                    <th scope = "row"> <b><small>TOTAL INGRESOS</small></b> </th>
+                    <th scope = "row"> <b><small>TOTAL INGRESOS LINK</small></b> </th>
+
+                    <th scope = "row"> <b><small>TOTAL INGRESOS LINK (Hº)</small></b> </th>
 
                     {% for i in datos_primero %}
 
@@ -65,11 +69,15 @@
     
                 <tr class = "table-light">
 
-                    <td> <b> <small> <b>{{i.0.0.1}}</b> </small> </b></td>
+                    <td> <b> <small> <b>{{i.0.0.1|date:"F, Y" }}</b> </small> </b></td>
+
+                    <td> <b> <small> <b>${{i.1|floatformat:0|intcomma}}</b> </small> </b></td>
 
                     <td> <b> <small> <b>{{i.2|floatformat:3}} M3</b> </small> </b></td>
 
-                    <td> <b> <small> <b>${{i.1|floatformat:0|intcomma}}</b> </small> </b></td>
+                    <td> <b> <small> <b>${{i.3|floatformat:0|intcomma}}</b> </small> </b></td>
+
+                    <td> <b> <small> <b>{{i.4|floatformat:3}} M3</b> </small> </b></td>
 
                     
                     {% for d in i.0 %}

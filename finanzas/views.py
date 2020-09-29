@@ -348,7 +348,9 @@ def totalcuentacte(request):
     
     #Establecemos un rango para hacer el cash de ingreso
     
-    fecha_inicial = datetime.date.today()
+    fecha_inicial_hoy = datetime.date.today()
+
+    fecha_inicial_2 = datetime.date(fecha_inicial_hoy.year, fecha_inicial_hoy.month, 1)
 
     fechas = []
 
@@ -358,11 +360,11 @@ def totalcuentacte(request):
     for f in range(26):
 
 
-        if (fecha_inicial.month + contador) == 13:
+        if (fecha_inicial_2.month + contador) == 13:
             
-            year = fecha_inicial.year + contador_year
+            year = fecha_inicial_2.year + contador_year
             
-            fecha_cargar = date(year, 1, fecha_inicial.day)
+            fecha_cargar = date(year, 1, fecha_inicial_2.day)
 
             fechas.append(fecha_cargar)
             
@@ -372,11 +374,11 @@ def totalcuentacte(request):
 
         else:
 
-            mes = fecha_inicial.month + contador
+            mes = fecha_inicial_2.month + contador
 
-            year = fecha_inicial.year + contador_year - 1
+            year = fecha_inicial_2.year + contador_year - 1
 
-            fecha_cargar = date(year, mes, fecha_inicial.day)
+            fecha_cargar = date(year, mes, fecha_inicial_2.day)
 
             fechas.append(fecha_cargar)
 
@@ -394,6 +396,7 @@ def totalcuentacte(request):
     for f in fechas:
 
         total = 0
+        total_link = 0
 
         datos_terceros = []
 
@@ -401,19 +404,22 @@ def totalcuentacte(request):
 
             if fecha_inicial == 0:
 
-                fecha_inicial = f
-
-                dato = (p, f, 0)
-                datos_terceros.append(dato)
+                fecha_inicial = fecha_inicial_hoy
 
             else:
+
+                #Aqui calculamos el saldo de cuotas totales
+
                 cuotas = Cuota.objects.filter(fecha__range = (fecha_inicial, f), cuenta_corriente__venta__proyecto = p)
                 
                 pagos = Pago.objects.filter(fecha__range = (fecha_inicial, f), cuota__cuenta_corriente__venta__proyecto = p)
 
                 total_cuotas = 0
+                total_cuotas_link = 0
                 total_pagado = 0
+                total_pagado_link = 0
                 saldo = 0
+                saldo_link = 0
 
                 if len(cuotas)>0:
 
@@ -421,25 +427,45 @@ def totalcuentacte(request):
 
                         total_cuotas = total_cuotas + c.precio*c.constante.valor
 
+                        if c.cuenta_corriente.venta.unidad.asig == "HON. LINK" or c.cuenta_corriente.venta.unidad.asig == "TERRENO":
+
+                            total_cuotas_link = total_cuotas_link + c.precio*c.constante.valor 
+
                 if len(pagos)>0:
 
                     for p in pagos:
 
                         total_pagado = total_pagado + p.pago*p.cuota.constante.valor
 
+                        if p.cuota.cuenta_corriente.venta.unidad.asig == "HON. LINK" or p.cuota.cuenta_corriente.venta.unidad.asig == "TERRENO":
+
+                            total_pagado_link = total_pagado_link + p.pago*p.cuota.constante.valor 
+
                 saldo = total_cuotas-total_pagado
 
                 total = total + saldo
 
+
+                #Aqui calculamos el saldo de cuotas de LINK
+
+                saldo_link = total_cuotas_link-total_pagado_link
+
+                total_link = total_link + saldo_link
+
                 
-                dato = (p, f, saldo)
+                dato = (p, fecha_inicial, saldo, saldo_link)
+                
                 datos_terceros.append(dato)
 
         fecha_inicial = f
 
         horm = Constantes.objects.get(nombre = "Hº VIVIENDA")
+        
         total_horm = total/horm.valor
-        datos_segundos.append((datos_terceros, total, total_horm))
+
+        total_horm_link = total_link/horm.valor
+
+        datos_segundos.append((datos_terceros, total, total_horm, total_link, total_horm_link))
         
     return render(request, 'totalcuentas.html', {"fechas":fechas, "datos":datos_segundos, "datos_primero":datos_primeros, "total_fechas":total_fecha})
 
