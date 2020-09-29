@@ -505,33 +505,29 @@ def comparativas_pl(request, estado):
 
     return render(request, 'comparativas_pl.html', {'datos':datos})
 
-def comparativas(request):
+def comparativas(request, estado):
 
-    datos = Comparativas.objects.order_by("-fecha_c")
-    fechafinal = datetime.date.today()
-    fechainicial = datetime.date.today()
+    if estado == "0":
 
-    if request.method == 'GET':
-
-        palabra_buscar = request.GET.items()
-
-        datos_viejos = datos
-
-        datos = []   
-
-        for i in palabra_buscar:
-
-            if i[0] == "fechai":
-        
-                fechainicial = i[1]
-
-            if i[0] == "fechaf":
-        
-                fechafinal = i[1]
+        datos = Comparativas.objects.order_by("-fecha_c")
 
 
-        datos  = Comparativas.objects.filter(fecha_c__range=(fechainicial, fechafinal))
+    if estado == "1":
 
+
+        datos = Comparativas.objects.filter(estado = "ESPERA").order_by("-fecha_c")
+
+    if estado == "2":
+
+        datos = Comparativas.objects.filter(estado = "ADJUNTO ✓").order_by("-fecha_c")
+
+    if estado == "3":
+
+        datos = Comparativas.objects.filter(estado = "NO AUTORIZADA").order_by("-fecha_c")
+
+    if estado == "4":
+
+        datos = Comparativas.objects.filter(estado = "AUTORIZADA").order_by("-fecha_c")
 
     if request.method == 'POST':
 
@@ -584,14 +580,7 @@ def comparativas(request):
                 comparativa.save()
 
 
-        #Aqui empieza el filtro
-
-
-        
-
-    #Aqui termina el filtro
-
-    return render(request, 'comparativas.html', {'datos':datos, 'fechai':fechainicial, 'fechaf':fechafinal})
+    return render(request, 'comparativas.html', {'datos':datos})
 
 
 def compras(request):

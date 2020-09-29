@@ -7,103 +7,57 @@
 
 <div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;">
 
-    <h3>Solicitud de compras</h3>
+    <h3>Solicitudes de compras</h3>
     <h6> <small>Comparativas entre proveedores y O.C para autorizar</small> </h6>
-     <b><hr class = "my-4" style="width: 75%;"></b>
 
-
-     {% if request.user.username == "PL" or request.user.username == "ar" or request.user.username == "AR" %}
-
-
-     <h6>Panel de autorización</h6>
-
-     <div style="margin-top: 2%;">
-
-     
-
-         <a class="btn btn-sm btn-dark" href="{% url 'Panel de comparativas' 1 %}" >NEWS</a>
-                     
-         <a class="btn btn-sm btn-warning" href="{% url 'Panel de comparativas' 2 %}" >ADJ ✓</a>
-                     
-         <a class="btn btn-sm btn-success" href="{% url 'Panel de comparativas' 4 %}" >O.C ✓</a>
-
-         <a class="btn btn-sm btn-danger" href="{% url 'Panel de comparativas' 3 %}" >X</a>
-          
-         <b><hr class = "my-4" style="width: 100%;"></b>
-    
-     </div>
-
-     
-
-
-     
-
-{% endif %}
-
-
-     <form method="GET" style="text-align: center;">
-
-        {% csrf_token %}
-
-        <div style="display: inline-block; margin-left: 1rem;">
-
-            <label for="fechai"><h6>Fecha Inicial</h6></label>
-
-            <input name="fechai" type="date" class="form-control form-control" list="art" style="width: 15rem;">
-
-
-        </div>
-
-        <div style="display: inline-block; margin-left: 1rem;">
-
-            <label for="fechaf"><h6>Fecha Final</h6></label>
-
-            <input name="fechaf" type="date" class="form-control form-control" list="art" style="width: 15rem;">
-
-
-        </div>
-        
-
-
-        <div>
-            <button class="btn btn-dark" type="submit" style="margin-top: 1%;">Buscar</button>          
-        </div>       
-
-     </form>
-
-
-    {% if datos %} 
+     <div style="text-align:center">
+                  
+    </div> 
 
 
     <b><hr class = "my-4" style="width: 100%;"></b>
 
+    <div style="text-align: left;">
 
-    <div class = "tableconteinerabel" style="margin-top: 2%;">
+    <a class="badge badge-secondary" href="{% url 'Comparativas' 0 %}" >Todas</a>
 
-        <div style="text-align: left;">
+    <a class="badge badge-dark" href="{% url 'Comparativas' 1 %}" >En espera</a>
+                     
+    <a class="badge badge-warning" href="{% url 'Comparativas' 2 %}" >Adjunto OK</a>
+                
+    <a class="badge badge-success" href="{% url 'Comparativas' 4 %}" >Autorizadas</a>
 
-            <small> Comparativas/O.C desde {{ fechai }} al {{ fechaf }} </small>
+    <a class="badge badge-danger" href="{% url 'Comparativas' 3 %}" >No Autorizadas</a>
 
-        </div>
+    <a href= "{% url 'Descargar estado' %}" class="badge badge-info" style="text-align: end;" > Descargar Excel</a>
 
-        
+
+    </div>
+
+
+     
+    {% if datos %} 
+
+
+    <div class = "tableconteinerabel" style="margin-top: 0.5%;">
+       
         <table class = "table table-hover" style="text-align: center;" >
             <thead>
     
                 <tr class = "table-dark">
-                    <th scope = "row" style="vertical-align: middle;"><strong>Nº REF</strong></th>
-                    <th scope = "row" style="vertical-align: middle;"><strong>Nº O.C</strong></th>
-                    <th scope = "row" style="vertical-align: middle;"><strong>PROVEEDOR</strong></th>
-                    <th scope = "row" style="vertical-align: middle;"><strong>PROYECTO</strong></th>
-                    <th scope = "row" style="vertical-align: middle;"><strong>MONTO</strong></th>
-                    <th scope = "row" style="vertical-align: middle;"><strong>ESTADO</strong></th>
-                    <th scope = "row" style="vertical-align: middle;"><strong>FECHA</strong></th>
-                    <th scope = "row" style="vertical-align: middle;"><strong>ARCHIVO</strong></th>
-                    <th scope = "row" style="vertical-align: middle;"><strong>O.C</strong></th>
+                    <th scope = "row" style="vertical-align: middle;"> <small><b>Nº REF</b></small></th>
+                    <th scope = "row" style="vertical-align: middle;"> <small><b>Nº O.C</b></small></th>
+                    <th scope = "row" style="vertical-align: middle;"> <small><b>PROVEEDOR</b></small></th>
+                    <th scope = "row" style="vertical-align: middle;"> <small><b>PROYECTO</b></small> </th>
+                    <th scope = "row" style="vertical-align: middle;"><small><b>MONTO</b></small></th>
+                    <th scope = "row" style="vertical-align: middle;"><small><b>ESTADO</b></small></th>
+                    <th scope = "row" style="vertical-align: middle;"><small><b>FECHA</b></small></th>
+                    <th scope = "row" style="vertical-align: middle;"><small><b>ARCHIVO</b></small></th>
+                    <th scope = "row" style="vertical-align: middle;"><small><b>O.C</b></small></th>
 
                     {% if request.user.username == "PL" or request.user.username == "AR" or request.user.username == "ar" %}
 
-                    <th scope = "row" style="vertical-align: middle;"><strong>AUTORIZAR</strong></th>
+                    <th scope = "row" style="vertical-align: middle;"><small><b>AUTORIZAR</b></small></th>
                     
                     {% endif %}
 
@@ -222,16 +176,15 @@
 
                     {% endif %}
                     <td style="width: 9%;"><small>{{i.fecha_c}}</small> </td>
-                    <td style="width: 5%;"><a href="{{ i.adjunto.url }}" class="btn btn-sm btn-warning">ADJUNTOS</a></td>
+                    <td style="width: 5%;"><a href="{{ i.adjunto.url }}" class="btn btn-sm btn-warning"><span class="hint--left hint--warning" aria-label="Es una imagen de comparativas o remitos!">ADJUNTOS</span></a></td>
                     
                     {% if i.adj_oc %}
                     
-                    <td style="width: 3%;"><a href="{{ i.adj_oc.url }}" class="btn btn-sm btn-success">O.C</a></td>
+                    <td style="width: 3%;"><a href="{{ i.adj_oc.url }}" class="btn btn-sm btn-success"><span class="hint--left hint--success" aria-label="Una copia de la O.C!, puedes buscarla en TANGO tambien!">O.C</span></a></td>
                     
                     {% else %}
 
                     <td style="width: 3%;"><small>S/C</small> </td>
-                    
 
                     {% endif %}
 
@@ -291,7 +244,7 @@
 
      {% else %}
             <div style="margin-top: 2rem;">
-                <h7>Indique fechas para iniciar la busqueda</h7>
+                <h7>No hay solicitudes!</h7>
             </div>
 
             {% endif %}
@@ -299,9 +252,7 @@
             <b><hr class = "my-4" style="width: 75%;"></b>
 
 
-            <div style="text-align:center">
-                <a href= "{% url 'Descargar estado' %}" class="btn btn-success" style="margin-top: 1%;" > Reporte en Excel</a>          
-            </div> 
+            
 
 
 
