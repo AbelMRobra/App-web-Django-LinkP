@@ -11,12 +11,27 @@
     <h6> <small>Autororizadas por PL</small> </h6>
      <b><hr class = "my-4" style="width: 75%;"></b>
 
+     <div style="text-align: left;">
+
+        <a class="badge badge-secondary" href="{% url 'OC autorizadas' 0 %}" >Todas</a>
+
+        <a class="badge badge-danger" href="{% url 'OC autorizadas' 3 %}" >No vistas</a>
+                           
+        <a class="badge badge-warning" href="{% url 'OC autorizadas' 2 %}" >Observadas</a>
+                    
+        <a class="badge badge-success" href="{% url 'OC autorizadas' 4 %}" >Vistas</a>
+    
+        <a href= "{% url 'Descargar estado' %}" class="badge badge-info" style="text-align: end;" > Descargar Excel</a>
+    
+    
+        </div>
+
 
 
     {% if datos %} 
 
 
-    <div class = "tableconteinerabel" style="margin-top: 2%;">
+    <div class = "tableconteinerabel" style="margin-top: 0.05%;">
 
 
         
@@ -206,6 +221,14 @@
     </div>
 
     <b><hr class = "my-4" style="width: 100%;"></b>
+
+    
+
+    {% else %}
+
+    <b><hr class = "my-4" style="width: 100%;"></b>
+
+    Todo limpio!
 
 
             {% endif %}

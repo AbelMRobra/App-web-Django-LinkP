@@ -419,9 +419,54 @@ def cargacompras(request):
 
 # ----------------------------------------------------- VISTAS PARA LISTAR COMPRAS ----------------------------------------------
 
-def panelvisto(request):
+def panelvisto(request, estado):
 
-    datos = Comparativas.objects.filter(estado = "AUTORIZADA", adj_oc__isnull = False).order_by("-fecha_c")
+    datos = 0
+
+    if estado == "0":
+
+        datos = Comparativas.objects.filter(estado = "AUTORIZADA", adj_oc__isnull = False).order_by("-fecha_c")
+
+    if estado == "3":
+
+        datos = Comparativas.objects.filter(estado = "AUTORIZADA", adj_oc__isnull = False, visto="NO_VISTO").order_by("-fecha_c")
+    if estado == "2":
+
+        datos = Comparativas.objects.filter(estado = "AUTORIZADA", adj_oc__isnull = False, visto="VISTO NO CONFORME").order_by("-fecha_c")
+    
+    if estado == "4":
+
+        datos = Comparativas.objects.filter(estado = "AUTORIZADA", adj_oc__isnull = False, visto="VISTO").order_by("-fecha_c")
+
+
+
+    if request.method == 'POST':
+
+        datos_post = request.POST.items()
+
+        id_selec = 0
+
+        for d in datos_post:
+
+            if d[0] == 'APROBADA':
+                id_selec = d[1]
+
+                comparativa = Comparativas.objects.get(id = id_selec)
+
+                comparativa.visto = "VISTO"
+
+                comparativa.save()
+
+
+            if d[0] == 'ADJAPROB':
+                
+                id_selec = d[1]
+
+                comparativa = Comparativas.objects.get(id = id_selec)
+
+                comparativa.visto = "VISTO NO CONFORME"
+
+                comparativa.save()
 
     return render(request, 'ocautorizadas.html', {'datos':datos})
 

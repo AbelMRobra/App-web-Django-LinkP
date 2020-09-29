@@ -250,7 +250,7 @@
 
             {% if request.user.username == "AR" or request.user.username == "ar" or request.user.username == "SP" %}
 
-            <a class="dropdown-item" href="/compras/ocautorizadas">Ordenes de compras autorizadas</a>
+            <a class="dropdown-item" href="{% url 'OC autorizadas' 0 %}">Ordenes de compras autorizadas</a>
 
 
             {% endif %}
