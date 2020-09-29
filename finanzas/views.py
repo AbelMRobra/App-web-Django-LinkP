@@ -384,7 +384,6 @@ def totalcuentacte(request):
 
         contador += 1
 
-
     #Aqui buscamos agrupar proyecto - sumatorias de cuotas y pagos - mes
     
     datos_segundos = []
@@ -400,13 +399,13 @@ def totalcuentacte(request):
 
         datos_terceros = []
 
-        for p in datos_primeros:
-
-            if fecha_inicial == 0:
+        if fecha_inicial == 0:
 
                 fecha_inicial = fecha_inicial_hoy
 
-            else:
+        else:
+
+            for p in datos_primeros:
 
                 #Aqui calculamos el saldo de cuotas totales
 
@@ -457,16 +456,16 @@ def totalcuentacte(request):
                 
                 datos_terceros.append(dato)
 
-        fecha_inicial = f
+            fecha_inicial = f
 
-        horm = Constantes.objects.get(nombre = "Hº VIVIENDA")
-        
-        total_horm = total/horm.valor
+            horm = Constantes.objects.get(nombre = "Hº VIVIENDA")
+            
+            total_horm = total/horm.valor
 
-        total_horm_link = total_link/horm.valor
+            total_horm_link = total_link/horm.valor
 
-        datos_segundos.append((datos_terceros, total, total_horm, total_link, total_horm_link))
-        
+            datos_segundos.append((datos_terceros, total, total_horm, total_link, total_horm_link))
+            
     return render(request, 'totalcuentas.html', {"fechas":fechas, "datos":datos_segundos, "datos_primero":datos_primeros, "total_fechas":total_fecha})
 
 
