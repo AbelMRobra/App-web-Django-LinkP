@@ -697,6 +697,10 @@ def consolidado(request):
 
         #Aqui calculamos la comisión por venta
 
+        if almacenero.unidades_socios == None:
+
+            almacenero.unidades_socios = 0
+
         comision = (almacenero.ingreso_ventas - almacenero.unidades_socios)*0.03
 
         almacenero.pendiente_comision = comision
@@ -912,6 +916,10 @@ def almacenero(request):
 
 
                     #Aqui calculamos la comisión por venta
+
+                    if almacenero.unidades_socios == None:
+
+                        almacenero.unidades_socios = 0
 
                     comision = (almacenero.ingreso_ventas - almacenero.unidades_socios)*0.03
 
