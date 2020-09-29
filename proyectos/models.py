@@ -64,6 +64,17 @@ class Unidades(models.Model):
             SOCIOS = "SOCIOS"
 
 
+    class iibb(models.TextChoices):
+
+        SI = "SI"
+        NO = "NO"
+
+    class comision(models.TextChoices):
+
+        SI = "SI"
+        NO = "NO"
+
+
     proyecto = models.ForeignKey(Proyectos, on_delete=models.CASCADE, verbose_name = "Proyecto")
     piso_unidad = models.CharField(max_length=50, verbose_name="Piso")
     nombre_unidad = models.CharField(max_length=50, verbose_name="Nomenclatura")
@@ -73,6 +84,8 @@ class Unidades(models.Model):
     sup_balcon = models.FloatField(verbose_name="Sup. Balcon", blank=True, null=True)
     sup_comun = models.FloatField(verbose_name="Sup. Comun")
     estado = models.CharField(choices=estados.choices, max_length=20, verbose_name="Estado")
+    estado_iibb = models.CharField(choices=iibb.choices, max_length=20, verbose_name="Estado de IIBB", default=iibb.NO, blank=True, null=True)
+    estado_comision = models.CharField(choices=comision.choices, max_length=20, verbose_name="Estado de comision", default=comision.NO, blank=True, null=True)
     asig = models.CharField(choices=asignacion.choices, max_length=20, verbose_name="Asignacion")
     sup_equiv = models.FloatField(verbose_name="Sup. Equivalente", blank=True, null=True)
     tipologia = models.CharField(max_length=50, verbose_name="Tipologia", blank=True, null=True)

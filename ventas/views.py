@@ -642,7 +642,8 @@ def pricing(request, id_proyecto):
     m2_totales = 0
     cocheras = 0
     ingreso_ventas = 0
-    ingreso_ventas_link = 0
+    iibb = 0
+    comision = 0
     unidades_socios = 0
 
     #Datos resumenes de arriba
@@ -738,12 +739,22 @@ def pricing(request, id_proyecto):
 
                     unidades_socios = unidades_socios + contado
 
-            elif (dato.estado == "DISPONIBLE" and dato.asig == "HON. LINK") or (dato.estado == "DISPONIBLE" and dato.asig == "TERRENO"):
 
-                ingreso_ventas_link = ingreso_ventas_link + contado 
+            #Aqui calculamos IIBB -> IIBB en estado "NO" -- HON.LINK o TERRENO
 
-            else:
-                print("Esta unidad no cumple ninguna condicion")
+            
+
+            if (dato.estado_iibb == "NO"):
+
+                iibb = iibb + contado
+
+
+            #Aqui calculamos comision -> comsion en estado "NO" -- PROYECTO (No socios)
+
+
+            if (dato.estado_comision == "NO" and dato.asig == "PROYECTO"):
+
+                comision = comision + contado*0.03 
 
         except:
 
@@ -797,7 +808,9 @@ def pricing(request, id_proyecto):
     almacenero.save()
     almacenero.unidades_socios = unidades_socios - unidades_socios*0.00
     almacenero.save()
-    almacenero.ingreso_ventas_link = ingreso_ventas_link
+    almacenero.pendiente_comision = comision
+    almacenero.save()
+    almacenero.pendiente_iibb_tem = (almacenero.cuotas_a_cobrar + iibb + almacenero.pendiente_iibb_tem_link)*0.02235
     almacenero.save()
 
     cantidad = len(datos_tabla_unidad)

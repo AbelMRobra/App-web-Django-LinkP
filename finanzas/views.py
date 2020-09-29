@@ -638,9 +638,23 @@ def panelctacote(request):
 
     return render(request, 'panelctacte.html', {"datos":datos})
 
-def ingresounidades(request):
+def ingresounidades(request, estado):
 
-    datos = VentasRealizadas.objects.filter(unidad__estado = "SEÑADA")
+    if estado == "0":
+
+        datos = VentasRealizadas.objects.all().exclude(unidad__estado_iibb = "SI", unidad__estado_comision = "SI")
+
+    if estado == "1":
+
+        datos = VentasRealizadas.objects.filter(unidad__estado = "SEÑADA")
+
+    if estado == "2":
+
+        datos = VentasRealizadas.objects.filter(unidad__estado_iibb = "NO")
+
+    if estado == "3":
+
+        datos = VentasRealizadas.objects.filter(unidad__estado_comision = "NO")
 
 
     if request.method == 'POST':
@@ -654,6 +668,22 @@ def ingresounidades(request):
                 unidad = Unidades.objects.get(id = i[1])
 
                 unidad.estado = "VENDIDA"
+
+                unidad.save()
+
+            if i[0] == 'comision':
+
+                unidad = Unidades.objects.get(id = i[1])
+
+                unidad.estado_comision = "SI"
+
+                unidad.save()
+
+            if i[0] == 'iibb':
+
+                unidad = Unidades.objects.get(id = i[1])
+
+                unidad.estado_iibb = "SI"
 
                 unidad.save()
 
@@ -689,23 +719,8 @@ def consolidado(request):
         almacenero.pendiente_iva_ventas = iva_compras
 
 
-        #Aqui vamos a calcular los IIBB --> (Ingreso por ventas de LINK + cuotas por cobrar de LINK + Ingreso por ventas del proyecto + cuotas por cobrar del proyecto)*0.02235
-
-        II_BB = (almacenero.ingreso_ventas + almacenero.cuotas_a_cobrar + almacenero.ingreso_ventas_link + almacenero.pendiente_iibb_tem_link)*0.02235
-
-        almacenero.pendiente_iibb_tem = II_BB
-
-        #Aqui calculamos la comisión por venta
-
-        if almacenero.unidades_socios == None:
-
-            almacenero.unidades_socios = 0
-
-        comision = (almacenero.ingreso_ventas - almacenero.unidades_socios)*0.03
-
-        almacenero.pendiente_comision = comision
-
         almacenero.save()
+
 
         # Calculo el resto de las cosas
 
@@ -906,24 +921,6 @@ def almacenero(request):
                     iva_compras = (presupuesto.imprevisto + presupuesto.saldo_mat + presupuesto.saldo_mo + presupuesto.credito + presupuesto.fdr)*0.07875
 
                     almacenero.pendiente_iva_ventas = iva_compras
-
-
-                    #Aqui vamos a calcular los IIBB --> (Ingreso por ventas de LINK + cuotas por cobrar de LINK + Ingreso por ventas del proyecto + cuotas por cobrar del proyecto)*0.02235
-
-                    II_BB = (almacenero.ingreso_ventas + almacenero.cuotas_a_cobrar + almacenero.ingreso_ventas_link + almacenero.pendiente_iibb_tem_link)*0.02235
-
-                    almacenero.pendiente_iibb_tem = II_BB
-
-
-                    #Aqui calculamos la comisión por venta
-
-                    if almacenero.unidades_socios == None:
-
-                        almacenero.unidades_socios = 0
-
-                    comision = (almacenero.ingreso_ventas - almacenero.unidades_socios)*0.03
-
-                    almacenero.pendiente_comision = comision
 
                     almacenero.save()
 

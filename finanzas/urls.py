@@ -8,7 +8,7 @@ urlpatterns = [
     #----------------URL PARA FIANANZAS -----------------------------------------
     url(r'^almacenero/$', login_required(views.almacenero), name = 'Almacenero'),
     url(r'^consolidado/$', login_required(views.consolidado), name = 'Consolidado'),
-    url(r'^unidadesseñadas/$', login_required(views.ingresounidades), name = 'Unidades señadas'),
+    url(r'^unidadesseñadas/(?P<estado>\d+)/$', login_required(views.ingresounidades), name = 'Unidades señadas'),
     url(r'^panelctacte/$', login_required(views.panelctacote), name = 'Panel cuentas corrientes'),
     url(r'^crearcuenta/(?P<id_proyecto>\d+)/$', login_required(views.crearcuenta), name = 'Crear cuenta corriente'),
     url(r'^resumen/(?P<id_cliente>\d+)/$', login_required(views.resumenctacte), name = 'Resumen cuenta corriente'),

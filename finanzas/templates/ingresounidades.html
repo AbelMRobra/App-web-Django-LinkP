@@ -12,6 +12,21 @@
     </div>
 
     <b><hr class = "my-4" style="width: 100%; "></b>
+
+    <div style="text-align: left;">
+
+        <a class="badge badge-secondary" href="{% url 'Unidades señadas' 0 %}" >Todas</a>
+
+        <a class="badge badge-warning" href="{% url 'Unidades señadas' 1 %}" >Señadas (S)</a>
+
+        <a class="badge badge-dark" href="{% url 'Unidades señadas' 3 %}" >Pend. Comisión (C)</a>
+
+        <a class="badge badge-dark" href="{% url 'Unidades señadas' 2 %}" >Pend. IIBB (IB)</a>
+
+        
+
+    
+        </div>
     
 
 
@@ -20,7 +35,7 @@
              
 
 
-    <table class = "table table-hover" style="text-align: center; margin-top: 2%;">
+    <table class = "table table-hover" style="text-align: center; margin-top: 0.5%;">
         <thead>
 
             <tr class = "table-dark">
@@ -28,12 +43,12 @@
                 <th scope = "row"> <small>PROYECTO</small></th>
                 <th scope = "row"> <small>COMPRADOR</small></th>
                 <th scope = "row"> <small>PISO</small></th>
-                <th scope = "row"> <small> NOM </small></th>
-                <th scope = "row"> <small> TIPO </small></th>
+                <th scope = "row"> <small> ESTADO </small></th>
+                <th scope = "row"> <small> IIBB </small></th>
+                <th scope = "row"> <small> COMISION </small></th>
                 <th scope = "row"> <small> SUPERFICIE </small></th>
                 <th scope = "row"> <small>  ASIGNACION </small></th>
-                <th scope = "row"> <small>PRECIO DE VENTA</small>   </th>
-                <th scope = "row"> <small> ANOTACIONES </small></th>
+            
                 <th scope = "row"> <small> INGRESAR </small></th>
                  
 
@@ -47,13 +62,13 @@
                 <td> <b> <small>{{i.fecha}}</small> </b></td>
                 <td> <b> <small>{{i.unidad.proyecto.nombre}}</small> </b></td>       
                 <td> <b> <small>{{i.comprador}}</small> </b> </td>
-                <td> <b> <small>{{i.unidad.piso_unidad}}</small> </b> </td>
-                <td> <b> <small>{{i.unidad.nombre_unidad}}</small> </b> </td>
-                <td> <b> <small>{{i.unidad.tipologia}}</small> </b> </td>
+                <td> <b> <small>{{i.unidad.piso_unidad}} - {{i.unidad.nombre_unidad}} </small> </b> </td>
+                <td> <b> <small> <b>{{i.unidad.estado}}</b>  </small> </b> </td>
+                <td> <b> <small> <b>{{i.unidad.estado_iibb}}</b> </small> </b> </td>
+                <td> <b> <small> <b>{{i.unidad.estado_comision}}</b> </small> </b> </td>
                 <td> <b> <small>{{i.m2|floatformat:2}}m2</small> </b> </td>
                 <td> <b> <small>{{i.asignacion}}</small></b> </td>
-                <td> <b>  <small>${{i.precio_venta|floatformat:0|intcomma}}</small></b> </td>
-                <td><a href="{% url 'Detalle venta' i.id %}" class="btn btn-sm btn-info" >Ver detalles</a></td>
+            
                 <td>
                     
                     <form method="POST">
@@ -61,8 +76,13 @@
                         {% csrf_token %}
 
 
-                        <button class="btn btn-sm btn-success" type="submit" name="ingresar" value="{{i.unidad.id}}" >Ingresar</button>
+                        <button class="btn btn-sm btn-warning" type="submit" name="ingresar" value="{{i.unidad.id}}" >S</button>
 
+                        
+
+                        <button class="btn btn-sm btn-dark" type="submit" name="comision" value="{{i.unidad.id}}" >C</button>
+
+                        <button class="btn btn-sm btn-dark" type="submit" name="iibb" value="{{i.unidad.id}}" >IB</button>
 
                     </form>
 
