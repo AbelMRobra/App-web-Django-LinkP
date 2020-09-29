@@ -695,6 +695,12 @@ def consolidado(request):
 
         almacenero.pendiente_iibb_tem = II_BB
 
+        #Aqui calculamos la comisión por venta
+
+        comision = (almacenero.ingreso_ventas - almacenero.unidades_socios)*0.03
+
+        almacenero.pendiente_comision = comision
+
         almacenero.save()
 
         # Calculo el resto de las cosas
@@ -903,6 +909,13 @@ def almacenero(request):
                     II_BB = (almacenero.ingreso_ventas + almacenero.cuotas_a_cobrar + almacenero.ingreso_ventas_link + almacenero.pendiente_iibb_tem_link)*0.02235
 
                     almacenero.pendiente_iibb_tem = II_BB
+
+
+                    #Aqui calculamos la comisión por venta
+
+                    comision = (almacenero.ingreso_ventas - almacenero.unidades_socios)*0.03
+
+                    almacenero.pendiente_comision = comision
 
                     almacenero.save()
 
