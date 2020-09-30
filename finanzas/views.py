@@ -1409,30 +1409,31 @@ class DescargarTotalCuentas(TemplateView):
 
         ws = wb.active
         ws.title = "Cuotas"
-        ws["A"+str(1)] = "RESUMEN MES A MES DE INGRESOS POR CUOTAS A COBRAR"
-        ws["A"+str(3)] = "CUENTAS"
-        ws["A"+str(4)] = "COBRADO"
-        ws["A"+str(5)] = "ADEUDADO"
-        ws["A"+str(6)] = "PENDIENTE"
+        ws["A"+str(2)] = "RESUMEN MES A MES DE INGRESOS POR CUOTAS A COBRAR"
+        ws["A"+str(5)] = "CUENTAS"
+        ws["A"+str(6)] = "COBRADO"
+        ws["A"+str(7)] = "ADEUDADO"
+        ws["A"+str(8)] = "PENDIENTE"
 
-        ws["A"+str(3)].font = Font(bold = True, color= "FDFFFF")
-        ws["A"+str(3)].fill =  PatternFill("solid", fgColor= "33353B")
-        ws["A"+str(4)].font = Font(bold = True, color= "FDFFFF")
-        ws["A"+str(4)].fill =  PatternFill("solid", fgColor= "33353B")
+        ws["A"+str(2)].font = Font(bold = True)
         ws["A"+str(5)].font = Font(bold = True, color= "FDFFFF")
         ws["A"+str(5)].fill =  PatternFill("solid", fgColor= "33353B")
         ws["A"+str(6)].font = Font(bold = True, color= "FDFFFF")
         ws["A"+str(6)].fill =  PatternFill("solid", fgColor= "33353B")
+        ws["A"+str(7)].font = Font(bold = True, color= "FDFFFF")
+        ws["A"+str(7)].fill =  PatternFill("solid", fgColor= "33353B")
+        ws["A"+str(8)].font = Font(bold = True, color= "FDFFFF")
+        ws["A"+str(8)].fill =  PatternFill("solid", fgColor= "33353B")
 
 
-        ws["B"+str(3)] = cantidad_cuentas
-        ws["B"+str(4)] = otros_datos[0]
-        ws["B"+str(5)] = otros_datos[1]
-        ws["B"+str(6)] = otros_datos[2]
+        ws["B"+str(5)] = cantidad_cuentas
+        ws["B"+str(6)] = otros_datos[0]
+        ws["B"+str(7)] = otros_datos[1]
+        ws["B"+str(8)] = otros_datos[2]
 
-        ws["B"+str(4)].number_format = '#,##0.00_-"M3"'
-        ws["B"+str(5)].number_format = '#,##0.00_-"M3"'
         ws["B"+str(6)].number_format = '#,##0.00_-"M3"'
+        ws["B"+str(7)].number_format = '#,##0.00_-"M3"'
+        ws["B"+str(8)].number_format = '#,##0.00_-"M3"'
 
         for dato in datos_segundos:
 
@@ -1668,30 +1669,32 @@ class DescargarTotalCuentas(TemplateView):
 
             ws = wb.create_sheet("My sheet")
             ws.title = "{0}".format(proyect.nombre)
-            ws["A"+str(1)] = "RESUMEN MES A MES DE INGRESOS POR CUOTAS A COBRAR"
-            ws["A"+str(3)] = "CUENTAS"
-            ws["A"+str(4)] = "COBRADO"
-            ws["A"+str(5)] = "ADEUDADO"
-            ws["A"+str(6)] = "PENDIENTE"
+            ws["A"+str(2)] = "RESUMEN MES A MES DE INGRESOS POR CUOTAS A COBRAR"
+            ws["A"+str(5)] = "CUENTAS"
+            ws["A"+str(6)] = "COBRADO"
+            ws["A"+str(7)] = "ADEUDADO"
+            ws["A"+str(8)] = "PENDIENTE"
 
-            ws["A"+str(3)].font = Font(bold = True, color= "FDFFFF")
-            ws["A"+str(3)].fill =  PatternFill("solid", fgColor= "33353B")
-            ws["A"+str(4)].font = Font(bold = True, color= "FDFFFF")
-            ws["A"+str(4)].fill =  PatternFill("solid", fgColor= "33353B")
+            ws["A"+str(2)].font = Font(bold = True)
             ws["A"+str(5)].font = Font(bold = True, color= "FDFFFF")
             ws["A"+str(5)].fill =  PatternFill("solid", fgColor= "33353B")
             ws["A"+str(6)].font = Font(bold = True, color= "FDFFFF")
             ws["A"+str(6)].fill =  PatternFill("solid", fgColor= "33353B")
+            ws["A"+str(7)].font = Font(bold = True, color= "FDFFFF")
+            ws["A"+str(7)].fill =  PatternFill("solid", fgColor= "33353B")
+            ws["A"+str(8)].font = Font(bold = True, color= "FDFFFF")
+            ws["A"+str(8)].fill =  PatternFill("solid", fgColor= "33353B")
 
 
-            ws["B"+str(3)] = cantidad_cuentas
-            ws["B"+str(4)] = otros_datos[0]
-            ws["B"+str(5)] = otros_datos[1]
-            ws["B"+str(6)] = otros_datos[2]
+            ws["B"+str(5)] = cantidad_cuentas
+            ws["B"+str(6)] = otros_datos[0]
+            ws["B"+str(7)] = otros_datos[1]
+            ws["B"+str(8)] = otros_datos[2]
+            ws["D"+str(5)] = proyect.iamgen
 
-            ws["B"+str(4)].number_format = '#,##0.00_-"M3"'
-            ws["B"+str(5)].number_format = '#,##0.00_-"M3"'
             ws["B"+str(6)].number_format = '#,##0.00_-"M3"'
+            ws["B"+str(7)].number_format = '#,##0.00_-"M3"'
+            ws["B"+str(8)].number_format = '#,##0.00_-"M3"'
 
             for dato in datos_segundos:
 
