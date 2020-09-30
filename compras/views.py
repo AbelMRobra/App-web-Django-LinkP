@@ -459,7 +459,7 @@ def panelvisto(request, estado):
 
 
             if d[0] == 'ADJAPROB':
-                
+
                 id_selec = d[1]
 
                 comparativa = Comparativas.objects.get(id = id_selec)
@@ -625,7 +625,7 @@ def comparativas(request, estado):
                 comparativa.save()
 
 
-    return render(request, 'comparativas.html', {'datos':datos})
+    return render(request, 'comparativas.html', {'datos':datos, "estado":estado})
 
 
 def compras(request):

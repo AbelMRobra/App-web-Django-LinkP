@@ -195,17 +195,26 @@
                         <form action="" method="POST">
                             {% csrf_token %}
 
+
+                            {% if estado == "0" or estado == "1" or estado == "3" %}
+
                             <div style="display: inline-block; max-width: 45%;">
 
                                 <button class="btn btn-sm btn-warning" type="submit"  name = "ADJAPROB" value="{{i.id}}"><span class="hint--left hint--warning" aria-label="El adjunto esta Ok!">✓</span></button>
 
                             </div>
 
+                            {% endif %}
+
+                            {% if estado == "0" or estado == "2" or estado == "3" %}
+
                             <div style="display: inline-block; max-width: 45%;">
 
                                 <button class="btn btn-sm btn-success" type="submit"  name = "APROBADA" value="{{i.id}}"><span class="hint--left hint--success" aria-label="Esta todo listo para el pago!">✓</span></button>
 
                             </div>
+
+                            {% endif %}
 
                             <div style="display: inline-block; max-width: 45%;">
 
