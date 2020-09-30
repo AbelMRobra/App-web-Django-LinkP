@@ -26,6 +26,8 @@
     
                 <tr class = "table-dark">
                     <th scope = "row"> <small>PROYECTO</small></th>
+                    <th scope = "row"> <small>CLIENTE</small></th>
+                    <th scope = "row"> <small>UNIDAD</small></th>
                     <th scope = "row"> <small>FECHA PAGO</small></th>
                     <th scope = "row"> <small>MONEDA (MD) </small></th>
                     <th scope = "row"> <small>COTIZACIÓN</small></th> 
@@ -40,7 +42,9 @@
     
                 {% for i in datos %}
                 <tr class = "table-light">
-                    <td> <b> <small> <b>{{i.cuota.cuenta_corriente.venta.proyecto.nombre}}</b> </small> </b></td> 
+                    <td> <b> <small> <b>{{i.cuota.cuenta_corriente.venta.proyecto.nombre}}</b> </small> </b></td>
+                    <td> <b> <small> <b>{{i.cuota.cuenta_corriente.venta.comprador}}</b> </small> </b></td> 
+                    <td> <b> <small> <b>{{i.cuota.cuenta_corriente.venta.unidad.piso_unidad}} - {{i.cuota.cuenta_corriente.venta.unidad.nombre_unidad}}</b> </small> </b></td>  
                     <td> <b> <small> <b>{{i.fecha}}</b> </small> </b></td>    
                     <td> <b> <small>{{i.pago|floatformat:2}}</small> </b> </td>
 
@@ -69,8 +73,27 @@
                     </small> </b> </td>
 
                     <td> <b> <small>${{i.pago_pesos|floatformat:0|intcomma}}</small> </b> </td>
+
+                    {% if i.documento_1 %}
+
                     <td> <b> <small>{{i.documento_1}}</small> </b> </td>
+
+                    {% else %}
+
+                    <td> <b> <small>Sin registro</small> </b> </td>
+
+                    {% endif %}
+
+
+                    {% if i.documento_2 %}
+
                     <td> <b> <small>{{i.documento_2}}</small> </b> </td>
+
+                    {% else %}
+
+                    <td> <b> <small>Sin registro</small> </b> </td>
+
+                    {% endif %}
 
 
                    
