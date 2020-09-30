@@ -423,15 +423,15 @@ def totalcuentacte(request, id_proyecto):
 
     for cuo in cuotas_anteriores:
 
-        total_original = total_original + cuo.precio*cuo.constante.valor
+        total_original = total_original + cuo.precio
 
     for pag in pagos_anteriores:
 
-        total_cobrado = total_cobrado +  pag.pago*pag.cuota.constante.valor
+        total_cobrado = total_cobrado +  pag.pago
 
     for cuot in cuotas_posteriores:
 
-        total_acobrar= total_acobrar + cuot.precio*cuot.constante.valor
+        total_acobrar= total_acobrar + cuot.precio
 
     total_pendiente = total_original - total_cobrado
 
