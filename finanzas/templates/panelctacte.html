@@ -20,7 +20,7 @@
     </div>
 
 
-    <div style="text-align: center; margin-bottom: 20%;">
+    <div style="text-align: center; margin-bottom: 2%;">
        <form method="POST">
 
            {% csrf_token %}
@@ -49,6 +49,12 @@
            
        </form>  
        
+   </div>
+
+   <div>
+
+    <a class="btn btn-info" href="{% url 'Total cuenta' 0 %}"> Ver resumen! </a>
+
    </div>
 
 
