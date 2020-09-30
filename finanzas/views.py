@@ -695,6 +695,14 @@ def panelctacote(request):
 
     return render(request, 'panelctacte.html', {"datos":datos})
 
+
+def consultapagos(request):
+
+    datos = Pago.objects.order_by("-fecha")
+
+    return render(request, 'pagos_total.html', {"datos":datos})
+
+
 def ingresounidades(request, estado, proyecto):
 
     estado_marcado = estado

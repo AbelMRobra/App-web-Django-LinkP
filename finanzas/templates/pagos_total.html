@@ -1,0 +1,102 @@
+{% extends "users/inicio.html" %}
+
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+
+
+
+<div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;" > 
+
+    <div style="text-align: center;">
+       
+        <h2>Registro de ultimos pagos en cuentas corrientes</h2>   
+       
+    </div>
+
+
+    <b><hr class = "my-4" style="width: 100%; "></b>
+
+
+    <div class = "tableconteinerabel">
+
+        <table class = "table table-hover" style="text-align: center; margin-top: 2%;">
+            <thead>
+    
+                <tr class = "table-dark">
+                    <th scope = "row"> <small>PROYECTO</small></th>
+                    <th scope = "row"> <small>FECHA PAGO</small></th>
+                    <th scope = "row"> <small>MONEDA (MD) </small></th>
+                    <th scope = "row"> <small>COTIZACIÓN</small></th> 
+                    <th scope = "row"> <small>MONTO PESOS</small></th>                    
+                    <th scope = "row"> <small> DOCUMENTO 1 </small></th>
+                    <th scope = "row"> <small> DOCUMENTO 2 </small></th>
+
+                </tr>
+            </thead>
+    
+            <tbody>   
+    
+                {% for i in datos %}
+                <tr class = "table-light">
+                    <td> <b> <small> <b>{{i.cuota.cuenta_corriente.venta.proyecto.nombre}}</b> </small> </b></td> 
+                    <td> <b> <small> <b>{{i.fecha}}</b> </small> </b></td>    
+                    <td> <b> <small>{{i.pago|floatformat:2}}</small> </b> </td>
+
+                    <td> <b> <small>
+
+                    <script>
+
+
+                        var pago_pesos;
+                        pago_pesos = {{i.pago_pesos}};
+
+                        var pago;
+                        pago = {{i.pago}};
+
+                        var cotizacion;
+
+                        cotizacion = pago_pesos/pago;
+
+                        document.write("$");
+                        
+                        document.write(cotizacion);
+
+
+                    </script>
+
+                    </small> </b> </td>
+
+                    <td> <b> <small>${{i.pago_pesos|floatformat:0|intcomma}}</small> </b> </td>
+                    <td> <b> <small>{{i.documento_1}}</small> </b> </td>
+                    <td> <b> <small>{{i.documento_2}}</small> </b> </td>
+
+
+                   
+
+    
+                </tr>
+                {% endfor %}
+            </tbody>
+         
+    
+        </table>
+    
+        </div>
+
+        <b><hr class = "my-4" style="width: 100%; "></b>
+
+
+    <div style="text-align: center; margin-top: 10%;">
+        <p> <small>-- Link<strong>P</strong> --</small> </p>
+
+     </div>
+
+    
+    
+
+</div>
+
+    
+{% endblock %}
