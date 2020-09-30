@@ -1690,7 +1690,6 @@ class DescargarTotalCuentas(TemplateView):
             ws["B"+str(6)] = otros_datos[0]
             ws["B"+str(7)] = otros_datos[1]
             ws["B"+str(8)] = otros_datos[2]
-            ws["D"+str(5)] = proyect.iamgen
 
             ws["B"+str(6)].number_format = '#,##0.00_-"M3"'
             ws["B"+str(7)].number_format = '#,##0.00_-"M3"'
