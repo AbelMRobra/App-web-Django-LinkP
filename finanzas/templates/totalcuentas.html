@@ -30,9 +30,12 @@
         <b><hr class = "my-4" style="width: 100%; "></b>
     
 
-        <div style="text-align: center;">
+        <div style="text-align: left;">
         
-        <h6>Ingreso mes a mes</h6>
+        <h6>Cantidad de cuentas cargadas: <small>{{cantidad_cuentas|intcomma}}</small></h6>
+        <h6>Monto en Hº cobrado: <small>{{otros_datos.0|floatformat:0|intcomma}} M3</small></h6>
+        <h6>Monto en Hº adeudado: <small> {{otros_datos.1|floatformat:0|intcomma}} M3</small></h6>
+        <h6>Monto en Hº pendiente: <small>{{otros_datos.2|floatformat:0|intcomma}} M3</small></h6>
 
 
         <b><hr class = "my-4" style="width: 75%; "></b>
