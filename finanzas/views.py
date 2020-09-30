@@ -330,11 +330,13 @@ def ctacteproyecto(request, id_proyecto):
     ### Armando resumen de cuenta corriente
 
 
-def totalcuentacte(request):
+def totalcuentacte(request, id_proyecto):
 
     proyectos = Proyectos.objects.all()
 
     datos_primeros = []
+
+    listado = []
 
     for proyecto in proyectos:
 
@@ -342,9 +344,18 @@ def totalcuentacte(request):
 
         if len(cuotas)>0:
             datos_primeros.append(proyecto)
+            
+            for c in cuotas:
 
-    #Hasta aqui tenemos todos los proyectos y todas las cuotas quitando a los proyectos en 0
+                listado.append(c.cuenta_corriente.venta.proyecto)
 
+    listado = set(list(listado))
+
+    proy = 0
+
+    if id_proyecto != "0":
+
+        proy = Proyectos.objects.get(id = id_proyecto)
     
     #Establecemos un rango para hacer el cash de ingreso
     
@@ -358,7 +369,6 @@ def totalcuentacte(request):
     contador_year = 1
 
     for f in range(26):
-
 
         if (fecha_inicial_2.month + contador) == 13:
             
@@ -405,56 +415,60 @@ def totalcuentacte(request):
 
         else:
 
-            for p in datos_primeros:
+            #Aqui calculamos el saldo de cuotas totales - Uso el id_proyecto para filtrar
 
-                #Aqui calculamos el saldo de cuotas totales
+            if id_proyecto != "0":
 
-                cuotas = Cuota.objects.filter(fecha__range = (fecha_inicial, f), cuenta_corriente__venta__proyecto = p)
+                cuotas = Cuota.objects.filter(fecha__range = (fecha_inicial, f), cuenta_corriente__venta__proyecto__id = id_proyecto)
                 
-                pagos = Pago.objects.filter(fecha__range = (fecha_inicial, f), cuota__cuenta_corriente__venta__proyecto = p)
-
-                total_cuotas = 0
-                total_cuotas_link = 0
-                total_pagado = 0
-                total_pagado_link = 0
-                saldo = 0
-                saldo_link = 0
-
-                if len(cuotas)>0:
-
-                    for c in cuotas:
-
-                        total_cuotas = total_cuotas + c.precio*c.constante.valor
-
-                        if c.cuenta_corriente.venta.unidad.asig == "HON. LINK" or c.cuenta_corriente.venta.unidad.asig == "TERRENO":
-
-                            total_cuotas_link = total_cuotas_link + c.precio*c.constante.valor 
-
-                if len(pagos)>0:
-
-                    for p in pagos:
-
-                        total_pagado = total_pagado + p.pago*p.cuota.constante.valor
-
-                        if p.cuota.cuenta_corriente.venta.unidad.asig == "HON. LINK" or p.cuota.cuenta_corriente.venta.unidad.asig == "TERRENO":
-
-                            total_pagado_link = total_pagado_link + p.pago*p.cuota.constante.valor 
-
-                saldo = total_cuotas-total_pagado
-
-                total = total + saldo
+                pagos = Pago.objects.filter(fecha__range = (fecha_inicial, f), cuota__cuenta_corriente__venta__proyecto__id = id_proyecto)
 
 
-                #Aqui calculamos el saldo de cuotas de LINK
+            else:
 
-                saldo_link = total_cuotas_link-total_pagado_link
-
-                total_link = total_link + saldo_link
-
+                cuotas = Cuota.objects.filter(fecha__range = (fecha_inicial, f))
                 
-                dato = (p, fecha_inicial, saldo, saldo_link)
-                
-                datos_terceros.append(dato)
+                pagos = Pago.objects.filter(fecha__range = (fecha_inicial, f))
+
+            total_cuotas = 0
+            total_cuotas_link = 0
+            total_pagado = 0
+            total_pagado_link = 0
+            saldo = 0
+            saldo_link = 0
+
+            if len(cuotas)>0:
+
+                for c in cuotas:
+
+                    total_cuotas = total_cuotas + c.precio*c.constante.valor
+
+                    if c.cuenta_corriente.venta.unidad.asig == "HON. LINK" or c.cuenta_corriente.venta.unidad.asig == "TERRENO":
+
+                        total_cuotas_link = total_cuotas_link + c.precio*c.constante.valor 
+
+            if len(pagos)>0:
+
+                for p in pagos:
+
+                    total_pagado = total_pagado + p.pago*p.cuota.constante.valor
+
+                    if p.cuota.cuenta_corriente.venta.unidad.asig == "HON. LINK" or p.cuota.cuenta_corriente.venta.unidad.asig == "TERRENO":
+
+                        total_pagado_link = total_pagado_link + p.pago*p.cuota.constante.valor 
+
+            saldo = total_cuotas-total_pagado
+
+            total = total + saldo
+
+
+            #Aqui calculamos el saldo de cuotas de LINK
+
+            saldo_link = total_cuotas_link-total_pagado_link
+
+            total_link = total_link + saldo_link
+            
+            datos_terceros.append((fecha_inicial, saldo, saldo_link))
 
             fecha_inicial = f
 
@@ -466,7 +480,7 @@ def totalcuentacte(request):
 
             datos_segundos.append((datos_terceros, total, total_horm, total_link, total_horm_link))
             
-    return render(request, 'totalcuentas.html', {"fechas":fechas, "datos":datos_segundos, "datos_primero":datos_primeros, "total_fechas":total_fecha})
+    return render(request, 'totalcuentas.html', {"fechas":fechas, "datos":datos_segundos, "datos_primero":datos_primeros, "total_fechas":total_fecha, "listado":listado, "proy":proy})
 
 
 

@@ -14,6 +14,19 @@
 
         <h2 style="color: rgb({{ctacte.venta.unidad.proyecto.color}})" >Resumen de cuentas corrientes</h2>
 
+
+        {% if proy %}
+
+        <div>
+
+            <img src="{{proy.iamgen.url}}"  class="img-fluid" alt="..." style="max-width:20%;width:auto;height:auto; margin-top: 1rem;">
+  
+
+        </div>
+
+
+        {% endif %}
+
         <b><hr class = "my-4" style="width: 100%; "></b>
     
 
@@ -27,10 +40,30 @@
     </div>
 
 
+    <div style="text-align: left; margin-top: 0.5%;">
+
+        <a class="badge badge-secondary" href="{% url 'Total cuenta' 0 %}" >Todos los proyectos</a>
+
+
+        {% for i in listado %}
+    
+            <a class="badge badge-warning" style="background-color: rgb({{i.color}});" href="{% url 'Total cuenta' i.id %}" >{{i.nombre}}</a>
+    
+
+
+            {% endfor %}
+    
+
+
+    
+    
+        </div>
+
+
     <div class = "tableconteinerabel">
 
 
-        <table class = "table table-hover" style="text-align: center; margin-top: 2%;">
+        <table class = "table table-hover" style="text-align: center; margin-top: 0.0%;">
             <thead>
     
                 <tr class = "table-dark">
@@ -45,12 +78,6 @@
 
                     <th scope = "row"> <b><small>TOTAL INGRESOS LINK (Hº)</small></b> </th>
 
-                    {% for i in datos_primero %}
-
-                    <th scope = "row"> <b><small>{{i.nombre}}</small></b> </th>
-
-
-                    {% endfor %}
 
                 </tr>
 
@@ -69,7 +96,7 @@
     
                 <tr class = "table-light">
 
-                    <td> <b> <small> <b>{{i.0.0.1|date:"F, Y" }}</b> </small> </b></td>
+                    <td> <b> <small> <b>{{i.0.0.0|date:"F, Y" }}</b> </small> </b></td>
 
                     <td> <b> <small> <b>${{i.1|floatformat:0|intcomma}}</b> </small> </b></td>
 
@@ -78,13 +105,6 @@
                     <td> <b> <small> <b>${{i.3|floatformat:0|intcomma}}</b> </small> </b></td>
 
                     <td> <b> <small> <b>{{i.4|floatformat:3}} M3</b> </small> </b></td>
-
-                    
-                    {% for d in i.0 %}
-
-                    <td> <b> <small> ${{d.2|floatformat:0|intcomma}}</small> </b></td>
-
-                    {% endfor %}
                     
     
                 </tr>
