@@ -1321,6 +1321,9 @@ class DescargarTotalCuentas(TemplateView):
         total_pendiente = total_original - total_cobrado
 
         otros_datos = [total_cobrado, total_pendiente, total_acobrar]
+
+
+
     
         #Aqui buscamos agrupar proyecto - sumatorias de cuotas y pagos - mes
         
@@ -1399,13 +1402,39 @@ class DescargarTotalCuentas(TemplateView):
 
         #Aqui termina la primera vuelta -> Total por proyecto
 
-        cont = 1
+        cont = 10
+
+        ws = wb.active
+        ws.title = "Cuotas"
+        ws["A"+str(1)] = "RESUMEN MES A MES DE INGRESOS POR CUOTAS A COBRAR"
+        ws["A"+str(3)] = "CUENTAS"
+        ws["A"+str(4)] = "COBRADO"
+        ws["A"+str(5)] = "ADEUDADO"
+        ws["A"+str(6)] = "PENDIENTE"
+
+        ws["A"+str(3)].font = Font(bold = True, color= "FDFFFF")
+        ws["A"+str(3)].fill =  PatternFill("solid", fgColor= "33353B")
+        ws["A"+str(4)].font = Font(bold = True, color= "FDFFFF")
+        ws["A"+str(4)].fill =  PatternFill("solid", fgColor= "33353B")
+        ws["A"+str(5)].font = Font(bold = True, color= "FDFFFF")
+        ws["A"+str(5)].fill =  PatternFill("solid", fgColor= "33353B")
+        ws["A"+str(6)].font = Font(bold = True, color= "FDFFFF")
+        ws["A"+str(6)].fill =  PatternFill("solid", fgColor= "33353B")
+
+
+        ws["B"+str(3)] = cantidad_cuentas
+        ws["B"+str(4)] = otros_datos[0]
+        ws["B"+str(5)] = otros_datos[1]
+        ws["B"+str(6)] = otros_datos[2]
+
+        ws["B"+str(4)].number_format = '#,##0.00_-"M3"'
+        ws["B"+str(5)].number_format = '#,##0.00_-"M3"'
+        ws["B"+str(6)].number_format = '#,##0.00_-"M3"'
 
         for dato in datos_segundos:
 
-            if cont == 1:
+            if cont == 10:
                 ws = wb.active
-                ws.title = "Cuotas"
                 ws["A"+str(cont)] = "FECHA"
                 ws["B"+str(cont)] = "TOTAL $"
                 ws["C"+str(cont)] = "TOTAL Hº"
@@ -1419,11 +1448,16 @@ class DescargarTotalCuentas(TemplateView):
                 ws["D"+str(cont)].alignment = Alignment(horizontal = "center")
                 ws["E"+str(cont)].alignment = Alignment(horizontal = "center")
 
-                ws["A"+str(cont)].font = Font(bold = True)
-                ws["B"+str(cont)].font = Font(bold = True)
-                ws["C"+str(cont)].font = Font(bold = True)
-                ws["D"+str(cont)].font = Font(bold = True)
-                ws["E"+str(cont)].font = Font(bold = True)
+                ws["A"+str(cont)].font = Font(bold = True, color= "FDFFFF")
+                ws["B"+str(cont)].font = Font(bold = True, color= "FDFFFF")
+                ws["C"+str(cont)].font = Font(bold = True, color= "FDFFFF")
+                ws["D"+str(cont)].font = Font(bold = True, color= "FDFFFF")
+                ws["E"+str(cont)].font = Font(bold = True, color= "FDFFFF")
+                ws["A"+str(cont)].fill =  PatternFill("solid", fgColor= "33353B")
+                ws["B"+str(cont)].fill =  PatternFill("solid", fgColor= "33353B")
+                ws["C"+str(cont)].fill =  PatternFill("solid", fgColor= "33353B")
+                ws["D"+str(cont)].fill =  PatternFill("solid", fgColor= "33353B")
+                ws["E"+str(cont)].fill =  PatternFill("solid", fgColor= "33353B")
 
 
                 ws.column_dimensions['A'].width = 15
@@ -1442,6 +1476,8 @@ class DescargarTotalCuentas(TemplateView):
                 ws["A"+str(cont+1)].font = Font(bold = True)
                 ws["A"+str(cont+1)].alignment = Alignment(horizontal = "center")
                 ws["B"+str(cont+1)].number_format = '"$"#,##0.00_-'
+                ws["C"+str(cont+1)].number_format = '#,##0.00_-"M3"'
+                ws["E"+str(cont+1)].number_format = '#,##0.00_-"M3"'
                 ws["D"+str(cont+1)].number_format = '"$"#,##0.00_-'
                 ws["C"+str(cont+1)].alignment = Alignment(horizontal = "center")
                 ws["E"+str(cont+1)].alignment = Alignment(horizontal = "center")
@@ -1461,10 +1497,11 @@ class DescargarTotalCuentas(TemplateView):
                 ws["A"+str(cont+1)].font = Font(bold = True)
                 ws["A"+str(cont+1)].alignment = Alignment(horizontal = "center")
                 ws["B"+str(cont+1)].number_format = '"$"#,##0.00_-'
+                ws["C"+str(cont+1)].number_format = '#,##0.00_-"M3"'
+                ws["E"+str(cont+1)].number_format = '#,##0.00_-"M3"'
                 ws["D"+str(cont+1)].number_format = '"$"#,##0.00_-'
                 ws["C"+str(cont+1)].alignment = Alignment(horizontal = "center")
                 ws["E"+str(cont+1)].alignment = Alignment(horizontal = "center")
-
                 cont += 1
         cont = 1
 
