@@ -1221,6 +1221,9 @@ class DescargarCuentacorriente(TemplateView):
 class DescargarTotalCuentas(TemplateView):
 
     def get(self, request, *args, **kwargs):
+
+
+        #color = '#%02x%02x%02x' % (0, 128, 64)
         
         wb = Workbook()
         #Establecemos una lista
@@ -1502,9 +1505,268 @@ class DescargarTotalCuentas(TemplateView):
                 ws["D"+str(cont+1)].number_format = '"$"#,##0.00_-'
                 ws["C"+str(cont+1)].alignment = Alignment(horizontal = "center")
                 ws["E"+str(cont+1)].alignment = Alignment(horizontal = "center")
+
                 cont += 1
         cont = 1
 
+
+        for proyect in listado:
+
+            #En la primera vuelta sacamos el totalizado
+
+            cantidad_cuentas = len(CuentaCorriente.objects.filter(venta__proyecto = proyect))
+            
+            #Establecemos un rango para hacer el cash de ingreso
+            
+            fecha_inicial_hoy = datetime.date.today()
+
+            fecha_inicial_2 = datetime.date(fecha_inicial_hoy.year, fecha_inicial_hoy.month, 1)
+
+            fechas = []
+
+            #Aqui buscamos la ultima fecha
+
+            fecha_ultima = Cuota.objects.filter(cuenta_corriente__venta__proyecto = proyect).order_by("-fecha")
+
+            contador = 0
+            
+            contador_year = 1
+
+            fecha_cargar = fecha_inicial_2
+
+            while fecha_cargar < fecha_ultima[0].fecha:
+
+                if (fecha_inicial_2.month + contador) == 13:
+                    
+                    year = fecha_inicial_2.year + contador_year
+                    
+                    fecha_cargar = date(year, 1, fecha_inicial_2.day)
+
+                    fechas.append(fecha_cargar)
+                    
+                    contador_year += 1
+
+                    contador = - (12 - contador)
+
+                else:
+
+                    mes = fecha_inicial_2.month + contador
+
+                    year = fecha_inicial_2.year + contador_year - 1
+
+                    fecha_cargar = date(year, mes, fecha_inicial_2.day)
+
+                    fechas.append(fecha_cargar)
+
+                contador += 1
+
+            #Aqui hacemos los totalizadores generales
+
+            cuotas_anteriores = Cuota.objects.filter(fecha__lt = fecha_inicial_hoy, cuenta_corriente__venta__proyecto = proyect)
+            pagos_anteriores = Pago.objects.filter(fecha__lt = fecha_inicial_hoy, cuota__cuenta_corriente__venta__proyecto = proyect)
+            cuotas_posteriores = Cuota.objects.filter(fecha__gt = fecha_inicial_hoy, cuenta_corriente__venta__proyecto = proyect)
+
+            total_original = 0
+            total_cobrado = 0
+            total_pendiente = 0
+            total_acobrar= 0
+
+            for cuo in cuotas_anteriores:
+
+                total_original = total_original + cuo.precio
+
+            for pag in pagos_anteriores:
+
+                total_cobrado = total_cobrado +  pag.pago
+
+            for cuot in cuotas_posteriores:
+
+                total_acobrar= total_acobrar + cuot.precio
+
+            total_pendiente = total_original - total_cobrado
+
+            otros_datos = [total_cobrado, total_pendiente, total_acobrar]
+        
+            #Aqui buscamos agrupar proyecto - sumatorias de cuotas y pagos - mes
+            
+            datos_segundos = []
+
+            total_fecha = []
+
+            fecha_inicial = 0
+
+            for f in fechas:
+
+                total = 0
+                total_link = 0
+
+                datos_terceros = []
+
+                if fecha_inicial == 0:
+
+                        fecha_inicial = fecha_inicial_hoy
+
+                else:
+
+                    cuotas = Cuota.objects.filter(fecha__range = (fecha_inicial, f), cuenta_corriente__venta__proyecto = proyect)
+                        
+                    pagos = Pago.objects.filter(fecha__range = (fecha_inicial, f), cuota__cuenta_corriente__venta__proyecto = proyect)
+
+                    total_cuotas = 0
+                    total_cuotas_link = 0
+                    total_pagado = 0
+                    total_pagado_link = 0
+                    saldo = 0
+                    saldo_link = 0
+
+                    if len(cuotas)>0:
+
+                        for c in cuotas:
+
+                            total_cuotas = total_cuotas + c.precio*c.constante.valor
+
+                            if c.cuenta_corriente.venta.unidad.asig == "HON. LINK" or c.cuenta_corriente.venta.unidad.asig == "TERRENO":
+
+                                total_cuotas_link = total_cuotas_link + c.precio*c.constante.valor 
+
+                    if len(pagos)>0:
+
+                        for p in pagos:
+
+                            total_pagado = total_pagado + p.pago*p.cuota.constante.valor
+
+                            if p.cuota.cuenta_corriente.venta.unidad.asig == "HON. LINK" or p.cuota.cuenta_corriente.venta.unidad.asig == "TERRENO":
+
+                                total_pagado_link = total_pagado_link + p.pago*p.cuota.constante.valor 
+
+                    saldo = total_cuotas-total_pagado
+
+                    total = total + saldo
+
+                    #Aqui calculamos el saldo de cuotas de LINK
+
+                    saldo_link = total_cuotas_link-total_pagado_link
+
+                    total_link = total_link + saldo_link
+                    
+                    datos_terceros.append((fecha_inicial, saldo, saldo_link))
+
+                    fecha_inicial = f
+
+                    horm = Constantes.objects.get(nombre = "Hº VIVIENDA")
+                    
+                    total_horm = total/horm.valor
+
+                    total_horm_link = total_link/horm.valor
+
+                    datos_segundos.append((datos_terceros, total, total_horm, total_link, total_horm_link))
+
+
+            #Aqui termina la primera vuelta -> Total por proyecto
+
+            cont = 10
+
+            ws = wb.create_sheet("My sheet")
+            ws.title = "{0}".format(proyect.nombre)
+            ws["A"+str(1)] = "RESUMEN MES A MES DE INGRESOS POR CUOTAS A COBRAR"
+            ws["A"+str(3)] = "CUENTAS"
+            ws["A"+str(4)] = "COBRADO"
+            ws["A"+str(5)] = "ADEUDADO"
+            ws["A"+str(6)] = "PENDIENTE"
+
+            ws["A"+str(3)].font = Font(bold = True, color= "FDFFFF")
+            ws["A"+str(3)].fill =  PatternFill("solid", fgColor= "33353B")
+            ws["A"+str(4)].font = Font(bold = True, color= "FDFFFF")
+            ws["A"+str(4)].fill =  PatternFill("solid", fgColor= "33353B")
+            ws["A"+str(5)].font = Font(bold = True, color= "FDFFFF")
+            ws["A"+str(5)].fill =  PatternFill("solid", fgColor= "33353B")
+            ws["A"+str(6)].font = Font(bold = True, color= "FDFFFF")
+            ws["A"+str(6)].fill =  PatternFill("solid", fgColor= "33353B")
+
+
+            ws["B"+str(3)] = cantidad_cuentas
+            ws["B"+str(4)] = otros_datos[0]
+            ws["B"+str(5)] = otros_datos[1]
+            ws["B"+str(6)] = otros_datos[2]
+
+            ws["B"+str(4)].number_format = '#,##0.00_-"M3"'
+            ws["B"+str(5)].number_format = '#,##0.00_-"M3"'
+            ws["B"+str(6)].number_format = '#,##0.00_-"M3"'
+
+            for dato in datos_segundos:
+
+                if cont == 10:
+                    ws = wb["{0}".format(proyect.nombre)]
+                    ws["A"+str(cont)] = "FECHA"
+                    ws["B"+str(cont)] = "TOTAL $"
+                    ws["C"+str(cont)] = "TOTAL Hº"
+                    ws["D"+str(cont)] = "TOTAL LINK $"
+                    ws["E"+str(cont)] = "TOTAL LINK Hª"
+
+
+                    ws["A"+str(cont)].alignment = Alignment(horizontal = "center")
+                    ws["B"+str(cont)].alignment = Alignment(horizontal = "center")
+                    ws["C"+str(cont)].alignment = Alignment(horizontal = "center")
+                    ws["D"+str(cont)].alignment = Alignment(horizontal = "center")
+                    ws["E"+str(cont)].alignment = Alignment(horizontal = "center")
+
+                    ws["A"+str(cont)].font = Font(bold = True, color= "FDFFFF")
+                    ws["B"+str(cont)].font = Font(bold = True, color= "FDFFFF")
+                    ws["C"+str(cont)].font = Font(bold = True, color= "FDFFFF")
+                    ws["D"+str(cont)].font = Font(bold = True, color= "FDFFFF")
+                    ws["E"+str(cont)].font = Font(bold = True, color= "FDFFFF")
+                    ws["A"+str(cont)].fill =  PatternFill("solid", fgColor= "33353B")
+                    ws["B"+str(cont)].fill =  PatternFill("solid", fgColor= "33353B")
+                    ws["C"+str(cont)].fill =  PatternFill("solid", fgColor= "33353B")
+                    ws["D"+str(cont)].fill =  PatternFill("solid", fgColor= "33353B")
+                    ws["E"+str(cont)].fill =  PatternFill("solid", fgColor= "33353B")
+
+
+                    ws.column_dimensions['A'].width = 15
+                    ws.column_dimensions['B'].width = 15
+                    ws.column_dimensions['C'].width = 15
+                    ws.column_dimensions['D'].width = 15
+                    ws.column_dimensions['E'].width = 15
+
+
+                    ws["A"+str(cont+1)] = dato[0][0][0]
+                    ws["B"+str(cont+1)] = dato[1]
+                    ws["C"+str(cont+1)] = dato[2]
+                    ws["D"+str(cont+1)] = dato[3]
+                    ws["E"+str(cont+1)] = dato[4]
+
+                    ws["A"+str(cont+1)].font = Font(bold = True)
+                    ws["A"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                    ws["B"+str(cont+1)].number_format = '"$"#,##0.00_-'
+                    ws["C"+str(cont+1)].number_format = '#,##0.00_-"M3"'
+                    ws["E"+str(cont+1)].number_format = '#,##0.00_-"M3"'
+                    ws["D"+str(cont+1)].number_format = '"$"#,##0.00_-'
+                    ws["C"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                    ws["E"+str(cont+1)].alignment = Alignment(horizontal = "center")
+
+
+                    cont += 1
+
+                else: 
+
+                    ws = wb["{0}".format(proyect.nombre)]
+                    ws["A"+str(cont+1)] = dato[0][0][0]
+                    ws["B"+str(cont+1)] = dato[1]
+                    ws["C"+str(cont+1)] = dato[2]
+                    ws["D"+str(cont+1)] = dato[3]
+                    ws["E"+str(cont+1)] = dato[4]
+
+                    ws["A"+str(cont+1)].font = Font(bold = True)
+                    ws["A"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                    ws["B"+str(cont+1)].number_format = '"$"#,##0.00_-'
+                    ws["C"+str(cont+1)].number_format = '#,##0.00_-"M3"'
+                    ws["E"+str(cont+1)].number_format = '#,##0.00_-"M3"'
+                    ws["D"+str(cont+1)].number_format = '"$"#,##0.00_-'
+                    ws["C"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                    ws["E"+str(cont+1)].alignment = Alignment(horizontal = "center")
+
+                    cont += 1
+            cont = 1
 
         #Establecer el nombre del archivo
         nombre_archivo = "ResumenCuentaCorriente.xls"
