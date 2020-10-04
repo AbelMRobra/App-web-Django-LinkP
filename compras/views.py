@@ -632,7 +632,7 @@ def compras(request, id_proyecto):
 
     #Aqui armamos un listado
 
-    proyectos = Proyectos.objects.all()
+    proyectos = Proyectos.objects.order_by("nombre")
 
     if id_proyecto == "0":
 
