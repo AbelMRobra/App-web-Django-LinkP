@@ -53,7 +53,7 @@
     
         </div>
         
-        <div style="display: inline-block; margin-left: 1%;  vertical-align: middle; margin-top: 5px; width: 25%;">
+        <div style="display: inline-block; margin-left: 1%;  vertical-align: middle; margin-top: 5px; width: 300px%;">
     
             <input name="palabra" type="text" class="form-control form-control" placeholder="Buscar por palabra" list="art" >
     
@@ -67,24 +67,22 @@
 
     </form>
 
-    <div class = "tableconteinerabel">
-
-             
 
 
+    
     <table class = "table table-hover" style="text-align: center; margin-top: 2%;">
         <thead>
 
             <tr class = "table-dark">
-                <th scope = "row"> <small>FECHA</small></th>
+                <th scope = "row" class="priority-3"> <small>FECHA</small></th>
                 <th scope = "row"> <small>COMPRADOR</small></th>
-                <th scope = "row"> <small>PISO</small></th>
-                <th scope = "row"> <small> NOM </small></th>
-                <th scope = "row"> <small> TIPO </small></th>
-                <th scope = "row"> <small> SUPERFICIE </small></th>
+                <th scope = "row" class="priority-5"> <small>PISO</small></th>
+                <th scope = "row" class="priority-5"> <small> NOM </small></th>
+                <th scope = "row" class="priority-5"> <small> TIPO </small></th>
+                <th scope = "row" class="priority-4"> <small> SUPERFICIE </small></th>
                 <th scope = "row"> <small>  ASIGNACION </small></th>
-                <th scope = "row"> <small>PRECIO DE VENTA</small>   </th>
-                <th scope = "row"> <small> ANOTACIONES (VENTAS) </small></th>
+                <th scope = "row" class="priority-3"> <small>PRECIO DE VENTA</small>   </th>
+                <th scope = "row" class="priority-4"> <small> ANOTACIONES (VENTAS) </small></th>
                 <th scope = "row"> <small> DETALLE DE CUENTA </small></th>
 
                  
@@ -96,24 +94,24 @@
 
             {% for i in datos %}
             <tr class = "table-light">
-                <td> <b> <small>{{i.venta.fecha}}</small> </b></td>    
+                <td class="priority-3"> <b> <small>{{i.venta.fecha}}</small> </b></td>    
                 <td> <b> <small>{{i.venta.comprador}}</small> </b> </td>
-                <td> <b> <small>{{i.venta.unidad.piso_unidad}}</small> </b> </td>
+                <td class="priority-5"> <b> <small>{{i.venta.unidad.piso_unidad}}</small> </b> </td>
 
                 {% if "0" in i.unidad.nombre_unidad %}
 
-                <td> <b> <small>{{i.venta.unidad.nombre_unidad|floatformat:0}}</small> </b> </td>
+                <td class="priority-5"> <b> <small>{{i.venta.unidad.nombre_unidad|floatformat:0}}</small> </b> </td>
 
                 {% else %}
 
-                <td> <b> <small>{{i.venta.unidad.nombre_unidad}}</small> </b> </td>
+                <td class="priority-5"> <b> <small>{{i.venta.unidad.nombre_unidad}}</small> </b> </td>
 
                 {% endif %}
-                <td> <b> <small>{{i.venta.unidad.tipologia}}</small> </b> </td>
-                <td> <b> <small>{{i.venta.m2|floatformat:2}}m2</small> </b> </td>
+                <td class="priority-5"> <b> <small>{{i.venta.unidad.tipologia}}</small> </b> </td>
+                <td class="priority-4"> <b> <small>{{i.venta.m2|floatformat:2}}m2</small> </b> </td>
                 <td> <b> <small>{{i.venta.asignacion}}</small></b> </td>
-                <td> <b>  <small>${{i.venta.precio_venta|floatformat:0|intcomma}}</small></b> </td>
-                <td> <b><a href="{% url 'Detalle venta' i.venta.id %}" class="btn btn-sm btn-info" >Ver detalles</a>
+                <td class="priority-3"> <b>  <small>${{i.venta.precio_venta|floatformat:0|intcomma}}</small></b> </td>
+                <td class="priority-4"> <b><a href="{% url 'Detalle venta' i.venta.id %}" class="btn btn-sm btn-info" >Ver detalles</a>
                 </b> </td>
                 <td> <b><a href="{% url 'Cuenta corriente venta' i.id %}" class="btn btn-sm btn-success" >Ingresar</a>
                 </b> </td>
@@ -128,7 +126,7 @@
 
     </table>
 
-    </div>
+
 
 
 
