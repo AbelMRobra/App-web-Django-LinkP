@@ -628,9 +628,19 @@ def comparativas(request, estado):
     return render(request, 'comparativas.html', {'datos':datos, "estado":estado})
 
 
-def compras(request):
+def compras(request, id_proyecto):
 
-    datos = Compras.objects.order_by("-fecha_c")
+    #Aqui armamos un listado
+
+    proyectos = Proyectos.objects.all()
+
+    if id_proyecto == "0":
+
+        datos = Compras.objects.order_by("-fecha_c")
+
+    else:
+
+        datos = Compras.objects.filter(proyecto = id_proyecto).order_by("-fecha_c")
 
     #Aqui empieza el filtro
 
@@ -694,7 +704,7 @@ def compras(request):
             compras.append((2,dato, total, v))
 
 
-    return render(request, 'compras.html', {'compras':compras})
+    return render(request, 'compras.html', {'compras':compras, 'proyectos':proyectos})
 
 # ----------------------------------------------------- VISTAS PARA CERTIFICADOS ----------------------------------------------
  
