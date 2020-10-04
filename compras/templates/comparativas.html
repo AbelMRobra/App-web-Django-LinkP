@@ -47,7 +47,7 @@
                     <th scope = "row" style="vertical-align: middle;"> <small><b>PROVEEDOR</b></small></th>
                     <th scope = "row" style="vertical-align: middle;" class="priority-4"> <small><b>PROYECTO</b></small> </th>
                     <th scope = "row" style="vertical-align: middle;" class="priority-4"><small><b>MONTO</b></small></th>
-                    <th scope = "row" style="vertical-align: middle;" class="priority-2"><small><b>ESTADO</b></small></th>
+                    <th scope = "row" style="vertical-align: middle;" class="priority-3"><small><b>ESTADO</b></small></th>
                     <th scope = "row" style="vertical-align: middle;" class="priority-4"><small><b>FECHA</b></small></th>
                     <th scope = "row" style="vertical-align: middle;"><small><b>ARCHIVO</b></small></th>
                     <th scope = "row" style="vertical-align: middle;"><small><b>O.C</b></small></th>
@@ -88,7 +88,7 @@
                     <td style="width: 5%;" class="priority-4" ><small>${{i.monto|floatformat:0|intcomma}}</small> </td>
 
                     {% if i.estado == "ESPERA" %}
-                    <td style="width: 5%; color: rgb(83, 82, 65);" class="priority-2" >  <small><strong>{{i.estado}}</strong></small></td>
+                    <td style="width: 5%; color: rgb(83, 82, 65);" class="priority-3" >  <small><strong>{{i.estado}}</strong></small></td>
 
                     {% endif %}
 
@@ -97,7 +97,7 @@
 
 
 
-                    <td style="width: 5%; color: rgb(50, 192, 74 );" class="priority-2">  
+                    <td style="width: 5%; color: rgb(50, 192, 74 );" class="priority-3">  
 
                     {% if i.comentario %}
                         
@@ -126,7 +126,7 @@
                     {% endif %}
 
                     {% if i.estado == "NO AUTORIZADA" %}
-                    <td style="width: 4%; color: rgb(192, 63, 50 );"  class="priority-2">
+                    <td style="width: 4%; color: rgb(192, 63, 50 );"  class="priority-3">
 
 
                         {% if i.comentario %}
@@ -150,7 +150,7 @@
                     {% endif %}
 
                     {% if i.estado == "ADJUNTO ✓" %}
-                    <td style="width: 4%; color: rgb(218, 207, 38);"  class="priority-2">
+                    <td style="width: 4%; color: rgb(218, 207, 38);"  class="priority-3">
 
 
                         {% if i.comentario %}
