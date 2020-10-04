@@ -42,62 +42,36 @@
     
                 {% for i in datos %}
                 <tr class = "table-light">
-                    <td> <b> <small> <b>{{i.cuota.cuenta_corriente.venta.proyecto.nombre}}</b> </small> </b></td>
-                    <td> <b> <small> <b>{{i.cuota.cuenta_corriente.venta.comprador}}</b> </small> </b></td> 
-                    <td> <b> <small> <b>{{i.cuota.cuenta_corriente.venta.unidad.piso_unidad}} - {{i.cuota.cuenta_corriente.venta.unidad.nombre_unidad}}</b> </small> </b></td>  
-                    <td> <b> <small> <b>{{i.fecha}}</b> </small> </b></td>    
-                    <td> <b> <small>{{i.pago|floatformat:2}}</small> </b> </td>
+                    <td> <b> <small> <b>{{i.0.cuota.cuenta_corriente.venta.proyecto.nombre}}</b> </small> </b></td>
+                    <td> <b> <small> <b>{{i.0.cuota.cuenta_corriente.venta.comprador}}</b> </small> </b></td> 
+                    <td> <b> <small> <b>{{i.0.cuota.cuenta_corriente.venta.unidad.piso_unidad}} - {{i.cuota.cuenta_corriente.venta.unidad.nombre_unidad}}</b> </small> </b></td>  
+                    <td> <b> <small> <b>{{i.0.fecha}}</b> </small> </b></td>    
+                    <td> <b> <small>{{i.0.pago|floatformat:2}}</small> </b> </td>
 
-                    <td> <b> <small>
+                    <td> <b> <small> ${{i.1|floatformat:0|intcomma} </small> </b> </td>
 
-                    <script>
+                    <td> <b> <small>${{i.0.pago_pesos|floatformat:0|intcomma}}</small> </b> </td>
 
+                    {% if i.0.documento_1 %}
 
-                        var pago_pesos;
-                        pago_pesos = {{i.pago_pesos|floatformat:0}};
+                    <td> <b> <small>{{i.0.documento_1}}</small> </b> </td>
 
-                        var pago;
-                        pago = {{i.pago|floatformat:0}};
+                    {% else %}
 
-                        var cotizacion;
+                    <td> <b> <small>SIN REGISTRO</small> </b> </td>
 
-                        cotizacion = pago_pesos/pago;
-
-                        document.write("$");
-                        
-                        document.write(cotizacion);
+                    {% endif %}
 
 
-                    </script>
+                    {% if i.0.documento_2 %}
 
-                    </small> </b> </td>
-
-                    <td> <b> <small>${{i.pago_pesos|floatformat:0|intcomma}}</small> </b> </td>
-
-                    {% if i.documento_1 %}
-
-                    <td> <b> <small>{{i.documento_1}}</small> </b> </td>
+                    <td> <b> <small>{{i.0.documento_2}}</small> </b> </td>
 
                     {% else %}
 
                     <td> <b> <small>Sin registro</small> </b> </td>
 
                     {% endif %}
-
-
-                    {% if i.documento_2 %}
-
-                    <td> <b> <small>{{i.documento_2}}</small> </b> </td>
-
-                    {% else %}
-
-                    <td> <b> <small>Sin registro</small> </b> </td>
-
-                    {% endif %}
-
-
-                   
-
     
                 </tr>
                 {% endfor %}

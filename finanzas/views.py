@@ -698,7 +698,15 @@ def panelctacote(request):
 
 def consultapagos(request):
 
-    datos = Pago.objects.order_by("-fecha")
+    datos_viejo = Pago.objects.order_by("-fecha")
+
+    datos = []
+
+    for d in datos:
+
+        cotizacion = d.pago_pesos/d.pago
+
+        datos.append((d , cotizacion))
 
     return render(request, 'pagos_total.html', {"datos":datos})
 
