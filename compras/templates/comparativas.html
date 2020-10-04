@@ -7,8 +7,8 @@
 
 <div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;">
 
-    <h3>Solicitudes de compras</h3>
-    <h6> <small>Comparativas entre proveedores y O.C para autorizar</small> </h6>
+    <h3 style="font-family: Arial, Helvetica, sans-serif;">Solicitudes de compras</h3>
+    <small style="font-family: Arial, Helvetica, sans-serif;"><b>Modulo:</b> Circuito de compras </small>
 
      <div style="text-align:center">
                   
@@ -19,17 +19,17 @@
 
     <div style="text-align: left;">
 
-    <a class="badge badge-secondary" href="{% url 'Comparativas' 0 %}" >Todas</a>
+    <a class="badge badge-secondary" href="{% url 'Comparativas' 0 %}" style="margin-top: 5px;" >Todas</a>
 
-    <a class="badge badge-dark" href="{% url 'Comparativas' 1 %}" >En espera</a>
+    <a class="badge badge-dark" href="{% url 'Comparativas' 1 %}" style="margin-top: 5px;" >En espera</a>
                      
-    <a class="badge badge-warning" href="{% url 'Comparativas' 2 %}" >Adjunto OK</a>
+    <a class="badge badge-warning" href="{% url 'Comparativas' 2 %}" style="margin-top: 5px;" >Adjunto OK</a>
                 
-    <a class="badge badge-success" href="{% url 'Comparativas' 4 %}" >Autorizadas</a>
+    <a class="badge badge-success" href="{% url 'Comparativas' 4 %}" style="margin-top: 5px;" >Autorizadas</a>
 
-    <a class="badge badge-danger" href="{% url 'Comparativas' 3 %}" >No Autorizadas</a>
+    <a class="badge badge-danger" href="{% url 'Comparativas' 3 %}" style="margin-top: 5px;" >No Autorizadas</a>
 
-    <a href= "{% url 'Descargar estado' %}" class="badge badge-info" style="text-align: end;" > Descargar Excel</a>
+    <a href= "{% url 'Descargar estado' %}" class="badge badge-info" style="text-align: end; margin-top: 5px;" > Descargar Excel</a>
 
 
     </div>
@@ -37,21 +37,18 @@
 
      
     {% if datos %} 
-
-
-    <div class = "tableconteinerabel" style="margin-top: 0.5%;">
        
-        <table class = "table table-hover" style="text-align: center;" >
+        <table class = "table table-hover" style="text-align: center; margin-top: 5px;" >
             <thead>
     
                 <tr class = "table-dark">
-                    <th scope = "row" style="vertical-align: middle;"> <small><b>Nº REF</b></small></th>
-                    <th scope = "row" style="vertical-align: middle;"> <small><b>Nº O.C</b></small></th>
+                    <th scope = "row" style="vertical-align: middle;" class="priority-5"><small><b>Nº REF</b></small></th>
+                    <th scope = "row" style="vertical-align: middle;" class="priority-4"> <small><b>Nº O.C</b></small></th>
                     <th scope = "row" style="vertical-align: middle;"> <small><b>PROVEEDOR</b></small></th>
-                    <th scope = "row" style="vertical-align: middle;"> <small><b>PROYECTO</b></small> </th>
-                    <th scope = "row" style="vertical-align: middle;"><small><b>MONTO</b></small></th>
+                    <th scope = "row" style="vertical-align: middle;" class="priority-4"> <small><b>PROYECTO</b></small> </th>
+                    <th scope = "row" style="vertical-align: middle;" class="priority-4"><small><b>MONTO</b></small></th>
                     <th scope = "row" style="vertical-align: middle;"><small><b>ESTADO</b></small></th>
-                    <th scope = "row" style="vertical-align: middle;"><small><b>FECHA</b></small></th>
+                    <th scope = "row" style="vertical-align: middle;" class="priority-4"><small><b>FECHA</b></small></th>
                     <th scope = "row" style="vertical-align: middle;"><small><b>ARCHIVO</b></small></th>
                     <th scope = "row" style="vertical-align: middle;"><small><b>O.C</b></small></th>
 
@@ -73,22 +70,22 @@
                 {% for i in datos|slice:"120" %}
 
                 <tr class = "table-light">
-                    <td style="width: 3%;"> <small> <strong>{{i.numero|upper}}</strong></small></td>
+                    <td style="width: 3%;" class="priority-5"> <small> <strong>{{i.numero|upper}}</strong></small></td>
 
                     {% if i.adj_oc %}
 
-                    <td style="width: 3%;"> <small> <strong>{{i.o_c}}</strong></small></td>
+                    <td style="width: 3%;" class="priority-4"> <small> <strong>{{i.o_c}}</strong></small></td>
 
                     {% else %}
 
-                    <td style="width: 5%;"><small>S/C</small> </td>
+                    <td style="width: 5%;" class="priority-4"><small>S/C</small> </td>
                     
 
                     {% endif %}
 
                     <td style="width: 8%;" > <small>{{i.proveedor.name}}</small> </td>
-                        <td style="width: 5%;" > <small><strong>{{i.proyecto|upper}}</strong></small></td>              
-                    <td style="width: 5%;" ><small>${{i.monto|floatformat:0|intcomma}}</small> </td>
+                        <td style="width: 5%;" class="priority-4" > <small><strong>{{i.proyecto|upper}}</strong></small></td>              
+                    <td style="width: 5%;" class="priority-4" ><small>${{i.monto|floatformat:0|intcomma}}</small> </td>
 
                     {% if i.estado == "ESPERA" %}
                     <td style="width: 5%; color: rgb(83, 82, 65);" >  <small><strong>{{i.estado}}</strong></small></td>
@@ -175,7 +172,7 @@
                     </td>
 
                     {% endif %}
-                    <td style="width: 9%;"><small>{{i.fecha_c}}</small> </td>
+                    <td style="width: 9%;" class="priority-4"><small>{{i.fecha_c}}</small> </td>
                     <td style="width: 5%;"><a href="{{ i.adjunto.url }}" class="btn btn-sm btn-warning"><span class="hint--left hint--warning" aria-label="Es una imagen de comparativas o remitos!">ADJUNTOS</span></a></td>
                     
                     {% if i.adj_oc %}
@@ -244,10 +241,6 @@
     
             </table>
     
-
-
-    </div>
-
     <b><hr class = "my-4" style="width: 100%;"></b>
 
 
