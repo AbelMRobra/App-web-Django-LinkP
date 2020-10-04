@@ -13,7 +13,7 @@
         
         <div>
 
-            <img src="{{proyecto.iamgen.url}}"  class="img-fluid" alt="..." style="max-width:200px;width:auto;height:auto; margin-top: 1%; margin-bottom: 1%;">
+            <img src="{{proyecto.iamgen.url}}"  class="img-fluid" alt="..." style="max-width:200px;width:auto;height:auto; margin-top: 5px; margin-bottom: 5px;">
   
 
         </div>
@@ -32,10 +32,10 @@
 
     <div style="text-align: center;">
     
-    <h6>Nueva cuenta corriente</h6>
+    <h6 style="font-family: Arial, Helvetica, sans-serif;">Crear cuenta corriente</h6>
 
 
-    <a href="{% url 'Crear cuenta corriente' proyecto.id %}" class="btn btn-primary">Crear cuenta</a>
+    <a href="{% url 'Crear cuenta corriente' proyecto.id %}" class="btn btn-primary">Ingresar</a>
     
     </div>
 
@@ -47,20 +47,19 @@
 
         {% csrf_token %}
 
-        <div style="display: inline-block;  vertical-align: middle;">
+        <div style="display: inline-block;  vertical-align: middle; margin-top: 5px;">
 
-            <h6>Cuentas corrientes activas</h6>
-    
+            <h6 style="font-family: Arial, Helvetica, sans-serif;">Cuentas corrientes activas</h6>
     
         </div>
         
-        <div style="display: inline-block; margin-left: 1%;  vertical-align: middle;">
+        <div style="display: inline-block; margin-left: 1%;  vertical-align: middle; margin-top: 5px; width: 25%;">
     
-            <input name="palabra" type="text" class="form-control form-control" placeholder="Buscar por palabra" list="art" style="width: 30rem;">
+            <input name="palabra" type="text" class="form-control form-control" placeholder="Buscar por palabra" list="art" >
     
         </div>
     
-        <div style="display: inline-block; margin-left: 1%; vertical-align: middle;">
+        <div style="display: inline-block; margin-left: 1%; vertical-align: middle; margin-top: 5px;">
             <button class="btn btn-dark" type="submit">Buscar</button>          
         </div>  
 
