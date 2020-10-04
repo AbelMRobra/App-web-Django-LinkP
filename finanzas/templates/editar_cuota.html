@@ -12,21 +12,21 @@
     <div>
         <div>
 
-            <img src="{{cuota.cuenta_corriente.venta.unidad.proyecto.iamgen.url}}"  class="img-fluid" alt="..." style="max-width:20%;width:auto;height:auto; margin-top: 1rem; margin-bottom: 3%;">
+            <img src="{{cuota.cuenta_corriente.venta.unidad.proyecto.iamgen.url}}"  class="img-fluid" alt="..." style="max-width: width 200px;;width:auto;height:auto; margin-top: 1rem; margin-bottom: 3%;">
   
 
         </div>
         
-        <h2 style="color: rgb({{cuota.cuenta_corriente.venta.unidad.proyecto.color}})" >Cuenta corriente cliente: {{cuota.cuenta_corriente.venta.comprador}} </h2>
+        <h2 style="color: rgb({{cuota.cuenta_corriente.venta.unidad.proyecto.color}}); font-family: Arial, Helvetica, sans-serif;" >Cuenta corriente cliente: {{cuota.cuenta_corriente.venta.comprador}} </h2>
 
-        <small><strong>{{cuota.cuenta_corriente.venta.unidad.proyecto.nombre}} - {{cuota.cuenta_corriente.venta.unidad.piso_unidad}} - {{cuota.cuenta_corriente.venta.unidad.nombre_unidad}}</strong></small>
+        <small style="font-family: Arial, Helvetica, sans-serif;"><strong>{{cuota.cuenta_corriente.venta.unidad.proyecto.nombre}} - {{cuota.cuenta_corriente.venta.unidad.piso_unidad}} - {{cuota.cuenta_corriente.venta.unidad.nombre_unidad}}</strong></small>
 
     </div>
 
     <b><hr class = "my-4" style="width: 75%;"></b>
 
     <div>
-        <h6>Editar cuota</h6>
+        <h6 style="font-family: Arial, Helvetica, sans-serif;">Editar cuota</h6>
 
     </div>
 
@@ -48,7 +48,7 @@
         
                     <div style="display: inline-block;">
             
-                        <label for="concepto1"><h6>Concepto de la cuota</h6></label>
+                        <label for="concepto1"><h6 style="font-family: Arial, Helvetica, sans-serif;">Concepto de la cuota</h6></label>
             
                     </div>
             
@@ -62,7 +62,7 @@
             
                     <div style="display: inline-block;">
             
-                        <label for="precio1"><h6>Precio de venta en moneda dura</h6></label>
+                        <label for="precio1"><h6 style="font-family: Arial, Helvetica, sans-serif;">Precio de venta en moneda dura</h6></label>
             
                     </div>
             
@@ -80,7 +80,7 @@
         
                     <div style="display: inline-block;">
             
-                        <label for="fecha1"><h6>Fecha de la cuota</h6></label>
+                        <label for="fecha1"><h6 style="font-family: Arial, Helvetica, sans-serif;">Fecha de la cuota</h6></label>
             
                     </div>
             
@@ -92,7 +92,7 @@
             
                     </div>
 
-                    <small><b>Fecha actual: {{cuota.fecha}}</b></small>
+                    <small><b style="font-family: Arial, Helvetica, sans-serif;">Fecha actual: {{cuota.fecha}}</b></small>
 
             
                     <div class="custom-control custom-radio" style="margin-top: 1%;">
@@ -132,7 +132,8 @@
 
 
     <div style="text-align: center; margin-top: 2rem;">
-        <p> <small>-- Link<strong>P</strong> --</small> </p>
+        <p style="font-family: Arial, Helvetica, sans-serif;"> <small>-- Link<strong>P</strong> --</small> </p>
+
 
      </div>
 
