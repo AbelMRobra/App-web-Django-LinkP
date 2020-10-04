@@ -10,9 +10,9 @@
 <div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;" > 
 
     <div >
-        <h2>Panel de control - Consolidado de los CBA</h2>
+        <h2 style="font-family: Arial, Helvetica, sans-serif;">Consolidado de los CBA</h2>
 
-        <small>Panel integral</small>
+        <small style="font-family: Arial, Helvetica, sans-serif;"><b>Modulo:</b> Finanzas </small>
 
 
         <b><hr class = "my-4" style="width: 100%; "></b>
@@ -23,19 +23,19 @@
     <div>
 
         <div style="margin-bottom: 2rem;">
-            <h5>Detalle por proyecto</h5>
+            <h5 style="font-family: Arial, Helvetica, sans-serif;">Detalle por proyecto</h5>
         </div>
         <table class = "table table-hover" style="text-align: center;">
             <thead>
     
                 <tr class = "table-dark">
-                    <th scope = "row" colspan="2">  PROYECTO </th>
-                    <th scope = "row"> INGRESOS</th>
-                    <th scope = "row"> COSTOS</th>
-                    <th scope = "row"> BENEFICIOS</th>
-                    <th scope = "row"> RENDIMIENTO</th>
-                    <th scope = "row"> PRICING</th>
-                    <th scope = "row"> PRESUPUESTO</th>
+                    <th scope = "row" style="vertical-align: middle;" colspan="2">  PROYECTO </th>
+                    <th scope = "row" style="vertical-align: middle;" class="priority-4"> INGRESOS</th>
+                    <th scope = "row" style="vertical-align: middle;" class="priority-4"> COSTOS</th>
+                    <th scope = "row" style="vertical-align: middle;"> BENEFICIOS</th>
+                    <th scope = "row" style="vertical-align: middle;"> RENDIMIENTO</th>
+                    <th scope = "row" style="vertical-align: middle;" class="priority-5"> <span class="hint--left hint--info" aria-label="Esta columna indica si tiene pricing asociado!">PRICING</span> </th>
+                    <th scope = "row" style="vertical-align: middle;" class="priority-5"> <span class="hint--left hint--info" aria-label="Esta columna indica si tiene un presupuesto calculado!">PRESUPUESTO</span> </th>
 
                    
                 </tr>
@@ -46,7 +46,7 @@
                 <tr class = "table-light">
 
 
-                    <td style="width: 15%; vertical-align: middle;"> <img src="{{i.0.proyecto.iamgen.url}}"  class="img-fluid" alt="..." style="max-width: 50%;width:auto;height:auto;"> </td>
+                    <td style="width: 15%; vertical-align: middle;"> <img src="{{i.0.proyecto.iamgen.url}}"  class="img-fluid" alt="..." style="max-width: 70px; width:auto;height:auto;"> </td>
                     
                     {% if "#300" in i.0.proyecto.nombre %}
 
@@ -59,33 +59,33 @@
 
                     {% endif %}
                     
-                    <td style="width: 5%; vertical-align: middle;"> ${{ i.2|floatformat:0|intcomma }}</td> 
-                    <td style="width: 10%; vertical-align: middle;">${{ i.1|floatformat:0|intcomma }}</td> 
+                    <td class="priority-4" style="width: 5%; vertical-align: middle;"> ${{ i.2|floatformat:0|intcomma }}</td> 
+                    <td class="priority-4" style="width: 10%; vertical-align: middle;">${{ i.1|floatformat:0|intcomma }}</td> 
                     <td style="width: 10%; vertical-align: middle; vertical-align: middle;">${{ i.3|floatformat:0|intcomma }}</td> 
                     <td style="width: 10%; vertical-align: middle;">{{ i.4|floatformat:0|intcomma }}%  </td> 
                     
                     {% if i.6 > 0 %}
                     
-                    <td style="width: 10%; vertical-align: middle; color: #3FB360;"><b>  CARGADO</b></td> 
+                    <td class="priority-5" style="width: 10%; vertical-align: middle; color: #3FB360;"><b>  CARGADO</b></td> 
                     
                     {% else %}
 
-                    <td style="width: 10%; vertical-align: middle; color: #B3513F ;"> <b>NO CARGADO</b></td> 
+                    <td class="priority-5" style="width: 10%; vertical-align: middle; color: #B3513F ;"> <b>NO CARGADO</b></td> 
 
                     {% endif %}
 
                     {% if i.5 > 200 %}
                     
-                    <td style="width: 10%; vertical-align: middle; color: #3FB360;"><b>CALCULADO</b></td> 
+                    <td class="priority-5" style="width: 10%; vertical-align: middle; color: #3FB360;"><b>CALCULADO</b></td> 
 
                     
                     {% elif i.5 > 100 %}
                     
-                    <td style="width: 10%; vertical-align: middle; color: #DBCD23 ;"><b>SEMI-CALCULADO</b></td> 
+                    <td class="priority-5" style="width: 10%; vertical-align: middle; color: #DBCD23 ;"><b>SEMI-CALCULADO</b></td> 
                     
                     {% else %}
 
-                    <td style="width: 10%; vertical-align: middle; color: #B3513F ;"> <b>EXTRAPOLADO</b></td> 
+                    <td class="priority-5" style="width: 10%; vertical-align: middle; color: #B3513F ;"> <b>EXTRAPOLADO</b></td> 
 
                     {% endif %}
 
@@ -98,8 +98,8 @@
     
                 <tr class = "table-light">
                     <td style="width: 15%; vertical-align: middle;" colspan="2"> RESULTADO CONJUNTO DE PROYECTOS </td>
-                    <td style="width: 5%; vertical-align: middle;"> ${{ datos_finales.0.0|floatformat:0|intcomma }}</td> 
-                    <td style="width: 10%; vertical-align: middle;"> ${{  datos_finales.0.1|floatformat:0|intcomma }}</td> 
+                    <td  class="priority-5" style="width: 5%; vertical-align: middle;"> ${{ datos_finales.0.0|floatformat:0|intcomma }}</td> 
+                    <td  class="priority-5" style="width: 10%; vertical-align: middle;"> ${{  datos_finales.0.1|floatformat:0|intcomma }}</td> 
                     <td style="width: 10%; vertical-align: middle; vertical-align: middle;"> ${{  datos_finales.0.2|floatformat:0|intcomma }}</td> 
                     <td style="width: 10%; vertical-align: middle;"> {{  datos_finales.0.3|floatformat:0|intcomma }}% </td> 
                     
@@ -112,8 +112,8 @@
     
                 <tr class = "table-light">
                     <td style="width: 15%; vertical-align: middle;" colspan="2"> DESCUENTO DEL 6% SOBRE UNIDADES </td>
-                    <td style="width: 5%; vertical-align: middle;"></td> 
-                    <td style="width: 10%; vertical-align: middle;"></td> 
+                    <td  class="priority-5" style="width: 5%; vertical-align: middle;"></td> 
+                    <td  class="priority-5" style="width: 10%; vertical-align: middle;"></td> 
                     <td style="width: 10%; vertical-align: middle; vertical-align: middle;">  - ${{ datos_finales.0.4|floatformat:0|intcomma }} </td> 
                     <td style="width: 10%; vertical-align: middle;"></td> 
                     
@@ -126,8 +126,8 @@
     
                 <tr class = "table-dark">
                     <td style="width: 15%; vertical-align: middle;" colspan="2"> <b>RESULTADO CONSIDERANDO DESCUENTO</b> </td>
-                    <td style="width: 5%; vertical-align: middle;"></td> 
-                    <td style="width: 10%; vertical-align: middle;"></td> 
+                    <td  class="priority-5" style="width: 5%; vertical-align: middle;"></td> 
+                    <td   class="priority-5"style="width: 10%; vertical-align: middle;"></td> 
                     <td style="width: 10%; vertical-align: middle; vertical-align: middle;"> <b>${{datos_finales.0.6|floatformat:0|intcomma }}</b></td> 
                     <td style="width: 10%; vertical-align: middle;"> <b>{{  datos_finales.0.5|floatformat:0|intcomma }}%</b>  </td> 
                     
@@ -140,10 +140,14 @@
         </table> 
 
 
-        <b><hr class = "my-4" style="width: 100%; "></b>   
-        <p style="text-align: left;"><small> <b>Presupuesto:</b> Ese valor indica si el proyecto tiene calculos realizados </small></p>
-        <p style="text-align: left;"><small> <b>Pricing:</b> Ese valor indica las unidades que tienen un pricing asociado</small></p>
-    </div>
+          
+   </div>
+
+   <b><hr class = "my-4" style="width: 100%; "></b> 
+
+   <div style="margin-bottom: 2rem;">
+    <h5 style="font-family: Arial, Helvetica, sans-serif;">Detalle grafico</h5>
+</div>
 
     <div style="margin-top: 0.5rem; width: 100%;">
 
@@ -151,7 +155,9 @@
             <small><strong>-- Analisis historico de rendimiento --</strong></small>
         </div>
 
-        <canvas id="myChart" height="60%"></canvas>
+        <canvas id="myChart" height="70px" width="auto"></canvas>
+
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
     <script>
         var ctx = document.getElementById('myChart').getContext('2d');
@@ -243,13 +249,13 @@
 
     </div>
 
-    <div style="margin-top: 0.5rem; width: 100%;">
+    <div style="margin-top: 5px;">
 
         <div style= "text-align: center;">
             <small><strong>-- Historico del ingreso/costo conjunto --</strong></small>
         </div>
 
-        <canvas id="myChart2" height="60%"></canvas>
+        <canvas id="myChart2" height="70px" width="auto"></canvas>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
     <script>
         var ctx = document.getElementById('myChart2').getContext('2d');
