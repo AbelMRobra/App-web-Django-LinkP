@@ -28,7 +28,7 @@
     }
 }
 
-@media screen and (max-width: 565px) and (min-width: 300px) {
+@media screen and (max-width: 835px) and (min-width: 300px) {
     .priority-5{
             display:none;
     }
