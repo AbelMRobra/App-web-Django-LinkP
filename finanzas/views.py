@@ -702,11 +702,15 @@ def consultapagos(request):
 
     datos = []
 
-    for d in datos:
+    for d in datos_viejo:
 
         cotizacion = d.pago_pesos/d.pago
 
-        datos.append((d , cotizacion))
+        datos_subir = (d, cotizacion)
+
+        datos.append(datos_subir)
+
+    print(datos)
 
     return render(request, 'pagos_total.html', {"datos":datos})
 
