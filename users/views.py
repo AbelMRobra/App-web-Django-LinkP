@@ -89,6 +89,8 @@ def inicio(request):
 
             barras.append((db, int(avance)))
 
+    barras = sorted(barras,reverse=True, key=lambda tup: tup[1])
+
     return render(request, "users/inicio.html", {"datos_barras":barras})
 
 def welcome(request):
