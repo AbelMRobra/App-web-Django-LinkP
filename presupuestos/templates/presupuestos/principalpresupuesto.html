@@ -170,9 +170,9 @@
         <small style="font-family: Arial, Helvetica, sans-serif;">Precio expresado en millones de pesos</small>
      </div>
 
-     <div style="width: 90%; text-align: center;">
+     <div style="text-align: center; max-height: 300px;">
 
-      <canvas id="myChart"></canvas>
+      <canvas id="myChart" height="100%"></canvas>
 
 
      </div>
@@ -195,9 +195,9 @@
                 datasets: [
                 {
                     label: 'Valor de reposición mes a mes',
-                    backgroundColor: 'rgb({{datos.0.0.color}})',
+                    backgroundColor: 'rgb({{datos.0.0.color}}, 0.15)',
                     borderColor: 'rgb({{datos.0.0.color}})',
-                    fill: false,
+                    fill: true,
                     data: [
                     {% for i in valor %}
                     {{i.1|floatformat:0}},                   
@@ -209,7 +209,21 @@
             },
 
             // Configuration options go here
-            options: {}
+            options: {
+
+              scales: {
+
+                xAxes: [
+                    {
+
+
+                        display: false,
+
+                    }
+                ],
+
+              },
+            },
         });
     </script>
 
