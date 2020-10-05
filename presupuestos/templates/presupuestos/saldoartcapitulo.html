@@ -31,7 +31,7 @@
         <thead>
 
             <tr class = "table-dark">
-                <th scope = "row" style="vertical-align: middle;">ARTICULO</th>
+                <th scope = "row" style="vertical-align: middle; text-align: left;">ARTICULO</th>
                 <th scope = "row" style="vertical-align: middle;" > VALOR</th>
                 <th scope = "row" style="vertical-align: middle;">CANTIDAD</th>
                 <th scope = "row" style="vertical-align: middle;" class="priority-4">SALDO</th>
@@ -47,7 +47,7 @@
         {% for i in datos.datos_saldo %}
 
             <tr class = "table-light">
-                <td style="width: 40%;"><b>{{i.0.nombre}} ({{i.0.unidad}})</b></td>
+                <td style="width: 40%; text-align: left;"><b>{{i.0.nombre}} ({{i.0.unidad}})</b></td>
                 <td style="width: 15%;" >${{i.0.valor|floatformat:0|intcomma}}</td>
                 <td style="width: 15%;">{{i.1|floatformat:0|intcomma}}</td>
                 <td style="width: 20%;" class="priority-4"> ${{i.2|floatformat:0|intcomma}} </td>
