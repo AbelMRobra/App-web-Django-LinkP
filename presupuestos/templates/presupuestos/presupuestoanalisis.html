@@ -55,7 +55,7 @@
             {% for i in datos.datos %}
 
             <tr class = "table-light">
-                <td> <a href="{% url 'Composición Analisis' i.0.codigo %}" style="color: black; text-align: left;"> <b>{{i.0.nombre}}</b> </a> </td>
+                <td style="text-align: left;"> <a href="{% url 'Composición Analisis' i.0.codigo %}" style="color: black;"> <b>{{i.0.nombre}}</b> </a> </td>
                 <td class="priority-5"> {{i.5}}</td>
                 <td class="priority-4"> ${{i.1|floatformat:0|intcomma}}</td>
                 <td class="priority-4"> {{i.2|floatformat:2}} ({{i.0.unidad}})</td>
