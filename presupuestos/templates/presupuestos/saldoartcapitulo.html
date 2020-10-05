@@ -32,9 +32,9 @@
 
             <tr class = "table-dark">
                 <th scope = "row" style="vertical-align: middle;">ARTICULO</th>
-                <th scope = "row" style="vertical-align: middle;" class="priority-4"> VALOR</th>
+                <th scope = "row" style="vertical-align: middle;" > VALOR</th>
                 <th scope = "row" style="vertical-align: middle;">CANTIDAD</th>
-                <th scope = "row" style="vertical-align: middle;">SALDO</th>
+                <th scope = "row" style="vertical-align: middle;" class="priority-4">SALDO</th>
                 <th scope = "row" style="vertical-align: middle;" class="priority-5"> INC</th>                
             </tr>
         </thead>
@@ -48,9 +48,9 @@
 
             <tr class = "table-light">
                 <td style="width: 40%;"><b>{{i.0.nombre}} ({{i.0.unidad}})</b></td>
-                <td style="width: 15%;" class="priority-4">${{i.0.valor|floatformat:0|intcomma}}</td>
+                <td style="width: 15%;" >${{i.0.valor|floatformat:0|intcomma}}</td>
                 <td style="width: 15%;">{{i.1|floatformat:0|intcomma}}</td>
-                <td style="width: 20%;"> ${{i.2|floatformat:0|intcomma}} </td>
+                <td style="width: 20%;" class="priority-4"> ${{i.2|floatformat:0|intcomma}} </td>
                 <td style="width: 10%;" class="priority-5"> <b>{{i.3|floatformat:0|intcomma}}% </b> </td>                         
             </tr>
 
