@@ -10,13 +10,11 @@
 
       <h3 style="color: rgb({{datos.0.0.color}}); font-family: Arial, Helvetica, sans-serif;">Panel principal</h3>
 
-      <h5 style="color: rgb({{datos.0.0.color}}); font-family: Arial, Helvetica, sans-serif;">{{datos.0.0.nombre}}</h5>
-
+      
     
       {% if datos %}
 
 
-      <small style="color: rgb({{datos.0.0.color}}); font-family: Arial, Helvetica, sans-serif;"> <b>Superficie estimada:</b> {{datos.0.0.m2|floatformat:0}}m2 </small>
       
 
       <div>
@@ -27,7 +25,12 @@
 
 
       </div>
-  
+
+
+      <h6 style="color: rgb({{datos.0.0.color}}); font-family: Arial, Helvetica, sans-serif;">{{datos.0.0.nombre}}</h6>
+
+      <small style="color: rgb({{datos.0.0.color}}); font-family: Arial, Helvetica, sans-serif;"> <b>Superficie estimada:</b> {{datos.0.0.m2|floatformat:0}}m2 </small>
+      
       
     </div>
 
