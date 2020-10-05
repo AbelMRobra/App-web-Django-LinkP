@@ -47,7 +47,7 @@
         <thead>
 
             <tr class = "table-dark">
-                <th scope = "row" style="vertical-align: middle;" class="priority-5">  Nº </th>
+                <th scope = "row" style="vertical-align: middle;" class="priority-4">  Nº </th>
                 <th scope = "row" style="vertical-align: middle;">  CAPITULO </th>
                 <th scope = "row" style="vertical-align: middle;" class="priority-5">  DESCRIPCIÓN </th>
                 <th scope = "row" style="vertical-align: middle;">  MONTO </th>
@@ -62,7 +62,7 @@
             {% for i in datos.datos %}
 
             <tr class = "table-light">
-                <td style="width: 5%; ; color: rgb({{datos.proyecto.color}})" class="priority-5"><b>{{i.0.id}}</b></td>
+                <td style="width: 5%; ; color: rgb({{datos.proyecto.color}})" class="priority-4"><b>{{i.0.id}}</b></td>
                 <td style="width: 25%;"> <b><a href="{% url 'Panel de presupuestos por analisis' id_proyecto=datos.proyecto.id id_capitulo=i.0.id %}" style="color: black;">{{i.0.nombre}}</a></b>  </td>
                 <td style="width: 40%;" class="priority-5"> <small>{{i.0.descrip}}</small> </td>
                 <td style="width: 15%;"> ${{i.1|floatformat:2}} M</td>
