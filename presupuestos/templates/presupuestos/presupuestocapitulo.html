@@ -9,7 +9,7 @@
 <div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;">
 
     <h3 style="text-align: center; color: rgb({{datos.proyecto.color}}) ;">Presupuesto de reposición {{datos.proyecto.nombre}}</h3>
-    <img src="{{datos.proyecto.iamgen.url}}"  class="img-fluid" alt="..." style="max-width:20%;width:auto;height:auto; margin-top: 1rem;">
+    <img src="{{datos.proyecto.iamgen.url}}"  class="img-fluid" alt="..." style="max-width:200px;width:auto;height:auto; margin-top: 1rem;">
   
     
      <b><hr class = "my-4" style="width: 75%; border-color: rgba({{datos.proyecto.color}}, 0.5;"></b>
@@ -31,11 +31,11 @@
         <thead>
 
             <tr class = "table-dark">
-                <th scope = "row">  Nº </th>
-                <th scope = "row">  CAPITULO </th>
-                <th scope = "row">  DESCRIPCIÓN </th>
-                <th scope = "row">  MONTO DEL CAPITULO </th>
-                <th scope = "row">  INC </th>               
+                <th scope = "row" style="vertical-align: middle;">  Nº </th>
+                <th scope = "row" style="vertical-align: middle;">  CAPITULO </th>
+                <th scope = "row" style="vertical-align: middle;" class="priority-5">  DESCRIPCIÓN </th>
+                <th scope = "row" style="vertical-align: middle;">  MONTO DEL CAPITULO </th>
+                <th scope = "row" style="vertical-align: middle;">  INC </th>               
             </tr>
         </thead>
 
@@ -48,7 +48,7 @@
             <tr class = "table-light">
                 <td style="width: 5%; ; color: rgb({{datos.proyecto.color}})"><b>{{i.0.id}}</b></td>
                 <td style="width: 25%;"> <b><a href="{% url 'Panel de presupuestos por analisis' id_proyecto=datos.proyecto.id id_capitulo=i.0.id %}" style="color: black;">{{i.0.nombre}}</a></b>  </td>
-                <td style="width: 40%;"> <small>{{i.0.descrip}}</small> </td>
+                <td style="width: 40%;" class="priority-5"> <small>{{i.0.descrip}}</small> </td>
                 <td style="width: 15%;"> ${{i.1|floatformat:2}} Millones</td>
                 <td style="width: 15%;"> {{i.2|floatformat:0|intcomma}}%</td>                         
             </tr>

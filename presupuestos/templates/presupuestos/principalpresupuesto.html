@@ -8,19 +8,38 @@
 
     <div style="text-align: center;">
 
-      <h3 style="color: rgb({{datos.0.0.color}})">Panel principal de presupuestos {{datos.0.0.nombre}}</h3>
+      <h3 style="color: rgb({{datos.0.0.color}}); font-family: Arial, Helvetica, sans-serif;">Panel principal de presupuestos {{datos.0.0.nombre}}</h3>
+
     
       {% if datos %}
+
+
+      <small style="color: rgb({{datos.0.0.color}}); font-family: Arial, Helvetica, sans-serif;"> <b>Superficie estimada:</b> {{datos.0.0.m2|floatformat:0}}m2 </small>
+      
+
+      <div>
+
+
+        <img src="{{datos.0.0.iamgen.url}}"  class="img-fluid" alt="..." style="max-width:20%;width:auto;height:auto; margin-top: 1rem;">
   
-      <img src="{{datos.0.0.iamgen.url}}"  class="img-fluid" alt="..." style="max-width:20%;width:auto;height:auto; margin-top: 1rem;">
+
+
+      </div>
   
-  
-      <p><small style="color: rgb({{datos.0.0.color}});"> <b>Un proyecto de {{datos.0.0.m2|floatformat:0}}m2</b> </small></p>
-        
       
     </div>
 
     {% endif %}
+
+    <div style="text-align: center;">
+
+
+      <small style="font-family: Arial, Helvetica, sans-serif;"> <b>Modulo:</b> Presupuestos</small>
+    
+
+
+    </div>
+
     
     
      <b><hr class = "my-4" style="width: 75%; border-color: rgba({{datos.0.0.color}}, 0.5) ;"></b>
@@ -28,7 +47,7 @@
      {% if datos %}
 
      <div style="text-align: center;">
-        <p> <small>-- Accede a la información haciendo <strong>click</strong> sobre el valor de reposición o el saldo --</small> </p>
+        <p style="font-family: Arial, Helvetica"> <small>-- Accede a la información haciendo <strong>click</strong> sobre el valor de reposición o el saldo --</small> </p>
 
      </div>
 
@@ -41,7 +60,12 @@
 
             {% csrf_token %}
 
-            <select name="proyecto" class="custom-select" style="width: 20%;">
+            <div>
+              <small style="font-family: Arial, Helvetica, sans-serif;"> Seleccione un proyecto del listado para acceder a los datos</small>
+
+            </div>
+
+            <select name="proyecto" class="custom-select" style="width: 200px; margin-top: 10px;">
 
                 {% if request.user.username != "HC" %}
 
@@ -66,13 +90,11 @@
 
 
               </select>
-              <div>
-                <small> Seleccione un proyecto del listado para acceder a los datos</small>
-              </div>
+              
               
 
               <div>
-                <button class="btn btn-dark" type="submit" style="margin-top: 1%;">Buscar datos</button>          
+                <button class="btn btn-dark" type="submit" style="margin-top: 10px;">Buscar datos</button>          
             </div>
             
         </form>
@@ -191,7 +213,7 @@
         
     {% endif %}
     <div style="text-align: center; margin-top: 2%;">
-        <p> <small>-- Link<strong>P</strong> --</small> </p>
+        <p style="font-family: Arial, Helvetica, sans-serif;"> <small>-- Link<strong>P</strong> --</small> </p>
 
      </div>
 
