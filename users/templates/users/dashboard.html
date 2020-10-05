@@ -1,33 +1,182 @@
 {% extends "users/inicio.html" %}
 
 {% load static %}
+{% load humanize %}
 
 {% block content %}
 
-<div class = "jumbotron" style="background-color: white; margin-bottom: 0px;">
+<div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;">
 
-    <div style="display: inline-block; width: 400px; vertical-align: top; margin-top: 10px;">
+    <div>
+        <h3 style="color: rgb({{datos.0.0.color}}); font-family: Arial, Helvetica, sans-serif;">Dashboard general</h3>
 
+    </div>
 
-        <h6 style="font-family: Arial, Helvetica, sans-serif;"> Avance de presupuesto </h6>
-
-
-        {% for i in datos_barras|slice:"4" %}
-
-        <div>
-
-          <small style="font-family: Arial, Helvetica, sans-serif;"> {{i.0.proyecto.nombre}}</small>
-        </div>
-
-        <div class="progress" style="width: 400px;">
-          <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: {{i.1}}%; background-color: rgb({{i.0.proyecto.color}});" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" ></div>
-        </div>
-
-        {% endfor %}
+    <div style="text-align: center;">
 
 
-
+        <small style="font-family: Arial, Helvetica, sans-serif;"> <b>Modulo:</b> Dirección</small>
+      
+  
+  
       </div>
+  
+      
+      
+       <b><hr class = "my-4" style="width: 75%; border-color: rgba({{datos.0.0.color}}, 0.5) ;"></b>
+  
+
+    <div>
+
+        <div style="display: inline-block; width: 400px; vertical-align: top;  margin: 40px; ">
+
+
+            <h6 style="font-family: Arial, Helvetica, sans-serif;"> Avance de presupuesto </h6>
+    
+    
+            {% for i in datos_barras|slice:"4" %}
+    
+            <div>
+    
+              <small style="font-family: Arial, Helvetica, sans-serif;"> {{i.0.proyecto.nombre}}</small>
+            </div>
+    
+            <div class="progress" style="width: 400px;">
+              <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: {{i.1}}%; background-color: rgb({{i.0.proyecto.color}});" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" ></div>
+            </div>
+    
+            {% endfor %}
+    
+    
+    
+          </div>
+    
+    
+          <div style="display: inline-block; width: 400px; vertical-align: top; margin: 40px;">
+    
+    
+            <h6 style="font-family: Arial, Helvetica, sans-serif;"> Resumen de compras del mes </h6>
+    
+    
+            <div style="text-align: left;">
+
+                <div>
+
+                    <small style="font-family: Arial, Helvetica, sans-serif;"> <b>Monto gastado en el mes:</b> {{datos_compras.0|floatformat:0|intcomma}} $</small>
+
+                </div>
+
+                <div>
+
+                    <small style="font-family: Arial, Helvetica, sans-serif;"> <b>Monto estimado:</b> {{datos_compras.1|floatformat:0|intcomma}} $</small>
+
+
+                </div>
+
+                <div>
+
+                    {% if datos_compras.2 == 0 %}
+
+                    <small style="font-family: Arial, Helvetica, sans-serif;"> <b>Diferencia con el presupuesto:</b> {{datos_compras.2|floatformat:0|intcomma}} %</small>
+
+
+                    {% elif datos_compras.2 > 0 %}
+
+                    <small style="font-family: Arial, Helvetica, sans-serif; color: rgb(68, 204, 52);"> <b>Diferencia con el presupuesto:</b> ↓ {{datos_compras.2|floatformat:0|intcomma}} %</small>
+
+
+
+                    {% else %}
+
+                    <small style="font-family: Arial, Helvetica, sans-serif; color: rgb(204, 66, 52);"> <b>Diferencia con el presupuesto:</b> ↑ {{datos_compras.2|floatformat:0|intcomma}} %</small>
+
+
+
+                    {% endif %}
+
+                </div>
+
+                
+            </div>
+    
+    
+    
+          </div>
+
+          <div style="display: inline-block; width: 400px; vertical-align: top; margin: 40px;">
+    
+    
+            <h6 style="font-family: Arial, Helvetica, sans-serif;"> Resumen de unidades</h6>
+    
+    
+            <div style="text-align: left;">
+
+                <div>
+
+                    <small style="font-family: Arial, Helvetica, sans-serif;"> <b>Departamentos disponibles:</b> Un</small>
+
+                </div>
+
+                <div>
+
+                    <small style="font-family: Arial, Helvetica, sans-serif;"> <b>Cocheras disponibles:</b> Un</small>
+
+
+                </div>
+
+                <div>
+
+                    <small style="font-family: Arial, Helvetica, sans-serif;"> <b>Superficie disponible:</b> M2</small>
+
+
+                </div>
+
+                
+            </div>
+    
+    
+    
+          </div>
+
+
+          <div style="display: inline-block; width: 400px; vertical-align: top; margin: 20px;">
+    
+    
+            <h6 style="font-family: Arial, Helvetica, sans-serif;"> Avance de ventas </h6>
+    
+
+                <div>
+
+                    <small style="font-family: Arial, Helvetica, sans-serif;"> <b>Unidades vendidas en el mes:</b> {{ventas}} Unidades</small>
+
+                </div>
+
+
+                    
+                {% for i in ventas_barras|slice:"4" %}
+        
+                <div>
+        
+                    <small style="font-family: Arial, Helvetica, sans-serif;"> {{i.0.nombre}}</small>
+                </div>
+        
+                <div class="progress" style="width: 400px;">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: {{i.1}}%; background-color: rgb({{i.0.color}});" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" ></div>
+                </div>
+        
+                {% endfor %}
+            
+                
+            </div>
+    
+    
+    
+          </div>
+
+
+    <b><hr class = "my-4" style="width: 75%; border-color: rgba({{datos.0.0.color}}, 0.5) ;"></b>
+
+    
 
 
     <div style="text-align: center; margin-top: 2%;">

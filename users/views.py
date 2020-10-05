@@ -6,6 +6,9 @@ from django.contrib.auth import login as do_login
 from django.contrib.auth.forms import UserCreationForm
 from finanzas.models import Almacenero, RegistroAlmacenero
 from presupuestos.models import Presupuestos
+from proyectos.models import Proyectos, Unidades
+from ventas.models import VentasRealizadas
+from compras.models import Compras
 from registro.models import RegistroValorProyecto
 import datetime
 from datetime import date
@@ -16,6 +19,9 @@ def guia(request):
 
 
 def dashboard(request):
+
+
+    #Calculos para tablero de avance de presupuesto
 
     barras = []
 
@@ -31,7 +37,57 @@ def dashboard(request):
 
     barras = sorted(barras,reverse=True, key=lambda tup: tup[1])
 
-    return render(request, "users/dashboard.html", {"datos_barras":barras})
+
+    #Calculos para tablero de ventas
+
+    proyectos = Proyectos.objects.all()
+
+    ventas_barras = []
+
+    for p in proyectos:
+
+        total_unidades = Unidades.objects.filter(proyecto = p)
+
+        unidades_vendidas = Unidades.objects.filter(proyecto = p, estado = "VENDIDA")
+
+        if len(total_unidades) != 0:
+
+            avance = (len(unidades_vendidas)/len(total_unidades))*100
+
+            ventas_barras.append((p, int(avance)))
+
+    ventas_barras = sorted(ventas_barras, reverse=True, key=lambda tup: tup[1])
+
+    date = datetime.date.today()
+
+    fecha_inicio = datetime.date(date.year, date.month, 1)
+
+    ventas_realizadas = len(VentasRealizadas.objects.filter(fecha__gt = fecha_inicio))
+
+
+    #Calculo para compras
+
+    compras = Compras.objects.filter(fecha_c__gt = fecha_inicio)
+
+    comprado = 0
+    estimado = 0
+
+    for c in compras:
+        comprado = comprado + c.cantidad*c.precio
+        estimado = estimado + c.cantidad*c.precio_presup
+
+    if estimado == 0:
+
+        diferencia = 0
+
+    else:
+
+        diferencia = (comprado/estimado-1)*100
+
+    datos_compras = [comprado, estimado, diferencia]
+
+
+    return render(request, "users/dashboard.html", {"datos_barras":barras, "ventas_barras":ventas_barras, "ventas":ventas_realizadas, "datos_compras":datos_compras})
 
 def inicio(request):
 
