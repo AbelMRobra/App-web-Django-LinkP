@@ -755,7 +755,7 @@ def ingresounidades(request, estado, proyecto):
 
         if estado == "0":
 
-            datos = VentasRealizadas.objects.all().exclude(unidad__estado_iibb = "SI", unidad__estado_comision = "SI", proyecto__id = proyecto)
+            datos = VentasRealizadas.objects.filter(proyecto__id = proyecto).exclude(unidad__estado_iibb = "SI", unidad__estado_comision = "SI")
 
         if estado == "1":
 
