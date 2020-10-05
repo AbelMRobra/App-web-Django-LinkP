@@ -48,7 +48,7 @@ def dashboard(request):
 
         total_unidades = Unidades.objects.filter(proyecto = p)
 
-        unidades_vendidas = Unidades.objects.filter(proyecto = p, estado = "VENDIDA")
+        unidades_vendidas = Unidades.objects.filter(proyecto = p).exclude(estado = "DISPONIBLE")
 
         if len(total_unidades) != 0:
 
@@ -87,7 +87,15 @@ def dashboard(request):
     datos_compras = [comprado, estimado, diferencia]
 
 
-    return render(request, "users/dashboard.html", {"datos_barras":barras, "ventas_barras":ventas_barras, "ventas":ventas_realizadas, "datos_compras":datos_compras})
+    #Calculo para unidades
+
+    deptos_disp = len(Unidades.objects.filter(estado = "DISPONIBLE", tipo = "DEPARTAMENTO"))
+    cocheras_disp = len(Unidades.objects.filter(estado = "DISPONIBLE", tipo = "COCHERA"))
+
+    datos_unidades = [deptos_disp, cocheras_disp]
+
+
+    return render(request, "users/dashboard.html", {"datos_barras":barras, "ventas_barras":ventas_barras, "ventas":ventas_realizadas, "datos_compras":datos_compras, "datos_unidades":datos_unidades})
 
 def inicio(request):
 
