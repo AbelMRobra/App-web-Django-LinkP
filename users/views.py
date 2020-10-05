@@ -75,10 +75,21 @@ def inicio(request):
 
             b.save()
 
-        
 
-    
-    return render(request, "users/inicio.html")
+    barras = []
+
+
+    datos_barras = Presupuestos.objects.order_by("-saldo")
+
+    for db in datos_barras:
+
+        if db.valor != 0:
+
+            avance = (100 - db.saldo/db.valor*100)
+
+            barras.append((db, int(avance)))
+
+    return render(request, "users/inicio.html", {"datos_barras":barras})
 
 def welcome(request):
     # Si estamos identificados devolvemos la portada
