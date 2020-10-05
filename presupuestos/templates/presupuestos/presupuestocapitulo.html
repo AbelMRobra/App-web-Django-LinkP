@@ -8,20 +8,32 @@
 
 <div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;">
 
-    <h3 style="text-align: center; color: rgb({{datos.proyecto.color}}) ;">Presupuesto de reposición {{datos.proyecto.nombre}}</h3>
-    <img src="{{datos.proyecto.iamgen.url}}"  class="img-fluid" alt="..." style="max-width:200px;width:auto;height:auto; margin-top: 1rem;">
+    <h3 style="text-align: center; color: rgb({{datos.proyecto.color}}); font-family: Arial, Helvetica, sans-serif;">Presupuesto de reposición {{datos.proyecto.nombre}}</h3>
+
+    <div>
+
+        <img src="{{datos.proyecto.iamgen.url}}"  class="img-fluid" alt="..." style="max-width:200px;width:auto;height:auto; margin-top: 1rem; margin-bottom: 10px;">
   
+
+
+    </div>
     
-     <b><hr class = "my-4" style="width: 75%; border-color: rgba({{datos.proyecto.color}}, 0.5;"></b>
+
+    <div style="text-align: center;">
+
+
+        <small style="font-family: Arial, Helvetica, sans-serif;"> <b>Modulo:</b> Presupuestos</small>
+      
+  
+  
+      </div>
+    
+     <b><hr class = "my-4" style="width: 100%; border-color: rgba({{datos.proyecto.color}}, 0.5;"></b>
 
      {% if datos.datos %}
 
      <div style="text-align: center;">
         <a href="{% url 'Explosión de insumos' id_proyecto=datos.proyecto.id %}" class="btn btn-dark">Explosión de insumos</a>          
-    </div>
-    <div style="margin-top: 1rem;">
-        <h6 style="color: rgb({{datos.proyecto.color}}) ;"> <small> <strong>Detalle de todos los articulos</strong> </small> </h6>
-    
     </div>
  
  <b><hr class = "my-4" style="width: 100%; border-color: rgba({{datos.proyecto.color}}, 0.5 ;"></b>
@@ -59,13 +71,8 @@
         </table>
 
         <div style="text-align: center;">
-            <h6 style="color: rgb({{datos.proyecto.color}})">Valor de reposición del proyecto: ${{datos.valor_proyecto_completo|floatformat:0|intcomma}} <strong>(${{datos.valor_proyecto|floatformat:2}} Millones)</strong> </h6>
+            <h6 style="color: rgb({{datos.proyecto.color}}); font-family: Arial, Helvetica, sans-serif;">Valor de reposición del proyecto: ${{datos.valor_proyecto_completo|floatformat:0|intcomma}} <strong>(${{datos.valor_proyecto|floatformat:2}} Millones)</strong> </h6>
         </div>
-
-        <div style="text-align: center;">
-            <p> <small>-- Link<strong>P</strong> --</small> </p>
-    
-         </div>
 
      {% else %}
      
@@ -78,12 +85,14 @@
         <img src="{% static 'img/comunicaciones.png' %}" style="width: 10%; height: 10%;">
     </div>
 
-    <div style="text-align: center;">
-        <p> <small>-- Link<strong>P</strong> --</small> </p>
-
-     </div>
         
     {% endif %}
+
+
+    <div style="text-align: center;">
+        <p style="font-family: Arial, Helvetica, sans-serif;"> <small>-- Link<strong>P</strong> --</small> </p>
+
+     </div>
         
 
    
