@@ -25,7 +25,7 @@ def dashboard(request):
 
     barras = []
 
-    datos_barras = Presupuestos.objects.order_by("-saldo")
+    datos_barras = Presupuestos.objects.order_by("-saldo").exclude(proyecto__nombre = "DIANCO - LAMADRID 1137")
 
     for db in datos_barras:
 
