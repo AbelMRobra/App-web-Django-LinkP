@@ -9,8 +9,26 @@
 
 <div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;">
 
-    <h3 style="color: rgb({{datos.proyecto.color}}) ;">Saldo del proyecto {{datos.proyecto.nombre}}</h3>
-    <img src="{{datos.proyecto.iamgen.url}}"  class="img-fluid" alt="..." style="max-width:20%;width:auto;height:auto; margin-top: 1rem;">
+    <h3 style="color: rgb({{datos.proyecto.color}}); font-family: Arial, Helvetica, sans-serif;">Saldo del proyecto</h3>
+
+    <h5 style="color: rgb({{datos.proyecto.color}}); font-family: Arial, Helvetica, sans-serif;">{{datos.proyecto.nombre}}</h5>
+
+    <div>
+
+        <img src="{{datos.proyecto.iamgen.url}}"  class="img-fluid" alt="..." style="max-width:200px;width:auto;height:auto; margin-top: 1rem;">
+
+
+
+    </div>
+    
+    <div style="text-align: center;">
+
+
+        <small style="font-family: Arial, Helvetica, sans-serif;"> <b>Modulo:</b> Presupuestos</small>
+      
+  
+  
+      </div>
   
      <b><hr class = "my-4" style="width: 75%; border-color: rgba({{datos.proyecto.color}}, 0.5) ;"></b>
 
@@ -18,12 +36,6 @@
         <a href="{% url 'Explosión de insumos' id_proyecto=datos.proyecto.id %}" class="btn btn-dark">Explosión de insumos</a>          
         
     </div>
-
-    <div style="margin-top: 1rem;">
-        <h6 style="color: rgb({{datos.proyecto.color}}) ;"> <small> <strong>Detalle de todos los articulos</strong> </small> </h6>
-    
-    </div>
-
  
  <b><hr class = "my-4" style="width: 100%; border-color: rgba({{datos.proyecto.color}}, 0.5) ;"></b>
 
@@ -31,12 +43,12 @@
         <thead>
 
             <tr class = "table-dark">
-                <th scope = "row">Nº</th>
-                <th scope = "row">CAPITULO</th>
-                <th scope = "row">VALOR DEL CAPITULO</th>
-                <th scope = "row">SALDO</th>
-                <th scope = "row">AVANCE</th>
-                <th scope = "row">INC</th>                
+                <th scope = "row" style="vertical-align: middle;">Nº</th>
+                <th scope = "row" style="vertical-align: middle;">CAPITULO</th>
+                <th scope = "row" style="vertical-align: middle;" class="priority-5">VALOR DEL CAPITULO</th>
+                <th scope = "row" style="vertical-align: middle;">SALDO</th>
+                <th scope = "row" style="vertical-align: middle;">AVANCE</th>
+                <th scope = "row" style="vertical-align: middle;">INC</th>                
             </tr>
         </thead>
 
@@ -48,7 +60,7 @@
             <tr class = "table-light">
                 <td style="width: 5%; color: rgb({{datos.proyecto.color}})"><b>{{i.0}}</b></td>
                 <td style="width: 30%;"> <b><a href="{% url 'Articulos saldo de presupuesto' id_proyecto=datos.proyecto.id id_capitulo=i.1.id %}" style="color: black;">{{i.1}}</a></b></td>
-                <td style="width: 15%;"> ${{i.2|floatformat:0|intcomma}} </td>
+                <td style="width: 15%;" class="priority-5" > ${{i.2|floatformat:0|intcomma}} </td>
                 <td style="width: 15%;"> ${{i.3|floatformat:0|intcomma}} </td>
                 <td style="width: 15%;"> {{i.4|floatformat:0|intcomma}}% </td>
                 <td style="width: 10%;"> <b>{{i.5|floatformat:0|intcomma}}% </b> </td>                         
@@ -61,7 +73,7 @@
         </table>
 
         <div style="text-align: center;">
-            <h6 style="color: rgb({{datos.proyecto.color}})">Saldo del proyecto a la fecha: ${{datos.saldo|floatformat:0|intcomma}}</h6>
+            <h6 style="color: rgb({{datos.proyecto.color}}); font-family: Arial, Helvetica, sans-serif;">Saldo del proyecto a la fecha: ${{datos.saldo|floatformat:0|intcomma}}</h6>
         </div>
 
         <div style="text-align: center; margin-top: 3%; margin-bottom: 2%;">
@@ -69,10 +81,12 @@
     
         </div>
     
-        <small> <strong>--Esta descarga puede durar algunos minutos--</strong>   </small>
+        <small style="font-family: Arial, Helvetica, sans-serif;"> <b>--Esta descarga puede durar algunos minutos--</b>   </small>
 
         <div style="text-align: center; margin-top: 2rem;">
-            <p> <small>-- Link<strong>P</strong> --</small> </p>
+
+            <p style="font-family: Arial, Helvetica, sans-serif;"> <small>-- Link<strong>P</strong> --</small> </p>
+
     
          </div>
    
