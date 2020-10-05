@@ -21,7 +21,15 @@
 
     <h6 style="text-align: center; color: rgb({{datos.proyecto.color}}); font-family: Arial, Helvetica, sans-serif;">{{datos.proyecto}}</h6>
      
-    
+    <div style="text-align: center;">
+
+
+        <small style="font-family: Arial, Helvetica, sans-serif;"> <b>Modulo:</b> Presupuestos</small>
+      
+  
+  
+      </div>
+  
     <b><hr class = "my-4" style="width: 100%; border-color: rgba({{datos.proyecto.color}}, 0.5)  ;"></b>
  
     
@@ -31,7 +39,7 @@
         <thead>
 
             <tr class = "table-dark">
-                <th scope = "row" style="vertical-align: middle;">ANALISIS </th>
+                <th scope = "row" style="vertical-align: middle; text-align: left;">ANALISIS </th>
                 <th scope = "row" style="vertical-align: middle;" class="priority-5"> VINCULACIÓN</th>
                 <th scope = "row" style="vertical-align: middle;" class="priority-4"> PRECIO DEL ANALISIS</th>
                 <th scope = "row" style="vertical-align: middle;" class="priority-4"> CANTIDAD</th>
@@ -47,7 +55,7 @@
             {% for i in datos.datos %}
 
             <tr class = "table-light">
-                <td> <a href="{% url 'Composición Analisis' i.0.codigo %}" style="color: black;"> <b>{{i.0.nombre}}</b> </a> </td>
+                <td> <a href="{% url 'Composición Analisis' i.0.codigo %}" style="color: black; text-align: left;"> <b>{{i.0.nombre}}</b> </a> </td>
                 <td class="priority-5"> {{i.5}}</td>
                 <td class="priority-4"> ${{i.1|floatformat:0|intcomma}}</td>
                 <td class="priority-4"> {{i.2|floatformat:2}} ({{i.0.unidad}})</td>
