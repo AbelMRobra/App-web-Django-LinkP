@@ -20,7 +20,7 @@
       <div>
 
 
-        <img src="{{datos.0.0.iamgen.url}}"  class="img-fluid" alt="..." style="max-width:20%;width:auto;height:auto; margin-top: 1rem;">
+        <img src="{{datos.0.0.iamgen.url}}"  class="img-fluid" alt="..." style="max-width:20%;width:auto;height:auto; margin-top: 1rem; margin-bottom: 10px;">
   
 
 
@@ -111,7 +111,7 @@
 
      <div style="text-align: center; margin-top: 3%; margin-bottom: 1.5%;">
 
-      <h6> Avance del presupuesto: {{datos.0.3|floatformat:2}}% </h6>
+      <h6 style="font-family: Arial, Helvetica, sans-serif;"> Avance del presupuesto: {{datos.0.3|floatformat:2}}% </h6>
    </div>
 
    <div class="progress" style="margin-bottom: 2%; width: 60%; margin-left: 20%;">
@@ -121,12 +121,12 @@
      <a href="{% url 'Panel de presupuestos por capitulo' datos.0.0.id %}" style="color: black;">
      <div style="text-align: center;">
 
-        <div class="card text-white bg-dark mb-3" style="display: inline-block; width: 25%; height: 25%;  ">
+        <div class="card text-white bg-dark mb-3" style="display: inline-block; width: 300px; height: 150px;">
           
             <div class="card-body">
-              <h4 class="card-title">Valor de reposición</h4>
-              <h6>${{datos.0.1|floatformat:2}} Millones</h6>
-              <small>El valor del proyecto neto actualizado</small>
+              <h4 class="card-title" style="font-family: Arial, Helvetica, sans-serif;">Valor de reposición</h4>
+              <h6 style="font-family: Arial, Helvetica, sans-serif;">${{datos.0.1|floatformat:2}} Millones</h6>
+              <small style="font-family: Arial, Helvetica, sans-serif;">El valor del proyecto neto actualizado</small>
             </div>
           </div>
     
@@ -134,12 +134,12 @@
 
     <a href="{% url 'Saldo por capitulo' datos.0.0.id %}" style="color: black;">
     
-        <div class="card text-white bg-dark mb-3" style="display: inline-block; width: 25%; margin-left:2%;">
+        <div class="card text-white bg-dark mb-3" style="display: inline-block; width: 300px; height: 150px; ">
               
             <div class="card-body">
-                <h4 class="card-title">Saldo del proyecto</h4>
-                <h6>${{datos.0.2|floatformat:2}} Millones</h6>
-                <small>Todas las partidas pendientes</small>
+                <h4 class="card-title" style="font-family: Arial, Helvetica, sans-serif;">Saldo del proyecto</h4>
+                <h6 style="font-family: Arial, Helvetica, sans-serif;">${{datos.0.2|floatformat:2}} Millones</h6>
+                <small style="font-family: Arial, Helvetica, sans-serif;">Todas las partidas pendientes</small>
             </div>
           </div>
 
@@ -161,8 +161,8 @@
 
       <div style="text-align: center; margin-top: 3%; margin-bottom: 1.5%;">
 
-        <h6> Variación del presupuesto del proyecto </h6>
-        <small>Precio expresado en millones de pesos</small>
+        <h6 style="font-family: Arial, Helvetica, sans-serif;"> Variación del presupuesto del proyecto </h6>
+        <small style="font-family: Arial, Helvetica, sans-serif;">Precio expresado en millones de pesos</small>
      </div>
 
      <div style="width: 90%; text-align: center;">
