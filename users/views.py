@@ -14,6 +14,25 @@ def guia(request):
 
     return render(request, "users/guia.html")
 
+
+def dashboard(request):
+
+    barras = []
+
+    datos_barras = Presupuestos.objects.order_by("-saldo")
+
+    for db in datos_barras:
+
+        if db.valor != 0:
+
+            avance = (100 - db.saldo/db.valor*100)
+
+            barras.append((db, int(avance)))
+
+    barras = sorted(barras,reverse=True, key=lambda tup: tup[1])
+
+    return render(request, "users/dashboard.html", {"datos_barras":barras})
+
 def inicio(request):
 
     date = datetime.date.today()

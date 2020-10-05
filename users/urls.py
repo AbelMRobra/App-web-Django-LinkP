@@ -12,5 +12,6 @@ urlpatterns = [
     url(r'^logout$', views.logout, name = 'Logout'),
     url(r'^inicio$', login_required(views.inicio), name = 'Inicio'),
     url(r'^accounts/login/$', views.welcome, name = 'Redicrección'),
+    url(r'^dashboard$', views.dashboard, name = 'Dashboard'),
 
 ]

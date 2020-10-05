@@ -1,0 +1,43 @@
+{% extends "users/inicio.html" %}
+
+{% load static %}
+
+{% block content %}
+
+<div class = "jumbotron" style="background-color: white; margin-bottom: 0px;">
+
+    <div style="display: inline-block; width: 400px; vertical-align: top; margin-top: 10px;">
+
+
+        <h6 style="font-family: Arial, Helvetica, sans-serif;"> Avance de presupuesto </h6>
+
+
+        {% for i in datos_barras|slice:"4" %}
+
+        <div>
+
+          <small style="font-family: Arial, Helvetica, sans-serif;"> {{i.0.proyecto.nombre}}</small>
+        </div>
+
+        <div class="progress" style="width: 400px;">
+          <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: {{i.1}}%; background-color: rgb({{i.0.proyecto.color}});" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" ></div>
+        </div>
+
+        {% endfor %}
+
+
+
+      </div>
+
+
+    <div style="text-align: center; margin-top: 2%;">
+        <p style="font-family: Arial, Helvetica, sans-serif;"> <small>-- Link<strong>P</strong> --</small> </p>
+
+     </div>
+
+   
+                    
+</div>
+ 
+    
+{% endblock %}
