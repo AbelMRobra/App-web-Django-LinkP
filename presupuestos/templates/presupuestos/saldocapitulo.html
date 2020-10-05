@@ -46,11 +46,11 @@
 
             <tr class = "table-dark">
                 <th scope = "row" style="vertical-align: middle;" class="priority-3">Nº</th>
-                <th scope = "row" style="vertical-align: middle;">CAPITULO</th>
+                <th scope = "row" style="vertical-align: middle; text-align: left;">CAPITULO</th>
                 <th scope = "row" style="vertical-align: middle;" class="priority-5">VALOR DEL CAPITULO</th>
                 <th scope = "row" style="vertical-align: middle;">SALDO</th>
                 <th scope = "row" style="vertical-align: middle;" class="priority-4">AVANCE</th>
-                <th scope = "row" style="vertical-align: middle;">INC</th>                
+                <th scope = "row" style="vertical-align: middle;" class="priority-3">INC</th>                
             </tr>
         </thead>
 
@@ -61,11 +61,11 @@
 
             <tr class = "table-light">
                 <td style="width: 5%; color: rgb({{datos.proyecto.color}})" class="priority-3"><b>{{i.0}}</b></td>
-                <td style="width: 30%;"> <b><a href="{% url 'Articulos saldo de presupuesto' id_proyecto=datos.proyecto.id id_capitulo=i.1.id %}" style="color: black;">{{i.1}}</a></b></td>
+                <td style="width: 30%; text-align: left;"> <b><a href="{% url 'Articulos saldo de presupuesto' id_proyecto=datos.proyecto.id id_capitulo=i.1.id %}" style="color: black;">{{i.1}}</a></b></td>
                 <td style="width: 15%;" class="priority-5" > ${{i.2|floatformat:0|intcomma}} </td>
                 <td style="width: 15%;"> ${{i.3|floatformat:0|intcomma}} </td>
                 <td style="width: 15%;" class="priority-4"> {{i.4|floatformat:0|intcomma}}% </td>
-                <td style="width: 10%;"> <b>{{i.5|floatformat:0|intcomma}}% </b> </td>                         
+                <td style="width: 10%;" class="priority-3"> <b>{{i.5|floatformat:0|intcomma}}% </b> </td>                         
             </tr>
 
         {% endfor %}
