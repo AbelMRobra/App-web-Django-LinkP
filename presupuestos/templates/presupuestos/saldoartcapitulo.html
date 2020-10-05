@@ -8,23 +8,34 @@
 
 <div class = "jumbotron" style="background-color: white; margin-bottom: 0px;">
 
-    <h3 style="text-align: center; color: rgb({{datos.proyecto.color}});">Articulos pendientes del capitulo {{datos.capitulo.0.nombre}}</h3>
-    <h6 style="text-align: center; color: rgb({{datos.proyecto.color}}) ;"> {{datos.proyecto.nombre}}</h6>
-     <b><hr class = "my-4" style="width: 75%; border-color: #17B5B5 ;"></b>
+    <h3 style="text-align: center; color: rgb({{datos.proyecto.color}}); font-family: Arial, Helvetica, sans-serif;">{{datos.capitulo.0.nombre}}</h3>
 
+    <h4 style="text-align: center; color: rgb({{datos.proyecto.color}}); font-family: Arial, Helvetica, sans-serif;">Articulos pendientes de compra</h4>
+
+    
+    <div style="text-align: center;">
+
+        <img src="{{datos.proyecto.iamgen.url}}"  class="img-fluid" alt="..." style="max-width:200px;width:auto;height:auto; margin-top: 1rem; margin-bottom: 10px;">
+
+    </div>
+
+    <h6 style="text-align: center; color: rgb({{datos.proyecto.color}}); font-family: Arial, Helvetica, sans-serif;"> {{datos.proyecto.nombre}}</h6>
+
+    <b><hr class = "my-4" style="width: 100%; border-color: #17B5B5 ;"></b>
+    
     {% if datos.datos_saldo %}
  
- <b><hr class = "my-4" style="width: 100%; border-color: #17B5B5 ;"></b>
+ 
 
     <table class = "table table-hover" style="text-align: center;">
         <thead>
 
             <tr class = "table-dark">
-                <th scope = "row">ARTICULO</th>
-                <th scope = "row">VALOR</th>
-                <th scope = "row">CANTIDAD</th>
-                <th scope = "row">SALDO</th>
-                <th scope = "row">INC</th>                
+                <th scope = "row" style="vertical-align: middle;">ARTICULO</th>
+                <th scope = "row" style="vertical-align: middle;" class="priority-4"> VALOR</th>
+                <th scope = "row" style="vertical-align: middle;">CANTIDAD</th>
+                <th scope = "row" style="vertical-align: middle;">SALDO</th>
+                <th scope = "row" style="vertical-align: middle;" class="priority-5"> INC</th>                
             </tr>
         </thead>
 
@@ -37,10 +48,10 @@
 
             <tr class = "table-light">
                 <td style="width: 40%;"><b>{{i.0.nombre}} ({{i.0.unidad}})</b></td>
-                <td style="width: 15%;">${{i.0.valor|floatformat:0|intcomma}}</td>
+                <td style="width: 15%;" class="priority-4">${{i.0.valor|floatformat:0|intcomma}}</td>
                 <td style="width: 15%;">{{i.1|floatformat:0|intcomma}}</td>
                 <td style="width: 20%;"> ${{i.2|floatformat:0|intcomma}} </td>
-                <td style="width: 10%;"> <b>{{i.3|floatformat:0|intcomma}}% </b> </td>                         
+                <td style="width: 10%;" class="priority-5"> <b>{{i.3|floatformat:0|intcomma}}% </b> </td>                         
             </tr>
 
         {% endfor %}
@@ -50,13 +61,11 @@
         </table>
 
         <div style="text-align: center;">
-            <h6>El saldo del capitulo es ${{datos.saldo|floatformat:0|intcomma}}</h6>
+
+            <h6 style="font-family: Arial, Helvetica, sans-serif;">El saldo del capitulo es ${{datos.saldo|floatformat:0|intcomma}}</h6>
+
         </div>
 
-        <div style="text-align: center;">
-            <p> <small>-- Link<strong>P</strong> --</small> </p>
-    
-         </div>
 
     {% else %}
 
@@ -69,12 +78,16 @@
         <img src="{% static 'img/comunicaciones.png' %}" style="width: 10%; height: 10%;">
     </div>
 
-    <div style="text-align: center;">
-        <p> <small>-- Link<strong>P</strong> --</small> </p>
 
-     </div>
 
     {% endif %}
+
+
+    <div style="text-align: center;">
+        
+        <p style="font-family: Arial, Helvetica, sans-serif;"> <small>-- Link<strong>P</strong> --</small> </p>
+
+     </div>
    
                     
 </div>
