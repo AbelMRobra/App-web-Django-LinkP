@@ -10,15 +10,65 @@
 <div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;" > 
 
     <div style="text-align: center;">
-        <h2>Resumen de precio</h2>
+        <h2 style="font-family: Arial, Helvetica, sans-serif;">Resumen de precio</h2>
 
-        {% if datos.fecha %}
+        
 
-        <h6>Fecha del resumen: {{datos.fecha}}</h6>
+        <small style="font-family: Arial, Helvetica, sans-serif,"><b>Modulo</b>: Ventas </small><small>
+        
 
-        {% endif %}
 
-        <small>Registro del precio base de los proyectos</small>
+        <b><hr class = "my-4" style="width: 75%; "></b>
+
+
+        <h6 style="font-family: Arial, Helvetica, sans-serif;">Resumen actual</h6>
+
+
+        <table class = "table table-hover" style="text-align: center; margin: 15px;">
+            <thead>
+    
+                <tr class = "table-dark">
+                    <th scope = "row" class="priority-3" style="vertical-align: middle;" colspan="2" > <small>PROYECTO</small></th>
+                    <th scope = "row" class="priority-3" style="vertical-align: middle;"> <small>PRESUPUESTO</small></th>
+                    <th scope = "row" style="vertical-align: middle;"> <small>CONTADO PROM.</small></th>
+                    <th scope = "row" style="vertical-align: middle;" class="priority-5"> <small>CONTADO PROM. PLUS</small></th>
+                    <th scope = "row" style="vertical-align: middle;" class="priority-5"> <small> VAR</small></th>
+                    <th scope = "row" style="vertical-align: middle;" class="priority-5"> <small> ULTIMA ACT. </small></th>
+                    <th scope = "row" style="vertical-align: middle;" class="priority-4"> <small> % VENDIDO </small></th>
+                    
+    
+                     
+    
+                </tr>
+            </thead>
+    
+            <tbody> 
+                
+                {% for i in datos.datos_presupuesto %}
+ 
+                <tr class = "table-light">
+                    <td> <b> <small><img src="{{.parametros.proyecto.iamgen.url}}"  class="img-fluid" alt="..." style="width:70px;height:auto; ">
+                    </small> </b></td>
+                    <td><small style="color: rgb({{i.parametros.proyecto.color}});"><b>{{i.parametros.proyecto.nombre}}</b> </small></td> 
+                    <td><small>$ {{i.valor_final|floatformat:0|intcomma}}</small></td> 
+                    <td> <b> <small>X</small> </b></td> 
+                    <td> <b> <small>X</small> </b></td> 
+                    <td> <b> <small>X</small> </b></td> 
+                    <td> <b> <small>X</small> </b></td>
+                    <td> <b> <small>X</small> </b></td>     
+                    
+    
+    
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+         
+    
+    
+        </table>
+
 
 
         <b><hr class = "my-4" style="width: 75%; "></b>
@@ -27,12 +77,27 @@
 
     {% if datos.busqueda %}
 
+    {% if datos.fecha %}
+
+        <h6>Fecha del resumen: {{datos.fecha}}</h6>
+
+        {% endif %}
+
     <div style="text-align: center;">
+
+        <h6 style="font-family: Arial, Helvetica, sans-serif;">Historico de los pricing</h6>
+
        <form method="POST">
 
            {% csrf_token %}
 
-           <select name="fecha" class="custom-select" style="width: 20%;">
+           <div style="margin-bottom: 10px;">
+
+            <small style="font-family: Arial, Helvetica, sans-serif;"> Seleccione una fecha para cargar el listado</small>
+
+          </div>
+
+           <select name="fecha" class="custom-select" style="width: 300px;">
 
 
                {% for i in datos.fechas %}
@@ -44,9 +109,7 @@
 
 
              </select>
-             <div>
-               <small> Seleccione una fecha para cargar el listado</small>
-             </div>
+             
              
 
              <div>
@@ -73,7 +136,7 @@
     <b><hr class = "my-4" style="width: 50%; border-color: rgba({{i.proyecto.color}}, 0.5) ;"></b>
     
     
-    <img src="{{i.proyecto.iamgen.url}}" style="max-width:20%;width:auto;height:auto; margin-top: 1rem; margin-bottom: 1%;">
+    <img src="{{i.proyecto.iamgen.url}}" style="max-width:200; height:auto; margin-top: 1rem; margin-bottom: 1%;">
     
     <h6 style="color: rgb({{i.proyecto.color}}) ">Precio Base: ${{i.base_precio|floatformat:0|intcomma}}  </h6>
     

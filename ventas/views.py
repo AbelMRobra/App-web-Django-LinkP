@@ -337,6 +337,7 @@ def radiografia(request):
 
 def resumenprecio(request):
 
+
     busqueda = 1
     datos_pricing = PricingResumen.objects.all()
     datos = 0
@@ -344,12 +345,80 @@ def resumenprecio(request):
 
     fechas = []
 
-    for dato in datos_pricing:
-        fechas.append((dato.fecha, str(dato.fecha)))
+    # Parte para calcular precio presupuesto
 
-    fechas = list(set(fechas))
+    datos_presupuesto = Desde.objects.all()
 
-    fechas.sort( reverse=True)
+    constantes = Constantes.objects.all()
+
+    usd_blue = Constantes.objects.get(nombre = "USD_BLUE")
+
+    for i in datos_presupuesto:
+
+        costo = i.presupuesto.valor
+
+        #Aqui calculo el precio min y sugerido
+
+        costo = (costo/(1 + i.parametros.tasa_des_p))*(1 + i.parametros.soft)
+        
+        costo = costo*(1 + i.parametros.imprevitso)
+
+        porc_terreno = i.parametros.terreno/i.parametros.proyecto.m2*100
+        porc_link = i.parametros.link/i.parametros.proyecto.m2*100
+
+        aumento_tem = i.parametros.tem_iibb*i.parametros.por_temiibb*(1+i.parametros.ganancia)
+
+        aumento_comer = i.parametros.comer*(1+(porc_terreno + porc_link)/100)*(1+i.parametros.ganancia)
+        
+
+        costo = costo/(1-aumento_tem- aumento_comer)
+        
+        m2 = (i.parametros.proyecto.m2 - i.parametros.terreno - i.parametros.link)
+
+        valor_costo = costo/m2
+
+        #Aqui coloco la tasa de descuento
+
+
+        fecha_entrega =  datetime.datetime.strptime(str(i.presupuesto.proyecto.fecha_f), '%Y-%m-%d')
+        ahora = datetime.datetime.utcnow()
+        fecha_inicial = ahora + datetime.timedelta(days = (365*2))
+
+        if fecha_entrega > fecha_inicial:
+            y = fecha_entrega.year - fecha_inicial.year
+            n = fecha_entrega.month - fecha_inicial.month
+
+            meses = y*12 + n
+
+            valor_costo = -np.pv(fv=valor_costo, rate=i.parametros.tasa_des, nper=meses, pmt=0)
+
+
+        #Calculo el valor final
+        
+        valor_final = valor_costo*(1 + i.parametros.ganancia)
+
+
+        # Valorizo en dolares el precio de costo y sugerido
+
+        valor_costo_usd = 0
+
+        valor_final_usd = 0
+
+        for c in constantes:
+
+            if str(c.nombre) == 'USD_BLUE':
+
+                valor_costo_usd = valor_costo/c.valor
+
+                valor_final_usd = valor_final/c.valor
+
+        i.valor_costo = valor_costo
+        i.valor_costo_usd = valor_costo_usd
+        i.valor_final = valor_final
+        i.valor_final_usd = valor_final_usd
+
+        i.save()
+
 
     if request.method == 'POST':
 
@@ -367,7 +436,8 @@ def resumenprecio(request):
     datos = {"fechas":fechas,
     "busqueda":busqueda,
     "datos":datos,
-    "fecha":fecha}
+    "fecha":fecha,
+    "datos_presupuesto":datos_presupuesto}
 
     return render(request, 'resumenprecio.html', {"datos":datos})
 

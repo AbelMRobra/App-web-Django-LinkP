@@ -84,6 +84,7 @@
                 <th scope = "row" style="vertical-align: middle;" class="priority-3"> <small>PRECIO DE VENTA</small>   </th>
                 <th scope = "row" style="vertical-align: middle;" class="priority-4"> <small> ANOTACIONES</small></th>
                 <th scope = "row" style="vertical-align: middle;"> <small> DETALLES</small></th>
+                <th scope = "row" style="vertical-align: middle;"> <small> ELIMINAR</small></th>
 
                  
 
@@ -114,6 +115,8 @@
                 <td class="priority-4"> <b><a href="{% url 'Detalle venta' i.venta.id %}" class="btn btn-sm btn-info" >Ver detalles</a>
                 </b> </td>
                 <td> <b><a href="{% url 'Cuenta corriente venta' i.id %}" class="btn btn-sm btn-success" >Ingresar</a>
+                </b> </td>
+                <td> <b><a href="{% url 'Eliminar cuenta corriente' i.id %}" class="btn btn-sm btn-danger" >X</a>
                 </b> </td>
 
 

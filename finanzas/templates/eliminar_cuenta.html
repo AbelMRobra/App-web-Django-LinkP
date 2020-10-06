@@ -1,0 +1,56 @@
+{% extends "users/inicio.html" %}
+
+{% load static %}
+
+{% load humanize %}
+
+
+{% block content %}
+
+
+<div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;">
+
+    <div class = "jumbotron" style="width: 70%; text-align: center; margin-left: 15%;">
+
+        <h3 style="font-family: Arial, Helvetica, sans-serif;"> ¿Está seguro de eliminar la cuenta corriente de {{datos.venta.comprador}}?</h3>
+        <b><hr class = "my-4" style="width: 100%;"></b>
+
+        <div style="text-align: left; margin: 15px;">
+            <h6 style="font-family: Arial, Helvetica, sans-serif;">Tenga en cuenta que esta cuenta tiene asociada:</h6>
+
+            <div>
+                <small style="font-family: Arial, Helvetica, sans-serif;"><b>Cuotas:</b> {{otros_datos.0}}</small>
+            </div>
+
+            <div>
+                <small style="font-family: Arial, Helvetica, sans-serif;"><b>Pagos:</b> {{otros_datos.1}}</small>
+            </div>
+        </div>
+
+        <div>
+
+            <form method="post">
+                {% csrf_token %}
+        
+                <button type='submit' class = "btn btn-danger">Si, seguro!</button>
+                <a class = "btn btn-success" href="{% url 'Cuenta corriente proyecto' datos.venta.proyecto.id %}">Volver al panel!</a>
+        
+            </form>
+
+
+        </div>
+
+        
+
+    </div>
+
+
+    <div>
+        <p style="font-family: Arial, Helvetica, sans-serif;"> <small>-- Link<strong>P</strong> --</small> </p>
+
+     </div>
+
+
+</div>
+
+{% endblock %}

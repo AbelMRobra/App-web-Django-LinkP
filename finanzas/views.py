@@ -327,7 +327,25 @@ def ctacteproyecto(request, id_proyecto):
 
     return render(request, 'ctacteproyecto.html', {"proyecto":proyecto, "datos":datos})
 
-    ### Armando resumen de cuenta corriente
+
+def EliminarCuentaCorriente(request, id_cuenta):
+
+    datos = CuentaCorriente.objects.get(id = id_cuenta)
+
+    cuotas = len(Cuota.objects.filter(cuenta_corriente = datos))
+    pagos = len(Pago.objects.filter(cuota__cuenta_corriente = datos))
+
+    otros_datos = [cuotas, pagos]
+
+    if request.method == 'POST':
+
+        datos.delete()
+
+        return redirect('Cuenta corriente proyecto', id_proyecto = datos.venta.proyecto.id)
+
+    return render(request, 'eliminar_cuenta.html', {"datos":datos, "otros_datos":otros_datos})
+
+### Armando resumen de cuenta corriente
 
 
 def totalcuentacte(request, id_proyecto):

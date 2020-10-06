@@ -11,6 +11,7 @@ urlpatterns = [
     url(r'^pagostotal/$', login_required(views.consultapagos), name = 'Panel de pagos total'),
     url(r'^unidadesseñadas/(?P<estado>\d+)/(?P<proyecto>\d+)$', login_required(views.ingresounidades), name = 'Unidades señadas'),
     url(r'^panelctacte/$', login_required(views.panelctacote), name = 'Panel cuentas corrientes'),
+    url(r'^eliminarcuentacorriente/(?P<id_cuenta>\d+)/$', login_required(views.EliminarCuentaCorriente), name = 'Eliminar cuenta corriente'),
     url(r'^crearcuenta/(?P<id_proyecto>\d+)/$', login_required(views.crearcuenta), name = 'Crear cuenta corriente'),
     url(r'^resumen/(?P<id_cliente>\d+)/$', login_required(views.resumenctacte), name = 'Resumen cuenta corriente'),
     url(r'^ctacteproyecto/(?P<id_proyecto>\d+)/$', login_required(views.ctacteproyecto), name = 'Cuenta corriente proyecto'),
