@@ -28,7 +28,7 @@
     }
 }
 
-@media screen and (max-width: 835px) and (min-width: 300px) {
+@media screen and (max-width: 835px) and (min-width: 600px) {
     .priority-5{
             display:none;
     }
@@ -40,7 +40,7 @@
     }
 }
 
-@media screen and (max-width: 300px) {
+@media screen and (max-width: 600px) {
     .priority-5{
             display:none;
     }
