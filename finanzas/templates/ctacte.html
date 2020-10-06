@@ -11,42 +11,41 @@
 
     <div style="text-align: center;">
 
+        
+        
+        <h2 style="color: rgb({{ctacte.venta.unidad.proyecto.color}}); font-family: Arial, Helvetica, sans-serif;" >Cuenta corriente cliente</h2>
+        <h3 style="color: rgb({{ctacte.venta.unidad.proyecto.color}}); font-family: Arial, Helvetica, sans-serif;" >{{ctacte.venta.comprador}} </h3>
+
+
         <div>
 
             <img src="{{ctacte.venta.unidad.proyecto.iamgen.url}}"  class="img-fluid" alt="..." style="max-width:200px; height:auto; margin-top: 1rem; margin-bottom: 3%;">
   
 
         </div>
+
         
-        <h2 style="color: rgb({{ctacte.venta.unidad.proyecto.color}}); font-family: Arial, Helvetica, sans-serif;" >Cuenta corriente cliente</h2>
-        <h2 style="color: rgb({{ctacte.venta.unidad.proyecto.color}}); font-family: Arial, Helvetica, sans-serif;" >{{ctacte.venta.comprador}} </h2>
 
         <small style="font-family: Arial, Helvetica, sans-serif;"><strong>{{ctacte.venta.unidad.proyecto.nombre}}: {{ctacte.venta.unidad.piso_unidad}} - {{ctacte.venta.unidad.nombre_unidad}}</strong></small>
 
+
+        <div>
+            <small><b>Modulo:</b> Cuentas corrientes </small>
+        </div>
         <b><hr class = "my-4" style="width: 100%; "></b>
     
-
-        <div style="text-align: center;">
-        
-        <h6 style="font-family: Arial, Helvetica, sans-serif;">Resumen de la cuenta</h6>
-    
-    
-        <a href="{% url 'Resumen cuenta corriente' ctacte.id %}" class="btn btn-primary">Ver resumen</a>
-
-        <b><hr class = "my-4" style="width: 75%; "></b>
-    
-    </div>
-
 
     <div class = "tableconteinerabel">
 
         <div style="text-align: left;">
 
-            <a href="{% url 'Agregar cuota' ctacte.id %}" class="btn btn-info">Agregar cuota</a>
+            <a href="{% url 'Resumen cuenta corriente' ctacte.id %}" class="badge badge-primary">Ver resumen</a>
+
+            <a href="{% url 'Agregar cuota' ctacte.id %}" class="badge badge-info">Agregar cuota</a>
 
         </div>
 
-        <table class = "table table-hover" style="text-align: center; margin-top: 2%;">
+        <table class = "table table-hover" style="text-align: center; margin-top: 5px;">
             <thead>
     
                 <tr class = "table-dark">
