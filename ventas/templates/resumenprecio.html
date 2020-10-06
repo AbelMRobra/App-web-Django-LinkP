@@ -31,7 +31,6 @@
                     <th scope = "row" style="vertical-align: middle;" colspan="2" > <small><b>PROYECTO</b> </small></th>
                     <th scope = "row" style="vertical-align: middle;" class="priority-2"> <small><b><span class="hint--top hint--danger" aria-label= "Precio sugerido por costos y parametros teoricos">PRESUPUESTO</span></b> </small></th>
                     <th scope = "row" style="vertical-align: middle;" class="priority-5"> <small><b> <span class="hint--top hint--danger" aria-label= "Precio promedio contado de las unidades disponibles">CONT. PROM. DISP.</span></b></small></th>
-                    <th scope = "row" style="vertical-align: middle;" > <small> <b><span class="hint--top hint--danger" aria-label= "El contrado promedio más un plus del 5%">CONTADO PLUS</span> </b>   </small></th>
                     <th scope = "row" style="vertical-align: middle;"> <small><span class="hint--top hint--danger" aria-label= "Porcentaje del contado promedio disponible sobre el precio sugerido de presupuestos"><b>VAR</b></span>  </small></th>
                     <th scope = "row" style="vertical-align: middle;" class="priority-4"> <small> <b>ULTIMA ACT.</b>  </small></th>
                     <th scope = "row" style="vertical-align: middle;" class="priority-5"> <small><b>% VENDIDO</b>  </small></th>
@@ -52,7 +51,6 @@
                     <td><small style="color: rgb({{i.0.parametros.proyecto.color}});"><b>{{i.0.parametros.proyecto.nombre}}</b> </small></td> 
                     <td class="priority-2"><small>$ {{i.0.valor_final|floatformat:0|intcomma}}</small></td> 
                     <td class="priority-5"> <b> <small>$ {{i.1|floatformat:0|intcomma}}</small> </b></td> 
-                    <td> <b> <small>$ {{i.2|floatformat:0|intcomma}}</small> </b></td>
                     {% if i.3 > 0 %} 
 
                     <td> <b> <small style="color: rgb(68, 204, 52)"><b>{{i.3|floatformat:2}} %</b> </small> </b></td> 
