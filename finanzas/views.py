@@ -571,6 +571,7 @@ def resumenctacte(request, id_cliente):
         total_pagado = 0
 
 
+
         for cuota in cuotas:
 
             if nombre == cuota.concepto:
@@ -588,7 +589,7 @@ def resumenctacte(request, id_cliente):
 
         saldo_moneda = total_moneda - total_pagado
         saldo_pesos = saldo_moneda*moneda.valor
-        saldo_total_pesos = saldo_total_pesos + saldo_pesos
+
 
         datos.append((nombre, moneda, total_moneda, cuotas_t, total_pagado, saldo_moneda, saldo_pesos))
 
@@ -669,6 +670,7 @@ def ctactecliente(request, id_cliente):
     for cuota in cuotas:
 
         pago_cuota = 0
+        pago_pesos = 0
         saldo_cuota = 0
         pagos_realizados = []
 
@@ -677,13 +679,19 @@ def ctactecliente(request, id_cliente):
             if pago.cuota == cuota:
 
                 pago_cuota = pago_cuota + pago.pago
+                pago_pesos = pago_pesos + pago.pago_pesos
 
                 pagos_realizados.append(pago)
 
         saldo_cuota = cuota.precio - pago_cuota
         saldo_pesos = saldo_cuota*cuota.constante.valor
 
-        datos_cuenta.append((cuota, pago_cuota, saldo_cuota, saldo_pesos, pagos_realizados))
+        if pago_cuota == 0:
+            cotizacion = 0
+        else:
+            cotizacion = pago_pesos/pago_cuota
+
+        datos_cuenta.append((cuota, pago_cuota, saldo_cuota, saldo_pesos, pagos_realizados, cotizacion))
 
     datos_cuenta = sorted(datos_cuenta, key=lambda datos: datos[0].fecha)
 

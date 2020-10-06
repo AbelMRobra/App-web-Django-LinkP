@@ -13,21 +13,22 @@
 
         <div>
 
-            <img src="{{ctacte.venta.unidad.proyecto.iamgen.url}}"  class="img-fluid" alt="..." style="max-width:20%;width:auto;height:auto; margin-top: 1rem; margin-bottom: 3%;">
+            <img src="{{ctacte.venta.unidad.proyecto.iamgen.url}}"  class="img-fluid" alt="..." style="max-width:200px; height:auto; margin-top: 1rem; margin-bottom: 3%;">
   
 
         </div>
         
-        <h2 style="color: rgb({{ctacte.venta.unidad.proyecto.color}})" >Cuenta corriente cliente: {{ctacte.venta.comprador}} </h2>
+        <h2 style="color: rgb({{ctacte.venta.unidad.proyecto.color}}); font-family: Arial, Helvetica, sans-serif;" >Cuenta corriente cliente</h2>
+        <h2 style="color: rgb({{ctacte.venta.unidad.proyecto.color}}); font-family: Arial, Helvetica, sans-serif;" >{{ctacte.venta.comprador}} </h2>
 
-        <small><strong>{{ctacte.venta.unidad.proyecto.nombre}}: {{ctacte.venta.unidad.piso_unidad}} - {{ctacte.venta.unidad.nombre_unidad}}</strong></small>
+        <small style="font-family: Arial, Helvetica, sans-serif;"><strong>{{ctacte.venta.unidad.proyecto.nombre}}: {{ctacte.venta.unidad.piso_unidad}} - {{ctacte.venta.unidad.nombre_unidad}}</strong></small>
 
         <b><hr class = "my-4" style="width: 100%; "></b>
     
 
         <div style="text-align: center;">
         
-        <h6>Resumen de la cuenta</h6>
+        <h6 style="font-family: Arial, Helvetica, sans-serif;">Resumen de la cuenta</h6>
     
     
         <a href="{% url 'Resumen cuenta corriente' ctacte.id %}" class="btn btn-primary">Ver resumen</a>
@@ -49,17 +50,17 @@
             <thead>
     
                 <tr class = "table-dark">
-                    <th scope = "row"> <small>FECHA CUOTA</small></th>
-                    <th scope = "row"> <small>CONCEPTO</small></th>
-                    <th scope = "row"> <small>MONEDA (MD) </small></th>
-                    <th scope = "row"> <small> VALOR EN (MD) </small></th>
-                    <th scope = "row"> <small> PAGADO EN (MD) </small></th>
-                    <th scope = "row"> <small> SALDO EN (MD) </small></th>
-                    <th scope = "row"> <small> VALOR DE MD</small></th>
-                    <th scope = "row"> <small> SALDO EN PESOS </small></th>
-                    <th scope = "row"> <small> INGRESAR PAGO </small></th>
-                    <th scope = "row"> <small> EDITAR </small></th>
-                    <th scope = "row"> <small> ELIMINAR </small></th>
+                    <th style="vertical-align: middle;" scope = "row"> <small>FECHA CUOTA</small></th>
+                    <th style="vertical-align: middle;"  scope = "row" class="priority-3"> <small>CONCEPTO</small></th>
+                    <th style="vertical-align: middle;"  scope = "row" class="priority-5" > <small>MONEDA (MD) </small></th>
+                    <th style="vertical-align: middle;"  scope = "row" class="priority-4"> <small> VALOR EN (MD) </small></th>
+                    <th style="vertical-align: middle;"  scope = "row" class="priority-4"> <small> PAGADO EN (MD) </small></th>
+                    <th style="vertical-align: middle;"  scope = "row"> <small> SALDO EN (MD) </small></th>
+                    <th style="vertical-align: middle;"  scope = "row"> <small> VALOR DE MD</small></th>
+                    <th style="vertical-align: middle;"  scope = "row"> <small> SALDO EN PESOS </small></th>
+                    <th style="vertical-align: middle;"  scope = "row"> <small> INGRESAR PAGO </small></th>
+                    <th style="vertical-align: middle;"  scope = "row" class="priority-3"> <small> EDITAR </small></th>
+                    <th style="vertical-align: middle;"  scope = "row" class="priority-3"> <small> ELIMINAR </small></th>
 
                 </tr>
             </thead>
@@ -69,20 +70,28 @@
                 {% for i in datos_cuenta %}
                 <tr class = "table-light">
                     <td> <b> <small> <b>{{i.0.fecha}}</b> </small> </b></td>    
-                    <td> <b> <small>{{i.0.concepto}}</small> </b> </td>
-                    <td> <b> <small>{{i.0.constante.nombre}}</small> </b> </td>
+                    <td class="priority-3"> <b> <small>{{i.0.concepto|upper}}</small> </b> </td>
+                    <td class="priority-5"> <b> <small>{{i.0.constante.nombre}}</small> </b> </td>
 
-                    <td> <b> <small>{{i.0.precio|floatformat:2}}</small> </b> </td>
+                    <td class="priority-4"> <b> <small>{{i.0.precio|floatformat:2}}</small> </b> </td>
 
-                    <td> <b> <small>{{i.1|floatformat:2}}</small> </b> </td>
+                    <td class="priority-4"> <b> <small>{{i.1|floatformat:2}}</small> </b> </td>
                     <td> <b> <small>{{i.2|floatformat:2}}</small> </b> </td>
+
+                    {% if i.5 == 0 %}
                     <td> <b> <small>${{i.0.constante.valor|floatformat:0|intcomma}}</small> </b> </td>
+
+                    {% else %}
+
+                    <td> <b> <small>${{i.5|floatformat:0|intcomma}}</small> </b> </td>
+
+                    {% endif %}
                     <td> <b> <small> <b>${{i.3|floatformat:0|intcomma}}</b> </small></b> </td>
                     <td> <b><a href="{% url 'Pagos' i.0.id %}" class="btn btn-sm btn-success" >Ingresar</a>
                     </b> </td>
-                    <td> <b><a href="{% url 'Editar cuota' i.0.id %}" class="btn btn-sm btn-info" >Editar</a>
+                    <td class="priority-3"> <b><a href="{% url 'Editar cuota' i.0.id %}" class="btn btn-sm btn-info" >Editar</a>
                     </b> </td>
-                    <td> <b><a href="{% url 'Eliminar cuota' i.0.id %}" class="btn btn-sm btn-danger" >Eliminar</a>
+                    <td class="priority-3"> <b><a href="{% url 'Eliminar cuota' i.0.id %}" class="btn btn-sm btn-danger" >X</a>
                     </b> </td>
                    
     
@@ -100,12 +109,12 @@
 
         <div >
 
-            <a href="{% url 'Descargar cuenta' id_cuenta=ctacte.id %}" class="btn btn-success">Descargar cuenta en Excel</a>
+            <a href="{% url 'Descargar cuenta' id_cuenta=ctacte.id %}" class="btn btn-success" style="margin: 10px;">Descargar cuenta en Excel</a>
 
         </div>
 
     <div style="text-align: center; margin-top: 10%;">
-        <p> <small>-- Link<strong>P</strong> --</small> </p>
+        <p style="font-family: Arial, Helvetica, sans-serif;"> <small>-- Link<strong>P</strong> --</small> </p>
 
      </div>
 
