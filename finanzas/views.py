@@ -172,7 +172,21 @@ def pagos(request, id_cuota):
 
     datos = Pago.objects.filter(cuota = cuota)
 
-    return render(request, 'pagos.html', {'datos':datos, 'cuota':cuota})
+    datos_total = []
+
+    try:
+
+        for d in datos:
+
+            cotizacion = d.pago_pesos/d.pago
+
+            datos_total.append((d, cotizacion))
+
+    except:
+
+        datos_total = 0
+
+    return render(request, 'pagos.html', {'datos':datos_total, 'cuota':cuota})
 
 def agregar_pagos(request, id_cuota):
 

@@ -11,6 +11,11 @@
 
     <div style="text-align: center;">
 
+        <h2 style="font-family: Arial, Helvetica, sans-serif,">Pagos realizados</h2>
+
+        <h3 style="color: rgb({{cuota.cuenta_corriente.venta.unidad.proyecto.color}}); font-family: Arial, Helvetica, sans-serif,">{{cuota.cuenta_corriente.venta.comprador}}</h3>
+
+
         <div>
 
             <img src="{{cuota.cuenta_corriente.venta.unidad.proyecto.iamgen.url}}"  class="img-fluid" alt="..." style="max-width:20%;width:auto;height:auto; margin-top: 1rem; margin-bottom: 3%;">
@@ -18,23 +23,20 @@
 
         </div>
         
-        <h2 style="color: rgb({{cuota.cuenta_corriente.venta.unidad.proyecto.color}})" >Cuenta corriente cliente: {{cuota.cuenta_corriente.venta.comprador}} </h2>
-
-        <small><strong>{{cuota.cuenta_corriente.venta.unidad.proyecto.nombre}}: {{cuota.cuenta_corriente.venta.unidad.piso_unidad}} - {{cuota.cuenta_corriente.venta.unidad.nombre_unidad}}</strong></small>
+        
+        <small style="font-family: Arial, Helvetica, sans-serif,"><strong>{{cuota.cuenta_corriente.venta.unidad.proyecto.nombre}}: {{cuota.cuenta_corriente.venta.unidad.piso_unidad}} - {{cuota.cuenta_corriente.venta.unidad.nombre_unidad}}</strong></small>
 
         <div>
 
-            <small> Cuota del mes: {{cuota.fecha}}</small>
+            <small style="font-family: Arial, Helvetica, sans-serif,"> Cuota del mes: {{cuota.fecha}}</small>
 
 
         </div>
 
-        <div style="margin-top: 2%;" >
-
-            <a href="{% url 'Cuenta corriente venta' cuota.cuenta_corriente.id %}" class="btn btn-info btn-sm">Regresar al panel del cliente</a>
-    
-        </div>
+        <div>
+            <small style="font-family: Arial, Helvetica, sans-serif,"><b>Modulo</b>: Cuentas corrientes </small>
         
+        </div>
 
 
         <b><hr class = "my-4" style="width: 100%; "></b>
@@ -42,12 +44,22 @@
     
     </div>
 
+    <div style="text-align: left;" >
 
+        <a href="{% url 'Agregar pagos' cuota.id %}" class="badge badge-primary">Agregar pago</a>
+
+        <a href="{% url 'Cuenta corriente venta' cuota.cuenta_corriente.id %}" class="badge badge-info">Regresar al panel del cliente</a>
+    
+
+    </div>
+
+
+    {% if datos %}
 
 
     <div class = "tableconteinerabel">
 
-        <table class = "table table-hover" style="text-align: center; margin-top: 2%;">
+        <table class = "table table-hover" style="text-align: center; margin-top: 5px;">
             <thead>
     
                 <tr class = "table-dark">
@@ -67,44 +79,22 @@
     
                 {% for i in datos %}
                 <tr class = "table-light">
-                    <td> <b> <small> <b>{{i.fecha}}</b> </small> </b></td>    
-                    <td> <b> <small>{{i.pago|floatformat:2}}</small> </b> </td>
 
-                    <td> <b> <small>
+                    <td> <b> <small> <b>{{i.0.fecha}}</b> </small> </b></td>    
+                    <td> <b> <small>{{i.0.pago|floatformat:2}}</small> </b> </td>
 
-                    <script>
+                    <td> <b> <small>${{i.1|floatformat:0|intcomma}}</small> </b> </td>
 
-
-                        var pago_pesos;
-                        pago_pesos = {{i.pago_pesos|floatformat:0}};
-
-                        var pago;
-                        pago = {{i.pago|floatformat:0}};
-
-                        var cotizacion;
-
-                        cotizacion = pago_pesos/pago;
-
-                        document.write("$");
-                        
-                        document.write(cotizacion);
-
-
-                    </script>
-
-                    </small> </b> </td>
-
-                    <td> <b> <small>${{i.pago_pesos|floatformat:0|intcomma}}</small> </b> </td>
-                    <td> <b> <small>{{i.documento_1}}</small> </b> </td>
-                    <td> <b> <small>{{i.documento_2}}</small> </b> </td>
+                    <td> <b> <small>${{i.0.pago_pesos|floatformat:0|intcomma}}</small> </b> </td>
+                    <td> <b> <small>{{i.0.documento_1}}</small> </b> </td>
+                    <td> <b> <small>{{i.0.documento_2}}</small> </b> </td>
 
                     <td> <b><a href="#" class="btn btn-sm btn-info" >Editar</a>
                     </b> </td>
-                    <td> <b><a href="{% url 'Eliminar pago' i.id %}" class="btn btn-sm btn-danger" >Eliminar</a>
+                    <td> <b><a href="{% url 'Eliminar pago' i.0.id %}" class="btn btn-sm btn-danger" >Eliminar</a>
                     </b> </td>
-                   
-    
-    
+
+                    
     
                 </tr>
                 {% endfor %}
@@ -116,16 +106,24 @@
     
         </div>
 
+        {% else %}
+
         <b><hr class = "my-4" style="width: 100%; "></b>
 
-        <div >
-
-            <a href="{% url 'Agregar pagos' cuota.id %}" class="btn btn-info">Agregar pago</a>
-
+        <div style="margin: 15px;">
+        
+        
+        <h6 style="font-family: Arial, Helvetica, sans-serif,">No se registraron pagos todavia!</h6>
         </div>
 
+
+        {% endif %}
+
+        
+
+
     <div style="text-align: center; margin-top: 10%;">
-        <p> <small>-- Link<strong>P</strong> --</small> </p>
+        <p style="font-family: Arial, Helvetica, sans-serif,">  <small>-- Link<strong>P</strong> --</small> </p>
 
      </div>
 
