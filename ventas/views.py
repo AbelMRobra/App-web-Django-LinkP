@@ -345,15 +345,17 @@ def resumenprecio(request):
 
     fechas = []
 
-    # Parte para calcular precio presupuesto
+    datos_presupuesto = []
 
-    datos_presupuesto = Desde.objects.all()
+    #--> Parte para calcular precio presupuesto
+
+    datos_desde = Desde.objects.all()
 
     constantes = Constantes.objects.all()
 
     usd_blue = Constantes.objects.get(nombre = "USD_BLUE")
 
-    for i in datos_presupuesto:
+    for i in datos_desde:
 
         costo = i.presupuesto.valor
 
@@ -419,6 +421,111 @@ def resumenprecio(request):
 
         i.save()
 
+        #--> Parte para calcular precio promedio contado
+
+        datos = Unidades.objects.filter(proyecto = i.parametros.proyecto, estado = "DISPONIBLE")
+
+        m2_totales = 0
+
+        sumatoria_contado = 0
+    
+        for dato in datos:
+
+            if dato.sup_equiv > 0:
+
+                m2 = dato.sup_equiv
+
+            else:
+
+                m2 = dato.sup_propia + dato.sup_balcon + dato.sup_comun + dato.sup_patio
+
+            try:
+
+                m2_panel = dato.sup_propia + dato.sup_balcon + dato.sup_comun + dato.sup_patio
+
+                venta = VentasRealizadas.objects.get(unidad = dato.id)
+
+                venta.m2 = m2_panel
+
+                venta.asignacion = dato.asig
+
+                venta.save()
+            
+            except:
+
+                print("Esta unidad no esta vendida")
+            
+            try:
+
+                param_uni = Pricing.objects.get(unidad = dato)
+                
+                desde = dato.proyecto.desde
+
+                if dato.tipo == "COCHERA":
+                    desde = dato.proyecto.desde*dato.proyecto.descuento_cochera
+
+                if param_uni.frente == "SI":
+                    desde = desde*dato.proyecto.recargo_frente
+
+                if param_uni.piso_intermedio == "SI":
+                    desde =desde*dato.proyecto.recargo_piso_intermedio
+
+                if param_uni.cocina_separada == "SI":
+                    desde = desde*dato.proyecto.recargo_cocina_separada
+
+                if param_uni.local == "SI":
+                    desde = desde*dato.proyecto.recargo_local
+
+                if param_uni.menor_45_m2 == "SI":
+                    desde = desde*dato.proyecto.recargo_menor_45
+
+                if param_uni.menor_50_m2 == "SI":
+                    desde = desde*dato.proyecto.recargo_menor_50
+
+                if param_uni.otros == "SI":
+                    desde = desde*dato.proyecto.recargo_otros 
+
+                #Aqui calculamos el contado/financiado
+                
+                contado = desde*m2 
+
+                sumatoria_contado = sumatoria_contado + contado
+                m2_totales = m2_totales + m2
+
+            except:
+
+                print("Esta unidad no tiene parametros")
+
+
+        if m2_totales == 0:
+
+            precio_promedio_contado = 0
+
+        else:
+
+            precio_promedio_contado = sumatoria_contado/m2_totales
+
+        precio_promedio_contado_plus = precio_promedio_contado*1.05
+
+        if valor_final == 0:
+
+            var = 0
+
+        else:
+
+            var = ((precio_promedio_contado_plus/i.valor_final)-1)*100
+
+        datos_presupuesto.append((i, precio_promedio_contado, precio_promedio_contado_plus, var))
+
+    
+
+    for dato in datos_pricing:
+        
+        fechas.append((dato.fecha, str(dato.fecha)))
+
+    fechas = list(set(fechas))
+
+    fechas.sort( reverse=True)
 
     if request.method == 'POST':
 

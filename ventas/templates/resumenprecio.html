@@ -28,13 +28,13 @@
             <thead>
     
                 <tr class = "table-dark">
-                    <th scope = "row" class="priority-3" style="vertical-align: middle;" colspan="2" > <small>PROYECTO</small></th>
-                    <th scope = "row" class="priority-3" style="vertical-align: middle;"> <small>PRESUPUESTO</small></th>
-                    <th scope = "row" style="vertical-align: middle;"> <small>CONTADO PROM.</small></th>
-                    <th scope = "row" style="vertical-align: middle;" class="priority-5"> <small>CONTADO PROM. PLUS</small></th>
-                    <th scope = "row" style="vertical-align: middle;" class="priority-5"> <small> VAR</small></th>
-                    <th scope = "row" style="vertical-align: middle;" class="priority-5"> <small> ULTIMA ACT. </small></th>
-                    <th scope = "row" style="vertical-align: middle;" class="priority-4"> <small> % VENDIDO </small></th>
+                    <th scope = "row" style="vertical-align: middle;" colspan="2" > <small><b>PROYECTO</b> </small></th>
+                    <th scope = "row" style="vertical-align: middle;"> <small><b>PRESUPUESTO</b> </small></th>
+                    <th scope = "row" style="vertical-align: middle;" class="priority-5"> <small><b>ONTADO PROM.</b> C</small></th>
+                    <th scope = "row" style="vertical-align: middle;" > <small> <b>CONTADO PLUS</b>   </small></th>
+                    <th scope = "row" style="vertical-align: middle;"> <small> <b>VAR</b> </small></th>
+                    <th scope = "row" style="vertical-align: middle;" class="priority-4"> <small> <b>ULTIMA ACT.</b>  </small></th>
+                    <th scope = "row" style="vertical-align: middle;" class="priority-5"> <small><b>% VENDIDO</b>  </small></th>
                     
     
                      
@@ -47,15 +47,30 @@
                 {% for i in datos.datos_presupuesto %}
  
                 <tr class = "table-light">
-                    <td> <b> <small><img src="{{.parametros.proyecto.iamgen.url}}"  class="img-fluid" alt="..." style="width:70px;height:auto; ">
+                    <td> <b> <small><img src="{{i.0.parametros.proyecto.iamgen.url}}"  class="img-fluid" alt="..." style="width:70px;height:auto; ">
                     </small> </b></td>
-                    <td><small style="color: rgb({{i.parametros.proyecto.color}});"><b>{{i.parametros.proyecto.nombre}}</b> </small></td> 
-                    <td><small>$ {{i.valor_final|floatformat:0|intcomma}}</small></td> 
-                    <td> <b> <small>X</small> </b></td> 
-                    <td> <b> <small>X</small> </b></td> 
-                    <td> <b> <small>X</small> </b></td> 
-                    <td> <b> <small>X</small> </b></td>
-                    <td> <b> <small>X</small> </b></td>     
+                    <td><small style="color: rgb({{i.0.parametros.proyecto.color}});"><b>{{i.0.parametros.proyecto.nombre}}</b> </small></td> 
+                    <td class="priority-5"><small>$ {{i.0.valor_final|floatformat:0|intcomma}}</small></td> 
+                    <td> <b> <small>$ {{i.1|floatformat:0|intcomma}}</small> </b></td> 
+                    <td> <b> <small>$ {{i.2|floatformat:0|intcomma}}</small> </b></td>
+                    {% if i.3 > 0 %} 
+
+                    <td> <b> <small style="color: rgb(68, 204, 52)"><b>{{i.3|floatformat:2}} %</b> </small> </b></td> 
+
+                    {% elif i.3 < 0 %} 
+
+                    <td> <b> <small style="color: rgb(204, 66, 52)"><b>{{i.3|floatformat:2}} %</b> </small> </b></td> 
+
+                    {% else %}
+                        
+                    <td> <b> <small> <b>{{i.3|floatformat:2}} %</b> </small> </b></td> 
+
+                    {% endif %} 
+
+
+
+                    <td class="priority-4"> <b> <small>X</small> </b></td>
+                    <td class="priority-5"> <b> <small>X</small> </b></td>     
                     
     
     
