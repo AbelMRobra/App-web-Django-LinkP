@@ -423,13 +423,13 @@ def resumenprecio(request):
 
         #--> Parte para calcular precio promedio contado
 
-        datos = Unidades.objects.filter(proyecto = i.parametros.proyecto, estado = "DISPONIBLE")
+        datos_unidades = Unidades.objects.filter(proyecto = i.parametros.proyecto, estado = "DISPONIBLE")
 
         m2_totales = 0
 
         sumatoria_contado = 0
     
-        for dato in datos:
+        for dato in datos_unidades:
 
             if dato.sup_equiv > 0:
 
@@ -537,7 +537,6 @@ def resumenprecio(request):
                 datos = PricingResumen.objects.filter(fecha = dato[1])
                 busqueda = 0
                 fecha = dato[1]
-
 
 
     datos = {"fechas":fechas,
