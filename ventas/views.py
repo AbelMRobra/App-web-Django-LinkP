@@ -521,7 +521,7 @@ def resumenprecio(request):
 
         else:
 
-            var = ((precio_promedio_contado_plus/i.valor_final)-1)*100
+            var = ((precio_promedio_contado/i.valor_final)-1)*100
 
         fecha_pricing = PricingResumen.objects.order_by("-fecha")
 
