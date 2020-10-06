@@ -424,6 +424,14 @@ def resumenprecio(request):
         #--> Parte para calcular precio promedio contado
 
         datos_unidades = Unidades.objects.filter(proyecto = i.parametros.proyecto, estado = "DISPONIBLE")
+        unidades_totales = len(Unidades.objects.filter(proyecto = i.parametros.proyecto))
+        unidades_disponibles = len(datos_unidades)
+
+        if unidades_totales == 0:
+            porcentaje_vendido = 0
+
+        else:
+            porcentaje_vendido = (1 - (unidades_disponibles/unidades_totales))*100
 
         m2_totales = 0
 
@@ -515,7 +523,9 @@ def resumenprecio(request):
 
             var = ((precio_promedio_contado_plus/i.valor_final)-1)*100
 
-        datos_presupuesto.append((i, precio_promedio_contado, precio_promedio_contado_plus, var))
+        fecha_pricing = PricingResumen.objects.order_by("-fecha")
+
+        datos_presupuesto.append((i, precio_promedio_contado, precio_promedio_contado_plus, var, porcentaje_vendido, fecha_pricing))
 
     
 
