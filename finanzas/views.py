@@ -1063,7 +1063,7 @@ def consolidado(request):
 
         else:
 
-            if dato.proyecto.nombre == "TMATE DE LUNA Y THAMES":
+            if "THAMES" in dato.proyecto.nombre:
 
                 precio_promedio_contado = almacenero.ingreso_ventas/12338
 
