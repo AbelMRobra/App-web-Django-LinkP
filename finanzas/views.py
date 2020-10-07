@@ -991,7 +991,83 @@ def consolidado(request):
 
             pass
 
-        datos_completos.append((dato, total_costo, total_ingresos, saldo_proyecto, rentabilidad, presupuesto, pricing, saldo_proyecto_pesimista, rentabilidad_pesimista))
+        # -----------------> Aqui empieza para el precio promedio contado
+
+        if len(Unidades.objects.filter(proyecto = dato.proyecto, estado = "DISPONIBLE")) > 0:
+
+            datos_unidades = Unidades.objects.filter(proyecto = dato.proyecto, estado = "DISPONIBLE")
+
+            m2_totales = 0
+
+            sumatoria_contado = 0
+
+            for d in datos_unidades:
+
+                if d.sup_equiv > 0:
+
+                    m2 = d.sup_equiv
+
+                else:
+
+                    m2 = d.sup_propia + d.sup_balcon + d.sup_comun + d.sup_patio
+            
+                try:
+
+                    param_uni = Pricing.objects.get(unidad = d)
+                    
+                    desde = d.proyecto.desde
+
+                    if d.tipo == "COCHERA":
+                        desde = d.proyecto.desde*d.proyecto.descuento_cochera
+
+                    if param_uni.frente == "SI":
+                        desde = desde*d.proyecto.recargo_frente
+
+                    if param_uni.piso_intermedio == "SI":
+                        desde =desde*d.proyecto.recargo_piso_intermedio
+
+                    if param_uni.cocina_separada == "SI":
+                        desde = desde*d.proyecto.recargo_cocina_separada
+
+                    if param_uni.local == "SI":
+                        desde = desde*d.proyecto.recargo_local
+
+                    if param_uni.menor_45_m2 == "SI":
+                        desde = desde*d.proyecto.recargo_menor_45
+
+                    if param_uni.menor_50_m2 == "SI":
+                        desde = desde*d.proyecto.recargo_menor_50
+
+                    if param_uni.otros == "SI":
+                        desde = desde*d.proyecto.recargo_otros 
+
+                    #Aqui calculamos el contado/financiado
+                    
+                    contado = desde*m2 
+
+                    sumatoria_contado = sumatoria_contado + contado
+                    m2_totales = m2_totales + m2
+
+                except:
+
+                    print("Esta unidad no tiene parametros")
+
+
+            if m2_totales == 0:
+
+                precio_promedio_contado = 0
+
+            else:
+
+                precio_promedio_contado = sumatoria_contado/m2_totales
+
+        else:
+
+            precio_promedio_contado = 0
+
+    # -----------------> Aqui termina para el precio promedio contado
+
+        datos_completos.append((dato, total_costo, total_ingresos, saldo_proyecto, rentabilidad, presupuesto, pricing, saldo_proyecto_pesimista, rentabilidad_pesimista, precio_promedio_contado))
 
     beneficio_total = ingresos_total - costo_total
     beneficio_total_pesimista = beneficio_total - descuento_total
