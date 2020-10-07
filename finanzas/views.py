@@ -1065,7 +1065,7 @@ def consolidado(request):
 
             if "THAMES" in dato.proyecto.nombre:
 
-                precio_promedio_contado = 66657,5
+                precio_promedio_contado = 66657.5
 
             elif "#300" in dato.proyecto.nombre:
 
