@@ -1063,7 +1063,17 @@ def consolidado(request):
 
         else:
 
-            precio_promedio_contado = 0
+            if dato.proyecto.nombre == "TMATE DE LUNA Y THAMES":
+
+                precio_promedio_contado = almacenero.ingreso_ventas/12338
+
+            elif "#300" in dato.proyecto.nombre:
+
+                precio_promedio_contado = almacenero.ingreso_ventas/14722
+
+            else:
+
+                precio_promedio_contado = 0
 
     # -----------------> Aqui termina para el precio promedio contado
 
