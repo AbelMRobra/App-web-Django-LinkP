@@ -29,13 +29,13 @@
             <thead>
     
                 <tr class = "table-dark">
-                    <th scope = "row" style="vertical-align: middle;" colspan="2">  PROYECTO </th>
-                    <th scope = "row" style="vertical-align: middle;" class="priority-5"><span class="hint--top hint--danger" aria-label= "Precio promedio contado de las unidades disponibles">CONT.PROM.DISP.</span></th>
+                    <th scope = "row" style="vertical-align: middle;" colspan="2">  PROYECTO </th>                   
                     <th scope = "row" style="vertical-align: middle;" class="priority-4"> INGRESOS</th>
                     <th scope = "row" style="vertical-align: middle;" class="priority-4"> COSTOS</th>
                     <th scope = "row" style="vertical-align: middle;"> BENEFICIOS</th>
                     <th scope = "row" style="vertical-align: middle;"> RENDIMIENTO</th>
                     <th scope = "row" style="vertical-align: middle;" class="priority-5"> <span class="hint--left hint--info" aria-label="Esta columna indica si tiene pricing asociado!">PRICING</span> </th>
+                    <th scope = "row" style="vertical-align: middle;" class="priority-5"><span class="hint--top hint--danger" aria-label= "Precio promedio contado de las unidades disponibles">CONT.PROM.DISP.</span></th>
                     <th scope = "row" style="vertical-align: middle;" class="priority-5"> <span class="hint--left hint--info" aria-label="Esta columna indica si tiene un presupuesto calculado!">PRESUPUESTO</span> </th>
 
                    
@@ -60,7 +60,7 @@
 
                     {% endif %}
                     
-                    <td class="priority-4" style="width: 5%; vertical-align: middle;"> ${{ i.9|floatformat:0|intcomma }}</td>
+                    
                     <td class="priority-4" style="width: 5%; vertical-align: middle;"> ${{ i.2|floatformat:0|intcomma }}</td> 
                     <td class="priority-4" style="width: 10%; vertical-align: middle;">${{ i.1|floatformat:0|intcomma }}</td> 
                     <td style="width: 10%; vertical-align: middle; vertical-align: middle;">${{ i.3|floatformat:0|intcomma }}</td> 
@@ -75,6 +75,8 @@
                     <td class="priority-5" style="width: 10%; vertical-align: middle; color: #B3513F ;"> <b>NO CARGADO</b></td> 
 
                     {% endif %}
+
+                    <td class="priority-4" style="width: 5%; vertical-align: middle;"> ${{ i.9|floatformat:0|intcomma }}</td>
 
                     {% if i.5 > 200 %}
                     
@@ -100,7 +102,6 @@
     
                 <tr class = "table-light">
                     <td style="width: 15%; vertical-align: middle;" colspan="2"> RESULTADO CONJUNTO DE PROYECTOS </td>
-                    <td  class="priority-5" style="width: 5%; vertical-align: middle;"></td> 
                     <td  class="priority-5" style="width: 5%; vertical-align: middle;"> ${{ datos_finales.0.0|floatformat:0|intcomma }}</td> 
                     <td  class="priority-5" style="width: 10%; vertical-align: middle;"> ${{  datos_finales.0.1|floatformat:0|intcomma }}</td> 
                     <td style="width: 10%; vertical-align: middle; vertical-align: middle;"> ${{  datos_finales.0.2|floatformat:0|intcomma }}</td> 
@@ -115,7 +116,6 @@
     
                 <tr class = "table-light">
                     <td style="width: 15%; vertical-align: middle;" colspan="2"> DESCUENTO DEL 6% SOBRE UNIDADES </td>
-                    <td  class="priority-5" style="width: 5%; vertical-align: middle;"></td>
                     <td  class="priority-5" style="width: 5%; vertical-align: middle;"></td>  
                     <td  class="priority-5" style="width: 10%; vertical-align: middle;"></td> 
                     <td style="width: 10%; vertical-align: middle; vertical-align: middle;">  - ${{ datos_finales.0.4|floatformat:0|intcomma }} </td> 
@@ -130,7 +130,6 @@
     
                 <tr class = "table-dark">
                     <td style="width: 15%; vertical-align: middle;" colspan="2"> <b>RESULTADO CONSIDERANDO DESCUENTO</b> </td>
-                    <td  class="priority-5" style="vertical-align: middle;"></td>
                     <td  class="priority-5" style="vertical-align: middle;"></td>  
                     <td   class="priority-5"style="vertical-align: middle;"></td> 
                     <td style="width: 10%; vertical-align: middle; vertical-align: middle;"> <b>${{datos_finales.0.6|floatformat:0|intcomma }}</b></td> 
