@@ -1,0 +1,164 @@
+{% extends "users/inicio.html" %}
+
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+
+{% if perms.finanzas.view_cuentacorriente %}
+
+<div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;">
+
+
+    <div>
+
+        <img src="{{pago.cuota.cuenta_corriente.venta.unidad.proyecto.iamgen.url}}"  class="img-fluid" alt="..." style="max-width:200px; height:auto; margin-top: 1rem; margin-bottom: 3%;">
+
+
+    </div>
+    
+    <h2 style="color: rgb({{cuota.cuenta_corriente.venta.unidad.proyecto.color}}); font-family: Arial, Helvetica, sans-serif," >Editar pago</h2>
+
+    
+    <div>
+
+        <small style="font-family: Arial, Helvetica, sans-serif,"><b>Modulo</b>: Cuentas corrientes </small><small>
+        
+
+
+    </div>
+    <b><hr class = "my-4" style="width: 75%;"></b>
+
+    <div style=" background-color: rgba(63, 95, 179, 0.3); width: 50%; margin-left: 25%;">
+
+
+
+                <form method="POST">
+        
+                    {% csrf_token %}
+        
+        
+                    <b><hr class = "my-4" style="width: 100%; "></b>
+
+                    <div class = "campoctacte">
+
+                        <div class = "campo">
+
+
+                            <div style="display: inline-block;">
+            
+                                <label for="fecha"><h6 style="font-family: Arial, Helvetica, sans-serif,">Fecha del pago</h6></label>
+                    
+                            </div>
+                    
+                            <div style="margin-bottom: 2%; width: 30%; margin-left: 35%;">
+                    
+                                <input name="fecha" type="date" class="form-control form-control">
+                    
+                            </div>
+
+                            <div style="display: inline-block;">
+            
+                                <label for="precio2"><h6 style="font-family: Arial, Helvetica, sans-serif,">Valor aportado en pesos</h6></label>
+                    
+                            </div>
+                    
+                            <div class="input-group mb-3" style="margin-bottom: 2%; width: 50%; margin-left: 25%;">
+                
+                                <div class="input-group-prepend">
+                
+                                    <span class="input-group-text">$</span>
+                
+                                </div>
+                
+                                <input name="precio2" type="number" step="0.001" class="form-control form-control" aria-label="Amount" placeholder="{{pago.pago_pesos}}">
+                                
+                            </div>
+            
+            
+                    <div style="display: inline-block;">
+            
+                        <label for="precio1"><h6 style="font-family: Arial, Helvetica, sans-serif,">Cotización de moneda dura</h6></label>
+            
+                    </div>
+            
+                    <div class="input-group mb-3" style="margin-bottom: 2%; width: 50%; margin-left: 25%;">
+        
+                        <div class="input-group-prepend">
+        
+                            <span class="input-group-text">$</span>
+        
+                        </div>
+        
+                        <input name="precio1" type="number" step="0.001" class="form-control form-control" aria-label="Amount" placeholder="{{cotizacion}}">
+                        
+                    </div>
+
+                    
+
+                    <div style="display: inline-block;">
+            
+                        <label for="documento1"><h6 style="font-family: Arial, Helvetica, sans-serif,">Documento 1</h6></label>
+            
+                    </div>
+            
+                    <div class="input-group mb-3" style="margin-bottom: 2%; width: 50%; margin-left: 25%;">
+        
+        
+                        <input name="documento1" type="text" class="form-control form-control" aria-label="Amount" placeholder="{{pago.documento_1}}">
+                        
+                    </div>
+
+                    <div style="display: inline-block;">
+            
+                        <label for="documento2"><h6 style="font-family: Arial, Helvetica, sans-serif,">Documento 2</h6></label>
+            
+                    </div>
+            
+                    <div class="input-group mb-3" style="margin-bottom: 2%; width: 50%; margin-left: 25%;">
+        
+        
+                        <input name="documento2" type="text" class="form-control form-control" aria-label="Amount" placeholder="{{pago.documento_2}}">
+                        
+                    </div>
+    
+        
+                      <b><hr class = "my-4" style="width: 100%; "></b>
+
+        </div>
+        
+    </div>
+                  
+              <div style="margin-top: 2%; ">
+    
+                <button type="submit" class="btn btn-primary" >Editar</button>
+    
+              </div>
+        
+
+        </form>
+
+        <b><hr class = "my-4" style="width: 100%; "></b>
+
+    
+    </div>
+
+
+
+    <b><hr class = "my-4" style="width: 50%;"></b>
+
+
+
+    <div style="text-align: center; margin-top: 2rem;">
+        <p> <small>-- Link<strong>P</strong> --</small> </p>
+
+     </div>
+
+                    
+</div>
+
+
+{% endif %} 
+ 
+    
+{% endblock %}

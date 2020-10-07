@@ -89,7 +89,7 @@
                     <td> <b> <small>{{i.0.documento_1}}</small> </b> </td>
                     <td> <b> <small>{{i.0.documento_2}}</small> </b> </td>
 
-                    <td> <b><a href="#" class="btn btn-sm btn-info" >Editar</a>
+                    <td> <b><a href="{% url 'Editar pagos' i.0.id %}" class="btn btn-sm btn-info" >Editar</a>
                     </b> </td>
                     <td> <b><a href="{% url 'Eliminar pago' i.0.id %}" class="btn btn-sm btn-danger" >Eliminar</a>
                     </b> </td>

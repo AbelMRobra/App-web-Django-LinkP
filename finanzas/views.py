@@ -188,6 +188,82 @@ def pagos(request, id_cuota):
 
     return render(request, 'pagos.html', {'datos':datos_total, 'cuota':cuota})
 
+def editar_pagos(request, id_pago):
+
+    pago = Pago.objects.get(id = id_pago)
+
+    cotizacion = pago.pago_pesos/pago.pago
+
+    if request.method == 'POST':
+
+        datos_crear =  [0, 0] #request.POST.items()
+
+        pagado = 0
+
+        for i in datos_crear:
+
+            if  'fecha' in i[0]:
+
+                fecha = i[1]
+
+            if  'documento1' in i[0]:
+
+                documento1 = i[1]
+
+            if  'documento2' in i[0]:
+
+                documento2 = i[1]
+
+            if  'precio1' in i[0]:
+
+                cotizacion = i[1]
+
+                precio1 = float(pagado)/float(cotizacion)
+
+            if  'precio2' in i[0]:
+
+                precio2 = i[1]
+
+                pagado = precio2
+
+        c = Pago(
+
+            cuota = cuota,
+            fecha = fecha,
+            pago = precio1,
+            pago_pesos = float(precio2),                       
+            documento_1 = documento1,
+            documento_2 = documento2,
+            )
+
+        c.save()
+
+        return redirect('Pagos', id_cuota = cuota.id)
+
+    return render(request, 'editar_pagos.html', {'pago':pago, 'cotizacion':cotizacion})
+
+def pagos(request, id_cuota):
+
+    cuota = Cuota.objects.get(id = id_cuota)
+
+    datos = Pago.objects.filter(cuota = cuota)
+
+    datos_total = []
+
+    try:
+
+        for d in datos:
+
+            cotizacion = d.pago_pesos/d.pago
+
+            datos_total.append((d, cotizacion))
+
+    except:
+
+        datos_total = 0
+
+    return render(request, 'pagos.html', {'datos':datos_total, 'cuota':cuota})
+
 def agregar_pagos(request, id_cuota):
 
     cuota = Cuota.objects.get(id = id_cuota)
