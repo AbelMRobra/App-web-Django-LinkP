@@ -196,49 +196,44 @@ def editar_pagos(request, id_pago):
 
     if request.method == 'POST':
 
-        datos_crear =  [0, 0] #request.POST.items()
+        datos_crear = request.POST.items()
 
         pagado = 0
 
         for i in datos_crear:
 
-            if  'fecha' in i[0]:
+            if  'fecha' in i[0] and i[1] != "":
 
-                fecha = i[1]
+                pago.fecha = str(i[1])
+                pago.save()
 
-            if  'documento1' in i[0]:
+            if  'documento1' in i[0] and i[1] != "":
 
-                documento1 = i[1]
+                pago.documento_1 = i[1]
+                pago.save()
 
-            if  'documento2' in i[0]:
+            if  'documento2' in i[0] and i[1] != "":
 
-                documento2 = i[1]
+                pago.documento_2 = i[1]
+                pago.save()
 
-            if  'precio1' in i[0]:
+            if  'precio1' in i[0] and i[1] != "":
 
                 cotizacion = i[1]
 
                 precio1 = float(pagado)/float(cotizacion)
+                pago.pago = precio1
+                pago.save()
 
-            if  'precio2' in i[0]:
+            if  'precio2' in i[0] and i[1] != "":
 
-                precio2 = i[1]
+                pago.pago_pesos = i[1]
+                pagado = i[1]
 
-                pagado = precio2
+                pago.save()
 
-        c = Pago(
 
-            cuota = cuota,
-            fecha = fecha,
-            pago = precio1,
-            pago_pesos = float(precio2),                       
-            documento_1 = documento1,
-            documento_2 = documento2,
-            )
-
-        c.save()
-
-        return redirect('Pagos', id_cuota = cuota.id)
+        return redirect('Pagos', id_cuota = pago.cuota.id)
 
     return render(request, 'editar_pagos.html', {'pago':pago, 'cotizacion':cotizacion})
 
