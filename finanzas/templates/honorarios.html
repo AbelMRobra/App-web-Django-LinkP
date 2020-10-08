@@ -1,0 +1,131 @@
+{% extends "users/inicio.html" %}
+
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+
+
+
+<div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;" > 
+
+    <div >
+        <h2 style="font-family: Arial, Helvetica, sans-serif;">Resumen de honorarios</h2>
+
+        <small style="font-family: Arial, Helvetica, sans-serif;"><b>Modulo:</b> Finanzas </small>
+
+
+        <b><hr class = "my-4" style="width: 100%; "></b>
+    
+    </div>
+
+
+    <div>
+
+        <div style="margin-bottom: 2rem;">
+            <h5 style="font-family: Arial, Helvetica, sans-serif;">Detalle por proyecto</h5>
+        </div>
+        <table class = "table table-hover" style="text-align: center;">
+            <thead>
+    
+                <tr class = "table-dark">
+                    <th scope = "row" style="vertical-align: middle;" colspan="2" rowspan="2">  PROYECTO </th>
+                    <th scope = "row" style="vertical-align: middle;" rowspan="2"> CONT.PROM.DISP</th>                   
+                    <th scope = "row" style="vertical-align: middle;" colspan="4"> UNIDADES PENDIENTES</th>
+                    <th scope = "row" style="vertical-align: middle;" colspan="4"> CTAS CTES</th>
+                    <th scope = "row" style="vertical-align: middle;" rowspan="2"> TOTAL</th>
+
+
+                   
+                </tr>
+
+                <tr class = "table-dark">
+
+                    <th scope = "row" style="vertical-align: middle;"> DEPARTAMENTOS</th>
+                    <th scope = "row" style="vertical-align: middle;"> COCHERAS</th> 
+                    <th scope = "row" style="vertical-align: middle;"> M2</th> 
+                    <th scope = "row" style="vertical-align: middle;"> TOTAL Hº</th>
+                    <th scope = "row" style="vertical-align: middle;"> ADEUDADO Hº</th>
+                    <th scope = "row" style="vertical-align: middle;"> PENDIENTE Hº</th>                    
+
+
+                   
+                </tr>
+            </thead>
+            {% for i in datos_completos %}   
+            <tbody>
+    
+                <tr class = "table-light">
+
+
+                    <td style="vertical-align: middle;"> <img src="{{i.0.proyecto.iamgen.url}}"  class="img-fluid" alt="..." style="max-width: 70px; height:auto;"> </td>
+                    
+                    {% if "#300" in i.0.proyecto.nombre %}
+
+                    <td style="color: rgb({{i.0.proyecto.color}}); vertical-align: middle;"> <b>#300 (PROYECTO COMPLETO)</b> </td> 
+                    
+                    {% else %}
+
+                    <td style="width: 10%; color: rgb({{i.0.proyecto.color}}); vertical-align: middle;"> <b>{{ i.0.proyecto.nombre}}</b> </td> 
+                    
+
+                    {% endif %}
+                    
+                    
+                    <td class="priority-4" style="width: 5%; vertical-align: middle;"> ${{ i.2|floatformat:0|intcomma }}</td> 
+                    <td class="priority-4" style="width: 10%; vertical-align: middle;">${{ i.1|floatformat:0|intcomma }}</td> 
+                    <td style="width: 10%; vertical-align: middle; vertical-align: middle;">${{ i.3|floatformat:0|intcomma }}</td> 
+                    <td style="width: 10%; vertical-align: middle;">{{ i.4|floatformat:0|intcomma }}%  </td> 
+                    
+                    {% if i.6 > 0 %}
+                    
+                    <td class="priority-5" style="width: 10%; vertical-align: middle; color: #3FB360;"><b>  CARGADO</b></td> 
+                    
+                    {% else %}
+
+                    <td class="priority-5" style="width: 10%; vertical-align: middle; color: #B3513F ;"> <b>NO CARGADO</b></td> 
+
+                    {% endif %}
+
+                    <td class="priority-4" style="width: 5%; vertical-align: middle;"> ${{ i.9|floatformat:0|intcomma }}</td>
+
+                    {% if i.5 > 200 %}
+                    
+                    <td class="priority-5" style="width: 10%; vertical-align: middle; color: #3FB360;"><b>CALCULADO</b></td> 
+
+                    
+                    {% elif i.5 > 100 %}
+                    
+                    <td class="priority-5" style="width: 10%; vertical-align: middle; color: #DBCD23 ;"><b>SEMI-CALCULADO</b></td> 
+                    
+                    {% else %}
+
+                    <td class="priority-5" style="width: 10%; vertical-align: middle; color: #B3513F ;"> <b>EXTRAPOLADO</b></td> 
+
+                    {% endif %}
+
+                </tr>
+            </tbody>
+
+            {% endfor %}
+
+            
+
+        </table> 
+
+
+          
+   </div>
+
+   <b><hr class = "my-4" style="width: 100%; "></b> 
+
+
+
+    <div>
+        <p style="font-family: Arial, Helvetica, sans-serif;"> <small>-- Link<strong>P</strong> --</small> </p>
+
+     </div>
+
+
+</div>
+{% endblock %}

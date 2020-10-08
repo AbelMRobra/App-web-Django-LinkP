@@ -674,6 +674,7 @@ def resumenctacte(request, id_cliente):
 
         saldo_moneda = total_moneda - total_pagado
         saldo_pesos = saldo_moneda*moneda.valor
+        saldo_total_pesos = saldo_total_pesos + saldo_pesos
 
 
         datos.append((nombre, moneda, total_moneda, cuotas_t, total_pagado, saldo_moneda, saldo_pesos))
@@ -826,6 +827,10 @@ def consultapagos(request):
         datos.append(datos_subir)
 
     return render(request, 'pagos_total.html', {"datos":datos})
+
+def honorarios(request):
+
+    return render(request, 'honorarios.html')
 
 
 def ingresounidades(request, estado, proyecto):
