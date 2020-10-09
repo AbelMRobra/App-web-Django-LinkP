@@ -1849,7 +1849,7 @@ def InformeArea(request):
 
     barras = []
 
-    datos_barras = Presupuestos.objects.order_by("-saldo").exclude(proyecto__nombre = "DIANCO - LAMADRID 1137")
+    datos_barras = Presupuestos.objects.order_by("-saldo")
 
     for db in datos_barras:
 
@@ -1861,7 +1861,7 @@ def InformeArea(request):
 
     barras = sorted(barras,reverse=True, key=lambda tup: tup[1])
 
-    return render(request, 'presupuestos/informearea.html', {"datos":datos, "datos_barras":datos_barras})
+    return render(request, 'presupuestos/informearea.html', {"datos":datos, "datos_barras":barras})
 
 # --------------------------------> FUNCIONES Y CLASES USADAS EN LAS VISTAS <------------------------------------------------------
 
