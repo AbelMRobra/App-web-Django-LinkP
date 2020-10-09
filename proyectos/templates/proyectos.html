@@ -50,17 +50,18 @@
 
             {% endfor %}
 
-            {% elif request.user.username == "AR" or request.user.username == "PL"  %}
+            {% elif request.user.username == "ar" or request.user.username == "PL"  %}
 
             {% for i in datos %}
 
             <tr class = "table-light">
 
-                <td> <b>{{i.nombre}}</b> </td>
-                <td>{{i.descrip}}</td>
+                <td> <b><img src="{{i.iamgen.url}}"  class="img-fluid" alt="..." style="max-width: 70px; height:auto;"></b> </td>
+                <td style="color: rgb({{i.color}}); vertical-align: middle;"> <b>{{i.nombre}}</b> </td>
+                <td class="priority-5">{{i.descrip}}</td>
                 <td>{{i.fecha_f}}</td>
-                <td>{{i.fecha_a}}</td>
-                <td> <b>{{i.m2}}m2</b> </td>
+                <td class="priority-5">{{i.fecha_a}}</td>
+                <td> <b>{{i.m2}} m2</b> </td>
             </tr>
 
 
@@ -75,11 +76,12 @@
 
             <tr class = "table-light">
 
-                <td> <b>{{i.nombre}}</b> </td>
-                <td>{{i.descrip}}</td>
+                <td> <b><img src="{{i.iamgen.url}}"  class="img-fluid" alt="..." style="max-width: 70px; height:auto;"></b> </td>
+                <td style="color: rgb({{i.color}}); vertical-align: middle;"> <b>{{i.nombre}}</b> </td>
+                <td class="priority-5">{{i.descrip}}</td>
                 <td>{{i.fecha_f}}</td>
-                <td>{{i.fecha_a}}</td>
-                <td> <b>{{i.m2}}m2</b> </td>
+                <td class="priority-5">{{i.fecha_a}}</td>
+                <td> <b>{{i.m2}} m2</b> </td>
             </tr>
 
             {% endif %}
