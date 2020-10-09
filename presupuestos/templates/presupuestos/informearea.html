@@ -19,13 +19,13 @@
     
     </div>
 
-    <div style="margin-bottom: 2rem;">
+    <div style="margin-bottom: 15px;">
 
-        <h3 style="font-family: Arial, Helvetica, sans-serif;">Información general</h3>
+        <h5 style="font-family: Arial, Helvetica, sans-serif;">Información general</h5>
 
     </div>
 
-    <div style="display: inline-block; width: 400px; vertical-align: top;  margin: 40px;">
+    <div style="display: inline-block; width: 400px; vertical-align: top;  margin: 15px;">
 
 
         <h6 style="font-family: Arial, Helvetica, sans-serif;"> Avance de presupuesto </h6>
@@ -50,27 +50,29 @@
     
     </script>
 
-    <b><hr class = "my-4" style="width: 100%; border-color: black ;"></b>
+    <b><hr class = "my-4" style="width: 100%;"></b>
 
     <div>
 
-        <div style="margin-bottom: 2rem;">
-            <h3 style="font-family: Arial, Helvetica, sans-serif;">Información de reposición/saldos</h3>
+        <div style="margin-bottom: 10px;">
+
+            <h5 style="font-family: Arial, Helvetica, sans-serif;">Información de reposición/saldos</h5>
+
         </div>
         <table class = "table table-hover" style="text-align: center;">
             <thead>
     
                 <tr class = "table-dark">
-                    <th scope = "row" colspan="2" style="  vertical-align: middle;">PROYECTO</th>
-                    <th scope = "row" style="  vertical-align: middle;"><span class="hint--top hint--danger" aria-label= "Valor de reposición del proyecto NETO">V.R*</span></th>
-                    <th scope = "row" style="  vertical-align: middle;">V:R/M2</th>
-                    <th scope = "row" style="  vertical-align: middle;">SALDO MAT</th>
-                    <th scope = "row" style="  vertical-align: middle;">CREDITO</th>
-                    <th scope = "row" style="  vertical-align: middle;">IMPREVISTO</th>
-                    <th scope = "row" style="  vertical-align: middle;">SALDO MO</th>
-                    <th scope = "row" style="  vertical-align: middle;">FDR </th>
-                    <th scope = "row" style="  vertical-align: middle;">ANTICIPO </th>
-                    <th scope = "row" style="  vertical-align: middle;">SALDO TOTAL </th>
+                    <th scope = "row" colspan="2" style="  vertical-align: middle;"> <small>PROYECTO</small> </th>
+                    <th scope = "row" style="  vertical-align: middle;"><span class="hint--top hint--danger" aria-label= "Valor de reposición del proyecto NETO"> <small>V.R*</small> </span></th>
+                    <th scope = "row" style="  vertical-align: middle;"><small>V:R/M2</small></th>
+                    <th scope = "row" style="  vertical-align: middle;"><small>SALDO MAT</small></th>
+                    <th scope = "row" style="  vertical-align: middle;"><small>CREDITO</small></th>
+                    <th scope = "row" style="  vertical-align: middle;"><small>PIMPREVISTO</small></th>
+                    <th scope = "row" style="  vertical-align: middle;"><small>SALDO MO</small></th>
+                    <th scope = "row" style="  vertical-align: middle;"><small>FDR </small></th>
+                    <th scope = "row" style="  vertical-align: middle;"><small>ANTICIPO</small> </th>
+                    <th scope = "row" style="  vertical-align: middle;"><small>SALDO TOTAL</small> </th>
                    
                 </tr>
             </thead>
@@ -78,11 +80,11 @@
             <tbody>
     
                 <tr class = "table-light">
-                    <td style="width: 15%;  vertical-align: middle;"> <img src="{{i.0.iamgen.url}}"  class="img-fluid" alt="..." style="max-height:200px; height:auto;"> </td>
+                    <td style="vertical-align: middle;"> <img src="{{i.0.iamgen.url}}"  class="img-fluid" alt="..." style="max-height:80px; height:auto;"> </td>
 
                     {% if "300" in i.0.nombre  %}
 
-                    <td style="width: 20%; color: rgb({{i.0.color}}); vertical-align: middle;"> <small><b>#300</b> </small></b> </td>
+                    <td style="width: 11%; color: rgb({{i.0.color}}); vertical-align: middle;"> <small><b>#300</b> </small></b> </td>
 
 
 
