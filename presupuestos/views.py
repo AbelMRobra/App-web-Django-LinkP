@@ -1844,7 +1844,24 @@ def InformeArea(request):
     datos = {"cantidad":cant_proy_act,   
     "datos":proy_presup}
 
-    return render(request, 'presupuestos/informearea.html', {"datos":datos})
+
+    #Calculos para tablero de avance de presupuesto
+
+    barras = []
+
+    datos_barras = Presupuestos.objects.order_by("-saldo").exclude(proyecto__nombre = "DIANCO - LAMADRID 1137")
+
+    for db in datos_barras:
+
+        if db.valor != 0:
+
+            avance = (100 - db.saldo/db.valor*100)
+
+            barras.append((db, int(avance)))
+
+    barras = sorted(barras,reverse=True, key=lambda tup: tup[1])
+
+    return render(request, 'presupuestos/informearea.html', {"datos":datos, "datos_barras":datos_barras})
 
 # --------------------------------> FUNCIONES Y CLASES USADAS EN LAS VISTAS <------------------------------------------------------
 
