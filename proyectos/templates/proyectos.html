@@ -6,8 +6,8 @@
 
 <div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;">
 
-    <h3>Panel - Proyectos</h3>
-    <h6> <small>Todos tus proyectos</small> </h6>
+    <h3 style="font-family: Arial, Helvetica, sans-serif;">Panel - Proyectos</h3>
+    <h6 style="font-family: Arial, Helvetica, sans-serif;"> <small>Todos tus proyectos</small> </h6>
 
      <b><hr class = "my-4" style="width: 100%;"></b>
 
@@ -17,10 +17,10 @@
         <thead>
 
             <tr class = "table-dark">
-                <th scope = "row" style="vertical-align: middle;"> NOMBRE DEL PROYECTO</th>
-                <th scope = "row" style="vertical-align: middle;">DESCRIPCIÓN </th>
+                <th scope = "row" style="vertical-align: middle;" colspan="2"> PROYECTO</th>
+                <th scope = "row" style="vertical-align: middle;" class="priority-5">DESCRIPCIÓN </th>
                 <th scope = "row" style="vertical-align: middle;">FECHA ENTREGA </th>
-                <th scope = "row" style="vertical-align: middle;">ULTIMA ACTUALIZACIÓN </th>
+                <th scope = "row" style="vertical-align: middle;" class="priority-5">ULTIMA ACTUALIZACIÓN </th>
                 <th scope = "row" style="vertical-align: middle;">TAMAÑO</th> 
 
             </tr>
@@ -28,39 +28,69 @@
 
         <tbody>
 
-            {% if request.user.username != "HC" %}
-            
-            {% for i in datos %}
-
-            <tr class = "table-light">
-
-                <td> <b>{{i.nombre}}</b> </td>
-                <td>{{i.descrip}}</td>
-                <td>{{i.fecha_f}}</td>
-                <td>{{i.fecha_a}}</td>
-                <td> <b>{{i.m2}}m2</b> </td>
-            </tr>
-
-            {% endfor %}
-            {% endif %}
-
-
             {% if request.user.username == "HC" %}
 
             {% for i in datos %}
 
-            {% if i.nombre == "DIANCO - LAMADRID 1137" %}
+            {% if "DIANCO" in i.nombre %}
+
+           
             <tr class = "table-light">
- 
+
+                <td> <b><img src="{{i.iamgen.url}}"  class="img-fluid" alt="..." style="max-width: 70px; height:auto;"></b> </td>
+                <td style="color: rgb({{i.color}}); vertical-align: middle;"> <b>{{i.nombre}}</b> </td>
+                <td class="priority-5">{{i.descrip}}</td>
+                <td>{{i.fecha_f}}</td>
+                <td class="priority-5">{{i.fecha_a}}</td>
+                <td> <b>{{i.m2}} m2</b> </td>
+            </tr>
+
+            {% endif %}
+
+
+            {% endfor %}
+
+            {% elif request.user.username == "AR" or request.user.username == "PL"  %}
+
+            {% for i in datos %}
+
+            <tr class = "table-light">
+
                 <td> <b>{{i.nombre}}</b> </td>
                 <td>{{i.descrip}}</td>
                 <td>{{i.fecha_f}}</td>
                 <td>{{i.fecha_a}}</td>
                 <td> <b>{{i.m2}}m2</b> </td>
             </tr>
-            {% endif %}
+
+
             {% endfor %}
+
+            {% else %}
+
+            
+            {% for i in datos %}
+
+            {% if not "SEMINARIO" in i.nombre %}
+
+            <tr class = "table-light">
+
+                <td> <b>{{i.nombre}}</b> </td>
+                <td>{{i.descrip}}</td>
+                <td>{{i.fecha_f}}</td>
+                <td>{{i.fecha_a}}</td>
+                <td> <b>{{i.m2}}m2</b> </td>
+            </tr>
+
             {% endif %}
+
+
+            {% endfor %}
+
+            
+            {% endif %}
+
+        
 
     </tbody>
 

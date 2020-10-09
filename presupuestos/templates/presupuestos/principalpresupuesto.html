@@ -72,21 +72,40 @@
 
             <select name="proyecto" class="custom-select" style="width: 200px; margin-top: 10px;">
 
-                {% if request.user.username != "HC" %}
+                {% if request.user.username == "HC" %}
 
                 {% for i in proyectos %}
+
+                {% if "DIANCO" in i.nombre %}
+
+               
                 <option value="{{i.id}}">{{i.nombre}}</option>
+
+                {% endif %}
+
+
+                {% endfor %}
+
+                {% elif request.user.username == "AR" or request.user.username == "PL"  %}
+
+                {% for i in proyectos %}
+
+                <option value="{{i.id}}">{{i.nombre}}</option>
+
 
                 {% endfor %}
 
                 {% else %}
 
+                
                 {% for i in proyectos %}
 
-                {% if "DIANCO" in i.nombre %}
+                {% if not "SEMINARIO" in i.nombre %}
+
                 <option value="{{i.id}}">{{i.nombre}}</option>
 
                 {% endif %}
+
 
                 {% endfor %}
 
