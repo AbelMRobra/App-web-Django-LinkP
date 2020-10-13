@@ -382,8 +382,6 @@ def cargacompras(request):
                         presupuesto_imprevisto.save()
 
 
-
-
                     b = Compras(
                         proyecto = Proyectos.objects.get(id=proyecto),
                         proveedor = Proveedores.objects.get(name=proveedor),
@@ -402,7 +400,7 @@ def cargacompras(request):
 
                     b.save()
 
-            return redirect('Compras', id_proyecto = proyecto)
+            return redirect('Compras', id_proyecto = 0)
            
         except:
 
