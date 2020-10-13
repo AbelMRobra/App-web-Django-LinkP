@@ -317,7 +317,7 @@ def cargacompras(request):
 
             if i[0] == "csrfmiddlewaretoken":
 
-                print("Basura")
+                basura = 1
 
 
             elif valor == 1:
