@@ -402,7 +402,7 @@ def cargacompras(request):
 
                     b.save()
 
-            return redirect('Compras')
+            return redirect('Compras', id_proyecto = proyecto)
            
         except:
 
