@@ -310,64 +310,52 @@ def cargacompras(request):
         valor = 1
 
 
-        try:
+        #try:
 
 
-            for i in resto:
+        for i in resto:
 
-                if i[0] == "csrfmiddlewaretoken":
+            if i[0] == "csrfmiddlewaretoken":
 
-                    print("Basura")
+                print("Basura")
 
 
-                elif valor == 1:
+            elif valor == 1:
 
-                    valor = 2
-    
-                    articulo = Articulos.objects.get(nombre=i[1])
+                valor = 2
 
-                elif valor == 2:
+                articulo = Articulos.objects.get(nombre=i[1])
 
-                    valor = 3
+            elif valor == 2:
 
-                    cantidad = i[1]
-                    
+                valor = 3
+
+                cantidad = i[1]
                 
-                elif valor == 3:
+            
+            elif valor == 3:
 
-                    valor = 4
+                valor = 4
 
-                    precio = i[1]
-
-
-                elif valor == 4:
-
-                    valor = 1
-
-                    partida= i[1]
-
-                    partida_original = i[1]
+                precio = i[1]
 
 
-                    if float(partida_original) > 0:
+            elif valor == 4:
 
-                        partida = float(partida) - float(cantidad)*articulo.valor
+                valor = 1
 
-                        if partida > 0:
+                partida= i[1]
 
-                            imprevisto = "PREVISTO"
+                partida_original = i[1]
 
-                        else:
 
-                            imprevisto = "IMPREVISTO"
+                if float(partida_original) > 0:
 
-                            presupuesto_imprevisto = Presupuestos.objects.get(proyecto__id = proyecto)
+                    partida = float(partida) - float(cantidad)*articulo.valor
 
-                            partida = presupuesto_imprevisto.imprevisto + partida
+                    if partida > 0:
 
-                            presupuesto_imprevisto.imprevisto = partida
-
-                            presupuesto_imprevisto.save()
+                        imprevisto = "PREVISTO"
 
                     else:
 
@@ -375,38 +363,50 @@ def cargacompras(request):
 
                         presupuesto_imprevisto = Presupuestos.objects.get(proyecto__id = proyecto)
 
-                        partida = presupuesto_imprevisto.imprevisto - float(cantidad)*float(precio)
+                        partida = presupuesto_imprevisto.imprevisto + partida
 
                         presupuesto_imprevisto.imprevisto = partida
 
                         presupuesto_imprevisto.save()
 
+                else:
 
-                    b = Compras(
-                        proyecto = Proyectos.objects.get(id=proyecto),
-                        proveedor = Proveedores.objects.get(name=proveedor),
-                        nombre = doc,
-                        tipo = tipo,
-                        documento = doc,
-                        articulo = articulo,
-                        cantidad = float(cantidad),
-                        precio = float(precio),
-                        precio_presup = articulo.valor,
-                        fecha_c = fecha,
-                        fecha_a = fecha,
-                        partida = partida,
-                        imprevisto = imprevisto,
-                        )
+                    imprevisto = "IMPREVISTO"
 
-                    b.save()
+                    presupuesto_imprevisto = Presupuestos.objects.get(proyecto__id = proyecto)
 
-            return redirect('Compras', id_proyecto = 0)
+                    partida = presupuesto_imprevisto.imprevisto - float(cantidad)*float(precio)
+
+                    presupuesto_imprevisto.imprevisto = partida
+
+                    presupuesto_imprevisto.save()
+
+
+                b = Compras(
+                    proyecto = Proyectos.objects.get(id=proyecto),
+                    proveedor = Proveedores.objects.get(name=proveedor),
+                    nombre = doc,
+                    tipo = tipo,
+                    documento = doc,
+                    articulo = articulo,
+                    cantidad = float(cantidad),
+                    precio = float(precio),
+                    precio_presup = articulo.valor,
+                    fecha_c = fecha,
+                    fecha_a = fecha,
+                    partida = partida,
+                    imprevisto = imprevisto,
+                    )
+
+                b.save()
+
+        return redirect('Compras', id_proyecto = 0)
            
-        except:
+        #except:
 
-            mensaje = "**Los datos ingresados no son correctos"
+            #mensaje = "**Los datos ingresados no son correctos"
 
-            datos = {'proyectos': proyectos, 'proveedores':proveedores, 'compras':compras, 'articulos':articulos, 'mensaje':mensaje}
+            #datos = {'proyectos': proyectos, 'proveedores':proveedores, 'compras':compras, 'articulos':articulos, 'mensaje':mensaje}
     
     else:
 
