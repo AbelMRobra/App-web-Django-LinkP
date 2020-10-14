@@ -1814,7 +1814,8 @@ def InformeArea(request):
                 saldo_total_300 = saldo_total_300 + valor_proyecto_materiales_300 + valor_proyecto_mo_300 + total_creditos_300 + total_fdr_300 + total_ant_300 + imprevisto_300
 
             except:
-                print("No esta cargado el presupuesto del proyecto")
+                
+                 basura = 1
 
         else:
 
@@ -1835,7 +1836,8 @@ def InformeArea(request):
 
                 proy_presup.append((proyecto, valor_proyecto, vr_M2, valor_proyecto_materiales, valor_proyecto_mo, total_creditos, saldo_total, total_fdr, total_ant, imprevisto))
             except:
-                print("No esta cargado el presupuesto del proyecto")
+
+                basura = 1
     
     proy_presup.append((proyecto_300, valor_proyecto_300, vr_M2_300, valor_proyecto_materiales_300, valor_proyecto_mo_300, total_creditos_300, saldo_total_300, total_fdr_300, total_ant_300, imprevisto_300))
 
