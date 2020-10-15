@@ -861,7 +861,7 @@ def pricing(request, id_proyecto):
         
         except:
 
-            print("Esta unidad no esta vendida")
+            basura = 1
         
         try:
             param_uni = Pricing.objects.get(unidad = dato)
@@ -1085,8 +1085,6 @@ def pricing(request, id_proyecto):
     #Aqui termina el filtro
 
     anticipo = anticipo*100
-
-
 
 
     datos_unidades.sort(key=lambda datos_unidades: datos_unidades[3], reverse=False)
