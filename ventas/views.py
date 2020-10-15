@@ -461,7 +461,7 @@ def resumenprecio(request):
             
             except:
 
-                print("Esta unidad no esta vendida")
+                basura = 1
             
             try:
 
@@ -502,7 +502,7 @@ def resumenprecio(request):
 
             except:
 
-                print("Esta unidad no tiene parametros")
+                basura = 1
 
 
         if m2_totales == 0:
@@ -644,7 +644,7 @@ def panelunidades(request):
                 disponibilidad.append(dato[1])
 
             elif str(dato[0]) == "csrfmiddlewaretoken":
-                print("basura")
+                basura = 1
 
             else:
                 list_proyectos.append(dato[0])
@@ -980,7 +980,7 @@ def pricing(request, id_proyecto):
             sumatoria_contado = sumatoria_contado + contado
             sumatoria_financiado = sumatoria_financiado + financiado
         except:
-            print("Unidades sin pricing")
+            basura = 1
         
         if dato.tipo == "COCHERA":
             cocheras += 1
