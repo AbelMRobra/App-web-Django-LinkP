@@ -80,7 +80,7 @@
                     <small style="font-family: Arial, Helvetica, sans-serif;"> <b>Diferencia con el presupuesto:</b> {{datos_compras.2|floatformat:0|intcomma}} %</small>
 
 
-                    {% elif datos_compras.2 > 0 %}
+                    {% elif datos_compras.2 < 0 %}
 
                     <small style="font-family: Arial, Helvetica, sans-serif; color: rgb(68, 204, 52);"> <b>Diferencia con el presupuesto:</b> ↓ {{datos_compras.2|floatformat:0|intcomma}} %</small>
 
