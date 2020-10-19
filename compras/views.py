@@ -589,8 +589,6 @@ def comparativas(request, estado):
 
                 date = datetime.date.today()
 
-                print(date)
-
                 comparativa.fecha_autorizacion = date
 
                 comparativa.save()

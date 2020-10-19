@@ -706,7 +706,7 @@ def resumenctacte(request, id_cliente):
 
         if fecha < hoy:
 
-            print("viejo")
+            basura = 1
 
         else:
 
@@ -950,7 +950,6 @@ def consolidado(request):
 
         almacenero.save()
 
-
         # Calculo el resto de las cosas
 
         pend_gast = almacenero.pendiente_admin + almacenero.pendiente_comision + presupuesto.saldo_mat + presupuesto.saldo_mo + presupuesto.imprevisto + presupuesto.credito + presupuesto.fdr - almacenero.pendiente_adelantos + almacenero.pendiente_iva_ventas + almacenero.pendiente_iibb_tem
@@ -1055,7 +1054,7 @@ def consolidado(request):
 
                 except:
 
-                    print("Esta unidad no tiene parametros")
+                    basura = 1
 
 
             if m2_totales == 0:
@@ -1131,14 +1130,14 @@ def consolidado(request):
 
             #Aqui calculo el IVA sobre compras
 
-            iva_compras = (presupuesto.imprevisto + presupuesto.saldo_mat + presupuesto.saldo_mo + presupuesto.credito + presupuesto.fdr)*0.07875
+            iva_compras = (dato.imprevisto + dato.saldo_mat + dato.saldo_mo + dato.credito + dato.fdr)*0.07875
 
             almacenero.pendiente_iva_ventas = iva_compras
 
 
             #Calculo el resto de las cosas
 
-            pend_gast = almacenero.pendiente_admin + almacenero.pendiente_comision + presupuesto.saldo_mat + presupuesto.saldo_mo + presupuesto.imprevisto + presupuesto.credito + presupuesto.fdr - almacenero.pendiente_adelantos + almacenero.pendiente_iva_ventas + almacenero.pendiente_iibb_tem
+            pend_gast = almacenero.pendiente_admin + almacenero.pendiente_comision + dato.saldo_mat + dato.saldo_mo + dato.imprevisto + dato.credito + dato.fdr - almacenero.pendiente_adelantos + almacenero.pendiente_iva_ventas + almacenero.pendiente_iibb_tem
             prest_cobrar = almacenero.prestamos_proyecto + almacenero.prestamos_otros
             total_costo = almacenero.cheques_emitidos + almacenero.gastos_fecha + pend_gast + almacenero.Prestamos_dados                    
             
