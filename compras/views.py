@@ -1386,13 +1386,23 @@ class CompOCestado(TemplateView):
 
                 ws["H"+str(cont+1)].alignment = Alignment(horizontal = "center")
 
-                if d.estado == "VISTO":
+                elif d.estado == "NO AUTORIZADA":
+
+                    ws["G"+str(cont+1)].font = Font(bold = True, color= "CF4708")
+
+                ws["H"+str(cont+1)].alignment = Alignment(horizontal = "center")
+
+                if d.visto == "VISTO":
 
                     ws["H"+str(cont+1)].font = Font(bold = True, color= "49AD26")
 
-                elif d.estado == "VISTO NO CONFORME":
+                elif d.visto == "VISTO NO CONFORME":
 
                     ws["H"+str(cont+1)].font = Font(bold = True, color= "CAC32E")
+
+                elif d.visto == "NO_VISTO":
+
+                    ws["H"+str(cont+1)].font = Font(bold = True, color= "CF4708")
                     
                 ws["I"+str(cont+1)].alignment = Alignment(horizontal = "center")
                 ws["J"+str(cont+1)].alignment = Alignment(horizontal = "center")
@@ -1436,13 +1446,23 @@ class CompOCestado(TemplateView):
 
                 ws["H"+str(cont+1)].alignment = Alignment(horizontal = "center")
 
-                if d.estado == "VISTO":
+                elif d.estado == "NO AUTORIZADA":
+
+                    ws["G"+str(cont+1)].font = Font(bold = True, color= "CF4708")
+
+                ws["H"+str(cont+1)].alignment = Alignment(horizontal = "center")
+
+                if d.visto == "VISTO":
 
                     ws["H"+str(cont+1)].font = Font(bold = True, color= "49AD26")
 
-                elif d.estado == "VISTO NO CONFORME":
+                elif d.visto == "VISTO NO CONFORME":
 
                     ws["H"+str(cont+1)].font = Font(bold = True, color= "CAC32E")
+
+                elif d.visto == "NO_VISTO":
+
+                    ws["H"+str(cont+1)].font = Font(bold = True, color= "CF4708")
                     
                 ws["I"+str(cont+1)].alignment = Alignment(horizontal = "center")
                 ws["J"+str(cont+1)].alignment = Alignment(horizontal = "center")
