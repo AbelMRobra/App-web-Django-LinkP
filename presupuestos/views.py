@@ -1487,7 +1487,7 @@ def parametros(request):
             datos.append((parametros, porc_terreno, porc_link, tasa_pl, soft, imp, comer, tem, ganan, costo_m2, costo_soft_m2, costo_imp, costo_terreno, costo_hon, costo_comer, costo_tem, ganancia, tasa_des, costo_desc, meses ))
 
         except: 
-            print("No esta cargado el parametro de ese proyecto")
+            basura = 1
 
     return render(request, 'desde/parametros.html', {'datos': datos})
 
