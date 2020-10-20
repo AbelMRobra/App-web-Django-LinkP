@@ -1384,8 +1384,6 @@ class CompOCestado(TemplateView):
 
                     ws["G"+str(cont+1)].font = Font(bold = True, color= "CAC32E")
 
-                ws["H"+str(cont+1)].alignment = Alignment(horizontal = "center")
-
                 elif d.estado == "NO AUTORIZADA":
 
                     ws["G"+str(cont+1)].font = Font(bold = True, color= "CF4708")
@@ -1443,8 +1441,6 @@ class CompOCestado(TemplateView):
                 elif d.estado == "ADJUNTO ✓":
 
                     ws["G"+str(cont+1)].font = Font(bold = True, color= "CAC32E")
-
-                ws["H"+str(cont+1)].alignment = Alignment(horizontal = "center")
 
                 elif d.estado == "NO AUTORIZADA":
 
