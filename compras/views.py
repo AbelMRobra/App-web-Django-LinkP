@@ -87,7 +87,7 @@ def informecompras(request):
         for d in datos_compra:
 
             if "FONDO DE REPARO" in str(d.articulo.nombre) or "ANTICIPO" in str(d.articulo.nombre) or "DIANCO" in str(d.proyecto.nombre):
-                print("No sumar")
+                basura = 1
 
             else:
 
@@ -142,7 +142,7 @@ def informecompras(request):
                 if proyecto == d.proyecto:
 
                     if "FONDO DE REPARO" in str(d.articulo.nombre) or "ANTICIPO" in str(d.articulo.nombre):
-                        print("No sumar")
+                        basura = 1
 
                     else:
 
@@ -157,7 +157,7 @@ def informecompras(request):
 
                         if "FONDO DE REPARO" in str(d.articulo.nombre) or "ANTICIPO" in str(d.articulo.nombre):
 
-                            print("No sumar")
+                            basura = 1
 
                         else:
 
@@ -749,8 +749,6 @@ def proveedores(request):
             for i in datos_viejos:
 
                 palabra =(str(palabra_buscar))
-
-                print(palabra)
 
                 buscar = (str(i.name)+str(i.descrip)+str(i.phone)+str(i.update))
 
