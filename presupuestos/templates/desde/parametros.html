@@ -7,27 +7,27 @@
 
 <div class = "jumbotron" style="background-color: white; margin-bottom: 0px;">
 
-    <h3 style="text-align: center; color: #138D75;">Parametros del indicador del precio</h3>
-    <h6 style="text-align: center; color: #138D75;">Estos parametros se aplican sobre el costo de construcción</h6>
+    <h3 style="text-align: center;">Parametros por proyecto</h3>
+    <h6 style="text-align: center;"> <small>Modulo: Indicador de precios</small> </h6>
 
-     <b><hr class = "my-4" style="width: 75%; border-color: #138D75 ;"></b>
+     <b><hr class = "my-4" style="width: 75%;"></b>
 
     {% if datos %} 
 
     <table class = "table table-hover" style="text-align: center;">
         <thead>
 
-            <tr class = "table-success">
-                <th scope = "row" style="vertical-align: middle;">  PROYECTO</th>
-                <th scope = "row" style="vertical-align: middle;"> DESCUENTO </th>
+            <tr class = "table-dark">
+                <th scope = "row" style="vertical-align: middle;" colspan="2"> <span  class="hint--top hint--danger" aria-label= "Valor de reposición del proyecto neto">PROYECTO</span> </th>
+                <th scope = "row" style="vertical-align: middle;"> PRESUPUESTO </th>
                 <th scope = "row" style="vertical-align: middle;"> SOFT + IVA </th>
-                <th scope = "row" style="vertical-align: middle;"> IMPREVISTO </th>
+                <th scope = "row" style="vertical-align: middle;"> <span  class="hint--top hint--danger" aria-label= "Se aplica sobre el valor son softcost e iva">IMPREVISTO</span>  </th>
                 <th scope = "row" style="vertical-align: middle;"> TERRENO </th>
-                <th scope = "row" style="vertical-align: middle;"> HONORARIOS LINK </th>
-                <th scope = "row" style="vertical-align: middle;"> COMER </th>
+                <th scope = "row" style="vertical-align: middle;"> HON. LINK </th>
+                <th scope = "row" style="vertical-align: middle;"> COMER. </th>
                 <th scope = "row" style="vertical-align: middle;"> TEM e IIBB </th>
                 <th scope = "row" style="vertical-align: middle;"> TASA DESC. </th>
-                <th scope = "row" style="vertical-align: middle;">GANANCIA </th>
+                <th scope = "row" style="vertical-align: middle;"> GANANCIA </th>
 
 
             </tr>
@@ -39,7 +39,8 @@
 
             {% for i in datos %}
             <tr class = "table-light">
-                <td rowspan="2" style="vertical-align: middle;" > <b>{{i.0.proyecto}}</b> </td>
+                <td rowspan="2" style="vertical-align: middle;" ><img src="{{i.0.proyecto.iamgen.url}}"  class="img-fluid" alt="..." style="max-width: 80px; height:auto;"></td>
+                <td rowspan="2" style="vertical-align: middle; color: rgb({{i.0.proyecto.color}});" > <b>{{i.0.proyecto}}</b> </td>
                 <td>{{i.3|floatformat:0}}%</td>
                 <td>{{i.4|floatformat:0}}%</td>
                 <td>{{i.5|floatformat:0}}%</td>
@@ -67,12 +68,10 @@
             {% endfor %}
 
         </table>
-        <b><hr class = "my-4" style="width: 100%; border-color: #138D75 ;"></b>
+        <b><hr class = "my-4" style="width: 100%;"></b>
 
 
-        <p><small>DESCUENTO PL: Supone que, en el general de las compras, siempre se conseguira al menos un 5% de descuento sobre valor del presupuesto</small></p>
         <p><small>SOFT + IVA/TEM e IIBB: Aquellos costos calculados por el área administrastiva o costos impositivos</small></p>
-        <p><small>IMPREVISTO: Este porcentaje se aplica sobre el costo de construcción incluido el descuento PL y el SOFT + IVA</small></p>
         <p><small>TERRENO/HON. LINK: Aquellos m2 destinados a pagar la adquisición del terreno o los servicios de la desarrolladora</small></p>
         <p><small>COMER: Hace referencia a los honorarios pagados a la comercializadora</small></p>
         <p><small>GANANCIA: Es el margen de ganancia que asume el inversor por el riesgo que se adquiere al invertir en el proyecto</small></p>
@@ -87,7 +86,10 @@
         
 
     
+    <div style="text-align: center;">
+        <p> <small>-- Link<strong>P</strong> --</small> </p>
 
+     </div>
                     
 </div>
  
