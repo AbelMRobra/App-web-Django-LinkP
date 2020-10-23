@@ -49,6 +49,37 @@ def funcionstock():
 
 # ----------------------------------------------------- VISTAS PARA INFORME DE COMPRAS ---------------------------------------------- 
 
+
+
+def detalleinforme(request, fecha_i, fecha_f, proyecto):
+
+    proyecto = Proyectos.objects.get(id = 1)
+
+    print(fecha_i)
+
+    fecha_inicial = datetime.date(year = int(fecha_i[0:4]), month=int(fecha_i[4:6]), day=int(fecha_i[6:8]))
+    fecha_final = datetime.date(year = int(fecha_f[0:4]), month=int(fecha_f[4:6]), day=int(fecha_f[6:8]))
+
+    datos = Compras.objects.filter(fecha_c__range=(fecha_inicial, fecha_final), proyecto = proyecto)
+
+    datos_compra = []
+
+    for d in datos:
+
+        if d.precio_presup != 0 or d.precio_presup != None:
+            
+            datos_compra.append((d, d.cantidad*d.precio, (d.cantidad*d.precio_presup - d.cantidad*d.precio)))
+
+    datos_compra = sorted(datos_compra, key=lambda x: x[2], reverse=True)
+
+    datos = {"datos_compra":datos_compra,
+    "fecha_inicial":fecha_inicial,
+    "fecha_final":fecha_final,
+    "proyecto":proyecto}
+
+    return render(request, 'detalle_informe.html', {"datos":datos})
+
+
 def informecompras(request):
 
     datos = 0
@@ -181,10 +212,14 @@ def informecompras(request):
 
         cantidad_compras = len(datos_compra)
 
+        fecha_i = str(fechainicial[0:4])+str(fechainicial[5:7])+str(fechainicial[8:10])
+        fecha_f = str(fechafinal[0:4])+str(fechafinal[5:7])+str(fechafinal[8:10])
+
         datos = {"cantidad_compras":cantidad_compras, "cantidad_doc":cantidad_doc, "monto_total":monto_total,
         "fechafinal":fechafinal, "fechainicial":fechainicial, "monto_estimado":monto_estimado,
         "datos_proyecto":datos_proyecto, "diferencia":diferencia, "diferencia_plata":diferencia_plata,
-        "materiales_rubros":materiales_rubros}
+        "materiales_rubros":materiales_rubros,
+        "fecha_i":fecha_i, "fecha_f":fecha_f}
 
     return render(request, 'informe_compra_semana.html', {"datos":datos})
 

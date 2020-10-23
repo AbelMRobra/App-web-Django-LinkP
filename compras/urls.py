@@ -21,5 +21,6 @@ urlpatterns = [
     url(r'^registrodecompras/$', login_required(Reegistrodecompras.as_view()), name = 'Descargar compras'),
     url(r'^descargarestado/$', login_required(CompOCestado.as_view()), name = 'Descargar estado'),
     url(r'^informecompras/$', login_required(views.informecompras), name = 'Informe compras'),
+    url(r'^detalleinforme/(?P<fecha_i>\d+)/(?P<fecha_f>\d+)/(?P<proyecto>\d+)/$', login_required(views.detalleinforme), name = 'Detalle de informe'),
 
 ]

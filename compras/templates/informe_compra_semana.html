@@ -39,7 +39,7 @@
         <table class = "table table-hover" style="text-align: center;" >
             <thead>
                 <tr class = "table-dark">
-                    <th scope = "row" style="vertical-align: middle;" rowspan="2"> <small> <strong>PROYECTO</strong> </small> </th>
+                    <th scope = "row" style="vertical-align: middle;" rowspan="2"><small> <strong>PROYECTO</strong> </small></th>
                     <th scope = "row" style="vertical-align: middle;" colspan="3"><small> <strong>COMPRADO</strong> </small> </th>
                     <th scope = "row" style="vertical-align: middle;" colspan="3"> <small> <strong>ESTIMADO</strong> </small></th>
 
@@ -70,7 +70,7 @@
 
 
                 <tr class = "table-light">
-                    <td style="width: 10%;"> <small> <strong>{{i.0}}</strong></small></td>              
+                    <td style="width: 10%;"> <small> <strong> <a href="{% url 'Detalle de informe' datos.fecha_i datos.fecha_f i.0.id %}">{{i.0}}</a> </strong></small></td>              
                     <td style="width: 10%;"> <small>${{i.3|floatformat:0|intcomma}}</small></td>
                     <td style="width: 10%;"> <small>${{i.5|floatformat:0|intcomma}}</small></td>
                     <td style="width: 10%;"> <small>${{i.1|floatformat:0|intcomma}}</small> </td>

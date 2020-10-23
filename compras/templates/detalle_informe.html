@@ -1,0 +1,77 @@
+{% extends "users/inicio.html" %}
+
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+
+
+
+<div class = "jumbotron" style="background-color: white; margin-bottom: 0px;" > 
+
+    <div style="text-align: center;">
+        <img src="{{datos.proyecto.iamgen.url}}"  class="img-fluid" alt="..." style="max-width: 200px; height:auto;">
+        <h2 style="font-family: Arial, Helvetica, sans-serif; margin-top: 10px;">{{datos.proyecto.nombre}} - Detalle de compras</h2>
+        <h6 style="font-family: Arial, Helvetica, sans-serif;">Periodo desde el {{datos.fecha_inicial}} a {{datos.fecha_final}}</h6>
+
+        <small style="font-family: Arial, Helvetica, sans-serif;"><b>Modulo:</b> Informe de compras</small>
+
+
+        <b><hr class = "my-4" style="width: 100% "></b>
+    
+    </div>
+
+    <div>
+
+        <div style="margin-bottom: 10px;">
+
+            <h5 style="font-family: Arial, Helvetica, sans-serif;">Detalle de articulos</h5>
+
+        </div>
+        <table class = "table table-hover" style="text-align: center;">
+            <thead>
+    
+                <tr class = "table-dark">
+                    <th scope = "row" style="  vertical-align: middle;"> <small>PROVEEDOR</small> </th>
+                    <th scope = "row" style="  vertical-align: middle;"> <small>ARTICULO</small> </th>
+                    <th scope = "row" style="  vertical-align: middle;"> <small>CANTIDAD</small></th>
+                    <th scope = "row" style="  vertical-align: middle;"><small>PRECIO</small></th>
+                    <th scope = "row" style="  vertical-align: middle;"><small>PRECIO LINK</small></th>
+                    <th scope = "row" style="  vertical-align: middle;"><small>MONTO</small></th>
+                    <th scope = "row" style="  vertical-align: middle;"><small>MONTO AHORRADO</small></th>
+                    <th scope = "row" style="  vertical-align: middle;"><small>O.C</small></th>
+                   
+                </tr>
+            </thead>
+            {% for i in datos.datos_compra %}   
+            <tbody>
+    
+                <tr class = "table-light">                  
+                    <td style="width: 10%; vertical-align: middle;"> <small> {{ i.0.proveedor}}</small></td> 
+                    <td style="width: 10%; vertical-align: middle;"> <small> {{ i.0.articulo.nombre}}</small></td> 
+                    <td style="width: 5%; vertical-align: middle;"> <small> <b>{{ i.0.cantidad|floatformat:0|intcomma }}</b> </small> </td> 
+                    <td style="width: 8%; vertical-align: middle; "> <small>${{ i.0.precio|floatformat:0|intcomma }}</small> </td> 
+                    <td style="width: 8%; vertical-align: middle;"> <small>${{ i.0.precio_presup|floatformat:0|intcomma }}</small> </td>  
+                    <td style="width: 8%; vertical-align: middle;"> <small>${{ i.1|floatformat:0|intcomma }}</small> </td> 
+                    <td style="width: 8%; vertical-align: middle;"> <small>${{ i.2|floatformat:0|intcomma }}</small></td>
+                    <td style="width: 10%; vertical-align: middle;"> <small> {{ i.0.documento}}</small></td> 
+              
+                </tr>
+            </tbody>
+
+            {% endfor %}
+        </table> 
+
+    
+        <b><hr class = "my-4" style="width: 100%"></b>   
+    </div>
+
+
+    <div style="text-align: center;">
+        <p> <small>-- Link<strong>P</strong> --</small> </p>
+
+     </div>
+
+
+</div>
+{% endblock %}
