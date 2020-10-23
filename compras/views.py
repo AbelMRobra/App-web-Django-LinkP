@@ -54,9 +54,6 @@ def funcionstock():
 def detalleinforme(request, fecha_i, fecha_f, proyecto):
 
     proyecto = Proyectos.objects.get(id = proyecto)
-
-    print(fecha_i)
-
     fecha_inicial = datetime.date(year = int(fecha_i[0:4]), month=int(fecha_i[4:6]), day=int(fecha_i[6:8]))
     fecha_final = datetime.date(year = int(fecha_f[0:4]), month=int(fecha_f[4:6]), day=int(fecha_f[6:8]))
 
