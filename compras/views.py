@@ -53,7 +53,7 @@ def funcionstock():
 
 def detalleinforme(request, fecha_i, fecha_f, proyecto):
 
-    proyecto = Proyectos.objects.get(id = 1)
+    proyecto = Proyectos.objects.get(id = proyecto)
 
     print(fecha_i)
 
