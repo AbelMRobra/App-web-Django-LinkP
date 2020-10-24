@@ -196,7 +196,11 @@ def informecompras(request):
             
 
 
-            datos_proyecto.append((proyecto, monto_total_p, monto_total_p_est, monto_mat_p, monto_mat_p_est, monto_mo_p, monto_mo_p_est))
+            ahorro_total_p = monto_total_p_est - monto_total_p
+            ahorro_mat_p = monto_mat_p_est - monto_mat_p
+            ahorro_mo_p = monto_mo_p_est - monto_mo_p
+
+            datos_proyecto.append((proyecto, monto_total_p, monto_total_p_est, monto_mat_p, monto_mat_p_est, monto_mo_p, monto_mo_p_est, ahorro_total_p, ahorro_mat_p, ahorro_mo_p ))
 
 
         try:
