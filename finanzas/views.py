@@ -907,7 +907,8 @@ def honorarios(request):
                         precio_promedio_contado = 0
 
                     else:
-                        precio_promedio_contado = sumatoria_contado/m2_totales
+                        h = Constantes.objects.get(nombre = "Hº VIVIENDA")
+                        precio_promedio_contado = (sumatoria_contado/m2_totales)/h.valor
 
                 datos = (p, cochera, departamento, sumatoria_contado, m2_totales)
 
