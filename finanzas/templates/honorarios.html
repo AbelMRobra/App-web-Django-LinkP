@@ -52,57 +52,20 @@
                    
                 </tr>
             </thead>
-            {% for i in datos_completos %}   
+            {% for i in datos_totales %}   
             <tbody>
     
                 <tr class = "table-light">
 
 
-                    <td style="vertical-align: middle;"> <img src="{{i.0.proyecto.iamgen.url}}"  class="img-fluid" alt="..." style="max-width: 70px; height:auto;"> </td>
+                    <td style="vertical-align: middle;"> <img src="#"  class="img-fluid" alt="..." style="max-width: 70px; height:auto;"> </td>
+                    <td style="width: 10%; color: rgb({{i.0.proyecto.color}}); vertical-align: middle;"> <b>{{ i.0.nombre}}</b> </td>
+                    <td class="priority-4" style="width: 5%; vertical-align: middle;"> No calculado</td>                      
+                    <td class="priority-4" style="width: 5%; vertical-align: middle;"> {{ i.2|floatformat:0|intcomma }}</td> 
+                    <td class="priority-4" style="width: 10%; vertical-align: middle;">{{ i.1|floatformat:0|intcomma }}</td> 
+                    <td style="width: 10%; vertical-align: middle; vertical-align: middle;">{{ i.4|floatformat:0|intcomma }} M2</td> 
+                    <td style="width: 10%; vertical-align: middle;">{{ i.3|floatformat:0|intcomma }} M3  </td> 
                     
-                    {% if "#300" in i.0.proyecto.nombre %}
-
-                    <td style="color: rgb({{i.0.proyecto.color}}); vertical-align: middle;"> <b>#300 (PROYECTO COMPLETO)</b> </td> 
-                    
-                    {% else %}
-
-                    <td style="width: 10%; color: rgb({{i.0.proyecto.color}}); vertical-align: middle;"> <b>{{ i.0.proyecto.nombre}}</b> </td> 
-                    
-
-                    {% endif %}
-                    
-                    
-                    <td class="priority-4" style="width: 5%; vertical-align: middle;"> ${{ i.2|floatformat:0|intcomma }}</td> 
-                    <td class="priority-4" style="width: 10%; vertical-align: middle;">${{ i.1|floatformat:0|intcomma }}</td> 
-                    <td style="width: 10%; vertical-align: middle; vertical-align: middle;">${{ i.3|floatformat:0|intcomma }}</td> 
-                    <td style="width: 10%; vertical-align: middle;">{{ i.4|floatformat:0|intcomma }}%  </td> 
-                    
-                    {% if i.6 > 0 %}
-                    
-                    <td class="priority-5" style="width: 10%; vertical-align: middle; color: #3FB360;"><b>  CARGADO</b></td> 
-                    
-                    {% else %}
-
-                    <td class="priority-5" style="width: 10%; vertical-align: middle; color: #B3513F ;"> <b>NO CARGADO</b></td> 
-
-                    {% endif %}
-
-                    <td class="priority-4" style="width: 5%; vertical-align: middle;"> ${{ i.9|floatformat:0|intcomma }}</td>
-
-                    {% if i.5 > 200 %}
-                    
-                    <td class="priority-5" style="width: 10%; vertical-align: middle; color: #3FB360;"><b>CALCULADO</b></td> 
-
-                    
-                    {% elif i.5 > 100 %}
-                    
-                    <td class="priority-5" style="width: 10%; vertical-align: middle; color: #DBCD23 ;"><b>SEMI-CALCULADO</b></td> 
-                    
-                    {% else %}
-
-                    <td class="priority-5" style="width: 10%; vertical-align: middle; color: #B3513F ;"> <b>EXTRAPOLADO</b></td> 
-
-                    {% endif %}
 
                 </tr>
             </tbody>

@@ -830,7 +830,94 @@ def consultapagos(request):
 
 def honorarios(request):
 
-    return render(request, 'honorarios.html')
+    proyectos = Proyectos.objects.all()
+
+    datos_totales = []
+
+    for p in proyectos:
+
+        if len(Pricing.objects.filter(unidad__proyecto = p)) > 0:
+
+            if len(Unidades.objects.filter(proyecto = p, estado = "DISPONIBLE", asig = "HON. LINK")) > 0:
+
+                datos_unidades = Unidades.objects.filter(proyecto = p, estado = "DISPONIBLE", asig = "HON. LINK")
+
+                m2_totales = 0
+
+                sumatoria_contado = 0
+
+                cochera = 0
+
+                departamentos = 0
+
+                for d in datos_unidades:
+
+                    if d.sup_equiv > 0:
+
+                        m2 = d.sup_equiv
+
+                    else:
+
+                        m2 = d.sup_propia + d.sup_balcon + d.sup_comun + d.sup_patio
+                
+                    try:
+
+                        param_uni = Pricing.objects.get(unidad = d)
+                        
+                        desde = d.proyecto.desde
+
+                        departamento += 1
+
+                        if d.tipo == "COCHERA":
+                            desde = d.proyecto.desde*d.proyecto.descuento_cochera
+                            cochera += 1
+                            departamento -= 1
+
+                        if param_uni.frente == "SI":
+                            desde = desde*d.proyecto.recargo_frente
+
+                        if param_uni.piso_intermedio == "SI":
+                            desde =desde*d.proyecto.recargo_piso_intermedio
+
+                        if param_uni.cocina_separada == "SI":
+                            desde = desde*d.proyecto.recargo_cocina_separada
+
+                        if param_uni.local == "SI":
+                            desde = desde*d.proyecto.recargo_local
+
+                        if param_uni.menor_45_m2 == "SI":
+                            desde = desde*d.proyecto.recargo_menor_45
+
+                        if param_uni.menor_50_m2 == "SI":
+                            desde = desde*d.proyecto.recargo_menor_50
+
+                        if param_uni.otros == "SI":
+                            desde = desde*d.proyecto.recargo_otros 
+
+                        #Aqui calculamos el contado/financiado
+                        
+                        contado = desde*m2 
+
+                        sumatoria_contado = sumatoria_contado + contado
+                        m2_totales = m2_totales + m2
+
+                    except:
+
+                        basura = 1
+
+
+                if m2_totales == 0:
+
+                    precio_promedio_contado = 0
+
+                else:
+                    precio_promedio_contado = sumatoria_contado/m2_totales
+
+                datos = (p, cochera, departamentos, sumatoria_contado, m2_totales)
+
+                datos_totales.append(datos)
+
+    return render(request, 'honorarios.html', {"datos_totales":datos_totales})
 
 
 def ingresounidades(request, estado, proyecto):
@@ -1548,9 +1635,6 @@ class DescargarTotalCuentas(TemplateView):
 
         otros_datos = [total_cobrado, total_pendiente, total_acobrar]
 
-
-
-    
         #Aqui buscamos agrupar proyecto - sumatorias de cuotas y pagos - mes
         
         datos_segundos = []
