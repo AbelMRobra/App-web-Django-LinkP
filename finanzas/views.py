@@ -841,8 +841,6 @@ def honorarios(request):
             if len(Unidades.objects.filter(proyecto = p, estado = "DISPONIBLE", asig = "HON. LINK")) > 0:
 
                 datos_unidades = Unidades.objects.filter(proyecto = p, estado = "DISPONIBLE", asig = "HON. LINK")
-
-                print(len(datos_unidades))
                 
                 m2_totales = 0
 
