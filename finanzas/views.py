@@ -850,7 +850,7 @@ def honorarios(request):
 
                 cochera = 0
 
-                departamentos = 0
+                departamento = 0
 
                 for d in datos_unidades:
 
@@ -861,60 +861,53 @@ def honorarios(request):
                     else:
 
                         m2 = d.sup_propia + d.sup_balcon + d.sup_comun + d.sup_patio
-                
-                    try:
 
-                        param_uni = Pricing.objects.get(unidad = d)
-                        
-                        desde = d.proyecto.desde
+                    param_uni = Pricing.objects.get(unidad = d)
+                    
+                    desde = d.proyecto.desde
 
-                        departamento += 1
+                    departamento += 1
 
-                        if d.tipo == "COCHERA":
-                            desde = d.proyecto.desde*d.proyecto.descuento_cochera
-                            cochera += 1
-                            departamento -= 1
+                    if d.tipo == "COCHERA":
+                        desde = d.proyecto.desde*d.proyecto.descuento_cochera
+                        cochera += 1
+                        departamento -= 1
 
-                        if param_uni.frente == "SI":
-                            desde = desde*d.proyecto.recargo_frente
+                    if param_uni.frente == "SI":
+                        desde = desde*d.proyecto.recargo_frente
 
-                        if param_uni.piso_intermedio == "SI":
-                            desde =desde*d.proyecto.recargo_piso_intermedio
+                    if param_uni.piso_intermedio == "SI":
+                        desde =desde*d.proyecto.recargo_piso_intermedio
 
-                        if param_uni.cocina_separada == "SI":
-                            desde = desde*d.proyecto.recargo_cocina_separada
+                    if param_uni.cocina_separada == "SI":
+                        desde = desde*d.proyecto.recargo_cocina_separada
 
-                        if param_uni.local == "SI":
-                            desde = desde*d.proyecto.recargo_local
+                    if param_uni.local == "SI":
+                        desde = desde*d.proyecto.recargo_local
 
-                        if param_uni.menor_45_m2 == "SI":
-                            desde = desde*d.proyecto.recargo_menor_45
+                    if param_uni.menor_45_m2 == "SI":
+                        desde = desde*d.proyecto.recargo_menor_45
 
-                        if param_uni.menor_50_m2 == "SI":
-                            desde = desde*d.proyecto.recargo_menor_50
+                    if param_uni.menor_50_m2 == "SI":
+                        desde = desde*d.proyecto.recargo_menor_50
 
-                        if param_uni.otros == "SI":
-                            desde = desde*d.proyecto.recargo_otros 
+                    if param_uni.otros == "SI":
+                        desde = desde*d.proyecto.recargo_otros 
 
-                        #Aqui calculamos el contado/financiado
-                        
-                        contado = desde*m2 
+                    #Aqui calculamos el contado/financiado
+                    
+                    contado = desde*m2 
 
-                        sumatoria_contado = sumatoria_contado + contado
-                        
-                        m2_totales = m2_totales + m2
+                    sumatoria_contado = sumatoria_contado + contado
+                    
+                    m2_totales = m2_totales + m2
 
-                    except:
+                    if m2_totales == 0:
 
-                        basura = 1
+                        precio_promedio_contado = 0
 
-
-                if m2_totales == 0:
-
-                    precio_promedio_contado = 0
-
-                else:
-                    precio_promedio_contado = sumatoria_contado/m2_totales
+                    else:
+                        precio_promedio_contado = sumatoria_contado/m2_totales
 
                 datos = (p, cochera, departamentos, sumatoria_contado, m2_totales)
 
