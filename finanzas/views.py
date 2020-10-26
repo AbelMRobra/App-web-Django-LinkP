@@ -909,7 +909,7 @@ def honorarios(request):
                     else:
                         precio_promedio_contado = sumatoria_contado/m2_totales
 
-                datos = (p, cochera, departamentos, sumatoria_contado, m2_totales)
+                datos = (p, cochera, departamento, sumatoria_contado, m2_totales)
 
                 datos_totales.append(datos)
 
