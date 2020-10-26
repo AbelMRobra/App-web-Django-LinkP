@@ -842,6 +842,8 @@ def honorarios(request):
 
                 datos_unidades = Unidades.objects.filter(proyecto = p, estado = "DISPONIBLE", asig = "HON. LINK")
 
+                print(len(datos_unidades))
+                
                 m2_totales = 0
 
                 sumatoria_contado = 0
@@ -899,6 +901,7 @@ def honorarios(request):
                         contado = desde*m2 
 
                         sumatoria_contado = sumatoria_contado + contado
+                        
                         m2_totales = m2_totales + m2
 
                     except:
