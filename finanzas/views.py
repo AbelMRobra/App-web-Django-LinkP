@@ -925,9 +925,9 @@ def honorarios(request):
 
                     total_anterior = total_anterior + c.precio
 
-                for p in pagos_anteriores:
+                for h in pagos_anteriores:
 
-                    total_pagado_anterior = total_pagado_anterior + p.pago
+                    total_pagado_anterior = total_pagado_anterior + h.pago
 
                 for d in cuotas_posteriores:
 
@@ -937,7 +937,7 @@ def honorarios(request):
 
                 total_m3 = total_deuda + sumatoria_contado
 
-                datos = (p, cochera, departamento, sumatoria_contado, m2_totales, precio_promedio_contado, total_deuda, total_cobrar, sumatoria_contado)
+                datos = (p, cochera, departamento, sumatoria_contado, m2_totales, precio_promedio_contado, total_deuda, total_cobrar, total_m3)
 
                 datos_totales.append(datos)
 
