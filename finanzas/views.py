@@ -917,8 +917,27 @@ def honorarios(request):
                 pagos_posteriores = Pago.objects.filter(fecha__gt = fecha_inicial_hoy, cuota__cuenta_corriente__venta__proyecto = p)
 
 
+                total_anterior = 0
+                total_pagado_anterior = 0
+                total_cobrar = 0
+                
+                for c in cuotas_anteriores:
 
-                datos = (p, cochera, departamento, sumatoria_contado, m2_totales, precio_promedio_contado)
+                    total_anterior = total_anterior + c.precio
+
+                for p in pagos_anteriores:
+
+                    total_pagado_anterior = total_pagado_anterior + p.pago
+
+                for d in cuotas_posteriores:
+
+                    total_cobrar = total_cobrar + d.precio
+
+                total_deuda = total_anterior - total_pagado_anterior
+
+                total_m3 = total_deuda + sumatoria_contado
+
+                datos = (p, cochera, departamento, sumatoria_contado, m2_totales, precio_promedio_contado, total_deuda, total_cobrar, sumatoria_contado)
 
                 datos_totales.append(datos)
 
