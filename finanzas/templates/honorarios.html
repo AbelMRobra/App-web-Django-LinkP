@@ -32,7 +32,7 @@
                     <th scope = "row" style="vertical-align: middle;" colspan="2" rowspan="2">  PROYECTO </th>
                     <th scope = "row" style="vertical-align: middle;" rowspan="2"> CONT.PROM.DISP</th>                   
                     <th scope = "row" style="vertical-align: middle;" colspan="4"> UNIDADES PENDIENTES</th>
-                    <th scope = "row" style="vertical-align: middle;" colspan="4"> CTAS CTES</th>
+                    <th scope = "row" style="vertical-align: middle;" colspan="2"> CTAS CTES</th>
                     <th scope = "row" style="vertical-align: middle;" rowspan="2"> TOTAL</th>
 
 
@@ -65,9 +65,9 @@
                     <td class="priority-4" style="width: 10%; vertical-align: middle;">{{ i.1|floatformat:0|intcomma }}</td> 
                     <td style="width: 10%; vertical-align: middle; vertical-align: middle;">{{ i.4|floatformat:0|intcomma }} M2</td> 
                     <td style="width: 10%; vertical-align: middle;"> <strong>{{ i.3|floatformat:0|intcomma }} M3</strong>   </td>
-                    <td class="priority-4" style="width: 5%; vertical-align: middle;">$ {{ i.6|floatformat:0|intcomma }}</td>
-                    <td class="priority-4" style="width: 5%; vertical-align: middle;">$ {{ i.7|floatformat:0|intcomma }}</td>
-                    <td class="priority-4" style="width: 5%; vertical-align: middle;">$ {{ i.8|floatformat:0|intcomma }}</td> 
+                    <td class="priority-4" style="width: 5%; vertical-align: middle;">{{ i.6|floatformat:0|intcomma }} M3</td>
+                    <td class="priority-4" style="width: 5%; vertical-align: middle;">{{ i.7|floatformat:0|intcomma }} M3</td>
+                    <td class="priority-4" style="width: 5%; vertical-align: middle;"> <strong>{{ i.8|floatformat:0|intcomma }} M3</strong></td> 
                     
 
                 </tr>
