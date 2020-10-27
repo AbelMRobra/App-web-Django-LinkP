@@ -906,6 +906,18 @@ def honorarios(request):
 
                 sumatoria_contado = sumatoria_contado/h.valor
 
+                # Empezamos cuenta corriente (calculamos el Hº en deuda y pendiente)
+
+
+                fecha_inicial_hoy = datetime.date.today()
+
+                cuotas_anteriores = Cuota.objects.filter(fecha__lt = fecha_inicial_hoy, cuenta_corriente__venta__proyecto = p)
+                pagos_anteriores = Pago.objects.filter(fecha__lt = fecha_inicial_hoy, cuota__cuenta_corriente__venta__proyecto = p)
+                cuotas_posteriores= Cuota.objects.filter(fecha__gt = fecha_inicial_hoy, cuenta_corriente__venta__proyecto = p)
+                pagos_posteriores = Pago.objects.filter(fecha__gt = fecha_inicial_hoy, cuota__cuenta_corriente__venta__proyecto = p)
+
+
+
                 datos = (p, cochera, departamento, sumatoria_contado, m2_totales, precio_promedio_contado)
 
                 datos_totales.append(datos)
