@@ -58,7 +58,7 @@
 
             <tr class = "table-light">
                 <td style="width: 5%; ; color: rgb({{datos.proyecto.color}})" class="priority-4"><b>{{i.0.id}}</b></td>
-                <td style="width: 25%; text-align: left;"> <b><a href="{% url 'Panel de presupuestos por analisis' id_proyecto=datos.proyecto.id id_capitulo=i.0.id %}" style="color: black;">{{i.0.nombre}}</a></b>  </td>
+                <td style="width: 25%; text-align: left;"> <b>{{i.0.nombre}}</b>  </td>
                 <td style="width: 26%;"  colspan="2" class="priority-5"> <small> <b></b></small> </td>
                 <td > <small> <b></b></small> </td>
                 <td style="width: 15%;"> <b>${{i.1|floatformat:0|intcomma}}</b> </td>
