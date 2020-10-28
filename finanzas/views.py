@@ -249,7 +249,13 @@ def pagos(request, id_cuota):
 
         for d in datos:
 
-            cotizacion = d.pago_pesos/d.pago
+            if d.pago == 0:
+                
+                cotizacion = 0
+
+            else:
+
+                cotizacion = d.pago_pesos/d.pago
 
             datos_total.append((d, cotizacion))
 
