@@ -35,6 +35,7 @@ urlpatterns = [
     url(r'^des_explosion/(?P<id_proyecto>\d+)/$', login_required(ReporteExplosion.as_view()), name = 'Descarga Exp'),
     url(r'^des_explosion_cap/(?P<id_proyecto>\d+)/$', login_required(ReporteExplosionCap.as_view()), name = 'Descarga Exp Cap'),
     url(r'^presupuestos_cap/(?P<id_proyecto>\d+)/$', login_required(views.presupuestoscapitulo), name = 'Panel de presupuestos por capitulo'),
+    url(r'^presuprepabierto/(?P<id_proyecto>\d+)/$', login_required(views.presupuestorepcompleto), name = 'Presupuesto de reposición abierto'),
     url(r'^presupuestos_cap/(?P<id_proyecto>\d+)/(?P<id_capitulo>\d+)/$', login_required(views.presupuestosanalisis), name = 'Panel de presupuestos por analisis'),
     url(r'^art_saldo_cap/(?P<id_proyecto>\d+)/(?P<id_capitulo>\d+)/$', login_required(views.SaldoCapArticulos), name = 'Articulos saldo de presupuesto'),
     

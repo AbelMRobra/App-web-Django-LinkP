@@ -1151,6 +1151,122 @@ def presupuestoscapitulo(request, id_proyecto):
     
     return render(request, 'presupuestos/presupuestocapitulo.html', {"datos":datos})
 
+
+
+# ----------------------------------------------------- VISTAS PARA PANEL PRESUPUESTOS - CAPITULO ----------------------------------------------
+
+def presupuestorepcompleto(request, id_proyecto):
+
+    proyecto = Proyectos.objects.get(id = id_proyecto)
+    capitulo = Capitulos.objects.all()
+    compo = CompoAnalisis.objects.all()
+    computo = Computos.objects.all()
+
+
+    crudo = []
+
+    valor_proyecto = 0
+
+    # En ese bucle revisamos los capitulos
+
+    for c in capitulo:
+
+        # Aqui armo el listado de analisis del capitulo
+
+        listado_analisis = []
+
+        valor_capitulo = 0
+
+        # En este bucle revisamos el modelo
+
+        modelo = Modelopresupuesto.objects.filter(proyecto = proyecto, capitulo = c )
+
+        for d in modelo:
+
+            cantidad = d.cantidad
+
+            valor_analisis = 0
+
+            if d.cantidad == None:
+
+                if "SOLO MANO DE OBRA" in str(d.analisis):
+                 
+                    for e in compo:
+
+                        if e.analisis == d.analisis:
+
+                            valor_analisis = valor_analisis + e.articulo.valor*e.cantidad
+
+                    cantidad = 0
+
+                    for h in computo:
+
+                        if h.proyecto == proyecto and h.tipologia == d.vinculacion:
+
+                            cantidad = cantidad + h.valor_vacio
+
+                    # Aqui suma al listado
+
+                    listado_analisis.append((d.analisis, valor_analisis, cantidad, valor_analisis*cantidad))  
+
+                    valor_capitulo = valor_capitulo + valor_analisis*cantidad
+
+                else:
+
+                    for e in compo:
+
+                        if e.analisis == d.analisis:
+
+                            valor_analisis = valor_analisis + e.articulo.valor*e.cantidad
+
+                    cantidad = 0
+
+                    for h in computo:
+
+                        if h.proyecto == proyecto and h.tipologia == d.vinculacion:
+                            
+                            cantidad = cantidad + h.valor_lleno
+
+
+                    # Aqui suma al listado
+
+                    listado_analisis.append((d.analisis, valor_analisis, cantidad, valor_analisis*cantidad))  
+
+                    valor_capitulo = valor_capitulo + valor_analisis*cantidad
+
+            else:
+
+                for e in compo:
+
+                    if e.analisis == d.analisis:
+
+                        valor_analisis = valor_analisis + e.articulo.valor*e.cantidad
+
+                # Aqui suma al listado
+
+                listado_analisis.append((d.analisis, valor_analisis, cantidad, valor_analisis*cantidad))
+
+                valor_capitulo = valor_capitulo + valor_analisis*float(d.cantidad)
+
+        valor_proyecto = valor_proyecto + valor_capitulo
+        
+        crudo.append((c, valor_capitulo, 0.0, listado_analisis))
+
+    datos =[]
+
+    for i in crudo:
+        i = list(i)
+        i[2] = i[1]/valor_proyecto*100
+        i = tuple(i)
+        datos.append(i)
+
+    valor_proyecto_completo = valor_proyecto
+
+    datos = {"datos":datos, "proyecto":proyecto, "valor_proyecto":valor_proyecto,"valor_proyecto_completo":valor_proyecto_completo}
+
+    
+    return render(request, 'presupuestos/presuprepabierto.html', {"datos":datos})
+
 # ----------------------------------------------------- VISTAS PARA VER ANALISIS----------------------------------------------
 
 def ver_analisis(request, id_analisis):

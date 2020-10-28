@@ -1,0 +1,124 @@
+{% extends "users/inicio.html" %}
+
+{% load humanize %}
+
+{% load static %}
+
+{% block content %}
+
+<div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;">
+
+    <h3 style="text-align: center; color: rgb({{datos.proyecto.color}}); font-family: Arial, Helvetica, sans-serif;">Presupuesto de reposición</h3>
+
+    
+    <div>
+
+        <img src="{{datos.proyecto.iamgen.url}}"  class="img-fluid" alt="..." style="max-width:200px;width:auto;height:auto; margin-top: 1rem; margin-bottom: 10px;">
+  
+
+
+    </div>
+
+    <h6 style="text-align: center; color: rgb({{datos.proyecto.color}}); font-family: Arial, Helvetica, sans-serif;">{{datos.proyecto.nombre}}</h6>
+
+    
+
+    <div style="text-align: center;">
+
+
+        <small style="font-family: Arial, Helvetica, sans-serif;"> <b>Modulo:</b> Presupuestos</small>
+      
+  
+  
+      </div>
+    
+     <b><hr class = "my-4" style="width: 100%; border-color: rgba({{datos.proyecto.color}}, 0.5;"></b>
+
+     {% if datos.datos %}
+     
+
+    <table class = "table table-hover" style="text-align: center;">
+        <thead>
+
+            <tr class = "table-dark">
+                <th scope = "row" style="vertical-align: middle;" class="priority-4">  Nº </th>
+                <th scope = "row" style="vertical-align: middle; text-align: left;">  CAPITULO/NOMBRE DEL ANALISIS </th>
+                <th scope = "row" style="vertical-align: middle; " colspan="2" class="priority-5"></th>
+                <th scope = "row" style="vertical-align: middle; " ></th>
+                <th scope = "row" style="vertical-align: middle;">  MONTO </th>
+                <th scope = "row" style="vertical-align: middle;" class="priority-5">  INC </th>               
+            </tr>
+        </thead>
+
+        <tbody>
+
+            
+
+            {% for i in datos.datos %}
+
+            <tr class = "table-light">
+                <td style="width: 5%; ; color: rgb({{datos.proyecto.color}})" class="priority-4"><b>{{i.0.id}}</b></td>
+                <td style="width: 25%; text-align: left;"> <b><a href="{% url 'Panel de presupuestos por analisis' id_proyecto=datos.proyecto.id id_capitulo=i.0.id %}" style="color: black;">{{i.0.nombre}}</a></b>  </td>
+                <td style="width: 26%;"  colspan="2" class="priority-5"> <small> <b></b></small> </td>
+                <td > <small> <b></b></small> </td>
+                <td style="width: 15%;"> <b>${{i.1|floatformat:0|intcomma}}</b> </td>
+                <td style="width: 15%;" class="priority-5" > <b>{{i.2|floatformat:0|intcomma}}%</b> </td>                         
+            </tr>
+
+            {% for i in i.3 %}
+
+            <tr class = "table-light">
+
+                <td style="text-align: left; width: 5%; " class="priority-4" ></td>
+
+                <td style="width: 40%; text-align: left;" colspan="2"> <small>{{ i.0.nombre }}</small>  </td>
+                <td style=" width: 10%; " class="priority-5"  > <small>$ {{ i.1|floatformat:0|intcomma }} </small>   </td>
+                <td style="width: 10%; " class="priority-5"  > <small>{{ i.2|floatformat:0|intcomma }} ({{ i.0.unidad }})</small>   </td>
+                <td style="width: 15%;" > <small>$ {{ i.3|floatformat:0|intcomma }}</small>   </td>
+
+
+
+            </tr>
+
+            {% endfor %}
+
+
+
+            {% endfor %}
+        </tbody>
+
+            
+
+        </table>
+
+        <div style="text-align: center;">
+            <h6 style="color: rgb({{datos.proyecto.color}}); font-family: Arial, Helvetica, sans-serif;">Valor de reposición del proyecto: ${{datos.valor_proyecto_completo|floatformat:0|intcomma}} </h6>
+        </div>
+
+     {% else %}
+     
+     <div style="text-align: center;">
+        <h6> Este presupuesto aun no esta cargado! </h6>
+        <small> Para mas información consulte a <b>AR</b></small>
+    </div>
+
+    <div style="text-align: center; margin-top: 2%; margin-bottom: 10%;">
+        <img src="{% static 'img/comunicaciones.png' %}" style="width: 10%; height: 10%;">
+    </div>
+
+        
+    {% endif %}
+
+
+    <div style="text-align: center;">
+        <p style="font-family: Arial, Helvetica, sans-serif;"> <small>-- Link<strong>P</strong> --</small> </p>
+
+     </div>
+        
+
+   
+                    
+</div>
+ 
+    
+{% endblock %}
