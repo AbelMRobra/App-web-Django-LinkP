@@ -935,7 +935,7 @@ def honorarios(request):
 
                 total_deuda = total_anterior - total_pagado_anterior
 
-                total_m3 = total_deuda + sumatoria_contado
+                total_m3 = total_deuda + sumatoria_contado + total_cobrar
 
                 datos = (p, cochera, departamento, sumatoria_contado, m2_totales, precio_promedio_contado, total_deuda, total_cobrar, total_m3)
 
