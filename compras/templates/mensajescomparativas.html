@@ -8,6 +8,41 @@
 <div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;">
 
     <h3 style="font-family: Arial, Helvetica, sans-serif;">{{datos.proveedor.name}}</h3>
+
+    <div>
+
+        {% if datos.estado == "ESPERA" %}
+
+    <small style="color: rgb(83, 82, 65);"><strong>{{datos.estado}}</strong></small>
+
+    {% endif %}
+
+    {% if datos.estado == "AUTORIZADA" %}
+
+    
+    <small style="color: rgb(37, 159, 76 );"><strong>O.C AUTORIZADA</strong></small>
+
+    {% endif %}
+
+    {% if datos.estado == "NO AUTORIZADA" %}
+        
+        <small style="color: rgb(192, 63, 50 );"><strong>RECHAZADA</strong></small>
+
+    {% endif %}
+
+    {% if datos.estado == "ADJUNTO ✓" %}
+
+       
+        <small style="color: rgb(208, 125, 32);"><strong>ADJUNTO AUTORIZADO</strong></small>
+
+
+    {% endif %}
+
+
+    </div>
+
+    
+
     <small style="font-family: Arial, Helvetica, sans-serif;"><b>Modulo:</b> Circuito de compras </small>
 
      <div style="text-align:center">
@@ -25,7 +60,7 @@
 
     </div>
 
-    <div style="text-align: left;">
+    <div style="text-align: left; margin-top: 15px;">
 
 
         {% if datos.adj_oc %}
@@ -49,11 +84,8 @@
 
             {% csrf_token %}
 
-            <label class="col-form-label col-form-label-lg" for="inputLarge">Ingrese un mensaje!</label>
             <input class="form-control form-control-lg" type="text" placeholder="Escriba aqui ..." id="inputLarge" name="mensaje">
      
-
-
 
         </form>
             
@@ -65,7 +97,7 @@
 
     <div style="text-align: right;">
 
-        <small> {{ i.mensaje }} :{{ i.usuario.identificacion }} </small> 
+        <small> {{ i.mensaje }} </small> 
 
         <img src="{{i.usuario.imagenlogo.url}}"  class="img-fluid" alt="..." style="max-width: 30px; height:auto;">
 
@@ -79,7 +111,7 @@
 
         <img src="{{i.usuario.imagenlogo.url}}"  class="img-fluid" alt="..." style="max-width: 30px; height:auto;">
 
-        <small> {{ i.usuario.identificacion }}: {{ i.mensaje }}</small> 
+        <small> {{ i.mensaje }}</small> 
 
     </div>
 
