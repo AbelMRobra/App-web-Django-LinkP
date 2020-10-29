@@ -596,8 +596,6 @@ def mensajescomparativas(request, id_comparativa):
 
             if i[0] == "mensaje" and i[1] != "" :
 
-                print(request.user)
-
                 b = ComparativasMensaje(
                         usuario = datosusuario.objects.get(identificacion = request.user),
                         comparativa = Comparativas.objects.get(id = id_comparativa),
