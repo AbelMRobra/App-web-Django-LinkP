@@ -15,6 +15,9 @@
         <hr class="my-4" style="background-color: #F3EAE5; width: 75%; ">
 
         {% if datos %}
+
+        <h5 style="color: #F3EAE5; margin-left: 12.5%;">Un poco sobre ti</h5>
+
         <div style="text-align: center;">
 
           <img src="{{datos.imagenlogo.url}}"  class="img-fluid" alt="..." style="max-width: 250px; height:auto;">
@@ -46,6 +49,8 @@
         <hr class="my-4" style="background-color: #F3EAE5; width: 75%; ">
 
         {% endif %}
+
+        <h5 style="color: #F3EAE5; margin-left: 12.5%;">Información general!</h5>
 
         <div style="text-align: left;">
 
@@ -90,6 +95,37 @@
 
 
         </div>
+
+        {% if otros_datos %}
+
+        <hr class="my-4" style="background-color: #F3EAE5; width: 75%; ">
+
+        <div style=" margin-left: 12.5%;">
+
+          <h5 style="color: #F3EAE5;">El equipo! </h5> 
+        </div>
+
+        {% for i in otros_datos %}
+
+        
+
+        <div style=" margin-left: 12.5%; margin-top: 10px;">
+
+          <img src="{{i.imagenlogo.url}}"  class="img-fluid" alt="..." style="max-width: 30px; height:auto;">
+          
+          
+          <small style="color: #F3EAE5;"> {{i.area}} - {{i.cargo}} </small>
+
+
+        </div>
+
+        {% endfor %}
+
+        {% endif %}
+
+        
+
+
 
 
         

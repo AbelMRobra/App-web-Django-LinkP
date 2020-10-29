@@ -18,14 +18,22 @@ def guia(request):
 
     datos = 0
 
+    otros_datos = 0
+
     try:
         datos = datosusuario.objects.get(identificacion = request.user)
+
+        if datos:
+
+            otros_datos = datosusuario.objects.order_by("area")
+
 
     except:
 
         datos = 0
 
-    return render(request, "users/guia.html", {"datos":datos})
+
+    return render(request, "users/guia.html", {"datos":datos, "otros_datos":otros_datos})
 
 
 def dashboard(request):
