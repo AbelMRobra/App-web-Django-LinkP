@@ -42,6 +42,7 @@
             <thead>
     
                 <tr class = "table-dark">
+                    <th scope = "row" style="vertical-align: middle;" ><small><b></b></small></th>
                     <th scope = "row" style="vertical-align: middle;" class="priority-5"><small><b>Nº REF</b></small></th>
                     <th scope = "row" style="vertical-align: middle;" class="priority-4"> <small><b>Nº O.C</b></small></th>
                     <th scope = "row" style="vertical-align: middle;"> <small><b>PROVEEDOR</b></small></th>
@@ -70,6 +71,7 @@
                 {% for i in datos|slice:"120" %}
 
                 <tr class = "table-light">
+                    <td style="width: 1%;" > <small> <strong> <a href="{% url 'Mensajes en comparativas' i.id%}">º</a> </strong></small></td>
                     <td style="width: 3%;" class="priority-5"> <small> <strong>{{i.numero|upper}}</strong></small></td>
 
                     {% if i.adj_oc %}

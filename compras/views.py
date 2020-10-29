@@ -4,7 +4,8 @@ from random import sample
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .models import Proveedores, Certificados
-from .models import StockComprasAnticipadas, Compras, Proyectos, Proveedores, Retiros, Comparativas
+from .models import StockComprasAnticipadas, Compras, Proyectos, Proveedores, Retiros, Comparativas, ComparativasMensaje
+from rrhh.models import datosusuario
 from .form import StockAntForm
 from .filters import CertificadoFilter
 from presupuestos.models import Articulos, Constantes, Presupuestos
@@ -583,6 +584,35 @@ def comparativas_pl(request, estado):
 
 
     return render(request, 'comparativas_pl.html', {'datos':datos})
+
+
+def mensajescomparativas(request, id_comparativa):
+
+    if request.method == 'POST':
+
+        datos_post = request.POST.items()
+
+        for i in datos_post:
+
+            if i[0] == "mensaje" and i[1] != "" :
+
+                print(request.user)
+
+                b = ComparativasMensaje(
+                        usuario = datosusuario.objects.get(identificacion = request.user),
+                        comparativa = Comparativas.objects.get(id = id_comparativa),
+                        mensaje = i[1],
+
+                        )
+
+                b.save()
+
+
+    datos = Comparativas.objects.get(id = id_comparativa)
+
+    mensajes = ComparativasMensaje.objects.filter(comparativa__id = id_comparativa).order_by("-fecha")
+
+    return render(request, 'mensajescomparativas.html', {'datos':datos, 'mensajes':mensajes})
 
 def comparativas(request, estado):
 

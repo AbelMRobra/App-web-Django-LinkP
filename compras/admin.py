@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Proveedores, Contratos, Certificados, StockComprasAnticipadas, Compras, Retiros, Comparativas
+from .models import Proveedores, Contratos, Certificados, StockComprasAnticipadas, Compras, Retiros, Comparativas, ComparativasMensaje
 from import_export import resources
 from import_export.admin import ImportExportModelAdmin
 
@@ -11,6 +11,16 @@ class ProveedoresResource(resources.ModelResource):
 
 class ProveedoresAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     resources_class = ProveedoresResource
+
+
+class ComparativasMensajeResource(resources.ModelResource):
+    class Meta:
+        model = ComparativasMensaje
+
+class ComparativasMensajeAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    list_display = ('usuario', 'mensaje')
+    search_fields = ('usuario__identificacion','mensaje')
+    resources_class = ComparativasMensajeResource
 
 
 class ComprasResource(resources.ModelResource):
@@ -44,6 +54,7 @@ class ComparativasAdmin(ImportExportModelAdmin, admin.ModelAdmin):
 admin.site.register(Proveedores, ProveedoresAdmin)
 admin.site.register(Retiros, RetirosAdmin)
 admin.site.register(Comparativas, ComparativasAdmin)
+admin.site.register(ComparativasMensaje, ComparativasMensajeAdmin)
 admin.site.register(Compras, ComprasAdmin)
 admin.site.register(Contratos)
 admin.site.register(Certificados)

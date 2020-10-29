@@ -1,7 +1,7 @@
 from django.db import models
 from proyectos.models import Proyectos
 from presupuestos.models import Articulos
-
+from rrhh.models import datosusuario
 # Create your models here.
 
 
@@ -20,6 +20,9 @@ class Proveedores(models.Model):
 
     def __str__(self):
         return self.name
+
+
+
 
 class Comparativas(models.Model):
 
@@ -54,6 +57,22 @@ class Comparativas(models.Model):
     class Meta:
         verbose_name = "Comparativa"
         verbose_name_plural = "Comparativas"
+
+class ComparativasMensaje(models.Model):
+
+    usuario =  models.ForeignKey(datosusuario, on_delete=models.CASCADE, verbose_name="Usuario")
+    comparativa =  models.ForeignKey(Comparativas, on_delete=models.CASCADE, verbose_name="Comparativa")
+    mensaje =  models.CharField(verbose_name="Mensaje", blank=True, null=True, max_length=200)
+    fecha = models.DateTimeField(verbose_name="Fecha de creación", auto_now_add=True, blank=True, null=True)
+
+    class Meta:
+
+        verbose_name="Mensaje"
+        verbose_name_plural="Mensajes"
+        
+
+    def __str__(self):
+        return self.mensaje
 
 
 class Contratos(models.Model):

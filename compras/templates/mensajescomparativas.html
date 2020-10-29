@@ -1,0 +1,114 @@
+{% extends "users/inicio.html" %}
+
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+
+<div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;">
+
+    <h3 style="font-family: Arial, Helvetica, sans-serif;">{{datos.proveedor.name}}</h3>
+    <small style="font-family: Arial, Helvetica, sans-serif;"><b>Modulo:</b> Circuito de compras </small>
+
+     <div style="text-align:center">
+                  
+    </div> 
+
+
+    <b><hr class = "my-4" style="width: 100%;"></b>
+
+    <div style="text-align: left;">
+
+        <a href="{{ datos.adjunto.url }}" class="btn btn-sm btn-warning"><span class="hint--left hint--warning" aria-label="Es una imagen de comparativas o remitos!">VER ADJUNTO</span> </a>
+
+
+
+    </div>
+
+    <div style="text-align: left;">
+
+
+        {% if datos.adj_oc %}
+                    
+                    <td style="width: 3%;"><a href="{{ datos.adj_oc.url }}" class="btn btn-sm btn-success"><span class="hint--left hint--success" aria-label="Una copia de la O.C!, puedes buscarla en TANGO tambien!">VER ORDEN DE COMPRA</span></a></td>
+                    
+    {% else %}
+
+    <td style="width: 3%;"><small>Sin orden de compra adjunta</small> </td>
+
+    {% endif %}
+
+
+    </div>
+
+    <b><hr class = "my-4" style="width: 100%;"></b>
+
+    <div class="form-group" style="max-width: 300px;">
+
+        <form action="" method="POST">
+
+            {% csrf_token %}
+
+            <label class="col-form-label col-form-label-lg" for="inputLarge">Ingrese un mensaje!</label>
+            <input class="form-control form-control-lg" type="text" placeholder="Escriba aqui ..." id="inputLarge" name="mensaje">
+     
+
+
+
+        </form>
+            
+         </div>
+
+    {% for i in mensajes %}
+
+    {% if i.usuario.identificacion == request.user.username %}
+
+    <div style="text-align: right;">
+
+        <small> {{ i.mensaje }} :{{ i.usuario.identificacion }} </small> 
+
+        <img src="{{i.usuario.imagenlogo.url}}"  class="img-fluid" alt="..." style="max-width: 30px; height:auto;">
+
+        
+
+    </div>
+
+    {% else %}
+
+    <div style="text-align: left;">
+
+        <img src="{{i.usuario.imagenlogo.url}}"  class="img-fluid" alt="..." style="max-width: 30px; height:auto;">
+
+        <small> {{ i.usuario.identificacion }}: {{ i.mensaje }}</small> 
+
+    </div>
+
+    {% endif %}
+
+
+    
+
+    {% endfor %}
+
+
+    
+
+    
+    
+
+
+    
+
+
+    <div style="margin-top: 2rem;">
+        <p> <small>-- Link<strong>P</strong> --</small> </p>
+
+     </div>
+        
+    
+
+                    
+</div>
+ 
+    
+{% endblock %}
