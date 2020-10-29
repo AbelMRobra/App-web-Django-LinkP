@@ -8,7 +8,12 @@
     <link rel="stylesheet" href="{% static 'css/hint.css' %}">
     <link rel="stylesheet" href="{% static 'css/styleabel.css' %}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
     <title>LINK-P</title>
+
+
+
+
 </head>
 <body background="{% static 'img/dark_wood.png' %}">
 
@@ -354,8 +359,48 @@
     
         <hr class="my-4" >
 
-        <a href="/guia"class="badge badge-pill badge-primary" style="margin-bottom: 10px;"> <b>Guia rapida!</b> </a>
+        <a href="/guia"class="badge badge-pill badge-primary" style="margin-bottom: 10px;"> Guia rapida! </a>
         
+        <!-- Button trigger modal -->
+
+        {% if request.user.username == "PL" or request.user.username == "ar" %}
+
+        {% if datos_pl %}
+
+        <div>
+
+          <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModalCenter">
+            Pablo!
+          </button>
+
+
+        </div>
+
+        {% endif %}
+
+        {% endif %}
+        
+
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Las ordenes de compra te necesitan!</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                Hay <strong>{{datos_pl.0.0}}</strong>  OC esperando ser vistas! Y <strong style="color: rgb(208, 125, 32)">{{datos_pl.0.1}} </strong>que dejaste solo con el adjunto autorizado!
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+         
+              </div>
+            </div>
+          </div>
+        </div>
 
 
         </div>

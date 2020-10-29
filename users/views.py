@@ -8,7 +8,7 @@ from finanzas.models import Almacenero, RegistroAlmacenero
 from presupuestos.models import Presupuestos
 from proyectos.models import Proyectos, Unidades
 from ventas.models import VentasRealizadas
-from compras.models import Compras
+from compras.models import Compras, Comparativas
 from registro.models import RegistroValorProyecto
 from rrhh.models import datosusuario
 import datetime
@@ -117,6 +117,20 @@ def dashboard(request):
 
 def inicio(request):
 
+
+    # Esta parte es para Pablo
+
+    compras_espera = Comparativas.objects.filter(estado = "ESPERA")
+    compras_adjunto_ok = Comparativas.objects.filter(estado = "ADJUNTO ✓")
+    
+    datos_pl = []
+
+    if len(compras_espera) > 0 or len(compras_adjunto_ok) > 0:
+
+        
+        datos_pl.append((len(compras_espera), len(compras_adjunto_ok)))
+    
+    
     datos_logo = 0
 
     try:
@@ -201,7 +215,7 @@ def inicio(request):
 
     barras = sorted(barras,reverse=True, key=lambda tup: tup[1])
 
-    return render(request, "users/inicio.html", {"datos_barras":barras, "datos_logo":datos_logo})
+    return render(request, "users/inicio.html", {"datos_barras":barras, "datos_logo":datos_logo, "datos_pl":datos_pl})
 
 def welcome(request):
     # Si estamos identificados devolvemos la portada
