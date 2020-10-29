@@ -8,84 +8,94 @@
       <div class="jumbotron" style="background-color: rgba(11, 32, 68, 0.8); margin-top: 2%;">
 
         <div style="text-align: center;">
-          <h3 style="color:#F3EAE5;"> Guia rapida </h3>
+          <h3 style="color:#F3EAE5;"> Tu espacio personal</h3>
+          <h4 style="color: #F3EAE5; font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif">{{request.user.first_name}} {{request.user.last_name}}</h4>
+
         </div>       
         <hr class="my-4" style="background-color: #F3EAE5; width: 75%; ">
 
-        			<!--Slider -->
-			<div class="row slider">
-				<div class="col">
-					<div class="carousel slide" id="slider" data-ride="carousel">
-						<ol class="carousel-indicators">
-							<li data-target="#slider" data-slide-to="0" class="active"></li>
-							<li data-target="#slider" data-slide-to="1"></li>
-							<li data-target="#slider" data-slide-to="2"></li>
-						</ol>
-						<div class="carousel-inner">
-              
-              <div class="carousel-item  active" style="width: 60%; margin-left: 20%; text-align: center;">
+        {% if datos %}
+        <div style="text-align: center;">
+
+          <img src="{{datos.imagenlogo.url}}"  class="img-fluid" alt="..." style="max-width: 250px; height:auto;">
+
+        </div>
+       
+        <div style="text-align: left; margin-left: 12.5%; margin-top: 20px;">
+
+
+          <div>
+
+            <small style="color:#F3EAE5;"><b>Área que perteneces:</b> </small> <small style="color:#F3EAE5;">{{datos.area}}</small>
+          
+
+          </div>
+
+          <div>
+
+            <small style="color:#F3EAE5;"><b>Cargo que ocupas:</b> </small> <small style="color:#F3EAE5;">{{datos.cargo}}</small>
+          
+
+          </div>
+
+
+
+
+        </div>
+
+        <hr class="my-4" style="background-color: #F3EAE5; width: 75%; ">
+
+        {% endif %}
+
+        <div style="text-align: left;">
+
+          <div style="display: inline-block; width: 300px; margin-left: 12.5%; vertical-align: top; margin-top: 20px;">
+
+            <img src="{% static 'img/car2.jpg' %}" width="300px" >
                 
-                <h6 style="color: #F3EAE5">Funcionamiento de la APP</h6>
-                  <div style="display: inline-block; width: 100%; text-align: center; margin-bottom: 1%;">
-
-                    <small style="color: #F3EAE5"> Está app fue desarrollada completamente de forma particular en un servidor privado</small>
-                    <small style="color: #F3EAE5">Funciona con una unica gran base de datos estructurada que facilita el manejo y control de datos  </small>
-                  
-                  </div>   
-								<img src="{% static 'img/car2.jpg' %}" width="20%" height="20%"  class="d-block w-100" alt="Slide#1">
-							</div>
-              <div class="carousel-item" style="width: 60%; margin-left: 20%; text-align: center;">
+  
+          </div>
+  
+          <div style="display: inline-block; width: 300px; margin-left: 12.5%; margin-top: 20px; ">
+  
+            <h6 style="color: #F3EAE5">¿Qué es LINK-P?</h6>
+            <small style="color: #F3EAE5"> Es una APP-WEB que recolecta y procesa datos! ayuda a que todos estemos conectados y podamos tener siempre la información actualizada</small>
                 
-                <h6 style="color: #F3EAE5">Accesibilidad y disponibilidad</h6>
-                  <div style="display: inline-block; width: 100%; text-align: center; margin-bottom: 1%;">
+  
+          </div>
 
-                    <small style="color: #F3EAE5"> Cada grupo de usuarios tienen permisos distintos, por lo que no se debe compartir la información de logeo</small>
-                    <small style="color: #F3EAE5">Para obtener un usuario escriba a <strong>AR</strong>. La app esta activa de Lunes a Viernes de 8:00 a 20:00 hs</small>
-                  
-                  </div> 
-								<img src="{% static 'img/car3.jpg' %}" width="20%" height="20%"  class="d-block w-100" alt="Slide#1">
-              </div>
-              
-              <div class="carousel-item" style="width: 60%; margin-left: 20%;">
-                <div style="text-align: center; margin-bottom: 2%; " >
 
-                  <h6 style="color: #F3EAE5">Equipo del área de presupuesto</h6>
-                  <div style="display: inline-block; width: 40%; text-align: center; margin-bottom: 1%;">
+        </div>
 
-                    <small style="color: #F3EAE5"> <b>ING. ROBRA ABEL - RESPONSABLE DEL ÁREA</b></small>
-                    <small style="color: #F3EAE5">Informes, consultas generales del área y de la app</small>
-                  
-                  </div>
-                  <div style="display: inline-block; width: 40%; text-align: center; margin-left: 5%;">
+        <div style="text-align: left;">
 
-                    <small style="color: #F3EAE5"> <b>ING. GALINDEZ LUCIANO - AUXILIAR DEL ÁREA</b></small>
-                    <small style="color: #F3EAE5">Computos y consultas sobre presupuesto</small>
-                  
-                  </div>
-                  
-                </div>  
-                      
-                <img src="{% static 'img/car1.jpg' %}"class="d-block w-100" alt="Slide#1">
+          
+  
+          <div style="display: inline-block; width: 300px; margin-left: 12.5%; margin-top: 20px; ">
+  
+            <h6 style="color: #F3EAE5">¿Qué cuidados debo tener?</h6>
+            <small style="color: #F3EAE5"> Esta aplicación maneja datos de nuestra empresa, y como con otros sistemas, se debe ser prudente con su manejo!</small>
+            <small style="color: #E54D38"> No pases tu información de logeo. </small>
+            <small style="color: #F3EAE5">LINK-P se desconecta automaticamente despues de 1 hora o cuando cierres el navegador</small>
+                
+  
+          </div>
 
-              </div>
-						</div>
+          <div style="display: inline-block; width: 300px; margin-left: 12.5%; margin-top: 20px; vertical-align: top;">
 
-						<a class="carousel-control-prev" href="#slider" role="button" data-slide="prev">
-							<span class="carousel-control-prev-icon" aria-hidden="true"></span>
-							<span class="sr-only">Anterior</span>
-						</a>
-						<a class="carousel-control-next" href="#slider" role="button" data-slide="next">
-							<span class="carousel-control-next-icon" aria-hidden="true"></span>
-							<span class="sr-only">Siguiente</span>
-						</a>
-					</div>
-				</div>
-			</div>
+            <img src="{% static 'img/car3.jpg' %}" width="300px" >
+                
+  
+          </div>
+
+
+        </div>
+
+
         
 
 
-
-          <hr class="my-4" >
+        <hr class="my-4" style="background-color: #F3EAE5; width: 50%; ">
 
 
         <div style="text-align: center;">

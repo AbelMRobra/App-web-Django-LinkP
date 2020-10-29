@@ -10,12 +10,22 @@ from proyectos.models import Proyectos, Unidades
 from ventas.models import VentasRealizadas
 from compras.models import Compras
 from registro.models import RegistroValorProyecto
+from rrhh.models import datosusuario
 import datetime
 from datetime import date
 
 def guia(request):
 
-    return render(request, "users/guia.html")
+    datos = 0
+
+    try:
+        datos = datosusuario.objects.get(identificacion = request.user)
+
+    except:
+
+        datos = 0
+
+    return render(request, "users/guia.html", {"datos":datos})
 
 
 def dashboard(request):
@@ -99,6 +109,15 @@ def dashboard(request):
 
 def inicio(request):
 
+    datos = 0
+
+    try:
+        datos = datosusuario.objects.get(identificacion = request.user)
+
+    except:
+
+        datos = 0
+
     date = datetime.date.today()
 
     Registros = RegistroAlmacenero.objects.filter(fecha =date)
@@ -174,7 +193,7 @@ def inicio(request):
 
     barras = sorted(barras,reverse=True, key=lambda tup: tup[1])
 
-    return render(request, "users/inicio.html", {"datos_barras":barras})
+    return render(request, "users/inicio.html", {"datos_barras":barras, "datos":datos})
 
 def welcome(request):
     # Si estamos identificados devolvemos la portada
