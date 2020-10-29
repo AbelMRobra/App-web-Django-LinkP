@@ -109,14 +109,14 @@ def dashboard(request):
 
 def inicio(request):
 
-    datos = 0
+    datos_logo = 0
 
     try:
-        datos = datosusuario.objects.get(identificacion = request.user)
+        datos_logo = datosusuario.objects.get(identificacion = request.user)
 
     except:
 
-        datos = 0
+        datos_logo = 0
 
     date = datetime.date.today()
 
@@ -193,7 +193,7 @@ def inicio(request):
 
     barras = sorted(barras,reverse=True, key=lambda tup: tup[1])
 
-    return render(request, "users/inicio.html", {"datos_barras":barras, "datos":datos})
+    return render(request, "users/inicio.html", {"datos_barras":barras, "datos_logo":datos_logo})
 
 def welcome(request):
     # Si estamos identificados devolvemos la portada
