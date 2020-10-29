@@ -78,58 +78,97 @@
 
     <b><hr class = "my-4" style="width: 100%;"></b>
 
-    <div class="form-group" style="max-width: 300px;">
 
-        <form action="" method="POST">
 
-            {% csrf_token %}
+        <h6>Mensajes!</h6>
 
-            <input class="form-control form-control-lg" type="text" placeholder="Escriba aqui ..." id="inputLarge" name="mensaje">
-     
 
-        </form>
-            
-         </div>
 
-    {% for i in mensajes %}
+    <div style="text-align: left;">
 
-    {% if i.usuario.identificacion == request.user.username %}
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+          Nuevo mensaje!
+        </button>
 
-    <div style="text-align: right; margin-top: 10px;">
 
-        <div style="display: inline-block; background-color: rgba(11, 32, 68, 0.3); border-radius: 5px;">
+      </div>
 
-            <small style="margin: 5px; "> {{ i.mensaje }}</small>
 
-        </div>
 
-        <img src="{{i.usuario.imagenlogo.url}}"  class="img-fluid" alt="..." style="max-width: 30px; height:auto;">
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLongTitle">Escribe un mensaje!</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
 
+                <form action="" method="POST">
+
+                    {% csrf_token %}
         
-
-    </div>
-
-    {% else %}
-
-    <div style="text-align: left; margin-top: 10px;">
-
-        <img src="{{i.usuario.imagenlogo.url}}"  class="img-fluid" alt="..." style="max-width: 30px; height:auto;">
-
-        <div style="display: inline-block; background-color: rgba(24, 220, 220, 0.3); border-radius: 5px;">
-
-            <small style="margin: 5px; "> {{ i.mensaje }}</small>
-
+                    <input class="col-form-label col-form-label-lg" type="text" placeholder="Escriba aqui ..." id="inputLarge" name="mensaje" style="margin: 5px; width: 50%;">
+             
+        
+                </form>
+              </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+       
+            </div>
+          </div>
         </div>
-         
-
-    </div>
-
-    {% endif %}
-
+      </div>
 
     
 
-    {% endfor %}
+
+        {% for i in mensajes %}
+
+        {% if i.usuario.identificacion == request.user.username %}
+
+        <div style="text-align: right; margin-top: 10px;">
+
+            <div style="display: inline-block; background-color: rgba(11, 32, 68, 0.3); border-radius: 5px;">
+    
+                <small style="margin: 5px; "> {{ i.mensaje }}</small>
+    
+            </div>
+    
+            <img src="{{i.usuario.imagenlogo.url}}"  class="img-fluid" alt="..." style="max-width: 30px; height:auto;">
+    
+            
+    
+        </div>
+    
+        {% else %}
+    
+        <div style="text-align: left; margin-top: 10px;">
+    
+            <img src="{{i.usuario.imagenlogo.url}}"  class="img-fluid" alt="..." style="max-width: 30px; height:auto;">
+    
+            <div style="display: inline-block; background-color: rgba(24, 220, 220, 0.3); border-radius: 5px;">
+    
+                <small style="margin: 5px; "> {{ i.mensaje }}</small>
+    
+            </div>
+             
+    
+        </div>
+    
+        {% endif %}
+    
+    
+        
+    
+        {% endfor %}
+
+
+    
 
 
     
