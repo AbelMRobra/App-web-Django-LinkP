@@ -109,6 +109,8 @@
           </div>
         </li>
 
+        {% if perms.compras.change_compras %}
+
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Técnica
@@ -126,6 +128,8 @@
             
           </div>
         </li>
+
+        {% endif %}
 
         {% if perms.finanzas.view_almacenero %}
 
