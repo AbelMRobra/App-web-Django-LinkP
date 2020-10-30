@@ -15,3 +15,17 @@ class datosusuario(models.Model):
 
     def __str__(self):
         return self.identificacion
+
+class mensajesgenerales(models.Model):
+
+    usuario = models.ForeignKey(datosusuario, on_delete=models.CASCADE, verbose_name="Usuario")
+    fecha = models.DateTimeField(auto_now_add=True, verbose_name="Fecha", blank=True, null=True)
+    mensaje = models.CharField(verbose_name="Mensaje", blank=True, null=True, max_length=200)
+
+
+    class Meta:
+        verbose_name="Mensaje general"
+        verbose_name_plural="Mensajes generales"
+
+    def __str__(self):
+        return self.mensaje

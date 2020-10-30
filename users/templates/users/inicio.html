@@ -409,6 +409,35 @@
 
         </div>
 
+        {% if request.user.username != "HC" %}
+
+
+        <div style="display: inline-block; max-width: 400px; vertical-align: top;">
+
+          {% for i in mensajesdeldia %}
+
+          <div style="text-align: left; margin-top: 10px;">
+    
+            <img src="{{i.usuario.imagenlogo.url}}"  class="img-fluid" alt="..." style="max-width: 30px; height:auto;">
+    
+            <div style="display: inline-block; background-color: rgba(24, 220, 220, 0.3); border-radius: 5px;">
+    
+                <small style="margin: 5px; color: #FBF8F7;"> {{ i.mensaje }}</small>
+    
+            </div>
+
+            {% endfor %}
+             
+    
+        </div>
+
+        {% endif %}
+
+          
+
+
+        </div>
+
       
       </div>
 

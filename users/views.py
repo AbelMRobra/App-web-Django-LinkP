@@ -10,7 +10,7 @@ from proyectos.models import Proyectos, Unidades
 from ventas.models import VentasRealizadas
 from compras.models import Compras, Comparativas
 from registro.models import RegistroValorProyecto
-from rrhh.models import datosusuario
+from rrhh.models import datosusuario, mensajesgenerales
 import datetime
 from datetime import date
 
@@ -122,6 +122,7 @@ def inicio(request):
 
     compras_espera = Comparativas.objects.filter(estado = "ESPERA")
     compras_adjunto_ok = Comparativas.objects.filter(estado = "ADJUNTO ✓")
+    mensajesdeldia = mensajesgenerales.objects.all()
     
     datos_pl = []
 
@@ -215,7 +216,7 @@ def inicio(request):
 
     barras = sorted(barras,reverse=True, key=lambda tup: tup[1])
 
-    return render(request, "users/inicio.html", {"datos_barras":barras, "datos_logo":datos_logo, "datos_pl":datos_pl})
+    return render(request, "users/inicio.html", {"datos_barras":barras, "datos_logo":datos_logo, "datos_pl":datos_pl, "mensajesdeldia":mensajesdeldia})
 
 def welcome(request):
     # Si estamos identificados devolvemos la portada
