@@ -1326,6 +1326,8 @@ def almacenero(request):
 
     mensaje = 0
 
+    lista = 0
+
     if request.method == 'POST':
         
         try:
@@ -1340,10 +1342,9 @@ def almacenero(request):
 
             for i in proyecto_elegido:
 
-                if i[0] == "proyecto":
+                if i[0] == "proyecto" and i[1] != "":
+
                     proyecto = Proyectos.objects.get(id = i[1])
-
-
                     presupuesto = Presupuestos.objects.get(proyecto = proyecto)
                     almacenero = Almacenero.objects.get(proyecto = proyecto)
 
@@ -1380,18 +1381,98 @@ def almacenero(request):
 
                     datos.append((pend_gast, prest_cobrar, total_costo, total_ingresos, rentabilidad, saldo_caja, saldo_proyecto, descuento, saldo_proyecto_pesimista, rentabilidad_pesimista))
 
+                    lista = RegistroAlmacenero.objects.filter(proyecto = proyecto)
+
             proyectos = 0
 
         except:
 
             mensaje = 1
 
+    if request.method == 'GET':
+
+        datos = request.GET.items()
+
+        for i in datos:
+
+            if i[0] != "csrfmiddlewaretoken":
+
+                print(i)
+
+                return redirect('Historico almacenero', id_proyecto = int(i[0]), fecha = int(i[1]))
+
+
     datos = {"proyectos":proyectos,
     'datos':datos,
     "usd":usd_blue,
-    "mensaje":mensaje}
+    "mensaje":mensaje,
+    'lista':lista}
 
     return render(request, 'almacenero.html', {"datos":datos} )
+
+
+
+def registro_almacenero(request, id_proyecto, fecha):
+
+
+    # Aqui calculamos el almacenero original
+
+
+    datos = []
+
+    proyecto = Proyectos.objects.get(id = id_proyecto)
+
+    presupuesto = Presupuestos.objects.get(proyecto = proyecto)
+    almacenero = Almacenero.objects.get(proyecto = proyecto)
+
+    #Aqui calculo el IVA sobre compras
+
+    iva_compras = (presupuesto.imprevisto + presupuesto.saldo_mat + presupuesto.saldo_mo + presupuesto.credito + presupuesto.fdr)*0.07875
+
+    almacenero.pendiente_iva_ventas = iva_compras
+
+    almacenero.save()
+
+    #Calculo el resto de las cosas
+    
+    pend_gast = almacenero.pendiente_admin + almacenero.pendiente_comision + presupuesto.saldo_mat + presupuesto.saldo_mo + presupuesto.imprevisto + presupuesto.credito + presupuesto.fdr - almacenero.pendiente_adelantos + almacenero.pendiente_iva_ventas + almacenero.pendiente_iibb_tem
+    prest_cobrar = almacenero.prestamos_proyecto + almacenero.prestamos_otros
+    total_costo = almacenero.cheques_emitidos + almacenero.gastos_fecha + pend_gast + almacenero.Prestamos_dados
+    
+    descuento = almacenero.ingreso_ventas*0.06 
+    
+    total_ingresos = prest_cobrar + almacenero.cuotas_cobradas + almacenero.cuotas_a_cobrar + almacenero.ingreso_ventas
+    saldo_caja = almacenero.cuotas_cobradas - almacenero.gastos_fecha - almacenero.Prestamos_dados
+    saldo_proyecto = total_ingresos - total_costo
+    rentabilidad = (saldo_proyecto/total_costo)*100
+
+    total_ingresos_pesimista = total_ingresos - descuento
+    saldo_proyecto_pesimista = total_ingresos_pesimista - total_costo
+    rentabilidad_pesimista = (saldo_proyecto_pesimista/total_costo)*100
+
+    #Cargo todo a datos
+
+    datos.append(proyecto)
+    datos.append(presupuesto)
+    datos.append(almacenero)
+
+    datos.append((pend_gast, prest_cobrar, total_costo, total_ingresos, rentabilidad, saldo_caja, saldo_proyecto, descuento, saldo_proyecto_pesimista, rentabilidad_pesimista))
+
+
+    # Aqui calculamos el almacenero historico
+
+    fecha = datetime.date(year = int(fecha[0:4]), month=int(fecha[4:6]), day=int(fecha[6:8]))
+
+    registro = RegistroAlmacenero.objects.filter(proyecto = proyecto, fecha = fecha)
+
+    print(registro.cuotas_a_cobrar)
+ 
+    datos = {
+        'datos':datos,
+        'registro':registro,
+    }
+
+    return render(request, 'historicoalmacenero.html', {"datos":datos} )
 
 class DescargarCuentacorriente(TemplateView):
 

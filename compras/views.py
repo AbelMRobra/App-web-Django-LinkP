@@ -684,6 +684,15 @@ def comparativas(request, estado):
 
                 comparativa.save()
 
+                b = ComparativasMensaje(
+                        usuario = datosusuario.objects.get(identificacion = request.user),
+                        comparativa = Comparativas.objects.get(id = comparativa.id),
+                        mensaje = d[1],
+
+                        )
+
+                b.save()
+
 
     return render(request, 'comparativas.html', {'datos':datos, "estado":estado})
 

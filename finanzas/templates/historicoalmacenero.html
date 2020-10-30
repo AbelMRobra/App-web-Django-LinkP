@@ -11,7 +11,7 @@
 
     <div style="text-align: center;">
 
-        <h2 style="font-family: Arial, Helvetica, sans-serif;">Cost benefits analysis (CBA)</h2>
+        <h2 style="font-family: Arial, Helvetica, sans-serif;">Historico CBA</h2>
 
         <small style="font-family: Arial, Helvetica, sans-serif;" > <b>Modulo:</b> Finanzas</small>
 
@@ -19,97 +19,13 @@
     
     </div>
 
-    {% if datos.proyectos %}
-
-    <div style="text-align: center; margin-bottom: 20%;">
-       <form method="POST">
-
-           {% csrf_token %}
-
-           <div>
-
-            <small style="font-family: Arial, Helvetica, sans-serif;"> Seleccione un proyecto del listado para acceder a los datos</small>
-
-          </div>
-
-           <select name="proyecto" class="custom-select" style="width: 200px; margin-top: 10px;">
-
-               {% if request.user.username != "HC" %}
-
-               {% for i in datos.proyectos %}
-
-               {% if not "DIANCO" in i.nombre %}
-
-               <option value="{{i.0}}">{{i.1}}</option>
-
-
-               {% endif %}
-
-               {% endfor %}
-
-               {% else %}
-
-               {% for i in datos.proyectos %}
-
-               {% if "DIANCO" in i.nombre %}
-               <option value="{{i.id}}">{{i.nombre}}</option>
-
-               {% endif %}
-
-               {% endfor %}
-
-               
-               {% endif %}
-
-
-             </select>
-             
-             
-
-             <div>
-               <button class="btn btn-dark" type="submit" style="margin-top: 10px;">Buscar datos</button>          
-           </div>
-           
-       </form>
-
-       <b><hr class = "my-4" style="width: 75%; "></b>
-
-
-       <a class="btn btn-info" href="{% url 'Consolidado' %}" style="margin-top: 10px;"> Ver consolidado </a>
-
-       
-       
-   </div>
-
-   
-
-   {% endif %}
-
-   {% if datos.mensaje == 1 %}
-
-   <div  style="margin-top: -15%;">
-    <h6> Este proyecto no tiene todos los requerimientos cargados </h6>
-    <small> Contactar con AR/VI</small>
-</div>
-
-<div style="text-align: center; margin-top: 2%; margin-bottom: 10%;">
-    
-    <img src="{% static 'img/comunicaciones.png' %}" style="max-width:10%;width:auto;height:auto; margin-top: 1rem;">
-
-</div>
-
-   {% endif %}
-
-
-
-   {% if datos.proyectos == 0 %}
 
     <div style="margin-bottom: 2rem;">
 
     <img src="{{datos.datos.0.iamgen.url}}"  class="img-fluid" alt="..." style="max-width:250px; height:auto; margin-bottom: 2rem;">
 
 
-    <h3 style="color: rgb({{datos.datos.0.color}});">Evaluación de {{datos.datos.0.nombre}}</h3>
+    <h3 style="color: rgb({{datos.datos.0.color}});">{{datos.datos.0.nombre}}</h3>
 
     
     </div>
@@ -142,60 +58,8 @@
     <h6>Rentabilidad: <small>{{datos.datos.3.4|floatformat:0|intcomma}}%</small>  </h6>
     <p><small style="color: #5DB150;">Valor del USD BLUE: $ {{datos.usd.valor}}</small></p>
 
-    <div style="text-align: left;">
 
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter" style="background-color: rgba({{datos.datos.0.color}}, 0.8); border-color: rgba({{datos.datos.0.color}}, 1)">
-          Ver historico
-        </button>
-
-
-      </div>
-
-
-
-    <!-- Modal -->
-    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLongTitle">Ingrese una fecha del listado</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-
-                <form action="" method="GET">
-
-                    {% csrf_token %}
-        
-                    <select name="{{datos.datos.0.id}}" class="custom-select" style="width: 200px; margin-top: 10px;">
-
-                        {% for i in datos.lista %}
-                    
-                    
-                        <option value="{{i.fecha|date:'Ymd'}}">{{i.fecha}}</option>
-
-                        {% endfor %}
-                    
-                    
-                    </select>
-
-                    <div>
-                        <button class="btn btn-dark" type="submit" style="margin-top: 10px;">Buscar datos</button>
-        
-                    </div>
-
-                    
-                </form>
-              </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-       
-            </div>
-          </div>
-        </div>
-      </div>
+    
 
     </div>
 
@@ -240,6 +104,49 @@
             <h6>$ {{datos.datos.3.1|floatformat:0|intcomma}}   </h6>
             <h6><small>$ {{datos.datos.2.prestamos_proyecto|floatformat:0|intcomma}}  </small></h6>
             <h6><small>$ {{datos.datos.2.prestamos_otros|floatformat:0|intcomma}}</small></h6>
+            <h6>$ {{datos.datos.2.cuotas_cobradas|floatformat:0|intcomma}}  </h6>
+            <h6>$ {{datos.datos.2.cuotas_a_cobrar|floatformat:0|intcomma}}  </h6>
+            <h6>$ {{datos.datos.2.ingreso_ventas|floatformat:0|intcomma}}  </h6>
+            <h6> <small> $ {{datos.datos.2.unidades_socios|floatformat:0|intcomma}}  </small></h6>
+            
+            
+        </div>
+
+        <div style="vertical-align: top; margin-top: 2%;">
+            <h6 style="color: #3FB360;">Ingresos totales: ${{datos.datos.3.3|floatformat:0|intcomma}}</h6>
+    
+        </div >
+
+
+    </div>
+
+    <div style="display: inline-block; width: 350px; margin: 20px;">
+
+        <h5>Ingresos del proyecto dia TANTO</h5>
+        <hr class = "my-4" style="width: 70%; border-color: rgba({{datos.datos.0.color}}, 0.3);">
+
+
+        <div style="display: inline-block; width: 170px; vertical-align: top; text-align: left;">
+             
+
+            <h6>Prestamos a cobrar:</h6>
+            <h6><small>Prestamos a proyectos:</small></h6>
+            <h6><small>Prestamos a otros:</small></h6>
+            <h6>Cuotas cobradas:</h6>
+            <h6>Cuotas a cobrar:</h6>
+            <h6>Ingreso por ventas:</h6>
+            <h6> <small>(Unidades de Socios):</small> </h6>
+            
+    
+            
+        </div>
+
+        <div style="display: inline-block; width: 170px; vertical-align: top; text-align: right;">
+             
+
+            <h6>$ </h6>
+            <h6><small>$ {{datos.registro.saldo_mo}}  </small></h6>
+            <h6><small>$ {{datos.registro.prestamos_otros|floatformat:0|intcomma}}</small></h6>
             <h6>$ {{datos.datos.2.cuotas_cobradas|floatformat:0|intcomma}}  </h6>
             <h6>$ {{datos.datos.2.cuotas_a_cobrar|floatformat:0|intcomma}}  </h6>
             <h6>$ {{datos.datos.2.ingreso_ventas|floatformat:0|intcomma}}  </h6>
@@ -350,9 +257,6 @@
     <hr class = "my-4" style="width: 50%; border-color: rgba({{datos.datos.0.color}}, 0.5);">
 
    
-
-    
-    {% endif %}
 
     
     
