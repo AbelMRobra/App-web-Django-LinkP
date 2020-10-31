@@ -8,6 +8,7 @@ from proyectos.models import Unidades
 from ventas.models import Pricing, VentasRealizadas
 import datetime
 import pandas as pd
+import numpy as np
 from datetime import date, timedelta
 from openpyxl import Workbook
 from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
@@ -1424,8 +1425,33 @@ def arqueo_diario(request):
 
     datos = []
 
+    array_pesos = np.array(data_frame['CAJA CONSOLIDADA'])
+
+    pesos = sum(array_pesos)
+
+    array_usd = np.array(data_frame['USD'])
+
+    usd = sum(array_usd)
+
+    array_euro = np.array(data_frame['EUROS'])
+
+    euro = sum(array_euro)
+
+    pesos_usd = usd*Constantes.objects.get(nombre = "USD_BLUE").valor
+    pesos_euros = euro*Constantes.objects.get(nombre = "EURO_BLUE").valor
+
+    pesos_pesos = pesos - pesos_usd - pesos_euros
+
+    porcentaje_usd = pesos_usd/pesos*100
+    porcentaje_euros = pesos_euros/pesos*100
+    porcentaje_pesos = 100 - porcentaje_euros - porcentaje_usd
+
+
+    otros_datos = [usd, euro, pesos]
+    datos_grafico = [porcentaje_usd, porcentaje_euros, porcentaje_pesos]
 
     numero = 0
+
     for i in lista_proyecto:
 
 
@@ -1442,7 +1468,7 @@ def arqueo_diario(request):
         numero += 1
 
 
-    return render(request, 'arqueo.html', {'datos':datos, 'data_cruda':data_cruda})
+    return render(request, 'arqueo.html', {'datos':datos, 'data_cruda':data_cruda, 'otros_datos':otros_datos, 'datos_grafico':datos_grafico})
 
 
 def registro_almacenero(request, id_proyecto, fecha):

@@ -21,6 +21,18 @@
     
     </div>
 
+    <div style="text-align: left;">
+
+        <h5 style="font-family: Arial, Helvetica, sans-serif;">Resumen de los datos</h5>
+
+        <h6>Total de la caja consolidada: <small>$ {{otros_datos.2|floatformat:0|intcomma}}</small></h6>
+        <h6>Total de Dolares: <small> U$D {{otros_datos.0|floatformat:0|intcomma}}</small></h6>
+        <h6>Total de Euros: <small>€ {{otros_datos.1|floatformat:0|intcomma}}</small></h6>
+    </div>
+
+
+    <b><hr class = "my-4" style="width: 100%; "></b>
+
 
     <div>
 
@@ -77,205 +89,7 @@
 
    <b><hr class = "my-4" style="width: 100%; "></b> 
 
-   <div style="margin-bottom: 2rem;">
-    <h5 style="font-family: Arial, Helvetica, sans-serif;">Detalle grafico</h5>
-</div>
 
-    <div style="margin-top: 0.5rem; width: 100%;">
-
-        <div style= "text-align: center;">
-            <small><strong>-- Analisis historico de rendimiento --</strong></small>
-        </div>
-
-        <canvas id="myChart" height="70px" width="auto"></canvas>
-
-
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
-    <script>
-        var ctx = document.getElementById('myChart').getContext('2d');
-        var chart = new Chart(ctx, {
-            // The type of chart we want to create
-            type: 'line',
-
-            // The data for our dataset
-            data: {
-
-                labels: [
-                    {% for i in fechas %}
-                    '{{i}}',                   
-                    {% endfor %}
-                    'Hoy'
-                    ],
-                datasets: [{
-                    label: 'Rendimiento despues del descuento',
-                    backgroundColor: 'rgb(46, 86, 202 , 0.15)',
-                    borderColor: 'rgb(46, 86, 202)',
-                    fill: true,
-                    borderWidth: 1,
-                    lineTension: 0,
-                    data: [
-                    {% for i in datos_registro  %}
-                    Math.round({{i.1.0.6|floatformat:0}}/1000000),  
-                                     
-                    {% endfor %}
-                    Math.round({{ datos_finales.0.6|floatformat:0 }}/1000000),
-                    ]
-                },
-                {
-                    label: 'Rendimiento total',
-                    backgroundColor: 'rgb(28, 180, 51, 0.15)',
-                    borderColor: 'rgb(28, 180, 51)',
-                    fill: true,
-                    borderWidth: 1,
-                    lineTension: 0,
-                    data: [
-                    {% for i in datos_registro %}
-                    Math.round({{i.1.0.2|floatformat:0}}/1000000),                   
-                    {% endfor %}
-                    Math.round({{ datos_finales.0.2|floatformat:0 }}/1000000),
-                    ]
-                }],
-
-            },
-
-            // Configuration options go here
-            options: {
-
-                scales: {
-
-                    xAxes: [
-                        {
-
-                            stacked: true,
-                            display: false,
-
-                        }
-                    ],
-                    yAxes: [
-                        {
-                            ticks: {
-                                min: 0,
-                                stepSize: 50,
-                                callback: function(label, index, labels) {
-                                    return '$ '+label+ ' M';
-                                    
-                                }
-                            },
-                            scaleLabel: {
-                                display: true,
-                                labelString: '1M = $1.000.000'
-                            },
-
-                            stacked: false
-                        }
-                    ],
-                },
-            }
-
-        });
-        
-
-        
-    </script>
-
-
-    </div>
-
-    <div style="margin-top: 5px;">
-
-        <div style= "text-align: center;">
-            <small><strong>-- Historico del ingreso/costo conjunto --</strong></small>
-        </div>
-
-        <canvas id="myChart2" height="70px" width="auto"></canvas>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
-    <script>
-        var ctx = document.getElementById('myChart2').getContext('2d');
-        var chart = new Chart(ctx, {
-            // The type of chart we want to create
-            type: 'line',
-
-            // The data for our dataset
-            data: {
-                labels: [
-                    {% for i in fechas %}
-                    '{{i}}',                   
-                    {% endfor %}
-                    'Hoy'
-                    ],
-                datasets: [{
-                    label: 'Costo del proyecto',
-                    backgroundColor: 'rgb(225, 40, 28 , 0.15)',
-                    borderColor: 'rgb(225, 40, 28 )',
-                    fill: true,
-                    borderWidth: 1,
-                    lineTension: 0,
-                    data: [
-                    {% for i in datos_registro  %}
-                    Math.round({{i.1.0.1|floatformat:0}}/1000000),
-                    {% endfor %}  
-                    Math.round({{ datos_finales.0.1|floatformat:0 }}/1000000),                 
-                    
-                    ]
-                },
-                {
-                    label: 'Ingresos del proyecto',
-                    backgroundColor: 'rgb(28, 180, 51, 0.15)',
-                    borderColor: 'rgb(28, 180, 51)',
-                    fill: true,
-                    borderWidth: 1,
-                    lineTension: 0,
-                    data: [
-                    {% for i in datos_registro %}
-                    Math.round({{i.1.0.0|floatformat:0}}/1000000),                   
-                    {% endfor %}
-                    Math.round({{ datos_finales.0.0|floatformat:0 }}/1000000),
-                    ]
-                }],
-
-            },
-
-            // Configuration options go here
-            options: {
-
-                scales: {
-
-                    xAxes: [
-                        {
-
-                            stacked: true,
-                            display: false,
-
-                        }
-                    ],
-                    yAxes: [
-                        {
-                            ticks: {
-                                min: 0,
-                                stepSize: 800,
-                                callback: function(label, index, labels) {
-                                    return '$ '+label + ' M';
-                                    
-                                }
-                            },
-                            scaleLabel: {
-                                display: true,
-                                labelString: '1 M = $1.000.000'
-                            },
-
-                            stacked: false
-                        }
-                    ],
-                },
-                }
-        });
-        
-
-        
-    </script>
-
-
-    </div>
 
     <div>
         <p style="font-family: Arial, Helvetica, sans-serif;"> <small>-- Link<strong>P</strong> --</small> </p>
