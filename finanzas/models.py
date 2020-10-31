@@ -110,3 +110,11 @@ class ArchivosAdmFin(models.Model):
     class Meta:
         verbose_name="Archivo ADM/FINAN"
         verbose_name_plural="Archivos ADM/FINAN"
+
+class Arqueo(models.Model):
+    fecha = models.DateField(verbose_name = "Fecha del arqueo")
+    arqueo = models.FileField(verbose_name="Archivo Excel", blank=True, null=True)
+
+    class Meta:
+        verbose_name="Arqueo"
+        verbose_name_plural="Arqueos"

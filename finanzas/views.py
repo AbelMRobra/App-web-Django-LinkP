@@ -3,10 +3,11 @@ from django.shortcuts import redirect
 from django.http import HttpResponse
 from django.views.generic.base import TemplateView  
 from presupuestos.models import Proyectos, Presupuestos, Constantes, Modelopresupuesto
-from .models import Almacenero, CuentaCorriente, Cuota, Pago, RegistroAlmacenero, ArchivosAdmFin
+from .models import Almacenero, CuentaCorriente, Cuota, Pago, RegistroAlmacenero, ArchivosAdmFin, Arqueo
 from proyectos.models import Unidades
 from ventas.models import Pricing, VentasRealizadas
 import datetime
+import pandas as pd
 from datetime import date, timedelta
 from openpyxl import Workbook
 from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
@@ -1411,9 +1412,40 @@ def almacenero(request):
     return render(request, 'almacenero.html', {"datos":datos} )
 
 
+def arqueo_diario(request):
+
+    data_cruda = Arqueo.objects.order_by("-fecha")
+
+    data = data_cruda[0]
+
+    data_frame = pd.read_excel(data.arqueo)
+
+    lista_proyecto = list(data_frame['PROYECTO'])
+
+    datos = []
+
+
+    numero = 0
+    for i in lista_proyecto:
+
+
+        try:
+
+            proyecto = Proyectos.objects.get(id = data_frame.loc[numero, 'ID LINK-P'])
+
+        except:
+
+            proyecto = 0
+
+        datos.append((proyecto, data_frame.loc[numero, 'PROYECTO'], data_frame.loc[numero, 'CAJA CONSOLIDADA'], data_frame.loc[numero, 'USD'], data_frame.loc[numero, 'EUROS']))
+
+        numero += 1
+
+
+    return render(request, 'arqueo.html', {'datos':datos, 'data_cruda':data_cruda})
+
 
 def registro_almacenero(request, id_proyecto, fecha):
-
 
     # Aqui calculamos el almacenero original
 
