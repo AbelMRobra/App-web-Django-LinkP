@@ -10,6 +10,7 @@ from ventas.models import PricingResumen, VentasRealizadas
 from registro.models import RegistroValorProyecto, RegistroConstantes
 from .models import Articulos, Constantes, DatosProyectos, Prametros, Desde, Analisis, CompoAnalisis, Modelopresupuesto, Capitulos, Presupuestos, Registrodeconstantes
 import sqlite3
+import pandas as pd
 import numpy as np
 import json
 import datetime
@@ -59,16 +60,21 @@ def insum_list(request):
 
                 palabra =(str(palabra_buscar))
 
-                codigo = (str(i.codigo))
+                lista_palabra = palabra.split()
 
-                nombre = (str(i.nombre))
+                buscar = (str(i.codigo)+str(i.constante)+str(i.nombre)+str(i.valor))
 
-                constante = (str(i.constante))
+                contador = 0
 
-                valor = (str(i.valor))
+                for palabra in lista_palabra:
 
+                    contador2 = 0
 
-                if palabra.lower() in codigo.lower() or palabra.lower() in nombre.lower() or palabra.lower() in constante.lower() or palabra.lower() in valor.lower():
+                    if palabra.lower() in buscar.lower():
+  
+                        contador += 1
+
+                if contador == len(lista_palabra):
 
                     datos.append(i)
 
@@ -347,9 +353,6 @@ def registroconstante(request):
 
         datos_finales.append((d.constante, registro_una))
 
-    print(datos_finales)
-
-        
     return render(request, 'constantes/historico.html', {'datos_finales':datos_finales, "fecha":fecha})
 
         
@@ -373,7 +376,7 @@ def presupuestostotal(request):
 
         except:
 
-            print("No tiene cargado nada")
+            var = "No tiene cargado nada"
 
     datos = 0
 
@@ -1272,7 +1275,7 @@ def presupuestorepcompleto(request, id_proyecto):
 def ver_analisis(request, id_analisis):
 
     analisis = Analisis.objects.get(codigo = id_analisis)
-    composi = CompoAnalisis.objects.all()
+    composi = CompoAnalisis.objects.filter(analisis = analisis)
     lista_compo = []
 
     for i in composi:
@@ -1302,19 +1305,20 @@ def ver_analisis(request, id_analisis):
 def analisis_list(request):
 
     analisis = Analisis.objects.all()
-    composicion = CompoAnalisis.objects.all()
     datos = []
 
     for i in analisis:
 
         valor = 0
 
+        composicion = CompoAnalisis.objects.filter(analisis = i)
+
         for c in composicion:
 
-            if i == c.analisis:
-                valor = valor +c.articulo.valor*c.cantidad
+            valor = valor +c.articulo.valor*c.cantidad
 
         datos.append((i, valor))
+
 
         #Aqui empieza el filtro
 
@@ -1342,9 +1346,21 @@ def analisis_list(request):
 
                 palabra =(str(palabra_buscar))
 
-                buscador = (str(i[0].nombre)+str(i[0].codigo))
+                lista_palabra = palabra.split()
 
-                if palabra.lower() in buscador.lower():
+                buscar = (str(i[0].nombre)+str(i[0].codigo)+str(i[1]))
+
+                contador = 0
+
+                for palabra in lista_palabra:
+
+                    contador2 = 0
+
+                    if palabra.lower() in buscar.lower():
+  
+                        contador += 1
+
+                if contador == len(lista_palabra):
 
                     datos.append(i)
 
@@ -1358,12 +1374,14 @@ def analisis_list(request):
 def panelanalisis(request):
 
     analisis = Analisis.objects.all()
-    composicion = CompoAnalisis.objects.all()
+    
     datos = []
 
     for i in analisis:
 
         valor = 0
+
+        composicion = CompoAnalisis.objects.filter(analisis = i)
 
         for c in composicion:
 
