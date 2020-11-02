@@ -1188,11 +1188,11 @@ def consolidado(request):
 
             if "2UO" in dato.proyecto.nombre:
 
-                precio_promedio_contado = 66657.5
+                precio_promedio_contado = 66657.5*1.1
 
             elif "#300" in dato.proyecto.nombre:
 
-                precio_promedio_contado = 95825
+                precio_promedio_contado = 95825*1.1
 
             else:
 
