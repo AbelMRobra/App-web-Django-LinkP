@@ -45,9 +45,14 @@
     
                 <tr class = "table-dark">
                     <th scope = "row" style="vertical-align: middle;" colspan="2">  PROYECTO </th>                   
+                    <th scope = "row" style="vertical-align: middle;"> EFECTIVO</th>
+                    <th scope = "row" style="vertical-align: middle;"> BANCO</th>
+                    <th scope = "row" style="vertical-align: middle;"> CHEQUES</th>
+                    <th scope = "row" style="vertical-align: middle;"> M. E.</th>
                     <th scope = "row" style="vertical-align: middle;"> CAJA CONSOLIDADA</th>
                     <th scope = "row" style="vertical-align: middle;"> DOLARES</th>
                     <th scope = "row" style="vertical-align: middle;"> EUROS</th>
+                    
                    
                 </tr>
             </thead>
@@ -60,7 +65,7 @@
                     {% if i.0 %}
 
 
-                    <td style="vertical-align: middle;"> <img src="{{i.0.iamgen.url}}"  class="img-fluid" alt="..." style="max-width: 70px; height:auto;"> </td>
+                    <td style="vertical-align: middle;"> <img src="#"  class="img-fluid" alt="..." style="max-width: 70px; height:auto;"> </td>
                     
                     {% else %}
 
@@ -72,8 +77,12 @@
                     
                     <td style="width: 15%; vertical-align: middle;"> {{ i.1 }}</td> 
                     <td style="width: 10%; vertical-align: middle;">${{ i.2|floatformat:0|intcomma }}</td>
-                    <td style="width: 10%; vertical-align: middle;">U$S {{ i.3|floatformat:0|intcomma }}</td>
-                    <td style="width: 10%; vertical-align: middle;">€ {{ i.4|floatformat:0|intcomma }}</td> 
+                    <td style="width: 10%; vertical-align: middle;">${{ i.7|floatformat:0|intcomma }}</td>
+                    <td style="width: 10%; vertical-align: middle;">${{ i.5|floatformat:0|intcomma }}</td>
+                    <td style="width: 10%; vertical-align: middle;">${{ i.6|floatformat:0|intcomma }}</td>
+                    <td style="width: 10%; vertical-align: middle;">${{ i.8|floatformat:0|intcomma }}</td>
+                    <td style="width: 10%; vertical-align: middle; color: rgb(89, 171, 70);">U$S {{ i.3|floatformat:0|intcomma }}</td>
+                    <td style="width: 10%; vertical-align: middle; color: rgb(76, 88, 173)">€ {{ i.4|floatformat:0|intcomma }}</td>
                    
 
                 </tr>

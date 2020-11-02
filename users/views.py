@@ -118,6 +118,11 @@ def dashboard(request):
 def inicio(request):
 
 
+    current_user = request.user
+
+    print(current_user)
+
+
     # Esta parte es para Pablo
 
     compras_espera = Comparativas.objects.filter(estado = "ESPERA")

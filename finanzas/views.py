@@ -1440,7 +1440,7 @@ def arqueo_diario(request):
 
     datos = []
 
-    array_pesos = np.array(data_frame['CAJA CONSOLIDADA'])
+    array_pesos = np.array(data_frame['EFECTIVO'])
 
     pesos = sum(array_pesos)
 
@@ -1478,7 +1478,18 @@ def arqueo_diario(request):
 
             proyecto = 0
 
-        datos.append((proyecto, data_frame.loc[numero, 'PROYECTO'], data_frame.loc[numero, 'CAJA CONSOLIDADA'], data_frame.loc[numero, 'USD'], data_frame.loc[numero, 'EUROS']))
+        nombre_columnas = data_frame.columns
+
+        banco = 0
+
+        for n in nombre_columnas:
+            if "BANCO" in n:
+                banco = banco + data_frame.loc[numero, n]
+
+
+        consolidado = data_frame.loc[numero, 'EFECTIVO'] + data_frame.loc[numero, 'CHEQUES'] + data_frame.loc[numero, 'MONEDA EXTRANJERA'] + banco
+
+        datos.append((proyecto, data_frame.loc[numero, 'PROYECTO'], data_frame.loc[numero, 'EFECTIVO'], data_frame.loc[numero, 'USD'], data_frame.loc[numero, 'EUROS'], data_frame.loc[numero, 'CHEQUES'], data_frame.loc[numero, 'MONEDA EXTRANJERA'], banco, consolidado))
 
         numero += 1
 

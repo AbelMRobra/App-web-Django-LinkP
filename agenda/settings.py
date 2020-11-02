@@ -166,4 +166,5 @@ if os.getcwd() == '/app':
 # Configuración de la sesión del usuario
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
-SESSION_COOKIE_AGE = 3600 
+SESSION_COOKIE_AGE = 3600
+
