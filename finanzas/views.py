@@ -1525,7 +1525,7 @@ def arqueo_diario(request):
 
         grafico.append((n.fecha, extranjera, efectivo, banco, cheque))
 
-    grafico = sorted(grafico, key=lambda tup: tup[0], reverse=True)
+    grafico = sorted(grafico, key=lambda tup: tup[0])
 
 
     return render(request, 'arqueo.html', {'datos':datos, 'data_cruda':data_cruda, 'otros_datos':otros_datos, 'grafico':grafico})
