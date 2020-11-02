@@ -5,57 +5,6 @@
   
   }
 
-@media (max-width: 740px) {
-    .tableconteinerabel {
-        display: block;
-        overflow-x: scroll;
-    
-    }
-}
-
-@media screen and (max-width: 1225px) and (min-width: 1045px) {
-    .priority-5{
-            display:none;
-    }
-}
-
-@media screen and (max-width: 1045px) and (min-width: 835px) {
-    .priority-5{
-            display:none;
-    }
-    .priority-4{
-            display:none;
-    }
-}
-
-@media screen and (max-width: 835px) and (min-width: 600px) {
-    .priority-5{
-            display:none;
-    }
-    .priority-4{
-            display:none;
-    }
-    .priority-3{
-            display:none;
-    }
-}
-
-@media screen and (max-width: 600px) {
-    .priority-5{
-            display:none;
-    }
-    .priority-4{
-            display:none;
-    }
-    .priority-3{
-            display:none;
-    }
-    .priority-2{
-            display:none;
-    }
-
-}
-
 
 .view {
 position: absolute;
@@ -161,3 +110,65 @@ box-shadow: 0 0 30px 2px #19C6C6;
                 transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg);
 }
 }
+
+@media (max-width: 740px) {
+        .tableconteinerabel {
+            display: block;
+            overflow-x: scroll;
+        
+        }
+    }
+    
+    @media screen and (max-width: 1225px) and (min-width: 1045px) {
+        .priority-5{
+                display:none;
+        }
+
+    }
+    
+    @media screen and (max-width: 1045px) and (min-width: 835px) {
+        .priority-5{
+                display:none;
+        }
+        .priority-4{
+                display:none;
+        }
+
+    }
+    
+    @media screen and (max-width: 835px) and (min-width: 600px) {
+        .priority-5{
+                display:none;
+        }
+        .priority-4{
+                display:none;
+        }
+        .priority-3{
+                display:none;
+        }
+
+        .view{
+                display:none;
+        }
+    }
+    
+    @media screen and (max-width: 600px) {
+        .priority-5{
+                display:none;
+        }
+        .priority-4{
+                display:none;
+        }
+        .priority-3{
+                display:none;
+        }
+        .priority-2{
+                display:none;
+        }
+
+        .view{
+                display:none;
+        }
+    
+    }
+    
