@@ -108,6 +108,7 @@ class Presupuestos(models.Model):
     anticipos = models.FloatField(verbose_name= "Anticipos", null=True, blank=True)
     saldo_cap = models.FileField(verbose_name="Archivo Saldo Capitulo", null=True, blank=True)
     fecha_a = models.DateField(auto_now=True, verbose_name= "Fecha de actualización")
+    presupuestador = models.CharField(verbose_name="Presupuestador", null=True, blank=True ,max_length=100)
 
 
     class Meta:

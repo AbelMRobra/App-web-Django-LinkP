@@ -8,6 +8,7 @@ from computos.models import Computos
 from compras.models import Compras
 from ventas.models import PricingResumen, VentasRealizadas
 from registro.models import RegistroValorProyecto, RegistroConstantes
+from rrhh.models import datosusuario
 from .models import Articulos, Constantes, DatosProyectos, Prametros, Desde, Analisis, CompoAnalisis, Modelopresupuesto, Capitulos, Presupuestos, Registrodeconstantes
 import sqlite3
 import pandas as pd
@@ -360,6 +361,8 @@ def registroconstante(request):
 # ---------------------------------> VISTAS PARA PANEL PRESUPUESTOS <----------------------------------------------
 
 def presupuestostotal(request):
+
+    presupuestador = 0
     
     proyectos_inicial = Proyectos.objects.order_by("nombre")
 
@@ -384,6 +387,9 @@ def presupuestostotal(request):
 
     if request.method == 'POST':
 
+
+        
+
         #Trae el proyecto elegido
 
         proyecto_elegido = request.POST.items()
@@ -394,6 +400,18 @@ def presupuestostotal(request):
 
             if i[0] == "proyecto":
                 proyectos = Proyectos.objects.get(id = i[1])
+
+                #Presupuestador
+
+            try:
+
+                presup_info = Presupuestos.objects.get(proyecto = proyectos)
+
+                presupuestador = datosusuario.objects.get(identificacion=presup_info.presupuestador)
+
+            except:
+
+                presupuestador = 0
 
         datos = []
 
@@ -478,7 +496,7 @@ def presupuestostotal(request):
 
         
     
-    return render(request, 'presupuestos/principalpresupuesto.html', {"datos":datos, "proyectos":proyectos, "valor":registro,})
+    return render(request, 'presupuestos/principalpresupuesto.html', {"datos":datos, "proyectos":proyectos, "valor":registro, "presupuestador":presupuestador})
 
 
 # ---------------------------------> VISTAS PARA PANEL PRESUPUESTOS - SALDO CAPITULO ----------------------------------------------
