@@ -8,7 +8,7 @@
 
     <div style="text-align: center;">
 
-      <h3 style="color: rgb({{datos.0.0.color}}); font-family: Arial, Helvetica, sans-serif;">Panel principal</h3>
+      <h3 style="color: rgb({{datos.0.0.color}}); font-family: Arial, Helvetica, sans-serif;">Panel principal de presupuestos</h3>
 
       
     
@@ -35,9 +35,9 @@
       </div>
 
 
-      <h6 style="color: rgb({{datos.0.0.color}}); font-family: Arial, Helvetica, sans-serif;">{{datos.0.0.nombre}}</h6>
+      <h6 style="color: rgb({{datos.0.0.color}}); font-family: Arial, Helvetica, sans-serif;">{{datos.0.0.nombre}} - Superficie estimada: {{datos.0.0.m2|floatformat:0}}m2</h6>
 
-      <small style="color: rgb({{datos.0.0.color}}); font-family: Arial, Helvetica, sans-serif;"> <b>Superficie estimada:</b> {{datos.0.0.m2|floatformat:0}}m2 </small>
+      <small style="color: rgb({{datos.0.0.color}}); font-family: Arial, Helvetica, sans-serif;"> Presupuestador/a:  </small>
       
       
     </div>
@@ -47,7 +47,7 @@
     <div style="text-align: center;">
 
 
-      <small style="font-family: Arial, Helvetica, sans-serif;"> <b>Modulo:</b> Presupuestos</small>
+      
 
       {% if presupuestador %}
 
@@ -61,6 +61,9 @@
 
       
       {% endif %}
+
+
+      <small style="font-family: Arial, Helvetica, sans-serif;"> <b>Modulo:</b> Presupuestos</small>
 
     </div>
 
