@@ -1186,7 +1186,7 @@ def consolidado(request):
 
         else:
 
-            if "THAMES" in dato.proyecto.nombre:
+            if "2UO" in dato.proyecto.nombre:
 
                 precio_promedio_contado = 66657.5
 
@@ -1417,6 +1417,21 @@ def arqueo_diario(request):
 
     data_cruda = Arqueo.objects.order_by("-fecha")
 
+
+    grafico = []
+
+    for n in data_cruda:
+
+        frame = pd.read_excel(n.arqueo)
+
+        array_usd = np.array(frame['USD'])
+
+        usd = sum(array_usd)
+
+        grafico.append((n.fecha, usd))
+
+
+
     data = data_cruda[0]
 
     data_frame = pd.read_excel(data.arqueo)
@@ -1468,7 +1483,7 @@ def arqueo_diario(request):
         numero += 1
 
 
-    return render(request, 'arqueo.html', {'datos':datos, 'data_cruda':data_cruda, 'otros_datos':otros_datos, 'datos_grafico':datos_grafico})
+    return render(request, 'arqueo.html', {'datos':datos, 'data_cruda':data_cruda, 'otros_datos':otros_datos, 'grafico':grafico})
 
 
 def registro_almacenero(request, id_proyecto, fecha):

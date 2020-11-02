@@ -87,8 +87,84 @@
           
    </div>
 
-   <b><hr class = "my-4" style="width: 100%; "></b> 
+   <b><hr class = "my-4" style="width: 100%; "></b>
 
+   <canvas id="myChart" height="70px" width="auto"></canvas>
+
+
+   <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+   <script>
+       var ctx = document.getElementById('myChart').getContext('2d');
+       var chart = new Chart(ctx, {
+           // The type of chart we want to create
+           type: 'bar',
+
+           // The data for our dataset
+           data: {
+
+               labels: [
+                   {% for i in grafico %}
+                   '{{i.0}}',                   
+                   {% endfor %}
+  
+                   ],
+               datasets: [{
+                   label: 'Stock de dolares',
+                   backgroundColor: 'rgb(56, 229, 98 , 0.5)',
+                   borderColor: 'rgb(56, 229, 98)',
+                   borderWidth: 1,
+                   data: [
+                   {% for i in grafico  %}
+                   Math.round({{i.1|floatformat:0}})/1000,  
+                                    
+                   {% endfor %}
+
+                   ]
+               }],
+
+           },
+
+           // Configuration options go here
+           options: {
+
+               scales: {
+
+                   xAxes: [
+                       {
+
+                           stacked: true,
+                           display: false,
+                           barThickness: 40,
+
+                       }
+                   ],
+                   yAxes: [
+                       {
+                           ticks: {
+                                beginAtZero: true,
+                               min: 0,
+                               stepSize: 100,
+                               callback: function(label, index, labels) {
+                                   return '$ '+ label + 'Mil';
+                                   
+                               }
+                           },
+                           scaleLabel: {
+                               display: true,
+                    
+                           },
+
+                           stacked: false
+                       }
+                   ],
+               },
+           }
+
+       });
+       
+
+       
+   </script>
 
 
     <div>
