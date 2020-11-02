@@ -25,9 +25,12 @@
 
         <h5 style="font-family: Arial, Helvetica, sans-serif;">Resumen de los datos</h5>
 
-        <h6>Total de la caja consolidada: <small>$ {{otros_datos.2|floatformat:0|intcomma}}</small></h6>
+        <h6>Total en efectivo: <small>$ {{otros_datos.2|floatformat:0|intcomma}}</small></h6>
+        <h6>Total en bancos: <small>$ {{otros_datos.4|floatformat:0|intcomma}}</small></h6>
+        <h6>Total en cheques: <small>$ {{otros_datos.3|floatformat:0|intcomma}}</small></h6>
         <h6>Total de Dolares: <small> U$D {{otros_datos.0|floatformat:0|intcomma}}</small></h6>
         <h6>Total de Euros: <small>€ {{otros_datos.1|floatformat:0|intcomma}}</small></h6>
+        <h6>Total en caja consolidada: <small>$ {{otros_datos.5|floatformat:0|intcomma}}</small></h6>
     </div>
 
 
@@ -65,7 +68,7 @@
                     {% if i.0 %}
 
 
-                    <td style="vertical-align: middle;"> <img src="{{i.0.iamgen.url}}"  class="img-fluid" alt="..." style="max-width: 70px; height:auto;"> </td>
+                    <td style="vertical-align: middle;"> <img src="#"  class="img-fluid" alt="..." style="max-width: 70px; height:auto;"> </td>
                     
                     {% else %}
 
@@ -118,18 +121,57 @@
   
                    ],
                datasets: [{
-                   label: 'Stock de dolares',
+                   label: 'Moneda extranjera',
                    backgroundColor: 'rgb(56, 229, 98 , 0.5)',
                    borderColor: 'rgb(56, 229, 98)',
                    borderWidth: 1,
                    data: [
                    {% for i in grafico  %}
-                   Math.round({{i.1|floatformat:0}})/1000,  
+                   Math.round({{i.1|floatformat:0}})/1000000,  
                                     
                    {% endfor %}
 
                    ]
-               }],
+               },
+               {
+                   label: 'Efectivo',
+                   backgroundColor: 'rgb(25, 71, 175 , 0.5)',
+                   borderColor: 'rgb(25, 71, 175)',
+                   borderWidth: 1,
+                   data: [
+                   {% for i in grafico  %}
+                   Math.round({{i.2|floatformat:0}})/1000000,  
+                                    
+                   {% endfor %}
+
+                   ]
+               },
+               {
+                   label: 'Banco',
+                   backgroundColor: 'rgb(222, 65, 37  , 0.5)',
+                   borderColor: 'rgb(222, 65, 37 )',
+                   borderWidth: 1,
+                   data: [
+                   {% for i in grafico  %}
+                   Math.round({{i.3|floatformat:0}})/1000000,  
+                                    
+                   {% endfor %}
+
+                   ]
+               },
+               {
+                   label: 'Cheque',
+                   backgroundColor: 'rgb(231, 206, 27  , 0.5)',
+                   borderColor: 'rgb(231, 206, 27)',
+                   borderWidth: 1,
+                   data: [
+                   {% for i in grafico  %}
+                   Math.round({{i.4|floatformat:0}})/1000000,  
+                                    
+                   {% endfor %}
+
+                   ]
+               },],
 
            },
 
@@ -149,12 +191,13 @@
                    ],
                    yAxes: [
                        {
+                            stacked: true,
                            ticks: {
                                 beginAtZero: true,
                                min: 0,
-                               stepSize: 100,
+                               stepSize: 10,
                                callback: function(label, index, labels) {
-                                   return '$ '+ label + 'Mil';
+                                   return '$ '+ label + 'Millones';
                                    
                                }
                            },
@@ -163,7 +206,6 @@
                     
                            },
 
-                           stacked: false
                        }
                    ],
                },

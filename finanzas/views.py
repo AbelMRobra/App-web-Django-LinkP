@@ -1418,20 +1418,6 @@ def arqueo_diario(request):
     data_cruda = Arqueo.objects.order_by("-fecha")
 
 
-    grafico = []
-
-    for n in data_cruda:
-
-        frame = pd.read_excel(n.arqueo)
-
-        array_usd = np.array(frame['USD'])
-
-        usd = sum(array_usd)
-
-        grafico.append((n.fecha, usd))
-
-
-
     data = data_cruda[0]
 
     data_frame = pd.read_excel(data.arqueo)
@@ -1443,6 +1429,10 @@ def arqueo_diario(request):
     array_pesos = np.array(data_frame['EFECTIVO'])
 
     pesos = sum(array_pesos)
+
+    array_cheques = np.array(data_frame['CHEQUES'])
+
+    cheques = sum(array_cheques)
 
     array_usd = np.array(data_frame['USD'])
 
@@ -1461,8 +1451,12 @@ def arqueo_diario(request):
     porcentaje_euros = pesos_euros/pesos*100
     porcentaje_pesos = 100 - porcentaje_euros - porcentaje_usd
 
+    bancos = 0
 
-    otros_datos = [usd, euro, pesos]
+    consolidados = 0
+
+
+    
     datos_grafico = [porcentaje_usd, porcentaje_euros, porcentaje_pesos]
 
     numero = 0
@@ -1485,13 +1479,53 @@ def arqueo_diario(request):
         for n in nombre_columnas:
             if "BANCO" in n:
                 banco = banco + data_frame.loc[numero, n]
+                bancos = bancos + data_frame.loc[numero, n]
 
 
         consolidado = data_frame.loc[numero, 'EFECTIVO'] + data_frame.loc[numero, 'CHEQUES'] + data_frame.loc[numero, 'MONEDA EXTRANJERA'] + banco
 
+        consolidados = consolidados + consolidado
+
         datos.append((proyecto, data_frame.loc[numero, 'PROYECTO'], data_frame.loc[numero, 'EFECTIVO'], data_frame.loc[numero, 'USD'], data_frame.loc[numero, 'EUROS'], data_frame.loc[numero, 'CHEQUES'], data_frame.loc[numero, 'MONEDA EXTRANJERA'], banco, consolidado))
 
         numero += 1
+
+    otros_datos = [usd, euro, pesos, cheques, bancos, consolidados]
+
+
+    grafico = []
+
+    for n in data_cruda:
+
+        frame = pd.read_excel(n.arqueo)
+
+        array_extranjera = np.array(frame['MONEDA EXTRANJERA'])
+
+        extranjera = sum(array_extranjera)
+
+        array_efectivo = np.array(frame['EFECTIVO'])
+
+        efectivo = sum(array_efectivo)
+
+        #Aqui sumamos los bancos
+
+        banco = 0
+
+        for m in nombre_columnas:
+
+            if "BANCO" in m:
+
+                array_banco = np.array(frame[m])
+
+                banco = banco +  sum(array_banco)
+
+        array_cheque = np.array(frame['CHEQUES'])
+
+        cheque = sum(array_cheque)
+
+        grafico.append((n.fecha, extranjera, efectivo, banco, cheque))
+
+    grafico = sorted(grafico, key=lambda tup: tup[0], reverse=True)
 
 
     return render(request, 'arqueo.html', {'datos':datos, 'data_cruda':data_cruda, 'otros_datos':otros_datos, 'grafico':grafico})
