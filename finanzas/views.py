@@ -949,7 +949,7 @@ def honorarios(request):
 
                 total_deuda = (total_anterior - total_pagado_anterior)/h.valor
 
-                total_m3 = (total_deuda + sumatoria_contado + total_cobrar)/h.valor
+                total_m3 = (sumatoria_contado + total_cobrar)/h.valor + total_deuda
 
                 total_cobrar = total_cobrar/h.valor
 
