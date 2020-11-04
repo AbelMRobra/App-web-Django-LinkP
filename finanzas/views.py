@@ -846,7 +846,7 @@ def honorarios(request):
 
         if len(Pricing.objects.filter(unidad__proyecto = p)) > 0:
 
-            if len(Unidades.objects.filter(proyecto = p, estado = "DISPONIBLE", asig = "HON. LINK")) > 0:
+            if len(Unidades.objects.filter(proyecto = p, asig = "HON. LINK")) > 0:
 
                 datos_unidades = Unidades.objects.filter(proyecto = p, estado = "DISPONIBLE", asig = "HON. LINK")
                 
