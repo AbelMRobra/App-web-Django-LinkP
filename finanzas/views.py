@@ -447,25 +447,22 @@ def totalcuentacte(request, id_proyecto):
 
     datos_primeros = []
 
+    # Listado de los proyectos que tienen cuenta corrientes
+
     listado = []
 
     for proyecto in proyectos:
 
-        cuotas = Cuota.objects.filter(cuenta_corriente__venta__proyecto = proyecto)
+        if len(Cuota.objects.filter(cuenta_corriente__venta__proyecto = proyecto)) > 0:
 
-        if len(cuotas)>0:
-            datos_primeros.append(proyecto)
-            
-            for c in cuotas:
-
-                listado.append(c.cuenta_corriente.venta.proyecto)
-
-    listado = set(list(listado))
+            listado.append(proyecto)
 
     proy = 0
 
     cantidad_cuentas = len(CuentaCorriente.objects.all())
 
+
+    #Esto es para cuando se selecciona un proyecto en especifico
 
     if id_proyecto != "0":
 
@@ -483,6 +480,8 @@ def totalcuentacte(request, id_proyecto):
 
     contador = 0
     contador_year = 1
+
+    # El cash en template es un rango de 26 dias
 
     for f in range(26):
 
@@ -533,19 +532,21 @@ def totalcuentacte(request, id_proyecto):
 
     for cuo in cuotas_anteriores:
 
-        total_original = total_original + cuo.precio
+        total_original = total_original + cuo.precio*Constantes.objects.get(id = cuo.constante.id).valor
 
     for pag in pagos_anteriores:
 
-        total_cobrado = total_cobrado +  pag.pago
+        total_cobrado = total_cobrado +  pag.pago*Constantes.objects.get(id = pag.cuota.constante.id).valor
 
     for cuot in cuotas_posteriores:
 
-        total_acobrar= total_acobrar + cuot.precio
+        total_acobrar= total_acobrar + cuot.precio*Constantes.objects.get(id = cuot.constante.id).valor
 
     total_pendiente = total_original - total_cobrado
 
-    otros_datos = [total_cobrado, total_pendiente, total_acobrar]
+    h = Constantes.objects.get(nombre = "Hº VIVIENDA")
+
+    otros_datos = [total_cobrado/h.valor, total_pendiente/h.valor, total_acobrar/h.valor]
     
 
     #Aqui buscamos agrupar proyecto - sumatorias de cuotas y pagos - mes
