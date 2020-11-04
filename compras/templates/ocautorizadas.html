@@ -39,6 +39,7 @@
             <thead>
     
                 <tr class = "table-dark">
+                    <th scope = "row" style="vertical-align: middle;"><strong></strong></th>
                     <th scope = "row" style="vertical-align: middle;"><strong>Nº O.C</strong></th>
 
                     <th scope = "row" style="vertical-align: middle;"><strong>PROYECTO</strong></th>
@@ -68,6 +69,9 @@
                 {% for i in datos %}
 
                 <tr class = "table-light">
+
+                    <td style="width: 1%;" > <small> <strong> <a href="{% url 'Mensajes en comparativas' i.id%}"><img src="{% static 'img/conversacion.png' %}" alt="" style="max-width:20px; height:auto;"  ></a>         
+                    </a> </strong></small></td>
 
                     {% if i.adj_oc %}
 
