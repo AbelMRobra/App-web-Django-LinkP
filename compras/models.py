@@ -52,7 +52,7 @@ class Comparativas(models.Model):
     fecha_autorizacion = models.DateField(blank=True, null=True, verbose_name="Fecha de aturorizacion")
     comentario = models.TextField(blank=True, null=True, verbose_name="Comentario", editable=False)
     visto = models.CharField(choices=visto.choices, default=visto.NO_VISTO, editable=False, max_length=20, verbose_name="Revisado por SP", blank=True, null=True)
-   
+    creador = models.CharField(verbose_name="Crador", blank=True, null=True, max_length=200) 
 
     class Meta:
         verbose_name = "Comparativa"

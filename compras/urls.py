@@ -4,7 +4,8 @@ from . import views
 from .views import Reegistrodecompras, CompOCestado
 from django.contrib.auth.decorators import login_required
 
-urlpatterns = [  
+urlpatterns = [ 
+    url(r'^cargarocautorizar$', login_required(views.cargarocautorizar), name = 'Cargar O.C para autorizar'), 
     url(r'^proveedores$', login_required(views.proveedores), name = 'Proveedores'),
     url(r'^cargacompras$', login_required(views.cargacompras), name = 'Carga compras'),
     url(r'^compras/(?P<id_proyecto>\d+)/$', login_required(views.compras), name = 'Compras'),

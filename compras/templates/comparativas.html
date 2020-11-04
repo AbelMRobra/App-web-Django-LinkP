@@ -19,17 +19,54 @@
 
     <div style="text-align: left;">
 
-    <a class="badge badge-secondary" href="{% url 'Comparativas' 0 %}" style="margin-top: 5px;" >Todas</a>
+    <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+        <button type="button" class="btn btn-primary">Estado</button>
+        <div class="btn-group" role="group">
+            <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+            <div class="dropdown-menu" aria-labelledby="btnGroupDrop1" style="">
+                <div style="margin: 2px;">
 
-    <a class="badge badge-dark" href="{% url 'Comparativas' 1 %}" style="margin-top: 5px;" >En espera</a>
-                     
-    <a class="badge badge-warning" href="{% url 'Comparativas' 2 %}" style="margin-top: 5px;" >Adjunto OK</a>
+                    <a href="{% url 'Comparativas' 0 %}" style="margin-top: 5px;" >Todas</a>
+
+                </div>
+                <div style="margin: 2px;">
+
+                    <a href="{% url 'Comparativas' 1 %}" style="margin-top: 5px; color: rgb(83, 82, 65);" >En espera</a>
+
+                </div>
+
+                <div style="margin: 2px;">
+
+                    <a href="{% url 'Comparativas' 2 %}" style="margin-top: 5px; color: rgb(208, 125, 32);" >Adjunto autorizado</a> 
                 
-    <a class="badge badge-success" href="{% url 'Comparativas' 4 %}" style="margin-top: 5px;" >Autorizadas</a>
+                </div>
 
-    <a class="badge badge-danger" href="{% url 'Comparativas' 3 %}" style="margin-top: 5px;" >No Autorizadas</a>
+                <div style="margin: 2px;">
 
-    <a href= "{% url 'Descargar estado' %}" class="badge badge-info" style="text-align: end; margin-top: 5px;" > Descargar Excel</a>
+                    <a href="{% url 'Comparativas' 4 %}" style="margin-top: 5px; color: rgb(37, 159, 76 );" >Autorizadas</a>
+                
+                </div>
+
+                <div style="margin: 2px;">
+
+                    <a href="{% url 'Comparativas' 3 %}" style="margin-top: 5px; color: rgb(192, 63, 50 );" >Rechazadas</a>
+                
+                </div>
+                
+                
+                             
+                
+                
+            </div>
+        </div>
+        </div>
+
+
+
+    <a href= "{% url 'Cargar O.C para autorizar' %}" class="btn btn-outline-info"style="text-align: end; margin-top: 5px;" > <b>+</b> Nueva solicitud</a>
+
+
+    <a href= "{% url 'Descargar estado' %}" class="btn btn-outline-success" style="text-align: end; margin-top: 5px;" > <img src="{% static 'img/sobresalir.png' %}" alt="" style="max-width:20px; height:auto;"  > Descargar Excel</a>
 
 
     </div>
@@ -42,6 +79,7 @@
             <thead>
     
                 <tr class = "table-dark">
+                    <th scope = "row" style="vertical-align: middle;" ><small><b></b></small></th>
                     <th scope = "row" style="vertical-align: middle;" ><small><b></b></small></th>
                     <th scope = "row" style="vertical-align: middle;" class="priority-5"><small><b>Nº REF</b></small></th>
                     <th scope = "row" style="vertical-align: middle;" class="priority-4"> <small><b>Nº O.C</b></small></th>
@@ -71,8 +109,18 @@
                 {% for i in datos|slice:"120" %}
 
                 <tr class = "table-light">
+                    
                     <td style="width: 1%;" > <small> <strong> <a href="{% url 'Mensajes en comparativas' i.id%}"><img src="{% static 'img/conversacion.png' %}" alt="" style="max-width:20px; height:auto;"  ></a>         
                     </a> </strong></small></td>
+                    <td style="width: 1%;" >
+
+                        {% if i.creador %}
+                        
+                        {{i.creador}}
+
+                        {% endif %}
+                    
+                    </td>
                     <td style="width: 3%;" class="priority-5"> <small> <strong>{{i.numero|upper}}</strong></small></td>
 
                     {% if i.adj_oc %}

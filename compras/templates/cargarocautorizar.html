@@ -1,0 +1,169 @@
+{% extends "users/inicio.html" %}
+
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+
+<div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;">
+
+    <h3 style="font-family: Arial, Helvetica, sans-serif;">Formulario de solicitud</h3>
+    <small style="font-family: Arial, Helvetica, sans-serif;"><b>Modulo:</b> Circuito de compras </small>
+
+
+
+    <form  role="form"  enctype="multipart/form-data" action="" method="POST" id="upload-image-form" style="margin: 30px;"> 
+        {% csrf_token %}
+
+
+        <div style="margin: 5px">
+
+            <div style="display: inline-block; margin: 10px; width: 200px;">
+
+                <label for="proveedor"><h6>Proveedor</h6></label>
+    
+            </div>
+            
+            <div style="display: inline-block; margin: 10px; ">
+    
+                <input name="proveedor" type="search" class="form-control form-control" placeholder="Nombre del proveedor" list="provee" style="width: 300px;">
+    
+            </div>
+
+
+        </div>
+
+        <div style="margin: 5px">
+
+            <div style="display: inline-block; margin: 10px; width: 200px;">
+
+                <label for="proyecto"><h6>Proyecto</h6></label>
+    
+            </div>
+            
+            <div style="display: inline-block; margin: 10px; ">
+    
+                <input name="proyecto" type="text" class="form-control form-control" placeholder="Escribir en MAYUSCULAS" style="width: 300px;">
+    
+            </div>
+
+
+        </div>
+
+        <div  style="margin: 5px">
+
+            <div style="display: inline-block; margin: 10px; width: 200px;">
+
+                <label for="referencia"><h6>Referencia</h6></label>
+    
+            </div>
+            
+            <div style="display: inline-block; margin: 10px; ">
+    
+                <input name="referencia" type="text" class="form-control form-control" placeholder="Ejemplo 'TEC' o 'PRESUP'" style="width: 300px;">
+    
+            </div>
+
+
+        </div>
+
+        <div style="margin: 5px">
+
+            <div style="display: inline-block; margin: 10px;  width: 200px;">
+
+                <label for="valor"><h6>Valor final de la solicitud</h6></label>
+    
+            </div>
+    
+            <div style="display: inline-block; margin: 10px; "> 
+    
+                <input name="valor" step="0.01" type="number" class="form-control form-control" placeholder="$" style="width: 300px;">
+    
+            </div>
+
+
+        </div>
+
+        
+
+        <div style="margin: 5px">
+
+            <div style="display: inline-block; margin: 10px;; width: 200px;">
+
+                <label for="imagen"><h6>Adjunto (PNG o JPEG)</h6></label>
+    
+            </div>
+            
+            <div style="display: inline-block; margin: 10px; ">
+    
+                <input type="file" class="form-control-file" name="imagen" aria-describedby="fileHelp" >
+    
+            </div>
+
+
+        </div>
+
+        <div  style="margin: 5px">
+
+            <div style="display: inline-block; margin: 10px; width: 200px;">
+
+                <label for="numerooc"><h6>Numero de O.C</h6></label>
+    
+            </div>
+            
+            <div style="display: inline-block; margin: 10px; ">
+    
+                <input name="numerooc" type="text" class="form-control form-control" placeholder="Formato ejemplo: '99-123'" style="width: 300px;">
+    
+            </div>
+
+
+        </div>
+
+        <div style="margin: 5px">
+
+            <div style="display: inline-block; margin: 10px;; width: 200px;">
+
+                <label for="oc"><h6>Orden de compra</h6></label>
+    
+            </div>
+            
+            <div style="display: inline-block; margin: 10px; ">
+    
+                <input type="file" class="form-control-file" name="oc" aria-describedby="fileHelp" >
+    
+            </div>
+
+
+        </div>
+
+
+
+          <button type="submit" class="btn btn-primary">Subir</button>
+
+
+        {{ form.as_p }}
+    </form>
+
+    <datalist id="provee"> 
+
+        {% for i in proveedores %}
+        
+        <option value="{{ i.name }}">({{i.id}})</option>
+
+        {% endfor %}
+
+    </datalist>
+
+<div style="margin-top: 2rem;">
+    <p> <small>-- Link<strong>P</strong> --</small> </p>
+
+ </div>
+    
+
+
+                
+</div>
+
+
+{% endblock %}

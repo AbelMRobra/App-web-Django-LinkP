@@ -1,5 +1,5 @@
 from django import forms
-from .models import StockComprasAnticipadas
+from .models import StockComprasAnticipadas, Comparativas
 
 class StockAntForm(forms.ModelForm):
 

@@ -21,6 +21,35 @@ from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
 from django.views.generic.base import TemplateView  
 
 
+
+def cargarocautorizar(request):
+
+    proveedores = Proveedores.objects.all()
+
+
+    if request.method == "POST":
+
+        datos = request.POST.items()
+
+        b = Comparativas(
+
+            proveedor = Proveedores.objects.get(name=request.POST['proveedor']),
+            proyecto = request.POST['proyecto'],
+            numero  = request.POST['referencia'],
+            monto = float(request.POST['valor']),
+            adjunto = request.FILES['imagen'],
+            adj_oc = request.FILES['oc'],
+            o_c = request.POST['numerooc'],
+        )
+
+        b.save()
+
+        return redirect('Comparativas', estado = 0)
+
+        
+    return render(request, 'cargarocautorizar.html', {'proveedores':proveedores})
+
+
 #Función para calcular el stock
 
 
@@ -618,7 +647,6 @@ def comparativas(request, estado):
 
         datos = Comparativas.objects.order_by("-fecha_c")
 
-
     if estado == "1":
 
 
@@ -777,6 +805,7 @@ def compras(request, id_proyecto):
 
 # ----------------------------------------------------- VISTAS PARA CERTIFICADOS ----------------------------------------------
  
+
 def certificados(request):
 
     datos = Certificados.objects.all()
