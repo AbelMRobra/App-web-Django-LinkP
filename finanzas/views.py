@@ -908,7 +908,13 @@ def honorarios(request):
                     
                     m2_totales = m2_totales + m2
 
-                precio_promedio_contado = sumatoria_contado/m2_totales
+                if m2_totales > 0:
+
+                    precio_promedio_contado = sumatoria_contado/m2_totales
+
+                else:
+
+                    precio_promedio_contado = 0
 
                 h = Constantes.objects.get(nombre = "Hº VIVIENDA")
 
@@ -931,19 +937,21 @@ def honorarios(request):
                 
                 for c in cuotas_anteriores:
 
-                    total_anterior = total_anterior + c.precio
+                    total_anterior = total_anterior + c.precio*Constantes.objects.get(id = c.constante.id).valor
 
-                for h in pagos_anteriores:
+                for f in pagos_anteriores:
 
-                    total_pagado_anterior = total_pagado_anterior + h.pago
+                    total_pagado_anterior = total_pagado_anterior + f.pago*Constantes.objects.get(id = f.cuota.constante.id).valor
 
                 for d in cuotas_posteriores:
 
-                    total_cobrar = total_cobrar + d.precio
+                    total_cobrar = total_cobrar + d.precio*Constantes.objects.get(id = d.constante.id).valor
 
-                total_deuda = total_anterior - total_pagado_anterior
+                total_deuda = (total_anterior - total_pagado_anterior)/h.valor
 
-                total_m3 = total_deuda + sumatoria_contado + total_cobrar
+                total_m3 = (total_deuda + sumatoria_contado + total_cobrar)/h.valor
+
+                total_cobrar = total_cobrar/h.valor
 
                 datos = (p, cochera, departamento, sumatoria_contado, m2_totales, precio_promedio_contado, total_deuda, total_cobrar, total_m3)
 
