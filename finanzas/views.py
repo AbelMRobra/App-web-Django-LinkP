@@ -926,10 +926,10 @@ def honorarios(request):
 
                 fecha_inicial_hoy = datetime.date.today()
 
-                cuotas_anteriores = Cuota.objects.filter(fecha__lt = fecha_inicial_hoy, cuenta_corriente__venta__proyecto = p)
-                pagos_anteriores = Pago.objects.filter(fecha__lt = fecha_inicial_hoy, cuota__cuenta_corriente__venta__proyecto = p)
-                cuotas_posteriores= Cuota.objects.filter(fecha__gt = fecha_inicial_hoy, cuenta_corriente__venta__proyecto = p)
-                pagos_posteriores = Pago.objects.filter(fecha__gt = fecha_inicial_hoy, cuota__cuenta_corriente__venta__proyecto = p)
+                cuotas_anteriores = Cuota.objects.filter(fecha__lt = fecha_inicial_hoy, cuenta_corriente__venta__proyecto = p, cuenta_corriente__venta__unidad__asig = "HON. LINK")
+                pagos_anteriores = Pago.objects.filter(fecha__lt = fecha_inicial_hoy, cuota__cuenta_corriente__venta__proyecto = p, cuota__cuenta_corriente__venta__unidad__asig = "HON. LINK")
+                cuotas_posteriores= Cuota.objects.filter(fecha__gt = fecha_inicial_hoy, cuenta_corriente__venta__proyecto = p, cuenta_corriente__venta__unidad__asig = "HON. LINK")
+                pagos_posteriores = Pago.objects.filter(fecha__gt = fecha_inicial_hoy, cuota__cuenta_corriente__venta__proyecto = p, cuota__cuenta_corriente__venta__unidad__asig = "HON. LINK")
 
 
                 total_anterior = 0
