@@ -715,6 +715,10 @@ def comparativas(request, estado):
 
                 comparativa.estado = "AUTORIZADA"
 
+                if request.user.username == "SP":
+
+                    comparativa.visto = "VISTO"
+
                 date = datetime.date.today()
 
                 comparativa.fecha_autorizacion = date

@@ -255,6 +255,22 @@
 
                     {% if request.user.username == "PL" or request.user.username == "AR" or request.user.username == "ar" or request.user.username == "SP" %}
 
+                    {% if request.user.username == "PL" and i.0.identificacion == "MES" %}
+
+                    <td style="width: 8%;" >
+                    
+                        <strong>Autoriza SP! <img src="{% static 'img/gracias.png' %}" alt="" style="max-width:25px; height:auto;"  > </strong>
+                    </td>
+
+                    {% elif request.user.username == "SP" and i.0.identificacion != "MES" %}
+
+                    <td style="width: 8%;" >
+                    
+                        <strong>Autoriza PL! <img src="{% static 'img/gracias.png' %}" alt="" style="max-width:25px; height:auto;"  > </strong>
+                    </td>
+
+                    {% else %}
+
                     <td style="width: 8%;" >
                         
                         <form action="" method="POST">
@@ -299,6 +315,8 @@
 
                         </form>
                         
+                    </td>
+                    {% endif %}
 
                     {% endif %}
 
