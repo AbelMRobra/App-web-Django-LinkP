@@ -486,25 +486,6 @@ def cargacompras(request):
 
 def panelvisto(request, estado):
 
-    datos = 0
-
-    if estado == "0":
-
-        datos = Comparativas.objects.filter(estado = "AUTORIZADA", adj_oc__isnull = False).order_by("-fecha_c")
-
-    if estado == "3":
-
-        datos = Comparativas.objects.filter(estado = "AUTORIZADA", adj_oc__isnull = False, visto="NO_VISTO").order_by("-fecha_c")
-    if estado == "2":
-
-        datos = Comparativas.objects.filter(estado = "AUTORIZADA", adj_oc__isnull = False, visto="VISTO NO CONFORME").order_by("-fecha_c")
-    
-    if estado == "4":
-
-        datos = Comparativas.objects.filter(estado = "AUTORIZADA", adj_oc__isnull = False, visto="VISTO").order_by("-fecha_c")
-
-
-
     if request.method == 'POST':
 
         datos_post = request.POST.items()
@@ -533,6 +514,81 @@ def panelvisto(request, estado):
 
                 comparativa.save()
 
+    datos = 0
+
+    if estado == "0":
+
+        datos_base = Comparativas.objects.filter(estado = "AUTORIZADA", adj_oc__isnull = False).order_by("-fecha_c")
+
+        datos = []
+
+        for d in datos_base:
+
+            mensajes = ComparativasMensaje.objects.filter(comparativa = d)
+
+            if d.creador:
+                usuario = datosusuario.objects.get(identificacion = d.creador)
+
+            else:
+                usuario = 0
+
+            datos.append((usuario, mensajes, d))
+    if estado == "3":
+
+        datos_base = Comparativas.objects.filter(estado = "AUTORIZADA", adj_oc__isnull = False, visto="NO_VISTO").order_by("-fecha_c")
+    
+        datos = []
+
+        for d in datos_base:
+
+            mensajes = ComparativasMensaje.objects.filter(comparativa = d)
+
+            if d.creador:
+                usuario = datosusuario.objects.get(identificacion = d.creador)
+
+            else:
+                usuario = 0
+
+            datos.append((usuario, mensajes, d))
+    
+    
+    if estado == "2":
+
+        datos_base = Comparativas.objects.filter(estado = "AUTORIZADA", adj_oc__isnull = False, visto="VISTO NO CONFORME").order_by("-fecha_c")
+    
+        datos = []
+
+        for d in datos_base:
+
+            mensajes = ComparativasMensaje.objects.filter(comparativa = d)
+
+            if d.creador:
+                usuario = datosusuario.objects.get(identificacion = d.creador)
+
+            else:
+                usuario = 0
+
+            datos.append((usuario, mensajes, d))
+    
+    
+    if estado == "4":
+
+        datos_base = Comparativas.objects.filter(estado = "AUTORIZADA", adj_oc__isnull = False, visto="VISTO").order_by("-fecha_c")
+
+        datos = []
+
+        for d in datos_base:
+
+            mensajes = ComparativasMensaje.objects.filter(comparativa = d)
+
+            if d.creador:
+                usuario = datosusuario.objects.get(identificacion = d.creador)
+
+            else:
+                usuario = 0
+
+            datos.append((usuario, mensajes, d))
+
     return render(request, 'ocautorizadas.html', {'datos':datos})
 
 
@@ -541,7 +597,6 @@ def comparativas_pl(request, estado):
     datos = 0
 
     if estado == "1":
-
 
         datos = Comparativas.objects.filter(estado = "ESPERA").order_by("-fecha_c")
 

@@ -13,15 +13,45 @@
 
      <div style="text-align: left;">
 
-        <a class="badge badge-secondary" href="{% url 'OC autorizadas' 0 %}" >Todas</a>
-
-        <a class="badge badge-danger" href="{% url 'OC autorizadas' 3 %}" >No vistas</a>
-                           
-        <a class="badge badge-warning" href="{% url 'OC autorizadas' 2 %}" >Observadas</a>
-                    
-        <a class="badge badge-success" href="{% url 'OC autorizadas' 4 %}" >Vistas</a>
+        <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+            <button type="button" class="btn btn-primary">Estado</button>
+            <div class="btn-group" role="group">
+                <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+                <div class="dropdown-menu" aria-labelledby="btnGroupDrop1" style="">
+                    <div style="margin: 2px;">
     
-        <a href= "{% url 'Descargar estado' %}" class="badge badge-info" style="text-align: end;" > Descargar Excel</a>
+                        <a href="{% url 'OC autorizadas' 0 %}" style="margin-top: 5px;" >Todas</a>
+    
+                    </div>
+
+                    <div style="margin: 2px;">
+    
+                        <a href="{% url 'OC autorizadas' 2 %}" style="margin-top: 5px; color: rgb(208, 125, 32);" >Observadas</a> 
+                    
+                    </div>
+    
+                    <div style="margin: 2px;">
+    
+                        <a href="{% url 'OC autorizadas' 4 %}"  style="margin-top: 5px; color: rgb(37, 159, 76 );" >Vistas</a>
+                    
+                    </div>
+    
+                    <div style="margin: 2px;">
+    
+                        <a href="{% url 'OC autorizadas' 3 %}" style="margin-top: 5px; color: rgb(192, 63, 50 );" >No vistas</a>
+                    
+                    </div>
+                    
+                    
+                                 
+                    
+                    
+                </div>
+            </div>
+            </div>
+
+
+        <a href= "{% url 'Descargar estado' %}" class="btn btn-outline-success" style="text-align: end;" ><img src="{% static 'img/sobresalir.png' %}" alt="" style="max-width:20px; height:auto;"  > Descargar Excel</a>
     
     
         </div>
@@ -39,6 +69,7 @@
             <thead>
     
                 <tr class = "table-dark">
+                    <th scope = "row" style="vertical-align: middle;"><strong></strong></th>
                     <th scope = "row" style="vertical-align: middle;"><strong></strong></th>
                     <th scope = "row" style="vertical-align: middle;"><strong>Nº O.C</strong></th>
 
@@ -70,12 +101,38 @@
 
                 <tr class = "table-light">
 
-                    <td style="width: 1%;" > <small> <strong> <a href="{% url 'Mensajes en comparativas' i.id%}"><img src="{% static 'img/conversacion.png' %}" alt="" style="max-width:20px; height:auto;"  ></a>         
+                    <td style="width: 1%;" > <small> <strong> 
+
+
+                        {% if i.1 %}
+                        
+                        
+                        <a href="{% url 'Mensajes en comparativas' i.2.id%}"><img src="{% static 'img/charla.png' %}" alt="" style="max-width:20px; height:auto;"  ></a>         
+                    
+                        {% else %}
+
+
+                        <a href="{% url 'Mensajes en comparativas' i.2.id%}"><img src="{% static 'img/charlar.png' %}" alt="" style="max-width:20px; height:auto;"  ></a>         
+                    
+
+
+                        {% endif %}
+                    
+                    
                     </a> </strong></small></td>
+                    <td style="width: 1%;" >
 
-                    {% if i.adj_oc %}
+                        {% if i.0 %}
+                        
+                        <img src="{{i.0.imagenlogo.url}}"  class="img-fluid" alt="..." style="max-width: 30px; height:auto;">
 
-                    <td style="width: 3%;"> <small> <strong>{{i.o_c}}</strong></small></td>
+                        {% endif %}
+                    
+                    </td>
+
+                    {% if i.2.adj_oc %}
+
+                    <td style="width: 3%;"> <small> <strong>{{i.2.o_c}}</strong></small></td>
 
                     {% else %}
 
@@ -84,100 +141,50 @@
 
                     {% endif %}
 
-                    <td style="width: 5%;" > <small><strong>{{i.proyecto|upper}}</strong></small></td>
+                    <td style="width: 5%;" > <small><strong>{{i.2.proyecto|upper}}</strong></small></td>
 
-                    <td style="width: 8%;" > <small>{{i.proveedor.name}}</small> </td>
+                    <td style="width: 8%;" > <small>{{i.2.proveedor.name}}</small> </td>
                                       
-                    <td style="width: 5%;" ><small>${{i.monto|floatformat:0|intcomma}}</small> </td>
+                    <td style="width: 5%;" ><small>${{i.2.monto|floatformat:0|intcomma}}</small> </td>
 
-                    {% if i.estado == "ESPERA" %}
-                    <td style="width: 5%; color: rgb(83, 82, 65);" >  <small><strong>{{i.estado}}</strong></small></td>
+                    {% if i.2.estado == "ESPERA" %}
+                    <td style="width: 5%; color: rgb(83, 82, 65);" >  <small><strong>{{i.2.estado}}</strong></small></td>
 
                     {% endif %}
 
-                    {% if i.visto == "VISTO" %}
-
-
-
+                    {% if i.2.visto == "VISTO" %}
 
                     <td style="width: 5%; color: rgb(50, 192, 74 );">  
-
-                    {% if i.comentario %}
-                        
-                        
-
-                    {% endif %}
-                    
-                    
-                    
-                    
-                    <small><strong>{{i.visto}}</strong></small>
-
-                    {% if i.comentario %}
-
-
-                {% endif %}
+                                              
+                    <small><strong>{{i.2.visto}}</strong></small>
                 
-                
-                </td>
-
-  
-        
+                    </td>
                     
                     {% endif %}
 
-                    {% if i.visto == "NO_VISTO" or i.visto == Null %}
+                    {% if i.2.visto == "NO_VISTO" or i.2.visto == Null %}
                     <td style="width: 5%; color: rgb(192, 63, 50 );" >
-
-
-                        {% if i.comentario %}
                         
-                        
+                    <small><strong>NO VISTO</strong></small>
 
-
-                            {% endif %}
-                        
-                        
-                        <small><strong>NO VISTO</strong></small>
-
-                        {% if i.comentario %}
-                    
-   
-
-                            {% endif %}
-                    
                     </td>
 
                     {% endif %}
 
-                    {% if i.visto == "VISTO NO CONFORME" %}
+                    {% if i.2.visto == "VISTO NO CONFORME" %}
                     <td style="width: 5%; color: rgb(218, 207, 38);" >
+                       
+                    <small><strong>{{i.2.visto}}</strong></small>
 
-
-                        {% if i.comentario %}
-                        
-       
-
-                            {% endif %}
-                        
-                        
-                        <small><strong>{{i.visto}}</strong></small>
-
-                        {% if i.comentario %}
-                    
-   
-
-                            {% endif %}
-                    
                     </td>
 
                     {% endif %}
-                    <td style="width: 8%;"><small>{{i.fecha_c}}</small> </td>
-                    <td style="width: 5%;"><a href="{{ i.adjunto.url }}" class="btn btn-sm btn-warning"><span class="hint--left hint--warning" aria-label="Es una imagen de comparativas o remitos!">ADJUNTOS</span></a></td>
+                    <td style="width: 8%;"><small>{{i.2.fecha_c}}</small> </td>
+                    <td style="width: 5%;"><a href="{{ i.2.adjunto.url }}" class="btn btn-sm btn-warning"><span class="hint--left hint--warning" aria-label="Es una imagen de comparativas o remitos!">ADJUNTOS</span></a></td>
                     
-                    {% if i.adj_oc %}
+                    {% if i.2.adj_oc %}
                     
-                    <td style="width: 3%;"><a href="{{ i.adj_oc.url }}" class="btn btn-sm btn-success"><span class="hint--left hint--success" aria-label="Una copia de la O.C!, puedes buscarla en TANGO tambien!">O.C</span></a></td>
+                    <td style="width: 3%;"><a href="{{ i.2.adj_oc.url }}" class="btn btn-sm btn-success"><span class="hint--left hint--success" aria-label="Una copia de la O.C!, puedes buscarla en TANGO tambien!">O.C</span></a></td>
                     
                     {% else %}
 
@@ -197,13 +204,13 @@
 
                             <div style="display: inline-block; max-width: 45%;">
 
-                                <button class="btn btn-sm btn-success" type="submit"  name = "APROBADA" value="{{i.id}}"><span class="hint--left hint--success" aria-label="Todo OK!">✓</span></button>
+                                <button class="btn btn-sm btn-success" type="submit"  name = "APROBADA" value="{{i.2.id}}"><span class="hint--left hint--success" aria-label="Todo OK!">✓</span></button>
 
                             </div>
 
                             <div style="display: inline-block; max-width: 45%;">
 
-                                <button class="btn btn-sm btn-warning" type="submit"  name = "ADJAPROB" value="{{i.id}}"><span class="hint--left hint--warning" aria-label="Puedes dejar una consulta!, esta acción no frenara el circuito de pago!">?</span></button>
+                                <button class="btn btn-sm btn-warning" type="submit"  name = "ADJAPROB" value="{{i.2.id}}"><span class="hint--left hint--warning" aria-label="Puedes dejar una consulta!, esta acción no frenara el circuito de pago!">?</span></button>
 
                             </div>
 
