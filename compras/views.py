@@ -863,6 +863,40 @@ def comparativas(request, estado):
             datos.append((usuario, mensajes, d))
 
 
+    if estado == "5":
+
+        datos_base = Comparativas.objects.filter(creador = "MES").order_by("-fecha_c")
+
+        datos_base_2 = Comparativas.objects.filter(numero__startswith = "POSTV").order_by("-fecha_c")
+
+
+        datos = []
+
+        for d in datos_base:
+
+            mensajes = ComparativasMensaje.objects.filter(comparativa = d)
+
+            if d.creador:
+                usuario = datosusuario.objects.get(identificacion = d.creador)
+
+            else:
+                usuario = 0
+
+            datos.append((usuario, mensajes, d))
+
+        for d in datos_base_2:
+
+            mensajes = ComparativasMensaje.objects.filter(comparativa = d)
+
+            if d.creador:
+                usuario = datosusuario.objects.get(identificacion = d.creador)
+
+            else:
+                usuario = 0
+
+            datos.append((usuario, mensajes, d))
+
+
     return render(request, 'comparativas.html', {'datos':datos, "estado":estado})
 
 
