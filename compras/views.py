@@ -40,6 +40,7 @@ def cargarocautorizar(request):
             adjunto = request.FILES['imagen'],
             adj_oc = request.FILES['oc'],
             o_c = request.POST['numerooc'],
+            creador = str(request.user.username),
         )
 
         b.save()
@@ -643,26 +644,6 @@ def mensajescomparativas(request, id_comparativa):
 
 def comparativas(request, estado):
 
-    if estado == "0":
-
-        datos = Comparativas.objects.order_by("-fecha_c")
-
-    if estado == "1":
-
-
-        datos = Comparativas.objects.filter(estado = "ESPERA").order_by("-fecha_c")
-
-    if estado == "2":
-
-        datos = Comparativas.objects.filter(estado = "ADJUNTO ✓").order_by("-fecha_c")
-
-    if estado == "3":
-
-        datos = Comparativas.objects.filter(estado = "NO AUTORIZADA").order_by("-fecha_c")
-
-    if estado == "4":
-
-        datos = Comparativas.objects.filter(estado = "AUTORIZADA").order_by("-fecha_c")
 
     if request.method == 'POST':
 
@@ -720,6 +701,102 @@ def comparativas(request, estado):
                         )
 
                 b.save()
+
+    if estado == "0":
+
+        datos_base = Comparativas.objects.order_by("-fecha_c")
+
+        datos = []
+
+        for d in datos_base:
+
+            mensajes = ComparativasMensaje.objects.filter(comparativa = d)
+
+            if d.creador:
+                usuario = datosusuario.objects.get(identificacion = d.creador)
+
+            else:
+                usuario = 0
+
+            datos.append((usuario, mensajes, d))
+            
+
+    if estado == "1":
+
+
+        datos_base = Comparativas.objects.filter(estado = "ESPERA").order_by("-fecha_c")
+
+
+        datos = []
+
+        for d in datos_base:
+
+            mensajes = ComparativasMensaje.objects.filter(comparativa = d)
+
+            if d.creador:
+                usuario = datosusuario.objects.get(identificacion = d.creador)
+
+            else:
+                usuario = 0
+
+            datos.append((usuario, mensajes, d))
+
+    if estado == "2":
+
+        datos_base = Comparativas.objects.filter(estado = "ADJUNTO ✓").order_by("-fecha_c")
+
+
+        datos = []
+
+        for d in datos_base:
+
+            mensajes = ComparativasMensaje.objects.filter(comparativa = d)
+
+            if d.creador:
+                usuario = datosusuario.objects.get(identificacion = d.creador)
+
+            else:
+                usuario = 0
+
+            datos.append((usuario, mensajes, d))
+
+    if estado == "3":
+
+        datos_base = Comparativas.objects.filter(estado = "NO AUTORIZADA").order_by("-fecha_c")
+
+
+        datos = []
+
+        for d in datos_base:
+
+            mensajes = ComparativasMensaje.objects.filter(comparativa = d)
+
+            if d.creador:
+                usuario = datosusuario.objects.get(identificacion = d.creador)
+
+            else:
+                usuario = 0
+
+            datos.append((usuario, mensajes, d))
+
+    if estado == "4":
+
+        datos_base = Comparativas.objects.filter(estado = "AUTORIZADA").order_by("-fecha_c")
+
+
+        datos = []
+
+        for d in datos_base:
+
+            mensajes = ComparativasMensaje.objects.filter(comparativa = d)
+
+            if d.creador:
+                usuario = datosusuario.objects.get(identificacion = d.creador)
+
+            else:
+                usuario = 0
+
+            datos.append((usuario, mensajes, d))
 
 
     return render(request, 'comparativas.html', {'datos':datos, "estado":estado})

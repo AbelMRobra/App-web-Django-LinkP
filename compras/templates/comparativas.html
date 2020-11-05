@@ -110,22 +110,39 @@
 
                 <tr class = "table-light">
                     
-                    <td style="width: 1%;" > <small> <strong> <a href="{% url 'Mensajes en comparativas' i.id%}"><img src="{% static 'img/conversacion.png' %}" alt="" style="max-width:20px; height:auto;"  ></a>         
+                    <td style="width: 1%;" > <small> <strong> 
+
+
+                        {% if i.0 %}
+                        
+                        
+                        <a href="{% url 'Mensajes en comparativas' i.2.id%}"><img src="{% static 'img/charla.png' %}" alt="" style="max-width:20px; height:auto;"  ></a>         
+                    
+                        {% else %}
+
+
+                        <a href="{% url 'Mensajes en comparativas' i.2.id%}"><img src="{% static 'img/charlar.png' %}" alt="" style="max-width:20px; height:auto;"  ></a>         
+                    
+
+
+                        {% endif %}
+                    
+                    
                     </a> </strong></small></td>
                     <td style="width: 1%;" >
 
-                        {% if i.creador %}
+                        {% if i.0 %}
                         
-                        {{i.creador}}
+                        <img src="{{1.0.imagenlogo.url}}"  class="img-fluid" alt="..." style="max-width: 30px; height:auto;">
 
                         {% endif %}
                     
                     </td>
-                    <td style="width: 3%;" class="priority-5"> <small> <strong>{{i.numero|upper}}</strong></small></td>
+                    <td style="width: 3%;" class="priority-5"> <small> <strong>{{i.2.numero|upper}}</strong></small></td>
 
-                    {% if i.adj_oc %}
+                    {% if i.2.adj_oc %}
 
-                    <td style="width: 3%;" class="priority-4"> <small> <strong>{{i.o_c}}</strong></small></td>
+                    <td style="width: 3%;" class="priority-4"> <small> <strong>{{i.2.o_c}}</strong></small></td>
 
                     {% else %}
 
@@ -134,23 +151,23 @@
 
                     {% endif %}
 
-                    <td style="width: 8%;" > <small>{{i.proveedor.name}}</small> </td>
-                        <td style="width: 5%;" class="priority-4" > <small><strong>{{i.proyecto|upper}}</strong></small></td>              
-                    <td style="width: 5%;" class="priority-4" ><small>${{i.monto|floatformat:0|intcomma}}</small> </td>
+                    <td style="width: 8%;" > <small>{{i.2.proveedor.name}}</small> </td>
+                        <td style="width: 5%;" class="priority-4" > <small><strong>{{i.2.proyecto|upper}}</strong></small></td>              
+                    <td style="width: 5%;" class="priority-4" ><small>${{i.2.monto|floatformat:0|intcomma}}</small> </td>
 
-                    {% if i.estado == "ESPERA" %}
-                    <td style="width: 5%; color: rgb(83, 82, 65);" class="priority-3" >  <small><strong>{{i.estado}}</strong></small></td>
+                    {% if i.2.estado == "ESPERA" %}
+                    <td style="width: 5%; color: rgb(83, 82, 65);" class="priority-3" >  <small><strong>{{i.2.estado}}</strong></small></td>
 
                     {% endif %}
 
-                    {% if i.estado == "AUTORIZADA" %}
+                    {% if i.2.estado == "AUTORIZADA" %}
 
 
 
 
                     <td style="width: 5%; color: rgb(37, 159, 76 );" class="priority-3">  
 
-                    {% if i.comentario %}
+                    {% if i.2.comentario %}
                         
                         
                     <span class="hint--left hint--danger"aria-label="{{i.comentario}}">
@@ -162,7 +179,7 @@
                     
                     <small><strong>O.C AUTORIZADA</strong></small>
 
-                    {% if i.comentario %}
+                    {% if i.2.comentario %}
                     
                 </span>
 
@@ -176,21 +193,21 @@
                     
                     {% endif %}
 
-                    {% if i.estado == "NO AUTORIZADA" %}
+                    {% if i.2.estado == "NO AUTORIZADA" %}
                     <td style="width: 4%; color: rgb(192, 63, 50 );"  class="priority-3">
 
 
-                        {% if i.comentario %}
+                        {% if i.2.comentario %}
                         
                         
-                        <span class="hint--left hint--danger" aria-label="{{i.comentario}}">
+                        <span class="hint--left hint--danger" aria-label="{{i.2.comentario}}">
 
                             {% endif %}
                         
                         
                         <small><strong>RECHAZADA</strong></small>
 
-                        {% if i.comentario %}
+                        {% if i.2.comentario %}
                     
                             </span>
 
@@ -200,21 +217,21 @@
 
                     {% endif %}
 
-                    {% if i.estado == "ADJUNTO ✓" %}
+                    {% if i.2.estado == "ADJUNTO ✓" %}
                     <td style="width: 4%; color: rgb(208, 125, 32);"  class="priority-3">
 
 
-                        {% if i.comentario %}
+                        {% if i.2.comentario %}
                         
                         
-                        <span class="hint--left hint--danger" aria-label="{{i.comentario}}">
+                        <span class="hint--left hint--danger" aria-label="{{i.2.comentario}}">
 
                             {% endif %}
                         
                         
                         <small><strong>ADJUNTO AUTORIZADO</strong></small>
 
-                        {% if i.comentario %}
+                        {% if i.2.comentario %}
                     
                             </span>
 
@@ -223,12 +240,12 @@
                     </td>
 
                     {% endif %}
-                    <td style="width: 9%;" class="priority-4"><small>{{i.fecha_c}}</small> </td>
-                    <td style="width: 5%;"><a href="{{ i.adjunto.url }}" class="btn btn-sm btn-warning"><span class="hint--left hint--warning" aria-label="Es una imagen de comparativas o remitos!">VER</span></a></td>
+                    <td style="width: 9%;" class="priority-4"><small>{{i.2.fecha_c}}</small> </td>
+                    <td style="width: 5%;"><a href="{{ i.2.adjunto.url }}" class="btn btn-sm btn-warning"><span class="hint--left hint--warning" aria-label="Es una imagen de comparativas o remitos!">VER</span></a></td>
                     
-                    {% if i.adj_oc %}
+                    {% if i.2.adj_oc %}
                     
-                    <td style="width: 3%;"><a href="{{ i.adj_oc.url }}" class="btn btn-sm btn-success"><span class="hint--left hint--success" aria-label="Una copia de la O.C!, puedes buscarla en TANGO tambien!">VER</span></a></td>
+                    <td style="width: 3%;"><a href="{{ i.2.adj_oc.url }}" class="btn btn-sm btn-success"><span class="hint--left hint--success" aria-label="Una copia de la O.C!, puedes buscarla en TANGO tambien!">VER</span></a></td>
                     
                     {% else %}
 
@@ -248,7 +265,7 @@
 
                             <div style="display: inline-block; max-width: 45%;">
 
-                                <button class="btn btn-sm btn-warning" type="submit"  name = "ADJAPROB" value="{{i.id}}"><span class="hint--left hint--warning" aria-label="El adjunto esta Ok!">✓</span></button>
+                                <button class="btn btn-sm btn-warning" type="submit"  name = "ADJAPROB" value="{{i.2.id}}"><span class="hint--left hint--warning" aria-label="El adjunto esta Ok!">✓</span></button>
 
                             </div>
 
@@ -258,7 +275,7 @@
 
                             <div style="display: inline-block; max-width: 45%;">
 
-                                <button class="btn btn-sm btn-success" type="submit"  name = "APROBADA" value="{{i.id}}"><span class="hint--left hint--success" aria-label="Esta todo listo para el pago!">✓</span></button>
+                                <button class="btn btn-sm btn-success" type="submit"  name = "APROBADA" value="{{i.2.id}}"><span class="hint--left hint--success" aria-label="Esta todo listo para el pago!">✓</span></button>
 
                             </div>
 
@@ -266,7 +283,7 @@
 
                             <div style="display: inline-block; max-width: 45%;">
 
-                                <button class="btn btn-sm btn-danger" type="submit" name = "NO APROBADA" value="{{i.id}}"><span class="hint--left hint--danger" aria-label="Deja un comentario para que revisen!">X</span></button>
+                                <button class="btn btn-sm btn-danger" type="submit" name = "NO APROBADA" value="{{i.2.id}}"><span class="hint--left hint--danger" aria-label="Deja un comentario para que revisen!">X</span></button>
                             
                             </div>
 
