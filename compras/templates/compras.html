@@ -39,30 +39,49 @@
 
     <div style="text-align: left;">
 
+        <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+            <button type="button" class="btn btn-primary">Proyecto</button>
+            <div class="btn-group" role="group">
+                <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+                <div class="dropdown-menu" aria-labelledby="btnGroupDrop1" style="">
     
-        <a href= "{% url 'Descargar compras' %}" class="badge badge-info" style="text-align: end; margin-top: 5px;" > Descargar Excel</a>
-
-        {% if perms.compras.add_compras %}
-
-        <a href= "/compras/cargacompras" class="badge badge-info" style="text-align: end; margin-top: 5px;" > Cargar una O.C</a>
+                    {% for i in proyectos %}
     
-        {% endif %}
+                    <div style="margin: 2px;">
     
-        </div>
-
-    <div style="text-align: left;">
-
-        {% for i in proyectos %}
+                        <a href="{% url 'Compras' i.id %}" style="margin-top: 5px; color:  rgb({{i.color}})" >{{i.nombre}}</a>
     
-        <a class="badge badge-secondary" style="background-color: rgb({{i.color}});  margin-top: 5px;" href="{% url 'Compras' i.id %}" >{{i.nombre}}</a>
-
-
-        {% endfor %}  
+                    </div>
     
+                    {% endfor %}  
+        
+                    
+                </div>
+            </div>
+            </div>
+    
+    
+        <div style="text-align: left; display: inline-block;">
+    
+        
+            
+            {% if perms.compras.add_compras %}
+    
+            <a href= "/compras/cargacompras" class="btn btn-outline-info" style="text-align: end; margin-top: 5px;" > <b>+</b> Cargar una O.C</a>
+        
+            {% endif %}
+    
+            <a href= "{% url 'Descargar compras' %}" class="btn btn-outline-success" style="text-align: end; margin-top: 5px;" > <img src="{% static 'img/sobresalir.png' %}" alt="" style="max-width:20px; height:auto;"  > Descargar Excel</a>
+    
+        
+            </div>
     
     </div>
 
     {% endif %}
+
+
+    
     
     
     
