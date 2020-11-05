@@ -684,7 +684,7 @@ def comparativas(request, estado):
 
                 comparativa.save()
 
-            if d[0] != 'csrfmiddlewaretoken' and d[0] != 'NO APROBADA' and d[0] != 'APROBADA':
+            if d[0] != 'csrfmiddlewaretoken' and d[0] != 'NO APROBADA' and d[0] != 'APROBADA' and d[0] != 'ADJAPROB':
                 
 
                 comparativa = Comparativas.objects.get(id = id_selec)
@@ -693,14 +693,19 @@ def comparativas(request, estado):
 
                 comparativa.save()
 
-                b = ComparativasMensaje(
-                        usuario = datosusuario.objects.get(identificacion = request.user),
-                        comparativa = Comparativas.objects.get(id = comparativa.id),
-                        mensaje = d[1],
+                if d[1] != "":
 
-                        )
+                    mensaje = str(d[0]) + ": " + str(d[1])
 
-                b.save()
+
+                    b = ComparativasMensaje(
+                            usuario = datosusuario.objects.get(identificacion = request.user),
+                            comparativa = Comparativas.objects.get(id = comparativa.id),
+                            mensaje = mensaje,
+
+                            )
+
+                    b.save()
 
     if estado == "0":
 
