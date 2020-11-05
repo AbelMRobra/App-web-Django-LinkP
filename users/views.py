@@ -220,7 +220,13 @@ def inicio(request):
 def welcome(request):
     # Si estamos identificados devolvemos la portada
     if request.user.is_authenticated:
-        return render(request, "users/welcome.html")
+
+
+        dia = datetime.date.today()
+
+        cumplea = datosusuario.objects.filter(cumpleaños = dia)
+
+        return render(request, "users/welcome.html", {"cumplea":cumplea})
     # En otro caso redireccionamos al login
     return redirect('/login')
 

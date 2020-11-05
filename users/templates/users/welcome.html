@@ -23,6 +23,37 @@
 
                 <hr class="my-4" style="background-color: #F3EAE5; width: 75%">
 
+                {% if cumplea %}
+
+
+                <h4 style="color: #F3EAE5; font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif"> <img src="{% static 'img/papel-picado.png' %}" alt="" style="max-width:25px; height:auto;"  >
+                    
+                    Hoy celebramos el cumpleaños de 
+                    
+                    {% for i in cumplea %}
+                    
+                    {{ i.identificacion }} 
+                    
+                    {% endfor %}
+                    
+                    !!
+                
+                    <img src="{% static 'img/papel-picado.png' %}" alt="" style="max-width:25px; height:auto;"  >
+                </h4>
+
+                <div style="margin: 20px;">
+
+                    {% for i in cumplea %}
+
+                    <img src="{{i.imagenlogo.url}}"  class="img-fluid" alt="..." style="max-width: 60px; height:auto;">
+
+                    {% endfor %}
+
+                </div>
+
+
+                {% endif %}
+
 
                 <h6 style="color: #F3EAE5 ; font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif">APP-WEB LINK- <b style="color: #19C6C6 ;">P</b> 
                 </h6>
