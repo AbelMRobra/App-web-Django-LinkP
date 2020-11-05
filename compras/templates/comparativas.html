@@ -255,7 +255,57 @@
 
                     {% if request.user.username == "PL" or request.user.username == "AR" or request.user.username == "ar" or request.user.username == "SP" %}
 
-                    {% if request.user.username == "PL" and i.0.identificacion == "MES" %}
+
+                    {% if request.user.username == "SP" and "POSTV" in i.2.numero %}
+
+                    <td style="width: 8%;" >
+                        
+                        <form action="" method="POST">
+                            {% csrf_token %}
+
+
+                            {% if estado == "0" or estado == "1" or estado == "3" %}
+
+                            <div style="display: inline-block; max-width: 45%;">
+
+                                <button class="btn btn-sm btn-warning" type="submit"  name = "ADJAPROB" value="{{i.2.id}}"><span class="hint--left hint--warning" aria-label="El adjunto esta Ok!">✓</span></button>
+
+                            </div>
+
+                            {% endif %}
+
+                            {% if estado == "0" or estado == "2" or estado == "3" %}
+
+                            <div style="display: inline-block; max-width: 45%;">
+
+                                <button class="btn btn-sm btn-success" type="submit"  name = "APROBADA" value="{{i.2.id}}"><span class="hint--left hint--success" aria-label="Esta todo listo para el pago!">✓</span></button>
+
+                            </div>
+
+                            {% endif %}
+
+                            <div style="display: inline-block; max-width: 45%;">
+
+                                <button class="btn btn-sm btn-danger" type="submit" name = "NO APROBADA" value="{{i.2.id}}"><span class="hint--left hint--danger" aria-label="Deja un comentario para que revisen!">X</span></button>
+                            
+                            </div>
+
+                            
+                            
+                            <div class="form-group" style="margin-top: 10%;">
+
+
+                                <input type="text" name="{{request.user.username}}" class="form-control form-control-sm" placeholder="Comentario" id="inputDefault">
+                        
+
+                            </div>
+
+                        </form>
+                        
+                    </td>
+
+
+                    {% elif request.user.username == "PL" and i.0.identificacion == "MES" %}
 
                     <td style="width: 8%;" >
                     
