@@ -8,7 +8,6 @@ class datosusuario(models.Model):
     imagenlogo = models.ImageField(verbose_name="Imagen", blank=True, null=True)
     area = models.CharField(max_length=200, verbose_name="Area", blank=True, null=True)
     cargo = models.CharField(max_length=200, verbose_name="Cargo", blank=True, null=True)
-    cumplea = models.DateField(verbose_name="Cumple", blank=True, null=True)
 
     class Meta:
         verbose_name="Dato de usuario"
@@ -16,6 +15,7 @@ class datosusuario(models.Model):
 
     def __str__(self):
         return self.identificacion
+
 
 class mensajesgenerales(models.Model):
 
