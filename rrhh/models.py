@@ -9,6 +9,10 @@ class NotaDePedido(models.Model):
         SI = "SI"
         NO = "NO"
 
+    class Tipo(models.TextChoices):
+        NP = "NP"
+        OS = "OS"
+
     proyecto = models.ForeignKey(Proyectos, on_delete=models.CASCADE, verbose_name = "Proyecto")
     numero = models.IntegerField(verbose_name="Nota de pedido numero")
     titulo = models.CharField(max_length=200, verbose_name="Titulo de la nota de pedido")
@@ -23,6 +27,16 @@ class NotaDePedido(models.Model):
     cambio_proyecto = models.CharField(choices=SioNo.choices, max_length=20, verbose_name="Genera cambios al proyecto")
     comunicacion_general = models.CharField(choices=SioNo.choices, max_length=20, verbose_name="Es comunicación general")
     descripcion = models.TextField(verbose_name="Descripción de la causa")
+
+    #Nuevo
+
+    '''
+
+    tipo = models.CharField(choices=Tipo.choices, max_length=20, verbose_name="Tipo de correspondencia", blank=True, null=True)
+    numero = models.IntegerField(verbose_name="Nota de pedido numero")
+    visto = models.IntegerField(verbose_name="Visto")
+
+    '''
 
     class Meta:
         verbose_name="Nota de pedido"

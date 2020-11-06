@@ -7,7 +7,7 @@
 
 <div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;">
 
-    <h3 style="font-family: Arial, Helvetica, sans-serif;">Notas de pedido</h3>
+    <h3 style="font-family: Arial, Helvetica, sans-serif;">Correspondencia</h3>
 
     <small style="font-family: Arial, Helvetica, sans-serif;"><b>Modulo:</b> Comunicación </small>
 
@@ -44,16 +44,47 @@
             <div class="btn-group" role="group">
                 <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
                 <div class="dropdown-menu" aria-labelledby="btnGroupDrop1" style="">
-    
-                    {% for i in proyectos %}
+
     
                     <div style="margin: 2px;">
     
-                        <a href="{% url 'Compras' i.id %}" style="margin-top: 5px; color:  rgb({{i.color}})" >{{i.nombre}}</a>
+                        <a href="#" style="margin-top: 5px; color:  rgb({{i.color}})" >Torre Blue</a>
     
                     </div>
+
+
+                    <div style="margin: 2px;">
     
-                    {% endfor %}  
+                        <a href="#" style="margin-top: 5px; color:  rgb({{i.color}})" >Vittalia</a>
+    
+                    </div>
+
+        
+                    
+                </div>
+            </div>
+            </div>
+
+        <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+            <button type="button" class="btn btn-primary">Tipo</button>
+            <div class="btn-group" role="group">
+                <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+                <div class="dropdown-menu" aria-labelledby="btnGroupDrop1" style="">
+
+    
+                    <div style="margin: 2px;">
+    
+                        <a href="#" style="margin-top: 5px; color:  rgb({{i.color}})" >Notas de pedido</a>
+    
+                    </div>
+
+
+                    <div style="margin: 2px;">
+    
+                        <a href="#" style="margin-top: 5px; color:  rgb({{i.color}})" >Ordenes de servicio</a>
+    
+                    </div>
+
         
                     
                 </div>
@@ -67,7 +98,7 @@
             
             {% if perms.compras.add_compras %}
     
-            <a href= "/compras/cargacompras" class="btn btn-outline-info" style="text-align: end; margin-top: 5px;" > <b>+</b> Nueva Nota de Pedido</a>
+            <a href= "/compras/cargacompras" class="btn btn-outline-info" style="text-align: end; margin-top: 5px;" > <b>+</b> Nueva correspondencia</a>
         
             {% endif %}
     
@@ -91,6 +122,8 @@
             <thead>
     
                 <tr class = "table-dark">
+                    <th scope = "row" style="vertical-align: middle;"> <small> <strong>TIPO</strong> </small> </th>
+                    <th scope = "row" style="vertical-align: middle;"> <small> <strong>Nº</strong> </small> </th>
                     <th scope = "row" style="vertical-align: middle;"> <small> <strong>PROYECTO</strong> </small> </th>
                     <th scope = "row" style="vertical-align: middle;"> <small> <strong>CREADOR</strong> </small> </th>
                     <th scope = "row" style="vertical-align: middle;"><small> <strong>DESTINATARIO</strong> </small> </th>
@@ -108,6 +141,8 @@
                 {% for i in datos %}
 
                 <tr class = "table-light">
+                    <td style="width: 5%;"> <small> <strong>NP</strong></small></td> 
+                    <td style="width: 5%;"> <small> <strong>X</strong></small></td> 
                     <td style="width: 15%;"> <small> <strong>{{i.proyecto}}</strong></small></td>              
                     <td style="width: 8%;"> <small>{{i.creador}}</small></td>
                     <td style="width: 8%;" > <small>{{i.destinatario}}</small></td>
