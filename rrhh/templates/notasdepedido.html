@@ -1,0 +1,145 @@
+{% extends "users/inicio.html" %}
+
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+
+<div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;">
+
+    <h3 style="font-family: Arial, Helvetica, sans-serif;">Notas de pedido</h3>
+
+    <small style="font-family: Arial, Helvetica, sans-serif;"><b>Modulo:</b> Comunicación </small>
+
+     <b><hr class = "my-4" style="width: 100%;"></b>
+
+     <form method="POST" style="text-align: left;">
+
+        {% csrf_token %}
+
+        <div style="display: inline-block; margin-left: 1rem;">
+
+            <label for="palabra"><h6 style="font-family: Arial, Helvetica, sans-serif;">Buscar</h6></label>
+
+        </div>
+        
+        <div style="display: inline-block; margin-left: 1rem; ">
+
+            <input name="palabra" type="text" class="form-control form-control" placeholder="Buscar por palabra" list="art" style="width: 250px;">
+
+        </div>
+       
+      
+
+     </form>
+
+    <b><hr class = "my-4" style="width: 100%;"></b>
+
+    {% if request.user.username != "HC" %}
+
+    <div style="text-align: left;">
+
+        <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+            <button type="button" class="btn btn-primary">Proyecto</button>
+            <div class="btn-group" role="group">
+                <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+                <div class="dropdown-menu" aria-labelledby="btnGroupDrop1" style="">
+    
+                    {% for i in proyectos %}
+    
+                    <div style="margin: 2px;">
+    
+                        <a href="{% url 'Compras' i.id %}" style="margin-top: 5px; color:  rgb({{i.color}})" >{{i.nombre}}</a>
+    
+                    </div>
+    
+                    {% endfor %}  
+        
+                    
+                </div>
+            </div>
+            </div>
+    
+    
+        <div style="text-align: left; display: inline-block;">
+    
+        
+            
+            {% if perms.compras.add_compras %}
+    
+            <a href= "/compras/cargacompras" class="btn btn-outline-info" style="text-align: end; margin-top: 5px;" > <b>+</b> Nueva Nota de Pedido</a>
+        
+            {% endif %}
+    
+            <a href= "{% url 'Descargar compras' %}" class="btn btn-outline-success" style="text-align: end; margin-top: 5px;" > <img src="{% static 'img/sobresalir.png' %}" alt="" style="max-width:20px; height:auto;"  > Descargar Excel</a>
+    
+        
+            </div>
+    
+    </div>
+
+    {% endif %}
+
+
+    
+    
+    
+    
+
+    <div class = "tableconteinerabel">
+        <table class = "table table-hover" style="text-align: center; margin-top: 5px;" >
+            <thead>
+    
+                <tr class = "table-dark">
+                    <th scope = "row" style="vertical-align: middle;"> <small> <strong>PROYECTO</strong> </small> </th>
+                    <th scope = "row" style="vertical-align: middle;"> <small> <strong>CREADOR</strong> </small> </th>
+                    <th scope = "row" style="vertical-align: middle;"><small> <strong>DESTINATARIO</strong> </small> </th>
+                    <th scope = "row" style="vertical-align: middle;"><small> <strong>TITULO</strong> </small> </th>                    
+                    <th scope = "row" style="vertical-align: middle;" class="priority-5"> <small> <strong>FECHA DE CREACIÓN</strong> </small></th>
+                    <th scope = "row" style="vertical-align: middle;"> <small> <strong>ADJUNTOS</strong> </small></th>
+                    
+                </tr>
+            </thead>
+    
+            <tbody>
+
+                
+               
+                {% for i in datos %}
+
+                <tr class = "table-light">
+                    <td style="width: 15%;"> <small> <strong>{{i.proyecto}}</strong></small></td>              
+                    <td style="width: 8%;"> <small>{{i.creador}}</small></td>
+                    <td style="width: 8%;" > <small>{{i.destinatario}}</small></td>
+                    <td style="width: 20%;"><small> <a href=" {% url 'Nota de pedido' i.id %}"><b>{{i.titulo}}</b></a>  </small> </td>
+                    <td style="width: 20%;" class="priority-5"> <small>{{i.fecha_creacion}}</small></td>
+                    <td style="width: 5%;"> <small>X</small></td>
+
+                </tr>
+
+                    {% endfor %}
+
+            </table>
+    </div>
+
+    <b><hr class = "my-4" style="width: 100%;"></b>
+
+
+        <div>
+            <small style="font-family: Arial, Helvetica, sans-serif;">El listado puede continuar, se limita el numero de filas visibles</small>
+        </div>
+
+
+    <div style="margin-top: 2rem;">
+
+        <p style="font-family: Arial, Helvetica, sans-serif;"> <small>-- Link<strong>P</strong> --</small> </p>
+
+     </div>
+        
+    
+
+                    
+</div>
+ 
+    
+{% endblock %}

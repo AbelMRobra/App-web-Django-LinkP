@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import datosusuario, mensajesgenerales
+from .models import datosusuario, mensajesgenerales, NotaDePedido
 from import_export import resources
 from import_export.admin import ImportExportModelAdmin
 
@@ -23,5 +23,16 @@ class MensajesGeneralesAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     search_fields = ('usuario__identificacion', 'mensaje')
     resources_class = MensajesGeneralesResource
 
+
+class NotasDePedidoResource(resources.ModelResource):
+    class Meta:
+        model = NotaDePedido
+
+class NotasDePedidoAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    list_display = ('titulo', 'creador', 'destinatario')
+    search_fields = ('titulo', 'creador', 'destinatario')
+    resources_class = NotasDePedidoResource
+
 admin.site.register(datosusuario, DatosUserAdmin)
 admin.site.register(mensajesgenerales, MensajesGeneralesAdmin)
+admin.site.register(NotaDePedido, NotasDePedidoAdmin)

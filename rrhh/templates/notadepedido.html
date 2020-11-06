@@ -1,0 +1,221 @@
+{% extends "users/inicio.html" %}
+
+{% load humanize %}
+
+{% load static %}
+
+{% block content %}
+
+<div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;">
+
+    <div style="text-align: right;">
+
+
+        <img src="{% static 'img/rrhh.png' %}" alt="" style="max-height:50px; width: auto; margin: 20px;"   >
+        
+
+
+
+    </div>
+
+    <h3 style="text-align: center; color: rgb({{datos.proyecto.color}}); font-family: Arial, Helvetica, sans-serif;">Anexo 2: Nota de pedido</h3>
+
+    
+    <div>
+
+        <img src="{{datos.proyecto.iamgen.url}}"  class="img-fluid" alt="..." style="max-width:200px;width:auto;height:auto; margin-top: 1rem; margin-bottom: 10px;">
+  
+
+
+    </div>
+
+    <h6 style="text-align: center; color: rgb({{datos.proyecto.color}}); font-family: Arial, Helvetica, sans-serif;">{{datos.proyecto.nombre}}</h6>
+
+    
+
+    <div style="text-align: center;">
+
+
+        <small style="font-family: Arial, Helvetica, sans-serif;"> <b>Modulo:</b> Comunicación</small>
+      
+  
+  
+      </div>
+    
+     <b><hr class = "my-4" style="width: 100%; border-color: rgba({{datos.proyecto.color}}, 0.5;"></b>
+
+     <div style="text-align: left;">
+        <h6>Nº: <small>{{datos.numero}}</small></h6>
+        <h6>REFERENCIA: <small>{{datos.titulo}}</small></h6>
+        <h6>CREADOR:
+
+            {% if creador %}
+
+            <img src="{{creador.imagenlogo.url}}"  class="img-fluid" alt="..." style="max-width: 30px; height:auto;">
+
+
+            {% else %}
+            
+            <small>{{datos.creador}}</small>
+
+
+            {% endif %}
+        
+        
+        </h6>
+        <h6>DESTINATARIO: 
+
+            {% if destino %}
+
+            <img src="{{destino.imagenlogo.url}}"  class="img-fluid" alt="..." style="max-width: 30px; height:auto;">
+
+
+            {% else %}
+            
+            <small>{{datos.destinatario}}</small>
+
+
+            {% endif %}
+        
+        
+        
+        </h6>
+        <h6>SE COPIA A: <small>{{datos.copia}}</small></h6>
+        <h6>FECHA DE CREACIÓN: <small>{{datos.fecha_creacion}}</small></h6>
+        <h6>ULTIMA ACTUALZIACIÓN: <small>{{datos.fecha_actualiacion}}</small></h6>
+        <h6>FECHA REQUERIDA: <small>{{datos.fecha_requerida}}</small></h6>
+
+
+     </div>
+
+     <b><hr class = "my-4" style="width: 100%; border-color: rgba({{datos.proyecto.color}}, 0.5;"></b>
+
+     <div style="display: inline-block; max-width: 300px;  margin: 20px;">
+
+        <h6>Envio de documentación:
+
+            {% if datos.envio_documentacion == "SI" %}
+            
+            
+            <small style="color: rgb(186, 55, 39);"> SI</small>
+
+            {% else %}
+
+            <small> NO</small>
+
+            {% endif %}
+        
+        
+        
+        </h6>
+
+    </div>
+
+    <div style="display: inline-block; max-width: 300px; margin: 20px;">
+
+
+        <h6>Cambio de proyecto:
+
+            {% if datos.cambio_proyecto == "SI" %}
+            
+            
+            <small style="color: rgb(186, 55, 39);"> SI</small>
+
+            {% else %}
+
+            <small> NO</small>
+
+            {% endif %}
+        
+        
+        
+        </h6>
+    
+    
+    
+    </div>
+
+
+    <div style="display: inline-block; max-width: 300px;  margin: 20px;">
+
+
+        <h6>Comunicación general:
+
+            {% if datos.comunicacion_general == "SI" %}
+            
+            
+            <small style="color: rgb(186, 55, 39);"> SI</small>
+
+            {% else %}
+
+            <small> NO</small>
+
+            {% endif %}
+        
+        
+        
+        </h6>
+
+    
+    
+    
+    </div>
+
+        
+
+
+        
+
+
+
+     
+
+     <b><hr class = "my-4" style="width: 100%; border-color: rgba({{datos.proyecto.color}}, 0.5;"></b>
+
+     <div style="text-align: justify;">
+
+        {% if datos.adjuntos %}
+
+        <div style="text-align: right;">
+
+            <a href="{{ datos.adjuntos.url }}">
+
+                <img src="{% static 'img/archivo-adjunto.png' %}" alt="" style="max-width:50px; height: auto; margin: 5px;"   >
+
+
+            </a>
+            
+        </div>
+
+        {% endif %}
+
+        
+        <h6>Descripción:</h6>
+
+        <p>{{datos.descripcion}}</p>
+
+
+     </div>
+
+     
+
+
+     <b><hr class = "my-4" style="width: 100%; border-color: rgba({{datos.proyecto.color}}, 0.5;"></b>
+
+
+
+
+
+
+    <div style="text-align: center;">
+        <p style="font-family: Arial, Helvetica, sans-serif;"> <small>-- Link<strong>P</strong> --</small> </p>
+
+     </div>
+        
+
+   
+                    
+</div>
+ 
+    
+{% endblock %}
