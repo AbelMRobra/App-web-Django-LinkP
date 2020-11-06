@@ -48,36 +48,15 @@
         <h6>Nº: <small>{{datos.numero}}</small></h6>
         <h6>REFERENCIA: <small>{{datos.titulo}}</small></h6>
         <h6>CREADOR:
-
-            {% if creador %}
-
-            <img src="{{creador.imagenlogo.url}}"  class="img-fluid" alt="..." style="max-width: 30px; height:auto;">
-
-
-            {% else %}
             
             <small>{{datos.creador}}</small>
 
-
-            {% endif %}
-        
-        
+           
         </h6>
         <h6>DESTINATARIO: 
-
-            {% if destino %}
-
-            <img src="{{destino.imagenlogo.url}}"  class="img-fluid" alt="..." style="max-width: 30px; height:auto;">
-
-
-            {% else %}
-            
+           
             <small>{{datos.destinatario}}</small>
-
-
-            {% endif %}
-        
-        
+       
         
         </h6>
         <h6>SE COPIA A: <small>{{datos.copia}}</small></h6>
