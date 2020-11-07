@@ -27,20 +27,13 @@ class NotaDePedido(models.Model):
     cambio_proyecto = models.CharField(choices=SioNo.choices, max_length=20, verbose_name="Genera cambios al proyecto")
     comunicacion_general = models.CharField(choices=SioNo.choices, max_length=20, verbose_name="Es comunicación general")
     descripcion = models.TextField(verbose_name="Descripción de la causa")
-
-    #Nuevo
-
-    '''
-
     tipo = models.CharField(choices=Tipo.choices, max_length=20, verbose_name="Tipo de correspondencia", blank=True, null=True)
-    numero = models.IntegerField(verbose_name="Nota de pedido numero")
-    visto = models.IntegerField(verbose_name="Visto")
-
-    '''
+    numero = models.IntegerField(verbose_name="Nota de pedido numero", blank=True, null=True)
+    visto = models.CharField(max_length=200, verbose_name="Visto", blank=True, null=True)
 
     class Meta:
-        verbose_name="Nota de pedido"
-        verbose_name_plural="Notas de pedido"
+        verbose_name="Correspondencia"
+        verbose_name_plural="Correspondencias"
 
     def __str__(self):
         return self.titulo

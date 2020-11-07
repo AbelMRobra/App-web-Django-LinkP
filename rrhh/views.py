@@ -1,13 +1,96 @@
 from django.shortcuts import render
 from .models import NotaDePedido, datosusuario
+from proyectos.models import Proyectos
 
 # Create your views here.
 
-def notasdepedido(request):
+def notasdepedido(request, id_proyecto, tipo):
 
-    datos = NotaDePedido.objects.all()
+    proyectos = NotaDePedido.objects.values_list("proyecto")
 
-    return render(request, 'notasdepedido.html', {'datos':datos})
+    proyectos = list(set(proyectos))
+
+    lista_proyectos = []
+
+    for p in proyectos:
+
+        lista_proyectos.append(Proyectos.objects.get(id = p[0]))
+
+    datos = 0
+
+    if id_proyecto == "0":
+
+
+        if tipo == "0":
+
+            datos = NotaDePedido.objects.all()
+
+        elif tipo == "1":
+
+            datos = NotaDePedido.objects.filter(tipo = "NP")
+
+        elif tipo == "2":
+
+            datos = NotaDePedido.objects.filter(tipo = "OS")
+
+    if id_proyecto != "0":
+
+
+        if tipo == "0":
+
+            datos = NotaDePedido.objects.filter(proyecto__id = id_proyecto)
+
+        elif tipo == "1":
+
+            datos = NotaDePedido.objects.filter(tipo = "NP", proyecto__id = id_proyecto)
+
+        elif tipo == "2":
+
+            datos = NotaDePedido.objects.filter(tipo = "OS", proyecto__id = id_proyecto)
+
+
+
+
+    if request.method == 'POST':
+
+
+
+        datos_viejos = datos
+
+        datos = []   
+
+        palabra_buscar = request.POST["palabra"]
+
+        if str(palabra_buscar) == "":
+
+            datos = datos_viejos
+
+        else:
+        
+            for i in datos_viejos:
+
+                palabra =(str(palabra_buscar))
+
+                lista_palabra = palabra.split()
+
+                buscar = (str(i.proyecto)+str(i.titulo)+str(i.tipo)+str(i.numero)+str(i.creador)+str(i.destinatario))
+
+                contador = 0
+
+                for palabra in lista_palabra:
+
+                    contador2 = 0
+
+                    if palabra.lower() in buscar.lower():
+  
+                        contador += 1
+
+                if contador == len(lista_palabra):
+
+                    datos.append(i)
+
+
+    return render(request, 'notasdepedido.html', {'datos':datos, "id_proyecto":id_proyecto, "tipo":tipo, "lista_proyectos":lista_proyectos})
 
 def notadepedido(request, id_nota):
 
@@ -24,5 +107,20 @@ def notadepedido(request, id_nota):
 
     except:
         destino = 0
+
+    if request.method == 'POST':
+
+        datos_post = request.POST.items()
+
+        if str(datos.visto) == "None":
+
+            datos.visto = str(request.POST["FIRMA"]) + " "
+
+        else:
+
+            datos.visto = str(datos.visto) + str(request.POST["FIRMA"]) + " "
+
+        datos.save()
+
 
     return render(request, 'notadepedido.html', {'datos':datos, 'creador':creador, 'destino':destino})

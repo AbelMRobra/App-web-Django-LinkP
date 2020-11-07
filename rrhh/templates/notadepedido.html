@@ -18,9 +18,17 @@
 
     </div>
 
-    <h3 style="text-align: center; color: rgb({{datos.proyecto.color}}); font-family: Arial, Helvetica, sans-serif;">Anexo 2: Nota de pedido</h3>
+    {% if datos.tipo == "NP" %}
 
-    
+    <h3 style="text-align: center; color: rgb({{datos.proyecto.color}}); font-family: Arial, Helvetica, sans-serif;">Nota de pedido</h3>
+
+    {% else %}
+
+
+    <h3 style="text-align: center; color: rgb({{datos.proyecto.color}}); font-family: Arial, Helvetica, sans-serif;">Orden de servicio</h3>
+
+
+    {% endif %}
     <div>
 
         <img src="{{datos.proyecto.iamgen.url}}"  class="img-fluid" alt="..." style="max-width:200px;width:auto;height:auto; margin-top: 1rem; margin-bottom: 10px;">
@@ -60,6 +68,7 @@
         
         </h6>
         <h6>SE COPIA A: <small>{{datos.copia}}</small></h6>
+        <h6>FIRMADO POR: <small>{{datos.visto}}</small></h6>
         <h6>FECHA DE CREACIÓN: <small>{{datos.fecha_creacion}}</small></h6>
         <h6>ULTIMA ACTUALZIACIÓN: <small>{{datos.fecha_actualiacion}}</small></h6>
         <h6>FECHA REQUERIDA: <small>{{datos.fecha_requerida}}</small></h6>
@@ -181,6 +190,38 @@
 
 
      <b><hr class = "my-4" style="width: 100%; border-color: rgba({{datos.proyecto.color}}, 0.5;"></b>
+
+
+     {% if user.username in datos.copia %}
+
+
+     {% if user.username in datos.visto %}
+
+     <div style="text-align: right; margin: 20px;">
+
+        <Small>Ya firmaste esta correspondencia!</Small>
+    </div>
+
+     {% else %}
+
+     <div style="text-align: right; margin: 20px;">
+
+        <form action="" method="POST">
+
+
+            {% csrf_token %}
+
+            <button class="btn btn-success" type="submit"  name = "FIRMA" value="{{user.username}}"><span class="hint--left hint--success" aria-label="Este boton representa tu firma!">FIRMAR</span></button>
+    
+
+
+        </form>
+
+    </div>
+
+    {% endif %}
+
+    {% endif %}
 
 
 

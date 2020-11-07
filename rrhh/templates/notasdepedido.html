@@ -45,19 +45,22 @@
                 <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
                 <div class="dropdown-menu" aria-labelledby="btnGroupDrop1" style="">
 
-    
-                    <div style="margin: 2px;">
-    
-                        <a href="#" style="margin-top: 5px; color:  rgb({{i.color}})" >Torre Blue</a>
-    
-                    </div>
-
 
                     <div style="margin: 2px;">
     
-                        <a href="#" style="margin-top: 5px; color:  rgb({{i.color}})" >Vittalia</a>
+                        <a href="{% url 'Notas de pedido' '0' tipo %}" style="margin-top: 5px; color:  rgb({{i.color}})" >TODOS</a>
     
                     </div>
+
+                    {% for i in lista_proyectos %}
+    
+                    <div style="margin: 2px;">
+    
+                        <a href="{% url 'Notas de pedido' i.id tipo %}" style="margin-top: 5px; color:  rgb({{i.color}})" >{{i.nombre}}</a>
+    
+                    </div>
+
+                    {% endfor %}
 
         
                     
@@ -71,17 +74,23 @@
                 <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
                 <div class="dropdown-menu" aria-labelledby="btnGroupDrop1" style="">
 
+                    <div style="margin: 2px;">
+    
+                        <a href="{% url 'Notas de pedido' id_proyecto '0' %}" style="margin-top: 5px;)" >TODO</a>
+    
+                    </div>
+
     
                     <div style="margin: 2px;">
     
-                        <a href="#" style="margin-top: 5px; color:  rgb({{i.color}})" >Notas de pedido</a>
+                        <a href="{% url 'Notas de pedido' id_proyecto '1' %}" style="margin-top: 5px;)" >NOTAS DE PEDIDO</a>
     
                     </div>
 
 
                     <div style="margin: 2px;">
     
-                        <a href="#" style="margin-top: 5px; color:  rgb({{i.color}})" >Ordenes de servicio</a>
+                        <a href="{% url 'Notas de pedido' id_proyecto '2' %}" style="margin-top: 5px;)" >ORDENES DE SERVICIO</a>
     
                     </div>
 
@@ -93,16 +102,9 @@
     
     
         <div style="text-align: left; display: inline-block;">
+
     
-        
-            
-            {% if perms.compras.add_compras %}
-    
-            <a href= "/compras/cargacompras" class="btn btn-outline-info" style="text-align: end; margin-top: 5px;" > <b>+</b> Nueva correspondencia</a>
-        
-            {% endif %}
-    
-            <a href= "{% url 'Descargar compras' %}" class="btn btn-outline-success" style="text-align: end; margin-top: 5px;" > <img src="{% static 'img/sobresalir.png' %}" alt="" style="max-width:20px; height:auto;"  > Descargar Excel</a>
+            <a href= "#" class="btn btn-outline-info" style="text-align: end; margin-top: 5px;" > <b>+</b> Nueva correspondencia</a>
     
         
             </div>
@@ -130,6 +132,7 @@
                     <th scope = "row" style="vertical-align: middle;"><small> <strong>TITULO</strong> </small> </th>                    
                     <th scope = "row" style="vertical-align: middle;" class="priority-5"> <small> <strong>FECHA DE CREACIÓN</strong> </small></th>
                     <th scope = "row" style="vertical-align: middle;"> <small> <strong>ADJUNTOS</strong> </small></th>
+                    <th scope = "row" style="vertical-align: middle;"> <small> <strong>FIRMA</strong> </small></th>
                     
                 </tr>
             </thead>
@@ -141,14 +144,43 @@
                 {% for i in datos %}
 
                 <tr class = "table-light">
-                    <td style="width: 5%;"> <small> <strong>NP</strong></small></td> 
-                    <td style="width: 5%;"> <small> <strong>X</strong></small></td> 
-                    <td style="width: 15%;"> <small> <strong>{{i.proyecto}}</strong></small></td>              
+                    <td style="width: 5%;"> <small> <strong>{{i.tipo}}</strong></small></td> 
+                    <td style="width: 5%;"> <small> <strong>{{i.numero}}</strong></small></td> 
+                    <td style="width: 10%;"> <small> <strong>{{i.proyecto}}</strong></small></td>              
                     <td style="width: 8%;"> <small>{{i.creador}}</small></td>
                     <td style="width: 8%;" > <small>{{i.destinatario}}</small></td>
                     <td style="width: 20%;"><small> <a href=" {% url 'Nota de pedido' i.id %}"><b>{{i.titulo}}</b></a>  </small> </td>
                     <td style="width: 20%;" class="priority-5"> <small>{{i.fecha_creacion}}</small></td>
-                    <td style="width: 5%;"> <small>X</small></td>
+
+                    {% if i.adjuntos %}
+
+                    <td style="width: 5%;"> <small><a href="{{i.adjuntos.url}}"><img src="{% static 'img/archivo-adjunto.png' %}" alt="" style="max-width:25px; height: auto; margin: 5px;"   ></a></small></td>
+
+                    {% else %}
+
+                    <td style="width: 5%;"> <small>NO</small></td>
+
+                    {% endif %}
+
+                    {% if user.username in i.copia %}
+
+                        {% if user.username in i.visto %}
+
+                        <td style="width: 10%;  color: rgb(59, 186, 39);"> <small> <b>Ya firmaste!</b> </small></td>
+
+                        {% else %}
+
+                        <td style="width: 10%; color: rgb(186, 55, 39);"> <small><b>Pendiente de firmar!</b></small></td>
+
+                        {% endif %}
+
+                    {% else %}
+
+                    <td style="width: 10%;"> <small><b>No firmas</b></small></td>
+
+                    {% endif %}
+
+
 
                 </tr>
 
