@@ -11,7 +11,7 @@
 
     <div style="text-align: center;">
 
-        <h2 style="font-family: Arial, Helvetica, sans-serif;">Cost benefits analysis (CBA)</h2>
+        <h2 style="font-family: Arial, Helvetica, sans-serif;">Analisis de proyectos</h2>
 
         <small style="font-family: Arial, Helvetica, sans-serif;" > <b>Modulo:</b> Finanzas</small>
 
@@ -21,64 +21,97 @@
 
     {% if datos.proyectos %}
 
-    <div style="text-align: center; margin-bottom: 20%;">
-       <form method="POST">
+    <div style="text-align: center; width: 350px; height: 210px; display: inline-block; margin: 20px; vertical-align: top;">
 
-           {% csrf_token %}
+        <div style="margin: 15px;">
+
+            <form method="POST">
+
+                {% csrf_token %}
+     
+                <div>
+     
+                <h6 style= "font-family: Arial, Helvetica, sans-serif; ">Estudio de un proyecto</h6>
+                
+               </div>
+     
+                <select name="proyecto" class="custom-select" style="width: 200px; margin-top: 10px;">
+     
+                    {% if request.user.username != "HC" %}
+     
+                    {% for i in datos.proyectos %}
+     
+                    {% if not "DIANCO" in i.nombre %}
+     
+                    <option value="{{i.0}}">{{i.1}}</option>
+     
+     
+                    {% endif %}
+     
+                    {% endfor %}
+     
+                    {% else %}
+     
+                    {% for i in datos.proyectos %}
+     
+                    {% if "DIANCO" in i.nombre %}
+                    <option value="{{i.id}}">{{i.nombre}}</option>
+     
+                    {% endif %}
+     
+                    {% endfor %}
+     
+                    
+                    {% endif %}
+     
+     
+                  </select>
+                  
+                  
+     
+                  <div>
+                    <button class="btn btn-info" type="submit" style="margin-top: 10px;"><img src="{% static 'img/buscar.png' %}" alt="" style="max-width:30px; height:auto;"></button>          
+                </div>
+                
+            </form>
+     
+            <b><hr class = "my-4" style="width: 75%; "></b>
+
+
+        </div>
+       
+
+
+       
+
+       
+       
+   </div>
+
+   <div style="text-align: center; width: 350px; height: 210px; display: inline-block; margin: 20px; vertical-align: top;">
+
+    <div style="margin: 15px;">
+
+        <div>
+     
+            <h6 style= "font-family: Arial, Helvetica, sans-serif;">Indice Link</h6>
+
+
+            
+           </div>
 
            <div>
 
-            <small style="font-family: Arial, Helvetica, sans-serif;"> Seleccione un proyecto del listado para acceder a los datos</small>
-
-          </div>
-
-           <select name="proyecto" class="custom-select" style="width: 200px; margin-top: 10px;">
-
-               {% if request.user.username != "HC" %}
-
-               {% for i in datos.proyectos %}
-
-               {% if not "DIANCO" in i.nombre %}
-
-               <option value="{{i.0}}">{{i.1}}</option>
-
-
-               {% endif %}
-
-               {% endfor %}
-
-               {% else %}
-
-               {% for i in datos.proyectos %}
-
-               {% if "DIANCO" in i.nombre %}
-               <option value="{{i.id}}">{{i.nombre}}</option>
-
-               {% endif %}
-
-               {% endfor %}
-
-               
-               {% endif %}
-
-
-             </select>
-             
-             
-
-             <div>
-               <button class="btn btn-dark" type="submit" style="margin-top: 10px;">Buscar datos</button>          
+            <img src="{% static 'img/link.png' %}" alt="" style="max-width:120px; height:auto;">
            </div>
-           
-       </form>
-
-       <b><hr class = "my-4" style="width: 75%; "></b>
 
 
-       <a class="btn btn-info" href="{% url 'Consolidado' %}" style="margin-top: 10px;"> Ver consolidado </a>
+    </div>
 
-       
-       
+    <a class="btn btn-info" href="{% url 'Consolidado' %}" > <img src="{% static 'img/reportar.png' %}" alt="" style="max-width:30px; height:auto;"> </a>
+
+    <b><hr class = "my-4" style="width: 75%; "></b>
+
    </div>
 
    
