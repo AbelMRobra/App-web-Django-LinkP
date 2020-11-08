@@ -10,74 +10,88 @@
 
 <div class = "jumbotron" style="background-color: white; margin-bottom: 0px;">
     <div style="text-align: center;">
-        <h2>Panel de control - Ventas de unidades</h2>
-        <small>Responsable del panel: </small><small><strong>Área de ventas</strong></small>  
+        <h3 style="font-family: Arial, Helvetica, sans-serif;">Ventas realizadas</h3>
+        <small style="font-family: Arial, Helvetica, sans-serif;"><b>Modulo:</b> Ventas </small> 
     </div>
 
     <b><hr class = "my-4" style="width: 100%; "></b>
     
 
-    <div style="text-align: center;">
-    
-    <h6>Cargar una venta</h6>
+    <div>
 
+        <div style="margin: 5px;">
 
-    <a href="{% url 'Cargar una Venta' %}" class="btn btn-primary">Registrar una venta</a>
-    
-    </div>
+            <form method="POST">
 
-
-    <b><hr class = "my-4" style="width: 100%; "></b>
-
-
-    <form method="POST">
-
-        {% csrf_token %}
-
-        <div style="display: inline-block;  vertical-align: middle;">
-
-            <h6>Operaciones realizadas</h6>
-    
-    
-        </div>
+                {% csrf_token %}
         
-        <div style="display: inline-block; margin-left: 1%;  vertical-align: middle;">
-    
-            <input name="palabra" type="text" class="form-control form-control" placeholder="Buscar por palabra" list="art" style="width: 30rem;">
-    
+                <div style="display: inline-block;  vertical-align: middle;">
+        
+                    <h6>Buscar</h6>
+            
+            
+                </div>
+                
+                <div style="display: inline-block; margin-left: 1%;  vertical-align: middle;">
+            
+                    <input name="palabra" type="text" class="form-control form-control" placeholder="Buscar por palabra" list="art" style="width: 300px;">
+            
+                </div>
+        
+       
+        
+            </form>
+
+
         </div>
+
+        <div style="margin: 5px;">
+
+            <a href= "{% url 'Cargar una Venta' %}" class="btn btn-outline-info"style="text-align: end; " > <img src="{% static 'img/agregar-archivo.png' %}" alt="" style="max-width:20px; height:auto;"  > Nueva venta</a>
     
-        <div style="display: inline-block; margin-left: 1%; vertical-align: middle;">
-            <button class="btn btn-dark" type="submit">Buscar</button>          
-        </div>  
+    
+        <a href= "{% url 'Descargar ventas' %}" class="btn btn-outline-success" style="text-align: end; " > <img src="{% static 'img/sobresalir.png' %}" alt="" style="max-width:20px; height:auto;"  > Descargar Excel</a>
+    
+
+
+        </div>
+
+        
+    
+        
+    
+    
 
 
 
-    </form>
+    </div>
+
+
+   
 
     <div class = "tableconteinerabel">
 
              
 
 
-    <table class = "table table-hover" style="text-align: center; margin-top: 2%;">
+    <table class = "table table-hover" style="text-align: center;">
         <thead>
 
             <tr class = "table-dark">
-                <th scope = "row"> <small>FECHA</small></th>
-                <th scope = "row"> <small>PROYECTO</small></th>
-                <th scope = "row"> <small>COMPRADOR</small></th>
-                <th scope = "row"> <small>PISO</small></th>
-                <th scope = "row"> <small> NOM </small></th>
-                <th scope = "row"> <small> TIPO </small></th>
-                <th scope = "row"> <small> SUPERFICIE </small></th>
-                <th scope = "row"> <small>  ASIGNACION </small></th>
-                <th scope = "row"> <small>PRECIO DE VENTA</small>   </th>
-                <th scope = "row"> <small>PRICING</small>   </th>
-                <th scope = "row"> <small>DESDE</small>   </th>
-                <th scope = "row"> <small> ANOTACIONES </small></th>
-                <th scope = "row"> <small> EDITAR </small></th>
-                <th scope = "row"> <small> ELIMINAR </small></th>
+                <th scope = "row" style="vertical-align: middle;"> <small>FECHA</small></th>
+                <th scope = "row" style="vertical-align: middle;"> <small>PROYECTO</small></th>
+                <th scope = "row" style="vertical-align: middle;"> <small>COMPRADOR</small></th>
+                <th scope = "row" style="vertical-align: middle;"> <small>PISO</small></th>
+                <th scope = "row" style="vertical-align: middle;"> <small> NOM </small></th>
+                <th scope = "row" style="vertical-align: middle;"> <small> TIPO </small></th>
+                <th scope = "row" style="vertical-align: middle;"> <small> SUPERFICIE </small></th>
+                <th scope = "row" style="vertical-align: middle;"> <small>  ASIGNACION </small></th>
+                <th scope = "row" style="vertical-align: middle;"> <small>PRECIO DE VENTA</small>   </th>
+                <th scope = "row" style="vertical-align: middle;"> <small>PRICING</small>   </th>
+                <th scope = "row" style="vertical-align: middle;"> <small>DESDE</small>   </th>
+                <th scope = "row" style="vertical-align: middle;"> <small> ANOTACIONES </small></th>
+                <th scope = "row" style="vertical-align: middle;"> <small> EDITAR </small></th>
+                <th scope = "row" style="vertical-align: middle;"> <small> ELIMINAR </small></th>
                  
 
             </tr>
@@ -87,8 +101,8 @@
 
             {% for i in datos|slice:"200" %}
             <tr class = "table-light">
-                <td> <b> <small>{{i.fecha}}</small> </b></td>
-                <td> <b> <small>{{i.unidad.proyecto.nombre}}</small> </b></td>       
+                <td> <b> <small>{{i.fecha|date:"Y-m-j"}}</small> </b></td>
+                <td style="color: rgb({{i.unidad.proyecto.color}});">  <small> <b>{{i.unidad.proyecto.nombre}}</b></small></td>       
                 <td> <b> <small>{{i.comprador}}</small> </b> </td>
                 <td> <b> <small>{{i.unidad.piso_unidad}}</small> </b> </td>
 
@@ -104,14 +118,14 @@
                 <td> <b> <small>{{i.unidad.tipologia}}</small> </b> </td>
                 <td> <b> <small>{{i.m2|floatformat:2}}m2</small> </b> </td>
                 <td> <b> <small>{{i.asignacion}}</small></b> </td>
-                <td> <b>  <small>${{i.precio_venta|floatformat:0|intcomma}}</small></b> </td>
+                <td> <small> <b>${{i.precio_venta|floatformat:0|intcomma}}</b> </small></td>
                 <td> <b>  <small>${{i.precio_pricing|floatformat:0|intcomma}}</small></b> </td>
                 <td> <b>  <small>${{i.precio_desde|floatformat:0|intcomma}}</small></b> </td>
-                <td> <b><a href="{% url 'Detalle venta' i.id %}" class="btn btn-sm btn-info" >Ver detalles</a>
+                <td> <b><a href="{% url 'Detalle venta' i.id %}" class="btn btn-sm btn-info" ><img src="{% static 'img/buscar.png' %}" alt="" style="max-width:20px; height:auto;"  ></a>
                 </b> </td>
-                <td> <a href="{% url 'Editar venta' i.id %}" class="btn btn-sm btn-success" >Editar</a>
+                <td> <a href="{% url 'Editar venta' i.id %}" class="btn btn-sm btn-success" ><img src="{% static 'img/documento.png' %}" alt="" style="max-width:20px; height:auto;"  ></a>
                 </td>
-                <td> <a href="{% url 'Eliminar venta' i.id %}" class="btn btn-sm btn-danger">Eliminar</a>
+                <td> <a href="{% url 'Eliminar venta' i.id %}" class="btn btn-sm btn-danger"><img src="{% static 'img/borrar.png' %}" alt="" style="max-width:20px; height:auto;"  ></a>
                 </b> </td>
 
 
@@ -133,11 +147,6 @@
     <div style="text-align: center;">
         <small>El listado puede continuar, se limita el numero de filas visibles</small>
     </div>
-
-    <div style="text-align:center">
-        <a href= "{% url 'Descargar ventas' %}" class="btn btn-success" style="margin-top: 1%;" > Descargar Excel</a>          
-    </div> 
-
 
 
     <div style="text-align: center; margin-top: 2rem;">
