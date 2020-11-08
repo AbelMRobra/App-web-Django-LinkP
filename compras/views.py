@@ -768,6 +768,8 @@ def comparativas(request, estado):
 
     if estado == "0":
 
+        mensaje = "Estado"
+
         datos_base = Comparativas.objects.order_by("-fecha_c")
 
         datos = []
@@ -786,6 +788,8 @@ def comparativas(request, estado):
             
 
     if estado == "1":
+
+        mensaje = "Espera"
 
 
         datos_base = Comparativas.objects.filter(estado = "ESPERA").order_by("-fecha_c")
@@ -807,6 +811,8 @@ def comparativas(request, estado):
 
     if estado == "2":
 
+        mensaje = "Adjunto ✓"
+
         datos_base = Comparativas.objects.filter(estado = "ADJUNTO ✓").order_by("-fecha_c")
 
 
@@ -825,6 +831,8 @@ def comparativas(request, estado):
             datos.append((usuario, mensajes, d))
 
     if estado == "3":
+
+        mensaje = "Rechazadas"
 
         datos_base = Comparativas.objects.filter(estado = "NO AUTORIZADA").order_by("-fecha_c")
 
@@ -845,6 +853,8 @@ def comparativas(request, estado):
 
     if estado == "4":
 
+        mensaje = "Autorizadas"
+
         datos_base = Comparativas.objects.filter(estado = "AUTORIZADA").order_by("-fecha_c")
 
 
@@ -864,6 +874,8 @@ def comparativas(request, estado):
 
 
     if estado == "5":
+
+        mensaje = "Estado SP"
 
         datos_base = Comparativas.objects.filter(creador = "MES").order_by("-fecha_c")
 
@@ -942,7 +954,7 @@ def comparativas(request, estado):
                             datos.append(i)
 
 
-    return render(request, 'comparativas.html', {'datos':datos, "estado":estado})
+    return render(request, 'comparativas.html', {'datos':datos, "estado":estado, "mensaje":mensaje})
 
 
 def compras(request, id_proyecto):
