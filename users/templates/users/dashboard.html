@@ -28,13 +28,72 @@
 
     <div>
 
+        <div style="display: inline-block; width: 400px; vertical-align: top; margin: 40px;">
+    
+    
+            <h6 style="font-family: Arial, Helvetica, sans-serif;"> Arqueo diario </h6>
+    
+
+                <div>
+
+                    <small style="font-family: Arial, Helvetica, sans-serif;"> <b>Fecha del arqueo:</b> {{arqueo.0}} </small>
+
+                </div>
+
+
+                    
+                <div style="margin: 15px;">
+
+                    <canvas id="myChart"></canvas>
+            
+                </div>
+                   
+                <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+                <script>
+            
+                    var ctx = document.getElementById('myChart').getContext('2d');
+                    var chart = new Chart(ctx, {
+                        // The type of chart we want to create
+                        type: 'doughnut',
+                        // The data for our dataset
+                        data: {
+                        datasets: [{        
+                            data: [{{arqueo.3|floatformat:0}}, {{arqueo.2|floatformat:0}},  {{arqueo.4|floatformat:0}}, {{arqueo.5|floatformat:0}}],
+                            backgroundColor: ['rgba(98, 173, 78 , 0.7)', 'rgba(27, 122, 216, 0.7)', 'rgba(216, 216, 27, 0.7)', 'rgba(216, 53, 27 , 0.7)' ],    
+                        }],
+            
+                        labels: ['Moneda extranjera','Pesos',  'Cheques', 'Bancos']
+                    
+                    },
+
+                        options: {
+                            legend: {
+                                position: 'right'
+                            },
+
+                        },
+                    });
+            
+                </script>
+
+
+                <div>
+                    
+                    <small style="font-family: Arial, Helvetica, sans-serif;"> <b>Consolidado:</b> $ {{arqueo.1|floatformat:0|intcomma}} </small>
+
+                </div>
+            
+                
+            </div>
+
+
         <div style="display: inline-block; width: 400px; vertical-align: top;  margin: 40px;">
 
 
             <h6 style="font-family: Arial, Helvetica, sans-serif;"> Avance de presupuesto </h6>
     
     
-            {% for i in datos_barras|slice:"4" %}
+            {% for i in datos_barras|slice:"6" %}
     
             <div>
     
@@ -168,7 +227,9 @@
             
                 
             </div>
-    
+
+
+            
     
     
           </div>

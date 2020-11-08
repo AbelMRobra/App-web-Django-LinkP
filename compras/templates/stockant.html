@@ -51,11 +51,11 @@
             // The data for our dataset
             data: {
             datasets: [{        
-                data: [{{datos.stock_pesos|floatformat:0}}, {{datos.stock_usd|floatformat:0}}, {{datos.stock_horm|floatformat:0}}],
-                backgroundColor: ['rgba(76, 119, 218, 0.5)', 'rgba(98, 227, 72, 0.5)', 'rgba(152, 165, 194, 0.5)' ],    
+                data: [{{arqueo.2|floatformat:0}}, {{arqueo.3|floatformat:0}}, {{arqueo.4|floatformat:0}}, {{arqueo.5|floatformat:0}}],
+                backgroundColor: ['rgba(76, 119, 218, 0.5)', 'rgba(98, 227, 72, 0.5)', 'rgba(152, 165, 194, 0.5)', 'rgba(152, 165, 194, 0.5)' ],    
             }],
 
-            labels: ['Pesos', 'Dolar', 'Hormigon']}
+            labels: ['Pesos', 'Moneda extranjera', 'Cheques', 'Bancos']}
         });
 
     </script>

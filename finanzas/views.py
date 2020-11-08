@@ -1463,15 +1463,12 @@ def arqueo_diario(request):
     bancos = 0
 
     consolidados = 0
-
-
-    
+  
     datos_grafico = [porcentaje_usd, porcentaje_euros, porcentaje_pesos]
 
     numero = 0
 
     for i in lista_proyecto:
-
 
         try:
 

@@ -4,7 +4,7 @@ from django.contrib.auth import authenticate
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login as do_login
 from django.contrib.auth.forms import UserCreationForm
-from finanzas.models import Almacenero, RegistroAlmacenero
+from finanzas.models import Almacenero, RegistroAlmacenero, Arqueo
 from presupuestos.models import Presupuestos
 from proyectos.models import Proyectos, Unidades
 from ventas.models import VentasRealizadas
@@ -13,6 +13,8 @@ from registro.models import RegistroValorProyecto
 from rrhh.models import datosusuario, mensajesgenerales
 import datetime
 from datetime import date
+import pandas as pd
+import numpy as np
 
 def guia(request):
 
@@ -37,6 +39,56 @@ def guia(request):
 
 
 def dashboard(request):
+
+    # En esta parte resolvemos el grafico del arqueo
+
+    data_cruda = Arqueo.objects.order_by("-fecha")
+
+    fecha = data_cruda[0].fecha
+
+    data = data_cruda[0]
+
+    data_frame = pd.read_excel(data.arqueo)
+
+    array_usd = np.array(data_frame['USD'])
+
+    usd = sum(array_usd)
+
+    array_euro = np.array(data_frame['EUROS'])
+
+    euro = sum(array_euro)
+
+    nombre_columnas = data_frame.columns
+
+    banco = 0
+
+    for n in nombre_columnas:
+
+        if "BANCO" in n:
+
+            banco = banco + sum(np.array(data_frame[n]))
+
+
+    array_pesos = np.array(data_frame['EFECTIVO'])
+
+    pesos = sum(array_pesos)
+
+    array_cheques = np.array(data_frame['CHEQUES'])
+
+    cheques = sum(array_cheques)
+
+    array_me = np.array(data_frame['MONEDA EXTRANJERA'])
+
+    me = sum(array_me)
+
+    consolidado = pesos + cheques + me + banco
+
+    porcentaje_pesos = pesos/consolidado*100
+    porcentaje_banco = banco/consolidado*100
+    porcentaje_cheques = cheques/consolidado*100
+    porcentaje_me = me/consolidado*100
+
+    arqueo = [fecha, consolidado, porcentaje_pesos, porcentaje_me, porcentaje_cheques, porcentaje_banco, usd, euro]
 
 
     #Calculos para tablero de avance de presupuesto
@@ -113,7 +165,7 @@ def dashboard(request):
     datos_unidades = [deptos_disp, cocheras_disp]
 
 
-    return render(request, "users/dashboard.html", {"datos_barras":barras, "ventas_barras":ventas_barras, "ventas":ventas_realizadas, "datos_compras":datos_compras, "datos_unidades":datos_unidades})
+    return render(request, "users/dashboard.html", {"datos_barras":barras, "ventas_barras":ventas_barras, "ventas":ventas_realizadas, "datos_compras":datos_compras, "datos_unidades":datos_unidades, "arqueo":arqueo})
 
 def inicio(request):
 
