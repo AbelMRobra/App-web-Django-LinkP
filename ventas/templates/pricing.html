@@ -10,18 +10,20 @@
 <div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;">
     <div style="text-align: left; justify-content: left;">
 
-        <div style="display: inline-block; vertical-align: middle; width: 15%; margin-right: 2%;">
+        <div style="display: inline-block; vertical-align: middle; width: 250px; margin: 20px;">
             <img src="{{datos.proyecto.iamgen.url}}"  class="img-fluid" alt="..." style="width:auto;height:auto; ">
 
 
         </div>
 
-        <div style="display: inline-block; vertical-align: middle; width: 40%;">
-            <h4 style="color: rgb({{datos.proyecto.color}}); " >Pricing del proyecto {{ datos.proyecto.nombre }} </h4>
+        <div style="display: inline-block; vertical-align: middle; width: 350px;  margin: 20px;">
+            <h4 style="color: rgb({{datos.proyecto.color}}); " >{{ datos.proyecto.nombre }} </h4>
+            <h5 style="color: rgb({{datos.proyecto.color}}); " >Pricing de unidades </h5>
+
 
         </div>
 
-        <div style="display: inline-block; vertical-align: middle; width: 20%; margin-left: 20%; vertical-align: middle;">
+        <div style="vertical-align: middle; margin: 20px; text-align: right;">
 
             <form method="POST" >
 
@@ -29,7 +31,7 @@
 
                     <div style="display: inline-block;">
 
-                        <input name="palabra" type="text" class="form-control form-control" placeholder="Buscar por palabra" list="art">
+                        <input name="palabra" type="text" class="form-control form-control" placeholder="Buscar por palabra" list="art" width="300px">
 
 
 
@@ -37,7 +39,7 @@
         
         
                     
-                    <img src="{% static 'img/buscar2.png' %}" alt="" style="max-width:30px; height:auto;"  >
+                    <img src="{% static 'img/buscar2.png' %}" alt="" style="max-width:25px; height:auto;"  >
         
              </form>
 
@@ -56,7 +58,7 @@
 
     {% if request.user.username == "IC" or request.user.username == "AR" or request.user.username == "ar"   %}
 
-    <div style="text-align: left;">
+    <div style="text-align: left; vertical-align: middle;">
 
         <div style="margin: 5px; display: inline-block;">
 
@@ -143,15 +145,15 @@
                     <th scope = "row" style="vertical-align: middle;"> <small>PISO/NOM</small> </th>
                     <th scope = "row"style="vertical-align: middle;" colspan="2"> <small>TIPOLOGIA</small>  </th>
                     <th scope = "row"style="vertical-align: middle;"> <small>SUPERFICIE</small> </th>
-                    <th scope = "row"style="vertical-align: middle;"> <small>ASIGNACIÓN</small> </th>
+                    <th scope = "row"style="vertical-align: middle;" class="priority-4"> <small>ASIGNACIÓN</small> </th>
                     <th scope = "row"style="vertical-align: middle;"> <small>ESTADO</small> </th>
                     <th scope = "row"style="vertical-align: middle;"> <small>CONTADO</small> </th>
                     <th scope = "row"style="vertical-align: middle;"> <small>CONT./M2</small> </th>
                     
-                    <th scope = "row"style="vertical-align: middle;"> <small>FINANCIADO</small> </th>
-                    <th scope = "row"style="vertical-align: middle;"> <small>FINAN./M2</small> </th>
-                    <th scope = "row"style="vertical-align: middle;"> <small>ANTICIPO ({{datos.anticipo}}%)</small> </th>
-                    <th scope = "row"style="vertical-align: middle;"> <small>CUOTAS ({{datos.meses}})</small> </th>
+                    <th scope = "row"style="vertical-align: middle;" class="priority-5"> <small>FINANCIADO</small> </th>
+                    <th scope = "row"style="vertical-align: middle;" class="priority-5"> <small>FINAN./M2</small> </th>
+                    <th scope = "row"style="vertical-align: middle;" class="priority-5"> <small>ANTICIPO ({{datos.anticipo}}%)</small> </th>
+                    <th scope = "row"style="vertical-align: middle;" class="priority-5"> <small>CUOTAS ({{datos.meses}})</small> </th>
 
                      
     
@@ -184,7 +186,7 @@
                     
                     <td style="width: 3%;"> <b> <small>{{i.0.tipologia}}</small> </b> </td>
                     <td style="width: 5%;"> <b> <small>{{i.1|floatformat:2}}m2</small></b> </td>
-                    <td style="width: 5%;"> <b> <small> {{i.0.asig}} </small> </b> </td>
+                    <td style="width: 5%;" class="priority-4"> <b> <small> {{i.0.asig}} </small> </b> </td>
                     
                     {% if i.9 != 0 and perms.ventas.view_ventasrealizadas %}
 
@@ -224,19 +226,19 @@
                     {% if i.2 >= 0 %}
                     <td style="width: 5%;"> <b> <small>${{i.4|floatformat:0|intcomma}}</small> </b> </td>
                     <td style="width: 5%;"> <small><b>${{i.2|floatformat:0|intcomma}}</b> </small></td>
-                    <td style="width: 5%;"> <b> <small>${{i.5|floatformat:0|intcomma}}</small> </b> </td>
-                    <td style="width: 5%;"> <b> <small>${{i.6|floatformat:0|intcomma}}</small> </b> </td>
-                    <td style="width: 5%;"> <b> <small>${{i.7|floatformat:0|intcomma}}</small> </b> </td>
-                    <td style="width: 5%;"> <b> <small>${{i.8|floatformat:0|intcomma}}</small> </b> </td>
+                    <td style="width: 5%;" class="priority-5"> <b> <small>${{i.5|floatformat:0|intcomma}}</small> </b> </td>
+                    <td style="width: 5%;" class="priority-5"> <b> <small>${{i.6|floatformat:0|intcomma}}</small> </b> </td>
+                    <td style="width: 5%;" class="priority-5"> <b> <small>${{i.7|floatformat:0|intcomma}}</small> </b> </td>
+                    <td style="width: 5%;" class="priority-5"> <b> <small>${{i.8|floatformat:0|intcomma}}</small> </b> </td>
                     
                     {% else %}
     
                     <td style="width: 5%;"> <b> <small>{{i.4}}</small> </b> </td>
                     <td style="width: 5%;"> <b> <small>{{i.2}}</small> </b> </td>
-                    <td style="width: 5%;"> <b> <small>{{i.2}}</small> </b> </td>
-                    <td style="width: 5%;"> <b> <small>{{i.2}}</small> </b> </td>
-                    <td style="width: 5%;"> <b> <small>{{i.2}}</small> </b> </td>
-                    <td style="width: 5%;"> <b> <small>{{i.2}}</small> </b> </td>
+                    <td style="width: 5%;" class="priority-5"> <b> <small>{{i.2}}</small> </b> </td>
+                    <td style="width: 5%;" class="priority-5"> <b> <small>{{i.2}}</small> </b> </td>
+                    <td style="width: 5%;" class="priority-5"> <b> <small>{{i.2}}</small> </b> </td>
+                    <td style="width: 5%;" class="priority-5"> <b> <small>{{i.2}}</small> </b> </td>
     
                     {% endif %}
                     
