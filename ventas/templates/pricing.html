@@ -21,15 +21,23 @@
 
         </div>
 
-        <div style="display: inline-block; vertical-align: middle; width: 20%; margin-left: 20%;">
+        <div style="display: inline-block; vertical-align: middle; width: 20%; margin-left: 20%; vertical-align: middle;">
 
             <form method="POST" >
 
                 {% csrf_token %}
+
+                    <div style="display: inline-block;">
+
+                        <input name="palabra" type="text" class="form-control form-control" placeholder="Buscar por palabra" list="art">
+
+
+
+                    </div>
         
         
-                    <input name="palabra" type="text" class="form-control form-control" placeholder="Buscar por palabra" list="art">
-    
+                    
+                    <img src="{% static 'img/buscar2.png' %}" alt="" style="max-width:30px; height:auto;"  >
         
              </form>
 
@@ -38,43 +46,92 @@
     </div>
 
 
+    <b><hr class = "my-4" style="width: 100%; border-color: rgba({{datos.proyecto.color}}, 0.5);"></b>
+
+
 
     {% if datos.datos_unidades %}
 
-    {% if perms.ventas.view_ventasrealizadas %}
-
-
-    <b><hr class = "my-4" style="width: 100%; border-color: rgba({{datos.proyecto.color}}, 0.5);"></b>
-
-    <div style="display: inline-block; vertical-align: middle;">
-
-        <h6>Modificar precio base:</h6>
     
+
+    {% if request.user.username == "IC" or request.user.username == "AR" or request.user.username == "ar"   %}
+
+    <div style="text-align: left;">
+
+        <div style="margin: 5px; display: inline-block;">
+
+
+
+            <button type="button" class="btn btn-outline-warning" data-toggle="modal" data-target="#exampleModalCenter">
+                <img src="{% static 'img/documento.png' %}" alt="" style="max-width:20px; height:auto;"  >
+              </button>
+           
+
+
+
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLongTitle">Estas por modificar el precio del pricing!</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+
+
+                      Cuando lo modifiques, espera unos segundos a que cargue todo!
+                      
+                      <form method="GET" style="margin: 15px;">
+    
+                        <div class="input-group mb-3">
+                    
+                                <div class="input-group-prepend">
+                    
+                                    <span class="input-group-text">$</span>
+                        
+                                </div>
+                        
+                                <input name="precio_venta" type="number" class="form-control form-control" aria-label="Amount" style="width: 100px;">
+                             
+                        </div>
+                    
+                    </form>
+                    
+                    
+                    
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+               
+                    </div>
+                  </div>
+                </div>
+              </div>
+
     </div>
 
-    <form method="GET">
-
-    <div class="input-group mb-3" style="width: 40%; margin-left: 30%;">
-
-            <div class="input-group-prepend">
-
-                <span class="input-group-text">$</span>
     
-            </div>
+
     
-            <input name="precio_venta" type="number" class="form-control form-control" aria-label="Amount" >
-         
-    </div>
-
-</form>
-
     {% endif %}
 
+    <div style="margin: 5px; display: inline-block;">
 
-    <b><hr class = "my-4" style="width: 100%; border-color: rgba({{datos.proyecto.color}}, 0.5);"></b>
+        <h6 style="text-align: left;">Precio base: <small>${{datos.proyecto.desde|floatformat:0|intcomma}}</small> - Promedio contado: <small>${{datos.otros_datos.0.4|floatformat:0|intcomma}}</small>  - Promedio financiado: <small>${{datos.otros_datos.0.5|floatformat:0|intcomma}}</small>  </h6>
 
-    <h6 style="text-align: left;">Precio base: ${{datos.proyecto.desde|floatformat:0|intcomma}} - Promedio contado: ${{datos.otros_datos.0.4|floatformat:0|intcomma}} - Promedio financiado: ${{datos.otros_datos.0.5|floatformat:0|intcomma}} </h6>
+    </div>
 
+
+    </div>
+
+
+    
+
+    
+    
 
     
     <div class = "tableconteinerabel">
@@ -106,7 +163,19 @@
                 {% for i in datos.datos_unidades %}
                 <tr class = "table-light">
                     <td style="width: 2%;"> <a href=" {% url 'Cotizador' i.0.id %}" style="color: rgb({{datos.proyecto.color}});"> <small> <b>{{i.0.piso_unidad}} - {{i.0.nombre_unidad}}</b> </small></a> </td>
-                    <td style="width: 5%;"> <b> <small>{{i.0.tipo}}</small> </b> </td>
+                    
+                    {% if i.0.tipo == "DEPARTAMENTO" %}
+                    
+                    <td style="width: 8%;"> <img src="{% static 'img/piso.png' %}" alt="" style="max-width:15px; height:auto; margin: 2px;"  > <small> <b>DEPTO</b> </small> </td>
+                    
+                    {% else %}
+
+                    <td style="width: 8%;"> <img src="{% static 'img/coche.png' %}" alt="" style="max-width:15px; height:auto; margin: 2px;"  > <small> <b>{{i.0.tipo}}</b> </small> </td>
+                   
+
+
+                    {% endif %}
+                    
                     <td style="width: 3%;"> <b> <small>{{i.0.tipologia}}</small> </b> </td>
                     <td style="width: 5%;"> <b> <small>{{i.1|floatformat:2}}m2</small></b> </td>
                     <td style="width: 5%;"> <b> <small> {{i.0.asig}} </small> </b> </td>
@@ -148,7 +217,7 @@
 
                     {% if i.2 >= 0 %}
                     <td style="width: 5%;"> <b> <small>${{i.4|floatformat:0|intcomma}}</small> </b> </td>
-                    <td style="width: 5%;"> <b> <small>${{i.2|floatformat:0|intcomma}}</small> </b> </td>
+                    <td style="width: 5%;"> <small><b>${{i.2|floatformat:0|intcomma}}</b> </small></td>
                     <td style="width: 5%;"> <b> <small>${{i.5|floatformat:0|intcomma}}</small> </b> </td>
                     <td style="width: 5%;"> <b> <small>${{i.6|floatformat:0|intcomma}}</small> </b> </td>
                     <td style="width: 5%;"> <b> <small>${{i.7|floatformat:0|intcomma}}</small> </b> </td>
