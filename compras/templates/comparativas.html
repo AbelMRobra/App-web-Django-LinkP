@@ -18,6 +18,27 @@
     <b><hr class = "my-4" style="width: 100%;"></b>
 
     <div style="text-align: left;">
+        
+
+        <form method="POST" style="text-align: left;">
+
+            {% csrf_token %}
+    
+            <div style="display: inline-block; margin-left: 1rem;">
+    
+                <label for="palabra"><h6 style="font-family: Arial, Helvetica, sans-serif;">Buscar</h6></label>
+    
+            </div>
+            
+            <div style="display: inline-block; margin-left: 1rem; ">
+    
+                <input name="palabra" type="text" class="form-control form-control" placeholder="Buscar por palabra" list="art" style="width: 250px;">
+    
+            </div>
+           
+          
+    
+         </form>
 
     <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
         <button type="button" class="btn btn-primary">Estado</button>
@@ -295,7 +316,7 @@
                             <div class="form-group" style="margin-top: 10%;">
 
 
-                                <input type="text" name="{{request.user.username}}" class="form-control form-control-sm" placeholder="Comentario" id="inputDefault">
+                                <input type="text" name="MENSAJE" class="form-control form-control-sm" placeholder="Comentario" id="inputDefault">
                         
 
                             </div>
@@ -358,7 +379,7 @@
                             <div class="form-group" style="margin-top: 10%;">
 
 
-                                <input type="text" name="{{request.user.username}}" class="form-control form-control-sm" placeholder="Comentario" id="inputDefault">
+                                <input type="text" name="MENSAJE" class="form-control form-control-sm" placeholder="Comentario" id="inputDefault">
                         
 
                             </div>

@@ -699,7 +699,6 @@ def mensajescomparativas(request, id_comparativa):
 
 def comparativas(request, estado):
 
-
     if request.method == 'POST':
 
         datos_post = request.POST.items()
@@ -709,6 +708,7 @@ def comparativas(request, estado):
         for d in datos_post:
 
             if d[0] == 'APROBADA':
+
                 id_selec = d[1]
 
                 comparativa = Comparativas.objects.get(id = id_selec)
@@ -735,6 +735,7 @@ def comparativas(request, estado):
                 comparativa.save()
 
             if d[0] == 'ADJAPROB':
+
                 id_selec = d[1]
 
                 comparativa = Comparativas.objects.get(id = id_selec)
@@ -743,12 +744,11 @@ def comparativas(request, estado):
 
                 comparativa.save()
 
-            if d[0] != 'csrfmiddlewaretoken' and d[0] != 'NO APROBADA' and d[0] != 'APROBADA' and d[0] != 'ADJAPROB':
+            if d[0] == 'MENSAJE':
                 
-
                 comparativa = Comparativas.objects.get(id = id_selec)
 
-                comparativa.comentario = str(d[0]) + ": " + str(d[1])
+                comparativa.comentario = str(request.user.username) + ": " + str(d[1])
 
                 comparativa.save()
 
@@ -895,6 +895,51 @@ def comparativas(request, estado):
                 usuario = 0
 
             datos.append((usuario, mensajes, d))
+
+
+    #Aqui empieza el filtro
+
+    if request.method == 'POST':
+
+        datos_post = request.POST.items()
+
+        for d in datos_post:
+
+            if d[0] == 'palabra':
+
+                datos_viejos = datos
+
+                datos = []  
+
+                palabra_buscar = request.POST["palabra"]
+
+                if str(palabra_buscar) == "":
+
+                    datos = datos_viejos
+
+                else:
+                
+                    for i in datos_viejos:
+
+                        palabra =(str(palabra_buscar))
+
+                        lista_palabra = palabra.split()
+
+                        buscar = (str(i[2].proyecto)+str(i[2].numero)+str(i[2].o_c)+str(i[2].creador)+str(i[2].proveedor.name))
+
+                        contador = 0
+
+                        for palabra in lista_palabra:
+
+                            contador2 = 0
+
+                            if palabra.lower() in buscar.lower():
+
+                                contador += 1
+
+                        if contador == len(lista_palabra):
+
+                            datos.append(i)
 
 
     return render(request, 'comparativas.html', {'datos':datos, "estado":estado})
