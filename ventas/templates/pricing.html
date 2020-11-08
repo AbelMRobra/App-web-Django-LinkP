@@ -168,6 +168,12 @@
                     
                     <td style="width: 8%;"> <img src="{% static 'img/piso.png' %}" alt="" style="max-width:15px; height:auto; margin: 2px;"  > <small> <b>DEPTO</b> </small> </td>
                     
+                    {% elif i.0.tipo == "LOCAL"%}
+
+                    <td style="width: 8%;"> <img src="{% static 'img/tienda.png' %}" alt="" style="max-width:15px; height:auto; margin: 2px;"  > <small> <b>{{i.0.tipo}}</b> </small> </td>
+                   
+                    
+                    
                     {% else %}
 
                     <td style="width: 8%;"> <img src="{% static 'img/coche.png' %}" alt="" style="max-width:15px; height:auto; margin: 2px;"  > <small> <b>{{i.0.tipo}}</b> </small> </td>
