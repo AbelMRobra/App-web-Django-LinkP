@@ -52,6 +52,11 @@ class VentasRealizadas(models.Model):
         DTO = "DTO"
         COCHERA = "COCHERA"
 
+    class Estado(models.TextChoices):
+        ACTIVA = "ACTIVA"
+        BAJA = "BAJA"
+
+
     comprador = models.CharField(max_length=100, verbose_name = "Nombre del comprador")
     fecha = models.DateField(verbose_name = "Fecha de venta")
     tipo_venta = models.CharField(choices=ModoVenda.choices, max_length=20, verbose_name="Tipo de venta", blank=True, null=True)
@@ -66,6 +71,7 @@ class VentasRealizadas(models.Model):
     anticipo = models.FloatField(verbose_name="Anticipo")
     cuotas_pend = models.IntegerField(verbose_name="Cuotas pendientes")
     observaciones = models.TextField(verbose_name="Observaciones", null=True, blank=True)
+    estado = models.CharField(choices=Estado.choices, max_length=20, verbose_name="Estado", blank=True, null=True, default="ACTIVA")
 
     
     class Meta:

@@ -952,7 +952,7 @@ def pricing(request, id_proyecto):
 
         try:
   
-            venta= VentasRealizadas.objects.filter(unidad = dato.id)
+            venta= VentasRealizadas.objects.filter(unidad = dato.id).exclude(estado = "BAJA")
 
             contador = 0
 
@@ -1160,7 +1160,7 @@ def cargarventa(request):
 
                 lista_palabra = palabra.split()
 
-                buscar = (str(i.unidad.proyecto.nombre)+str(i.comprador)+str(i.unidad.piso_unidad)+str(i.unidad.nombre_unidad)+str(i.unidad.tipologia)+str(i.asignacion))
+                buscar = (str(i.unidad.proyecto.nombre)+str(i.comprador)+str(i.unidad.piso_unidad)+str(i.unidad.nombre_unidad)+str(i.unidad.tipologia)+str(i.asignacion)+str(i.estado))
 
                 contador = 0
 
@@ -1179,8 +1179,6 @@ def cargarventa(request):
         datos_unidades = datos
     
     #Aqui termina el filtro
-
-
 
     return render(request, 'cargarventas.html', {'datos':datos})
 
@@ -1333,9 +1331,6 @@ def cargar_venta(request):
             valor_final = valor_costo*(1 + desde.parametros.ganancia)
 
             precio_desde = valor_final*m2
-
-            print(precio_desde)
-            print(precio_pricing)
 
             b = VentasRealizadas(
 

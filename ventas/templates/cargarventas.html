@@ -78,20 +78,27 @@
         <thead>
 
             <tr class = "table-dark">
-                <th scope = "row" style="vertical-align: middle;"> <small>FECHA</small></th>
-                <th scope = "row" style="vertical-align: middle;"> <small>PROYECTO</small></th>
-                <th scope = "row" style="vertical-align: middle;"> <small>COMPRADOR</small></th>
-                <th scope = "row" style="vertical-align: middle;"> <small>PISO</small></th>
-                <th scope = "row" style="vertical-align: middle;"> <small> NOM </small></th>
-                <th scope = "row" style="vertical-align: middle;"> <small> TIPO </small></th>
-                <th scope = "row" style="vertical-align: middle;"> <small> SUPERFICIE </small></th>
-                <th scope = "row" style="vertical-align: middle;"> <small>  ASIGNACION </small></th>
-                <th scope = "row" style="vertical-align: middle;"> <small>PRECIO DE VENTA</small>   </th>
-                <th scope = "row" style="vertical-align: middle;"> <small>PRICING</small>   </th>
-                <th scope = "row" style="vertical-align: middle;"> <small>DESDE</small>   </th>
-                <th scope = "row" style="vertical-align: middle;"> <small> ANOTACIONES </small></th>
-                <th scope = "row" style="vertical-align: middle;"> <small> EDITAR </small></th>
-                <th scope = "row" style="vertical-align: middle;"> <small> ELIMINAR </small></th>
+                <th scope = "row" style="vertical-align: middle;"> <small> <b>FECHA</b></small></th>
+                <th scope = "row" style="vertical-align: middle;"> <small><b>PROYECTO</b> </small></th>
+                <th scope = "row" style="vertical-align: middle;"> <small><b>COMPRADOR</b> </small></th>
+                <th scope = "row" style="vertical-align: middle;"> <small><b>ESTADO</b> </small></th>
+                <th scope = "row" style="vertical-align: middle;"> <small><b>PISO</b> </small></th>
+                <th scope = "row" style="vertical-align: middle;"> <small><b>NOM.</b>  </small></th>
+                <th scope = "row" style="vertical-align: middle;"> <small><b>TIPO</b>  </small></th>
+                <th scope = "row" style="vertical-align: middle;"> <small><b>SUP.</b>  </small></th>
+                <th scope = "row" style="vertical-align: middle;"> <small><b>ASIGNACION</b>   </small></th>
+                <th scope = "row" style="vertical-align: middle;"> <small><b>PRECIO DE VENTA</b> </small>   </th>
+                <th scope = "row" style="vertical-align: middle;"> <small><b>PRICING</b> </small>   </th>
+                <th scope = "row" style="vertical-align: middle;"> <small><b>DESDE</b> </small>   </th>
+                <th scope = "row" style="vertical-align: middle;"> <small><b>ANOT.</b>  </small></th>
+                <th scope = "row" style="vertical-align: middle;"> <small><b>EDITAR</b>  </small></th>
+
+                {% if user.username == "AR" or user.username == "ar" %}
+
+                <th scope = "row" style="vertical-align: middle;"> <small><b>ELIMINAR</b>  </small></th>
+
+
+                {% endif %}
                  
 
             </tr>
@@ -101,14 +108,24 @@
 
             {% for i in datos|slice:"200" %}
             <tr class = "table-light">
-                <td> <b> <small>{{i.fecha|date:"Y-m-j"}}</small> </b></td>
-                <td style="color: rgb({{i.unidad.proyecto.color}});">  <small> <b>{{i.unidad.proyecto.nombre}}</b></small></td>       
-                <td> <b> <small>{{i.comprador}}</small> </b> </td>
-                <td> <b> <small>{{i.unidad.piso_unidad}}</small> </b> </td>
+                <td style="width: 120px;"> <b> <small>{{i.fecha|date:"Y-m-j"}}</small> </b></td>
+                <td style="color: rgb({{i.unidad.proyecto.color}}); width: 120px">  <small> <b>{{i.unidad.proyecto.nombre}}</b></small></td>       
+                <td style="width: 250px;"> <b> <small>{{i.comprador}}</small> </b> </td>
+
+                {% if i.estado == "ACTIVA" %}
+
+                <td style="color: rgb(81, 169, 104 ); width: 120px;"><small><b>{{i.estado}}</b></small></td>
+
+                {% else %}
+
+                <td style="color: rgb(169, 88, 81 ); width: 120px;"><small> <b>{{i.estado}}</b></small></td>
+
+                {% endif %}
+                <td style="width: 80px;"> <b> <small>{{i.unidad.piso_unidad}}</small> </b> </td>
 
                 {% if "0" in i.unidad.nombre_unidad %}
 
-                <td> <b> <small>{{i.unidad.nombre_unidad|floatformat:0}}</small> </b> </td>
+                <td style="width: 60px;"> <b> <small>{{i.unidad.nombre_unidad|floatformat:0}}</small> </b> </td>
 
                 {% else %}
 
@@ -121,12 +138,17 @@
                 <td> <small> <b>${{i.precio_venta|floatformat:0|intcomma}}</b> </small></td>
                 <td> <b>  <small>${{i.precio_pricing|floatformat:0|intcomma}}</small></b> </td>
                 <td> <b>  <small>${{i.precio_desde|floatformat:0|intcomma}}</small></b> </td>
-                <td> <b><a href="{% url 'Detalle venta' i.id %}" class="btn btn-sm btn-info" ><img src="{% static 'img/buscar.png' %}" alt="" style="max-width:20px; height:auto;"  ></a>
+                <td> <b><a href="{% url 'Detalle venta' i.id %}" class="btn btn-outline-info" ><img src="{% static 'img/buscar.png' %}" alt="" style="max-width:20px; height:auto;"  ></a>
                 </b> </td>
-                <td> <a href="{% url 'Editar venta' i.id %}" class="btn btn-sm btn-success" ><img src="{% static 'img/documento.png' %}" alt="" style="max-width:20px; height:auto;"  ></a>
+                <td> <a href="{% url 'Editar venta' i.id %}" class="btn btn-outline-warning" ><img src="{% static 'img/documento.png' %}" alt="" style="max-width:20px; height:auto;"  ></a>
                 </td>
-                <td> <a href="{% url 'Eliminar venta' i.id %}" class="btn btn-sm btn-danger"><img src="{% static 'img/borrar.png' %}" alt="" style="max-width:20px; height:auto;"  ></a>
+
+                {% if user.username == "AR" or user.username == "ar" %}
+
+                <td> <a href="{% url 'Eliminar venta' i.id %}" class="btn btn-outline-danger"><img src="{% static 'img/borrar.png' %}" alt="" style="max-width:20px; height:auto;"  ></a>
                 </b> </td>
+
+                {% endif %}
 
 
             </tr>
