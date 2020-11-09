@@ -121,50 +121,56 @@ def agregar_cuota(request, id_cuenta):
 
         datos = request.POST.items()
 
-        for i in datos:
+        fecha = request.POST['fecha1']
+
+        concepto = request.POST['concepto1']
+
+        precio = request.POST['precio1']
+
+        if request.POST['tipo_venta'] == "HORM":
+            constante = Constantes.objects.get(nombre = "Hº VIVIENDA"),
+
+        if request.POST['tipo_venta'] == "USD":
+                constante = Constantes.objects.get(nombre = "USD"),
+
+        precio_pesos = float(precio)/constante[0].valor
 
 
-            if  'fecha' in i[0]:
+        for i in range(int(request.POST['cantidad'])):
 
-                fecha = i[1]
+            c = Cuota(
 
-            if  'concepto' in i[0]:
+                cuenta_corriente = cuenta,
+                fecha = fecha,
+                precio = float(precio),
+                constante = constante[0],
+                precio_pesos = precio_pesos,                        
+                concepto = concepto,
+                )
 
-                concepto = i[1]
+            c.save()
 
-            if  'precio' in i[0]:
+            fecha_objeto = datetime.datetime.strptime(str(fecha), '%Y-%m-%d')
 
-                precio = i[1]
+            fecha_dia = fecha_objeto.day
 
-            if  'tipo_venta' in i[0]:
+            if fecha_objeto.month == 12:
 
-                if i[1] == "HORM":
-                    constante = Constantes.objects.get(nombre = "Hº VIVIENDA"),
+                fecha_mes = 1
 
-                if i[1] == "USD":
-                    constante = Constantes.objects.get(nombre = "USD"),
+                fecha_ano = (fecha_objeto.year + 1)
 
-                precio_pesos = float(precio)/constante[0].valor
+            else:
 
-                try:
+                fecha_mes = (fecha_objeto.month + 1)
 
-                    c = Cuota(
+                fecha_ano = fecha_objeto.year
 
-                        cuenta_corriente = cuenta,
-                        fecha = fecha,
-                        precio = float(precio),
-                        constante = constante[0],
-                        precio_pesos = precio_pesos,                        
-                        concepto = concepto,
-                        )
+            hoy = date.today()
 
-                    c.save()
+            fecha = hoy.replace(fecha_ano, fecha_mes, fecha_dia)
 
-                    return redirect('Cuenta corriente venta', id_cliente = cuenta.id)
-
-                except:
-
-                    print("Hay un error")
+        return redirect('Cuenta corriente venta', id_cliente = cuenta.id)
 
     return render(request, 'agregar_cuota.html', {"cuenta":cuenta})
 
@@ -275,45 +281,28 @@ def agregar_pagos(request, id_cuota):
 
         datos_crear = request.POST.items()
 
-        pagado = 0
+        pagado = float(request.POST['precio2'])
 
-        for i in datos_crear:
+        fecha = request.POST['fecha']
 
-            if  'fecha' in i[0]:
+        documento1 = request.POST['documento1']
 
-                fecha = i[1]
+        documento2 = request.POST['documento2']
 
-            if  'documento1' in i[0]:
-
-                documento1 = i[1]
-
-            if  'documento2' in i[0]:
-
-                documento2 = i[1]
-
-            if  'precio1' in i[0]:
-
-                cotizacion = i[1]
-
-                precio1 = float(pagado)/float(cotizacion)
-
-            if  'precio2' in i[0]:
-
-                precio2 = i[1]
-
-                pagado = precio2
+        precio1 = float(pagado)/float(request.POST['precio1'])
 
         c = Pago(
 
             cuota = cuota,
             fecha = fecha,
             pago = precio1,
-            pago_pesos = float(precio2),                       
+            pago_pesos = float(pagado),                       
             documento_1 = documento1,
             documento_2 = documento2,
             )
 
         c.save()
+
 
         return redirect('Pagos', id_cuota = cuota.id)
 

@@ -29,19 +29,6 @@
     </div>
 
     <b><hr class = "my-4" style="width: 100%; "></b>
-    
-
-    <div style="text-align: center;">
-    
-    <h6 style="font-family: Arial, Helvetica, sans-serif;">Crear cuenta corriente</h6>
-
-
-    <a href="{% url 'Crear cuenta corriente' proyecto.id %}" class="btn btn-primary">Ingresar</a>
-    
-    </div>
-
-
-    <b><hr class = "my-4" style="width: 100%; "></b>
 
 
     <form method="POST">
@@ -50,7 +37,7 @@
 
         <div style="display: inline-block;  vertical-align: middle; margin-top: 5px;">
 
-            <h6 style="font-family: Arial, Helvetica, sans-serif;">Cuentas corrientes activas</h6>
+            <h6 style="font-family: Arial, Helvetica, sans-serif;">Buscar</h6>
     
         </div>
         
@@ -60,18 +47,22 @@
     
         </div>
     
-        <div style="display: inline-block; margin-left: 1%; vertical-align: middle; margin-top: 5px;">
-            <button class="btn btn-dark" type="submit">Buscar</button>          
-        </div>  
-
 
 
     </form>
 
+    <div style="margin: 5px;">
+
+        <a href= "{% url 'Crear cuenta corriente' proyecto.id %}" class="btn btn-outline-info"style="text-align: end; " > <img src="{% static 'img/agregar-archivo.png' %}" alt="" style="max-width:20px; height:auto;"  > Nueva cuenta</a>
+
+
+
+    </div>
+
 
 
     
-    <table class = "table table-hover" style="text-align: center; margin-top: 2%;">
+    <table class = "table table-hover" style="text-align: center;">
         <thead>
 
             <tr class = "table-dark">

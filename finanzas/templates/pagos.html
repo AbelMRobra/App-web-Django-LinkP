@@ -46,9 +46,11 @@
 
     <div style="text-align: left;" >
 
-        <a href="{% url 'Agregar pagos' cuota.id %}" class="badge badge-primary">Agregar pago</a>
+        <a href="{% url 'Cuenta corriente venta' cuota.cuenta_corriente.id %}" class="btn btn-outline-secondary"><img src="{% static 'img/flecha-izquierda.png' %}" alt="" style="max-width:20px; height:auto;"> Volver al panel</a>
 
-        <a href="{% url 'Cuenta corriente venta' cuota.cuenta_corriente.id %}" class="badge badge-info">Regresar al panel del cliente</a>
+        <a href="{% url 'Agregar pagos' cuota.id %}" class="btn btn-outline-info"><img src="{% static 'img/agregar-archivo.png' %}" alt="" style="max-width:20px; height:auto;"> Nuevo pago</a>
+
+        
     
 
     </div>
