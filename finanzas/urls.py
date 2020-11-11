@@ -11,6 +11,7 @@ urlpatterns = [
     url(r'^arqueo/$', login_required(views.arqueo_diario), name = 'Arqueo diario'),
     url(r'^historicoalmacenero/(?P<id_proyecto>\d+)/(?P<fecha>\d+)$', login_required(views.registro_almacenero), name = 'Historico almacenero'),
     url(r'^consolidado/$', login_required(views.consolidado), name = 'Consolidado'),
+    url(r'^consolidadoh/$', login_required(views.consolidadoh), name = 'Consolidado H'),
     url(r'^honorarios/$', login_required(views.honorarios), name = 'Honorarios'),
     url(r'^pagostotal/$', login_required(views.consultapagos), name = 'Panel de pagos total'),
     url(r'^unidadesseñadas/(?P<estado>\d+)/(?P<proyecto>\d+)$', login_required(views.ingresounidades), name = 'Unidades señadas'),

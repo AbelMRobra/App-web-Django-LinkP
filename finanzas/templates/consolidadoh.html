@@ -36,7 +36,7 @@
         <table class = "table table-hover" style="text-align: center;">
             <thead>
     
-                <tr class = "table-dark">
+                <tr class = "table-secondary">
                     <th scope = "row" style="vertical-align: middle;" colspan="2">  PROYECTO </th>                   
                     <th scope = "row" style="vertical-align: middle;" class="priority-4"> INGRESOS</th>
                     <th scope = "row" style="vertical-align: middle;" class="priority-4"> COSTOS</th>
@@ -69,9 +69,9 @@
                     {% endif %}
                     
                     
-                    <td class="priority-4" style="width: 5%; vertical-align: middle;"> ${{ i.2|floatformat:0|intcomma }}</td> 
-                    <td class="priority-4" style="width: 10%; vertical-align: middle;">${{ i.1|floatformat:0|intcomma }}</td> 
-                    <td style="width: 10%; vertical-align: middle; vertical-align: middle;">${{ i.3|floatformat:0|intcomma }}</td> 
+                    <td class="priority-4" style="width: 5%; vertical-align: middle;"> {{ i.2|floatformat:0|intcomma }} M3</td> 
+                    <td class="priority-4" style="width: 10%; vertical-align: middle;">{{ i.1|floatformat:0|intcomma }} M3</td> 
+                    <td style="width: 10%; vertical-align: middle; vertical-align: middle;">{{ i.3|floatformat:0|intcomma }} M3</td> 
                     <td style="width: 10%; vertical-align: middle;">{{ i.4|floatformat:0|intcomma }}%  </td> 
                     
                     {% if i.6 > 0 %}
@@ -110,9 +110,9 @@
     
                 <tr class = "table-light">
                     <td style="width: 15%; vertical-align: middle;" colspan="2"> RESULTADO CONJUNTO DE PROYECTOS </td>
-                    <td  class="priority-5" style="width: 5%; vertical-align: middle;"> ${{ datos_finales.0.0|floatformat:0|intcomma }}</td> 
-                    <td  class="priority-5" style="width: 10%; vertical-align: middle;"> ${{  datos_finales.0.1|floatformat:0|intcomma }}</td> 
-                    <td style="width: 10%; vertical-align: middle; vertical-align: middle;"> ${{  datos_finales.0.2|floatformat:0|intcomma }}</td> 
+                    <td  class="priority-5" style="width: 5%; vertical-align: middle;"> {{ datos_finales.0.0|floatformat:0|intcomma }} M3</td> 
+                    <td  class="priority-5" style="width: 10%; vertical-align: middle;"> {{  datos_finales.0.1|floatformat:0|intcomma }} M3</td> 
+                    <td style="width: 10%; vertical-align: middle; vertical-align: middle;"> {{  datos_finales.0.2|floatformat:0|intcomma }} M3</td> 
                     <td style="width: 10%; vertical-align: middle;"> {{  datos_finales.0.3|floatformat:0|intcomma }}% </td> 
                     
 
@@ -126,7 +126,7 @@
                     <td style="width: 15%; vertical-align: middle;" colspan="2"> DESCUENTO DEL 6% SOBRE UNIDADES </td>
                     <td  class="priority-5" style="width: 5%; vertical-align: middle;"></td>  
                     <td  class="priority-5" style="width: 10%; vertical-align: middle;"></td> 
-                    <td style="width: 10%; vertical-align: middle; vertical-align: middle;">  - ${{ datos_finales.0.4|floatformat:0|intcomma }} </td> 
+                    <td style="width: 10%; vertical-align: middle; vertical-align: middle;">  - {{ datos_finales.0.4|floatformat:0|intcomma }}M3 </td> 
                     <td style="width: 10%; vertical-align: middle;"></td> 
                     
 
@@ -136,11 +136,11 @@
 
             <tbody>
     
-                <tr class = "table-dark">
+                <tr class = "table-secondary">
                     <td style="width: 15%; vertical-align: middle;" colspan="2"> <b>RESULTADO CONSIDERANDO DESCUENTO</b> </td>
                     <td  class="priority-5" style="vertical-align: middle;"></td>  
                     <td   class="priority-5"style="vertical-align: middle;"></td> 
-                    <td style="width: 10%; vertical-align: middle; vertical-align: middle;"> <b>${{datos_finales.0.6|floatformat:0|intcomma }}</b></td> 
+                    <td style="width: 10%; vertical-align: middle; vertical-align: middle;"> <b>{{datos_finales.0.6|floatformat:0|intcomma }} M3</b></td> 
                     <td style="width: 10%; vertical-align: middle;"> <b>{{  datos_finales.0.5|floatformat:0|intcomma }}%</b>  </td> 
                     
 
@@ -195,10 +195,10 @@
                     lineTension: 0,
                     data: [
                     {% for i in datos_registro  %}
-                    Math.round({{i.1.0.6|floatformat:0}}/1000000),  
+                    Math.round({{i.1.0.6|floatformat:0}}/1000),  
                                      
                     {% endfor %}
-                    Math.round({{ datos_finales.0.6|floatformat:0 }}/1000000),
+                    Math.round({{ datos_finales.0.6|floatformat:0 }}/1000),
                     ]
                 },
                 {
@@ -210,9 +210,9 @@
                     lineTension: 0,
                     data: [
                     {% for i in datos_registro %}
-                    Math.round({{i.1.0.2|floatformat:0}}/1000000),                   
+                    Math.round({{i.1.0.2|floatformat:0}}/1000),                   
                     {% endfor %}
-                    Math.round({{ datos_finales.0.2|floatformat:0 }}/1000000),
+                    Math.round({{ datos_finales.0.2|floatformat:0 }}/1000),
                     ]
                 }],
 
@@ -235,15 +235,15 @@
                         {
                             ticks: {
                                 min: 0,
-                                stepSize: 50,
+                                stepSize: 10,
                                 callback: function(label, index, labels) {
-                                    return '$ '+label+ ' M';
+                                    return label+ ' mil M3';
                                     
                                 }
                             },
                             scaleLabel: {
                                 display: true,
-                                labelString: '1M = $1.000.000'
+                                labelString: 'Expresado en miles de metros cubicos de Hº'
                             },
 
                             stacked: false
@@ -292,9 +292,9 @@
                     lineTension: 0,
                     data: [
                     {% for i in datos_registro  %}
-                    Math.round({{i.1.0.1|floatformat:0}}/1000000),
+                    Math.round({{i.1.0.1|floatformat:0}}/1000),
                     {% endfor %}  
-                    Math.round({{ datos_finales.0.1|floatformat:0 }}/1000000),                 
+                    Math.round({{ datos_finales.0.1|floatformat:0 }}/1000),                 
                     
                     ]
                 },
@@ -307,9 +307,9 @@
                     lineTension: 0,
                     data: [
                     {% for i in datos_registro %}
-                    Math.round({{i.1.0.0|floatformat:0}}/1000000),                   
+                    Math.round({{i.1.0.0|floatformat:0}}/1000),                   
                     {% endfor %}
-                    Math.round({{ datos_finales.0.0|floatformat:0 }}/1000000),
+                    Math.round({{ datos_finales.0.0|floatformat:0 }}/1000),
                     ]
                 }],
 
@@ -332,15 +332,15 @@
                         {
                             ticks: {
                                 min: 0,
-                                stepSize: 800,
+                                stepSize: 100,
                                 callback: function(label, index, labels) {
-                                    return '$ '+label + ' M';
+                                    return label + 'mil M3';
                                     
                                 }
                             },
                             scaleLabel: {
                                 display: true,
-                                labelString: '1 M = $1.000.000'
+                                labelString: 'Expresado en miles de metros cubicos de Hº'
                             },
 
                             stacked: false
