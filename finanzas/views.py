@@ -1500,8 +1500,8 @@ def consolidadoh(request):
 
     for fecha in fechas:
 
-        fecha = datetime.date(d.fecha.year, d.fecha.month, 1)
-        registro = Registrodeconstantes.objects.get(fecha = fecha, constante__nombre='Hº VIVIENDA')
+        fecha_r = datetime.date(d.fecha.year, d.fecha.month, 1)
+        registro = Registrodeconstantes.objects.get(fecha = fecha_r, constante__nombre='Hº VIVIENDA')
         h = registro.valor
 
         datos = RegistroAlmacenero.objects.filter(fecha = fecha)
@@ -1574,7 +1574,7 @@ def consolidadoh(request):
 
                 pass
 
-            datos_completos_registro.append((dato, total_costo, total_ingresos, saldo_proyecto, rentabilidad, presupuesto, pricing, saldo_proyecto_pesimista, rentabilidad_pesimista))
+            datos_completos_registro.append((dato, total_costo/h, total_ingresos/h, saldo_proyecto/h, rentabilidad/h, presupuesto, pricing, saldo_proyecto_pesimista/h, rentabilidad_pesimista/h))
 
         beneficio_total = ingresos_total - costo_total
         beneficio_total_pesimista = beneficio_total - descuento_total
