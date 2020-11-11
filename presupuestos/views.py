@@ -316,45 +316,34 @@ def registroconstante(request):
     datos_constante = Constantes.objects.all()
 
     datos = []
-    fecha = []
+
 
     for dato in datos_constante:
 
+        registros = []
+
         try:
-            registro_constante = Registrodeconstantes.objects.filter(constante = dato)
+            registro_constante = Registrodeconstantes.objects.filter(constante = dato).order_by("-fecha")
 
-            datos.append(registro_constante)
+            if len(registro_constante)>0:
 
-            for registro in registro_constante:
-                fecha.append(registro.fecha)
+                valor_referencia = registro_constante[0].valor
+
+                for registro in registro_constante:
+
+                    registros.append((registro, registro.valor/valor_referencia))
+
+                datos.append((dato, registros))
 
         except:
 
             mensaje = "No hay registros de esta constanre"
 
-    fecha = set(fecha)
+        
 
-    fecha = sorted(fecha)
 
-    datos_finales = []
 
-    registro_una = []
-
-    for dato in datos:
-
-        for f in fecha:
-
-            for d in dato:
-
-                if d.fecha == f:
-                    registro_una.append(d.valor)
-
-                else:
-                    registro_una.append(0)
-
-        datos_finales.append((d.constante, registro_una))
-
-    return render(request, 'constantes/historico.html', {'datos_finales':datos_finales, "fecha":fecha})
+    return render(request, 'constantes/historico.html', {'datos':datos})
 
         
 
