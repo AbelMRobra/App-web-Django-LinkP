@@ -1500,7 +1500,7 @@ def consolidadoh(request):
 
     for fecha in fechas:
 
-        fecha_r = datetime.date(d.fecha.year, d.fecha.month, 1)
+        fecha_r = datetime.date(fecha.year, fecha.month, 1)
         registro = Registrodeconstantes.objects.get(fecha = fecha_r, constante__nombre='Hº VIVIENDA')
         h = registro.valor
 
