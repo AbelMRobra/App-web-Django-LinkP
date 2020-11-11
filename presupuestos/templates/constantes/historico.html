@@ -25,10 +25,10 @@
             <small><strong>Evolución {{ d.0.nombre }}</strong></small>
         </div>
 
-        <canvas id="myChart" width="400" height="150rem"></canvas>
+        <canvas id="{{ d.0.nombre }}" width="400" height="150rem"></canvas>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
     <script>
-        var ctx = document.getElementById('myChart').getContext('2d');
+        var ctx = document.getElementById('{{ d.0.nombre }}').getContext('2d');
         var chart = new Chart(ctx, {
             // The type of chart we want to create
             type: 'line',

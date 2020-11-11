@@ -323,7 +323,7 @@ def registroconstante(request):
         registros = []
 
         try:
-            registro_constante = Registrodeconstantes.objects.filter(constante = dato).order_by("-fecha")
+            registro_constante = Registrodeconstantes.objects.filter(constante = dato).order_by("fecha")
 
             if len(registro_constante)>0:
 
