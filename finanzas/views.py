@@ -502,40 +502,35 @@ def totalcuentacte(request, id_proyecto):
 
     if id_proyecto != "0":
 
-        cuotas_anteriores = Cuota.objects.filter(fecha__lt = fecha_inicial_hoy, cuenta_corriente__venta__proyecto__id = id_proyecto)
-        pagos_anteriores = Pago.objects.filter(fecha__lt = fecha_inicial_hoy, cuota__cuenta_corriente__venta__proyecto__id = id_proyecto)
-        cuotas_posteriores= Cuota.objects.filter(fecha__gt = fecha_inicial_hoy, cuenta_corriente__venta__proyecto__id = id_proyecto)
-        pagos_posteriores = Pago.objects.filter(fecha__gt = fecha_inicial_hoy, cuota__cuenta_corriente__venta__proyecto__id = id_proyecto)
+        cuotas_anteriores_h = sum(np.array(Cuota.objects.values_list('precio').filter(fecha__lt = fecha_inicial_hoy, constante__id = 7, cuenta_corriente__venta__proyecto__id = id_proyecto)))*Constantes.objects.get(id = 7).valor
+        cuotas_anteriores_usd = sum(np.array(Cuota.objects.values_list('precio').filter(fecha__lt = fecha_inicial_hoy, constante__id = 1, cuenta_corriente__venta__proyecto__id = id_proyecto)))*Constantes.objects.get(id = 1).valor
+        pagos_anteriores_h = sum(np.array(Pago.objects.values_list('pago').filter(fecha__lt = fecha_inicial_hoy, cuota__constante__id = 7, cuota__cuenta_corriente__venta__proyecto__id = id_proyecto)))*Constantes.objects.get(id = 7).valor
+        pagos_anteriores_usd = sum(np.array(Pago.objects.values_list('pago').filter(fecha__lt = fecha_inicial_hoy, cuota__constante__id = 1, cuota__cuenta_corriente__venta__proyecto__id = id_proyecto)))*Constantes.objects.get(id = 1).valor
+        cuotas_posteriores_h = sum(np.array(Cuota.objects.values_list('precio').filter(fecha__gt = fecha_inicial_hoy, constante__id = 7, cuenta_corriente__venta__proyecto__id = id_proyecto)))*Constantes.objects.get(id = 7).valor
+        cuotas_posteriores_usd = sum(np.array(Cuota.objects.values_list('precio').filter(fecha__gt = fecha_inicial_hoy, constante__id = 1, cuenta_corriente__venta__proyecto__id = id_proyecto)))*Constantes.objects.get(id = 1).valor
 
 
     else:
 
-        cuotas_anteriores = Cuota.objects.filter(fecha__lt = fecha_inicial_hoy)
-        pagos_anteriores = Pago.objects.filter(fecha__lt = fecha_inicial_hoy)
-        cuotas_posteriores = Cuota.objects.filter(fecha__gt = fecha_inicial_hoy)
+        
+        # Traemos las cuotas y pagos anteriores en hormigon y en dolares (por si constante para hacerlo en pesos), luego dividimos en el valor del Hº para tener todo en 1 moneda
 
-    total_original = 0
-    total_cobrado = 0
-    total_pendiente = 0
-    total_acobrar= 0
+        cuotas_anteriores_h = sum(np.array(Cuota.objects.values_list('precio').filter(fecha__lt = fecha_inicial_hoy, constante__id = 7)))*Constantes.objects.get(id = 7).valor
+        cuotas_anteriores_usd = sum(np.array(Cuota.objects.values_list('precio').filter(fecha__lt = fecha_inicial_hoy, constante__id = 1)))*Constantes.objects.get(id = 1).valor
+        pagos_anteriores_h = sum(np.array(Pago.objects.values_list('pago').filter(fecha__lt = fecha_inicial_hoy, cuota__constante__id = 7)))*Constantes.objects.get(id = 7).valor
+        pagos_anteriores_usd = sum(np.array(Pago.objects.values_list('pago').filter(fecha__lt = fecha_inicial_hoy, cuota__constante__id = 1)))*Constantes.objects.get(id = 1).valor
+        cuotas_posteriores_h = sum(np.array(Cuota.objects.values_list('precio').filter(fecha__gt = fecha_inicial_hoy, constante__id = 7)))*Constantes.objects.get(id = 7).valor
+        cuotas_posteriores_usd = sum(np.array(Cuota.objects.values_list('precio').filter(fecha__gt = fecha_inicial_hoy, constante__id = 1)))*Constantes.objects.get(id = 1).valor
 
-    for cuo in cuotas_anteriores:
-
-        total_original = total_original + cuo.precio*Constantes.objects.get(id = cuo.constante.id).valor
-
-    for pag in pagos_anteriores:
-
-        total_cobrado = total_cobrado +  pag.pago*Constantes.objects.get(id = pag.cuota.constante.id).valor
-
-    for cuot in cuotas_posteriores:
-
-        total_acobrar= total_acobrar + cuot.precio*Constantes.objects.get(id = cuot.constante.id).valor
-
+    total_original = (cuotas_anteriores_h + cuotas_anteriores_usd)
+    total_cobrado = (pagos_anteriores_h, pagos_anteriores_usd)
     total_pendiente = total_original - total_cobrado
+    total_acobrar= (cuotas_posteriores_h + cuotas_posteriores_usd)
+
 
     h = Constantes.objects.get(nombre = "Hº VIVIENDA")
 
-    otros_datos = [total_cobrado/h.valor, total_pendiente/h.valor, total_acobrar/h.valor]
+    otros_datos = [total_cobrado[0]/h.valor, total_pendiente[0]/h.valor, total_acobrar[0]/h.valor]
     
 
     #Aqui buscamos agrupar proyecto - sumatorias de cuotas y pagos - mes
