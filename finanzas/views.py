@@ -478,7 +478,7 @@ def totalcuentacte(request, id_proyecto):
             
             year = fecha_inicial_2.year + contador_year
             
-            fecha_cargar = date(year, 1, fecha_inicial_2.day)
+            fecha_cargar = date(year, 1, 1)
 
             fechas.append(fecha_cargar)
             
@@ -492,7 +492,7 @@ def totalcuentacte(request, id_proyecto):
 
             year = fecha_inicial_2.year + contador_year - 1
 
-            fecha_cargar = date(year, mes, fecha_inicial_2.day)
+            fecha_cargar = date(year, mes, 1)
 
             fechas.append(fecha_cargar)
 
@@ -550,7 +550,7 @@ def totalcuentacte(request, id_proyecto):
 
         if fecha_inicial == 0:
 
-                fecha_inicial = fecha_inicial_hoy
+                fecha_inicial = datetime.date(fecha_inicial_hoy.year, fecha_inicial_hoy.month, 1)
 
         else:
 
