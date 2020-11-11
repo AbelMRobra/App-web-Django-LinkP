@@ -118,3 +118,15 @@ class Arqueo(models.Model):
     class Meta:
         verbose_name="Arqueo"
         verbose_name_plural="Arqueos"
+
+
+
+class RetirodeSocios(models.Model):
+    fecha = models.DateField(verbose_name = "Fecha del retiro")
+    proyecto = models.ForeignKey(Proyectos, on_delete=models.CASCADE, verbose_name = "Proyecto", blank=True, null=True)
+    monto_pesos = models.FloatField(verbose_name="Monto en pesos", blank=True, null=True)
+    comentario = models.CharField(verbose_name="Comentario", blank=True, null=True, max_length=300)
+
+    class Meta:
+        verbose_name="Retiro"
+        verbose_name_plural="Retiros"

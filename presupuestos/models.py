@@ -174,8 +174,8 @@ class Modelopresupuesto(models.Model):
 
 class Registrodeconstantes(models.Model):
     constante = models.ForeignKey(Constantes, on_delete=models.CASCADE, verbose_name = "Constante")
-    valor = models.FloatField(verbose_name="Valor")
-    fecha = models.DateField(verbose_name="Fecha")
+    valor = models.FloatField(verbose_name="Valor", blank=True, null=True)
+    fecha = models.DateField(verbose_name="Fecha", blank=True, null=True)
 
     class Meta:
         verbose_name="Registro de contantes ultimo"

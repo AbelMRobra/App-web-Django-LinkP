@@ -64,6 +64,8 @@ class RegistrodeConstanteResource(resources.ModelResource):
         model = Registrodeconstantes
 
 class RegistrodeConstanteAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    list_display = ('constante', 'valor',  'fecha')
+    search_fields = ('constante__nombre', 'valor', 'fecha')
     resources_class = RegistrodeConstanteResource
 
 admin.site.register(Constantes, ConstantesAdmin)

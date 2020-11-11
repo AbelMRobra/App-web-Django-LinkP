@@ -2,8 +2,8 @@ from django.shortcuts import render
 from django.shortcuts import redirect
 from django.http import HttpResponse
 from django.views.generic.base import TemplateView  
-from presupuestos.models import Proyectos, Presupuestos, Constantes, Modelopresupuesto
-from .models import Almacenero, CuentaCorriente, Cuota, Pago, RegistroAlmacenero, ArchivosAdmFin, Arqueo
+from presupuestos.models import Proyectos, Presupuestos, Constantes, Modelopresupuesto, Registrodeconstantes
+from .models import Almacenero, CuentaCorriente, Cuota, Pago, RegistroAlmacenero, ArchivosAdmFin, Arqueo, RetirodeSocios
 from proyectos.models import Unidades
 from ventas.models import Pricing, VentasRealizadas
 import datetime
@@ -1409,6 +1409,42 @@ def almacenero(request):
     'lista':lista}
 
     return render(request, 'almacenero.html', {"datos":datos} )
+
+
+def retirodesocios(request):
+
+    if request.method == 'POST':
+
+        b = RetirodeSocios(
+            proyecto = Proyectos.objects.get(nombre = request.POST['proyecto']),
+            fecha = request.POST['fecha'],
+            monto_pesos = request.POST['pesos'],
+            comentario = request.POST['comentario']
+        )
+
+        b.save()
+
+    datos_retiro = RetirodeSocios.objects.order_by("-fecha")
+
+    proyectos = Proyectos.objects.all()
+
+    total_pesos = 0
+    total_h = 0
+
+    datos = []
+
+    for d in datos_retiro:
+
+        fecha = datetime.date(d.fecha.year, d.fecha.month, 1)
+        registro = Registrodeconstantes.objects.get(fecha = fecha, constante__nombre='Hº VIVIENDA')
+        monto_h = d.monto_pesos/registro.valor
+
+        total_pesos = total_pesos + d.monto_pesos
+        total_h = total_h + monto_h
+
+        datos.append((d, monto_h))
+
+    return render(request, 'retirodesocios.html', {'datos':datos, 'total_pesos':total_pesos, 'total_h':total_h, 'proyectos':proyectos})
 
 
 def arqueo_diario(request):

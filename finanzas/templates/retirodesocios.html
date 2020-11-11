@@ -1,0 +1,176 @@
+{% extends "users/inicio.html" %}
+
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+
+
+
+<div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;" > 
+
+    <div >
+        <h2 style="font-family: Arial, Helvetica, sans-serif;">Retiros de socios</h2>
+
+        
+        <small style="font-family: Arial, Helvetica, sans-serif;"><b>Modulo:</b> Analisis de proyectos </small>
+
+
+        <b><hr class = "my-4" style="width: 100%; "></b>
+    
+    </div>
+
+    <div style="text-align: left;">
+
+        <h5 style="font-family: Arial, Helvetica, sans-serif;">Resumen de los datos</h5>
+
+        <h6>Monto en pesos total retirado: <small>$ {{total_pesos|floatformat:0|intcomma}}</small></h6>
+        <h6>Monto en Hº total retirado: <small>{{total_h|floatformat:0|intcomma}} M3</small></h6>
+
+    </div>
+
+
+    <b><hr class = "my-4" style="width: 100%; "></b>
+
+
+    <div>
+
+        <div style="margin-bottom: 2rem;">
+            <h5 style="font-family: Arial, Helvetica, sans-serif;">Detalle por proyecto</h5>
+        </div>
+
+        <div style="text-align: left; margin: 5px;">
+
+            <button type="button" class="btn btn-outline-info" data-toggle="modal" data-target="#exampleModalCenter"><img src="{% static 'img/agregar-archivo.png' %}" alt="" style="max-width:20px; height:auto;"  > Nuevo retiro</button>
+            
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLongTitle">Estas por agregar un nuevo retiro!</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+
+
+                  Completa el formulario!
+                  
+                  <form method="POST" style="margin: 15px;">
+
+                    {% csrf_token %}
+
+                    <div class="input-group mb-3">               
+                
+                        <input name="proyecto" type="search" class="form-control form-control" placeholder="Nombre del proyecto" list="proyectos" style="width: 100px;">
+    
+                    </div>
+
+                    <div class="input-group mb-3">
+                
+                            <div class="input-group-prepend">
+                
+                                <span class="input-group-text">$</span>
+                    
+                            </div>
+                    
+                            <input name="pesos" type="number" class="form-control form-control" aria-label="Amount" style="width: 100px;">
+                         
+                    </div>
+
+
+                    <div class="input-group mb-3">
+                
+                
+                        <input name="fecha" type="date" class="form-control form-control" aria-label="Amount" style="width: 80px;">
+                     
+                </div>
+
+
+                <div class="input-group mb-3">
+                
+            
+                    <input name="comentario" type="text" class="form-control form-control" aria-label="Amount" style="width: 100px;" placeholder="Algún comentario!">
+                 
+                </div>
+
+                <button type="submit" class="btn btn-primary">Enviar</button>
+
+
+                
+                </form>
+                
+                
+                
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+           
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+          <datalist id="prooyectos"> 
+
+            {% for i in proyectos %}
+            
+            <option value="{{ i.nombre }}">({{i.id}})</option>
+    
+            {% endfor %}
+    
+        </datalist>
+
+
+
+        <table class = "table table-hover" style="text-align: center;">
+            <thead>
+    
+                <tr class = "table-dark">
+                    <th scope = "row" style="vertical-align: middle;" colspan="2">  PROYECTO </th> 
+                    <th scope = "row" style="vertical-align: middle;"> FECHA</th>                  
+                    <th scope = "row" style="vertical-align: middle;"> EFECTIVO</th>
+                    <th scope = "row" style="vertical-align: middle;"> M3H</th>
+                    <th scope = "row" style="vertical-align: middle;"> COMENTARIO</th>                                  
+                </tr>
+            </thead>
+            {% for i in datos %}   
+            <tbody>
+    
+                <tr class = "table-light">
+
+                    <td style="vertical-align: middle; width: 10%;"> <img src="{{i.0.proyecto.iamgen.url}}"  class="img-fluid" alt="..." style="max-width: 70px; height:auto;"> </td>                  
+                    <td style="width: 15%; vertical-align: middle;"> {{ i.0.proyecto.nombre }}</td> 
+                    <td style="width: 10%; vertical-align: middle;">{{ i.0.fecha|date:"SHORT_DATE_FORMAT"}}</td>
+                    <td style="width: 10%; vertical-align: middle;">${{ i.0.monto_pesos|floatformat:0|intcomma }}</td>
+                    <td style="width: 10%; vertical-align: middle;">{{ i.1|floatformat:0|intcomma }} M3</td>
+                    <td style="width: 20%; vertical-align: middle;">{{ i.0.comentario }}</td>
+                    
+
+                </tr>
+            </tbody>
+
+            {% endfor %}
+
+        </table> 
+
+
+          
+   </div>
+
+ 
+
+
+    <div>
+        <p style="font-family: Arial, Helvetica, sans-serif;"> <small>-- Link<strong>P</strong> --</small> </p>
+
+     </div>
+
+
+</div>
+{% endblock %}
