@@ -1,5 +1,5 @@
-from django.shortcuts import render
-from .models import Inventario, Tarea, SubTarea
+from django.shortcuts import render, redirect
+from .models import Inventario, Tarea, SubTarea, Operario
 import datetime
 
 # Create your views here.
@@ -111,4 +111,24 @@ def tareas(request):
 
 
     return render(request, 'tareas.html', {"datos":datos_totales})
+
+
+def login(request):
+
+    if request.method == 'POST':
+
+        if Operario.objects.get(dni = request.POST['dni']):
+
+            return redirect('Parte diarios', dni = request.POST['dni'])
+
+    return render(request, 'login.html')
+
+def partesdiarios(request, dni):
+
+    datos = Operario.objects.filter(dni = int(dni))
+
+
+    return render(request, 'partediarios.html', {"datos":datos})
+
+
 

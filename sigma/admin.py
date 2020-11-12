@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Inventario, Tarea, SubTarea
+from .models import Inventario, Tarea, SubTarea, Operario
 from import_export import resources
 from import_export.admin import ImportExportModelAdmin
 
@@ -33,7 +33,17 @@ class SubTareaAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     search_fields = ('nombre', 'vinculacion__nombre',  'unidad', 'rend')
     resources_class = SubTareaResource
 
+class OperarioResource(resources.ModelResource):
+    class Meta:
+        model = Operario
+       
+class OperarioAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    list_display = ('nombre', 'dni',  'estado')
+    search_fields = ('nombre', 'dni',  'estado')
+    resources_class = OperarioResource
+
 
 admin.site.register(Inventario, InventarioAdmin)
 admin.site.register(Tarea, TareaAdmin)
 admin.site.register(SubTarea, SubTareaAdmin)
+admin.site.register(Operario, OperarioAdmin)

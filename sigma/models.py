@@ -45,3 +45,22 @@ class SubTarea(models.Model):
 
     def __str__(self):
         return self.nombre
+
+
+class Operario(models.Model):
+
+    class Estado(models.TextChoices):
+        ACTIVO = "ACTIVO"
+        NO_ACTIVO = "NO ACTIVO"
+
+
+    dni = models.IntegerField(verbose_name="DNI del operario")
+    nombre = models.CharField(max_length=200, verbose_name="Nombre del operario")
+    estado = models.CharField(choices=Estado.choices, max_length=20, verbose_name="Estado", default="ACTIVO")
+
+    class Meta:
+        verbose_name="Operario"
+        verbose_name_plural="Operarios"
+
+    def __str__(self):
+        return self.nombre

@@ -1,0 +1,85 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'css/estiloabel.css' %}">
+    <link rel="shortcut icon" href="{% static 'img/icolinkpr.ico' %}" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>SIGMA</title>
+</head>
+
+<body background="{% static 'img/tileable_wood_texture.png' %}">
+
+    <div class= "conteiner">
+
+        <div class="jumbotron" style="margin-top: 5%; background-color: rgba(241, 226, 224, 0.8);  text-align: center;">
+
+            <div class="boxlogin" style="width: 100%;">
+
+                <img src="{% static 'img/sigma.png' %}" alt="" style="max-width:300px; height:auto; margin: 2px;"  >
+                
+                <hr class="my-4">
+                
+                <h2>Iniciar sesión</h2>
+
+                <hr class="my-4">
+
+
+            <div style="text-align: center;">
+
+                <form method="POST" >
+
+            
+                    {% csrf_token %}
+    
+                    <div style="margin: 5px">
+    
+                        <div style="margin: 10px;  width: 200px; display: inline-block">
+            
+                            <label for="dni" ><h6>DNI del usuario</h6></label>
+                
+                        </div>
+
+                    <div>
+
+                        <div style="margin: 10px; display: inline-block"> 
+                
+                            <input name="dni" step="0.01" type="number" class="form-control form-control" placeholder="Escribe tu documento" style="width: 250px;">
+                
+                        </div>
+
+
+                    </div>
+                
+                        
+            
+            
+                    </div>
+    
+                    <button type="submit" class="btn btn-danger">Log in</button>
+                
+                </form>
+
+
+            </div>
+
+
+            
+
+            {% block content %}
+            
+                {% endblock %}
+
+
+
+            </div>           
+          </div>
+    </div>
+</body>
+
+
+</html>
