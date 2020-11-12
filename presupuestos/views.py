@@ -2157,8 +2157,6 @@ def InformeArea(request):
 
     proyectos_radar = PorcentajeCapitulo.objects.values_list('proyecto')
 
-    print(proyectos_radar)
-
     proyecto_radar = list(set(proyectos_radar))
 
     datos_radar = []
