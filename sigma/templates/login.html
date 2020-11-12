@@ -20,7 +20,7 @@
 
             <div class="boxlogin" style="width: 100%;">
 
-                <img src="{% static 'img/sigma.png' %}" alt="" style="max-width:300px; height:auto; margin: 2px;"  >
+                <img src="{% static 'img/sigma.png' %}" alt="" style="max-width:250px; height:auto; margin: 2px;"  >
                 
                 <hr class="my-4">
                 
@@ -54,7 +54,20 @@
 
 
                     </div>
+
+                    {% if mensaje %}
+
+                    <div>
+
+                        <div style="margin: 10px; display: inline-block"> 
                 
+                            <small>Tu documento no esta registrado!</small>
+                        </div>
+
+
+                    </div>
+
+                {% endif %}
                         
             
             

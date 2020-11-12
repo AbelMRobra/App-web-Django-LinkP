@@ -115,17 +115,22 @@ def tareas(request):
 
 def login(request):
 
+    mensaje = 0
+
     if request.method == 'POST':
 
-        if Operario.objects.get(dni = request.POST['dni']):
+        if len(Operario.objects.filter(dni = request.POST['dni'])) > 0:
 
             return redirect('Parte diarios', dni = request.POST['dni'])
 
-    return render(request, 'login.html')
+        else:
+            mensaje = "Tu documento no se encuentra en nuestra nomina"
+
+    return render(request, 'login.html', {"mensaje":mensaje})
 
 def partesdiarios(request, dni):
 
-    datos = Operario.objects.filter(dni = int(dni))
+    datos = Operario.objects.get(dni = int(dni))
 
 
     return render(request, 'partediarios.html', {"datos":datos})
