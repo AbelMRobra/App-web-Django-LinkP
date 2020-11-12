@@ -1,0 +1,197 @@
+{% extends "users/inicio.html" %}
+
+{% load humanize %}
+
+{% load static %}
+
+{% block content %}
+
+<div class = "jumbotron" style="background-color: white; margin-bottom: 0px;">
+
+    <h3 style="text-align: center; color: rgb({{datos.proyecto.color}}); font-family: Arial, Helvetica, sans-serif;">Tareas de la constructora</h3>
+    
+    <div style="text-align: center">
+
+        <img src="{% static 'img/sigma.png' %}"  class="img-fluid" alt="..." style="max-width:200px;width:auto;height:auto; margin: 20px;">
+  
+
+    </div>
+
+    <div style="text-align: center">
+
+        <small> <b>Modulo:</b> Control de rendimiento</small>
+
+
+    </div>
+    
+
+
+    <b><hr class = "my-4" style="width: 100%;"></b>
+
+ 
+
+    <form method="POST" style="text-align: left;">
+
+        {% csrf_token %}
+
+        <div style="display: inline-block; margin: 5px;">
+
+            <label for="palabra"><h6>Buscar</h6></label>
+
+        </div>
+        
+        <div style="display: inline-block; margin: 5px; ">
+
+            <input name="palabra" type="text" class="form-control form-control" placeholder="Buscar por palabra" list="art" style="width: 250px;">
+
+        </div>
+
+        
+
+        </form>
+
+
+
+     
+ 
+    <a href= "#" class="btn btn-outline-danger"style="text-align: end; " > <img src="{% static 'img/agregar-archivo.png' %}" alt="" style="max-width:20px; height:auto;"  > Nueva tarea</a>
+    
+
+    <table class = "table table-hover" style="text-align: center; margin-top: 1%;">
+        <thead>
+
+            <tr class = "table-dark">
+                <th scope = "row" style="vertical-align: middle;"></th>
+                <th scope = "row" style="vertical-align: middle;"></th>
+                <th scope = "row" style="vertical-align: middle;"> TAREA </th>
+                <th scope = "row" style="vertical-align: middle;">  UNIDAD </th>
+                <th scope = "row" style="vertical-align: middle;">  VINCULACIÓN </th>
+                <th scope = "row" style="vertical-align: middle;">  HS/UNIDAD </th>
+                <th scope = "row" style="vertical-align: middle;">  SUBTAREAS </th>
+                                      
+            </tr>
+        </thead>
+
+        <tbody>
+
+            
+
+            {% for i in datos|slice:"20" %}
+
+            <tr class = "table-light">
+                <td style="width: 3%;"><b><img src="{% static 'img/documento.png' %}" alt="" style="max-width:20px; height:auto;"  ></b></td>
+                <td style="width: 3%"><b><img src="{% static 'img/borrar.png' %}" alt="" style="max-width:20px; height:auto;"  ></b></td>
+                <td style="width: 20%;"><b>{{i.0.nombre}}</b></td>
+                <td style="width: 10%;"> {{i.0.unidad}}</td>
+
+                {% if i.0.vinculacion %}
+                <td style="width: 10%;">{{i.0.vinculacion.nombre}}</td>
+
+                {% else %}
+
+                <td style="width: 10%;">No vinculado</td>
+
+                {% endif %}
+                <td style="width: 10%;">{{i.0.rend}} hs/{{i.0.unidad}}</td>
+                <td style="width: 8%;"> 
+
+                    <div>
+
+                        <button type="button" class="btn btn-outline-danger" data-toggle="modal" data-target="#exampleModalCenter">Subtareas</button>
+                        
+                    </div>
+            
+                    <!-- Modal -->
+                    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h6 class="modal-title" id="exampleModalLongTitle">{{i.0.nombre}}</h6>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                            <div class="modal-body">
+            
+            
+                              Esta tarea esta compuesta por:
+
+                              <table class = "table table-hover" style="text-align: center; margin-top: 1%;">
+                                <thead>
+                        
+                                    <tr class = "table-dark">
+                                        <th scope = "row" style="vertical-align: middle;"> <small>TAREA</small>  </th>
+                                        <th scope = "row" style="vertical-align: middle;"> <small>UNIDAD</small> </th>
+                                        <th scope = "row" style="vertical-align: middle;"> <small>HS(UNIDAD</small> </th>
+                                        
+                                                              
+                                    </tr>
+                                </thead>
+                        
+                                <tbody>
+
+                                    {% for n in i.1%}
+
+                                    <tr class = "table-light">
+
+                                        <td style="width: 20%;"> <small><b>{{n.nombre}}</b></small> </td>
+                                        <td style="width: 10%;"> <small>{{n.unidad}}</small> </td>
+                                        <td style="width: 10%;"> <small>{{n.rend}} HS/{{i.0.unidad}}</small> </td>
+                                        
+
+
+                                    </tr>
+
+                                    {% endfor %}
+                                        
+
+
+
+                                </tbody>
+
+                            </table>
+                              
+                              
+                            
+                            
+                            
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                       
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                
+                
+                
+                
+                
+                </td>
+                         
+            </tr>
+        </tbody>
+
+            {% endfor %}
+
+        </table>
+
+        <div>
+            <small>El listado puede continuar, el maximo de filas visibles es de 20</small>
+        </div>
+
+
+    <div style="text-align: center;">
+        <p> <small>-- Link<strong>P</strong> --</small> </p>
+
+     </div>
+        
+
+
+   
+                    
+</div>
+ 
+    
+{% endblock %}

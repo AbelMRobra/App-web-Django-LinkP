@@ -66,15 +66,15 @@
         <thead>
 
             <tr class = "table-dark">
-                <th scope = "row" class="priority-3" style="vertical-align: middle;"> <small>FECHA</small></th>
                 <th scope = "row" style="vertical-align: middle;"> <small>COMPRADOR</small></th>
+                <th scope = "row" class="priority-3" style="vertical-align: middle;"> <small>FECHA</small></th>               
                 <th scope = "row" style="vertical-align: middle;" class="priority-5"> <small>PISO</small></th>
                 <th scope = "row" style="vertical-align: middle;" class="priority-5"> <small> NOM </small></th>
                 <th scope = "row" style="vertical-align: middle;" class="priority-5"> <small> TIPO </small></th>
                 <th scope = "row" style="vertical-align: middle;" class="priority-4"> <small> SUPERFICIE </small></th>
                 <th scope = "row" style="vertical-align: middle;"> <small>  ASIGNACION </small></th>
                 <th scope = "row" style="vertical-align: middle;" class="priority-3"> <small>PRECIO DE VENTA</small>   </th>
-                <th scope = "row" style="vertical-align: middle;" class="priority-4"> <small> ANOTACIONES</small></th>
+                <th scope = "row" style="vertical-align: middle;" class="priority-4"> <small> PANEL</small></th>
                 <th scope = "row" style="vertical-align: middle;"> <small> DETALLES</small></th>
                 <th scope = "row" style="vertical-align: middle;"> <small> ELIMINAR</small></th>
 
@@ -87,8 +87,8 @@
 
             {% for i in datos %}
             <tr class = "table-light">
-                <td class="priority-3"> <b> <small>{{i.venta.fecha}}</small> </b></td>    
-                <td> <b> <small>{{i.venta.comprador}}</small> </b> </td>
+                <td><small> <b>{{i.venta.comprador}}</b> </small></td>
+                <td class="priority-3"> <b> <small>{{i.venta.fecha|date:"Y-m-j"}}</small> </b></td>    
                 <td class="priority-5"> <b> <small>{{i.venta.unidad.piso_unidad}}</small> </b> </td>
 
                 {% if "0" in i.unidad.nombre_unidad %}
@@ -100,16 +100,19 @@
                 <td class="priority-5"> <b> <small>{{i.venta.unidad.nombre_unidad}}</small> </b> </td>
 
                 {% endif %}
-                <td class="priority-5"> <b> <small>{{i.venta.unidad.tipologia}}</small> </b> </td>
-                <td class="priority-4"> <b> <small>{{i.venta.m2|floatformat:2}}m2</small> </b> </td>
-                <td> <b> <small>{{i.venta.asignacion}}</small></b> </td>
-                <td class="priority-3"> <b>  <small>${{i.venta.precio_venta|floatformat:0|intcomma}}</small></b> </td>
-                <td class="priority-4"> <b><a href="{% url 'Detalle venta' i.venta.id %}" class="btn btn-sm btn-info" >Ver detalles</a>
-                </b> </td>
-                <td> <b><a href="{% url 'Cuenta corriente venta' i.id %}" class="btn btn-sm btn-success" >Ingresar</a>
-                </b> </td>
-                <td> <b><a href="{% url 'Eliminar cuenta corriente' i.id %}" class="btn btn-sm btn-danger" >X</a>
-                </b> </td>
+                <td class="priority-5"><small>{{i.venta.unidad.tipologia}}</small></td>
+                <td class="priority-4"><small>{{i.venta.m2|floatformat:2}}m2</small></td>
+                <td><small>{{i.venta.asignacion}}</small></td>
+                <td class="priority-3"><small>${{i.venta.precio_venta|floatformat:0|intcomma}}</small></td>
+                
+                <td><a href="{% url 'Cuenta corriente venta' i.id %}" class="btn btn-sm btn-success" ><span class="hint--left hint--danger" aria-label= "Accede a la cuenta corriente!">Ingresar</span></a>
+                </td>
+
+                <td class="priority-4"><a href="{% url 'Detalle venta' i.venta.id %}"><span class="hint--left hint--danger" aria-label= "Anotaciones realizadas en la venta!"><img src="{% static 'img/publicalo.png' %}" alt="" style="max-width:20px; height:auto;"></span></a>
+                </td>
+
+                <td><a href="{% url 'Eliminar cuenta corriente' i.id %}" > <span class="hint--left hint--danger" aria-label= "Elimina la cuenta corriente!"><img src="{% static 'img/borrar.png' %}" alt="" style="max-width:20px; height:auto;"></span> </a>
+                </td>
 
 
 

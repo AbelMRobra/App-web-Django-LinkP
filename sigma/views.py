@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import Inventario
+from .models import Inventario, Tarea, SubTarea
 import datetime
 
 # Create your views here.
@@ -97,4 +97,18 @@ def inventario(request):
 
     return render(request, 'inventario.html', {"datos":datos})
 
+def tareas(request):
+
+    datos = Tarea.objects.all()
+
+    datos_totales = []
+
+    for d in datos:
+
+        subtareas = SubTarea.objects.filter(vinculacion = d)
+
+        datos_totales.append((d, subtareas))
+
+
+    return render(request, 'tareas.html', {"datos":datos_totales})
 
