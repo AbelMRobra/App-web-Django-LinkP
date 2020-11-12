@@ -339,11 +339,137 @@ def registroconstante(request):
 
             mensaje = "No hay registros de esta constanre"
 
+    # Aqui armo para un grafico comparativo
+
+    hormigon = Registrodeconstantes.objects.filter(constante__nombre = "Hº VIVIENDA").order_by("fecha")
+
+    hormigon_list = []
+
+    fecha = Registrodeconstantes.objects.values_list('fecha').filter(constante__nombre = "Hº VIVIENDA").order_by("fecha")
+
+    contador = 0
+
+    for h in hormigon:
+
+        if contador == 0:
+
+            hormigon_list.append(0)
+
+            contador = h.valor
+
+        else:
+
+            hormigon_list.append(((h.valor/contador)-1)*100)
+
+
+    usd = []
+    usd_blue = []
+    uva = []
+    cac = []
+
+    contador == 0
+
+    valor_usd = 0
+    valor_blue = 0
+    valor_uva = 0
+    valor_cac = 0
+
+
+    for f in fecha:
+
+        if contador == 0:
+
+            usd.append(0)
+            usd_blue.append(0)
+            uva.append(0)
+            cac.append(0)
+
+            contador = 1
+
+        else:
+
+            try:
+
+                
+               
+                if len(Registrodeconstantes.objects.filter(constante__nombre = "USD", fecha = f[0])) >0:
+
+                    if valor_usd == 0:
+
+                        valor_usd = Registrodeconstantes.objects.filter(constante__nombre = "USD", fecha = f[0])[0].valor
+
+                    usd.append((((Registrodeconstantes.objects.filter(constante__nombre = "USD", fecha = f[0])[0].valor)/valor_usd) -1)*100 )
+                
+                else:
+
+                    usd.append("")
+            except:
+
+                usd.append(valor_usd)
+            
+
+                
+            try:
+
+                            
+                if len(Registrodeconstantes.objects.filter(constante__nombre = "USD_BLUE", fecha = f[0])) >0:
+
+                    if valor_blue == 0:
+
+                        valor_blue = Registrodeconstantes.objects.filter(constante__nombre = "USD_BLUE", fecha = f[0])[0].valor
+
+                    usd_blue.append((((Registrodeconstantes.objects.filter(constante__nombre = "USD_BLUE", fecha = f[0])[0].valor)/valor_blue) -1)*100 )
+                
+                else:
+
+                    usd_blue.append("")
+            
+            except:
+
+                usd_blue.append(valor_blue)
+            
+            try:
+                
+                if len(Registrodeconstantes.objects.filter(constante__nombre = "UVA", fecha = f[0])) >0:
+
+                    if valor_uva == 0:
+
+                        valor_uva = Registrodeconstantes.objects.filter(constante__nombre = "UVA", fecha = f[0])[0].valor
+
+                    uva.append((((Registrodeconstantes.objects.filter(constante__nombre = "UVA", fecha = f[0])[0].valor)/valor_uva) -1)*100 )
+                
+                else:
+
+                    uva.append("")
+            
+            except:
+
+                uva.append(valor_uva)
+
+
+            try:
+                
+                if len(Registrodeconstantes.objects.filter(constante__nombre = "CAC_GENERAL", fecha = f[0])) >0:
+
+                    if valor_cac == 0:
+
+                        valor_cac = Registrodeconstantes.objects.filter(constante__nombre = "CAC_GENERAL", fecha = f[0])[0].valor
+
+                    cac.append((((Registrodeconstantes.objects.filter(constante__nombre = "CAC_GENERAL", fecha = f[0])[0].valor)/valor_cac) -1)*100 )
+                
+                else:
+
+                    cac.append("")
+            except:
+
+                cac.append(valor_cac)
+            
+            
+            
+
         
 
-
-
-    return render(request, 'constantes/historico.html', {'datos':datos})
+    return render(request, 'constantes/historico.html', {'datos':datos, 'fecha':fecha, 'hormigon':hormigon_list, 'usd':usd, 'usd_blue':usd_blue, 'uva':uva, 'cac':cac})
 
         
 

@@ -13,6 +13,98 @@
     </div>
 
 
+    <b><hr class = "my-4" style="width: 100%; "></b>
+
+    
+
+    <div style="margin-top: 0.5rem; display: inline-block; width: 100%;">
+
+        <div style= "text-align: center;">
+            <small><strong>Evolución de indices</strong></small>
+        </div>
+
+        <canvas id="total" width="400" height="150rem"></canvas>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    <script>
+        var ctx = document.getElementById('total').getContext('2d');
+        var chart = new Chart(ctx, {
+            // The type of chart we want to create
+            type: 'line',
+
+            // The data for our dataset
+            data: {
+                labels: [
+                    {% for i in fecha %}
+                    '{{i.0}}',                   
+                    {% endfor %}
+                    ],
+                datasets: [{
+                    label: 'Hormigon',
+                    backgroundColor: 'rgb(150, 142, 141 )',
+                    borderColor: 'rgb(150, 142, 141 )',
+                    fill: false,
+                    data: [
+                    {% for i in hormigon %}
+                    {{i|floatformat:0}},                   
+                    {% endfor %}
+                    ]
+                },
+                {
+                    label: 'Dolar',
+                    backgroundColor: 'rgb(53, 163, 54 )',
+                    borderColor: 'rgb(53, 163, 54 )',
+                    fill: false,
+                    data: [
+                    {% for i in usd %}
+                    {{i|floatformat:0}},                   
+                    {% endfor %}
+                    ]
+                },
+                {
+                    label: 'Dolar Blue',
+                    backgroundColor: 'rgb(53, 163, 103 )',
+                    borderColor: 'rgb(53, 163, 103 )',
+                    fill: false,
+                    data: [
+                    {% for i in usd_blue %}
+                    {{i|floatformat:0}},                   
+                    {% endfor %}
+                    ]
+                },
+                {
+                    label: 'UVA',
+                    backgroundColor: 'rgb(53, 66, 163 )',
+                    borderColor: 'rgb(53, 66, 163 )',
+                    fill: false,
+                    data: [
+                    {% for i in uva %}
+                    {{i|floatformat:0}},                   
+                    {% endfor %}
+                    ]
+                },
+                {
+                    label: 'CAC',
+                    backgroundColor: 'rgb(178, 137, 48 )',
+                    borderColor: 'rgb(178, 137, 48 )',
+                    fill: false,
+                    data: [
+                    {% for i in cac %}
+                    {{i|floatformat:0}},                   
+                    {% endfor %}
+                    ]
+                }],
+
+            },
+
+            // Configuration options go here
+            options: {}
+        });
+    </script>
+
+
+    </div>
+
+
     {% for d in datos %}
 
     <b><hr class = "my-4" style="width: 100%; "></b>
@@ -41,7 +133,7 @@
                     {% endfor %}
                     ],
                 datasets: [{
-                    label: 'Dolar',
+                    label: '{{ d.0.nombre }}',
                     backgroundColor: 'rgb(9, 10, 9)',
                     borderColor: 'rgb(9, 10, 9)',
                     fill: false,
