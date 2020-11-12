@@ -2165,9 +2165,6 @@ def InformeArea(request):
 
         datos_radar.append(PorcentajeCapitulo.objects.filter(proyecto = proyect).order_by("capitulo"))
 
-    print(datos_radar)
-
-
     return render(request, 'presupuestos/informearea.html', {"datos":datos, "datos_barras":barras, 'capitulos':capitulos, 'datos_radar':datos_radar})
 
 # --------------------------------> FUNCIONES Y CLASES USADAS EN LAS VISTAS <------------------------------------------------------
