@@ -9,7 +9,7 @@ from compras.models import Compras
 from ventas.models import PricingResumen, VentasRealizadas
 from registro.models import RegistroValorProyecto, RegistroConstantes
 from rrhh.models import datosusuario
-from .models import Articulos, Constantes, DatosProyectos, Prametros, Desde, Analisis, CompoAnalisis, Modelopresupuesto, Capitulos, Presupuestos, Registrodeconstantes
+from .models import Articulos, Constantes, DatosProyectos, Prametros, Desde, Analisis, CompoAnalisis, Modelopresupuesto, Capitulos, Presupuestos, Registrodeconstantes, PorcentajeCapitulo
 import sqlite3
 import pandas as pd
 import numpy as np
@@ -1393,6 +1393,25 @@ def presupuestorepcompleto(request, id_proyecto):
     for i in crudo:
         i = list(i)
         i[2] = i[1]/valor_proyecto*100
+
+        try:
+
+            dato = PorcentajeCapitulo.objects.get(proyecto = proyecto, capitulo = i[0])
+
+            dato.porcentaje = i[2]
+
+            dato.save()
+
+        except:
+
+            b = PorcentajeCapitulo(
+                proyecto = proyecto,
+                capitulo = i[0],
+                porcentaje = i[2]
+                )
+
+            b.save()
+
         i = tuple(i)
         datos.append(i)
 
@@ -2036,6 +2055,9 @@ def InformeArea(request):
 
     proyectos = Proyectos.objects.all()
 
+
+    capitulos = Capitulos.objects.all()
+
     proy_presup = []
 
     contador = 0
@@ -2130,7 +2152,25 @@ def InformeArea(request):
 
     barras = sorted(barras,reverse=True, key=lambda tup: tup[1])
 
-    return render(request, 'presupuestos/informearea.html', {"datos":datos, "datos_barras":barras})
+
+    #Aqui calculamos el radar
+
+    proyectos_radar = PorcentajeCapitulo.objects.values_list('proyecto')
+
+    print(proyectos_radar)
+
+    proyecto_radar = list(set(proyectos_radar))
+
+    datos_radar = []
+
+    for proyect in proyecto_radar:
+
+        datos_radar.append(PorcentajeCapitulo.objects.filter(proyecto = proyect).order_by("capitulo"))
+
+    print(datos_radar)
+
+
+    return render(request, 'presupuestos/informearea.html', {"datos":datos, "datos_barras":barras, 'capitulos':capitulos, 'datos_radar':datos_radar})
 
 # --------------------------------> FUNCIONES Y CLASES USADAS EN LAS VISTAS <------------------------------------------------------
 

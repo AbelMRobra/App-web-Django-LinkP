@@ -25,7 +25,7 @@
 
     </div>
 
-    <div style="display: inline-block; width: 400px; vertical-align: top;  margin: 15px;">
+    <div style="display: inline-block; width: 350px; vertical-align: top;  margin: 10px;">
 
 
         <h6 style="font-family: Arial, Helvetica, sans-serif;"> Avance de presupuesto </h6>
@@ -47,6 +47,7 @@
 
 
       </div>
+
     
     </script>
 
@@ -80,7 +81,7 @@
             <tbody>
     
                 <tr class = "table-light">
-                    <td style="vertical-align: middle;"> <img src="{{i.0.iamgen.url}}"  class="img-fluid" alt="..." style="max-width: 80px; height:auto;"> </td>
+                    <td style="vertical-align: middle;"> <img src="{{i.0.iamgen.url}}" class="img-fluid" alt="..." style="max-width: 80px; height:auto;"> </td>
 
                     {% if "300" in i.0.nombre  %}
 
@@ -116,10 +117,65 @@
     </div>
 
 
+    <div style="display: inline-block; width: 1200px; vertical-align: top;  margin: 10px;">
+
+
+        <canvas id="total" width="400" height="150rem"></canvas>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    <script>
+        var ctx = document.getElementById('total').getContext('2d');
+        var chart = new Chart(ctx, {
+            // The type of chart we want to create
+            type: 'radar',
+
+            // The data for our dataset
+            data: {
+                labels: [
+                    {% for i in capitulos %}
+                    '{{i}}',                   
+                    {% endfor %}
+                    ],
+                datasets: [
+                    
+                
+                {% for d in datos_radar %}
+                {
+                    label: '{{d.0.proyecto.nombre}}',
+                    backgroundColor: 'rgb({{d.0.proyecto.color}}, 0.2)',
+                    borderColor: 'rgb({{d.0.proyecto.color}})',
+                    fill: true,
+                    data: [
+
+                    {% for m in d %}
+                    
+                    {{m.porcentaje|floatformat:0}},
+
+
+                    {% endfor %}
+                
+                ]
+                },]
+                
+                {% endfor %}
+                ,
+
+            },
+
+            // Configuration options go here
+            options: {}
+        });
+    </script>
+
+
+    </div>
+    
+
+
     <div style="text-align: center;">
         <p> <small>-- Link<strong>P</strong> --</small> </p>
 
      </div>
+
 
 
 </div>

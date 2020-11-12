@@ -181,3 +181,14 @@ class Registrodeconstantes(models.Model):
         verbose_name="Registro de contantes ultimo"
         verbose_name_plural="Registros de constantes ultimo"
 
+class PorcentajeCapitulo(models.Model):
+    proyecto= models.ForeignKey(Proyectos, on_delete=models.CASCADE, verbose_name = "Proyecto")
+    capitulo = models.ForeignKey(Capitulos, on_delete=models.CASCADE, verbose_name="Capitulo")
+    porcentaje = models.FloatField(verbose_name="Porcentaje")
+
+    class Meta:
+        verbose_name="Incidencia del capitulo"
+        verbose_name_plural="incidencia del capitulo"
+
+
+
