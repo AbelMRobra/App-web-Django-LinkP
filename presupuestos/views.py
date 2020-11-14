@@ -993,23 +993,17 @@ def explosion(request, id_proyecto):
 
             if "SOLO MANO DE OBRA" in str(i.analisis.nombre):
 
-                computos = Computos.objects.filter(tipologia = i.vinculacion, proyecto = proyecto)
+                computos = Computos.objects.values_list('valor_vacio').filter(tipologia = i.vinculacion, proyecto = proyecto)
 
-                cantidad = 0
-
-                for r in computos:
-                    cantidad = cantidad + r.valor_vacio
+                cantidad = sum(np.array(computos))
 
                 crudo_analisis.append((i.analisis, cantidad))
 
             else:
 
-                computos = Computos.objects.filter(tipologia = i.vinculacion, proyecto = proyecto)
+                computos = Computos.objects.values_list('valor_lleno').filter(tipologia = i.vinculacion, proyecto = proyecto)
 
-                cantidad = 0
-
-                for r in computos:
-                    cantidad = cantidad + r.valor_lleno
+                cantidad = sum(np.array(computos))
 
                 crudo_analisis.append((i.analisis, cantidad))
 
@@ -1019,6 +1013,8 @@ def explosion(request, id_proyecto):
     for c in crudo_analisis:
 
         analisis = CompoAnalisis.objects.filter(analisis = c[0])
+
+        cantidad = 0
 
         for d in analisis:
 
@@ -1043,17 +1039,12 @@ def explosion(request, id_proyecto):
                 cantidad = cantidad + c[1]
         datos.append((i, cantidad))
 
-
-    compras = Compras.objects.filter(proyecto = proyecto)
-
     datos_viejos = datos
     datos = []
 
     for i in datos_viejos:
-        comprado = 0
-        for c in compras:
-            if c.articulo == i[0]:
-                comprado = comprado + c.cantidad
+
+        comprado = sum(np.array(Compras.objects.values_list('cantidad').filter(proyecto = proyecto, articulo = i[0])))
         
         cantidad_saldo = i[1] - comprado
 
@@ -1092,7 +1083,6 @@ def explosion(request, id_proyecto):
                 if palabra.lower() in buscador.lower():
 
                     datos.append(i)
-
 
     #Aqui termina el filtro
 
@@ -2627,9 +2617,12 @@ class ReporteExplosion(TemplateView):
         datos = []
 
         for i in datos_viejos:
+
             comprado = 0
             for c in compras:
+
                 if c.proyecto == proyecto and c.articulo == i[0]:
+                    
                     comprado = comprado + c.cantidad
             
             cantidad_saldo = i[1] - comprado
