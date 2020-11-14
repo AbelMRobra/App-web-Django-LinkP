@@ -2338,8 +2338,8 @@ def Saldoporcapitulo(id_proyecto):
 
     articulos_comprados = []
 
-
     for compra in compras:
+        
         articulos_comprados.append(compra.articulo)
 
     articulos_comprados = list(set(articulos_comprados))
@@ -2350,12 +2350,7 @@ def Saldoporcapitulo(id_proyecto):
 
     for articulo in articulos_comprados:
 
-        compras_articulo = Compras.objects.filter(proyecto = proyecto, articulo = articulo)
-
-        cantidad = 0
-
-        for compra in compras_articulo:
-            cantidad = cantidad + compra.cantidad
+        cantidad = sum(np.array(Compras.objects.values_list('cantidad').filter(proyecto = proyecto, articulo = articulo)))
 
         stock_articulos.append((articulo, cantidad))
 
@@ -2622,7 +2617,7 @@ class ReporteExplosion(TemplateView):
             for c in compras:
 
                 if c.proyecto == proyecto and c.articulo == i[0]:
-                    
+
                     comprado = comprado + c.cantidad
             
             cantidad_saldo = i[1] - comprado
