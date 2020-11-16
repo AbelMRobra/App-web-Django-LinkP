@@ -101,6 +101,51 @@ def tareas(request):
 
     datos = Tarea.objects.all()
 
+    #Aqui empieza el filtro
+
+    if request.method == 'POST':
+
+        datos_post = request.POST.items()
+
+        for d in datos_post:
+
+            if d[0] == 'palabra':
+
+                datos_viejos = datos
+
+                datos = []  
+
+                palabra_buscar = request.POST["palabra"]
+
+                if str(palabra_buscar) == "":
+
+                    datos = datos_viejos
+
+                else:
+                
+                    for i in datos_viejos:
+
+                        palabra =(str(palabra_buscar))
+
+                        lista_palabra = palabra.split()
+
+                        buscar = (str(i.nombre)+str(i.rend)+str(i.unidad))
+
+                        contador = 0
+
+                        for palabra in lista_palabra:
+
+                            contador2 = 0
+
+                            if palabra.lower() in buscar.lower():
+
+                                contador += 1
+
+                        if contador == len(lista_palabra):
+
+                            datos.append(i)
+
+
     datos_totales = []
 
     for d in datos:
@@ -109,6 +154,8 @@ def tareas(request):
 
         datos_totales.append((d, subtareas))
 
+
+    
 
     return render(request, 'tareas.html', {"datos":datos_totales})
 

@@ -44,7 +44,7 @@
         
             <div style="text-align: left;">
 
-                <a href= "#" class="btn btn-outline-danger"style="text-align: end; " > <img src="{% static 'img/agregar-archivo.png' %}" alt="" style="max-width:20px; height:auto;"  > Nueva parte</a>
+                <a href= "#" class="btn btn-danger"style="text-align: end; " > <img src="{% static 'img/agregar-archivo.png' %}" alt="" style="max-width:20px; height:auto;"  > Nuevo parte</a>
             
 
 
@@ -57,12 +57,11 @@
         
                     <tr class = "table-dark">
                         <th scope = "row" style="vertical-align: middle;"></th>
-                        <th scope = "row" style="vertical-align: middle;"></th>
+                        <th scope = "row" style="vertical-align: middle;"> FECHA </th>
                         <th scope = "row" style="vertical-align: middle;"> TAREA </th>
                         <th scope = "row" style="vertical-align: middle;">  SUBTAREA </th>
-                        <th scope = "row" style="vertical-align: middle;">  VINCULACIÓN </th>
-                        <th scope = "row" style="vertical-align: middle;">  HS/UNIDAD </th>
-                        <th scope = "row" style="vertical-align: middle;">  SUBTAREAS </th>
+                        <th scope = "row" style="vertical-align: middle;">  HORAS </th>
+                        <th scope = "row" style="vertical-align: middle;">  AVANCE </th>
                                               
                     </tr>
                 </thead>
@@ -74,103 +73,23 @@
 
         
                     <tr class = "table-light">
-                        <td style="width: 3%;"><b><img src="{% static 'img/documento.png' %}" alt="" style="max-width:20px; height:auto;"  ></b></td>
-                        <td style="width: 3%"><b><img src="{% static 'img/borrar.png' %}" alt="" style="max-width:20px; height:auto;"  ></b></td>
-                        <td style="width: 20%;"><b>{{i.0.nombre}}</b></td>
-                        <td style="width: 10%;"> {{i.0.unidad}}</td>
-        
-                        {% if i.0.vinculacion %}
-                        <td style="width: 10%;">{{i.0.vinculacion.nombre}}</td>
-        
-                        {% else %}
-        
-                        <td style="width: 10%;">No vinculado</td>
-        
-                        {% endif %}
-                        <td style="width: 10%;">{{i.0.rend}} hs/{{i.0.unidad}}</td>
-                        <td style="width: 8%;"> 
-        
-                            <div>
-        
-                                <button type="button" class="btn btn-outline-danger" data-toggle="modal" data-target="#exampleModalCenter">Subtareas</button>
-                                
-                            </div>
-                    
-                            <!-- Modal -->
-                            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered" role="document">
-                                  <div class="modal-content">
-                                    <div class="modal-header">
-                                      <h6 class="modal-title" id="exampleModalLongTitle">{{i.0.nombre}}</h6>
-                                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                      </button>
-                                    </div>
-                                    <div class="modal-body">
-                    
-                    
-                                      Esta tarea esta compuesta por:
-        
-                                      <table class = "table table-hover" style="text-align: center; margin-top: 1%;">
-                                        <thead>
-                                
-                                            <tr class = "table-dark">
-                                                <th scope = "row" style="vertical-align: middle;"> <small>TAREA</small>  </th>
-                                                <th scope = "row" style="vertical-align: middle;"> <small>UNIDAD</small> </th>
-                                                <th scope = "row" style="vertical-align: middle;"> <small>HS(UNIDAD</small> </th>
-                                                
-                                                                      
-                                            </tr>
-                                        </thead>
-                                
-                                        <tbody>
-        
-                                            <tr class = "table-light">
-        
-                                                <td style="width: 20%;"> <small><b>{{n.nombre}}</b></small> </td>
-                                                <td style="width: 10%;"> <small>{{n.unidad}}</small> </td>
-                                                <td style="width: 10%;"> <small>{{n.rend}} HS/{{i.0.unidad}}</small> </td>
-                                                
-        
-        
-                                            </tr>
-       
- 
-        
-        
-        
-                                        </tbody>
-        
-                                    </table>
-                                      
-                                      
-                                    
-                                    
-                                    
-                                    </div>
-                                    <div class="modal-footer">
-                                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                               
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
+                        <td style="width: 10%;">
+                            <img src="{% static 'img/documento.png' %}" alt="" style="max-width:20px; height:auto;">
+                            <img src="{% static 'img/borrar.png' %}" alt="" style="max-width:20px; height:auto;"></td>
                         
+                            <td style="width: 10%;"><b>{{i.0.nombre}}</b></td>
+                        <td style="width: 25%;"> {{i.0.unidad}}</td>
+                        <td style="width: 25%;">{{i.0.vinculacion.nombre}}</td>
+                        <td style="width: 15%;">{{i.0.rend}} hs/{{i.0.unidad}}</td>
+                        <td style="width: 15%;">{{i.0.rend}} hs/{{i.0.unidad}}</td>
                         
-                        
-                        
-                        
-                        </td>
-                                 
-                    </tr>
+
                 </tbody>
   
         
                 </table>
         
-                <div>
-                    <small>El listado puede continuar, el maximo de filas visibles es de 20</small>
-                </div>
+
         
         
             <div style="text-align: center;">
