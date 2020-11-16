@@ -60,6 +60,7 @@
                     <tr class = "table-dark">
                         <th scope = "row" style="vertical-align: middle;"></th>
                         <th scope = "row" style="vertical-align: middle;"> FECHA </th>
+                        <th scope = "row" style="vertical-align: middle;"> LIDER DE CUADRILLA </th>
                         <th scope = "row" style="vertical-align: middle;"> TAREA </th>
                         <th scope = "row" style="vertical-align: middle;">  SUBTAREA </th>
                         <th scope = "row" style="vertical-align: middle;">  HORAS </th>
@@ -70,22 +71,24 @@
         
                 <tbody>
         
-                    
+                    {% for i in partes %}
         
 
         
                     <tr class = "table-light">
-                        <td style="width: 10%;">
+                        <td style="width: 8%;">
                             <img src="{% static 'img/documento.png' %}" alt="" style="max-width:20px; height:auto;">
                             <img src="{% static 'img/borrar.png' %}" alt="" style="max-width:20px; height:auto;"></td>
                         
-                            <td style="width: 10%;"><b>{{i.0.nombre}}</b></td>
-                        <td style="width: 25%;"> {{i.0.unidad}}</td>
-                        <td style="width: 25%;">{{i.0.vinculacion.nombre}}</td>
-                        <td style="width: 15%;">{{i.0.rend}} hs/{{i.0.unidad}}</td>
-                        <td style="width: 15%;">{{i.0.rend}} hs/{{i.0.unidad}}</td>
+                        <td style="width: 10%;"><b>{{i.fecha|date:"Y-m-j"}}</b></td>
+                        <td style="width: 20%;"> {{i.lider}}</td>
+                        <td style="width: 20%;"> {{i.subtarea.vinculacion.nombre}}</td>
+                        <td style="width: 20%;">{{i.subtarea.nombre}}</td>
+                        <td style="width: 10%;">{{i.horas|floatformat:2}}</td>
+                        <td style="width: 15%;">{{i.avance|floatformat:2}} ({{i.subtarea.unidad}})</td>
                         
 
+                    {% endfor %}
                 </tbody>
   
         

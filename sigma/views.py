@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
-from .models import Inventario, Tarea, SubTarea, Operario
+from .models import Inventario, Tarea, SubTarea, Operario, Partediario
 import datetime
+import re
 
 # Create your views here.
 
@@ -178,16 +179,32 @@ def login(request):
 def partesdiarios(request, dni):
 
     datos = Operario.objects.get(dni = int(dni))
+    partes = Partediario.objects.filter(usuario = datos)
 
 
-    return render(request, 'partediarios.html', {"datos":datos})
+    return render(request, 'partediarios.html', {"datos":datos, "partes":partes})
 
 def cargarpartediario(request, dni):
 
     datos = Operario.objects.get(dni = int(dni))
-
     subtareas = SubTarea.objects.all()
     operarios = Operario.objects.all()
+
+    if request.method == 'POST':
+
+        texto = request.POST['subtarea']
+        numero = int(texto.split()[0])
+        b = Partediario(
+
+        usuario = datos,
+        lider = str(Operario.objects.get(nombre = request.POST['lider']).dni),
+        subtarea = SubTarea.objects.get(id = numero),
+        horas = request.POST['rend'],
+        avance = request.POST['avance'],
+        )
+        b.save()
+
+        return redirect('Parte diarios', dni = datos.dni)
 
     return render(request, 'cargarparte.html', {"datos":datos, 'subtareas':subtareas, 'operarios':operarios})
 

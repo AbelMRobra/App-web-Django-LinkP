@@ -93,7 +93,7 @@
 
             <div style="display: inline-block; margin: 10px;  width: 200px;">
 
-                <label for="rend"><h6>Avance</h6></label>
+                <label for="avance"><h6>Avance</h6></label>
     
             </div>
     
@@ -101,7 +101,7 @@
     
                 <div class="input-group mb-3">
                     
-                    <input name="rend" type="number" step="0.01" class="form-control" aria-label="Amount (to the nearest dollar)" style="width: 100px;">
+                    <input name="avance" type="number" step="0.01" class="form-control" aria-label="Amount (to the nearest dollar)" style="width: 100px;">
                     <div class="input-group-append">
                       <span class="input-group-text">Unidad de la tarea</span>
                     </div>
@@ -137,7 +137,7 @@
 
         {% for i in subtareas %}
         
-        <option value="{{ i.nombre }}">unidad: {{i.unidad}} - Tarea madre: {{ i.vinculacion.nombre }}</option>
+        <option value="{{i.id}} {{ i.nombre }}">unidad: {{i.unidad}} - Tarea madre: {{ i.vinculacion.nombre }}</option>
 
         {% endfor %}
 
