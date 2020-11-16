@@ -28,7 +28,7 @@
 
 
 
-    <form  role="form"  enctype="multipart/form-data" action="" method="POST" id="upload-image-form" style="margin: 30px;"> 
+    <form  role="form"  enctype="multipart/form-data" action="" method="POST" id="upload-image-form"> 
         {% csrf_token %}
 
 
@@ -103,7 +103,7 @@
                     
                     <input name="avance" type="number" step="0.01" class="form-control" aria-label="Amount (to the nearest dollar)" style="width: 100px;">
                     <div class="input-group-append">
-                      <span class="input-group-text">Unidad</span>
+                      <span class="input-group-text">Unidad de la tarea</span>
                     </div>
                   </div>
 
