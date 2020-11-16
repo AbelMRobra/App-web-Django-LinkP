@@ -52,47 +52,54 @@
 
             </div>
          
+            <div class = "tableconteinerabel">
+
+                <table class = "table table-hover" style="text-align: center; margin-top: 1%;">
+                    <thead>
+            
+                        <tr class = "table-dark">
+                            <th scope = "row" style="vertical-align: middle;"></th>
+                            <th scope = "row" style="vertical-align: middle;"> <small>FECHA</small>  </th>
+                            <th scope = "row" style="vertical-align: middle;"> <small>LIDER DE CUADRILLA</small>  </th>
+                            <th scope = "row" style="vertical-align: middle;"> <small>TAREA</small>  </th>
+                            <th scope = "row" style="vertical-align: middle;"> <small>SUBTAREA</small>   </th>
+                            <th scope = "row" style="vertical-align: middle;"> <small>HORAS</small>   </th>
+                            <th scope = "row" style="vertical-align: middle;"> <small>AVANCE</small>   </th>
+                                                  
+                        </tr>
+                    </thead>
+            
+                    <tbody>
+            
+                        {% for i in partes %}
+            
+    
+            
+                        <tr class = "table-light">
+                            <td style="width: 8%;">
+                                <img src="{% static 'img/documento.png' %}" alt="" style="max-width:20px; height:auto;">
+                                <img src="{% static 'img/borrar.png' %}" alt="" style="max-width:20px; height:auto;"></td>
+                            
+                            <td style="width: 10%;"><small><b>{{i.fecha|date:"Y-m-j"}}</b></small> </td>
+                            <td style="width: 20%;"><small>{{i.lider}}</small> </td>
+                            <td style="width: 20%;"><small>{{i.subtarea.vinculacion.nombre}}</small> </td>
+                            <td style="width: 20%;"><small>{{i.subtarea.nombre}}</small></td>
+                            <td style="width: 10%;"> <small>{{i.horas|floatformat:2}}</small></td>
+                            <td style="width: 15%;"> <small>{{i.avance|floatformat:2}} ({{i.subtarea.unidad}})</small></td>
+                            
+    
+                        {% endfor %}
+                    </tbody>
+      
+            
+                    </table>
+
+
+
+            </div>
             
         
-            <table class = "table table-hover" style="text-align: center; margin-top: 1%;">
-                <thead>
-        
-                    <tr class = "table-dark">
-                        <th scope = "row" style="vertical-align: middle;"></th>
-                        <th scope = "row" style="vertical-align: middle;"> FECHA </th>
-                        <th scope = "row" style="vertical-align: middle;"> LIDER DE CUADRILLA </th>
-                        <th scope = "row" style="vertical-align: middle;"> TAREA </th>
-                        <th scope = "row" style="vertical-align: middle;">  SUBTAREA </th>
-                        <th scope = "row" style="vertical-align: middle;">  HORAS </th>
-                        <th scope = "row" style="vertical-align: middle;">  AVANCE </th>
-                                              
-                    </tr>
-                </thead>
-        
-                <tbody>
-        
-                    {% for i in partes %}
-        
-
-        
-                    <tr class = "table-light">
-                        <td style="width: 8%;">
-                            <img src="{% static 'img/documento.png' %}" alt="" style="max-width:20px; height:auto;">
-                            <img src="{% static 'img/borrar.png' %}" alt="" style="max-width:20px; height:auto;"></td>
-                        
-                        <td style="width: 10%;"><b>{{i.fecha|date:"Y-m-j"}}</b></td>
-                        <td style="width: 20%;"> {{i.lider}}</td>
-                        <td style="width: 20%;"> {{i.subtarea.vinculacion.nombre}}</td>
-                        <td style="width: 20%;">{{i.subtarea.nombre}}</td>
-                        <td style="width: 10%;">{{i.horas|floatformat:2}}</td>
-                        <td style="width: 15%;">{{i.avance|floatformat:2}} ({{i.subtarea.unidad}})</td>
-                        
-
-                    {% endfor %}
-                </tbody>
-  
-        
-                </table>
+            
 
 
                 {% endblock %}
