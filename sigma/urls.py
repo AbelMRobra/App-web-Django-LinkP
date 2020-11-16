@@ -10,6 +10,7 @@ urlpatterns = [
     url(r'^creartareas/$', login_required(views.cargartarea), name = 'Crear tareas'),
     url(r'^crearsubtareas/(?P<id_tarea>\d+)/$', login_required(views.cargarsubtarea), name = 'Crear subtareas'),
     url(r'^eliminartarea/(?P<id_tarea>\d+)/$', login_required(views.eliminartarea), name = 'Eliminar tarea'),
+    url(r'^eliminarsubtarea/(?P<id_subtarea>\d+)/$', login_required(views.eliminarsubtarea), name = 'Eliminar subtarea'),
     url(r'^login/$', views.login, name = 'login'),
     url(r'^partediario/(?P<dni>\d+)/$', views.partesdiarios, name = 'Parte diarios'),
 

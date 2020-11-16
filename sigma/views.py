@@ -184,6 +184,18 @@ def eliminartarea(request, id_tarea):
 
     return render(request, 'eliminartarea.html', {'datos':datos})
 
+def eliminarsubtarea(request, id_subtarea):
+
+    datos = SubTarea.objects.get(id = id_subtarea)
+
+    if request.method == 'POST':
+
+        datos.delete()
+
+        return redirect ('tareas')
+
+    return render(request, 'eliminarsubtarea.html', {'datos':datos})
+
 
 
 

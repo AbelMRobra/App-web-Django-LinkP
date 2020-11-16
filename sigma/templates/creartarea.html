@@ -103,15 +103,9 @@
         {{ form.as_p }}
     </form>
 
-    <datalist id="provee"> 
-
-        {% for i in proveedores %}
+    <a class = "btn btn-secondary" href="{% url 'tareas' %}"> <img src="{% static 'img/flecha-izquierda.png' %}" alt="" style="max-width:20px; height:auto;"> Volver</a>
         
-        <option value="{{ i.name }}">({{i.id}})</option>
 
-        {% endfor %}
-
-    </datalist>
 
 <div style="margin-top: 2rem;">
     <p> <small>-- Link<strong>P</strong> --</small> </p>
