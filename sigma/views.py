@@ -182,6 +182,15 @@ def partesdiarios(request, dni):
 
     return render(request, 'partediarios.html', {"datos":datos})
 
+def cargarpartediario(request, dni):
+
+    datos = Operario.objects.get(dni = int(dni))
+
+    subtareas = SubTarea.objects.all()
+    operarios = Operario.objects.all()
+
+    return render(request, 'cargarparte.html', {"datos":datos, 'subtareas':subtareas, 'operarios':operarios})
+
 def cargartarea(request):
 
     if request.method == 'POST':

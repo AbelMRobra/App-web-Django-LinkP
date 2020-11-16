@@ -13,6 +13,7 @@ urlpatterns = [
     url(r'^eliminarsubtarea/(?P<id_subtarea>\d+)/$', login_required(views.eliminarsubtarea), name = 'Eliminar subtarea'),
     url(r'^login/$', views.login, name = 'login'),
     url(r'^partediario/(?P<dni>\d+)/$', views.partesdiarios, name = 'Parte diarios'),
+    url(r'^cargarparte/(?P<dni>\d+)/$', views.cargarpartediario, name = 'Cargar parte'),
 
 
 ]

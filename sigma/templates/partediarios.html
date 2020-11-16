@@ -20,6 +20,8 @@
 
         <div class="jumbotron" style="margin-top: 5%; background-color: rgba(241, 226, 224, 0.8);  text-align: center;">
 
+            {% block content %}
+
 
             <h3 style="text-align: center; color: rgb({{datos.proyecto.color}}); font-family: Arial, Helvetica, sans-serif;">Partes diarios</h3>
             <h5 style="text-align: center; color: rgb({{datos.proyecto.color}}); font-family: Arial, Helvetica, sans-serif;">{{datos.nombre}}</h5>
@@ -44,7 +46,7 @@
         
             <div style="text-align: left;">
 
-                <a href= "#" class="btn btn-danger"style="text-align: end; " > <img src="{% static 'img/agregar-archivo.png' %}" alt="" style="max-width:20px; height:auto;"  > Nuevo parte</a>
+                <a href= "{% url 'Cargar parte' datos.dni %}" class="btn btn-danger"style="text-align: end; " > <img src="{% static 'img/agregar-archivo.png' %}" alt="" style="max-width:20px; height:auto;"  > Nuevo parte</a>
             
 
 
@@ -88,6 +90,9 @@
   
         
                 </table>
+
+
+                {% endblock %}
         
 
         

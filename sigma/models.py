@@ -64,3 +64,20 @@ class Operario(models.Model):
 
     def __str__(self):
         return self.nombre
+
+
+class Partediario(models.Model):
+
+    usuario = models.ForeignKey(Operario, verbose_name="Usuario", on_delete=models.CASCADE)
+    lider = models.CharField(max_length=200, verbose_name="Nombre del lider de cuadrilla")
+    subtarea = models.ForeignKey(SubTarea, verbose_name="Subtarea", on_delete=models.CASCADE)
+    fecha = models.DateField(auto_now_add=True, verbose_name="Fecha del parte")
+    horas = models.FloatField(verbose_name="Horas", blank=True, null=True)
+    avance = models.FloatField(verbose_name="Avance", blank=True, null=True)
+
+    class Meta:
+        verbose_name="Parte diario"
+        verbose_name_plural="Partes diarios"
+
+    def __str__(self):
+        return self.fecha
