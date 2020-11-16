@@ -5,7 +5,9 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
-    <link rel="stylesheet" href="{% static 'css/estiloabel.css' %}">
+    <link rel="stylesheet" href="{% static 'css/hint.css' %}">
+    <link rel="stylesheet" href="{% static 'css/styleabel.css' %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="{% static 'img/icolinkpr.ico' %}" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -52,19 +54,17 @@
 
             </div>
          
-            <div class = "tableconteinerabel">
-
                 <table class = "table table-hover" style="text-align: center; margin-top: 1%;">
                     <thead>
             
                         <tr class = "table-dark">
                             <th scope = "row" style="vertical-align: middle;"></th>
                             <th scope = "row" style="vertical-align: middle;"> <small>FECHA</small>  </th>
-                            <th scope = "row" style="vertical-align: middle;"> <small>LIDER DE CUADRILLA</small>  </th>
-                            <th scope = "row" style="vertical-align: middle;"> <small>TAREA</small>  </th>
+                            <th scope = "row" style="vertical-align: middle;" class="priority-5"> <small>LIDER DE CUADRILLA</small>  </th>
+                            <th scope = "row" style="vertical-align: middle;" class="priority-5"> <small>TAREA</small>  </th>
                             <th scope = "row" style="vertical-align: middle;"> <small>SUBTAREA</small>   </th>
                             <th scope = "row" style="vertical-align: middle;"> <small>HORAS</small>   </th>
-                            <th scope = "row" style="vertical-align: middle;"> <small>AVANCE</small>   </th>
+                            <th scope = "row" style="vertical-align: middle;" class="priority-5"> <small>AVANCE</small>   </th>
                                                   
                         </tr>
                     </thead>
@@ -81,11 +81,11 @@
                                 <img src="{% static 'img/borrar.png' %}" alt="" style="max-width:20px; height:auto;"></td>
                             
                             <td style="width: 10%;"><small><b>{{i.fecha|date:"Y-m-j"}}</b></small> </td>
-                            <td style="width: 20%;"><small>{{i.lider}}</small> </td>
-                            <td style="width: 20%;"><small>{{i.subtarea.vinculacion.nombre}}</small> </td>
+                            <td style="width: 20%;" class="priority-5"><small>{{i.lider}}</small> </td>
+                            <td style="width: 20%;" class="priority-5"><small>{{i.subtarea.vinculacion.nombre}}</small> </td>
                             <td style="width: 20%;"><small>{{i.subtarea.nombre}}</small></td>
                             <td style="width: 10%;"> <small>{{i.horas|floatformat:2}}</small></td>
-                            <td style="width: 15%;"> <small>{{i.avance|floatformat:2}} ({{i.subtarea.unidad}})</small></td>
+                            <td style="width: 15%;" class="priority-5"> <small>{{i.avance|floatformat:2}} ({{i.subtarea.unidad}})</small></td>
                             
     
                         {% endfor %}
@@ -95,9 +95,6 @@
                     </table>
 
 
-
-            </div>
-            
         
             
 
