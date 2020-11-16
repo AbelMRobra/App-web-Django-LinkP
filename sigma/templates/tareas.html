@@ -54,14 +54,13 @@
 
      
  
-    <a href= "#" class="btn btn-outline-danger"style="text-align: end; " > <img src="{% static 'img/agregar-archivo.png' %}" alt="" style="max-width:20px; height:auto;"  > Nueva tarea</a>
+    <a href= "{% url 'Crear tareas' %}" class="btn btn-outline-danger"style="text-align: end; " > <img src="{% static 'img/agregar-archivo.png' %}" alt="" style="max-width:20px; height:auto;"  > Nueva tarea</a>
     
 
     <table class = "table table-hover" style="text-align: center; margin-top: 1%;">
         <thead>
 
             <tr class = "table-dark">
-                <th scope = "row" style="vertical-align: middle;"></th>
                 <th scope = "row" style="vertical-align: middle;"></th>
                 <th scope = "row" style="vertical-align: middle;"> TAREA </th>
                 <th scope = "row" style="vertical-align: middle;">  UNIDAD </th>
@@ -79,21 +78,21 @@
             {% for i in datos|slice:"20" %}
 
             <tr class = "table-light">
-                <td style="width: 3%;"><b><img src="{% static 'img/documento.png' %}" alt="" style="max-width:20px; height:auto;"  ></b></td>
-                <td style="width: 3%"><b><img src="{% static 'img/borrar.png' %}" alt="" style="max-width:20px; height:auto;"  ></b></td>
-                <td style="width: 20%;"><b>{{i.0.nombre}}</b></td>
-                <td style="width: 10%;"> {{i.0.unidad}}</td>
+                <td style="width: 10%;"><b><img src="{% static 'img/documento.png' %}" alt="" style="max-width:20px; height:auto;"  ></b>
+                <a href="{% url 'Eliminar tarea' i.0.id %}"><img src="{% static 'img/borrar.png' %}" alt="" style="max-width:20px; height:auto;"></a></td>
+                <td style="width: 30%;"><b>{{i.0.nombre}}</b></td>
+                <td style="width: 8%;"> {{i.0.unidad}}</td>
 
                 {% if i.0.vinculacion %}
-                <td style="width: 10%;">{{i.0.vinculacion.nombre}}</td>
+                <td style="width: 20%;">{{i.0.vinculacion.nombre}}</td>
 
                 {% else %}
 
-                <td style="width: 10%;">No vinculado</td>
+                <td style="width: 20%;">No vinculado</td>
 
                 {% endif %}
-                <td style="width: 10%;">{{i.0.rend}} hs/{{i.0.unidad}}</td>
-                <td style="width: 8%;"> 
+                <td style="width: 15%;">{{i.0.rend}} hs/{{i.0.unidad}}</td>
+                <td style="width: 10%;"> 
 
                     <div>
 
@@ -120,6 +119,7 @@
                                 <thead>
                         
                                     <tr class = "table-dark">
+                                        <th></th>
                                         <th scope = "row" style="vertical-align: middle;"> <small>TAREA</small>  </th>
                                         <th scope = "row" style="vertical-align: middle;"> <small>UNIDAD</small> </th>
                                         <th scope = "row" style="vertical-align: middle;"> <small>HS(UNIDAD</small> </th>
@@ -133,7 +133,11 @@
                                     {% for n in i.1%}
 
                                     <tr class = "table-light">
+                                        <td style="width: 10%;">
+                                            <a href="#"><img src="{% static 'img/documento.png' %}" alt="" style="max-width:20px; height:auto;"  ></a>
+                                            <a href="{% url 'Eliminar tarea' i.0.id %}"><img src="{% static 'img/borrar.png' %}" alt="" style="max-width:20px; height:auto;"  ></a>
 
+                                        </td>
                                         <td style="width: 20%;"> <small><b>{{n.nombre}}</b></small> </td>
                                         <td style="width: 10%;"> <small>{{n.unidad}}</small> </td>
                                         <td style="width: 10%;"> <small>{{n.rend}} HS/{{i.0.unidad}}</small> </td>
@@ -150,6 +154,9 @@
                                 </tbody>
 
                             </table>
+
+                            <a href= "{% url 'Crear subtareas' i.0.id %}" class="btn btn-outline-danger"style="text-align: end; " > <img src="{% static 'img/agregar-archivo.png' %}" alt="" style="max-width:20px; height:auto;"  > Nueva subtarea</a>
+    
                               
                               
                             

@@ -135,5 +135,55 @@ def partesdiarios(request, dni):
 
     return render(request, 'partediarios.html', {"datos":datos})
 
+def cargartarea(request):
+
+    if request.method == 'POST':
+
+        b = Tarea(
+            nombre = request.POST['nombre'],
+            unidad = request.POST['unidad'],
+            descripcion = request.POST['descripcion'],
+            rend = request.POST['rend'],
+        )
+
+        b.save()
+
+        return redirect ('tareas')
+
+    return render(request, 'creartarea.html')
+
+def cargarsubtarea(request, id_tarea):
+
+    datos = Tarea.objects.get(id = id_tarea)
+
+    if request.method == 'POST':
+
+        b = SubTarea(
+            vinculacion = datos,
+            nombre = request.POST['nombre'],
+            unidad = request.POST['unidad'],
+            descripcion = request.POST['descripcion'],
+            rend = request.POST['rend'],
+        )
+
+        b.save()
+
+        return redirect ('tareas')
+
+    return render(request, 'subtarea.html', {'datos':datos})
+
+def eliminartarea(request, id_tarea):
+
+    datos = Tarea.objects.get(id = id_tarea)
+
+    if request.method == 'POST':
+
+        datos.delete()
+
+        return redirect ('tareas')
+
+    return render(request, 'eliminartarea.html', {'datos':datos})
+
+
 
 

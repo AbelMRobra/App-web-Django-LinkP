@@ -2339,7 +2339,7 @@ def Saldoporcapitulo(id_proyecto):
     articulos_comprados = []
 
     for compra in compras:
-        
+
         articulos_comprados.append(compra.articulo)
 
     articulos_comprados = list(set(articulos_comprados))
