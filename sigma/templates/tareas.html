@@ -84,7 +84,7 @@
                 <td style="width: 8%;"> {{i.0.unidad}}</td>
 
                 {% if i.0.vinculacion %}
-                <td style="width: 20%;">$ {{i.0.vinculacion.valor}}</td>
+                <td style="width: 20%;">$ {{i.0.vinculacion.valor|floatformat:0|intcomma}}</td>
 
                 {% else %}
 
