@@ -56,6 +56,7 @@ class RegistroAlmacenero(models.Model):
     imprevisto = models.FloatField(null=True, blank=True, verbose_name="Saldo de imprevisto")
     credito = models.FloatField(null=True, blank=True, verbose_name="Credito")
     fdr = models.FloatField(null=True, blank=True, verbose_name="Fondos de reparo")
+    retiro_socios = models.FloatField(null=True, blank=True, verbose_name="Retiro socios", default=0)
 
 
     class Meta:

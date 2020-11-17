@@ -4,7 +4,7 @@ from django.contrib.auth import authenticate
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login as do_login
 from django.contrib.auth.forms import UserCreationForm
-from finanzas.models import Almacenero, RegistroAlmacenero, Arqueo
+from finanzas.models import Almacenero, RegistroAlmacenero, Arqueo, RetirodeSocios
 from presupuestos.models import Presupuestos
 from proyectos.models import Proyectos, Unidades
 from ventas.models import VentasRealizadas
@@ -227,7 +227,8 @@ def inicio(request):
                 saldo_mo = presupuesto.saldo_mo,
                 imprevisto = presupuesto.imprevisto,
                 credito = presupuesto.credito, 
-                fdr = presupuesto.fdr 
+                fdr = presupuesto.fdr,
+                retiro_socios= sum(np.array(RetirodeSocios.objects.values_list('monto_pesos').filter(proyecto = alma.proyecto)))
 
             )
 
