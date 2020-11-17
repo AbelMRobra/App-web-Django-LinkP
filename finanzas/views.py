@@ -1056,7 +1056,8 @@ def consolidado(request):
 
         pend_gast = almacenero.pendiente_admin + almacenero.pendiente_comision + presupuesto.saldo_mat + presupuesto.saldo_mo + presupuesto.imprevisto + presupuesto.credito + presupuesto.fdr - almacenero.pendiente_adelantos + almacenero.pendiente_iva_ventas + almacenero.pendiente_iibb_tem
         prest_cobrar = almacenero.prestamos_proyecto + almacenero.prestamos_otros
-        total_costo = almacenero.cheques_emitidos + almacenero.gastos_fecha + pend_gast + almacenero.Prestamos_dados        
+        retiro_socios = sum(np.array(RetirodeSocios.objects.values_list('monto_pesos').filter(proyecto = dato.proyecto)))  
+        total_costo = almacenero.cheques_emitidos + almacenero.gastos_fecha + pend_gast + almacenero.Prestamos_dados + retiro_socios       
         
         
         costo_total = costo_total + total_costo
@@ -1241,7 +1242,7 @@ def consolidado(request):
 
             pend_gast = almacenero.pendiente_admin + almacenero.pendiente_comision + dato.saldo_mat + dato.saldo_mo + dato.imprevisto + dato.credito + dato.fdr - almacenero.pendiente_adelantos + almacenero.pendiente_iva_ventas + almacenero.pendiente_iibb_tem
             prest_cobrar = almacenero.prestamos_proyecto + almacenero.prestamos_otros
-            total_costo = almacenero.cheques_emitidos + almacenero.gastos_fecha + pend_gast + almacenero.Prestamos_dados                    
+            total_costo = almacenero.cheques_emitidos + almacenero.gastos_fecha + pend_gast + almacenero.Prestamos_dados + almacenero.retiro_socios                 
             
             costo_total = costo_total + total_costo
 
@@ -1330,7 +1331,7 @@ def consolidadoh(request):
 
         pend_gast = almacenero.pendiente_admin + almacenero.pendiente_comision + presupuesto.saldo_mat + presupuesto.saldo_mo + presupuesto.imprevisto + presupuesto.credito + presupuesto.fdr - almacenero.pendiente_adelantos + almacenero.pendiente_iva_ventas + almacenero.pendiente_iibb_tem
         prest_cobrar = almacenero.prestamos_proyecto + almacenero.prestamos_otros
-        retiro_socios = sum(np.array(RetirodeSocios.objects.values_list('monto_pesos').filter(proyecto = proyecto)))  
+        retiro_socios = sum(np.array(RetirodeSocios.objects.values_list('monto_pesos').filter(proyecto = dato.proyecto)))  
         total_costo = almacenero.cheques_emitidos + almacenero.gastos_fecha + pend_gast + almacenero.Prestamos_dados + retiro_socios       
         
         
