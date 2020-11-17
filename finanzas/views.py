@@ -1623,7 +1623,8 @@ def almacenero(request):
                     
                     pend_gast = almacenero.pendiente_admin + almacenero.pendiente_comision + presupuesto.saldo_mat + presupuesto.saldo_mo + presupuesto.imprevisto + presupuesto.credito + presupuesto.fdr - almacenero.pendiente_adelantos + almacenero.pendiente_iva_ventas + almacenero.pendiente_iibb_tem
                     prest_cobrar = almacenero.prestamos_proyecto + almacenero.prestamos_otros
-                    total_costo = almacenero.cheques_emitidos + almacenero.gastos_fecha + pend_gast + almacenero.Prestamos_dados
+                    retiro_socios = sum(np.array(RetirodeSocios.objects.values_list('monto_pesos').filter(proyecto = i)))
+                    total_costo = almacenero.cheques_emitidos + almacenero.gastos_fecha + pend_gast + almacenero.Prestamos_dados + retiro_socios
                     
                     descuento = almacenero.ingreso_ventas*0.06 
                     
@@ -1642,7 +1643,7 @@ def almacenero(request):
                     datos.append(presupuesto)
                     datos.append(almacenero)
 
-                    datos.append((pend_gast, prest_cobrar, total_costo, total_ingresos, rentabilidad, saldo_caja, saldo_proyecto, descuento, saldo_proyecto_pesimista, rentabilidad_pesimista))
+                    datos.append((pend_gast, prest_cobrar, total_costo, total_ingresos, rentabilidad, saldo_caja, saldo_proyecto, descuento, saldo_proyecto_pesimista, rentabilidad_pesimista, retiro_socios))
 
                     lista = RegistroAlmacenero.objects.filter(proyecto = proyecto)
 

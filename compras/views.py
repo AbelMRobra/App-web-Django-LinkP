@@ -8,7 +8,7 @@ from .models import StockComprasAnticipadas, Compras, Proyectos, Proveedores, Re
 from rrhh.models import datosusuario
 from .form import StockAntForm
 from .filters import CertificadoFilter
-from presupuestos.models import Articulos, Constantes, Presupuestos
+from presupuestos.models import Articulos, Constantes, Presupuestos, Analisis, Modelopresupuesto
 import sqlite3
 import operator
 import datetime
@@ -1445,6 +1445,7 @@ def informe(request):
     }
 
     return render(request, 'stockant.html', {'datos': datos})
+
 
 # ----------------------------------------------------- VISTAS PARA CARGA DE RETIROS----------------------------------------------
 
