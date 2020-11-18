@@ -201,7 +201,7 @@
      <b><hr class = "my-4" style="width: 100%; border-color: rgba({{datos.proyecto.color}}, 0.5;"></b>
 
 
-     {% if user.username in datos.copia %}
+     {% if user.username in datos.copia or user.username in datos.destinatario %}
 
 
      {% if user.username in datos.visto %}
