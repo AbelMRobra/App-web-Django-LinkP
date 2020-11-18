@@ -131,3 +131,21 @@ class RetirodeSocios(models.Model):
     class Meta:
         verbose_name="Retiro"
         verbose_name_plural="Retiros"
+
+
+class MovimientoAdmin(models.Model):
+
+    class Estado(models.TextChoices):
+        ESPERA = "ESPERA"
+        APROBADA = "APROBADA"
+        RECHAZADA = "RECHAZADA"
+
+
+    fecha = models.DateField(verbose_name = "Fecha del archivo")
+    archivo = models.FileField(verbose_name = "Archivo")
+    comentario = models.CharField(max_length=200, null=True, blank=True, verbose_name = "Comentario")
+    estado = models.CharField(choices=Estado.choices, max_length=20, verbose_name="Estado", default="ESPERA")
+
+    class Meta:
+        verbose_name="Movimiento de administración"
+        verbose_name_plural="Movimientos de administración"

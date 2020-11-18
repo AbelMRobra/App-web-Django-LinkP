@@ -3,7 +3,7 @@ from django.shortcuts import redirect
 from django.http import HttpResponse
 from django.views.generic.base import TemplateView  
 from presupuestos.models import Proyectos, Presupuestos, Constantes, Modelopresupuesto, Registrodeconstantes
-from .models import Almacenero, CuentaCorriente, Cuota, Pago, RegistroAlmacenero, ArchivosAdmFin, Arqueo, RetirodeSocios
+from .models import Almacenero, CuentaCorriente, Cuota, Pago, RegistroAlmacenero, ArchivosAdmFin, Arqueo, RetirodeSocios, MovimientoAdmin
 from proyectos.models import Unidades
 from ventas.models import Pricing, VentasRealizadas
 import datetime
@@ -1675,6 +1675,69 @@ def almacenero(request):
     'lista':lista}
 
     return render(request, 'almacenero.html', {"datos":datos} )
+
+
+def movimientoadmin(request):
+
+    if request.method == 'POST':
+
+        req = request.POST.items()
+
+        for r in req:
+
+            if r[0] == "APROBADA" and r[1] != "":
+
+                b = MovimientoAdmin.objects.get(id = r[1])
+
+                b.estado = "APROBADA"
+
+                b.save()
+
+            if r[0] == "RECHAZADA" and r[1] != "":
+
+                b = MovimientoAdmin.objects.get(id = r[1])
+
+                b.estado = "RECHAZADA"
+
+                b.save()
+
+    datos = MovimientoAdmin.objects.order_by("-fecha")
+
+    return render(request, 'movimientoadmin.html', {'datos':datos})
+
+
+def subirmovimiento(request):
+
+    if request.method == 'POST':
+
+        b = MovimientoAdmin(
+            fecha = request.POST['fecha'],
+            archivo = request.FILES['archivo'],
+            comentario = request.POST['comentario'],
+            )
+
+        b.save()
+
+        return redirect ('Movimiento administración')
+
+    return render(request, 'crearmovimiento.html')
+
+
+def borrarmovimiento(request, id_mov):
+
+    datos = MovimientoAdmin.objects.get(id = id_mov)
+
+    if request.method == 'POST':
+
+        datos.delete()
+
+        return redirect ('Movimiento administración')
+
+
+    return render(request, 'borrarmovimiento.html', {'datos':datos})
+
+
+
 
 
 def retirodesocios(request):

@@ -1,0 +1,35 @@
+{% extends "users/inicio.html" %}
+
+{% load static %}
+
+{% block content %}
+
+
+<div class = "jumbotron" style="background-color: white; margin-bottom: 0px;">
+
+    <div class = "jumbotron" style="width: 70%; text-align: center; margin-left: 15%;">
+
+        <h3> ¿Esta seguro de eliminar el archivo?</h3>
+        <b><hr class = "my-4" style="width: 100%;"></b>
+
+        <div>
+
+            <form method="post">
+                {% csrf_token %}
+
+                <a class = "btn btn-secondary" href="{% url 'Movimiento administración' %}"><img src="{% static 'img/flecha-izquierda.png' %}" alt="" style="max-width:25px; height: auto;"> Volver</a>
+        
+        
+                <button type='submit' class = "btn btn-danger">Eliminar</button>
+                
+            </form>
+
+
+        </div>
+
+        
+
+    </div>
+</div>
+
+{% endblock %}

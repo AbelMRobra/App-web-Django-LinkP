@@ -766,6 +766,14 @@ def comparativas(request, estado):
 
                     b.save()
 
+
+    #Aqui calculo para saber cuantos de cada uno hay
+
+    num_espera = len(Comparativas.objects.filter(estado = "ESPERA"))
+    num_adj = len(Comparativas.objects.filter(estado = "ADJUNTO ✓"))
+    num_rechazada = len(Comparativas.objects.filter(estado = "NO AUTORIZADA"))
+    num_autorizada = len(Comparativas.objects.filter(estado = "AUTORIZADA"))
+
     if estado == "0":
 
         mensaje = "Estado"
@@ -789,7 +797,7 @@ def comparativas(request, estado):
 
     if estado == "1":
 
-        mensaje = "Espera"
+        mensaje = "Espera (" + str(len(Comparativas.objects.filter(estado = "ESPERA"))) + ")"
 
 
         datos_base = Comparativas.objects.filter(estado = "ESPERA").order_by("-fecha_c")
@@ -811,7 +819,7 @@ def comparativas(request, estado):
 
     if estado == "2":
 
-        mensaje = "Adjunto ✓"
+        mensaje = "Adjunto ✓ (" + str(len(Comparativas.objects.filter(estado = "ADJUNTO ✓"))) + ")"
 
         datos_base = Comparativas.objects.filter(estado = "ADJUNTO ✓").order_by("-fecha_c")
 
@@ -832,7 +840,7 @@ def comparativas(request, estado):
 
     if estado == "3":
 
-        mensaje = "Rechazadas"
+        mensaje = "Rechazadas (" + str(len(Comparativas.objects.filter(estado = "NO AUTORIZADA"))) + ")"
 
         datos_base = Comparativas.objects.filter(estado = "NO AUTORIZADA").order_by("-fecha_c")
 
@@ -853,7 +861,7 @@ def comparativas(request, estado):
 
     if estado == "4":
 
-        mensaje = "Autorizadas"
+        mensaje = "Autorizadas (" + str(len(Comparativas.objects.filter(estado = "AUTORIZADA"))) + ")"
 
         datos_base = Comparativas.objects.filter(estado = "AUTORIZADA").order_by("-fecha_c")
 
@@ -954,7 +962,7 @@ def comparativas(request, estado):
                             datos.append(i)
 
 
-    return render(request, 'comparativas.html', {'datos':datos, "estado":estado, "mensaje":mensaje})
+    return render(request, 'comparativas.html', {'datos':datos, "estado":estado, "mensaje":mensaje, "espera":num_espera, "autorizada":num_autorizada, "rechazada":num_rechazada, "adjunto":num_adj})
 
 
 def compras(request, id_proyecto):

@@ -78,6 +78,7 @@
         <thead>
 
             <tr class = "table-dark">
+                <th scope = "row" style="vertical-align: middle;"> <small><b></b>  </small></th>
                 <th scope = "row" style="vertical-align: middle;"> <small> <b>FECHA</b></small></th>
                 <th scope = "row" style="vertical-align: middle;"> <small><b>PROYECTO</b> </small></th>
                 <th scope = "row" style="vertical-align: middle;"> <small><b>COMPRADOR</b> </small></th>
@@ -90,12 +91,11 @@
                 <th scope = "row" style="vertical-align: middle;"> <small><b>PRECIO DE VENTA</b> </small>   </th>
                 <th scope = "row" style="vertical-align: middle;"> <small><b>PRICING</b> </small>   </th>
                 <th scope = "row" style="vertical-align: middle;"> <small><b>DESDE</b> </small>   </th>
-                <th scope = "row" style="vertical-align: middle;"> <small><b>ANOT.</b>  </small></th>
-                <th scope = "row" style="vertical-align: middle;"> <small><b>EDITAR</b>  </small></th>
+                
 
                 {% if user.username == "AR" or user.username == "ar" %}
 
-                <th scope = "row" style="vertical-align: middle;"> <small><b>ELIMINAR</b>  </small></th>
+                <th scope = "row" style="vertical-align: middle;"> <small><b></b>  </small></th>
 
 
                 {% endif %}
@@ -108,6 +108,15 @@
 
             {% for i in datos|slice:"200" %}
             <tr class = "table-light">
+
+                <td style="width: 8%;">
+                    <a href="{% url 'Detalle venta' i.id %}"><img src="{% static 'img/buscar.png' %}" alt="" style="max-width:20px; height:auto;"></a>
+        
+
+
+                    <a href="{% url 'Editar venta' i.id %}" ><img src="{% static 'img/documento.png' %}" alt="" style="max-width:20px; height:auto;"></a>
+        
+                </td>
                 <td style="width: 120px;"> <b> <small>{{i.fecha|date:"Y-m-j"}}</small> </b></td>
                 <td style="color: rgb({{i.unidad.proyecto.color}}); width: 120px">  <small> <b>{{i.unidad.proyecto.nombre}}</b></small></td>       
                 <td style="width: 250px;"> <b> <small>{{i.comprador}}</small> </b> </td>
@@ -138,14 +147,10 @@
                 <td> <small> <b>${{i.precio_venta|floatformat:0|intcomma}}</b> </small></td>
                 <td> <b>  <small>${{i.precio_pricing|floatformat:0|intcomma}}</small></b> </td>
                 <td> <b>  <small>${{i.precio_desde|floatformat:0|intcomma}}</small></b> </td>
-                <td> <b><a href="{% url 'Detalle venta' i.id %}" class="btn btn-outline-info" ><img src="{% static 'img/buscar.png' %}" alt="" style="max-width:20px; height:auto;"  ></a>
-                </b> </td>
-                <td> <a href="{% url 'Editar venta' i.id %}" class="btn btn-outline-warning" ><img src="{% static 'img/documento.png' %}" alt="" style="max-width:20px; height:auto;"  ></a>
-                </td>
 
                 {% if user.username == "AR" or user.username == "ar" %}
 
-                <td> <a href="{% url 'Eliminar venta' i.id %}" class="btn btn-outline-danger"><img src="{% static 'img/borrar.png' %}" alt="" style="max-width:20px; height:auto;"  ></a>
+                <td> <a href="{% url 'Eliminar venta' i.id %}" ><img src="{% static 'img/borrar.png' %}" alt="" style="max-width:20px; height:auto;"  ></a>
                 </b> </td>
 
                 {% endif %}
