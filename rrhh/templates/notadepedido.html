@@ -53,26 +53,48 @@
      <b><hr class = "my-4" style="width: 100%; border-color: rgba({{datos.proyecto.color}}, 0.5;"></b>
 
      <div style="text-align: left;">
-        <h6>Nº: <small>{{datos.numero}}</small></h6>
-        <h6>REFERENCIA: <small>{{datos.titulo}}</small></h6>
-        <h6>CREADOR:
-            
-            <small>{{datos.creador}}</small>
 
-           
-        </h6>
-        <h6>DESTINATARIO: 
-           
-            <small>{{datos.destinatario}}</small>
-       
-        
-        </h6>
-        <h6>SE COPIA A: <small>{{datos.copia}}</small></h6>
-        <h6>FIRMADO POR: <small>{{datos.visto}}</small></h6>
-        <h6>FECHA DE CREACIÓN: <small>{{datos.fecha_creacion}}</small></h6>
-        <h6>ULTIMA ACTUALZIACIÓN: <small>{{datos.fecha_actualiacion}}</small></h6>
-        <h6>FECHA REQUERIDA: <small>{{datos.fecha_requerida}}</small></h6>
+        <div>
+            <small> <b>Nº: </b> {{datos.numero}}</small>
+        </div>
+        <div>
+            <small> <b>REFERENCIA: </b>{{datos.titulo}}</small>
+        </div>
+        <div>
+            <small> <b>CREADOR: </b>{{datos.creador}}</small>
+        </div>
+        <div>
+            <small> <b>DESTINATARIO: </b>{{datos.destinatario}}</small>
+        </div>
+        <div>
+            <small> <b>SE COPIA A: </b>{{datos.copia}}</small>
+        </div>
 
+        {% if datos.visto %}
+        <div>
+            <small> <b>FIRMADO POR: </b>{{datos.visto}}</small>
+        </div>
+
+        {% else %}
+
+        <div>
+            <small> <b>FIRMADO POR: </b>Aun nadie a firmado!</small>
+        </div>
+
+
+        {% endif %}
+
+        <div>
+            <small> <b>FECHA DE CREACIÓN: </b>{{datos.fecha_creacion}}</small>
+        </div>
+
+
+        <div>
+            <small> <b>ULTIMA ACTUALZIACIÓN: </b>{{datos.fecha_actualiacion}}</small>
+        </div>
+        <div>
+            <small> <b>FECHA REQUERIDA: </b>{{datos.fecha_requerida}}</small>
+        </div>
 
      </div>
 

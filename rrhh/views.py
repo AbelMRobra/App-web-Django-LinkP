@@ -1,8 +1,65 @@
 from django.shortcuts import render
+from django.shortcuts import redirect
 from .models import NotaDePedido, datosusuario
 from proyectos.models import Proyectos
 
 # Create your views here.
+
+
+def crearcorrespondencia(request):
+
+    proyectos = Proyectos.objects.all()
+
+    if request.method == 'POST':
+
+        numero = len(NotaDePedido.objects.filter(tipo = request.POST['corres']))+1
+
+        try:
+
+            b = NotaDePedido(
+
+                proyecto = Proyectos.objects.get(nombre = request.POST['proyecto']),
+                numero = numero,
+                titulo = request.POST['titulo'],
+                creador = str(request.user.username),
+                destinatario = request.POST['desti'],
+                fecha_requerida = request.POST['fechareq'],
+                copia = request.POST['copia'],
+                adjuntos = request.FILES['archivo'],
+                envio_documentacion = request.POST['envdoc'],
+                cambio_proyecto = request.POST['camproy'],
+                comunicacion_general = request.POST['comugral'],
+                descripcion = request.POST['descripcion'],
+                tipo = request.POST['corres'],
+            )
+
+            b.save()
+
+        except:
+
+            b = NotaDePedido(
+
+                proyecto = Proyectos.objects.get(nombre = request.POST['proyecto']),
+                numero = numero,
+                titulo = request.POST['titulo'],
+                creador = str(request.user.username),
+                destinatario = request.POST['desti'],
+                fecha_requerida = request.POST['fechareq'],
+                copia = request.POST['copia'],
+                envio_documentacion = request.POST['envdoc'],
+                cambio_proyecto = request.POST['camproy'],
+                comunicacion_general = request.POST['comugral'],
+                descripcion = request.POST['descripcion'],
+                tipo = request.POST['corres'],
+            )
+
+            b.save()
+
+        return redirect('Notas de pedido', id_proyecto = 0, tipo = 0)
+
+
+
+    return render(request, 'nuevacorres.html', {'proyectos':proyectos})
 
 def notasdepedido(request, id_proyecto, tipo):
 
