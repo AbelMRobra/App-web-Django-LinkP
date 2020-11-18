@@ -179,7 +179,7 @@ def notadepedido(request, id_nota):
 
         datos.save()
 
-    return redirect('Nota de pedido', id_proyecto = 0, tipo = 0)
+    return redirect('Notas de pedido', id_proyecto = 0, tipo = 0)
 
 
     return render(request, 'notadepedido.html', {'datos':datos, 'creador':creador, 'destino':destino})
