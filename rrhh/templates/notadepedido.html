@@ -8,15 +8,7 @@
 
 <div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;">
 
-    <div style="text-align: right;">
 
-
-        <img src="{% static 'img/rrhh.png' %}" alt="" style="max-height:50px; width: auto; margin: 20px;"   >
-        
-
-
-
-    </div>
 
     {% if datos.tipo == "NP" %}
 
@@ -52,7 +44,11 @@
     
      <b><hr class = "my-4" style="width: 100%; border-color: rgba({{datos.proyecto.color}}, 0.5;"></b>
 
+
+
      <div style="text-align: left;">
+
+        <h6>Información general:</h6>
 
         <div>
             <small> <b>Nº: </b> {{datos.numero}}</small>
@@ -173,13 +169,6 @@
 
         
 
-
-        
-
-
-
-     
-
      <b><hr class = "my-4" style="width: 100%; border-color: rgba({{datos.proyecto.color}}, 0.5;"></b>
 
      <div style="text-align: justify;">
@@ -202,9 +191,7 @@
         
         <h6>Descripción:</h6>
 
-
-        <p>{{datos.descripcion}}</p>
-
+        <p style="white-space: pre-wrap;"> {{datos.descripcion}} </p>
 
      </div>
 

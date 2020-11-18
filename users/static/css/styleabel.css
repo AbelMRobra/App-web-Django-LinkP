@@ -171,4 +171,10 @@ box-shadow: 0 0 30px 2px #19C6C6;
         }
     
     }
-    
+
+
+.prewrap  {
+         white-space: pre-wrap;
+         }
+          
+
