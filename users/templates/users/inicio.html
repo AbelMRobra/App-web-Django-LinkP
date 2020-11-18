@@ -312,7 +312,7 @@
             
             {% endif %}
 
-            {% if request.user.username == "AR" or request.user.username == "ar" or request.user.username == "SP" %}
+            {% if request.user.username == "AR" or or request.user.username == "SP" %}
 
             <a class="dropdown-item" href="{% url 'OC autorizadas' 0 %}">Ordenes de compras autorizadas</a>
 
@@ -487,7 +487,7 @@
 
                 <!-- Button trigger modal -->
 
-                {% if request.user.username == "PL" or request.user.username == "ar" %}
+                {% if request.user.username == "PL" or request.user.username == "AR" %}
 
                 {% if datos_pl %}
         
