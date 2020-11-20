@@ -971,14 +971,8 @@ def pricing(request, id_proyecto):
 
         m2 = dato.sup_propia + dato.sup_balcon + dato.sup_comun + dato.sup_patio
 
-        try:
-            contado_m2 = desde/m2
 
-        except:
-
-            contado_m2 = "NO DEFINIDO"
-            
-        datos_tabla_unidad.append((dato, m2, desde, dato.id, contado_m2, financiado, financiado_m2, fin_ant, valor_cuotas, venta))
+        datos_tabla_unidad.append((dato, m2, desde, dato.id, contado, financiado, financiado_m2, fin_ant, valor_cuotas, venta))
         
         #Aqui vamos armando los m2 totales y los m2 de cocheras
 

@@ -1153,7 +1153,7 @@ def consolidado(request):
                     contado = desde*m2 
 
                     sumatoria_contado = sumatoria_contado + contado
-                    m2_totales = m2_totales + (d.sup_propia + d.sup_balcon + d.sup_comun + d.sup_patio)
+                    m2_totales = m2_totales + m2
 
                 except:
 
