@@ -186,9 +186,26 @@
                     {% endfor %}
                     'Hoy'
                     ],
-                datasets: [{
-                    label: 'Margen despues del descuento',
-                    backgroundColor: 'rgb(46, 86, 202 , 0.15)',
+                datasets: [
+
+                {
+                    label: 'Retiro de socios',
+                    backgroundColor: 'rgb(223, 48, 26, 0.8)',
+                    borderColor: 'rgb(223, 48, 26)',
+                    fill: true,
+                    borderWidth: 1,
+                    lineTension: 0,
+                    data: [
+                    {% for i in datos_registro %}
+                    Math.round({{i.2|floatformat:0}}/1000000),                   
+                    {% endfor %}
+                    Math.round({{ datos_finales.0.7|floatformat:0 }}/1000000),
+                    ]
+                },
+
+                {
+                    label: 'Margen con descuento',
+                    backgroundColor: 'rgb(46, 86, 202 , 0.5)',
                     borderColor: 'rgb(46, 86, 202)',
                     fill: true,
                     borderWidth: 1,
@@ -201,9 +218,10 @@
                     Math.round({{ datos_finales.0.6|floatformat:0 }}/1000000),
                     ]
                 },
+
                 {
                     label: 'Margen total',
-                    backgroundColor: 'rgb(28, 180, 51, 0.15)',
+                    backgroundColor: 'rgb(28, 180, 51, 0.2)',
                     borderColor: 'rgb(28, 180, 51)',
                     fill: true,
                     borderWidth: 1,
@@ -214,7 +232,9 @@
                     {% endfor %}
                     Math.round({{ datos_finales.0.2|floatformat:0 }}/1000000),
                     ]
-                }],
+                },
+                
+                ],
 
             },
 

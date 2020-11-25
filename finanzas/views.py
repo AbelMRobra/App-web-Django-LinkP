@@ -1031,6 +1031,7 @@ def consolidado(request):
     costo_total = 0
     ingresos_total = 0
     descuento_total = 0
+    retiro_totales = 0
 
 
     for dato in datos:
@@ -1077,6 +1078,7 @@ def consolidado(request):
         total_ingresos_pesimista = total_ingresos - descuento
         saldo_proyecto_pesimista = total_ingresos_pesimista - total_costo
         rentabilidad_pesimista = (saldo_proyecto_pesimista/total_costo)*100
+        retiro_totales = retiro_totales + retiro_socios 
 
         try:
 
@@ -1191,7 +1193,7 @@ def consolidado(request):
     rendimiento_total = beneficio_total/costo_total*100
     rendimiento_total_pesimista = beneficio_total_pesimista/costo_total*100
 
-    datos_finales.append((ingresos_total, costo_total, beneficio_total, rendimiento_total, descuento_total, rendimiento_total_pesimista, beneficio_total_pesimista))
+    datos_finales.append((ingresos_total, costo_total, beneficio_total, rendimiento_total, descuento_total, rendimiento_total_pesimista, beneficio_total_pesimista, retiro_totales))
 
 
     #Esta es la parte del historico
@@ -1219,6 +1221,7 @@ def consolidado(request):
         costo_total = 0
         ingresos_total = 0
         descuento_total = 0
+        retiro_totales = 0
 
 
         for dato in datos:
@@ -1261,6 +1264,8 @@ def consolidado(request):
             saldo_proyecto_pesimista = total_ingresos_pesimista - total_costo
             rentabilidad_pesimista = (saldo_proyecto_pesimista/total_costo)*100
 
+            retiro_totales = retiro_totales + dato.retiro_socios
+
             try:
 
                 modelo = Modelopresupuesto.objects.filter(proyecto = dato.proyecto)
@@ -1290,7 +1295,7 @@ def consolidado(request):
 
         datos_finales_registro.append((ingresos_total, costo_total, beneficio_total, rendimiento_total, descuento_total, rendimiento_total_pesimista, beneficio_total_pesimista))
 
-        datos_registro.append((datos_completos_registro, datos_finales_registro))
+        datos_registro.append((datos_completos_registro, datos_finales_registro, retiro_totales))
 
     return render(request, 'consolidado.html', {"datos_completos":datos_completos, 'datos_finales':datos_finales, "datos_registro":datos_registro, "fechas":fechas})
 
