@@ -10,59 +10,77 @@
 <div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;" > 
 
     <div style="text-align: center;">
-        <h2>Ritmo de venta</h2>
+        <h2 style="font-family: Arial, Helvetica, sans-serif;">Historial de ventas</h2>
 
         {% if datos.fecha %}
 
-        <h6>Fecha del adjunto: {{datos.fecha}}</h6>
+        <h6>Fecha del informe: {{datos.fecha}}</h6>
 
         {% endif %}
 
-        <small>Área comercial</small>
+        <small> <b>Modulo: </b> Archivos del área</small>
 
 
         <b><hr class = "my-4" style="width: 75%;"></b>
     
     </div>
 
-    <div style="text-align: center;">
-       <form method="POST">
+    <div style="text-align: center; width: 350px; height: 210px; display: inline-block; margin: 20px; vertical-align: top; border: 2px solid rgb(11, 32, 68); border-radius: 5%;">
 
-           {% csrf_token %}
+      <div style="margin: 15px;">
 
-           <select name="fecha" class="custom-select" style="width: 20%;">
+          <form method="POST">
 
-
-               {% for i in datos.fechas %}
-
-               <option value="{{i.1}}">{{i.0}}</option>
-
-               {% endfor %}
-
-
-
-             </select>
-             <div>
-               <small> Seleccione una fecha para cargar el archivo</small>
+              {% csrf_token %}
+   
+              <div>
+   
+              <h6 style= "font-family: Arial, Helvetica, sans-serif; color: rgb(11, 32, 68); ">Archivos cargados</h6>
+              
              </div>
+   
+             <select name="fecha" class="custom-select" style="width: 200px;">
+
+
+              {% for i in datos.fechas %}
+
+              <option value="{{i.1}}">{{i.0}}</option>
+
+              {% endfor %}
 
 
 
-             <div>
-               <button class="btn btn-dark" type="submit" style="margin-top: 1%;">Buscar</button>          
-           </div>
-           
-       </form>
+            </select>
+                
+                
+   
+                <div>
+                  <button class="btn btn-dark" type="submit" style="margin-top: 10px;"><img src="{% static 'img/buscar2.png' %}" alt="" style="max-width:20px; height:auto;"> Buscar</button>          
+              </div>
+              
+          </form>
+   
+          <b><hr class = "my-4" style="width: 75%; "></b>
+
 
       </div>
+     
+ </div>
 
-       {% if datos.datos %}
+
+      {% if datos.datos %}
 
        <div>
-          <a href="{{ datos.datos.historial_venta.url }}" class="btn btn-info" style="margin-top: 1%;">Ver Informe!</a>
-       </div>
+          <a href="{{ datos.datos.historial_venta.url }}" style="margin-top: 1%;"><img src="{% static 'img/reportar.png' %}" alt="" style="max-width:30px; height:auto;"> Informe encontrado!</a>
 
-       {% endif %}
+        </div>
+
+        <small> Ingrese al link para ver el archivo</small>
+
+
+        
+
+      {% endif %}
        
        <div style="text-align: center; margin-top: 10%;">
         <p> <small>-- Link<strong>P</strong> --</small> </p>
