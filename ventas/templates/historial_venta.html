@@ -44,7 +44,7 @@
 
               {% for i in datos.fechas %}
 
-              <option value="{{i.1}}">{{i.0}}</option>
+              <option value="{{i.1}}">{{i.0|date:"Y-m-j"}}</option>
 
               {% endfor %}
 
