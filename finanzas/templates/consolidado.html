@@ -90,19 +90,7 @@
 
 
                         
-                        {% if i.6 > 0 %}
-
-
-                        {% endif %}
-
-                        {% if i.5 > 200 %}
-
-                        {% elif i.5 > 100 %}
-
-                        {% else %}
-
-
-                        {% endif %}
+                        
 
 
                         
@@ -125,7 +113,56 @@
                     <td style="width: 10%; vertical-align: middle;">- $ {{ i.10|floatformat:0|intcomma }}</td> 
                     <td style="width: 10%; vertical-align: middle;"><b>$ {{ i.7|floatformat:0|intcomma }}</b></td> 
                     <td style="width: 8%; vertical-align: middle;">{{ i.8|floatformat:0|intcomma }}%  </td> 
-                    <td style="width: 10%; vertical-align: middle; color: #323BA9;"><b>$ {{ i.9|floatformat:0|intcomma }}</b> </td>
+                    <td style="width: 10%; vertical-align: middle; color: #323BA9;">
+                        
+                        
+                        <b>$ {{ i.9|floatformat:0|intcomma }}</b> 
+
+
+                        <div>
+
+                            {% if i.6 > 0 %}
+
+                            <small style="color: #D64127;"><b>PRG</b></small>
+
+
+                            {% else %}
+
+                            <small style="color: #D64127;"><b>PRG</b></small>
+
+
+                            {% endif %}
+
+
+                            {% if i.5 > 180 %}
+
+                            <small style="color: #2FD627;"><b> PRP</b></small>
+
+                            {% elif i.5 > 100 %}
+
+                            <small style="color: #D6C127;"><b> PRP</b></small>
+
+                            {% else %}
+
+                            <small style="color: #D64127;"><b >PRP</b></small>
+
+
+                            {% endif %}
+
+
+
+                        </div>
+
+
+                        
+
+                        
+                    
+                    
+                    
+                    
+                    
+                    </td>
 
                 </tr>
             </tbody>
