@@ -1075,7 +1075,7 @@ def consolidado(request):
         rentabilidad = (saldo_proyecto/total_costo)*100
 
 
-        total_ingresos_pesimista = total_ingresos - descuento
+        total_ingresos_pesimista = total_ingresos - descuento - retiro_socios
         saldo_proyecto_pesimista = total_ingresos_pesimista - total_costo
         rentabilidad_pesimista = (saldo_proyecto_pesimista/total_costo)*100
         retiro_totales = retiro_totales + retiro_socios 
@@ -1186,7 +1186,7 @@ def consolidado(request):
 
     # -----------------> Aqui termina para el precio promedio contado
 
-        datos_completos.append((dato, total_costo, total_ingresos, saldo_proyecto, rentabilidad, presupuesto, pricing, saldo_proyecto_pesimista, rentabilidad_pesimista, precio_promedio_contado))
+        datos_completos.append((dato, total_costo, total_ingresos, saldo_proyecto, rentabilidad, presupuesto, pricing, saldo_proyecto_pesimista, rentabilidad_pesimista, precio_promedio_contado, retiro_socios, descuento))
 
     beneficio_total = ingresos_total - costo_total
     beneficio_total_pesimista = beneficio_total - descuento_total - retiro_totales
@@ -1746,9 +1746,6 @@ def borrarmovimiento(request, id_mov):
 
 
     return render(request, 'borrarmovimiento.html', {'datos':datos})
-
-
-
 
 
 def retirodesocios(request):

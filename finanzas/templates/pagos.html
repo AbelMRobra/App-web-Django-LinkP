@@ -79,7 +79,7 @@
     
             <tbody>   
     
-                {% for i in datos %}
+                {% for i in datos|slice:"200" %}
                 <tr class = "table-light">
 
                     <td> <b> <small> <b>{{i.0.fecha}}</b> </small> </b></td>    
