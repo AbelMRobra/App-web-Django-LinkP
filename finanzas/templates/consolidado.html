@@ -109,7 +109,7 @@
             <tbody>
     
                 <tr class = "table-light">
-                    <td style="width: 15%; vertical-align: middle;" colspan="2"> RESULTADO CONJUNTO DE PROYECTOS </td>
+                    <td style="width: 15%; vertical-align: middle;" colspan="2"> RESULTADO  </td>
                     <td  class="priority-5" style="width: 5%; vertical-align: middle;"> ${{ datos_finales.0.0|floatformat:0|intcomma }}</td> 
                     <td  class="priority-5" style="width: 10%; vertical-align: middle;"> ${{  datos_finales.0.1|floatformat:0|intcomma }}</td> 
                     <td style="width: 10%; vertical-align: middle; vertical-align: middle;"> ${{  datos_finales.0.2|floatformat:0|intcomma }}</td> 
@@ -123,7 +123,7 @@
             <tbody>
     
                 <tr class = "table-light">
-                    <td style="width: 15%; vertical-align: middle;" colspan="2"> DESCUENTO DEL 6% SOBRE UNIDADES </td>
+                    <td style="width: 15%; vertical-align: middle;" colspan="2"> DESCUENTO SOBRE UNID. (6%)</td>
                     <td  class="priority-5" style="width: 5%; vertical-align: middle;"></td>  
                     <td  class="priority-5" style="width: 10%; vertical-align: middle;"></td> 
                     <td style="width: 10%; vertical-align: middle; vertical-align: middle;">  - ${{ datos_finales.0.4|floatformat:0|intcomma }} </td> 
@@ -136,8 +136,22 @@
 
             <tbody>
     
+                <tr class = "table-light">
+                    <td style="width: 15%; vertical-align: middle;" colspan="2"> RETIROS REALIZADOS </td>
+                    <td  class="priority-5" style="width: 5%; vertical-align: middle;"></td>  
+                    <td  class="priority-5" style="width: 10%; vertical-align: middle;"></td> 
+                    <td style="width: 10%; vertical-align: middle; vertical-align: middle;">  - ${{ datos_finales.0.7|floatformat:0|intcomma }} </td> 
+                    <td style="width: 10%; vertical-align: middle;"></td> 
+                    
+
+
+                </tr>
+            </tbody>
+
+            <tbody>
+    
                 <tr class = "table-dark">
-                    <td style="width: 15%; vertical-align: middle;" colspan="2"> <b>RESULTADO CONSIDERANDO DESCUENTO</b> </td>
+                    <td style="width: 15%; vertical-align: middle;" colspan="2"> <b>RESULTADO SIN RETIROS</b> </td>
                     <td  class="priority-5" style="vertical-align: middle;"></td>  
                     <td   class="priority-5"style="vertical-align: middle;"></td> 
                     <td style="width: 10%; vertical-align: middle; vertical-align: middle;"> <b>${{datos_finales.0.6|floatformat:0|intcomma }}</b></td> 
@@ -305,7 +319,7 @@
                     ],
                 datasets: [{
                     label: 'Costo del proyecto',
-                    backgroundColor: 'rgb(225, 40, 28 , 0.15)',
+                    backgroundColor: 'rgb(225, 40, 28 , 0.3)',
                     borderColor: 'rgb(225, 40, 28 )',
                     fill: true,
                     borderWidth: 1,

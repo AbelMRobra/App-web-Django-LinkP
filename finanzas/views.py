@@ -1058,7 +1058,7 @@ def consolidado(request):
         pend_gast = almacenero.pendiente_admin + almacenero.pendiente_comision + presupuesto.saldo_mat + presupuesto.saldo_mo + presupuesto.imprevisto + presupuesto.credito + presupuesto.fdr - almacenero.pendiente_adelantos + almacenero.pendiente_iva_ventas + almacenero.pendiente_iibb_tem
         prest_cobrar = almacenero.prestamos_proyecto + almacenero.prestamos_otros
         retiro_socios = sum(np.array(RetirodeSocios.objects.values_list('monto_pesos').filter(proyecto = dato.proyecto)))  
-        total_costo = almacenero.cheques_emitidos + almacenero.gastos_fecha + pend_gast + almacenero.Prestamos_dados + retiro_socios       
+        total_costo = almacenero.cheques_emitidos + almacenero.gastos_fecha + pend_gast + almacenero.Prestamos_dados      
         
         
         costo_total = costo_total + total_costo
@@ -1189,7 +1189,7 @@ def consolidado(request):
         datos_completos.append((dato, total_costo, total_ingresos, saldo_proyecto, rentabilidad, presupuesto, pricing, saldo_proyecto_pesimista, rentabilidad_pesimista, precio_promedio_contado))
 
     beneficio_total = ingresos_total - costo_total
-    beneficio_total_pesimista = beneficio_total - descuento_total
+    beneficio_total_pesimista = beneficio_total - descuento_total - retiro_totales
     rendimiento_total = beneficio_total/costo_total*100
     rendimiento_total_pesimista = beneficio_total_pesimista/costo_total*100
 
@@ -1245,7 +1245,7 @@ def consolidado(request):
 
             pend_gast = almacenero.pendiente_admin + almacenero.pendiente_comision + dato.saldo_mat + dato.saldo_mo + dato.imprevisto + dato.credito + dato.fdr - almacenero.pendiente_adelantos + almacenero.pendiente_iva_ventas + almacenero.pendiente_iibb_tem
             prest_cobrar = almacenero.prestamos_proyecto + almacenero.prestamos_otros
-            total_costo = almacenero.cheques_emitidos + almacenero.gastos_fecha + pend_gast + almacenero.Prestamos_dados + almacenero.retiro_socios                 
+            total_costo = almacenero.cheques_emitidos + almacenero.gastos_fecha + pend_gast + almacenero.Prestamos_dados                
             
             costo_total = costo_total + total_costo
 
@@ -1255,6 +1255,7 @@ def consolidado(request):
             total_ingresos = prest_cobrar + almacenero.cuotas_cobradas + almacenero.cuotas_a_cobrar + almacenero.ingreso_ventas
             
             ingresos_total = ingresos_total + total_ingresos
+            retiro_totales = retiro_totales + dato.retiro_socios
 
             saldo_caja = almacenero.cuotas_cobradas - almacenero.gastos_fecha - almacenero.Prestamos_dados
             saldo_proyecto = total_ingresos - total_costo
@@ -1264,7 +1265,7 @@ def consolidado(request):
             saldo_proyecto_pesimista = total_ingresos_pesimista - total_costo
             rentabilidad_pesimista = (saldo_proyecto_pesimista/total_costo)*100
 
-            retiro_totales = retiro_totales + dato.retiro_socios
+            
 
             try:
 
@@ -1289,7 +1290,7 @@ def consolidado(request):
             datos_completos_registro.append((dato, total_costo, total_ingresos, saldo_proyecto, rentabilidad, presupuesto, pricing, saldo_proyecto_pesimista, rentabilidad_pesimista))
 
         beneficio_total = ingresos_total - costo_total
-        beneficio_total_pesimista = beneficio_total - descuento_total
+        beneficio_total_pesimista = beneficio_total - descuento_total - retiro_totales
         rendimiento_total = beneficio_total/costo_total*100
         rendimiento_total_pesimista = beneficio_total_pesimista/costo_total*100
 
@@ -1311,6 +1312,7 @@ def consolidadoh(request):
     costo_total = 0
     ingresos_total = 0
     descuento_total = 0
+    retiro_totales = 0
 
 
     for dato in datos:
@@ -1357,6 +1359,8 @@ def consolidadoh(request):
         total_ingresos_pesimista = total_ingresos - descuento
         saldo_proyecto_pesimista = total_ingresos_pesimista - total_costo
         rentabilidad_pesimista = (saldo_proyecto_pesimista/total_costo)*100
+
+        retiro_totales = retiro_totales + retiro_socios 
 
         try:
 
@@ -1469,11 +1473,11 @@ def consolidadoh(request):
         datos_completos.append((dato, total_costo/h, total_ingresos/h, saldo_proyecto/h, rentabilidad, presupuesto, pricing, saldo_proyecto_pesimista/h, rentabilidad_pesimista, precio_promedio_contado))
 
     beneficio_total = ingresos_total - costo_total
-    beneficio_total_pesimista = beneficio_total - descuento_total
+    beneficio_total_pesimista = beneficio_total - descuento_total - retiro_totales
     rendimiento_total = beneficio_total/costo_total*100
     rendimiento_total_pesimista = beneficio_total_pesimista/costo_total*100
 
-    datos_finales.append((ingresos_total/h, costo_total/h, beneficio_total/h, rendimiento_total, descuento_total/h, rendimiento_total_pesimista, beneficio_total_pesimista/h))
+    datos_finales.append((ingresos_total/h, costo_total/h, beneficio_total/h, rendimiento_total, descuento_total/h, rendimiento_total_pesimista, beneficio_total_pesimista/h, retiro_totales/h))
 
 
     #Esta es la parte del historico
@@ -1504,6 +1508,7 @@ def consolidadoh(request):
         costo_total = 0
         ingresos_total = 0
         descuento_total = 0
+        retiro_totales = 0
 
 
         for dato in datos:
@@ -1537,6 +1542,7 @@ def consolidadoh(request):
             total_ingresos = prest_cobrar + almacenero.cuotas_cobradas + almacenero.cuotas_a_cobrar + almacenero.ingreso_ventas
             
             ingresos_total = ingresos_total + total_ingresos
+            retiro_totales = retiro_totales + dato.retiro_socios
 
             saldo_caja = almacenero.cuotas_cobradas - almacenero.gastos_fecha - almacenero.Prestamos_dados
             saldo_proyecto = total_ingresos - total_costo
@@ -1575,7 +1581,7 @@ def consolidadoh(request):
 
         datos_finales_registro.append((ingresos_total/h, costo_total/h, beneficio_total/h, rendimiento_total, descuento_total/h, rendimiento_total_pesimista, beneficio_total_pesimista/h))
 
-        datos_registro.append((datos_completos_registro, datos_finales_registro))
+        datos_registro.append((datos_completos_registro, datos_finales_registro, retiro_totales/h))
 
     return render(request, 'consolidadoh.html', {"datos_completos":datos_completos, 'datos_finales':datos_finales, "datos_registro":datos_registro, "fechas":fechas})
 
