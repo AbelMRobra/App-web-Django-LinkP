@@ -1290,11 +1290,12 @@ def consolidado(request):
             datos_completos_registro.append((dato, total_costo, total_ingresos, saldo_proyecto, rentabilidad, presupuesto, pricing, saldo_proyecto_pesimista, rentabilidad_pesimista))
 
         beneficio_total = ingresos_total - costo_total
-        beneficio_total_pesimista = beneficio_total - descuento_total - retiro_totales
+        beneficio_descuento = beneficio_total - descuento_total
+        beneficio_retiro = beneficio_descuento - retiro_totales
         rendimiento_total = beneficio_total/costo_total*100
         rendimiento_total_pesimista = beneficio_total_pesimista/costo_total*100
 
-        datos_finales_registro.append((ingresos_total, costo_total, beneficio_total, rendimiento_total, descuento_total, rendimiento_total_pesimista, beneficio_total_pesimista))
+        datos_finales_registro.append((ingresos_total, costo_total, beneficio_total, rendimiento_total, descuento_total, rendimiento_total_pesimista, beneficio_descuento, beneficio_retiro))
 
         datos_registro.append((datos_completos_registro, datos_finales_registro, retiro_totales))
 
