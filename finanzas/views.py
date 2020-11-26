@@ -174,6 +174,81 @@ def agregar_cuota(request, id_cuenta):
 
     return render(request, 'agregar_cuota.html', {"cuenta":cuenta})
 
+
+def deudores(request):
+
+
+    ctas_ctes = CuentaCorriente.objects.all()
+
+    fecha_hoy = datetime.date.today()
+
+    h = Constantes.objects.get(id = 7).valor
+    usd = Constantes.objects.get(id = 1).valor
+
+    datos = []
+
+    for c in ctas_ctes:
+
+        cuotas_anteriores_h = sum(np.array(Cuota.objects.values_list('precio').filter(fecha__lt = fecha_hoy, constante__id = 7, cuenta_corriente = c)))*h
+        cuotas_anteriores_usd = sum(np.array(Cuota.objects.values_list('precio').filter(fecha__lt = fecha_hoy, constante__id = 7, cuenta_corriente = c)))*usd
+        pagos_h = sum(np.array(Pago.objects.values_list('pago').filter(fecha__lt = fecha_hoy, cuota__constante__id = 7, cuota__cuenta_corriente = c)))*h
+        pagos_usd = sum(np.array(Pago.objects.values_list('pago').filter(fecha__lt = fecha_hoy, cuota__constante__id = 7, cuota__cuenta_corriente = c)))*usd
+        
+        cuotas = (cuotas_anteriores_h + cuotas_anteriores_usd)/h
+        pagos = (pagos_h + pagos_usd)/h
+        deuda = cuotas - pagos
+        deuda_pesos = deuda*h
+
+        datos.append((c, cuotas, pagos, deuda, deuda_pesos))
+
+    # Aqui empieza el filtro
+
+    if request.method == 'POST':
+
+        datos_viejos = datos
+
+        datos = []   
+
+        palabra_buscar = request.POST["palabra"]
+
+        if str(palabra_buscar) == "":
+
+            datos = datos_viejos
+
+        else:
+        
+            for i in datos_viejos:
+
+                palabra =(str(palabra_buscar))
+
+                lista_palabra = palabra.split()
+
+                buscar = (str(i[0].venta.proyecto.nombre)+str(i[0].venta.comprador))
+
+                contador = 0
+
+                for palabra in lista_palabra:
+
+                    contador2 = 0
+
+                    if palabra.lower() in buscar.lower():
+  
+                        contador += 1
+
+                if contador == len(lista_palabra):
+
+                    datos.append(i)
+
+
+    # Aqui termina el filtro
+
+    # Ordenamos los datos
+
+    datos = sorted(datos, key=lambda tup: tup[3], reverse=True)
+
+
+    return render(request, 'deudores.html', {'datos':datos})
+
 def pagos(request, id_cuota):
 
     cuota = Cuota.objects.get(id = id_cuota)

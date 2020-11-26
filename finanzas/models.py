@@ -77,12 +77,20 @@ class CuentaCorriente(models.Model):
         return self.venta.comprador
 
 class Cuota(models.Model):
+
+    class Estado(models.TextChoices):
+        BOLETO= "BOLETO"
+        NO_BOLETO= "NO BOLETO"
+
+
     cuenta_corriente = models.ForeignKey(CuentaCorriente, on_delete=models.CASCADE, verbose_name = "Cuenta corriente")
     fecha = models.DateField(verbose_name = "Fecha de venta")
     precio = models.FloatField(verbose_name="Precio de la cuota en moneda dura")
     constante = models.ForeignKey(Constantes, on_delete=models.CASCADE, verbose_name = "Constante asociada")
     precio_pesos = models.FloatField(verbose_name="Precio en pesos", blank=True, null=True)
     concepto = models.CharField(max_length=100, verbose_name = "Concepto", blank=True, null=True)
+    boleto = models.CharField(choices=Estado.choices, max_length=20, verbose_name="Boleto", default="NO BOLETO")
+    porc_boleto = models.FloatField(verbose_name="Porcentaje a aplicar boleto", blank=True, null=True)
     
     class Meta:
         verbose_name="Cuota"
