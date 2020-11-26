@@ -175,6 +175,7 @@
     <h6>Rentabilidad: <small>{{datos.datos.3.4|floatformat:0|intcomma}}%</small>  </h6>
     <p><small style="color: #5DB150;">Valor del USD BLUE: $ {{datos.usd.valor}}</small></p>
 
+    <!--
     <div style="text-align: left;">
 
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter" style="background-color: rgba({{datos.datos.0.color}}, 0.8); border-color: rgba({{datos.datos.0.color}}, 1)">
@@ -184,6 +185,7 @@
 
       </div>
 
+    -->
 
 
     <!-- Modal -->
@@ -311,7 +313,6 @@
         <h6><small>I.V.A sobre compras: </small></h6>
         <h6><small>II.BB + T.E.M:</small></h6>
         <h6>Prestamos:</h6>
-        <h6>Retiros de socios:</h6>
         
         </div>
 
@@ -332,7 +333,6 @@
         <h6><small>$ {{datos.datos.2.pendiente_iva_ventas|floatformat:0|intcomma}}   </small></h6>
         <h6><small>$ {{datos.datos.2.pendiente_iibb_tem|floatformat:0|intcomma}}</small></h6>
         <h6>$ {{datos.datos.2.Prestamos_dados|floatformat:0|intcomma}}  </h6>
-        <h6>$ {{datos.datos.3.10|floatformat:0|intcomma}}  </h6>
         
         </div>
 
@@ -365,7 +365,7 @@
 
         <hr class = "my-4" style="width: 100%; border-color: rgba({{datos.datos.0.color}}, 0.5);">
 
-        <h5> Escenario pesimista </h5>
+        <h5> Escenario despues de descuentos y retiros </h5>
 
         <hr class = "my-4" style="width: 100%; border-color: rgba({{datos.datos.0.color}}, 0.5);">
 
@@ -373,7 +373,8 @@
     </div>
 
     <div style="text-align: left;">
-        <h6>Descuento de sobre unidades en venta/socios (6%): - ${{datos.datos.3.7|floatformat:0|intcomma}} </h6>
+        <h6>Descuento de sobre unidades en venta/socios (6%): - $ {{datos.datos.3.7|floatformat:0|intcomma}} </h6>
+        <h6>Retiros de socios: - $ {{datos.datos.3.10|floatformat:0|intcomma}} </h6>
     </div>
 
 
