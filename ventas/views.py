@@ -299,6 +299,30 @@ def cajaarea(request):
 
     return render(request, 'caja_area.html', {"datos":datos})
 
+
+def fechaentrega(request):
+
+    datos = ArchivoFechaEntrega.objects.order_by("-fecha")
+
+    busqueda = 0
+
+    if request.method == 'POST':
+
+        #Trae los datos elegidos
+        datos_elegidos = request.POST.items()
+
+        for dato in datos_elegidos:
+
+            if dato[0] == "fecha":
+                datos = ArchivosAreaVentas.objects.get(fecha = dato[1])
+                busqueda = 0
+                fecha = dato[1]
+
+    datos = {"datos":datos,
+    "busqueda":busqueda}
+
+    return render(request, 'radiografiaclientes.html', {"datos":datos})
+
 def radiografia(request):
 
     busqueda = 1

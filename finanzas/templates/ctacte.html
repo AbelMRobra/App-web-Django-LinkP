@@ -71,7 +71,34 @@
                 {% for i in datos_cuenta %}
                 <tr class = "table-light">
                     <td> <b> <small> <b>{{i.0.fecha}}</b> </small> </b></td>    
-                    <td class="priority-3"> <b> <small>{{i.0.concepto|upper}}</small> </b> </td>
+                    <td class="priority-3"> <b> <small>
+
+                        {{i.0.concepto|upper}}
+
+                        <div>
+
+                            {% if i.0.boleto == "NO BOLETO" %}
+                        
+                        <b style="color: #CE2615;">⚫ </b>    
+
+                        {% else %}
+
+                        <b style="color: #34CE15;">⚫ {{i.0.porc_boleto|floatformat:2}}% </b>
+
+                        {% endif %}
+
+
+                        </div>
+
+
+                        
+
+
+                        
+                    
+                    
+                    
+                    </small> </b> </td>
                     <td class="priority-5"> <b> <small>{{i.0.constante.nombre}}</small> </b> </td>
 
                     <td class="priority-4"> <b> <small>{{i.0.precio|floatformat:2}}</small> </b> </td>
@@ -90,9 +117,9 @@
                     <td> <b> <small> <b>${{i.3|floatformat:0|intcomma}}</b> </small></b> </td>
                     <td> <b><a href="{% url 'Pagos' i.0.id %}" class="btn btn-sm btn-success" >Ingresar</a>
                     </b> </td>
-                    <td class="priority-3"> <b><a href="{% url 'Editar cuota' i.0.id %}" class="btn btn-sm btn-info" >Editar</a>
+                    <td class="priority-3"> <b><a href="{% url 'Editar cuota' i.0.id %}"><img src="{% static 'img/documento.png' %}" alt="" style="max-width:20px; height:auto;"></a>
                     </b> </td>
-                    <td class="priority-3"> <b><a href="{% url 'Eliminar cuota' i.0.id %}" class="btn btn-sm btn-danger" >X</a>
+                    <td class="priority-3"> <b><a href="{% url 'Eliminar cuota' i.0.id %}"><img src="{% static 'img/borrar.png' %}" alt="" style="max-width:20px; height:auto;"></a>
                     </b> </td>
                    
     

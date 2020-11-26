@@ -115,3 +115,15 @@ class ArchivosAreaVentas(models.Model):
         return "Archivos del area"
 
 
+class ArchivoFechaEntrega(models.Model):
+    fecha = models.DateField(verbose_name="Fecha de carga", auto_now_add=True)
+    archivo = models.FileField(verbose_name="archivo", blank=True, null=True)
+
+    class Meta:
+        verbose_name = "Archivos Fecha de entrega"
+        verbose_name_plural = "Archivos Fecha de entrega"
+
+    def __str__(self):
+        return "Archivos de fecha de entrega"
+
+

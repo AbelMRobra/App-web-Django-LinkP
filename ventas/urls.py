@@ -17,6 +17,7 @@ urlpatterns = [
     url(r'^panelpricing$', login_required(views.panelpricing), name = 'Panel de pricing'),
     url(r'^radiografia$', login_required(views.radiografia), name = 'Radiografia del cliente'),
     url(r'^informeventa$', login_required(views.informeventa), name = 'Informe de venta'),
+    url(r'^informeventa$', login_required(views.fechaentrega), name = 'Fecha de entrega'),
     url(r'^historialventa$', login_required(views.historialventa), name = 'Historial de venta'),
     url(r'^cajaarea$', login_required(views.cajaarea), name = 'Caja del area'),
     url(r'^invmer$', login_required(views.invmer), name = 'Investigacion de mercado'),
