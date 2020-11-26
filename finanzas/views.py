@@ -1190,10 +1190,11 @@ def consolidado(request):
 
     beneficio_total = ingresos_total - costo_total
     beneficio_total_pesimista = beneficio_total - descuento_total - retiro_totales
+    beneficio_retiros = beneficio_total - descuento_total
     rendimiento_total = beneficio_total/costo_total*100
     rendimiento_total_pesimista = beneficio_total_pesimista/costo_total*100
 
-    datos_finales.append((ingresos_total, costo_total, beneficio_total, rendimiento_total, descuento_total, rendimiento_total_pesimista, beneficio_total_pesimista, retiro_totales))
+    datos_finales.append((ingresos_total, costo_total, beneficio_total, rendimiento_total, descuento_total, rendimiento_total_pesimista, beneficio_total_pesimista, retiro_totales, beneficio_retiros))
 
 
     #Esta es la parte del historico
