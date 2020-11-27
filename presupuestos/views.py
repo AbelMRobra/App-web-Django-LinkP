@@ -609,9 +609,17 @@ def presupuestostotal(request):
 
         proyectos = 0
 
+        try:
+
+            variacion = ((valor_reposicion/registro[-30]) -1)*100
+
+        except:
+
+            variacion = 0
+
         
     
-    return render(request, 'presupuestos/principalpresupuesto.html', {"datos":datos, "proyectos":proyectos, "valor":registro, "presupuestador":presupuestador})
+    return render(request, 'presupuestos/principalpresupuesto.html', {"datos":datos, "proyectos":proyectos, "valor":registro, "presupuestador":presupuestador, "variacion":variacion})
 
 
 # ---------------------------------> VISTAS PARA PANEL PRESUPUESTOS - SALDO CAPITULO ----------------------------------------------
