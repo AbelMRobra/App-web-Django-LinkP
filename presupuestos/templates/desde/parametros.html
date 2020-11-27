@@ -39,7 +39,7 @@
 
             {% for i in datos %}
             <tr class = "table-light">
-                <td rowspan="2" style="vertical-align: middle; width: 100px;" >
+                <td rowspan="2" style="vertical-align: middle; width: 10%" >
                     
                     <img src="{{i.0.proyecto.iamgen.url}}"  class="img-fluid" alt="..." style="max-width: 80px; height:auto;">
 
@@ -49,14 +49,14 @@
                 
                 
                 </td>
-                <td style="width: 120px;">{{i.3|floatformat:0}}%</td>
-                <td style="width: 120px;">{{i.4|floatformat:0}}%</td>
-                <td>{{i.5|floatformat:0}}%</td>
-                <td style="width: 140px;">{{i.0.terreno }} m2 - <b>{{i.1|floatformat:0}}%</b></td>
-                <td style="width: 140px;">{{i.0.link}} m2 - <b>{{i.2|floatformat:0}}%</b></td>
-                <td style="width: 100px;">{{i.6|floatformat:2}}%</td>
-                <td style="width: 100px;">{{i.7|floatformat:2}}%</td>
-                <td style="width: 120px;">{{i.17|floatformat:2}}% ({{i.19|floatformat:0|intcomma}})</td>
+                <td style="width: 10%;">{{i.3|floatformat:0}}%</td>
+                <td style="width: 10%">{{i.4|floatformat:0}}%</td>
+                <td style="width: 10%">{{i.5|floatformat:0}}%</td>
+                <td style="width: 10%">{{i.0.terreno }} m2 - <b>{{i.1|floatformat:0}}%</b></td>
+                <td style="width: 10%">{{i.0.link}} m2 - <b>{{i.2|floatformat:0}}%</b></td>
+                <td style="width: 10%">{{i.6|floatformat:2}}%</td>
+                <td style="width: 10%">{{i.7|floatformat:2}}%</td>
+                <td style="width: 10%">{{i.17|floatformat:2}}% ({{i.19|floatformat:0|intcomma}})</td>
                 <td> <strong>{{i.8|floatformat:0}}%</strong> </td>
             
             </tr>
