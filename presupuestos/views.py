@@ -502,9 +502,6 @@ def presupuestostotal(request):
 
     if request.method == 'POST':
 
-
-        
-
         #Trae el proyecto elegido
 
         proyecto_elegido = request.POST.items()
@@ -541,7 +538,7 @@ def presupuestostotal(request):
 
                 valor_reposicion = (valor_reposicion + articulo_cantidad[0].valor*articulo_cantidad[1])
 
-        valor_reposicion = valor_reposicion/1000000
+        valor_reposicion = valor_reposicion
         
         valor_saldo = 0
 
@@ -564,13 +561,13 @@ def presupuestostotal(request):
 
         valor_proyecto_mo = valor_saldo - valor_proyecto_materiales
 
-        valor_saldo = valor_saldo/1000000
+        valor_saldo = valor_saldo
 
         try:
 
             Saldo_act = Presupuestos.objects.get(proyecto = proyectos)
 
-            Saldo_act.saldo = valor_saldo*1000000
+            Saldo_act.saldo = valor_saldo
             Saldo_act.saldo_mat = valor_proyecto_materiales
             Saldo_act.saldo_mo = valor_proyecto_mo
 
@@ -584,8 +581,9 @@ def presupuestostotal(request):
 
         if valor_reposicion != 0:
             avance = (1 - (valor_saldo/valor_reposicion))*100
+            pendiente = 100 - avance
 
-        datos.append((proyectos, valor_reposicion, valor_saldo, avance))
+        datos.append((proyectos, valor_reposicion, valor_saldo, avance, pendiente))
 
         valor_proyecto = RegistroValorProyecto.objects.filter(proyecto = proyectos)
 
@@ -594,18 +592,20 @@ def presupuestostotal(request):
         for valor in valor_proyecto:
 
 
-            registro.append((valor.fecha, valor.precio_proyecto/1000000))
+            registro.append((valor.fecha, valor.precio_proyecto))
 
         try:
 
             Presup_act = Presupuestos.objects.get(proyecto = proyectos)
 
-            Presup_act.valor = valor_reposicion*1000000
+            Presup_act.valor = valor_reposicion
 
             Presup_act.save()
 
         except:
             pass
+
+        registro = registro[-60:]
 
         proyectos = 0
 
