@@ -155,11 +155,17 @@ class StockComprasAnticipadas(models.Model):
 # Modelo para pasar certificados
 
 class Certificados(models.Model):
+
+    class Estado(models.TextChoices):
+        ESPERA = "ESPERA"
+        CHEQUEADO = "CHEQUEADO"
+
     proyecto = models.ForeignKey(Proyectos, null=False, blank=True, on_delete=models.CASCADE, verbose_name = "Proyecto")
-    contrato = models.ForeignKey(Contratos, null=False, blank=True, on_delete=models.CASCADE, verbose_name= "Nombre del Contrato")
+    contrato = models.ForeignKey(Contratos, null=False, blank=True, on_delete=models.CASCADE, verbose_name= "Contrato")
     num_cer =  models.IntegerField(verbose_name="Numero de certificado")
     descrip = models.CharField(max_length=200, verbose_name="Descripción")
     adj = models.FileField(null=True, verbose_name = "Adjunto", upload_to="projects/cert")
+    estado = models.CharField(choices=Estado.choices, max_length=20, verbose_name="Estado", blank=True, null=True, default="ESPERA")
 
     class Meta:
         verbose_name = "Certificado"

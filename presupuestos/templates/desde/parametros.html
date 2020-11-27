@@ -18,7 +18,7 @@
         <thead>
 
             <tr class = "table-dark">
-                <th scope = "row" style="vertical-align: middle;" colspan="2"> <span  class="hint--top hint--danger" aria-label= "Valor de reposición del proyecto neto">PROYECTO</span> </th>
+                <th scope = "row" style="vertical-align: middle;"> <span  class="hint--top hint--danger" aria-label= "Valor de reposición del proyecto neto">PROYECTO</span> </th>
                 <th scope = "row" style="vertical-align: middle;"> PRESUPUESTO </th>
                 <th scope = "row" style="vertical-align: middle;"> SOFT + IVA </th>
                 <th scope = "row" style="vertical-align: middle;"> <span  class="hint--top hint--danger" aria-label= "Se aplica sobre el valor son softcost e iva">IMPREVISTO</span>  </th>
@@ -39,8 +39,16 @@
 
             {% for i in datos %}
             <tr class = "table-light">
-                <td rowspan="2" style="vertical-align: middle; width: 100px;" ><img src="{{i.0.proyecto.iamgen.url}}"  class="img-fluid" alt="..." style="max-width: 80px; height:auto;"></td>
-                <td rowspan="2" style="vertical-align: middle; width: 120px; color: rgb({{i.0.proyecto.color}});" > <b>{{i.0.proyecto}}</b> </td>
+                <td rowspan="2" style="vertical-align: middle; width: 100px;" >
+                    
+                    <img src="{{i.0.proyecto.iamgen.url}}"  class="img-fluid" alt="..." style="max-width: 80px; height:auto;">
+
+                    <div>
+                        <small style="color: rgb({{i.0.proyecto.color}});"><b>{{i.0.proyecto}}</b></small>
+                    </div>
+                
+                
+                </td>
                 <td style="width: 120px;">{{i.3|floatformat:0}}%</td>
                 <td style="width: 120px;">{{i.4|floatformat:0}}%</td>
                 <td>{{i.5|floatformat:0}}%</td>
