@@ -45,18 +45,18 @@
 
     <div style="text-align: left; margin-top: 0.5%;">
 
-        <a class="badge badge-secondary" href="{% url 'Total cuenta' 0 %}" >Todos los proyectos</a>
+        <a style="margin: 3px;" class="badge badge-secondary" href="{% url 'Total cuenta' 0 %}" >Todos los proyectos</a>
 
 
         {% for i in listado %}
     
-            <a class="badge badge-warning" style="background-color: rgb({{i.color}});" href="{% url 'Total cuenta' i.id %}" >{{i.nombre}}</a>
+            <a class="badge badge-warning" style="background-color: rgb({{i.color}}); margin: 3px;" href="{% url 'Total cuenta' i.id %}" >{{i.nombre}}</a>
     
 
 
             {% endfor %}
 
-            <a class="badge badge-info" href="{% url 'Descargar resumen total de cuenta' %}" >Descargar Excel</a>
+            <a style="margin: 3px;" class="badge badge-success" href="{% url 'Descargar resumen total de cuenta' %}"><img src="{% static 'img/sobresalir.png' %}" alt="" style="max-width:12px; height:auto;"> Descargar Excel</a>
     
 
 

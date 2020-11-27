@@ -70,7 +70,7 @@
                   
      
                   <div>
-                    <button class="btn btn-info" type="submit" style="margin-top: 10px;"><img src="{% static 'img/buscar.png' %}" alt="" style="max-width:30px; height:auto;"></button>          
+                    <button class="btn btn-dark" type="submit" style="margin-top: 10px;"><img src="{% static 'img/buscar2.png' %}" alt="" style="max-width:20px; height:auto;"> Buscar</button>          
                 </div>
                 
             </form>
@@ -100,6 +100,8 @@
             
            </div>
 
+           
+
            <div>
 
             <img src="{% static 'img/link.png' %}" alt="" style="max-width:120px; height:auto;">
@@ -108,8 +110,13 @@
 
     </div>
 
-    <a class="btn btn-info" href="{% url 'Consolidado' %}" > <img src="{% static 'img/reportar.png' %}" alt="" style="max-width:30px; height:auto;"> </a>
+    <div style="margin: 15px; ">
 
+        <a href="{% url 'Consolidado' %}"><button class="btn btn-dark"><img src="{% static 'img/stocks.png' %}" alt="" style="max-width:20px; height:auto;"> Ver indice!</button></a>
+
+    </div>
+
+        
     <b><hr class = "my-4" style="width: 75%; "></b>
 
    </div>
