@@ -220,7 +220,7 @@
     
           <div style="display: inline-block; vertical-align: middle;">
     
-            <img src="{{presupuestador.imagenlogo.url}}"  class="img-fluid" alt="..." style="max-width: 70px; height:auto;">
+            <img src="{{presupuestador.imagenlogo.url}}"  class="img-fluid" alt="..." style="max-width: 40px; height:auto;">
         
           </div>
 
@@ -318,8 +318,11 @@
                     fill: true,
                     data: [
                     {% for i in valor %}
-                    {{i.1|floatformat:0}},                   
-                    {% endfor %}{{datos.0.1|floatformat:0}},
+                    {{i.1|floatformat:0}},
+                    {% endfor %},                  
+                    Math.round({{datos.0.1|floatformat:0}}/1000000),
+                    
+
                     ]
                 },
                 ],
@@ -339,6 +342,22 @@
 
                     }
                 ],
+                yAxes: [
+                        {
+                            ticks: {
+                                callback: function(label, index, labels) {
+                                    return '$ '+label + ' M';
+                                    
+                                }
+                            },
+                            scaleLabel: {
+                                display: true,
+                                labelString: '1 M = $1.000.000'
+                            },
+
+                            stacked: false
+                        }
+                    ],
 
               },
             },

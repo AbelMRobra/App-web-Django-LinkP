@@ -592,13 +592,13 @@ def presupuestostotal(request):
         for valor in valor_proyecto:
 
 
-            registro.append((valor.fecha, valor.precio_proyecto))
+            registro.append((valor.fecha, valor.precio_proyecto/1000000))
 
         try:
 
             Presup_act = Presupuestos.objects.get(proyecto = proyectos)
 
-            Presup_act.valor = valor_reposicion
+            Presup_act.valor = valor_reposicion/1000000
 
             Presup_act.save()
 
