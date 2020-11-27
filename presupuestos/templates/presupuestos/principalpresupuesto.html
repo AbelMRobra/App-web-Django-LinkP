@@ -254,19 +254,19 @@
                 
                 <div class="card-body">
                   <div style="margin: 2px;">
-                    <a href="{% url 'Creditos de proyectos' datos.0.0.id %}" style="color: seashell;"><img src="{% static 'img/flecha-izquierda.png' %}" alt="" style="max-width:20px; height:auto; margin: 2px;"> Creditos varios</a>
+                    <a href="{% url 'Creditos de proyectos' datos.0.0.id %}" style="color: seashell;"><img src="{% static 'img/flecha-derecha.png' %}" alt="" style="max-width:20px; height:auto; margin: 2px;"> Creditos varios</a>
               
                   </div>
                   <div style="margin: 2px;">
             
-                    <a href="{% url 'Fondos de reparo' datos.0.0.id %}" style="color: seashell;"><img src="{% static 'img/flecha-izquierda.png' %}" alt="" style="max-width:20px; height:auto; margin: 2px;"> Fondos de reparo</a>
+                    <a href="{% url 'Fondos de reparo' datos.0.0.id %}" style="color: seashell;"><img src="{% static 'img/flecha-derecha.png' %}" alt="" style="max-width:20px; height:auto; margin: 2px;"> Fondos de reparo</a>
                
             
                   </div>
             
                   <div style="margin: 2px;">
             
-                    <a href="{% url 'Anticipos' datos.0.0.id %}" style="color: seashell;"><img src="{% static 'img/flecha-izquierda.png' %}" alt="" style="max-width:20px; height:auto; margin: 2px;"> Anticipos</a>
+                    <a href="{% url 'Anticipos' datos.0.0.id %}" style="color: seashell;"><img src="{% static 'img/flecha-derecha.png' %}" alt="" style="max-width:20px; height:auto; margin: 2px;"> Anticipos</a>
                 
                   </div>
                 </div>
@@ -321,19 +321,6 @@
           
     </div>
 
-
-
-   
-
-   
-
-     
-
-        
-
-        
-    
-
         <b><hr class = "my-4" style="width: 100%; border-color: rgba({{datos.0.0.color}}, 0.5) ;"></b>
 
       <div style="text-align: center; margin-top: 3%; margin-bottom: 1.5%;">
@@ -373,7 +360,7 @@
                     data: [
                     {% for i in valor %}
                     {{i.1|floatformat:0}},
-                    {% endfor %},                  
+                    {% endfor %}                  
                     Math.round({{datos.0.1|floatformat:0}}/1000000),
                     
 
