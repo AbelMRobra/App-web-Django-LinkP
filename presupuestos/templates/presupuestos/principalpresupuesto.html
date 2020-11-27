@@ -137,185 +137,191 @@
 
     {% if datos %}
 
-<div style="vertical-align: middle;">
 
-    
 
-<a href="{% url 'Panel de presupuestos por capitulo' datos.0.0.id %}" style="color: black;">
-       
-  <div class="card text-white bg-secondary mb-3" style="display: inline-block; width: 300px; height: 150px; vertical-align: top; margin: 10px;">
-      
-        <div class="card-body">
-          <h5 class="card-title" style="font-family: Arial, Helvetica, sans-serif;">Valor de reposición</h5>
-          <h6 style="font-family: Arial, Helvetica, sans-serif;">$ {{datos.0.1|floatformat:0|intcomma}}</h6>
-          <small style="font-family: Arial, Helvetica, sans-serif;">* Valor sin IVA actualizado a la fecha</small>
-        </div>
-      </div>
+    <div style="text-align: center;">
 
-    </a>
+        <div style="vertical-align: middle;">
 
-<a href="{% url 'Saldo por capitulo' datos.0.0.id %}" style="color: black;">
-
-    <div class="card text-white bg-dark mb-3" style="display: inline-block; width: 300px; height: 150px; vertical-align: top; margin: 10px;">
+          <a href="{% url 'Panel de presupuestos por capitulo' datos.0.0.id %}" style="color: black;">
+                 
+            <div class="card text-white bg-secondary mb-3" style="display: inline-block; width: 310px; height: 150px; vertical-align: top; margin: 10px;">
+                
+                  <div class="card-body">
+                    <h5 class="card-title" style="font-family: Arial, Helvetica, sans-serif;">Valor de reposición</h5>
+                    <h6 style="font-family: Arial, Helvetica, sans-serif;">$ {{datos.0.1|floatformat:0|intcomma}}</h6>
+                    <small style="font-family: Arial, Helvetica, sans-serif;">* Valor sin IVA actualizado a la fecha</small>
+                  </div>
+                </div>
           
-        <div class="card-body">
-            <h5 class="card-title" style="font-family: Arial, Helvetica, sans-serif;">Saldo del proyecto</h5>
-            <h6 style="font-family: Arial, Helvetica, sans-serif;">$ {{datos.0.2|floatformat:0|intcomma}}</h6>
-            <small style="font-family: Arial, Helvetica, sans-serif;">* Descontando compras registradas</small>
-        </div>
-      </div>
-
-    </a>
-
-    <div style="display: inline-block; width: 350px;">
-
-      <canvas id="myChart2"></canvas>
-  
+              </a>
+          
+          <a href="{% url 'Saldo por capitulo' datos.0.0.id %}" style="color: black;">
+          
+              <div class="card text-white bg-dark mb-3" style="display: inline-block; width: 310px; height: 150px; vertical-align: top; margin: 10px;">
+                    
+                  <div class="card-body">
+                      <h5 class="card-title" style="font-family: Arial, Helvetica, sans-serif;">Saldo del proyecto</h5>
+                      <h6 style="font-family: Arial, Helvetica, sans-serif;">$ {{datos.0.2|floatformat:0|intcomma}}</h6>
+                      <small style="font-family: Arial, Helvetica, sans-serif;">* Descontando compras registradas</small>
+                  </div>
+                </div>
+          
+              </a>
+          
+              <div style="display: inline-block; width: 310px;">
+          
+                <canvas id="myChart2"></canvas>
+            
+              </div>
+               
+              <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+              <script>
+            
+                  var ctx = document.getElementById('myChart2').getContext('2d');
+                  var chart = new Chart(ctx, {
+                      // The type of chart we want to create
+                      type: 'doughnut',
+                      // The data for our dataset
+                      data: {
+                      datasets: [{        
+                          data: [{{datos.0.3|floatformat:0}}, {{datos.0.4|floatformat:0}}],
+                          backgroundColor: ['rgba({{datos.0.0.color}}, 0.5)', 'rgba(152, 165, 194, 0.5)'],    
+                      }],
+            
+                      labels: ['Avance', 'Pendiente' ]
+                    },
+                      options: {
+                        legend: {
+                            position: 'right'
+                        },
+                      },
+            
+                    });
+            
+              </script>
+          
+          
+              
+          
+             </div>
+          
+             <div>
+          
+              
+          
+              <div class="card text-white bg-dark mb-3" style="display: inline-block; width: 310px; height: 150px; vertical-align: top;  margin: 10px;">
+                
+                <div class="card-body">
+                  <div style="display: inline-block; text-align: left; vertical-align: middle; margin-top: 15px;">
+          
+                    <h6 style="font-family: Arial, Helvetica, sans-serif;">Responsable: </h6> 
+                  </div>
+          
+                  {% if presupuestador %}
+              
+                    <div style="display: inline-block; vertical-align: middle;">
+              
+                      <img src="{{presupuestador.imagenlogo.url}}"  class="img-fluid" alt="..." style="max-width: 40px; height:auto;">
+                  
+                    </div>
+          
+                    {% else %}
+          
+                    <div style="display: inline-block; text-align: left; vertical-align: middle; margin-top: 15px;">
+          
+                      <h6 style="font-family: Arial, Helvetica, sans-serif;">Sin asignación </h6> 
+                    </div>
+          
+                    {% endif %}
+          
+                    <div>
+          
+                      <small style="font-family: Arial, Helvetica, sans-serif;">Superficie estimada: {{datos.0.0.m2|floatformat:0}}m2 </small> 
+          
+                    </div>
+          
+          
+                    <div>
+          
+                      <small style="font-family: Arial, Helvetica, sans-serif;">Entrega: {{datos.0.0.fecha_f}} </small> 
+          
+                    </div>
+                  </div>
+              </div>
+          
+              <div class="card text-white bg-secondary mb-3" style="display: inline-block; width: 310px; height: 150px; vertical-align: top; margin: 10px;">
+                
+                <div class="card-body">
+                  <div style="margin: 2px;">
+                    <a href="{% url 'Creditos de proyectos' datos.0.0.id %}" style="color: seashell;"><img src="{% static 'img/flecha-izquierda.png' %}" alt="" style="max-width:20px; height:auto; margin: 2px;"> Creditos varios</a>
+              
+                  </div>
+                  <div style="margin: 2px;">
+            
+                    <a href="{% url 'Fondos de reparo' datos.0.0.id %}" style="color: seashell;"><img src="{% static 'img/flecha-izquierda.png' %}" alt="" style="max-width:20px; height:auto; margin: 2px;"> Fondos de reparo</a>
+               
+            
+                  </div>
+            
+                  <div style="margin: 2px;">
+            
+                    <a href="{% url 'Anticipos' datos.0.0.id %}" style="color: seashell;"><img src="{% static 'img/flecha-izquierda.png' %}" alt="" style="max-width:20px; height:auto; margin: 2px;"> Anticipos</a>
+                
+                  </div>
+                </div>
+              </div>
+          
+              <div class="card text-white bg-dark mb-3" style="display: inline-block; width: 310px; height: 150px; vertical-align: top;  margin: 10px;">
+                
+                <div class="card-body">
+                  <div style="display: inline-block; text-align: left; vertical-align: middle; margin-top: 15px;">
+          
+                    <h6 style="font-family: Arial, Helvetica, sans-serif;">Variación ultimos 30 dias: </h6> 
+                  </div>
+          
+                  {% if variacion > 0 %}
+          
+          
+                    <div style="text-align: center;">
+          
+                      <h5 style="font-family: Arial, Helvetica, sans-serif; color: #34CE15;">+ {{variacion|floatformat:2}} % </h5> 
+          
+                    </div>
+          
+          
+                  {% elif variacion == 0 %}
+          
+                  <div style="text-align: center;">
+          
+                    <h5 style="font-family: Arial, Helvetica, sans-serif; color: #1563CE;">= {{variacion|floatformat:2}} % </h5> 
+          
+                  </div>
+          
+          
+                  {% else %}
+          
+                  <div style="text-align: center;">
+          
+                    <h5 style="font-family: Arial, Helvetica, sans-serif; color: #CE3115;">- {{variacion|floatformat:2}} % </h5> 
+          
+                  </div>
+          
+          
+                  {% endif %}
+          
+          
+                  </div>
+              </div>
+          
+                
+          
+          
+             </div>
+          
     </div>
-     
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
-    <script>
-  
-        var ctx = document.getElementById('myChart2').getContext('2d');
-        var chart = new Chart(ctx, {
-            // The type of chart we want to create
-            type: 'doughnut',
-            // The data for our dataset
-            data: {
-            datasets: [{        
-                data: [{{datos.0.3|floatformat:0}}, {{datos.0.4|floatformat:0}}],
-                backgroundColor: ['rgba({{datos.0.0.color}}, 0.5)', 'rgba(152, 165, 194, 0.5)'],    
-            }],
-  
-            labels: ['Avance', 'Pendiente' ]
-          },
-            options: {
-              legend: {
-                  position: 'right'
-              },
-            },
-  
-          });
-  
-    </script>
 
 
-    
-
-   </div>
-
-   <div>
-
-    
-
-    <div class="card text-white bg-dark mb-3" style="display: inline-block; width: 300px; height: 150px; vertical-align: top;  margin: 10px;">
-      
-      <div class="card-body">
-        <div style="display: inline-block; text-align: left; vertical-align: middle; margin-top: 15px;">
-
-          <h6 style="font-family: Arial, Helvetica, sans-serif;">Responsable: </h6> 
-        </div>
-
-        {% if presupuestador %}
-    
-          <div style="display: inline-block; vertical-align: middle;">
-    
-            <img src="{{presupuestador.imagenlogo.url}}"  class="img-fluid" alt="..." style="max-width: 40px; height:auto;">
-        
-          </div>
-
-          {% else %}
-
-          <div style="display: inline-block; text-align: left; vertical-align: middle; margin-top: 15px;">
-
-            <h6 style="font-family: Arial, Helvetica, sans-serif;">Sin asignación </h6> 
-          </div>
-
-          {% endif %}
-
-          <div>
-
-            <small style="font-family: Arial, Helvetica, sans-serif;">Superficie estimada: {{datos.0.0.m2|floatformat:0}}m2 </small> 
-
-          </div>
-
-
-          <div>
-
-            <small style="font-family: Arial, Helvetica, sans-serif;">Entrega: {{datos.0.0.fecha_f}} </small> 
-
-          </div>
-        </div>
-    </div>
-
-    <div class="card text-white bg-secondary mb-3" style="display: inline-block; width: 300px; height: 150px; vertical-align: top; margin: 10px;">
-      
-      <div class="card-body">
-        <div style="margin: 2px;">
-          <a href="{% url 'Creditos de proyectos' datos.0.0.id %}" style="color: seashell;"><img src="{% static 'img/flecha-izquierda.png' %}" alt="" style="max-width:20px; height:auto; margin: 2px;"> Creditos varios</a>
-    
-        </div>
-        <div style="margin: 2px;">
-  
-          <a href="{% url 'Fondos de reparo' datos.0.0.id %}" style="color: seashell;"><img src="{% static 'img/flecha-izquierda.png' %}" alt="" style="max-width:20px; height:auto; margin: 2px;"> Fondos de reparo</a>
-     
-  
-        </div>
-  
-        <div style="margin: 2px;">
-  
-          <a href="{% url 'Anticipos' datos.0.0.id %}" style="color: seashell;"><img src="{% static 'img/flecha-izquierda.png' %}" alt="" style="max-width:20px; height:auto; margin: 2px;"> Anticipos</a>
-      
-        </div>
-      </div>
-    </div>
-
-    <div class="card text-white bg-dark mb-3" style="display: inline-block; width: 300px; height: 150px; vertical-align: top;  margin: 10px;">
-      
-      <div class="card-body">
-        <div style="display: inline-block; text-align: left; vertical-align: middle; margin-top: 15px;">
-
-          <h6 style="font-family: Arial, Helvetica, sans-serif;">Variación ultimos 30 dias: </h6> 
-        </div>
-
-        {% if variacion > 0 %}
-
-
-          <div style="text-align: center;">
-
-            <h5 style="font-family: Arial, Helvetica, sans-serif; color: #34CE15;">+ {{variacion|floatformat:2}} % </h5> 
-
-          </div>
-
-
-        {% elif variacion == 0 %}
-
-        <div style="text-align: center;">
-
-          <h5 style="font-family: Arial, Helvetica, sans-serif; color: #1563CE;">= {{variacion|floatformat:2}} % </h5> 
-
-        </div>
-
-
-        {% else %}
-
-        <div style="text-align: center;">
-
-          <h5 style="font-family: Arial, Helvetica, sans-serif; color: #CE3115;">- {{variacion|floatformat:2}} % </h5> 
-
-        </div>
-
-
-        {% endif %}
-
-
-        </div>
-    </div>
-
-      
-
-
-   </div>
 
    
 
