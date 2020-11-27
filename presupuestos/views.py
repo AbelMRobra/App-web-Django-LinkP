@@ -479,7 +479,7 @@ def presupuestostotal(request):
 
     presupuestador = 0
 
-    variacion = 0
+    variacion = 0   
     
     proyectos_inicial = Proyectos.objects.order_by("nombre")
 
@@ -600,7 +600,7 @@ def presupuestostotal(request):
 
             Presup_act = Presupuestos.objects.get(proyecto = proyectos)
 
-            Presup_act.valor = valor_reposicion/1000000
+            Presup_act.valor = valor_reposicion
 
             Presup_act.save()
 
