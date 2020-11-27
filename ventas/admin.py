@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import PricingResumen, VentasRealizadas, EstudioMercado, Pricing, ArchivosAreaVentas
+from .models import PricingResumen, VentasRealizadas, EstudioMercado, Pricing, ArchivosAreaVentas, ArchivoFechaEntrega
 from import_export import resources
 from import_export.admin import ImportExportModelAdmin
 
@@ -49,8 +49,17 @@ class ArchivosAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = ('fecha',)
     resources_class = ArchivosResource
 
+class ArchivoFechaEntregaResource(resources.ModelResource):
+    class Meta:
+        model = ArchivoFechaEntrega
+        
+class ArchivoFechaEntregaAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    list_display = ('fecha',)
+    resources_class = ArchivoFechaEntregaResource
+
 admin.site.register(PricingResumen, PricingResumenAdmin)
 admin.site.register(Pricing, PricingAdmin)
 admin.site.register(VentasRealizadas, VentasRealizadasAdmin)
 admin.site.register(EstudioMercado, EstudioMercadoAdmin)
 admin.site.register(ArchivosAreaVentas, ArchivosAdmin)
+admin.site.register(ArchivoFechaEntrega, ArchivoFechaEntregaAdmin)

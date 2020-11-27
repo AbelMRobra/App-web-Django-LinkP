@@ -1,0 +1,141 @@
+{% extends "users/inicio.html" %}
+
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+
+
+
+<div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;" > 
+
+    <div style="text-align: center;">
+        <h2 style="font-family: Arial, Helvetica, sans-serif;">Placas resumen de las fechas de entrega</h2>
+
+
+        <small> <b>Modulo: </b> Archivos del área</small>
+
+
+        <b><hr class = "my-4" style="width: 75%;"></b>
+    
+    </div>
+
+    <div style="text-align: center; width: 350px; height: 210px; display: inline-block; margin: 20px; vertical-align: top; border: 2px solid rgb(11, 32, 68); border-radius: 5%;">
+
+      <div style="margin: 15px;">
+
+          <form method="POST">
+
+              {% csrf_token %}
+   
+              <div>
+   
+              <h6 style= "font-family: Arial, Helvetica, sans-serif; color: rgb(11, 32, 68); ">Archivos cargados</h6>
+              
+             </div>
+   
+             <select name="fecha" class="custom-select" style="width: 200px;">
+
+
+              {% for i in datos %}
+
+              <option value="{{i.id}}">{{i.fecha|date:"Y-m-j"}}</option>
+
+              {% endfor %}
+
+
+
+            </select>
+                
+                
+   
+                <div>
+                  <button class="btn btn-dark" type="submit" style="margin-top: 10px;"><img src="{% static 'img/buscar2.png' %}" alt="" style="max-width:20px; height:auto;"> Buscar</button>          
+              </div>
+              
+          </form>
+
+          <div style="text-align: right; margin-top: 20px;">
+
+            <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#exampleModalCenter" >
+              <img src="{% static 'img/agregar-archivo.png' %}" alt="" style="max-width:20px; height:auto;"  >
+            </button>
+    
+    
+          </div>
+          <!-- Modal -->
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">Sube el archivo!</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+
+              <form role="form"  enctype="multipart/form-data" action="" method="POST" id="upload-image-form">
+
+                  {% csrf_token %}
+
+
+                <div style="display: inline-block; margin: 10px; ">
+        
+                    <input type="file" class="form-control-file" name="adjunto" aria-describedby="fileHelp">
+        
+                </div>
+        
+
+                <div style="margin: 10px; ">
+
+                  <small>*El archivo se subira con la fecha de hoy</small>
+
+                </div>
+        
+        
+        
+                  <button type="submit" class="btn btn-primary">Subir</button>
+      
+              </form>
+            </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+     
+          </div>
+        </div>
+      </div>
+    </div>
+   
+          <b><hr class = "my-4" style="width: 75%; "></b>
+
+
+      </div>
+     
+ </div>
+
+
+      {% if busqueda %}
+
+       <div>
+          <a href="{{ busqueda.archivo.url }}" style="margin-top: 1%;"><img src="{% static 'img/reportar.png' %}" alt="" style="max-width:30px; height:auto;"> Informe encontrado!</a>
+
+        </div>
+
+        <small> Ingrese al link para ver el archivo</small>
+
+
+        
+
+      {% endif %}
+       
+       <div style="text-align: center; margin-top: 10%;">
+        <p> <small>-- Link<strong>P</strong> --</small> </p>
+
+     </div>
+       
+       
+   </div>
+
+
+{% endblock %}

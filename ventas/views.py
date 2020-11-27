@@ -2,7 +2,7 @@ from django.shortcuts import render
 from .models import EstudioMercado, PricingResumen
 from proyectos.models import Unidades, Proyectos
 from finanzas.models import Almacenero
-from ventas.models import Pricing, ArchivosAreaVentas, VentasRealizadas
+from ventas.models import Pricing, ArchivosAreaVentas, VentasRealizadas, ArchivoFechaEntrega
 from presupuestos.models import Constantes, Desde
 from datetime import date
 from django.shortcuts import redirect
@@ -308,20 +308,21 @@ def fechaentrega(request):
 
     if request.method == 'POST':
 
-        #Trae los datos elegidos
-        datos_elegidos = request.POST.items()
+        try:
 
-        for dato in datos_elegidos:
+            b = ArchivoFechaEntrega(
 
-            if dato[0] == "fecha":
-                datos = ArchivosAreaVentas.objects.get(fecha = dato[1])
-                busqueda = 0
-                fecha = dato[1]
+                archivo = request.FILES['adjunto'],
+            )
 
-    datos = {"datos":datos,
-    "busqueda":busqueda}
+            b.save()
 
-    return render(request, 'radiografiaclientes.html', {"datos":datos})
+        except:
+            
+            busqueda = ArchivoFechaEntrega.objects.get(id = request.POST['fecha'])  
+
+
+    return render(request, 'fechaentrega.html', {"datos":datos, "busqueda":busqueda})
 
 def radiografia(request):
 
