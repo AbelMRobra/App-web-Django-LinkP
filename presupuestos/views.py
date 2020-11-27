@@ -611,7 +611,7 @@ def presupuestostotal(request):
 
         try:
 
-            variacion = ((valor_reposicion/registro[-30]) -1)*100
+            variacion = (((valor_reposicion/1000000)/registro[-30][1]) -1)*100
 
         except:
 
