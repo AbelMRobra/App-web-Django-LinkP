@@ -828,7 +828,6 @@ def pricing(request, id_proyecto):
 
     proyecto = Proyectos.objects.get(id = id_proyecto)
 
-
     datos = Unidades.objects.filter(proyecto = proyecto)
 
     mensaje = 0
@@ -851,6 +850,7 @@ def pricing(request, id_proyecto):
     otros_datos = []
     datos_tabla_unidad = []
     m2_totales = 0
+    m2_totales_disp = 0
     cocheras = 0
     ingreso_ventas = 0
     iibb = 0
@@ -861,6 +861,8 @@ def pricing(request, id_proyecto):
 
     sumatoria_contado = 0
     sumatoria_financiado = 0
+    sumatoria_contado_disp = 0
+    sumatoria_financiado_disp = 0
     
     for dato in datos:
 
@@ -950,10 +952,7 @@ def pricing(request, id_proyecto):
 
                     unidades_socios = unidades_socios + contado
 
-
             #Aqui calculamos IIBB -> IIBB en estado "NO" -- HON.LINK o TERRENO
-
-            
 
             if (dato.estado_iibb == "NO"):
 
@@ -961,7 +960,6 @@ def pricing(request, id_proyecto):
 
 
             #Aqui calculamos comision -> comsion en estado "NO" -- PROYECTO (No socios)
-
 
             if (dato.estado_comision == "NO" and dato.asig == "PROYECTO"):
 
@@ -973,7 +971,6 @@ def pricing(request, id_proyecto):
             contado = "NO DEFINIDO"
 
         venta = 0
-
 
         try:
   
@@ -987,7 +984,6 @@ def pricing(request, id_proyecto):
             if contador == 0:
                 venta = 0
     
-
         except:
             venta = 0
 
@@ -996,15 +992,26 @@ def pricing(request, id_proyecto):
 
         m2 = dato.sup_propia + dato.sup_balcon + dato.sup_comun + dato.sup_patio
 
-
         datos_tabla_unidad.append((dato, m2, desde, dato.id, contado, financiado, financiado_m2, fin_ant, valor_cuotas, venta))
         
         #Aqui vamos armando los m2 totales y los m2 de cocheras
 
         m2_totales = m2_totales + m2
+
+        if dato.estado == "DISPONIBLE":
+
+            m2_totales_disp = m2_totales_disp + m2
+
         try:
             sumatoria_contado = sumatoria_contado + contado
             sumatoria_financiado = sumatoria_financiado + financiado
+
+            if dato.estado == "DISPONIBLE":
+
+                sumatoria_contado_disp = sumatoria_contado_disp + contado
+                sumatoria_financiado_disp = sumatoria_financiado_disp + financiado
+
+
         except:
             basura = 1
         
@@ -1034,6 +1041,9 @@ def pricing(request, id_proyecto):
     promedio_contado = sumatoria_contado/m2_totales
     promedio_financiado = sumatoria_financiado/m2_totales
 
+    promedio_contado_disp = sumatoria_contado_disp/m2_totales_disp
+    promedio_financiado_disp = sumatoria_financiado_disp/m2_totales_disp
+
     if request.method == 'GET':
 
         nuevo_precio = request.GET.items()
@@ -1058,7 +1068,7 @@ def pricing(request, id_proyecto):
 
 
 
-    otros_datos.append((m2_totales, cantidad, departamentos, cocheras, promedio_contado, promedio_financiado))
+    otros_datos.append((m2_totales, cantidad, departamentos, cocheras, promedio_contado, promedio_financiado, promedio_contado_disp, promedio_financiado_disp))
 
     datos_unidades = datos_tabla_unidad
     
