@@ -863,6 +863,8 @@ def pricing(request, id_proyecto):
     sumatoria_financiado = 0
     sumatoria_contado_disp = 0
     sumatoria_financiado_disp = 0
+    prom_desde_contado = []
+    prom_desde_financiado = []
     
     for dato in datos:
 
@@ -1005,6 +1007,10 @@ def pricing(request, id_proyecto):
                 sumatoria_contado_disp = sumatoria_contado_disp + contado
                 sumatoria_financiado_disp = sumatoria_financiado_disp + financiado
 
+                if desde != "NO DEFINIDO" and dato.tipo != "COCHERA":
+                    prom_desde_contado.append(desde)
+                    prom_desde_financiado.append(financiado_m2)
+
 
         except:
             basura = 1
@@ -1043,6 +1049,17 @@ def pricing(request, id_proyecto):
     promedio_contado_disp = sumatoria_contado_disp/m2_totales_disp
     promedio_financiado_disp = sumatoria_financiado_disp/m2_totales_disp
 
+    if len(prom_desde_contado) > 0:
+
+        promedio_m2_contado = sum(np.array(prom_desde_contado))/len(prom_desde_contado)
+        promedio_m2_financiado = sum(np.array(prom_desde_financiado))/len(prom_desde_financiado)
+
+    else:
+
+        promedio_m2_contado = 0
+        promedio_m2_financiado = 0
+
+
     if request.method == 'GET':
 
         nuevo_precio = request.GET.items()
@@ -1065,9 +1082,7 @@ def pricing(request, id_proyecto):
             
             b.save()
 
-
-
-    otros_datos.append((m2_totales, cantidad, departamentos, cocheras, promedio_contado, promedio_financiado, promedio_contado_disp, promedio_financiado_disp))
+    otros_datos.append((m2_totales, cantidad, departamentos, cocheras, promedio_contado, promedio_financiado, promedio_contado_disp, promedio_financiado_disp, promedio_m2_contado, promedio_m2_financiado))
 
     datos_unidades = datos_tabla_unidad
     

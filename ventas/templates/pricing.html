@@ -55,7 +55,7 @@
     {% if datos.datos_unidades %}
 
     
-    <div class="card border-dark mb-3" style="display: inline-block; width: 310px; height: 180px; vertical-align: top; margin: 10px;">
+    <div class="card border-dark mb-3" style="display: inline-block; width: 300px; height: 180px; vertical-align: top; margin: 5px;">
         <div class="card-header">Precio base</div>  
         <div class="card-body">
             <h6> 
@@ -118,21 +118,30 @@
       </div>
 
 
-    <div class="card border-dark mb-3" style="display: inline-block; width: 310px; height: 180px; vertical-align: top; margin: 10px;">
+    <div class="card border-dark mb-3" style="display: inline-block; width: 300px; height: 180px; vertical-align: top; margin: 5px;">
         <div class="card-header">Unidades completas</div>  
         <div class="card-body">
-            <h6>Promedio contado: <small>${{datos.otros_datos.0.4|floatformat:0|intcomma}}</small></h6>
-            <h6>Promedio financiado: <small>${{datos.otros_datos.0.5|floatformat:0|intcomma}}</small></h6>
+            <h6>Prom. contado: <small>${{datos.otros_datos.0.4|floatformat:0|intcomma}}</small></h6>
+            <h6>Prom. financiado: <small>${{datos.otros_datos.0.5|floatformat:0|intcomma}}</small></h6>
             <small>*Todas las unidades usando sup. equivalente</small>
         </div>
       </div>
 
-      <div class="card border-dark mb-3" style="display: inline-block; width: 310px; height: 180px; vertical-align: top; margin: 10px;">
+      <div class="card border-dark mb-3" style="display: inline-block; width: 300px; height: 180px; vertical-align: top; margin: 5px;">
         <div class="card-header">Unidades disponibles</div>   
         <div class="card-body">
-            <h6>Promedio contado: <small>${{datos.otros_datos.0.6|floatformat:0|intcomma}}</small></h6>
-            <h6>Promedio financiado: <small>${{datos.otros_datos.0.7|floatformat:0|intcomma}}</small></h6>
+            <h6>Prom. contado: <small>${{datos.otros_datos.0.6|floatformat:0|intcomma}}</small></h6>
+            <h6>Prom. financiado: <small>${{datos.otros_datos.0.7|floatformat:0|intcomma}}</small></h6>
             <small>*Solo unidades disponibles usando sup. equivalente</small>
+        </div>
+      </div>
+
+      <div class="card border-dark mb-3" style="display: inline-block; width: 300px; height: 180px; vertical-align: top; margin: 5px;">
+        <div class="card-header">Precios por m2 de unidades</div>   
+        <div class="card-body">
+            <h6>Prom. del contado: <small>${{datos.otros_datos.0.8|floatformat:0|intcomma}}</small></h6>
+            <h6>Prom. del financiado: <small>${{datos.otros_datos.0.9|floatformat:0|intcomma}}</small></h6>
+            <small>*Promedio del precio por m2 sobre sup. equivalente y solo departamentos</small>
         </div>
       </div>
 
