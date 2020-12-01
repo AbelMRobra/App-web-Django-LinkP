@@ -988,12 +988,6 @@ def pricing(request, id_proyecto):
             venta = 0
 
 
-        #Aqui sumamos los datos
-
-        m2 = dato.sup_propia + dato.sup_balcon + dato.sup_comun + dato.sup_patio
-
-        datos_tabla_unidad.append((dato, m2, desde, dato.id, contado, financiado, financiado_m2, fin_ant, valor_cuotas, venta))
-        
         #Aqui vamos armando los m2 totales y los m2 de cocheras
 
         m2_totales = m2_totales + m2
@@ -1017,8 +1011,13 @@ def pricing(request, id_proyecto):
         
         if dato.tipo == "COCHERA":
             cocheras += 1
-                            
+                           
+        #Aqui sumamos los datos
 
+        m2 = dato.sup_propia + dato.sup_balcon + dato.sup_comun + dato.sup_patio
+
+        datos_tabla_unidad.append((dato, m2, desde, dato.id, contado, financiado, financiado_m2, fin_ant, valor_cuotas, venta))
+        
     almacenero = Almacenero.objects.get(proyecto = proyecto)
 
     #Aqui resto el 6%  --> Ya no resto el 6%, solo guardo los cambios en la BBDD
