@@ -58,7 +58,6 @@ class RegistroAlmacenero(models.Model):
     fdr = models.FloatField(null=True, blank=True, verbose_name="Fondos de reparo")
     retiro_socios = models.FloatField(null=True, blank=True, verbose_name="Retiro socios", default=0)
 
-
     class Meta:
         verbose_name="RegistroAlmacenero"
         verbose_name_plural="RegistroAlmaceneros"
@@ -82,7 +81,6 @@ class Cuota(models.Model):
         BOLETO= "BOLETO"
         NO_BOLETO= "NO BOLETO"
 
-
     cuenta_corriente = models.ForeignKey(CuentaCorriente, on_delete=models.CASCADE, verbose_name = "Cuenta corriente")
     fecha = models.DateField(verbose_name = "Fecha de venta")
     precio = models.FloatField(verbose_name="Precio de la cuota en moneda dura")
@@ -95,7 +93,6 @@ class Cuota(models.Model):
     class Meta:
         verbose_name="Cuota"
         verbose_name_plural="Cuotas"
-
 
 class Pago(models.Model):
     cuota = models.ForeignKey(Cuota, on_delete=models.CASCADE, verbose_name = "Cuota")
@@ -128,8 +125,6 @@ class Arqueo(models.Model):
         verbose_name="Arqueo"
         verbose_name_plural="Arqueos"
 
-
-
 class RetirodeSocios(models.Model):
     fecha = models.DateField(verbose_name = "Fecha del retiro")
     proyecto = models.ForeignKey(Proyectos, on_delete=models.CASCADE, verbose_name = "Proyecto", blank=True, null=True)
@@ -157,3 +152,22 @@ class MovimientoAdmin(models.Model):
     class Meta:
         verbose_name="Movimiento de administración"
         verbose_name_plural="Movimientos de administración"
+
+class Honorarios(models.Model):
+    fecha = models.DateTimeField(auto_now=True, verbose_name="Fecha de actualización")
+    cuotas = models.FloatField(verbose_name="Cuotas a cobrar", blank=True, null=True, default=0)
+    ventas = models.FloatField(verbose_name="Ventas proyectadas", blank=True, null=True, default=0)
+    estructura_gio = models.FloatField(verbose_name="Gastos de estructura y G.I.O", blank=True, null=True, default=0)
+    aportes = models.FloatField(verbose_name="Aportes a proyectos", blank=True, null=True, default=0)
+    socios = models.FloatField(verbose_name="Socios", blank=True, null=True, default=0)
+    comision_venta = models.FloatField(verbose_name="Comisión de venta", blank=True, null=True, default=0)
+    deudas = models.FloatField(verbose_name="Deudas", blank=True, null=True, default=0)
+    retiro_socios = models.FloatField(verbose_name="Retiro de socios", blank=True, null=True, default=0)
+    creditos = models.FloatField(verbose_name="Retiro de socios", blank=True, null=True, default=0)
+
+    class Meta:
+        verbose_name = "Honorario"
+        verbose_name_plural = "Honorarios"
+
+    def __str__(self):
+        return "Honorarios"

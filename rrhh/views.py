@@ -110,8 +110,6 @@ def notasdepedido(request, id_proyecto, tipo):
 
     if request.method == 'POST':
 
-
-
         datos_viejos = datos
 
         datos = []   

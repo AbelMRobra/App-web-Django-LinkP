@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Almacenero, CuentaCorriente, Cuota, RegistroAlmacenero, Pago, ArchivosAdmFin, Arqueo, RetirodeSocios
+from .models import Almacenero, CuentaCorriente, Cuota, RegistroAlmacenero, Pago, ArchivosAdmFin, Arqueo, RetirodeSocios, Honorarios
 from import_export import resources
 from import_export.admin import ImportExportModelAdmin
 
@@ -60,6 +60,16 @@ class RetiroSociosAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     search_fields = ['fecha', 'monto_pesos', 'comentario']
     resources_class = RetirodeSociosResource
 
+
+class HonorariosResource(resources.ModelResource):
+    class Meta:
+        model = Honorarios
+
+class HonorariosAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    list_display = ['fecha']
+    search_fields = ['fecha']
+    resources_class = HonorariosResource
+
 admin.site.register(RegistroAlmacenero, RegistroAlmaceneroAdmin)
 admin.site.register(Almacenero, AlmaceneroAdmin)
 admin.site.register(CuentaCorriente, CuentaCorrienteAdmin)
@@ -68,3 +78,4 @@ admin.site.register(Pago, PagoAdmin)
 admin.site.register(ArchivosAdmFin, ArchivosAdmFinAdmin)
 admin.site.register(Arqueo, ArqueoAdmin)
 admin.site.register(RetirodeSocios, RetiroSociosAdmin)
+admin.site.register(Honorarios, HonorariosAdmin)

@@ -3,7 +3,7 @@ from django.shortcuts import redirect
 from django.http import HttpResponse
 from django.views.generic.base import TemplateView  
 from presupuestos.models import Proyectos, Presupuestos, Constantes, Modelopresupuesto, Registrodeconstantes
-from .models import Almacenero, CuentaCorriente, Cuota, Pago, RegistroAlmacenero, ArchivosAdmFin, Arqueo, RetirodeSocios, MovimientoAdmin
+from .models import Almacenero, CuentaCorriente, Cuota, Pago, RegistroAlmacenero, ArchivosAdmFin, Arqueo, RetirodeSocios, MovimientoAdmin, Honorarios
 from proyectos.models import Unidades
 from ventas.models import Pricing, VentasRealizadas
 import datetime
@@ -176,7 +176,6 @@ def agregar_cuota(request, id_cuenta):
 
 
 def deudores(request):
-
 
     ctas_ctes = CuentaCorriente.objects.all()
 
@@ -1007,7 +1006,115 @@ def honorarios(request):
 
                 datos_totales.append(datos)
 
-    return render(request, 'honorarios.html', {"datos_totales":datos_totales})
+
+        honorarios = Honorarios.objects.order_by("-fecha")
+
+        subtotal_1 = honorarios[0].cuotas + honorarios[0].ventas
+        ingresos = subtotal_1 + honorarios[0].creditos
+        comision = honorarios[0].comision_venta*honorarios[0].ventas
+        subtotal_2 = honorarios[0].estructura_gio + honorarios[0].aportes + honorarios[0].socios + comision
+        costos = subtotal_2 + honorarios[0].retiro_socios + honorarios[0].deudas
+        beneficio = ingresos - costos
+        porc_beneficio = beneficio/ingresos*100
+        if beneficio == 0:
+            porc_costo = 0
+
+        else:
+            porc_costo = costos/beneficio*100
+        datos_honorarios = [subtotal_1, ingresos, comision, subtotal_2, costos, beneficio, porc_beneficio, porc_costo]
+        
+
+    return render(request, 'honorarios.html', {"datos_totales":datos_totales, "honorarios":honorarios, "datos_honorarios":datos_honorarios})
+
+def modhonorarios(request):
+
+    honorarios = Honorarios.objects.order_by("-fecha")
+
+    if request.method == 'POST':
+
+        # Cuotas
+
+        if request.POST['cuotas'] != "":
+            cuotas = request.POST['cuotas']
+        else:
+            cuotas = honorarios[0].cuotas
+
+        # Ventas
+
+        if request.POST['ventas'] != "":
+            ventas = request.POST['ventas']
+        else:
+            ventas = honorarios[0].ventas
+
+        # Estructura de gastos y GIO
+
+        if request.POST['estructura_gio'] != "":
+            estructura_gio = request.POST['estructura_gio']
+        else:
+            estructura_gio = honorarios[0].estructura_gio
+
+        # Aportes
+
+        if request.POST['aportes'] != "":
+            aportes = request.POST['aportes']
+        else:
+            aportes = honorarios[0].aportes
+
+        # Socios
+
+        if request.POST['socios'] != "":
+            socios = request.POST['socios']
+        else:
+            socios = honorarios[0].socios
+
+        # comision_venta
+
+        if request.POST['comision_venta'] != "":
+            comision_venta = request.POST['comision_venta']
+        else:
+            comision_venta = honorarios[0].comision_venta
+
+        # deudas
+
+        if request.POST['deudas'] != "":
+            deudas = request.POST['deudas']
+        else:
+            deudas = honorarios[0].deudas
+
+        # retiro_socios
+
+        if request.POST['retiro_socios'] != "":
+            retiro_socios = request.POST['retiro_socios']
+        else:
+            retiro_socios = honorarios[0].retiro_socios
+
+        # creditos
+
+        if request.POST['creditos'] != "":
+            creditos = request.POST['creditos']
+        else:
+            creditos = honorarios[0].creditos
+
+        b = Honorarios(
+
+            cuotas = cuotas,
+            ventas = ventas,
+            estructura_gio = estructura_gio,
+            aportes = aportes,
+            socios = socios,
+            comision_venta = comision_venta,
+            deudas = deudas,
+            retiro_socios = retiro_socios,
+            creditos = creditos,
+
+        )
+
+        b.save()
+
+        return redirect('Honorarios')
+
+
+    return render(request, 'modificar_hono.html', {"honorarios":honorarios})
 
 
 def ingresounidades(request, estado, proyecto):

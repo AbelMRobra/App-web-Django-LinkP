@@ -1,0 +1,193 @@
+{% extends "users/inicio.html" %}
+
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+
+<div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;">
+
+    <h3 style="font-family: Arial, Helvetica, sans-serif;">Modificar honorarios</h3>
+    <small style="font-family: Arial, Helvetica, sans-serif;"><b>Modulo:</b> Honorarios </small>
+
+
+
+    <form  role="form"  enctype="multipart/form-data" action="" method="POST" id="upload-image-form" style="margin: 30px;"> 
+        {% csrf_token %}
+
+
+        <div style="margin: 5px">
+
+            <div style="display: inline-block; margin: 10px;  width: 200px;">
+
+                <label for="cuotas"><h6>Cuotas a cobrar</h6></label>
+    
+            </div>
+    
+            <div style="display: inline-block; margin: 10px; "> 
+    
+                <input name="cuotas" step="0.001" type="number" class="form-control form-control" placeholder="{{honorarios.0.cuotas|floatformat:2}} M3" style="width: 300px;">
+    
+            </div>
+
+
+        </div>
+
+        <div style="margin: 5px">
+
+            <div style="display: inline-block; margin: 10px;  width: 200px;">
+
+                <label for="ventas"><h6>Ventas proyectadas</h6></label>
+    
+            </div>
+    
+            <div style="display: inline-block; margin: 10px; "> 
+    
+                <input name="ventas" step="0.001" type="number" class="form-control form-control" placeholder="{{honorarios.0.ventas|floatformat:2}} M3" style="width: 300px;">
+    
+            </div>
+
+
+        </div>
+
+        <div style="margin: 5px">
+
+            <div style="display: inline-block; margin: 10px;  width: 200px;">
+
+                <label for="creditos"><h6>Creditos</h6></label>
+    
+            </div>
+    
+            <div style="display: inline-block; margin: 10px; "> 
+    
+                <input name="creditos" step="0.001" type="number" class="form-control form-control" placeholder="{{honorarios.0.creditos|floatformat:2}} M3" style="width: 300px;">
+    
+            </div>
+
+
+        </div>
+
+        <div style="margin: 5px">
+
+            <div style="display: inline-block; margin: 10px;  width: 200px;">
+
+                <label for="estructura_gio"><h6>Gastos de estructura y GIO</h6></label>
+    
+            </div>
+    
+            <div style="display: inline-block; margin: 10px; "> 
+    
+                <input name="estructura_gio" step="0.001" type="number" class="form-control form-control" placeholder="{{honorarios.0.estructura_gio|floatformat:2}} M3" style="width: 300px;">
+    
+            </div>
+
+
+        </div>
+
+        <div style="margin: 5px">
+
+            <div style="display: inline-block; margin: 10px;  width: 200px;">
+
+                <label for="aportes"><h6>Aportes</h6></label>
+    
+            </div>
+    
+            <div style="display: inline-block; margin: 10px; "> 
+    
+                <input name="aportes" step="0.001" type="number" class="form-control form-control" placeholder="{{honorarios.0.aportes|floatformat:2}} M3" style="width: 300px;">
+    
+            </div>
+
+
+        </div>
+        <div style="margin: 5px">
+
+            <div style="display: inline-block; margin: 10px;  width: 200px;">
+
+                <label for="socios"><h6>Socios</h6></label>
+    
+            </div>
+    
+            <div style="display: inline-block; margin: 10px; "> 
+    
+                <input name="socios" step="0.001" type="number" class="form-control form-control" placeholder="{{honorarios.0.socios|floatformat:2}} M3" style="width: 300px;">
+    
+            </div>
+
+
+        </div>
+
+        <div style="margin: 5px">
+
+            <div style="display: inline-block; margin: 10px;  width: 200px;">
+
+                <label for="comision_venta"><h6>% de comisión de venta</h6></label>
+    
+            </div>
+    
+            <div style="display: inline-block; margin: 10px; "> 
+    
+                <input name="comision_venta" step="0.001" type="number" class="form-control form-control" placeholder="{{honorarios.0.comision_venta|floatformat:2}}" style="width: 300px;">
+    
+            </div>
+
+
+        </div>
+
+        <div style="margin: 5px">
+
+            <div style="display: inline-block; margin: 10px;  width: 200px;">
+
+                <label for="deudas"><h6>Deudas</h6></label>
+    
+            </div>
+    
+            <div style="display: inline-block; margin: 10px; "> 
+    
+                <input name="deudas" step="0.001" type="number" class="form-control form-control" placeholder="{{honorarios.0.deudas|floatformat:2}} M3" style="width: 300px;">
+    
+            </div>
+
+
+        </div>
+
+        <div style="margin: 5px">
+
+            <div style="display: inline-block; margin: 10px;  width: 200px;">
+
+                <label for="retiro_socios"><h6>Retiro de socios</h6></label>
+    
+            </div>
+    
+            <div style="display: inline-block; margin: 10px; "> 
+    
+                <input name="retiro_socios" step="0.001" type="number" class="form-control form-control" placeholder="{{honorarios.0.retiro_socios|floatformat:2}} M3" style="width: 300px;">
+    
+            </div>
+
+
+        </div>
+
+        
+
+
+          <button type="submit" class="btn btn-primary">Subir</button>
+
+
+        {{ form.as_p }}
+    </form>
+
+
+
+<div style="margin-top: 2rem;">
+    <p> <small>-- Link<strong>P</strong> --</small> </p>
+
+ </div>
+    
+
+
+                
+</div>
+
+
+{% endblock %}
