@@ -1014,7 +1014,7 @@ def honorarios(request):
         comision = honorarios[0].comision_venta*honorarios[0].ventas
         subtotal_2 = honorarios[0].estructura_gio + honorarios[0].aportes + honorarios[0].socios + comision
         costos = subtotal_2 + honorarios[0].retiro_socios + honorarios[0].deudas
-        beneficio = ingresos - costos
+        beneficio = ingresos - costos + honorarios[0].caja_actual
         porc_beneficio = beneficio/ingresos*100
         if beneficio == 0:
             porc_costo = 0
@@ -1095,6 +1095,13 @@ def modhonorarios(request):
         else:
             creditos = honorarios[0].creditos
 
+        # caja actual
+
+        if request.POST['caja_actual'] != "":
+            caja_actual = request.POST['caja_actual']
+        else:
+            caja_actual = honorarios[0].caja_actual
+
         b = Honorarios(
 
             cuotas = cuotas,
@@ -1106,6 +1113,7 @@ def modhonorarios(request):
             deudas = deudas,
             retiro_socios = retiro_socios,
             creditos = creditos,
+            caja_actual = caja_actual,
 
         )
 

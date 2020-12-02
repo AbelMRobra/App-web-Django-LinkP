@@ -163,7 +163,8 @@ class Honorarios(models.Model):
     comision_venta = models.FloatField(verbose_name="Comisión de venta", blank=True, null=True, default=0)
     deudas = models.FloatField(verbose_name="Deudas", blank=True, null=True, default=0)
     retiro_socios = models.FloatField(verbose_name="Retiro de socios", blank=True, null=True, default=0)
-    creditos = models.FloatField(verbose_name="Retiro de socios", blank=True, null=True, default=0)
+    creditos = models.FloatField(verbose_name="Creditos", blank=True, null=True, default=0)
+    caja_actual = models.FloatField(verbose_name="Caja actual", blank=True, null=True, default=0)
 
     class Meta:
         verbose_name = "Honorario"
