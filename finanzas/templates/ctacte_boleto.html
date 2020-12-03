@@ -31,13 +31,75 @@
             <small><b>Modulo:</b> Cuentas corrientes </small>
         </div>
         <b><hr class = "my-4" style="width: 100%; "></b>
+
     
 
     <div class = "tableconteinerabel">
 
         <div style="text-align: left;">
 
-            <a href="{% url 'Resumen cuenta corriente' ctacte.id %}" class="btn btn-outline-primary"><img src="{% static 'img/reportar.png' %}" alt="" style="max-width:20px; height:auto;"> Ver resumen</a>
+
+            <a class="btn btn-outline-primary" type="button" data-toggle="modal" data-target="#exampleModalCenter" ><img src="{% static 'img/reportar.png' %}" alt="" style="max-width:20px; height:auto;"> Resumen boleto</a>
+
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="card border-secondary mb-3" style="display: inline-block; width: 300px; height: 250px; vertical-align: top;  margin: 10px;">
+                            <div class="card-header">Resumen</div>  
+                                <div class="card-body">
+      
+                                <div>
+                      
+                                  <small style="font-family: Arial, Helvetica, sans-serif;"><b>Operación real:</b> $ {{datos_totales.0|floatformat:0|intcomma}}</small> 
+                      
+                                </div>
+                    
+                                <div>
+                      
+                                    <small style="font-family: Arial, Helvetica, sans-serif;"><b>Operación boleto:</b> $ {{datos_totales.1|floatformat:0|intcomma}} </small> 
+                        
+                                  </div>
+                    
+                                  <div>
+                      
+                                    <small style="font-family: Arial, Helvetica, sans-serif;"><b>Pagado:</b> $ {{datos_totales.2|floatformat:0|intcomma}} </small> 
+                        
+                                  </div>
+                    
+                                  
+                                  <div>
+                      
+                                    <small style="font-family: Arial, Helvetica, sans-serif;"><b>Saldo:</b> $ {{datos_totales.3|floatformat:0|intcomma}} </small> 
+                        
+                                  </div>
+
+                                  <div style="text-align: right; margin: 5px;">
+
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                     
+
+
+                                  </div>
+
+
+                                  
+
+                                  
+                    
+                         
+                              </div>
+
+                              
+                          </div>
+
+                    
+                  </div>
+                </div>
+            </div>
+
+            </div>
 
             <a href="{% url 'Cuenta corriente venta' ctacte.id %}" class="btn btn-outline-primary"><img src="{% static 'img/pagina-principal.png' %}" alt="" style="max-width:20px; height:auto;"> Principal</a>
 

@@ -835,15 +835,25 @@ def estructura_boleto(request, id_cliente):
 
     cuotas = Cuota.objects.filter(cuenta_corriente = ctacte)
 
+    operacion_real = 0
+    operacion_boleto = 0
+    pagado = 0
+    saldo = 0
+
     datos_cuenta = []
 
     for cuota in cuotas:
 
+        valor_real = cuota.precio*cuota.constante.valor
+        operacion_real = operacion_real + valor_real
+
         if cuota.boleto  == "BOLETO":
 
-            valor_cuota = cuota.precio*cuota.porc_boleto
+            valor_boleto  = cuota.precio*cuota.constante.valor*cuota.porc_boleto
+            operacion_boleto = operacion_boleto + valor_boleto
             pago_cuota = sum(np.array(Pago.objects.filter(cuota = cuota).values_list("pago")))*cuota.porc_boleto
             pago_pesos = sum(np.array(Pago.objects.filter(cuota = cuota).values_list("pago_pesos")))*cuota.porc_boleto
+            pagado = pagado + pago_pesos
             saldo_cuota = cuota.precio*cuota.porc_boleto - pago_cuota
             saldo_pesos = saldo_cuota*cuota.constante.valor
             pagos_realizados = Pago.objects.filter(cuota = cuota)
@@ -852,11 +862,15 @@ def estructura_boleto(request, id_cliente):
                 cotizacion = 0
             else:
                 cotizacion = pago_pesos/pago_cuota
-            datos_cuenta.append((cuota, pago_pesos, saldo_cuota, saldo_pesos, pagos_realizados, cotizacion, valor_cuota))
+            datos_cuenta.append((cuota, pago_pesos, saldo_cuota, saldo_pesos, pagos_realizados, cotizacion, valor_boleto ))
 
     datos_cuenta = sorted(datos_cuenta, key=lambda datos: datos[0].fecha)
 
-    return render(request, 'ctacte_boleto.html', {"ctacte":ctacte, "datos_cuenta":datos_cuenta})
+    saldo = operacion_boleto - pagado
+
+    datos_totales = [operacion_real, operacion_boleto, pagado, saldo]
+
+    return render(request, 'ctacte_boleto.html', {"ctacte":ctacte, "datos_cuenta":datos_cuenta, "datos_totales":datos_totales})
 
 
 def boleto(request, id_cuenta, id_cuota):
