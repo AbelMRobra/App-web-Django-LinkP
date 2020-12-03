@@ -83,7 +83,7 @@
 
                         {% else %}
 
-                        <a href="{% url 'Boleto en cuota' ctacte.id i.0.id %}"><b style="color: #34CE15;"> - {{i.0.porc_boleto|floatformat:2}}% </b></a>
+                        <a href="{% url 'Boleto en cuota' ctacte.id i.0.id %}"><b style="color: #34CE15;"> - {{i.0.porc_boleto|floatformat:-2}}% </b></a>
 
                         {% endif %}
 
