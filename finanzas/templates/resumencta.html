@@ -57,13 +57,15 @@
     <div class="card border-success mb-3" style="display: inline-block; width: 310px; height: 250px; vertical-align: top;  margin: 10px;">
                 
         <div class="card-body">
-          <div style="display: inline-block; text-align: left; vertical-align: middle; margin-top: 15px;">
+
+            
+          
+            <div style="display: inline-block; text-align: left; vertical-align: top; margin-top: 10px;">
   
-            <h6 style="font-family: Arial, Helvetica, sans-serif;">{{i.0|upper}}</h6> 
-          </div>
-  
-  
-    
+            <h6 style="font-family: Arial, Helvetica, sans-serif;"> {{i.0|upper}}</h6> 
+          
+            </div>
+
             <div>
   
               <small style="font-family: Arial, Helvetica, sans-serif;"><b>Moneda:</b> {{i.1.nombre}} ($ {{i.1.valor|floatformat:2}}) </small> 
@@ -100,6 +102,12 @@
                 <small style="font-family: Arial, Helvetica, sans-serif;"><b>Cuotas:</b> {{i.3}} </small> 
     
               </div>
+
+              <div style="text-align: center; vertical-align: top;">
+
+                <img src="{% static 'img/cheque.png' %}" alt="" style="max-width:20px; height:auto;">
+
+            </div>
   
   
   
@@ -112,7 +120,7 @@
       <div class="card border-primary mb-3" style="display: inline-block; width: 310px; height: 250px; vertical-align: top;  margin: 10px;">
                 
         <div class="card-body">
-          <div style="display: inline-block; text-align: left; vertical-align: middle; margin-top: 15px;">
+          <div style="display: inline-block; text-align: left; vertical-align: middle; margin-top: 10px;">
   
             <h6 style="font-family: Arial, Helvetica, sans-serif;">{{i.0|upper}}</h6> 
           </div>
@@ -168,7 +176,7 @@
       <div class="card border-secondary mb-3" style="display: inline-block; width: 310px; height: 250px; vertical-align: top;  margin: 10px;">
                 
         <div class="card-body">
-          <div style="display: inline-block; text-align: left; vertical-align: middle; margin-top: 15px;">
+          <div style="display: inline-block; text-align: left; vertical-align: middle; margin-top: 10px;">
   
             <h6 style="font-family: Arial, Helvetica, sans-serif;">{{i.0|upper}}</h6> 
           </div>
