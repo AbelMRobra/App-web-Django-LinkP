@@ -17,6 +17,8 @@
   
 
         </div>
+
+        <h6 style="color: rgb({{ctacte.venta.unidad.proyecto.color}}); font-family: Arial, Helvetica, sans-serif;" >{{ctacte.venta.unidad.proyecto.nombre}} </h6>
         
         <div style="text-align: left; margin-top: 2%;">
 
@@ -36,7 +38,7 @@
 
             {% elif  ctacte.venta.unidad.tipo == "LOCAL" %}
 
-            <h6>Tipo: <small>{{ctacte.venta.unidad.tipo}} de {{ctacte.venta.m2}} m2</small></h6>
+            <h6>Tipo: <small>{{ctacte.venta.unidad.tipo}} de {{ctacte.venta.m2|floatformat:2}} m2</small></h6>
            
 
             {% endif %}
@@ -52,7 +54,7 @@
 
     {% if i.5 < 1 %}
 
-    <div class="card text-white bg-success mb-3" style="display: inline-block; width: 310px; height: 250px; vertical-align: top;  margin: 10px;">
+    <div class="card border-success mb-3" style="display: inline-block; width: 310px; height: 250px; vertical-align: top;  margin: 10px;">
                 
         <div class="card-body">
           <div style="display: inline-block; text-align: left; vertical-align: middle; margin-top: 15px;">
@@ -107,7 +109,7 @@
       {% elif  i.4 > 0 %}
 
 
-      <div class="card bg-light mb-3" style="display: inline-block; width: 310px; height: 250px; vertical-align: top;  margin: 10px;">
+      <div class="card border-primary mb-3" style="display: inline-block; width: 310px; height: 250px; vertical-align: top;  margin: 10px;">
                 
         <div class="card-body">
           <div style="display: inline-block; text-align: left; vertical-align: middle; margin-top: 15px;">
@@ -163,7 +165,7 @@
 
       {% else %}
 
-      <div class="card text-white bg-secondary mb-3" style="display: inline-block; width: 310px; height: 250px; vertical-align: top;  margin: 10px;">
+      <div class="card border-secondary mb-3" style="display: inline-block; width: 310px; height: 250px; vertical-align: top;  margin: 10px;">
                 
         <div class="card-body">
           <div style="display: inline-block; text-align: left; vertical-align: middle; margin-top: 15px;">
@@ -221,134 +223,17 @@
       {% endfor %}
 
 
-    <div class = "tableconteinerabel">
-
-             
+      <b><hr class = "my-4" style="width: 100%; "></b>
 
 
-        <table class = "table table-hover" style="text-align: center; margin-top: 2%;">
-            <thead>
-    
-                <tr class = "table-dark">
-                    <th scope = "row"> CONCEPTO </th>
-                    <th scope = "row"> MONEDA</th>
-                    <th scope = "row"> VALOR MONEDA</th>
-                    <th scope = "row"> TOTAL (MD)</th>
-                    <th scope = "row"> CUOTAS</th>
-                    <th scope = "row"> PAGADO (MD)</th>
-                    <th scope = "row"> SALDO (MD)</th>
-                    <th scope = "row"> SALDO (PESOS)</th>
+      <h5>Saldo total de la cuenta: <small>${{saldo_total_pesos|floatformat:0|intcomma}}</small> </h5>
+
+      <h6>Proxima cuota: <small>${{datos_cuotas.0.1|floatformat:0|intcomma}} vence en {{datos_cuotas.0.0|date:"F Y"}} </small> </h6>
 
 
-                </tr>
-            </thead>
-    
-            <tbody>   
-    
-                {% for i in datos %}
-                <tr class = "table-light">
-                    <td> <b> <small> <b>{{i.0|upper}}</b> </small> </b></td>    
-                    <td> <b> <small>{{i.1.nombre}}</small> </b> </td>
-                    <td> <b> <small>${{i.1.valor|floatformat:2}}</small> </b> </td>
-                    <td> <b> <small>{{i.2|floatformat:2}}</small> </b> </td>
-                    <td> <b> <small>{{i.3}}</small> </b> </td>
-                    <td> <b> <small>{{i.4|floatformat:2}}</small> </b> </td>
-                    <td> <b> <small>{{i.5|floatformat:2}}</small> </b> </td>
-                    <td> <b> <small> <b>${{i.6|floatformat:0|intcomma}}</b> </small></b> </td>
-
-
-                </tr>
-                {% endfor %}
-
-                <tr class = "table-light">
-                    <td colspan="7"> <b> <b>TOTAL</b></b></td>    
-                    <td> <b> <b>${{saldo_total_pesos|floatformat:0|intcomma}}</b></b> </td>
-
-
-                </tr>
-            
-            </tbody>
-         
-    
-    
-        </table>
-    
-        </div>
-
-        <small>*MD. Moneda dura de referencia para las cuotas </small>
 
         <b><hr class = "my-4" style="width: 100%; "></b>
 
-        <div style="text-align: left;">
-
-            <h6>Datos de cuotas a vencer:</h6>
-
-
-        </div>
-
-        <div class = "tableconteinerabel">
-
-             
-
-
-            <table class = "table table-hover" style="text-align: center; margin-top: 2%; width: 100%;">
-                <thead>
-        
-                    <tr class = "table-dark">
-                        <th scope = "row" style="width: 10%; vertical-align: middle;"> FECHA </th>
-
-                        {% if datos_cuotas %}
-
-                        {% for i in datos_cuotas|slice:"9" %}
-
-                        <th scope = "row" style="width: 10%;  vertical-align: middle;"> {{i.0|date:"F Y" }}</th>
-
-                        {% endfor %}
-
-                        {% else %}
-
-                        <th scope = "row" style="width: 10%;  vertical-align: middle;"> PAGOS COMPLETADOS</th>
-
-
-                        {% endif %}
-
-                    </tr>
-                </thead>
-        
-                <tbody>   
-        
-                    
-                    <tr class = "table-light">
-                        <td style="width: 10%;"> <b> <small> <b>MONTO</b> </small> </b></td>
-                        
-                        {% if datos_cuotas %}
-                        
-                        {% for i in datos_cuotas|slice:"9" %}
-
-                        <td style="width: 10%;">  <b> <small>${{i.1|floatformat:0|intcomma}}</small> </b> </td>  
-
-                        {% endfor %}
-
-                        {% else %}
-
-                        <td style="width: 10%;">  <b> <small>NO HAY MONTO ADEUDADO</small> </b> </td>  
-
-
-                        {% endif %}
-    
-                    </tr>
-                    
-                
-                </tbody>
-             
-        
-        
-            </table>
-        
-            </div>
-
-
-            <b><hr class = "my-4" style="width: 75%; "></b>
 
 
 
