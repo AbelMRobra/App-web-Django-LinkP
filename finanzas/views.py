@@ -844,7 +844,7 @@ def estructura_boleto(request, id_cliente):
             valor_cuota = cuota.precio*cuota.porc_boleto
             pago_cuota = sum(np.array(Pago.objects.filter(cuota = cuota).values_list("pago")))*cuota.porc_boleto
             pago_pesos = sum(np.array(Pago.objects.filter(cuota = cuota).values_list("pago_pesos")))*cuota.porc_boleto
-            saldo_cuota = cuota.precio*cuota.porc_bolet - pago_cuota
+            saldo_cuota = cuota.precio*cuota.porc_boleto - pago_cuota
             saldo_pesos = saldo_cuota*cuota.constante.valor
             pagos_realizados = Pago.objects.filter(cuota = cuota)
             saldo_cuota = cuota.precio - pago_cuota
