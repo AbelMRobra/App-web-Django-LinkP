@@ -54,11 +54,8 @@
                     <th style="vertical-align: middle;" scope = "row"> <small>FECHA CUOTA</small></th>
                     <th style="vertical-align: middle;"  scope = "row" class="priority-3"> <small>CONCEPTO</small></th>
                     <th style="vertical-align: middle;"  scope = "row" class="priority-5" > <small>MONEDA (MD) </small></th>
-                    <th style="vertical-align: middle;"  scope = "row" class="priority-4"> <small> VALOR EN (MD) </small></th>
-                    <th style="vertical-align: middle;"  scope = "row" class="priority-4"> <small> PAGADO EN (MD) </small></th>
-                    <th style="vertical-align: middle;"  scope = "row"> <small> SALDO EN (MD) </small></th>
-                    <th style="vertical-align: middle;"  scope = "row"> <small> VALOR DE MD</small></th>
-                    <th style="vertical-align: middle;"  scope = "row"> <small> SALDO EN PESOS </small></th>
+                    <th style="vertical-align: middle;"  scope = "row" class="priority-4"> <small> PAGADO EN PESOS </small></th>
+                    <th style="vertical-align: middle;"  scope = "row" class="priority-4"> <small> SALDO EN PESOS </small></th>
 
                 </tr>
             </thead>
@@ -72,36 +69,11 @@
 
                         {{i.0.concepto|upper}}
 
-                            {% if i.0.boleto == "NO BOLETO" %}
-                        
-                        <a href="{% url 'Boleto en cuota' ctacte.id i.0.id %}"><b style="color: #CE2615;"> ⚫ </b></a>    
-
-                        {% else %}
-
-                        <a href="{% url 'Boleto en cuota' ctacte.id i.0.id %}"><b style="color: #34CE15;"> - {{i.0.porc_boleto|floatformat:2}}% </b></a>
-
-                        {% endif %}
-
-
-                        
-
-                    </small> </b> </td>
                     <td class="priority-5"> <b> <small>{{i.0.constante.nombre}}</small> </b> </td>
 
-                    <td class="priority-4"> <b> <small>{{i.0.precio|floatformat:2}}</small> </b> </td>
+                    <td class="priority-4"> <b> <small>$ {{i.1|floatformat:0|intcomma}}</small> </b> </td>
+                    <td class="priority-4"> <b> <small>$ {{i.3|floatformat:0|intcomma}}</small> </b> </td>
 
-                    <td class="priority-4"> <b> <small>{{i.1|floatformat:2}}</small> </b> </td>
-                    <td> <b> <small>{{i.2|floatformat:2}}</small> </b> </td>
-
-                    {% if i.5 == 0 %}
-                    <td> <b> <small>${{i.0.constante.valor|floatformat:0|intcomma}}</small> </b> </td>
-
-                    {% else %}
-
-                    <td> <b> <small>${{i.5|floatformat:0|intcomma}}</small> </b> </td>
-
-                    {% endif %}
-                    <td> <b> <small> <b>${{i.3|floatformat:0|intcomma}}</b> </small></b> </td>
 
                 
                 </tr>
