@@ -812,23 +812,12 @@ def ctactecliente(request, id_cliente):
 
     for cuota in cuotas:
 
-        pago_cuota = 0
-        pago_pesos = 0
-        saldo_cuota = 0
-        pagos_realizados = []
-
-        for pago in pagos:
-
-            if pago.cuota == cuota:
-
-                pago_cuota = pago_cuota + pago.pago
-                pago_pesos = pago_pesos + pago.pago_pesos
-
-                pagos_realizados.append(pago)
-
+        pago_cuota = sum(np.array(Pago.objects.filter(cuota = cuota).values_list("pago")))
+        pago_pesos = sum(np.array(Pago.objects.filter(cuota = cuota).values_list("pago_pesos")))
         saldo_cuota = cuota.precio - pago_cuota
         saldo_pesos = saldo_cuota*cuota.constante.valor
-
+        pagos_realizados = Pago.objects.filter(cuota = cuota)
+        saldo_cuota = cuota.precio - pago_cuota
         if pago_cuota == 0:
             cotizacion = 0
         else:
@@ -839,6 +828,71 @@ def ctactecliente(request, id_cliente):
     datos_cuenta = sorted(datos_cuenta, key=lambda datos: datos[0].fecha)
 
     return render(request, 'ctacte.html', {"ctacte":ctacte, "datos_cuenta":datos_cuenta})
+
+def estructura_boleto(request, id_cliente):
+
+    ctacte = CuentaCorriente.objects.get(id = id_cliente)
+
+    cuotas = Cuota.objects.filter(cuenta_corriente = ctacte)
+
+    datos_cuenta = []
+
+    for cuota in cuotas:
+
+        if cuota.boleto  == "BOLETO":
+
+            valor_cuota = cuota.precio*cuota.porc_boleto
+            pago_cuota = sum(np.array(Pago.objects.filter(cuota = cuota).values_list("pago")))*cuota.porc_boleto
+            pago_pesos = sum(np.array(Pago.objects.filter(cuota = cuota).values_list("pago_pesos")))*cuota.porc_boleto
+            saldo_cuota = cuota.precio - pago_cuota
+            saldo_pesos = saldo_cuota*cuota.constante.valor
+            pagos_realizados = Pago.objects.filter(cuota = cuota)
+            saldo_cuota = cuota.precio - pago_cuota
+            if pago_cuota == 0:
+                cotizacion = 0
+            else:
+                cotizacion = pago_pesos/pago_cuota
+            datos_cuenta.append((cuota, pago_cuota, saldo_cuota, saldo_pesos, pagos_realizados, cotizacion, valor_cuota))
+
+    datos_cuenta = sorted(datos_cuenta, key=lambda datos: datos[0].fecha)
+
+    return render(request, 'ctacte_boleto.html', {"ctacte":ctacte, "datos_cuenta":datos_cuenta})
+
+
+def boleto(request, id_cuenta, id_cuota):
+
+    ctacte = CuentaCorriente.objects.get(id = id_cuenta)
+
+    nombre_cuotas = list(set(Cuota.objects.filter(cuenta_corriente = ctacte).values_list("concepto")))
+
+    cuota = Cuota.objects.get(id = id_cuota)
+
+    if request.method == 'POST':
+
+        if request.POST["cuota_edit"] != "":
+
+            cuota.boleto = "BOLETO"
+            cuota.porc_boleto = float(request.POST["cuota_edit"])
+            cuota.save()
+
+        for n in nombre_cuotas:
+
+            if request.POST[n[0]] != "":
+
+                cuotas = Cuota.objects.filter(concepto = n[0])
+
+                for c in cuotas:
+
+                    c.boleto = "BOLETO"
+                    c.porc_boleto = float(request.POST[n[0]])
+                    c.save()
+
+        return redirect('Cuenta corriente venta', ctacte.id)
+
+
+    return render(request, 'boleto.html', {"ctacte":ctacte, "nombre_cuotas":nombre_cuotas})
+
+
 
 def panelctacote(request):
 

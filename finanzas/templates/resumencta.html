@@ -22,17 +22,203 @@
 
             <h6>Fecha de la venta: <small>{{ctacte.venta.fecha}}</small> </h6>
             <h6>Cliente: <small>{{ctacte.venta.comprador}}</small> </h6>
-            <h6>Nombre de la unidad: <small>{{ctacte.venta.unidad.piso_unidad}} - {{ctacte.venta.unidad.nombre_unidad}}</small></h6>
-            <h6>Tipo: <small> {{ctacte.venta.unidad.tipo}} </small></h6>
-            <h6>Tipologia: <small> {{ctacte.venta.unidad.tipologia}} </small></h6>
-            <h6>Tamaño de la unidad: <small> {{ctacte.venta.m2}} </small></h6> 
+            <h6>Unidad: <small>{{ctacte.venta.unidad.piso_unidad}} - {{ctacte.venta.unidad.nombre_unidad}}</small></h6>
+            
+            {% if ctacte.venta.unidad.tipo == "DEPARTAMENTO" %}
 
+            <h6>Tipo: <small>{{ctacte.venta.unidad.tipo}} {{ctacte.venta.unidad.tipologia}} de {{ctacte.venta.m2}} m2</small></h6>
+            
+
+            {% elif  ctacte.venta.unidad.tipo == "COCHERA" %}
+
+            <h6>Tipo: <small>{{ctacte.venta.unidad.tipo}} de {{ctacte.venta.m2}} m2</small></h6>
+            
+
+            {% elif  ctacte.venta.unidad.tipo == "LOCAL" %}
+
+            <h6>Tipo: <small>{{ctacte.venta.unidad.tipo}} de {{ctacte.venta.m2}} m2</small></h6>
+           
+
+            {% endif %}
+            
 
         </div>
         <b><hr class = "my-4" style="width: 100%; "></b>
     
     
     </div>
+
+    {% for i in datos %}
+
+    {% if i.5 < 1 %}
+
+    <div class="card text-white bg-success mb-3" style="display: inline-block; width: 310px; height: 250px; vertical-align: top;  margin: 10px;">
+                
+        <div class="card-body">
+          <div style="display: inline-block; text-align: left; vertical-align: middle; margin-top: 15px;">
+  
+            <h6 style="font-family: Arial, Helvetica, sans-serif;">{{i.0|upper}}</h6> 
+          </div>
+  
+  
+    
+            <div>
+  
+              <small style="font-family: Arial, Helvetica, sans-serif;"><b>Moneda:</b> {{i.1.nombre}} ($ {{i.1.valor|floatformat:2}}) </small> 
+  
+            </div>
+
+            <div>
+  
+                <small style="font-family: Arial, Helvetica, sans-serif;"><b>Monto total:</b> {{i.2|floatformat:2}} </small> 
+    
+              </div>
+
+              <div>
+  
+                <small style="font-family: Arial, Helvetica, sans-serif;"><b>Pagado:</b> {{i.4|floatformat:2}} </small> 
+    
+              </div>
+
+              
+              <div>
+  
+                <small style="font-family: Arial, Helvetica, sans-serif;"><b>Saldo:</b> {{i.5|floatformat:2}} </small> 
+    
+              </div>
+
+              <div>
+  
+                <small style="font-family: Arial, Helvetica, sans-serif;"><b>Saldo en pesos:</b> $ {{i.6|floatformat:0|intcomma}} </small> 
+    
+              </div>
+
+              <div>
+  
+                <small style="font-family: Arial, Helvetica, sans-serif;"><b>Cuotas:</b> {{i.3}} </small> 
+    
+              </div>
+  
+  
+  
+          </div>
+      </div>
+
+      {% elif  i.4 > 0 %}
+
+
+      <div class="card bg-light mb-3" style="display: inline-block; width: 310px; height: 250px; vertical-align: top;  margin: 10px;">
+                
+        <div class="card-body">
+          <div style="display: inline-block; text-align: left; vertical-align: middle; margin-top: 15px;">
+  
+            <h6 style="font-family: Arial, Helvetica, sans-serif;">{{i.0|upper}}</h6> 
+          </div>
+  
+  
+    
+            <div>
+  
+              <small style="font-family: Arial, Helvetica, sans-serif;"><b>Moneda:</b> {{i.1.nombre}} ($ {{i.1.valor|floatformat:2}}) </small> 
+  
+            </div>
+
+            <div>
+  
+                <small style="font-family: Arial, Helvetica, sans-serif;"><b>Monto total:</b> {{i.2|floatformat:2}} </small> 
+    
+              </div>
+
+              <div>
+  
+                <small style="font-family: Arial, Helvetica, sans-serif;"><b>Pagado:</b> {{i.4|floatformat:2}} </small> 
+    
+              </div>
+
+              
+              <div>
+  
+                <small style="font-family: Arial, Helvetica, sans-serif;"><b>Saldo:</b> {{i.5|floatformat:2}} </small> 
+    
+              </div>
+
+              <div>
+  
+                <small style="font-family: Arial, Helvetica, sans-serif;"><b>Saldo en pesos:</b> $ {{i.6|floatformat:0|intcomma}} </small> 
+    
+              </div>
+
+              <div>
+  
+                <small style="font-family: Arial, Helvetica, sans-serif;"><b>Cuotas:</b> {{i.3}} </small> 
+    
+              </div>
+  
+  
+  
+          </div>
+      </div>
+
+
+
+      {% else %}
+
+      <div class="card text-white bg-secondary mb-3" style="display: inline-block; width: 310px; height: 250px; vertical-align: top;  margin: 10px;">
+                
+        <div class="card-body">
+          <div style="display: inline-block; text-align: left; vertical-align: middle; margin-top: 15px;">
+  
+            <h6 style="font-family: Arial, Helvetica, sans-serif;">{{i.0|upper}}</h6> 
+          </div>
+  
+  
+    
+            <div>
+  
+              <small style="font-family: Arial, Helvetica, sans-serif;"><b>Moneda:</b> {{i.1.nombre}} ($ {{i.1.valor|floatformat:2}}) </small> 
+  
+            </div>
+
+            <div>
+  
+                <small style="font-family: Arial, Helvetica, sans-serif;"><b>Monto total:</b> {{i.2|floatformat:2}} </small> 
+    
+              </div>
+
+              <div>
+  
+                <small style="font-family: Arial, Helvetica, sans-serif;"><b>Pagado:</b> {{i.4|floatformat:2}} </small> 
+    
+              </div>
+
+              
+              <div>
+  
+                <small style="font-family: Arial, Helvetica, sans-serif;"><b>Saldo:</b> {{i.5|floatformat:2}} </small> 
+    
+              </div>
+
+              <div>
+  
+                <small style="font-family: Arial, Helvetica, sans-serif;"><b>Saldo en pesos:</b> $ {{i.6|floatformat:0|intcomma}} </small> 
+    
+              </div>
+
+              <div>
+  
+                <small style="font-family: Arial, Helvetica, sans-serif;"><b>Cuotas:</b> {{i.3}} </small> 
+    
+              </div>
+  
+  
+  
+          </div>
+      </div>
+
+
+      {% endif %}
+
+      {% endfor %}
 
 
     <div class = "tableconteinerabel">
