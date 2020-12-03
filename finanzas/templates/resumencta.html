@@ -34,12 +34,12 @@
             
             {% if ctacte.venta.unidad.tipo == "DEPARTAMENTO" %}
 
-            <h6>Tipo: <small>{{ctacte.venta.unidad.tipo}} {{ctacte.venta.unidad.tipologia}} de {{ctacte.venta.m2}} m2</small></h6>
+            <h6>Tipo: <small>{{ctacte.venta.unidad.tipo}} {{ctacte.venta.unidad.tipologia}} de {{ctacte.venta.m2|floatformat:2}} m2</small></h6>
             
 
             {% elif  ctacte.venta.unidad.tipo == "COCHERA" %}
 
-            <h6>Tipo: <small>{{ctacte.venta.unidad.tipo}} de {{ctacte.venta.m2}} m2</small></h6>
+            <h6>Tipo: <small>{{ctacte.venta.unidad.tipo}} de {{ctacte.venta.m2|floatformat:2}} m2</small></h6>
             
 
             {% elif  ctacte.venta.unidad.tipo == "LOCAL" %}
