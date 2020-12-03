@@ -844,15 +844,18 @@ def estructura_boleto(request, id_cliente):
 
     for cuota in cuotas:
 
-        valor_real = cuota.precio*cuota.constante.valor
+        valor_real = cuota.precio*cuota.constante.valor -sum(np.array(Pago.objects.filter(cuota = cuota).values_list("pago")))*cuota.constante.valor + sum(np.array(Pago.objects.filter(cuota = cuota).values_list("pago_pesos")))
         operacion_real = operacion_real + valor_real
 
         if cuota.boleto  == "BOLETO":
 
             valor_boleto  = cuota.precio*cuota.constante.valor*cuota.porc_boleto
-            operacion_boleto = operacion_boleto + valor_boleto
+            
             pago_cuota = sum(np.array(Pago.objects.filter(cuota = cuota).values_list("pago")))*cuota.porc_boleto
             pago_pesos = sum(np.array(Pago.objects.filter(cuota = cuota).values_list("pago_pesos")))*cuota.porc_boleto
+            
+            operacion_boleto = operacion_boleto + valor_boleto - pago_cuota*cuota.constante.valor + pago_pesos
+            
             pagado = pagado + pago_pesos
             saldo_cuota = cuota.precio*cuota.porc_boleto - pago_cuota
             saldo_pesos = saldo_cuota*cuota.constante.valor
