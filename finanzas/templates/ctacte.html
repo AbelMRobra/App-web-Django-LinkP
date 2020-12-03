@@ -54,6 +54,7 @@
     
                 <tr class = "table-dark">
                     <th style="vertical-align: middle;" scope = "row"> <small>FECHA CUOTA</small></th>
+                    <th style="vertical-align: middle;"  scope = "row" class="priority-3"> <small>BOLETO</small></th>
                     <th style="vertical-align: middle;"  scope = "row" class="priority-3"> <small>CONCEPTO</small></th>
                     <th style="vertical-align: middle;"  scope = "row" class="priority-5" > <small>MONEDA (MD) </small></th>
                     <th style="vertical-align: middle;"  scope = "row" class="priority-4"> <small> VALOR EN (MD) </small></th>
@@ -75,7 +76,7 @@
                     <td> <b> <small> <b>{{i.0.fecha}}</b> </small> </b></td>    
                     <td class="priority-3"> <b> <small>
 
-                        {{i.0.concepto|upper}}
+                        
 
                             {% if i.0.boleto == "NO BOLETO" %}
                         
@@ -83,7 +84,7 @@
 
                         {% else %}
 
-                        <a href="{% url 'Boleto en cuota' ctacte.id i.0.id %}"><b style="color: #34CE15;"> - {{i.0.porc_boleto|floatformat:-2}}% </b></a>
+                        <a href="{% url 'Boleto en cuota' ctacte.id i.0.id %}"><b style="color: #34CE15;">{{i.0.porc_boleto|floatformat:2}} </b></a>
 
                         {% endif %}
 
@@ -91,6 +92,8 @@
                         
 
                     </small> </b> </td>
+
+                    <td class="priority-3"> <b> <small>{{i.0.concepto|upper}}</small> </b> </td>
                     <td class="priority-5"> <b> <small>{{i.0.constante.nombre}}</small> </b> </td>
 
                     <td class="priority-4"> <b> <small>{{i.0.precio|floatformat:2}}</small> </b> </td>

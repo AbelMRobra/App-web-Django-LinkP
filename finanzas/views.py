@@ -893,7 +893,7 @@ def boleto(request, id_cuenta, id_cuota):
 
             if request.POST[n[0]] != "":
 
-                cuotas = Cuota.objects.filter(concepto = n[0])
+                cuotas = Cuota.objects.filter(concepto = n[0], cuenta_corriente = ctacte)
 
                 for c in cuotas:
 
