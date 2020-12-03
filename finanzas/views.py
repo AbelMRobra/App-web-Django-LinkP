@@ -712,8 +712,6 @@ def resumenctacte(request, id_cliente):
         cuotas_t = 0
         total_pagado = 0
 
-
-
         for cuota in cuotas:
 
             if nombre == cuota.concepto:
@@ -732,9 +730,11 @@ def resumenctacte(request, id_cliente):
         saldo_moneda = total_moneda - total_pagado
         saldo_pesos = saldo_moneda*moneda.valor
         saldo_total_pesos = saldo_total_pesos + saldo_pesos
+        avance = total_pagado/total_moneda
 
+        datos.append((nombre, moneda, total_moneda, cuotas_t, total_pagado, saldo_moneda, saldo_pesos, avance))
 
-        datos.append((nombre, moneda, total_moneda, cuotas_t, total_pagado, saldo_moneda, saldo_pesos))
+    datos = sorted(datos, key=lambda datos: datos[7], reverse=True)
 
     #Aqui creo la curva de ingresos por mes
 
