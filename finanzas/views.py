@@ -1,14 +1,22 @@
+import os
+import datetime
+import pandas as pd
+import numpy as np
+from io import  BytesIO
+from xhtml2pdf import pisa
 from django.shortcuts import render
 from django.shortcuts import redirect
 from django.http import HttpResponse
+from django.template import Context
+from django.views.generic import View
+from django.template.loader import get_template
+from django.contrib.staticfiles import finders
 from django.views.generic.base import TemplateView  
+from django.conf import settings
 from presupuestos.models import Proyectos, Presupuestos, Constantes, Modelopresupuesto, Registrodeconstantes
 from .models import Almacenero, CuentaCorriente, Cuota, Pago, RegistroAlmacenero, ArchivosAdmFin, Arqueo, RetirodeSocios, MovimientoAdmin, Honorarios
 from proyectos.models import Unidades
 from ventas.models import Pricing, VentasRealizadas
-import datetime
-import pandas as pd
-import numpy as np
 from datetime import date, timedelta
 from openpyxl import Workbook
 from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
@@ -16,6 +24,170 @@ from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
 
 # Create your views here.
 
+
+# Vista para imprimir reportes de las cuentas corrientes
+
+class PdfPrueba(View):
+
+    def link_callback(self, uri, rel):
+            """
+            Convert HTML URIs to absolute system paths so xhtml2pdf can access those
+            resources
+            """
+            sUrl = settings.STATIC_URL        # Typically /static/
+            sRoot = settings.STATIC_ROOT      # Typically /home/userX/project_static/
+            mUrl = settings.MEDIA_URL         # Typically /media/
+            mRoot = settings.MEDIA_ROOT       # Typically /home/userX/project_static/media/
+
+            if uri.startswith(mUrl):
+                path = os.path.join(mRoot, uri.replace(mUrl, ""))
+            elif uri.startswith(sUrl):
+                path = os.path.join(sRoot, uri.replace(sUrl, ""))
+            else:
+                return uri
+
+            # make sure that file exists
+            if not os.path.isfile(path):
+                raise Exception(
+                        'media URI must start with %s or %s' % (sUrl, mUrl)
+                )
+            return path
+
+    def get(self, request, id_cuenta, *args, **kwargs):
+
+        #Creamos la información
+
+        ctacte = CuentaCorriente.objects.get(id = id_cuenta)
+
+        cuotas = Cuota.objects.filter(cuenta_corriente = ctacte)
+
+        nombre_conceptos = []
+
+        datos = []
+
+        for cuota in cuotas:
+
+            nombre_conceptos.append(cuota.concepto)
+
+        nombre_conceptos = set(nombre_conceptos)
+
+        saldo_total_pesos = 0
+
+        for nombre in nombre_conceptos:
+
+            moneda = 0
+            total_moneda = 0
+            cuotas_t = 0
+            total_pagado = 0
+
+            for cuota in cuotas:
+
+                if nombre == cuota.concepto:
+
+                    moneda = cuota.constante
+                    total_moneda = total_moneda + cuota.precio
+
+                    cuotas_t = (cuotas_t + 1)
+
+                    pagos = Pago.objects.filter(cuota = cuota)
+
+                    for pago in pagos:
+
+                        total_pagado = total_pagado + pago.pago
+
+            saldo_moneda = total_moneda - total_pagado
+            saldo_pesos = saldo_moneda*moneda.valor
+            saldo_total_pesos = saldo_total_pesos + saldo_pesos
+            avance = total_pagado/total_moneda
+
+            datos.append((nombre, moneda, total_moneda, cuotas_t, total_pagado, saldo_moneda, saldo_pesos, avance))
+
+        datos = sorted(datos, key=lambda datos: datos[7], reverse=True)
+
+        #Aqui creo la curva de ingresos por mes
+
+        fechas = []
+
+        for cuota in cuotas:
+
+            fecha_nueva = date(cuota.fecha.year, cuota.fecha.month, 1 )
+            fechas.append(fecha_nueva)
+
+        fechas = list(set(fechas))
+
+        fechas.sort()
+
+        datos_cuotas = []
+
+        deuda_md = 0
+        pago_md = 0
+
+        for fecha in fechas:
+
+            deuda_md = 0
+            pago_md = 0
+
+            hoy = datetime.date.today()
+
+            if fecha < hoy:
+
+                basura = 1
+
+            else:
+
+                if fecha.month == 12:
+
+                    año = fecha.year + 1
+
+                    fecha_final = date(año, 1, fecha.day)
+
+                else:
+
+                    mes = fecha.month + 1
+
+                    fecha_final = date(fecha.year, mes, fecha.day)
+
+                fecha_final = fecha_final + timedelta(days = -1)
+
+                cuotas = Cuota.objects.filter(fecha__range = (fecha, fecha_final), cuenta_corriente  = ctacte)
+
+                for cuota in cuotas:
+
+                    pagos = Pago.objects.filter(cuota = cuota)
+
+                    for pago in pagos:
+
+                        pago_md = pago_md + pago.pago*pago.cuota.constante.valor 
+
+                    deuda_md = deuda_md + cuota.precio*cuota.constante.valor 
+
+                saldo_md = deuda_md - pago_md
+
+                datos_cuotas.append((fecha, saldo_md))
+
+
+        # Aqui llamamos y armamos el PDF
+      
+        template = get_template('reportepdf.html')
+        contexto = {'ctacte':ctacte, 
+        'datos':datos, 
+        'datos_cuotas':datos_cuotas, 
+        'saldo_total_pesos':saldo_total_pesos,
+        'fecha':datetime.date.today(),
+        'logo':'{}{}'.format(settings.STATIC_URL, 'img/link.png')}
+        html = template.render(contexto)
+        response = HttpResponse(content_type = "application/pdf")
+        
+        #response['Content-Disposition'] = 'attachment; filename="reporte.pdf"'
+        
+        pisaStatus = pisa.CreatePDF(html, dest=response, link_callback=self.link_callback)
+        
+        if pisaStatus.err:
+            
+            return HttpResponse("Hay un error")
+
+        return response
+       
 def resumencredinv(request):
 
     busqueda = 1

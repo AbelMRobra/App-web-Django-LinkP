@@ -1,39 +1,51 @@
-{% extends "users/inicio.html" %}
-
 {% load static %}
 {% load humanize %}
 
-{% block content %}
-
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'css/hint.css' %}">
+    <link rel="stylesheet" href="{% static 'css/styleabel.css' %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+</head>
 
 
 <div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;" > 
 
     <div style="text-align: center;">
 
+        <div style="text-align: left;">
+
+            <img src="{{logo}}"  class="img-fluid" alt="..." style="max-width:100px; height:auto; margin-top: 5px; margin-bottom: 5px;">
+  
+
+        </div>
+
+
         <div>
 
-            <img src="{{ctacte.venta.unidad.proyecto.iamgen.url}}"  class="img-fluid" alt="..." style="max-width:300px; height:auto; margin-top: 5px; margin-bottom: 5px;">
+            <img src="{{ctacte.venta.unidad.proyecto.iamgen.url}}"  class="img-fluid" alt="..." style="width: 40mm; height:auto; margin-top: 5px; margin-bottom: 20mm;">
   
 
         </div>
 
         <div>
 
-            <small style="color: rgb({{ctacte.venta.unidad.proyecto.color}}); font-family: Arial, Helvetica, sans-serif;"><b>{{ ctacte.venta.unidad.proyecto.nombre }}</b> </small>
+            <h6 style="color: rgb({{ctacte.venta.unidad.proyecto.color}}); font-family: Arial, Helvetica, sans-serif;">{{ ctacte.venta.unidad.proyecto.nombre }} </h6>
         
 
         </div>
 
         <div style="text-align: left; margin-top: 2%;">
 
-            <h6>Fecha de la venta: <small>{{ctacte.venta.fecha}}</small> </h6>
-            <h6>Cliente: <small>{{ctacte.venta.comprador}}</small> </h6>
-            <h6>Unidad: <small>{{ctacte.venta.unidad.piso_unidad}} - {{ctacte.venta.unidad.nombre_unidad}}</small></h6>
+            <h3>Fecha: {{fecha}}</h3>
+            <h3>Cliente: {{ctacte.venta.comprador}} </h3>
+            <h3>Unidad: {{ctacte.venta.unidad.piso_unidad}} - {{ctacte.venta.unidad.nombre_unidad}} </h3>
             
             {% if ctacte.venta.unidad.tipo == "DEPARTAMENTO" %}
 
-            <h6>Tipo: <small>{{ctacte.venta.unidad.tipo}} {{ctacte.venta.unidad.tipologia}} de {{ctacte.venta.m2|floatformat:2}} m2</small></h6>
+            <h3>Tipo: {{ctacte.venta.unidad.tipo}} {{ctacte.venta.unidad.tipologia}} de {{ctacte.venta.m2|floatformat:2}} m2 </h3>
             
 
             {% elif  ctacte.venta.unidad.tipo == "COCHERA" %}
@@ -50,7 +62,8 @@
             
 
         </div>
-        <b><hr class = "my-4" style="width: 100%; "></b>
+        
+        <b><hr class = "my-4" style="width: 100%;"></b>
     
     
     </div>
@@ -239,26 +252,34 @@
       <b><hr class = "my-4" style="width: 100%; "></b>
 
 
-      <h5>Saldo total de la cuenta: <small>${{saldo_total_pesos|floatformat:0|intcomma}}</small> </h5>
+      <h2>Saldo total de la cuenta: $ {{saldo_total_pesos|floatformat:0|intcomma}}</h2>
 
-      <h6>Proxima cuota: <small>${{datos_cuotas.0.1|floatformat:0|intcomma}} vence en {{datos_cuotas.0.0|date:"F Y"}} </small> </h6>
+      <h3>Proxima cuota: $ {{datos_cuotas.0.1|floatformat:0|intcomma}} vence en {{datos_cuotas.0.0|date:"F Y"}}</h3>
 
 
 
         <b><hr class = "my-4" style="width: 100%; "></b>
 
+    <div style="text-align: left;">
+
+        <div>
+            <small>VALOR M3 DE HORMIGON Y EQUIVALENTE EN PESOS CALCULADO SEGÚN REVISTA VIVIENDA MES EN CURSO </small>
+        </div>
+        <div>
+            <small>Sección CI (CI RUBROS DE OBRA) Código 544 – HORMIGONES – ELABORADO 0130 (Hormigón H21) </small>
+        </div>
+        <div>
+            <small><b>Importante:</b> </small>
+        </div>
 
 
-
-    <div style="text-align: center; margin-top: 10%;">
-        <p> <small>-- Link<strong>P</strong> --</small> </p>
-
-     </div>
-
+    </div>
     
-    
+
 
 </div>
 
-    
-{% endblock %}
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
