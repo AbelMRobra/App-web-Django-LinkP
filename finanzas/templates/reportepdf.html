@@ -84,31 +84,24 @@
 
     {% if i.5 < 1 %}
 
-    <h6 style="font-family: Arial, Helvetica, sans-serif; text-align: center; color: #2DBD41;">{{i.0|upper}} - COMPLETO!</h6> 
+    <h6 style="font-family: Arial, Helvetica, sans-serif; text-align: left;">{{i.0|upper}}</h6> 
   
             <div style="text-align: left;">
   
-              <p style="font-family: Arial, Helvetica, sans-serif;"><b>Moneda:</b> {{i.1.nombre}} ($ {{i.1.valor|floatformat:2}}) </p> 
-              <p style="font-family: Arial, Helvetica, sans-serif;"><b>Monto total en la moneda:</b> {{i.2|floatformat:2}} </p> 
-              <p style="font-family: Arial, Helvetica, sans-serif;"><b>Pagado en la moneda:</b> {{i.4|floatformat:2}} </p> 
-              <p style="font-family: Arial, Helvetica, sans-serif;"><b>Saldo en la moneda:</b> {{i.5|floatformat:2}} </p> 
-              <p style="font-family: Arial, Helvetica, sans-serif;"><b>Saldo en pesos:</b> $ {{i.6|floatformat:0|intcomma}} </p> 
-              <p style="font-family: Arial, Helvetica, sans-serif;"><b>Cuotas:</b> {{i.3}} </p> 
+                <p style="font-family: Arial, Helvetica, sans-serif;"><b>Moneda:</b> {{i.1.nombre}} ($ {{i.1.valor|floatformat:2}}) | <b>Total:</b> {{i.2|floatformat:2}} | <b>Pagado:</b> {{i.4|floatformat:2}} | <b>Saldo:</b> {{i.5|floatformat:2}} </p>  
+                <p style="font-family: Arial, Helvetica, sans-serif; color:#319537 ;"><b>Saldo en pesos:</b> $ {{i.6|floatformat:0|intcomma}} </p> 
+      
     
             </div>
       {% elif  i.4 > 0 %}
 
 
-      <h6 style="font-family: Arial, Helvetica, sans-serif; text-align: center;  color: #2D61BD;">{{i.0|upper}} - EN PROCESO!</h6> 
+      <h6 style="font-family: Arial, Helvetica, sans-serif; text-align: left;">{{i.0|upper}}</h6> 
   
             <div style="text-align: left;">
   
-              <p style="font-family: Arial, Helvetica, sans-serif;"><b>Moneda:</b> {{i.1.nombre}} ($ {{i.1.valor|floatformat:2}}) </p> 
-              <p style="font-family: Arial, Helvetica, sans-serif;"><b>Monto total en la moneda:</b> {{i.2|floatformat:2}} </p> 
-              <p style="font-family: Arial, Helvetica, sans-serif;"><b>Pagado en la moneda:</b> {{i.4|floatformat:2}} </p> 
-              <p style="font-family: Arial, Helvetica, sans-serif;"><b>Saldo en la moneda:</b> {{i.5|floatformat:2}} </p> 
-              <p style="font-family: Arial, Helvetica, sans-serif;"><b>Saldo en pesos:</b> $ {{i.6|floatformat:0|intcomma}} </p> 
-              <p style="font-family: Arial, Helvetica, sans-serif;"><b>Cuotas:</b> {{i.3}} </p> 
+              <p style="font-family: Arial, Helvetica, sans-serif;"><b>Moneda:</b> {{i.1.nombre}} ($ {{i.1.valor|floatformat:2}}) | <b>Total:</b> {{i.2|floatformat:2}} | <b>Pagado:</b> {{i.4|floatformat:2}} | <b>Saldo:</b> {{i.5|floatformat:2}} </p>  
+              <p style="font-family: Arial, Helvetica, sans-serif; color: #2D61BD;"><b>Saldo en pesos:</b> $ {{i.6|floatformat:0|intcomma}} </p> 
     
             </div>
 
@@ -116,16 +109,13 @@
 
       {% else %}
 
-            <h6 style="font-family: Arial, Helvetica, sans-serif; text-align: center;">{{i.0|upper}}</h6> 
+            <h6 style="font-family: Arial, Helvetica, sans-serif; text-align: left;">{{i.0|upper}}</h6> 
   
             <div style="text-align: left;">
   
-              <p style="font-family: Arial, Helvetica, sans-serif;"><b>Moneda:</b> {{i.1.nombre}} ($ {{i.1.valor|floatformat:2}}) </p> 
-              <p style="font-family: Arial, Helvetica, sans-serif;"><b>Monto total en la moneda:</b> {{i.2|floatformat:2}} </p> 
-              <p style="font-family: Arial, Helvetica, sans-serif;"><b>Pagado en la moneda:</b> {{i.4|floatformat:2}} </p> 
-              <p style="font-family: Arial, Helvetica, sans-serif;"><b>Saldo en la moneda:</b> {{i.5|floatformat:2}} </p> 
-              <p style="font-family: Arial, Helvetica, sans-serif;"><b>Saldo en pesos:</b> $ {{i.6|floatformat:0|intcomma}} </p> 
-              <p style="font-family: Arial, Helvetica, sans-serif;"><b>Cuotas:</b> {{i.3}} </p> 
+                <p style="font-family: Arial, Helvetica, sans-serif;"><b>Moneda:</b> {{i.1.nombre}} ($ {{i.1.valor|floatformat:2}}) | <b>Total:</b> {{i.2|floatformat:2}} | <b>Pagado:</b> {{i.4|floatformat:2}} | <b>Saldo:</b> {{i.5|floatformat:2}} </p>  
+                <p style="font-family: Arial, Helvetica, sans-serif;"><b>Saldo en pesos:</b> $ {{i.6|floatformat:0|intcomma}} </p> 
+      
     
             </div>
 
