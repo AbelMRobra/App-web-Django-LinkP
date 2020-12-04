@@ -12,7 +12,10 @@ from presupuestos.models import Articulos, Constantes, Presupuestos, Analisis, M
 import sqlite3
 import operator
 import datetime
+from email.mime.text import MIMEText
 import dateutil.parser
+import smtplib
+from agenda import settings
 from datetime import date
 from dateutil.relativedelta import relativedelta
 import matplotlib.pyplot as plt
@@ -591,86 +594,6 @@ def panelvisto(request, estado):
 
     return render(request, 'ocautorizadas.html', {'datos':datos})
 
-
-def comparativas_pl(request, estado):
-
-    datos = 0
-
-    if estado == "1":
-
-        datos = Comparativas.objects.filter(estado = "ESPERA").order_by("-fecha_c")
-
-    if estado == "2":
-
-        datos = Comparativas.objects.filter(estado = "ADJUNTO ✓").order_by("-fecha_c")
-
-    if estado == "3":
-
-        datos = Comparativas.objects.filter(estado = "NO AUTORIZADA").order_by("-fecha_c")
-
-    if estado == "4":
-
-        datos = Comparativas.objects.filter(estado = "AUTORIZADA").order_by("-fecha_c")
-
-
-    if request.method == 'POST':
-
-        datos_post = request.POST.items()
-
-        id_selec = 0
-
-        for d in datos_post:
-
-            if d[0] == 'APROBADA':
-                id_selec = d[1]
-
-                comparativa = Comparativas.objects.get(id = id_selec)
-
-                comparativa.estado = "AUTORIZADA"
-
-                date = datetime.date.today()
-
-                comparativa.fecha_autorizacion = date
-
-                comparativa.save()
-
-            if d[0] == 'NO APROBADA':
-                id_selec = d[1]
-
-                comparativa = Comparativas.objects.get(id = id_selec)
-
-                comparativa.estado = "NO AUTORIZADA"
-
-                comparativa.save()
-
-            if d[0] == 'ADJAPROB':
-                id_selec = d[1]
-
-                comparativa = Comparativas.objects.get(id = id_selec)
-
-                comparativa.estado = "ADJUNTO ✓"
-
-                comparativa.save()
-
-            if d[0] != 'csrfmiddlewaretoken' and d[0] != 'NO APROBADA' and d[0] != 'APROBADA' and d[0] != 'ADJAPROB':
-                
-
-                comparativa = Comparativas.objects.get(id = id_selec)
-
-                if len(d[1]) == 0:
-
-                    comparativa.comentario = str(d[0]) + ": Sin comentarios!"
-
-                else:
-
-                    comparativa.comentario = str(d[0]) + ": " + str(d[1])
-
-                comparativa.save()
-
-
-    return render(request, 'comparativas_pl.html', {'datos':datos})
-
-
 def mensajescomparativas(request, id_comparativa):
 
     if request.method == 'POST':
@@ -733,6 +656,45 @@ def comparativas(request, estado):
                 comparativa.estado = "NO AUTORIZADA"
 
                 comparativa.save()
+                
+                try:
+
+                    # Establecemos conexion con el servidor smtp de gmail
+                    mailServer = smtplib.SMTP(settings.EMAIL_HOST, settings.EMAIL_PORT)
+                    mailServer.ehlo()
+                    mailServer.starttls()
+                    mailServer.ehlo()
+                    mailServer.login(settings.EMAIL_HOST_USER, settings.EMAIL_HOST_PASSWORD)
+
+                    # Construimos el mensaje simple
+                    mensaje = MIMEText("""
+                    
+                    Buenas!,
+
+                    Tu Orden de compra fue rechazada por el siguiente motivo:
+
+                    {}
+
+                    Por favor ingresa a www.linkp.online y comunicate con el equipo de presupuestos para solucionar el problema
+
+                    Gracias!
+                    Saludos!
+                    """.format(comparativa.comentario))
+                    mensaje['From']=settings.EMAIL_HOST_USER
+                    mensaje['To']=datosusuario.objects.get(identificacion = comparativa.creador).email
+                    mensaje['Subject']="La Orden de compra para {} fue rechazada!".format(comparativa.proveedor.name)
+
+                    # Envio del mensaje
+
+                    mailServer.sendmail(settings.EMAIL_HOST_USER,
+                                    datosusuario.objects.get(identificacion = comparativa.creador).email,
+                                    mensaje.as_string())
+
+                except:
+
+                    pass
+
+        
 
             if d[0] == 'ADJAPROB':
 
@@ -746,13 +708,14 @@ def comparativas(request, estado):
 
             if d[0] == 'MENSAJE':
                 
-                comparativa = Comparativas.objects.get(id = id_selec)
-
-                comparativa.comentario = str(request.user.username) + ": " + str(d[1])
-
-                comparativa.save()
 
                 if d[1] != "":
+
+                    comparativa = Comparativas.objects.get(id = id_selec)
+
+                    comparativa.comentario = str(request.user.username) + ": " + str(d[1])
+
+                    comparativa.save()
 
                     mensaje = str(d[0]) + ": " + str(d[1])
 
@@ -765,6 +728,15 @@ def comparativas(request, estado):
                             )
 
                     b.save()
+
+                else:
+
+                    comparativa = Comparativas.objects.get(id = id_selec)
+
+                    comparativa.comentario = str((request.user.username) + ": Sin motivo")
+
+                    comparativa.save()
+
 
 
     #Aqui calculo para saber cuantos de cada uno hay

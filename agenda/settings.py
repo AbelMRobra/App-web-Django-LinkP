@@ -168,3 +168,10 @@ if os.getcwd() == '/app':
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 SESSION_COOKIE_AGE = 3600
 
+# Email
+
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'linkphelp@gmail.com'
+EMAIL_HOST_PASSWORD = 'link2020'
+

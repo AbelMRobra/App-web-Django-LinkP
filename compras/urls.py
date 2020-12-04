@@ -12,7 +12,6 @@ urlpatterns = [
     url(r'^comparativas/(?P<estado>\d+)/$', login_required(views.comparativas), name = 'Comparativas'),
     url(r'^mensajecomparativas/(?P<id_comparativa>\d+)/$', login_required(views.mensajescomparativas), name = 'Mensajes en comparativas'),
     url(r'^ocautorizadas/(?P<estado>\d+)/$', login_required(views.panelvisto), name = 'OC autorizadas'),
-    url(r'^comparativaspl/(?P<estado>\d+)/$', login_required(views.comparativas_pl), name = 'Panel de comparativas'),
     url(r'^listaretiros$', login_required(views.listaretiros), name = 'Lista de retiros'),
     url(r'^listacomprasretiros$', login_required(views.comprasdisponibles), name = 'Compras para retirar'),
     url(r'^cargaretiro/(?P<nombre>\d+)/$', login_required(views.cargaretiro), name = 'Carga de retiros'),
