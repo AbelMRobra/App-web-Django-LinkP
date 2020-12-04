@@ -25,7 +25,7 @@
 
         <div>
 
-            <img src="{{ctacte.venta.unidad.proyecto.iamgen.url}}"  class="img-fluid" alt="..." style="width: 60mm; height:auto; margin-top: 5px; margin-bottom: 20mm;">
+            <img src="{{ctacte.venta.unidad.proyecto.iamgen.url}}"  class="img-fluid" alt="..." style="width: 50mm; height:auto; margin-top: 5px; margin-bottom: 20mm;">
   
 
         </div>
@@ -37,25 +37,32 @@
 
         </div>
 
+        <b><hr class = "my-4" style="width: 100%;"></b>
+
+        <div style="text-align: center;">
+            <h1 style="font-family: Arial, Helvetica, sans-serif;"> Resumen de la cuenta </h1>
+        </div>
+        
+
         <div style="text-align: left; margin-top: 2%;">
 
-            <h3>Fecha: {{fecha}}</h3>
-            <h3>Cliente: {{ctacte.venta.comprador}} </h3>
-            <h3>Unidad: {{ctacte.venta.unidad.piso_unidad}} - {{ctacte.venta.unidad.nombre_unidad}} </h3>
+            <p><b>FECHA: </b>{{fecha}}</p>
+            <p><b>CLIENTE: </b>{{ctacte.venta.comprador}} </p>
+            <p><b>UNIDAD: </b>{{ctacte.venta.unidad.piso_unidad}} - {{ctacte.venta.unidad.nombre_unidad}} </p>
             
             {% if ctacte.venta.unidad.tipo == "DEPARTAMENTO" %}
 
-            <h3>Tipo: {{ctacte.venta.unidad.tipo}} {{ctacte.venta.unidad.tipologia}} de {{ctacte.venta.m2|floatformat:2}} m2 </h3>
+            <p><b>TIPO: </b>{{ctacte.venta.unidad.tipo}} {{ctacte.venta.unidad.tipologia}} de {{ctacte.venta.m2|floatformat:2}} m2 </p>
             
 
             {% elif  ctacte.venta.unidad.tipo == "COCHERA" %}
 
-            <h6>Tipo: <small>{{ctacte.venta.unidad.tipo}} de {{ctacte.venta.m2|floatformat:2}} m2</small></h6>
+            <p><b>TIPO: </b><small>{{ctacte.venta.unidad.tipo}} de {{ctacte.venta.m2|floatformat:2}} m2</small></p>
             
 
             {% elif  ctacte.venta.unidad.tipo == "LOCAL" %}
 
-            <h6>Tipo: <small>{{ctacte.venta.unidad.tipo}} de {{ctacte.venta.m2|floatformat:2}} m2</small></h6>
+            <p><b>TIPO: </b><small>{{ctacte.venta.unidad.tipo}} de {{ctacte.venta.m2|floatformat:2}} m2</small></p>
            
 
             {% endif %}
@@ -64,7 +71,12 @@
         </div>
         
         <b><hr class = "my-4" style="width: 100%;"></b>
-    
+
+
+        <div style="text-align: center;">
+            <h1 style="font-family: Arial, Helvetica, sans-serif;"> Estado de las cuotas </h1>
+        </div>
+   
     
     </div>
 
@@ -72,176 +84,51 @@
 
     {% if i.5 < 1 %}
 
-    <div class="card border-success mb-3" style="display: inline-block; width: 310px; height: 250px; vertical-align: top;  margin: 10px;">
-                
-        <div class="card-body">
-
-            
-          
-            <div style="display: inline-block; text-align: left; vertical-align: top; margin-top: 10px;">
+    <h6 style="font-family: Arial, Helvetica, sans-serif; text-align: center; color: #2DBD41;">{{i.0|upper}} - COMPLETO!</h6> 
   
-            <h6 style="font-family: Arial, Helvetica, sans-serif;"> {{i.0|upper}}</h6> 
-          
+            <div style="text-align: left;">
+  
+              <p style="font-family: Arial, Helvetica, sans-serif;"><b>Moneda:</b> {{i.1.nombre}} ($ {{i.1.valor|floatformat:2}}) </p> 
+              <p style="font-family: Arial, Helvetica, sans-serif;"><b>Monto total en la moneda:</b> {{i.2|floatformat:2}} </p> 
+              <p style="font-family: Arial, Helvetica, sans-serif;"><b>Pagado en la moneda:</b> {{i.4|floatformat:2}} </p> 
+              <p style="font-family: Arial, Helvetica, sans-serif;"><b>Saldo en la moneda:</b> {{i.5|floatformat:2}} </p> 
+              <p style="font-family: Arial, Helvetica, sans-serif;"><b>Saldo en pesos:</b> $ {{i.6|floatformat:0|intcomma}} </p> 
+              <p style="font-family: Arial, Helvetica, sans-serif;"><b>Cuotas:</b> {{i.3}} </p> 
+    
             </div>
-
-            <div>
-  
-              <small style="font-family: Arial, Helvetica, sans-serif;"><b>Moneda:</b> {{i.1.nombre}} ($ {{i.1.valor|floatformat:2}}) </small> 
-  
-            </div>
-
-            <div>
-  
-                <small style="font-family: Arial, Helvetica, sans-serif;"><b>Monto total:</b> {{i.2|floatformat:2}} </small> 
-    
-              </div>
-
-              <div>
-  
-                <small style="font-family: Arial, Helvetica, sans-serif;"><b>Pagado:</b> {{i.4|floatformat:2}} </small> 
-    
-              </div>
-
-              
-              <div>
-  
-                <small style="font-family: Arial, Helvetica, sans-serif;"><b>Saldo:</b> {{i.5|floatformat:2}} </small> 
-    
-              </div>
-
-              <div>
-  
-                <small style="font-family: Arial, Helvetica, sans-serif;"><b>Saldo en pesos:</b> $ {{i.6|floatformat:0|intcomma}} </small> 
-    
-              </div>
-
-              <div>
-  
-                <small style="font-family: Arial, Helvetica, sans-serif;"><b>Cuotas:</b> {{i.3}} </small> 
-    
-              </div>
-
-              <div style="text-align: center; vertical-align: top;">
-
-                <img src="{% static 'img/cheque.png' %}" alt="" style="max-width:20px; height:auto;">
-
-            </div>
-  
-  
-  
-          </div>
-      </div>
-
       {% elif  i.4 > 0 %}
 
 
-      <div class="card border-primary mb-3" style="display: inline-block; width: 310px; height: 250px; vertical-align: top;  margin: 10px;">
-                
-        <div class="card-body">
-          <div style="display: inline-block; text-align: left; vertical-align: middle; margin-top: 10px;">
+      <h6 style="font-family: Arial, Helvetica, sans-serif; text-align: center;  color: #2D61BD;">{{i.0|upper}} - EN PROCESO!</h6> 
   
-            <h6 style="font-family: Arial, Helvetica, sans-serif;">{{i.0|upper}}</h6> 
-          </div>
+            <div style="text-align: left;">
   
-  
+              <p style="font-family: Arial, Helvetica, sans-serif;"><b>Moneda:</b> {{i.1.nombre}} ($ {{i.1.valor|floatformat:2}}) </p> 
+              <p style="font-family: Arial, Helvetica, sans-serif;"><b>Monto total en la moneda:</b> {{i.2|floatformat:2}} </p> 
+              <p style="font-family: Arial, Helvetica, sans-serif;"><b>Pagado en la moneda:</b> {{i.4|floatformat:2}} </p> 
+              <p style="font-family: Arial, Helvetica, sans-serif;"><b>Saldo en la moneda:</b> {{i.5|floatformat:2}} </p> 
+              <p style="font-family: Arial, Helvetica, sans-serif;"><b>Saldo en pesos:</b> $ {{i.6|floatformat:0|intcomma}} </p> 
+              <p style="font-family: Arial, Helvetica, sans-serif;"><b>Cuotas:</b> {{i.3}} </p> 
     
-            <div>
-  
-              <small style="font-family: Arial, Helvetica, sans-serif;"><b>Moneda:</b> {{i.1.nombre}} ($ {{i.1.valor|floatformat:2}}) </small> 
-  
             </div>
-
-            <div>
-  
-                <small style="font-family: Arial, Helvetica, sans-serif;"><b>Monto total:</b> {{i.2|floatformat:2}} </small> 
-    
-              </div>
-
-              <div>
-  
-                <small style="font-family: Arial, Helvetica, sans-serif;"><b>Pagado:</b> {{i.4|floatformat:2}} </small> 
-    
-              </div>
-
-              
-              <div>
-  
-                <small style="font-family: Arial, Helvetica, sans-serif;"><b>Saldo:</b> {{i.5|floatformat:2}} </small> 
-    
-              </div>
-
-              <div>
-  
-                <small style="font-family: Arial, Helvetica, sans-serif;"><b>Saldo en pesos:</b> $ {{i.6|floatformat:0|intcomma}} </small> 
-    
-              </div>
-
-              <div>
-  
-                <small style="font-family: Arial, Helvetica, sans-serif;"><b>Cuotas:</b> {{i.3}} </small> 
-    
-              </div>
-  
-  
-  
-          </div>
-      </div>
 
 
 
       {% else %}
 
-      <div class="card border-secondary mb-3" style="display: inline-block; width: 310px; height: 250px; vertical-align: top;  margin: 10px;">
-                
-        <div class="card-body">
-          <div style="display: inline-block; text-align: left; vertical-align: middle; margin-top: 10px;">
+            <h6 style="font-family: Arial, Helvetica, sans-serif; text-align: center;">{{i.0|upper}}</h6> 
   
-            <h6 style="font-family: Arial, Helvetica, sans-serif;">{{i.0|upper}}</h6> 
-          </div>
+            <div style="text-align: left;">
   
-  
+              <p style="font-family: Arial, Helvetica, sans-serif;"><b>Moneda:</b> {{i.1.nombre}} ($ {{i.1.valor|floatformat:2}}) </p> 
+              <p style="font-family: Arial, Helvetica, sans-serif;"><b>Monto total en la moneda:</b> {{i.2|floatformat:2}} </p> 
+              <p style="font-family: Arial, Helvetica, sans-serif;"><b>Pagado en la moneda:</b> {{i.4|floatformat:2}} </p> 
+              <p style="font-family: Arial, Helvetica, sans-serif;"><b>Saldo en la moneda:</b> {{i.5|floatformat:2}} </p> 
+              <p style="font-family: Arial, Helvetica, sans-serif;"><b>Saldo en pesos:</b> $ {{i.6|floatformat:0|intcomma}} </p> 
+              <p style="font-family: Arial, Helvetica, sans-serif;"><b>Cuotas:</b> {{i.3}} </p> 
     
-            <div>
-  
-              <small style="font-family: Arial, Helvetica, sans-serif;"><b>Moneda:</b> {{i.1.nombre}} ($ {{i.1.valor|floatformat:2}}) </small> 
-  
             </div>
 
-            <div>
-  
-                <small style="font-family: Arial, Helvetica, sans-serif;"><b>Monto total:</b> {{i.2|floatformat:2}} </small> 
-    
-              </div>
-
-              <div>
-  
-                <small style="font-family: Arial, Helvetica, sans-serif;"><b>Pagado:</b> {{i.4|floatformat:2}} </small> 
-    
-              </div>
-
-              
-              <div>
-  
-                <small style="font-family: Arial, Helvetica, sans-serif;"><b>Saldo:</b> {{i.5|floatformat:2}} </small> 
-    
-              </div>
-
-              <div>
-  
-                <small style="font-family: Arial, Helvetica, sans-serif;"><b>Saldo en pesos:</b> $ {{i.6|floatformat:0|intcomma}} </small> 
-    
-              </div>
-
-              <div>
-  
-                <small style="font-family: Arial, Helvetica, sans-serif;"><b>Cuotas:</b> {{i.3}} </small> 
-    
-              </div>
-  
-  
-  
-          </div>
-      </div>
 
 
       {% endif %}
@@ -251,10 +138,13 @@
 
       <b><hr class = "my-4" style="width: 100%; "></b>
 
+      <div>
 
-      <h2>Saldo total de la cuenta: $ {{saldo_total_pesos|floatformat:0|intcomma}}</h2>
+        <h2 style="color: rgb({{ctacte.venta.unidad.proyecto.color}});">Saldo total de la cuenta: $ {{saldo_total_pesos|floatformat:0|intcomma}}</h2>
 
-      <h3>Proxima cuota: $ {{datos_cuotas.0.1|floatformat:0|intcomma}} vence en {{datos_cuotas.0.0|date:"F Y"}}</h3>
+        <h3 style="color: rgb({{ctacte.venta.unidad.proyecto.color}});">Proxima cuota: $ {{datos_cuotas.0.1|floatformat:0|intcomma}}** vence en {{datos_cuotas.0.0|date:"F Y"}}</h3>
+
+      </div>
 
 
 
