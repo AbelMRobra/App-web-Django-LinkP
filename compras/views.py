@@ -679,7 +679,7 @@ def comparativas(request, estado):
 
                     Gracias!
                     Saludos!
-                    """.format(comparativa.comentario))
+                    """.format(request.POST['MENSAJE']))
                     mensaje['From']=settings.EMAIL_HOST_USER
                     mensaje['To']=datosusuario.objects.get(identificacion = comparativa.creador).email
                     mensaje['Subject']="La Orden de compra para {} fue rechazada!".format(comparativa.proveedor.name)
