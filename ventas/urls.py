@@ -22,6 +22,7 @@ urlpatterns = [
     url(r'^cajaarea$', login_required(views.cajaarea), name = 'Caja del area'),
     url(r'^invmer$', login_required(views.invmer), name = 'Investigacion de mercado'),
     url(r'^informeredes$', login_required(views.invmer), name = 'Informe redes'),
+    url(r'^variacionhormigon$', login_required(views.variacionh), name = 'Variacion H'),
     url(r'^encuestapostventa$', login_required(views.encuestapostventa), name = 'Encuesta de postventa'),
     url(r'^folleto$', login_required(views.folleto), name = 'Folleto'),
     url(r'^evo_usd$', login_required(views.evousd), name = 'Evolucion USD/m2'),

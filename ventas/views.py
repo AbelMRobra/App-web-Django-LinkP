@@ -3,7 +3,7 @@ from .models import EstudioMercado, PricingResumen
 from proyectos.models import Unidades, Proyectos
 from finanzas.models import Almacenero
 from ventas.models import Pricing, ArchivosAreaVentas, VentasRealizadas, ArchivoFechaEntrega
-from presupuestos.models import Constantes, Desde
+from presupuestos.models import Constantes, Desde, Registrodeconstantes
 from datetime import date
 from django.shortcuts import redirect
 import datetime
@@ -764,6 +764,87 @@ def panelunidades(request):
 
     return render(request, 'panelunidades.html', {"datos":datos})
 
+def variacionh(request):
+
+    datos_hormigon = Registrodeconstantes.objects.filter(constante__nombre = "Hº VIVIENDA").order_by('fecha')
+
+    print(datos_hormigon[0].fecha.year)
+
+    year = datos_hormigon[0].fecha.year
+
+    year_now = datetime.date.today().year
+
+    datos = []
+
+    valor_anterior = 0
+
+    while year != (year_now+1):
+
+        valor_inicial = 0
+        valor_final = 0
+
+        datos_year = []
+
+        month = 1
+
+        for i in range(12):
+            
+            dia = datetime.date(year, month, 1)
+
+            valor = Registrodeconstantes.objects.filter(constante__nombre = "Hº VIVIENDA", fecha = dia)
+
+            if len(valor) != 0:
+
+                if valor_anterior == 0:
+
+                    variacion = 0
+
+                    datos_year.append((dia, valor[0].valor, variacion))
+
+                    valor_anterior = valor[0].valor
+
+                    if month == 1:
+                        valor_inicial = valor[0].valor
+
+                    if month == 12:
+                        valor_final = valor[0].valor
+
+
+                else:
+
+                    variacion = (valor[0].valor/valor_anterior-1)*100
+
+                    datos_year.append((dia, valor[0].valor, variacion))
+
+                    valor_anterior = valor[0].valor
+
+                    if month == 1:
+                        valor_inicial = valor[0].valor
+
+                    if month == 12:
+                        valor_final = valor[0].valor
+
+            else:
+                datos_year.append((dia, 0, 0))
+
+            if month == 12:
+
+                if valor_inicial != 0:
+
+                    variacion = (valor_final/valor_inicial-1)*100
+                else:
+                    variacion = 0
+
+                datos_year.append(variacion)
+            
+            month += 1
+       
+        datos.append(datos_year)
+
+        year += 1
+
+    return render(request, 'variacionhormigon.html', {"datos":datos})
+
 def editarasignacion(request, id_unidad):
 
     id_unidad = id_unidad
@@ -1010,7 +1091,6 @@ def pricing(request, id_proyecto):
                 if desde != "NO DEFINIDO" and dato.tipo != "COCHERA":
                     prom_desde_contado.append(desde)
                     prom_desde_financiado.append(financiado_m2)
-
 
         except:
             basura = 1

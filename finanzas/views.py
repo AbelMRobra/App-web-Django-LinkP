@@ -1607,11 +1607,11 @@ def consolidado(request):
 
             if "2UO" in dato.proyecto.nombre:
 
-                precio_promedio_contado = 66657.5*1.1*1.09
+                precio_promedio_contado = 85000
 
             elif "#300" in dato.proyecto.nombre:
 
-                precio_promedio_contado = 95825*1.1*1.14
+                precio_promedio_contado = 130000
 
             else:
 
@@ -1741,6 +1741,8 @@ def consolidadoh(request):
 
     datos = Almacenero.objects.all()
 
+    h = Constantes.objects.get(nombre = "Hº VIVIENDA").valor
+
     datos_completos = []
     datos_finales = []
 
@@ -1774,7 +1776,7 @@ def consolidadoh(request):
         pend_gast = almacenero.pendiente_admin + almacenero.pendiente_comision + presupuesto.saldo_mat + presupuesto.saldo_mo + presupuesto.imprevisto + presupuesto.credito + presupuesto.fdr - almacenero.pendiente_adelantos + almacenero.pendiente_iva_ventas + almacenero.pendiente_iibb_tem
         prest_cobrar = almacenero.prestamos_proyecto + almacenero.prestamos_otros
         retiro_socios = sum(np.array(RetirodeSocios.objects.values_list('monto_pesos').filter(proyecto = dato.proyecto)))  
-        total_costo = almacenero.cheques_emitidos + almacenero.gastos_fecha + pend_gast + almacenero.Prestamos_dados + retiro_socios       
+        total_costo = almacenero.cheques_emitidos + almacenero.gastos_fecha + pend_gast + almacenero.Prestamos_dados      
         
         
         costo_total = costo_total + total_costo
@@ -1791,10 +1793,9 @@ def consolidadoh(request):
         rentabilidad = (saldo_proyecto/total_costo)*100
 
 
-        total_ingresos_pesimista = total_ingresos - descuento
+        total_ingresos_pesimista = total_ingresos - descuento - retiro_socios
         saldo_proyecto_pesimista = total_ingresos_pesimista - total_costo
         rentabilidad_pesimista = (saldo_proyecto_pesimista/total_costo)*100
-
         retiro_totales = retiro_totales + retiro_socios 
 
         try:
@@ -1891,11 +1892,11 @@ def consolidadoh(request):
 
             if "2UO" in dato.proyecto.nombre:
 
-                precio_promedio_contado = 66657.5*1.1*1.09
+                precio_promedio_contado = 85000
 
             elif "#300" in dato.proyecto.nombre:
 
-                precio_promedio_contado = 95825*1.1*1.14
+                precio_promedio_contado = 130000
 
             else:
 
@@ -1903,16 +1904,15 @@ def consolidadoh(request):
 
     # -----------------> Aqui termina para el precio promedio contado
 
-        h = Constantes.objects.get(nombre = "Hº VIVIENDA").valor
-
-        datos_completos.append((dato, total_costo/h, total_ingresos/h, saldo_proyecto/h, rentabilidad, presupuesto, pricing, saldo_proyecto_pesimista/h, rentabilidad_pesimista, precio_promedio_contado))
+        datos_completos.append((dato, total_costo/h, total_ingresos/h, saldo_proyecto/h, rentabilidad, presupuesto, pricing, saldo_proyecto_pesimista/h, rentabilidad_pesimista, precio_promedio_contado, retiro_socios/h, descuento/h))
 
     beneficio_total = ingresos_total - costo_total
     beneficio_total_pesimista = beneficio_total - descuento_total - retiro_totales
+    beneficio_retiros = beneficio_total - descuento_total
     rendimiento_total = beneficio_total/costo_total*100
     rendimiento_total_pesimista = beneficio_total_pesimista/costo_total*100
 
-    datos_finales.append((ingresos_total/h, costo_total/h, beneficio_total/h, rendimiento_total, descuento_total/h, rendimiento_total_pesimista, beneficio_total_pesimista/h, retiro_totales/h))
+    datos_finales.append((ingresos_total/h, costo_total/h, beneficio_total/h, rendimiento_total, descuento_total/h, rendimiento_total_pesimista, beneficio_total_pesimista/h, retiro_totales/h, beneficio_retiros/h))
 
 
     #Esta es la parte del historico

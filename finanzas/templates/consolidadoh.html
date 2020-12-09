@@ -33,137 +33,138 @@
             <a class="badge badge-secondary" href="{% url 'Consolidado H' %}" >HORMIGON</a>
 
             </div>
-        <table class = "table table-hover" style="text-align: center;">
-            <thead>
+            <table class = "table table-hover" style="text-align: center;">
+                <thead>
+        
+                    <tr class = "table-secondary">
+                        <th scope = "row" style="vertical-align: middle;">  PROYECTO </th>                   
+                        <th scope = "row" style="vertical-align: middle;" class="priority-4"> INGRESOS</th>
+                        <th scope = "row" style="vertical-align: middle;" class="priority-4"> COSTOS</th>
+                        <th scope = "row" style="vertical-align: middle;"> BENEFICIO</th>
+                        <th scope = "row" style="vertical-align: middle;"> REND.</th>
+                        <th scope = "row" style="vertical-align: middle;"> DESCUENTOS</th>
+                        <th scope = "row" style="vertical-align: middle;"> RETIROS</th>
+                        <th scope = "row" style="vertical-align: middle;"> BENEFICIO 2</th>
+                        <th scope = "row" style="vertical-align: middle;"> REND. 2</th>
+                        <th scope = "row" style="vertical-align: middle;"> PROM. CONT</th>
     
-                <tr class = "table-secondary">
-                    <th scope = "row" style="vertical-align: middle;" colspan="2">  PROYECTO </th>                   
-                    <th scope = "row" style="vertical-align: middle;" class="priority-4"> INGRESOS</th>
-                    <th scope = "row" style="vertical-align: middle;" class="priority-4"> COSTOS</th>
-                    <th scope = "row" style="vertical-align: middle;"> BENEFICIOS</th>
-                    <th scope = "row" style="vertical-align: middle;"> RENDIMIENTO</th>
-                    <th scope = "row" style="vertical-align: middle;" class="priority-5"> <span class="hint--left hint--info" aria-label="Esta columna indica si tiene pricing asociado!">PRICING</span> </th>
-                    <th scope = "row" style="vertical-align: middle;" class="priority-5"><span class="hint--top hint--danger" aria-label= "Precio promedio contado de las unidades disponibles">CONT.PROM.DISP.</span></th>
-                    <th scope = "row" style="vertical-align: middle;" class="priority-5"> <span class="hint--left hint--info" aria-label="Esta columna indica si tiene un presupuesto calculado!">PRESUPUESTO</span> </th>
-
-                   
-                </tr>
-            </thead>
-            {% for i in datos_completos %}   
-            <tbody>
+                       
+                    </tr>
+                </thead>
+                {% for i in datos_completos %}   
+                <tbody>
+        
+                    <tr class = "table-light">
     
-                <tr class = "table-light">
-
-
-                    <td style="vertical-align: middle;"> <img src="{{i.0.proyecto.iamgen.url}}"  class="img-fluid" alt="..." style="max-width: 70px; height:auto;"> </td>
-                    
-                    {% if "#300" in i.0.proyecto.nombre %}
-
-                    <td style="color: rgb({{i.0.proyecto.color}}); vertical-align: middle;"> <b>#300 (PROYECTO COMPLETO)</b> </td> 
-                    
-                    {% else %}
-
-                    <td style="width: 10%; color: rgb({{i.0.proyecto.color}}); vertical-align: middle;"> <b>{{ i.0.proyecto.nombre}}</b> </td> 
-                    
-
-                    {% endif %}
-                    
-                    
-                    <td class="priority-4" style="width: 5%; vertical-align: middle;"> {{ i.2|floatformat:0|intcomma }} M3</td> 
-                    <td class="priority-4" style="width: 10%; vertical-align: middle;">{{ i.1|floatformat:0|intcomma }} M3</td> 
-                    <td style="width: 10%; vertical-align: middle; vertical-align: middle;">{{ i.3|floatformat:0|intcomma }} M3</td> 
-                    <td style="width: 10%; vertical-align: middle;">{{ i.4|floatformat:0|intcomma }}%  </td> 
-                    
-                    {% if i.6 > 0 %}
-                    
-                    <td class="priority-5" style="width: 10%; vertical-align: middle; color: #3FB360;"><b>  CARGADO</b></td> 
-                    
-                    {% else %}
-
-                    <td class="priority-5" style="width: 10%; vertical-align: middle; color: #B3513F ;"> <b>NO CARGADO</b></td> 
-
-                    {% endif %}
-
-                    <td class="priority-4" style="width: 5%; vertical-align: middle;"> ${{ i.9|floatformat:0|intcomma }}</td>
-
-                    {% if i.5 > 200 %}
-                    
-                    <td class="priority-5" style="width: 10%; vertical-align: middle; color: #3FB360;"><b>CALCULADO</b></td> 
-
-                    
-                    {% elif i.5 > 100 %}
-                    
-                    <td class="priority-5" style="width: 10%; vertical-align: middle; color: #DBCD23 ;"><b>SEMI-CALCULADO</b></td> 
-                    
-                    {% else %}
-
-                    <td class="priority-5" style="width: 10%; vertical-align: middle; color: #B3513F ;"> <b>EXTRAPOLADO</b></td> 
-
-                    {% endif %}
-
-                </tr>
-            </tbody>
-
-            {% endfor %}
-
-            <tbody>
     
-                <tr class = "table-light">
-                    <td style="width: 15%; vertical-align: middle;" colspan="2"> RESULTADO CONJUNTO DE PROYECTOS </td>
-                    <td  class="priority-5" style="width: 5%; vertical-align: middle;"> {{ datos_finales.0.0|floatformat:0|intcomma }} M3</td> 
-                    <td  class="priority-5" style="width: 10%; vertical-align: middle;"> {{  datos_finales.0.1|floatformat:0|intcomma }} M3</td> 
-                    <td style="width: 10%; vertical-align: middle; vertical-align: middle;"> {{  datos_finales.0.2|floatformat:0|intcomma }} M3</td> 
-                    <td style="width: 10%; vertical-align: middle;"> {{  datos_finales.0.3|floatformat:0|intcomma }}% </td> 
-                    
-
-
-                </tr>
-            </tbody>
-
-            <tbody>
+                        {% if "#300" in i.0.proyecto.nombre %}
     
-                <tr class = "table-light">
-                    <td style="width: 15%; vertical-align: middle;" colspan="2"> DESCUENTO SOBRE UNID. (6%)</td>
-                    <td  class="priority-5" style="width: 5%; vertical-align: middle;"></td>  
-                    <td  class="priority-5" style="width: 10%; vertical-align: middle;"></td> 
-                    <td style="width: 10%; vertical-align: middle; vertical-align: middle;">  - {{ datos_finales.0.4|floatformat:0|intcomma }} M3</td> 
-                    <td style="width: 10%; vertical-align: middle;"></td> 
-                    
-
-
-                </tr>
-            </tbody>
-
-            <tbody>
+                        <td style="color: rgb({{i.0.proyecto.color}}); vertical-align: middle;"> 
+                            
+                            <div>
     
-                <tr class = "table-light">
-                    <td style="width: 15%; vertical-align: middle;" colspan="2"> RETIROS REALIZADOS </td>
-                    <td  class="priority-5" style="width: 5%; vertical-align: middle;"></td>  
-                    <td  class="priority-5" style="width: 10%; vertical-align: middle;"></td> 
-                    <td style="width: 10%; vertical-align: middle; vertical-align: middle;">  - {{ datos_finales.0.7|floatformat:0|intcomma }} M3</td> 
-                    <td style="width: 10%; vertical-align: middle;"></td> 
-                    
-
-
-                </tr>
-            </tbody>
-
-            <tbody>
+                                <img src="{{i.0.proyecto.iamgen.url}}"  class="img-fluid" alt="..." style="max-width: 70px; height:auto;">
+                            
+                            </div>
     
-                <tr class = "table-secondary">
-                    <td style="width: 15%; vertical-align: middle;" colspan="2"> <b>RESULTADO CON RETIROS</b> </td>
-                    <td  class="priority-5" style="vertical-align: middle;"></td>  
-                    <td   class="priority-5"style="vertical-align: middle;"></td> 
-                    <td style="width: 10%; vertical-align: middle; vertical-align: middle;"> <b>{{datos_finales.0.6|floatformat:0|intcomma }} M3</b></td> 
-                    <td style="width: 10%; vertical-align: middle;"> <b>{{  datos_finales.0.5|floatformat:0|intcomma }}%</b>  </td> 
-                    
-
-
-                </tr>
-            </tbody>
-
-
-        </table> 
+                            <small><b>#300</b></small>
+                             
+                        
+                        </td> 
+                        
+                        {% else %}
+    
+                        <td style="width: 10%; color: rgb({{i.0.proyecto.color}}); vertical-align: middle;">
+    
+    
+                            <div>
+    
+                                <img src="{{i.0.proyecto.iamgen.url}}"  class="img-fluid" alt="..." style="max-width: 70px; height:auto;">
+                            
+                            </div>
+    
+                            <small><b>{{ i.0.proyecto.nombre}}</b> </small>                  
+                        
+                        </td> 
+                        
+    
+                        {% endif %}
+                        
+                        
+                        <td style="width: 10%; vertical-align: middle;">{{ i.2|floatformat:0|intcomma }} M3</td> 
+                        <td style="width: 10%; vertical-align: middle;">{{ i.1|floatformat:0|intcomma }} M3</td> 
+                        <td style="width: 10%; vertical-align: middle; vertical-align: middle;"><b>{{ i.3|floatformat:0|intcomma }} M3</b></td> 
+                        <td style="width: 8%; vertical-align: middle;">{{ i.4|floatformat:0|intcomma }}%  </td>
+                        <td style="width: 10%; vertical-align: middle;">- {{ i.11|floatformat:0|intcomma }} M3</td> 
+                        <td style="width: 10%; vertical-align: middle;">- {{ i.10|floatformat:0|intcomma }} M3</td> 
+                        <td style="width: 10%; vertical-align: middle;"><b>{{ i.7|floatformat:0|intcomma }} M3</b></td> 
+                        <td style="width: 8%; vertical-align: middle;">{{ i.8|floatformat:0|intcomma }}%  </td> 
+                        <td style="width: 10%; vertical-align: middle; color: #323BA9;">
+                            
+                            
+                            <b>$ {{ i.9|floatformat:0|intcomma }}</b> 
+    
+    
+                            <div>
+    
+                                {% if i.6 > 0 %}
+    
+                                <small style="color:#2FD627;"><b>PRG</b></small>
+    
+    
+                                {% else %}
+    
+                                <small style="color: #D64127;"><b>PRG</b></small>
+    
+    
+                                {% endif %}
+    
+    
+                                {% if i.5 > 180 %}
+    
+                                <small style="color: #2FD627;"><b> PRP</b></small>
+    
+                                {% elif i.5 > 100 %}
+    
+                                <small style="color: #D6C127;"><b> PRP</b></small>
+    
+                                {% else %}
+    
+                                <small style="color: #D64127;"><b >PRP</b></small>
+    
+    
+                                {% endif %}
+    
+    
+    
+                            </div>
+                        
+                        </td>
+    
+                    </tr>
+                </tbody>
+    
+                {% endfor %}
+    
+                <tbody>
+        
+                    <tr class = "table-secondary">
+                        <td style="width: 10%; vertical-align: middle;"> <b>RESULTADO</b></td>
+                        <td  class="priority-5" style="width: 5%; vertical-align: middle;"><b>{{datos_finales.0.0|floatformat:0|intcomma }} M3</b> </td> 
+                        <td  class="priority-5" style="width: 10%; vertical-align: middle;"><b>{{datos_finales.0.1|floatformat:0|intcomma }} M3</b> </td> 
+                        <td style="width: 10%; vertical-align: middle; vertical-align: middle;"><b>{{datos_finales.0.2|floatformat:0|intcomma }} M3</b> </td> 
+                        <td style="width: 10%; vertical-align: middle;"><b>{{datos_finales.0.3|floatformat:0|intcomma }}%</b>  </td>
+                        <td style="width: 10%; vertical-align: middle; vertical-align: middle;"><b>- {{ datos_finales.0.4|floatformat:0|intcomma }} M3</b></td> 
+                        <td style="width: 10%; vertical-align: middle; vertical-align: middle;"><b>- {{ datos_finales.0.7|floatformat:0|intcomma }} M3</b></td>
+    
+                        <td style="width: 10%; vertical-align: middle; vertical-align: middle;"> <b>{{datos_finales.0.6|floatformat:0|intcomma }} M3</b></td> 
+                        <td style="width: 10%; vertical-align: middle;"> <b>{{datos_finales.0.5|floatformat:0|intcomma }}%</b>  </td>
+                    </tr>
+                </tbody>
+    
+    
+    
+            </table> 
 
 
           
@@ -172,13 +173,13 @@
    <b><hr class = "my-4" style="width: 100%; "></b> 
 
    <div style="margin-bottom: 2rem;">
-    <h5 style="font-family: Arial, Helvetica, sans-serif;">Detalle grafico</h5>
+    <h5 style="font-family: Arial, Helvetica, sans-serif;">Variación historica</h5>
 </div>
 
     <div style="margin-top: 0.5rem; width: 100%;">
 
         <div style= "text-align: center;">
-            <small><strong>-- Analisis historico del margen --</strong></small>
+            <small><strong>-- Composición del margen --</strong></small>
         </div>
 
         <canvas id="myChart" height="70px" width="auto"></canvas>
@@ -201,52 +202,54 @@
                     'Hoy'
                     ],
                 datasets: [
-                    
+
                 {
-                    label: 'Retiro de socios',
-                    backgroundColor: 'rgb(223, 48, 26, 0.8)',
-                    borderColor: 'rgb(223, 48, 26)',
-                    fill: true,
-                    borderWidth: 1,
-                    lineTension: 0,
-                    data: [
-                    {% for i in datos_registro  %}
-                    Math.round({{i.2|floatformat:0}}/1000),  
-                                     
-                    {% endfor %}
-                    Math.round({{ datos_finales.0.7|floatformat:0 }}/1000),
-                    ]
-                },
-                
-                {
-                    label: 'Margen con retiro',
-                    backgroundColor: 'rgb(46, 86, 202 , 0.5)',
-                    borderColor: 'rgb(46, 86, 202)',
-                    fill: true,
-                    borderWidth: 1,
-                    lineTension: 0,
-                    data: [
-                    {% for i in datos_registro  %}
-                    Math.round({{i.1.0.6|floatformat:0}}/1000),  
-                                     
-                    {% endfor %}
-                    Math.round({{ datos_finales.0.6|floatformat:0 }}/1000),
-                    ]
-                },
-                {
-                    label: 'Margen total',
-                    backgroundColor: 'rgb(28, 180, 51, 0.2)',
-                    borderColor: 'rgb(28, 180, 51)',
+                    label: 'Margen final',
+                    backgroundColor: 'rgb(35, 211, 27 , 0.5)',
+                    borderColor: 'rgb(35, 211, 27 )',
                     fill: true,
                     borderWidth: 1,
                     lineTension: 0,
                     data: [
                     {% for i in datos_registro %}
-                    Math.round({{i.1.0.2|floatformat:0}}/1000),                   
+                    Math.round({{i.1.0.7|floatformat:0}}/1000000),                   
                     {% endfor %}
-                    Math.round({{ datos_finales.0.2|floatformat:0 }}/1000),
+                    Math.round({{ datos_finales.0.6|floatformat:0 }}/1000000),
                     ]
-                }],
+                },
+
+                {
+                    label: 'Retiros',
+                    backgroundColor: 'rgb(83, 45, 213  , 0.5)',
+                    borderColor: 'rgb(83, 45, 213 )',
+                    fill: '-1',
+                    borderWidth: 1,
+                    lineTension: 0,
+                    data: [
+                    {% for i in datos_registro  %}
+                    Math.round({{i.1.0.6|floatformat:0}}/1000000),  
+                                     
+                    {% endfor %}
+                    Math.round({{ datos_finales.0.8|floatformat:0 }}/1000000),
+                    ]
+                },
+
+                {
+                    label: 'Descuentos',
+                    backgroundColor: 'rgb(211, 194, 27 , 0.5)',
+                    borderColor: 'rgb(211, 194, 27 )',
+                    fill: '-1',
+                    borderWidth: 1,
+                    lineTension: 0,
+                    data: [
+                    {% for i in datos_registro %}
+                    Math.round({{i.1.0.2|floatformat:0}}/1000000),                   
+                    {% endfor %}
+                    Math.round({{ datos_finales.0.2|floatformat:0 }}/1000000),
+                    ]
+                },
+                
+                ],
 
             },
 
@@ -267,15 +270,15 @@
                         {
                             ticks: {
                                 min: 0,
-                                stepSize: 10,
+                                stepSize: 50,
                                 callback: function(label, index, labels) {
-                                    return label+ ' mil M3';
+                                    return '$ '+label+ ' M';
                                     
                                 }
                             },
                             scaleLabel: {
                                 display: true,
-                                labelString: 'Expresado en miles de metros cubicos de Hº'
+                                labelString: '1M = $1.000.000'
                             },
 
                             stacked: false
@@ -296,7 +299,7 @@
     <div style="margin-top: 5px;">
 
         <div style= "text-align: center;">
-            <small><strong>-- Historico del ingreso/costo conjunto --</strong></small>
+            <small><strong>-- Variación costos e ingresos --</strong></small>
         </div>
 
         <canvas id="myChart2" height="70px" width="auto"></canvas>
@@ -317,31 +320,31 @@
                     ],
                 datasets: [{
                     label: 'Costo del proyecto',
-                    backgroundColor: 'rgb(225, 40, 28 , 0.3)',
-                    borderColor: 'rgb(225, 40, 28 )',
+                    backgroundColor: 'rgb(206, 38, 21 , 0.5)',
+                    borderColor: 'rgb(206, 38, 21 )',
                     fill: true,
                     borderWidth: 1,
                     lineTension: 0,
                     data: [
                     {% for i in datos_registro  %}
-                    Math.round({{i.1.0.1|floatformat:0}}/1000),
+                    Math.round({{i.1.0.1|floatformat:0}}/1000000),
                     {% endfor %}  
-                    Math.round({{ datos_finales.0.1|floatformat:0 }}/1000),                 
+                    Math.round({{ datos_finales.0.1|floatformat:0 }}/1000000),                 
                     
                     ]
                 },
                 {
                     label: 'Ingresos del proyecto',
-                    backgroundColor: 'rgb(28, 180, 51, 0.15)',
-                    borderColor: 'rgb(28, 180, 51)',
-                    fill: true,
+                    backgroundColor: 'rgb(35, 211, 27 , 0.5)',
+                    borderColor: 'rgb(35, 211, 27)',
+                    fill: '-1',
                     borderWidth: 1,
                     lineTension: 0,
                     data: [
                     {% for i in datos_registro %}
-                    Math.round({{i.1.0.0|floatformat:0}}/1000),                   
+                    Math.round({{i.1.0.0|floatformat:0}}/1000000),                   
                     {% endfor %}
-                    Math.round({{ datos_finales.0.0|floatformat:0 }}/1000),
+                    Math.round({{ datos_finales.0.0|floatformat:0 }}/1000000),
                     ]
                 }],
 
@@ -363,16 +366,16 @@
                     yAxes: [
                         {
                             ticks: {
-                                min: 0,
-                                stepSize: 100,
+                                min: 100,
+                                stepSize: 10,
                                 callback: function(label, index, labels) {
-                                    return label + 'mil M3';
+                                    return label + ' M3';
                                     
                                 }
                             },
                             scaleLabel: {
                                 display: true,
-                                labelString: 'Expresado en miles de metros cubicos de Hº'
+                                labelString: '1 M = $1.000.000'
                             },
 
                             stacked: false
@@ -393,7 +396,6 @@
         <p style="font-family: Arial, Helvetica, sans-serif;"> <small>-- Link<strong>P</strong> --</small> </p>
 
      </div>
-
 
 </div>
 {% endblock %}
