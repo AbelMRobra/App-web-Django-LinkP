@@ -139,7 +139,7 @@
                 <tr class = "table-dark">
                     <th scope = "row" style="vertical-align: middle;"></th> 
                     
-                    {% for i in datos %}
+                    {% for i in datos_h %}
                     <th scope = "row" style="vertical-align: middle;" colspan="2">{{i.0.0|date:"Y"}}</th>
                     
                     {% endfor %}
@@ -152,7 +152,7 @@
 
                     <td style="width: 10%; vertical-align: middle;"><small><b>ENERO</b></small></td>
 
-                    {% for i in datos %}
+                    {% for i in datos_h %}
                     
                     
                     <td style="width: 10%; vertical-align: middle;"><small>$ {{i.0.1|floatformat:0|intcomma}}</small></td> 
@@ -165,7 +165,7 @@
                 <tr class = "table-light">
 
                     <td style="width: 10%; vertical-align: middle;"><small><b>FEBRERO</b></small></td> 
-                    {% for i in datos %}
+                    {% for i in datos_h %}
                     
                     
                     <td style="width: 10%; vertical-align: middle;"><small>$ {{i.1.1|floatformat:0|intcomma}}</small></td> 
@@ -177,7 +177,7 @@
                 <tr class = "table-light">
 
                     <td style="vertical-align: middle;"><small><b>MARZO</b></small></td> 
-                    {% for i in datos %}
+                    {% for i in datos_h %}
                     
                     
                     <td style="vertical-align: middle;"><small>$ {{i.2.1|floatformat:0|intcomma}}</small></td> 
@@ -189,7 +189,7 @@
                 <tr class = "table-light">
 
                     <td style="vertical-align: middle;"><small><b>ABRIL</b></small></td> 
-                    {% for i in datos %}
+                    {% for i in datos_h %}
                     
                     
                     <td style="vertical-align: middle;"><small>$ {{i.3.1|floatformat:0|intcomma}}</small></td> 
@@ -201,7 +201,7 @@
                 <tr class = "table-light">
 
                     <td style="vertical-align: middle;"><small><b>MAYO</b></small></td> 
-                    {% for i in datos %}
+                    {% for i in datos_h %}
                     
                     
                     <td style="vertical-align: middle;"><small>$ {{i.4.1|floatformat:0|intcomma}}</small></td> 
@@ -213,7 +213,7 @@
                 <tr class = "table-light">
 
                     <td style="vertical-align: middle;"><small><b>JUNIO</b></small></td> 
-                    {% for i in datos %}
+                    {% for i in datos_h %}
                     
                     
                     <td style="vertical-align: middle;"><small>$ {{i.5.1|floatformat:0|intcomma}}</small></td> 
@@ -225,7 +225,7 @@
                 <tr class = "table-light">
 
                     <td style="vertical-align: middle;"><small><b>JULIO</b></small></td> 
-                    {% for i in datos %}
+                    {% for i in datos_h %}
                     
                     
                     <td style="vertical-align: middle;"><small>$ {{i.6.1|floatformat:0|intcomma}}</small></td> 
@@ -237,7 +237,7 @@
                 <tr class = "table-light">
 
                     <td style="vertical-align: middle;"><small><b>AGOSTO</b></small></td> 
-                    {% for i in datos %}
+                    {% for i in datos_h %}
                     
                     
                     <td style="vertical-align: middle;"><small>$ {{i.7.1|floatformat:0|intcomma}}</small></td> 
@@ -249,7 +249,7 @@
                 <tr class = "table-light">
 
                     <td style="vertical-align: middle;"><small><b>SEPTIEMBRE</b></small></td> 
-                    {% for i in datos %}
+                    {% for i in datos_h %}
                     
                     
                     <td style="vertical-align: middle;"><small>$ {{i.8.1|floatformat:0|intcomma}}</small></td> 
@@ -261,7 +261,7 @@
                 <tr class = "table-light">
 
                     <td style="vertical-align: middle;"><small><b>OCTUBRE</b></small></td> 
-                    {% for i in datos %}
+                    {% for i in datos_h %}
                     
                     
                     <td style="vertical-align: middle;"><small>$ {{i.9.1|floatformat:0|intcomma}}</small></td> 
@@ -273,7 +273,7 @@
                 <tr class = "table-light">
 
                     <td style="vertical-align: middle;"><small><b>NOVIEMBRE</b></small></td> 
-                    {% for i in datos %}
+                    {% for i in datos_h %}
                     
                     
                     <td style="vertical-align: middle;"><small>$ {{i.10.1|floatformat:0|intcomma}}</small></td> 
@@ -285,7 +285,7 @@
                 <tr class = "table-light">
 
                     <td style="vertical-align: middle;"><small><b>DICIEMBRE</b></small></td> 
-                    {% for i in datos %}
+                    {% for i in datos_h %}
                     
                     
                     <td style="vertical-align: middle;"><small>$ {{i.11.1|floatformat:0|intcomma}}</small></td> 
@@ -306,7 +306,7 @@
     
                 <tr class = "table-dark">
                     <td style="width: 10%; vertical-align: middle;"> <b>PROMEDIO ANUAL</b></td>
-                    {% for i in datos %}
+                    {% for i in datos_h %}
                     <th scope = "row" style="vertical-align: middle;" colspan="2">{{i.12|floatformat:2}} %</th>
                     
                     {% endfor %} 

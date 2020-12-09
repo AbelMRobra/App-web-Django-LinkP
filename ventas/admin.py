@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import PricingResumen, VentasRealizadas, EstudioMercado, Pricing, ArchivosAreaVentas, ArchivoFechaEntrega
+from .models import PricingResumen, VentasRealizadas, EstudioMercado, Pricing, ArchivosAreaVentas, ArchivoFechaEntrega, ArchivoVariacionHormigon
 from import_export import resources
 from import_export.admin import ImportExportModelAdmin
 
@@ -57,9 +57,18 @@ class ArchivoFechaEntregaAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = ('fecha',)
     resources_class = ArchivoFechaEntregaResource
 
+class ArchivoVariacionHormigonResource(resources.ModelResource):
+    class Meta:
+        model = ArchivoVariacionHormigon
+        
+class ArchivoVariacionHormigonAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    list_display = ('fecha',)
+    resources_class = ArchivoVariacionHormigonResource
+
 admin.site.register(PricingResumen, PricingResumenAdmin)
 admin.site.register(Pricing, PricingAdmin)
 admin.site.register(VentasRealizadas, VentasRealizadasAdmin)
 admin.site.register(EstudioMercado, EstudioMercadoAdmin)
 admin.site.register(ArchivosAreaVentas, ArchivosAdmin)
 admin.site.register(ArchivoFechaEntrega, ArchivoFechaEntregaAdmin)
+admin.site.register(ArchivoVariacionHormigon, ArchivoVariacionHormigonAdmin)

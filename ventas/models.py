@@ -120,8 +120,19 @@ class ArchivoFechaEntrega(models.Model):
     archivo = models.FileField(verbose_name="archivo", blank=True, null=True)
 
     class Meta:
-        verbose_name = "Archivos Fecha de entrega"
+        verbose_name = "Archivo Fecha de entrega"
         verbose_name_plural = "Archivos Fecha de entrega"
+
+    def __str__(self):
+        return "Archivos de fecha de entrega"
+
+class ArchivoVariacionHormigon(models.Model):
+    fecha = models.DateTimeField(verbose_name="Fecha de carga", auto_now_add=True)
+    archivo = models.FileField(verbose_name="archivo", blank=True, null=True)
+
+    class Meta:
+        verbose_name = "Archivo Variacion Hormigon"
+        verbose_name_plural = "Archivos Variacion Hormigon"
 
     def __str__(self):
         return "Archivos de fecha de entrega"

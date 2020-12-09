@@ -766,15 +766,32 @@ def panelunidades(request):
 
 def variacionh(request):
 
-    datos_hormigon = Registrodeconstantes.objects.filter(constante__nombre = "Hº VIVIENDA").order_by('fecha')
+    datos = ArchivoVariacionHormigon.objects.order_by("-fecha")
 
-    print(datos_hormigon[0].fecha.year)
+    busqueda = 0
+
+    if request.method == 'POST':
+
+        try:
+
+            b = ArchivoVariacionHormigon(
+
+                archivo = request.FILES['adjunto'],
+            )
+
+            b.save()
+
+        except:
+            
+            busqueda = ArchivoVariacionHormigon.objects.get(id = request.POST['fecha']) 
+
+    datos_hormigon = Registrodeconstantes.objects.filter(constante__nombre = "Hº VIVIENDA").order_by('fecha')
 
     year = datos_hormigon[0].fecha.year
 
     year_now = datetime.date.today().year
 
-    datos = []
+    datos_h = []
 
     valor_anterior = 0
 
@@ -839,11 +856,11 @@ def variacionh(request):
             
             month += 1
        
-        datos.append(datos_year)
+        datos_h.append(datos_year)
 
         year += 1
 
-    return render(request, 'variacionhormigon.html', {"datos":datos})
+    return render(request, 'variacionhormigon.html', {"datos_h":datos_h, "datos":datos, "busqueda":busqueda})
 
 def editarasignacion(request, id_unidad):
 
