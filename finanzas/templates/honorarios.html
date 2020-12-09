@@ -26,12 +26,12 @@
     <div class="card border-success mb-3" style="display: inline-block; width: 310px; height: 340px; vertical-align: top; margin: 10px;">
         <div class="card-header">Ingresos</div>  
         <div class="card-body">
-            <h6>Cuotas a cobrar: <small>{{honorarios.0.cuotas|floatformat:2}} M3</small></h6>
-            <h6>Ventas proyectadas: <small>{{honorarios.0.ventas|floatformat:2}} M3</small></h6>
-            <h6 style="color: #468049;">Subtotal: <small>{{datos_honorarios.0|floatformat:2}} M3</small></h6>
+            <h6>Cuotas a cobrar: <small>$ {{honorarios.0.cuotas|floatformat:0|intcomma}}</small></h6>
+            <h6>Ventas proyectadas: <small>$ {{honorarios.0.ventas|floatformat:0|intcomma}}</small></h6>
+            <h6 style="color: #468049;">Subtotal: <small>$ {{datos_honorarios.0|floatformat:0|intcomma}}</small></h6>
             <b><hr class = "my-4" style="width: 75%; "></b>
-            <h6>Creditos: <small>{{honorarios.0.creditos|floatformat:2}} M3</small></h6>
-            <h6 style="color: #468049  ;">Total: <small>{{datos_honorarios.1|floatformat:2}} M3</small></h6>
+            <h6>Creditos: <small>$ {{honorarios.0.creditos|floatformat:0|intcomma}}</small></h6>
+            <h6 style="color: #468049  ;">Total: <small>$ {{datos_honorarios.1|floatformat:0|intcomma}}</small></h6>
         </div>
       </div>
 
@@ -39,24 +39,24 @@
         <div class="card border-danger mb-3" style="display: inline-block; width: 310px; height: 340px; vertical-align: top; margin: 10px;">
             <div class="card-header">Costos</div>
             <div class="card-body">
-                <h6>Gastos de estr.y GIO: <small>{{honorarios.0.estructura_gio|floatformat:2}} M3</small></h6>
-                <h6>Aportes: <small>{{honorarios.0.aportes|floatformat:2}} M3</small></h6>
-                <h6>Socios: <small>{{honorarios.0.socios|floatformat:2}} M3</small></h6>
-                <h6>Comisión de venta: <small>{{datos_honorarios.2|floatformat:2}} M3</small></h6>
-                <h6 style="color: #C54A4A ;">Subtotal: <small>{{datos_honorarios.3|floatformat:2}} M3</small></h6>
+                <h6>Gastos de estr.y GIO: <small>$ {{honorarios.0.estructura_gio|floatformat:0|intcomma}}</small></h6>
+                <h6>Aportes: <small>$ {{honorarios.0.aportes|floatformat:0|intcomma}}</small></h6>
+                <h6>Socios: <small>$ {{honorarios.0.socios|floatformat:0|intcomma}}</small></h6>
+                <h6>Comisión de venta: <small>$ {{datos_honorarios.2|floatformat:0|intcomma}}</small></h6>
+                <h6 style="color: #C54A4A ;">Subtotal: <small>$ {{datos_honorarios.3|floatformat:0|intcomma}}</small></h6>
                 <b><hr class = "my-4" style="width: 75%; "></b>
-                <h6>Deudas: <small>{{honorarios.0.deudas|floatformat:2}} M3</small></h6>
-                <h6>Retiro de socios: <small>{{honorarios.0.retiro_socios|floatformat:2}} M3</small></h6>
-                <h6 style="color: #C54A4A;">Total: <small>{{datos_honorarios.4|floatformat:2}} M3</small></h6>
+                <h6>Deudas: <small>$ {{honorarios.0.deudas|floatformat:0|intcomma}}</small></h6>
+                <h6>Retiro de socios: <small>$ {{honorarios.0.retiro_socios|floatformat:0|intcomma}}</small></h6>
+                <h6 style="color: #C54A4A;">Total: <small>$ {{datos_honorarios.4|floatformat:0|intcomma}}</small></h6>
             </div>
           </div>
 
           <div class="card border-primary mb-3" style="display: inline-block; width: 310px; height: 340px; vertical-align: top; margin: 10px;">
             <div class="card-header">Beneficio</div>
             <div class="card-body">
-                <h6 style="color:#2D3FBD; margin-bottom: 20px;">Caja actual: <small>{{honorarios.0.caja_actual|floatformat:2}} M3</small></h6>
+                <h6 style="color:#2D3FBD; margin-bottom: 20px;">Caja actual: <small>$ {{honorarios.0.caja_actual|floatformat:0|intcomma}}</small></h6>
 
-                <h6 style="color:#2D3FBD; margin-bottom: 20px;">Total: <small>{{datos_honorarios.5|floatformat:2}} M3</small></h6>
+                <h6 style="color:#2D3FBD; margin-bottom: 20px;">Total: <small>$ {{datos_honorarios.5|floatformat:0|intcomma}}</small></h6>
 
                 <canvas id="myChart2"></canvas>
 
@@ -129,7 +129,7 @@
 
                     <td style="vertical-align: middle;">
                         
-                        <img src="{{i.0.iamgen.url}}"  class="img-fluid" alt="..." style="max-width: 70px; height:auto;"> 
+                        <img src="{{i.0.0.iamgen.url}}"  class="img-fluid" alt="..." style="max-width: 70px; height:auto;"> 
 
                         <div>
 

@@ -1621,13 +1621,44 @@ def consolidado(request):
 
         datos_completos.append((dato, total_costo, total_ingresos, saldo_proyecto, rentabilidad, presupuesto, pricing, saldo_proyecto_pesimista, rentabilidad_pesimista, precio_promedio_contado, retiro_socios, descuento))
 
+
+
+    # -----------------> Aqui calculo los totalizadores
+
     beneficio_total = ingresos_total - costo_total
     beneficio_total_pesimista = beneficio_total - descuento_total - retiro_totales
     beneficio_retiros = beneficio_total - descuento_total
     rendimiento_total = beneficio_total/costo_total*100
     rendimiento_total_pesimista = beneficio_total_pesimista/costo_total*100
 
+    # -----------------> Aqui calculo la parte de honorarios
+
+    honorarios = Honorarios.objects.order_by("-fecha")
+
+    subtotal_1 = honorarios[0].cuotas + honorarios[0].ventas
+    ingresos = subtotal_1 + honorarios[0].creditos
+    comision = honorarios[0].comision_venta*honorarios[0].ventas
+    subtotal_2 = honorarios[0].estructura_gio + honorarios[0].aportes + honorarios[0].socios + comision
+    costos = subtotal_2  + honorarios[0].deudas
+    honorario = ingresos - costos + honorarios[0].caja_actual + beneficio_total
+    retiros = honorarios[0].retiro_socios
+    honorarios2 = honorario - retiros
+
+    # -----------------> Aqui calculo los totalizadores con los honorarios
+
+    ingresos_totales = ingresos_total + ingresos
+    costos_totales = costo_total + costos
+    beneficios_totales =beneficio_total + honorario
+    rend1_totales =  beneficios_totales/costos_totales*100
+    descuentos_totales = descuento_total
+    retiros_totales =retiro_totales + retiros
+    beneficios2_totales = (beneficios_totales - descuentos_totales - retiros_totales)
+    rend2_totales = beneficios2_totales/costos_totales*100
+     
+
     datos_finales.append((ingresos_total, costo_total, beneficio_total, rendimiento_total, descuento_total, rendimiento_total_pesimista, beneficio_total_pesimista, retiro_totales, beneficio_retiros))
+
+    datos_finales_2 = [honorario, ingresos, costos, retiros, honorarios2, ingresos_totales, costos_totales, beneficios_totales, rend1_totales, descuentos_totales, retiros_totales, rend2_totales, beneficios2_totales]
 
 
     #Esta es la parte del historico
@@ -1733,7 +1764,7 @@ def consolidado(request):
 
         datos_registro.append((datos_completos_registro, datos_finales_registro, retiro_totales))
 
-    return render(request, 'consolidado.html', {"datos_completos":datos_completos, 'datos_finales':datos_finales, "datos_registro":datos_registro, "fechas":fechas})
+    return render(request, 'consolidado.html', {"datos_completos":datos_completos, 'datos_finales':datos_finales, "datos_registro":datos_registro, "fechas":fechas, "datos_finales_2":datos_finales_2})
 
 #Copia del consolidado en Hº
 

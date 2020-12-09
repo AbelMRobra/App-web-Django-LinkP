@@ -34,16 +34,16 @@
             <thead>
     
                 <tr class = "table-dark">
-                    <th scope = "row" style="vertical-align: middle;">  PROYECTO </th>                   
-                    <th scope = "row" style="vertical-align: middle;" class="priority-4"> INGRESOS</th>
-                    <th scope = "row" style="vertical-align: middle;" class="priority-4"> COSTOS</th>
-                    <th scope = "row" style="vertical-align: middle;"> BENEFICIO</th>
-                    <th scope = "row" style="vertical-align: middle;"> REND.</th>
-                    <th scope = "row" style="vertical-align: middle;"> DESCUENTOS</th>
-                    <th scope = "row" style="vertical-align: middle;"> RETIROS</th>
-                    <th scope = "row" style="vertical-align: middle;"> BENEFICIO 2</th>
-                    <th scope = "row" style="vertical-align: middle;"> REND. 2</th>
-                    <th scope = "row" style="vertical-align: middle;"> PROM. CONT</th>
+                    <th scope = "row" style="vertical-align: middle;"><small><b>PROYECTO</b></small></th>                   
+                    <th scope = "row" style="vertical-align: middle;" class="priority-4"><small><b>INGRESOS</b></small></th>
+                    <th scope = "row" style="vertical-align: middle;" class="priority-4"><small><b>COSTOS</b></small></th>
+                    <th scope = "row" style="vertical-align: middle;"><small><b>BENEFICIO</b></small></th>
+                    <th scope = "row" style="vertical-align: middle;"><small><b>REND.</b></small> </th>
+                    <th scope = "row" style="vertical-align: middle;"><small><b>DESCUENTOS</b></small></th>
+                    <th scope = "row" style="vertical-align: middle;"><small><b>RETIROS</b></small></th>
+                    <th scope = "row" style="vertical-align: middle;"><small><b>BENEFICIO 2</b></small> </th>
+                    <th scope = "row" style="vertical-align: middle;"><small><b>REND. 2</b></small> </th>
+                    <th scope = "row" style="vertical-align: middle;"><small><b>PROM. CONT</b></small> </th>
 
                    
                 </tr>
@@ -88,18 +88,18 @@
                     {% endif %}
                     
                     
-                    <td style="width: 10%; vertical-align: middle;"> $ {{ i.2|floatformat:0|intcomma }}</td> 
-                    <td style="width: 10%; vertical-align: middle;">$ {{ i.1|floatformat:0|intcomma }}</td> 
-                    <td style="width: 10%; vertical-align: middle; vertical-align: middle;"><b>$ {{ i.3|floatformat:0|intcomma }}</b></td> 
-                    <td style="width: 8%; vertical-align: middle;">{{ i.4|floatformat:0|intcomma }}%  </td>
-                    <td style="width: 10%; vertical-align: middle;">- $ {{ i.11|floatformat:0|intcomma }}</td> 
-                    <td style="width: 10%; vertical-align: middle;">- $ {{ i.10|floatformat:0|intcomma }}</td> 
-                    <td style="width: 10%; vertical-align: middle;"><b>$ {{ i.7|floatformat:0|intcomma }}</b></td> 
-                    <td style="width: 8%; vertical-align: middle;">{{ i.8|floatformat:0|intcomma }}%  </td> 
+                    <td style="width: 10%; vertical-align: middle;"><small>$ {{ i.2|floatformat:0|intcomma }}</small> </td> 
+                    <td style="width: 10%; vertical-align: middle;"><small>$ {{ i.1|floatformat:0|intcomma }}</small> </td> 
+                    <td style="width: 10%; vertical-align: middle; vertical-align: middle;"><small><b>$ {{ i.3|floatformat:0|intcomma }}</b></small></td> 
+                    <td style="width: 8%; vertical-align: middle;"><small>{{ i.4|floatformat:0|intcomma }}%</small></td>
+                    <td style="width: 10%; vertical-align: middle;"><small>- $ {{ i.11|floatformat:0|intcomma }}</small> </td> 
+                    <td style="width: 10%; vertical-align: middle;"><small>- $ {{ i.10|floatformat:0|intcomma }}</small> </td> 
+                    <td style="width: 10%; vertical-align: middle;"><small><b>$ {{ i.7|floatformat:0|intcomma }}</b></small> </td> 
+                    <td style="width: 8%; vertical-align: middle;"><small>{{ i.8|floatformat:0|intcomma }}%</small></td> 
                     <td style="width: 10%; vertical-align: middle; color: #323BA9;">
                         
                         
-                        <b>$ {{ i.9|floatformat:0|intcomma }}</b> 
+                        <small><b>$ {{ i.9|floatformat:0|intcomma }}</b> </small> 
 
 
                         <div>
@@ -146,16 +146,43 @@
             <tbody>
     
                 <tr class = "table-dark">
-                    <td style="width: 10%; vertical-align: middle;"> <b>RESULTADO</b></td>
-                    <td  class="priority-5" style="width: 5%; vertical-align: middle;"><b>$ {{datos_finales.0.0|floatformat:0|intcomma }}</b> </td> 
-                    <td  class="priority-5" style="width: 10%; vertical-align: middle;"><b>$ {{datos_finales.0.1|floatformat:0|intcomma }}</b> </td> 
-                    <td style="width: 10%; vertical-align: middle; vertical-align: middle;"><b>$ {{datos_finales.0.2|floatformat:0|intcomma }}</b> </td> 
-                    <td style="width: 10%; vertical-align: middle;"><b>{{datos_finales.0.3|floatformat:0|intcomma }}%</b>  </td>
-                    <td style="width: 10%; vertical-align: middle; vertical-align: middle;"><b>- $ {{ datos_finales.0.4|floatformat:0|intcomma }}</b></td> 
-                    <td style="width: 10%; vertical-align: middle; vertical-align: middle;"><b>- $ {{ datos_finales.0.7|floatformat:0|intcomma }}</b></td>
+                    <td style="width: 10%; vertical-align: middle;"><small><b>RESULTADO PROYECTOS</b></small> </td>
+                    <td  class="priority-5" style="width: 5%; vertical-align: middle;"><small><b>$ {{datos_finales.0.0|floatformat:0|intcomma }}</b> </small> </td> 
+                    <td  class="priority-5" style="width: 10%; vertical-align: middle;"><small><b>$ {{datos_finales.0.1|floatformat:0|intcomma }}</b></small> </td> 
+                    <td style="width: 10%; vertical-align: middle; vertical-align: middle;"><small><b>$ {{datos_finales.0.2|floatformat:0|intcomma}}</b></small> </td> 
+                    <td style="width: 10%; vertical-align: middle;"><small><b>{{datos_finales.0.3|floatformat:0|intcomma }}%</b></small> </td>
+                    <td style="width: 10%; vertical-align: middle; vertical-align: middle;"><small><b>- $ {{ datos_finales.0.4|floatformat:0|intcomma}}</b></small> </td> 
+                    <td style="width: 10%; vertical-align: middle; vertical-align: middle;"><small><b>- $ {{ datos_finales.0.7|floatformat:0|intcomma }}</b></small> </td>
 
-                    <td style="width: 10%; vertical-align: middle; vertical-align: middle;"> <b>$ {{datos_finales.0.6|floatformat:0|intcomma }}</b></td> 
-                    <td style="width: 10%; vertical-align: middle;"> <b>{{datos_finales.0.5|floatformat:0|intcomma }}%</b>  </td>
+                    <td style="width: 10%; vertical-align: middle; vertical-align: middle;"><small><b>$ {{datos_finales.0.6|floatformat:0|intcomma }}</b></small> </td> 
+                    <td style="width: 10%; vertical-align: middle;"><small><b>{{datos_finales.0.5|floatformat:0|intcomma }}%</b></small></td>
+                    <td style="width: 10%; vertical-align: middle;"></td>
+                </tr>
+                <tr class = "table-light">
+                    <td style="width: 10%; vertical-align: middle;"><small><b>HONORARIOS</b></small></td>
+                    <td  class="priority-5" style="width: 5%; vertical-align: middle;"><small>$ {{datos_finales_2.1|floatformat:0|intcomma }}</small></td> 
+                    <td  class="priority-5" style="width: 10%; vertical-align: middle;"><small>$ {{datos_finales_2.2|floatformat:0|intcomma }}</small></td> 
+                    <td style="width: 10%; vertical-align: middle; vertical-align: middle;"><small><b>$ {{datos_finales_2.0|floatformat:0|intcomma }}</b></small></td> 
+                    <td style="width: 10%; vertical-align: middle;"></td>
+                    <td style="width: 10%; vertical-align: middle; vertical-align: middle;"></td> 
+                    <td style="width: 10%; vertical-align: middle; vertical-align: middle;"><small>- $ {{datos_finales_2.3|floatformat:0|intcomma }}</small></td>
+
+                    <td style="width: 10%; vertical-align: middle; vertical-align: middle;"><small><b>$ {{datos_finales_2.4|floatformat:0|intcomma }}</b></small></td> 
+                    <td style="width: 10%; vertical-align: middle;"></td>
+                    <td style="width: 10%; vertical-align: middle;"></td>
+                </tr>
+                <tr class = "table-dark">
+                    <td style="width: 10%; vertical-align: middle;"> <small><b>RESULTADO COMPLETO</b></small> </td>
+                    <td  class="priority-5" style="width: 5%; vertical-align: middle;"><small><b>$ {{datos_finales_2.5|floatformat:0|intcomma }}</b></small></td> 
+                    <td  class="priority-5" style="width: 10%; vertical-align: middle;"><small><b>$ {{datos_finales_2.6|floatformat:0|intcomma }}</b></small></td> 
+                    <td style="width: 10%; vertical-align: middle; vertical-align: middle;"><small><b>$ {{datos_finales_2.7|floatformat:0|intcomma }}</b></small></td> 
+                    <td style="width: 10%; vertical-align: middle;"><small><b>{{datos_finales_2.8|floatformat:0|intcomma }}%</b></small></td>
+                    <td style="width: 10%; vertical-align: middle; vertical-align: middle;"><small><b>- $ {{datos_finales_2.9|floatformat:0|intcomma }}</b></small> </td> 
+                    <td style="width: 10%; vertical-align: middle; vertical-align: middle;"><small><b>- $ {{datos_finales_2.10|floatformat:0|intcomma }}</b></small> </td>
+
+                    <td style="width: 10%; vertical-align: middle; vertical-align: middle;"><small><b>$ {{datos_finales_2.12|floatformat:0|intcomma }}</b></small> </td> 
+                    <td style="width: 10%; vertical-align: middle;"><small><b>{{datos_finales_2.11|floatformat:0|intcomma }}%</b></small></td>
+                    <td style="width: 10%; vertical-align: middle;"></td>
                 </tr>
             </tbody>
 
@@ -200,6 +227,8 @@
                     ],
                 datasets: [
 
+                
+
                 {
                     label: 'Margen final',
                     backgroundColor: 'rgb(35, 211, 27 , 0.5)',
@@ -232,7 +261,7 @@
                 },
 
                 {
-                    label: 'Descuentos',
+                    label: 'Margen sin descuento',
                     backgroundColor: 'rgb(211, 194, 27 , 0.5)',
                     borderColor: 'rgb(211, 194, 27 )',
                     fill: '-1',
@@ -245,6 +274,7 @@
                     Math.round({{ datos_finales.0.2|floatformat:0 }}/1000000),
                     ]
                 },
+
                 
                 ],
 

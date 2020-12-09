@@ -901,7 +901,6 @@ def editarasignacion(request, id_unidad):
 
 def pricing(request, id_proyecto):
 
-
     #Aqui empieza para cambiar el precio base
 
     precio_nuevo = 0
@@ -919,7 +918,6 @@ def pricing(request, id_proyecto):
             datos_modificar.desde = precio_nuevo
 
             datos_modificar.save()
-
 
     proyecto = Proyectos.objects.get(id = id_proyecto)
 
@@ -956,11 +954,8 @@ def pricing(request, id_proyecto):
 
     sumatoria_contado = 0
     sumatoria_financiado = 0
-    sumatoria_contado_disp = 0
-    sumatoria_financiado_disp = 0
-    prom_desde_contado = []
-    prom_desde_financiado = []
-    
+
+   
     for dato in datos:
 
         if dato.sup_equiv > 0:
@@ -1094,17 +1089,11 @@ def pricing(request, id_proyecto):
             m2_totales_disp = m2_totales_disp + m2
 
         try:
-            sumatoria_contado = sumatoria_contado + contado
-            sumatoria_financiado = sumatoria_financiado + financiado
 
-            if dato.estado == "DISPONIBLE":
+            if dato.asig == "PROYECTO":
 
-                sumatoria_contado_disp = sumatoria_contado_disp + contado
-                sumatoria_financiado_disp = sumatoria_financiado_disp + financiado
-
-                if desde != "NO DEFINIDO" and dato.tipo != "COCHERA":
-                    prom_desde_contado.append(desde)
-                    prom_desde_financiado.append(financiado_m2)
+                sumatoria_contado = sumatoria_contado + contado
+                sumatoria_financiado = sumatoria_financiado + financiado
 
         except:
             basura = 1
@@ -1140,20 +1129,6 @@ def pricing(request, id_proyecto):
     promedio_contado = sumatoria_contado/m2_totales
     promedio_financiado = sumatoria_financiado/m2_totales
 
-    promedio_contado_disp = sumatoria_contado_disp/m2_totales_disp
-    promedio_financiado_disp = sumatoria_financiado_disp/m2_totales_disp
-
-    if len(prom_desde_contado) > 0:
-
-        promedio_m2_contado = sum(np.array(prom_desde_contado))/len(prom_desde_contado)
-        promedio_m2_financiado = sum(np.array(prom_desde_financiado))/len(prom_desde_financiado)
-
-    else:
-
-        promedio_m2_contado = 0
-        promedio_m2_financiado = 0
-
-
     if request.method == 'GET':
 
         nuevo_precio = request.GET.items()
@@ -1176,7 +1151,7 @@ def pricing(request, id_proyecto):
             
             b.save()
 
-    otros_datos.append((m2_totales, cantidad, departamentos, cocheras, promedio_contado, promedio_financiado, promedio_contado_disp, promedio_financiado_disp, promedio_m2_contado, promedio_m2_financiado))
+    otros_datos.append((m2_totales, cantidad, departamentos, cocheras, promedio_contado, promedio_financiado))
 
     datos_unidades = datos_tabla_unidad
     
