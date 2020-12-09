@@ -1640,7 +1640,7 @@ def consolidado(request):
     comision = honorarios[0].comision_venta*honorarios[0].ventas
     subtotal_2 = honorarios[0].estructura_gio + honorarios[0].aportes + honorarios[0].socios + comision
     costos = subtotal_2  + honorarios[0].deudas
-    honorario = ingresos - costos + honorarios[0].caja_actual + beneficio_total
+    honorario = ingresos - costos + honorarios[0].caja_actual
     retiros = honorarios[0].retiro_socios
     honorarios2 = honorario - retiros
 
