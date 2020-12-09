@@ -795,10 +795,9 @@ def variacionh(request):
 
     valor_anterior = 0
 
-    while year != (year_now+1):
+    valor_inicial = 0
 
-        valor_inicial = 0
-        valor_final = 0
+    while year != (year_now+1):
 
         datos_year = []
 
@@ -810,6 +809,14 @@ def variacionh(request):
 
             valor = Registrodeconstantes.objects.filter(constante__nombre = "Hº VIVIENDA", fecha = dia)
 
+            if month == 12:
+
+                if valor_inicial != 0 and len(valor) != 0:
+
+                    variacion_anual = (valor[0].valor/valor_inicial-1)*100
+                else:
+                    variacion_anual = 0
+
             if len(valor) != 0:
 
                 if valor_anterior == 0:
@@ -820,12 +827,8 @@ def variacionh(request):
 
                     valor_anterior = valor[0].valor
 
-                    if month == 1:
-                        valor_inicial = valor[0].valor
-
                     if month == 12:
-                        valor_final = valor[0].valor
-
+                        valor_inicial = valor[0].valor
 
                 else:
 
@@ -835,28 +838,22 @@ def variacionh(request):
 
                     valor_anterior = valor[0].valor
 
-                    if month == 1:
-                        valor_inicial = valor[0].valor
-
                     if month == 12:
-                        valor_final = valor[0].valor
+                        valor_inicial = valor[0].valor
 
             else:
                 datos_year.append((dia, 0, 0))
 
             if month == 12:
 
-                if valor_inicial != 0:
+                datos_year.append(variacion_anual)
 
-                    variacion = (valor_final/valor_inicial-1)*100
-                else:
-                    variacion = 0
-
-                datos_year.append(variacion)
-            
             month += 1
-       
+
+      
         datos_h.append(datos_year)
+
+        datos_h.sort(key=lambda datos_h: datos_h, reverse=True)
 
         year += 1
 
