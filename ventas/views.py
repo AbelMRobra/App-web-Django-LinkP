@@ -2,7 +2,7 @@ from django.shortcuts import render
 from .models import EstudioMercado, PricingResumen
 from proyectos.models import Unidades, Proyectos
 from finanzas.models import Almacenero
-from ventas.models import Pricing, ArchivosAreaVentas, VentasRealizadas, ArchivoFechaEntrega
+from ventas.models import Pricing, ArchivosAreaVentas, VentasRealizadas, ArchivoFechaEntrega, ArchivoVariacionHormigon
 from presupuestos.models import Constantes, Desde, Registrodeconstantes
 from datetime import date
 from django.shortcuts import redirect
