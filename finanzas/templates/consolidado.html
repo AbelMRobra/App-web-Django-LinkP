@@ -203,7 +203,7 @@
     <div style="margin-top: 0.5rem; width: 100%;">
 
         <div style= "text-align: center;">
-            <small><strong>-- Composición del margen --</strong></small>
+            <small><strong>-- Composición del beneficio --</strong></small>
         </div>
 
         <canvas id="myChart" height="70px" width="auto"></canvas>
@@ -227,51 +227,68 @@
                     ],
                 datasets: [
 
+                {
+                    label: 'Retiros',
+                    backgroundColor: 'rgb(24, 40, 230, 0.5)',
+                    borderColor: 'rgb(24, 40, 230)',
+                    fill: true,
+                    borderWidth: 1,
+                    lineTension: 0,
+                    data: [
+                    {% for i in datos_registro  %}
+                    Math.round({{i.0.2|floatformat:0}}/1000000),  
+                                     
+                    {% endfor %}
+                    Math.round({{datos_finales_2.10|floatformat:0 }}/1000000),
+                    ]
+                },
+
+                {
+                    label: 'Honorarios',
+                    backgroundColor: 'rgb(230, 43, 24, 0.5)',
+                    borderColor: 'rgb(230, 43, 24)',
+                    fill: '-1',
+                    borderWidth: 1,
+                    lineTension: 0,
+                    data: [
+                    {% for i in datos_registro %}
+                    Math.round({{i.0.3|floatformat:0}}/1000000),                   
+                    {% endfor %}
+                    Math.round({{datos_finales_2.13|floatformat:0 }}/1000000),
+                    ]
+                },
+
                 
 
                 {
-                    label: 'Margen final',
-                    backgroundColor: 'rgb(35, 211, 27 , 0.5)',
-                    borderColor: 'rgb(35, 211, 27 )',
+                    label: 'Margen no negociable',
+                    backgroundColor: 'rgb(24, 230, 52, 0.5)',
+                    borderColor: 'rgb(24, 230, 52)',
                     fill: true,
                     borderWidth: 1,
                     lineTension: 0,
                     data: [
                     {% for i in datos_registro %}
-                    Math.round({{i.1.0.7|floatformat:0}}/1000000),                   
+                    Math.round({{i.0.4|floatformat:0}}/1000000),                   
                     {% endfor %}
-                    Math.round({{ datos_finales.0.6|floatformat:0 }}/1000000),
+                    Math.round({{datos_finales_2.14|floatformat:0 }}/1000000),
                     ]
                 },
 
-                {
-                    label: 'Retiros',
-                    backgroundColor: 'rgb(83, 45, 213  , 0.5)',
-                    borderColor: 'rgb(83, 45, 213 )',
-                    fill: '-1',
-                    borderWidth: 1,
-                    lineTension: 0,
-                    data: [
-                    {% for i in datos_registro  %}
-                    Math.round({{i.1.0.6|floatformat:0}}/1000000),  
-                                     
-                    {% endfor %}
-                    Math.round({{ datos_finales.0.8|floatformat:0 }}/1000000),
-                    ]
-                },
+                
 
                 {
-                    label: 'Margen sin descuento',
-                    backgroundColor: 'rgb(211, 194, 27 , 0.5)',
-                    borderColor: 'rgb(211, 194, 27 )',
+                    label: 'Margen negociable',
+                    backgroundColor: 'rgb(230, 214, 24, 0.5)',
+                    borderColor: 'rgb(230, 214, 24)',
                     fill: '-1',
                     borderWidth: 1,
                     lineTension: 0,
                     data: [
                     {% for i in datos_registro %}
-                    Math.round({{i.1.0.2|floatformat:0}}/1000000),                   
+                    Math.round({{i.0.5|floatformat:0}}/1000000),                   
                     {% endfor %}
-                    Math.round({{ datos_finales.0.2|floatformat:0 }}/1000000),
+                    Math.round({{ datos_finales_2.15|floatformat:0 }}/1000000),
                     ]
                 },
 
@@ -354,7 +371,7 @@
                     lineTension: 0,
                     data: [
                     {% for i in datos_registro  %}
-                    Math.round({{i.1.0.1|floatformat:0}}/1000000),
+                    Math.round({{i.0.1|floatformat:0}}/1000000),
                     {% endfor %}  
                     Math.round({{ datos_finales.0.1|floatformat:0 }}/1000000),                 
                     
@@ -369,7 +386,7 @@
                     lineTension: 0,
                     data: [
                     {% for i in datos_registro %}
-                    Math.round({{i.1.0.0|floatformat:0}}/1000000),                   
+                    Math.round({{i.0.0|floatformat:0}}/1000000),                   
                     {% endfor %}
                     Math.round({{ datos_finales.0.0|floatformat:0 }}/1000000),
                     ]

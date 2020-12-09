@@ -57,6 +57,8 @@ class RegistroAlmacenero(models.Model):
     credito = models.FloatField(null=True, blank=True, verbose_name="Credito")
     fdr = models.FloatField(null=True, blank=True, verbose_name="Fondos de reparo")
     retiro_socios = models.FloatField(null=True, blank=True, verbose_name="Retiro socios", default=0)
+    retiro_socios_honorarios = models.FloatField(null=True, blank=True, verbose_name="Retiro socios en honorarios", default=0)
+    honorarios = models.FloatField(null=True, blank=True, verbose_name="Honorarios", default=0)
 
     class Meta:
         verbose_name="RegistroAlmacenero"

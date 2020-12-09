@@ -4,7 +4,7 @@ from django.contrib.auth import authenticate
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login as do_login
 from django.contrib.auth.forms import UserCreationForm
-from finanzas.models import Almacenero, RegistroAlmacenero, Arqueo, RetirodeSocios
+from finanzas.models import Almacenero, RegistroAlmacenero, Arqueo, RetirodeSocios, Honorarios
 from presupuestos.models import Presupuestos
 from proyectos.models import Proyectos, Unidades
 from ventas.models import VentasRealizadas
@@ -196,6 +196,19 @@ def inicio(request):
 
     Registros = RegistroAlmacenero.objects.filter(fecha =date)
 
+    # -----------------> Aqui traigo la parte de honorarios para guardar en los historicos
+
+    honorarios = Honorarios.objects.order_by("-fecha")
+
+    subtotal_1 = honorarios[0].cuotas + honorarios[0].ventas
+    ingresos = subtotal_1 + honorarios[0].creditos
+    comision = honorarios[0].comision_venta*honorarios[0].ventas
+    subtotal_2 = honorarios[0].estructura_gio + honorarios[0].aportes + honorarios[0].socios + comision
+    costos = subtotal_2  + honorarios[0].deudas
+    honorario = ingresos - costos + honorarios[0].caja_actual
+    retiros = honorarios[0].retiro_socios
+    honorarios2 = honorario - retiros
+
     if len(Registros) == 0:
     
         almacenero = Almacenero.objects.all()
@@ -228,7 +241,9 @@ def inicio(request):
                 imprevisto = presupuesto.imprevisto,
                 credito = presupuesto.credito, 
                 fdr = presupuesto.fdr,
-                retiro_socios= sum(np.array(RetirodeSocios.objects.values_list('monto_pesos').filter(proyecto = alma.proyecto)))
+                retiro_socios= sum(np.array(RetirodeSocios.objects.values_list('monto_pesos').filter(proyecto = alma.proyecto))),
+                retiro_socios_honorarios = retiros,
+                honorarios = honorario
 
             )
 

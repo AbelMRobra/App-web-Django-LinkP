@@ -1654,14 +1654,19 @@ def consolidado(request):
     retiros_totales =retiro_totales + retiros
     beneficios2_totales = (beneficios_totales - descuentos_totales - retiros_totales)
     rend2_totales = beneficios2_totales/costos_totales*100
-     
+
+    # -----------------> Información para graficos
+
+    retiro_honorarios = retiros_totales + honorarios2
+    honorarios_beneficio2 = retiro_honorarios + beneficio_total_pesimista + retiro_totales
+    honorarios_beneficio1 = retiro_honorarios + beneficio_total
 
     datos_finales.append((ingresos_total, costo_total, beneficio_total, rendimiento_total, descuento_total, rendimiento_total_pesimista, beneficio_total_pesimista, retiro_totales, beneficio_retiros))
 
-    datos_finales_2 = [honorario, ingresos, costos, retiros, honorarios2, ingresos_totales, costos_totales, beneficios_totales, rend1_totales, descuentos_totales, retiros_totales, rend2_totales, beneficios2_totales]
+    datos_finales_2 = [honorario, ingresos, costos, retiros, honorarios2, ingresos_totales, costos_totales, beneficios_totales, rend1_totales, descuentos_totales, retiros_totales, rend2_totales, beneficios2_totales, retiro_honorarios, honorarios_beneficio2, honorarios_beneficio1]
 
 
-    #Esta es la parte del historico
+    # -----------------> Esta es la parte del historico
 
     datos_historicos = RegistroAlmacenero.objects.order_by("fecha")
 
@@ -1680,14 +1685,12 @@ def consolidado(request):
 
         datos = RegistroAlmacenero.objects.filter(fecha = fecha)
 
-        datos_completos_registro = []
         datos_finales_registro = []
 
         costo_total = 0
         ingresos_total = 0
         descuento_total = 0
         retiro_totales = 0
-
 
         for dato in datos:
 
@@ -1752,17 +1755,23 @@ def consolidado(request):
 
                 pass
 
-            datos_completos_registro.append((dato, total_costo, total_ingresos, saldo_proyecto, rentabilidad, presupuesto, pricing, saldo_proyecto_pesimista, rentabilidad_pesimista))
-
         beneficio_total = ingresos_total - costo_total
         beneficio_descuento = beneficio_total - descuento_total
         beneficio_retiro = beneficio_descuento - retiro_totales
         rendimiento_total = beneficio_total/costo_total*100
         rendimiento_total_pesimista = beneficio_total_pesimista/costo_total*100
 
-        datos_finales_registro.append((ingresos_total, costo_total, beneficio_total, rendimiento_total, descuento_total, rendimiento_total_pesimista, beneficio_descuento, beneficio_retiro))
 
-        datos_registro.append((datos_completos_registro, datos_finales_registro, retiro_totales))
+        retiros_completo = retiro_totales + dato.retiro_socios_honorarios
+        honorarios = dato.honorarios
+        retiro_honorarios = retiros_completo + honorarios
+        honorarios_beneficio2 = retiro_honorarios + beneficio_total_pesimista + retiro_totales
+        honorarios_beneficio1 = retiro_honorarios + beneficio_total
+
+        datos_finales_registro.append((ingresos_total, costo_total, retiros_completo, retiro_honorarios,  honorarios_beneficio2, honorarios_beneficio1))
+
+        datos_registro.append(datos_finales_registro)
+
 
     return render(request, 'consolidado.html', {"datos_completos":datos_completos, 'datos_finales':datos_finales, "datos_registro":datos_registro, "fechas":fechas, "datos_finales_2":datos_finales_2})
 
