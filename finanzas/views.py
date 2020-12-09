@@ -1765,7 +1765,7 @@ def consolidado(request):
         retiros_completo = retiro_totales + dato.retiro_socios_honorarios
         honorarios = dato.honorarios
         retiro_honorarios = retiros_completo + honorarios
-        honorarios_beneficio2 = retiro_honorarios + beneficio_total_pesimista + retiro_totales
+        honorarios_beneficio2 = retiro_honorarios + beneficio_descuento
         honorarios_beneficio1 = retiro_honorarios + beneficio_total
 
         datos_finales_registro.append((ingresos_total, costo_total, retiros_completo, retiro_honorarios,  honorarios_beneficio2, honorarios_beneficio1))
