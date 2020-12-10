@@ -1256,7 +1256,7 @@ def honorarios(request):
         ingresos = subtotal_1 + honorarios[0].creditos
         comision = honorarios[0].comision_venta*honorarios[0].ventas
         subtotal_2 = honorarios[0].estructura_gio + honorarios[0].aportes + honorarios[0].socios + comision
-        costos = subtotal_2 + honorarios[0].retiro_socios + honorarios[0].deudas
+        costos = subtotal_2 + honorarios[0].deudas
         beneficio = ingresos - costos + honorarios[0].caja_actual
         porc_beneficio = beneficio/ingresos*100
         if beneficio == 0:
