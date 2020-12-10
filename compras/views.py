@@ -648,6 +648,44 @@ def comparativas(request, estado):
 
                 comparativa.save()
 
+                try:
+
+                    # Establecemos conexion con el servidor smtp de gmail
+                    mailServer = smtplib.SMTP(settings.EMAIL_HOST, settings.EMAIL_PORT)
+                    mailServer.ehlo()
+                    mailServer.starttls()
+                    mailServer.ehlo()
+                    mailServer.login(settings.EMAIL_HOST_USER, settings.EMAIL_HOST_PASSWORD)
+
+                    # Construimos el mensaje simple
+                    mensaje = MIMEText("""
+                    
+                    Buenas!,
+
+                    Tu orden de compra fue autorizada!
+
+                    El numero de la misma es: {}
+
+                    No olvides dejar una copia fisica en la oficina, de no hacerlo no se efectuara el pago!
+
+                    Gracias!
+
+                    Saludos!
+                    """.format(comparativa.o_c))
+                    mensaje['From']=settings.EMAIL_HOST_USER
+                    mensaje['To']=datosusuario.objects.get(identificacion = comparativa.creador).email
+                    mensaje['Subject']="Todo listo! La O.C para {} esta autorizada!".format(comparativa.proveedor.name)
+
+                    # Envio del mensaje
+
+                    mailServer.sendmail(settings.EMAIL_HOST_USER,
+                                    datosusuario.objects.get(identificacion = comparativa.creador).email,
+                                    mensaje.as_string())
+
+                except:
+
+                    pass
+
             if d[0] == 'NO APROBADA':
                 id_selec = d[1]
 
@@ -682,7 +720,7 @@ def comparativas(request, estado):
                     """.format(request.POST['MENSAJE']))
                     mensaje['From']=settings.EMAIL_HOST_USER
                     mensaje['To']=datosusuario.objects.get(identificacion = comparativa.creador).email
-                    mensaje['Subject']="La Orden de compra para {} fue rechazada!".format(comparativa.proveedor.name)
+                    mensaje['Subject']="Atención! La OC para {} fue rechazada!".format(comparativa.proveedor.name)
 
                     # Envio del mensaje
 
