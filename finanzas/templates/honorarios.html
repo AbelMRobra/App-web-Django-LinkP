@@ -46,7 +46,7 @@
                 <h6 style="color: #C54A4A ;">Subtotal: <small>$ {{datos_honorarios.3|floatformat:0|intcomma}}</small></h6>
                 <b><hr class = "my-4" style="width: 75%; "></b>
                 <h6>Deudas: <small>$ {{honorarios.0.deudas|floatformat:0|intcomma}}</small></h6>
-                <h6>Retiro de socios: <small>$ {{honorarios.0.retiro_socios|floatformat:0|intcomma}}</small></h6>
+                
                 <h6 style="color: #C54A4A;">Total: <small>$ {{datos_honorarios.4|floatformat:0|intcomma}}</small></h6>
             </div>
           </div>
@@ -54,10 +54,13 @@
           <div class="card border-primary mb-3" style="display: inline-block; width: 310px; height: 340px; vertical-align: top; margin: 10px;">
             <div class="card-header">Beneficio</div>
             <div class="card-body">
-                <h6 style="color:#2D3FBD; margin-bottom: 20px;">Caja actual: <small>$ {{honorarios.0.caja_actual|floatformat:0|intcomma}}</small></h6>
+                <h6 style="margin-bottom: 10px;">Caja actual: <small>$ {{honorarios.0.caja_actual|floatformat:0|intcomma}}</small></h6>
 
-                <h6 style="color:#2D3FBD; margin-bottom: 20px;">Total: <small>$ {{datos_honorarios.5|floatformat:0|intcomma}}</small></h6>
+                <h6 style="color:#2D3FBD; margin-bottom: 10px;">Total: <small>$ {{datos_honorarios.5|floatformat:0|intcomma}}</small></h6>
 
+                <h6>Retiros futuros: <small>$ {{honorarios.0.retiro_socios|floatformat:0|intcomma}}</small></h6>
+
+                <h6 style="color:#2D3FBD; margin-bottom: 10px;">Total con retiros: <small>$ {{datos_honorarios.8|floatformat:0|intcomma}}</small></h6>
                 <canvas id="myChart2"></canvas>
 
                 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>

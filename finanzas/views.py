@@ -1259,12 +1259,13 @@ def honorarios(request):
         costos = subtotal_2 + honorarios[0].deudas
         beneficio = ingresos - costos + honorarios[0].caja_actual
         porc_beneficio = beneficio/ingresos*100
+        beneficio_2 = beneficio - honorarios[0].retiro_socios
         if beneficio == 0:
             porc_costo = 0
 
         else:
             porc_costo = costos/beneficio*100
-        datos_honorarios = [subtotal_1, ingresos, comision, subtotal_2, costos, beneficio, porc_beneficio, porc_costo]
+        datos_honorarios = [subtotal_1, ingresos, comision, subtotal_2, costos, beneficio, porc_beneficio, porc_costo, beneficio_2]
         
 
     return render(request, 'honorarios.html', {"datos_totales":datos_totales, "honorarios":honorarios, "datos_honorarios":datos_honorarios})
