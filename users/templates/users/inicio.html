@@ -18,22 +18,6 @@
 </head>
 <body background="{% static 'img/dark_wood.png' %}">
 
-  {% if datos_logo %}
-
-        <div class="view">
-          <div class="plane main">
-            <div class="circle"></div>
-            <div class="circle"></div>
-            <div class="circle"></div>
-            <div class="circle"></div>
-            <div class="circle"></div>
-            <div class="circle"></div>
-          </div>
-        </div>
-      
-  {% endif %}
-
-
   <nav class="navbar navbar-expand-lg navbar-dark " style="background-color: rgb(11, 32, 68);">
     <a class="navbar-brand" href="/guia">
 
@@ -167,19 +151,18 @@
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
             <div class="dropdown-divider"></div>
-            <div style="margin-left: 5%;"><h6><small> <strong>  Paneles e informes</strong> </small></h6> </div>
+            <div style="margin-left: 5%;"><h6><small> <strong>Herramientas y paneles</strong> </small></h6> </div>
              
             <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="/finanzas/almacenero">Analisis de proyectos/ Índice LINK</a>
+            <a class="dropdown-item" href="/finanzas/almacenero">Analisis de proyectos</a>
+            <a class="dropdown-item" href="{% url 'Unidades señadas' 0 0 %}">Control de unidades</a>
+            <a class="dropdown-item" href="/ventas/panelunidades">Disponibilidad y asignación</a>
             <a class="dropdown-item" href="{% url 'Honorarios' %}">Honorarios</a>
+            <a class="dropdown-item" href="#">Índice LINK</a>
             <a class="dropdown-item" href="{% url 'Retiro de socios' %}">Retiros de socios</a>
             
-            <a class="dropdown-item" href="/ventas/panelunidades">Disponibilidad y asignación</a>
-            <a class="dropdown-item" href="{% url 'Unidades señadas' 0 0 %}">Panel de control de unidades (ADM)</a>
-            
-
             <div class="dropdown-divider"></div>
-            <div style="margin-left: 5%;"><h6><small> <strong>  Informes</strong> </small></h6> </div>
+            <div style="margin-left: 5%;"><h6><small> <strong>Informes</strong> </small></h6> </div>
              
             <div class="dropdown-divider"></div>
 
@@ -405,7 +388,7 @@
         <div style="display: inline-block; width: 400px; margin-top: 10px;">
           
 
-          <h1 style="color: #F3EAE5;"> <b>LINK-</b><b style="color: #19C6C6 ;">P</b> </h1>
+          <h1 style="color: #F3EAE5;"><img src="{% static 'img/arbol-de-navidad.png' %}" alt="" style="max-width:80px; height:auto; vertical-align: bottom;"  > <b>LINK-</b><b style="color: #19C6C6 ;">P</b> </h1>
 
         <hr class="my-4" >
 

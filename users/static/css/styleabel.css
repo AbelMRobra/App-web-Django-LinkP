@@ -27,7 +27,7 @@ position: absolute;
 top: 0;
 left: 0;
 right: 0;
-bottom: 20%;
+bottom: 30%;
 margin: auto;
 -webkit-transform: rotateX(60deg) rotateZ(-30deg);
         transform: rotateX(60deg) rotateZ(-30deg);
@@ -42,7 +42,7 @@ position: absolute;
         transform-style: preserve-3d;
 border-radius: 100%;
 box-sizing: border-box;
-box-shadow: 0 0 30px #19C6C6, inset 0 0 30px #19C6C6;
+box-shadow: 0 0 30px #41C84C, inset 0 0 30px #41C84C;
 }
 .plane.main .circle::before, .plane.main .circle::after {
 content: "";
@@ -56,9 +56,9 @@ margin: auto;
 width: 10%;
 height: 10%;
 border-radius: 100%;
-background: #19C6C6;
+background: #E62B18;
 box-sizing: border-box;
-box-shadow: 0 0 30px 2px #19C6C6;
+box-shadow: 0 0 30px 2px #E62B18;
 }
 .plane.main .circle::before {
 -webkit-transform: translateZ(-90px);
