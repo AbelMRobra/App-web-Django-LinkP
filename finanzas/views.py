@@ -1264,7 +1264,7 @@ def honorarios(request):
             porc_costo = 0
 
         else:
-            porc_costo = costos/beneficio*100
+            porc_costo = costos/ingresos*100
         datos_honorarios = [subtotal_1, ingresos, comision, subtotal_2, costos, beneficio, porc_beneficio, porc_costo, beneficio_2]
         
 
