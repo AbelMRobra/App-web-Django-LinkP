@@ -195,54 +195,218 @@
                         <b>RESULTADO PROYECTOS</b>
                     </small> </td>
                     <td  class="priority-5" style="width: 5%; vertical-align: middle;"><small>
-                        <b>$ {{datos_finales.0.0|floatformat:0|intcomma }}</b> 
+                        {% if moneda.id == 7 %}
+
+                        <b>{{datos_finales.0.0|floatformat:0|intcomma }} M3</b> 
+                    
+                                        
+                        {% else %}
+
+                        <b>U$D {{datos_finales.0.0|floatformat:0|intcomma }}</b>
+                    
+
+                        {% endif %}
+ 
                     </small> </td> 
                     <td  class="priority-5" style="width: 10%; vertical-align: middle;"><small>
-                        <b>$ {{datos_finales.0.1|floatformat:0|intcomma }}</b>
+
+                        {% if moneda.id == 7 %}
+
+                        <b>{{datos_finales.0.1|floatformat:0|intcomma }} M3</b> 
+                    
+                                        
+                        {% else %}
+
+                        <b>U$D {{datos_finales.0.1|floatformat:0|intcomma }}</b>
+                    
+
+                        {% endif %}
+
+                        
                     </small> </td> 
                     <td style="width: 10%; vertical-align: middle; vertical-align: middle;"><small>
-                        <b>$ {{datos_finales.0.2|floatformat:0|intcomma}}</b></small> 
+                        {% if moneda.id == 7 %}
+
+                        <b>{{datos_finales.0.2|floatformat:0|intcomma}} M3</b> 
+                    
+                                        
+                        {% else %}
+
+                        <b>U$D {{datos_finales.0.2|floatformat:0|intcomma}}</b>
+                    
+
+                        {% endif %}
+                        </small> 
                     </td> 
                     <td style="width: 10%; vertical-align: middle;"><small>
-                        <b>$ {{datos_finales.0.4|floatformat:0|intcomma }}</b>
+                        {% if moneda.id == 7 %}
+
+                        <b>{{datos_finales.0.4|floatformat:0|intcomma }} M3</b> 
+                    
+                                        
+                        {% else %}
+
+                        <b>U$D {{datos_finales.0.4|floatformat:0|intcomma }}</b>
+                    
+
+                        {% endif %}
+                        
+                        
                     </small> </td>
                     <td style="width: 10%; vertical-align: middle;"><small>
-                        <b>- $ {{ datos_finales.0.3|floatformat:0|intcomma}}</b>
+                        {% if moneda.id == 7 %}
+
+                        <b>- {{ datos_finales.0.3|floatformat:0|intcomma}} M3</b> 
+                    
+                                        
+                        {% else %}
+
+                        <b>- U$D {{ datos_finales.0.3|floatformat:0|intcomma}}</b>
+                    
+
+                        {% endif %}
+                
+
                     </small> </td> 
                     <td style="width: 10%; vertical-align: middle;"><small>
-                        <b>$ {{ datos_finales.0.5|floatformat:0|intcomma }}</b>
+                        {% if moneda.id == 7 %}
+
+                        <b>{{ datos_finales.0.5|floatformat:0|intcomma }} M3</b> 
+                    
+                                        
+                        {% else %}
+
+                        <b>U$D {{ datos_finales.0.5|floatformat:0|intcomma }}</b>
+                    
+
+                        {% endif %}
+                
                     </small> </td>
             </tr>
                 <tr class = "table-light">
                     <td style="width: 10%; vertical-align: middle;"><small><b>HONORARIOS</b></small></td>
                     <td  class="priority-5" style="width: 5%; vertical-align: middle;"><small>
-                        $ {{datos_finales_2.11|floatformat:0|intcomma }}</small>
+                        {% if moneda.id == 7 %}
+
+                        {{datos_finales_2.11|floatformat:0|intcomma }} M3
+                    
+                                        
+                        {% else %}
+
+                        U$D {{datos_finales_2.11|floatformat:0|intcomma }}
+                    
+
+                        {% endif %}
+                        </small>
                     </td> 
                     <td  class="priority-5" style="width: 10%; vertical-align: middle;"><small>
-                        $ {{datos_finales_2.2|floatformat:0|intcomma }}</small>
+                        {% if moneda.id == 7 %}
+
+                         {{datos_finales_2.2|floatformat:0|intcomma }} M3
+                    
+                                        
+                        {% else %}
+
+                        U$D {{datos_finales_2.2|floatformat:0|intcomma }}
+                    
+
+                        {% endif %}
+                        </small>
                     </td> 
                     <td style="width: 10%; vertical-align: middle; vertical-align: middle;"><small>
-                        <b>$ {{datos_finales_2.1|floatformat:0|intcomma }}</b>
+                        {% if moneda.id == 7 %}
+
+                        <b>{{datos_finales_2.1|floatformat:0|intcomma }} M3</b> 
+                    
+                                        
+                        {% else %}
+
+                        <b>U$D {{datos_finales_2.1|floatformat:0|intcomma }}</b>
+                    
+
+                        {% endif %}
+                        
                     </small></td> 
                     <td style="width: 10%; vertical-align: middle;"><small>
-                        <b>$ {{datos_finales_2.0|floatformat:0|intcomma }}</b>
+                        {% if moneda.id == 7 %}
+
+                        <b>{{datos_finales_2.0|floatformat:0|intcomma }} M3</b> 
+                    
+                                        
+                        {% else %}
+
+                        <b>U$D {{datos_finales_2.0|floatformat:0|intcomma }}</b>
+                    
+
+                        {% endif %}
+     
                     </small></td>
                     <td style="width: 10%; vertical-align: middle; vertical-align: middle;"></td> 
                     <td style="width: 10%; vertical-align: middle; vertical-align: middle;">
-                        <small><b>$ {{datos_finales_2.3|floatformat:0|intcomma }}</b></small>
+
+                    <small>
+
+                        {% if moneda.id == 7 %}
+
+                        <b>{{datos_finales_2.3|floatformat:0|intcomma }} M3</b> 
+                    
+                                        
+                        {% else %}
+
+                        <b>U$D {{datos_finales_2.3|floatformat:0|intcomma }}</b>
+                    
+
+                        {% endif %}
+
+                    </small>
+
                     </td>
 
                 </tr>
                 <tr class = "table-dark">
                     <td style="width: 10%; vertical-align: middle;"> <small><b>RESULTADO COMPLETO</b></small> </td>
                     <td  class="priority-5" style="width: 5%; vertical-align: middle;"><small>
-                        <b>$ {{datos_finales_2.12|floatformat:0|intcomma }}</b>
+
+                        {% if moneda.id == 7 %}
+
+                        <b>{{datos_finales_2.12|floatformat:0|intcomma }} M3</b> 
+                    
+                                        
+                        {% else %}
+
+                        <b>U$D {{datos_finales_2.12|floatformat:0|intcomma }}</b>
+                    
+
+                        {% endif %}
+
                     </small></td> 
                     <td  class="priority-5" style="width: 10%; vertical-align: middle;"><small>
-                        <b>$ {{datos_finales_2.5|floatformat:0|intcomma }}</b>
+                        {% if moneda.id == 7 %}
+
+                        <b>{{datos_finales_2.5|floatformat:0|intcomma }} M3</b> 
+                    
+                                        
+                        {% else %}
+
+                        <b>U$D {{datos_finales_2.5|floatformat:0|intcomma }}</b>
+                    
+
+                        {% endif %}
+   
                     </small></td> 
                     <td style="width: 10%; vertical-align: middle; vertical-align: middle;"><small>
-                        <b>$ {{datos_finales_2.4|floatformat:0|intcomma }}</b></small>
+                        {% if moneda.id == 7 %}
+
+                        <b>{{datos_finales_2.4|floatformat:0|intcomma }} M3</b> 
+                    
+                                        
+                        {% else %}
+
+                        <b>U$D {{datos_finales_2.4|floatformat:0|intcomma }}</b>
+                    
+
+                        {% endif %}
+
                     </td> 
                     <td style="width: 10%; vertical-align: middle;"><small>
                         {% if moneda.id == 7 %}
