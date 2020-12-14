@@ -1855,20 +1855,19 @@ def consolidado(request):
 
 #Copia del consolidado en Hº
 
-def consolidadoh(request):
+def indicelinkmoneda(request, id_moneda):
+
+    moneda = Constantes.objects.get(id = id_moneda)
 
     datos = Almacenero.objects.all()
-
-    h = Constantes.objects.get(nombre = "Hº VIVIENDA").valor
 
     datos_completos = []
     datos_finales = []
 
-    costo_total = 0
+    saldo_caja_total = 0
+    pendiente_gastar_total = 0
     ingresos_total = 0
     descuento_total = 0
-    retiro_totales = 0
-
 
     for dato in datos:
 
@@ -1886,154 +1885,67 @@ def consolidadoh(request):
 
         almacenero.pendiente_iva_ventas = iva_compras
 
-
         almacenero.save()
 
         # Calculo el resto de las cosas
 
-        pend_gast = almacenero.pendiente_admin + almacenero.pendiente_comision + presupuesto.saldo_mat + presupuesto.saldo_mo + presupuesto.imprevisto + presupuesto.credito + presupuesto.fdr - almacenero.pendiente_adelantos + almacenero.pendiente_iva_ventas + almacenero.pendiente_iibb_tem
+        retiro_socios = sum(np.array(RetirodeSocios.objects.values_list('monto_pesos').filter(proyecto = dato.proyecto)))
+        saldo_caja = almacenero.cuotas_cobradas - almacenero.gastos_fecha - almacenero.Prestamos_dados - retiro_socios
+        saldo_caja_total = saldo_caja_total + saldo_caja
+        pend_gast = almacenero.pendiente_admin + almacenero.pendiente_comision + presupuesto.saldo_mat + presupuesto.saldo_mo + presupuesto.imprevisto + presupuesto.credito + presupuesto.fdr - almacenero.pendiente_adelantos + almacenero.pendiente_iva_ventas + almacenero.pendiente_iibb_tem +almacenero.cheques_emitidos
+        pendiente_gastar_total = pendiente_gastar_total + pend_gast
         prest_cobrar = almacenero.prestamos_proyecto + almacenero.prestamos_otros
-        retiro_socios = sum(np.array(RetirodeSocios.objects.values_list('monto_pesos').filter(proyecto = dato.proyecto)))  
-        total_costo = almacenero.cheques_emitidos + almacenero.gastos_fecha + pend_gast + almacenero.Prestamos_dados      
-        
-        
-        costo_total = costo_total + total_costo
-
+        total_ingresos = prest_cobrar + almacenero.cuotas_a_cobrar + almacenero.ingreso_ventas + saldo_caja
+        ingresos_total = ingresos_total + total_ingresos
+        margen = total_ingresos - pend_gast
         descuento = almacenero.ingreso_ventas*0.06
         descuento_total = descuento_total + descuento
-        
-        total_ingresos = prest_cobrar + almacenero.cuotas_cobradas + almacenero.cuotas_a_cobrar + almacenero.ingreso_ventas
-        
-        ingresos_total = ingresos_total + total_ingresos
+        margen_2 = margen - descuento 
+               
+        datos_completos.append((dato, saldo_caja/moneda.valor, pend_gast/moneda.valor, total_ingresos/moneda.valor, margen/moneda.valor, descuento/moneda.valor, margen_2/moneda.valor))
 
-        saldo_caja = almacenero.cuotas_cobradas - almacenero.gastos_fecha - almacenero.Prestamos_dados
-        saldo_proyecto = total_ingresos - total_costo
-        rentabilidad = (saldo_proyecto/total_costo)*100
+    # -----------------> Aqui calculo los totalizadores
 
-
-        total_ingresos_pesimista = total_ingresos - descuento - retiro_socios
-        saldo_proyecto_pesimista = total_ingresos_pesimista - total_costo
-        rentabilidad_pesimista = (saldo_proyecto_pesimista/total_costo)*100
-        retiro_totales = retiro_totales + retiro_socios 
-
-        try:
-
-            modelo = Modelopresupuesto.objects.filter(proyecto = dato.proyecto)
-
-            presupuesto = len(modelo)
-
-        except:
-
-            pass
-
-        try:
-
-            pricing = Pricing.objects.filter(unidad__proyecto = dato.proyecto)
-
-            pricing = len(pricing)
-
-        except:
-
-            pass
-
-        # -----------------> Aqui empieza para el precio promedio contado
-
-        if len(Unidades.objects.filter(proyecto = dato.proyecto, estado = "DISPONIBLE")) > 0:
-
-            datos_unidades = Unidades.objects.filter(proyecto = dato.proyecto, estado = "DISPONIBLE")
-
-            m2_totales = 0
-
-            sumatoria_contado = 0
-
-            for d in datos_unidades:
-
-                if d.sup_equiv > 0:
-
-                    m2 = d.sup_equiv
-
-                else:
-
-                    m2 = d.sup_propia + d.sup_balcon + d.sup_comun + d.sup_patio
-            
-                try:
-
-                    param_uni = Pricing.objects.get(unidad = d)
-                    
-                    desde = d.proyecto.desde
-
-                    if d.tipo == "COCHERA":
-                        desde = d.proyecto.desde*d.proyecto.descuento_cochera
-
-                    if param_uni.frente == "SI":
-                        desde = desde*d.proyecto.recargo_frente
-
-                    if param_uni.piso_intermedio == "SI":
-                        desde =desde*d.proyecto.recargo_piso_intermedio
-
-                    if param_uni.cocina_separada == "SI":
-                        desde = desde*d.proyecto.recargo_cocina_separada
-
-                    if param_uni.local == "SI":
-                        desde = desde*d.proyecto.recargo_local
-
-                    if param_uni.menor_45_m2 == "SI":
-                        desde = desde*d.proyecto.recargo_menor_45
-
-                    if param_uni.menor_50_m2 == "SI":
-                        desde = desde*d.proyecto.recargo_menor_50
-
-                    if param_uni.otros == "SI":
-                        desde = desde*d.proyecto.recargo_otros 
-
-                    #Aqui calculamos el contado/financiado
-                    
-                    contado = desde*m2 
-
-                    sumatoria_contado = sumatoria_contado + contado
-                    m2_totales = m2_totales + m2
-
-                except:
-
-                    basura = 1
+    margen1_total = ingresos_total - pendiente_gastar_total
+    margen2_total = margen1_total - descuento_total
 
 
-            if m2_totales == 0:
+    # -----------------> Aqui calculo la parte de honorarios
 
-                precio_promedio_contado = 0
+    honorarios = Honorarios.objects.order_by("-fecha")
+    caja_actual = honorarios[0].caja_actual
+    subtotal_1 = honorarios[0].cuotas + honorarios[0].ventas
+    ingresos = subtotal_1 + honorarios[0].creditos
+    comision = honorarios[0].comision_venta*honorarios[0].ventas
+    subtotal_2 = honorarios[0].estructura_gio + honorarios[0].aportes + honorarios[0].socios + comision
+    costos = subtotal_2  + honorarios[0].deudas
+    honorario = ingresos - costos + honorarios[0].caja_actual
+    honorarios2 = honorario
 
-            else:
+    # -----------------> Aqui calculo los totalizadores con los honorarios
 
-                precio_promedio_contado = sumatoria_contado/m2_totales
+    caja_total = caja_actual + saldo_caja_total
+    costos_totales = pendiente_gastar_total + costos
+    ingresos_totales = ingresos_total + ingresos
+    margen1_completo = margen1_total + honorario
+    margen2_completo = margen1_completo - descuento_total
 
-        else:
+    # -----------------> Información para graficos
 
-            if "2UO" in dato.proyecto.nombre:
+    retiro_honorarios = 0
+    honorarios_beneficio2 = 0
+    honorarios_beneficio1 = 0
 
-                precio_promedio_contado = 85000
+    datos_finales.append((saldo_caja_total , pendiente_gastar_total, ingresos_total, descuento_total, margen1_total, margen2_total))
 
-            elif "#300" in dato.proyecto.nombre:
+    datos_finales_2 = [honorario, ingresos, costos, honorarios2, ingresos_totales, costos_totales, margen1_completo , margen2_completo, retiro_honorarios, honorarios_beneficio2, honorarios_beneficio1, caja_actual, caja_total]
 
-                precio_promedio_contado = 130000
+    # -----------------> Bucle para moneda
 
-            else:
+    datos_finales = np.array(datos_finales)/moneda.valor
+    datos_finales_2 = np.array(datos_finales_2)/moneda.valor
 
-                precio_promedio_contado = 0
-
-    # -----------------> Aqui termina para el precio promedio contado
-
-        datos_completos.append((dato, total_costo/h, total_ingresos/h, saldo_proyecto/h, rentabilidad, presupuesto, pricing, saldo_proyecto_pesimista/h, rentabilidad_pesimista, precio_promedio_contado, retiro_socios/h, descuento/h))
-
-    beneficio_total = ingresos_total - costo_total
-    beneficio_total_pesimista = beneficio_total - descuento_total - retiro_totales
-    beneficio_retiros = beneficio_total - descuento_total
-    rendimiento_total = beneficio_total/costo_total*100
-    rendimiento_total_pesimista = beneficio_total_pesimista/costo_total*100
-
-    datos_finales.append((ingresos_total/h, costo_total/h, beneficio_total/h, rendimiento_total, descuento_total/h, rendimiento_total_pesimista, beneficio_total_pesimista/h, retiro_totales/h, beneficio_retiros/h))
-
-
-    #Esta es la parte del historico
+    # -----------------> Esta es la parte del historico
 
     datos_historicos = RegistroAlmacenero.objects.order_by("fecha")
 
@@ -2049,94 +1961,61 @@ def consolidadoh(request):
 
     for fecha in fechas:
 
-        fecha_r = datetime.date(fecha.year, fecha.month, 1)
-        registro = Registrodeconstantes.objects.get(fecha = fecha_r, constante__nombre='Hº VIVIENDA')
-        h = registro.valor
-
         datos = RegistroAlmacenero.objects.filter(fecha = fecha)
 
-        datos_completos_registro = []
-        datos_finales_registro = []
-
-        costo_total = 0
+        saldo_caja_total = 0
+        pendiente_gastar_total = 0
         ingresos_total = 0
         descuento_total = 0
-        retiro_totales = 0
+        honorario = 0
 
 
         for dato in datos:
 
-            presupuesto = "NO"
-
-            pricing = "NO"
-
             almacenero = dato
-
-            presupuesto = Presupuestos.objects.get(proyecto = dato.proyecto)
-
-            #Aqui calculo el IVA sobre compras
-
-            iva_compras = (dato.imprevisto + dato.saldo_mat + dato.saldo_mo + dato.credito + dato.fdr)*0.07875
-
-            almacenero.pendiente_iva_ventas = iva_compras
-
 
             #Calculo el resto de las cosas
 
-            pend_gast = almacenero.pendiente_admin + almacenero.pendiente_comision + dato.saldo_mat + dato.saldo_mo + dato.imprevisto + dato.credito + dato.fdr - almacenero.pendiente_adelantos + almacenero.pendiente_iva_ventas + almacenero.pendiente_iibb_tem
-            prest_cobrar = almacenero.prestamos_proyecto + almacenero.prestamos_otros           
-            total_costo = almacenero.cheques_emitidos + almacenero.gastos_fecha + pend_gast + almacenero.Prestamos_dados + almacenero.retiro_socios                 
+            retiro_socios = almacenero.retiro_socios
+            saldo_caja = almacenero.cuotas_cobradas - almacenero.gastos_fecha - almacenero.Prestamos_dados - retiro_socios
             
-            costo_total = costo_total + total_costo
-
+            pend_gast = almacenero.pendiente_admin + almacenero.pendiente_comision + almacenero.saldo_mat + almacenero.saldo_mo + almacenero.imprevisto + almacenero.credito + almacenero.fdr - almacenero.pendiente_adelantos + almacenero.pendiente_iva_ventas + almacenero.pendiente_iibb_tem +almacenero.cheques_emitidos
+            
+            prest_cobrar = almacenero.prestamos_proyecto + almacenero.prestamos_otros
+            total_ingresos = prest_cobrar + almacenero.cuotas_a_cobrar + almacenero.ingreso_ventas + saldo_caja
+            
+            margen = total_ingresos - pend_gast
             descuento = almacenero.ingreso_ventas*0.06
+            
+            margen_2 = margen - descuento
+            honorario = almacenero.honorarios
+
+            pendiente_gastar_total = pendiente_gastar_total + pend_gast
+            saldo_caja_total = saldo_caja_total + saldo_caja
             descuento_total = descuento_total + descuento
-            
-            total_ingresos = prest_cobrar + almacenero.cuotas_cobradas + almacenero.cuotas_a_cobrar + almacenero.ingreso_ventas
-            
             ingresos_total = ingresos_total + total_ingresos
-            retiro_totales = retiro_totales + dato.retiro_socios
 
-            saldo_caja = almacenero.cuotas_cobradas - almacenero.gastos_fecha - almacenero.Prestamos_dados
-            saldo_proyecto = total_ingresos - total_costo
-            rentabilidad = (saldo_proyecto/total_costo)*100
+            # Me falta calcular la parte de honorarios
 
-            total_ingresos_pesimista = total_ingresos - descuento
-            saldo_proyecto_pesimista = total_ingresos_pesimista - total_costo
-            rentabilidad_pesimista = (saldo_proyecto_pesimista/total_costo)*100
 
-            try:
+        margen1 = ingresos_total - pendiente_gastar_total + honorario
+        margen2 = margen1 - descuento_total
 
-                modelo = Modelopresupuesto.objects.filter(proyecto = dato.proyecto)
+        # Valor para dividir de la moneda
 
-                presupuesto = len(modelo)
+        #try:
 
-            except:
+        fecha_valor = datetime.date(fecha.year, fecha.month, 1)
+        
+        valor = Registrodeconstantes.objects.get(fecha=fecha_valor)
 
-                pass
+        datos_registro.append((margen1/valor.valor, margen2/valor.valor))
 
-            try:
+        #except:
 
-                pricing = Pricing.objects.filter(unidad__proyecto = dato.proyecto)
+            #datos_registro.append((0, 0))
 
-                pricing = len(pricing)
-
-            except:
-
-                pass
-
-            datos_completos_registro.append((dato, total_costo/h, total_ingresos/h, saldo_proyecto/h, rentabilidad/h, presupuesto, pricing, saldo_proyecto_pesimista/h, rentabilidad_pesimista/h))
-
-        beneficio_total = ingresos_total - costo_total
-        beneficio_total_pesimista = beneficio_total - descuento_total
-        rendimiento_total = beneficio_total/costo_total*100
-        rendimiento_total_pesimista = beneficio_total_pesimista/costo_total*100
-
-        datos_finales_registro.append((ingresos_total/h, costo_total/h, beneficio_total/h, rendimiento_total, descuento_total/h, rendimiento_total_pesimista, beneficio_total_pesimista/h))
-
-        datos_registro.append((datos_completos_registro, datos_finales_registro, retiro_totales/h))
-
-    return render(request, 'consolidadoh.html', {"datos_completos":datos_completos, 'datos_finales':datos_finales, "datos_registro":datos_registro, "fechas":fechas})
+    return render(request, 'indicelinkmoneda.html', {"datos_completos":datos_completos, 'datos_finales':datos_finales, "datos_registro":datos_registro, "fechas":fechas, "datos_finales_2":datos_finales_2, "moneda":moneda})
 
 def almacenero(request):
 

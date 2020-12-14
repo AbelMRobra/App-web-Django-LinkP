@@ -23,11 +23,13 @@
     <div>
 
 
-        <div style="text-align: left;">
+        <div style="text-align: left; margin: 5px;">
 
-            <a class="badge badge-dark" href="{% url 'Consolidado' %}" >PESOS</a>
+            <a class="badge badge-dark" href="{% url 'Indice Link' %}" >PESOS</a>
     
-            <a class="badge badge-secondary" href="{% url 'Consolidado H' %}" >HORMIGON</a>
+            <a class="badge badge-secondary" href="{% url 'Indice Link moneda' 7 %}" >HORMIGON</a>
+
+            <a class="badge badge-success" href="{% url 'Indice Link moneda' 2 %}" >USD</a>
 
             </div>
         <table class = "table table-hover" style="text-align: center;">
