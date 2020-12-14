@@ -2007,7 +2007,7 @@ def indicelinkmoneda(request, id_moneda):
 
         fecha_valor = datetime.date(fecha.year, fecha.month, 1)
         
-        valor = Registrodeconstantes.objects.get(fecha=fecha_valor)
+        valor = Registrodeconstantes.objects.get(fecha=fecha_valor, constante__id = id_moneda)
 
         datos_registro.append((margen1/valor.valor, margen2/valor.valor))
 
