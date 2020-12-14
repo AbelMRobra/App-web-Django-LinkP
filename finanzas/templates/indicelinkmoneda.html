@@ -245,10 +245,32 @@
                         <b>$ {{datos_finales_2.4|floatformat:0|intcomma }}</b></small>
                     </td> 
                     <td style="width: 10%; vertical-align: middle;"><small>
-                        <b>$ {{datos_finales_2.6|floatformat:0|intcomma }}</b>
+                        {% if moneda.id == 7 %}
+
+                        <b>{{datos_finales_2.6|floatformat:0|intcomma }} M3</b> 
+                    
+                                        
+                        {% else %}
+
+                        <b>U$D {{datos_finales_2.6|floatformat:0|intcomma }}</b>
+                    
+
+                        {% endif %}
+                        
                     </small></td>
                     <td style="width: 10%; vertical-align: middle; vertical-align: middle;"><small>
-                        <b>- $ {{ datos_finales.0.3|floatformat:0|intcomma}}</b>
+                        {% if moneda.id == 7 %}
+
+                        <b>{{ datos_finales.0.3|floatformat:0|intcomma}} M3</b> 
+                    
+                                        
+                        {% else %}
+
+                        <b>U$D {{ datos_finales.0.3|floatformat:0|intcomma}}</b>
+                    
+
+                        {% endif %}
+
                     </small> </td> 
                     <td style="width: 10%; vertical-align: middle; vertical-align: middle;"><small>
 
@@ -340,10 +362,10 @@
 
 
                     {% for i in datos_registro  %}
-                    Math.round({{i.1|floatformat:0}}/1000000),  
+                    Math.round({{i.1|floatformat:0}}/1000),  
                                      
                     {% endfor %}
-                    Math.round({{datos_finales_2.7|floatformat:0}}/1000000),
+                    Math.round({{datos_finales_2.7|floatformat:0}}/1000),
                     ]
 
                     {% endif %}
@@ -378,9 +400,9 @@
                     {% else %}
 
                     {% for i in datos_registro %}
-                    Math.round({{i.0|floatformat:0}}/1000000),                   
+                    Math.round({{i.0|floatformat:0}}/1000),                   
                     {% endfor %}
-                    Math.round({{datos_finales_2.6|floatformat:0}}/1000000),
+                    Math.round({{datos_finales_2.6|floatformat:0}}/1000),
 
                     {% endif %}
                     ]
@@ -412,7 +434,7 @@
                                     
                                     {% else %}
 
-                                    return 'U$D '+label+ ' M';
+                                    return 'U$D '+label+ ' Mil';
 
                                     {% endif %}
                                     
