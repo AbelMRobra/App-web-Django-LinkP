@@ -1086,17 +1086,16 @@ def pricing(request, id_proyecto):
 
         if dato.estado == "DISPONIBLE":
 
-            m2_totales_disp = m2_totales_disp + m2
+            try:
 
-        try:
+                if dato.asig == "PROYECTO":
 
-            if dato.asig == "PROYECTO":
+                    sumatoria_contado = sumatoria_contado + contado
+                    sumatoria_financiado = sumatoria_financiado + financiado
+                    m2_totales_disp = m2_totales_disp + m2
 
-                sumatoria_contado = sumatoria_contado + contado
-                sumatoria_financiado = sumatoria_financiado + financiado
-
-        except:
-            basura = 1
+            except:
+                basura = 1
         
         if dato.tipo == "COCHERA":
             cocheras += 1
@@ -1126,8 +1125,8 @@ def pricing(request, id_proyecto):
 
     #Aqui calculo promedio contado y promedio financiado
 
-    promedio_contado = sumatoria_contado/m2_totales
-    promedio_financiado = sumatoria_financiado/m2_totales
+    promedio_contado = sumatoria_contado/m2_totales_disp
+    promedio_financiado = sumatoria_financiado/m2_totales_disp
 
     if request.method == 'GET':
 
