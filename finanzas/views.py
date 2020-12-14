@@ -1558,8 +1558,6 @@ def indicelink(request):
 
         datos = RegistroAlmacenero.objects.filter(fecha = fecha)
 
-        datos_finales_registro = []
-
         saldo_caja_total = 0
         pendiente_gastar_total = 0
         ingresos_total = 0
@@ -1569,36 +1567,28 @@ def indicelink(request):
 
         for dato in datos:
 
-            presupuesto = "NO"
-
-            pricing = "NO"
-
             almacenero = dato
-
-            presupuesto = Presupuestos.objects.get(proyecto = dato.proyecto)
-
-            #Aqui calculo el IVA sobre compras
-
-            iva_compras = (dato.imprevisto + dato.saldo_mat + dato.saldo_mo + dato.credito + dato.fdr)*0.07875
-
-            almacenero.pendiente_iva_ventas = iva_compras
-
 
             #Calculo el resto de las cosas
 
             retiro_socios = almacenero.retiro_socios
             saldo_caja = almacenero.cuotas_cobradas - almacenero.gastos_fecha - almacenero.Prestamos_dados - retiro_socios
-            saldo_caja_total = saldo_caja_total + saldo_caja
-            pend_gast = almacenero.pendiente_admin + almacenero.pendiente_comision + presupuesto.saldo_mat + presupuesto.saldo_mo + presupuesto.imprevisto + presupuesto.credito + presupuesto.fdr - almacenero.pendiente_adelantos + almacenero.pendiente_iva_ventas + almacenero.pendiente_iibb_tem +almacenero.cheques_emitidos
-            pendiente_gastar_total = pendiente_gastar_total + pend_gast
+            
+            pend_gast = almacenero.pendiente_admin + almacenero.pendiente_comision + almacenero.saldo_mat + almacenero.saldo_mo + almacenero.imprevisto + almacenero.credito + almacenero.fdr - almacenero.pendiente_adelantos + almacenero.pendiente_iva_ventas + almacenero.pendiente_iibb_tem +almacenero.cheques_emitidos
+            
             prest_cobrar = almacenero.prestamos_proyecto + almacenero.prestamos_otros
             total_ingresos = prest_cobrar + almacenero.cuotas_a_cobrar + almacenero.ingreso_ventas + saldo_caja
-            ingresos_total = ingresos_total + total_ingresos
+            
             margen = total_ingresos - pend_gast
             descuento = almacenero.ingreso_ventas*0.06
-            descuento_total = descuento_total + descuento
+            
             margen_2 = margen - descuento
             honorario = almacenero.honorarios
+
+            pendiente_gastar_total = pendiente_gastar_total + pend_gast
+            saldo_caja_total = saldo_caja_total + saldo_caja
+            descuento_total = descuento_total + descuento
+            ingresos_total = ingresos_total + total_ingresos
 
             # Me falta calcular la parte de honorarios
 
@@ -1609,8 +1599,6 @@ def indicelink(request):
         datos_registro.append((margen1, margen2))
 
     return render(request, 'indicelink.html', {"datos_completos":datos_completos, 'datos_finales':datos_finales, "datos_registro":datos_registro, "fechas":fechas, "datos_finales_2":datos_finales_2})
-
-
 
 def consolidado(request):
 
@@ -1826,24 +1814,11 @@ def consolidado(request):
 
         for dato in datos:
 
-            presupuesto = "NO"
-
-            pricing = "NO"
-
             almacenero = dato
-
-            presupuesto = Presupuestos.objects.get(proyecto = dato.proyecto)
-
-            #Aqui calculo el IVA sobre compras
-
-            iva_compras = (dato.imprevisto + dato.saldo_mat + dato.saldo_mo + dato.credito + dato.fdr)*0.07875
-
-            almacenero.pendiente_iva_ventas = iva_compras
-
 
             #Calculo el resto de las cosas
 
-            pend_gast = almacenero.pendiente_admin + almacenero.pendiente_comision + dato.saldo_mat + dato.saldo_mo + dato.imprevisto + dato.credito + dato.fdr - almacenero.pendiente_adelantos + almacenero.pendiente_iva_ventas + almacenero.pendiente_iibb_tem
+            pend_gast = almacenero.pendiente_admin + almacenero.pendiente_comision + almacenero.saldo_mat + almacenero.saldo_mo + almacenero.imprevisto + almacenero.credito + almacenero.fdr - almacenero.pendiente_adelantos + almacenero.pendiente_iva_ventas + almacenero.pendiente_iibb_tem
             prest_cobrar = almacenero.prestamos_proyecto + almacenero.prestamos_otros
             total_costo = almacenero.cheques_emitidos + almacenero.gastos_fecha + pend_gast + almacenero.Prestamos_dados                
             
@@ -1865,27 +1840,6 @@ def consolidado(request):
             saldo_proyecto_pesimista = total_ingresos_pesimista - total_costo
             rentabilidad_pesimista = (saldo_proyecto_pesimista/total_costo)*100
 
-            
-
-            try:
-
-                modelo = Modelopresupuesto.objects.filter(proyecto = dato.proyecto)
-
-                presupuesto = len(modelo)
-
-            except:
-
-                pass
-
-            try:
-
-                pricing = Pricing.objects.filter(unidad__proyecto = dato.proyecto)
-
-                pricing = len(pricing)
-
-            except:
-
-                pass
 
         beneficio_total = ingresos_total - costo_total - descuento_total - retiro_totales 
         beneficio_descuento = ingresos_total - costo_total - retiro_totales 
