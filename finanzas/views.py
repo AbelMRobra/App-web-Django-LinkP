@@ -1606,9 +1606,7 @@ def indicelink(request):
         margen1 = ingresos_total - pendiente_gastar_total + honorario
         margen2 = margen1 - descuento_total
 
-        datos_finales_registro.append((margen1, margen2))
-
-        datos_registro.append(datos_finales_registro)
+        datos_registro.append((margen1, margen2))
 
     return render(request, 'indicelink.html', {"datos_completos":datos_completos, 'datos_finales':datos_finales, "datos_registro":datos_registro, "fechas":fechas, "datos_finales_2":datos_finales_2})
 
@@ -1816,7 +1814,6 @@ def consolidado(request):
     datos_registro = []
 
     for fecha in fechas:
-
 
         datos = RegistroAlmacenero.objects.filter(fecha = fecha)
 
