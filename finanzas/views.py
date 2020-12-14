@@ -1556,7 +1556,6 @@ def indicelink(request):
 
     for fecha in fechas:
 
-
         datos = RegistroAlmacenero.objects.filter(fecha = fecha)
 
         datos_finales_registro = []
@@ -1565,6 +1564,7 @@ def indicelink(request):
         pendiente_gastar_total = 0
         ingresos_total = 0
         descuento_total = 0
+        honorario = 0
 
 
         for dato in datos:
@@ -1586,7 +1586,7 @@ def indicelink(request):
 
             #Calculo el resto de las cosas
 
-            retiro_socios = sum(np.array(RetirodeSocios.objects.values_list('monto_pesos').filter(proyecto = dato.proyecto)))
+            retiro_socios = almacenero.retiro_socios
             saldo_caja = almacenero.cuotas_cobradas - almacenero.gastos_fecha - almacenero.Prestamos_dados - retiro_socios
             saldo_caja_total = saldo_caja_total + saldo_caja
             pend_gast = almacenero.pendiente_admin + almacenero.pendiente_comision + presupuesto.saldo_mat + presupuesto.saldo_mo + presupuesto.imprevisto + presupuesto.credito + presupuesto.fdr - almacenero.pendiente_adelantos + almacenero.pendiente_iva_ventas + almacenero.pendiente_iibb_tem +almacenero.cheques_emitidos
@@ -1597,7 +1597,11 @@ def indicelink(request):
             margen = total_ingresos - pend_gast
             descuento = almacenero.ingreso_ventas*0.06
             descuento_total = descuento_total + descuento
-            margen_2 = margen - descuento 
+            margen_2 = margen - descuento
+            honorario = almacenero.honorarios
+
+            # Me falta calcular la parte de honorarios
+
 
         margen1 = ingresos_total - pendiente_gastar_total + honorario
         margen2 = margen1 - descuento_total
