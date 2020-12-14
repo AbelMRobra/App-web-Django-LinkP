@@ -1561,10 +1561,11 @@ def indicelink(request):
 
         datos_finales_registro = []
 
-        costo_total = 0
+        saldo_caja_total = 0
+        pendiente_gastar_total = 0
         ingresos_total = 0
         descuento_total = 0
-        retiro_totales = 0
+
 
         for dato in datos:
 
@@ -1585,62 +1586,23 @@ def indicelink(request):
 
             #Calculo el resto de las cosas
 
-            pend_gast = almacenero.pendiente_admin + almacenero.pendiente_comision + dato.saldo_mat + dato.saldo_mo + dato.imprevisto + dato.credito + dato.fdr - almacenero.pendiente_adelantos + almacenero.pendiente_iva_ventas + almacenero.pendiente_iibb_tem
+            retiro_socios = sum(np.array(RetirodeSocios.objects.values_list('monto_pesos').filter(proyecto = dato.proyecto)))
+            saldo_caja = almacenero.cuotas_cobradas - almacenero.gastos_fecha - almacenero.Prestamos_dados - retiro_socios
+            saldo_caja_total = saldo_caja_total + saldo_caja
+            pend_gast = almacenero.pendiente_admin + almacenero.pendiente_comision + presupuesto.saldo_mat + presupuesto.saldo_mo + presupuesto.imprevisto + presupuesto.credito + presupuesto.fdr - almacenero.pendiente_adelantos + almacenero.pendiente_iva_ventas + almacenero.pendiente_iibb_tem +almacenero.cheques_emitidos
+            pendiente_gastar_total = pendiente_gastar_total + pend_gast
             prest_cobrar = almacenero.prestamos_proyecto + almacenero.prestamos_otros
-            total_costo = almacenero.cheques_emitidos + almacenero.gastos_fecha + pend_gast + almacenero.Prestamos_dados                
-            
-            costo_total = costo_total + total_costo
-
+            total_ingresos = prest_cobrar + almacenero.cuotas_a_cobrar + almacenero.ingreso_ventas + saldo_caja
+            ingresos_total = ingresos_total + total_ingresos
+            margen = total_ingresos - pend_gast
             descuento = almacenero.ingreso_ventas*0.06
             descuento_total = descuento_total + descuento
-            
-            total_ingresos = prest_cobrar + almacenero.cuotas_cobradas + almacenero.cuotas_a_cobrar + almacenero.ingreso_ventas
-            
-            ingresos_total = ingresos_total + total_ingresos
-            retiro_totales = retiro_totales + dato.retiro_socios
+            margen_2 = margen - descuento 
 
-            saldo_caja = almacenero.cuotas_cobradas - almacenero.gastos_fecha - almacenero.Prestamos_dados
-            saldo_proyecto = total_ingresos - total_costo
-            rentabilidad = (saldo_proyecto/total_costo)*100
+        margen1 = ingresos_total - pendiente_gastar_total + honorario
+        margen2 = margen1 - descuento_total
 
-            total_ingresos_pesimista = total_ingresos - descuento
-            saldo_proyecto_pesimista = total_ingresos_pesimista - total_costo
-            rentabilidad_pesimista = (saldo_proyecto_pesimista/total_costo)*100
-
-            try:
-
-                modelo = Modelopresupuesto.objects.filter(proyecto = dato.proyecto)
-
-                presupuesto = len(modelo)
-
-            except:
-
-                pass
-
-            try:
-
-                pricing = Pricing.objects.filter(unidad__proyecto = dato.proyecto)
-
-                pricing = len(pricing)
-
-            except:
-
-                pass
-
-        beneficio_total = ingresos_total - costo_total
-        beneficio_descuento = beneficio_total - descuento_total
-        beneficio_retiro = beneficio_descuento - retiro_totales
-        rendimiento_total = beneficio_total/costo_total*100
-        rendimiento_total_pesimista = 0
-
-
-        retiros_completo = retiro_totales + dato.retiro_socios_honorarios
-        honorarios = dato.honorarios
-        retiro_honorarios = retiros_completo + honorarios
-        honorarios_beneficio2 = retiro_honorarios + beneficio_descuento
-        honorarios_beneficio1 = retiro_honorarios + beneficio_total
-
-        datos_finales_registro.append((ingresos_total, costo_total, retiros_completo, retiro_honorarios,  honorarios_beneficio2, honorarios_beneficio1))
+        datos_finales_registro.append((margen1, margen2))
 
         datos_registro.append(datos_finales_registro)
 
