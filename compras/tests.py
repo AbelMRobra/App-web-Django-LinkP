@@ -16,9 +16,14 @@ def send_email():
         # Construimos el mensaje simple
         mensaje = MIMEText("""Este es el mensaje
         de las narices""")
-        mensaje['From']="settings.EMAIL_HOST"
-        mensaje['To']="settings.EMAIL_HOST"
+        mensaje['From']=settings.EMAIL_HOST_USER
+        mensaje['To']=settings.EMAIL_HOST_USER
         mensaje['Subject']="Prueba"
+
+        # Envio del mensaje
+        mailServer.sendmail(settings.EMAIL_HOST_USER,
+                        settings.EMAIL_HOST_USER,
+                        mensaje.as_string())
     
     except  Exception as e:
         print(e)

@@ -42,6 +42,7 @@ urlpatterns = [
     url(r'^arqueo/$', login_required(views.arqueo_diario), name = 'Arqueo diario'),
     url(r'^historicoalmacenero/(?P<id_proyecto>\d+)/(?P<fecha>\d+)$', login_required(views.registro_almacenero), name = 'Historico almacenero'),
     url(r'^consolidado/$', login_required(views.consolidado), name = 'Consolidado'),
+    url(r'^indicelink/$', login_required(views.indicelink), name = 'Indice Link'),
     url(r'^consolidadoh/$', login_required(views.consolidadoh), name = 'Consolidado H'),
     url(r'^honorarios/$', login_required(views.honorarios), name = 'Honorarios'),
     url(r'^modhonorarios/$', login_required(views.modhonorarios), name = 'Modificar Honorarios'),

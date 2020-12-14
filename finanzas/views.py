@@ -1455,6 +1455,199 @@ def ingresounidades(request, estado, proyecto):
 
     return render(request, 'ingresounidades.html',{'datos':datos, 'estado':estado_marcado, 'proyecto':proyecto_marcado, 'listado':listado})
 
+
+def indicelink(request):
+
+    datos = Almacenero.objects.all()
+
+    datos_completos = []
+    datos_finales = []
+
+    saldo_caja_total = 0
+    pendiente_gastar_total = 0
+    ingresos_total = 0
+    descuento_total = 0
+
+    for dato in datos:
+
+        presupuesto = "NO"
+
+        pricing = "NO"
+
+        almacenero = dato
+
+        presupuesto = Presupuestos.objects.get(proyecto = dato.proyecto)
+
+        # Aqui calculo el IVA sobre compras
+
+        iva_compras = (presupuesto.imprevisto + presupuesto.saldo_mat + presupuesto.saldo_mo + presupuesto.credito + presupuesto.fdr)*0.07875
+
+        almacenero.pendiente_iva_ventas = iva_compras
+
+        almacenero.save()
+
+        # Calculo el resto de las cosas
+
+        retiro_socios = sum(np.array(RetirodeSocios.objects.values_list('monto_pesos').filter(proyecto = dato.proyecto)))
+        saldo_caja = almacenero.cuotas_cobradas - almacenero.gastos_fecha - almacenero.Prestamos_dados - retiro_socios
+        saldo_caja_total = saldo_caja_total + saldo_caja
+        pend_gast = almacenero.pendiente_admin + almacenero.pendiente_comision + presupuesto.saldo_mat + presupuesto.saldo_mo + presupuesto.imprevisto + presupuesto.credito + presupuesto.fdr - almacenero.pendiente_adelantos + almacenero.pendiente_iva_ventas + almacenero.pendiente_iibb_tem +almacenero.cheques_emitidos
+        pendiente_gastar_total = pendiente_gastar_total + pend_gast
+        prest_cobrar = almacenero.prestamos_proyecto + almacenero.prestamos_otros
+        total_ingresos = prest_cobrar + almacenero.cuotas_a_cobrar + almacenero.ingreso_ventas + saldo_caja
+        ingresos_total = ingresos_total + total_ingresos
+        margen = total_ingresos - pend_gast
+        descuento = almacenero.ingreso_ventas*0.06
+        descuento_total = descuento_total + descuento
+        margen_2 = margen - descuento 
+               
+        datos_completos.append((dato, saldo_caja, pend_gast, total_ingresos, margen, descuento, margen_2))
+
+    # -----------------> Aqui calculo los totalizadores
+
+    margen1_total = ingresos_total - pendiente_gastar_total
+    margen2_total = margen1_total - descuento_total
+
+
+    # -----------------> Aqui calculo la parte de honorarios
+
+    honorarios = Honorarios.objects.order_by("-fecha")
+    caja_actual = honorarios[0].caja_actual
+    subtotal_1 = honorarios[0].cuotas + honorarios[0].ventas
+    ingresos = subtotal_1 + honorarios[0].creditos
+    comision = honorarios[0].comision_venta*honorarios[0].ventas
+    subtotal_2 = honorarios[0].estructura_gio + honorarios[0].aportes + honorarios[0].socios + comision
+    costos = subtotal_2  + honorarios[0].deudas
+    honorario = ingresos - costos + honorarios[0].caja_actual
+    honorarios2 = honorario
+
+    # -----------------> Aqui calculo los totalizadores con los honorarios
+
+    caja_total = caja_actual + saldo_caja_total
+    costos_totales = pendiente_gastar_total + costos
+    ingresos_totales = ingresos_total + ingresos
+    margen1_completo = margen1_total + honorario
+    margen2_completo = margen1_completo - descuento_total
+
+    # -----------------> Información para graficos
+
+    retiro_honorarios = 0
+    honorarios_beneficio2 = 0
+    honorarios_beneficio1 = 0
+
+    datos_finales.append((saldo_caja_total , pendiente_gastar_total, ingresos_total, descuento_total, margen1_total, margen2_total))
+
+    datos_finales_2 = [honorario, ingresos, costos, honorarios2, ingresos_totales, costos_totales, margen1_completo , margen2_completo, retiro_honorarios, honorarios_beneficio2, honorarios_beneficio1, caja_actual, caja_total]
+
+
+    # -----------------> Esta es la parte del historico
+
+    datos_historicos = RegistroAlmacenero.objects.order_by("fecha")
+
+    fechas = []
+
+    for d in datos_historicos:
+
+        if not d.fecha in fechas:
+
+            fechas.append(d.fecha)
+
+    datos_registro = []
+
+    for fecha in fechas:
+
+
+        datos = RegistroAlmacenero.objects.filter(fecha = fecha)
+
+        datos_finales_registro = []
+
+        costo_total = 0
+        ingresos_total = 0
+        descuento_total = 0
+        retiro_totales = 0
+
+        for dato in datos:
+
+            presupuesto = "NO"
+
+            pricing = "NO"
+
+            almacenero = dato
+
+            presupuesto = Presupuestos.objects.get(proyecto = dato.proyecto)
+
+            #Aqui calculo el IVA sobre compras
+
+            iva_compras = (dato.imprevisto + dato.saldo_mat + dato.saldo_mo + dato.credito + dato.fdr)*0.07875
+
+            almacenero.pendiente_iva_ventas = iva_compras
+
+
+            #Calculo el resto de las cosas
+
+            pend_gast = almacenero.pendiente_admin + almacenero.pendiente_comision + dato.saldo_mat + dato.saldo_mo + dato.imprevisto + dato.credito + dato.fdr - almacenero.pendiente_adelantos + almacenero.pendiente_iva_ventas + almacenero.pendiente_iibb_tem
+            prest_cobrar = almacenero.prestamos_proyecto + almacenero.prestamos_otros
+            total_costo = almacenero.cheques_emitidos + almacenero.gastos_fecha + pend_gast + almacenero.Prestamos_dados                
+            
+            costo_total = costo_total + total_costo
+
+            descuento = almacenero.ingreso_ventas*0.06
+            descuento_total = descuento_total + descuento
+            
+            total_ingresos = prest_cobrar + almacenero.cuotas_cobradas + almacenero.cuotas_a_cobrar + almacenero.ingreso_ventas
+            
+            ingresos_total = ingresos_total + total_ingresos
+            retiro_totales = retiro_totales + dato.retiro_socios
+
+            saldo_caja = almacenero.cuotas_cobradas - almacenero.gastos_fecha - almacenero.Prestamos_dados
+            saldo_proyecto = total_ingresos - total_costo
+            rentabilidad = (saldo_proyecto/total_costo)*100
+
+            total_ingresos_pesimista = total_ingresos - descuento
+            saldo_proyecto_pesimista = total_ingresos_pesimista - total_costo
+            rentabilidad_pesimista = (saldo_proyecto_pesimista/total_costo)*100
+
+            try:
+
+                modelo = Modelopresupuesto.objects.filter(proyecto = dato.proyecto)
+
+                presupuesto = len(modelo)
+
+            except:
+
+                pass
+
+            try:
+
+                pricing = Pricing.objects.filter(unidad__proyecto = dato.proyecto)
+
+                pricing = len(pricing)
+
+            except:
+
+                pass
+
+        beneficio_total = ingresos_total - costo_total
+        beneficio_descuento = beneficio_total - descuento_total
+        beneficio_retiro = beneficio_descuento - retiro_totales
+        rendimiento_total = beneficio_total/costo_total*100
+        rendimiento_total_pesimista = 0
+
+
+        retiros_completo = retiro_totales + dato.retiro_socios_honorarios
+        honorarios = dato.honorarios
+        retiro_honorarios = retiros_completo + honorarios
+        honorarios_beneficio2 = retiro_honorarios + beneficio_descuento
+        honorarios_beneficio1 = retiro_honorarios + beneficio_total
+
+        datos_finales_registro.append((ingresos_total, costo_total, retiros_completo, retiro_honorarios,  honorarios_beneficio2, honorarios_beneficio1))
+
+        datos_registro.append(datos_finales_registro)
+
+    return render(request, 'indicelink.html', {"datos_completos":datos_completos, 'datos_finales':datos_finales, "datos_registro":datos_registro, "fechas":fechas, "datos_finales_2":datos_finales_2})
+
+
+
 def consolidado(request):
 
     datos = Almacenero.objects.all()
@@ -1632,40 +1825,15 @@ def consolidado(request):
     rendimiento_total = beneficio_total/costo_total*100
     rendimiento_total_pesimista = beneficio_total_pesimista/costo_total*100
 
-    # -----------------> Aqui calculo la parte de honorarios
-
-    honorarios = Honorarios.objects.order_by("-fecha")
-
-    subtotal_1 = honorarios[0].cuotas + honorarios[0].ventas
-    ingresos = subtotal_1 + honorarios[0].creditos
-    comision = honorarios[0].comision_venta*honorarios[0].ventas
-    subtotal_2 = honorarios[0].estructura_gio + honorarios[0].aportes + honorarios[0].socios + comision
-    costos = subtotal_2  + honorarios[0].deudas
-    honorario = ingresos - costos + honorarios[0].caja_actual
-    retiros = honorarios[0].retiro_socios
-    honorarios2 = honorario - retiros
-
-    # -----------------> Aqui calculo los totalizadores con los honorarios
-
-    ingresos_totales = ingresos_total + ingresos
-    costos_totales = costo_total + costos
-    beneficios_totales =beneficio_total + honorario
-    rend1_totales =  beneficios_totales/costos_totales*100
-    descuentos_totales = descuento_total
-    retiros_totales =retiro_totales + retiros
-    beneficios2_totales = (beneficios_totales - descuentos_totales - retiros_totales)
-    rend2_totales = beneficios2_totales/costos_totales*100
+    datos_finales.append((ingresos_total, costo_total, beneficio_total, rendimiento_total, descuento_total, rendimiento_total_pesimista, beneficio_total_pesimista, retiro_totales, beneficio_retiros))
 
     # -----------------> Información para graficos
 
-    retiro_honorarios = retiros_totales + honorarios2
-    honorarios_beneficio2 = retiro_honorarios + beneficio_total_pesimista + retiro_totales
-    honorarios_beneficio1 = retiro_honorarios + beneficio_total
+    beneficio_total = ingresos_total - costo_total - descuento_total - retiro_totales 
+    beneficio_descuento = ingresos_total - costo_total - retiro_totales 
+    retiros_completo = ingresos_total - costo_total 
 
-    datos_finales.append((ingresos_total, costo_total, beneficio_total, rendimiento_total, descuento_total, rendimiento_total_pesimista, beneficio_total_pesimista, retiro_totales, beneficio_retiros))
-
-    datos_finales_2 = [honorario, ingresos, costos, retiros, honorarios2, ingresos_totales, costos_totales, beneficios_totales, rend1_totales, descuentos_totales, retiros_totales, rend2_totales, beneficios2_totales, retiro_honorarios, honorarios_beneficio2, honorarios_beneficio1]
-
+    datos_finales_2 = [ingresos_total, costo_total, beneficio_total, beneficio_descuento, retiros_completo]
 
     # -----------------> Esta es la parte del historico
 
@@ -1756,20 +1924,12 @@ def consolidado(request):
 
                 pass
 
-        beneficio_total = ingresos_total - costo_total
-        beneficio_descuento = beneficio_total - descuento_total
-        beneficio_retiro = beneficio_descuento - retiro_totales
-        rendimiento_total = beneficio_total/costo_total*100
-        rendimiento_total_pesimista = beneficio_total_pesimista/costo_total*100
+        beneficio_total = ingresos_total - costo_total - descuento_total - retiro_totales 
+        beneficio_descuento = ingresos_total - costo_total - retiro_totales 
+        retiros_completo = ingresos_total - costo_total 
 
 
-        retiros_completo = retiro_totales + dato.retiro_socios_honorarios
-        honorarios = dato.honorarios
-        retiro_honorarios = retiros_completo + honorarios
-        honorarios_beneficio2 = retiro_honorarios + beneficio_descuento
-        honorarios_beneficio1 = retiro_honorarios + beneficio_total
-
-        datos_finales_registro.append((ingresos_total, costo_total, retiros_completo, retiro_honorarios,  honorarios_beneficio2, honorarios_beneficio1))
+        datos_finales_registro.append((ingresos_total, costo_total, retiros_completo, beneficio_total, beneficio_descuento))
 
         datos_registro.append(datos_finales_registro)
 
