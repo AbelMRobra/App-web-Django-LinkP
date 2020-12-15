@@ -669,7 +669,7 @@ def comparativas(request, estado, creador):
 
                 # El servidor no esta ubicado en el mismo lugar que los trabajadores, por lo cual debo ajustarlo
 
-                date = datetime.datetime.now() - datetime.timedelta(hours=2.5)
+                date = datetime.datetime.now() - datetime.timedelta(hours=3)
 
                 comparativa.fecha_autorizacion = date
 
