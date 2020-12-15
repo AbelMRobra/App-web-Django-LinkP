@@ -116,9 +116,9 @@ def dashboard(request):
 
     for p in proyectos:
 
-        total_unidades = Unidades.objects.filter(proyecto = p)
+        total_unidades = Unidades.objects.filter(proyecto = p, asig = "PROYECTO")
 
-        unidades_vendidas = Unidades.objects.filter(proyecto = p).exclude(estado = "DISPONIBLE")
+        unidades_vendidas = Unidades.objects.filter(proyecto = p, asig = "PROYECTO").exclude(estado = "DISPONIBLE")
 
         if len(total_unidades) != 0:
 
@@ -130,7 +130,7 @@ def dashboard(request):
 
     date = datetime.date.today()
 
-    fecha_inicio = datetime.date(date.year, date.month, 1)
+    fecha_inicio = date - datetime.timedelta(days=90)
 
     ventas_realizadas = len(VentasRealizadas.objects.filter(fecha__gt = fecha_inicio))
 
@@ -159,13 +159,154 @@ def dashboard(request):
 
     #Calculo para unidades
 
-    deptos_disp = len(Unidades.objects.filter(estado = "DISPONIBLE", tipo = "DEPARTAMENTO"))
-    cocheras_disp = len(Unidades.objects.filter(estado = "DISPONIBLE", tipo = "COCHERA"))
+    deptos_disp = len(Unidades.objects.filter(estado = "DISPONIBLE", tipo = "DEPARTAMENTO", asig = "PROYECTO"))
+    cocheras_disp = len(Unidades.objects.filter(estado = "DISPONIBLE", tipo = "COCHERA", asig = "PROYECTO"))
 
     datos_unidades = [deptos_disp, cocheras_disp]
 
 
-    return render(request, "users/dashboard.html", {"datos_barras":barras, "ventas_barras":ventas_barras, "ventas":ventas_realizadas, "datos_compras":datos_compras, "datos_unidades":datos_unidades, "arqueo":arqueo})
+    # -----------------> Aqui calculo indice LINK
+
+    datos = Almacenero.objects.all()
+
+    datos_completos = []
+    datos_finales = []
+
+    saldo_caja_total = 0
+    pendiente_gastar_total = 0
+    ingresos_total = 0
+    descuento_total = 0
+
+    for dato in datos:
+
+        presupuesto = "NO"
+
+        pricing = "NO"
+
+        almacenero = dato
+
+        presupuesto = Presupuestos.objects.get(proyecto = dato.proyecto)
+
+        # Aqui calculo el IVA sobre compras
+
+        iva_compras = (presupuesto.imprevisto + presupuesto.saldo_mat + presupuesto.saldo_mo + presupuesto.credito + presupuesto.fdr)*0.07875
+
+        almacenero.pendiente_iva_ventas = iva_compras
+
+        almacenero.save()
+
+        # Calculo el resto de las cosas
+
+        retiro_socios = sum(np.array(RetirodeSocios.objects.values_list('monto_pesos').filter(proyecto = dato.proyecto)))
+        saldo_caja = almacenero.cuotas_cobradas - almacenero.gastos_fecha - almacenero.Prestamos_dados
+        saldo_caja_total = saldo_caja_total + saldo_caja
+        pend_gast = almacenero.pendiente_admin + almacenero.pendiente_comision + presupuesto.saldo_mat + presupuesto.saldo_mo + presupuesto.imprevisto + presupuesto.credito + presupuesto.fdr - almacenero.pendiente_adelantos + almacenero.pendiente_iva_ventas + almacenero.pendiente_iibb_tem +almacenero.cheques_emitidos
+        pendiente_gastar_total = pendiente_gastar_total + pend_gast
+        prest_cobrar = almacenero.prestamos_proyecto + almacenero.prestamos_otros
+        total_ingresos = prest_cobrar + almacenero.cuotas_a_cobrar + almacenero.ingreso_ventas + saldo_caja
+        ingresos_total = ingresos_total + total_ingresos
+        margen = total_ingresos - pend_gast
+        descuento = almacenero.ingreso_ventas*0.06
+        descuento_total = descuento_total + descuento
+        margen_2 = margen - descuento 
+               
+        datos_completos.append((dato, saldo_caja, pend_gast, total_ingresos, margen, descuento, margen_2))
+
+    # -----------------> Aqui calculo los totalizadores
+
+    margen1_total = ingresos_total - pendiente_gastar_total
+    margen2_total = margen1_total - descuento_total
+
+
+    # -----------------> Aqui calculo la parte de honorarios
+
+    honorarios = Honorarios.objects.order_by("-fecha")
+    caja_actual = honorarios[0].caja_actual
+    subtotal_1 = honorarios[0].cuotas + honorarios[0].ventas
+    ingresos = subtotal_1 + honorarios[0].creditos
+    comision = honorarios[0].comision_venta*honorarios[0].ventas
+    subtotal_2 = honorarios[0].estructura_gio + honorarios[0].aportes + honorarios[0].socios + comision
+    costos = subtotal_2  + honorarios[0].deudas
+    honorario = ingresos - costos + honorarios[0].caja_actual
+    honorarios2 = honorario
+
+    # -----------------> Aqui calculo los totalizadores con los honorarios
+
+    caja_total = caja_actual + saldo_caja_total
+    costos_totales = pendiente_gastar_total + costos
+    ingresos_totales = ingresos_total + ingresos
+    margen1_completo = margen1_total
+
+    # -----------------> Información para graficos
+
+    retiro_honorarios = 0
+    honorarios_beneficio2 = 0
+    honorarios_beneficio1 = 0
+
+    datos_finales.append((saldo_caja_total , pendiente_gastar_total, ingresos_total, descuento_total, margen1_total, margen2_total))
+
+    datos_finales_2 = [margen1_completo]
+
+
+    # -----------------> Esta es la parte del historico
+
+    datos_historicos = RegistroAlmacenero.objects.order_by("fecha")
+
+    fechas = []
+
+    for d in datos_historicos:
+
+        if not d.fecha in fechas:
+
+            fechas.append(d.fecha)
+
+    datos_registro = []
+
+    for fecha in fechas:
+
+        datos = RegistroAlmacenero.objects.filter(fecha = fecha)
+
+        saldo_caja_total = 0
+        pendiente_gastar_total = 0
+        ingresos_total = 0
+        descuento_total = 0
+        honorario = 0
+
+
+        for dato in datos:
+
+            almacenero = dato
+
+            #Calculo el resto de las cosas
+
+            retiro_socios = almacenero.retiro_socios
+            saldo_caja = almacenero.cuotas_cobradas - almacenero.gastos_fecha - almacenero.Prestamos_dados
+            
+            pend_gast = almacenero.pendiente_admin + almacenero.pendiente_comision + almacenero.saldo_mat + almacenero.saldo_mo + almacenero.imprevisto + almacenero.credito + almacenero.fdr - almacenero.pendiente_adelantos + almacenero.pendiente_iva_ventas + almacenero.pendiente_iibb_tem +almacenero.cheques_emitidos
+            
+            prest_cobrar = almacenero.prestamos_proyecto + almacenero.prestamos_otros
+            total_ingresos = prest_cobrar + almacenero.cuotas_a_cobrar + almacenero.ingreso_ventas + saldo_caja
+            
+            margen = total_ingresos - pend_gast
+            descuento = almacenero.ingreso_ventas*0.06
+            
+            margen_2 = margen - descuento
+            honorario = almacenero.honorarios
+
+            pendiente_gastar_total = pendiente_gastar_total + pend_gast
+            saldo_caja_total = saldo_caja_total + saldo_caja
+            descuento_total = descuento_total + descuento
+            ingresos_total = ingresos_total + total_ingresos
+
+            # Me falta calcular la parte de honorarios
+
+
+        margen1 = ingresos_total - pendiente_gastar_total
+
+        datos_registro.append(margen1)
+
+
+    return render(request, "users/dashboard.html", {"fechas":fechas, "datos_finales_2":datos_finales_2, "indice":margen1_completo, "datos_registro":datos_registro, "datos_barras":barras, "ventas_barras":ventas_barras, "ventas":ventas_realizadas, "datos_compras":datos_compras, "datos_unidades":datos_unidades, "arqueo":arqueo})
 
 def inicio(request):
 

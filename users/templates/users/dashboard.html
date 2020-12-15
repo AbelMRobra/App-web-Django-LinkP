@@ -22,233 +22,316 @@
       </div>
   
       
-      
-       <b><hr class = "my-4" style="width: 75%; border-color: rgba({{datos.0.0.color}}, 0.5) ;"></b>
   
-
-    <div>
-
-        <div style="display: inline-block; width: 400px; vertical-align: top; margin: 40px;">
-    
-    
-            <h6 style="font-family: Arial, Helvetica, sans-serif;"> Arqueo diario </h6>
-    
-
-                <div>
-
-                    <small style="font-family: Arial, Helvetica, sans-serif;"> <b>Fecha del arqueo:</b> {{arqueo.0}} </small>
-
-                </div>
-
-
-                    
-                <div style="margin: 15px;">
-
-                    <canvas id="myChart"></canvas>
-            
-                </div>
-                   
-                <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
-                <script>
-            
-                    var ctx = document.getElementById('myChart').getContext('2d');
-                    var chart = new Chart(ctx, {
-                        // The type of chart we want to create
-                        type: 'doughnut',
-                        // The data for our dataset
-                        data: {
-                        datasets: [{        
-                            data: [{{arqueo.3|floatformat:0}}, {{arqueo.2|floatformat:0}},  {{arqueo.4|floatformat:0}}, {{arqueo.5|floatformat:0}}],
-                            backgroundColor: ['rgba(98, 173, 78 , 0.7)', 'rgba(27, 122, 216, 0.7)', 'rgba(216, 216, 27, 0.7)', 'rgba(216, 53, 27 , 0.7)' ],    
-                        }],
-            
-                        labels: ['Moneda extranjera','Pesos',  'Cheques', 'Bancos']
-                    
-                    },
-
-                        options: {
-                            legend: {
-                                position: 'right'
-                            },
-
-                        },
-                    });
-            
-                </script>
-
-
-                <div>
-                    
-                    <small style="font-family: Arial, Helvetica, sans-serif;"> <b>Consolidado:</b> $ {{arqueo.1|floatformat:0|intcomma}} </small>
-
-                </div>
-            
-                
-            </div>
-
-
-        <div style="display: inline-block; width: 400px; vertical-align: top;  margin: 40px;">
-
-
-            <h6 style="font-family: Arial, Helvetica, sans-serif;"> Avance de presupuesto </h6>
-    
-    
-            {% for i in datos_barras|slice:"6" %}
-
-            <div style="margin: 5px;"> 
-        
-                <small style="font-family: Arial, Helvetica, sans-serif; color: rgb({{i.0.proyecto.color}});"> <b>{{i.0.proyecto.nombre}}</b></small>
-            </div>
-    
- 
-            <div class="progress" style="width: 400px;">
-              <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: {{i.1}}%; background-color: rgb({{i.0.proyecto.color}});" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >{{i.1}}%</div>
-            </div>
-    
-            {% endfor %}
-    
-    
-    
-          </div>
-    
-    
-          <div style="display: inline-block; width: 400px; vertical-align: top; margin: 40px; ">
-    
-    
-            <h6 style="font-family: Arial, Helvetica, sans-serif;"> Resumen de compras del mes </h6>
-    
-    
-            <div style="text-align: left;  margin: 15px;">
-
-                <div>
-
-                    <img src="{% static 'img/bolsa-de-dinero.png' %}" alt="" style="max-width:20px; height:auto; margin: 2px;"  >
-
-
-                    <small style="font-family: Arial, Helvetica, sans-serif;"> <b>Monto gastado en el mes:</b>$ {{datos_compras.0|floatformat:0|intcomma}} </small>
-
-                </div>
-
-                <div>
-
-                    <img src="{% static 'img/presupuesto.png' %}" alt="" style="max-width:20px; height:auto; margin: 2px;"  >
-
-
-                    <small style="font-family: Arial, Helvetica, sans-serif;"> <b>Monto estimado:</b>$ {{datos_compras.1|floatformat:0|intcomma}} </small>
-
-
-                </div>
-
-                <div>
-
-                    {% if datos_compras.2 == 0 %}
-
-                    <small style="font-family: Arial, Helvetica, sans-serif;"> <b>Diferencia con el presupuesto:</b> {{datos_compras.2|floatformat:0|intcomma}} %</small>
-
-
-                    {% elif datos_compras.2 < 0 %}
-
-                    <small style="font-family: Arial, Helvetica, sans-serif; color: rgb(78, 172, 53);"> <b>Diferencia con el presupuesto:</b> ↓ {{datos_compras.2|floatformat:0|intcomma}} %</small>
-
-
-
-                    {% else %}
-
-                    <small style="font-family: Arial, Helvetica, sans-serif; color: rgb(211, 95, 84);"> <b>Diferencia con el presupuesto:</b> ↑ {{datos_compras.2|floatformat:0|intcomma}} %</small>
-
-
-
-                    {% endif %}
-
-                </div>
-
-                
-            </div>
-    
-    
-    
-          </div>
-
-          <div style="display: inline-block; width: 400px; vertical-align: top; margin: 40px;">
-    
-    
-            <h6 style="font-family: Arial, Helvetica, sans-serif;"> Resumen de unidades</h6>
-    
-    
-            <div style="text-align: left; margin: 15px;">
-
-                <div>
-
-                    <img src="{% static 'img/piso.png' %}" alt="" style="max-width:20px; height:auto; margin: 2px;"  >
-
-                    <small style="font-family: Arial, Helvetica, sans-serif;"> <b>Departamentos disponibles:</b> {{datos_unidades.0}} Un</small>
-
-                </div>
-
-                <div>
-
-                    <img src="{% static 'img/coche.png' %}" alt="" style="max-width:20px; height:auto; margin: 2px;"  >
-
-                    <small style="font-family: Arial, Helvetica, sans-serif;"> <b>Cocheras disponibles:</b> {{datos_unidades.1}} Un</small>
-
-
-                </div>
-
-                <div>
-
-                    <small style="font-family: Arial, Helvetica, sans-serif;"> <b>Superficie disponible:</b> M2</small>
-
-
-                </div>
-
-                
-            </div>
-    
-    
-    
-          </div>
-
-
-          <div style="display: inline-block; width: 400px; vertical-align: top; margin: 40px;">
-    
-    
-            <h6 style="font-family: Arial, Helvetica, sans-serif;"> Avance de ventas </h6>
-    
-
-                <div>
-
-                    <small style="font-family: Arial, Helvetica, sans-serif;"> <b>Unidades vendidas en el mes:</b> {{ventas}} Unidades</small>
-
-                </div>
-
-
-                    
-                {% for i in ventas_barras|slice:"4" %}
-        
-                <div style="margin: 5px;"> 
-        
-                    <small style="font-family: Arial, Helvetica, sans-serif; color: rgb({{i.0.color}});"> <b>{{i.0.nombre}}</b></small>
-                </div>
-        
-                <div class="progress" style="width: 400px;">
-                    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: {{i.1}}%; background-color: rgb({{i.0.color}});" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >{{i.1}}%</div>
-                </div>
-        
-                {% endfor %}
-            
-                
-            </div>
-
-
-            
-    
-    
-          </div>
-
-
     <b><hr class = "my-4" style="width: 75%; border-color: rgba({{datos.0.0.color}}, 0.5) ;"></b>
 
+    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+        <div class="panel panel-default">
+          <div class="panel-heading" role="tab" id="headingOne">
+            <h4 class="panel-title" style="text-align: left;">
+              <a style="font-family: Arial, Helvetica, sans-serif; color: #99BA1C;" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                Desarrolladora
+              </a>
+            </h4>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+            <div class="panel-body">
+                <div style="margin: 5px;">
+
+                    <h5 style="font-family: Arial, Helvetica, sans-serif;"> Dashboard</h5>
     
+                    <b><hr class = "my-4" style="width: 100%; "></b>
+                    <div style="text-align: left;  margin: 15px;">
+    
+                        <h6 style="font-family: Arial, Helvetica, sans-serif;"> Valor actual del margen $ {{indice|floatformat:0|intcomma }}</h6>
+
+                            <div style="margin-top: 0.5rem; width: 100%;">
+                        
+                                <div style= "text-align: center;">
+                                    <small><strong>-- Variación del margen --</strong></small>
+                                </div>
+                        
+                                <canvas id="myChart2" height="70px" width="auto"></canvas>
+                        
+                        
+                            <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+                            <script>
+                                var ctx = document.getElementById('myChart2').getContext('2d');
+                                var chart = new Chart(ctx, {
+                                    // The type of chart we want to create
+                                    type: 'line',
+                        
+                                    // The data for our dataset
+                                    data: {
+                        
+                                        labels: [
+                                            {% for i in fechas %}
+                                            '{{i}}',                   
+                                            {% endfor %}
+                                            'Hoy'
+                                            ],
+                                        datasets: [
+                        
+                                        {
+                                            label: 'Valor antes de descuentos y retiros',
+                                            backgroundColor: 'rgb(132, 200, 65, 0.5)',
+                                            borderColor: 'rgb(132, 200, 65)',
+                                            fill: true,
+                                            borderWidth: 1,
+                                            lineTension: 0,
+                                            data: [
+                                            {% for i in datos_registro  %}
+                                            Math.round({{i|floatformat:0}}/1000000),  
+                                                             
+                                            {% endfor %}
+                                            Math.round({{datos_finales_2.0|floatformat:0 }}/1000000),
+                                            ]
+                                        }],
+                        
+                                    },
+                        
+                                    // Configuration options go here
+                                    options: {
+                        
+                                        scales: {
+                        
+                                            xAxes: [
+                                                {
+                        
+                                                    stacked: true,
+                                                    display: false,
+                        
+                                                }
+                                            ],
+                                            yAxes: [
+                                                {
+                                                    ticks: {
+                                                        min: 0,
+                                                        stepSize: 50,
+                                                        callback: function(label, index, labels) {
+                                                            return '$ '+label+ ' M';
+                                                            
+                                                        }
+                                                    },
+                                                    scaleLabel: {
+                                                        display: true,
+                                                        labelString: '1M = $1.000.000'
+                                                    },
+                        
+                                                    stacked: false
+                                                }
+                                            ],
+                                        },
+                                    }
+                        
+                                });
+                                
+                        
+                                
+                            </script>
+                        
+                        
+                            </div>
+    
+                    </div>
+    
+                        <b><hr class = "my-4" style="width: 100%; "></b>
+    
+                    <div style="text-align: left;  margin: 20px; max-width: 300px; display: inline-block;  vertical-align: top;">
+    
+                        <h6 style="font-family: Arial, Helvetica, sans-serif;"> Compras </h6>
+
+                        <b><hr class = "my-4" style="width: 100%; "></b>
+    
+                        <div>
+        
+                        
+                            <small style="font-family: Arial, Helvetica, sans-serif;"> <b>Monto gastado 90 dias:</b>$ {{datos_compras.0|floatformat:0|intcomma}} </small>
+        
+                        </div>
+        
+                        <div>
+        
+                       
+                            <small style="font-family: Arial, Helvetica, sans-serif;"> <b>Monto estimado:</b>$ {{datos_compras.1|floatformat:0|intcomma}} </small>
+        
+        
+                        </div>
+        
+                        <div>
+        
+                            {% if datos_compras.2 == 0 %}
+        
+                            <small style="font-family: Arial, Helvetica, sans-serif;"> <b>Diferencia con el presupuesto:</b> {{datos_compras.2|floatformat:0|intcomma}} %</small>
+        
+        
+                            {% elif datos_compras.2 < 0 %}
+        
+                            <small style="font-family: Arial, Helvetica, sans-serif; color: rgb(78, 172, 53);"> <b>Diferencia con el presupuesto:</b> ↓ {{datos_compras.2|floatformat:0|intcomma}} %</small>
+        
+        
+        
+                            {% else %}
+        
+                            <small style="font-family: Arial, Helvetica, sans-serif; color: rgb(211, 95, 84);"> <b>Diferencia con el presupuesto:</b> ↑ {{datos_compras.2|floatformat:0|intcomma}} %</small>
+        
+        
+        
+                            {% endif %}
+        
+                        </div>
+        
+                        
+                    </div>
+    
+                    <div style="text-align: left; margin: 20px;  max-width: 300px; display: inline-block;  vertical-align: top;">
+    
+                        <h6 style="font-family: Arial, Helvetica, sans-serif;"> Ingresos y disponibilidades </h6>
+
+                        <b><hr class = "my-4" style="width: 100%; "></b>
+    
+                        <div>
+    
+                            <small style="font-family: Arial, Helvetica, sans-serif;"> <b>Unidades vendidas 90 dias:</b> {{ventas}} Unidades</small>
+        
+                        </div>
+    
+                        <div>
+        
+                            <img src="{% static 'img/piso.png' %}" alt="" style="max-width:15px; height:auto; margin: 2px;"  >
+        
+                            <small style="font-family: Arial, Helvetica, sans-serif;"> <b>Departamentos disponibles:</b> {{datos_unidades.0}} Un</small>
+        
+                        </div>
+        
+                        <div>
+        
+                            <img src="{% static 'img/coche.png' %}" alt="" style="max-width:15px; height:auto; margin: 2px;"  >
+        
+                            <small style="font-family: Arial, Helvetica, sans-serif;"> <b>Cocheras disponibles:</b> {{datos_unidades.1}} Un</small>
+        
+        
+                        </div>
+        
+                        <div>
+        
+                            <small style="font-family: Arial, Helvetica, sans-serif;"> <b>Superficie disponible:</b> M2</small>
+        
+        
+                        </div>
+    
+                        <small>* Solo unidades de proyectos sin locales u otros</small>
+        
+                        
+                    </div>
+    
+    
+                    <div style="text-align: left; margin: 20px;  max-width: 300px; display: inline-block; vertical-align: top;">
+    
+                        <h6 style="font-family: Arial, Helvetica, sans-serif;"> Caja </h6>
+
+                        <b><hr class = "my-4" style="width: 100%; "></b>
+        
+    
+                    <div>
+    
+                        <small style="font-family: Arial, Helvetica, sans-serif;"> <b>Fecha del arqueo:</b> {{arqueo.0}} </small>
+    
+                    </div>
+    
+    
+                        
+                    <div style="margin: 15px;">
+    
+                        <canvas id="myChart"></canvas>
+                
+                    </div>
+                       
+                    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+                    <script>
+                
+                        var ctx = document.getElementById('myChart').getContext('2d');
+                        var chart = new Chart(ctx, {
+                            // The type of chart we want to create
+                            type: 'doughnut',
+                            // The data for our dataset
+                            data: {
+                            datasets: [{        
+                                data: [{{arqueo.3|floatformat:0}}, {{arqueo.2|floatformat:0}},  {{arqueo.4|floatformat:0}}, {{arqueo.5|floatformat:0}}],
+                                backgroundColor: ['rgba(98, 173, 78 , 0.7)', 'rgba(27, 122, 216, 0.7)', 'rgba(216, 216, 27, 0.7)', 'rgba(216, 53, 27 , 0.7)' ],    
+                            }],
+                
+                            labels: ['Moneda extranjera','Pesos',  'Cheques', 'Bancos']
+                        
+                        },
+    
+                            options: {
+                                legend: {
+                                    position: 'right'
+                                },
+    
+                            },
+                        });
+                
+                    </script>
+    
+    
+                    <div>
+                        
+                        <small style="font-family: Arial, Helvetica, sans-serif;"> <b>Consolidado:</b> $ {{arqueo.1|floatformat:0|intcomma}} </small>
+    
+                    </div>
+    
+                    </div>
+    
+                </div>
+            </div>
+          </div>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-heading" role="tab" id="headingTwo">
+            <h4 class="panel-title"  style="text-align: left;">
+              <a style="font-family: Arial, Helvetica, sans-serif; color: #1CBA40 ;" class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                Honorarios
+              </a>
+            </h4>
+          </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+            <div class="panel-body">
+                En construcción
+            </div>
+          </div>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-heading" role="tab" id="headingThree">
+            <h4 class="panel-title"  style="text-align: left;">
+              <a style="font-family: Arial, Helvetica, sans-serif; color: #1CBA81 ;" class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                Comercializadora
+              </a>
+            </h4>
+          </div>
+          <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+            <div class="panel-body">
+              En construcción
+            </div>
+          </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="heading4">
+              <h4 class="panel-title"  style="text-align: left;">
+                <a style="font-family: Arial, Helvetica, sans-serif; color: #BA1C2D ;" class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse4" aria-expanded="false" aria-controls="collapse4">
+                  Constructora
+                </a>
+              </h4>
+            </div>
+            <div id="collapse4" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading4">
+              <div class="panel-body">
+                En construcción
+              </div>
+            </div>
+          </div>
+      </div>
+
 
 
     <div style="text-align: center; margin-top: 2%;">
@@ -259,6 +342,7 @@
    
                     
 </div>
+
  
     
 {% endblock %}
