@@ -667,7 +667,9 @@ def comparativas(request, estado, creador):
 
                     comparativa.visto = "VISTO"
 
-                date = datetime.datetime.now()
+                # El servidor no esta ubicado en el mismo lugar que los trabajadores, por lo cual debo ajustarlo
+
+                date = datetime.datetime.now() - datetime.timedelta(hours=2.5)
 
                 comparativa.fecha_autorizacion = date
 
@@ -756,8 +758,6 @@ def comparativas(request, estado, creador):
                 except:
 
                     pass
-
-        
 
             if d[0] == 'ADJAPROB':
 
