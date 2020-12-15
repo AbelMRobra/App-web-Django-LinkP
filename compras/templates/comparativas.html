@@ -40,6 +40,33 @@
     
          </form>
 
+         <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+            <button type="button" class="btn btn-primary">{{mensaje_creador}}</button>
+            <div class="btn-group" role="group">
+                <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+                <div class="dropdown-menu" aria-labelledby="btnGroupDrop1" style="">
+                    <div style="margin: 2px;">
+    
+                        <a href="{% url 'Comparativas' estado 0 %}" style="margin-top: 5px;" >Todos</a>
+    
+                    </div>
+
+                    {% for i in list_creadores %}
+    
+                    <div style="margin: 2px;">
+    
+                        <a href="{% url 'Comparativas' estado i.id %}" style="margin-top: 5px;" >{{i.identificacion}}</a> 
+                    
+                    </div>
+
+                    {% endfor %}
+    
+ 
+                                              
+                </div>
+            </div>
+            </div>
+
 
     <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
         <button type="button" class="btn btn-primary">{{mensaje}}</button>
@@ -48,30 +75,30 @@
             <div class="dropdown-menu" aria-labelledby="btnGroupDrop1" style="">
                 <div style="margin: 2px;">
 
-                    <a href="{% url 'Comparativas' 0 %}" style="margin-top: 5px;" >Todas</a>
+                    <a href="{% url 'Comparativas' 0 creador %}" style="margin-top: 5px;" >Todas</a>
 
                 </div>
                 <div style="margin: 2px;">
 
-                    <a href="{% url 'Comparativas' 1 %}" style="margin-top: 5px; color: rgb(83, 82, 65);" >En espera ({{espera}})</a>
+                    <a href="{% url 'Comparativas' 1 creador %}" style="margin-top: 5px; color: rgb(83, 82, 65);" >En espera ({{espera}})</a>
 
                 </div>
 
                 <div style="margin: 2px;">
 
-                    <a href="{% url 'Comparativas' 2 %}" style="margin-top: 5px; color: rgb(208, 125, 32);" >Adjunto listo ({{adjunto}})</a> 
+                    <a href="{% url 'Comparativas' 2 creador %}" style="margin-top: 5px; color: rgb(208, 125, 32);" >Adjunto listo ({{adjunto}})</a> 
                 
                 </div>
 
                 <div style="margin: 2px;">
 
-                    <a href="{% url 'Comparativas' 4 %}" style="margin-top: 5px; color: rgb(37, 159, 76 );" >Autorizadas ({{autorizada}})</a>
+                    <a href="{% url 'Comparativas' 4 creador %}" style="margin-top: 5px; color: rgb(37, 159, 76 );" >Autorizadas ({{autorizada}})</a>
                 
                 </div>
 
                 <div style="margin: 2px;">
 
-                    <a href="{% url 'Comparativas' 3 %}" style="margin-top: 5px; color: rgb(192, 63, 50 );" >Rechazadas ({{rechazada}})</a>
+                    <a href="{% url 'Comparativas' 3 creador %}" style="margin-top: 5px; color: rgb(192, 63, 50 );" >Rechazadas ({{rechazada}})</a>
                 
                 </div>
                 

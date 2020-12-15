@@ -620,7 +620,34 @@ def mensajescomparativas(request, id_comparativa):
 
     return render(request, 'mensajescomparativas.html', {'datos':datos, 'mensajes':mensajes})
 
-def comparativas(request, estado):
+def comparativas(request, estado, creador):
+
+    
+    if creador == "0":
+        mensaje_creador = "Creador"
+
+    else:
+
+        mensaje_creador = datosusuario.objects.get(id = creador).identificacion
+
+    creadores = Comparativas.objects.values_list('creador')
+
+    creadores = list(set(creadores))
+
+    list_creadores = []
+
+    for c in creadores:
+
+        try:
+
+            usuario = datosusuario.objects.get(identificacion = c[0])
+
+            list_creadores.append(usuario)
+
+        except:
+            None
+
+    list_creadores = sorted(list_creadores)
 
     if request.method == 'POST':
 
@@ -784,147 +811,292 @@ def comparativas(request, estado):
     num_rechazada = len(Comparativas.objects.filter(estado = "NO AUTORIZADA"))
     num_autorizada = len(Comparativas.objects.filter(estado = "AUTORIZADA"))
 
-    if estado == "0":
+    if creador == "0":
 
-        mensaje = "Estado"
+        if estado == "0":
 
-        datos_base = Comparativas.objects.order_by("-fecha_c")
+            mensaje = "Estado"
 
-        datos = []
+            datos_base = Comparativas.objects.order_by("-fecha_c")
 
-        for d in datos_base:
+            datos = []
 
-            mensajes = ComparativasMensaje.objects.filter(comparativa = d)
+            for d in datos_base:
 
-            if d.creador:
-                usuario = datosusuario.objects.get(identificacion = d.creador)
+                mensajes = ComparativasMensaje.objects.filter(comparativa = d)
 
-            else:
-                usuario = 0
+                if d.creador:
+                    usuario = datosusuario.objects.get(identificacion = d.creador)
 
-            datos.append((usuario, mensajes, d))
-            
+                else:
+                    usuario = 0
 
-    if estado == "1":
+                datos.append((usuario, mensajes, d))
+                
 
-        mensaje = "Espera (" + str(len(Comparativas.objects.filter(estado = "ESPERA"))) + ")"
+        if estado == "1":
 
+            mensaje = "Espera (" + str(len(Comparativas.objects.filter(estado = "ESPERA"))) + ")"
 
-        datos_base = Comparativas.objects.filter(estado = "ESPERA").order_by("-fecha_c")
 
+            datos_base = Comparativas.objects.filter(estado = "ESPERA").order_by("-fecha_c")
 
-        datos = []
 
-        for d in datos_base:
+            datos = []
 
-            mensajes = ComparativasMensaje.objects.filter(comparativa = d)
+            for d in datos_base:
 
-            if d.creador:
-                usuario = datosusuario.objects.get(identificacion = d.creador)
+                mensajes = ComparativasMensaje.objects.filter(comparativa = d)
 
-            else:
-                usuario = 0
+                if d.creador:
+                    usuario = datosusuario.objects.get(identificacion = d.creador)
 
-            datos.append((usuario, mensajes, d))
+                else:
+                    usuario = 0
 
-    if estado == "2":
+                datos.append((usuario, mensajes, d))
 
-        mensaje = "Adjunto ✓ (" + str(len(Comparativas.objects.filter(estado = "ADJUNTO ✓"))) + ")"
+        if estado == "2":
 
-        datos_base = Comparativas.objects.filter(estado = "ADJUNTO ✓").order_by("-fecha_c")
+            mensaje = "Adjunto ✓ (" + str(len(Comparativas.objects.filter(estado = "ADJUNTO ✓"))) + ")"
 
+            datos_base = Comparativas.objects.filter(estado = "ADJUNTO ✓").order_by("-fecha_c")
 
-        datos = []
 
-        for d in datos_base:
+            datos = []
 
-            mensajes = ComparativasMensaje.objects.filter(comparativa = d)
+            for d in datos_base:
 
-            if d.creador:
-                usuario = datosusuario.objects.get(identificacion = d.creador)
+                mensajes = ComparativasMensaje.objects.filter(comparativa = d)
 
-            else:
-                usuario = 0
+                if d.creador:
+                    usuario = datosusuario.objects.get(identificacion = d.creador)
 
-            datos.append((usuario, mensajes, d))
+                else:
+                    usuario = 0
 
-    if estado == "3":
+                datos.append((usuario, mensajes, d))
 
-        mensaje = "Rechazadas (" + str(len(Comparativas.objects.filter(estado = "NO AUTORIZADA"))) + ")"
+        if estado == "3":
 
-        datos_base = Comparativas.objects.filter(estado = "NO AUTORIZADA").order_by("-fecha_c")
+            mensaje = "Rechazadas (" + str(len(Comparativas.objects.filter(estado = "NO AUTORIZADA"))) + ")"
 
+            datos_base = Comparativas.objects.filter(estado = "NO AUTORIZADA").order_by("-fecha_c")
 
-        datos = []
 
-        for d in datos_base:
+            datos = []
 
-            mensajes = ComparativasMensaje.objects.filter(comparativa = d)
+            for d in datos_base:
 
-            if d.creador:
-                usuario = datosusuario.objects.get(identificacion = d.creador)
+                mensajes = ComparativasMensaje.objects.filter(comparativa = d)
 
-            else:
-                usuario = 0
+                if d.creador:
+                    usuario = datosusuario.objects.get(identificacion = d.creador)
 
-            datos.append((usuario, mensajes, d))
+                else:
+                    usuario = 0
 
-    if estado == "4":
+                datos.append((usuario, mensajes, d))
 
-        mensaje = "Autorizadas (" + str(len(Comparativas.objects.filter(estado = "AUTORIZADA"))) + ")"
+        if estado == "4":
 
-        datos_base = Comparativas.objects.filter(estado = "AUTORIZADA").order_by("-fecha_c")
+            mensaje = "Autorizadas (" + str(len(Comparativas.objects.filter(estado = "AUTORIZADA"))) + ")"
 
+            datos_base = Comparativas.objects.filter(estado = "AUTORIZADA").order_by("-fecha_c")
 
-        datos = []
 
-        for d in datos_base:
+            datos = []
 
-            mensajes = ComparativasMensaje.objects.filter(comparativa = d)
+            for d in datos_base:
 
-            if d.creador:
-                usuario = datosusuario.objects.get(identificacion = d.creador)
+                mensajes = ComparativasMensaje.objects.filter(comparativa = d)
 
-            else:
-                usuario = 0
+                if d.creador:
+                    usuario = datosusuario.objects.get(identificacion = d.creador)
 
-            datos.append((usuario, mensajes, d))
+                else:
+                    usuario = 0
 
+                datos.append((usuario, mensajes, d))
 
-    if estado == "5":
 
-        mensaje = "Estado SP"
+        if estado == "5":
 
-        datos_base = Comparativas.objects.filter(creador = "MES").order_by("-fecha_c")
+            mensaje = "Estado SP"
 
-        datos_base_2 = Comparativas.objects.filter(numero__startswith = "POSTV").order_by("-fecha_c")
+            datos_base = Comparativas.objects.filter(creador = "MES").order_by("-fecha_c").exclude(estado = "AUTORIZADA")
 
+            datos_base_2 = Comparativas.objects.filter(numero__startswith = "POSTV").order_by("-fecha_c").exclude(estado = "AUTORIZADA")
 
-        datos = []
 
-        for d in datos_base:
+            datos = []
 
-            mensajes = ComparativasMensaje.objects.filter(comparativa = d)
+            for d in datos_base:
 
-            if d.creador:
-                usuario = datosusuario.objects.get(identificacion = d.creador)
+                mensajes = ComparativasMensaje.objects.filter(comparativa = d)
 
-            else:
-                usuario = 0
+                if d.creador:
+                    usuario = datosusuario.objects.get(identificacion = d.creador)
 
-            datos.append((usuario, mensajes, d))
+                else:
+                    usuario = 0
 
-        for d in datos_base_2:
+                datos.append((usuario, mensajes, d))
 
-            mensajes = ComparativasMensaje.objects.filter(comparativa = d)
+            for d in datos_base_2:
 
-            if d.creador:
-                usuario = datosusuario.objects.get(identificacion = d.creador)
+                mensajes = ComparativasMensaje.objects.filter(comparativa = d)
 
-            else:
-                usuario = 0
+                if d.creador:
+                    usuario = datosusuario.objects.get(identificacion = d.creador)
 
-            datos.append((usuario, mensajes, d))
+                else:
+                    usuario = 0
+
+                datos.append((usuario, mensajes, d))
+
+    else:
+
+        if estado == "0":
+
+            mensaje = "Estado"
+
+            datos_base = Comparativas.objects.filter(creador = mensaje_creador).order_by("-fecha_c")
+
+            datos = []
+
+            for d in datos_base:
+
+                mensajes = ComparativasMensaje.objects.filter(comparativa = d)
+
+                if d.creador:
+                    usuario = datosusuario.objects.get(identificacion = d.creador)
+
+                else:
+                    usuario = 0
+
+                datos.append((usuario, mensajes, d))
+                
+
+        if estado == "1":
+
+            mensaje = "Espera (" + str(len(Comparativas.objects.filter(estado = "ESPERA"))) + ")"
+
+
+            datos_base = Comparativas.objects.filter(estado = "ESPERA", creador = mensaje_creador).order_by("-fecha_c")
+
+
+            datos = []
+
+            for d in datos_base:
+
+                mensajes = ComparativasMensaje.objects.filter(comparativa = d)
+
+                if d.creador:
+                    usuario = datosusuario.objects.get(identificacion = d.creador)
+
+                else:
+                    usuario = 0
+
+                datos.append((usuario, mensajes, d))
+
+        if estado == "2":
+
+            mensaje = "Adjunto ✓ (" + str(len(Comparativas.objects.filter(estado = "ADJUNTO ✓"))) + ")"
+
+            datos_base = Comparativas.objects.filter(estado = "ADJUNTO ✓", creador = mensaje_creador).order_by("-fecha_c")
+
+
+            datos = []
+
+            for d in datos_base:
+
+                mensajes = ComparativasMensaje.objects.filter(comparativa = d)
+
+                if d.creador:
+                    usuario = datosusuario.objects.get(identificacion = d.creador)
+
+                else:
+                    usuario = 0
+
+                datos.append((usuario, mensajes, d))
+
+        if estado == "3":
+
+            mensaje = "Rechazadas (" + str(len(Comparativas.objects.filter(estado = "NO AUTORIZADA"))) + ")"
+
+            datos_base = Comparativas.objects.filter(estado = "NO AUTORIZADA", creador = mensaje_creador).order_by("-fecha_c")
+
+
+            datos = []
+
+            for d in datos_base:
+
+                mensajes = ComparativasMensaje.objects.filter(comparativa = d)
+
+                if d.creador:
+                    usuario = datosusuario.objects.get(identificacion = d.creador)
+
+                else:
+                    usuario = 0
+
+                datos.append((usuario, mensajes, d))
+
+        if estado == "4":
+
+            mensaje = "Autorizadas (" + str(len(Comparativas.objects.filter(estado = "AUTORIZADA"))) + ")"
+
+            datos_base = Comparativas.objects.filter(estado = "AUTORIZADA", creador = mensaje_creador).order_by("-fecha_c")
+
+
+            datos = []
+
+            for d in datos_base:
+
+                mensajes = ComparativasMensaje.objects.filter(comparativa = d)
+
+                if d.creador:
+                    usuario = datosusuario.objects.get(identificacion = d.creador)
+
+                else:
+                    usuario = 0
+
+                datos.append((usuario, mensajes, d))
+
+
+        if estado == "5":
+
+            mensaje = "Estado SP"
+
+            datos_base = Comparativas.objects.filter(creador = "MES").order_by("-fecha_c").exclude(estado = "AUTORIZADA")
+
+            datos_base_2 = Comparativas.objects.filter(numero__startswith = "POSTV").order_by("-fecha_c").exclude(estado = "AUTORIZADA")
+
+            datos = []
+
+            for d in datos_base:
+
+                mensajes = ComparativasMensaje.objects.filter(comparativa = d)
+
+                if d.creador:
+                    usuario = datosusuario.objects.get(identificacion = d.creador)
+
+                else:
+                    usuario = 0
+
+                datos.append((usuario, mensajes, d))
+
+            for d in datos_base_2:
+
+                mensajes = ComparativasMensaje.objects.filter(comparativa = d)
+
+                if d.creador:
+                    usuario = datosusuario.objects.get(identificacion = d.creador)
+
+                else:
+                    usuario = 0
+
+                datos.append((usuario, mensajes, d))
 
 
 
@@ -973,7 +1145,10 @@ def comparativas(request, estado):
                             datos.append(i)
 
 
-    return render(request, 'comparativas.html', {'datos':datos, "estado":estado, "mensaje":mensaje, "espera":num_espera, "autorizada":num_autorizada, "rechazada":num_rechazada, "adjunto":num_adj})
+    return render(request, 'comparativas.html', {'mensaje_creador':mensaje_creador, 
+    'list_creadores':list_creadores, 'datos':datos, "estado":estado, 
+    "creador":creador, "mensaje":mensaje, "espera":num_espera, "autorizada":num_autorizada, 
+    "rechazada":num_rechazada, "adjunto":num_adj})
 
 
 def compras(request, id_proyecto):
