@@ -622,6 +622,12 @@ def mensajescomparativas(request, id_comparativa):
 
 def comparativas(request, estado):
 
+    creadores = Comparativas.objects.values('creador').exclude(creador = None)
+
+    creadores = creadores[0]['creador']
+    
+    print(creadores)
+
     if request.method == 'POST':
 
         datos_post = request.POST.items()
@@ -925,6 +931,7 @@ def comparativas(request, estado):
                 usuario = 0
 
             datos.append((usuario, mensajes, d))
+
 
 
     #Aqui empieza el filtro
