@@ -647,8 +647,6 @@ def comparativas(request, estado, creador):
         except:
             None
 
-    list_creadores = sorted(list_creadores)
-
     if request.method == 'POST':
 
         datos_post = request.POST.items()
