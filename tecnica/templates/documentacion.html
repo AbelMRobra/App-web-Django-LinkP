@@ -64,10 +64,61 @@
 
                                     <tr class = "table-light">
                                         
-                                        <td><small>{{t.nombre}}</small></td>
-                                        <td><small>{{t.estado}}</small></td>
-                                        <td><small>{{t.responsable}}</small></td>
-                                        <td><small>{{t.archivo}}</small></td>
+                                        <td style="width: 40%;"><small>{{t.nombre}}</small></td>
+
+                                        {% if t.estado == 'LISTO' %}
+                                        <td style="width: 20%; color: rgb(37, 159, 76 )"><small>
+
+
+                                            <b>{{t.estado}}</b> 
+                                        
+                                        
+                                        </small></td>
+
+                                        {% elif t.estado == 'TRABAJANDO' %}
+
+                                        <td style="width: 20%; color: rgb(181, 136, 26)"><small>
+
+
+                                            <b>{{t.estado}}</b> 
+                                        
+                                        
+                                        </small></td>
+
+                                        {% elif t.estado == 'PROBLEMAS' %}
+
+                                        <td style="width: 20%; color: rgb(181, 53, 26)"><small>
+
+
+                                            <b>{{t.estado}}</b> 
+                                        
+                                        
+                                        </small></td>
+
+                                        {% else %}
+
+                                        <td style="width: 20%;"><small>
+
+
+                                            <b>{{t.estado}}</b> 
+                                        
+                                        
+                                        </small></td>
+
+                                        {% endif %}
+
+
+                                        <td style="width: 20%;"><small>
+                                            
+                                            <img src="{{t.imagenlogo.url}}"  class="img-fluid" alt="..." style="max-width: 30px; max-height: 30px">
+
+
+                                        </small></td>
+                                        <td style="width: 20%;"><small>
+
+                                            <img src="{% static 'img/archivo-adjunto.png' %}" alt="" style="max-width:15px; height:auto; margin: 2px;"  >
+                                        
+                                        </small></td>
 
                                         </tr>
 
