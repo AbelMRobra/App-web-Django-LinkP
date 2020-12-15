@@ -642,7 +642,7 @@ def comparativas(request, estado):
 
                     comparativa.visto = "VISTO"
 
-                date = datetime.date.today()
+                date = datetime.datetime.now()
 
                 comparativa.fecha_autorizacion = date
 
@@ -1702,7 +1702,7 @@ class CompOCestado(TemplateView):
                 ws.column_dimensions['F'].width = 15
                 ws.column_dimensions['G'].width = 17
                 ws.column_dimensions['H'].width = 17
-                ws.column_dimensions['I'].width = 15
+                ws.column_dimensions['I'].width = 20
                 ws.column_dimensions['J'].width = 40
 
                 ws["A"+str(cont+1)] = d.fecha_c
