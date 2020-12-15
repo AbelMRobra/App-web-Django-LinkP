@@ -1,0 +1,114 @@
+{% extends "users/inicio.html" %}
+
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+
+<div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;">
+
+    <h3 style="font-family: Arial, Helvetica, sans-serif;">Panel principal de documentación tecnica</h3>
+    <small style="font-family: Arial, Helvetica, sans-serif;"><b>Modulo:</b> E.T </small>
+
+     <div style="text-align:center">
+                  
+    </div> 
+
+    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+
+
+        {% for i in datos %}
+        
+        <div class="panel panel-default">
+          <div class="panel-heading" role="tab" id="heading{{i.0.id}}">
+            <h4 class="panel-title"  style="text-align: left;">
+              <a style="font-family: Arial, Helvetica, sans-serif;" class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse{{i.0.id}}" aria-expanded="false" aria-controls="collapse{{i.0}}">
+                <b><hr class = "my-4" style="width: 100%;"></b>
+                <h5 style="font-family: Arial, Helvetica, sans-serif; color: rgb({{i.0.color}}) ;">{{i.0.nombre}}</h5>
+                <b><hr class = "my-4" style="width: 100%;"></b>
+              </a>
+            </h4>
+          </div>
+          <div id="collapse{{i.0.id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading{{i.0.id}}">
+            <div class="panel-body">
+
+                <!-- Aqui entra el segundo acordeon -->
+
+                <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+
+                    {% for c in i.1 %}
+                    <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="headingetapa{{c.0.id}}">
+                        <h4 class="panel-title"  style="text-align: left;">
+                            <a style="font-family: Arial, Helvetica, sans-serif;" class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseetapa{{c.0.id}}" aria-expanded="false" aria-controls="collapse{{c.id}}">
+                                <table class = "table table-hover" style="text-align: left;" >
+                                    <thead>
+                            
+                                        <tr class = "table-dark">
+                                            <th scope = "row" style="vertical-align: middle;" ><small><b>{{c.0.nombre}}</b></small></th>                        
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </a>
+                        </h4>
+                        </div>
+                        <div id="collapseetapa{{c.0.id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingetapa{{c.0.id}}">
+                        <div class="panel-body">
+
+                            
+
+                            <table class = "table table-hover" style="text-align: left;" >
+                                <tbody>
+
+                                    {% for t in c.1 %}
+
+                                    <tr class = "table-light">
+                                        
+                                        <td><small>{{t.nombre}}</small></td>
+                                        <td><small>{{t.estado}}</small></td>
+                                        <td><small>{{t.responsable}}</small></td>
+                                        <td><small>{{t.archivo}}</small></td>
+
+                                        </tr>
+
+                                        {% endfor %}
+
+
+                                        </tbody>
+
+                            </table>
+
+                            
+
+
+
+                        </div>
+                        </div>
+                    </div>
+
+                    {% endfor %}
+
+
+                </div>
+                
+            </div>
+          </div>
+        </div>
+
+        {% endfor %}
+        
+      </div>
+
+
+    <div style="margin-top: 2rem;">
+        <p> <small>-- Link<strong>P</strong> --</small> </p>
+
+     </div>
+        
+    
+
+                    
+</div>
+ 
+    
+{% endblock %}

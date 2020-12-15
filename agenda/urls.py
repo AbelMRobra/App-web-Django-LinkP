@@ -31,6 +31,7 @@ urlpatterns = [
     path('compras/', include('compras.urls')),
     path('sigma/', include('sigma.urls')),
     path('rrhh/', include('rrhh.urls')),
+    path('tecnica/', include('tecnica.urls')),
     path('admin/', admin.site.urls),
 
 ]
