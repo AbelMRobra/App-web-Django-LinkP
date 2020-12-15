@@ -270,9 +270,10 @@ def cons_edit(request, id_cons):
 
                     cons_valor_nuevo = (value)
 
-            datos_constante = Constantes.objects.all()
+            datos_constante = Constantes.objects.filter(nombre = nombre)
 
             for i in datos_constante:
+                
                 if str(i.nombre) == str(nombre):
                     
                     cons_nombre = i.nombre
@@ -281,18 +282,26 @@ def cons_edit(request, id_cons):
 
                     form.save()
 
-            datos_insumos = Articulos.objects.all()
+            datos_insumos = Articulos.objects.filter(constante__nombre = nombre)
 
             for i in datos_insumos:
 
-                if str(i.constante) == str(cons_nombre):
-                    valor_actual = i.valor
+                valor_actual = i.valor
 
-                    valor_nuevo = valor_actual*(float(cons_valor_nuevo)/cons_valor) 
+                valor_nuevo = valor_actual*(float(cons_valor_nuevo)/cons_valor) 
 
-                    i.valor = valor_nuevo
+                i.valor = valor_nuevo
 
-                    i.save()
+                i.save()
+
+            if nombre == "UVA":
+
+                datos = Presupuestos.objects.all()
+                
+                for d in datos:
+                    valor_nuevo = d.imprevisto*(float(cons_valor_nuevo)/cons_valor) 
+                    d.imprevisto = valor_nuevo
+                    d.save()
 
         return redirect('Cons_panel')
     
