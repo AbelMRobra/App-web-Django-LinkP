@@ -155,8 +155,8 @@ def tareas(request):
 
         datos_totales.append((d, subtareas))
 
+    print(datos_totales)
 
-    
 
     return render(request, 'tareas.html', {"datos":datos_totales})
 

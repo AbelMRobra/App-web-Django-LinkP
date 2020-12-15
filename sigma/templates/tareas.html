@@ -75,7 +75,7 @@
 
             
 
-            {% for i in datos|slice:"20" %}
+            {% for i in datos %}
 
             <tr class = "table-light">
                 <td style="width: 10%;"><b><img src="{% static 'img/documento.png' %}" alt="" style="max-width:20px; height:auto;"  ></b>
@@ -96,12 +96,12 @@
 
                     <div>
 
-                        <button type="button" class="btn btn-outline-danger" data-toggle="modal" data-target="#exampleModalCenter">Subtareas</button>
+                        <button type="button" class="btn btn-outline-danger" data-toggle="modal" data-target="#exampleModalCenter{{i.0.id}}">Subtareas</button>
                         
                     </div>
             
                     <!-- Modal -->
-                    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal fade" id="exampleModalCenter{{i.0.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered" role="document">
                           <div class="modal-content">
                             <div class="modal-header">
