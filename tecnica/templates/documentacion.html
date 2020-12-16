@@ -72,6 +72,12 @@
                                             
                                             <small>{{t.nombre}}</small></td>
 
+                                            <td style="width: 10%;"><small>
+
+                                                <a href="{% url 'Mensajes en comparativas' 1 %}"><img src="{% static 'img/charlar.png' %}" alt="" style="max-width:20px; height:auto; margin: 2px;"></a>
+                                                                                        
+                                            </small></td>
+
                                         {% if t.estado == 'LISTO' %}
                                         <td style="width: 20%; color: rgb(37, 159, 76 )"><small>
 
@@ -114,11 +120,11 @@
                                         {% endif %}
 
 
-                                        <td style="width: 20%;"><small>
+                                        <td style="width: 10%;"><small>
 
                                             {% if t.responsable %}
                                             
-                                            <img src="{{t.responsable.imagenlogo.url}}"  class="img-fluid" alt="..." style="max-width: 30px; max-height: 30px">
+                                            <img src="{{t.responsable.imagenlogo.url}}"  class="img-fluid" alt="..." style="max-width: 20px; max-height: 30px">
                                             
                                             {% else %}
 
