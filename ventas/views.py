@@ -986,7 +986,7 @@ def pricing(request, id_proyecto):
             param_uni = Pricing.objects.get(unidad = dato)
             desde = dato.proyecto.desde
 
-            if dato.tipo == "COCHERA":
+            if param_uni.cochera == "SI":
                 desde = dato.proyecto.desde*dato.proyecto.descuento_cochera
 
             if param_uni.frente == "SI":

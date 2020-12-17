@@ -49,6 +49,8 @@ class Unidades(models.Model):
 
             COCHERA = "COCHERA"
             DEPARTAMENTO = "DEPARTAMENTO"
+            LOCAL = "LOCAL"
+            BAULERA = "BAULERA"
 
     class estados(models.TextChoices):
 
