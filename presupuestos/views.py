@@ -622,8 +622,7 @@ def presupuestostotal(request):
 
         registro = registro[-60:]
 
-        proyectos = 0
-
+    
         try:
 
             variacion = (((valor_reposicion/1000000)/registro[-30][1]) -1)*100
@@ -634,7 +633,7 @@ def presupuestostotal(request):
 
             try:
 
-                dato = RegistroValorProyecto.objects.filter(fecha = date)
+                dato = RegistroValorProyecto.objects.filter(fecha = date, proyecto = proyectos)
 
                 valor = (((valor_reposicion)/dato[0].precio_proyecto) -1)*100
 
@@ -650,6 +649,8 @@ def presupuestostotal(request):
         except:
 
             variacion = 0
+
+        proyectos = 0
 
         
     
