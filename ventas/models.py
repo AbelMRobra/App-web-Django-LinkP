@@ -66,6 +66,7 @@ class VentasRealizadas(models.Model):
     asignacion = models.CharField(max_length=100, verbose_name="Asignacion")   
     m2 = models.FloatField(verbose_name="Metros cuadrados")
     precio_venta = models.FloatField(verbose_name="Precio de venta")
+    precio_contado = models.FloatField(verbose_name="Precio de contado", blank=True, null=True, default=0)
     precio_pricing = models.FloatField(verbose_name="Precio pricing", blank=True, null=True)
     precio_desde = models.FloatField(verbose_name="Precio desde", blank=True, null=True)
     anticipo = models.FloatField(verbose_name="Anticipo")

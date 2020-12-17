@@ -1461,6 +1461,7 @@ def cargar_venta(request):
                 m2 = 0,
                 asignacion = "n",
                 precio_venta = precio_venta,
+                precio_contado = request.POST["precio_contado"],
                 precio_pricing = precio_pricing,
                 precio_desde = precio_desde,
                 anticipo = anticipo,
@@ -1488,6 +1489,7 @@ def editarventa(request, id_venta):
 
         comprador = "Nadie"
         precio_venta = 0
+        precio_contado = 0
         anticipo = 0
         cuotas_pend = 0
         tipo_venta = "Ninguna"
@@ -1511,6 +1513,10 @@ def editarventa(request, id_venta):
             if dato[0] == "precio_venta" and dato[1] != "":
                 precio_venta = dato[1]
                 datos.precio_venta = precio_venta
+                datos.save()
+            if dato[0] == "precio_contado" and dato[1] != "":
+                precio_contado = dato[1]
+                datos.precio_contado = precio_contado
                 datos.save()
 
             if dato[0] == "cuotas" and dato[1] != "":
