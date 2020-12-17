@@ -488,7 +488,9 @@ def presupuestostotal(request):
 
     presupuestador = 0
 
-    variacion = 0   
+    variacion = 0
+
+    variacion_year = 0   
     
     proyectos_inicial = Proyectos.objects.order_by("nombre")
 
@@ -624,13 +626,26 @@ def presupuestostotal(request):
 
             variacion = (((valor_reposicion/1000000)/registro[-30][1]) -1)*100
 
+            try:
+
+                today = datetime.date.today()
+
+                date = datetime.date(today.year, 1, 1)
+
+                dato = RegistroValorProyecto.objects.get(fecha = date)
+
+                variacion_year = [date, (((valor_reposicion)/dato.precio_proyecto) -1)*100]
+
+            except:
+                pass
+
         except:
 
-            variacion = 0
+            pass
 
         
     
-    return render(request, 'presupuestos/principalpresupuesto.html', {"datos":datos, "proyectos":proyectos, "valor":registro, "presupuestador":presupuestador, "variacion":variacion})
+    return render(request, 'presupuestos/principalpresupuesto.html', {"datos":datos, "proyectos":proyectos, "valor":registro, "presupuestador":presupuestador, "variacion":variacion, "varaicion_year":variacion_year})
 
 
 # ---------------------------------> VISTAS PARA PANEL PRESUPUESTOS - SALDO CAPITULO ----------------------------------------------
