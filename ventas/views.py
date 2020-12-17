@@ -694,40 +694,42 @@ def panelunidades(request):
                         for dato in datos_unidades:
                             if dato.sup_equiv > 0:
 
-                                m2 = dato.sup_equiv
+                                m2 = round(dato.sup_equiv, 2)
 
                             else:
 
-                                m2 = dato.sup_propia + dato.sup_balcon + dato.sup_comun + dato.sup_patio
+                                m2 = round((dato.sup_propia + dato.sup_balcon + dato.sup_comun + dato.sup_patio), 2)
                             
                             try:
                                 param_uni = Pricing.objects.get(unidad = dato)
                                 desde = dato.proyecto.desde
+                                aumento = 1
 
                                 if dato.tipo == "COCHERA":
-                                    desde = dato.proyecto.desde*dato.proyecto.descuento_cochera
+                                    aumento = aumento*dato.proyecto.descuento_cochera
 
                                 if param_uni.frente == "SI":
-                                    desde = desde*dato.proyecto.recargo_frente
+                                    aumento = aumento*dato.proyecto.recargo_frente
 
                                 if param_uni.piso_intermedio == "SI":
-                                    desde =desde*dato.proyecto.recargo_piso_intermedio
+                                    aumento =aumento*dato.proyecto.recargo_piso_intermedio
 
                                 if param_uni.cocina_separada == "SI":
-                                    desde = desde*dato.proyecto.recargo_cocina_separada
+                                    aumento = aumento*dato.proyecto.recargo_cocina_separada
 
                                 if param_uni.local == "SI":
-                                    desde = desde*dato.proyecto.recargo_local
+                                    aumento = aumento*dato.proyecto.recargo_local
 
                                 if param_uni.menor_45_m2 == "SI":
-                                    desde = desde*dato.proyecto.recargo_menor_45
+                                    aumento = aumento*dato.proyecto.recargo_menor_45
 
                                 if param_uni.menor_50_m2 == "SI":
-                                    desde = desde*dato.proyecto.recargo_menor_50
+                                    aumento = aumento*dato.proyecto.recargo_menor_50
 
                                 if param_uni.otros == "SI":
-                                    desde = desde*dato.proyecto.recargo_otros 
+                                    aumento = aumento*dato.proyecto.recargo_otros 
 
+                                desde = desde*round(aumento, 4)
                                 desde = desde*m2 
                                 monto_total = monto_total + desde 
 
@@ -960,15 +962,15 @@ def pricing(request, id_proyecto):
 
         if dato.sup_equiv > 0:
 
-            m2 = dato.sup_equiv
+            m2 = round(dato.sup_equiv, 2)
 
         else:
 
-            m2 = dato.sup_propia + dato.sup_balcon + dato.sup_comun + dato.sup_patio
+            m2 = round((dato.sup_propia + dato.sup_balcon + dato.sup_comun + dato.sup_patio), 2)
 
         try:
 
-            m2_panel = dato.sup_propia + dato.sup_balcon + dato.sup_comun + dato.sup_patio
+            m2_panel = round((dato.sup_propia + dato.sup_balcon + dato.sup_comun + dato.sup_patio), 2)
 
             venta = VentasRealizadas.objects.get(unidad = dato.id)
 
@@ -985,30 +987,33 @@ def pricing(request, id_proyecto):
         try:
             param_uni = Pricing.objects.get(unidad = dato)
             desde = dato.proyecto.desde
+            aumento = 1
 
             if dato.tipo == "COCHERA":
-                desde = dato.proyecto.desde*dato.proyecto.descuento_cochera
+                aumento = aumento*dato.proyecto.descuento_cochera
 
             if param_uni.frente == "SI":
-                desde = desde*dato.proyecto.recargo_frente
+                aumento = aumento*dato.proyecto.recargo_frente
 
             if param_uni.piso_intermedio == "SI":
-                desde =desde*dato.proyecto.recargo_piso_intermedio
+                aumento = aumento*dato.proyecto.recargo_piso_intermedio
 
             if param_uni.cocina_separada == "SI":
-                desde = desde*dato.proyecto.recargo_cocina_separada
+                aumento = aumento*dato.proyecto.recargo_cocina_separada
 
             if param_uni.local == "SI":
-                desde = desde*dato.proyecto.recargo_local
+                aumento = aumento*dato.proyecto.recargo_local
 
             if param_uni.menor_45_m2 == "SI":
-                desde = desde*dato.proyecto.recargo_menor_45
+                aumento = aumento*dato.proyecto.recargo_menor_45
 
             if param_uni.menor_50_m2 == "SI":
-                desde = desde*dato.proyecto.recargo_menor_50
+                aumento = aumento*dato.proyecto.recargo_menor_50
 
             if param_uni.otros == "SI":
-                desde = desde*dato.proyecto.recargo_otros 
+                aumento = aumento*dato.proyecto.recargo_otros 
+
+            desde = desde*round(aumento, 4)
 
             #Aqui calculamos el contado/financiado
             
