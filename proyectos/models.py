@@ -48,6 +48,7 @@ class Unidades(models.Model):
     class tipos(models.TextChoices):
 
             COCHERA = "COCHERA"
+            COCHERA_SD = "COCHERA S/D"
             DEPARTAMENTO = "DEPARTAMENTO"
             LOCAL = "LOCAL"
             BAULERA = "BAULERA"
