@@ -48,7 +48,7 @@ def cargarocautorizar(request):
 
         b.save()
 
-        return redirect('Comparativas', estado = 0)
+        return redirect('Comparativas', estado = 0, creador = 0)
 
         
     return render(request, 'cargarocautorizar.html', {'proveedores':proveedores})
