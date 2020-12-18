@@ -16,7 +16,7 @@
 
         </div>
 
-        <div style="display: inline-block; vertical-align: middle; width: 350px;  margin: 20px;">
+        <div style="display: inline-block; vertical-align: middle; width: 300px;  margin: 20px;">
             <h4 style="color: rgb({{datos.proyecto.color}}); " >{{ datos.proyecto.nombre }} </h4>
             <h5 style="color: rgb({{datos.proyecto.color}}); " >Pricing de unidades </h5>
 
@@ -43,6 +43,7 @@
         
              </form>
 
+            
         </div>
     
     </div>
@@ -260,7 +261,14 @@
     
     </div>
 
+    
+
     {% endif %}
+
+    <div>
+        <a href="{% url 'Descargar del pricing' datos.proyecto.id %}"><img src="{% static 'img/sobresalir.png' %}" alt="" style="max-width:25px; height:auto;"  ></a>
+
+    </div>
 
     <div style="text-align: center; margin-top: 2rem;">
         <p> <small>-- Link<strong>P</strong> --</small> </p>

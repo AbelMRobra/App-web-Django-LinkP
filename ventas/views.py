@@ -735,7 +735,6 @@ def panelunidades(request):
 
                                 m2 = dato.sup_propia + dato.sup_balcon + dato.sup_comun + dato.sup_patio
 
-
                             except:
                                 
                                 desde = "NO DEFINIDO"
@@ -1729,16 +1728,29 @@ class descargadeventas(TemplateView):
         ws = wb.active
         ws.title = "ADVERTENCIA"
 
-        ws.merge_cells("B2:K2")
-        ws["B2"] = "LEER ATENTAMENTE ANTES DE USAR ESTE DOCUMENTO"
+        ws.merge_cells("A2:K2")
+        ws["A2"] = "UNA ADVERTENCIA ANTES DE AVANZAR"
 
-        ws["B2"].alignment = Alignment(horizontal = "center")
-        ws["B2"].font = Font(bold = True, color= "CF433F", size = 20)
+        ws["A2"].alignment = Alignment(horizontal = "left")
+        ws["A2"].font = Font(bold = True, color= "23346D", size = 20)
 
-        ws.merge_cells("B5:K25")
-        ws["B5"] = "Este documento contiene informción --> PRIVADA <-- del área de ventas, \n la misma es solo para uso interno de LINK INVERSIONES y no debe ser compartida sin previa autorización. Compartir este archivo puede ser considerado como divulgar información confidencial. Si usted esta utilizando este archivo en una computadora que no pertenezca a la empresa, al finalizar --> ELIMINE <-- el archivo. Gracias"
-        ws["B5"].alignment = Alignment(horizontal = "center", vertical = "center", wrap_text=True)
-        ws["B5"].font = Font(bold = True)
+        ws.merge_cells("A5:K25")
+        ws["A5"] = """
+        La información que contiene este documento se considera de caracter CONFIDENCIAL.
+
+         Esto quiere decir debes garantizar su protección y no debe ser divulgada sin el consentimiento de Link Inversiones S.R.L.
+         
+         Algunas recomendaciones:
+
+         1 - Habla con tu responsable de área antes de pasar este documento
+         2 - Si usas este documento fuera de las computadoras de la empresa, borra el archivo y vacia la papelera
+         
+         Gracias por tu atención
+
+         Saludos!
+         """
+        ws["A5"].alignment = Alignment(horizontal = "left", vertical = "center", wrap_text=True)
+        ws["A5"].font = Font(bold = True)
         
         cont = 1
         
@@ -1746,7 +1758,7 @@ class descargadeventas(TemplateView):
 
             if cont == 1:
                 ws = wb.create_sheet("My sheet")
-                ws.title = "Registrodeventas"
+                ws.title = "REGISTRO"
                 ws["A"+str(cont)] = "FECHA"
                 ws["B"+str(cont)] = "PROYECTO"
                 ws["C"+str(cont)] = "COMPRADOR"
@@ -1774,31 +1786,31 @@ class descargadeventas(TemplateView):
 
 
                 ws["A"+str(cont)].font = Font(bold = True, color= "FDFFFF")
-                ws["A"+str(cont)].fill =  PatternFill("solid", fgColor= "159ABB")
+                ws["A"+str(cont)].fill =  PatternFill("solid", fgColor= "23346D")
                 ws["B"+str(cont)].font = Font(bold = True, color= "FDFFFF")
-                ws["B"+str(cont)].fill =  PatternFill("solid", fgColor= "159ABB")
+                ws["B"+str(cont)].fill =  PatternFill("solid", fgColor= "23346D")
                 ws["C"+str(cont)].font = Font(bold = True, color= "FDFFFF")
-                ws["C"+str(cont)].fill =  PatternFill("solid", fgColor= "159ABB")
+                ws["C"+str(cont)].fill =  PatternFill("solid", fgColor= "23346D")
                 ws["D"+str(cont)].font = Font(bold = True, color= "FDFFFF")
-                ws["D"+str(cont)].fill =  PatternFill("solid", fgColor= "159ABB")
+                ws["D"+str(cont)].fill =  PatternFill("solid", fgColor= "23346D")
                 ws["E"+str(cont)].font = Font(bold = True, color= "FDFFFF")
-                ws["E"+str(cont)].fill =  PatternFill("solid", fgColor= "159ABB")
+                ws["E"+str(cont)].fill =  PatternFill("solid", fgColor= "23346D")
                 ws["F"+str(cont)].font = Font(bold = True, color= "FDFFFF")
-                ws["F"+str(cont)].fill =  PatternFill("solid", fgColor= "159ABB")
+                ws["F"+str(cont)].fill =  PatternFill("solid", fgColor= "23346D")
                 ws["G"+str(cont)].font = Font(bold = True, color= "FDFFFF")
-                ws["G"+str(cont)].fill =  PatternFill("solid", fgColor= "159ABB")
+                ws["G"+str(cont)].fill =  PatternFill("solid", fgColor= "23346D")
                 ws["H"+str(cont)].font = Font(bold = True, color= "FDFFFF")
-                ws["H"+str(cont)].fill =  PatternFill("solid", fgColor= "159ABB")
+                ws["H"+str(cont)].fill =  PatternFill("solid", fgColor= "23346D")
                 ws["I"+str(cont)].font = Font(bold = True, color= "FDFFFF")
-                ws["I"+str(cont)].fill =  PatternFill("solid", fgColor= "159ABB")
+                ws["I"+str(cont)].fill =  PatternFill("solid", fgColor= "23346D")
                 ws["J"+str(cont)].font = Font(bold = True, color= "FDFFFF")
-                ws["J"+str(cont)].fill =  PatternFill("solid", fgColor= "159ABB")
+                ws["J"+str(cont)].fill =  PatternFill("solid", fgColor= "23346D")
                 ws["K"+str(cont)].font = Font(bold = True, color= "FDFFFF")
-                ws["K"+str(cont)].fill =  PatternFill("solid", fgColor= "159ABB")
+                ws["K"+str(cont)].fill =  PatternFill("solid", fgColor= "23346D")
 
 
-                ws.column_dimensions['A'].width = 10
-                ws.column_dimensions['B'].width = 10.71
+                ws.column_dimensions['A'].width = 12
+                ws.column_dimensions['B'].width = 12
                 ws.column_dimensions['C'].width = 22
                 ws.column_dimensions['D'].width = 6.86
                 ws.column_dimensions['E'].width = 5
@@ -1825,6 +1837,7 @@ class descargadeventas(TemplateView):
                 ws["A"+str(cont+1)].font = Font(bold = True)
                 ws["A"+str(cont+1)].alignment = Alignment(horizontal = "center")
                 ws["B"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["B"+str(cont+1)].font = Font(bold = True)
                 ws["C"+str(cont+1)].alignment = Alignment(horizontal = "center")
                 ws["D"+str(cont+1)].alignment = Alignment(horizontal = "center")
                 ws["E"+str(cont+1)].alignment = Alignment(horizontal = "center")
@@ -1833,13 +1846,13 @@ class descargadeventas(TemplateView):
                 ws["H"+str(cont+1)].number_format = '#,##0.00_-'
                 ws["I"+str(cont+1)].alignment = Alignment(horizontal = "center")
                 ws["J"+str(cont+1)].number_format = '"$"#,##0.00_-'
-                ws["K"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["K"+str(cont+1)].alignment = Alignment(horizontal = "left")
   
 
                 cont += 1
 
             else:
-                ws = wb["Registrodeventas"]
+                ws = wb["REGISTRO"]
 
                 ws["A"+str(cont+1)] = d.fecha
                 ws["B"+str(cont+1)] = d.proyecto.nombre
@@ -1857,6 +1870,7 @@ class descargadeventas(TemplateView):
                 ws["A"+str(cont+1)].font = Font(bold = True)
                 ws["A"+str(cont+1)].alignment = Alignment(horizontal = "center")
                 ws["B"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["B"+str(cont+1)].font = Font(bold = True)
                 ws["C"+str(cont+1)].alignment = Alignment(horizontal = "center")
                 ws["D"+str(cont+1)].alignment = Alignment(horizontal = "center")
                 ws["E"+str(cont+1)].alignment = Alignment(horizontal = "center")
@@ -1865,7 +1879,548 @@ class descargadeventas(TemplateView):
                 ws["H"+str(cont+1)].number_format = '#,##0.00_-'
                 ws["I"+str(cont+1)].alignment = Alignment(horizontal = "center")
                 ws["J"+str(cont+1)].number_format = '"$"#,##0.00_-'
-                ws["K"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["K"+str(cont+1)].alignment = Alignment(horizontal = "left")
+
+                cont += 1
+
+        #Establecer el nombre del archivo
+        nombre_archivo = "RegistroVentas.xls"
+        #Definir tipo de respuesta que se va a dar
+        response = HttpResponse(content_type = "application/ms-excel")
+        contenido = "attachment; filename = {0}".format(nombre_archivo)
+        response["Content-Disposition"] = contenido
+        wb.save(response)
+        return response
+
+
+class DescargaPricing(TemplateView):
+
+    def get(self, request, id_proyecto, *args, **kwargs):
+        
+        wb = Workbook()
+
+        id_proyecto = id_proyecto
+
+        # -----------> Toda la parte de calculo de información
+
+        # Traemos la información necesaria
+
+        proyecto = Proyectos.objects.get(id = id_proyecto)
+        datos = Unidades.objects.filter(proyecto = proyecto)
+
+        # Calculamos/establecemos algunos parametros
+
+        fecha_entrega =  datetime.datetime.strptime(str(proyecto.fecha_f), '%Y-%m-%d')
+        ahora = datetime.datetime.utcnow()
+        y = fecha_entrega.year - ahora.year
+        n = fecha_entrega.month - ahora.month
+        meses = y*12 + n
+        anticipo = 0.4
+
+        # Variables a calcular en el proceso
+
+        financiado = 0
+        financiado_m2 = 0
+        fin_ant = 0
+        valor_cuotas = 0
+        mensaje = 2
+        otros_datos = []
+        datos_unidad = []
+        m2_totales = 0
+        m2_totales_disp = 0
+        cocheras = 0
+        ingreso_ventas = 0
+        iibb = 0
+        comision = 0
+        unidades_socios = 0
+        sumatoria_contado = 0
+        sumatoria_financiado = 0
+
+        # Proceso 1: Calculo de datos
+        for dato in datos:
+
+            # Calculamos los m2 equivalente y total
+
+            m2_equivalente = round(dato.sup_equiv, 2)
+            m2_total = round((dato.sup_propia + dato.sup_balcon + dato.sup_comun + dato.sup_patio), 2)
+
+            # Formula del m2 para calculos
+
+            if dato.sup_equiv > 0:
+                m2 = round(dato.sup_equiv, 2)
+            else:
+                m2 = round((dato.sup_propia + dato.sup_balcon + dato.sup_comun + dato.sup_patio), 2)
+
+            # Calculamos el precio contado y financiado de ser posible, sino establecemos que no esta definido
+
+            try:
+                param_uni = Pricing.objects.get(unidad = dato)
+                desde = dato.proyecto.desde
+                aumento = 1
+                if dato.tipo == "COCHERA":
+                    aumento = aumento*dato.proyecto.descuento_cochera
+                if param_uni.frente == "SI":
+                    aumento = aumento*dato.proyecto.recargo_frente
+                if param_uni.piso_intermedio == "SI":
+                    aumento = aumento*dato.proyecto.recargo_piso_intermedio
+                if param_uni.cocina_separada == "SI":
+                    aumento = aumento*dato.proyecto.recargo_cocina_separada
+                if param_uni.local == "SI":
+                    aumento = aumento*dato.proyecto.recargo_local
+                if param_uni.menor_45_m2 == "SI":
+                    aumento = aumento*dato.proyecto.recargo_menor_45
+                if param_uni.menor_50_m2 == "SI":
+                    aumento = aumento*dato.proyecto.recargo_menor_50
+                if param_uni.otros == "SI":
+                    aumento = aumento*dato.proyecto.recargo_otros 
+                desde = desde*round(aumento, 4)
+
+                #Aqui calculamos el contado/financiado
+                
+                contado = desde*m2           
+                values = [0]
+                for m in range((meses)):
+                    values.append(1)
+                anticipo = 0.4
+                valor_auxiliar = np.npv(rate=(dato.proyecto.tasa_f/100), values=values)
+                incremento = (meses/(1-anticipo)/(((anticipo/(1-anticipo))*meses)+valor_auxiliar))
+                financiado = contado*incremento
+                financiado_m2 = financiado/m2                
+                fin_ant = financiado*anticipo
+                valor_cuotas = (financiado - fin_ant)/meses
+            except:
+                param_uni = 0
+                desde = "NO DEFINIDO"
+                contado = "NO DEFINIDO"
+                aumento = "NO"
+
+            # Aqui establecemos los datos de la venta
+
+            venta = 0
+            try:    
+                venta= VentasRealizadas.objects.filter(unidad = dato.id).exclude(estado = "BAJA")
+                contador = 0
+                for v in venta:
+                    contador += 1
+                if contador == 0:
+                    venta = 0        
+            except:
+                venta = 0
+
+            #Aqui vamos armando los m2 totales , m2 de proyecto, cantidad de cocheras
+
+            m2_totales = m2_totales + m2
+            if dato.estado == "DISPONIBLE":
+                try:
+                    if dato.asig == "PROYECTO":
+                        sumatoria_contado = sumatoria_contado + contado
+                        sumatoria_financiado = sumatoria_financiado + financiado
+                        m2_totales_disp = m2_totales_disp + m2
+                except:
+                    pass           
+            if dato.tipo == "COCHERA":
+                cocheras += 1
+                            
+            #Aqui sumamos los datos
+
+            datos_unidad.append((dato, m2_equivalente, m2_total, aumento,  contado, desde, financiado, financiado_m2, venta, param_uni))
+
+    
+        #Aqui calculo promedio contado y promedio financiado y otros datos que usaremos en el resumen
+
+        cantidad = len(datos_unidad)
+        departamentos = cantidad - cocheras
+        promedio_contado = sumatoria_contado/m2_totales_disp
+        promedio_financiado = sumatoria_financiado/m2_totales_disp
+
+        # Proceso 2: Creado del Excel
+
+        ws = wb.active
+        ws.title = "ADVERTENCIA"
+
+        ws.merge_cells("A2:K2")
+        ws["A2"] = "UNA ADVERTENCIA ANTES DE AVANZAR"
+
+        ws["A2"].alignment = Alignment(horizontal = "left")
+        ws["A2"].font = Font(bold = True, color= "23346D", size = 20)
+
+        ws.merge_cells("A5:K25")
+        ws["A5"] = """
+        La información que contiene este documento se considera de caracter CONFIDENCIAL.
+        
+         Esto quiere decir debes garantizar su protección y no debe ser divulgada sin el consentimiento de Link Inversiones S.R.L.
+         
+         Algunas recomendaciones:
+
+         1 - Habla con tu responsable de área antes de pasar este documento
+         2 - Si usas este documento fuera de las computadoras de la empresa, borra el archivo y vacia la papelera
+         
+         Gracias por tu atención
+
+         Saludos!
+         """
+        ws["A5"].alignment = Alignment(horizontal = "left", vertical = "center", wrap_text=True)
+        ws["A5"].font = Font(bold = True)
+
+        ws = wb.create_sheet("My sheet")
+        ws.title = "RESUMEN"
+
+        ws["A2"] = "PROYECTO"
+        ws["A3"] = "FECHA DE ENTREGA"
+        ws["A4"] = "CANTIDAD DE UNIDADES"
+        ws["A5"] = "M2 TOTALES"
+        ws["A6"] = "PRECIO DE REPOSICIÓN CONTADO"
+        ws["A7"] = "PRECIO DE REPOSICIÓN FINANCIADO"
+        ws["A8"] = "PRECIO DESDE"
+
+        ws["A2"].font = Font(bold = True, color= "FDFFFF")
+        ws["A2"].fill =  PatternFill("solid", fgColor= "23346D")
+        ws["A3"].font = Font(bold = True, color= "FDFFFF")
+        ws["A3"].fill =  PatternFill("solid", fgColor= "23346D")
+        ws["A4"].font = Font(bold = True, color= "FDFFFF")
+        ws["A4"].fill =  PatternFill("solid", fgColor= "23346D")
+        ws["A5"].font = Font(bold = True, color= "FDFFFF")
+        ws["A5"].fill =  PatternFill("solid", fgColor= "23346D")
+        ws["A6"].font = Font(bold = True, color= "FDFFFF")
+        ws["A6"].fill =  PatternFill("solid", fgColor= "23346D")
+        ws["A7"].font = Font(bold = True, color= "FDFFFF")
+        ws["A7"].fill =  PatternFill("solid", fgColor= "23346D")
+        ws["A8"].font = Font(bold = True, color= "FDFFFF")
+        ws["A8"].fill =  PatternFill("solid", fgColor= "23346D")
+
+        ws["A9"] = "PARAMETROS DEL PRECING"
+        ws["A9"].font = Font(bold = True, color= "FDFFFF")
+        ws["A9"].fill =  PatternFill("solid", fgColor= "23346D")
+
+
+        ws["A10"] = "VARIACIÓN COCHERA"
+        ws["A11"] = "VARIACIÓN FRENTE"
+        ws["A12"] = "VARIACIÓN PISO INTERMEDIO"
+        ws["A13"] = "VARIACIÓN COCINA SEPARADA"
+        ws["A14"] = "VARIACIÓN LOCAL"
+        ws["A15"] = "VARIACIÓN UNIDAD MENOR A 45M2"
+        ws["A16"] = "VARIACIÓN UNIDAD MENOR A 50M2"
+        ws["A17"] = "VARIACIÓN POR OTROS"
+        ws["A10"].font = Font(bold = True)
+        ws["A11"].font = Font(bold = True)
+        ws["A12"].font = Font(bold = True)
+        ws["A13"].font = Font(bold = True)
+        ws["A14"].font = Font(bold = True)
+        ws["A15"].font = Font(bold = True)
+        ws["A16"].font = Font(bold = True)
+        ws["A17"].font = Font(bold = True)
+
+
+        ws["B2"] = proyecto.nombre
+        ws["B2"].font = Font(bold = True)
+        ws["B2"].alignment = Alignment(horizontal = "center")
+        ws["B3"] = fecha_entrega
+        ws["B4"] = cantidad
+        ws["B5"] = m2_totales
+        ws["B6"] = promedio_contado
+        ws["B7"] = promedio_financiado
+        ws["B8"] = dato.proyecto.desde
+        ws["B10"] = dato.proyecto.descuento_cochera
+        ws["B11"] = dato.proyecto.recargo_frente
+        ws["B12"] = dato.proyecto.recargo_piso_intermedio
+        ws["B13"] = dato.proyecto.recargo_cocina_separada
+        ws["B14"] = dato.proyecto.recargo_local
+        ws["B15"] = dato.proyecto.recargo_menor_45
+        ws["B16"] = dato.proyecto.recargo_menor_50
+        ws["B17"] = dato.proyecto.recargo_otros 
+
+
+        ws["B5"].number_format = '#,##0.00_-"M2"'
+        ws["B6"].number_format = '"$"#,##0.00_-'
+        ws["B7"].number_format = '"$"#,##0.00_-'
+        ws["B8"].number_format = '"$"#,##0.00_-'
+        ws["B10"].number_format = '#,##0.00_-'
+        ws["B11"].number_format = '#,##0.00_-'
+        ws["B12"].number_format = '#,##0.00_-'
+        ws["B13"].number_format = '#,##0.00_-'
+        ws["B14"].number_format = '#,##0.00_-'
+        ws["B15"].number_format = '#,##0.00_-'
+        ws["B16"].number_format = '#,##0.00_-'
+        ws["B17"].number_format = '#,##0.00_-'
+
+
+        ws.column_dimensions['A'].width = 40
+        ws.column_dimensions['B'].width = 20
+        
+        cont = 1
+        
+        for d in datos_unidad:
+
+            if cont == 1:
+                ws = wb.create_sheet("My sheet")
+                ws.title = "DETALLE"
+                ws["A"+str(cont)] = "PISO"
+                ws["B"+str(cont)] = "N"
+                ws["C"+str(cont)] = "TIPO"
+                ws["D"+str(cont)] = "TIPOLOGIA"
+                ws["E"+str(cont)] = "M2 EQUIV"
+                ws["F"+str(cont)] = "M2"
+                ws["G"+str(cont)] = "ESTADO"
+                ws["H"+str(cont)] = "CONTADO"
+                ws["I"+str(cont)] = "CONTADO M2"
+                ws["J"+str(cont)] = "FINANCIADO"
+                ws["K"+str(cont)] = "FINANCIADO M2"
+                ws["L"+str(cont)] = "ASIGNACIÓN"
+                ws["M"+str(cont)] = "VENDIDO A"
+                ws["N"+str(cont)] = "%V"
+                ws["O"+str(cont)] = "FRENTE"
+                ws["P"+str(cont)] = "PISO INT."
+                ws["Q"+str(cont)] = "COCINA SEP."
+                ws["R"+str(cont)] = "LOCAL"
+                ws["S"+str(cont)] = "MENOR A 45"
+                ws["T"+str(cont)] = "MENOR A 50"
+                ws["U"+str(cont)] = "OTROS"
+
+
+
+                ws["A"+str(cont)].alignment = Alignment(horizontal = "center")
+                ws["B"+str(cont)].alignment = Alignment(horizontal = "center")
+                ws["C"+str(cont)].alignment = Alignment(horizontal = "center")
+                ws["D"+str(cont)].alignment = Alignment(horizontal = "center")
+                ws["E"+str(cont)].alignment = Alignment(horizontal = "center")
+                ws["F"+str(cont)].alignment = Alignment(horizontal = "center")
+                ws["G"+str(cont)].alignment = Alignment(horizontal = "center")
+                ws["H"+str(cont)].alignment = Alignment(horizontal = "center")
+                ws["I"+str(cont)].alignment = Alignment(horizontal = "center")
+                ws["J"+str(cont)].alignment = Alignment(horizontal = "center")
+                ws["K"+str(cont)].alignment = Alignment(horizontal = "center")
+                ws["L"+str(cont)].alignment = Alignment(horizontal = "center")
+                ws["M"+str(cont)].alignment = Alignment(horizontal = "center")
+                ws["N"+str(cont)].alignment = Alignment(horizontal = "center")
+                ws["O"+str(cont)].alignment = Alignment(horizontal = "center")
+                ws["P"+str(cont)].alignment = Alignment(horizontal = "center")
+                ws["Q"+str(cont)].alignment = Alignment(horizontal = "center")
+                ws["R"+str(cont)].alignment = Alignment(horizontal = "center")
+                ws["S"+str(cont)].alignment = Alignment(horizontal = "center")
+                ws["T"+str(cont)].alignment = Alignment(horizontal = "center")
+                ws["U"+str(cont)].alignment = Alignment(horizontal = "center")
+
+
+
+                ws["A"+str(cont)].font = Font(bold = True, color= "FDFFFF")
+                ws["A"+str(cont)].fill =  PatternFill("solid", fgColor= "23346D")
+                ws["B"+str(cont)].font = Font(bold = True, color= "FDFFFF")
+                ws["B"+str(cont)].fill =  PatternFill("solid", fgColor= "23346D")
+                ws["C"+str(cont)].font = Font(bold = True, color= "FDFFFF")
+                ws["C"+str(cont)].fill =  PatternFill("solid", fgColor= "23346D")
+                ws["D"+str(cont)].font = Font(bold = True, color= "FDFFFF")
+                ws["D"+str(cont)].fill =  PatternFill("solid", fgColor= "23346D")
+                ws["E"+str(cont)].font = Font(bold = True, color= "FDFFFF")
+                ws["E"+str(cont)].fill =  PatternFill("solid", fgColor= "23346D")
+                ws["F"+str(cont)].font = Font(bold = True, color= "FDFFFF")
+                ws["F"+str(cont)].fill =  PatternFill("solid", fgColor= "23346D")
+                ws["G"+str(cont)].font = Font(bold = True, color= "FDFFFF")
+                ws["G"+str(cont)].fill =  PatternFill("solid", fgColor= "23346D")
+                ws["H"+str(cont)].font = Font(bold = True, color= "FDFFFF")
+                ws["H"+str(cont)].fill =  PatternFill("solid", fgColor= "23346D")
+                ws["I"+str(cont)].font = Font(bold = True, color= "FDFFFF")
+                ws["I"+str(cont)].fill =  PatternFill("solid", fgColor= "23346D")
+                ws["J"+str(cont)].font = Font(bold = True, color= "FDFFFF")
+                ws["J"+str(cont)].fill =  PatternFill("solid", fgColor= "23346D")
+                ws["K"+str(cont)].font = Font(bold = True, color= "FDFFFF")
+                ws["K"+str(cont)].fill =  PatternFill("solid", fgColor= "23346D")
+                ws["L"+str(cont)].font = Font(bold = True, color= "FDFFFF")
+                ws["L"+str(cont)].fill =  PatternFill("solid", fgColor= "23346D")
+                ws["M"+str(cont)].font = Font(bold = True, color= "FDFFFF")
+                ws["M"+str(cont)].fill =  PatternFill("solid", fgColor= "23346D")
+                ws["N"+str(cont)].font = Font(bold = True, color= "FDFFFF")
+                ws["N"+str(cont)].fill =  PatternFill("solid", fgColor= "23346D")
+                ws["O"+str(cont)].font = Font(bold = True, color= "FDFFFF")
+                ws["O"+str(cont)].fill =  PatternFill("solid", fgColor= "23346D")
+                ws["P"+str(cont)].font = Font(bold = True, color= "FDFFFF")
+                ws["P"+str(cont)].fill =  PatternFill("solid", fgColor= "23346D")
+                ws["Q"+str(cont)].font = Font(bold = True, color= "FDFFFF")
+                ws["Q"+str(cont)].fill =  PatternFill("solid", fgColor= "23346D")
+                ws["R"+str(cont)].font = Font(bold = True, color= "FDFFFF")
+                ws["R"+str(cont)].fill =  PatternFill("solid", fgColor= "23346D")
+                ws["S"+str(cont)].font = Font(bold = True, color= "FDFFFF")
+                ws["S"+str(cont)].fill =  PatternFill("solid", fgColor= "23346D")
+                ws["T"+str(cont)].font = Font(bold = True, color= "FDFFFF")
+                ws["T"+str(cont)].fill =  PatternFill("solid", fgColor= "23346D")
+                ws["U"+str(cont)].font = Font(bold = True, color= "FDFFFF")
+                ws["U"+str(cont)].fill =  PatternFill("solid", fgColor= "23346D")
+
+
+                ws.column_dimensions['A'].width = 12
+                ws.column_dimensions['B'].width = 8
+                ws.column_dimensions['C'].width = 18
+                ws.column_dimensions['D'].width = 15
+                ws.column_dimensions['E'].width = 10
+                ws.column_dimensions['F'].width = 10
+                ws.column_dimensions['G'].width = 12
+                ws.column_dimensions['H'].width = 15
+                ws.column_dimensions['I'].width = 15
+                ws.column_dimensions['J'].width = 15
+                ws.column_dimensions['K'].width = 15
+                ws.column_dimensions['L'].width = 15
+                ws.column_dimensions['M'].width = 20
+                ws.column_dimensions['N'].width = 10
+                ws.column_dimensions['O'].width = 15
+                ws.column_dimensions['P'].width = 15
+                ws.column_dimensions['Q'].width = 15
+                ws.column_dimensions['R'].width = 15
+                ws.column_dimensions['S'].width = 15
+                ws.column_dimensions['T'].width = 15
+                ws.column_dimensions['U'].width = 15
+
+
+                # Aqui empiezan los datos
+
+                ws["A"+str(cont+1)] = d[0].piso_unidad
+                ws["B"+str(cont+1)] = d[0].nombre_unidad
+                ws["C"+str(cont+1)] = d[0].tipo
+                ws["D"+str(cont+1)] = d[0].tipologia
+                ws["E"+str(cont+1)] = d[1]
+                ws["F"+str(cont+1)] = d[2]
+                ws["G"+str(cont+1)] = d[0].estado
+                ws["H"+str(cont+1)] = d[4]
+                ws["I"+str(cont+1)] = d[5]
+                ws["J"+str(cont+1)] = d[6]
+                ws["K"+str(cont+1)] = d[7]
+                ws["L"+str(cont+1)] = d[0].asig
+
+                if d[8] == 0:
+
+                    ws["M"+str(cont+1)] = "SIN COMPRADOR"
+
+                else:
+                    ws["M"+str(cont+1)] = d[8][0].comprador
+
+                ws["N"+str(cont+1)] = d[3]
+
+                if d[9] == 0:
+
+                    ws["O"+str(cont+1)] = "NO"
+                    ws["P"+str(cont+1)] = "NO"
+                    ws["Q"+str(cont+1)] = "NO"
+                    ws["R"+str(cont+1)] = "NO"
+                    ws["S"+str(cont+1)] = "NO"
+                    ws["T"+str(cont+1)] = "NO"
+                    ws["U"+str(cont+1)] = "NO"
+                
+                else:
+
+                    ws["O"+str(cont+1)] = d[9].frente
+                    ws["P"+str(cont+1)] = d[9].piso_intermedio
+                    ws["Q"+str(cont+1)] = d[9].cocina_separada
+                    ws["R"+str(cont+1)] = d[9].local
+                    ws["S"+str(cont+1)] = d[9].menor_45_m2
+                    ws["T"+str(cont+1)] = d[9].menor_50_m2
+                    ws["U"+str(cont+1)] = d[9].otros
+
+
+
+
+                ws["A"+str(cont+1)].font = Font(bold = True)
+                ws["A"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["B"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["B"+str(cont+1)].font = Font(bold = True)
+                ws["C"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["D"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["E"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["E"+str(cont+1)].number_format = '#,##0.00_-"M2"'
+                ws["F"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["F"+str(cont+1)].number_format = '#,##0.00_-"M2"'
+                ws["G"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["H"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["H"+str(cont+1)].number_format = '"$"#,##0.00_-'
+                ws["I"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["I"+str(cont+1)].number_format = '"$"#,##0.00_-'
+                ws["J"+str(cont+1)].number_format = '"$"#,##0.00_-'
+                ws["K"+str(cont+1)].number_format = '"$"#,##0.00_-'
+                ws["L"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["M"+str(cont+1)].alignment = Alignment(horizontal = "left")
+                ws["N"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["O"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["P"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["Q"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["R"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["S"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["T"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["U"+str(cont+1)].alignment = Alignment(horizontal = "center")
+  
+
+                cont += 1
+
+            else:
+                ws = wb["DETALLE"]
+
+                ws["A"+str(cont+1)] = d[0].piso_unidad
+                ws["B"+str(cont+1)] = d[0].nombre_unidad
+                ws["C"+str(cont+1)] = d[0].tipo
+                ws["D"+str(cont+1)] = d[0].tipologia
+                ws["E"+str(cont+1)] = d[1]
+                ws["F"+str(cont+1)] = d[2]
+                ws["G"+str(cont+1)] = d[0].estado
+                ws["H"+str(cont+1)] = d[4]
+                ws["I"+str(cont+1)] = d[5]
+                ws["J"+str(cont+1)] = d[6]
+                ws["K"+str(cont+1)] = d[7]
+                ws["L"+str(cont+1)] = d[0].asig
+
+                if d[8] == 0:
+
+                    ws["M"+str(cont+1)] = "SIN COMPRADOR"
+
+                else:
+                    ws["M"+str(cont+1)] = d[8][0].comprador
+                    
+                ws["N"+str(cont+1)] = d[3]
+
+                if d[9] == 0:
+
+                    ws["O"+str(cont+1)] = "NO"
+                    ws["P"+str(cont+1)] = "NO"
+                    ws["Q"+str(cont+1)] = "NO"
+                    ws["R"+str(cont+1)] = "NO"
+                    ws["S"+str(cont+1)] = "NO"
+                    ws["T"+str(cont+1)] = "NO"
+                    ws["U"+str(cont+1)] = "NO"
+                
+                else:
+
+                    ws["O"+str(cont+1)] = d[9].frente
+                    ws["P"+str(cont+1)] = d[9].piso_intermedio
+                    ws["Q"+str(cont+1)] = d[9].cocina_separada
+                    ws["R"+str(cont+1)] = d[9].local
+                    ws["S"+str(cont+1)] = d[9].menor_45_m2
+                    ws["T"+str(cont+1)] = d[9].menor_50_m2
+                    ws["U"+str(cont+1)] = d[9].otros
+
+
+
+                ws["A"+str(cont+1)].font = Font(bold = True)
+                ws["A"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["B"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["B"+str(cont+1)].font = Font(bold = True)
+                ws["C"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["D"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["E"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["E"+str(cont+1)].number_format = '#,##0.00_-"M2"'
+                ws["F"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["F"+str(cont+1)].number_format = '#,##0.00_-"M2"'
+                ws["G"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["H"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["H"+str(cont+1)].number_format = '"$"#,##0.00_-'
+                ws["I"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["I"+str(cont+1)].number_format = '"$"#,##0.00_-'
+                ws["J"+str(cont+1)].number_format = '"$"#,##0.00_-'
+                ws["K"+str(cont+1)].number_format = '"$"#,##0.00_-'
+                ws["L"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["M"+str(cont+1)].alignment = Alignment(horizontal = "left")
+                ws["N"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["O"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["P"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["Q"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["R"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["S"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["T"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["U"+str(cont+1)].alignment = Alignment(horizontal = "center")
 
                 cont += 1
 

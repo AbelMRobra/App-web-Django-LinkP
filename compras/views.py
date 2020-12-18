@@ -1678,16 +1678,29 @@ class Reegistrodecompras(TemplateView):
         ws = wb.active
         ws.title = "ADVERTENCIA"
 
-        ws.merge_cells("B2:K2")
-        ws["B2"] = "LEER ATENTAMENTE ANTES DE USAR ESTE DOCUMENTO"
+        ws["A2"] = "UNA ADVERTENCIA ANTES DE AVANZAR"
 
-        ws["B2"].alignment = Alignment(horizontal = "center")
-        ws["B2"].font = Font(bold = True, color= "CF433F", size = 20)
+        ws["A2"].alignment = Alignment(horizontal = "left")
+        ws["A2"].font = Font(bold = True, color= "23346D", size = 20)
 
-        ws.merge_cells("B5:K25")
-        ws["B5"] = "Este documento contiene informción --> PRIVADA <-- del área de presupuestos, \n la misma es solo para uso interno de LINK INVERSIONES y no debe ser compartida sin previa autorización. Compartir este archivo puede ser considerado como divulgar información confidencial. Si usted esta utilizando este archivo en una computadora que no pertenezca a la empresa, al finalizar --> ELIMINE <-- el archivo. Gracias --AR"
-        ws["B5"].alignment = Alignment(horizontal = "center", vertical = "center", wrap_text=True)
-        ws["B5"].font = Font(bold = True)
+        ws.merge_cells("A5:K25")
+        ws["A5"] = """
+        La información que contiene este documento se considera de caracter CONFIDENCIAL.
+        
+         Esto quiere decir debes garantizar su protección y no debe ser divulgada sin el consentimiento de Link Inversiones S.R.L.
+         
+         Algunas recomendaciones:
+
+         1 - Habla con tu responsable de área antes de pasar este documento
+         2 - Si usas este documento fuera de las computadoras de la empresa, borra el archivo y vacia la papelera
+         
+         Gracias por tu atención
+
+         Saludos!
+         """
+
+        ws["A5"].alignment = Alignment(horizontal = "left", vertical = "center", wrap_text=True)
+        ws["A5"].font = Font(bold = True)
         
         cont = 1
         
@@ -1717,21 +1730,21 @@ class Reegistrodecompras(TemplateView):
 
 
                 ws["A"+str(cont)].font = Font(bold = True, color= "FDFFFF")
-                ws["A"+str(cont)].fill =  PatternFill("solid", fgColor= "159ABB")
+                ws["A"+str(cont)].fill =  PatternFill("solid", fgColor= "23346D")
                 ws["B"+str(cont)].font = Font(bold = True, color= "FDFFFF")
-                ws["B"+str(cont)].fill =  PatternFill("solid", fgColor= "159ABB")
+                ws["B"+str(cont)].fill =  PatternFill("solid", fgColor= "23346D")
                 ws["C"+str(cont)].font = Font(bold = True, color= "FDFFFF")
-                ws["C"+str(cont)].fill =  PatternFill("solid", fgColor= "159ABB")
+                ws["C"+str(cont)].fill =  PatternFill("solid", fgColor= "23346D")
                 ws["D"+str(cont)].font = Font(bold = True, color= "FDFFFF")
-                ws["D"+str(cont)].fill =  PatternFill("solid", fgColor= "159ABB")
+                ws["D"+str(cont)].fill =  PatternFill("solid", fgColor= "23346D")
                 ws["E"+str(cont)].font = Font(bold = True, color= "FDFFFF")
-                ws["E"+str(cont)].fill =  PatternFill("solid", fgColor= "159ABB")
+                ws["E"+str(cont)].fill =  PatternFill("solid", fgColor= "23346D")
                 ws["F"+str(cont)].font = Font(bold = True, color= "FDFFFF")
-                ws["F"+str(cont)].fill =  PatternFill("solid", fgColor= "159ABB")
+                ws["F"+str(cont)].fill =  PatternFill("solid", fgColor= "23346D")
                 ws["G"+str(cont)].font = Font(bold = True, color= "FDFFFF")
-                ws["G"+str(cont)].fill =  PatternFill("solid", fgColor= "159ABB")
+                ws["G"+str(cont)].fill =  PatternFill("solid", fgColor= "23346D")
                 ws["H"+str(cont)].font = Font(bold = True, color= "FDFFFF")
-                ws["H"+str(cont)].fill =  PatternFill("solid", fgColor= "159ABB")
+                ws["H"+str(cont)].fill =  PatternFill("solid", fgColor= "23346D")
 
 
                 ws.column_dimensions['A'].width = 23.29
@@ -1818,17 +1831,29 @@ class CompOCestado(TemplateView):
         ws = wb.active
         ws.title = "ADVERTENCIA"
 
-        ws.merge_cells("B2:K2")
-        ws["B2"] = "LEER ATENTAMENTE ANTES DE USAR ESTE DOCUMENTO"
+        ws["A2"] = "UNA ADVERTENCIA ANTES DE AVANZAR"
 
-        ws["B2"].alignment = Alignment(horizontal = "center")
-        ws["B2"].font = Font(bold = True, color= "CF433F", size = 20)
+        ws["A2"].alignment = Alignment(horizontal = "left")
+        ws["A2"].font = Font(bold = True, color= "23346D", size = 20)
 
-        ws.merge_cells("B5:K25")
-        ws["B5"] = "Este documento contiene informción --> PRIVADA <-- del área de presupuestos, \n la misma es solo para uso interno de LINK INVERSIONES y no debe ser compartida sin previa autorización. Compartir este archivo puede ser considerado como divulgar información confidencial. Si usted esta utilizando este archivo en una computadora que no pertenezca a la empresa, al finalizar --> ELIMINE <-- el archivo. Gracias --AR"
-        ws["B5"].alignment = Alignment(horizontal = "center", vertical = "center", wrap_text=True)
-        ws["B5"].font = Font(bold = True)
+        ws.merge_cells("A5:K25")
+        ws["A5"] = """
+        La información que contiene este documento se considera de caracter CONFIDENCIAL.
         
+         Esto quiere decir debes garantizar su protección y no debe ser divulgada sin el consentimiento de Link Inversiones S.R.L.
+         
+         Algunas recomendaciones:
+
+         1 - Habla con tu responsable de área antes de pasar este documento
+         2 - Si usas este documento fuera de las computadoras de la empresa, borra el archivo y vacia la papelera
+         
+         Gracias por tu atención
+
+         Saludos!
+         """
+
+        ws["A5"].alignment = Alignment(horizontal = "left", vertical = "center", wrap_text=True)
+        ws["A5"].font = Font(bold = True)
         cont = 5
         
         for d in datos:

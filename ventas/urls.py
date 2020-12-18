@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.urls import path
 from django.conf.urls import url
 from . import views
-from .views import descargadeventas
+from .views import descargadeventas, DescargaPricing
 from django.contrib.auth.decorators import login_required
 
 urlpatterns = [
@@ -31,5 +31,6 @@ urlpatterns = [
     url(r'^cargarventa$', login_required(views.cargarventa), name = 'Cargar Venta'),
     url(r'^cargar_venta$', login_required(views.cargar_venta), name = 'Cargar una Venta'),
     url(r'^descargarventas/$', login_required(descargadeventas.as_view()), name = 'Descargar ventas'),
+    url(r'^descargapricing/(?P<id_proyecto>\d+)/$', login_required(DescargaPricing.as_view()), name = 'Descargar del pricing'),
 
 ]
