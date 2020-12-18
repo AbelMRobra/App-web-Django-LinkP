@@ -259,11 +259,13 @@
         <div style="display: inline-block; width: 170px; vertical-align: top; text-align: left;">
              
 
+            <h6>Resultado por tenencia:</h6>
             <h6>Prestamos a cobrar:</h6>
             <h6><small>Prestamos a proyectos:</small></h6>
             <h6><small>Prestamos a otros:</small></h6>
             <h6>Cuotas cobradas:</h6>
             <h6>Cuotas a cobrar:</h6>
+            <h6>Financiación:</h6>
             <h6>Ingreso por ventas:</h6>
             <h6> <small>(Unidades de Socios):</small> </h6>
             
@@ -273,12 +275,13 @@
 
         <div style="display: inline-block; width: 170px; vertical-align: top; text-align: right;">
              
-
-            <h6>$ {{datos.datos.3.1|floatformat:0|intcomma}}   </h6>
+            <h6>$ {{datos.datos.2.tenencia|floatformat:0|intcomma}}</h6>
+            <h6>$ {{datos.datos.3.1|floatformat:0|intcomma}}</h6>
             <h6><small>$ {{datos.datos.2.prestamos_proyecto|floatformat:0|intcomma}}  </small></h6>
             <h6><small>$ {{datos.datos.2.prestamos_otros|floatformat:0|intcomma}}</small></h6>
             <h6>$ {{datos.datos.2.cuotas_cobradas|floatformat:0|intcomma}}  </h6>
             <h6>$ {{datos.datos.2.cuotas_a_cobrar|floatformat:0|intcomma}}  </h6>
+            <h6>$ {{datos.datos.2.financiacion|floatformat:0|intcomma}}</h6>
             <h6>$ {{datos.datos.2.ingreso_ventas|floatformat:0|intcomma}}  </h6>
             <h6> <small> $ {{datos.datos.2.unidades_socios|floatformat:0|intcomma}}  </small></h6>
             

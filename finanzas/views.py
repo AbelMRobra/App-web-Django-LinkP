@@ -2077,8 +2077,8 @@ def almacenero(request):
                     
                     descuento = almacenero.ingreso_ventas*0.06 
                     
-                    total_ingresos = prest_cobrar + almacenero.cuotas_cobradas + almacenero.cuotas_a_cobrar + almacenero.ingreso_ventas
-                    saldo_caja = almacenero.cuotas_cobradas - almacenero.gastos_fecha - almacenero.Prestamos_dados
+                    total_ingresos = prest_cobrar + almacenero.cuotas_cobradas + almacenero.cuotas_a_cobrar + almacenero.ingreso_ventas + almacenero.tenencia + almacenero.financiacion
+                    saldo_caja = almacenero.cuotas_cobradas - almacenero.gastos_fecha - almacenero.Prestamos_dados + almacenero.tenencia
                     saldo_proyecto = total_ingresos - total_costo
                     rentabilidad = (saldo_proyecto/total_costo)*100
 
