@@ -1572,14 +1572,14 @@ def indicelink(request):
             #Calculo el resto de las cosas
 
             retiro_socios = almacenero.retiro_socios
-            saldo_caja = almacenero.cuotas_cobradas - almacenero.gastos_fecha - almacenero.Prestamos_dados - retiro_socios
+            saldo_caja = almacenero.cuotas_cobradas - almacenero.gastos_fecha - almacenero.Prestamos_dados - retiro_socios + almacenero.tenencia
             
             pend_gast = almacenero.pendiente_admin + almacenero.pendiente_comision + almacenero.saldo_mat + almacenero.saldo_mo + almacenero.imprevisto + almacenero.credito + almacenero.fdr - almacenero.pendiente_adelantos + almacenero.pendiente_iva_ventas + almacenero.pendiente_iibb_tem +almacenero.cheques_emitidos
             
             prest_cobrar = almacenero.prestamos_proyecto + almacenero.prestamos_otros
-            total_ingresos = prest_cobrar + almacenero.cuotas_a_cobrar + almacenero.ingreso_ventas + saldo_caja
+            total_ingresos = prest_cobrar + almacenero.cuotas_a_cobrar + almacenero.ingreso_ventas + almacenero.financiacion
             
-            margen = total_ingresos - pend_gast
+            margen = total_ingresos - pend_gast + saldo_caja
             descuento = almacenero.ingreso_ventas*0.06
             
             margen_2 = margen - descuento
@@ -1593,7 +1593,7 @@ def indicelink(request):
             # Me falta calcular la parte de honorarios
 
 
-        margen1 = ingresos_total - pendiente_gastar_total + honorario
+        margen1 = ingresos_total - pendiente_gastar_total + honorario + saldo_caja_total
         margen2 = margen1 - descuento_total
 
         datos_registro.append((margen1, margen2))
@@ -1894,14 +1894,14 @@ def indicelinkmoneda(request, id_moneda):
         # Calculo el resto de las cosas
 
         retiro_socios = sum(np.array(RetirodeSocios.objects.values_list('monto_pesos').filter(proyecto = dato.proyecto)))
-        saldo_caja = almacenero.cuotas_cobradas - almacenero.gastos_fecha - almacenero.Prestamos_dados - retiro_socios
+        saldo_caja = almacenero.cuotas_cobradas - almacenero.gastos_fecha - almacenero.Prestamos_dados - retiro_socios + almacenero.tenencia
         saldo_caja_total = saldo_caja_total + saldo_caja
         pend_gast = almacenero.pendiente_admin + almacenero.pendiente_comision + presupuesto.saldo_mat + presupuesto.saldo_mo + presupuesto.imprevisto + presupuesto.credito + presupuesto.fdr - almacenero.pendiente_adelantos + almacenero.pendiente_iva_ventas + almacenero.pendiente_iibb_tem +almacenero.cheques_emitidos
         pendiente_gastar_total = pendiente_gastar_total + pend_gast
         prest_cobrar = almacenero.prestamos_proyecto + almacenero.prestamos_otros
-        total_ingresos = prest_cobrar + almacenero.cuotas_a_cobrar + almacenero.ingreso_ventas + saldo_caja
+        total_ingresos = prest_cobrar + almacenero.cuotas_a_cobrar + almacenero.ingreso_ventas + almacenero.financiacion
         ingresos_total = ingresos_total + total_ingresos
-        margen = total_ingresos - pend_gast
+        margen = total_ingresos - pend_gast + saldo_caja
         descuento = almacenero.ingreso_ventas*0.06
         descuento_total = descuento_total + descuento
         margen_2 = margen - descuento 
@@ -1910,7 +1910,7 @@ def indicelinkmoneda(request, id_moneda):
 
     # -----------------> Aqui calculo los totalizadores
 
-    margen1_total = ingresos_total - pendiente_gastar_total
+    margen1_total = ingresos_total - pendiente_gastar_total + saldo_caja_total
     margen2_total = margen1_total - descuento_total
 
 
@@ -1981,14 +1981,14 @@ def indicelinkmoneda(request, id_moneda):
             #Calculo el resto de las cosas
 
             retiro_socios = almacenero.retiro_socios
-            saldo_caja = almacenero.cuotas_cobradas - almacenero.gastos_fecha - almacenero.Prestamos_dados - retiro_socios
+            saldo_caja = almacenero.cuotas_cobradas - almacenero.gastos_fecha - almacenero.Prestamos_dados - retiro_socios + almacenero.tenencia
             
             pend_gast = almacenero.pendiente_admin + almacenero.pendiente_comision + almacenero.saldo_mat + almacenero.saldo_mo + almacenero.imprevisto + almacenero.credito + almacenero.fdr - almacenero.pendiente_adelantos + almacenero.pendiente_iva_ventas + almacenero.pendiente_iibb_tem +almacenero.cheques_emitidos
             
             prest_cobrar = almacenero.prestamos_proyecto + almacenero.prestamos_otros
-            total_ingresos = prest_cobrar + almacenero.cuotas_a_cobrar + almacenero.ingreso_ventas + saldo_caja
+            total_ingresos = prest_cobrar + almacenero.cuotas_a_cobrar + almacenero.ingreso_ventas + almacenero.financiacion
             
-            margen = total_ingresos - pend_gast
+            margen = total_ingresos - pend_gast + saldo_caja
             descuento = almacenero.ingreso_ventas*0.06
             
             margen_2 = margen - descuento
@@ -2002,7 +2002,7 @@ def indicelinkmoneda(request, id_moneda):
             # Me falta calcular la parte de honorarios
 
 
-        margen1 = ingresos_total - pendiente_gastar_total + honorario
+        margen1 = ingresos_total - pendiente_gastar_total + honorario + saldo_caja_total
         margen2 = margen1 - descuento_total
 
         # Valor para dividir de la moneda
