@@ -98,7 +98,13 @@ class PdfPrueba(View):
             saldo_moneda = total_moneda - total_pagado
             saldo_pesos = saldo_moneda*moneda.valor
             saldo_total_pesos = saldo_total_pesos + saldo_pesos
-            avance = total_pagado/total_moneda
+            
+            if total_moneda == 0:
+
+                avance = 0
+            else:
+
+                avance = total_pagado/total_moneda
 
             datos.append((nombre, moneda, total_moneda, cuotas_t, total_pagado, saldo_moneda, saldo_pesos, avance))
 
