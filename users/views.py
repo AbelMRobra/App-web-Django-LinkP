@@ -384,7 +384,9 @@ def inicio(request):
                 fdr = presupuesto.fdr,
                 retiro_socios= sum(np.array(RetirodeSocios.objects.values_list('monto_pesos').filter(proyecto = alma.proyecto))),
                 retiro_socios_honorarios = retiros,
-                honorarios = honorario
+                honorarios = honorario,
+                tenencia = alma.tenencia,
+                financiacion = alma.financiacion,
 
             )
 

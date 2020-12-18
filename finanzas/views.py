@@ -1611,6 +1611,8 @@ def consolidado(request):
     ingresos_total = 0
     descuento_total = 0
     retiro_totales = 0
+    tenencia_totales = 0
+    financiacion_totales = 0
 
 
     for dato in datos:
@@ -1650,12 +1652,14 @@ def consolidado(request):
         ingresos_total = ingresos_total + total_ingresos
 
         saldo_caja = almacenero.cuotas_cobradas - almacenero.gastos_fecha - almacenero.Prestamos_dados
-        saldo_proyecto = total_ingresos - total_costo
+        saldo_proyecto = total_ingresos - total_costo + almacenero.tenencia + almacenero.financiacion
+        tenencia_totales = tenencia_totales + almacenero.tenencia
+        financiacion_totales = financiacion_totales + almacenero.financiacion
         rentabilidad = (saldo_proyecto/total_costo)*100
 
 
         total_ingresos_pesimista = total_ingresos - descuento - retiro_socios
-        saldo_proyecto_pesimista = total_ingresos_pesimista - total_costo
+        saldo_proyecto_pesimista = total_ingresos_pesimista - total_costo + almacenero.tenencia + almacenero.financiacion
         rentabilidad_pesimista = (saldo_proyecto_pesimista/total_costo)*100
         retiro_totales = retiro_totales + retiro_socios 
 
@@ -1751,11 +1755,7 @@ def consolidado(request):
 
         else:
 
-            if "2UO" in dato.proyecto.nombre:
-
-                precio_promedio_contado = 85000
-
-            elif "#300" in dato.proyecto.nombre:
+            if "#300" in dato.proyecto.nombre:
 
                 precio_promedio_contado = 130000
 
@@ -1771,19 +1771,19 @@ def consolidado(request):
 
     # -----------------> Aqui calculo los totalizadores
 
-    beneficio_total = ingresos_total - costo_total
+    beneficio_total = ingresos_total - costo_total + tenencia_totales + financiacion_totales
     beneficio_total_pesimista = beneficio_total - descuento_total - retiro_totales
     beneficio_retiros = beneficio_total - descuento_total
     rendimiento_total = beneficio_total/costo_total*100
     rendimiento_total_pesimista = beneficio_total_pesimista/costo_total*100
 
-    datos_finales.append((ingresos_total, costo_total, beneficio_total, rendimiento_total, descuento_total, rendimiento_total_pesimista, beneficio_total_pesimista, retiro_totales, beneficio_retiros))
+    datos_finales.append((ingresos_total, costo_total, beneficio_total, rendimiento_total, descuento_total, rendimiento_total_pesimista, beneficio_total_pesimista, retiro_totales, beneficio_retiros, tenencia_totales, financiacion_totales))
 
     # -----------------> Información para graficos
 
-    beneficio_total = ingresos_total - costo_total - descuento_total - retiro_totales 
-    beneficio_descuento = ingresos_total - costo_total - retiro_totales 
-    retiros_completo = ingresos_total - costo_total 
+    beneficio_total = ingresos_total - costo_total - descuento_total - retiro_totales + tenencia_totales + financiacion_totales
+    beneficio_descuento = ingresos_total - costo_total - retiro_totales + tenencia_totales + financiacion_totales
+    retiros_completo = ingresos_total - costo_total + tenencia_totales + financiacion_totales
 
     datos_finales_2 = [ingresos_total, costo_total, beneficio_total, beneficio_descuento, retiros_completo]
 
@@ -1811,6 +1811,8 @@ def consolidado(request):
         ingresos_total = 0
         descuento_total = 0
         retiro_totales = 0
+        tenencia_totales = 0
+        financiacion_totales = 0
 
         for dato in datos:
 
@@ -1834,16 +1836,18 @@ def consolidado(request):
 
             saldo_caja = almacenero.cuotas_cobradas - almacenero.gastos_fecha - almacenero.Prestamos_dados
             saldo_proyecto = total_ingresos - total_costo
-            rentabilidad = (saldo_proyecto/total_costo)*100
+            tenencia_totales = tenencia_totales + almacenero.tenencia
+            financiacion_totales = financiacion_totales + almacenero.financiacion
+            
 
             total_ingresos_pesimista = total_ingresos - descuento
             saldo_proyecto_pesimista = total_ingresos_pesimista - total_costo
-            rentabilidad_pesimista = (saldo_proyecto_pesimista/total_costo)*100
+            
 
 
-        beneficio_total = ingresos_total - costo_total - descuento_total - retiro_totales 
-        beneficio_descuento = ingresos_total - costo_total - retiro_totales 
-        retiros_completo = ingresos_total - costo_total 
+        beneficio_total = ingresos_total - costo_total - descuento_total - retiro_totales + tenencia_totales + financiacion_totales
+        beneficio_descuento = ingresos_total - costo_total - retiro_totales + tenencia_totales + financiacion_totales
+        retiros_completo = ingresos_total - costo_total + tenencia_totales + financiacion_totales
 
 
         datos_finales_registro.append((ingresos_total, costo_total, retiros_completo, beneficio_total, beneficio_descuento))
@@ -2383,8 +2387,6 @@ def registro_almacenero(request, id_proyecto, fecha):
 
     registro = RegistroAlmacenero.objects.filter(proyecto = proyecto, fecha = fecha)
 
-    print(registro.cuotas_a_cobrar)
- 
     datos = {
         'datos':datos,
         'registro':registro,

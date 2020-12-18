@@ -23,6 +23,8 @@ class Almacenero(models.Model):
     ingreso_ventas_link = models.FloatField(null=True, blank=True, verbose_name="Ingreso por unidades a vender de LINK") #Esto solo es para el calculo de IIBB
     Prestamos_dados = models.FloatField(null=True, blank=True, verbose_name="Prestamos otorgados")
     unidades_socios = models.FloatField(null=True, blank=True, verbose_name="Unidades de Socios", editable=False)
+    tenencia = models.FloatField(null=True, blank=True, verbose_name="Resultado por tenencia", default=0)
+    financiacion = models.FloatField(null=True, blank=True, verbose_name="Recargo por financiacion", default=0)
 
 
     class Meta:
@@ -59,6 +61,8 @@ class RegistroAlmacenero(models.Model):
     retiro_socios = models.FloatField(null=True, blank=True, verbose_name="Retiro socios", default=0)
     retiro_socios_honorarios = models.FloatField(null=True, blank=True, verbose_name="Retiro socios en honorarios", default=0)
     honorarios = models.FloatField(null=True, blank=True, verbose_name="Honorarios", default=0)
+    tenencia = models.FloatField(null=True, blank=True, verbose_name="Resultado por tenencia", default=0)
+    financiacion = models.FloatField(null=True, blank=True, verbose_name="Recargo por financiacion", default=0)
 
     class Meta:
         verbose_name="RegistroAlmacenero"
