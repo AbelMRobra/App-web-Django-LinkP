@@ -18,9 +18,10 @@ urlpatterns = [
     url(r'^certificados$', login_required(views.certificados), name = 'Certificados'),
     url(r'^informe$', login_required(views.informe), name = 'Informe de área'),
     url(r'^stockprov$', login_required(views.stockproveedores), name = 'Stock Proveedores'),
+    url(r'^descargacom$', login_required(views.descargacomparativas), name = 'Descarga Comparativas'),
     url(r'^analisiscompras$', login_required(views.analisiscompras), name = 'Analisis Compras'),
     url(r'^registrodecompras/$', login_required(Reegistrodecompras.as_view()), name = 'Descargar compras'),
-    url(r'^descargarestado/$', login_required(CompOCestado.as_view()), name = 'Descargar estado'),
+    url(r'^descargarestado/(?P<fechai>\d+)/(?P<fechaf>\d+)/$', login_required(CompOCestado.as_view()), name = 'Descargar estado'),
     url(r'^informecompras/$', login_required(views.informecompras), name = 'Informe compras'),
     url(r'^detalleinforme/(?P<fecha_i>\d+)/(?P<fecha_f>\d+)/(?P<proyecto>\d+)/$', login_required(views.detalleinforme), name = 'Detalle de informe'),
 

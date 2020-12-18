@@ -620,9 +620,21 @@ def mensajescomparativas(request, id_comparativa):
 
     return render(request, 'mensajescomparativas.html', {'datos':datos, 'mensajes':mensajes})
 
-def comparativas(request, estado, creador):
 
-    
+def descargacomparativas(request):
+
+    if request.method == 'POST':
+
+        fechai = str(request.POST['fechai'])[0:4]+str(request.POST['fechai'])[5:7]+str(request.POST['fechai'])[8:]
+        fechaf = str(request.POST['fechaf'])[0:4]+str(request.POST['fechaf'])[5:7]+str(request.POST['fechaf'])[8:]
+
+        return redirect('Descargar estado', fechai = fechai, fechaf = fechaf)
+
+    return render(request, 'descargacom.html')
+
+
+def comparativas(request, estado, creador):
+   
     if creador == "0":
         mensaje_creador = "Creador"
 
@@ -1792,13 +1804,16 @@ class Reegistrodecompras(TemplateView):
 
 class CompOCestado(TemplateView):
 
-    def get(self, request, *args, **kwargs):
+    def get(self, request, fechai, fechaf, *args, **kwargs):
         
         wb = Workbook()
 
         #Aqui coloco la formula para calcular
 
-        datos = Comparativas.objects.filter(fecha_c__gte="2020-09-13").order_by("-fecha_c")
+        fecha_inicial = datetime.date(int(fechai[0:4]), int(fechai[4:6]), int(fechai[6:8]))
+        fecha_final = datetime.date(int(fechaf[0:4]), int(fechaf[4:6]), int(fechaf[6:8]))
+
+        datos = Comparativas.objects.filter(fecha_c__gte=fecha_inicial, fecha_c__lte=fecha_final,).order_by("-fecha_c")
 
         ws = wb.active
         ws.title = "ADVERTENCIA"
@@ -1814,23 +1829,41 @@ class CompOCestado(TemplateView):
         ws["B5"].alignment = Alignment(horizontal = "center", vertical = "center", wrap_text=True)
         ws["B5"].font = Font(bold = True)
         
-        cont = 1
+        cont = 5
         
         for d in datos:
 
-            if cont == 1:
+            if cont == 5:
                 ws = wb.create_sheet("My sheet")
                 ws.title = "Listado"
+
+                ws["A2"] = "FECHA INICIAL"
+                ws["A3"] = "FECHA FINAL"
+                ws["A2"].font = Font(bold = True)
+                ws["A3"].font = Font(bold = True)
+
+
+                ws["B2"] = fecha_inicial
+                ws["B3"] = fecha_final
+                ws["B2"].font = Font(bold = True)
+                ws["B2"].alignment = Alignment(horizontal = "center")
+                ws["B3"].font = Font(bold = True)
+                ws["B3"].alignment = Alignment(horizontal = "center")
+
+
+
+
                 ws["A"+str(cont)] = "FECHA"
-                ws["B"+str(cont)] = "PROYECTO"
-                ws["C"+str(cont)] = "PROVEEDOR"
-                ws["D"+str(cont)] = "REFERENCIA"
-                ws["E"+str(cont)] = "OC"
-                ws["F"+str(cont)] = "MONTO"
-                ws["G"+str(cont)] = "ESTADO PL"
-                ws["H"+str(cont)] = "ESTADO SP"
-                ws["I"+str(cont)] = "AUTORIZADO EL"
-                ws["J"+str(cont)] = "OBSERVACION PL"
+                ws["B"+str(cont)] = "CREADOR"
+                ws["C"+str(cont)] = "PROYECTO"
+                ws["D"+str(cont)] = "PROVEEDOR"
+                ws["E"+str(cont)] = "REFERENCIA"
+                ws["F"+str(cont)] = "OC"
+                ws["G"+str(cont)] = "MONTO"
+                ws["H"+str(cont)] = "ESTADO PL"
+                ws["I"+str(cont)] = "ESTADO SP"
+                ws["J"+str(cont)] = "AUTORIZADO EL"
+                ws["K"+str(cont)] = "OBSERVACIONES"
 
 
                 ws["A"+str(cont)].alignment = Alignment(horizontal = "center")
@@ -1843,92 +1876,99 @@ class CompOCestado(TemplateView):
                 ws["H"+str(cont)].alignment = Alignment(horizontal = "center")
                 ws["I"+str(cont)].alignment = Alignment(horizontal = "center")
                 ws["J"+str(cont)].alignment = Alignment(horizontal = "center")
+                ws["K"+str(cont)].alignment = Alignment(horizontal = "center")
 
 
                 ws["A"+str(cont)].font = Font(bold = True, color= "FDFFFF")
-                ws["A"+str(cont)].fill =  PatternFill("solid", fgColor= "159ABB")
+                ws["A"+str(cont)].fill =  PatternFill("solid", fgColor= "23346D")
                 ws["B"+str(cont)].font = Font(bold = True, color= "FDFFFF")
-                ws["B"+str(cont)].fill =  PatternFill("solid", fgColor= "159ABB")
+                ws["B"+str(cont)].fill =  PatternFill("solid", fgColor= "23346D")
                 ws["C"+str(cont)].font = Font(bold = True, color= "FDFFFF")
-                ws["C"+str(cont)].fill =  PatternFill("solid", fgColor= "159ABB")
+                ws["C"+str(cont)].fill =  PatternFill("solid", fgColor= "23346D")
                 ws["D"+str(cont)].font = Font(bold = True, color= "FDFFFF")
-                ws["D"+str(cont)].fill =  PatternFill("solid", fgColor= "159ABB")
+                ws["D"+str(cont)].fill =  PatternFill("solid", fgColor= "23346D")
                 ws["E"+str(cont)].font = Font(bold = True, color= "FDFFFF")
-                ws["E"+str(cont)].fill =  PatternFill("solid", fgColor= "159ABB")
+                ws["E"+str(cont)].fill =  PatternFill("solid", fgColor= "23346D")
                 ws["F"+str(cont)].font = Font(bold = True, color= "FDFFFF")
-                ws["F"+str(cont)].fill =  PatternFill("solid", fgColor= "159ABB")
+                ws["F"+str(cont)].fill =  PatternFill("solid", fgColor= "23346D")
                 ws["G"+str(cont)].font = Font(bold = True, color= "FDFFFF")
-                ws["G"+str(cont)].fill =  PatternFill("solid", fgColor= "159ABB")
+                ws["G"+str(cont)].fill =  PatternFill("solid", fgColor= "23346D")
                 ws["H"+str(cont)].font = Font(bold = True, color= "FDFFFF")
-                ws["H"+str(cont)].fill =  PatternFill("solid", fgColor= "159ABB")
+                ws["H"+str(cont)].fill =  PatternFill("solid", fgColor= "23346D")
                 ws["I"+str(cont)].font = Font(bold = True, color= "FDFFFF")
-                ws["I"+str(cont)].fill =  PatternFill("solid", fgColor= "159ABB")
+                ws["I"+str(cont)].fill =  PatternFill("solid", fgColor= "23346D")
                 ws["J"+str(cont)].font = Font(bold = True, color= "FDFFFF")
-                ws["J"+str(cont)].fill =  PatternFill("solid", fgColor= "159ABB")
+                ws["J"+str(cont)].fill =  PatternFill("solid", fgColor= "23346D")
+                ws["K"+str(cont)].font = Font(bold = True, color= "FDFFFF")
+                ws["K"+str(cont)].fill =  PatternFill("solid", fgColor= "23346D")
 
 
                 ws.column_dimensions['A'].width = 15
-                ws.column_dimensions['B'].width = 15
-                ws.column_dimensions['C'].width = 40
+                ws.column_dimensions['B'].width = 12
+                ws.column_dimensions['C'].width = 30
                 ws.column_dimensions['D'].width = 40
-                ws.column_dimensions['E'].width = 12
-                ws.column_dimensions['F'].width = 15
-                ws.column_dimensions['G'].width = 17
+                ws.column_dimensions['E'].width = 40
+                ws.column_dimensions['F'].width = 12
+                ws.column_dimensions['G'].width = 15
                 ws.column_dimensions['H'].width = 17
-                ws.column_dimensions['I'].width = 20
-                ws.column_dimensions['J'].width = 40
+                ws.column_dimensions['I'].width = 17
+                ws.column_dimensions['J'].width = 20
+                ws.column_dimensions['K'].width = 66
 
                 ws["A"+str(cont+1)] = d.fecha_c
-                ws["B"+str(cont+1)] = d.proyecto
-                ws["C"+str(cont+1)] = d.proveedor.name
-                ws["D"+str(cont+1)] = d.numero
-                ws["E"+str(cont+1)] = d.o_c
-                ws["F"+str(cont+1)] = d.monto
-                ws["G"+str(cont+1)] = d.estado
-                ws["H"+str(cont+1)] = d.visto
-                ws["I"+str(cont+1)] = d.fecha_autorizacion
-                ws["J"+str(cont+1)] = d.comentario
+                ws["B"+str(cont+1)] = d.creador
+                ws["C"+str(cont+1)] = d.proyecto
+                ws["D"+str(cont+1)] = d.proveedor.name
+                ws["E"+str(cont+1)] = d.numero
+                ws["F"+str(cont+1)] = d.o_c
+                ws["G"+str(cont+1)] = d.monto
+                ws["H"+str(cont+1)] = d.estado
+                ws["I"+str(cont+1)] = d.visto
+                ws["J"+str(cont+1)] = d.fecha_autorizacion
+                ws["K"+str(cont+1)] = d.comentario
 
 
                 ws["A"+str(cont+1)].font = Font(bold = True)
                 ws["A"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["B"+str(cont+1)].font = Font(bold = True)
                 ws["B"+str(cont+1)].alignment = Alignment(horizontal = "center")
                 ws["C"+str(cont+1)].alignment = Alignment(horizontal = "center")
                 ws["D"+str(cont+1)].alignment = Alignment(horizontal = "center")
                 ws["E"+str(cont+1)].alignment = Alignment(horizontal = "center")
-                ws["E"+str(cont+1)].font = Font(bold = True)
                 ws["F"+str(cont+1)].alignment = Alignment(horizontal = "center")
-                ws["F"+str(cont+1)].number_format = '"$"#,##0.00_-'
+                ws["F"+str(cont+1)].font = Font(bold = True)
                 ws["G"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["G"+str(cont+1)].number_format = '"$"#,##0.00_-'
+                ws["H"+str(cont+1)].alignment = Alignment(horizontal = "center")
 
                 if d.estado == "AUTORIZADA":
 
-                    ws["G"+str(cont+1)].font = Font(bold = True, color= "49AD26")
+                    ws["H"+str(cont+1)].font = Font(bold = True, color= "236D25")
 
                 elif d.estado == "ADJUNTO ✓":
 
-                    ws["G"+str(cont+1)].font = Font(bold = True, color= "CAC32E")
+                    ws["H"+str(cont+1)].font = Font(bold = True, color= "B86914")
 
                 elif d.estado == "NO AUTORIZADA":
 
-                    ws["G"+str(cont+1)].font = Font(bold = True, color= "CF4708")
+                    ws["H"+str(cont+1)].font = Font(bold = True, color= "99221D")
 
-                ws["H"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["I"+str(cont+1)].alignment = Alignment(horizontal = "center")
 
                 if d.visto == "VISTO":
 
-                    ws["H"+str(cont+1)].font = Font(bold = True, color= "49AD26")
+                    ws["I"+str(cont+1)].font = Font(bold = True, color= "236D25")
 
                 elif d.visto == "VISTO NO CONFORME":
 
-                    ws["H"+str(cont+1)].font = Font(bold = True, color= "CAC32E")
+                    ws["I"+str(cont+1)].font = Font(bold = True, color= "B86914")
 
                 elif d.visto == "NO_VISTO":
 
-                    ws["H"+str(cont+1)].font = Font(bold = True, color= "CF4708")
+                    ws["I"+str(cont+1)].font = Font(bold = True, color= "99221D")
                     
-                ws["I"+str(cont+1)].alignment = Alignment(horizontal = "center")
                 ws["J"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["K"+str(cont+1)].alignment = Alignment(horizontal = "left")
   
 
                 cont += 1
@@ -1937,58 +1977,59 @@ class CompOCestado(TemplateView):
                 ws = wb["Listado"]
 
                 ws["A"+str(cont+1)] = d.fecha_c
-                ws["B"+str(cont+1)] = d.proyecto
-                ws["C"+str(cont+1)] = d.proveedor.name
-                ws["D"+str(cont+1)] = d.numero
-                ws["E"+str(cont+1)] = d.o_c
-                ws["F"+str(cont+1)] = d.monto
-                ws["G"+str(cont+1)] = d.estado
-                ws["H"+str(cont+1)] = d.visto
-                ws["I"+str(cont+1)] = d.fecha_autorizacion
-                ws["J"+str(cont+1)] = d.comentario
+                ws["B"+str(cont+1)] = d.creador
+                ws["C"+str(cont+1)] = d.proyecto
+                ws["D"+str(cont+1)] = d.proveedor.name
+                ws["E"+str(cont+1)] = d.numero
+                ws["F"+str(cont+1)] = d.o_c
+                ws["G"+str(cont+1)] = d.monto
+                ws["H"+str(cont+1)] = d.estado
+                ws["I"+str(cont+1)] = d.visto
+                ws["J"+str(cont+1)] = d.fecha_autorizacion
+                ws["K"+str(cont+1)] = d.comentario
 
 
                 ws["A"+str(cont+1)].font = Font(bold = True)
                 ws["A"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["B"+str(cont+1)].font = Font(bold = True)
                 ws["B"+str(cont+1)].alignment = Alignment(horizontal = "center")
                 ws["C"+str(cont+1)].alignment = Alignment(horizontal = "center")
                 ws["D"+str(cont+1)].alignment = Alignment(horizontal = "center")
                 ws["E"+str(cont+1)].alignment = Alignment(horizontal = "center")
-                ws["E"+str(cont+1)].font = Font(bold = True)
                 ws["F"+str(cont+1)].alignment = Alignment(horizontal = "center")
-                ws["F"+str(cont+1)].number_format = '"$"#,##0.00_-'
+                ws["F"+str(cont+1)].font = Font(bold = True)
                 ws["G"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["G"+str(cont+1)].number_format = '"$"#,##0.00_-'
+                ws["H"+str(cont+1)].alignment = Alignment(horizontal = "center")
 
                 if d.estado == "AUTORIZADA":
 
-                    ws["G"+str(cont+1)].font = Font(bold = True, color= "49AD26")
+                    ws["H"+str(cont+1)].font = Font(bold = True, color= "236D25")
 
                 elif d.estado == "ADJUNTO ✓":
 
-                    ws["G"+str(cont+1)].font = Font(bold = True, color= "CAC32E")
+                    ws["H"+str(cont+1)].font = Font(bold = True, color= "B86914")
 
                 elif d.estado == "NO AUTORIZADA":
 
-                    ws["G"+str(cont+1)].font = Font(bold = True, color= "CF4708")
+                    ws["H"+str(cont+1)].font = Font(bold = True, color= "99221D")
 
-                ws["H"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["I"+str(cont+1)].alignment = Alignment(horizontal = "center")
 
                 if d.visto == "VISTO":
 
-                    ws["H"+str(cont+1)].font = Font(bold = True, color= "49AD26")
+                    ws["I"+str(cont+1)].font = Font(bold = True, color= "236D25")
 
                 elif d.visto == "VISTO NO CONFORME":
 
-                    ws["H"+str(cont+1)].font = Font(bold = True, color= "CAC32E")
+                    ws["I"+str(cont+1)].font = Font(bold = True, color= "B86914")
 
                 elif d.visto == "NO_VISTO":
 
-                    ws["H"+str(cont+1)].font = Font(bold = True, color= "CF4708")
+                    ws["I"+str(cont+1)].font = Font(bold = True, color= "99221D")
                     
-                ws["I"+str(cont+1)].alignment = Alignment(horizontal = "center")
                 ws["J"+str(cont+1)].alignment = Alignment(horizontal = "center")
-  
-
+                ws["K"+str(cont+1)].alignment = Alignment(horizontal = "left")
 
                 cont += 1
 

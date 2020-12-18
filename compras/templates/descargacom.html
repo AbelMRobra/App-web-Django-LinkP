@@ -1,0 +1,86 @@
+{% extends "users/inicio.html" %}
+
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+
+<div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;">
+
+    <h3 style="font-family: Arial, Helvetica, sans-serif;">Solicitudes de compras</h3>
+    <small style="font-family: Arial, Helvetica, sans-serif;"><b>Modulo:</b> Circuito de compras </small>
+
+
+
+    <form  role="form"  enctype="multipart/form-data" action="" method="POST" id="upload-image-form" style="margin: 30px;"> 
+        {% csrf_token %}
+
+
+        <div style="margin: 5px">
+
+            <div style="display: inline-block; margin: 10px; width: 200px;">
+
+                <label for="fechai"><h6>Fecha inicial</h6></label>
+    
+            </div>
+            
+            <div style="display: inline-block; margin: 10px; ">
+    
+                <input name="fechai" type="date" class="form-control form-control" style="width: 300px;">
+    
+            </div>
+
+
+        </div>
+
+        <div style="margin: 5px">
+
+            <div style="display: inline-block; margin: 10px; width: 200px;">
+
+                <label for="fechaf"><h6>Fecha final</h6></label>
+    
+            </div>
+            
+            <div style="display: inline-block; margin: 10px; ">
+    
+                <input name="fechaf" type="date" class="form-control form-control" style="width: 300px;">
+    
+            </div>
+
+
+        </div>
+
+        
+
+          <button type="submit" class="btn btn-light"> <img src="{% static 'img/sobresalir.png' %}" alt="" style="max-width:20px; height:auto; margin: 2px;"> Descargar</button>
+
+
+        {{ form.as_p }}
+    </form>
+
+
+    <a href="{% url 'Comparativas' 0 0 %}" class="btn btn-secondary"><img src="{% static 'img/flecha-izquierda.png' %}" alt="" style="max-width:15px; height:auto; margin: 2px;"> Volver</a>
+
+    <datalist id="provee"> 
+
+        {% for i in proveedores %}
+        
+        <option value="{{ i.name }}">({{i.id}})</option>
+
+        {% endfor %}
+
+    </datalist>
+
+
+<div style="margin-top: 2rem;">
+    <p> <small>-- Link<strong>P</strong> --</small> </p>
+
+ </div>
+    
+
+
+                
+</div>
+
+
+{% endblock %}

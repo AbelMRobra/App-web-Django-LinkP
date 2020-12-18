@@ -145,6 +145,8 @@
         {{ form.as_p }}
     </form>
 
+    <a href="{% url 'Comparativas' 0 0 %}" class="btn btn-secondary"><img src="{% static 'img/flecha-izquierda.png' %}" alt="" style="max-width:15px; height:auto; margin: 2px;"> Volver</a>
+
     <datalist id="provee"> 
 
         {% for i in proveedores %}
