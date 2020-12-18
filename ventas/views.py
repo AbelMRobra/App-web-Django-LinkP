@@ -2131,9 +2131,9 @@ class DescargaPricing(TemplateView):
 
 
         ws["B5"].number_format = '#,##0.00_-"M2"'
-        ws["B6"].number_format = '"$"#,##0.00_-'
-        ws["B7"].number_format = '"$"#,##0.00_-'
-        ws["B8"].number_format = '"$"#,##0.00_-'
+        ws["B6"].number_format = '"$ "#,##0.00_-'
+        ws["B7"].number_format = '"$ "#,##0.00_-'
+        ws["B8"].number_format = '"$ "#,##0.00_-'
         ws["B10"].number_format = '#,##0.00_-'
         ws["B11"].number_format = '#,##0.00_-'
         ws["B12"].number_format = '#,##0.00_-'
@@ -2328,11 +2328,11 @@ class DescargaPricing(TemplateView):
                 ws["F"+str(cont+1)].number_format = '#,##0.00_-"M2"'
                 ws["G"+str(cont+1)].alignment = Alignment(horizontal = "center")
                 ws["H"+str(cont+1)].alignment = Alignment(horizontal = "center")
-                ws["H"+str(cont+1)].number_format = '"$"#,##0.00_-'
+                ws["H"+str(cont+1)].number_format = '"$ "#,##0.00_-'
                 ws["I"+str(cont+1)].alignment = Alignment(horizontal = "center")
-                ws["I"+str(cont+1)].number_format = '"$"#,##0.00_-'
-                ws["J"+str(cont+1)].number_format = '"$"#,##0.00_-'
-                ws["K"+str(cont+1)].number_format = '"$"#,##0.00_-'
+                ws["I"+str(cont+1)].number_format = '"$ "#,##0.00_-'
+                ws["J"+str(cont+1)].number_format = '"$ "#,##0.00_-'
+                ws["K"+str(cont+1)].number_format = '"$ "#,##0.00_-'
                 ws["L"+str(cont+1)].alignment = Alignment(horizontal = "center")
                 ws["M"+str(cont+1)].alignment = Alignment(horizontal = "left")
                 ws["N"+str(cont+1)].alignment = Alignment(horizontal = "center")
@@ -2406,11 +2406,11 @@ class DescargaPricing(TemplateView):
                 ws["F"+str(cont+1)].number_format = '#,##0.00_-"M2"'
                 ws["G"+str(cont+1)].alignment = Alignment(horizontal = "center")
                 ws["H"+str(cont+1)].alignment = Alignment(horizontal = "center")
-                ws["H"+str(cont+1)].number_format = '"$"#,##0.00_-'
+                ws["H"+str(cont+1)].number_format = '"$ "#,##0.00_-'
                 ws["I"+str(cont+1)].alignment = Alignment(horizontal = "center")
-                ws["I"+str(cont+1)].number_format = '"$"#,##0.00_-'
-                ws["J"+str(cont+1)].number_format = '"$"#,##0.00_-'
-                ws["K"+str(cont+1)].number_format = '"$"#,##0.00_-'
+                ws["I"+str(cont+1)].number_format = '"$ "#,##0.00_-'
+                ws["J"+str(cont+1)].number_format = '"$ "#,##0.00_-'
+                ws["K"+str(cont+1)].number_format = '"$ "#,##0.00_-'
                 ws["L"+str(cont+1)].alignment = Alignment(horizontal = "center")
                 ws["M"+str(cont+1)].alignment = Alignment(horizontal = "left")
                 ws["N"+str(cont+1)].alignment = Alignment(horizontal = "center")
@@ -2425,7 +2425,7 @@ class DescargaPricing(TemplateView):
                 cont += 1
 
         #Establecer el nombre del archivo
-        nombre_archivo = "RegistroVentas.xls"
+        nombre_archivo = "PRICING {}.xls".format(proyecto.nombre)
         #Definir tipo de respuesta que se va a dar
         response = HttpResponse(content_type = "application/ms-excel")
         contenido = "attachment; filename = {0}".format(nombre_archivo)
