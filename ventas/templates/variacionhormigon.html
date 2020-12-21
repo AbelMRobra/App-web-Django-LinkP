@@ -65,14 +65,15 @@
   </div>
 
 
-    <form method="POST">
-
-      {% csrf_token %}
+    
 
       <div style="text-align: left;">
 
-        
+        <form method="POST" style="display: inline-block">
 
+          {% csrf_token %}
+
+        
         <div style="display: inline-block; vertical-align: middle;">
 
           <h6 style= "font-family: Arial, Helvetica, sans-serif;">Archivos cargados: </h6>
@@ -103,6 +104,8 @@
           <button class="btn btn-light" type="submit"><img src="{% static 'img/buscar2.png' %}" alt="" style="max-width:20px; height:auto;"></button>          
       </div>
 
+    </form>
+
       <div style="display: inline-block;  vertical-align: middle;">
 
         <button type="button" class="btn btn-light" data-toggle="modal" data-target="#exampleModalCenter" >
@@ -123,7 +126,7 @@
       
       {% endif %}
       
-  </form>
+  
 
   <b><hr class = "my-4" style="width: 100%;"></b>
 
