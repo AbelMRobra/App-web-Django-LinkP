@@ -248,9 +248,18 @@ def historialventa(request):
     descuento_2 = (real_2/pricing_2 - 1)*100   
 
     ventas_1 = len(ventas_1)
-    ventas_2 = len(ventas_2)       
+    ventas_2 = len(ventas_2)
 
-    datos_panel = [ventas_1, ventas_2, fecha_1, fecha_2, list_p, list_ritmo, descuento, unidades_chequeadas, descuento_2, unidades_chequeadas_2]
+    hoy = datetime.date.today()
+
+    diferencia = abs((hoy - fecha_1).days)  
+
+    if ventas_1 > 0:
+        ritmo = diferencia/ventas_1   
+    else:
+        ritmo = 0  
+
+    datos_panel = [ventas_1, ventas_2, fecha_1, fecha_2, list_p, list_ritmo, descuento, unidades_chequeadas, descuento_2, unidades_chequeadas_2, ritmo]
 
     datos = {"fechas":fechas,
     "busqueda":busqueda,
