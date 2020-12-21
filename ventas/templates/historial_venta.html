@@ -145,7 +145,18 @@
 
                 <h6 style="font-family: Arial, Helvetica, sans-serif;">Descuento promedio {{datos.datos_panel.2|date:"Y"}}</h6>
 
-                <h5 style="color: rgb(153, 46, 29); font-family: Arial, Helvetica, sans-serif;">{{datos.datos_panel.6|floatformat:2}} %</h5>
+                {% if datos.datos_panel.6 < -10 %}
+                <h5 style="color: rgb(223, 104, 66); font-family: Arial, Helvetica, sans-serif;">{{datos.datos_panel.6|floatformat:2}} %</h5>
+
+                {% elif datos.datos_panel.6 < -6 %}
+                
+                <h5 style="color: rgb(223, 169, 66 ); font-family: Arial, Helvetica, sans-serif;">{{datos.datos_panel.6|floatformat:2}} %</h5>
+
+                {% else %}
+
+                <h5 style="color: rgb(60, 175, 53 ); font-family: Arial, Helvetica, sans-serif;">{{datos.datos_panel.6|floatformat:2}} %</h5>
+
+                {% endif %}
 
                 <div>
                   <small style="font-family: Arial, Helvetica, sans-serif;">Descuento promedio {{datos.datos_panel.3|date:"Y"}}: <b>{{datos.datos_panel.8|floatformat:2}} %</b></small>
@@ -201,7 +212,7 @@
 
                 <h6 style="font-family: Arial, Helvetica, sans-serif;">Metros cuadrados vendidos</h6>
 
-                <h5 style="color: rgb(53, 103, 175); font-family: Arial, Helvetica, sans-serif;">{{datos.datos_panel.17|floatformat:2}} M2</h5>
+                <h5 style="color: rgb(60, 175, 53 ); font-family: Arial, Helvetica, sans-serif;">{{datos.datos_panel.17|floatformat:2}} M2</h5>
 
                 <div>
                   <small style="font-family: Arial, Helvetica, sans-serif;">Resultado {{datos.datos_panel.3|date:"Y"}}: <b> {{datos.datos_panel.18|floatformat:2}} M2</b></small>
