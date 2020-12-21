@@ -28,7 +28,9 @@ def documentacion(request):
 
             datos_itemetapas = ItemEtapa.objects.filter(etapa = e)
 
-            sub_datos.append((e, datos_itemetapas))
+            cantidad = len(ItemEtapa.objects.filter(etapa = e))
+
+            sub_datos.append((e, datos_itemetapas, cantidad))
 
         datos.append((p, sub_datos))
 

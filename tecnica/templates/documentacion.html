@@ -7,8 +7,8 @@
 
 <div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;">
 
-    <h3 style="font-family: Arial, Helvetica, sans-serif;">Panel principal de documentación tecnica</h3>
-    <small style="font-family: Arial, Helvetica, sans-serif;"><b>Modulo:</b> E.T </small>
+    <h3 style="font-family: Arial, Helvetica, sans-serif;">Seguimiento de proyectos</h3>
+    <small style="font-family: Arial, Helvetica, sans-serif;"><b>Modulo:</b> Documentación O.T</small>
 
      <div style="text-align:center">
                   
@@ -45,7 +45,7 @@
                                     <thead>
                             
                                         <tr class = "table-dark">
-                                            <th scope = "row" style="vertical-align: middle;" ><small><img src="{% static 'img/anadir.png' %}" alt="" style="max-width:20px; height:auto; vertical-align: bottom;"> <b>{{c.0.nombre}}</b></small></th>                        
+                                            <th scope = "row" style="vertical-align: middle;" ><small><img src="{% static 'img/anadir.png' %}" alt="" style="max-width:20px; height:auto; vertical-align: bottom;"> <b>{{c.0.nombre}} ({{c.2}})</b></small></th>                        
                                         </tr>
                                     </thead>
                                 </table>
@@ -66,9 +66,9 @@
                                         
                                         <td style="width: 40%;">
 
-                                            <a href="{% url 'Mensajes en comparativas' 1 %}"><img src="{% static 'img/borrar.png' %}" alt="" style="max-width:15px; height:auto; margin: 2px;"></a>
+                                            <a href="#"><img src="{% static 'img/borrar.png' %}" alt="" style="max-width:15px; height:auto; margin: 2px;"></a>
 
-                                            <a href="{% url 'Mensajes en comparativas' 1 %}"><img src="{% static 'img/documento.png' %}" alt="" style="max-width:15px; height:auto; margin: 2px;"></a>
+                                            <a href="#"><img src="{% static 'img/documento.png' %}" alt="" style="max-width:15px; height:auto; margin: 2px;"></a>
                                             
                                             <small>{{t.nombre}}</small></td>
 
