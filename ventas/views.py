@@ -108,7 +108,28 @@ def historialventa(request):
 
     list_p.sort(key=lambda tup: tup[1], reverse=True)
 
-    datos_panel = [ventas_1, ventas_2, fecha_1, fecha_2, list_p]
+
+    list_ritmo = []
+
+    fecha = fecha_1
+
+    for i in range(12):
+
+        fecha_i = fecha
+        if fecha_i.month != 12:
+            fecha_f = datetime.date(fecha_i.year, (fecha_i.month + 1), 1)
+        else:
+            fecha_f = datetime.date((fecha_i.year + 1), 1, 1)
+        ventas_n = len(VentasRealizadas.objects.filter(fecha__gte = fecha_i, fecha__lte = fecha_f))
+
+        list_ritmo.append((fecha_i, ventas_n))
+
+        fecha = fecha_f
+
+    print(list_ritmo)
+
+  
+    datos_panel = [ventas_1, ventas_2, fecha_1, fecha_2, list_p, list_ritmo]
 
     datos = {"fechas":fechas,
     "busqueda":busqueda,
