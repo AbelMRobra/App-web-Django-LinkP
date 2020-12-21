@@ -19,52 +19,9 @@
     
     </div>
 
-
-<div style="text-align: center; width: 350px; height: 210px; display: inline-block; margin: 20px; vertical-align: top; border: 2px solid rgb(11, 32, 68); border-radius: 5%;">
-
-  <div style="margin: 15px;">
-
-      <form method="POST">
-
-          {% csrf_token %}
-
-          <div>
-
-          <h6 style= "font-family: Arial, Helvetica, sans-serif; color: rgb(11, 32, 68); ">Archivos cargados</h6>
-          
-         </div>
-
-         <select name="fecha" class="custom-select" style="width: 200px;">
-
-
-          {% for i in datos %}
-
-          <option value="{{i.id}}">{{i.fecha|date:"Y-m-j"}}</option>
-
-          {% endfor %}
-
-
-
-        </select>
-            
-            
-
-            <div>
-              <button class="btn btn-dark" type="submit" style="margin-top: 10px;"><img src="{% static 'img/buscar2.png' %}" alt="" style="max-width:20px; height:auto;"> Buscar</button>          
-          </div>
-          
-      </form>
-
-      <div style="text-align: right; margin-top: 20px;">
-
-        <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#exampleModalCenter" >
-          <img src="{% static 'img/agregar-archivo.png' %}" alt="" style="max-width:20px; height:auto;"  >
-        </button>
-
-
-      </div>
-      <!-- Modal -->
-<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    
+    <!-- Modal -->
+  <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -96,42 +53,126 @@
     
     
               <button type="submit" class="btn btn-primary">Subir</button>
-  
+
           </form>
         </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
- 
+
       </div>
     </div>
   </div>
-</div>
-
-      <b><hr class = "my-4" style="width: 75%; "></b>
-
-
   </div>
- 
-</div>
 
 
-  {% if busqueda %}
+    <form method="POST">
 
-   <div>
-      <a href="{{ busqueda.archivo.url }}" style="margin-top: 1%;"><img src="{% static 'img/reportar.png' %}" alt="" style="max-width:30px; height:auto;"> Informe encontrado!</a>
+      {% csrf_token %}
 
+      <div style="text-align: left;">
+
+        
+
+        <div style="display: inline-block; vertical-align: middle;">
+
+          <h6 style= "font-family: Arial, Helvetica, sans-serif;">Archivos cargados: </h6>
+                
+  
+        </div>
+
+        <div style="display: inline-block;  vertical-align: middle;">
+
+
+          <select name="fecha" class="custom-select" style="width: 200px;">
+
+
+            {% for i in datos %}
+
+            <option value="{{i.1}}">{{i.0|date:"Y-m-j"}}</option>
+
+            {% endfor %}
+
+
+
+          </select>
+        
+        </div>
+  
+
+        <div style="display: inline-block;  vertical-align: middle;">
+          <button class="btn btn-light" type="submit"><img src="{% static 'img/buscar2.png' %}" alt="" style="max-width:20px; height:auto;"></button>          
+      </div>
+
+      <div style="display: inline-block;  vertical-align: middle;">
+
+        <button type="button" class="btn btn-light" data-toggle="modal" data-target="#exampleModalCenter" >
+          <img src="{% static 'img/agregar-archivo.png' %}" alt="" style="max-width:20px; height:auto;"  >
+        </button>
+  
+  
+      </div>
+
+      {% if datos.datos %}
+
+      <div style="display: inline-block;  vertical-align: middle;">
+          <a class="btn btn-light"  href="{{ busqueda.archivo.url }}" style="margin-top: 1%;">Ver informe <img src="{% static 'img/reportar.png' %}" alt="" style="max-width:20px; height:auto;"></a>
+
+        </div>
+
+
+      
+      {% endif %}
+      
+  </form>
+
+  <b><hr class = "my-4" style="width: 100%;"></b>
+
+  <div style="text-align: center;"> 
+
+    <div class="card text-white bg-dark mb-3" style="display: inline-block; width: 310px; height: 120px; vertical-align: top; margin: 10px;">
+                
+      <div class="card-body">
+
+        <h6 style= "font-family: Arial, Helvetica, sans-serif;">Valor actual</h6>
+
+        <h4 style="color: rgb(52, 121, 214); font-family: Arial, Helvetica, sans-serif;">$ {{horm.valor}}/M3</h4>
+
+        
+        
+      </div>
     </div>
 
-    <small> Ingrese al link para ver el archivo</small>
+
+    <div class="card text-white bg-dark mb-3" style="display: inline-block; width: 310px; height: 120px; vertical-align: top; margin: 10px;">
+                
+      <div class="card-body">
+
+        <h6 style= "font-family: Arial, Helvetica, sans-serif;">Variación anual</h6>
+
+        <h4 style="color: rgb(48, 153, 29); font-family: Arial, Helvetica, sans-serif;">+ {{datos_h.0.12|floatformat:2}} %</h4>
 
 
-  {% endif %}
+        
+      </div>
+    </div>
+
+  
+  
+  </div>
+
+  <div>
+    <small>*Sección CI (CI RUBROS DE OBRA) Código 544 – HORMIGONES – ELABORADO 0130 (Hormigón H21)</small>
+  </div>
 
 
-  <b><hr class = "my-4" style="width: 75%;"></b>
+
+
+  <b><hr class = "my-4" style="width: 100%;"></b>
 
 
     <div style="overflow-x: scroll;">
+
+      <h6 style= "font-family: Arial, Helvetica, sans-serif;">Valores historicos</h6>
 
         <table class = "table table-hover" style="text-align: center;">
             <thead>
@@ -150,13 +191,13 @@
 
                 <tr class = "table-light">
 
-                    <td style="width: 10%; vertical-align: middle;"><small><b>ENERO</b></small></td>
+                    <td style="vertical-align: middle;"><small><b>ENERO</b></small></td>
 
                     {% for i in datos_h %}
                     
                     
-                    <td style="width: 10%; vertical-align: middle;"><small>$ {{i.0.1|floatformat:0|intcomma}}</small></td> 
-                    <td style="width: 10%; vertical-align: middle;"><small>{{i.0.2|floatformat:2}} %</small> </td>
+                    <td style="vertical-align: middle;"><small>$ {{i.0.1|floatformat:0|intcomma}}</small></td> 
+                    <td style="vertical-align: middle;"><small>{{i.0.2|floatformat:2}} %</small> </td>
 
                     {% endfor %} 
                     
@@ -164,12 +205,12 @@
                 </tr>
                 <tr class = "table-light">
 
-                    <td style="width: 10%; vertical-align: middle;"><small><b>FEBRERO</b></small></td> 
+                    <td style="vertical-align: middle;"><small><b>FEBRERO</b></small></td> 
                     {% for i in datos_h %}
                     
                     
-                    <td style="width: 10%; vertical-align: middle;"><small>$ {{i.1.1|floatformat:0|intcomma}}</small></td> 
-                    <td style="width: 10%; vertical-align: middle;"><small>{{i.1.2|floatformat:2}} %</small> </td>
+                    <td style="vertical-align: middle;"><small>$ {{i.1.1|floatformat:0|intcomma}}</small></td> 
+                    <td style="vertical-align: middle;"><small>{{i.1.2|floatformat:2}} %</small> </td>
 
                     {% endfor %} 
 
@@ -305,7 +346,7 @@
             <tbody>
     
                 <tr class = "table-dark">
-                    <td style="width: 10%; vertical-align: middle;"> <b>PROMEDIO ANUAL</b></td>
+                    <td style="vertical-align: middle;"><small><b>PROMEDIO ANUAL</b></small> </td>
                     {% for i in datos_h %}
                     <th scope = "row" style="vertical-align: middle;" colspan="2">{{i.12|floatformat:2}} %</th>
                     
@@ -323,7 +364,7 @@
    </div>
 
 
-    <div>
+    <div style="text-align: center;">
         <p style="font-family: Arial, Helvetica, sans-serif;"> <small>-- Link<strong>P</strong> --</small> </p>
 
      </div>

@@ -125,10 +125,7 @@ def historialventa(request):
         list_ritmo.append((fecha_i, ventas_n))
 
         fecha = fecha_f
-
-    print(list_ritmo)
-
-  
+ 
     datos_panel = [ventas_1, ventas_2, fecha_1, fecha_2, list_p, list_ritmo]
 
     datos = {"fechas":fechas,
@@ -697,7 +694,6 @@ def panelunidades(request):
 
     proyectos = list(set(proyectos))
 
-
     if request.method == 'POST':
 
         #Trae los datos elegidos
@@ -905,7 +901,9 @@ def variacionh(request):
 
         year += 1
 
-    return render(request, 'variacionhormigon.html', {"datos_h":datos_h, "datos":datos, "busqueda":busqueda})
+        horm = Constantes.objects.get(nombre = "Hº VIVIENDA")
+
+    return render(request, 'variacionhormigon.html', {"datos_h":datos_h, "datos":datos, "busqueda":busqueda, "horm":horm})
 
 def editarasignacion(request, id_unidad):
 
