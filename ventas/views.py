@@ -279,7 +279,7 @@ def historialventa(request):
     else:
         ritmo = 0  
 
-    ritmo_mes = (ritmo)**(-1)/30
+    ritmo_mes = (ritmo)**(-1)*30
 
     datos_panel = [ventas_1, ventas_2, fecha_1, fecha_2, list_p, list_ritmo, descuento, unidades_chequeadas, descuento_2, unidades_chequeadas_2, ritmo, monto_neto, contado, financiado, contado_2, financiado_2, ritmo_mes]
 
