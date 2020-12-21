@@ -91,9 +91,9 @@ def historialventa(request):
     fecha_1 = datetime.date(today.year, 1, 1)
     fecha_2 = datetime.date((today.year - 1), 1, 1)
 
-    ventas_1 = len(VentasRealizadas.objects.filter(fecha__gte = fecha_1, unidad__asig = "PROYECTO"))
+    ventas_1 = VentasRealizadas.objects.filter(fecha__gte = fecha_1, unidad__asig = "PROYECTO")
 
-    ventas_2 = len(VentasRealizadas.objects.filter(fecha__gte = fecha_2, fecha__lte = fecha_1, unidad__asig = "PROYECTO"))
+    ventas_2 = VentasRealizadas.objects.filter(fecha__gte = fecha_2, fecha__lte = fecha_1, unidad__asig = "PROYECTO")
 
     proyectos = Proyectos.objects.all()
 
@@ -125,8 +125,132 @@ def historialventa(request):
         list_ritmo.append((fecha_i, ventas_n))
 
         fecha = fecha_f
- 
-    datos_panel = [ventas_1, ventas_2, fecha_1, fecha_2, list_p, list_ritmo]
+
+    # ------> Aqui estudiamos la parte del descuento
+
+    pricing = 0
+    real = 0
+    unidades_chequeadas = 0
+
+    for v in ventas_1:
+
+        dato = v.unidad
+
+        if dato.sup_equiv > 0:
+
+                m2 = dato.sup_equiv
+
+        else:
+
+            m2 = dato.sup_propia + dato.sup_balcon + dato.sup_comun + dato.sup_patio
+
+            
+        try:
+
+            param_uni = Pricing.objects.get(unidad = dato)
+            
+            desde = PricingResumen.objects.filter(fecha__lte = v.fecha).order_by("-fecha")
+            desde = desde[0].base_precio
+
+            if dato.tipo == "COCHERA":
+                desde = desde*dato.proyecto.descuento_cochera
+
+            if param_uni.frente == "SI":
+                desde = desde*dato.proyecto.recargo_frente
+
+            if param_uni.piso_intermedio == "SI":
+                desde =desde*dato.proyecto.recargo_piso_intermedio
+
+            if param_uni.cocina_separada == "SI":
+                desde = desde*dato.proyecto.recargo_cocina_separada
+
+            if param_uni.local == "SI":
+                desde = desde*dato.proyecto.recargo_local
+
+            if param_uni.menor_45_m2 == "SI":
+                desde = desde*dato.proyecto.recargo_menor_45
+
+            if param_uni.menor_50_m2 == "SI":
+                desde = desde*dato.proyecto.recargo_menor_50
+
+            if param_uni.otros == "SI":
+                desde = desde*dato.proyecto.recargo_otros 
+
+            pricing = pricing + desde*m2 
+
+            unidades_chequeadas += 1
+
+            real = real + v.precio_contado
+
+        except:
+            pass
+
+    descuento = (real/pricing - 1)*100 
+
+    pricing_2 = 0
+    real_2 = 0
+    unidades_chequeadas_2 = 0
+
+    for v in ventas_2:
+
+        dato = v.unidad
+
+        if dato.sup_equiv > 0:
+
+                m2 = dato.sup_equiv
+
+        else:
+
+            m2 = dato.sup_propia + dato.sup_balcon + dato.sup_comun + dato.sup_patio
+
+            
+        try:
+
+            param_uni = Pricing.objects.get(unidad = dato)
+            
+            desde = PricingResumen.objects.filter(fecha__lte = v.fecha).order_by("-fecha")
+
+            desde = desde[0].base_precio
+
+            if dato.tipo == "COCHERA":
+                desde = desde*dato.proyecto.descuento_cochera
+
+            if param_uni.frente == "SI":
+                desde = desde*dato.proyecto.recargo_frente
+
+            if param_uni.piso_intermedio == "SI":
+                desde =desde*dato.proyecto.recargo_piso_intermedio
+
+            if param_uni.cocina_separada == "SI":
+                desde = desde*dato.proyecto.recargo_cocina_separada
+
+            if param_uni.local == "SI":
+                desde = desde*dato.proyecto.recargo_local
+
+            if param_uni.menor_45_m2 == "SI":
+                desde = desde*dato.proyecto.recargo_menor_45
+
+            if param_uni.menor_50_m2 == "SI":
+                desde = desde*dato.proyecto.recargo_menor_50
+
+            if param_uni.otros == "SI":
+                desde = desde*dato.proyecto.recargo_otros 
+
+            pricing_2 = pricing_2 + desde*m2 
+
+            unidades_chequeadas_2 += 1
+
+            real_2 = real_2 + v.precio_contado
+
+        except:
+            pass
+
+    descuento_2 = (real_2/pricing_2 - 1)*100   
+
+    ventas_1 = len(ventas_1)
+    ventas_2 = len(ventas_2)       
+
+    datos_panel = [ventas_1, ventas_2, fecha_1, fecha_2, list_p, list_ritmo, descuento, unidades_chequeadas, descuento_2, unidades_chequeadas_2]
 
     datos = {"fechas":fechas,
     "busqueda":busqueda,

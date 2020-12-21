@@ -78,9 +78,9 @@
                 
               <div class="card-body">
 
-                <h6>Unidades vendidas {{datos.datos_panel.2|date:"Y"}}</h6>
+                <h6 style="font-family: Arial, Helvetica, sans-serif;">Unidades vendidas {{datos.datos_panel.2|date:"Y"}}</h6>
 
-                <h4 style="color: rgb(48, 153, 29)">{{datos.datos_panel.0}}</h4>
+                <h5 style="color: rgb(48, 153, 29); font-family: Arial, Helvetica, sans-serif;">{{datos.datos_panel.0}}</h5>
 
                 <div>
                   <small>Unidades vendidas {{datos.datos_panel.3|date:"Y"}}: <b>{{datos.datos_panel.1}}</b></small>
@@ -143,18 +143,24 @@
                             
               <div class="card-body">
 
-                <h6>Descuento promedio {{datos.datos_panel.2|date:"Y"}}</h6>
+                <h6 style="font-family: Arial, Helvetica, sans-serif;">Descuento promedio {{datos.datos_panel.2|date:"Y"}}</h6>
 
-                <h4 style="color: rgb(153, 46, 29)">- 5% </h4>
+                <h5 style="color: rgb(153, 46, 29); font-family: Arial, Helvetica, sans-serif;">{{datos.datos_panel.6|floatformat:2}} %</h5>
 
                 <div>
-                  <small>Descuento promedio {{datos.datos_panel.3|date:"Y"}}: <b>- 3%</b></small>
+                  <small style="font-family: Arial, Helvetica, sans-serif;">Descuento promedio {{datos.datos_panel.3|date:"Y"}}: <b>{{datos.datos_panel.8|floatformat:2}} %</b></small>
                 </div>
+
+                
                 
               </div>
             </div>
 
         
+          </div>
+
+          <div>
+            <small>*Unidades chequeadas {{datos.datos_panel.2|date:"Y"}}: {{datos.datos_panel.7}} - {{datos.datos_panel.3|date:"Y"}}: {{datos.datos_panel.9}}</small>
           </div>
 
 
