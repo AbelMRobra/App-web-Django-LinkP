@@ -149,7 +149,7 @@ def historialventa(request):
 
             param_uni = Pricing.objects.get(unidad = dato)
             
-            desde = PricingResumen.objects.filter(fecha__lte = v.fecha).order_by("-fecha")
+            desde = PricingResumen.objects.filter(fecha__lte = v.fecha, proyecto = dato.proyecto).order_by("-fecha")
             desde = desde[0].base_precio
 
             if dato.tipo == "COCHERA":
@@ -208,7 +208,7 @@ def historialventa(request):
 
             param_uni = Pricing.objects.get(unidad = dato)
             
-            desde = PricingResumen.objects.filter(fecha__lte = v.fecha).order_by("-fecha")
+            desde = PricingResumen.objects.filter(fecha__lte = v.fecha, proyecto = dato.proyecto).order_by("-fecha")
 
             desde = desde[0].base_precio
 
