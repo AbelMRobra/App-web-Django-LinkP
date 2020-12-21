@@ -18,44 +18,48 @@
 
         {% endif %}
 
-        <small> <b>Modulo: </b> Archivos del área</small>
+        <small> <b>Modulo: </b> Comercialización</small>
 
 
         <b><hr class = "my-4" style="width: 75%;"></b>
     
     </div>
 
-    <div style="text-align: center; width: 350px; height: 210px; display: inline-block; margin: 20px; vertical-align: top; border: 2px solid rgb(11, 32, 68); border-radius: 5%;">
-
-      <div style="margin: 15px;">
 
           <form method="POST">
 
               {% csrf_token %}
    
-              <div>
-   
-              <h6 style= "font-family: Arial, Helvetica, sans-serif; color: rgb(11, 32, 68); ">Archivos cargados</h6>
-              
-             </div>
-   
-             <select name="fecha" class="custom-select" style="width: 200px;">
+              <div style="text-align: left;">
+
+                <div style="display: inline-block; vertical-align: middle;">
+
+                  <h6 style= "font-family: Arial, Helvetica, sans-serif;">Archivos cargados: </h6>
+                        
+          
+                </div>
+
+                <div style="display: inline-block;  vertical-align: middle;">
 
 
-              {% for i in datos.fechas %}
-
-              <option value="{{i.1}}">{{i.0|date:"Y-m-j"}}</option>
-
-              {% endfor %}
+                  <select name="fecha" class="custom-select" style="width: 200px;">
 
 
-
-            </select>
+                    {% for i in datos.fechas %}
+      
+                    <option value="{{i.1}}">{{i.0|date:"Y-m-j"}}</option>
+      
+                    {% endfor %}
+      
+      
+      
+                  </select>
                 
-                
+                </div>
+          
    
-                <div>
-                  <button class="btn btn-dark" type="submit" style="margin-top: 10px;"><img src="{% static 'img/buscar2.png' %}" alt="" style="max-width:20px; height:auto;"> Buscar</button>          
+                <div style="display: inline-block;  vertical-align: middle;">
+                  <button class="btn btn-light" type="submit"><img src="{% static 'img/buscar2.png' %}" alt="" style="max-width:20px; height:auto;"></button>          
               </div>
               
           </form>
@@ -63,9 +67,76 @@
           <b><hr class = "my-4" style="width: 75%; "></b>
 
 
-      </div>
-     
- </div>
+          <div style="text-align: center;">
+
+            <div class="card text-white bg-dark mb-3" style="display: inline-block; width: 310px; height: 150px; vertical-align: top; margin: 10px;">
+                
+              <div class="card-body">
+
+                <h6>Unidades vendidas {{datos.datos_panel.2|date:"Y"}}</h6>
+
+                <h4 style="color: rgb(48, 153, 29)">{{datos.datos_panel.0}}</h4>
+
+                <div>
+                  <small>Unidades vendidas {{datos.datos_panel.3|date:"Y"}}: <b>{{datos.datos_panel.1}}</b></small>
+                </div>
+                
+              </div>
+            </div>
+
+            <div style="display: inline-block; width: 310px; margin: 10px;">
+          
+              <canvas id="myChart2"></canvas>
+          
+            </div>
+             
+            <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+            <script>
+          
+                var ctx = document.getElementById('myChart2').getContext('2d');
+                var chart = new Chart(ctx, {
+                    // The type of chart we want to create
+                    type: 'doughnut',
+                    // The data for our dataset
+                    data: {
+                    datasets: [{        
+                        data: [{% for i in datos.datos_panel.4 %}
+                      {{i.1}}, 
+                      
+
+                      {% endfor %}],
+                        backgroundColor: [
+                        {% for i in datos.datos_panel.4 %}
+                      'rgba({{i.0.color}}, 0.7)', 
+                      
+
+                      {% endfor %}
+                          ],    
+                    }],
+          
+                    labels: [
+                      {% for i in datos.datos_panel.4 %}
+                      '{{i.0.nombre}}', 
+                      
+
+                      {% endfor %}
+
+                      ]
+                  },
+                    options: {
+                      legend: {
+                          position: 'right'
+                      },
+                    },
+          
+                  });
+          
+            </script>
+        
+          </div>
+
+
+
 
 
       {% if datos.datos %}

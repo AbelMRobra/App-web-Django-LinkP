@@ -84,11 +84,37 @@ def historialventa(request):
                 busqueda = 0
                 fecha = dato[1]
 
+    # ----> Aqui armo la fecha de inicio
+
+    today = datetime.date.today()
+
+    fecha_1 = datetime.date(today.year, 1, 1)
+    fecha_2 = datetime.date((today.year - 1), 1, 1)
+
+    ventas_1 = len(VentasRealizadas.objects.filter(fecha__gte = fecha_1))
+
+    ventas_2 = len(VentasRealizadas.objects.filter(fecha__gte = fecha_2, fecha__lte = fecha_1))
+
+    proyectos = Proyectos.objects.all()
+
+    list_p = []
+
+    for p in proyectos:
+
+        ventas_p = len(VentasRealizadas.objects.filter(fecha__gte = fecha_1, unidad__proyecto = p))
+
+        if ventas_p > 0:
+            list_p.append((p, ventas_p))
+
+    list_p.sort(key=lambda tup: tup[1], reverse=True)
+
+    datos_panel = [ventas_1, ventas_2, fecha_1, fecha_2, list_p]
 
     datos = {"fechas":fechas,
     "busqueda":busqueda,
     "datos":datos,
-    "fecha":fecha}
+    "fecha":fecha,
+    "datos_panel":datos_panel,}
 
     return render(request, 'historial_venta.html', {"datos":datos})
 
