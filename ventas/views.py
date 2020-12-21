@@ -91,9 +91,9 @@ def historialventa(request):
     fecha_1 = datetime.date(today.year, 1, 1)
     fecha_2 = datetime.date((today.year - 1), 1, 1)
 
-    ventas_1 = len(VentasRealizadas.objects.filter(fecha__gte = fecha_1))
+    ventas_1 = len(VentasRealizadas.objects.filter(fecha__gte = fecha_1, unidad__asig = "PROYECTO"))
 
-    ventas_2 = len(VentasRealizadas.objects.filter(fecha__gte = fecha_2, fecha__lte = fecha_1))
+    ventas_2 = len(VentasRealizadas.objects.filter(fecha__gte = fecha_2, fecha__lte = fecha_1, unidad__asig = "PROYECTO"))
 
     proyectos = Proyectos.objects.all()
 
@@ -101,7 +101,7 @@ def historialventa(request):
 
     for p in proyectos:
 
-        ventas_p = len(VentasRealizadas.objects.filter(fecha__gte = fecha_1, unidad__proyecto = p))
+        ventas_p = len(VentasRealizadas.objects.filter(fecha__gte = fecha_1, unidad__proyecto = p, unidad__asig = "PROYECTO"))
 
         if ventas_p > 0:
             list_p.append((p, ventas_p))
