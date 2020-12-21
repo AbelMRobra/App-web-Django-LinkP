@@ -61,6 +61,17 @@
                 <div style="display: inline-block;  vertical-align: middle;">
                   <button class="btn btn-light" type="submit"><img src="{% static 'img/buscar2.png' %}" alt="" style="max-width:20px; height:auto;"></button>          
               </div>
+
+              {% if datos.datos %}
+
+              <div style="display: inline-block;  vertical-align: middle;">
+                  <a class="btn btn-light"  href="{{ datos.datos.historial_venta.url }}" style="margin-top: 1%;">Ver informe <img src="{% static 'img/reportar.png' %}" alt="" style="max-width:20px; height:auto;"></a>
+
+                </div>
+
+  
+              
+              {% endif %}
               
           </form>
    
@@ -139,19 +150,7 @@
 
 
 
-      {% if datos.datos %}
-
-       <div>
-          <a href="{{ datos.datos.historial_venta.url }}" style="margin-top: 1%;"><img src="{% static 'img/reportar.png' %}" alt="" style="max-width:30px; height:auto;"> Informe encontrado!</a>
-
-        </div>
-
-        <small> Ingrese al link para ver el archivo</small>
-
-
-        
-
-      {% endif %}
+      
        
        <div style="text-align: center; margin-top: 10%;">
         <p> <small>-- Link<strong>P</strong> --</small> </p>
