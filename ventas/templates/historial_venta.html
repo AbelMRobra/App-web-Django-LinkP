@@ -90,7 +90,7 @@
             </div>
 
             <div style="display: inline-block; width: 310px; margin: 10px;">
-          
+
               <canvas id="myChart"></canvas>
           
             </div>
@@ -182,7 +182,24 @@
                 <h5 style="color: rgb(60, 175, 53 ); font-family: Arial, Helvetica, sans-serif;">$ {{datos.datos_panel.11|floatformat:0|intcomma}} </h5>
 
                 <div>
-                  <small style="font-family: Arial, Helvetica, sans-serif;">Aprox. USD: <b> --</b></small>
+                  <small style="font-family: Arial, Helvetica, sans-serif;">Aprox. M3: <b>{{datos.datos_panel.19|floatformat:2}} M3</b></small>
+                </div>
+
+                
+                
+              </div>
+            </div>
+
+            <div class="card text-white bg-secondary mb-3" style="display: inline-block; width: 310px; height: 150px; vertical-align: top; margin: 10px;">
+                            
+              <div class="card-body">
+
+                <h6 style="font-family: Arial, Helvetica, sans-serif;">Metros cuadrados vendidos</h6>
+
+                <h5 style="color: rgb(53, 103, 175); font-family: Arial, Helvetica, sans-serif;">{{datos.datos_panel.17|floatformat:2}} M2</h5>
+
+                <div>
+                  <small style="font-family: Arial, Helvetica, sans-serif;">Resultado {{datos.datos_panel.3|date:"Y"}}: <b> {{datos.datos_panel.18|floatformat:2}} M2</b></small>
                 </div>
 
                 

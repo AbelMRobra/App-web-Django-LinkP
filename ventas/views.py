@@ -133,6 +133,8 @@ def historialventa(request):
     unidades_chequeadas = 0
     monto_neto = 0
     contado = 0
+    m2_v = 0
+    monto_h = 0
 
     for v in ventas_1:
 
@@ -189,9 +191,17 @@ def historialventa(request):
 
         monto_neto = monto_neto + v.precio_venta
 
+        fecha_buscar = datetime.date(v.fecha.year, v.fecha.month, 1)
+
+        registro_h = Registrodeconstantes.objects.filter(constante__nombre = "Hº VIVIENDA", fecha = fecha_buscar)[0].valor
+
+        monto_h = monto_h + (v.precio_venta/registro_h)
+
         if (v.precio_venta - v.anticipo) < v.precio_venta*0.05:
 
             contado += 1
+
+        m2_v = m2_v + m2
 
     descuento = (real/pricing - 1)*100 
 
@@ -199,6 +209,7 @@ def historialventa(request):
     real_2 = 0
     unidades_chequeadas_2 = 0   
     contado_2 = 0
+    m2_v_2 = 0
 
     for v in ventas_2:
 
@@ -258,6 +269,7 @@ def historialventa(request):
 
             contado_2 += 1
     
+        m2_v_2 = m2_v_2 + m2
 
     descuento_2 = (real_2/pricing_2 - 1)*100   
 
@@ -281,7 +293,7 @@ def historialventa(request):
 
     ritmo_mes = (ritmo)**(-1)*30
 
-    datos_panel = [ventas_1, ventas_2, fecha_1, fecha_2, list_p, list_ritmo, descuento, unidades_chequeadas, descuento_2, unidades_chequeadas_2, ritmo, monto_neto, contado, financiado, contado_2, financiado_2, ritmo_mes]
+    datos_panel = [ventas_1, ventas_2, fecha_1, fecha_2, list_p, list_ritmo, descuento, unidades_chequeadas, descuento_2, unidades_chequeadas_2, ritmo, monto_neto, contado, financiado, contado_2, financiado_2, ritmo_mes, m2_v, m2_v_2, monto_h]
 
     datos = {"fechas":fechas,
     "busqueda":busqueda,
