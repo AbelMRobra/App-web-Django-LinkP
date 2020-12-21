@@ -131,6 +131,8 @@ def historialventa(request):
     pricing = 0
     real = 0
     unidades_chequeadas = 0
+    monto_neto = 0
+    contado = 0
 
     for v in ventas_1:
 
@@ -185,11 +187,18 @@ def historialventa(request):
         except:
             pass
 
+        monto_neto = monto_neto + v.precio_venta
+
+        if (v.precio_venta - v.anticipo) < v.precio_venta*0.05:
+
+            contado += 1
+
     descuento = (real/pricing - 1)*100 
 
     pricing_2 = 0
     real_2 = 0
-    unidades_chequeadas_2 = 0
+    unidades_chequeadas_2 = 0   
+    contado_2 = 0
 
     for v in ventas_2:
 
@@ -244,11 +253,15 @@ def historialventa(request):
 
         except:
             pass
+    
 
     descuento_2 = (real_2/pricing_2 - 1)*100   
 
     ventas_1 = len(ventas_1)
     ventas_2 = len(ventas_2)
+
+    contado = ((contado/ventas_1))*100
+    financiado = 100 - contado
 
     hoy = datetime.date.today()
 
@@ -259,7 +272,7 @@ def historialventa(request):
     else:
         ritmo = 0  
 
-    datos_panel = [ventas_1, ventas_2, fecha_1, fecha_2, list_p, list_ritmo, descuento, unidades_chequeadas, descuento_2, unidades_chequeadas_2, ritmo]
+    datos_panel = [ventas_1, ventas_2, fecha_1, fecha_2, list_p, list_ritmo, descuento, unidades_chequeadas, descuento_2, unidades_chequeadas_2, ritmo, monto_neto, contado, financiado]
 
     datos = {"fechas":fechas,
     "busqueda":busqueda,
