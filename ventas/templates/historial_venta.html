@@ -69,7 +69,7 @@
               
           </form>
    
-          <b><hr class = "my-4" style="width: 75%; "></b>
+          <b><hr class = "my-4" style="width: 100%; "></b>
 
 
           <div style="text-align: center;">
@@ -182,8 +182,13 @@
                 <h5 style="color: rgb(60, 175, 53 ); font-family: Arial, Helvetica, sans-serif;">$ {{datos.datos_panel.11|floatformat:0|intcomma}} </h5>
 
                 <div>
-                  <small style="font-family: Arial, Helvetica, sans-serif;">Aprox. M3: <b>{{datos.datos_panel.19|floatformat:0|intcomma}} M3</b></small>
+                  <small style="font-family: Arial, Helvetica, sans-serif;">Ingreso en M3: <b>{{datos.datos_panel.19|floatformat:0|intcomma}} M3</b></small>
                 </div>
+
+                <div>
+                  <small style="font-family: Arial, Helvetica, sans-serif;">Precio prom. M3/M2: <b>{{datos.datos_panel.20|floatformat:0|intcomma}} M3</b></small>
+                </div>
+
 
                 
                 
@@ -214,6 +219,7 @@
             <small>*Unidades chequeadas {{datos.datos_panel.2|date:"Y"}}: {{datos.datos_panel.7}} - {{datos.datos_panel.3|date:"Y"}}: {{datos.datos_panel.9}}</small>
           </div>
 
+          <b><hr class = "my-4" style="width: 100%; "></b>
 
           <div style="margin-top: 0.5rem; width: 100%;">                        
 
