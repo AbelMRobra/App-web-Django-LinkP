@@ -120,7 +120,7 @@ def historialventa(request):
             fecha_f = datetime.date(fecha_i.year, (fecha_i.month + 1), 1)
         else:
             fecha_f = datetime.date((fecha_i.year + 1), 1, 1)
-        ventas_n = len(VentasRealizadas.objects.filter(fecha__gte = fecha_i, fecha__lte = fecha_f))
+        ventas_n = len(VentasRealizadas.objects.filter(fecha__gte = fecha_i, fecha__lte = fecha_f, unidad__asig = "PROYECTO"))
 
         list_ritmo.append((fecha_i, ventas_n))
 
