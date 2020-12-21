@@ -40,3 +40,18 @@ class ItemEtapa(models.Model):
         
     def __str__(self):
         return self.nombre
+
+class TecnicaMensaje(models.Model):
+
+    usuario =  models.ForeignKey(datosusuario, on_delete=models.CASCADE, verbose_name="Usuario")
+    item =  models.ForeignKey(ItemEtapa, on_delete=models.CASCADE, verbose_name="Item asociado")
+    mensaje =  models.CharField(verbose_name="Mensaje", blank=True, null=True, max_length=200)
+    fecha = models.DateTimeField(verbose_name="Fecha de creación", auto_now_add=True, blank=True, null=True)
+
+    class Meta:
+
+        verbose_name="Mensaje"
+        verbose_name_plural="Mensajes"
+        
+    def __str__(self):
+        return self.mensaje

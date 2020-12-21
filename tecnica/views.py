@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from proyectos.models import Proyectos
-from .models import Etapas, ItemEtapa
+from .models import Etapas, ItemEtapa, TecnicaMensaje
+from rrhh.models import datosusuario
 
 # Create your views here.
 
@@ -32,3 +33,29 @@ def documentacion(request):
         datos.append((p, sub_datos))
 
     return render(request, "documentacion.html", {"datos":datos})
+
+def mensajesitem(request, id_item):
+
+    if request.method == 'POST':
+
+        datos_post = request.POST.items()
+
+        for i in datos_post:
+
+            if i[0] == "mensaje" and i[1] != "" :
+
+                b = TecnicaMensaje(
+                        usuario = datosusuario.objects.get(identificacion = request.user),
+                        item = ItemEtapa.objects.get(id = id_item),
+                        mensaje = i[1],
+
+                        )
+
+                b.save()
+
+
+    datos = ItemEtapa.objects.get(id = id_item)
+
+    mensajes = TecnicaMensaje.objects.filter(item__id = id_item).order_by("-fecha")
+
+    return render(request, 'mensajeitem.html', {'datos':datos, 'mensajes':mensajes})
