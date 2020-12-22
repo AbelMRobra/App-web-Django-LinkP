@@ -105,9 +105,6 @@ def notasdepedido(request, id_proyecto, tipo):
 
             datos = NotaDePedido.objects.filter(tipo = "OS", proyecto__id = id_proyecto)
 
-
-
-
     if request.method == 'POST':
 
         datos_viejos = datos

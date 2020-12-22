@@ -42,7 +42,6 @@ class ItemEtapa(models.Model):
         return self.nombre
 
 class TecnicaMensaje(models.Model):
-
     usuario =  models.ForeignKey(datosusuario, on_delete=models.CASCADE, verbose_name="Usuario")
     item =  models.ForeignKey(ItemEtapa, on_delete=models.CASCADE, verbose_name="Item asociado")
     mensaje =  models.CharField(verbose_name="Mensaje", blank=True, null=True, max_length=200)

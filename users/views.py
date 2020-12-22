@@ -314,7 +314,6 @@ def inicio(request):
     compras_adjunto_ok = Comparativas.objects.filter(estado = "ADJUNTO ✓")
     mensajesdeldia = mensajesgenerales.objects.all()
 
-
     # -----> Aqui para decirte si tenes pendiente firmar
 
     usuario = request.user.username
@@ -416,7 +415,6 @@ def inicio(request):
 
 
     barras = []
-
 
     datos_barras = Presupuestos.objects.order_by("-saldo")
 
