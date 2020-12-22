@@ -131,7 +131,7 @@
 
         {% if i.usuario.identificacion == request.user.username %}
 
-        <div style="text-align: right; margin-top: 10px;">
+        <div style="text-align: right; margin-top: 10px;  vertical-align: bottom;">
 
             <div style="display: inline-block; background-color: rgba(11, 32, 68, 0.3); border-radius: 5px;">
     
@@ -139,7 +139,7 @@
     
             </div>
     
-            <img src="{{i.usuario.imagenlogo.url}}"  class="img-fluid" alt="..." style="max-width: 30px; height:auto;">
+            <img src="{{i.usuario.imagenlogo.url}}"  class="imgRedondaChica" alt="...">
     
             
     
@@ -147,9 +147,9 @@
     
         {% else %}
     
-        <div style="text-align: left; margin-top: 10px;">
+        <div style="text-align: left; margin-top: 10px; vertical-align: bottom;">
     
-            <img src="{{i.usuario.imagenlogo.url}}"  class="img-fluid" alt="..." style="max-width: 30px; height:auto;">
+            <img src="{{i.usuario.imagenlogo.url}}"  class="imgRedondaChica" alt="...">
     
             <div style="display: inline-block; background-color: rgba(24, 220, 220, 0.3); border-radius: 5px;">
     
