@@ -27,8 +27,7 @@ def guia(request):
 
         if datos:
 
-            otros_datos = datosusuario.objects.order_by("area")
-
+            otros_datos = datosusuario.objects.order_by("area").exclude(estado = "NO ACTIVO")
 
     except:
 

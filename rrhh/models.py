@@ -39,12 +39,20 @@ class NotaDePedido(models.Model):
         return self.titulo
 
 class datosusuario(models.Model):
+
+    class estados(models.TextChoices):
+
+        ACTIVO = "ACTIVO"
+        NO_ACTIVO = "NO ACTIVO"
+
+
     identificacion = models.CharField(max_length=200, verbose_name="Identificacion")
     imagen = models.CharField(max_length=200, verbose_name="Imagen", blank=True, null=True, editable=False)
     imagenlogo = models.ImageField(verbose_name="Imagen", blank=True, null=True)
     area = models.CharField(max_length=200, verbose_name="Area", blank=True, null=True)
     cargo = models.CharField(max_length=200, verbose_name="Cargo", blank=True, null=True)
     email = models.CharField(max_length=200, verbose_name="Email", blank=True, null=True)
+    estado = models.CharField(choices=estados.choices, default=estados.ACTIVO, max_length=20, verbose_name="Estado")
 
     class Meta:
         verbose_name="Dato de usuario"
