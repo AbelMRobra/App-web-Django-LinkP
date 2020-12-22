@@ -219,3 +219,15 @@ box-shadow: 0 0 30px 2px #E62B18;
                 opacity: 1;
                 max-height: 500px;
             }
+
+.imgRedondaGrande {
+        width:300px;
+        height:300px;
+        border-radius:150px;
+        }
+
+.imgRedondaChica {
+        width:300px;
+        height:300px;
+        border-radius:150px;
+        }
