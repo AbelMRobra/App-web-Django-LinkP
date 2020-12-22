@@ -10,7 +10,7 @@ from proyectos.models import Proyectos, Unidades
 from ventas.models import VentasRealizadas
 from compras.models import Compras, Comparativas
 from registro.models import RegistroValorProyecto
-from rrhh.models import datosusuario, mensajesgenerales
+from rrhh.models import datosusuario, mensajesgenerales, NotaDePedido
 import datetime
 from datetime import date
 import pandas as pd
@@ -32,7 +32,6 @@ def guia(request):
     except:
 
         datos = 0
-
 
     return render(request, "users/guia.html", {"datos":datos, "otros_datos":otros_datos})
 
@@ -314,6 +313,13 @@ def inicio(request):
     compras_espera = Comparativas.objects.filter(estado = "ESPERA")
     compras_adjunto_ok = Comparativas.objects.filter(estado = "ADJUNTO ✓")
     mensajesdeldia = mensajesgenerales.objects.all()
+
+
+    # -----> Aqui para decirte si tenes pendiente firmar
+
+    usuario = request.user.username
+
+    datos_mensajeria = len(NotaDePedido.objects.filter(copia__contains = str(usuario)).exclude(visto__contains = str(usuario))) + len(NotaDePedido.objects.filter(destinatario__contains = str(usuario)).exclude(visto__contains = str(usuario)))
     
     datos_pl = []
 
@@ -321,8 +327,7 @@ def inicio(request):
 
         
         datos_pl.append((len(compras_espera), len(compras_adjunto_ok)))
-    
-    
+       
     datos_logo = 0
 
     try:
@@ -425,7 +430,7 @@ def inicio(request):
 
     barras = sorted(barras,reverse=True, key=lambda tup: tup[1])
 
-    return render(request, "users/inicio.html", {"datos_barras":barras, "datos_logo":datos_logo, "datos_pl":datos_pl, "mensajesdeldia":mensajesdeldia})
+    return render(request, "users/inicio.html", {"datos_barras":barras, "datos_logo":datos_logo, "datos_pl":datos_pl, "mensajesdeldia":mensajesdeldia, "datos_mensajeria":datos_mensajeria})
 
 def welcome(request):
     # Si estamos identificados devolvemos la portada

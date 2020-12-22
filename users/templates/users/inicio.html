@@ -490,30 +490,42 @@
 
                 <!-- Button trigger modal -->
 
-                {% if request.user.username == "PL" or request.user.username == "AR" %}
+                <div style="position: fixed; bottom: 3%; left: 10px;">
 
-                {% if datos_pl %}
-        
-                <div style="position: fixed; top: 90%; left: 10px;">
-        
-                  <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModalCenter">
-                    Pablo mensajes sobre O.C! 
-                  </button>
-        
-        
+
+                  {% if datos_mensajeria %}
+
+                  <div style="margin: 5px;">
+                    <a  href="/rrhh/notasdepedido/0/0" class="btn btn-warning">
+                      <img src="{% static 'img/advertir.png' %}" alt="" style="max-width:20px; height:auto; margin: 2px; vertical-align: bottom;"> Tienes correspondencia
+                    </a>
+
+                  </div>
+
+                  {% endif %}
+
+                  {% if datos_pl %}
+
+                  <div style="margin: 5px;">
+
+                    <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#exampleModalCenter">
+                      <img src="{% static 'img/advertir.png' %}" alt="" style="max-width:20px; height:auto; margin: 2px; vertical-align: bottom;"> O.C pendientes! 
+                    </button>
+
+                  </div>
+
+                  {% endif %}
+
+                  
                 </div>
         
-                {% endif %}
-        
-                {% endif %}
-                
         
                 <!-- Modal -->
                 <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                   <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
                       <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLongTitle">Las ordenes de compra te necesitan!</h5>
+                        <h5 class="modal-title" id="exampleModalLongTitle">Hay ordenes de compra pendiente</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                           <span aria-hidden="true">&times;</span>
                         </button>
