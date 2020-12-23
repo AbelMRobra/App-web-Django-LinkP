@@ -2,6 +2,7 @@ from django.shortcuts import render
 from proyectos.models import Proyectos
 from .models import Etapas, ItemEtapa, TecnicaMensaje
 from rrhh.models import datosusuario
+import datetime
 
 # Create your views here.
 
@@ -20,19 +21,33 @@ def documentacion(request):
 
     for p in proyectos:
 
+        hoy = datetime.date.today()
+
+        dias_faltantes = (p.fecha_f - hoy).days
+
         datos_etapas = Etapas.objects.filter(proyecto = p)
 
         sub_datos = []
 
         for e in datos_etapas:
 
+            listos = len(ItemEtapa.objects.filter(etapa = e, estado = "LISTO"))
+
             datos_itemetapas = ItemEtapa.objects.filter(etapa = e)
 
             cantidad = len(ItemEtapa.objects.filter(etapa = e))
 
-            sub_datos.append((e, datos_itemetapas, cantidad))
+            avance = 0
+            no_avance = 100
 
-        datos.append((p, sub_datos))
+            if cantidad > 0:
+
+                avance = round((listos/cantidad)*100, 0)
+                no_avance = 100 - avance
+
+            sub_datos.append((e, datos_itemetapas, cantidad, avance, no_avance))
+
+        datos.append((p, sub_datos, dias_faltantes))
 
     return render(request, "documentacion.html", {"datos":datos})
 

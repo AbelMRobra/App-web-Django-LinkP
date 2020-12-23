@@ -32,6 +32,9 @@ class ItemEtapa(models.Model):
     estado = models.CharField(choices=estados.choices, default=estados.ESPERA, max_length=20, verbose_name="Estado")
     contrato = models.ForeignKey(Contratos, on_delete=models.CASCADE, verbose_name="Contrato", blank=True, null=True)
     archivo_vigente = models.FileField(verbose_name="Archivo vigente", blank=True, null=True)
+    fecha_estimada = models.DateField(verbose_name="Fecha estimada de finalziación", blank=True, null=True)
+    fecha_inicio = models.DateField(verbose_name="Fecha de inicio", blank=True, null=True)
+    fecha_final = models.DateField(verbose_name="Fecha final", blank=True, null=True)
 
     class Meta:
 

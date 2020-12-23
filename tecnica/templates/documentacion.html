@@ -18,14 +18,69 @@
 
 
         {% for i in datos %}
-        
-        <div class="panel panel-default">
+
+        <div style="border: 2px solid rgb(192, 202, 190); margin: 10px;">
+       
+        <div class="panel panel-default" style="margin: 5px;">
           <div class="panel-heading" role="tab" id="heading{{i.0.id}}">
             <h4 class="panel-title"  style="text-align: left;">
               <a style="font-family: Arial, Helvetica, sans-serif;  text-decoration:none" class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse{{i.0.id}}" aria-expanded="false" aria-controls="collapse{{i.0}}">
-                <b><hr class = "my-4" style="width: 100%;"></b>
-                <h5 style="font-family: Arial, Helvetica, sans-serif; color: rgb({{i.0.color}});"><img src="{% static 'img/anadir.png' %}" alt="" style="max-width:30px; height:auto; vertical-align: bottom;"> {{i.0.nombre}}</h5>
-                <b><hr class = "my-4" style="width: 100%;"></b>
+
+                <div style="display: inline-block; width: 350px; vertical-align: middle;">
+
+                    <h5 style="font-family: Arial, Helvetica, sans-serif; color: rgb({{i.0.color}});">{{i.0.nombre}}</h5>
+                    <h6 style="font-family: Arial, Helvetica, sans-serif; color: rgb(75, 79, 74)"><small>Dias faltantes: 
+                        
+                        {% if i.2 > 0 %}
+                        <b>{{i.2}}</b>
+
+                        {% elif i.2 == 0 %}
+                        <b>HOY SE ENTREGA</b>
+                        {% else %}
+                        <b>ENTREGADO</b>
+                        {% endif %}
+                    
+                    </small></h6>
+
+                </div>
+
+
+                {% for c in i.1 %}
+                
+                <div style="display: inline-block; width: 200px; margin: 5px; vertical-align: middle;">
+
+                    <canvas id="myChart{{c.0.id}}"></canvas>
+                
+                  </div>
+                   
+                  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+                  <script>
+                
+                      var ctx = document.getElementById('myChart{{c.0.id}}').getContext('2d');
+                      var chart = new Chart(ctx, {
+                          // The type of chart we want to create
+                          type: 'doughnut',
+                          // The data for our dataset
+                          data: {
+                          datasets: [{        
+                              data: [{{c.3}}, {{c.4}}],
+                              backgroundColor: ['rgba(47, 149, 26, 0.6), rgba(236, 240, 235,1)'],    
+                          }],
+                
+                          labels: ["{{c.0.nombre}}"]
+                        },
+                          options: {
+                            legend: {
+                                position: 'top'
+                            },
+                          },
+                
+                        });
+                
+                  </script>
+
+                {% endfor %}
+
               </a>
             </h4>
           </div>
@@ -60,6 +115,17 @@
                             <table class = "table table-hover" style="text-align: left;" >
                                 <tbody>
 
+                                    <tr class = "table-active">
+                                        <td><small><b>NOMBRE DEL ITEM</b></small></td>
+                                        <td><small><b></b></small></td>
+                                        <td><small><b>ESTADO</b></small></td>
+                                        <td><small><b>RESP.</b></small></td>
+                                        <td><small><b>INICIO</b></small></td>
+                                        <td><small><b>FINAL</b></small></td>
+                                        <td><small><b>ADJUNTO</b></small></td>
+
+                                    </tr>
+
                                     {% for t in c.1 %}
 
                                     <tr class = "table-light">
@@ -79,7 +145,7 @@
                                             </small></td>
 
                                         {% if t.estado == 'LISTO' %}
-                                        <td style="width: 20%; color: rgb(37, 159, 76 )"><small>
+                                        <td style="width: 20%; color: rgb(124, 209, 107)"><small>
 
 
                                             <b>{{t.estado}}</b> 
@@ -89,7 +155,7 @@
 
                                         {% elif t.estado == 'TRABAJANDO' %}
 
-                                        <td style="width: 20%; color: rgb(181, 136, 26)"><small>
+                                        <td style="width: 20%; color: rgb(209, 176, 107)"><small>
 
 
                                             <b>{{t.estado}}</b> 
@@ -99,7 +165,7 @@
 
                                         {% elif t.estado == 'PROBLEMAS' %}
 
-                                        <td style="width: 20%; color: rgb(181, 53, 26)"><small>
+                                        <td style="width: 20%; color: rgb(209, 119, 107)"><small>
 
 
                                             <b>{{t.estado}}</b> 
@@ -133,7 +199,9 @@
                                             {% endif %}
 
                                         </small></td>
-                                        <td style="width: 20%;"><small>
+                                        <td style="width: 10%;"><small>{{t.fecha_inicio|date:"Y-m-j"}}</small></td>
+                                        <td style="width: 10%;"><small>{{t.fecha_final|date:"Y-m-j"}}</small></td>
+                                        <td style="width: 10%;"><small>
 
                                             <img src="{% static 'img/archivo-adjunto.png' %}" alt="" style="max-width:25px; height:auto; margin: 2px;"  >
                                         
@@ -169,6 +237,7 @@
             </div>
           </div>
         </div>
+    </div>
 
         {% endfor %}
         
