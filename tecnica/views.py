@@ -128,9 +128,13 @@ def ganttet(request, id_proyecto):
         
         if len(items) > 0:
 
-            fecha_1 = ItemEtapa.objects.filter(etapa = e, fecha_inicio__lte = fechas[-1], fecha_final__gte = fecha_inicial_hoy).order_by("-fecha_inicio").values_list("fecha_inicio")[0][0]
+            fecha_1 = ItemEtapa.objects.filter(etapa = e, fecha_inicio__range = (fecha_inicial_hoy, fechas[-1]), fecha_final__gte = fecha_inicial_hoy).order_by("fecha_inicio").values_list("fecha_inicio")
             fecha_2 = ItemEtapa.objects.filter(etapa = e, fecha_inicio__lte = fechas[-1], fecha_final__gte = fecha_inicial_hoy).order_by("-fecha_final").values_list("fecha_final")[0][0]
 
+            if len(fecha_1) == 0:
+                fecha_1 = fecha_inicial_hoy
+            else:
+                fecha_1 = fecha_1[0][0]
             for i in items:
 
                 if (i.fecha_inicio - fecha_inicial_hoy).days >= 0 and (fechas[-1] - i.fecha_final).days >= 0:
