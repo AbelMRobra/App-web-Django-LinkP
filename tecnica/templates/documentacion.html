@@ -207,13 +207,40 @@
                                             {% endif %}
 
                                         </small></td>
+
+                                        {% if t.fecha_inicio %}
                                         <td style="width: 10%;"><small>{{t.fecha_inicio|date:"Y-m-j"}}</small></td>
+                                        {% else %}
+
+                                        <td style="width: 10%;"><small>NO DEFINIDIO</small></td>
+
+                                        {% endif %}
+                                        {% if t.fecha_final %}
                                         <td style="width: 10%;"><small>{{t.fecha_final|date:"Y-m-j"}}</small></td>
+                                        {% else %}
+
+                                        <td style="width: 10%;"><small>NO DEFINIDIO</small></td>
+
+                                        {% endif %}
+
+                                        {% if t.archivo_vigente %}
                                         <td style="width: 10%;"><small>
 
-                                            <img src="{% static 'img/archivo-adjunto.png' %}" alt="" style="max-width:25px; height:auto; margin: 2px;"  >
+                                            <a href="{{ t.archivo_vigente.url }}">
+
+                                                <img src="{% static 'img/archivo-adjunto.png' %}" alt="" style="max-width:25px; height:auto; margin: 2px;"  >
                                         
+                                            </a>
+
+
                                         </small></td>
+
+                                        {% else %}
+
+                                        <td style="width: 10%;"><small>S/D</small></td>
+
+                                        {% endif %}
+
 
                                         </tr>
 
