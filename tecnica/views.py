@@ -133,7 +133,7 @@ def ganttet(request, id_proyecto):
 
             for i in items:
 
-                if (i.fecha_inicio - fecha_inicial_hoy).days >= 0 and (fechas[-1] - i.fecha_final) >= 0:
+                if (i.fecha_inicio - fecha_inicial_hoy).days >= 0 and (fechas[-1] - i.fecha_final).days >= 0:
 
                     datos_items.append((i.nombre, i.fecha_inicio, i.fecha_final))
 
