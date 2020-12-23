@@ -29,13 +29,21 @@ def documentacion(request):
 
         sub_datos = []
 
+        avance_general = 0
+        cantidad_total = 0
+        
+
         for e in datos_etapas:
 
             listos = len(ItemEtapa.objects.filter(etapa = e, estado = "LISTO"))
 
+            avance_general = avance_general + listos
+
             datos_itemetapas = ItemEtapa.objects.filter(etapa = e)
 
             cantidad = len(ItemEtapa.objects.filter(etapa = e))
+
+            cantidad_total = cantidad_total + cantidad
 
             avance = 0
             no_avance = 100
@@ -47,7 +55,14 @@ def documentacion(request):
 
             sub_datos.append((e, datos_itemetapas, cantidad, avance, no_avance))
 
-        datos.append((p, sub_datos, dias_faltantes))
+        if cantidad_total != 0:
+
+            avance_general = round((avance_general/cantidad_total)*100, 0)
+
+        else:
+            avance_general = 0.0
+
+        datos.append((p, sub_datos, dias_faltantes, avance_general))
 
     return render(request, "documentacion.html", {"datos":datos})
 
