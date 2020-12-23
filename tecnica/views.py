@@ -135,6 +135,13 @@ def ganttet(request, id_proyecto):
                 fecha_1 = fecha_inicial_hoy
             else:
                 fecha_1 = fecha_1
+
+            if (fechas[-1] - fecha_2).days < 0:
+                fecha_2 = fechas[-1]
+            else:
+                fecha_2 = fecha_2
+
+
             for i in items:
 
                 if (i.fecha_inicio - fecha_inicial_hoy).days >= 0 and (fechas[-1] - i.fecha_final).days >= 0:
