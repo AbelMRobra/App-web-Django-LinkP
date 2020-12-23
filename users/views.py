@@ -310,23 +310,48 @@ def inicio(request):
 
     # Esta parte es para Pablo
 
-    compras_espera = Comparativas.objects.filter(estado = "ESPERA")
-    compras_adjunto_ok = Comparativas.objects.filter(estado = "ADJUNTO ✓")
+    
     mensajesdeldia = mensajesgenerales.objects.all()
 
-    # -----> Aqui para decirte si tenes pendiente firmar
+    # -----> Aqui para decirte si tenes pendiente firmar correspondencia
 
     usuario = request.user.username
 
     datos_mensajeria = len(NotaDePedido.objects.filter(copia__contains = str(usuario)).exclude(visto__contains = str(usuario))) + len(NotaDePedido.objects.filter(destinatario__contains = str(usuario)).exclude(visto__contains = str(usuario)))
     
-    datos_pl = []
+    # -----> Aqui para decirte si tenes pendiente firmar OC
 
-    if len(compras_espera) > 0 or len(compras_adjunto_ok) > 0:
+    mensaje_oc = 0
 
+    if usuario == "PL":
         
-        datos_pl.append((len(compras_espera), len(compras_adjunto_ok)))
-       
+        compras_espera = Comparativas.objects.filter(estado = "ESPERA").exclude(creador = "MES", numero__contains = "POSTVENTA")
+        compras_adjunto_ok = Comparativas.objects.filter(estado = "ADJUNTO ✓").exclude(creador = "MES", numero__contains = "POSTVENTA")
+
+        if len(compras_espera) > 0 or len(compras_adjunto_ok) > 0:
+        
+            mensaje_oc = "Pablo!, tienes {} O.C en espera y {} solo en adjunto!".format(len(compras_espera), len(compras_adjunto_ok))
+        
+    elif usuario == "SP":
+
+        compras = Comparativas.objects.filter(creador = "MES").exclude(estado = "AUTORIZADA")
+        compras_2 = Comparativas.objects.filter(numero__contains = "POSTVENTA").exclude(estado = "AUTORIZADA")
+
+        if len(compras) > 0 or len(compras_2) > 0:
+        
+            mensaje_oc = '''Seba!, tienes {} ordenes de compra para autorizar!
+            
+            
+            '''.format(len(compras) + len(compras_2))
+
+    else:
+        compras = Comparativas.objects.filter(estado = "NO AUTORIZADA", creador = usuario)
+
+        if len(compras) > 0:
+
+            mensaje_oc = "Tienes {} ordenes de compra rechazadas!".format(len(compras))
+        
+
     datos_logo = 0
 
     try:
@@ -428,7 +453,7 @@ def inicio(request):
 
     barras = sorted(barras,reverse=True, key=lambda tup: tup[1])
 
-    return render(request, "users/inicio.html", {"datos_barras":barras, "datos_logo":datos_logo, "datos_pl":datos_pl, "mensajesdeldia":mensajesdeldia, "datos_mensajeria":datos_mensajeria})
+    return render(request, "users/inicio.html", {"datos_barras":barras, "datos_logo":datos_logo, "mensaje_oc":mensaje_oc, "mensajesdeldia":mensajesdeldia, "datos_mensajeria":datos_mensajeria})
 
 def welcome(request):
     # Si estamos identificados devolvemos la portada
