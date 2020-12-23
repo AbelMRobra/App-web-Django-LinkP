@@ -3,6 +3,7 @@ from proyectos.models import Proyectos
 from .models import Etapas, ItemEtapa, TecnicaMensaje
 from rrhh.models import datosusuario
 import datetime
+from datetime import date, timedelta
 
 # Create your views here.
 
@@ -65,6 +66,56 @@ def documentacion(request):
         datos.append((p, sub_datos, dias_faltantes, avance_general))
 
     return render(request, "documentacion.html", {"datos":datos})
+
+def ganttet(request, id_proyecto):
+
+    proyecto = Proyectos.objects.get(id = id_proyecto)
+
+    datos_etapas = Etapas.objects.filter(proyecto = proyecto)
+
+    # ------> Fechas
+
+    #Establecemos un rango para hacer el gantt
+    
+    fecha_inicial_hoy = datetime.date.today()
+
+    fecha_inicial_2 = datetime.date(fecha_inicial_hoy.year, fecha_inicial_hoy.month, 1)
+
+    fechas = []
+
+    contador = 0
+    contador_year = 1
+
+    # El cash en template es un rango de 24 meses
+
+    for f in range(8):
+
+        if (fecha_inicial_2.month + contador) == 13:
+            
+            year = fecha_inicial_2.year + contador_year
+            
+            fecha_cargar = date(year, 1, 1)
+
+            fechas.append(fecha_cargar)
+            
+            contador_year += 1
+
+            contador = - (12 - contador)
+
+        else:
+
+            mes = fecha_inicial_2.month + contador
+
+            year = fecha_inicial_2.year + contador_year - 1
+
+            fecha_cargar = date(year, mes, 1)
+
+            fechas.append(fecha_cargar)
+
+        contador += 1
+
+
+    return render(request, "gantt.html", {"fechas":fechas, "proyecto":proyecto})
 
 def mensajesitem(request, id_item):
 

@@ -10,10 +10,6 @@
     <h3 style="font-family: Arial, Helvetica, sans-serif;">Seguimiento de proyectos</h3>
     <small style="font-family: Arial, Helvetica, sans-serif;"><b>Modulo:</b> Documentación O.T</small>
 
-     <div style="text-align:center">
-                  
-    </div> 
-
     <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
 
 
@@ -24,6 +20,13 @@
         <div class="panel panel-default" style="margin: 5px;">
           <div class="panel-heading" role="tab" id="heading{{i.0.id}}">
             <h4 class="panel-title"  style="text-align: left;">
+
+                <a href="{% url 'Gantt ET' i.0.id %}" style="text-decoration:none">
+
+                    <img src="{% static 'img/grafico-de-gantt.png' %}" alt="" style="max-width:40px; height:auto; margin: 5px; vertical-align: top;">
+
+                </a>
+                
               <a style="font-family: Arial, Helvetica, sans-serif;  text-decoration:none" class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse{{i.0.id}}" aria-expanded="false" aria-controls="collapse{{i.0}}">
 
                 <div style="display: inline-block; width: 350px; vertical-align: middle;">
@@ -85,6 +88,8 @@
                 {% endfor %}
 
               </a>
+
+              
             </h4>
           </div>
           <div id="collapse{{i.0.id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading{{i.0.id}}">
@@ -245,7 +250,6 @@
         {% endfor %}
         
       </div>
-
 
     <div style="margin-top: 2rem;">
         <p> <small>-- Link<strong>P</strong> --</small> </p>
