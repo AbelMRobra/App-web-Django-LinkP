@@ -31,15 +31,18 @@
 
             </ul>
             <ul class="chart-bars">
-              <li data-duration="2020.12-2021.06" data-color="rgb({{proyecto.color}})">FINAL DE OBRA</li>
-              <li data-duration="2021.01-2021.02" data-color="rgba({{proyecto.color}}, 0.6)">Tarea 1</li>
-              <li data-duration="2021.01-2021.03" data-color="rgba({{proyecto.color}}, 0.6)">Tarea 2</li>
-              <li data-duration="2021.03-2021.06" data-color="rgba({{proyecto.color}}, 0.6)">Tarea 3</li>
-              <li data-duration="mon-tue½" data-color="#da6f2b">Task</li>
-              <li data-duration="wed-wed" data-color="#3d8bb1">Task</li>
-              <li data-duration="thu-fri½" data-color="#e03f3f">Task</li>
-              <li data-duration="mon½-wed½" data-color="#59a627">Task</li>
-              <li data-duration="fri-sat" data-color="#4464a1">Task</li>
+                {% for i in datos %}
+  
+              <li data-duration="{{i.2|date:'Y.m'}}-{{i.3|date:'Y.m'}}" data-color="rgb({{proyecto.color}})">{{i.0}}</li>
+
+              {% for t in i.1 %}
+
+              <li data-duration="{% if t.1.days > 15%}{{t.1|date:'Y.m'}}½{%else%}{{t.1|date:'Y.m'}}{%endif%}-{% if t.2.days > 15%}{{t.2|date:'Y.m'}}½{%else%}{{t.2|date:'Y.m'}}{%endif%}" data-color="rgba({{proyecto.color}}, 0.6)">{{t.0}}</li>
+
+              {% endfor %}
+
+              {% endfor %}
+
             </ul>
           </div>
 

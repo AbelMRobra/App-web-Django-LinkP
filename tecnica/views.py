@@ -114,8 +114,38 @@ def ganttet(request, id_proyecto):
 
         contador += 1
 
+    # ------> Datos a colocar
 
-    return render(request, "gantt.html", {"fechas":fechas, "proyecto":proyecto})
+    datos_etapas = Etapas.objects.filter(proyecto = proyecto)
+
+    datos = []
+
+    for e in datos_etapas:
+
+        items = ItemEtapa.objects.filter(etapa = e, fecha_inicio__lte = fechas[-1], fecha_final__gte = fecha_inicial_hoy)
+
+        datos_items = []
+        
+        if len(items) > 0:
+
+            fecha_1 = ItemEtapa.objects.filter(etapa = e, fecha_inicio__lte = fechas[-1], fecha_final__gte = fecha_inicial_hoy).order_by("-fecha_inicio").values_list("fecha_inicio")[0][0]
+            fecha_2 = ItemEtapa.objects.filter(etapa = e, fecha_inicio__lte = fechas[-1], fecha_final__gte = fecha_inicial_hoy).order_by("-fecha_final").values_list("fecha_final")[0][0]
+
+            for i in items:
+
+                if (i.fecha_inicio - fecha_inicial_hoy).days >= 0 and (fechas[-1] - i.fecha_final) >= 0:
+
+                    datos_items.append((i.nombre, i.fecha_inicio, i.fecha_final))
+
+                elif (i.fecha_inicio -fecha_inicial_hoy).days >= 0:
+
+                    datos_items.append((i.nombre, i.fecha_inicio, fechas[-1]))
+                else:
+                    datos_items.append((i.nombre, fecha_inicial_hoy, i.fecha_final))
+            
+            datos.append((e.nombre, datos_items, fecha_1, fecha_2))
+
+    return render(request, "gantt.html", {"fechas":fechas, "proyecto":proyecto, "datos":datos})
 
 def mensajesitem(request, id_item):
 
