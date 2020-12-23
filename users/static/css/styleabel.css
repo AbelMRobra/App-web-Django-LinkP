@@ -232,6 +232,11 @@ box-shadow: 0 0 30px 2px #E62B18;
         border-radius:15px;
         }
 
+:root {
+--white: #fff;
+--divider: lightgrey;
+--body: #f5f7f8;
+}
 /* RESET RULES
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 .chart-wrapper {
