@@ -142,7 +142,7 @@
 
                                             <a href="#"><img src="{% static 'img/borrar.png' %}" alt="" style="max-width:15px; height:auto; margin: 2px;"></a>
 
-                                            <a href="#"><img src="{% static 'img/documento.png' %}" alt="" style="max-width:15px; height:auto; margin: 2px;"></a>
+                                            <a href="{% url 'Editar Item' t.id %}"><img src="{% static 'img/documento.png' %}" alt="" style="max-width:15px; height:auto; margin: 2px;"></a>
                                             
                                             <small>{{t.nombre}}</small></td>
 
@@ -209,14 +209,14 @@
                                         </small></td>
 
                                         {% if t.fecha_inicio %}
-                                        <td style="width: 10%;"><small>{{t.fecha_inicio|date:"Y-m-j"}}</small></td>
+                                        <td style="width: 10%;"><small>{{t.fecha_inicio|date:"Y-m-d"}}</small></td>
                                         {% else %}
 
                                         <td style="width: 10%;"><small>NO DEFINIDIO</small></td>
 
                                         {% endif %}
                                         {% if t.fecha_final %}
-                                        <td style="width: 10%;"><small>{{t.fecha_final|date:"Y-m-j"}}</small></td>
+                                        <td style="width: 10%;"><small>{{t.fecha_final|date:"Y-m-d"}}</small></td>
                                         {% else %}
 
                                         <td style="width: 10%;"><small>NO DEFINIDIO</small></td>

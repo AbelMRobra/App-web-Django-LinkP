@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.shortcuts import redirect
 from proyectos.models import Proyectos
 from .models import Etapas, ItemEtapa, TecnicaMensaje
 from rrhh.models import datosusuario
@@ -6,6 +7,24 @@ import datetime
 from datetime import date, timedelta
 
 # Create your views here.
+
+def editaritem(request, id_item):
+
+    datos = ItemEtapa.objects.get(id = id_item)
+
+    if request.method == 'POST':
+
+        datos.nombre = request.POST['nombre']
+        datos.responsable = datosusuario.objects.get(identificacion = request.POST['responsable'])
+        datos.estado = request.POST['estado']
+        datos.fecha_inicio = request.POST['fechai']
+        datos.fecha_final = request.POST['fechaf']
+
+        datos.save()
+
+        return redirect('Documentacion')
+
+    return render(request, "editaritem.html", {"datos":datos})
 
 def documentacion(request):
 

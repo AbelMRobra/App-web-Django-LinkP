@@ -1,0 +1,223 @@
+{% extends "users/inicio.html" %}
+
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+
+<div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;">
+
+    <div>
+
+        <img src="{{datos.etapa.proyecto.iamgen.url}}"  class="img-fluid" alt="..." style="max-width:200px;width:auto;height:auto; margin-top: 5px; margin-bottom: 5px;">
+
+
+    </div>
+
+    <div>
+
+        <small style="color: rgb({{datos.etapa.proyecto.color}}); font-family: Arial, Helvetica, sans-serif;"><b>{{ datos.etapa.proyecto.nombre }}</b> </small>
+    
+
+
+    </div>
+
+    <div>
+
+        <small style="font-family: Arial, Helvetica, sans-serif;"><b>{{ datos.etapa.nombre }}</b> </small>
+    
+
+
+    </div>
+    <small style="font-family: Arial, Helvetica, sans-serif;"><b>Modulo:</b> Documentación O.T</small>
+
+
+
+    <form  role="form"  enctype="multipart/form-data" action="" method="POST" id="upload-image-form" style="margin: 30px;"> 
+        {% csrf_token %}
+
+
+        <div style="margin: 5px">
+
+            <div style="display: inline-block; margin: 10px; width: 200px;">
+
+                <label for="nombre"><h6>Nombre del item</h6></label>
+    
+            </div>
+            
+            <div style="display: inline-block; margin: 10px; ">
+    
+                <input name="nombre" type="search" class="form-control form-control" value="{{datos.nombre}}" list="provee" style="width: 300px;">
+    
+            </div>
+
+
+        </div>
+
+        <div style="margin: 5px">
+
+            <div style="display: inline-block; margin: 10px; width: 200px;">
+
+                <label for="responsable"><h6>Responsable</h6></label>
+    
+            </div>
+            
+            <div style="display: inline-block; margin: 10px; ">
+    
+                <input name="responsable" type="text" class="form-control form-control" value="{{datos.responsable.identificacion}}" style="width: 300px;">
+    
+            </div>
+
+
+        </div>
+
+        <div  style="margin: 5px">
+
+            <div style="display: inline-block; margin: 10px; width: 200px;">
+
+                <label for="estado"><h6>Estado</h6></label>
+    
+            </div>
+            
+            <div style="display: inline-block; margin: 10px; ">
+    
+                <select name="estado" class="custom-select" style="width: 300px;">
+
+                    {% if datos.estado == "ESPERA" %}
+
+                    <option value="ESPERA" selected>ESPERA</option>
+
+                    {% else %}
+
+                    <option value="ESPERA">ESPERA</option>
+
+                    {% endif %}
+
+                    {% if datos.estado == "TRABAJANDO" %}
+
+                    <option value="TRABAJANDO" selected>TRABAJANDO</option>
+
+                    {% else %}
+
+                    <option value="TRABAJANDO">TRABAJANDO</option>
+
+                    {% endif %}
+
+                    {% if datos.estado == "PROBLEMAS" %}
+
+                    <option value="PROBLEMAS" selected>PROBLEMAS</option>
+
+                    {% else %}
+
+                    <option value="PROBLEMAS">PROBLEMAS</option>
+
+                    {% endif %}
+
+                    {% if datos.estado == "LISTO" %}
+
+                    <option value="LISTO" selected>LISTO</option>
+
+                    {% else %}
+
+                    <option value="LISTO">LISTO</option>
+
+                    {% endif %}
+
+
+                </select>
+    
+            </div>
+
+
+        </div>
+
+        <div style="margin: 5px">
+
+            <div style="display: inline-block; margin: 10px;  width: 200px;">
+
+                <label for="fechai"><h6>Fecha inicial</h6></label>
+    
+            </div>
+    
+            <div style="display: inline-block; margin: 10px; "> 
+    
+                <input name="fechai" type="date" class="form-control form-control" value="{{datos.fecha_inicio|date:'Y-m-d'}}" style="width: 300px;">
+    
+            </div>
+
+
+        </div>
+
+
+        <div style="margin: 5px">
+
+            <div style="display: inline-block; margin: 10px;  width: 200px;">
+
+                <label for="fechaf"><h6>Fecha final</h6></label>
+    
+            </div>
+    
+            <div style="display: inline-block; margin: 10px; "> 
+    
+                <input name="fechaf" type="date" class="form-control form-control" style="width: 300px;" value="{{datos.fecha_final|date:'Y-m-d'}}">
+    
+            </div>
+
+
+        </div>
+
+        <div style="margin: 5px">
+
+            <div style="display: inline-block; margin: 10px;  width: 200px;">
+
+                <label for="url"><h6>URL</h6></label>
+    
+            </div>
+    
+            <div style="display: inline-block; margin: 10px; "> 
+    
+                <input name="url" type="url" class="form-control form-control" style="width: 300px;">
+    
+            </div>
+
+
+        </div>
+
+        
+
+        <div style="margin: 5px">
+
+            <div style="display: inline-block; margin: 10px;; width: 200px;">
+
+                <label for="adjunto"><h6>Adjunto</h6></label>
+    
+            </div>
+            
+            <div style="display: inline-block; margin: 10px; ">
+    
+                <input type="file" class="form-control-file" name="adjunto" aria-describedby="fileHelp" >
+    
+            </div>
+
+
+        </div>
+
+          <button type="submit" class="btn btn-primary">Subir</button>
+
+
+        {{ form.as_p }}
+    </form>
+
+    <a href="{% url 'Documentacion' %}" class="btn btn-secondary"><img src="{% static 'img/flecha-izquierda.png' %}" alt="" style="max-width:15px; height:auto; margin: 2px;"> Volver</a>
+
+
+<div style="margin-top: 2rem;">
+    <p> <small>-- Link<strong>P</strong> --</small> </p>
+
+ </div>
+    
+                
+</div>
+
+
+{% endblock %}

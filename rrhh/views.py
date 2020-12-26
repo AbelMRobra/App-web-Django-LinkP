@@ -166,11 +166,11 @@ def notadepedido(request, id_nota):
 
         if str(datos.visto) == "None":
 
-            datos.visto = str(request.POST["FIRMA"]) + " "
+            datos.visto = str(request.POST["FIRMA"])
 
         else:
 
-            datos.visto = str(datos.visto) + str(request.POST["FIRMA"]) + " "
+            datos.visto = str(datos.visto) + "-" + str(request.POST["FIRMA"])
 
         datos.save()
 
