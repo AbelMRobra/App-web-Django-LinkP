@@ -63,15 +63,20 @@
                 
         
         </h6>
+        <h6 style="font-family: Arial, Helvetica, sans-serif;">URL: <small><a href="{{datos.url}}">{{datos.url}}</a></small></h6>
 
                   
     </div> 
 
+    {% if datos.archivo_vigente %}
+
     <div style="text-align: left;">
 
-        <a href="{{ 1.datos.archivo_vigente.url }}" class="btn btn-sm btn-light"><span class="hint--right hint--danger" aria-label="Documentación disponible">VER ADJUNTO <img src="{% static 'img/archivo-adjunto.png' %}" alt="" style="max-width:25px; height:auto; margin: 2px;"></span> </a>
+        <a href="{{ datos.archivo_vigente.url }}" class="btn btn-sm btn-light"><span class="hint--right hint--danger" aria-label="Documentación disponible">VER ADJUNTO <img src="{% static 'img/archivo-adjunto.png' %}" alt="" style="max-width:25px; height:auto; margin: 2px;"></span> </a>
 
     </div>
+
+    {% endif %}
 
 
     <b><hr class = "my-4" style="width: 100%;"></b>

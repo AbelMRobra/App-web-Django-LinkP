@@ -19,8 +19,17 @@ def editaritem(request, id_item):
         datos.estado = request.POST['estado']
         datos.fecha_inicio = request.POST['fechai']
         datos.fecha_final = request.POST['fechaf']
+        datos.url = request.POST['url']
 
         datos.save()
+
+        try:
+            datos.archivo_vigente = request.FILES['adjunto']
+            datos.save()
+
+        except:
+
+            pass
 
         return redirect('Documentacion')
 

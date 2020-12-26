@@ -35,7 +35,7 @@ class ItemEtapa(models.Model):
     fecha_estimada = models.DateField(verbose_name="Fecha estimada de finalziación", blank=True, null=True)
     fecha_inicio = models.DateField(verbose_name="Fecha de inicio", blank=True, null=True)
     fecha_final = models.DateField(verbose_name="Fecha final", blank=True, null=True)
-
+    url = models.CharField(max_length=200, verbose_name="URL del servidor", blank=True, null=True)
     class Meta:
 
         verbose_name="Sub etapa"
