@@ -52,7 +52,7 @@
 
               {% for t in i.1 %}
 
-              <li data-duration="{% if t.1.days > 15%}{{t.1|date:'Y.m'}}½{%else%}{{t.1|date:'Y.m'}}{%endif%}-{% if t.2.days > 15%}{{t.2|date:'Y.m'}}½{%else%}{{t.2|date:'Y.m'}}{%endif%}" data-color="rgba({{proyecto.color}}, 0.6)">{{t.0}}</li>
+              <li data-duration="{% if t.1.days > 15%}{{t.1|date:'Y.m'}}½{%else%}{{t.1|date:'Y.m'}}{%endif%}-{% if t.2.days > 15%}{{t.2|date:'Y.m'}}½{%else%}{{t.2|date:'Y.m'}}{%endif%}" data-color="rgba({{proyecto.color}}, 0.8)">{{t.0}}</li>
 
               {% endfor %}
 
