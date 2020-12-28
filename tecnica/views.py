@@ -32,6 +32,7 @@ def editaritem(request, id_item):
 
     if request.method == 'POST':
 
+        datos.orden = request.POST['orden']
         datos.nombre = request.POST['nombre']
         datos.responsable = datosusuario.objects.get(identificacion = request.POST['responsable'])
         datos.estado = request.POST['estado']
