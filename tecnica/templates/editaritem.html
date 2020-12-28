@@ -226,6 +226,15 @@
         {{ form.as_p }}
     </form>
 
+    <div style="margin: 30px;">
+
+        <a href="{% url 'Borrar Item' datos.id %}" class="btn btn-sm btn-light"><img src="{% static 'img/borrar.png' %}" alt="" style="max-width:20px; height:auto;"></a>
+
+
+
+    </div>
+
+    
     <a href="{% url 'Documentacion' %}" class="btn btn-secondary"><img src="{% static 'img/flecha-izquierda.png' %}" alt="" style="max-width:15px; height:auto; margin: 2px;"> Volver</a>
 
 

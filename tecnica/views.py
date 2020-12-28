@@ -8,6 +8,19 @@ from datetime import date, timedelta
 
 # Create your views here.
 
+
+def eliminaritem(request, id_item):
+
+    datos = ItemEtapa.objects.get(id = id_item)
+
+    if request.method == 'POST':
+
+        datos.delete()
+
+        return redirect('Documentacion')
+
+    return render(request, "borraritem.html", {"datos":datos})
+
 def agregaritem(request, id_etapa):
 
     datos = Etapas.objects.get(id = id_etapa)
