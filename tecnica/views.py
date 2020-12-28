@@ -68,7 +68,7 @@ def documentacion(request):
 
             avance_general = avance_general + listos
 
-            datos_itemetapas = ItemEtapa.objects.filter(etapa = e)
+            datos_itemetapas = ItemEtapa.objects.filter(etapa = e).order_by("orden")
 
             cantidad = len(ItemEtapa.objects.filter(etapa = e))
 

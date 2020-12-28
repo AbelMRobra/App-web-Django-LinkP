@@ -128,6 +128,8 @@
                                         <td><small><b></b></small></td>
                                         <td><small><b>ESTADO</b></small></td>
                                         <td><small><b>RESP.</b></small></td>
+                                        <td><small><b>INICIO (P)</b></small></td>
+                                        <td><small><b>FINAL (P)</b></small></td>
                                         <td><small><b>INICIO</b></small></td>
                                         <td><small><b>FINAL</b></small></td>
                                         <td><small><b>ADJUNTO</b></small></td>
@@ -136,24 +138,24 @@
 
                                     {% for t in c.1 %}
 
-                                    <tr class = "table-light">
-                                        
-                                        <td style="width: 40%;">
+                                    <tr class = "table-light">                                     
+                                        <td style="width: 30%;">
 
                                             <a href="#"><img src="{% static 'img/borrar.png' %}" alt="" style="max-width:15px; height:auto; margin: 2px;"></a>
 
                                             <a href="{% url 'Editar Item' t.id %}"><img src="{% static 'img/documento.png' %}" alt="" style="max-width:15px; height:auto; margin: 2px;"></a>
                                             
-                                            <small>{{t.nombre}}</small></td>
+                                            
+                                            <small><b>Nº: {{t.orden|floatformat:0}}</b> {{t.nombre}}</small></td>
 
-                                            <td style="width: 10%;"><small>
+                                            <td style="width: 5%;"><small>
 
                                                 <a href="{% url 'Mensaje item' t.id %}"><img src="{% static 'img/charlar.png' %}" alt="" style="max-width:20px; height:auto; margin: 2px;"></a>
                                                                                         
                                             </small></td>
 
                                         {% if t.estado == 'LISTO' %}
-                                        <td style="width: 20%; color: rgb(124, 209, 107)"><small>
+                                        <td style="width: 10%; color: rgb(124, 209, 107)"><small>
 
 
                                             <b>{{t.estado}}</b> 
@@ -163,7 +165,7 @@
 
                                         {% elif t.estado == 'TRABAJANDO' %}
 
-                                        <td style="width: 20%; color: rgb(209, 176, 107)"><small>
+                                        <td style="width: 10%; color: rgb(209, 176, 107)"><small>
 
 
                                             <b>{{t.estado}}</b> 
@@ -173,7 +175,7 @@
 
                                         {% elif t.estado == 'PROBLEMAS' %}
 
-                                        <td style="width: 20%; color: rgb(209, 119, 107)"><small>
+                                        <td style="width: 10%; color: rgb(209, 119, 107)"><small>
 
 
                                             <b>{{t.estado}}</b> 
@@ -183,7 +185,7 @@
 
                                         {% else %}
 
-                                        <td style="width: 20%;"><small>
+                                        <td style="width: 10%;"><small>
 
 
                                             <b>{{t.estado}}</b> 
@@ -194,7 +196,7 @@
                                         {% endif %}
 
 
-                                        <td style="width: 10%;"><small>
+                                        <td style="width: 5%;"><small>
 
                                             {% if t.responsable %}
                                             
@@ -207,6 +209,21 @@
                                             {% endif %}
 
                                         </small></td>
+
+                                        {% if t.fecha_estimada_i %}
+                                        <td style="width: 10%;"><small>{{t.fecha_estimada_i|date:"Y-m-d"}}</small></td>
+                                        {% else %}
+
+                                        <td style="width: 10%;"><small>NO DEFINIDIO</small></td>
+
+                                        {% endif %}
+                                        {% if t.fecha_estimada_f %}
+                                        <td style="width: 10%;"><small>{{t.fecha_estimada_f|date:"Y-m-d"}}</small></td>
+                                        {% else %}
+
+                                        <td style="width: 10%;"><small>NO DEFINIDIO</small></td>
+
+                                        {% endif %}
 
                                         {% if t.fecha_inicio %}
                                         <td style="width: 10%;"><small>{{t.fecha_inicio|date:"Y-m-d"}}</small></td>
