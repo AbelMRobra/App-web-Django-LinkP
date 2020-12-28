@@ -233,7 +233,7 @@ box-shadow: 0 0 30px 2px #E62B18;
         }
 
 :root {
---white: #fff;
+--white: #EAE9E6;
 --divider: lightgrey;
 --body: #f5f7f8;
 }
@@ -270,7 +270,7 @@ position: relative;
 content: '';
 position: absolute;
 right: 0;
-height: auto;
+height: 1000px;
 border-right: 1px solid var(--divider);
 }
 
