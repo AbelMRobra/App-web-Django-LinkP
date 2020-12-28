@@ -270,7 +270,7 @@ position: relative;
 content: '';
 position: absolute;
 right: 0;
-height: 510px;
+height: auto;
 border-right: 1px solid var(--divider);
 }
 
