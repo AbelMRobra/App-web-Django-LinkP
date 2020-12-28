@@ -8,6 +8,24 @@ from datetime import date, timedelta
 
 # Create your views here.
 
+def agregaritem(request, id_etapa):
+
+    datos = Etapas.objects.get(id = id_etapa)
+
+    if request.method == 'POST':
+
+        b = ItemEtapa(
+            orden = request.POST['orden'],
+            nombre = request.POST['nombre'],
+            etapa = datos,
+        )
+
+        b.save()
+
+        return redirect('Documentacion')
+
+    return render(request, "crearitem.html", {"datos":datos})
+
 def editaritem(request, id_item):
 
     datos = ItemEtapa.objects.get(id = id_item)
