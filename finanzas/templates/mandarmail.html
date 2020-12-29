@@ -61,7 +61,46 @@
         {{ form.as_p }}
     </form>
 
-    <a href="{% url 'Documentacion' %}" class="btn btn-secondary"><img src="{% static 'img/flecha-izquierda.png' %}" alt="" style="max-width:15px; height:auto; margin: 2px;"> Volver</a>
+    {% if mensaje %}
+
+    {% if mensaje == "ok" %}
+
+    <div>
+
+        <img src="{% static 'img/aceptado.png' %}"  class="img-fluid" alt="..." style="max-width:30px;width:auto;height:auto; margin-bottom: 5px;">
+
+
+    </div>
+
+    <div>
+
+        <small style="color: rgb(43, 209, 38); font-family: Arial, Helvetica, sans-serif; margin-bottom: 5px;"><b>Email enviado exitosamente!</b> </small>
+    
+
+
+    </div>
+
+    {% else %}
+
+    <div>
+
+        <img src="{% static 'img/rechazado.png' %}"  class="img-fluid" alt="..." style="max-width:30px;width:auto;height:auto; margin-bottom: 5px;">
+
+
+    </div>
+
+    <div>
+
+        <small style="color: rgb(212, 63, 19); font-family: Arial, Helvetica, sans-serif; margin-bottom: 5px;"><b>Ocurrio un error durante el envio!</b> </small>
+    
+
+    </div>
+
+    {% endif %}
+
+    {% endif %}
+
+    <a href="{% url 'Cuenta corriente proyecto' datos.venta.proyecto.id %}" class="btn btn-secondary"><img src="{% static 'img/flecha-izquierda.png' %}" alt="" style="max-width:15px; height:auto; margin: 2px;"> Volver</a>
 
 
 <div style="margin-top: 2rem;">

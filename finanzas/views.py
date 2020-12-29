@@ -204,6 +204,8 @@ def mandarmail(request, id_cuenta):
 
     datos = CuentaCorriente.objects.get(id = id_cuenta)
 
+    mensaje = 0
+
 
     if request.method == 'POST':
 
@@ -213,51 +215,60 @@ def mandarmail(request, id_cuenta):
 
         venta.save()
 
-        # Establecemos conexion con el servidor smtp de gmail
-        mailServer = smtplib.SMTP(settings.EMAIL_HOST, settings.EMAIL_PORT)
-        mailServer.ehlo()
-        mailServer.starttls()
-        mailServer.ehlo()
-        mailServer.login(settings.EMAIL_HOST_USER, settings.EMAIL_HOST_PASSWORD)
+        try:
 
-        # Construimos el mensaje simple
-        
-        mensaje = MIMEMultipart()
-        mensaje.attach(MIMEText("""
-        
-        Buenas!,
+            # Establecemos conexion con el servidor smtp de gmail
+            mailServer = smtplib.SMTP(settings.EMAIL_HOST, settings.EMAIL_PORT)
+            mailServer.ehlo()
+            mailServer.starttls()
+            mailServer.ehlo()
+            mailServer.login(settings.EMAIL_HOST_USER, settings.EMAIL_HOST_PASSWORD)
 
-        Este mail es una prueba del envio de cuenta corriente.
+            # Construimos el mensaje simple
+            
+            mensaje = MIMEMultipart()
+            mensaje.attach(MIMEText("""
+            
+            Buenas!,
 
-        El cliente es: {}
+            Este mail es una prueba del envio de cuenta corriente.
 
-        Este mail deberia tener un adjunto en PDF
+            El cliente es: {}
 
-        Gracias!
+            Este mail deberia tener un adjunto en PDF
 
-        Saludos!
-        """.format(venta.comprador), 'plain'))
-        mensaje['From']=settings.EMAIL_HOST_USER
-        mensaje['To']=venta.email
-        mensaje['Subject']="Prueba de correo para {}".format(venta.comprador)
+            Gracias!
 
-        # Esta es la parte para adjuntar (prueba)
+            Saludos!
+            """.format(venta.comprador), 'plain'))
+            mensaje['From']=settings.EMAIL_HOST_USER
+            mensaje['To']=venta.email
+            mensaje['Subject']="Prueba de correo para {}".format(venta.comprador)
 
-        adjunto_MIME = MIMEBase('application', "octet-stream")
-        pdf_adjunto = PdfPrueba()
-        pdf_adjunto = pdf_adjunto.get(request = request, id_cuenta = id_cuenta).content
-        adjunto_MIME.set_payload(pdf_adjunto)
-        encoders.encode_base64(adjunto_MIME)
-        adjunto_MIME.add_header('Content-Disposition', 'attachment; filename="reporte.pdf"')
-        mensaje.attach(adjunto_MIME)
+            # Esta es la parte para adjuntar (prueba)
 
-        # Envio del mensaje
+            adjunto_MIME = MIMEBase('application', "octet-stream")
+            pdf_adjunto = PdfPrueba()
+            pdf_adjunto = pdf_adjunto.get(request = request, id_cuenta = id_cuenta).content
+            adjunto_MIME.set_payload(pdf_adjunto)
+            encoders.encode_base64(adjunto_MIME)
+            adjunto_MIME.add_header('Content-Disposition', 'attachment; filename="reporte.pdf"')
+            mensaje.attach(adjunto_MIME)
 
-        mailServer.sendmail(settings.EMAIL_HOST_USER,
-                        venta.email,
-                        mensaje.as_string())
+            # Envio del mensaje
 
-    return render(request, 'mandarmail.html', {"datos":datos})
+            mailServer.sendmail(settings.EMAIL_HOST_USER,
+                            venta.email,
+                            mensaje.as_string())
+
+
+            datos = CuentaCorriente.objects.get(id = id_cuenta)
+
+            mensaje = "ok"
+        except:
+            mensaje = "error"
+
+    return render(request, 'mandarmail.html', {"datos":datos, "mensaje":mensaje})
 
        
 def resumencredinv(request):
