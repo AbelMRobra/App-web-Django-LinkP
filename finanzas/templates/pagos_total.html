@@ -19,11 +19,43 @@
 
 
     <b><hr class = "my-4" style="width: 100%; "></b>
+    <div style="text-align: left;">
+
+        <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+            <button type="button" class="btn btn-primary">{{mensaje}}</button>
+            <div class="btn-group" role="group">
+                <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+                <div class="dropdown-menu" aria-labelledby="btnGroupDrop1" style="">
+                    <div style="margin: 2px;">
+    
+                        <a href="{% url 'Panel de pagos total' 0 %}" style="margin-top: 5px;" >Todos</a>
+    
+                    </div>
+    
+                    {% for i in list_proyectos %}
+    
+                    <div style="margin: 2px;">
+    
+                        <a href="{% url 'Panel de pagos total' i.0.id %}" style="margin-top: 5px;" >{{i.0.nombre}} ({{i.1}})</a> 
+                    
+                    </div>
+    
+                    {% endfor %}
+    
+    
+                                              
+                </div>
+            </div>
+            </div>
+
+    </div>
+
+    
 
 
     <div class = "tableconteinerabel">
 
-        <table class = "table table-hover" style="text-align: center; margin-top: 2%;">
+        <table class = "table table-hover" style="text-align: center; margin-top: 5px;">
             <thead>
     
                 <tr class = "table-dark">

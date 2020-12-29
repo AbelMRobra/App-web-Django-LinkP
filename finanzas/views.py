@@ -1221,9 +1221,34 @@ def panelctacote(request):
     return render(request, 'panelctacte.html', {"datos":datos})
 
 
-def consultapagos(request):
+def consultapagos(request, id_proyecto):
 
-    datos_viejo = Pago.objects.order_by("-fecha")
+    # ---> Lista de proyectos
+
+    proyectos = Proyectos.objects.all()
+
+    list_proyectos = []
+
+    for p in proyectos:
+
+        cantidad = len(Pago.objects.filter(cuota__cuenta_corriente__venta__proyecto__id = p.id))
+
+        if cantidad > 0:
+
+            list_proyectos.append((p, cantidad))
+
+    if id_proyecto == "0":
+
+        mensaje = "Todos"
+
+        datos_viejo = Pago.objects.order_by("-fecha")
+
+    else:
+
+        mensaje = Proyectos.objects.get(id = id_proyecto).nombre
+
+        datos_viejo = Pago.objects.filter(cuota__cuenta_corriente__venta__proyecto__id = id_proyecto).order_by("-fecha")
+
 
     datos = []
 
@@ -1239,7 +1264,7 @@ def consultapagos(request):
 
         datos.append(datos_subir)
 
-    return render(request, 'pagos_total.html', {"datos":datos})
+    return render(request, 'pagos_total.html', {"datos":datos, "list_proyectos":list_proyectos, "mensaje":mensaje})
 
 def honorarios(request):
 
