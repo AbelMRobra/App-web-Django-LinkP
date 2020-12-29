@@ -187,9 +187,9 @@ def historialventa(request):
 
             pricing = desde*m2
 
-            descuento = (1 - v.precio_contado/pricing)*100
+            descuento_un = (1 - v.precio_contado/pricing)*100
 
-            lista_venta_des.append((v, pricing, descuento, v.fecha))
+            lista_venta_des.append((v, pricing, descuento_un, v.fecha))
 
         except:
             lista_venta_des.append((v, "S/PRG", "S/D", v.fecha))
@@ -268,9 +268,9 @@ def historialventa(request):
 
             pricing = desde*m2
 
-            descuento = (1 - v.precio_contado/pricing)*100
+            descuento_un = (1 - v.precio_contado/pricing)*100
 
-            lista_venta_des.append((v, pricing, descuento, v.fecha))
+            lista_venta_des.append((v, pricing, descuento_un, v.fecha))
 
         except:
             lista_venta_des.append((v, "S/PRG", "S/D", v.fecha))
