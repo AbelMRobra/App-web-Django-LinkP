@@ -215,6 +215,10 @@ def mandarmail(request, id_cuenta):
 
         venta.save()
 
+        hoy = datetime.date.today()
+
+        h = Constantes.objects.get(nombre = "Hº VIVIENDA")
+
         try:
 
             # Establecemos conexion con el servidor smtp de gmail
@@ -229,21 +233,28 @@ def mandarmail(request, id_cuenta):
             mensaje = MIMEMultipart()
             mensaje.attach(MIMEText("""
             
-            Buenas!,
+            Estimado cliente {},
 
-            Este mail es una prueba del envio de cuenta corriente.
+            Adjunto estado de cuenta con el valor de la cuota de {}-{}.
 
-            El cliente es: {}
+            El valor del hormigón de este mes es de ${}.
 
-            Este mail deberia tener un adjunto en PDF
+            Le recordamos que los horarios de tesoreria para realizar pagos son:
 
-            Gracias!
+            Lunes a Viernes de 08:30 a 12:30
 
-            Saludos!
-            """.format(venta.comprador), 'plain'))
+            En caso de realizar pagos por Depósito o Transferencias bancarias, solicitamos enviar el comprobante al siguiente mail: 
+            
+            mjp@linkinversiones.com.ar
+            
+            
+            Saludos cordiales
+
+            
+            """.format(venta.comprador, str(hoy.month), str(hoy.year), str(h.valor)), 'plain'))
             mensaje['From']=settings.EMAIL_HOST_USER
             mensaje['To']=venta.email
-            mensaje['Subject']="Prueba de correo para {}".format(venta.comprador)
+            mensaje['Subject']="ESTADO DE CUENTA {}-{}".format(str(hoy.month), str(hoy.year))
 
             # Esta es la parte para adjuntar (prueba)
 
@@ -252,7 +263,7 @@ def mandarmail(request, id_cuenta):
             pdf_adjunto = pdf_adjunto.get(request = request, id_cuenta = id_cuenta).content
             adjunto_MIME.set_payload(pdf_adjunto)
             encoders.encode_base64(adjunto_MIME)
-            adjunto_MIME.add_header('Content-Disposition', 'attachment; filename="reporte.pdf"')
+            adjunto_MIME.add_header('Content-Disposition', 'attachment; filename="EstadoDeCuenta{}.{}.pdf"'.format(str(hoy.month), str(hoy.year)))
             mensaje.attach(adjunto_MIME)
 
             # Envio del mensaje
