@@ -15,6 +15,7 @@ urlpatterns = [
 
     url(r'^panelctacte/$', login_required(views.panelctacote), name = 'Panel cuentas corrientes'),
     url(r'^crearcuenta/(?P<id_proyecto>\d+)/$', login_required(views.crearcuenta), name = 'Crear cuenta corriente'),
+    url(r'^mandarmail/(?P<id_cuenta>\d+)/$', login_required(views.mandarmail), name = 'Mandar email'),
     url(r'^deudores/$', login_required(views.deudores), name = 'Deudores'),
     url(r'^resumen/(?P<id_cliente>\d+)/$', login_required(views.resumenctacte), name = 'Resumen cuenta corriente'),
     url(r'^ctacteproyecto/(?P<id_proyecto>\d+)/$', login_required(views.ctacteproyecto), name = 'Cuenta corriente proyecto'),

@@ -115,7 +115,8 @@
                 <td><a href="{% url 'Cuenta corriente venta' i.id %}" class="btn btn-sm btn-success" ><span class="hint--left hint--danger" aria-label= "Accede a la cuenta corriente!">Ingresar</span></a>
                 </td>
                 <td>
-                    <a href="{% url 'Reporte de pdf de cuentas corrientes' i.id %}"><img src="{% static 'img/pdf.png' %}" alt="" style="max-width:20px; height:auto;"></a>
+                    <a href="{% url 'Reporte de pdf de cuentas corrientes' i.id %}"><span class="hint--left hint--danger" aria-label= "PDF resumen de cuenta!"><img src="{% static 'img/pdf.png' %}" alt="" style="max-width:20px; height:auto;"></span></a>
+                    <a href="{% url 'Mandar email' i.id %}"><span class="hint--left hint--danger" aria-label= "Mandar un email al cliente con su resumen!"><img src="{% static 'img/correo-electronico.png' %}" alt="" style="max-width:20px; height:auto;"></span></a>
                     <a href="{% url 'Detalle venta' i.venta.id %}"><span class="hint--left hint--danger" aria-label= "Anotaciones realizadas en la venta!"><img src="{% static 'img/publicalo.png' %}" alt="" style="max-width:20px; height:auto;"></span></a>
                     <a href="{% url 'Eliminar cuenta corriente' i.id %}" > <span class="hint--left hint--danger" aria-label= "Elimina la cuenta corriente!"><img src="{% static 'img/borrar.png' %}" alt="" style="max-width:20px; height:auto;"></span> </a>
                 </td>

@@ -1,0 +1,76 @@
+{% extends "users/inicio.html" %}
+
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+
+<div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;">
+
+    <div>
+
+        <img src="{{datos.venta.proyecto.iamgen.url}}"  class="img-fluid" alt="..." style="max-width:200px;width:auto;height:auto; margin-top: 5px; margin-bottom: 5px;">
+
+
+    </div>
+
+    <div>
+
+        <small style="color: rgb({{datos.venta.proyecto.color}}); font-family: Arial, Helvetica, sans-serif;"><b>{{ datos.venta.proyecto.nombre }}</b> </small>
+    
+
+
+    </div>
+
+    <div>
+
+        <small style="font-family: Arial, Helvetica, sans-serif;"><b>{{ datos.venta.comrpador }}</b> </small>
+    
+
+
+    </div>
+    <small style="font-family: Arial, Helvetica, sans-serif;"><b>Modulo:</b> Cuentas corrientes</small>
+
+
+
+    <form  role="form"  enctype="multipart/form-data" action="" method="POST" id="upload-image-form" style="margin: 30px;"> 
+        {% csrf_token %}
+
+
+        <div style="margin: 5px">
+
+            <div style="display: inline-block; margin: 10px; width: 200px;">
+
+                <label for="email"><h6>Email de la cuenta</h6></label>
+    
+            </div>
+            
+            <div style="display: inline-block; margin: 10px; ">
+    
+                <input name="email" type="text" class="form-control form-control" value = "{{datos.venta.email}}" list="provee" style="width: 300px;">
+    
+            </div>
+
+
+        </div>
+
+
+          <button type="submit" class="btn btn-primary"><img src="{% static 'img/correo-electronico.png' %}" alt="" style="max-width:22px; height:auto; vertical-align: top;"> Enviar</button>
+
+
+        {{ form.as_p }}
+    </form>
+
+    <a href="{% url 'Documentacion' %}" class="btn btn-secondary"><img src="{% static 'img/flecha-izquierda.png' %}" alt="" style="max-width:15px; height:auto; margin: 2px;"> Volver</a>
+
+
+<div style="margin-top: 2rem;">
+    <p> <small>-- Link<strong>P</strong> --</small> </p>
+
+ </div>
+    
+                
+</div>
+
+
+{% endblock %}

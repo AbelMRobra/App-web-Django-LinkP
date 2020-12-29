@@ -20,6 +20,11 @@ from ventas.models import Pricing, VentasRealizadas
 from datetime import date, timedelta
 from openpyxl import Workbook
 from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+from email.mime.base import MIMEBase
+from email import encoders
 
 
 # Create your views here.
@@ -193,6 +198,67 @@ class PdfPrueba(View):
             return HttpResponse("Hay un error")
 
         return response
+
+
+def mandarmail(request, id_cuenta):
+
+    datos = CuentaCorriente.objects.get(id = id_cuenta)
+
+
+    if request.method == 'POST':
+
+        venta = VentasRealizadas.objects.get(id = datos.venta.id)
+
+        venta.email = request.POST["email"]
+
+        venta.save()
+
+        # Establecemos conexion con el servidor smtp de gmail
+        mailServer = smtplib.SMTP(settings.EMAIL_HOST, settings.EMAIL_PORT)
+        mailServer.ehlo()
+        mailServer.starttls()
+        mailServer.ehlo()
+        mailServer.login(settings.EMAIL_HOST_USER, settings.EMAIL_HOST_PASSWORD)
+
+        # Construimos el mensaje simple
+        
+        mensaje = MIMEMultipart()
+        mensaje.attach(MIMEText("""
+        
+        Buenas!,
+
+        Este mail es una prueba del envio de cuenta corriente.
+
+        El cliente es: {}
+
+        Este mail deberia tener un adjunto en PDF
+
+        Gracias!
+
+        Saludos!
+        """.format(venta.comprador), 'plain'))
+        mensaje['From']=settings.EMAIL_HOST_USER
+        mensaje['To']=venta.email
+        mensaje['Subject']="Prueba de correo para {}".format(venta.comprador)
+
+        # Esta es la parte para adjuntar (prueba)
+
+        adjunto_MIME = MIMEBase('application', "octet-stream")
+        pdf_adjunto = PdfPrueba()
+        pdf_adjunto = pdf_adjunto.get(request = request, id_cuenta = id_cuenta).content
+        adjunto_MIME.set_payload(pdf_adjunto)
+        encoders.encode_base64(adjunto_MIME)
+        adjunto_MIME.add_header('Content-Disposition', 'attachment; filename="reporte.pdf"')
+        mensaje.attach(adjunto_MIME)
+
+        # Envio del mensaje
+
+        mailServer.sendmail(settings.EMAIL_HOST_USER,
+                        venta.email,
+                        mensaje.as_string())
+
+    return render(request, 'mandarmail.html', {"datos":datos})
+
        
 def resumencredinv(request):
 

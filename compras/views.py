@@ -13,6 +13,9 @@ import sqlite3
 import operator
 import datetime
 from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+from email.mime.base import MIMEBase
+from email import encoders
 import dateutil.parser
 import smtplib
 from agenda import settings
@@ -697,6 +700,7 @@ def comparativas(request, estado, creador):
                     mailServer.login(settings.EMAIL_HOST_USER, settings.EMAIL_HOST_PASSWORD)
 
                     # Construimos el mensaje simple
+                    
                     mensaje = MIMEText("""
                     
                     Buenas!,
@@ -714,6 +718,7 @@ def comparativas(request, estado, creador):
                     mensaje['From']=settings.EMAIL_HOST_USER
                     mensaje['To']=datosusuario.objects.get(identificacion = comparativa.creador).email
                     mensaje['Subject']="Todo listo! La O.C para {} esta autorizada!".format(comparativa.proveedor.name)
+
 
                     # Envio del mensaje
 

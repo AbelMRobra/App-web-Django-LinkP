@@ -139,10 +139,18 @@
 
                                     {% for t in c.1 %}
 
-                                    <tr class = "table-light">                                     
-                                        <td style="width: 30%;">
+                                    <tr class = "table-light">  
+                                        
+                                        
+                                        
 
-                                            <small><b>{{t.orden|floatformat:0}}.</b> {{t.nombre}}</small></td>
+                                        <td style="width: 30%;">
+                                                       
+                                            <small><b>{{t.orden|floatformat:0}}.</b> {{t.nombre}}</small>
+
+                                        
+                                        
+                                        </td>
 
                                         <td style="width: 5%;"><small>
 
@@ -261,7 +269,6 @@
 
 
                                         </tr>
-                                        
 
 
                                         {% endfor %}
@@ -277,9 +284,6 @@
                                 <a href="{% url 'Agregar Item' c.0.id %}" style="text-decoration:none" class="btn btn-sm btn-light"><img src="{% static 'img/agregar-archivo.png' %}" alt="" style="max-width:20px; height:auto; margin: 2px;"> <small><b>Agregar item</b> </small> </a>
 
                             </div>
-
-                           
-
 
                         </div>
                         </div>

@@ -73,7 +73,7 @@ class VentasRealizadas(models.Model):
     cuotas_pend = models.IntegerField(verbose_name="Cuotas pendientes")
     observaciones = models.TextField(verbose_name="Observaciones", null=True, blank=True)
     estado = models.CharField(choices=Estado.choices, max_length=20, verbose_name="Estado", blank=True, null=True, default="ACTIVA")
-
+    email = models.CharField(max_length=100, verbose_name = "Email de ventas", null=True, blank=True) 
     
     class Meta:
         verbose_name="Venta"
