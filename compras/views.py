@@ -12,12 +12,12 @@ from presupuestos.models import Articulos, Constantes, Presupuestos, Analisis, M
 import sqlite3
 import operator
 import datetime
+import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from email.mime.base import MIMEBase
 from email import encoders
 import dateutil.parser
-import smtplib
 from agenda import settings
 from datetime import date
 from dateutil.relativedelta import relativedelta

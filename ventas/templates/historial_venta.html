@@ -329,6 +329,78 @@
     
         </div>
 
+        <div style="text-align: left;">
+
+          <h2 style="font-family: Arial, Helvetica, sans-serif;">Registros de ventas</h2>
+
+        </div>
+
+        <table class = "table table-hover" style="text-align: center;">
+          <thead>
+  
+              <tr class = "table-dark">
+                  <th scope = "row" style="vertical-align: middle;"> <small> <b>FECHA</b></small></th>
+                  <th scope = "row" style="vertical-align: middle;"> <small><b>PROYECTO</b> </small></th>
+                  <th scope = "row" style="vertical-align: middle;"> <small><b>COMPRADOR</b> </small></th>
+                  <th scope = "row" style="vertical-align: middle;"> <small><b>UNIDAD</b> </small></th>
+                  <th scope = "row" style="vertical-align: middle;"> <small><b>SUP.</b>  </small></th>
+                  <th scope = "row" style="vertical-align: middle;"> <small><b>PRECIO DE VENTA</b> </small></th>
+                  <th scope = "row" style="vertical-align: middle;"> <small><b>PRECIO DE CONTADO</b> </small></th>
+                  <th scope = "row" style="vertical-align: middle;"> <small><b>PRICING</b></small></th>
+                  <th scope = "row" style="vertical-align: middle;"> <small><b>% DESC</b></small></th>
+  
+              </tr>
+          </thead>
+  
+          <tbody>   
+  
+              {% for i in datos.lista_venta_des %}
+              <tr class = "table-light">
+  
+                  <td style="width: 8%;"> <b> <small>{{i.0.fecha|date:"Y-m-d"}}</small> </b></td>
+                  <td style="color: rgb({{i.0.unidad.proyecto.color}}); width: 10%">  <small> <b>{{i.0.unidad.proyecto.nombre}}</b></small></td>       
+                  <td style="width: 15%;"> <b> <small>{{i.0.comprador}}</small> </b> </td>
+                  <td style="width: 15%;"> <b> <small>{{i.0.unidad.piso_unidad}} -
+  
+                      {% if "0" in i.0.unidad.nombre_unidad %}
+  
+                       {{i.0.unidad.nombre_unidad|floatformat:0}} -
+  
+                      {% else %}
+  
+                       {{i.0.unidad.nombre_unidad}} -
+  
+                      {% endif %}
+  
+                       {{i.0.unidad.tipologia}}
+  
+                  </small> </b> </td>
+                  <td  style="width: 5%;"> <b> <small>{{i.0.m2|floatformat:2}}m2</small> </b> </td>
+                  <td  style="width: 10%;"> <small> <b>${{i.0.precio_venta|floatformat:0|intcomma}}</b> </small></td>
+                  <td  style="width: 10%;"> <small> <b>${{i.0.precio_contado|floatformat:0|intcomma}}</b> </small></td>
+                  <td  style="width: 10%;"> <small> <b>${{i.1|floatformat:0|intcomma}}</b> </small></td>
+                  <td  style="width: 10%;"> <small> <b>{{i.2|floatformat:0|intcomma}} %</b> </small></td>
+                 
+
+  
+              </tr>
+              {% endfor %}
+          </tbody>
+       
+  
+  
+      </table>
+  
+      </div>
+    
+  
+      <b><hr class = "my-4" style="width: 100%;"></b>
+  
+  
+      <div style="text-align: center;">
+          <small>El listado puede continuar, se limita el numero de filas visibles</small>
+      </div>
+
 
 
 

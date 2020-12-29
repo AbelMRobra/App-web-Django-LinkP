@@ -136,6 +136,8 @@ def historialventa(request):
     m2_v = 0
     monto_h = 0
 
+    lista_venta_des = []
+
     for v in ventas_1:
 
         dato = v.unidad
@@ -143,12 +145,9 @@ def historialventa(request):
         if dato.sup_equiv > 0:
 
                 m2 = dato.sup_equiv
-
         else:
 
-            m2 = dato.sup_propia + dato.sup_balcon + dato.sup_comun + dato.sup_patio
-
-            
+            m2 = dato.sup_propia + dato.sup_balcon + dato.sup_comun + dato.sup_patio           
         try:
 
             param_uni = Pricing.objects.get(unidad = dato)
@@ -186,8 +185,14 @@ def historialventa(request):
 
             real = real + v.precio_contado
 
+            pricing = desde*m2
+
+            descuento = (1 - v.precio_contado/pricing)*100
+
+            lista_venta_des.append((v, pricing, descuento, v.fecha))
+
         except:
-            pass
+            lista_venta_des.append((v, "S/PRG", "S/D", v.fecha))
 
         monto_neto = monto_neto + v.precio_venta
 
@@ -202,7 +207,7 @@ def historialventa(request):
             contado += 1
 
         m2_v = m2_v + m2
-
+       
     descuento = (real/pricing - 1)*100 
 
     pricing_2 = 0
@@ -222,8 +227,7 @@ def historialventa(request):
         else:
 
             m2 = dato.sup_propia + dato.sup_balcon + dato.sup_comun + dato.sup_patio
-
-            
+           
         try:
 
             param_uni = Pricing.objects.get(unidad = dato)
@@ -262,8 +266,14 @@ def historialventa(request):
 
             real_2 = real_2 + v.precio_contado
 
+            pricing = desde*m2
+
+            descuento = (1 - v.precio_contado/pricing)*100
+
+            lista_venta_des.append((v, pricing, descuento, v.fecha))
+
         except:
-            pass
+            lista_venta_des.append((v, "S/PRG", "S/D", v.fecha))
 
         if (v.precio_venta - v.anticipo) < v.precio_venta*0.05:
 
@@ -297,11 +307,14 @@ def historialventa(request):
 
     datos_panel = [ventas_1, ventas_2, fecha_1, fecha_2, list_p, list_ritmo, descuento, unidades_chequeadas, descuento_2, unidades_chequeadas_2, ritmo, monto_neto, contado, financiado, contado_2, financiado_2, ritmo_mes, m2_v, m2_v_2, monto_h, m3_m2]
 
+    lista_venta_des = sorted(lista_venta_des, key=lambda tup: tup[1])
+
     datos = {"fechas":fechas,
     "busqueda":busqueda,
     "datos":datos,
     "fecha":fecha,
-    "datos_panel":datos_panel,}
+    "datos_panel":datos_panel,
+    "lista_venta_des":lista_venta_des}
 
     return render(request, 'historial_venta.html', {"datos":datos})
 
