@@ -176,13 +176,32 @@ class PdfPrueba(View):
 
                 datos_cuotas.append((fecha, saldo_md))
 
+        
+        # Aqui vemos el pago actual
+
+        hoy = datetime.date.today()
+        fecha_1 = datetime.date(hoy.year, hoy.month, 1)
+        fecha_2 = datetime.date(hoy.year, hoy.month, 28)
+        vencimiento = datetime.date(hoy.year, hoy.month, 10)
+
+        venc_cuotas = []
+
+        cuotas_vencimiento = Cuota.objects.filter(cuenta_corriente = ctacte, fecha__range = (fecha_1, fecha_2))
+
+        for c in cuotas_vencimiento:
+            pesos = c.precio*c.constante.valor
+            venc_cuotas.append((c, pesos))
+
+        datos_vencimiento = [venc_cuotas, vencimiento]
+
 
         # Aqui llamamos y armamos el PDF
       
         template = get_template('reportepdf.html')
         contexto = {'ctacte':ctacte, 
         'datos':datos, 
-        'datos_cuotas':datos_cuotas, 
+        'datos_cuotas':datos_cuotas,
+        'datos_vencimiento':datos_vencimiento, 
         'saldo_total_pesos':saldo_total_pesos,
         'fecha':datetime.date.today(),
         'logo':'{}{}'.format(settings.STATIC_URL, 'img/link.png')}

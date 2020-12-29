@@ -32,7 +32,7 @@
 
         <div>
 
-            <h4 style="color: rgb({{ctacte.venta.unidad.proyecto.color}}); font-family: Arial, Helvetica, sans-serif;">{{ ctacte.venta.unidad.proyecto.nombre }} </h4>
+            <h4 style="color: rgb({{ctacte.venta.unidad.proyecto.color}}); font-family: sans-serif">{{ ctacte.venta.unidad.proyecto.nombre }} </h4>
         
 
         </div>
@@ -40,15 +40,15 @@
         <b><hr class = "my-4" style="width: 100%;"></b>
 
         <div style="text-align: center;">
-            <h1 style="font-family: Arial, Helvetica, sans-serif;"> Resumen de la cuenta </h1>
+            <h1 style="font-family: sans-serif"> Resumen de la cuenta </h1>
         </div>
         
 
         <div style="text-align: left; margin-top: 2%;">
 
-            <p><b>FECHA: </b>{{fecha}}</p>
-            <p><b>CLIENTE: </b>{{ctacte.venta.comprador}} </p>
-            <p><b>UNIDAD: </b>{{ctacte.venta.unidad.piso_unidad}} - {{ctacte.venta.unidad.nombre_unidad}} </p>
+            <p style="font-family: sans-serif"><b>FECHA: </b>{{fecha}}</p>
+            <p style="font-family: sans-serif"><b>CLIENTE: </b>{{ctacte.venta.comprador}} </p>
+            <p style="font-family: sans-serif"><b>UNIDAD: </b>{{ctacte.venta.unidad.piso_unidad}} - {{ctacte.venta.unidad.nombre_unidad}} </p>
             
             {% if ctacte.venta.unidad.tipo == "DEPARTAMENTO" %}
 
@@ -69,70 +69,120 @@
             
 
         </div>
+
+        <b><hr class = "my-4" style="width: 100%;"></b>
+
+
+        <div style="text-align: center;">
+            <h1 style="font-family: Arial, Helvetica, sans-serif;"> Pago actual</h1>
+        </div>
+
+        <table class = "table table-hover" style="text-align: left;" >
+            <thead>
+    
+                <tr style="background-color: rgb(81, 75, 74); text-align: left; height: 28px; vertical-align: bottom;">
+                    <th scope = "row" style="color: rgb(247, 241, 240);" colspan="2"><b>DATOS DEL PAGO ACTUAL</b></th>                        
+                </tr>
+            </thead>
+    
+            <tbody>
+    
+                <tr style="height: 25px; background-color: rgb(229, 224, 223);">
+                    <td><small><b></b></small></td>
+                    <td><small><b>CUOTA</b></small></td>
+                    <td><small><b>MONEDA (M)</b></small></td>
+                    <td><small><b>TOTAL (M)</b></small></td>
+                    <td><small><b>VALOR (M)</b></small></td>
+                    <td><small><b>TOTAL PESOS</b></small></td>
+                    <td><small><b>VENCIMIENTO</b></small></td>
+    
+                </tr>
+
+                {% for i in datos_vencimiento.0 %}
+
+                <tr style="height: 25px; ">
+                    <td style="width: 20px;"><small><b></b></small></td>
+                    <td><small>{{i.0.concepto|upper}}</small></td>
+                    <td><small>{{i.0.constante.nombre}}</small></td>
+                    <td><small>{{i.0.precio}}</small></td>
+                    <td><small>$ {{i.0.constante.valor|floatformat:2}}</small></td>
+                    <td><small>$ {{i.1|floatformat:0|intcomma}}</small></td>
+                    <td><small>{{datos_vencimiento.1|date:"Y-m-d"}}</small></td>
+          
+                </tr>
+               
+                {% endfor %}
+            </tbody>
+    
+        </table>
         
         <b><hr class = "my-4" style="width: 100%;"></b>
 
 
         <div style="text-align: center;">
-            <h1 style="font-family: Arial, Helvetica, sans-serif;"> Estado de las cuotas </h1>
+            <h1 style="font-family: Arial, Helvetica, sans-serif;"> Estado de cuenta</h1>
         </div>
    
     
     </div>
 
-    {% for i in datos %}
+    <table class = "table table-hover" style="text-align: left;" >
+        <thead>
 
-    {% if i.5 < 1 %}
+            <tr style="background-color: rgb(81, 75, 74); text-align: left; height: 28px; vertical-align: bottom;">
+                <th scope = "row" style="color: rgb(247, 241, 240);" colspan="2"><b>RESUMEN DE CUENTA</b></th>                        
+            </tr>
+        </thead>
 
-    <h6 style="font-family: Arial, Helvetica, sans-serif; text-align: left;">{{i.0|upper}}</h6> 
-  
-            <div style="text-align: left;">
-  
-                <p style="font-family: Arial, Helvetica, sans-serif;"><b>Moneda:</b> {{i.1.nombre}} ($ {{i.1.valor|floatformat:2}}) | <b>Total:</b> {{i.2|floatformat:2}} | <b>Pagado:</b> {{i.4|floatformat:2}} | <b>Saldo:</b> {{i.5|floatformat:2}} </p>  
-                <p style="font-family: Arial, Helvetica, sans-serif; color:#319537 ;"><b>Saldo en pesos:</b> $ -</p> 
+        <tbody>
+
+            <tr style="height: 25px; background-color: rgb(229, 224, 223);">
+                <td><small><b></b></small></td>
+                <td><small><b>CUOTA</b></small></td>
+                <td><small><b>MONEDA (M)</b></small></td>
+                <td><small><b>VALOR (M)</b></small></td>
+                <td><small><b>TOTAL</b></small></td>
+                <td><small><b>PAGADO</b></small></td>
+                <td><small><b>SALDO</b></small></td>
+                <td><small><b>SALDO PESOS</b></small></td>
+
+            </tr>
+
+            {% for i in datos %}
+           
+            <tr style="height: 25px; ">
+                <td style="width: 20px;"><small><b></b></small></td>
+                <td><small>{{i.0|upper}}</small></td>
+                <td><small>{{i.1.nombre}}</small></td>
+                <td><small>$ {{i.1.valor|floatformat:2}}</small></td>
+                <td><small>{{i.2|floatformat:2}}</small></td>
+                <td><small>{{i.4|floatformat:2}}</small></td>
+                <td><small>{{i.5|floatformat:2}}</small></td>
+                {% if i.5 < 1 %}
+                <td style="font-family: Arial, Helvetica, sans-serif; color:#319537 ;"><small><b>PAGADO</b></small></td>
+                {% elif  i.4 > 0 %}
+                <td style="font-family: Arial, Helvetica, sans-serif; color:#2D61BD ;"><small><b>$ {{i.6|floatformat:0|intcomma}}</b></small></td>
+                {% else %}
+                <td style="font-family: Arial, Helvetica, sans-serif;"><small><b>$ {{i.6|floatformat:0|intcomma}}</b></small></td>
+                {% endif %}
+
       
-    
-            </div>
-      {% elif  i.4 > 0 %}
+            </tr>
+
+            {% endfor %}
+
+            <tr style="height: 25px; background-color: rgb(81, 75, 74);">
+                <td style="text-align: center; color: rgb(247, 241, 240);" colspan="6"><b>SALDO TOTAL DE LA CUENTA</b></td>
+                <td style="color: rgb(247, 241, 240);"><b>$ {{saldo_total_pesos|floatformat:0|intcomma}}</b></td>
+
+            </tr>
+        
+        </tbody>
+
+    </table>
 
 
-      <h6 style="font-family: Arial, Helvetica, sans-serif; text-align: left;">{{i.0|upper}}</h6> 
-  
-            <div style="text-align: left;">
-  
-              <p style="font-family: Arial, Helvetica, sans-serif;"><b>Moneda:</b> {{i.1.nombre}} ($ {{i.1.valor|floatformat:2}}) | <b>Total:</b> {{i.2|floatformat:2}} | <b>Pagado:</b> {{i.4|floatformat:2}} | <b>Saldo:</b> {{i.5|floatformat:2}} </p>  
-              <p style="font-family: Arial, Helvetica, sans-serif; color: #2D61BD;"><b>Saldo en pesos:</b> $ {{i.6|floatformat:0|intcomma}} </p> 
-    
-            </div>
-
-
-
-      {% else %}
-
-            <h6 style="font-family: Arial, Helvetica, sans-serif; text-align: left;">{{i.0|upper}}</h6> 
-  
-            <div style="text-align: left;">
-  
-                <p style="font-family: Arial, Helvetica, sans-serif;"><b>Moneda:</b> {{i.1.nombre}} ($ {{i.1.valor|floatformat:2}}) | <b>Total:</b> {{i.2|floatformat:2}} | <b>Pagado:</b> {{i.4|floatformat:2}} | <b>Saldo:</b> {{i.5|floatformat:2}} </p>  
-                <p style="font-family: Arial, Helvetica, sans-serif;"><b>Saldo en pesos:</b> $ {{i.6|floatformat:0|intcomma}} </p> 
-      
-    
-            </div>
-
-
-
-      {% endif %}
-
-      {% endfor %}
-
-
-      <b><hr class = "my-4" style="width: 100%; "></b>
-
-      <div>
-
-        <h2 style="color: rgb({{ctacte.venta.unidad.proyecto.color}});">Saldo total de la cuenta: $ {{saldo_total_pesos|floatformat:0|intcomma}}</h2>
-
-        <h3 style="color: rgb({{ctacte.venta.unidad.proyecto.color}});">Proxima cuota: $ {{datos_cuotas.0.1|floatformat:0|intcomma}}** vence en {{datos_cuotas.0.0|date:"F Y"}}</h3>
+        <h3>Proxima cuota: $ {{datos_cuotas.0.1|floatformat:0|intcomma}}** vence en {{datos_cuotas.0.0|date:"F Y"}}</h3>
 
       </div>
 
