@@ -44,7 +44,7 @@
     
                 {% for i in datos|slice:"200" %}
                 <tr class = "table-light">
-                    <td> <b> <small> <b>{{i.0.cuota.cuenta_corriente.venta.proyecto.nombre}}</b> </small> </b></td>
+                    <td style="color: rgb({{i.0.cuota.cuenta_corriente.venta.proyecto.color}});"> <b> <small> <b>{{i.0.cuota.cuenta_corriente.venta.proyecto.nombre}}</b> </small> </b></td>
                     <td> <b> <small> {{i.0.cuota.cuenta_corriente.venta.comprador}} </small> </b></td> 
                     <td> <b> <small>{{i.0.cuota.cuenta_corriente.venta.unidad.piso_unidad}} - {{i.0.cuota.cuenta_corriente.venta.unidad.nombre_unidad}} </small> </b></td>  
                     <td> <b> <small> {{i.0.fecha|date:"Y-m-d"}} </small> </b></td>    
