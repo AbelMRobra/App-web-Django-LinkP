@@ -498,9 +498,9 @@ def deudores(request, id_proyecto):
     for c in ctas_ctes:
 
         cuotas_anteriores_h = sum(np.array(Cuota.objects.values_list('precio').filter(fecha__lt = fecha_hoy, constante__id = 7, cuenta_corriente = c)))*h
-        cuotas_anteriores_usd = sum(np.array(Cuota.objects.values_list('precio').filter(fecha__lt = fecha_hoy, constante__id = 7, cuenta_corriente = c)))*usd
+        cuotas_anteriores_usd = sum(np.array(Cuota.objects.values_list('precio').filter(fecha__lt = fecha_hoy, constante__id = 1, cuenta_corriente = c)))*usd
         pagos_h = sum(np.array(Pago.objects.values_list('pago').filter(fecha__lt = fecha_hoy, cuota__constante__id = 7, cuota__cuenta_corriente = c)))*h
-        pagos_usd = sum(np.array(Pago.objects.values_list('pago').filter(fecha__lt = fecha_hoy, cuota__constante__id = 7, cuota__cuenta_corriente = c)))*usd
+        pagos_usd = sum(np.array(Pago.objects.values_list('pago').filter(fecha__lt = fecha_hoy, cuota__constante__id = 1, cuota__cuenta_corriente = c)))*usd
         
         cuotas = (cuotas_anteriores_h + cuotas_anteriores_usd)/h
         pagos = (pagos_h + pagos_usd)/h
