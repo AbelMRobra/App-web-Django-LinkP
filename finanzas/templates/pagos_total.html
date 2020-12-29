@@ -42,12 +42,12 @@
     
             <tbody>   
     
-                {% for i in datos %}
+                {% for i in datos|slice:"200" %}
                 <tr class = "table-light">
                     <td> <b> <small> <b>{{i.0.cuota.cuenta_corriente.venta.proyecto.nombre}}</b> </small> </b></td>
                     <td> <b> <small> {{i.0.cuota.cuenta_corriente.venta.comprador}} </small> </b></td> 
                     <td> <b> <small>{{i.0.cuota.cuenta_corriente.venta.unidad.piso_unidad}} - {{i.0.cuota.cuenta_corriente.venta.unidad.nombre_unidad}} </small> </b></td>  
-                    <td> <b> <small> {{i.0.fecha}} </small> </b></td>    
+                    <td> <b> <small> {{i.0.fecha|date:"Y-m-d"}} </small> </b></td>    
                     <td> <b> <small>{{i.0.pago|floatformat:2}}</small> </b> </td>
 
                     <td> <b> <small> <b>${{i.1|floatformat:0|intcomma}}</b>  </small> </b> </td>
@@ -85,6 +85,10 @@
         </div>
 
         <b><hr class = "my-4" style="width: 100%; "></b>
+
+        <div>
+            <small style="font-family: Arial, Helvetica, sans-serif;">El listado puede continuar, se limita el numero de filas visibles</small>
+        </div>
 
 
     <div style="text-align: center; margin-top: 10%;">
