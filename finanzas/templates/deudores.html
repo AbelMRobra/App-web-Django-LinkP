@@ -17,34 +17,76 @@
             <small style="font-family: Arial, Helvetica, sans-serif,"><b>Modulo</b>: Cuentas corrientes </small>
         
         </div>
+    </div>
 
         <b><hr class = "my-4" style="width: 100%;"></b>
 
-        <form method="POST" style="text-align: left;">
-   
-           {% csrf_token %}
-   
-           <div style="display: inline-block; margin-left: 1rem;">
-   
-               <label for="palabra"><h6 style="font-family: Arial, Helvetica, sans-serif;"> <img src="{% static 'img/buscar2.png' %}" alt="" style="max-width:15px; height:auto; margin: 2px;" > Buscar </h6></label>
-   
-           </div>
-           
-           <div style="display: inline-block; margin-left: 1rem; ">
-   
-               <input name="palabra" type="text" class="form-control form-control" placeholder="Buscar por palabra" list="art" style="width: 250px;">
-   
-           </div>
-          
-         
-   
-        </form>
+        <div style="text-align: left;">
+
+            <div style="display: inline-block;">
+    
+                <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+                    <button type="button" class="btn btn-primary">{{mensaje}}</button>
+                    <div class="btn-group" role="group">
+                        <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+                        <div class="dropdown-menu" aria-labelledby="btnGroupDrop1" style="">
+                            <div style="margin: 2px;">
+            
+                                <a href="{% url 'Panel de pagos total' 0 %}" style="margin-top: 5px;" >Todos</a>
+            
+                            </div>
+            
+                            {% for i in list_proyectos %}
+            
+                            <div style="margin: 2px;">
+            
+                                <a href="{% url 'Deudores' i.0.id %}" style="margin-top: 5px;" >{{i.0.nombre}} ({{i.1}})</a> 
+                            
+                            </div>
+            
+                            {% endfor %}
+            
+            
+                                                      
+                        </div>
+                    </div>
+                    </div>
+        
+            </div>
+
+            <div style="display: inline-block;">
+
+                <form method="POST" style="text-align: left;">
+       
+                    {% csrf_token %}
+            
+                    
+                    
+                    <div style="display: inline-block; margin-left: 1rem; ">
+            
+                        <input name="palabra" type="text" class="form-control form-control" placeholder="Buscar por palabra" list="art" style="width: 250px;">
+            
+                    </div>
+
+                    <div style="display: inline-block; margin-left: 1rem;">
+            
+                        <button type="submit" class="btn btn-sm btn-light"><img src="{% static 'img/buscar2.png' %}" alt="" style="max-width:25px; height:auto; margin: 2px;" ></button>
+            
+                    </div>
+                   
+                  
+            
+                 </form>
+    
+            </div>
+    
+            
+            
+
+        </div>
 
 
-        <b><hr class = "my-4" style="width: 100%; "></b>
     
-    
-    </div>
 
 
     {% if datos %}
@@ -56,8 +98,8 @@
             <thead>
     
                 <tr class = "table-dark">
-                    <th scope = "row"> <small>PROYECTO</small></th>
                     <th scope = "row"> <small>COMPRADOR </small></th>
+                    <th scope = "row"> <small>PROYECTO</small></th> 
                     <th scope = "row"> <small>CUOTAS</small></th> 
                     <th scope = "row"> <small>PAGOS</small></th>                    
                     <th scope = "row"> <small> DEUDA </small></th>
@@ -70,9 +112,8 @@
     
                 {% for i in datos|slice:"200" %}
                 <tr class = "table-light">
-
-                    <td> <b> <small> <b>{{i.0.venta.proyecto.nombre}}</b> </small> </b></td>    
-                    <td> <b> <small><a href="{% url 'Cuenta corriente venta' i.0.id %}">{{i.0.venta.comprador}}</a> </small> </b> </td>
+                    <td style="text-align: left"> <b> <small><a href="{% url 'Cuenta corriente venta' i.0.id %}" style="text-decoration:none; color: rgb(56, 60, 57);">{{i.0.venta.comprador}}</a> </small> </b> </td>
+                    <td style="color: rgb({{i.0.venta.proyecto.color}});"> <b> <small> <b>{{i.0.venta.proyecto.nombre}}</b> </small> </b></td>    
                     <td> <b> <small>{{i.1|floatformat:0|intcomma}} M3</small> </b> </td>
                     <td> <b> <small>{{i.2|floatformat:0|intcomma}} M3</small> </b> </td>
                     <td> <b> <small>{{i.3|floatformat:0|intcomma}} M3</small> </b> </td>
@@ -85,7 +126,7 @@
     
         </table>
     
-        </div>
+
 
         {% else %}
 

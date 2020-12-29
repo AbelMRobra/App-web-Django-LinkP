@@ -460,9 +460,33 @@ def agregar_cuota(request, id_cuenta):
     return render(request, 'agregar_cuota.html', {"cuenta":cuenta})
 
 
-def deudores(request):
+def deudores(request, id_proyecto):
 
-    ctas_ctes = CuentaCorriente.objects.all()
+    # ---> Lista de proyectos
+
+    proyectos = Proyectos.objects.all()
+
+    list_proyectos = []
+
+    for p in proyectos:
+
+        cantidad = len(CuentaCorriente.objects.filter(venta__proyecto__id = p.id))
+
+        if cantidad > 0:
+
+            list_proyectos.append((p, cantidad))
+
+    if id_proyecto == "0":
+
+        mensaje = "Todos"
+
+        ctas_ctes = CuentaCorriente.objects.all()
+
+    else:
+
+        mensaje = Proyectos.objects.get(id = id_proyecto)
+
+        ctas_ctes = CuentaCorriente.objects.filter(venta__proyecto__id = id_proyecto)
 
     fecha_hoy = datetime.date.today()
 
@@ -531,7 +555,7 @@ def deudores(request):
     datos = sorted(datos, key=lambda tup: tup[3], reverse=True)
 
 
-    return render(request, 'deudores.html', {'datos':datos})
+    return render(request, 'deudores.html', {'datos':datos, 'mensaje':mensaje, 'list_proyectos':list_proyectos})
 
 def pagos(request, id_cuota):
 
