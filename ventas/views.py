@@ -307,7 +307,7 @@ def historialventa(request):
 
     datos_panel = [ventas_1, ventas_2, fecha_1, fecha_2, list_p, list_ritmo, descuento, unidades_chequeadas, descuento_2, unidades_chequeadas_2, ritmo, monto_neto, contado, financiado, contado_2, financiado_2, ritmo_mes, m2_v, m2_v_2, monto_h, m3_m2]
 
-    lista_venta_des = sorted(lista_venta_des, key=lambda tup: tup[3])
+    lista_venta_des = sorted(lista_venta_des, key=lambda tup: tup[3], reverse=True)
 
     datos = {"fechas":fechas,
     "busqueda":busqueda,
