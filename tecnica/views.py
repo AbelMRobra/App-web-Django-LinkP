@@ -16,6 +16,23 @@ def subitem(request, id_item):
 
     return render(request, 'subitems.html', {"datos_item":datos_item, "datos_sub":datos_sub})
 
+def agregarsubitem(request, id_item):
+
+    datos = ItemEtapa.objects.get(id = id_item)
+
+    if request.method == 'POST':
+
+        b = SubItem(
+            orden = request.POST['orden'],
+            nombre = request.POST['nombre'],
+            item = datos,
+        )
+
+        b.save()
+
+        return redirect('Sub item', id_item = id_item)
+
+    return render(request, "crearsubitem.html", {"datos":datos})
 
 def eliminaritem(request, id_item):
 

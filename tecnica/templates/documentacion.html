@@ -126,6 +126,7 @@
                                     <tr class = "table-active">
                                         <td><small><b>NOMBRE DEL ITEM</b></small></td>
                                         <td><small><b></b></small></td>
+                                        <td><small><b></b></small></td>
                                         <td><small><b>ESTADO</b></small></td>
                                         <td><small><b>RESP.</b></small></td>
                                         <td><small><b>INICIO (P)</b></small></td>
@@ -150,11 +151,19 @@
                                                        
                                             <small><b>{{t.orden|floatformat:0}}.</b> {{t.nombre}}</small>
 
-                                            <a href="{% url 'Sub item' t.id %}"><img src="{% static 'img/liza.png' %}" alt="" style="max-width:15px; height:auto; margin: 2px;"></a> 
+                                            
 
                                         
                                         
                                         </td>
+
+                                        <td style="width: 5%;"><small>
+
+
+                                            <a href="{% url 'Sub item' t.id %}"><img src="{% static 'img/liza.png' %}" alt="" style="max-width:15px; height:auto; margin: 2px;"></a> 
+
+
+                                        </small></td>
 
                                         <td style="width: 5%;"><small>
 

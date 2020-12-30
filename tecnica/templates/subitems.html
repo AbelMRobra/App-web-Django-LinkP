@@ -26,6 +26,8 @@
 
     <b><hr class = "my-4" style="width: 100%; "></b>
 
+    {{ request.user.groups }}
+
     
     <table class = "table table-hover" style="text-align: left;" >
         <tbody>
@@ -49,56 +51,44 @@
 
             </tr>
 
-            {% for t in c.1 %}
+            {% for i in datos_sub %}
 
             <tr class = "table-light">  
                 
                 
-                
-
+            
                 <td style="width: 30%;">
-
-                    
                                
-                    <small><b>{{t.orden|floatformat:0}}.</b> {{t.nombre}}</small>
+                    <small><b>{{i.orden|floatformat:0}}.</b> {{i.nombre}}</small>
 
-                    <a href="#"><img src="{% static 'img/liza.png' %}" alt="" style="max-width:15px; height:auto; margin: 2px;"></a> 
-
-                
-                
                 </td>
 
-                <td style="width: 5%;"><small>
 
-                    <a href="{% url 'Mensaje item' t.id %}"><img src="{% static 'img/charlar.png' %}" alt="" style="max-width:20px; height:auto; margin: 2px;"></a>
-                                                         
-                </small></td>
-
-                {% if t.estado == 'LISTO' %}
+                {% if i.estado == 'LISTO' %}
                 <td style="width: 10%; color: rgb(124, 209, 107)"><small>
 
 
-                    <b>{{t.estado}}</b> 
+                    <b>{{i.estado}}</b> 
                 
                 
                 </small></td>
 
-                {% elif t.estado == 'TRABAJANDO' %}
+                {% elif i.estado == 'TRABAJANDO' %}
 
                 <td style="width: 10%; color: rgb(209, 176, 107)"><small>
 
 
-                    <b>{{t.estado}}</b> 
+                    <b>{{i.estado}}</b> 
                 
                 
                 </small></td>
 
-                {% elif t.estado == 'PROBLEMAS' %}
+                {% elif i.estado == 'PROBLEMAS' %}
 
                 <td style="width: 10%; color: rgb(209, 119, 107)"><small>
 
 
-                    <b>{{t.estado}}</b> 
+                    <b>{{i.estado}}</b> 
                 
                 
                 </small></td>
@@ -108,7 +98,7 @@
                 <td style="width: 10%;"><small>
 
 
-                    <b>{{t.estado}}</b> 
+                    <b>{{i.estado}}</b> 
                 
                 
                 </small></td>
@@ -180,7 +170,7 @@
 
                 <td style="width: 5%;">
 
-                    <a href="{% url 'Editar Item' t.id %}" class="btn btn-sm btn-light"><img src="{% static 'img/documento.png' %}" alt="" style="max-width:15px; height:auto;"></a>
+                    <a href="#" class="btn btn-sm btn-light"><img src="{% static 'img/documento.png' %}" alt="" style="max-width:15px; height:auto;"></a>
                 </td>
 
 
@@ -194,6 +184,12 @@
                 </tbody>
 
     </table>
+
+    <div style="text-align: left; margin: 5px;">
+
+        <a href="{% url 'Agregar Subitem' datos_item.id %}" style="text-decoration:none" class="btn btn-sm btn-light"><img src="{% static 'img/agregar-archivo.png' %}" alt="" style="max-width:20px; height:auto; margin: 2px;"> <small><b>Agregar subitem</b> </small> </a>
+
+    </div>
 
     
 

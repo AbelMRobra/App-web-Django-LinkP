@@ -308,6 +308,16 @@ def dashboard(request):
 
 def inicio(request):
 
+    # Esta es la parte de los permisos
+
+    lista_grupos = 0
+
+    grupos = request.user.groups.all()
+
+    for g in grupos :
+
+        lista_grupos = str(lista_grupos)+"-"+str(g.name)
+
     # Esta parte es para Pablo
 
     
@@ -453,7 +463,7 @@ def inicio(request):
 
     barras = sorted(barras,reverse=True, key=lambda tup: tup[1])
 
-    return render(request, "users/inicio.html", {"datos_barras":barras, "datos_logo":datos_logo, "mensaje_oc":mensaje_oc, "mensajesdeldia":mensajesdeldia, "datos_mensajeria":datos_mensajeria})
+    return render(request, "users/inicio.html", {"datos_barras":barras, "datos_logo":datos_logo, "mensaje_oc":mensaje_oc, "mensajesdeldia":mensajesdeldia, "datos_mensajeria":datos_mensajeria, "lista_grupos":lista_grupos})
 
 def welcome(request):
     # Si estamos identificados devolvemos la portada
