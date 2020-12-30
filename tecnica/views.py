@@ -92,6 +92,34 @@ def editaritem(request, id_item):
 
     return render(request, "editaritem.html", {"datos":datos})
 
+def editarsubitem(request, id_subitem):
+
+    datos = SubItem.objects.get(id = id_subitem)
+
+    if request.method == 'POST':
+
+        datos.orden = request.POST['orden']
+        datos.nombre = request.POST['nombre']
+        datos.responsable = datosusuario.objects.get(identificacion = request.POST['responsable'])
+        datos.estado = request.POST['estado']
+        datos.fecha_inicio = request.POST['fechai']
+        datos.fecha_final = request.POST['fechaf']
+        datos.url = request.POST['url']
+
+        datos.save()
+
+        try:
+            datos.archivo_vigente = request.FILES['adjunto']
+            datos.save()
+
+        except:
+
+            pass
+
+        return redirect('Sub item', id_item = datos.item.id)
+
+    return render(request, "editarsubitem.html", {"datos":datos})
+
 def documentacion(request):
 
     datos_proyectos = Etapas.objects.values_list("proyecto")

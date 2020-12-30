@@ -108,9 +108,9 @@
 
                 <td style="width: 5%;"><small>
 
-                    {% if t.responsable %}
+                    {% if i.responsable %}
                     
-                    <img src="{{t.responsable.imagenlogo.url}}"  class="img-fluid" alt="..." style="max-width: 30px; height:auto;">
+                    <img src="{{i.responsable.imagenlogo.url}}"  class="img-fluid" alt="..." style="max-width: 30px; height:auto;">
                     
                     {% else %}
 
@@ -120,40 +120,40 @@
 
                 </small></td>
 
-                {% if t.fecha_estimada_i %}
-                <td style="width: 10%;"><small>{{t.fecha_estimada_i|date:"Y-m-d"}}</small></td>
+                {% if i.fecha_estimada_i %}
+                <td style="width: 10%;"><small>{{i.fecha_estimada_i|date:"Y-m-d"}}</small></td>
                 {% else %}
 
                 <td style="width: 10%;"><small>NO DEFINIDIO</small></td>
 
                 {% endif %}
-                {% if t.fecha_estimada_f %}
-                <td style="width: 10%;"><small>{{t.fecha_estimada_f|date:"Y-m-d"}}</small></td>
-                {% else %}
-
-                <td style="width: 10%;"><small>NO DEFINIDIO</small></td>
-
-                {% endif %}
-
-                {% if t.fecha_inicio %}
-                <td style="width: 10%;"><small>{{t.fecha_inicio|date:"Y-m-d"}}</small></td>
-                {% else %}
-
-                <td style="width: 10%;"><small>NO DEFINIDIO</small></td>
-
-                {% endif %}
-                {% if t.fecha_final %}
-                <td style="width: 10%;"><small>{{t.fecha_final|date:"Y-m-d"}}</small></td>
+                {% if i.fecha_estimada_f %}
+                <td style="width: 10%;"><small>{{i.fecha_estimada_f|date:"Y-m-d"}}</small></td>
                 {% else %}
 
                 <td style="width: 10%;"><small>NO DEFINIDIO</small></td>
 
                 {% endif %}
 
-                {% if t.archivo_vigente %}
+                {% if i.fecha_inicio %}
+                <td style="width: 10%;"><small>{{i.fecha_inicio|date:"Y-m-d"}}</small></td>
+                {% else %}
+
+                <td style="width: 10%;"><small>NO DEFINIDIO</small></td>
+
+                {% endif %}
+                {% if i.fecha_final %}
+                <td style="width: 10%;"><small>{{i.fecha_final|date:"Y-m-d"}}</small></td>
+                {% else %}
+
+                <td style="width: 10%;"><small>NO DEFINIDIO</small></td>
+
+                {% endif %}
+
+                {% if i.archivo_vigente %}
                 <td style="width: 5%;"><small>
 
-                    <a href="{{ t.archivo_vigente.url }}">
+                    <a href="{{ i.archivo_vigente.url }}">
 
                         <img src="{% static 'img/archivo-adjunto.png' %}" alt="" style="max-width:20px; height:auto; margin: 2px;"  >
                 
@@ -170,7 +170,7 @@
 
                 <td style="width: 5%;">
 
-                    <a href="#" class="btn btn-sm btn-light"><img src="{% static 'img/documento.png' %}" alt="" style="max-width:15px; height:auto;"></a>
+                    <a href="{% url 'Editar subitem' i.id %}" class="btn btn-sm btn-light"><img src="{% static 'img/documento.png' %}" alt="" style="max-width:15px; height:auto;"></a>
                 </td>
 
 
