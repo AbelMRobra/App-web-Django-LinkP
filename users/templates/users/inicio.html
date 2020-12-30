@@ -245,7 +245,7 @@
             <a class="dropdown-item" href="/ventas/folleto">Folletos</a>
 
             {% if request.user|has_group:"VENTAS NIVEL 3" %}
-            
+
             <a class="dropdown-item" href="/ventas/resumenprecio">Resumen de precio</a>
 
             {% endif %}
@@ -385,7 +385,7 @@
 
         <hr class="my-4" >
 
-        <h6 style="color:#FBF8F7; font-family: Arial, Helvetica, sans-serif;">{{ request.user.groups.values_list }}</h6>
+        <h6 style="color:#FBF8F7; font-family: Arial, Helvetica, sans-serif;">Un espacio de trabajo diferente</h6>
         <small style="color:#FBF8F7; font-family: Arial, Helvetica, sans-serif;">Toda la información en un unico lugar</small>
 
     
