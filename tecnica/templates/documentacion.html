@@ -145,8 +145,12 @@
                                         
 
                                         <td style="width: 30%;">
+
+                                            
                                                        
                                             <small><b>{{t.orden|floatformat:0}}.</b> {{t.nombre}}</small>
+
+                                            <a href="{% url 'Sub item' t.id %}"><img src="{% static 'img/liza.png' %}" alt="" style="max-width:15px; height:auto; margin: 2px;"></a> 
 
                                         
                                         
@@ -155,7 +159,7 @@
                                         <td style="width: 5%;"><small>
 
                                             <a href="{% url 'Mensaje item' t.id %}"><img src="{% static 'img/charlar.png' %}" alt="" style="max-width:20px; height:auto; margin: 2px;"></a>
-                                                                                    
+                                                                                 
                                         </small></td>
 
                                         {% if t.estado == 'LISTO' %}

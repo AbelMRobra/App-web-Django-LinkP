@@ -1,0 +1,210 @@
+{% extends "users/inicio.html" %}
+
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+
+<div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;">
+
+    <div>
+
+        <img src="{{datos_item.etapa.proyecto.iamgen.url}}"  class="img-fluid" alt="..." style="max-width:200px;width:auto;height:auto; margin-top: 5px; margin-bottom: 5px;">
+
+
+    </div>
+
+    <div>
+
+        <small style="color: rgb({{datos_item.etapa.proyecto.color}}); font-family: Arial, Helvetica, sans-serif;"><b>{{ datos_item.etapa.proyecto.nombre }}</b> </small>
+    
+
+
+    </div>
+
+    <small style="font-family: Arial, Helvetica, sans-serif;"><b>Modulo:</b> Documentación O.T</small>
+
+    <b><hr class = "my-4" style="width: 100%; "></b>
+
+    
+    <table class = "table table-hover" style="text-align: left;" >
+        <tbody>
+
+            <tr class = "table-dark">
+                <td colspan="10"><small><b>{{datos_item.nombre}}</b></small></td>
+
+
+            </tr>
+
+            <tr class = "table-active">
+                <td><small><b>SUBITEM</b></small></td>
+                <td><small><b>ESTADO</b></small></td>
+                <td><small><b>RESP.</b></small></td>
+                <td><small><b>INICIO (P)</b></small></td>
+                <td><small><b>FINAL (P)</b></small></td>
+                <td><small><b>INICIO</b></small></td>
+                <td><small><b>FINAL</b></small></td>
+                <td><small><b>ADJ.</b></small></td>
+                <td><small><b></b></small></td>
+
+            </tr>
+
+            {% for t in c.1 %}
+
+            <tr class = "table-light">  
+                
+                
+                
+
+                <td style="width: 30%;">
+
+                    
+                               
+                    <small><b>{{t.orden|floatformat:0}}.</b> {{t.nombre}}</small>
+
+                    <a href="#"><img src="{% static 'img/liza.png' %}" alt="" style="max-width:15px; height:auto; margin: 2px;"></a> 
+
+                
+                
+                </td>
+
+                <td style="width: 5%;"><small>
+
+                    <a href="{% url 'Mensaje item' t.id %}"><img src="{% static 'img/charlar.png' %}" alt="" style="max-width:20px; height:auto; margin: 2px;"></a>
+                                                         
+                </small></td>
+
+                {% if t.estado == 'LISTO' %}
+                <td style="width: 10%; color: rgb(124, 209, 107)"><small>
+
+
+                    <b>{{t.estado}}</b> 
+                
+                
+                </small></td>
+
+                {% elif t.estado == 'TRABAJANDO' %}
+
+                <td style="width: 10%; color: rgb(209, 176, 107)"><small>
+
+
+                    <b>{{t.estado}}</b> 
+                
+                
+                </small></td>
+
+                {% elif t.estado == 'PROBLEMAS' %}
+
+                <td style="width: 10%; color: rgb(209, 119, 107)"><small>
+
+
+                    <b>{{t.estado}}</b> 
+                
+                
+                </small></td>
+
+                {% else %}
+
+                <td style="width: 10%;"><small>
+
+
+                    <b>{{t.estado}}</b> 
+                
+                
+                </small></td>
+
+                {% endif %}
+
+
+                <td style="width: 5%;"><small>
+
+                    {% if t.responsable %}
+                    
+                    <img src="{{t.responsable.imagenlogo.url}}"  class="img-fluid" alt="..." style="max-width: 30px; height:auto;">
+                    
+                    {% else %}
+
+                    S/A
+
+                    {% endif %}
+
+                </small></td>
+
+                {% if t.fecha_estimada_i %}
+                <td style="width: 10%;"><small>{{t.fecha_estimada_i|date:"Y-m-d"}}</small></td>
+                {% else %}
+
+                <td style="width: 10%;"><small>NO DEFINIDIO</small></td>
+
+                {% endif %}
+                {% if t.fecha_estimada_f %}
+                <td style="width: 10%;"><small>{{t.fecha_estimada_f|date:"Y-m-d"}}</small></td>
+                {% else %}
+
+                <td style="width: 10%;"><small>NO DEFINIDIO</small></td>
+
+                {% endif %}
+
+                {% if t.fecha_inicio %}
+                <td style="width: 10%;"><small>{{t.fecha_inicio|date:"Y-m-d"}}</small></td>
+                {% else %}
+
+                <td style="width: 10%;"><small>NO DEFINIDIO</small></td>
+
+                {% endif %}
+                {% if t.fecha_final %}
+                <td style="width: 10%;"><small>{{t.fecha_final|date:"Y-m-d"}}</small></td>
+                {% else %}
+
+                <td style="width: 10%;"><small>NO DEFINIDIO</small></td>
+
+                {% endif %}
+
+                {% if t.archivo_vigente %}
+                <td style="width: 5%;"><small>
+
+                    <a href="{{ t.archivo_vigente.url }}">
+
+                        <img src="{% static 'img/archivo-adjunto.png' %}" alt="" style="max-width:20px; height:auto; margin: 2px;"  >
+                
+                    </a>
+
+
+                </small></td>
+
+                {% else %}
+
+                <td style="width: 5%;"><small>S/D</small></td>
+
+                {% endif %}
+
+                <td style="width: 5%;">
+
+                    <a href="{% url 'Editar Item' t.id %}" class="btn btn-sm btn-light"><img src="{% static 'img/documento.png' %}" alt="" style="max-width:15px; height:auto;"></a>
+                </td>
+
+
+                </tr>
+
+
+                {% endfor %}
+
+                
+
+                </tbody>
+
+    </table>
+
+    
+
+  
+
+    <div style="margin-top: 2rem;">
+        <p> <small>-- Link<strong>P</strong> --</small> </p>
+
+     </div>
+                           
+</div>
+ 
+    
+{% endblock %}

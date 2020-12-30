@@ -1,12 +1,20 @@
 from django.shortcuts import render
 from django.shortcuts import redirect
 from proyectos.models import Proyectos
-from .models import Etapas, ItemEtapa, TecnicaMensaje
+from .models import Etapas, ItemEtapa, TecnicaMensaje, SubItem
 from rrhh.models import datosusuario
 import datetime
 from datetime import date, timedelta
 
 # Create your views here.
+
+
+def subitem(request, id_item):
+
+    datos_item = ItemEtapa.objects.get(id = id_item)
+    datos_sub = SubItem.objects.filter(item = datos_item)
+
+    return render(request, 'subitems.html', {"datos_item":datos_item, "datos_sub":datos_sub})
 
 
 def eliminaritem(request, id_item):

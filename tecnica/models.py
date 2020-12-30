@@ -42,6 +42,32 @@ class ItemEtapa(models.Model):
         
         verbose_name="Sub etapa"
         verbose_name_plural="Sub etapas"
+
+class SubItem(models.Model):
+
+    class estados(models.TextChoices):
+
+        ESPERA = "ESPERA"
+        TRABAJANDO = "TRABAJANDO"
+        PROBLEMAS = "PROBLEMAS"
+        LISTO = "LISTO"
+
+    nombre = models.CharField(max_length=200, verbose_name="Nombre del subitem")
+    orden = models.FloatField(verbose_name="Orden", default = 0.0)
+    responsable = models.ForeignKey(datosusuario, on_delete=models.CASCADE, verbose_name="Responsable", blank=True, null=True)
+    item = models.ForeignKey(ItemEtapa, on_delete=models.CASCADE, verbose_name="Item")
+    estado = models.CharField(choices=estados.choices, default=estados.ESPERA, max_length=20, verbose_name="Estado")
+    contrato = models.ForeignKey(Contratos, on_delete=models.CASCADE, verbose_name="Contrato", blank=True, null=True)
+    archivo_vigente = models.FileField(verbose_name="Archivo vigente", blank=True, null=True)
+    fecha_estimada_i = models.DateField(verbose_name="Fecha estimada de iniciación", blank=True, null=True)
+    fecha_estimada_f = models.DateField(verbose_name="Fecha estimada de finalziación", blank=True, null=True)
+    fecha_inicio = models.DateField(verbose_name="Fecha de inicio", blank=True, null=True)
+    fecha_final = models.DateField(verbose_name="Fecha final", blank=True, null=True)
+    url = models.CharField(max_length=200, verbose_name="URL del servidor", blank=True, null=True)
+    class Meta:
+        
+        verbose_name="Sub item"
+        verbose_name_plural="Sub item"
         
     def __str__(self):
         return self.nombre

@@ -9,6 +9,7 @@ urlpatterns = [
     url(r'^eliminaritem/(?P<id_item>\d+)/$', login_required(views.eliminaritem), name = 'Borrar Item'), 
     url(r'^agregaritem/(?P<id_etapa>\d+)/$', login_required(views.agregaritem), name = 'Agregar Item'), 
     url(r'^gantt/(?P<id_proyecto>\d+)/$', login_required(views.ganttet), name = 'Gantt ET'), 
-    url(r'^mensajeitem/(?P<id_item>\d+)/$', login_required(views.mensajesitem), name = 'Mensaje item'), 
+    url(r'^mensajeitem/(?P<id_item>\d+)/$', login_required(views.mensajesitem), name = 'Mensaje item'),
+    url(r'^subitem/(?P<id_item>\d+)/$', login_required(views.subitem), name = 'Sub item'), 
 
 ]
