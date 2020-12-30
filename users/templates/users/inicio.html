@@ -94,6 +94,10 @@
              
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="/presupuestos/presupuestos">Control de presupuestos</a>
+
+            {% endif %}
+            {% if request.user|has_group:"PRESUPUESTO NIVEL 3" %}
+
             <a class="dropdown-item" href="/presupuestos/desde">Indicador de precios</a>
             <a class="dropdown-item" href="/presupuestos/informe">Informe del área</a>
             
