@@ -61,7 +61,7 @@
         <div class="card-body">
             <h6> 
 
-                {% if request.user.username == "IC" or request.user.username == "AR" %}
+                {% if request.user|has_group:"MANDO MEDIO" %}
 
                 <a type="button" data-toggle="modal" data-target="#exampleModalCenter">
                     <img src="{% static 'img/documento.png' %}" alt="" style="max-width:20px; height:auto;"  >

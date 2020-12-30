@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'finanzas',
     'rrhh',
     'tecnica',
+    'apptags',
 ]
 
 MIDDLEWARE = [
@@ -175,4 +176,3 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'linkphelp@gmail.com'
 EMAIL_HOST_PASSWORD = 'link2020'
-

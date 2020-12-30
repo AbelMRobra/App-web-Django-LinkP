@@ -1,4 +1,5 @@
 {% load static %}
+{% load apptags_extras %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -67,7 +68,7 @@
         </li>
 
         
-        {% if "PRESUPUESTO NIVEL 1" in lista_grupos %}
+        {% if request.user|has_group:"PRESUPUESTO NIVEL 1" %}
 
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -85,36 +86,25 @@
             <a class="dropdown-item" href="/presupuestos/insum_list">Articulos</a>
             <a class="dropdown-item" href="/presupuestos/analisis_list">Biblioteca - APU</a>
             <a class="dropdown-item" href="/computos/lista">Computos</a>
-
-            
-
-            {% if "PRESUPUESTO NIVEL 2" in lista_grupos %}
+           
+            {% if request.user|has_group:"PRESUPUESTO NIVEL 2" %}
 
             <div class="dropdown-divider"></div>
             <div style="margin-left: 5%;"><h6><small> <strong>  Paneles e informes</strong> </small></h6> </div>
              
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="/presupuestos/presupuestos">Control de presupuestos</a>
-
-            {% endif %}
-
-            <!-- <a class="dropdown-item" href="/presupuestos/datos">Datos de proyectos</a> -->
-            {% if "PRESUPUESTO NIVEL 3" in lista_grupos %}
-
             <a class="dropdown-item" href="/presupuestos/desde">Indicador de precios</a>
             <a class="dropdown-item" href="/presupuestos/informe">Informe del área</a>
             
             {% endif %}
 
-            
-
-            
           </div>
         </li>
 
         {% endif %}
 
-        {% if "TECNICA NIVEL 1" in lista_grupos %}
+        {% if request.user|has_group:"TECNICA NIVEL 1" %}
 
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -157,7 +147,7 @@
 
         {% endif %}
 
-        {% if perms.finanzas.view_almacenero %}
+        {% if request.user|has_group:"FINANZAS NIVEL 1" %}
 
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="/projects" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -187,7 +177,7 @@
 
         {% endif %}
 
-        {% if "ADMIN NIVEL 1" in lista_grupos %}
+        {% if request.user|has_group:"ADMIN NIVEL 1" %}
 
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="/projects" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -210,9 +200,7 @@
 
         {% endif %}
 
-        {% if request.user.username != "HC" %}
-
-        {% if perms.ventas.view_archivosareaventas %}
+        {% if request.user|has_group:"VENTAS NIVEL 1" %}
 
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -220,56 +208,51 @@
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
 
-            {% if perms.ventas.view_pricing %}
+            {% if request.user|has_group:"VENTAS NIVEL 3" %}
 
             <div class="dropdown-divider"></div>
-
-            
             <div style="margin-left: 5%;"><h6><small> <strong>  Información de unidades</strong> </small></h6> </div>
-             
             <div class="dropdown-divider"></div>
-
             <a class="dropdown-item" href="/ventas/cargarventa">Panel de ventas</a>
             <a class="dropdown-item" href="/ventas/panelpricing">Pricing de unidades</a>
 
+            {% endif %}
 
+            {% if request.user|has_group:"VENTAS NIVEL 2" %}
             
             <div class="dropdown-divider"></div>
+            <div style="margin-left: 5%;"><h6><small> <strong>  Información recurrente</strong> </small></h6> </div>
+            <div class="dropdown-divider"></div>
+            
+            <a class="dropdown-item" href="/ventas/cajaarea">Caja del área</a>
+            <a class="dropdown-item" href="/ventas/encuestapostventa">Encuesta postventa</a>
+            <a class="dropdown-item" href="/ventas/evo_usd">Evolución historica USD/m2</a>
+            <a class="dropdown-item" href="/ventas/fechaentrega">Fechas de entrega</a>
+            <a class="dropdown-item" href="/ventas/historialventa">Historial de ventas</a>
+            <a class="dropdown-item" href="/ventas/informe_redes">Informe de redes</a> 
+            <a class="dropdown-item" href="/ventas/informeventa">Informe de ventas</a>      
+            <a class="dropdown-item" href="/ventas/invmer">Investigación de mercado</a>
+            <a class="dropdown-item" href="/ventas/radiografia">Radiografia del cliente</a>
+            <a class="dropdown-item" href="/ventas/variacionhormigon">Variación del Hº</a>
+            {% endif %}
+
+
+              
+            <div class="dropdown-divider"></div>
+            <div style="margin-left: 5%;"><h6><small> <strong>  Información comercial</strong> </small></h6> </div>
+            <div class="dropdown-divider"></div>
+            
+            <a class="dropdown-item" href="/ventas/folleto">Folletos</a>
+
+            {% if request.user|has_group:"VENTAS NIVEL 3" %}
+            
+            <a class="dropdown-item" href="/ventas/resumenprecio">Resumen de precio</a>
 
             {% endif %}
 
-            <div style="margin-left: 5%;"><h6><small> <strong>  Información recurrente</strong> </small></h6> </div>
-             
-            <div class="dropdown-divider"></div>
-            
-              <a class="dropdown-item" href="/ventas/cajaarea">Caja del área</a>
-              <a class="dropdown-item" href="/ventas/encuestapostventa">Encuesta postventa</a>
-              <a class="dropdown-item" href="/ventas/evo_usd">Evolución historica USD/m2</a>
-              <a class="dropdown-item" href="/ventas/fechaentrega">Fechas de entrega</a>
-              <a class="dropdown-item" href="/ventas/historialventa">Historial de ventas</a>
-              <a class="dropdown-item" href="/ventas/informe_redes">Informe de redes</a> 
-              <a class="dropdown-item" href="/ventas/informeventa">Informe de ventas</a>      
-              <a class="dropdown-item" href="/ventas/invmer">Investigación de mercado</a>
-              <a class="dropdown-item" href="/ventas/radiografia">Radiografia del cliente</a>
-              <a class="dropdown-item" href="/ventas/variacionhormigon">Variación del Hº</a>
-              
-              
-              <div class="dropdown-divider"></div>
-            <div style="margin-left: 5%;"><h6><small> <strong>  Información comercial</strong> </small></h6> </div>
-             
-            <div class="dropdown-divider"></div>
-            
-              <a class="dropdown-item" href="/ventas/folleto">Folletos</a>
-              <a class="dropdown-item" href="/ventas/resumenprecio">Resumen de precio</a>
-
-            
-            
-            
           </div>
         </li> 
         
-        {% endif %}
-
         {% endif %}
 
         <li class="nav-item dropdown">
@@ -402,7 +385,7 @@
 
         <hr class="my-4" >
 
-        <h6 style="color:#FBF8F7; font-family: Arial, Helvetica, sans-serif;">Un espacio de trabajo diferente</h6>
+        <h6 style="color:#FBF8F7; font-family: Arial, Helvetica, sans-serif;">{{ request.user.groups.values_list }}</h6>
         <small style="color:#FBF8F7; font-family: Arial, Helvetica, sans-serif;">Toda la información en un unico lugar</small>
 
     
@@ -437,9 +420,6 @@
         </div>
 
         {% endif %}
-
-          
-
 
         </div>
 
