@@ -153,6 +153,23 @@
 
             <div style="display: inline-block; margin: 10px;  width: 200px;">
 
+                <label for="fecha_estimada_i"><h6>Fecha inicial P</h6></label>
+    
+            </div>
+    
+            <div style="display: inline-block; margin: 10px; "> 
+    
+                <input name="fecha_estimada_i" type="date" class="form-control form-control" value="{{datos.fecha_estimada_i|date:'Y-m-d'}}" style="width: 300px;" {% if not request.user|has_group:"MANDO MEDIO" %} disabled {% endif %}>
+    
+            </div>
+
+
+        </div>
+
+        <div style="margin: 5px">
+
+            <div style="display: inline-block; margin: 10px;  width: 200px;">
+
                 <label for="fechai"><h6>Fecha inicial</h6></label>
     
             </div>
@@ -160,6 +177,23 @@
             <div style="display: inline-block; margin: 10px; "> 
     
                 <input name="fechai" type="date" class="form-control form-control" value="{{datos.fecha_inicio|date:'Y-m-d'}}" style="width: 300px;">
+    
+            </div>
+
+
+        </div>
+
+        <div style="margin: 5px">
+
+            <div style="display: inline-block; margin: 10px;  width: 200px;">
+
+                <label for="fecha_estimada_f"><h6>Fecha final P</h6></label>
+    
+            </div>
+    
+            <div style="display: inline-block; margin: 10px; "> 
+    
+                <input name="fecha_estimada_f" type="date" class="form-control form-control" value="{{datos.fecha_estimada_f|date:'Y-m-d'}}" style="width: 300px;" {% if not request.user|has_group:"MANDO MEDIO" %} disabled {% endif %}>
     
             </div>
 

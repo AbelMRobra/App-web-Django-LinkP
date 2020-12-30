@@ -69,24 +69,30 @@ def editaritem(request, id_item):
     datos = ItemEtapa.objects.get(id = id_item)
 
     if request.method == 'POST':
-
-        datos.orden = request.POST['orden']
+        
         datos.nombre = request.POST['nombre']
         datos.responsable = datosusuario.objects.get(identificacion = request.POST['responsable'])
         datos.estado = request.POST['estado']
         datos.fecha_inicio = request.POST['fechai']
         datos.fecha_final = request.POST['fechaf']
         datos.url = request.POST['url']
+        
+        if request.POST['orden']:
+            datos.orden = request.POST['orden']
+            
+        if request.POST['fecha_estimada_i']:
+            datos.fecha_estimada_i = request.POST['fecha_estimada_i']
 
-        datos.save()
-
+        if request.POST['fecha_estimada_f']:
+            datos.fecha_estimada_f = request.POST['fecha_estimada_f']
+   
         try:
             datos.archivo_vigente = request.FILES['adjunto']
             datos.save()
 
         except:
 
-            pass
+            datos.save()
 
         return redirect('Documentacion')
 
@@ -106,15 +112,22 @@ def editarsubitem(request, id_subitem):
         datos.fecha_final = request.POST['fechaf']
         datos.url = request.POST['url']
 
-        datos.save()
+        if request.POST['orden']:
+            datos.orden = request.POST['orden']
+            
+        if request.POST['fecha_estimada_i']:
+            datos.fecha_estimada_i = request.POST['fecha_estimada_i']
 
+        if request.POST['fecha_estimada_f']:
+            datos.fecha_estimada_f = request.POST['fecha_estimada_f']
+   
         try:
             datos.archivo_vigente = request.FILES['adjunto']
             datos.save()
 
         except:
 
-            pass
+            datos.save()
 
         return redirect('Sub item', id_item = datos.item.id)
 
