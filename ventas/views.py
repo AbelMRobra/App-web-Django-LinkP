@@ -307,7 +307,10 @@ def historialventa(request):
         ritmo = 0
         ritmo_mes = 0  
 
-    m3_m2 = monto_h/m2_v
+    if m2_v == 0:
+        m3_m2 = 0
+    else:
+        m3_m2 = monto_h/m2_v
 
     datos_panel = [ventas_1, ventas_2, fecha_1, fecha_2, list_p, list_ritmo, descuento, unidades_chequeadas, descuento_2, unidades_chequeadas_2, ritmo, monto_neto, contado, financiado, contado_2, financiado_2, ritmo_mes, m2_v, m2_v_2, monto_h, m3_m2]
 
