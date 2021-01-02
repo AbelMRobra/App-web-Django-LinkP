@@ -302,10 +302,10 @@ def historialventa(request):
 
     if ventas_1 > 0:
         ritmo = diferencia/ventas_1   
+        ritmo_mes = (ritmo)**(-1)*30
     else:
-        ritmo = 0  
-
-    ritmo_mes = (ritmo)**(-1)*30
+        ritmo = 0
+        ritmo_mes = 0  
 
     m3_m2 = monto_h/m2_v
 
