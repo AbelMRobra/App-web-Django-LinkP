@@ -286,13 +286,13 @@ def historialventa(request):
         m2_v_2 = m2_v_2 + m2
 
     descuento_2 = (real_2/pricing_2 - 1)*100   
-
     ventas_1 = len(ventas_1)
     ventas_2 = len(ventas_2)
-
-    contado = ((contado/ventas_1))*100
+    if ventas_1 == 0:
+        contado = 0
+    else:
+        contado = ((contado/ventas_1))*100
     financiado = 100 - contado
-
     contado_2 = ((contado_2/ventas_2))*100
     financiado_2 = 100 - contado_2
 
