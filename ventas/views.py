@@ -207,8 +207,12 @@ def historialventa(request):
             contado += 1
 
         m2_v = m2_v + m2
-       
-    descuento = (real/pricing - 1)*100 
+
+    if pricing == 0:
+        
+        descuento = 0
+    else:   
+        descuento = (real/pricing - 1)*100 
 
     pricing_2 = 0
     real_2 = 0
