@@ -201,6 +201,16 @@ def documentacion(request):
                             d.estado = "ESPERA"
                             d.save()
 
+                    fecha_iniciales = SubItem.objects.values_list("fecha_inicio").filter(item = d).exclude(fecha_inicio = None).order_by("fecha_inicio")
+                    if len(fecha_iniciales) > 0:
+                        d.fecha_inicio = fecha_iniciales[0][0]
+                        d.save()
+
+                    fecha_finales = SubItem.objects.values_list("fecha_final").filter(item = d).exclude(fecha_final = None).order_by("-fecha_inicio")
+                    if len(fecha_finales) > 0:
+                        d.fecha_inicio = fecha_finales[0][0]
+                        d.save()
+
 
             cantidad = len(ItemEtapa.objects.filter(etapa = e))
 
