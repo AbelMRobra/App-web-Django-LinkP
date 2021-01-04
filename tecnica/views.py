@@ -205,7 +205,7 @@ def documentacion(request):
 
         datos.append((p, sub_datos, dias_faltantes, avance_general, dias_faltantes_2))
 
-    return render(request, "documentacion.html", {"datos":datos})
+    return render(request, "documentacion.html", {"datos":datos, "hoy":hoy})
 
 def ganttet(request, id_proyecto):
 

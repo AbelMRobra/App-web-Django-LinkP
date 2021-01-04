@@ -1,4 +1,5 @@
 {% extends "users/inicio.html" %}
+{% load apptags_extras %}
 
 {% load static %}
 {% load humanize %}
@@ -142,14 +143,32 @@
                 {% endif %}
 
                 {% if i.fecha_inicio %}
+
+                {% if i.fecha_final|fecha_prueba == 0 and i.estado == "ESPERA" %}
+
+                <td style="width: 10%; color: rgb(238, 48, 14 );""><small>{{i.fecha_inicio|date:"Y-m-d"}}</small></td>
+
+                {% else %}
+
                 <td style="width: 10%;"><small>{{i.fecha_inicio|date:"Y-m-d"}}</small></td>
+
+                {% endif %}
                 {% else %}
 
                 <td style="width: 10%;"><small>NO DEFINIDIO</small></td>
 
                 {% endif %}
                 {% if i.fecha_final %}
+
+                {% if i.fecha_final|fecha_prueba == 1 and i.estado != "LISTO" %}
+
+                <td style="width: 10%; color: rgb(238, 48, 14 );"><small>{{i.fecha_final|date:"Y-m-d"}}</small></td>
+                
+                {% else %}
                 <td style="width: 10%;"><small>{{i.fecha_final|date:"Y-m-d"}}</small></td>
+                {% endif %}
+                
+                
                 {% else %}
 
                 <td style="width: 10%;"><small>NO DEFINIDIO</small></td>
