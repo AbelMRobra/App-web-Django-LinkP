@@ -205,7 +205,7 @@ class PdfPrueba(View):
         'saldo_total_pesos':saldo_total_pesos,
         'fecha':datetime.date.today(),
         'logo':'{}{}'.format(settings.STATIC_URL, 'img/link.png'),
-        'fondo':'{}{}'.format(settings.STATIC_URL, 'img/fondo.png')}
+        'fondo':'{}{}'.format(settings.STATIC_URL, 'img/fondo.jpg')}
         html = template.render(contexto)
         response = HttpResponse(content_type = "application/pdf")
         
