@@ -165,7 +165,7 @@
 
                                             
                                                        
-                                            <small><b>{{t.orden|floatformat:0}}.</b> {{t.nombre}}</small>
+                                            <small><b>{{t.0.orden|floatformat:0}}.</b> {{t.0.nombre}}</small>
 
                                             
 
@@ -175,43 +175,51 @@
 
                                         <td style="width: 5%;"><small>
 
+                                            {% if t.1%}
 
-                                            <a href="{% url 'Sub item' t.id %}"><img src="{% static 'img/liza.png' %}" alt="" style="max-width:15px; height:auto; margin: 2px;"></a> 
 
+                                            <a href="{% url 'Sub item' t.0.id %}"><img src="{% static 'img/liza.png' %}" alt="" style="max-width:15px; height:auto; margin: 2px;"></a> 
+
+                                            {% else %}
+
+                                            <a href="{% url 'Sub item' t.0.id %}"><img src="{% static 'img/liza2.png' %}" alt="" style="max-width:15px; height:auto; margin: 2px;"></a> 
+
+
+                                            {% endif %}
 
                                         </small></td>
 
                                         <td style="width: 5%;"><small>
 
-                                            <a href="{% url 'Mensaje item' t.id %}"><img src="{% static 'img/charlar.png' %}" alt="" style="max-width:20px; height:auto; margin: 2px;"></a>
+                                            <a href="{% url 'Mensaje item' t.0.id %}"><img src="{% static 'img/charlar.png' %}" alt="" style="max-width:20px; height:auto; margin: 2px;"></a>
                                                                                  
                                         </small></td>
 
-                                        {% if t.estado == 'LISTO' %}
+                                        {% if t.0.estado == 'LISTO' %}
                                         <td style="width: 10%; color: rgb(124, 209, 107)"><small>
 
 
-                                            <b>{{t.estado}}</b> 
+                                            <b>{{t.0.estado}}</b> 
                                         
                                         
                                         </small></td>
 
-                                        {% elif t.estado == 'TRABAJANDO' %}
+                                        {% elif t.0.estado == 'TRABAJANDO' %}
 
                                         <td style="width: 10%; color: rgb(209, 176, 107)"><small>
 
 
-                                            <b>{{t.estado}}</b> 
+                                            <b>{{t.0.estado}}</b> 
                                         
                                         
                                         </small></td>
 
-                                        {% elif t.estado == 'PROBLEMAS' %}
+                                        {% elif t.0.estado == 'PROBLEMAS' %}
 
                                         <td style="width: 10%; color: rgb(209, 119, 107)"><small>
 
 
-                                            <b>{{t.estado}}</b> 
+                                            <b>{{t.0.estado}}</b> 
                                         
                                         
                                         </small></td>
@@ -221,7 +229,7 @@
                                         <td style="width: 10%;"><small>
 
 
-                                            <b>{{t.estado}}</b> 
+                                            <b>{{t.0.estado}}</b> 
                                         
                                         
                                         </small></td>
@@ -231,9 +239,9 @@
 
                                         <td style="width: 5%;"><small>
 
-                                            {% if t.responsable %}
+                                            {% if t.0.responsable %}
                                             
-                                            <img src="{{t.responsable.imagenlogo.url}}"  class="img-fluid" alt="..." style="max-width: 30px; height:auto;">
+                                            <img src="{{t.0.responsable.imagenlogo.url}}"  class="img-fluid" alt="..." style="max-width: 30px; height:auto;">
                                             
                                             {% else %}
 
@@ -243,40 +251,40 @@
 
                                         </small></td>
 
-                                        {% if t.fecha_estimada_i %}
-                                        <td style="width: 10%;"><small>{{t.fecha_estimada_i|date:"Y-m-d"}}</small></td>
+                                        {% if t.0.fecha_estimada_i %}
+                                        <td style="width: 10%;"><small>{{t.0.fecha_estimada_i|date:"Y-m-d"}}</small></td>
                                         {% else %}
 
                                         <td style="width: 10%;"><small>NO DEFINIDIO</small></td>
 
                                         {% endif %}
-                                        {% if t.fecha_estimada_f %}
-                                        <td style="width: 10%;"><small>{{t.fecha_estimada_f|date:"Y-m-d"}}</small></td>
-                                        {% else %}
-
-                                        <td style="width: 10%;"><small>NO DEFINIDIO</small></td>
-
-                                        {% endif %}
-
-                                        {% if t.fecha_inicio %}
-                                        <td style="width: 10%;"><small>{{t.fecha_inicio|date:"Y-m-d"}}</small></td>
-                                        {% else %}
-
-                                        <td style="width: 10%;"><small>NO DEFINIDIO</small></td>
-
-                                        {% endif %}
-                                        {% if t.fecha_final %}
-                                        <td style="width: 10%;"><small>{{t.fecha_final|date:"Y-m-d"}}</small></td>
+                                        {% if t.0.fecha_estimada_f %}
+                                        <td style="width: 10%;"><small>{{t.0.fecha_estimada_f|date:"Y-m-d"}}</small></td>
                                         {% else %}
 
                                         <td style="width: 10%;"><small>NO DEFINIDIO</small></td>
 
                                         {% endif %}
 
-                                        {% if t.archivo_vigente %}
+                                        {% if t.0.fecha_inicio %}
+                                        <td style="width: 10%;"><small>{{t.0.fecha_inicio|date:"Y-m-d"}}</small></td>
+                                        {% else %}
+
+                                        <td style="width: 10%;"><small>NO DEFINIDIO</small></td>
+
+                                        {% endif %}
+                                        {% if t.0.fecha_final %}
+                                        <td style="width: 10%;"><small>{{t.0.fecha_final|date:"Y-m-d"}}</small></td>
+                                        {% else %}
+
+                                        <td style="width: 10%;"><small>NO DEFINIDIO</small></td>
+
+                                        {% endif %}
+
+                                        {% if t.0.archivo_vigente %}
                                         <td style="width: 5%;"><small>
 
-                                            <a href="{{ t.archivo_vigente.url }}">
+                                            <a href="{{ t.0.archivo_vigente.url }}">
 
                                                 <img src="{% static 'img/archivo-adjunto.png' %}" alt="" style="max-width:20px; height:auto; margin: 2px;"  >
                                         
@@ -293,7 +301,7 @@
 
                                         <td style="width: 5%;">
 
-                                            <a href="{% url 'Editar Item' t.id %}" class="btn btn-sm btn-light"><img src="{% static 'img/documento.png' %}" alt="" style="max-width:15px; height:auto;"></a>
+                                            <a href="{% url 'Editar Item' t.0.id %}" class="btn btn-sm btn-light"><img src="{% static 'img/documento.png' %}" alt="" style="max-width:15px; height:auto;"></a>
                                         </td>
 
 

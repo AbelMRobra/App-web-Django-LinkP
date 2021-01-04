@@ -175,6 +175,13 @@ def documentacion(request):
 
             datos_itemetapas = ItemEtapa.objects.filter(etapa = e).order_by("orden")
 
+            datos_subitem = []
+
+            for d in datos_itemetapas:
+
+                item_cantidad = len(SubItem.objects.filter(item = d))
+                datos_subitem.append((d, item_cantidad))
+
             cantidad = len(ItemEtapa.objects.filter(etapa = e))
 
             cantidad_total = cantidad_total + cantidad
@@ -187,7 +194,7 @@ def documentacion(request):
                 avance = round((listos/cantidad)*100, 0)
                 no_avance = 100 - avance
 
-            sub_datos.append((e, datos_itemetapas, cantidad, avance, no_avance))
+            sub_datos.append((e, datos_subitem, cantidad, avance, no_avance))
 
         if cantidad_total != 0:
 
