@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Etapas, ItemEtapa
+from .models import Etapas, ItemEtapa, SubItem
 from import_export import resources
 from import_export.admin import ImportExportModelAdmin
 
@@ -24,5 +24,17 @@ class ItemEtapaAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     search_fields = ('etapa__nombre','nombre')
     resources_class = ItemEtapaResource
 
+class SubItemResource(resources.ModelResource):
+    class Meta:
+        model = SubItem
+
+class SubItemAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    list_display = ('item', 'nombre')
+    search_fields = ('item__nombre','nombre')
+    resources_class = SubItemResource
+
+
+
 admin.site.register(Etapas, EtapasAdmin)
 admin.site.register(ItemEtapa, ItemEtapaAdmin)
+admin.site.register(SubItem, SubItemAdmin)
