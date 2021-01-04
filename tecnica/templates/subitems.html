@@ -144,7 +144,7 @@
 
                 {% if i.fecha_inicio %}
 
-                {% if i.fecha_final|fecha_prueba == 0 and i.estado == "ESPERA" %}
+                {% if i.fecha_final|fecha_prueba == 1 and i.estado == "ESPERA" %}
 
                 <td style="width: 10%; color: rgb(238, 48, 14 );""><small>{{i.fecha_inicio|date:"Y-m-d"}}</small></td>
 
