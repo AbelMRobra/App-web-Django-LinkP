@@ -208,7 +208,7 @@ def documentacion(request):
 
                     fecha_finales = SubItem.objects.values_list("fecha_final").filter(item = d).exclude(fecha_final = None).order_by("-fecha_inicio")
                     if len(fecha_finales) > 0:
-                        d.fecha_inicio = fecha_finales[0][0]
+                        d.fecha_final = fecha_finales[0][0]
                         d.save()
 
 
