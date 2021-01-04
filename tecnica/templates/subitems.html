@@ -148,7 +148,7 @@
 
                 <td style="width: 10%; color: rgb(238, 48, 14);"><small>{{i.fecha_inicio|date:"Y-m-d"}}</small></td>
 
-                {% elif i.fecha_final|fecha_prueba == 1 and i.estado != "ESPERA" %}
+                {% elif i.fecha_final|fecha_prueba == 0 and i.estado != "ESPERA" %}
                 <td style="width: 10%; color: rgb(41, 166, 60);"><small>{{i.fecha_inicio|date:"Y-m-d"}}</small></td>
                 {% else %}
 
