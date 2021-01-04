@@ -178,9 +178,29 @@ def documentacion(request):
             datos_subitem = []
 
             for d in datos_itemetapas:
-
+                
                 item_cantidad = len(SubItem.objects.filter(item = d))
                 datos_subitem.append((d, item_cantidad))
+
+                if len(SubItem.objects.filter(item = d)) > 0:
+
+                    if len(SubItem.objects.filter(item = d, estado = "PROBLEMAS")) > 0:
+                        if d.estado != "PROBLEMAS":
+                            d.estado = "PROBLEMAS"
+                            d.save()
+                    elif len(SubItem.objects.filter(item = d, estado = "TRABAJANDO")) > 0 or (len(SubItem.objects.filter(item = d, estado = "ESPERA"))/len(SubItem.objects.filter(item = d))) != 1:
+                        if d.estado != "TRABAJANDO":
+                            d.estado = "TRABAJANDO"
+                            d.save()
+                    elif (len(SubItem.objects.filter(item = d, estado = "LISTO"))/len(SubItem.objects.filter(item = d))) == 1:
+                        if d.estado != "LISTO":
+                            d.estado = "LISTO"
+                            d.save()
+                    else:
+                        if d.estado != "ESPERA":
+                            d.estado = "ESPERA"
+                            d.save()
+
 
             cantidad = len(ItemEtapa.objects.filter(etapa = e))
 
