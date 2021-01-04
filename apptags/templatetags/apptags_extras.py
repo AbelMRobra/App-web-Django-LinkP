@@ -16,7 +16,7 @@ def has_group(user, group_name):
 @register.filter('fecha_prueba')
 def is_past_due(self):
 
-    if date.today() > self:
+    if date.today() >= self:
 
        return True
     else:
