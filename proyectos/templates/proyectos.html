@@ -19,8 +19,8 @@
             <tr class = "table-dark">
                 <th scope = "row" style="vertical-align: middle;" colspan="2"> PROYECTO</th>
                 <th scope = "row" style="vertical-align: middle;" class="priority-5">DESCRIPCIÓN </th>
-                <th scope = "row" style="vertical-align: middle;">FECHA ENTREGA </th>
-                <th scope = "row" style="vertical-align: middle;" class="priority-5">ULTIMA ACTUALIZACIÓN </th>
+                <th scope = "row" style="vertical-align: middle;">FECHA INICIO </th>
+                <th scope = "row" style="vertical-align: middle;" class="priority-5">FECHA DE ENTREGA</th>
                 <th scope = "row" style="vertical-align: middle;">TAMAÑO</th> 
 
             </tr>
@@ -40,8 +40,16 @@
                 <td> <b><img src="{{i.iamgen.url}}"  class="img-fluid" alt="..." style="max-width: 70px; height:auto;"></b> </td>
                 <td style="color: rgb({{i.color}}); vertical-align: middle;"> <b>{{i.nombre}}</b> </td>
                 <td class="priority-5">{{i.descrip}}</td>
-                <td>{{i.fecha_f}}</td>
-                <td class="priority-5">{{i.fecha_a}}</td>
+
+                {% if i.fecha_i %}
+                <td>{{i.fecha_i|date:"Y-m-d"}}</td>
+
+                {% else %}
+
+                <td>No definida</td>
+
+                {% endif %}
+                <td class="priority-5">{{i.fecha_f|date:"Y-m-d"}}</td>
                 <td> <b>{{i.m2}} m2</b> </td>
             </tr>
 
@@ -59,8 +67,15 @@
                 <td> <b><img src="{{i.iamgen.url}}"  class="img-fluid" alt="..." style="max-width: 70px; height:auto;"></b> </td>
                 <td style="color: rgb({{i.color}}); vertical-align: middle;"> <b>{{i.nombre}}</b> </td>
                 <td class="priority-5">{{i.descrip}}</td>
-                <td>{{i.fecha_f}}</td>
-                <td class="priority-5">{{i.fecha_a}}</td>
+                {% if i.fecha_i %}
+                <td>{{i.fecha_i|date:"Y-m-d"}}</td>
+
+                {% else %}
+
+                <td>No definida</td>
+
+                {% endif %}
+                <td class="priority-5">{{i.fecha_f|date:"Y-m-d"}}</td>
                 <td> <b>{{i.m2}} m2</b> </td>
             </tr>
 
@@ -79,8 +94,15 @@
                 <td> <b><img src="{{i.iamgen.url}}"  class="img-fluid" alt="..." style="max-width: 70px; height:auto;"></b> </td>
                 <td style="color: rgb({{i.color}}); vertical-align: middle;"> <b>{{i.nombre}}</b> </td>
                 <td class="priority-5">{{i.descrip}}</td>
-                <td>{{i.fecha_f}}</td>
-                <td class="priority-5">{{i.fecha_a}}</td>
+                {% if i.fecha_i %}
+                <td>{{i.fecha_i|date:"Y-m-d"}}</td>
+
+                {% else %}
+
+                <td>No definida</td>
+
+                {% endif %}
+                <td class="priority-5">{{i.fecha_f|date:"Y-m-d"}}</td>
                 <td> <b>{{i.m2}} m2</b> </td>
             </tr>
 

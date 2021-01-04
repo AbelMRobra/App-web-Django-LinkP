@@ -8,6 +8,7 @@ class Proyectos(models.Model):
     iamgen = models.ImageField(verbose_name="Logo del proyecto", blank=True, null=True)
     color = models.TextField(verbose_name="Color del proyecto", blank=True, null=True)
     fecha_f = models.DateField(verbose_name="Fecha de entrega")
+    fecha_i = models.DateField(verbose_name="Fecha de inicio", blank=True, null=True)
     fecha_a = models.DateField(auto_now=True, verbose_name="Fecha de actualización")
     m2 =  models.FloatField(verbose_name="Tamaño de la obra")
     desde = models.FloatField(null=True, blank=True, verbose_name="Precio desde")

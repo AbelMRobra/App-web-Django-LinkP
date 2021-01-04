@@ -32,20 +32,38 @@
                 <div style="display: inline-block; width: 350px; vertical-align: middle;">
 
                     <h5 style="font-family: Arial, Helvetica, sans-serif; color: rgb({{i.0.color}});">{{i.0.nombre}}</h5>
-                    <h6 style="font-family: Arial, Helvetica, sans-serif; color: rgb(75, 79, 74)"><small>Dias faltantes: 
+                    <h6 style="font-family: Arial, Helvetica, sans-serif; color: rgb(75, 79, 74)"><small>Inicio: 
+                        
+                        {% if i.4 == "NO DEFINIDO"%}
+
+                        NO DEFINIDO
+                        
+                        {% else %}
+                        
+                            {% if i.4 > 0 %}
+                            <b>{{i.2}}</b>
+
+                            {% elif i.4 == 0 %}
+                            <b style="color: rgb(197, 173, 54);">HOY INICIA</b>
+                            {% else %}
+                            <b style="color: rgb(46, 149, 72);">INICIADO</b>
+                            {% endif %}
+
+                        {% endif %}
+                    
+                    </small></h6>
+                    <h6 style="font-family: Arial, Helvetica, sans-serif; color: rgb(75, 79, 74)"><small>Final: 
                         
                         {% if i.2 > 0 %}
                         <b>{{i.2}}</b>
 
                         {% elif i.2 == 0 %}
-                        <b>HOY SE ENTREGA</b>
+                        <b style="color: rgb(197, 173, 54);">HOY SE ENTREGA</b>
                         {% else %}
-                        <b>ENTREGADO</b>
+                        <b style="color: rgb(46, 149, 72);">ENTREGADO</b>
                         {% endif %}
                     
                     </small></h6>
-
-
                     <h6 style="font-family: Arial, Helvetica, sans-serif; color: rgb(75, 79, 74)"><small>Avance general: <b>{{i.3}}%</b></small></h6>
 
                 </div>

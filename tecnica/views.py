@@ -152,6 +152,14 @@ def documentacion(request):
 
         dias_faltantes = (p.fecha_f - hoy).days
 
+        try:
+
+            dias_faltantes_2 = (p.fecha_i - hoy).days
+
+        except:
+
+            dias_faltantes_2 = "NO DEFINIDO"
+
         datos_etapas = Etapas.objects.filter(proyecto = p)
 
         sub_datos = []
@@ -189,7 +197,7 @@ def documentacion(request):
         else:
             avance_general = 0.0
 
-        datos.append((p, sub_datos, dias_faltantes, avance_general))
+        datos.append((p, sub_datos, dias_faltantes, avance_general, dias_faltantes_2))
 
     return render(request, "documentacion.html", {"datos":datos})
 
