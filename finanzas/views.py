@@ -495,6 +495,8 @@ def deudores(request, id_proyecto):
 
     datos = []
 
+    deuda_total = 0
+
     for c in ctas_ctes:
 
         cuotas_anteriores_h = sum(np.array(Cuota.objects.values_list('precio').filter(fecha__lte = fecha_hoy, constante__id = 7, cuenta_corriente = c)))*h
@@ -506,6 +508,7 @@ def deudores(request, id_proyecto):
         pagos = (pagos_h + pagos_usd)/h
         deuda = cuotas - pagos
         deuda_pesos = deuda*h
+        deuda_total = deuda_total + deuda_pesos
 
         datos.append((c, cuotas, pagos, deuda, deuda_pesos))
 
@@ -555,7 +558,7 @@ def deudores(request, id_proyecto):
     datos = sorted(datos, key=lambda tup: tup[3], reverse=True)
 
 
-    return render(request, 'deudores.html', {'datos':datos, 'mensaje':mensaje, 'list_proyectos':list_proyectos})
+    return render(request, 'deudores.html', {'datos':datos, 'mensaje':mensaje, 'list_proyectos':list_proyectos, 'deuda_total': deuda_total})
 
 def pagos(request, id_cuota):
 
