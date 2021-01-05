@@ -4,18 +4,18 @@
 
 {% block content %}
 
-      <div class="jumbotron" style="background-color: rgba(11, 32, 68, 0.8); margin-top: 2%;">
+      <div class="jumbotron" style="background-color: white; margin-top: 2%;">
 
         <div style="text-align: center;">
-          <h3 style="color:#F3EAE5;"> Tu espacio personal</h3>
-          <h4 style="color: #F3EAE5; font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif">{{request.user.first_name}} {{request.user.last_name}}</h4>
+          <h3> Tu espacio personal</h3>
+          <h4 style="font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif">{{request.user.first_name}} {{request.user.last_name}}</h4>
 
         </div>       
-        <hr class="my-4" style="background-color: #F3EAE5; width: 75%; ">
+        <hr class="my-4" style="width: 75%; ">
 
         {% if datos %}
 
-        <h5 style="color: #F3EAE5; margin-left: 12.5%;">Un poco sobre ti</h5>
+        <h5 style="margin-left: 12.5%;">Tu perfil</h5>
 
         <div style="text-align: center;">
 
@@ -28,15 +28,28 @@
 
           <div>
 
-            <small style="color:#F3EAE5;"><b>Área que perteneces:</b> </small> <small style="color:#F3EAE5;">{{datos.area}}</small>
+            <small><b>Área que perteneces:</b> {{datos.area}}</small>
           
 
           </div>
 
           <div>
 
-            <small style="color:#F3EAE5;"><b>Cargo que ocupas:</b> </small> <small style="color:#F3EAE5;">{{datos.cargo}}</small>
+            <small><b>Cargo que ocupas:</b> {{datos.cargo}}</small>
           
+
+          </div>
+
+          <div>
+
+            <small><b>Email:</b> {{request.user.email}}</small>
+          
+
+          </div>
+
+          <div>
+
+            <small><b>Monedas que tienes:</b> No habilitado <img src="{% static 'img/monedalink.png' %}" alt="" style="max-width:20px; height:auto; margin: 2px; vertical-align: bottom;"></small> 
 
           </div>
 
@@ -45,7 +58,73 @@
 
         </div>
 
-        <hr class="my-4" style="background-color: #F3EAE5; width: 75%; ">
+        <hr class="my-4" style="width: 75%; ">
+
+        <div style="margin-left: 12.5%;">
+
+          <button href="#" class="btn btn-secondary">Contraseña</button>
+
+          <button href="#" class="btn btn-secondary">Vacaciones</button>
+
+          <button href="#" class="btn btn-secondary">Evaluaciones</button>
+
+        </div>
+
+        
+
+        <hr class="my-4" style="width: 75%; ">
+
+        <div style="text-align: center;">
+
+          <h5>Nuestra empresa</h5> 
+        </div>
+
+        <table class = "table table-hover" style="text-align: center; margin-top: 5px; width: 75%; margin-left: 12.5%;" >
+          <thead>
+  
+              <tr class = "table-dark">
+                  {% for i in otros_datos %}
+                  <th scope = "row" style="vertical-align: middle;"> <small> <strong>{{i.0.0}}</strong> </small> </th>
+                  {% endfor %}
+                  </tr>
+                 </thead>
+
+                 <tbody>
+
+                  <tr class = "table-light">
+                    {% for c in otros_datos %}
+                      <td>
+                        {% for d in c.1 %}
+                         <div>
+                           
+                          <img src="{{d.imagenlogo.url}}"  class="img-fluid" alt="..." style="max-width: 30px; height:auto;">
+                         </div>
+
+                         {% endfor %}
+                        
+                        </td>
+                      {% endfor %}
+
+                      </tr>
+
+                 </tbody>
+        </table> 
+        
+
+        <!-- 
+        
+
+        <div style=" margin-left: 12.5%; margin-top: 10px;">
+
+          <img src="{{i.imagenlogo.url}}"  class="img-fluid" alt="..." style="max-width: 30px; height:auto;">
+          
+          
+          <small style="color: #F3EAE5;">{{i.identificacion}} - <b>Área</b>: {{i.area}} - <b>Cargo</b>: {{i.cargo}} </small>
+
+
+        </div>
+
+        
 
         {% endif %}
 
@@ -99,28 +178,11 @@
 
         <hr class="my-4" style="background-color: #F3EAE5; width: 75%; ">
 
-        <div style=" margin-left: 12.5%;">
-
-          <h5 style="color: #F3EAE5;">El equipo! </h5> 
-        </div>
-
-        {% for i in otros_datos %}
-
         
 
-        <div style=" margin-left: 12.5%; margin-top: 10px;">
-
-          <img src="{{i.imagenlogo.url}}"  class="img-fluid" alt="..." style="max-width: 30px; height:auto;">
-          
-          
-          <small style="color: #F3EAE5;">{{i.identificacion}} - <b>Área</b>: {{i.area}} - <b>Cargo</b>: {{i.cargo}} </small>
-
-
-        </div>
-
-        {% endfor %}
-
         {% endif %}
+
+        -->
 
         <hr class="my-4" style="background-color: #F3EAE5; width: 50%; ">
 

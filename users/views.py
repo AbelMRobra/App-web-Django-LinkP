@@ -27,7 +27,15 @@ def guia(request):
 
         if datos:
 
-            otros_datos = datosusuario.objects.order_by("area").exclude(estado = "NO ACTIVO")
+            areas = datosusuario.objects.values_list("area").exclude(estado = "NO ACTIVO")
+
+            otros_datos = []
+
+            for a in areas:
+
+                miembros = datosusuario.objects.filter(area = a[0]).order_by("identificacion").exclude(estado = "NO ACTIVO")
+                print(miembros)
+                otros_datos.append((a, miembros))
 
     except:
 
