@@ -97,7 +97,7 @@
                         {% for d in c.1 %}
                          <div>
                            
-                          <img src="{{d.imagenlogo.url}}"  class="img-fluid" alt="..." style="max-width: 30px; height:auto; margin-top: 2px;">
+                          <span class="hint--top hint--danger" aria-label="Soy {{d.identificacion}}, me desempeño como {{d.cargo}}"><img src="{{d.imagenlogo.url}}"  class="img-fluid" alt="..." style="max-width: 50px; height:auto; margin-top: 5px;"></span>
                          </div>
 
                          {% endfor %}
