@@ -29,12 +29,14 @@ def guia(request):
 
             areas = datosusuario.objects.values_list("area").exclude(estado = "NO ACTIVO")
 
+            areas = list(set(areas))
+
             otros_datos = []
 
             for a in areas:
 
                 miembros = datosusuario.objects.filter(area = a[0]).order_by("identificacion").exclude(estado = "NO ACTIVO")
-                print(miembros)
+
                 otros_datos.append((a, miembros))
 
     except:
