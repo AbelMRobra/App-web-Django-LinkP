@@ -20,17 +20,6 @@ from openpyxl import Workbook
 from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
 
 
-# Vistas para articulos desde linea 26 a 200
-# Vistas para constantes desde linea 200 a 300
-
-
-
-
-
-
-# --------------------------------> VISTA PARA LISTADO DE ARTICULOS <------------------------------------------------------
-
-
 def insum_list(request):
 
     datos = Articulos.objects.all()
@@ -86,9 +75,6 @@ def insum_list(request):
 
     return render(request, 'articulos/insum_list.html', c )
 
-# --------------------------------> VISTA PARA PANEL DE MODIFICIACIÓN DE ARTICULOS <------------------------------------------------------
-
-
 def insum_panel(request):
 
     art_actuales = Articulos.objects.all()
@@ -100,9 +86,7 @@ def insum_panel(request):
     c = {'articulos':art_actuales, 'myfilter':myfilter}
 
     return render(request, 'articulos/insum_panel.html', c )
-
-# ----------------------------------> VISTAS PARA CREAR ARTICULOS <----------------------------------------------
-    
+  
 def insum_create(request):
 
     #Si el metodo es POST activa la funciones para guardar los datos del formulario
@@ -179,8 +163,6 @@ def insum_create(request):
 
     return render(request, 'articulos/insum_create.html', f )
 
-# --------------------------------> VISTA PARA EDITAR ARTICULOS <------------------------------------------------------
-
 def insum_edit(request, id_articulos):
 
     art = Articulos.objects.get(codigo=id_articulos)
@@ -195,8 +177,6 @@ def insum_edit(request, id_articulos):
 
     return render(request, 'articulos/insum_create.html', {'form':form})
 
-# --------------------------------> VISTA PARA CONFIRMAR SI SE ELIMINA UN ARTICULO <------------------------------------------------------
-
 def insum_delete(request, id_articulos):
 
     art = Articulos.objects.get(codigo=id_articulos)
@@ -206,10 +186,6 @@ def insum_delete(request, id_articulos):
         return redirect('Panel de cambios')
 
     return render(request, 'articulos/insum_delete.html', {'art':art})
-
-# ----------------------------------------------------- VISTAS PARA CONSTANTES ----------------------------------------------
-
-# VISTA --> Crear constante
 
 def cons_create(request):
 
@@ -224,8 +200,6 @@ def cons_create(request):
 
     f = {'form':form}
     return render(request, 'constantes/cons_create.html', f )
-
-# ----------------------------------------------------- VISTAS PARA PANEL DE CAMBIOS CONSTANTES ----------------------------------------------
 
 def cons_list(request):
 
@@ -242,8 +216,6 @@ def cons_panel(request):
     c = {'constantes':cons_actuales}
 
     return render(request, 'constantes/cons_panel.html', c )
-
-# --------------------------------> VISTA PARA EDITAR CONSTANTES <------------------------------------------------------
 
 def cons_edit(request, id_cons):
 
@@ -307,8 +279,6 @@ def cons_edit(request, id_cons):
     
     return render(request, 'constantes/cons_create.html', {'form':form})
 
-# --------------------------------> VISTA PARA ELIMINAR CONSTANTE <------------------------------------------------------
-
 def cons_delete(request, id_cons):
 
     cons = Constantes.objects.get(id=id_cons)
@@ -317,8 +287,6 @@ def cons_delete(request, id_cons):
         cons.delete()
         return redirect('Cons_panel')
     return render(request, 'constantes/cons_delete.html', {'cons':cons})
-
-# --------------------------------> REGISTRO DE CONSTANTE <------------------------------------------------------
 
 def registroconstante(request):
 
@@ -480,10 +448,6 @@ def registroconstante(request):
 
     return render(request, 'constantes/historico.html', {'datos':datos, 'fecha':fecha, 'hormigon':hormigon_list, 'usd':usd, 'usd_blue':usd_blue, 'uva':uva, 'cac':cac})
 
-        
-
-# ---------------------------------> VISTAS PARA PANEL PRESUPUESTOS <----------------------------------------------
-
 def presupuestostotal(request):
 
     presupuestador = 0
@@ -491,6 +455,8 @@ def presupuestostotal(request):
     variacion = 0
 
     variacion_year = 0  
+    
+    variacion_year_2 = 0  
 
     variacion_anuales = 0 
     
@@ -631,6 +597,8 @@ def presupuestostotal(request):
 
             date = datetime.date(today.year, 1, 1)
 
+            date_2 = datetime.date((today.year - 1), 1, 1)
+
             try:
 
                 dato = RegistroValorProyecto.objects.filter(fecha = date, proyecto = proyectos)
@@ -646,6 +614,18 @@ def presupuestostotal(request):
 
                 variacion_anuales = 0
 
+            try:
+                dato_1 = RegistroValorProyecto.objects.filter(fecha = date, proyecto = proyectos)
+                dato_2 = RegistroValorProyecto.objects.filter(fecha = date_2, proyecto = proyectos)
+
+                valor = ((dato_1[0].precio_proyecto/dato_2[0].precio_proyecto) -1)*100
+
+                variacion_year_2 = [date, valor]
+
+            except:
+
+                variacion_year_2 = 0
+
         except:
 
             variacion = 0
@@ -654,10 +634,7 @@ def presupuestostotal(request):
 
         
     
-    return render(request, 'presupuestos/principalpresupuesto.html', {"datos":datos, "proyectos":proyectos, "valor":registro, "presupuestador":presupuestador, "variacion":variacion, "variacion_year":variacion_year, "variacion_anuales":variacion_anuales})
-
-
-# ---------------------------------> VISTAS PARA PANEL PRESUPUESTOS - SALDO CAPITULO ----------------------------------------------
+    return render(request, 'presupuestos/principalpresupuesto.html', {"datos":datos, "proyectos":proyectos, "valor":registro, "presupuestador":presupuestador, "variacion":variacion, "variacion_year":variacion_year, "variacion_year_2":variacion_year_2, "variacion_anuales":variacion_anuales})
 
 def saldocapitulo(request, id_proyecto):
 
@@ -735,8 +712,6 @@ def saldocapitulo(request, id_proyecto):
                 
     return render(request, 'presupuestos/saldocapitulo.html', {"datos":datos})
 
-# ----------------------------------------------------- VISTAS PARA ARTICULOS SALDO - CAPITULO ----------------------------------------------
-
 def SaldoCapArticulos(request, id_proyecto, id_capitulo):
 
     #Armamos el saldo de cada capitulo
@@ -808,16 +783,12 @@ def SaldoCapArticulos(request, id_proyecto, id_capitulo):
 
     return render(request, 'presupuestos/saldoartcapitulo.html', {"datos":datos})
 
-# ----------------------------------------------------- VISTAS PARA ARTICULOS SALDO - CAPITULO ----------------------------------------------
-
 def debugsa(request, id_proyecto):
 
     datos = debugsaldo(id_proyecto)
 
     return render(request, 'presupuestos/debugsaldo.html', {"datos":datos})
 
-
-# ----------------------------------------------------- VISTAS PARA PANEL PRESUPUESTOS - CREDITOS ----------------------------------------------
 def creditos(request, id_proyecto):
 
     proyecto = Proyectos.objects.get(id = id_proyecto)
@@ -884,8 +855,6 @@ def creditos(request, id_proyecto):
   
     return render(request, 'presupuestos/creditos.html', {"datos":datos})
 
-
-# ----------------------------------------------------- VISTAS PARA PANEL PRESUPUESTOS - FONDES DE REPARO ----------------------------------------------
 def fdr(request, id_proyecto):
 
     proyecto = Proyectos.objects.get(id = id_proyecto)
@@ -950,8 +919,6 @@ def fdr(request, id_proyecto):
   
     return render(request, 'presupuestos/fdr.html', {"datos":datos})
 
-
-# ----------------------------------------------------- VISTAS PARA PANEL PRESUPUESTOS - ANTICIPOS ----------------------------------------------
 def anticiposf(request, id_proyecto):
 
     proyecto = Proyectos.objects.get(id = id_proyecto)
@@ -1016,7 +983,6 @@ def anticiposf(request, id_proyecto):
   
     return render(request, 'presupuestos/anticiposf.html', {"datos":datos})
 
-# ----------------------------------------------------- VISTAS PARA PANEL PRESUPUESTOS - EXPLOSION ----------------------------------------------
 def explosion(request, id_proyecto):
 
     proyecto = Proyectos.objects.get(id = id_proyecto)
@@ -1134,7 +1100,6 @@ def explosion(request, id_proyecto):
 
     return render(request, 'presupuestos/explosion.html', {"datos":datos})
 
-# ----------------------------------------------------- VISTAS PARA PANEL PRESUPUESTOS - ANALISIS ----------------------------------------------
 def presupuestosanalisis(request, id_proyecto, id_capitulo):
 
     proyecto = Proyectos.objects.get(id = id_proyecto)
@@ -1221,9 +1186,6 @@ def presupuestosanalisis(request, id_proyecto, id_capitulo):
     datos = {"datos":datos, "proyecto":proyecto, "capitulo":capitulo}
 
     return render(request, 'presupuestos/presupuestoanalisis.html', {"datos":datos})
-
-
-# ----------------------------------------------------- VISTAS PARA PANEL PRESUPUESTOS - CAPITULO ----------------------------------------------
 
 def presupuestoscapitulo(request, id_proyecto):
 
@@ -1320,17 +1282,12 @@ def presupuestoscapitulo(request, id_proyecto):
     
     return render(request, 'presupuestos/presupuestocapitulo.html', {"datos":datos})
 
-
-
-# ----------------------------------------------------- VISTAS PARA PANEL PRESUPUESTOS - CAPITULO ----------------------------------------------
-
 def presupuestorepcompleto(request, id_proyecto):
 
     proyecto = Proyectos.objects.get(id = id_proyecto)
     capitulo = Capitulos.objects.all()
     compo = CompoAnalisis.objects.all()
     computo = Computos.objects.all()
-
 
     crudo = []
 
@@ -1455,8 +1412,6 @@ def presupuestorepcompleto(request, id_proyecto):
     
     return render(request, 'presupuestos/presuprepabierto.html', {"datos":datos})
 
-# ----------------------------------------------------- VISTAS PARA VER ANALISIS----------------------------------------------
-
 def ver_analisis(request, id_analisis):
 
     analisis = Analisis.objects.get(codigo = id_analisis)
@@ -1483,9 +1438,6 @@ def ver_analisis(request, id_analisis):
 
     
     return render(request, 'analisis/veranalisis.html', {"datos":datos})
-
-
-# ----------------------------------------------------- VISTAS PARA LISTAR ANALISIS----------------------------------------------
 
 def analisis_list(request):
 
@@ -1554,8 +1506,6 @@ def analisis_list(request):
 
     return render(request, 'analisis/listaanalisis.html', {"datos":datos})
 
-# ----------------------------------------------------- VISTAS PARA PANEL DE ANALISIS----------------------------------------------
-
 def panelanalisis(request):
 
     analisis = Analisis.objects.all()
@@ -1612,8 +1562,6 @@ def panelanalisis(request):
 
     return render(request, 'analisis/panelanalisis.html', {"datos":datos})
     
-# ----------------------------------------------------- VISTAS PARA CREAR ANALISIS ----------------------------------------------
-
 def crearanalisis(request):
 
     articulos = Articulos.objects.all()
@@ -1725,8 +1673,6 @@ def crearanalisis(request):
 
     return render(request, 'analisis/crearanalisis.html', {'datos':datos})
 
-# ----------------------------------------------------- VISTAS PARA MODIFICAR ANALISIS ----------------------------------------------
-
 def modificaranalisis(request, id_analisis):
 
     analisis = Analisis.objects.get(codigo = id_analisis)
@@ -1747,10 +1693,6 @@ def modificaranalisis(request, id_analisis):
     "datos":datos}
 
     return render(request, 'analisis/modificaranalisis.html', {"datos":datos})
-
-
-
-# ----------------------------------------------------- VISTAS PARA PARAMETROS----------------------------------------------
 
 def parametros(request):
 
@@ -1809,8 +1751,6 @@ def parametros(request):
             basura = 1
 
     return render(request, 'desde/parametros.html', {'datos': datos})
-
-# ----------------------------------------------------- VISTAS PARA INDICADOR DE PRECIOS----------------------------------------------
 
 def desde(request):
 
@@ -2073,16 +2013,11 @@ def desde(request):
 
     return render(request, 'desde/desde.html', {'datos':datos})
 
-# ----------------------------------------------------- VISTAS PARA DATOS DE PROYECTOS ----------------------------------------------
-
 def proyectos(request):
 
     datos = DatosProyectos.objects.all()
 
     return render(request, 'datos/projects.html', {'datos':datos})
-
-
-# --------------------------------> VISTA PARA INFORME PRESUPUESTO <------------------------------------------------------
 
 def InformeArea(request):
 
@@ -2200,8 +2135,6 @@ def InformeArea(request):
 
     return render(request, 'presupuestos/informearea.html', {"datos":datos, "datos_barras":barras, 'capitulos':capitulos, 'datos_radar':datos_radar})
 
-# --------------------------------> FUNCIONES Y CLASES USADAS EN LAS VISTAS <------------------------------------------------------
-
 def AnticiposFinan(id_proyecto):
     proyecto = Proyectos.objects.get(id = id_proyecto)
     articulo = Articulos.objects.get(codigo = 9998005250)
@@ -2224,7 +2157,6 @@ def AnticiposFinan(id_proyecto):
         datos.append((proveedor, monto_fdr))
 
     return datos
-
 
 def Fondosdereparo(id_proyecto):
     proyecto = Proyectos.objects.get(id = id_proyecto)
@@ -2568,7 +2500,6 @@ def Creditocapitulo(id_proyecto):
             datos.append((compra.articulo, 0, compra.cantidad, -compra.cantidad, -saldo))
 
     return datos
-
 
 class ReporteExplosion(TemplateView):
 
@@ -2996,7 +2927,6 @@ class ReporteExplosionCap(TemplateView):
         response["Content-Disposition"] = contenido
         wb.save(response)
         return response
-
 
 def debugsaldo(id_proyecto):
 
