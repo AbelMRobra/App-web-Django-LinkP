@@ -34,7 +34,7 @@
             <ul class="chart-bars">
                 {% for i in datos %}
   
-              <li data-duration="{% if i.fecha_inicio.days > 15 %}{{i.fecha_inicio|date:'Y.m'}}½{%else%}{{i.fecha_inicio|date:'Y.m'}}{%endif%}-{% if i.fecha_final.days > 15%}{{i.fecha_final|date:'Y.m'}}½{%else%}{{i.fecha_final|date:'Y.m'}}{%endif%}" data-color="rgb(83, 86, 83)">
+              <li data-duration="{% if i.fecha_inicio.day > 15 %}{{i.fecha_inicio|date:'Y.m'}}½{%else%}{{i.fecha_inicio|date:'Y.m'}}{%endif%}-{% if i.fecha_final.day > 15%}{{i.fecha_final|date:'Y.m'}}½{%else%}{{i.fecha_final|date:'Y.m'}}{%endif%}" data-color="rgb(83, 86, 83)">
                 
                 <span class="hint--top hint--danger" aria-label="Me tomo vacaciones desde {{i.fecha_inicio|date:'d-m-Y'}} hasta el {{i.fecha_final|date:'d-m-Y'}}">
                   

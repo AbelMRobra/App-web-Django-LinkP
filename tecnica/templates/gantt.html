@@ -48,11 +48,11 @@
             <ul class="chart-bars">
                 {% for i in datos %}
   
-              <li data-duration="{% if i.2.days > 15%}{{i.2|date:'Y.m'}}½{%else%}{{i.2|date:'Y.m'}}{%endif%}-{% if i.3.days > 15%}{{i.3|date:'Y.m'}}½{%else%}{{i.3|date:'Y.m'}}{%endif%}" data-color="rgb({{proyecto.color}})">{{i.0}}</li>
+              <li data-duration="{% if i.2.day > 15%}{{i.2|date:'Y.m'}}½{%else%}{{i.2|date:'Y.m'}}{%endif%}-{% if i.3.day > 15%}{{i.3|date:'Y.m'}}½{%else%}{{i.3|date:'Y.m'}}{%endif%}" data-color="rgb({{proyecto.color}})">{{i.0}}</li>
 
               {% for t in i.1 %}
 
-              <li data-duration="{% if t.1.days > 15%}{{t.1|date:'Y.m'}}½{%else%}{{t.1|date:'Y.m'}}{%endif%}-{% if t.2.days > 15%}{{t.2|date:'Y.m'}}½{%else%}{{t.2|date:'Y.m'}}{%endif%}" data-color="rgba({{proyecto.color}}, 0.8)">{{t.0}}</li>
+              <li data-duration="{% if t.1.day > 15%}{{t.1|date:'Y.m'}}½{%else%}{{t.1|date:'Y.m'}}{%endif%}-{% if t.2.day > 15%}{{t.2|date:'Y.m'}}½{%else%}{{t.2|date:'Y.m'}}{%endif%}" data-color="rgba({{proyecto.color}}, 0.8)">{{t.0}}</li>
 
               {% endfor %}
 
