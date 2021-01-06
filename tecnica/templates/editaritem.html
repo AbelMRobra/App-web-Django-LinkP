@@ -83,7 +83,7 @@
             
             <div style="display: inline-block; margin: 10px; ">
     
-                <input name="responsable" type="text" class="form-control form-control" value="{{datos.responsable.identificacion}}" style="width: 300px;">
+                <input name="responsable" type="text" class="form-control form-control" value="{{datos.responsable.identificacion}}" style="width: 300px;" required="true">
     
             </div>
 
@@ -176,7 +176,7 @@
     
             <div style="display: inline-block; margin: 10px; "> 
     
-                <input name="fechai" type="date" class="form-control form-control" value="{{datos.fecha_inicio|date:'Y-m-d'}}" style="width: 300px;">
+                <input name="fechai" type="date" class="form-control form-control" value="{{datos.fecha_inicio|date:'Y-m-d'}}" style="width: 300px;" required="true">
     
             </div>
 
@@ -211,7 +211,7 @@
     
             <div style="display: inline-block; margin: 10px; "> 
     
-                <input name="fechaf" type="date" class="form-control form-control" style="width: 300px;" value="{{datos.fecha_final|date:'Y-m-d'}}">
+                <input name="fechaf" type="date" class="form-control form-control" style="width: 300px;" value="{{datos.fecha_final|date:'Y-m-d'}}" required="true">
     
             </div>
 
