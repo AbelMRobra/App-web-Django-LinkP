@@ -620,7 +620,7 @@ def presupuestostotal(request):
 
                 valor = ((dato_1[0].precio_proyecto/dato_2[0].precio_proyecto) -1)*100
 
-                variacion_year_2 = [date, valor]
+                variacion_year_2 = [date_2, valor]
 
             except:
 
