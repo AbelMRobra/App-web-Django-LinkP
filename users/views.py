@@ -15,6 +15,22 @@ import datetime
 from datetime import date
 import pandas as pd
 import numpy as np
+from django.contrib.auth.models import User
+
+
+def password(request):
+
+    if request.method == 'POST':
+
+        usuario = User.objects.get(id = request.user.id)
+        
+        usuario.set_password(request.POST["password"])
+
+        usuario.save()
+
+
+
+    return render(request, "users/password.html")
 
 def guia(request):
 
