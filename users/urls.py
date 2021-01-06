@@ -14,5 +14,6 @@ urlpatterns = [
     url(r'^accounts/login/$', views.welcome, name = 'Redicrección'),
     url(r'^dashboard$', views.dashboard, name = 'Dashboard'),
     url(r'^password$', login_required(views.password), name = 'Password'),
+    url(r'^vacaciones$', login_required(views.vacaciones), name = 'Holidays'),
 
 ]

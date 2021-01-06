@@ -1,0 +1,117 @@
+{% extends "users/inicio.html" %}
+
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+
+<div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;">
+
+    <h3 style="font-family: Arial, Helvetica, sans-serif;">Calendario de vacaciones</h3>
+
+    <small style="font-family: Arial, Helvetica, sans-serif;"><b>Modulo:</b> Usuario</small>
+
+    <b><hr class = "my-4" style="width: 100% "></b>
+
+    <div style="margin: 10px;">
+
+        <h6 style="font-family: Arial, Helvetica, sans-serif;">PERIODO OCTUBRE - ABRIL </h6>
+
+    </div>
+
+    <div style="height: 1000px;">
+
+        <div class="chart-wrapper" >
+            <ul class="chart-values">
+
+                {% for i in fechas %}
+              
+                <li><small>{{i|date:"Y.m"}}</small></li>
+
+                {% endfor %}
+
+            </ul>
+            <ul class="chart-bars">
+                {% for i in datos %}
+  
+              <li data-duration="{% if i.fecha_inicio.days > 15 %}{{i.fecha_inicio|date:'Y.m'}}½{%else%}{{i.fecha_inicio|date:'Y.m'}}{%endif%}-{% if i.fecha_final.days > 15%}{{i.fecha_final|date:'Y.m'}}½{%else%}{{i.fecha_final|date:'Y.m'}}{%endif%}" data-color="rgb(83, 86, 83)">
+                
+                <span class="hint--top hint--danger" aria-label="Me tomo vacaciones desde {{i.fecha_inicio|date:'d-m-Y'}} hasta el {{i.fecha_final|date:'d-m-Y'}}">
+                  
+                  
+                
+                  {{i.usuario.identificacion}}
+
+                </span>
+                
+              
+              
+              </li>
+
+
+              {% endfor %}
+
+            </ul>
+          </div>
+
+
+    <script>
+
+function createChart(e) {
+  const days = document.querySelectorAll(".chart-values li");
+  const tasks = document.querySelectorAll(".chart-bars li");
+  const daysArray = [...days];
+
+  tasks.forEach(el => {
+    const duration = el.dataset.duration.split("-");
+    const startDay = duration[0];
+    const endDay = duration[1];
+    let left = 0,
+      width = 0;
+
+    if (startDay.endsWith("½")) {
+      const filteredArray = daysArray.filter(day => day.textContent == startDay.slice(0, -1));
+      left = filteredArray[0].offsetLeft + filteredArray[0].offsetWidth / 2;
+    } else {
+      const filteredArray = daysArray.filter(day => day.textContent == startDay);
+      left = filteredArray[0].offsetLeft;
+    }
+
+    if (endDay.endsWith("½")) {
+      const filteredArray = daysArray.filter(day => day.textContent == endDay.slice(0, -1));
+      width = filteredArray[0].offsetLeft + filteredArray[0].offsetWidth / 2 - left;
+    } else {
+      const filteredArray = daysArray.filter(day => day.textContent == endDay);
+      width = filteredArray[0].offsetLeft + filteredArray[0].offsetWidth - left;
+    }
+
+    // apply css
+    el.style.left = `${left}px`;
+    el.style.width = `${width}px`;
+    if (e.type == "load") {
+      el.style.backgroundColor = el.dataset.color;
+      el.style.opacity = 1;
+    }
+  });
+}
+
+window.addEventListener("load", createChart);
+window.addEventListener("resize", createChart);
+    </script>
+
+
+    </div>
+
+
+    <div style="margin-top: 2rem;">
+        <p> <small>-- Link<strong>P</strong> --</small> </p>
+
+     </div>
+        
+    
+
+                    
+</div>
+ 
+    
+{% endblock %}

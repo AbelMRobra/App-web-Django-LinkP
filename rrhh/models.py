@@ -61,6 +61,15 @@ class datosusuario(models.Model):
     def __str__(self):
         return self.identificacion
 
+class Vacaciones(models.Model):
+    usuario = models.ForeignKey(datosusuario, on_delete=models.CASCADE, verbose_name="Usuario")
+    fecha_inicio = models.DateField(verbose_name="Fecha de inicio")
+    fecha_final = models.DateField(verbose_name="Fecha final")
+
+    class Meta:
+        verbose_name="Vacaciones"
+        verbose_name_plural="Vacaciones"
+
 
 class mensajesgenerales(models.Model):
 

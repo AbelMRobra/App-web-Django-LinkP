@@ -10,12 +10,35 @@ from proyectos.models import Proyectos, Unidades
 from ventas.models import VentasRealizadas
 from compras.models import Compras, Comparativas
 from registro.models import RegistroValorProyecto
-from rrhh.models import datosusuario, mensajesgenerales, NotaDePedido
+from rrhh.models import datosusuario, mensajesgenerales, NotaDePedido, Vacaciones
 import datetime
 from datetime import date
 import pandas as pd
 import numpy as np
 from django.contrib.auth.models import User
+
+
+def vacaciones(request):
+
+    # Determinamos las fechas
+
+    hoy = datetime.date.today()
+
+    if hoy.month < 4:
+
+        abril = datetime.date(hoy.year, 4, 1)
+        marzo = datetime.date(hoy.year, 3, 1)
+        febrero = datetime.date(hoy.year, 2, 1)
+        enero = datetime.date(hoy.year, 1, 1)
+        diciembre = datetime.date((hoy.year - 1), 12, 1)
+        noviembre = datetime.date((hoy.year - 1), 11, 1)
+        octubre = datetime.date((hoy.year - 1), 10, 1)
+
+        fechas = [octubre, noviembre, diciembre, enero, febrero, marzo, abril]
+
+        datos = Vacaciones.objects.filter(fecha_inicio__gte = octubre, fecha_final__lte = abril)
+           
+    return render(request, "users/holidays.html", {'fechas':fechas, 'datos':datos})
 
 
 def password(request):
@@ -27,8 +50,6 @@ def password(request):
         usuario.set_password(request.POST["password"])
 
         usuario.save()
-
-
 
     return render(request, "users/password.html")
 

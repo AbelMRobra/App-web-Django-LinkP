@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import datosusuario, mensajesgenerales, NotaDePedido
+from .models import datosusuario, mensajesgenerales, NotaDePedido, Vacaciones
 from import_export import resources
 from import_export.admin import ImportExportModelAdmin
 
@@ -33,6 +33,16 @@ class NotasDePedidoAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     search_fields = ('titulo', 'creador', 'destinatario')
     resources_class = NotasDePedidoResource
 
+class VacacionesResource(resources.ModelResource):
+    class Meta:
+        model = Vacaciones
+
+class VacacionesAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    list_display = ('usuario', 'fecha_inicio', 'fecha_final')
+    search_fields = ('usuario__nombre', 'fecha_inicio', 'fecha_final')
+    resources_class = NotasDePedidoResource
+
 admin.site.register(datosusuario, DatosUserAdmin)
 admin.site.register(mensajesgenerales, MensajesGeneralesAdmin)
 admin.site.register(NotaDePedido, NotasDePedidoAdmin)
+admin.site.register(Vacaciones, VacacionesAdmin)
