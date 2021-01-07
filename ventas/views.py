@@ -15,9 +15,82 @@ from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
 from django.views.generic.base import TemplateView 
 from django.http import HttpResponse 
 
+def crearreclamo(request):
+
+
+    proyectos = list(set(ReclamosPostventa.objects.values_list('proyecto')))
+    clasificacion = list(set(ReclamosPostventa.objects.values_list('clasificacion')))
+
+    if request.method == 'POST':
+
+        b = ReclamosPostventa(
+                numero = request.POST['numero'],
+                propietario = request.POST['propietario'],
+                usuario = request.POST['usuario'],
+                telefono = request.POST['telefono'],
+                email = request.POST['email'],
+                proyecto = request.POST['proyecto'],
+                unidad = request.POST['unidad'],
+                estado = "ESPERA",
+                clasificacion = request.POST['clasificacion'],
+                descripcion = request.POST['descripcion'],
+                )
+
+        b.save()
+
+        return redirect('Reclamos Postventa')
+
+    return render(request, 'agregarreclamo.html', {'proyectos':proyectos, 'clasificacion':clasificacion})
+
 def reclamospostventa(request):
 
     datos = ReclamosPostventa.objects.all().order_by("-fecha_reclamo")
+
+    #----> Aqui empieza el filtro
+
+    if request.method == 'POST':
+
+        palabra_buscar = request.POST.items()
+
+        datos_viejos = datos
+
+        datos = []   
+
+        for i in palabra_buscar:
+
+            if i[0] == "palabra":
+        
+                palabra_buscar = i[1]
+
+        if str(palabra_buscar) == "":
+
+            datos = datos_viejos
+
+        else:
+        
+            for i in datos_viejos:
+
+                palabra =(str(palabra_buscar))
+
+                lista_palabra = palabra.split()
+
+                buscar = (str(i.proyecto)+str(i.usuario)+str(i.propietario)+str(i.descripcion)+str(i.numero)+str(i.clasificacion))
+
+                contador = 0
+
+                for palabra in lista_palabra:
+
+                    contador2 = 0
+
+                    if palabra.lower() in buscar.lower():
+  
+                        contador += 1
+
+                if contador == len(lista_palabra):
+
+                    datos.append(i)
+
+    #----> Aqui termina el filtro
 
     return render(request, 'reclamospostventa.html', {'datos':datos})
 

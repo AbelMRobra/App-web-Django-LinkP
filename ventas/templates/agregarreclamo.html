@@ -1,0 +1,228 @@
+{% extends "users/inicio.html" %}
+
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+
+<div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;">
+
+
+
+    <h3 style="font-family: Arial, Helvetica, sans-serif;">Subir reclamo</h3>
+    <small style="font-family: Arial, Helvetica, sans-serif;"><b>Modulo:</b> Postventa</small>
+
+
+
+    <form  role="form"  enctype="multipart/form-data" action="" method="POST" id="upload-image-form" style="margin: 30px;"> 
+        {% csrf_token %}
+
+
+        <div style="margin: 5px">
+
+            <div style="display: inline-block; margin: 10px; width: 200px;">
+
+                <label for="numero"><h6>Nº del reclamo</h6></label>
+    
+            </div>
+            
+            <div style="display: inline-block; margin: 10px; ">
+    
+                <input name="numero" type="number" class="form-control form-control" placeholder="Revisar el numero" style="width: 300px;" required="true">
+    
+            </div>
+
+
+        </div>
+
+        <div style="margin: 5px">
+
+            <div style="display: inline-block; margin: 10px; width: 200px;">
+
+                <label for="proyecto"><h6>Proyecto</h6></label>
+    
+            </div>
+            
+            <div style="display: inline-block; margin: 10px; ">
+    
+                <input name="proyecto" type="search" class="form-control form-control" list="proyectos" style="width: 300px;">
+    
+            </div>
+
+
+        </div>
+
+        <div style="margin: 5px">
+
+            <div style="display: inline-block; margin: 10px; width: 200px;">
+
+                <label for="unidad"><h6>Unidad</h6></label>
+    
+            </div>
+            
+            <div style="display: inline-block; margin: 10px; ">
+    
+                <input name="unidad" type="text" class="form-control form-control" placeholder="Unidad del problema" style="width: 300px;">
+    
+            </div>
+
+
+        </div>
+
+        
+
+        <div style="margin: 5px">
+
+            <div style="display: inline-block; margin: 10px; width: 200px;">
+
+                <label for="propietario"><h6>Propietario</h6></label>
+    
+            </div>
+            
+            <div style="display: inline-block; margin: 10px; ">
+    
+                <input name="propietario" type="text" class="form-control form-control" style="width: 300px;" placeholder="Dueño de la unidad" required="true">
+    
+            </div>
+
+
+        </div>
+
+        <div style="margin: 5px">
+
+            <div style="display: inline-block; margin: 10px; width: 200px;">
+
+                <label for="usuario"><h6>Contacto</h6></label>
+    
+            </div>
+            
+            <div style="display: inline-block; margin: 10px; ">
+    
+                <input name="usuario" type="text" class="form-control form-control" style="width: 300px;" placeholder="Persona quien realiza el reclamo" required="true">
+    
+            </div>
+
+
+        </div>
+
+        <div style="margin: 5px">
+
+            <div style="display: inline-block; margin: 10px; width: 200px;">
+
+                <label for="telefono"><h6>Telefono</h6></label>
+    
+            </div>
+            
+            <div style="display: inline-block; margin: 10px; ">
+    
+                <input name="telefono" type="number" class="form-control form-control" placeholder="Telefono del contacto" style="width: 300px;">
+    
+            </div>
+
+
+        </div>
+
+        <div style="margin: 5px">
+
+            <div style="display: inline-block; margin: 10px; width: 200px;">
+
+                <label for="email"><h6>Email</h6></label>
+    
+            </div>
+            
+            <div style="display: inline-block; margin: 10px; ">
+    
+                <input name="email" type="text" class="form-control form-control" placeholder="Email del contacto" style="width: 300px;" >
+    
+            </div>
+
+
+        </div>
+
+        <div style="margin: 5px">
+
+            <div style="display: inline-block; margin: 10px; width: 200px;">
+
+                <label for="responsable"><h6>Responsable</h6></label>
+    
+            </div>
+            
+            <div style="display: inline-block; margin: 10px; ">
+    
+                <input name="responsable" type="text" class="form-control form-control" placeholder="Responsable de resolver" style="width: 300px;">
+    
+            </div>
+
+
+        </div>
+
+        <div style="margin: 5px">
+
+            <div style="display: inline-block; margin: 10px; width: 200px;">
+
+                <label for="clasificacion"><h6>Clasificación</h6></label>
+    
+            </div>
+            
+            <div style="display: inline-block; margin: 10px; ">
+    
+                <input name="clasificacion" type="search" class="form-control form-control" list="clasificacion" style="width: 300px;">
+    
+            </div>
+
+
+        </div>
+
+        <div style="margin: 5px">
+
+            <div style="display: inline-block; margin: 10px; width: 200px;">
+
+                <label for="descripcion"><h6>Descripción</h6></label>
+    
+            </div>
+            
+            <textarea class="form-control" id="exampleTextarea" rows="3" name="descripcion"></textarea>
+
+
+        </div>
+
+
+
+          <button type="submit" class="btn btn-primary">Subir</button>
+
+
+        {{ form.as_p }}
+    </form>
+
+    <a href="{% url 'Reclamos Postventa' %}" class="btn btn-secondary"><img src="{% static 'img/flecha-izquierda.png' %}" alt="" style="max-width:15px; height:auto; margin: 2px;"> Volver</a>
+
+    <datalist id="proyectos"> 
+
+        {% for i in proyectos %}
+        
+        <option value="{{i.0}}">({{i.0}})</option>
+
+        {% endfor %}
+
+    </datalist>
+
+    <datalist id="clasificacion"> 
+
+        {% for i in clasificacion %}
+        
+        <option value="{{ i.0 }}">({{i.0}})</option>
+
+        {% endfor %}
+
+    </datalist>
+
+<div style="margin-top: 2rem;">
+    <p> <small>-- Link<strong>P</strong> --</small> </p>
+
+ </div>
+    
+                
+</div>
+
+
+{% endblock %}

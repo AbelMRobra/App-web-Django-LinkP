@@ -255,14 +255,14 @@ def notadepedido(request, id_nota):
                 Saludos!
                 """.format(datos.titulo, request.user.username, request.POST["COMENTARIO"]))
                 mensaje['From']=settings.EMAIL_HOST_USER
-                mensaje['To']=datosusuario.objects.get(identificacion = request.user.username).email
+                mensaje['To']=datosusuario.objects.get(identificacion = datos.creador).email
                 mensaje['Subject']="Tu correspondencia {} tiene un comentario!".format(datos.titulo)
 
 
                 # Envio del mensaje
 
                 mailServer.sendmail(settings.EMAIL_HOST_USER,
-                                datosusuario.objects.get(identificacion = request.user.username).email,
+                                datosusuario.objects.get(identificacion = datos.creador).email,
                                 mensaje.as_string())
 
             except:

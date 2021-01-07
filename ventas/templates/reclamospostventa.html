@@ -11,11 +11,33 @@
     <h3 style="font-family: Arial, Helvetica, sans-serif;">Reclamos de postventa</h3>
     <small style="font-family: Arial, Helvetica, sans-serif;"><b>Modulo:</b> Postventa</small>
 
+    <b><hr class = "my-4" style="width: 100%;"></b>
+
+     <form method="POST" style="text-align: left;">
+
+        {% csrf_token %}
+
+        <div style="display: inline-block; margin-left: 1rem;">
+
+            <label for="palabra"><h6 style="font-family: Arial, Helvetica, sans-serif;">Buscar</h6></label>
+
+        </div>
+        
+        <div style="display: inline-block; margin-left: 1rem; ">
+
+            <input name="palabra" type="text" class="form-control form-control" placeholder="Buscar por palabra" list="art" style="width: 250px;">
+
+        </div>
+       
+      
+
+     </form>
+
     <b><hr class = "my-4" style="width: 100%; "></b>
 
     <div style="text-align: left; margin: 5px;">
 
-        <a href="#" style="text-decoration:none" class="btn btn-sm btn-light"><img src="{% static 'img/agregar-archivo.png' %}" alt="" style="max-width:20px; height:auto; margin: 2px;"> <small><b>Agregar reclamo</b> </small> </a>
+        <a href="{% url 'Crear reclamo' %}" style="text-decoration:none" class="btn btn-sm btn-light"><img src="{% static 'img/agregar-archivo.png' %}" alt="" style="max-width:20px; height:auto; margin: 2px;"> <small><b>Agregar reclamo</b> </small> </a>
 
     </div>
 
@@ -43,10 +65,10 @@
                                
                 <td><small><b>{{i.numero}}</b></small></td>
                 <td><small><b>{{i.proyecto}}</b></small></td>
-                <td><small><b>{{i.unidad}}</b></small></td>
+                <td><small>{{i.unidad}}</small></td>
                 <td><small><b>{{i.propietario}}</b></small></td>
-                <td><small><b>{{i.usuario}}</b></small></td>
-                <td><small><b>{{i.fecha_reclamo|date:"Y-m-d"}}</b></small></td>
+                <td><small>{{i.usuario}}</small></td>
+                <td><small>{{i.fecha_reclamo|date:"Y-m-d"}}</small></td>
 
 
                 {% if i.estado == 'LISTO' %}
