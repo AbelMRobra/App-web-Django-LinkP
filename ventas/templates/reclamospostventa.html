@@ -46,6 +46,7 @@
         <tbody>
 
             <tr class = "table-dark">
+                <td><small><b></b></small></td>
                 <td><small><b>Nº</b></small></td>
                 <td><small><b>PROYECTO</b></small></td>
                 <td><small><b>UNIDAD</b></small></td>
@@ -62,8 +63,9 @@
             {% for i in datos %}
 
             <tr class = "table-light">  
-                               
-                <td><small><b><a href="{% url 'Reclamo' i.id %}" class="btn btn-sm btn-dark">{{i.numero}}</a></b></small></td>
+                 
+                <td><a href="{% url 'Reclamo' i.id %}" style="text-decoration: none;"><img src="{% static 'img/anadir.png' %}" alt="" style="max-width:20px; height:auto; margin: 2px;"></a></td>
+                <td><small><b>{{i.numero}}</b></small></td>
                 <td><small><b>{{i.proyecto}}</b></small></td>
                 <td><small>{{i.unidad}}</small></td>
                 <td><small><b>{{i.propietario}}</b></small></td>
