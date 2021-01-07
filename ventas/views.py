@@ -15,8 +15,14 @@ from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
 from django.views.generic.base import TemplateView 
 from django.http import HttpResponse 
 
-def crearreclamo(request):
 
+def reclamo(request, id_reclamo):
+
+    datos = ReclamosPostventa.objects.get(id = id_reclamo)
+
+    return render(request, 'reclamo.html', {'datos':datos})
+
+def crearreclamo(request):
 
     proyectos = list(set(ReclamosPostventa.objects.values_list('proyecto')))
     clasificacion = list(set(ReclamosPostventa.objects.values_list('clasificacion')))

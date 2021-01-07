@@ -63,7 +63,7 @@
 
             <tr class = "table-light">  
                                
-                <td><small><b>{{i.numero}}</b></small></td>
+                <td><small><b><a href="{% url 'Reclamo' i.id %}" class="btn btn-sm btn-dark">{{i.numero}}</a></b></small></td>
                 <td><small><b>{{i.proyecto}}</b></small></td>
                 <td><small>{{i.unidad}}</small></td>
                 <td><small><b>{{i.propietario}}</b></small></td>
