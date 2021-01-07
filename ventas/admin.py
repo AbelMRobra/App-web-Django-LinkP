@@ -1,9 +1,7 @@
 from django.contrib import admin
-from .models import PricingResumen, VentasRealizadas, EstudioMercado, Pricing, ArchivosAreaVentas, ArchivoFechaEntrega, ArchivoVariacionHormigon
+from .models import PricingResumen, VentasRealizadas, EstudioMercado, Pricing, ArchivosAreaVentas, ArchivoFechaEntrega, ArchivoVariacionHormigon, ReclamosPostventa
 from import_export import resources
 from import_export.admin import ImportExportModelAdmin
-
-# Register your models here.
 
 class PricingResource(resources.ModelResource):
     class Meta:
@@ -65,6 +63,14 @@ class ArchivoVariacionHormigonAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = ('fecha',)
     resources_class = ArchivoVariacionHormigonResource
 
+class ReclamosPostventaResource(resources.ModelResource):
+    class Meta:
+        model = ReclamosPostventa
+        
+class ReclamosPostventaAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    list_display = ('numero', 'propietario', 'usuario', 'unidad')
+    resources_class = ReclamosPostventaResource
+
 admin.site.register(PricingResumen, PricingResumenAdmin)
 admin.site.register(Pricing, PricingAdmin)
 admin.site.register(VentasRealizadas, VentasRealizadasAdmin)
@@ -72,3 +78,4 @@ admin.site.register(EstudioMercado, EstudioMercadoAdmin)
 admin.site.register(ArchivosAreaVentas, ArchivosAdmin)
 admin.site.register(ArchivoFechaEntrega, ArchivoFechaEntregaAdmin)
 admin.site.register(ArchivoVariacionHormigon, ArchivoVariacionHormigonAdmin)
+admin.site.register(ReclamosPostventa, ReclamosPostventaAdmin)

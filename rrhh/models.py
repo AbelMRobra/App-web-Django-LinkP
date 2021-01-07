@@ -80,7 +80,6 @@ class Vacaciones(models.Model):
         verbose_name="Vacaciones"
         verbose_name_plural="Vacaciones"
 
-
 class mensajesgenerales(models.Model):
 
     usuario = models.ForeignKey(datosusuario, on_delete=models.CASCADE, verbose_name="Usuario")

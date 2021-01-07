@@ -4,8 +4,6 @@ from presupuestos.models import Articulos
 from rrhh.models import datosusuario
 # Create your models here.
 
-
-
 class Proveedores(models.Model):
     name = models.CharField(max_length=200, verbose_name="Nombre")
     descrip = models.TextField(verbose_name="Descripción")
@@ -20,9 +18,6 @@ class Proveedores(models.Model):
 
     def __str__(self):
         return self.name
-
-
-
 
 class Comparativas(models.Model):
 
@@ -74,7 +69,6 @@ class ComparativasMensaje(models.Model):
     def __str__(self):
         return self.mensaje
 
-
 class Contratos(models.Model):
     np = models.CharField(max_length=200, verbose_name="Nota de pedido")
     nombre = models.CharField(max_length=200, verbose_name="Nombre del contrato")
@@ -86,7 +80,6 @@ class Contratos(models.Model):
     
     def __str__(self):
         return self.nombre
-
 
 class Compras(models.Model):
 
@@ -152,8 +145,6 @@ class StockComprasAnticipadas(models.Model):
     def __str__(self):
         return self.name
      
-# Modelo para pasar certificados
-
 class Certificados(models.Model):
 
     class Estado(models.TextChoices):

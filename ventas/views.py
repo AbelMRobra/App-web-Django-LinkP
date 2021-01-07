@@ -2,7 +2,7 @@ from django.shortcuts import render
 from .models import EstudioMercado, PricingResumen
 from proyectos.models import Unidades, Proyectos
 from finanzas.models import Almacenero
-from ventas.models import Pricing, ArchivosAreaVentas, VentasRealizadas, ArchivoFechaEntrega, ArchivoVariacionHormigon
+from ventas.models import Pricing, ArchivosAreaVentas, VentasRealizadas, ArchivoFechaEntrega, ArchivoVariacionHormigon, ReclamosPostventa
 from presupuestos.models import Constantes, Desde, Registrodeconstantes
 from datetime import date
 from django.shortcuts import redirect
@@ -15,7 +15,11 @@ from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
 from django.views.generic.base import TemplateView 
 from django.http import HttpResponse 
 
-# Create your views here.
+def reclamospostventa(request):
+
+    datos = ReclamosPostventa.objects.all()
+
+    return render(request, 'reclamospostventa.html', {'datos':datos})
 
 def informeventa(request):
 
@@ -344,7 +348,6 @@ def folleto(request):
 
     return render(request, 'folleto.html', {"datos":datos, "proyecto":proyecto})
 
-
 def evousd(request):
 
     busqueda = 1
@@ -418,7 +421,6 @@ def encuestapostventa(request):
     "fecha":fecha}
 
     return render(request, 'encuestapostventa.html', {"datos":datos})
-
 
 def invmer(request):
 
@@ -494,7 +496,6 @@ def informe_redes(request):
 
     return render(request, 'informe_redes.html', {"datos":datos})
 
-
 def cajaarea(request):
 
     busqueda = 1
@@ -531,7 +532,6 @@ def cajaarea(request):
     "fecha":fecha}
 
     return render(request, 'caja_area.html', {"datos":datos})
-
 
 def fechaentrega(request):
 
@@ -814,7 +814,6 @@ def resumenprecio(request):
     "datos_presupuesto":datos_presupuesto}
 
     return render(request, 'resumenprecio.html', {"datos":datos})
-
 
 def estmercado(request):
 
@@ -1948,7 +1947,6 @@ def cotizador(request, id_unidad):
 
     return render(request, 'cotizador.html', {'datos':datos, 'resultados':resultados, 'precio_contado':precio_contado, 'm2':m2})
 
-
 class descargadeventas(TemplateView):
 
     def get(self, request, *args, **kwargs):
@@ -2125,7 +2123,6 @@ class descargadeventas(TemplateView):
         response["Content-Disposition"] = contenido
         wb.save(response)
         return response
-
 
 class DescargaPricing(TemplateView):
 

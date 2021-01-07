@@ -56,10 +56,6 @@ def cargarocautorizar(request):
         
     return render(request, 'cargarocautorizar.html', {'proveedores':proveedores})
 
-
-#Función para calcular el stock
-
-
 def funcionstock():
 
     compras = Compras.objects.filter(tipo = "ANT")
@@ -83,10 +79,6 @@ def funcionstock():
             stock.append(i)
     
     return stock
-
-# ----------------------------------------------------- VISTAS PARA INFORME DE COMPRAS ---------------------------------------------- 
-
-
 
 def detalleinforme(request, fecha_i, fecha_f, proyecto):
 
@@ -112,7 +104,6 @@ def detalleinforme(request, fecha_i, fecha_f, proyecto):
     "proyecto":proyecto}
 
     return render(request, 'detalle_informe.html', {"datos":datos})
-
 
 def informecompras(request):
 
@@ -261,20 +252,11 @@ def informecompras(request):
 
     return render(request, 'informe_compra_semana.html', {"datos":datos})
 
-
-
-
-# ----------------------------------------------------- VISTAS PARA RETIROS ---------------------------------------------- 
-
 def listaretiros(request):
 
     datos = Retiros.objects.all()
 
     return render(request, 'retirolist.html', {"datos":datos})
-
-
-
-# ----------------------------------------------------- VISTAS PARA VER COMPRAS DISPONIBLES----------------------------------------------
 
 def comprasdisponibles(request):
 
@@ -321,9 +303,6 @@ def comprasdisponibles(request):
     datos = list(set(lista))
 
     return render(request, 'retiros.html', {"datos":datos})
-
-
-# ----------------------------------------------------- VISTAS PARA INGRESAR COMPRAS ----------------------------------------------
 
 def cargacompras(request):
 
@@ -488,8 +467,6 @@ def cargacompras(request):
 
     return render(request, 'cargacompras.html', {'datos':datos})
 
-# ----------------------------------------------------- VISTAS PARA LISTAR COMPRAS ----------------------------------------------
-
 def panelvisto(request, estado):
 
     if request.method == 'POST':
@@ -623,7 +600,6 @@ def mensajescomparativas(request, id_comparativa):
 
     return render(request, 'mensajescomparativas.html', {'datos':datos, 'mensajes':mensajes})
 
-
 def descargacomparativas(request):
 
     if request.method == 'POST':
@@ -634,7 +610,6 @@ def descargacomparativas(request):
         return redirect('Descargar estado', fechai = fechai, fechaf = fechaf)
 
     return render(request, 'descargacom.html')
-
 
 def comparativas(request, estado, creador):
    
@@ -1165,7 +1140,6 @@ def comparativas(request, estado, creador):
     "creador":creador, "mensaje":mensaje, "espera":num_espera, "autorizada":num_autorizada, 
     "rechazada":num_rechazada, "adjunto":num_adj})
 
-
 def compras(request, id_proyecto):
 
     #Aqui armamos un listado
@@ -1243,9 +1217,6 @@ def compras(request, id_proyecto):
 
 
     return render(request, 'compras.html', {'compras':compras, 'proyectos':proyectos})
-
-# ----------------------------------------------------- VISTAS PARA CERTIFICADOS ----------------------------------------------
- 
 
 def certificados(request):
 

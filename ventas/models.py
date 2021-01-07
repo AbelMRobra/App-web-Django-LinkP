@@ -1,5 +1,6 @@
 from django.db import models
 from proyectos.models import Proyectos, Unidades
+from rrhh.models import datosusuario
 
 # Create your models here.
 
@@ -23,8 +24,6 @@ class Pricing(models.Model):
 
     def __str__(self):
         return '{}'.format(self.unidad)
-
-
 
 class PricingResumen(models.Model):
     proyecto = models.ForeignKey(Proyectos, on_delete=models.CASCADE, verbose_name = "Proyecto")
@@ -115,7 +114,6 @@ class ArchivosAreaVentas(models.Model):
     def __str__(self):
         return "Archivos del area"
 
-
 class ArchivoFechaEntrega(models.Model):
     fecha = models.DateField(verbose_name="Fecha de carga", auto_now_add=True)
     archivo = models.FileField(verbose_name="archivo", blank=True, null=True)
@@ -137,5 +135,35 @@ class ArchivoVariacionHormigon(models.Model):
 
     def __str__(self):
         return "Archivos de fecha de entrega"
+
+class ReclamosPostventa(models.Model):
+
+    class Estado(models.TextChoices):
+
+        ESPERA = "ESPERA"
+        TRABAJANDO = "TRABAJANDO"
+        PROBLEMAS = "PROBLEMAS"
+        LISTO = "LISTO"
+
+    numero = models.IntegerField(verbose_name = "Numero de reclamo")
+    propietario = models.CharField(max_length=100, verbose_name = "Propietario")
+    usuario = models.CharField(max_length=100, verbose_name = "Usuario")
+    telefono = models.IntegerField(verbose_name = "Telefono", blank=True, null=True)
+    email = models.CharField(max_length=100, verbose_name = "Email", blank=True, null=True)
+    proyecto = models.CharField(max_length=100, verbose_name = "Proyecto")
+    unidad = models.CharField(max_length=100, verbose_name = "Unidad")
+    fecha_reclamo = models.DateField(auto_now_add=True, verbose_name="Fecha del reclamo")
+    fecha_solucion = models.DateField(verbose_name="Fecha del reclamo", blank=True, null=True)
+    estado = models.CharField(choices=Estado.choices, max_length=40, verbose_name="Estado", default="ESPERA")
+    responsable =  models.ForeignKey(datosusuario, on_delete=models.CASCADE, verbose_name="Responsable", blank=True, null=True)
+    clasificacion = models.CharField(max_length=300, verbose_name = "Clasificacion del problema")
+    descripcion = models.TextField(verbose_name="Descripción del problema")
+
+    class Meta:
+        verbose_name = "Reclamo de Postventa"
+        verbose_name_plural = "Reclamos de Postventa"
+
+    def __str__(self):
+        return self.propietario
 
 
