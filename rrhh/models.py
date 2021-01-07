@@ -61,6 +61,16 @@ class datosusuario(models.Model):
     def __str__(self):
         return self.identificacion
 
+class ComentariosCorrespondencia(models.Model):
+    usuario = models.ForeignKey(datosusuario, on_delete=models.CASCADE, verbose_name = "Usuario")
+    correspondencia = models.ForeignKey(NotaDePedido, on_delete=models.CASCADE, verbose_name = "Usuario")
+    comentario = models.CharField(max_length=200, verbose_name="Creador")
+    fecha = models.DateTimeField(verbose_name="Fecha")
+
+    class Meta:
+        verbose_name="Comentario"
+        verbose_name_plural="Comentarios"
+
 class Vacaciones(models.Model):
     usuario = models.ForeignKey(datosusuario, on_delete=models.CASCADE, verbose_name="Usuario")
     fecha_inicio = models.DateField(verbose_name="Fecha de inicio")

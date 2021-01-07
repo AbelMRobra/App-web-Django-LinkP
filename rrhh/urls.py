@@ -8,6 +8,7 @@ urlpatterns = [
     url(r'^notasdepedido/(?P<id_proyecto>\d+)/(?P<tipo>\d+)/$', login_required(views.notasdepedido), name = 'Notas de pedido'),
     url(r'^notadepedido/(?P<id_nota>\d+)/$', login_required(views.notadepedido), name = 'Nota de pedido'),
     url(r'^crearcorres/$', login_required(views.crearcorrespondencia), name = 'Crear correspondencia'),
+    url(r'^editarcorres/(?P<id_nota>\d+)/$', login_required(views.editarcorrespondencia), name = 'Editar correspondencia'),
 
 
 ]

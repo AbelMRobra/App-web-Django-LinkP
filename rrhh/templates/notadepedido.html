@@ -92,6 +92,55 @@
             <small> <b>FECHA REQUERIDA: </b>{{datos.fecha_requerida}}</small>
         </div>
 
+        <div>
+
+            {%if datos.creador == user.username %}
+            <a href="{% url 'Editar correspondencia' datos.id %}" class="btn btn-sm btn-light"><img src="{% static 'img/documento.png' %}" alt="" style="max-width:20px; height:auto;"></a>
+            {% endif %}
+
+
+            {% if user.username in datos.copia or user.username in datos.destinatario or datos.creador == user.username %}
+            
+
+            <button type="button" class="btn btn-sm btn-light" data-toggle="modal" data-target="#exampleModalCenter" style="border-radius: 0.6;">
+                <img src="{% static 'img/charlar.png' %}" alt="" style="max-width:20px; height:auto;">
+              </button>
+
+  
+            {% endif %}
+
+            <!-- Modal -->
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLongTitle">Escribe un comentario!</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+
+                <form action="" method="POST">
+
+                    {% csrf_token %}
+        
+                    <input class="col-form-label col-form-label-lg" type="text" placeholder="Escriba aqui ..." id="inputLarge" name="COMENTARIO" style="margin: 5px; width: 50%;">
+             
+        
+                </form>
+              </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+       
+            </div>
+          </div>
+        </div>
+      </div>
+        
+        </div>
+
+
      </div>
 
      <b><hr class = "my-4" style="width: 100%; border-color: rgba({{datos.proyecto.color}}, 0.5;"></b>
@@ -229,6 +278,29 @@
     </div>
 
     {% endif %}
+
+    {% endif %}
+
+    {% if comentarios %}
+
+
+    {% for i in comentarios %}
+
+
+    <div style="text-align: left; margin-top: 10px; vertical-align: bottom;">
+    
+        <img src="{{i.usuario.imagenlogo.url}}"  class="img-fluid" alt="..." style="max-width: 40px; height:auto;">
+
+        <div style="display: inline-block; background-color: rgba(11, 32, 68); border-radius: 5px;">
+
+            <small style="margin: 5px; color: white;"> {{ i.comentario }}</small>
+
+        </div>
+         
+
+    </div>
+
+    {% endfor %}
 
     {% endif %}
 

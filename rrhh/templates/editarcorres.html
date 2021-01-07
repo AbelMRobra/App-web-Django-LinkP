@@ -1,0 +1,241 @@
+{% extends "users/inicio.html" %}
+
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+
+<div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;">
+
+    <h3 style="font-family: Arial, Helvetica, sans-serif;">Editar correspondencia</h3>
+    <small style="font-family: Arial, Helvetica, sans-serif;"><b>Modulo:</b> Comunicación </small>
+
+
+
+    <form  role="form"  enctype="multipart/form-data" action="" method="POST" id="upload-image-form" style="margin: 30px;"> 
+        {% csrf_token %}
+
+
+        <div style="margin: 5px">
+
+            <div style="display: inline-block; margin: 10px; width: 200px;">
+
+                <label for="proyecto"><h6>Proyecto</h6></label>
+    
+            </div>
+            
+            <div style="display: inline-block; margin: 10px; ">
+    
+                <input name="proyecto" type="search" class="form-control form-control" style="width: 300px;" list="proy" value='{{datos.proyecto}}'>
+    
+            </div>
+
+
+        </div>
+
+        
+
+        <div style="margin: 5px">
+
+            <div style="display: inline-block; margin: 10px; width: 200px;">
+
+                <label for="titulo"><h6>Titulo</h6></label>
+    
+            </div>
+            
+            <div style="display: inline-block; margin: 10px; ">
+    
+                <input name="titulo" type="text" class="form-control form-control" style="width: 300px;" value="{{datos.titulo}}">
+    
+            </div>
+
+
+        </div>
+
+        <div style="margin: 5px">
+
+            <div style="display: inline-block; margin: 10px; width: 200px;">
+
+                <label for="desti"><h6>Destinatario</h6></label>
+    
+            </div>
+            
+            <div style="display: inline-block; margin: 10px; ">
+    
+                <input name="desti" type="text" class="form-control form-control" style="width: 300px;" value='{{datos.destinatario}}'>
+    
+            </div>
+
+
+        </div>
+
+
+        <div style="margin: 5px">
+
+            <div style="display: inline-block; margin: 10px; width: 200px;">
+
+                <label for="copia"><h6>En copia a</h6></label>
+    
+            </div>
+            
+            <div style="display: inline-block; margin: 10px; ">
+    
+                <input name="copia" type="text" class="form-control form-control" style="width: 300px;" value='{{datos.copia}}'>
+    
+            </div>
+
+        </div>
+       
+        <div style="margin: 5px">
+
+            <div style="display: inline-block; margin: 10px; width: 200px;">
+
+                <label for="fechareq"><h6>Fecha requerida</h6></label>
+    
+            </div>
+            
+            <div style="display: inline-block; margin: 10px; ">
+    
+                <input name="fechareq" type="text" class="form-control form-control" style="width: 300px;" value="{{datos.fecha_requerida}}">
+    
+            </div>
+
+
+        </div>
+
+        <div style="margin: 5px">
+
+            <div style="display: inline-block; margin: 10px; width: 200px;">
+
+                <label for="comugral"><h6>¿Comunicación general?</h6></label>
+    
+            </div>
+
+
+            <div class="form-check" style="display: inline-block; margin: 5px;">
+                <label class="form-check-label">
+                  <input type="radio" class="form-check-input" name="comugral" id="optionsRadios1" value="SI" {% if datos.comunicacion_general == "SI" %} checked="" {% endif%}>
+                  SI
+                </label>
+              </div>
+              <div class="form-check" style="display: inline-block;  margin: 5px;">
+                <label class="form-check-label" style="display: inline-block;">
+                  <input type="radio" class="form-check-input" name="comugral" id="optionsRadios2" value="NO"  {% if datos.comunicacion_general == "NO" %} checked="" {% endif%}>
+                  NO
+                </label>
+              </div>
+        </div>
+
+        <div style="margin: 5px">
+
+            <div style="display: inline-block; margin: 10px; width: 200px;">
+
+                <label for="camproy"><h6>¿Cambia el proyecto?</h6></label>
+    
+            </div>
+
+
+            <div class="form-check" style="display: inline-block; margin: 5px;">
+                <label class="form-check-label">
+                  <input type="radio" class="form-check-input" name="camproy" id="optionsRadios1" value="SI"  {% if datos.cambio_proyecto == "SI" %} checked="" {% endif%}>
+                  SI
+                </label>
+              </div>
+              <div class="form-check" style="display: inline-block;  margin: 5px;">
+                <label class="form-check-label" style="display: inline-block;">
+                  <input type="radio" class="form-check-input" name="camproy" id="optionsRadios2" value="NO" {% if datos.cambio_proyecto == "NO" %} checked="" {% endif%}>
+                  NO
+                </label>
+              </div>
+        </div>
+
+        <div style="margin: 5px">
+
+            <div style="display: inline-block; margin: 10px; width: 200px;">
+
+                <label for="envdoc"><h6>¿Envia documentación?</h6></label>
+    
+            </div>
+
+
+            <div class="form-check" style="display: inline-block; margin: 5px;">
+                <label class="form-check-label">
+                  <input type="radio" class="form-check-input" name="envdoc" id="optionsRadios1" value="SI" {% if datos.envio_documentacion == "SI" %} checked="" {% endif%}>
+                  SI
+                </label>
+              </div>
+              <div class="form-check" style="display: inline-block;  margin: 5px;">
+                <label class="form-check-label" style="display: inline-block;">
+                  <input type="radio" class="form-check-input" name="envdoc" id="optionsRadios2" value="NO" {% if datos.envio_documentacion == "NO" %} checked="" {% endif%}>
+                  NO
+                </label>
+              </div>
+        </div>
+
+        <div style="margin: 5px">
+
+            <div style="display: inline-block; margin: 10px;; width: 200px;">
+
+                <label for="archivo"><h6>Adjunto </h6></label>
+    
+            </div>
+            
+            <div style="display: inline-block; margin: 10px; ">
+    
+                <input type="file" class="form-control-file" name="archivo" aria-describedby="fileHelp" >
+    
+            </div>
+
+            <div>
+
+                <small style=" color: rgb(192, 63, 50 );">*Archivo actual: {{datos.adjuntos}}</small>
+
+            </div>
+
+
+
+
+        </div>
+
+        <div style="margin: 5px">
+
+            <div style="display: inline-block; margin: 10px; width: 300px;">
+
+                <label for="descripcion"><h6>Descripción del problema</h6></label>
+    
+            </div>
+            
+            <textarea class="form-control" id="exampleTextarea" rows="3" name="descripcion">{{datos.descripcion}}</textarea>
+
+        </div>
+
+
+          <button type="submit" class="btn btn-primary">Subir</button>
+
+
+        {{ form.as_p }}
+    </form>
+
+    <datalist id="proy"> 
+
+        {% for i in proyectos %}
+        
+        <option value="{{ i.nombre }}">({{i.id}})</option>
+
+        {% endfor %}
+
+    </datalist>
+
+
+<div style="margin-top: 2rem;">
+    <p> <small>-- Link<strong>P</strong> --</small> </p>
+
+ </div>
+    
+
+
+                
+</div>
+
+
+{% endblock %}

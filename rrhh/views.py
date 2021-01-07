@@ -1,10 +1,44 @@
 from django.shortcuts import render
 from django.shortcuts import redirect
-from .models import NotaDePedido, datosusuario
+from .models import NotaDePedido, datosusuario, ComentariosCorrespondencia
 from proyectos.models import Proyectos
+import datetime
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+from email.mime.base import MIMEBase
+from email import encoders
+from agenda import settings
 
-# Create your views here.
+def editarcorrespondencia(request, id_nota):
 
+    proyectos = Proyectos.objects.all()
+
+    datos = NotaDePedido.objects.get(id = id_nota)
+
+    if request.method == 'POST':
+
+        datos.proyecto = Proyectos.objects.get(nombre = request.POST['proyecto'])
+        datos.titulo = request.POST['titulo']
+        datos.destinatario = request.POST['desti']
+        datos.fecha_requerida = request.POST['fechareq']
+        datos.copia = request.POST['copia']
+        datos.envio_documentacion = request.POST['envdoc']
+        datos.cambio_proyecto = request.POST['camproy']
+        datos.comunicacion_general = request.POST['comugral']
+        datos.descripcion = request.POST['descripcion']
+        datos.save()
+
+        try:
+            datos.adjuntos = request.FILES['archivo']
+            datos.save()
+        except:
+            pass
+
+        return redirect('Nota de pedido', id_nota = datos.id)
+                
+
+    return render(request, 'editarcorres.html', {"datos":datos, "proyectos":proyectos})
 
 def crearcorrespondencia(request):
 
@@ -147,6 +181,7 @@ def notasdepedido(request, id_proyecto, tipo):
 def notadepedido(request, id_nota):
 
     datos = NotaDePedido.objects.get(id = id_nota)
+    comentarios = ComentariosCorrespondencia.objects.filter(correspondencia = datos).order_by("fecha")
 
     try:
         creador = datosusuario.objects.get(identificacion=datos.creador)
@@ -164,17 +199,79 @@ def notadepedido(request, id_nota):
 
         datos_post = request.POST.items()
 
-        if str(datos.visto) == "None":
+        try:
 
-            datos.visto = str(request.POST["FIRMA"])
+            if str(datos.visto) == "None":
 
-        else:
+                datos.visto = str(request.POST["FIRMA"])
 
-            datos.visto = str(datos.visto) + "-" + str(request.POST["FIRMA"])
+            else:
 
-        datos.save()
+                datos.visto = str(datos.visto) + "-" + str(request.POST["FIRMA"])
 
-        return redirect('Notas de pedido', id_proyecto = 0, tipo = 0)
+            datos.save()
+
+            return redirect('Notas de pedido', id_proyecto = 0, tipo = 0)
+
+        except:
+            pass
+
+        try:
+        
+
+            date = datetime.datetime.now() - datetime.timedelta(hours=3)
+
+            b = ComentariosCorrespondencia(
+
+                usuario = datosusuario.objects.get(identificacion = request.user.username),
+                correspondencia = datos,
+                comentario = request.POST["COMENTARIO"],
+                fecha = date
+            )
+
+            b.save()
+
+            try:
+
+                # Establecemos conexion con el servidor smtp de gmail
+                mailServer = smtplib.SMTP(settings.EMAIL_HOST, settings.EMAIL_PORT)
+                mailServer.ehlo()
+                mailServer.starttls()
+                mailServer.ehlo()
+                mailServer.login(settings.EMAIL_HOST_USER, settings.EMAIL_HOST_PASSWORD)
+
+                # Construimos el mensaje simple
+                
+                mensaje = MIMEText("""
+                
+                Buenas!,
+
+                Tu correspondencia de titulo {} a recibido el siguiente comentario de {}!
+
+                El comentario es: "{}"
+
+                Gracias!
+
+                Saludos!
+                """.format(datos.titulo, request.user.username, request.POST["COMENTARIO"]))
+                mensaje['From']=settings.EMAIL_HOST_USER
+                mensaje['To']=datosusuario.objects.get(identificacion = request.user.username).email
+                mensaje['Subject']="Tu correspondencia {} tiene un comentario!".format(datos.titulo)
 
 
-    return render(request, 'notadepedido.html', {'datos':datos, 'creador':creador, 'destino':destino})
+                # Envio del mensaje
+
+                mailServer.sendmail(settings.EMAIL_HOST_USER,
+                                datosusuario.objects.get(identificacion = request.user.username).email,
+                                mensaje.as_string())
+
+            except:
+
+                pass
+
+            return redirect('Nota de pedido', id_nota = datos.id)
+
+        except:
+            pass
+
+    return render(request, 'notadepedido.html', {'datos':datos, 'creador':creador, 'destino':destino, 'comentarios':comentarios})
