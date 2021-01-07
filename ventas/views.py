@@ -17,7 +17,7 @@ from django.http import HttpResponse
 
 def reclamospostventa(request):
 
-    datos = ReclamosPostventa.objects.all()
+    datos = ReclamosPostventa.objects.all().order_by("-fecha_reclamo")
 
     return render(request, 'reclamospostventa.html', {'datos':datos})
 
