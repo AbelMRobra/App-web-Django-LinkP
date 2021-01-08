@@ -21,11 +21,38 @@
           <div class="panel-heading" role="tab" id="heading{{i.0.id}}">
             <h4 class="panel-title"  style="text-align: left;">
 
-                <a href="{% url 'Gantt ET' i.0.id %}" style="text-decoration:none">
+                <div style="display: inline-block; vertical-align: top;">
 
-                    <img src="{% static 'img/grafico-de-gantt.png' %}" alt="" style="max-width:20px; height:auto; margin: 5px; vertical-align: top;">
+                    <div>
 
-                </a>
+                        <a href="{% url 'Gantt ET' i.0.id %}" style="text-decoration:none">
+
+                            <img src="{% static 'img/grafico-de-gantt2.png' %}" alt="" style="max-width:20px; height:auto; margin: 5px; vertical-align: top;">
+                            
+        
+                        </a>
+
+
+                    </div>
+
+                    <div>
+
+                        <a href="{% url 'Documentacion Amp' i.0.id %}" style="text-decoration:none">
+    
+                
+                            <img src="{% static 'img/agrandar.png' %}" alt="" style="max-width:20px; height:auto; margin: 5px; vertical-align: top;">
+        
+                        </a>
+
+
+                    </div>
+    
+                    
+
+
+                </div>
+
+                
                 
               <a style="font-family: Arial, Helvetica, sans-serif;  text-decoration:none" class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse{{i.0.id}}" aria-expanded="false" aria-controls="collapse{{i.0}}">
 
@@ -175,11 +202,11 @@
                                             {% if t.1%}
 
 
-                                            <a href="{% url 'Sub item' t.0.id %}"><img src="{% static 'img/liza2.png' %}" alt="" style="max-width:15px; height:auto; margin: 2px;"></a> 
+                                            <a href="{% url 'Sub item' t.0.id %}"><img src="{% static 'img/lista2.png' %}" alt="" style="max-width:20px; height:auto; margin: 2px;"></a> 
 
                                             {% else %}
 
-                                            <a href="{% url 'Sub item' t.0.id %}"><img src="{% static 'img/liza.png' %}" alt="" style="max-width:15px; height:auto; margin: 2px;"></a> 
+                                            <a href="{% url 'Sub item' t.0.id %}"><img src="{% static 'img/lista.png' %}" alt="" style="max-width:20px; height:auto; margin: 2px;"></a> 
 
 
                                             {% endif %}

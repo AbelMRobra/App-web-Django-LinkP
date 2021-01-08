@@ -8,6 +8,8 @@
 
 <div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;">
 
+    <h3 style="font-family: Arial, Helvetica, sans-serif;">Seguimiento de proyectos</h3>
+
     <div>
 
         <img src="{{datos_item.etapa.proyecto.iamgen.url}}"  class="img-fluid" alt="..." style="max-width:200px;width:auto;height:auto; margin-top: 5px; margin-bottom: 5px;">
@@ -27,9 +29,9 @@
 
     <b><hr class = "my-4" style="width: 100%; "></b>
 
-    <div style="text-align: left; margin: 2px;">
+    <div style="text-align: left; margin: 3px;">
 
-        <a href="{% url 'Documentacion' %}" class="btn btn-secondary"><img src="{% static 'img/flecha-izquierda.png' %}" alt="" style="max-width:15px; height:auto; margin: 2px;"> Volver</a>
+        <a href="{% url 'Documentacion Amp' datos_item.etapa.proyecto.id %}" class="btn btn-light"><img src="{% static 'img/flecha-izquierda.png' %}" alt="" style="max-width:15px; height:auto; margin: 2px;"> Volver</a>
    
 
     </div>

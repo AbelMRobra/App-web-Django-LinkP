@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 
 urlpatterns = [ 
     url(r'^documentacion$', login_required(views.documentacion), name = 'Documentacion'),
+    url(r'^documentacionamp/(?P<id_proyecto>\d+)/$', login_required(views.documentacionamp), name = 'Documentacion Amp'),
     url(r'^editaritem/(?P<id_item>\d+)/$', login_required(views.editaritem), name = 'Editar Item'),
     url(r'^editarsubitem/(?P<id_subitem>\d+)/$', login_required(views.editarsubitem), name = 'Editar subitem'),  
     url(r'^eliminaritem/(?P<id_item>\d+)/$', login_required(views.eliminaritem), name = 'Borrar Item'), 

@@ -237,6 +237,99 @@ def documentacion(request):
 
     return render(request, "documentacion.html", {"datos":datos, "hoy":hoy})
 
+def documentacionamp(request, id_proyecto):
+
+    p = Proyectos.objects.get(id = id_proyecto)
+       
+    hoy = datetime.date.today()
+
+    dias_faltantes = (p.fecha_f - hoy).days
+
+    try:
+
+        dias_faltantes_2 = (p.fecha_i - hoy).days
+
+    except:
+
+        dias_faltantes_2 = "NO DEFINIDO"
+
+    datos_etapas = Etapas.objects.filter(proyecto = p)
+
+    sub_datos = []
+
+    avance_general = 0
+    cantidad_total = 0
+        
+    for e in datos_etapas:
+
+        listos = len(ItemEtapa.objects.filter(etapa = e, estado = "LISTO"))
+
+        avance_general = avance_general + listos
+
+        datos_itemetapas = ItemEtapa.objects.filter(etapa = e).order_by("orden")
+
+        datos_subitem = []
+
+        for d in datos_itemetapas:
+            
+            item_cantidad = len(SubItem.objects.filter(item = d))
+            datos_subitem.append((d, item_cantidad))
+
+            if len(SubItem.objects.filter(item = d)) > 0:
+
+                if len(SubItem.objects.filter(item = d, estado = "PROBLEMAS")) > 0:
+                    if d.estado != "PROBLEMAS":
+                        d.estado = "PROBLEMAS"
+                        d.save()
+                elif len(SubItem.objects.filter(item = d, estado = "TRABAJANDO")) > 0 or (len(SubItem.objects.filter(item = d, estado = "ESPERA"))/len(SubItem.objects.filter(item = d))) != 1:
+                    if d.estado != "TRABAJANDO":
+                        d.estado = "TRABAJANDO"
+                        d.save()
+                elif (len(SubItem.objects.filter(item = d, estado = "LISTO"))/len(SubItem.objects.filter(item = d))) == 1:
+                    if d.estado != "LISTO":
+                        d.estado = "LISTO"
+                        d.save()
+                else:
+                    if d.estado != "ESPERA":
+                        d.estado = "ESPERA"
+                        d.save()
+
+                fecha_iniciales = SubItem.objects.values_list("fecha_inicio").filter(item = d).exclude(fecha_inicio = None).order_by("fecha_inicio")
+                if len(fecha_iniciales) > 0:
+                    d.fecha_inicio = fecha_iniciales[0][0]
+                    d.save()
+
+                fecha_finales = SubItem.objects.values_list("fecha_final").filter(item = d).exclude(fecha_final = None).order_by("-fecha_inicio")
+                if len(fecha_finales) > 0:
+                    d.fecha_final = fecha_finales[0][0]
+                    d.save()
+
+
+        cantidad = len(ItemEtapa.objects.filter(etapa = e))
+
+        cantidad_total = cantidad_total + cantidad
+
+        avance = 0
+        no_avance = 100
+
+        if cantidad > 0:
+
+            avance = round((listos/cantidad)*100, 0)
+            no_avance = 100 - avance
+
+        sub_datos.append((e, datos_subitem, cantidad, avance, no_avance))
+
+    if cantidad_total != 0:
+
+        avance_general = round((avance_general/cantidad_total)*100, 0)
+
+    else:
+        avance_general = 0.0
+
+    datos = [p, sub_datos, dias_faltantes, avance_general, dias_faltantes_2]
+
+    return render(request, "documentacionamp.html", {"datos":datos, "hoy":hoy})
+
 def ganttet(request, id_proyecto):
 
     proyecto = Proyectos.objects.get(id = id_proyecto)
