@@ -365,11 +365,7 @@ def inicio(request):
 
     for u in usuarios:
 
-        print(u)
-
         moneda = MonedaLink.objects.filter(usuario_portador = u, fecha__gte = fecha_control)
-
-        print(moneda)
 
         if len(moneda) == 0:
 
