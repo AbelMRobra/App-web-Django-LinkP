@@ -1,0 +1,86 @@
+{% extends "users/inicio.html" %}
+{% load apptags_extras %}
+
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+
+<div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;">
+
+    <div style="text-align: center;">
+        <h3> Tus Monedas</h3>
+        <h4 style="font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif">{{request.user.first_name}} {{request.user.last_name}}</h4>
+
+      </div>       
+      <hr class="my-4" style="width: 100%; ">
+
+      
+
+      <div style="text-align: left; margin-left: 20%; width: 70%;">
+
+        <h6>¿Qué son las monedas LINK?</h6>
+
+        <div style="width: 60%; display: inline-block;  vertical-align: middle; margin-top: 5px;">
+
+            <p>Las monedas LINK es nuestro propio sistema de premios! Cada moneda equivale a <strong>0.01 M3 de Hº</strong> y todos los meses que trabajes con nosotros recibiras 10 de estas bellezas </p>
+
+        </div>
+
+        <div style="width: 20%; display: inline-block; vertical-align: top; text-align: center;">
+
+            <img src="{% static 'img/monedalinkpila.png' %}" alt="" style="max-width:100px; height:auto; margin-left: 5px; vertical-align: bottom;">
+
+        
+        </div>
+        
+      </div>
+
+      <div style="text-align: left; margin-left: 20%; width: 70%;  margin-top: 10px;">
+
+        <div style="width: 20%; display: inline-block; vertical-align: top; text-align: center;">
+
+            <img src="{% static 'img/juntos.png' %}" alt="" style="max-width:100px; height:auto; margin-right: 5px; vertical-align: bottom;">
+
+        
+        </div>
+
+
+
+        <div style="width: 60%; display: inline-block;  vertical-align: middle;">
+
+            <p>Las monedas de por si solas no tienen mucha utilidad, pero cuando la compartes generan valor al que las recibe! Todas las monedas que recibas durante el año formaran un fondo que podras retirar al finalizar este 2021</p>
+
+        </div>
+
+    </div>
+
+    <div style="text-align: left; margin-left: 20%; width: 70%; margin-top: 10px;">
+
+        <div style="width: 60%; display: inline-block;  vertical-align: middle; ">
+
+            <p>Pero eso no es todo!, durante el año habra monedas <strong style="color: #229608;">especiales</strong> que daran premios unicos al que mas recolecte! El empleado del año, el compañero mas divertido .. Con tu voto sabremos quien es merecedor de ese titulo y LINK le dara una sorpresa a esas personas!</p>
+
+        </div>
+
+        <div style="width: 20%; display: inline-block; vertical-align: top; text-align: center;">
+
+            <img src="{% static 'img/varmonedas.png' %}" alt="" style="max-width:150px; height:auto; margin-left: 5px; vertical-align: bottom;">
+
+        
+        </div>
+        
+      </div>
+
+
+
+<div style="margin-top: 2rem;">
+    <p> <small>-- Link<strong>P</strong> --</small> </p>
+
+ </div>
+    
+                
+</div>
+
+
+{% endblock %}

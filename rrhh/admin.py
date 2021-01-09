@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import datosusuario, mensajesgenerales, NotaDePedido, Vacaciones
+from .models import datosusuario, mensajesgenerales, NotaDePedido, Vacaciones, MonedaLink, EntregaMoneda
 from import_export import resources
 from import_export.admin import ImportExportModelAdmin
 
@@ -23,7 +23,6 @@ class MensajesGeneralesAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     search_fields = ('usuario__identificacion', 'mensaje')
     resources_class = MensajesGeneralesResource
 
-
 class NotasDePedidoResource(resources.ModelResource):
     class Meta:
         model = NotaDePedido
@@ -42,7 +41,27 @@ class VacacionesAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     search_fields = ('usuario__nombre', 'fecha_inicio', 'fecha_final')
     resources_class = NotasDePedidoResource
 
+class MonedaLinkResource(resources.ModelResource):
+    class Meta:
+        model = MonedaLink
+
+class MonedaLinkAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    list_display = ('nombre', 'fecha')
+    search_fields = ('nombre', 'fecha')
+    resources_class = MonedaLinkResource
+
+class EntregaMonedaResource(resources.ModelResource):
+    class Meta:
+        model = EntregaMoneda
+
+class EntregaMonedaAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    list_display = ('moneda', 'fecha')
+    search_fields = ('moneda__nombre', 'fecha')
+    resources_class = EntregaMonedaResource
+
 admin.site.register(datosusuario, DatosUserAdmin)
 admin.site.register(mensajesgenerales, MensajesGeneralesAdmin)
 admin.site.register(NotaDePedido, NotasDePedidoAdmin)
 admin.site.register(Vacaciones, VacacionesAdmin)
+admin.site.register(MonedaLink, MonedaLinkAdmin)
+admin.site.register(EntregaMoneda, EntregaMonedaAdmin)

@@ -93,3 +93,30 @@ class mensajesgenerales(models.Model):
 
     def __str__(self):
         return self.mensaje
+
+class MonedaLink(models.Model):
+
+    nombre = models.CharField(verbose_name="Nombre de la moneda", blank=True, null=True, max_length=200)
+    usuario_portador = models.ForeignKey(datosusuario, on_delete=models.CASCADE, verbose_name="Usuario Portador")
+    fecha = models.DateField(auto_now_add=True, verbose_name="Fecha")
+    tipo = models.CharField(verbose_name="Tipo de moneda", blank=True, null=True, max_length=200)
+
+    class Meta:
+        verbose_name="Moneda link"
+        verbose_name_plural="Monedas link"
+
+    def __str__(self):
+        return self.nombre
+
+class EntregaMoneda(models.Model):
+    moneda = models.ForeignKey(MonedaLink, on_delete=models.CASCADE, verbose_name="Usuario Portador")
+    fecha = models.DateTimeField(auto_now_add=True, verbose_name="Fecha de la entrega")
+    usuario_recibe = models.ForeignKey(datosusuario, on_delete=models.CASCADE, verbose_name="Usuario Recibe")
+    mensaje = models.CharField(verbose_name="Mensaje de la entrega", blank=True, null=True, max_length=300)
+
+    class Meta:
+        verbose_name="Entrega de moneda"
+        verbose_name_plural="Entregas de monedas"
+
+    def __str__(self):
+        return self.mensaje

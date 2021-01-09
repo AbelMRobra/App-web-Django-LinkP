@@ -1341,7 +1341,6 @@ def pricing(request, id_proyecto):
 
             incremento = (meses/(1-anticipo)/(((anticipo/(1-anticipo))*meses)+valor_auxiliar))
 
-
             financiado = contado*incremento
 
             financiado_m2 = financiado/m2
@@ -1400,18 +1399,16 @@ def pricing(request, id_proyecto):
 
         m2_totales = m2_totales + m2
 
-        if dato.estado == "DISPONIBLE":
+        try:
 
-            try:
+            if dato.asig == "PROYECTO":
 
-                if dato.asig == "PROYECTO":
+                sumatoria_contado = sumatoria_contado + contado
+                sumatoria_financiado = sumatoria_financiado + financiado
+                m2_totales_disp = m2_totales_disp + m2
 
-                    sumatoria_contado = sumatoria_contado + contado
-                    sumatoria_financiado = sumatoria_financiado + financiado
-                    m2_totales_disp = m2_totales_disp + m2
-
-            except:
-                basura = 1
+        except:
+            basura = 1
         
         if dato.tipo == "COCHERA":
             cocheras += 1

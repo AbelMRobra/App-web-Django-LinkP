@@ -10,13 +10,16 @@ from proyectos.models import Proyectos, Unidades
 from ventas.models import VentasRealizadas
 from compras.models import Compras, Comparativas
 from registro.models import RegistroValorProyecto
-from rrhh.models import datosusuario, mensajesgenerales, NotaDePedido, Vacaciones
+from rrhh.models import datosusuario, mensajesgenerales, NotaDePedido, Vacaciones, MonedaLink
 import datetime
 from datetime import date
 import pandas as pd
 import numpy as np
 from django.contrib.auth.models import User
 
+def monedalink(request):
+
+    return render(request, 'users/monedaslink.html')
 
 def vacaciones(request):
 
@@ -39,7 +42,6 @@ def vacaciones(request):
         datos = Vacaciones.objects.filter(fecha_inicio__gte = octubre, fecha_final__lte = abril)
            
     return render(request, "users/holidays.html", {'fechas':fechas, 'datos':datos})
-
 
 def password(request):
 
@@ -81,7 +83,6 @@ def guia(request):
         datos = 0
 
     return render(request, "users/guia.html", {"datos":datos, "otros_datos":otros_datos})
-
 
 def dashboard(request):
 
@@ -354,6 +355,38 @@ def dashboard(request):
     return render(request, "users/dashboard.html", {"fechas":fechas, "datos_finales_2":datos_finales_2, "indice":margen1_completo, "datos_registro":datos_registro, "datos_barras":barras, "ventas_barras":ventas_barras, "ventas":ventas_realizadas, "datos_compras":datos_compras, "datos_unidades":datos_unidades, "arqueo":arqueo})
 
 def inicio(request):
+
+    # La creación de monedas
+
+    usuarios = datosusuario.objects.all().exclude(estado = "NO ACTIVO")
+
+    hoy = datetime.date.today()
+    fecha_control = datetime.date(hoy.year, hoy.month, 1)
+
+    for u in usuarios:
+
+        print(u)
+
+        moneda = MonedaLink.objects.filter(usuario_portador = u, fecha__gte = fecha_control)
+
+        print(moneda)
+
+        if len(moneda) == 0:
+
+            numero = 0
+
+            for i in range(10):
+
+                b = MonedaLink(
+                    nombre = str(fecha_control)+str(u.identificacion)+str(numero),
+                    usuario_portador = u,
+                    fecha = fecha_control,
+                    tipo = "NORMAL"
+                )
+
+                b.save()
+                
+                numero += 1
 
     # Esta es la parte de los permisos
 
