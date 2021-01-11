@@ -294,3 +294,12 @@ transition: all 0.65s linear 0.2s;
         padding: 10px;
 }
 }
+
+
+
+.contendorplanificacion {
+        max-width: 100%;
+
+        overflow-x: scroll;
+        
+        }

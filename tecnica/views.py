@@ -245,6 +245,19 @@ def documentacionamp(request, id_proyecto):
 
     dias_faltantes = (p.fecha_f - hoy).days
 
+
+    fecha_semana_actual = hoy - datetime.timedelta(hoy.weekday())
+    
+    fechas_semana = []
+
+    fecha_nueva = fecha_semana_actual - datetime.timedelta(7)
+    
+    for f in range(50):
+
+        fecha_nueva = fecha_semana_actual + datetime.timedelta(7)
+
+        fechas_semana.append(fecha_nueva)
+
     try:
 
         dias_faltantes_2 = (p.fecha_i - hoy).days
@@ -328,7 +341,7 @@ def documentacionamp(request, id_proyecto):
 
     datos = [p, sub_datos, dias_faltantes, avance_general, dias_faltantes_2]
 
-    return render(request, "documentacionamp.html", {"datos":datos, "hoy":hoy})
+    return render(request, "documentacionamp.html", {"datos":datos, "hoy":hoy, "fechas_semana":fechas_semana})
 
 def ganttet(request, id_proyecto):
 
