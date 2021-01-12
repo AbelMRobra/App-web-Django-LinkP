@@ -21,3 +21,12 @@ def is_past_due(self):
        return True
     else:
         return False
+
+@register.filter('planificacion')
+def prueba_planificacion(self):
+
+    fecha_nueva = self - datetime.timedelta(self.weekday())
+
+    fecha_cadena = str(fecha_nueva.year)+'-'+str(fecha_nueva.month)+'-'+str(fecha_nueva.day)
+
+    return fecha_cadena

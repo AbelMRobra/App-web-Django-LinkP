@@ -2,6 +2,7 @@
 
 {% load static %}
 {% load humanize %}
+{% load apptags_extras %}
 
 {% block content %}
 
@@ -30,13 +31,6 @@
 
     <div style="text-align: left;">
 
-        <a href="{% url 'Gantt ET' datos.0.id %}" class="btn btn-sm btn-light">
-
-            <img src="{% static 'img/grafico-de-gantt2.png' %}" alt="" style="max-width:20px; height:auto; margin: 5px; vertical-align: middle;">
-            <b>Gannt</b> 
-
-        </a>
-
         <a href="{% url 'Documentacion' %}" class="btn btn-sm btn-light">
 
 
@@ -47,198 +41,931 @@
 
     </div>
 
+    <div class="contendorplanificacion">
 
- 
-
-    {% for i in datos.1 %} 
-
-    <table class = "table table-hover" style="text-align: left;" >
-        <thead>
-                            
-            <tr class = "table-dark">
-                <th scope = "row" style="vertical-align: middle;" colspan="11"><small><b>{{i.0.nombre}} ({{i.2}})</b></small></th>                        
-            </tr>
-
-        <tbody>
-
-            <tr class = "table-active">
-                <td><small><b>NOMBRE DEL ITEM</b></small></td>
+        <table class = "table table-hover" style="text-align: left; " >
+            <thead>
+                                
+                <tr class = "table-dark">
+                <td class="sticky" style="min-width: 250px;"><small><b>TAREA</b></small></td>
                 <td><small><b></b></small></td>
                 <td><small><b></b></small></td>
                 <td><small><b>ESTADO</b></small></td>
                 <td><small><b>RESP.</b></small></td>
-                <td><small><b>INICIO (P)</b></small></td>
-                <td><small><b>FINAL (P)</b></small></td>
-                <td><small><b>INICIO</b></small></td>
-                <td><small><b>FINAL</b></small></td>
+                <td style="min-width: 100px;"><small><b>INICIO (P)</b></small></td>
+                <td style="min-width: 100px;"><small ><b>FINAL (P)</b></small></td>
+                <td style="min-width: 100px;"><small><b>INICIO</b></small></td>
+                <td style="min-width: 100px;"><small><b>FINAL</b></small></td>
                 <td><small><b>ADJ.</b></small></td>
-                <td><small><b></b></small></td>
+                
+                {% for f in fechas_semana %}
 
-            </tr>
+                <td class="diaplanificacion" style="min-width: 80px;">{{f|date:"d-m-Y"}}</td> 
+                
+                {% endfor %}
+                </tr>
 
-            {% for t in i.1 %}
+                <tbody>
 
-        <tr class = "table-light">  
+                    {% for i in datos.1 %} 
+
+                    <tr class = "table-secondary">
+                        <td class="sticky"><small><b>{{i.0.nombre}} ({{i.2}})</b></small></td>
+                        <td><a href="#" style="text-decoration: none"><img src="{% static 'img/anadir.png' %}" alt="" style="max-width:16px; height:auto; margin: 2px;"></a></td>
+                        <td><small><b></b></small></td>
+                        <td><small><b></b></small></td>
+                        <td><small><b></b></small></td>
+                        <td><small><b></b></small></td>
+                        <td><small><b></b></small></td>
+                        <td><small><b></b></small></td>
+                        <td><small><b></b></small></td>
+                        <td><small><b></b></small></td>
+                        {% for f in fechas_semana %}
+
+                        <td></td> 
+                
+                        {% endfor %}
+        
+                    </tr>
+
+                    {% for t in i.1 %}
+
+                    <tr class = "table-light" style="font-size: 11px;">  
             
-            <td style="width: 30%;">
-
+                        <td class="sticky" >
+            
+                                        
+                        {{t.0.nombre}}
+            
                             
-                <small><b>{{t.0.orden|floatformat:0}}.</b> {{t.0.nombre}}</small>
+                        
+                        </td>
+
+                        <td><a href="#" style="text-decoration: none"><img src="{% static 'img/anadir.png' %}" alt="" style="max-width:16px; height:auto; margin: 2px;"></a></td>
+            
+            
+                        <td style="width: 5%;"><small>
+            
+                            <a href="{% url 'Mensaje item' t.0.id %}"><img src="{% static 'img/charlar.png' %}" alt="" style="max-width:20px; height:auto; margin: 2px;"></a>
+                                                                    
+                        </small></td>
+            
+                        {% if t.0.estado == 'LISTO' %}
+                        <td style="width: 10%; color: rgb(124, 209, 107)">
+            
+            
+                            <b>{{t.0.estado}}</b> 
+                        
+                        
+                        </td>
+            
+                        {% elif t.0.estado == 'TRABAJANDO' %}
+            
+                        <td style="width: 10%; color: rgb(209, 176, 107)">
+            
+            
+                            <b>{{t.0.estado}}</b> 
+                        
+                        
+                        </td>
+            
+                        {% elif t.0.estado == 'PROBLEMAS' %}
+            
+                        <td style="width: 10%; color: rgb(209, 119, 107)">
+            
+            
+                            <b>{{t.0.estado}}</b> 
+                        
+                        
+                        </td>
+            
+                        {% else %}
+            
+                        <td style="width: 10%;">
+            
+            
+                            <b>{{t.0.estado}}</b> 
+                        
+                        
+                        </td>
+            
+                        {% endif %}
+            
+            
+                        <td style="width: 5%;"><small>
+            
+                            {% if t.0.responsable %}
+                            
+                            <img src="{{t.0.responsable.imagenlogo.url}}"  class="img-fluid" alt="..." style="max-width: 30px; height:auto;">
+                            
+                            {% else %}
+            
+                            S/A
+            
+                            {% endif %}
+            
+                        </small></td>
+            
+                        {% if t.0.fecha_estimada_i %}
+                        <td style="width: 10%;">{{t.0.fecha_estimada_i|date:"d-m-Y"}}</td>
+                        {% else %}
+            
+                        <td style="width: 10%;">NO DEFINIDIO</td>
+            
+                        {% endif %}
+                        {% if t.0.fecha_estimada_f %}
+                        <td style="width: 10%;">{{t.0.fecha_estimada_f|date:"d-m-Y"}}</td>
+                        {% else %}
+            
+                        <td style="width: 10%;">NO DEFINIDIO</td>
+            
+                        {% endif %}
+            
+                        {% if t.0.fecha_inicio %}
+                        <td style="width: 10%;">{{t.0.fecha_inicio|date:"d-m-Y"}}</td>
+                        {% else %}
+            
+                        <td style="width: 10%;">NO DEFINIDIO</td>
+            
+                        {% endif %}
+                        {% if t.0.fecha_final %}
+                        <td style="width: 10%;">{{t.0.fecha_final|date:"d-m-Y"}}</td>
+                        {% else %}
+            
+                        <td style="width: 10%;">NO DEFINIDIO</td>
+            
+                        {% endif %}
+            
+                        {% if t.0.archivo_vigente %}
+                        <td style="width: 5%;"><small>
+            
+                            <a href="{{ t.0.archivo_vigente.url }}">
+            
+                                <img src="{% static 'img/archivo-adjunto.png' %}" alt="" style="max-width:20px; height:auto; margin: 2px;"  >
+                        
+                            </a>
+            
+            
+                        </small></td>
+            
+                        {% else %}
+            
+                        <td style="width: 5%;"><small>S/D</small></td>
+            
+                        {% endif %}
+            
+                        {% for f in fechas_semana %}
+
+
+                            {% if f|date:"Y-m-d" > t.0.fecha_inicio|date:"Y-m-d" %}
+
+                                {% if f|date:"Y-m-d" < t.0.fecha_final|date:"Y-m-d" and fecha_semana_actual|date:"Y-m-d" == f|date:"Y-m-d" %}
+
+                                <td style="background: rgba(119, 170, 70); border-left-style: solid; border-left-color: rgb(188, 55, 27);"></td>
+
+                                {% elif f|date:"Y-m-d" < t.0.fecha_final|date:"Y-m-d"%}
+
+                                <td style="background: rgba(119, 170, 70);"></td>
+
+                                {% else %}
+
+                                <td style="background: rgba(230, 231, 243)"></td>
+
+                                {% endif %}
+
+                            {% elif f|date:"Y-m-d" < t.0.fecha_inicio|date:"Y-m-d" %}
+
+                                {% if f|date:"Y-m-d" < t.0.fecha_final|date:"Y-m-d"%}
+
+                                <td style="background: rgba(230, 231, 243)"></td>
+
+                                {% elif fecha_semana_actual|date:"Y-m-d" == f|date:"Y-m-d"%}
+
+                                <td style="background: rgba(230, 231, 243); border-left-style: solid; border-left-color: rgb(188, 55, 27);"></td>
+
+                                {% else %}
+
+                                <td style="background: rgba(230, 231, 243)"></td>
+
+                                {% endif %}
+
+  
+    
+                            {% endif %}
+                        
+                            
+                
+                        {% endfor %}
+            
+            
+                        </tr>
+
+                        {% for h in t.1 %}
+
+                    <tr class = "table-light" style="font-size: 9px;">  
+
+                        <td class="sticky" >
+                                                    
+                            -> {{h.0.nombre}}
+                
+                            </td>
+
+                            <td><a href="{% url 'Agregar Subsubitem' h.0.id %}" style="text-decoration: none"><img src="{% static 'img/anadir.png' %}" alt="" style="max-width:16px; height:auto; margin: 2px;"></a></td>
 
                 
-            
-            </td>
-
-            <td style="width: 5%;"><small>
-
-                {% if t.1%}
-
-
-                <a href="{% url 'Sub item' t.0.id %}"><img src="{% static 'img/lista2.png' %}" alt="" style="max-width:20px; height:auto; margin: 2px;"></a> 
-
-                {% else %}
-
-                <a href="{% url 'Sub item' t.0.id %}"><img src="{% static 'img/lista.png' %}" alt="" style="max-width:20px; height:auto; margin: 2px;"></a> 
-
-
-                {% endif %}
-
-            </small></td>
-
-            <td style="width: 5%;"><small>
-
-                <a href="{% url 'Mensaje item' t.0.id %}"><img src="{% static 'img/charlar.png' %}" alt="" style="max-width:20px; height:auto; margin: 2px;"></a>
-                                                        
-            </small></td>
-
-            {% if t.0.estado == 'LISTO' %}
-            <td style="width: 10%; color: rgb(124, 209, 107)"><small>
-
-
-                <b>{{t.0.estado}}</b> 
-            
-            
-            </small></td>
-
-            {% elif t.0.estado == 'TRABAJANDO' %}
-
-            <td style="width: 10%; color: rgb(209, 176, 107)"><small>
-
-
-                <b>{{t.0.estado}}</b> 
-            
-            
-            </small></td>
-
-            {% elif t.0.estado == 'PROBLEMAS' %}
-
-            <td style="width: 10%; color: rgb(209, 119, 107)"><small>
-
-
-                <b>{{t.0.estado}}</b> 
-            
-            
-            </small></td>
-
-            {% else %}
-
-            <td style="width: 10%;"><small>
-
-
-                <b>{{t.0.estado}}</b> 
-            
-            
-            </small></td>
-
-            {% endif %}
-
-
-            <td style="width: 5%;"><small>
-
-                {% if t.0.responsable %}
+                            <td style="width: 5%;"><small>
                 
-                <img src="{{t.0.responsable.imagenlogo.url}}"  class="img-fluid" alt="..." style="max-width: 30px; height:auto;">
+                               
+                                                                        
+                            </small></td>
                 
-                {% else %}
+                            {% if h.0.estado == 'LISTO' %}
+                            <td style="width: 10%; color: rgb(124, 209, 107)">
+                
+                
+                                <a type="button" data-toggle="modal" data-target="#ModalEstadoSubItem{{h.0.id}}"><b>{{h.0.estado}}</b></a> 
+                            
+                            
+                            </td>
+                
+                            {% elif h.0.estado == 'TRABAJANDO' %}
+                
+                            <td style="width: 10%; color: rgb(209, 176, 107)">
+                
+                
+                                <a type="button" data-toggle="modal" data-target="#ModalEstadoSubItem{{h.0.id}}"><b>{{h.0.estado}}</b></a> 
+                            
+                            
+                            </td>
+                
+                            {% elif h.0.estado == 'PROBLEMAS' %}
+                
+                            <td style="width: 10%; color: rgb(209, 119, 107)">
+                
+                
+                                <a type="button" data-toggle="modal" data-target="#ModalEstadoSubItem{{h.0.id}}"><b>{{h.0.estado}}</b></a> 
+                            
+                            
+                            </td>
+                
+                            {% else %}
+                
+                            <td style="width: 10%;">
+                
+                
+                                <a type="button" data-toggle="modal" data-target="#ModalEstadoSubItem{{h.0.id}}"><b>{{h.0.estado}}</b></a> 
+                            
+                            
+                            </td>
+                
+                            {% endif %}
 
-                S/A
+                            <!-- Modal fecha estado Subitem -->
+                            <div class="modal fade" id="ModalEstadoSubItem{{h.0.id}}" tabindex="-1" role="dialog" aria-labelledby="ModalEstadoSubItem{{h.0.id}}Title" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLongTitle">Estado del subitem</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    </div>
+                                    <div class="modal-body">
+                                    <h6><small>Se modificara el estado del subitem {{h.0.nombre}}</small> </h6>                                    
+                                    <form method="POST" style="margin: 15px;">
 
-                {% endif %}
+                                        {% csrf_token %}
+                    
+                                        <div class="input-group mb-3">
+                                                   
+                                                <select name="{{h.0.id}}-estado_subitem" class="custom-select" style="width: 300px;">
 
-            </small></td>
+                                                    {% if h.0.estado == "ESPERA" %}
+                                
+                                                    <option value="ESPERA" selected>ESPERA</option>
+                                
+                                                    {% else %}
+                                
+                                                    <option value="ESPERA">ESPERA</option>
+                                
+                                                    {% endif %}
+                                
+                                                    {% if h.0.estado == "TRABAJANDO" %}
+                                
+                                                    <option value="TRABAJANDO" selected>TRABAJANDO</option>
+                                
+                                                    {% else %}
+                                
+                                                    <option value="TRABAJANDO">TRABAJANDO</option>
+                                
+                                                    {% endif %}
+                                
+                                                    {% if h.0.estado == "PROBLEMAS" %}
+                                
+                                                    <option value="PROBLEMAS" selected>PROBLEMAS</option>
+                                
+                                                    {% else %}
+                                
+                                                    <option value="PROBLEMAS">PROBLEMAS</option>
+                                
+                                                    {% endif %}
+                                
+                                                    {% if h.0.estado == "LISTO" %}
+                                
+                                                    <option value="LISTO" selected>LISTO</option>
+                                
+                                                    {% else %}
+                                
+                                                    <option value="LISTO">LISTO</option>
+                                
+                                                    {% endif %}
+                                
+                                
+                                                </select>
+                                        </div>
 
-            {% if t.0.fecha_estimada_i %}
-            <td style="width: 10%;"><small>{{t.0.fecha_estimada_i|date:"Y-m-d"}}</small></td>
-            {% else %}
+                                        <button type="submit" class="btn btn-light">Modificar</button>
+                                    
+                                    </form>
+                                    
+                                    </div>
+                                    <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            
+                                    </div>
+                                </div>
+                                </div>
 
-            <td style="width: 10%;"><small>NO DEFINIDIO</small></td>
-
-            {% endif %}
-            {% if t.0.fecha_estimada_f %}
-            <td style="width: 10%;"><small>{{t.0.fecha_estimada_f|date:"Y-m-d"}}</small></td>
-            {% else %}
-
-            <td style="width: 10%;"><small>NO DEFINIDIO</small></td>
-
-            {% endif %}
-
-            {% if t.0.fecha_inicio %}
-            <td style="width: 10%;"><small>{{t.0.fecha_inicio|date:"Y-m-d"}}</small></td>
-            {% else %}
-
-            <td style="width: 10%;"><small>NO DEFINIDIO</small></td>
-
-            {% endif %}
-            {% if t.0.fecha_final %}
-            <td style="width: 10%;"><small>{{t.0.fecha_final|date:"Y-m-d"}}</small></td>
-            {% else %}
-
-            <td style="width: 10%;"><small>NO DEFINIDIO</small></td>
-
-            {% endif %}
-
-            {% if t.0.archivo_vigente %}
-            <td style="width: 5%;"><small>
-
-                <a href="{{ t.0.archivo_vigente.url }}">
-
-                    <img src="{% static 'img/archivo-adjunto.png' %}" alt="" style="max-width:20px; height:auto; margin: 2px;"  >
+                            </div>
+                
+                
+                            <td style="width: 5%;"><small>
+                
+                                {% if h.0.responsable %}
+                                
+                                <img src="{{h.responsable.imagenlogo.url}}"  class="img-fluid" alt="..." style="max-width: 30px; height:auto;">
+                                
+                                {% else %}
+                
+                                S/A
+                
+                                {% endif %}
+                
+                            </small></td>
+                
+                            {% if h.0.fecha_estimada_i %}
+                            <td style="width: 10%;">{{h.0.fecha_estimada_i|date:"d-m-Y"}}</td>
+                            {% else %}
+                
+                            <td style="width: 10%;">NO DEFINIDIO</td>
+                
+                            {% endif %}
+                            {% if h.0.fecha_estimada_f %}
+                            
+                            <td style="width: 10%;">{{h.0.fecha_estimada_f|date:"d-m-Y"}}</td>
+                            {% else %}
+                
+                            <td style="width: 10%;">NO DEFINIDIO</td>
+                
+                            {% endif %}
+                
+                            {% if h.0.fecha_inicio %}
+                            <td style="width: 10%;">
+                                <a type="button" data-toggle="modal" data-target="#ModalFechaInicioSubItem{{h.0.id}}">{{h.0.fecha_inicio|date:"d-m-Y"}}</a>
+                                </td>
+                            {% else %}
             
-                </a>
-
-
-            </small></td>
-
-            {% else %}
-
-            <td style="width: 5%;"><small>S/D</small></td>
-
-            {% endif %}
-
-            <td style="width: 5%;">
-
-                <a href="{% url 'Editar Item' t.0.id %}" class="btn btn-sm btn-light"><img src="{% static 'img/documento.png' %}" alt="" style="max-width:15px; height:auto;"></a>
-            </td>
-
-
-            </tr>
-
-
-            {% endfor %}
-
+                            <td style="width: 10%;"><a type="button" data-toggle="modal" data-target="#ModalFechaInicioSubItem{{h.0.id}}">NO DEFINIDIO</a></td>
+                
+                            {% endif %}
+                            <!-- Modal fecha final Subitem -->
+                            <div class="modal fade" id="ModalFechaInicioSubItem{{h.0.id}}" tabindex="-1" role="dialog" aria-labelledby="ModalFechaInicioSubItem{{h.0.id}}Title" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLongTitle">Fecha inicio subitem</h5>
+                                    <h6 class="modal-title" id="exampleModalLongTitle">{{h.0.nombre}}</h6>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    </div>
+                                    <div class="modal-body">
+                
             
+                                    <h6><small>Selecciona una fecha y presiona enter!</small> </h6>
+                                    
+                                    <form method="POST" style="margin: 15px;">
 
-            </tbody>
-        </thead>
-    </table>
+                                        {% csrf_token %}
+                    
+                                        <div class="input-group mb-3">
+                                        
+                                                <input name="{{h.0.id}}-fecha_inicio_subitem" type="date" class="form-control form-control" value="{{h.0.fecha_inicio|date:"Y-m-d"}}" aria-label="Amount" style="width: 100px;">
+                                            
+                                        </div>
 
-    <div style="text-align: left;">
-        <a href = "{% url 'Agregar Item' i.0.id %}" style="text-decoration:none" class="btn btn-sm btn-light"><img src="{% static 'img/agregar-archivo.png' %}" alt="" style="max-width:20px; height:auto; margin: 2px;"> <small><b>Agregar item</b> </small> </a>
+                                        <button type="submit" class="btn btn-light">Modificar</button>
+                                    
+                                    </form>
+                                    
+                                    </div>
+                                    <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            
+                                    </div>
+                                </div>
+                                </div>
+
+                            </div>
+                                               
+                            {% if h.0.fecha_final %}
+                            <td style="width: 10%;">
+                                <a type="button" data-toggle="modal" data-target="#ModalSubItem{{h.0.id}}">{{h.0.fecha_final|date:"d-m-Y"}}</a>
+                            {% else %}
+
+                            <td style="width: 10%;"><a type="button" data-toggle="modal" data-target="#ModalSubItem{{h.0.id}}">NO DEFINIDIO</a></td>
+                
+                            {% endif %}
+                                <!-- Modal fecha final Subitem -->
+                                <div class="modal fade" id="ModalSubItem{{h.0.id}}" tabindex="-1" role="dialog" aria-labelledby="ModalSubItem{{h.id}}Title" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLongTitle">Fecha final subitem</h5>
+                                        <h6 class="modal-title" id="exampleModalLongTitle">{{h.0.nombre}}</h6>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                        </div>
+                                        <div class="modal-body">
+                    
+                
+                                        <h6><small>Selecciona una fecha y presiona enter!</small> </h6>
+                                        
+                                        <form method="POST" style="margin: 15px;">
+
+                                            {% csrf_token %}
+                        
+                                            <div class="input-group mb-3">
+                                            
+                                                    <input name="{{h.0.id}}-fecha_final_subitem" type="date" class="form-control form-control" value="{{h.fecha_final|date:"Y-m-d"}}" aria-label="Amount" style="width: 100px;">
+                                                
+                                            </div>
+
+                                            <button type="submit" class="btn btn-light">Modificar</button>
+                                        
+                                        </form>
+                                        
+                                        </div>
+                                        <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                
+                                        </div>
+                                    </div>
+                                    </div>
+
+                                </div>
+                            </td>
+                                            
+                            {% if h.0.archivo_vigente %}
+                            <td style="width: 5%;"><small>
+                
+                                <a href="{{ h.0.archivo_vigente.url }}">
+                
+                                    <img src="{% static 'img/archivo-adjunto.png' %}" alt="" style="max-width:20px; height:auto; margin: 2px;"  >
+                            
+                                </a>
+                
+                
+                            </small></td>
+                
+                            {% else %}
+                
+                            <td style="width: 5%;"><small>S/D</small></td>
+                
+                            {% endif %}
+                
+                            {% for f in fechas_semana %}
+    
+                            {% if f|date:"Y-m-d" > h.0.fecha_inicio|date:"Y-m-d" %}
+
+                                {% if f|date:"Y-m-d" < h.0.fecha_final|date:"Y-m-d" and fecha_semana_actual|date:"Y-m-d" == f|date:"Y-m-d" %}
+
+                                <td style="background: rgba(119, 170, 70, 0.8); border-left-style: solid; border-left-color: rgb(188, 55, 27);"><span class="hint--top hint--danger" aria-label="{{f}}"><small style="color:rgba(119, 170, 70, 0.8);">⚫</small></span></td>
+
+                                {% elif f|date:"Y-m-d" < h.0.fecha_final|date:"Y-m-d"%}
+
+                                <td style="background: rgba(119, 170, 70, 0.8);"><span class="hint--top hint--danger" aria-label="{{f}}"><small style="color:rgba(119, 170, 70, 0.8);">⚫</small></span></td>
+
+                                {% else %}
+
+                                <td style="background: rgba(230, 231, 243)"></td>
+
+                                {% endif %}
+
+                            {% elif f|date:"Y-m-d" < h.0.fecha_inicio|date:"Y-m-d" %}
+
+                                {% if f|date:"Y-m-d" < h.0.fecha_final|date:"Y-m-d"%}
+
+                                <td style="background: rgba(230, 231, 243)"></td>
+
+                                {% elif fecha_semana_actual|date:"Y-m-d" == f|date:"Y-m-d"%}
+
+                                <td style="background: rgba(230, 231, 243); border-left-style: solid; border-left-color: rgb(188, 55, 27);"></td>
+
+                                {% else %}
+
+                                <td style="background: rgba(230, 231, 243)"></td>
+
+                                {% endif %}
+
+  
+    
+                            {% endif %}
+                                                            
+                    
+                            {% endfor %}
+
+                            {% for k in h.1 %}
+
+                            <tr class = "table-light" style="font-size: 8.5px;">  
+        
+                                <td class="sticky" >
+                                                            
+                                --> {{k.nombre}}
+                        
+                                    </td>
+
+                                    <td></td>
+    
+                                    <td></td>
+                        
+                                    {% if k.estado == 'LISTO' %}
+                                    <td style="width: 10%; color: rgb(124, 209, 107)">
+                        
+                        
+                                        <a type="button" data-toggle="modal" data-target="#ModalEstadoSubSubItem{{k.id}}"><b>{{k.estado}}</b></a> 
+                                    
+                                    
+                                    </td>
+                        
+                                    {% elif k.estado == 'TRABAJANDO' %}
+                        
+                                    <td style="width: 10%; color: rgb(209, 176, 107)">
+                        
+                        
+                                        <a type="button" data-toggle="modal" data-target="#ModalEstadoSubSubItem{{k.id}}"><b>{{k.estado}}</b></a> 
+                                    
+                                    
+                                    </td>
+                        
+                                    {% elif k.estado == 'PROBLEMAS' %}
+                        
+                                    <td style="width: 10%; color: rgb(209, 119, 107)">
+                        
+                        
+                                        <a type="button" data-toggle="modal" data-target="#ModalEstadoSubSubItem{{k.id}}"><b>{{k.estado}}</b></a> 
+                                    
+                                    
+                                    </td>
+                        
+                                    {% else %}
+                        
+                                    <td style="width: 10%;">
+                        
+                        
+                                        <a type="button" data-toggle="modal" data-target="#ModalEstadoSubSubItem{{k.id}}"><b>{{k.estado}}</b></a> 
+                                    
+                                    
+                                    </td>
+                        
+                                    {% endif %}
+
+                                    <!-- Modal fecha estado SubSubitem -->
+                            <div class="modal fade" id="ModalEstadoSubSubItem{{k.id}}" tabindex="-1" role="dialog" aria-labelledby="ModalEstadoSubSubItem{{k.id}}Title" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLongTitle">Estado del Sub-subitem</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    </div>
+                                    <div class="modal-body">
+                                    <h6><small>Se modificara el estado del subitem {{k.nombre}}</small> </h6>                                    
+                                    <form method="POST" style="margin: 15px;">
+
+                                        {% csrf_token %}
+                    
+                                        <div class="input-group mb-3">
+                                                   
+                                                <select name="{{k.id}}-estado_subsubitem" class="custom-select" style="width: 300px;">
+
+                                                    {% if k.estado == "ESPERA" %}
+                                
+                                                    <option value="ESPERA" selected>ESPERA</option>
+                                
+                                                    {% else %}
+                                
+                                                    <option value="ESPERA">ESPERA</option>
+                                
+                                                    {% endif %}
+                                
+                                                    {% if k.estado == "TRABAJANDO" %}
+                                
+                                                    <option value="TRABAJANDO" selected>TRABAJANDO</option>
+                                
+                                                    {% else %}
+                                
+                                                    <option value="TRABAJANDO">TRABAJANDO</option>
+                                
+                                                    {% endif %}
+                                
+                                                    {% if k.estado == "PROBLEMAS" %}
+                                
+                                                    <option value="PROBLEMAS" selected>PROBLEMAS</option>
+                                
+                                                    {% else %}
+                                
+                                                    <option value="PROBLEMAS">PROBLEMAS</option>
+                                
+                                                    {% endif %}
+                                
+                                                    {% if k.estado == "LISTO" %}
+                                
+                                                    <option value="LISTO" selected>LISTO</option>
+                                
+                                                    {% else %}
+                                
+                                                    <option value="LISTO">LISTO</option>
+                                
+                                                    {% endif %}
+                                
+                                
+                                                </select>
+                                        </div>
+
+                                        <button type="submit" class="btn btn-light">Modificar</button>
+                                    
+                                    </form>
+                                    
+                                    </div>
+                                    <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            
+                                    </div>
+                                </div>
+                                </div>
+
+                            </div>
+                
+                        
+                        
+                                    <td style="width: 5%;"><small>
+                        
+                                        {% if k.responsable %}
+                                        
+                                        <img src="{{k.responsable.imagenlogo.url}}"  class="img-fluid" alt="..." style="max-width: 30px; height:auto;">
+                                        
+                                        {% else %}
+                        
+                                        S/A
+                        
+                                        {% endif %}
+                        
+                                    </small></td>
+                        
+                                    {% if k.fecha_estimada_i %}
+                                    <td style="width: 10%;">{{k.fecha_estimada_i|date:"d-m-Y"}}</td>
+                                    {% else %}
+                        
+                                    <td style="width: 10%;">NO DEFINIDIO</td>
+                        
+                                    {% endif %}
+                                    {% if k.fecha_estimada_f %}
+                                    <td style="width: 10%;">{{k.fecha_estimada_f|date:"d-m-Y"}}</td>
+                                    {% else %}
+                        
+                                    <td style="width: 10%;">NO DEFINIDIO</td>
+                        
+                                    {% endif %}
+                        
+                                    {% if k.fecha_inicio %}
+
+                                        {% if k.fecha_inicio|fecha_prueba == 1 and k.estado == "ESPERA" %}
+
+                                        <td style="color: rgb(238, 48, 14);"><a type="button" data-toggle="modal" data-target="#ModalFechaInicioSubSubItem{{k.id}}">{{k.fecha_inicio|date:"d-m-Y"}}</a></td>
+
+                                        {% elif k.fecha_inicio|fecha_prueba == 1 and k.estado != "ESPERA" %}
+                                        
+                                        <td style="color: rgb(41, 166, 60);"><a type="button" data-toggle="modal" data-target="#ModalFechaInicioSubSubItem{{k.id}}">{{k.fecha_inicio|date:"d-m-Y"}}</a></td>
+                                        
+                                        {% else %}
+
+                                        <td><a type="button" data-toggle="modal" data-target="#ModalFechaInicioSubSubItem{{k.id}}">{{k.fecha_inicio|date:"d-m-Y"}}</a></td>
+
+                                        {% endif %}
+ 
+                                        {% else %}
+                        
+                                        <td style="width: 10%;"><a type="button" data-toggle="modal" data-target="#ModalFechaInicioSubSubItem{{k.id}}">NO DEFINIDIO</a></td>
+                            
+                                        {% endif %}
+                                    <!-- Modal fecha final Subitem -->
+                                    <div class="modal fade" id="ModalFechaInicioSubSubItem{{k.id}}" tabindex="-1" role="dialog" aria-labelledby="ModalFechaInicioSubSubItem{{k.id}}Title" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLongTitle">Fecha inicio Sub-subitem</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                            </div>
+                                            <div class="modal-body">
+                        
+                    
+                                            <h6><small>Se modificara la fecha del Sub-subitem {{k.nombre}}</small> </h6>
+                                            
+                                            <form method="POST" style="margin: 15px;">
+        
+                                                {% csrf_token %}
+                            
+                                                <div class="input-group mb-3">
+                                                
+                                                        <input name="{{k.id}}-fecha_inicio_subsubitem" type="date" class="form-control form-control" value="{{k.fecha_inicio|date:"Y-m-d"}}" aria-label="Amount" style="width: 100px;">
+                                                    
+                                                </div>
+        
+                                                <button type="submit" class="btn btn-light">Modificar</button>
+                                            
+                                            </form>
+                                            
+                                            </div>
+                                            <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    
+                                            </div>
+                                        </div>
+                                        </div>
+        
+                                    </div>
+                                    
+                                    {% if k.fecha_final %}
+
+                                        {% if k.fecha_final|fecha_prueba == 1 and k.estado != "LISTO" %}
+
+                                        <td style="width: 10%; color: rgb(238, 48, 14 );"><a type="button" data-toggle="modal" data-target="#ModalSubSubItem{{k.id}}">{{k.fecha_final|date:"d-m-Y"}}</a></td>
+                                        
+                                        {% elif k.fecha_final|fecha_prueba == 1 and k.estado == "LISTO" %}
+
+                                        <td style="width: 10%; color: rgb(41, 166, 60);"><a type="button" data-toggle="modal" data-target="#ModalSubSubItem{{k.id}}">{{k.fecha_final|date:"d-m-Y"}}</a></td>
+                                        
+
+                                        {% else %}
+                                        <td style="width: 10%;"><a type="button" data-toggle="modal" data-target="#ModalSubSubItem{{k.id}}">{{k.fecha_final|date:"d-m-Y"}}</a></td>
+                                        {% endif %}
+
+                                    {% else %}
+
+                                    <td style="width: 10%;"><a type="button" data-toggle="modal" data-target="#ModalSubSubItem{{k.id}}">NO DEFINIDIO</a></td>
+                        
+                                    {% endif %}
+
+                                    <!-- Modal fecha final Subitem -->
+                                    <div class="modal fade" id="ModalSubSubItem{{k.id}}" tabindex="-1" role="dialog" aria-labelledby="ModalSubSubItem{{k.id}}Title" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLongTitle">Fecha final subitem: {{k.nombre}}</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                            </div>
+                                            <div class="modal-body">
+                        
+                    
+                                            <h6><small>Selecciona una fecha y presiona enter!</small> </h6>
+                                            
+                                            <form method="POST" style="margin: 15px;">
+    
+                                                {% csrf_token %}
+                            
+                                                <div class="input-group mb-3">
+                                                
+                                                        <input name="{{k.id}}-fecha_final_subsubitem" type="date" class="form-control form-control" value="{{k.fecha_final|date:"Y-m-d"}}" aria-label="Amount" style="width: 100px;">
+                                                    
+                                                </div>
+    
+                                                <button type="submit" class="btn btn-light">Modificar</button>
+                                            
+                                            </form>
+                                            
+                                            </div>
+                                            <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    
+                                            </div>
+                                        </div>
+                                        </div>
+    
+                                    </div>
+                                
+        
+                                    
+                        
+                                    
+                        
+                                    {% if k.archivo_vigente %}
+                                    <td style="width: 5%;"><small>
+                        
+                                        <a href="{{ k.archivo_vigente.url }}">
+                        
+                                            <img src="{% static 'img/archivo-adjunto.png' %}" alt="" style="max-width:20px; height:auto; margin: 2px;"  >
+                                    
+                                        </a>
+                        
+                        
+                                    </small></td>
+                        
+                                    {% else %}
+                        
+                                    <td style="width: 5%;"><small>S/D</small></td>
+                        
+                                    {% endif %}
+                        
+                                    {% for f in fechas_semana %}
+            
+                                    {% if f|date:"Y-m-d" > k.fecha_inicio|date:"Y-m-d" %}
+        
+                                        {% if f|date:"Y-m-d" < k.fecha_final|date:"Y-m-d" and fecha_semana_actual|date:"Y-m-d" == f|date:"Y-m-d" %}
+        
+                                        <td style="background: rgba(119, 170, 70, 0.6); border-left-style: solid; border-left-color: rgb(188, 55, 27);"><span class="hint--top hint--danger" aria-label="{{f}}"><small style="color:rgba(119, 170, 70, 0.6);">⚫</small></span></td>
+        
+                                        {% elif f|date:"Y-m-d" < k.fecha_final|date:"Y-m-d"%}
+        
+                                        <td style="background: rgba(119, 170, 70, 0.6);"><span class="hint--top hint--danger" aria-label="{{f}}"><small style="color:rgba(119, 170, 70, 0.6);">⚫</small></span></td>
+        
+                                        {% else %}
+        
+                                        <td style="background: rgba(230, 231, 243)"></td>
+        
+                                        {% endif %}
+        
+                                    {% elif f|date:"Y-m-d" < k.fecha_inicio|date:"Y-m-d" %}
+        
+                                        {% if f|date:"Y-m-d" < k.fecha_final|date:"Y-m-d"%}
+        
+                                        <td style="background: rgba(230, 231, 243)"></td>
+        
+                                        {% elif fecha_semana_actual|date:"Y-m-d" == f|date:"Y-m-d"%}
+        
+                                        <td style="background: rgba(230, 231, 243); border-left-style: solid; border-left-color: rgb(188, 55, 27);"></td>
+        
+                                        {% else %}
+        
+                                        <td style="background: rgba(230, 231, 243)"></td>
+        
+                                        {% endif %}
+        
+          
+            
+                                    {% endif %}
+                                                                    
+                            
+                                    {% endfor %}
+                        
+                        
+                                    </tr>
+
+                                    {% endfor %}
+                
+                
+                            </tr>
+    
+                    
+                    </tr>
+
+                    {% endfor %}
+
+
+                    {% endfor %}
+
+                    
+
+
+                    {% endfor %}
+
+                </tbody>
+            </thead>
+        </table>
     </div>
+
+
+
 
     <b><hr class = "my-4" style="width: 100%; border-color: rgba({{datos.proyecto.color}}, 0.5;"></b>
 
-    {% endfor %}
+
 
         
 

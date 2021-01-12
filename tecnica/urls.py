@@ -13,6 +13,7 @@ urlpatterns = [
     url(r'^gantt/(?P<id_proyecto>\d+)/$', login_required(views.ganttet), name = 'Gantt ET'), 
     url(r'^mensajeitem/(?P<id_item>\d+)/$', login_required(views.mensajesitem), name = 'Mensaje item'),
     url(r'^subitem/(?P<id_item>\d+)/$', login_required(views.subitem), name = 'Sub item'), 
-    url(r'^agregarsubitem/(?P<id_item>\d+)/$', login_required(views.agregarsubitem), name = 'Agregar Subitem'), 
+    url(r'^agregarsubitem/(?P<id_item>\d+)/$', login_required(views.agregarsubitem), name = 'Agregar Subitem'),
+    url(r'^agregarsubsubitem/(?P<id_subitem>\d+)/$', login_required(views.agregarsubsubitem), name = 'Agregar Subsubitem'), 
 
 ]

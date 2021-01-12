@@ -47,11 +47,15 @@
 
           </div>
 
+          {% if request.user|has_group:"MANDO MEDIO" %}
+
           <div>
 
-            <small><b>Monedas que tienes:</b> No habilitado <a href="#" style="text-decoration: none;"><img src="{% static 'img/monedalink.png' %}" alt="" style="max-width:20px; height:auto; margin: 2px; vertical-align: bottom;"></a> </small> 
+            <small><b>Monedas que tienes:</b> No habilitado <a href="{% url 'Moneda Link' %}" style="text-decoration: none;"><img src="{% static 'img/monedalink.png' %}" alt="" style="max-width:20px; height:auto; margin: 2px; vertical-align: bottom;"></a> </small> 
 
           </div>
+
+          {% endif %}
 
 
 

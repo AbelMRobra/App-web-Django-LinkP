@@ -298,8 +298,23 @@ transition: all 0.65s linear 0.2s;
 
 
 .contendorplanificacion {
-        max-width: 100%;
+max-width: 100%;
+overflow-x: scroll;
 
-        overflow-x: scroll;
-        
-        }
+}
+
+.diaplanificacion {
+font-size: 10px;
+
+}
+
+.sticky {
+position: sticky;
+left: 0;
+
+}
+
+.itemsplanificacion {
+ 
+font-size: 10px;
+}
