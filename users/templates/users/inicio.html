@@ -280,18 +280,18 @@
              
             <div class="dropdown-divider"></div>
 
+            <a class="dropdown-item" href="/compras/proveedores">Proveedores</a> 
+
             
-            {% if request.user|has_group:"COMPRAS NIVEL 2" %}
-            <a class="dropdown-item" href="/compras/proveedores">Proveedores</a>            
+            {% if request.user|has_group:"COMPRAS NIVEL 2" %}          
             <a class="dropdown-item" href="{% url 'Comparativas' 0 0 %}">Solicitudes de compras</a>
-            <a class="dropdown-item" href="/compras/stockprov">Stock en proveedores</a>
-            
+                       
             {% endif %}
 
             {% if request.user|has_group:"COMPRAS NIVEL 3" %}
 
             <a class="dropdown-item" href="/compras/compras/0">Registros de compras </a>
-
+            <a class="dropdown-item" href="/compras/stockprov">Stock en proveedores</a>
             {% endif %}
 
             {% if request.user|has_group:"COMPRAS NIVEL 4" %}
@@ -315,9 +315,6 @@
 
             {% endif %}
 
-          
-
-            {% endif %}
 
           </div> 
         </li>
