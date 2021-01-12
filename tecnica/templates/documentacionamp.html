@@ -551,11 +551,11 @@
 
                                 {% if f|date:"Y-m-d" < h.0.fecha_final|date:"Y-m-d" and fecha_semana_actual|date:"Y-m-d" == f|date:"Y-m-d" %}
 
-                                <td style="background: rgba(119, 170, 70, 0.8); border-left-style: solid; border-left-color: rgb(188, 55, 27);"><span class="hint--top hint--danger" aria-label="{{f}}"><small style="color:rgba(119, 170, 70, 0.8);">⚫</small></span></td>
+                                <td style="background: rgba(119, 170, 70, 0.8); border-left-style: solid; border-left-color: rgb(188, 55, 27); text-align: center;"><span class="hint--top hint--danger" aria-label="{{f}}"><small style="color:rgba(119, 170, 70, 0.8);">⚫</small></span></td>
 
                                 {% elif f|date:"Y-m-d" < h.0.fecha_final|date:"Y-m-d"%}
 
-                                <td style="background: rgba(119, 170, 70, 0.8);"><span class="hint--top hint--danger" aria-label="{{f}}"><small style="color:rgba(119, 170, 70, 0.8);">⚫</small></span></td>
+                                <td style="background: rgba(119, 170, 70, 0.8); text-align: center;"><span class="hint--top hint--danger" aria-label="{{f}}"><small style="color:rgba(119, 170, 70, 0.8);">⚫</small></span></td>
 
                                 {% else %}
 
@@ -899,11 +899,11 @@
         
                                         {% if f|date:"Y-m-d" < k.fecha_final|date:"Y-m-d" and fecha_semana_actual|date:"Y-m-d" == f|date:"Y-m-d" %}
         
-                                        <td style="background: rgba(119, 170, 70, 0.6); border-left-style: solid; border-left-color: rgb(188, 55, 27);"><span class="hint--top hint--danger" aria-label="{{f}}"><small style="color:rgba(119, 170, 70, 0.6);">⚫</small></span></td>
+                                        <td style="background: rgba(119, 170, 70, 0.6); border-left-style: solid; border-left-color: rgb(188, 55, 27);  text-align: center;"><span class="hint--top hint--danger" aria-label="{{f}}"><small style="color:rgba(119, 170, 70, 0.6);">⚫</small></span></td>
         
                                         {% elif f|date:"Y-m-d" < k.fecha_final|date:"Y-m-d"%}
         
-                                        <td style="background: rgba(119, 170, 70, 0.6);"><span class="hint--top hint--danger" aria-label="{{f}}"><small style="color:rgba(119, 170, 70, 0.6);">⚫</small></span></td>
+                                        <td style="background: rgba(119, 170, 70, 0.6);  text-align: center;"><span class="hint--top hint--danger" aria-label="{{f}}"><small style="color:rgba(119, 170, 70, 0.6);">⚫</small></span></td>
         
                                         {% else %}
         
