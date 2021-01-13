@@ -60,7 +60,7 @@
                 
                 {% for f in fechas_semana %}
 
-                <td class="diaplanificacion" style="min-width: 80px;">{{f|date:"d-m-Y"}}</td> 
+                <td class="diaplanificacion celdagantplanif">{{f|date:"d-m-Y"}}</td> 
                 
                 {% endfor %}
                 </tr>
@@ -91,14 +91,14 @@
                                     <td  class="celdacharlaplanif"> </td>
                                     <td class="celdaestadoplanif"><small><b></b></small></td>
                                     <td class="celdarespplanif"><small><b></b></small></td>
-                                    <td><small><b></b></small></td>
                                     <td class="celdafechaplanif"><small><b></b></small></td>
                                     <td class="celdafechaplanif"><small><b></b></small></td>
                                     <td class="celdafechaplanif"><small><b></b></small></td>
                                     <td class="celdafechaplanif"><small><b></b></small></td>
+                                    <td class="celdaadjplanif"><small><b></b></small></td>
                                     {% for f in fechas_semana %}
     
-                                    <td class="celdaadjplanif"></td> 
+                                    <td class="celdagantplanif"></td> 
                             
                                     {% endfor %}
                     
@@ -151,14 +151,14 @@
                             <td class="celdafechaplanif">{{t.0.fecha_estimada_i|date:"d-m-Y"}}</td>
                             {% else %}
                 
-                            <td class="celdafechaplanif">NO DEFINIDIO</td>
+                            <td class="celdafechaplanif">---</td>
                 
                             {% endif %}
                             {% if t.0.fecha_estimada_f %}
                             <td class="celdafechaplanif">{{t.0.fecha_estimada_f|date:"d-m-Y"}}</td>
                             {% else %}
                 
-                            <td class="celdafechaplanif">NO DEFINIDIO</td>
+                            <td class="celdafechaplanif">---</td>
                 
                             {% endif %}
                 
@@ -166,14 +166,14 @@
                             <td class="celdafechaplanif">{{t.0.fecha_inicio|date:"d-m-Y"}}</td>
                             {% else %}
                 
-                            <td class="celdafechaplanif">NO DEFINIDIO</td>
+                            <td class="celdafechaplanif">---</td>
                 
                             {% endif %}
                             {% if t.0.fecha_final %}
-                            <td class="celdafechaplanif">{{t.0.fecha_final|date:"d-m-Y"}}</td>
+                            <td class="celdafechaplanif" style="color: rgb({% fecha_final_planif t.0.fecha_final t.0.estado%});">{{t.0.fecha_final|date:"d-m-Y"}}</td>
                             {% else %}
                 
-                            <td class="celdafechaplanif">NO DEFINIDIO</td>
+                            <td class="celdafechaplanif">---</td>
                 
                             {% endif %}
                 
@@ -196,46 +196,9 @@
                             {% endif %}
                 
                             {% for f in fechas_semana %}
-    
-    
-                                {% if f|date:"Y-m-d" > t.0.fecha_inicio|date:"Y-m-d" %}
-    
-                                    {% if f|date:"Y-m-d" < t.0.fecha_final|date:"Y-m-d" and fecha_semana_actual|date:"Y-m-d" == f|date:"Y-m-d" %}
-    
-                                    <td style="min-width: 80px; background: rgba(119, 170, 70); border-left-style: solid; border-left-color: rgb(188, 55, 27);"></td>
-    
-                                    {% elif f|date:"Y-m-d" < t.0.fecha_final|date:"Y-m-d"%}
-    
-                                    <td style="min-width: 80px; background: rgba(119, 170, 70);"></td>
-    
-                                    {% else %}
-    
-                                    <td style="min-width: 80px; background: rgba(230, 231, 243)"></td>
-    
-                                    {% endif %}
-    
-                                {% elif f|date:"Y-m-d" < t.0.fecha_inicio|date:"Y-m-d" %}
-    
-                                    {% if f|date:"Y-m-d" < t.0.fecha_final|date:"Y-m-d"%}
-    
-                                    <td style="min-width: 80px; background: rgba(230, 231, 243)"></td>
-    
-                                    {% elif fecha_semana_actual|date:"Y-m-d" == f|date:"Y-m-d"%}
-    
-                                    <td style="min-width: 80px; background: rgba(230, 231, 243); border-left-style: solid; border-left-color: rgb(188, 55, 27);"></td>
-    
-                                    {% else %}
-    
-                                    <td style="min-width: 80px; background: rgba(230, 231, 243)"></td>
-    
-                                    {% endif %}
-    
-      
-        
-                                {% endif %}
-                            
-                                
-                    
+
+                            <td class="celdagantplanif" style="{% gannt f t.0.fecha_inicio  t.0.fecha_final %}"><span class="hint--top hint--danger" aria-label="{{f}}"><small>⚫⚫⚫⚫⚫</small></span></td>
+                                     
                             {% endfor %}
                 
                 
@@ -352,7 +315,7 @@
                                 <td class="celdafechaplanif">{{h.0.fecha_estimada_i|date:"d-m-Y"}}</td>
                                 {% else %}
                     
-                                <td class="celdafechaplanif">NO DEFINIDIO</td>
+                                <td class="celdafechaplanif">---</td>
                     
                                 {% endif %}
                                 {% if h.0.fecha_estimada_f %}
@@ -360,7 +323,7 @@
                                 <td class="celdafechaplanif">{{h.0.fecha_estimada_f|date:"d-m-Y"}}</td>
                                 {% else %}
                     
-                                <td class="celdafechaplanif">NO DEFINIDIO</td>
+                                <td class="celdafechaplanif">---</td>
                     
                                 {% endif %}
                     
@@ -414,10 +377,10 @@
                                                    
                                 {% if h.0.fecha_final %}
                                 <td class="celdafechaplanif">
-                                    <a type="button" data-toggle="modal" data-target="#ModalSubItem{{h.0.id}}">{{h.0.fecha_final|date:"d-m-Y"}}</a>
+                                    <a type="button" data-toggle="modal" data-target="#ModalSubItem{{h.0.id}}" style="color: rgb({% fecha_final_planif h.0.fecha_final h.0.estado%});">{{h.0.fecha_final|date:"d-m-Y"}}</a>
                                 {% else %}
     
-                                <td class="celdafechaplanif"><a type="button" data-toggle="modal" data-target="#ModalSubItem{{h.0.id}}">NO DEFINIDIO</a></td>
+                                <td class="celdafechaplanif"><a type="button" data-toggle="modal" data-target="#ModalSubItem{{h.0.id}}">---</a></td>
                     
                                 {% endif %}
                                     <!-- Modal fecha final Subitem -->
@@ -480,43 +443,8 @@
                     
                                 {% for f in fechas_semana %}
         
-                                {% if f|date:"Y-m-d" > h.0.fecha_inicio|date:"Y-m-d" %}
-    
-                                    {% if f|date:"Y-m-d" < h.0.fecha_final|date:"Y-m-d" and fecha_semana_actual|date:"Y-m-d" == f|date:"Y-m-d" %}
-    
-                                    <td style="min-width: 80px; background: rgba(119, 170, 70, 0.8); border-left-style: solid; border-left-color: rgb(188, 55, 27); text-align: center;"><span class="hint--top hint--danger" aria-label="{{f}}"><small style="color:rgba(119, 170, 70, 0.8);">⚫</small></span></td>
-    
-                                    {% elif f|date:"Y-m-d" < h.0.fecha_final|date:"Y-m-d"%}
-    
-                                    <td style="min-width: 80px; background: rgba(119, 170, 70, 0.8); text-align: center;"><span class="hint--top hint--danger" aria-label="{{f}}"><small style="color:rgba(119, 170, 70, 0.8);">⚫</small></span></td>
-    
-                                    {% else %}
-    
-                                    <td style="min-width: 80px; background: rgba(230, 231, 243)"></td>
-    
-                                    {% endif %}
-    
-                                {% elif f|date:"Y-m-d" < h.0.fecha_inicio|date:"Y-m-d" %}
-    
-                                    {% if f|date:"Y-m-d" < h.0.fecha_final|date:"Y-m-d"%}
-    
-                                    <td style="min-width: 80px; background: rgba(230, 231, 243)"></td>
-    
-                                    {% elif fecha_semana_actual|date:"Y-m-d" == f|date:"Y-m-d"%}
-    
-                                    <td style="min-width: 80px; background: rgba(230, 231, 243); border-left-style: solid; border-left-color: rgb(188, 55, 27);"></td>
-    
-                                    {% else %}
-    
-                                    <td style="min-width: 80px; background: rgba(230, 231, 243)"></td>
-    
-                                    {% endif %}
-    
-      
-        
-                                {% endif %}
-                                                                
-                        
+                                <td class="celdagantplanif" style="{% gannt f h.0.fecha_inicio  h.0.fecha_final %}"><span class="hint--top hint--danger" aria-label="{{f}}"><small>⚫⚫⚫⚫⚫</small></span></td>
+                                  
                                 {% endfor %}
     
                                 {% for k in h.1 %}
@@ -629,14 +557,14 @@
                                         <td class="celdafechaplanif">{{k.fecha_estimada_i|date:"d-m-Y"}}</td>
                                         {% else %}
                             
-                                        <td class="celdafechaplanif">NO DEFINIDIO</td>
+                                        <td class="celdafechaplanif">---</td>
                             
                                         {% endif %}
                                         {% if k.fecha_estimada_f %}
-                                        <td class="celdafechaplanif">{{k.fecha_estimada_f|date:"d-m-Y"}}</td>
+                                        <td class="celdafechaplanif" style="color: rgb({% fecha_final_planif k.fecha_final k.estado%});">{{k.fecha_estimada_f|date:"d-m-Y"}}</td>
                                         {% else %}
                             
-                                        <td class="celdafechaplanif">NO DEFINIDIO</td>
+                                        <td class="celdafechaplanif">---</td>
                             
                                         {% endif %}
                             
@@ -658,7 +586,7 @@
      
                                             {% else %}
                             
-                                            <td class="celdafechaplanif"><a type="button" data-toggle="modal" data-target="#ModalFechaInicioSubSubItem{{k.id}}">NO DEFINIDIO</a></td>
+                                            <td class="celdafechaplanif"><a type="button" data-toggle="modal" data-target="#ModalFechaInicioSubSubItem{{k.id}}">---</a></td>
                                 
                                             {% endif %}
                                         <!-- Modal fecha final Subitem -->
@@ -702,22 +630,11 @@
                                         
                                         {% if k.fecha_final %}
     
-                                            {% if k.fecha_final|fecha_prueba == 1 and k.estado != "LISTO" %}
-    
-                                            <td class="celdafechaplanif" style="width: 10%; color: rgb(238, 48, 14 );"><a type="button" data-toggle="modal" data-target="#ModalSubSubItem{{k.id}}">{{k.fecha_final|date:"d-m-Y"}}</a></td>
+                                        <td class="celdafechaplanif" style="width: 10%; color: rgb({% fecha_final_planif k.fecha_final k.estado%});"><a type="button" data-toggle="modal" data-target="#ModalSubSubItem{{k.id}}">{{k.fecha_final|date:"d-m-Y"}}</a></td>
                                             
-                                            {% elif k.fecha_final|fecha_prueba == 1 and k.estado == "LISTO" %}
-    
-                                            <td class="celdafechaplanif" style="width: 10%; color: rgb(41, 166, 60);"><a type="button" data-toggle="modal" data-target="#ModalSubSubItem{{k.id}}">{{k.fecha_final|date:"d-m-Y"}}</a></td>
-                                            
-    
-                                            {% else %}
-                                            <td class="celdafechaplanif"><a type="button" data-toggle="modal" data-target="#ModalSubSubItem{{k.id}}">{{k.fecha_final|date:"d-m-Y"}}</a></td>
-                                            {% endif %}
-    
                                         {% else %}
     
-                                        <td class="celdafechaplanif"><a type="button" data-toggle="modal" data-target="#ModalSubSubItem{{k.id}}">NO DEFINIDIO</a></td>
+                                        <td class="celdafechaplanif"><a type="button" data-toggle="modal" data-target="#ModalSubSubItem{{k.id}}">---</a></td>
                             
                                         {% endif %}
     
@@ -779,42 +696,8 @@
                                         {% endif %}
                             
                                         {% for f in fechas_semana %}
-                
-                                        {% if f|date:"Y-m-d" > k.fecha_inicio|date:"Y-m-d" %}
-            
-                                            {% if f|date:"Y-m-d" < k.fecha_final|date:"Y-m-d" and fecha_semana_actual|date:"Y-m-d" == f|date:"Y-m-d" %}
-            
-                                            <td style="background: rgba(119, 170, 70, 0.6); border-left-style: solid; border-left-color: rgb(188, 55, 27);  text-align: center;"><span class="hint--top hint--danger" aria-label="{{f}}"><small style="color:rgba(119, 170, 70, 0.6);">⚫</small></span></td>
-            
-                                            {% elif f|date:"Y-m-d" < k.fecha_final|date:"Y-m-d"%}
-            
-                                            <td style="background: rgba(119, 170, 70, 0.6);  text-align: center;"><span class="hint--top hint--danger" aria-label="{{f}}"><small style="color:rgba(119, 170, 70, 0.6);">⚫</small></span></td>
-            
-                                            {% else %}
-            
-                                            <td style="background: rgba(230, 231, 243)"></td>
-            
-                                            {% endif %}
-            
-                                        {% elif f|date:"Y-m-d" < k.fecha_inicio|date:"Y-m-d" %}
-            
-                                            {% if f|date:"Y-m-d" < k.fecha_final|date:"Y-m-d"%}
-            
-                                            <td style="background: rgba(230, 231, 243)"></td>
-            
-                                            {% elif fecha_semana_actual|date:"Y-m-d" == f|date:"Y-m-d"%}
-            
-                                            <td style="background: rgba(230, 231, 243); border-left-style: solid; border-left-color: rgb(188, 55, 27);"></td>
-            
-                                            {% else %}
-            
-                                            <td style="background: rgba(230, 231, 243)"></td>
-            
-                                            {% endif %}
-            
-                                        {% endif %}
-                                                                        
-                                
+
+                                        <td class="celdagantplanif" style="{% gannt f k.fecha_inicio k.fecha_final %}"><span class="hint--top hint--danger" aria-label="{{f}}"><small>⚫⚫⚫⚫⚫</small></span> </td>                                                 
                                         {% endfor %}
                             
                             

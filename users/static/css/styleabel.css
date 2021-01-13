@@ -357,6 +357,10 @@ min-width: 40px;
 min-width: 50px;
 }
 
+.celdagantplanif {
+min-width: 80px;
+}
+
 .celdaestadoplanif {
 min-width: 100px;
 text-align: left;

@@ -353,7 +353,7 @@ def documentacionamp(request, id_proyecto):
                     if d.estado != "PROBLEMAS":
                         d.estado = "PROBLEMAS"
                         d.save()
-                elif len(SubItem.objects.filter(item = d, estado = "TRABAJANDO")):
+                elif len(SubItem.objects.filter(item = d, estado = "TRABAJANDO")) > 0:
                     if d.estado != "TRABAJANDO":
                         d.estado = "TRABAJANDO"
                         d.save()
@@ -381,6 +381,25 @@ def documentacionamp(request, id_proyecto):
             for j in item_cantidad:
 
                 subsubitems = SubSubItem.objects.filter(subitem = j)
+
+                if len(SubSubItem.objects.filter(subitem = j)) > 0:
+
+                    if len(SubSubItem.objects.filter(subitem = j, estado = "PROBLEMAS")) > 0:
+                        if j.estado != "PROBLEMAS":
+                            j.estado = "PROBLEMAS"
+                            j.save()
+                    elif len(SubSubItem.objects.filter(subitem = j, estado = "TRABAJANDO")) > 0:
+                        if j.estado != "TRABAJANDO":
+                            j.estado = "TRABAJANDO"
+                            j.save()
+                    elif (len(SubSubItem.objects.filter(subitem = j, estado = "LISTO"))/len(SubSubItem.objects.filter(subitem = j))) == 1:
+                        if j.estado != "LISTO":
+                            j.estado = "LISTO"
+                            j.save()
+                    else:
+                        if j.estado != "ESPERA":
+                            j.estado = "ESPERA"
+                            j.save()
 
                 datos_subsubitem.append((j, subsubitems))
 
