@@ -61,12 +61,12 @@ def fecha_final_planif(fecha, estado):
         return "122, 118, 117"
 
 @register.simple_tag
-def fecha_inicio_planif(fecha, estado):
+def fecha_inicio_planif(fecha_i, estado_i):
 
-    if date.today() >= fecha and estado != "LISTO":
+    if date.today() >= fecha_i and estado_i == "ESPERA":
         return "238, 48, 14"
 
-    elif date.today() >= fecha and estado == "LISTO":
+    elif date.today() >= fecha_i and estado_i != "ESPERA":
         return "41, 166, 60"
 
     else:

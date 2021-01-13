@@ -312,7 +312,7 @@
                                 </small></td>
                     
                                 {% if h.0.fecha_estimada_i %}
-                                <td class="celdafechaplanif" style="color: rgb({% fecha_inicio_planif h.0.fecha_estimada_i h.0.estado%});">{{h.0.fecha_estimada_i|date:"d-m-Y"}}</td>
+                                <td class="celdafechaplanif" style="color: rgb({% fecha_inicio_planif h.0.fecha_estimada_i h.0.estado %});">{{h.0.fecha_estimada_i|date:"d-m-Y"}}</td>
                                 {% else %}
                     
                                 <td class="celdafechaplanif">---</td>
@@ -320,7 +320,7 @@
                                 {% endif %}
                                 {% if h.0.fecha_estimada_f %}
                                 
-                                <td class="celdafechaplanif" style="color: rgb({% fecha_final_planif h.0.fecha_estimada_f h.0.estado%});">{{h.0.fecha_estimada_f|date:"d-m-Y"}}</td>
+                                <td class="celdafechaplanif" style="color: rgb({% fecha_final_planif h.0.fecha_estimada_f h.0.estado %});">{{h.0.fecha_estimada_f|date:"d-m-Y"}}</td>
                                 {% else %}
                     
                                 <td class="celdafechaplanif">---</td>
@@ -329,7 +329,7 @@
                     
                                 {% if h.0.fecha_inicio %}
                                 <td class="celdafechaplanif">
-                                    <a type="button" data-toggle="modal" data-target="#ModalFechaInicioSubItem{{h.0.id}}" style="color: rgb({% fecha_inicio_planif h.0.fecha_inicio h.0.estado%});">{{h.0.fecha_inicio|date:"d-m-Y"}}</a>
+                                    <a type="button" data-toggle="modal" data-target="#ModalFechaInicioSubItem{{h.0.id}}" style="color: rgb({% fecha_inicio_planif h.0.fecha_inicio h.0.estado %});">{{h.0.fecha_inicio|date:"d-m-Y"}}</a>
                                     </td>
                                 {% else %}
                 
@@ -568,7 +568,7 @@
                             
                                         {% endif %}                            
                                         {% if k.fecha_inicio %}
-                                        <td class="celdafechaplanif" style="color: rgb({% fecha_inicio_planif k.fecha_inicio k.estado%});"><a type="button" data-toggle="modal" data-target="#ModalFechaInicioSubSubItem{{k.id}}">{{k.fecha_inicio|date:"d-m-Y"}}</a></td>                                                
+                                        <td class="celdafechaplanif" style="color: rgb({% fecha_inicio_planif k.fecha_inicio k.estado %});"><a type="button" data-toggle="modal" data-target="#ModalFechaInicioSubSubItem{{k.id}}">{{k.fecha_inicio|date:"d-m-Y"}}</a></td>                                                
                                         {% else %}                            
                                         <td class="celdafechaplanif"><a type="button" data-toggle="modal" data-target="#ModalFechaInicioSubSubItem{{k.id}}">---</a></td>                                
                                         {% endif %}
