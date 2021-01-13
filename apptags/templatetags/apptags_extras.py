@@ -45,3 +45,4 @@ def prueba_planificacion(self):
 
     if self == "ESPERA":
         return "122, 118, 117 "
+

@@ -113,7 +113,7 @@
 
                     <!--  CONTENEDOR DEL PRIMER ACORDEON -> NIVEL ITEM  -->
 
-                    <div id="collapse{{i.0.id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading{{i.0.id}}">
+                    <div id="collapse{{i.0.id}}" class="panel-collapse collapse show" role="tabpanel" aria-labelledby="heading{{i.0.id}}">
 
                     {% for t in i.1 %}
 
@@ -375,8 +375,7 @@
                                     <div class="modal-dialog modal-dialog-centered" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLongTitle">Fecha inicio subitem</h5>
-                                        <h6 class="modal-title" id="exampleModalLongTitle">{{h.0.nombre}}</h6>
+                                        <h5 class="modal-title" id="exampleModalLongTitle">Fecha inicio SUB-item</h5>
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
@@ -384,7 +383,7 @@
                                         <div class="modal-body">
                     
                 
-                                        <h6><small>Selecciona una fecha y presiona enter!</small> </h6>
+                                        <h6><small>Se modificara la fecha del SUB-subitem {{h.0.nombre}}</small> </h6>
                                         
                                         <form method="POST" style="margin: 15px;">
     
@@ -423,8 +422,7 @@
                                         <div class="modal-dialog modal-dialog-centered" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLongTitle">Fecha final subitem</h5>
-                                            <h6 class="modal-title" id="exampleModalLongTitle">{{h.0.nombre}}</h6>
+                                            <h5 class="modal-title" id="exampleModalLongTitle">Fecha final SUB-item</h5>
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
@@ -432,7 +430,7 @@
                                             <div class="modal-body">
                         
                     
-                                            <h6><small>Selecciona una fecha y presiona enter!</small> </h6>
+                                            <h6><small>Se modificara la fecha del SUB-subitem {{h.0.nombre}}</small> </h6>
                                             
                                             <form method="POST" style="margin: 15px;">
     
@@ -662,7 +660,7 @@
                                             <div class="modal-dialog modal-dialog-centered" role="document">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLongTitle">Fecha inicio Sub-subitem</h5>
+                                                <h5 class="modal-title" id="exampleModalLongTitle">Fecha inicio SUB-subitem</h5>
                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
@@ -670,7 +668,7 @@
                                                 <div class="modal-body">
                             
                         
-                                                <h6><small>Se modificara la fecha del Sub-subitem {{k.nombre}}</small> </h6>
+                                                <h6><small>Se modificara la fecha del SUB-subitem {{k.nombre}}</small> </h6>
                                                 
                                                 <form method="POST" style="margin: 15px;">
             
@@ -717,12 +715,12 @@
                             
                                         {% endif %}
     
-                                        <!-- Modal fecha final Subitem -->
+                                        <!-- Modal fecha final SUB-Subitem -->
                                         <div class="modal fade" id="ModalSubSubItem{{k.id}}" tabindex="-1" role="dialog" aria-labelledby="ModalSubSubItem{{k.id}}Title" aria-hidden="true">
                                             <div class="modal-dialog modal-dialog-centered" role="document">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLongTitle">Fecha final subitem: {{k.nombre}}</h5>
+                                                <h5 class="modal-title" id="exampleModalLongTitle">Fecha final SUB-subitem</h5>
                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
@@ -730,7 +728,7 @@
                                                 <div class="modal-body">
                             
                         
-                                                <h6><small>Selecciona una fecha y presiona enter!</small> </h6>
+                                                <h6><small>Se modificara la fecha del SUB-subitem {{k.nombre}}</small> </h6>
                                                 
                                                 <form method="POST" style="margin: 15px;">
         
