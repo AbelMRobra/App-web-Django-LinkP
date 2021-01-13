@@ -349,7 +349,34 @@ min-width: 100px;
 min-width: 50px;
 }
 
+.celdaadjplanif {
+min-width: 50px;
+}
+
 .celdaestadoplanif {
 min-width: 100px;
 text-align: left;
+}
+
+.imagenlogoplanif {
+max-width: 25px;
+height: auto;
+}
+
+.filasubsubitem {
+font-size: 8.5px;
+border-top: solid 1px #C4C8C4;
+
+}
+
+.filasubitem {
+font-size: 9px;
+border-top: solid 1px #A5A9A4;
+
+}
+
+.filaitem {
+font-size: 9px;
+border-top: solid 1px #767976;
+
 }

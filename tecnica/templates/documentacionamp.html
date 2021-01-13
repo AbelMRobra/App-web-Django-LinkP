@@ -98,7 +98,7 @@
                                     <td class="celdafechaplanif"><small><b></b></small></td>
                                     {% for f in fechas_semana %}
     
-                                    <td style="min-width: 80px;"></td> 
+                                    <td class="celdaadjplanif"></td> 
                             
                                     {% endfor %}
                     
@@ -121,7 +121,7 @@
 
                         <!--  NIVEL ITEM -->
 
-                        <tr class = "table-light" style="font-size: 11px;">  
+                        <tr class = "table-light filaitem">  
             
                             <td class="sticky item" style="min-width: 250px;">{{t.0.nombre}}</td>    
                             <td><a href="#" style="text-decoration: none"><img src="{% static 'img/anadir.png' %}" alt="" style="max-width:16px; height:auto; margin: 2px;"></a></td>               
@@ -177,7 +177,7 @@
                 
                                 {% if t.0.responsable %}
                                 
-                                <img src="{{t.0.responsable.imagenlogo.url}}"  class="img-fluid" alt="..." style="max-width: 30px; height:auto;">
+                                <img src="{{t.0.responsable.imagenlogo.url}}"  class="img-fluid imagenlogoplanif" alt="...">
                                 
                                 {% else %}
                 
@@ -218,7 +218,7 @@
                             {% endif %}
                 
                             {% if t.0.archivo_vigente %}
-                            <td style="width: 5%;"><small>
+                            <td class="celdaadjplanif"><small>
                 
                                 <a href="{{ t.0.archivo_vigente.url }}">
                 
@@ -231,7 +231,7 @@
                 
                             {% else %}
                 
-                            <td><small>S/D</small></td>
+                            <td class="celdaadjplanif"><small>S/D</small></td>
                 
                             {% endif %}
                 
@@ -286,7 +286,7 @@
 
                             <!--  NIVEL SUBITEM  -->
     
-                        <tr class = "table-light" style="font-size: 9px;">  
+                        <tr class = "table-light filasubsubitem">  
     
                             <td class="sticky subitem" style="min-width: 250px">-> {{h.0.nombre}}</td>
     
@@ -423,7 +423,7 @@
                     
                                     {% if h.0.responsable %}
                                     
-                                    <img src="{{h.0.responsable.imagenlogo.url}}"  class="img-fluid" alt="..." style="max-width: 30px; height:auto;">
+                                    <img src="{{h.0.responsable.imagenlogo.url}}"  class="img-fluid imagenlogoplanif" alt="...">
                                     
                                     {% else %}
                     
@@ -548,7 +548,7 @@
                                 </td>
                                                 
                                 {% if h.0.archivo_vigente %}
-                                <td style="width: 5%;"><small>
+                                <td class="celdaadjplanif"><small>
                     
                                     <a href="{{ h.0.archivo_vigente.url }}">
                     
@@ -561,7 +561,7 @@
                     
                                 {% else %}
                     
-                                <td style="width: 5%;"><small>S/D</small></td>
+                                <td class="celdaadjplanif"><small>S/D</small></td>
                     
                                 {% endif %}
                     
@@ -608,7 +608,7 @@
     
                                 {% for k in h.1 %}
     
-                                <tr class = "table-light" style="font-size: 8.5px;">  
+                                <tr class ="table-light filasubsubitem">  
             
                                     <td class="sticky subsubitem">--> {{k.nombre}}</td>
                                     <td></td>
@@ -738,7 +738,7 @@
                             
                                             {% if k.responsable %}
                                             
-                                            <img src="{{k.responsable.imagenlogo.url}}"  class="img-fluid" alt="..." style="max-width: 30px; height:auto;">
+                                            <img src="{{k.responsable.imagenlogo.url}}"  class="img-fluid imagenlogoplanif" alt="...">
                                             
                                             {% else %}
                             
@@ -889,7 +889,7 @@
                                         
                             
                                         {% if k.archivo_vigente %}
-                                        <td style="width: 5%;"><small>
+                                        <td class="celdaadjplanif"><small>
                             
                                             <a href="{{ k.archivo_vigente.url }}">
                             
@@ -902,7 +902,7 @@
                             
                                         {% else %}
                             
-                                        <td style="width: 5%;"><small>S/D</small></td>
+                                        <td class="celdaadjplanif"><small>S/D</small></td>
                             
                                         {% endif %}
                             
