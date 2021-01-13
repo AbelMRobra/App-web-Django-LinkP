@@ -349,6 +349,10 @@ min-width: 100px;
 min-width: 50px;
 }
 
+.celdacharlaplanif {
+min-width: 50px;
+}
+
 .celdaadjplanif {
 min-width: 50px;
 }
@@ -359,7 +363,7 @@ text-align: left;
 }
 
 .imagenlogoplanif {
-max-width: 25px;
+max-width: 23px;
 height: auto;
 }
 
@@ -377,6 +381,6 @@ border-top: solid 1px #A5A9A4;
 
 .filaitem {
 font-size: 9px;
-border-top: solid 1px #767976;
+border-top: solid 1px #969895;
 
 }
