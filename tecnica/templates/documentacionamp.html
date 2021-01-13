@@ -131,48 +131,7 @@
                                                                         
                             </small></td>
                 
-                            {% if t.0.estado == 'LISTO' %}
-                            <td class="celdaestadoplanif" style="color: rgb(124, 209, 107)">
-                
-                
-                                <b>{{t.0.estado}}</b> 
-                            
-                            
-                            </td>
-                
-                            {% elif t.0.estado == 'TRABAJANDO' %}
-                
-                            <td class="celdaestadoplanif" style="color: rgb(209, 176, 107)">
-                
-                
-                                <b>{{t.0.estado}}</b> 
-                            
-                            
-                            </td>
-                
-                            {% elif t.0.estado == 'PROBLEMAS' %}
-                
-                            <td class="celdaestadoplanif" style="color: rgb(209, 119, 107)">
-                
-                
-                                <b>{{t.0.estado}}</b> 
-                            
-                            
-                            </td>
-                
-                            {% else %}
-                
-                            <td class="celdaestadoplanif">
-                
-                
-                                <b>{{t.0.estado}}</b> 
-                            
-                            
-                            </td>
-                
-                            {% endif %}
-                
-                
+                            <td class="celdaestadoplanif" style="color: rgb({{t.0.estado|estadoplan}})"><b>{{t.0.estado}}</b></td>            
                             <td class="celdarespplanif"><small>
                 
                                 {% if t.0.responsable %}
@@ -292,47 +251,7 @@
     
                             <td><a href="{% url 'Agregar Subsubitem' h.0.id %}" style="text-decoration: none"><img src="{% static 'img/anadir.png' %}" alt="" style="max-width:16px; height:auto; margin: 2px;"></a></td>
                                 <td  class="celdacharlaplanif"></td>                    
-                                {% if h.0.estado == 'LISTO' %}
-                                <td class="celdaestadoplanif" style="color: rgb(124, 209, 107)">
-                    
-                    
-                                    <a type="button" data-toggle="modal" data-target="#ModalEstadoSubItem{{h.0.id}}"><b>{{h.0.estado}}</b></a> 
-                                
-                                
-                                </td>
-                    
-                                {% elif h.0.estado == 'TRABAJANDO' %}
-                    
-                                <td class="celdaestadoplanif" style="color: rgb(209, 176, 107)">
-                    
-                    
-                                    <a type="button" data-toggle="modal" data-target="#ModalEstadoSubItem{{h.0.id}}"><b>{{h.0.estado}}</b></a> 
-                                
-                                
-                                </td>
-                    
-                                {% elif h.0.estado == 'PROBLEMAS' %}
-                    
-                                <td class="celdaestadoplanif" style="color: rgb(209, 119, 107)">
-                    
-                    
-                                    <a type="button" data-toggle="modal" data-target="#ModalEstadoSubItem{{h.0.id}}"><b>{{h.0.estado}}</b></a> 
-                                
-                                
-                                </td>
-                    
-                                {% else %}
-                    
-                                <td class="celdaestadoplanif">
-                    
-                    
-                                    <a type="button" data-toggle="modal" data-target="#ModalEstadoSubItem{{h.0.id}}"><b>{{h.0.estado}}</b></a> 
-                                
-                                
-                                </td>
-                    
-                                {% endif %}
-    
+                                <td class="celdaestadoplanif" style="color: rgb({{h.0.estado|estadoplan}})"><a type="button" data-toggle="modal" data-target="#ModalEstadoSubItem{{h.0.id}}"><b>{{h.0.estado}}</b></a></td>                  
                                 <!-- Modal fecha estado Subitem -->
                                 <div class="modal fade" id="ModalEstadoSubItem{{h.0.id}}" tabindex="-1" role="dialog" aria-labelledby="ModalEstadoSubItem{{h.0.id}}Title" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -606,47 +525,8 @@
                                     <td class="sticky subsubitem">--> {{k.nombre}}</td>
                                     <td></td>
                                     <td  class="celdacharlaplanif"></td>
-                                    {% if k.estado == 'LISTO' %}
-                                    <td class="celdaestadoplanif" style="color: rgb(124, 209, 107)">
-                            
-                            
-                                            <a type="button" data-toggle="modal" data-target="#ModalEstadoSubSubItem{{k.id}}"><b>{{k.estado}}</b></a> 
-                                        
-                                        
-                                        </td>
-                            
-                                        {% elif k.estado == 'TRABAJANDO' %}
-                            
-                                        <td class="celdaestadoplanif" style="color: rgb(209, 176, 107)">
-                            
-                            
-                                            <a type="button" data-toggle="modal" data-target="#ModalEstadoSubSubItem{{k.id}}"><b>{{k.estado}}</b></a> 
-                                        
-                                        
-                                        </td>
-                            
-                                        {% elif k.estado == 'PROBLEMAS' %}
-                            
-                                        <td class="celdaestadoplanif" style="color: rgb(209, 119, 107)">
-                            
-                            
-                                            <a type="button" data-toggle="modal" data-target="#ModalEstadoSubSubItem{{k.id}}"><b>{{k.estado}}</b></a> 
-                                        
-                                        
-                                        </td>
-                            
-                                        {% else %}
-                            
-                                        <td class="celdaestadoplanif">
-                            
-                            
-                                            <a type="button" data-toggle="modal" data-target="#ModalEstadoSubSubItem{{k.id}}"><b>{{k.estado}}</b></a> 
-                                        
-                                        
-                                        </td>
-                            
-                                        {% endif %}
-    
+                                    <td class="celdaestadoplanif" style="color: rgb({{k.estado|estadoplan}})"><a type="button" data-toggle="modal" data-target="#ModalEstadoSubSubItem{{k.id}}"><b>{{k.estado}}</b></a></td>
+
                                         <!-- Modal fecha estado SubSubitem -->
                                 <div class="modal fade" id="ModalEstadoSubSubItem{{k.id}}" tabindex="-1" role="dialog" aria-labelledby="ModalEstadoSubSubItem{{k.id}}Title" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered" role="document">

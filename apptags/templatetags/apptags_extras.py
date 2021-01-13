@@ -30,3 +30,18 @@ def prueba_planificacion(self):
     fecha_cadena = str(fecha_nueva.year)+'-'+str(fecha_nueva.month)+'-'+str(fecha_nueva.day)
 
     return fecha_cadena
+
+@register.filter('estadoplan')
+def prueba_planificacion(self):
+
+    if self == "LISTO":
+        return "77, 142, 62"
+
+    if self == "TRABAJANDO":
+        return "192, 173, 52"
+
+    if self == "PROBLEMAS":
+        return "192, 71, 52 "
+
+    if self == "ESPERA":
+        return "122, 118, 117 "
