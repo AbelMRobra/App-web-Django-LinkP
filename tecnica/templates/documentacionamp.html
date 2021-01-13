@@ -148,7 +148,7 @@
                             </small></td>
                 
                             {% if t.0.fecha_estimada_i %}
-                            <td class="celdafechaplanif">{{t.0.fecha_estimada_i|date:"d-m-Y"}}</td>
+                            <td class="celdafechaplanif" style="color: rgb({% fecha_inicio_planif t.0.fecha_estimada_i t.0.estado%});">{{t.0.fecha_estimada_i|date:"d-m-Y"}}</td>
                             {% else %}
                 
                             <td class="celdafechaplanif">---</td>
@@ -163,7 +163,7 @@
                             {% endif %}
                 
                             {% if t.0.fecha_inicio %}
-                            <td class="celdafechaplanif">{{t.0.fecha_inicio|date:"d-m-Y"}}</td>
+                            <td class="celdafechaplanif" style="color: rgb({% fecha_inicio_planif t.0.fecha_inicio t.0.estado%});">{{t.0.fecha_inicio|date:"d-m-Y"}}</td>
                             {% else %}
                 
                             <td class="celdafechaplanif">---</td>
@@ -312,7 +312,7 @@
                                 </small></td>
                     
                                 {% if h.0.fecha_estimada_i %}
-                                <td class="celdafechaplanif">{{h.0.fecha_estimada_i|date:"d-m-Y"}}</td>
+                                <td class="celdafechaplanif" style="color: rgb({% fecha_inicio_planif h.0.fecha_estimada_i h.0.estado%});">{{h.0.fecha_estimada_i|date:"d-m-Y"}}</td>
                                 {% else %}
                     
                                 <td class="celdafechaplanif">---</td>
@@ -320,7 +320,7 @@
                                 {% endif %}
                                 {% if h.0.fecha_estimada_f %}
                                 
-                                <td class="celdafechaplanif">{{h.0.fecha_estimada_f|date:"d-m-Y"}}</td>
+                                <td class="celdafechaplanif" style="color: rgb({% fecha_final_planif h.0.fecha_estimada_f h.0.estado%});">{{h.0.fecha_estimada_f|date:"d-m-Y"}}</td>
                                 {% else %}
                     
                                 <td class="celdafechaplanif">---</td>
@@ -329,11 +329,11 @@
                     
                                 {% if h.0.fecha_inicio %}
                                 <td class="celdafechaplanif">
-                                    <a type="button" data-toggle="modal" data-target="#ModalFechaInicioSubItem{{h.0.id}}">{{h.0.fecha_inicio|date:"d-m-Y"}}</a>
+                                    <a type="button" data-toggle="modal" data-target="#ModalFechaInicioSubItem{{h.0.id}}" style="color: rgb({% fecha_inicio_planif h.0.fecha_inicio h.0.estado%});">{{h.0.fecha_inicio|date:"d-m-Y"}}</a>
                                     </td>
                                 {% else %}
                 
-                                <td class="celdafechaplanif"><a type="button" data-toggle="modal" data-target="#ModalFechaInicioSubItem{{h.0.id}}">NO DEFINIDIO</a></td>
+                                <td class="celdafechaplanif"><a type="button" data-toggle="modal" data-target="#ModalFechaInicioSubItem{{h.0.id}}" style="color: rgb({% fecha_inicio_planif h.0.fecha_inicio h.0.estado%});">NO DEFINIDIO</a></td>
                     
                                 {% endif %}
                                 <!-- Modal fecha final Subitem -->
@@ -554,41 +554,24 @@
                                         </small></td>
                             
                                         {% if k.fecha_estimada_i %}
-                                        <td class="celdafechaplanif">{{k.fecha_estimada_i|date:"d-m-Y"}}</td>
+                                        <td class="celdafechaplanif"style="color: rgb({% fecha_inicio_planif k.fecha_estimada_i k.estado%});">{{k.fecha_estimada_i|date:"d-m-Y"}}</td>
                                         {% else %}
                             
                                         <td class="celdafechaplanif">---</td>
                             
                                         {% endif %}
                                         {% if k.fecha_estimada_f %}
-                                        <td class="celdafechaplanif" style="color: rgb({% fecha_final_planif k.fecha_final k.estado%});">{{k.fecha_estimada_f|date:"d-m-Y"}}</td>
+                                        <td class="celdafechaplanif" style="color: rgb({% fecha_final_planif k.fecha_estimada_i k.estado%});">{{k.fecha_estimada_f|date:"d-m-Y"}}</td>
                                         {% else %}
                             
                                         <td class="celdafechaplanif">---</td>
                             
-                                        {% endif %}
-                            
+                                        {% endif %}                            
                                         {% if k.fecha_inicio %}
-    
-                                            {% if k.fecha_inicio|fecha_prueba == 1 and k.estado == "ESPERA" %}
-    
-                                            <td class="celdafechaplanif" style="color: rgb(238, 48, 14);"><a type="button" data-toggle="modal" data-target="#ModalFechaInicioSubSubItem{{k.id}}">{{k.fecha_inicio|date:"d-m-Y"}}</a></td>
-    
-                                            {% elif k.fecha_inicio|fecha_prueba == 1 and k.estado != "ESPERA" %}
-                                            
-                                            <td class="celdafechaplanif" style="color: rgb(41, 166, 60);"><a type="button" data-toggle="modal" data-target="#ModalFechaInicioSubSubItem{{k.id}}">{{k.fecha_inicio|date:"d-m-Y"}}</a></td>
-                                            
-                                            {% else %}
-    
-                                            <td class="celdafechaplanif"><a type="button" data-toggle="modal" data-target="#ModalFechaInicioSubSubItem{{k.id}}">{{k.fecha_inicio|date:"d-m-Y"}}</a></td>
-    
-                                            {% endif %}
-     
-                                            {% else %}
-                            
-                                            <td class="celdafechaplanif"><a type="button" data-toggle="modal" data-target="#ModalFechaInicioSubSubItem{{k.id}}">---</a></td>
-                                
-                                            {% endif %}
+                                        <td class="celdafechaplanif" style="color: rgb({% fecha_inicio_planif k.fecha_inicio k.estado%});"><a type="button" data-toggle="modal" data-target="#ModalFechaInicioSubSubItem{{k.id}}">{{k.fecha_inicio|date:"d-m-Y"}}</a></td>                                                
+                                        {% else %}                            
+                                        <td class="celdafechaplanif"><a type="button" data-toggle="modal" data-target="#ModalFechaInicioSubSubItem{{k.id}}">---</a></td>                                
+                                        {% endif %}
                                         <!-- Modal fecha final Subitem -->
                                         <div class="modal fade" id="ModalFechaInicioSubSubItem{{k.id}}" tabindex="-1" role="dialog" aria-labelledby="ModalFechaInicioSubSubItem{{k.id}}Title" aria-hidden="true">
                                             <div class="modal-dialog modal-dialog-centered" role="document">
@@ -626,18 +609,12 @@
                                             </div>
                                             </div>
             
-                                        </div>
-                                        
-                                        {% if k.fecha_final %}
-    
-                                        <td class="celdafechaplanif" style="width: 10%; color: rgb({% fecha_final_planif k.fecha_final k.estado%});"><a type="button" data-toggle="modal" data-target="#ModalSubSubItem{{k.id}}">{{k.fecha_final|date:"d-m-Y"}}</a></td>
-                                            
-                                        {% else %}
-    
-                                        <td class="celdafechaplanif"><a type="button" data-toggle="modal" data-target="#ModalSubSubItem{{k.id}}">---</a></td>
-                            
-                                        {% endif %}
-    
+                                        </div>                                        
+                                        {% if k.fecha_final %}    
+                                        <td class="celdafechaplanif" style="width: 10%; color: rgb({% fecha_final_planif k.fecha_inicio k.estado%});"><a type="button" data-toggle="modal" data-target="#ModalSubSubItem{{k.id}}">{{k.fecha_final|date:"d-m-Y"}}</a></td>                                            
+                                        {% else %}    
+                                        <td class="celdafechaplanif"><a type="button" data-toggle="modal" data-target="#ModalSubSubItem{{k.id}}">---</a></td>                            
+                                        {% endif %}    
                                         <!-- Modal fecha final SUB-Subitem -->
                                         <div class="modal fade" id="ModalSubSubItem{{k.id}}" tabindex="-1" role="dialog" aria-labelledby="ModalSubSubItem{{k.id}}Title" aria-hidden="true">
                                             <div class="modal-dialog modal-dialog-centered" role="document">
@@ -675,34 +652,20 @@
                                             </div>
                                             </div>
         
-                                        </div>
-                                    
+                                        </div>                                    
                                         {% if k.archivo_vigente %}
-                                        <td class="celdaadjplanif"><small>
-                            
-                                            <a href="{{ k.archivo_vigente.url }}">
-                            
+                                        <td class="celdaadjplanif"><small>                            
+                                            <a href="{{ k.archivo_vigente.url }}">                           
                                                 <img src="{% static 'img/archivo-adjunto.png' %}" alt="" style="max-width:20px; height:auto; margin: 2px;"  >
-                                        
-                                            </a>
-                            
-                            
+                                            </a>                           
                                         </small></td>
-                            
-                                        {% else %}
-                            
-                                        <td class="celdaadjplanif"><small>S/D</small></td>
-                            
-                                        {% endif %}
-                            
+                                        {% else %}                            
+                                        <td class="celdaadjplanif"><small>S/D</small></td>                            
+                                        {% endif %}                            
                                         {% for f in fechas_semana %}
-
                                         <td class="celdagantplanif" style="{% gannt f k.fecha_inicio k.fecha_final %}"><span class="hint--top hint--danger" aria-label="{{f}}"><small>⚫⚫⚫⚫⚫</small></span> </td>                                                 
-                                        {% endfor %}
-                            
-                            
+                                        {% endfor %}                                                       
                                         </tr>
-    
                                         {% endfor %}
                     
                     

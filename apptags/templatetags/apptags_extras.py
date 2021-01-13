@@ -61,6 +61,18 @@ def fecha_final_planif(fecha, estado):
         return "122, 118, 117"
 
 @register.simple_tag
+def fecha_inicio_planif(fecha, estado):
+
+    if date.today() >= fecha and estado != "LISTO":
+        return "238, 48, 14"
+
+    elif date.today() >= fecha and estado == "LISTO":
+        return "41, 166, 60"
+
+    else:
+        return "122, 118, 117"
+
+@register.simple_tag
 def gannt(fecha_gant, fecha_inicial, fecha_final):
 
     hoy = date.today()
