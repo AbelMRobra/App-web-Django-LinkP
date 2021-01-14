@@ -259,7 +259,6 @@ def documentacion(request):
     return render(request, "documentacion.html", {"datos":datos, "hoy":hoy})
 
 def documentacionamp(request, id_proyecto, id_estado, id_week):
-
     week = int(id_week)
 
     hoy = date.today()
