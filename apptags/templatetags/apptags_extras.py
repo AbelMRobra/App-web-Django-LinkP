@@ -51,26 +51,30 @@ def prueba_planificacion(self):
 @register.simple_tag
 def fecha_final_planif(fecha, estado):
 
-    if date.today() >= fecha and estado != "LISTO":
-        return "238, 48, 14"
+    if fecha:
 
-    elif date.today() >= fecha and estado == "LISTO":
-        return "41, 166, 60"
+        if date.today() >= fecha and estado != "LISTO":
+            return "238, 48, 14"
 
-    else:
-        return "122, 118, 117"
+        elif date.today() >= fecha and estado == "LISTO":
+            return "41, 166, 60"
+
+        else:
+            return "122, 118, 117"
 
 @register.simple_tag
 def fecha_inicio_planif(fecha_i, estado_i):
 
-    if date.today() >= fecha_i and estado_i == "ESPERA":
-        return "238, 48, 14"
+    if fecha_i:
 
-    elif date.today() >= fecha_i and estado_i != "ESPERA":
-        return "41, 166, 60"
+        if date.today() >= fecha_i and estado_i == "ESPERA":
+            return "238, 48, 14"
 
-    else:
-        return "122, 118, 117"
+        elif date.today() >= fecha_i and estado_i != "ESPERA":
+            return "41, 166, 60"
+
+        else:
+            return "122, 118, 117"
 
 @register.simple_tag
 def gannt(fecha_gant, fecha_inicial, fecha_final):

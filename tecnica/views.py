@@ -258,7 +258,24 @@ def documentacion(request):
 
     return render(request, "documentacion.html", {"datos":datos, "hoy":hoy})
 
-def documentacionamp(request, id_proyecto):
+def documentacionamp(request, id_proyecto, id_estado):
+
+    if id_estado == "0": 
+            
+        mensaje = "Todo"
+
+    elif id_estado == "1":
+
+        mensaje = "Listo"
+
+    elif id_estado == "2":
+        mensaje = "Trabajando"
+
+    elif id_estado == "3":
+        mensaje = "Problemas"
+
+    else:
+        mensaje = "Espera"
 
     if request.method == 'POST':
 
@@ -418,19 +435,63 @@ def documentacionamp(request, id_proyecto):
 
         avance_general = avance_general + listos
 
-        datos_itemetapas = ItemEtapa.objects.filter(etapa = e).order_by("orden")
+        if id_estado == "0": 
+
+            datos_itemetapas = ItemEtapa.objects.filter(etapa = e).order_by("orden")
+
+        elif id_estado == "1":
+
+            datos_itemetapas = ItemEtapa.objects.filter(etapa = e, estado = "LISTO").order_by("orden")
+
+        elif id_estado == "2":
+            datos_itemetapas = ItemEtapa.objects.filter(etapa = e, estado = "TRABAJANDO").order_by("orden")
+
+        elif id_estado == "3":
+            datos_itemetapas = ItemEtapa.objects.filter(etapa = e, estado = "PROBLEMAS").order_by("orden")
+
+        else:
+            datos_itemetapas = ItemEtapa.objects.filter(etapa = e, estado = "ESPERA").order_by("orden")
+
 
         datos_subitem = []
 
         for d in datos_itemetapas:
+
+            if id_estado == "0": 
             
-            item_cantidad = SubItem.objects.filter(item = d).order_by("orden")
+                item_cantidad = SubItem.objects.filter(item = d).order_by("orden")
+
+            elif id_estado == "1":
+
+                item_cantidad = SubItem.objects.filter(item = d, estado = 'LISTO').order_by("orden")
+
+            elif id_estado == "2":
+                item_cantidad = SubItem.objects.filter(item = d, estado = 'TRABAJANDO').order_by("orden")
+
+            elif id_estado == "3":
+                item_cantidad = SubItem.objects.filter(item = d, estado = 'PROBLEMAS').order_by("orden")
+
+            else:
+                item_cantidad = SubItem.objects.filter(item = d, estado = 'ESPERA').order_by("orden")
             
             datos_subsubitem = []
 
             for j in item_cantidad:
+                if id_estado == "0": 
 
-                subsubitems = SubSubItem.objects.filter(subitem = j).order_by("orden")
+                    subsubitems = SubSubItem.objects.filter(subitem = j).order_by("orden")
+                elif id_estado == "1":
+
+                    subsubitems = SubSubItem.objects.filter(subitem = j, estado = 'LISTO').order_by("orden")
+
+                elif id_estado == "2":
+                    subsubitems = SubSubItem.objects.filter(subitem = j, estado = 'TRABAJANDO').order_by("orden")
+
+                elif id_estado == "3":
+                    subsubitems = SubSubItem.objects.filter(subitem = j, estado = 'PROBLEMAS').order_by("orden")
+
+                else:
+                    subsubitems = SubSubItem.objects.filter(subitem = j, estado = 'ESPERA').order_by("orden")
 
                 if len(SubSubItem.objects.filter(subitem = j)) > 0:
 
@@ -518,7 +579,7 @@ def documentacionamp(request, id_proyecto):
     datos = [p, sub_datos, dias_faltantes, avance_general, dias_faltantes_2]
 
     
-    return render(request, "documentacionamp.html", {"datos":datos, "hoy":hoy, "fechas_semana":fechas_semana, "fecha_semana_actual":fecha_semana_actual})
+    return render(request, "documentacionamp.html", {"datos":datos, "hoy":hoy, "fechas_semana":fechas_semana, "fecha_semana_actual":fecha_semana_actual, "mensaje":mensaje})
 
 def ganttet(request, id_proyecto):
 
