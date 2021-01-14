@@ -125,8 +125,23 @@
             
                             <td class="sticky item" style="min-width: 250px;"><a href="#" style="text-decoration: none"><img src="{% static 'img/anadir.png' %}" alt="" style="max-width:15px; height:auto; margin: 2px;"></a> {{t.0.nombre}}</td>                 
                             <td  class="celdacharlaplanif">
-                                <img src="{% static 'img/flecha-hacia-arriba.png' %}" alt="" style="max-width:15px; height:auto;">
-                                <img src="{% static 'img/flecha-hacia-abajo.png' %}" alt="" style="max-width:15px; height:auto;">
+                                <div style="display: inline-block;">
+                                    <form action="" method="POST">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-light" style="padding: 0px;" name="subir_item" value="{{t.0.id}}"><img src="{% static 'img/flecha-hacia-arriba.png' %}" alt="" style="max-width:15px; height:auto;"></button>
+
+                                    </form>
+                                    
+                                </div>
+
+                                <div style="display: inline-block;">
+                                    <form action="" method="POST">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-light" style="padding: 0px;" name="bajar_item" value="{{t.0.id}}"><img src="{% static 'img/flecha-hacia-abajo.png' %}" alt="" style="max-width:15px; height:auto;"></button>
+
+                                    </form>
+                                    
+                                </div>
                             </td>
                             <td  class="celdacharlaplanif"><small>
                                 <a href="{% url 'Mensaje item' t.0.id %}"><img src="{% static 'img/charlar.png' %}" alt="" style="max-width:18px; height:auto; margin: 2px;"></a>                                     
@@ -213,8 +228,25 @@
     
                             <td class="sticky subitem" style="min-width: 250px"><a href="{% url 'Agregar Subsubitem' h.0.id %}" style="text-decoration: none"><img src="{% static 'img/anadir.png' %}" alt="" style="max-width:13px; height:auto; margin: 2px;"></a> {{h.0.nombre}}</td>
                                 <td  class="celdacharlaplanif">
-                                    <img src="{% static 'img/flecha-hacia-arriba.png' %}" alt="" style="max-width:13px; height:auto;">
-                                    <img src="{% static 'img/flecha-hacia-abajo.png' %}" alt="" style="max-width:13px; height:auto;">
+                                    <div style="display: inline-block;">
+                                        <form action="" method="POST">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn btn-light" style="padding: 0px;" name="subir_subitem" value="{{h.0.id}}"><img src="{% static 'img/flecha-hacia-arriba.png' %}" alt="" style="max-width:13px; height:auto;"></button>
+
+                                        </form>
+                                        
+                                    </div>
+
+                                    <div style="display: inline-block;">
+                                        <form action="" method="POST">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn btn-light" style="padding: 0px;" name="bajar_subitem" value="{{h.0.id}}"><img src="{% static 'img/flecha-hacia-abajo.png' %}" alt="" style="max-width:13px; height:auto;"></button>
+
+                                        </form>
+                                        
+                                    </div>
+                                     
+                    
                                 </td>
                                 <td  class="celdacharlaplanif"></td>                    
                                 <td class="celdaestadoplanif" style="color: rgb({{h.0.estado|estadoplan}})"><a type="button" data-toggle="modal" data-target="#ModalEstadoSubItem{{h.0.id}}"><b>{{h.0.estado}}</b></a></td>                  
@@ -453,8 +485,23 @@
             
                                     <td class="sticky subsubitem">{{k.nombre}}</td>
                                     <td  class="celdacharlaplanif">
-                                        <img src="{% static 'img/flecha-hacia-arriba.png' %}" alt="" style="max-width:10px; height:auto;">
-                                        <img src="{% static 'img/flecha-hacia-abajo.png' %}" alt="" style="max-width:10px; height:auto;">
+                                        <div style="display: inline-block;">
+                                            <form action="" method="POST">
+                                                {% csrf_token %}
+                                                <button type="submit" class="btn btn-light" style="padding: 0px;" name="subir_subsubitem" value="{{k.id}}"><img src="{% static 'img/flecha-hacia-arriba.png' %}" alt="" style="max-width:10px; height:auto;"></button>
+    
+                                            </form>
+                                            
+                                        </div>
+    
+                                        <div style="display: inline-block;">
+                                            <form action="" method="POST">
+                                                {% csrf_token %}
+                                                <button type="submit" class="btn btn-light" style="padding: 0px;" name="bajar_subsubitem" value="{{k.id}}"><img src="{% static 'img/flecha-hacia-abajo.png' %}" alt="" style="max-width:10px; height:auto;"></button>
+    
+                                            </form>
+                                            
+                                        </div>
                                     </td>
                                     <td  class="celdacharlaplanif"></td>
                                     <td class="celdaestadoplanif" style="color: rgb({{k.estado|estadoplan}})"><a type="button" data-toggle="modal" data-target="#ModalEstadoSubSubItem{{k.id}}"><b>{{k.estado}}</b></a></td>

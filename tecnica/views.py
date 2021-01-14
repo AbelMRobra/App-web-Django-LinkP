@@ -21,9 +21,10 @@ def agregarsubitem(request, id_item):
     datos = ItemEtapa.objects.get(id = id_item)
 
     if request.method == 'POST':
+        orden = len(SubItem.objects.filter(item = datos)) +1
 
         b = SubItem(
-            orden = request.POST['orden'],
+            orden = orden,
             nombre = request.POST['nombre'],
             item = datos,
         )
@@ -40,7 +41,10 @@ def agregarsubsubitem(request, id_subitem):
 
     if request.method == 'POST':
 
+        orden = len(SubSubItem.objects.filter(subitem = datos)) +1
+
         b = SubSubItem(
+            orden = orden,
             nombre = request.POST['nombre'],
             subitem = datos,
         )
@@ -296,6 +300,83 @@ def documentacionamp(request, id_proyecto):
                 b.estado = d[1]
                 b.save()
 
+            if "subir_subitem" in d[0]:
+                
+                subitem = SubItem.objects.get(id = d[1])               
+                if subitem.orden != 1:
+                    orden_nuevo = subitem.orden -1
+                    resto_subitems = SubItem.objects.filter(orden = orden_nuevo, item = subitem.item)
+
+                    for r in resto_subitems:
+                        r.orden = r.orden + 1
+                        r.save()
+                    subitem.orden = subitem.orden - 1
+                    subitem.save()
+
+            if "bajar_subitem" in d[0]:
+                
+                subitem = SubItem.objects.get(id = d[1])               
+                if subitem.orden != len(SubItem.objects.filter(item = subitem.item)):
+                    orden_nuevo = subitem.orden + 1
+                    resto_subitems = SubItem.objects.filter(orden = orden_nuevo, item = subitem.item)
+
+                    for r in resto_subitems:
+                        r.orden = r.orden - 1
+                        r.save()
+                    subitem.orden = subitem.orden + 1
+                    subitem.save()
+
+            if "subir_subsubitem" in d[0]:
+                
+                subsubitem = SubSubItem.objects.get(id = d[1])               
+                if subsubitem.orden != 1:
+                    orden_nuevo = subsubitem.orden -1
+                    resto_subsubitems = SubSubItem.objects.filter(orden = orden_nuevo, subitem = subsubitem.subitem)
+
+                    for r in resto_subsubitems:
+                        r.orden = r.orden + 1
+                        r.save()
+                    subsubitem.orden = subsubitem.orden - 1
+                    subsubitem.save()
+
+            if "bajar_subsubitem" in d[0]:
+                
+                subsubitem = SubSubItem.objects.get(id = d[1])               
+                if subsubitem.orden != len(SubSubItem.objects.filter(subitem = subsubitem.subitem)):
+                    orden_nuevo = subsubitem.orden + 1
+                    resto_subsubitems = SubSubItem.objects.filter(orden = orden_nuevo, subitem = subsubitem.subitem)
+
+                    for r in resto_subsubitems:
+                        r.orden = r.orden - 1
+                        r.save()
+                    subsubitem.orden = subsubitem.orden + 1
+                    subsubitem.save()
+
+            if "subir_item" in d[0]:
+                
+                item = ItemEtapa.objects.get(id = d[1])               
+                if item.orden != 1:
+                    orden_nuevo = item.orden -1
+                    resto_items = ItemEtapa.objects.filter(orden = orden_nuevo, etapa = item.etapa)
+
+                    for r in resto_items:
+                        r.orden = r.orden + 1
+                        r.save()
+                    item.orden = item.orden - 1
+                    item.save()
+
+            if "bajar_item" in d[0]:
+                
+                item = ItemEtapa.objects.get(id = d[1])               
+                if item.orden != len(ItemEtapa.objects.filter(etapa = item.etapa)):
+                    orden_nuevo = item.orden + 1
+                    resto_items = ItemEtapa.objects.filter(orden = orden_nuevo, etapa = item.etapa)
+
+                    for r in resto_items:
+                        r.orden = r.orden - 1
+                        r.save()
+                    item.orden = item.orden + 1
+                    item.save()
 
 
     p = Proyectos.objects.get(id = id_proyecto)
@@ -303,7 +384,6 @@ def documentacionamp(request, id_proyecto):
     hoy = datetime.date.today()
 
     dias_faltantes = (p.fecha_f - hoy).days
-
 
     fecha_semana_actual = hoy - datetime.timedelta(hoy.weekday())
     
@@ -344,8 +424,44 @@ def documentacionamp(request, id_proyecto):
 
         for d in datos_itemetapas:
             
-            item_cantidad = SubItem.objects.filter(item = d)
+            item_cantidad = SubItem.objects.filter(item = d).order_by("orden")
             
+            datos_subsubitem = []
+
+            for j in item_cantidad:
+
+                subsubitems = SubSubItem.objects.filter(subitem = j).order_by("orden")
+
+                if len(SubSubItem.objects.filter(subitem = j)) > 0:
+
+                    if len(SubSubItem.objects.filter(subitem = j, estado = "PROBLEMAS")) > 0:
+                        if j.estado != "PROBLEMAS":
+                            j.estado = "PROBLEMAS"
+                            j.save()
+                    elif len(SubSubItem.objects.filter(subitem = j, estado = "TRABAJANDO")) > 0:
+                        if j.estado != "TRABAJANDO":
+                            j.estado = "TRABAJANDO"
+                            j.save()
+                    elif (len(SubSubItem.objects.filter(subitem = j, estado = "LISTO"))/len(SubSubItem.objects.filter(subitem = j))) == 1:
+                        if j.estado != "LISTO":
+                            j.estado = "LISTO"
+                            j.save()
+                    else:
+                        if j.estado != "ESPERA":
+                            j.estado = "ESPERA"
+                            j.save()
+
+                    fecha_iniciales = SubSubItem.objects.values_list("fecha_inicio").filter(subitem = j).exclude(fecha_inicio = None).order_by("fecha_inicio")
+                    if len(fecha_iniciales) > 0:
+                        j.fecha_inicio = fecha_iniciales[0][0]
+                        j.save()
+
+                    fecha_finales = SubSubItem.objects.values_list("fecha_final").filter(subitem = j).exclude(fecha_final = None).order_by("-fecha_inicio")
+                    if len(fecha_finales) > 0:
+                        j.fecha_final = fecha_finales[0][0]
+                        j.save()
+
+                datos_subsubitem.append((j, subsubitems))
 
             if len(SubItem.objects.filter(item = d)) > 0:
 
@@ -376,36 +492,8 @@ def documentacionamp(request, id_proyecto):
                     d.fecha_final = fecha_finales[0][0]
                     d.save()
 
-            datos_subsubitem = []
-
-            for j in item_cantidad:
-
-                subsubitems = SubSubItem.objects.filter(subitem = j)
-
-                if len(SubSubItem.objects.filter(subitem = j)) > 0:
-
-                    if len(SubSubItem.objects.filter(subitem = j, estado = "PROBLEMAS")) > 0:
-                        if j.estado != "PROBLEMAS":
-                            j.estado = "PROBLEMAS"
-                            j.save()
-                    elif len(SubSubItem.objects.filter(subitem = j, estado = "TRABAJANDO")) > 0:
-                        if j.estado != "TRABAJANDO":
-                            j.estado = "TRABAJANDO"
-                            j.save()
-                    elif (len(SubSubItem.objects.filter(subitem = j, estado = "LISTO"))/len(SubSubItem.objects.filter(subitem = j))) == 1:
-                        if j.estado != "LISTO":
-                            j.estado = "LISTO"
-                            j.save()
-                    else:
-                        if j.estado != "ESPERA":
-                            j.estado = "ESPERA"
-                            j.save()
-
-                datos_subsubitem.append((j, subsubitems))
-
             datos_subitem.append((d, datos_subsubitem))
-
-            
+           
         cantidad = len(ItemEtapa.objects.filter(etapa = e))
 
         cantidad_total = cantidad_total + cantidad
@@ -419,7 +507,7 @@ def documentacionamp(request, id_proyecto):
             no_avance = 100 - avance
 
         sub_datos.append((e, datos_subitem, cantidad, avance, no_avance))
-
+       
     if cantidad_total != 0:
 
         avance_general = round((avance_general/cantidad_total)*100, 0)
@@ -429,6 +517,7 @@ def documentacionamp(request, id_proyecto):
 
     datos = [p, sub_datos, dias_faltantes, avance_general, dias_faltantes_2]
 
+    
     return render(request, "documentacionamp.html", {"datos":datos, "hoy":hoy, "fechas_semana":fechas_semana, "fecha_semana_actual":fecha_semana_actual})
 
 def ganttet(request, id_proyecto):
