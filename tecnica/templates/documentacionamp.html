@@ -282,7 +282,7 @@
                 
                             {% for f in fechas_semana %}
 
-                            <td class="celdagantplanif" style="{% gannt f t.0.fecha_inicio  t.0.fecha_final %}"><span class="hint--top hint--danger" aria-label="{{f}}"><small>⚫⚫⚫⚫⚫</small></span></td>
+                            <td class="celdagantplanif" style="{% gannt f t.0.fecha_inicio  t.0.fecha_final %}"><span class="hint--top hint--danger" aria-label="Semana del {{f}}"><small>⚫⚫⚫⚫⚫</small></span></td>
                                      
                             {% endfor %}
                 
@@ -546,7 +546,7 @@
                     
                                 {% for f in fechas_semana %}
         
-                                <td class="celdagantplanif" style="{% gannt f h.0.fecha_inicio  h.0.fecha_final %}"><span class="hint--top hint--danger" aria-label="{{f}}"><small>⚫⚫⚫⚫⚫</small></span></td>
+                                <td class="celdagantplanif" style="{% gannt f h.0.fecha_inicio  h.0.fecha_final %}"><span class="hint--top hint--danger" aria-label="Semana del {{f}}"><small>⚫⚫⚫⚫⚫</small></span></td>
                                   
                                 {% endfor %}
     
@@ -554,7 +554,8 @@
     
                                 <tr class ="table-light filasubsubitem">  
             
-                                    <td class="sticky subsubitem">{{k.nombre}}</td>
+                                    <td class="sticky subsubitem">
+                                        <a href="{% url 'Editar subsubitem' k.id %}" style="text-decoration: none; color:#636762;">{{k.nombre}}</a></td>
                                     <td  class="celdacharlaplanif">
                                         <div style="display: inline-block;">
                                             <form action="" method="POST">
@@ -729,7 +730,7 @@
             
                                         </div>                                        
                                         {% if k.fecha_final %}    
-                                        <td class="celdafechaplanif" style="width: 10%; color: rgb({% fecha_final_planif k.fecha_inicio k.estado%});"><a type="button" data-toggle="modal" data-target="#ModalSubSubItem{{k.id}}">{{k.fecha_final|date:"d-m-Y"}}</a></td>                                            
+                                        <td class="celdafechaplanif" style="width: 10%; color: rgb({% fecha_final_planif k.fecha_final k.estado%});"><a type="button" data-toggle="modal" data-target="#ModalSubSubItem{{k.id}}">{{k.fecha_final|date:"d-m-Y"}}</a></td>                                            
                                         {% else %}    
                                         <td class="celdafechaplanif"><a type="button" data-toggle="modal" data-target="#ModalSubSubItem{{k.id}}">---</a></td>                            
                                         {% endif %}    
@@ -781,7 +782,7 @@
                                         <td class="celdaadjplanif"><small>S/D</small></td>                            
                                         {% endif %}                            
                                         {% for f in fechas_semana %}
-                                        <td class="celdagantplanif" style="{% gannt f k.fecha_inicio k.fecha_final %}"><span class="hint--top hint--danger" aria-label="{{f}}"><small>⚫⚫⚫⚫⚫</small></span> </td>                                                 
+                                        <td class="celdagantplanif" style="{% gannt f k.fecha_inicio k.fecha_final %}"><span class="hint--top hint--danger" aria-label="Semana del {{f}}"><small>⚫⚫⚫⚫⚫</small></span> </td>                                                 
                                         {% endfor %}                                                       
                                         </tr>
                                         {% endfor %}

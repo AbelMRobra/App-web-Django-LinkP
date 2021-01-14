@@ -8,6 +8,7 @@ urlpatterns = [
     url(r'^documentacionamp/(?P<id_proyecto>\d+)/(?P<id_estado>\d+)/(?P<id_week>\d+)/$', login_required(views.documentacionamp), name = 'Documentacion Amp'),
     url(r'^editaritem/(?P<id_item>\d+)/$', login_required(views.editaritem), name = 'Editar Item'),
     url(r'^editarsubitem/(?P<id_subitem>\d+)/$', login_required(views.editarsubitem), name = 'Editar subitem'),  
+    url(r'^editarsubsubitem/(?P<id_subsubitem>\d+)/$', login_required(views.editarsubsubitem), name = 'Editar subsubitem'),  
     url(r'^eliminaritem/(?P<id_item>\d+)/$', login_required(views.eliminaritem), name = 'Borrar Item'), 
     url(r'^agregaritem/(?P<id_etapa>\d+)/$', login_required(views.agregaritem), name = 'Agregar Item'), 
     url(r'^gantt/(?P<id_proyecto>\d+)/$', login_required(views.ganttet), name = 'Gantt ET'), 

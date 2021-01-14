@@ -10,14 +10,14 @@
 
     <div>
 
-        <img src="{{datos.etapa.proyecto.iamgen.url}}"  class="img-fluid" alt="..." style="max-width:200px;width:auto;height:auto; margin-top: 5px; margin-bottom: 5px;">
+        <img src="{{datos.subitem.item.etapa.proyecto.iamgen.url}}"  class="img-fluid" alt="..." style="max-width:200px;width:auto;height:auto; margin-top: 5px; margin-bottom: 5px;">
 
 
     </div>
 
     <div>
 
-        <small style="color: rgb({{datos.etapa.proyecto.color}}); font-family: Arial, Helvetica, sans-serif;"><b>{{ datos.etapa.proyecto.nombre }}</b> </small>
+        <small style="color: rgb({{datos.subitem.item.etapa.proyecto.color}}); font-family: Arial, Helvetica, sans-serif;"><b>{{ datos.subitem.item.etapa.proyecto.nombre }}</b> </small>
     
 
 
@@ -25,7 +25,7 @@
 
     <div>
 
-        <small style="font-family: Arial, Helvetica, sans-serif;"><b>{{ datos.etapa.nombre }}</b> </small>
+        <small style="font-family: Arial, Helvetica, sans-serif;"><b>{{ datos.item.etapa.nombre }}</b> </small>
     
 
 
@@ -42,7 +42,7 @@
 
             <div style="display: inline-block; margin: 10px; width: 200px;">
 
-                <label for="nombre"><h6>Nombre del item</h6></label>
+                <label for="nombre"><h6>Nombre del SUB-subitem</h6></label>
     
             </div>
             
@@ -65,7 +65,7 @@
             
             <div style="display: inline-block; margin: 10px; ">
     
-                <input name="responsable" type="text" class="form-control form-control" value="{{datos.responsable.identificacion}}" style="width: 300px;" required="true">
+                <input name="responsable" type="text" class="form-control form-control" value="{{datos.responsable.identificacion}}" style="width: 300px;">
     
             </div>
 
@@ -146,6 +146,7 @@
     
             </div>
 
+
         </div>
 
         <div style="margin: 5px">
@@ -158,7 +159,7 @@
     
             <div style="display: inline-block; margin: 10px; "> 
     
-                <input name="fechai" type="date" class="form-control form-control" value="{{datos.fecha_inicio|date:'Y-m-d'}}" style="width: 300px;" required="true">
+                <input name="fechai" type="date" class="form-control form-control" value="{{datos.fecha_inicio|date:'Y-m-d'}}" style="width: 300px;">
     
             </div>
 
@@ -193,14 +194,12 @@
     
             <div style="display: inline-block; margin: 10px; "> 
     
-                <input name="fechaf" type="date" class="form-control form-control" style="width: 300px;" value="{{datos.fecha_final|date:'Y-m-d'}}" required="true">
+                <input name="fechaf" type="date" class="form-control form-control" style="width: 300px;" value="{{datos.fecha_final|date:'Y-m-d'}}">
     
             </div>
 
 
         </div>
-
-        
 
         <div style="margin: 5px">
 
@@ -212,7 +211,7 @@
     
             <div style="display: inline-block; margin: 10px; "> 
     
-                <input name="url" type="url" class="form-control form-control" style="width: 300px;" value="{{datos.url}}">
+                <input name="url" type="url" class="form-control form-control" style="width: 300px;" {% if datos.url %} value="{{datos.url}}" {% endif %}>
     
             </div>
 
@@ -246,14 +245,14 @@
 
     <div style="margin: 30px;">
 
-        <a href="{% url 'Borrar Item' datos.id %}" class="btn btn-sm btn-light"><img src="{% static 'img/borrar.png' %}" alt="" style="max-width:20px; height:auto;"></a>
+        <a href="#" class="btn btn-sm btn-light"><img src="{% static 'img/borrar.png' %}" alt="" style="max-width:20px; height:auto;"></a>
 
 
 
     </div>
 
     
-    <a href="{% url 'Documentacion Amp' datos.etapa.proyecto.id 0 1 %}" class="btn btn-secondary"><img src="{% static 'img/flecha-izquierda.png' %}" alt="" style="max-width:15px; height:auto; margin: 2px;"> Volver</a>
+    <a href="{% url 'Documentacion Amp' datos.subitem.item.etapa.proyecto.id 0 1 %}" class="btn btn-secondary"><img src="{% static 'img/flecha-izquierda.png' %}" alt="" style="max-width:15px; height:auto; margin: 2px;"> Volver</a>
 
 
 <div style="margin-top: 2rem;">

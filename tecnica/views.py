@@ -31,7 +31,7 @@ def agregarsubitem(request, id_item):
 
         b.save()
 
-        return redirect('Sub item', id_item = id_item)
+        return redirect('Documentacion Amp', id_proyecto = datos.etapa.proyecto.id, id_estado = 0, id_week = 1)
 
     return render(request, "crearsubitem.html", {"datos":datos})
 
@@ -51,7 +51,7 @@ def agregarsubsubitem(request, id_subitem):
 
         b.save()
 
-        return redirect('Documentacion Amp', id_proyecto = datos.item.etapa.proyecto.id)
+        return redirect('Documentacion Amp', id_proyecto = datos.item.etapa.proyecto.id, id_estado = 0, id_week = 1)
 
     return render(request, "crearsubsubitem.html", {"datos":datos})
 
@@ -119,7 +119,7 @@ def editaritem(request, id_item):
 
             datos.save()
 
-        return redirect('Documentacion Amp', id_proyecto = datos.etapa.proyecto.id, id_estado = 0, id_week = 0)
+        return redirect('Documentacion Amp', id_proyecto = datos.etapa.proyecto.id, id_estado = 0, id_week = 1)
 
     return render(request, "editaritem.html", {"datos":datos})
 
@@ -158,9 +158,48 @@ def editarsubitem(request, id_subitem):
 
             datos.save()
 
-        return redirect('Documentacion Amp', id_proyecto = datos.item.etapa.proyecto.id, id_estado = 0, id_week = 0)
+        return redirect('Documentacion Amp', id_proyecto = datos.item.etapa.proyecto.id, id_estado = 0, id_week = 1)
 
     return render(request, "editarsubitem.html", {"datos":datos})
+
+def editarsubsubitem(request, id_subsubitem):
+
+    datos = SubSubItem.objects.get(id = id_subsubitem)
+
+    if request.method == 'POST':
+
+        datos.nombre = request.POST['nombre']
+        datos.estado = request.POST['estado']
+
+        if request.POST['responsable']:
+            datos.responsable = datosusuario.objects.get(identificacion = request.POST['responsable'])
+        
+        if request.POST['fechai']:
+            datos.fecha_inicio = request.POST['fechai']
+
+        if request.POST['fechaf']:
+            datos.fecha_final = request.POST['fechaf']
+
+        if request.POST['url']:
+            datos.url = request.POST['url']
+
+        if request.POST['fecha_estimada_i']:
+            datos.fecha_estimada_i = request.POST['fecha_estimada_i']
+
+        if request.POST['fecha_estimada_f']:
+            datos.fecha_estimada_f = request.POST['fecha_estimada_f']
+   
+        try:
+            datos.archivo_vigente = request.FILES['adjunto']
+            datos.save()
+
+        except:
+
+            datos.save()
+
+        return redirect('Documentacion Amp', id_proyecto = datos.subitem.item.etapa.proyecto.id, id_estado = 0, id_week = 1)
+
+    return render(request, "editarsubsubitem.html", {"datos":datos})
 
 def documentacion(request):
 
