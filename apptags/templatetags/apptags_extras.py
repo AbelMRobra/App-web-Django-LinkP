@@ -156,6 +156,31 @@ def gannt(fecha_gant, fecha_inicial, fecha_final):
 
                 return "background: rgba(119, 170, 70); border-left-style: solid; border-left-color: rgb(188, 55, 27); color: rgba(255, 255, 255, .4)"
             else:
-                    return "background: rgba(230, 231, 243); color: rgba(255, 255, 255, .4)"
+                return "background: rgba(230, 231, 243); color: rgba(255, 255, 255, .4)"
+
+
+@register.simple_tag
+def thisweek(fecha_inicial_tw, fecha_final_tw):
+
+    hoy = date.today()
+
+    fecha_semana_hoy_tw = hoy - timedelta(hoy.weekday())
+
+    if fecha_final_tw == None or fecha_inicial_tw == None:
+
+        return 0
+
+    else:
+
+        fecha_semana_tw = fecha_inicial_tw - timedelta(fecha_inicial_tw.weekday())
+        fecha_semana_final_tw = fecha_final_tw - timedelta(fecha_inicial_tw.weekday())
+        
+        if fecha_semana_tw == fecha_semana_hoy_tw:
+            return 1
+        elif  (fecha_semana_tw < fecha_semana_hoy_tw) and (fecha_final_tw > fecha_semana_hoy_tw):
+            return 1
+
+        else:
+            return 0
 
 

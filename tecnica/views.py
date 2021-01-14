@@ -9,12 +9,12 @@ from datetime import date, timedelta
 # Create your views here.
 
 
-def subitem(request, id_item):
+def bbddgroup(request, id_item):
 
-    datos_item = ItemEtapa.objects.get(id = id_item)
-    datos_sub = SubItem.objects.filter(item = datos_item)
+    datos_item = []
+    datos_sub = []
 
-    return render(request, 'subitems.html', {"datos_item":datos_item, "datos_sub":datos_sub})
+    return render(request, 'bbdgroup.html', {"datos_item":datos_item, "datos_sub":datos_sub})
 
 def agregarsubitem(request, id_item):
 
@@ -258,7 +258,13 @@ def documentacion(request):
 
     return render(request, "documentacion.html", {"datos":datos, "hoy":hoy})
 
-def documentacionamp(request, id_proyecto, id_estado):
+def documentacionamp(request, id_proyecto, id_estado, id_week):
+
+    week = int(id_week)
+
+    hoy = date.today()
+    fecha_esta_semana = hoy - timedelta(hoy.weekday())
+    fecha_otra_semana = fecha_esta_semana + timedelta(7)
 
     if id_estado == "0": 
             
@@ -435,9 +441,15 @@ def documentacionamp(request, id_proyecto, id_estado):
 
         avance_general = avance_general + listos
 
-        if id_estado == "0": 
+        if id_estado == "0":
 
-            datos_itemetapas = ItemEtapa.objects.filter(etapa = e).order_by("orden")
+            if week: 
+
+                datos_itemetapas = ItemEtapa.objects.filter(etapa = e).order_by("orden")
+
+            else:
+
+                datos_itemetapas = ItemEtapa.objects.filter(etapa = e, fecha_inicio__lte = fecha_otra_semana, fecha_final__gte = fecha_esta_semana).order_by("orden")
 
         elif id_estado == "1":
 
@@ -458,8 +470,14 @@ def documentacionamp(request, id_proyecto, id_estado):
         for d in datos_itemetapas:
 
             if id_estado == "0": 
+
+                if week:
             
-                item_cantidad = SubItem.objects.filter(item = d).order_by("orden")
+                    item_cantidad = SubItem.objects.filter(item = d).order_by("orden")
+
+                else:
+
+                    item_cantidad = SubItem.objects.filter(item = d, fecha_inicio__lte = fecha_otra_semana, fecha_final__gte = fecha_esta_semana).order_by("orden")
 
             elif id_estado == "1":
 
@@ -479,7 +497,12 @@ def documentacionamp(request, id_proyecto, id_estado):
             for j in item_cantidad:
                 if id_estado == "0": 
 
-                    subsubitems = SubSubItem.objects.filter(subitem = j).order_by("orden")
+                    if week:
+
+                        subsubitems = SubSubItem.objects.filter(subitem = j).order_by("orden")
+                    else:
+                        subsubitems = SubSubItem.objects.filter(subitem = j, fecha_inicio__lte = fecha_otra_semana, fecha_final__gte = fecha_esta_semana).order_by("orden")
+                
                 elif id_estado == "1":
 
                     subsubitems = SubSubItem.objects.filter(subitem = j, estado = 'LISTO').order_by("orden")
@@ -579,7 +602,7 @@ def documentacionamp(request, id_proyecto, id_estado):
     datos = [p, sub_datos, dias_faltantes, avance_general, dias_faltantes_2]
 
     
-    return render(request, "documentacionamp.html", {"datos":datos, "hoy":hoy, "fechas_semana":fechas_semana, "fecha_semana_actual":fecha_semana_actual, "mensaje":mensaje})
+    return render(request, "documentacionamp.html", {"datos":datos, "hoy":hoy, "fechas_semana":fechas_semana, "fecha_semana_actual":fecha_semana_actual, "mensaje":mensaje, "week":week})
 
 def ganttet(request, id_proyecto):
 

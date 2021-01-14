@@ -39,7 +39,7 @@
 
                     <div>
 
-                        <a href="{% url 'Documentacion Amp' i.0.id 0 %}" style="text-decoration:none">
+                        <a href="{% url 'Documentacion Amp' i.0.id 0 1 %}" style="text-decoration:none">
     
                 
                             <img src="{% static 'img/agrandar.png' %}" alt="" style="max-width:20px; height:auto; margin: 5px; vertical-align: top;">
@@ -204,11 +204,11 @@
                                             {% if t.1%}
 
 
-                                            <a href="{% url 'Sub item' t.0.id %}"><img src="{% static 'img/lista2.png' %}" alt="" style="max-width:20px; height:auto; margin: 2px;"></a> 
+                                            <a href="#"><img src="{% static 'img/lista2.png' %}" alt="" style="max-width:20px; height:auto; margin: 2px;"></a> 
 
                                             {% else %}
 
-                                            <a href="{% url 'Sub item' t.0.id %}"><img src="{% static 'img/lista.png' %}" alt="" style="max-width:20px; height:auto; margin: 2px;"></a> 
+                                            <a href="#"><img src="{% static 'img/lista.png' %}" alt="" style="max-width:20px; height:auto; margin: 2px;"></a> 
 
 
                                             {% endif %}

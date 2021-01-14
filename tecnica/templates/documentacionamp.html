@@ -39,26 +39,26 @@
                 <div class="dropdown-menu" aria-labelledby="btnGroupDrop1" style="">
                     <div style="margin: 2px;">
     
-                        <a href="{% url 'Documentacion Amp' datos.0.id  0 %}" style="margin-top: 5px;" >Todas</a>
+                        <a href="{% url 'Documentacion Amp' datos.0.id  0 1 %}" style="margin-top: 5px;" >Todas</a>
     
                     </div>
                     
     
                     <div style="margin: 2px;">
     
-                        <a href="{% url 'Documentacion Amp' datos.0.id  2 %}" style="margin-top: 5px; color: rgb(208, 125, 32);" >Trabajando</a> 
+                        <a href="{% url 'Documentacion Amp' datos.0.id  2 1 %}" style="margin-top: 5px; color: rgb(208, 125, 32);" >Trabajando</a> 
                     
                     </div>
     
                     <div style="margin: 2px;">
     
-                        <a href="{% url 'Documentacion Amp' datos.0.id  1 %}" style="margin-top: 5px; color: rgb(37, 159, 76 );" >Listo</a>
+                        <a href="{% url 'Documentacion Amp' datos.0.id  1 1 %}" style="margin-top: 5px; color: rgb(37, 159, 76 );" >Listo</a>
                     
                     </div>
     
                     <div style="margin: 2px;">
     
-                        <a href="{% url 'Documentacion Amp' datos.0.id  3 %}" style="margin-top: 5px; color: rgb(192, 63, 50 );" >Con problemas</a>
+                        <a href="{% url 'Documentacion Amp' datos.0.id  3 1 %}" style="margin-top: 5px; color: rgb(192, 63, 50 );" >Con problemas</a>
                     
                     </div>
                     
@@ -70,12 +70,32 @@
             </div>
             </div>
 
-            <a href="{% url 'Documentacion' %}" class="btn btn-sm btn-light">
+            <a href="{% url 'BBDD group' datos.0.id %}" class="btn btn-sm btn-light">
 
 
-                <img src="{% static 'img/achicar.png' %}" alt="" style="max-width:20px; height:auto; margin: 5px; vertical-align: middle;">
+                <img src="{% static 'img/blockchain.png' %}" alt="" style="max-width:20px; height:auto; margin: 5px; vertical-align: middle;">
+                <b>BBDD Group</b>
+            </a>
+
+            {% if week %}
+
+            <a href="{% url 'Documentacion Amp' datos.0.id  0 0 %}" class="btn btn-sm btn-light">
+
+
+                <img src="{% static 'img/cita.png' %}" alt="" style="max-width:20px; height:auto; margin: 5px; vertical-align: middle;">
                 <b>Esta semana</b>
             </a>
+
+            {% else %}
+
+            <a href="{% url 'Documentacion Amp' datos.0.id  0 1 %}" class="btn btn-sm btn-light">
+
+
+                <img src="{% static 'img/cita.png' %}" alt="" style="max-width:20px; height:auto; margin: 5px; vertical-align: middle;">
+                <b>Total</b>
+            </a>
+
+            {% endif %}
 
             <a href="{% url 'Documentacion' %}" class="btn btn-sm btn-light">
 
@@ -765,7 +785,7 @@
                     
                     
                                 </tr>
-        
+
                         
                         </tr>
     

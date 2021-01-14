@@ -31,7 +31,7 @@
 
     <div style="text-align: left; margin: 3px;">
 
-        <a href="{% url 'Documentacion Amp' datos_item.etapa.proyecto.id %}" class="btn btn-light"><img src="{% static 'img/flecha-izquierda.png' %}" alt="" style="max-width:15px; height:auto; margin: 2px;"> Volver</a>
+        <a href="#" class="btn btn-light"><img src="{% static 'img/flecha-izquierda.png' %}" alt="" style="max-width:15px; height:auto; margin: 2px;"> Volver</a>
    
 
     </div>
@@ -191,7 +191,7 @@
                 {% if i.archivo_vigente %}
                 <td style="width: 5%;"><small>
 
-                    <a href="{{ i.archivo_vigente.url }}">
+                    <a href="#">
 
                         <img src="{% static 'img/archivo-adjunto.png' %}" alt="" style="max-width:20px; height:auto; margin: 2px;"  >
                 
@@ -208,7 +208,7 @@
 
                 <td style="width: 5%;">
 
-                    <a href="{% url 'Editar subitem' i.id %}" class="btn btn-sm btn-light"><img src="{% static 'img/documento.png' %}" alt="" style="max-width:15px; height:auto;"></a>
+                    <a href="#" class="btn btn-sm btn-light"><img src="{% static 'img/documento.png' %}" alt="" style="max-width:15px; height:auto;"></a>
                 </td>
 
 
@@ -225,7 +225,7 @@
 
     <div style="text-align: left; margin: 5px;">
 
-        <a href="{% url 'Agregar Subitem' datos_item.id %}" style="text-decoration:none" class="btn btn-sm btn-light"><img src="{% static 'img/agregar-archivo.png' %}" alt="" style="max-width:20px; height:auto; margin: 2px;"> <small><b>Agregar subitem</b> </small> </a>
+        <a href="#" style="text-decoration:none" class="btn btn-sm btn-light"><img src="{% static 'img/agregar-archivo.png' %}" alt="" style="max-width:20px; height:auto; margin: 2px;"> <small><b>Agregar subitem</b> </small> </a>
 
     </div>
 
