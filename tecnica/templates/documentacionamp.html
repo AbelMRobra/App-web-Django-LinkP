@@ -191,7 +191,9 @@
 
                         <tr class = "table-light filaitem">  
             
-                            <td class="sticky item" style="min-width: 250px;"><a href="#" style="text-decoration: none"><img src="{% static 'img/anadir.png' %}" alt="" style="max-width:15px; height:auto; margin: 2px;"></a> {{t.0.nombre}}</td>                 
+                            <td class="sticky item" style="min-width: 250px;"><a href="#" style="text-decoration: none"><img src="{% static 'img/anadir.png' %}" alt="" style="max-width:15px; height:auto; margin: 2px;"></a> 
+                                <a href="{% url 'Editar Item' t.0.id %}" style="text-decoration: none; color:#636762;">{{t.0.nombre}}</a>
+                            </td>                 
                             <td  class="celdacharlaplanif">
                                 <div style="display: inline-block;">
                                     <form action="" method="POST">
@@ -294,7 +296,8 @@
     
                         <tr class = "table-light filasubsubitem">  
     
-                            <td class="sticky subitem" style="min-width: 250px"><a href="{% url 'Agregar Subsubitem' h.0.id %}" style="text-decoration: none"><img src="{% static 'img/anadir.png' %}" alt="" style="max-width:13px; height:auto; margin: 2px;"></a> {{h.0.nombre}}</td>
+                            <td class="sticky subitem" style="min-width: 250px"><a href="{% url 'Agregar Subsubitem' h.0.id %}" style="text-decoration: none"><img src="{% static 'img/anadir.png' %}" alt="" style="max-width:13px; height:auto; margin: 2px;"></a>
+                                <a href="{% url 'Editar subitem' h.0.id %}" style="text-decoration: none; color:#636762;">{{h.0.nombre}}</a></td>
                                 <td  class="celdacharlaplanif">
                                     <div style="display: inline-block;">
                                         <form action="" method="POST">

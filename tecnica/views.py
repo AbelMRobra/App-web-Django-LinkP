@@ -92,15 +92,19 @@ def editaritem(request, id_item):
     if request.method == 'POST':
         
         datos.nombre = request.POST['nombre']
-        datos.responsable = datosusuario.objects.get(identificacion = request.POST['responsable'])
         datos.estado = request.POST['estado']
-        datos.fecha_inicio = request.POST['fechai']
-        datos.fecha_final = request.POST['fechaf']
-        datos.url = request.POST['url']
+        if request.POST['responsable']:
+            datos.responsable = datosusuario.objects.get(identificacion = request.POST['responsable'])
         
-        if request.POST['orden']:
-            datos.orden = request.POST['orden']
-            
+        if request.POST['fechai']:
+            datos.fecha_inicio = request.POST['fechai']
+
+        if request.POST['fechaf']:
+            datos.fecha_final = request.POST['fechaf']
+
+        if request.POST['url']:
+            datos.url = request.POST['url']
+
         if request.POST['fecha_estimada_i']:
             datos.fecha_estimada_i = request.POST['fecha_estimada_i']
 
@@ -115,7 +119,7 @@ def editaritem(request, id_item):
 
             datos.save()
 
-        return redirect('Documentacion')
+        return redirect('Documentacion Amp', id_proyecto = datos.etapa.proyecto.id, id_estado = 0, id_week = 0)
 
     return render(request, "editaritem.html", {"datos":datos})
 
@@ -126,15 +130,20 @@ def editarsubitem(request, id_subitem):
     if request.method == 'POST':
 
         datos.nombre = request.POST['nombre']
-        datos.responsable = datosusuario.objects.get(identificacion = request.POST['responsable'])
         datos.estado = request.POST['estado']
-        datos.fecha_inicio = request.POST['fechai']
-        datos.fecha_final = request.POST['fechaf']
-        datos.url = request.POST['url']
 
-        if request.POST['orden']:
-            datos.orden = request.POST['orden']
-            
+        if request.POST['responsable']:
+            datos.responsable = datosusuario.objects.get(identificacion = request.POST['responsable'])
+        
+        if request.POST['fechai']:
+            datos.fecha_inicio = request.POST['fechai']
+
+        if request.POST['fechaf']:
+            datos.fecha_final = request.POST['fechaf']
+
+        if request.POST['url']:
+            datos.url = request.POST['url']
+
         if request.POST['fecha_estimada_i']:
             datos.fecha_estimada_i = request.POST['fecha_estimada_i']
 
@@ -149,7 +158,7 @@ def editarsubitem(request, id_subitem):
 
             datos.save()
 
-        return redirect('Sub item', id_item = datos.item.id)
+        return redirect('Documentacion Amp', id_proyecto = datos.item.etapa.proyecto.id, id_estado = 0, id_week = 0)
 
     return render(request, "editarsubitem.html", {"datos":datos})
 
