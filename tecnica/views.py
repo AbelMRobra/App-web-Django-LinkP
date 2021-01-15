@@ -73,15 +73,17 @@ def agregaritem(request, id_etapa):
 
     if request.method == 'POST':
 
+        orden = len(ItemEtapa.objects.filter(etapa = datos)) +1
+
         b = ItemEtapa(
-            orden = request.POST['orden'],
+            orden = orden,
             nombre = request.POST['nombre'],
             etapa = datos,
         )
 
         b.save()
 
-        return redirect('Documentacion')
+        return redirect('Documentacion Amp', id_proyecto = datos.proyecto.id, id_estado = 0, id_week = 1)
 
     return render(request, "crearitem.html", {"datos":datos})
 

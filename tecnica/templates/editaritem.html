@@ -212,7 +212,7 @@
     
             <div style="display: inline-block; margin: 10px; "> 
     
-                <input name="url" type="url" class="form-control form-control" style="width: 300px;" value="{{datos.url}}">
+                <input name="url" type="url" class="form-control form-control" style="width: 300px;" {% if datos.url %} value="{{datos.url}}" {% endif %}>
     
             </div>
 

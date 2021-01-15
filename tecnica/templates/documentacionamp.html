@@ -136,8 +136,6 @@
             </thead>
         </table>
 
-                <tbody>
-
                     <!--  EMPIEZA EL PRIMERO ACORDEON -> NIVEL ITEM  -->
 
                     <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
@@ -191,7 +189,8 @@
 
                         <tr class = "table-light filaitem">  
             
-                            <td class="sticky item" style="min-width: 250px;"><a href="#" style="text-decoration: none"><img src="{% static 'img/anadir.png' %}" alt="" style="max-width:15px; height:auto; margin: 2px;"></a> 
+                            <td class="sticky item" style="min-width: 250px;">
+                                <a href="{% url 'Agregar Subitem' t.0.id %}" style="text-decoration: none"><img src="{% static 'img/anadir.png' %}" alt="" style="max-width:15px; height:auto; margin: 2px;"></a> 
                                 <a href="{% url 'Editar Item' t.0.id %}" style="text-decoration: none; color:#636762;">{{t.0.nombre}}</a>
                             </td>                 
                             <td  class="celdacharlaplanif">
@@ -893,6 +892,15 @@
 
                 </div>
 
+                <div style="text-align: left; margin: 1px;">
+
+                    <a href="{% url 'Agregar Item' i.0.id %}" class="btn btn-sm btn-light">
+                        <img src="{% static 'img/anadir.png' %}" alt="" style="max-width:15px; height:auto;"> 
+                        <b style="color: #969895; font-size: 9px;">Agregar Item</b> 
+                    </a>
+
+                </div>
+
                     
 
 
@@ -906,26 +914,14 @@
                 </tbody>
             </thead>
         </table>
-    </div>
-    </div>
-
-
-
+    </div> 
 
     <b><hr class = "my-4" style="width: 100%; border-color: rgba({{datos.proyecto.color}}, 0.5;"></b>
-
-
-
-        
 
     <div style="margin-top: 2rem;">
         <p> <small>-- Link<strong>P</strong> --</small> </p>
 
-     </div>
-        
-    
-
-                    
+     </div>                  
 </div>
  
     

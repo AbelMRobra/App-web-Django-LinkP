@@ -41,36 +41,18 @@
 
             <div style="display: inline-block; margin: 10px; width: 200px;">
 
-                <label for="nombre"><h6>Nombre del subitem</h6></label>
+                <label for="nombre"><h6>Nombre del SUB-item</h6></label>
     
             </div>
             
             <div style="display: inline-block; margin: 10px; ">
     
-                <input name="nombre" type="text" class="form-control form-control" placeholder="Nombre del Item" list="provee" style="width: 300px;">
+                <input name="nombre" type="text" class="form-control form-control" placeholder="Escribe el nombre ..." style="width: 300px;">
     
             </div>
 
 
         </div>
-
-        <div style="margin: 5px">
-
-            <div style="display: inline-block; margin: 10px; width: 200px;">
-
-                <label for="orden"><h6>Orden</h6></label>
-    
-            </div>
-            
-            <div style="display: inline-block; margin: 10px; ">
-    
-                <input name="orden" type="number" step="0.1" class="form-control form-control" placeholder="Orden dentro de la etapa" list="provee" style="width: 300px;">
-    
-            </div>
-
-
-        </div>
-
 
           <button type="submit" class="btn btn-primary">Subir</button>
 
@@ -78,7 +60,7 @@
         {{ form.as_p }}
     </form>
 
-    <a href="{% url 'Documentacion' %}" class="btn btn-secondary"><img src="{% static 'img/flecha-izquierda.png' %}" alt="" style="max-width:15px; height:auto; margin: 2px;"> Volver</a>
+    <a href="{% url 'Documentacion Amp' datos.etapa.proyecto.id 0 1 %}" class="btn btn-secondary"><img src="{% static 'img/flecha-izquierda.png' %}" alt="" style="max-width:15px; height:auto; margin: 2px;"> Volver</a>
 
 
 <div style="margin-top: 2rem;">
