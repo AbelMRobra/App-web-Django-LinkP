@@ -109,7 +109,7 @@
 
     
 
-    <div class="contendorplanificacion">
+    <div class="contendorplanificacion" >
 
         <table class = "table table-hover" style="text-align: left; " >
             <thead>
@@ -248,19 +248,107 @@
                             {% endif %}
                 
                             {% if t.0.fecha_inicio %}
-                            <td class="celdafechaplanif" style="color: rgb({% fecha_inicio_planif t.0.fecha_inicio t.0.estado%});">{{t.0.fecha_inicio|date:"d-m-Y"}}</td>
+                            <td class="celdafechaplanif">
+                                <a type="button" data-toggle="modal" data-target="#ModalFechaInicioItem{{t.0.id}}" style="color: rgb({% fecha_inicio_planif t.0.fecha_inicio t.0.estado%});">
+                                    {{t.0.fecha_inicio|date:"d-m-Y"}}</a></td>
                             {% else %}
                 
-                            <td class="celdafechaplanif">---</td>
+                            <td class="celdafechaplanif">
+                                <a type="button" data-toggle="modal" data-target="#ModalFechaInicioItem{{t.0.id}}" style="color: rgb({% fecha_inicio_planif t.0.fecha_inicio t.0.estado%});">
+                                    ---</a></td>
                 
                             {% endif %}
+
+                            <!-- MODAL FECHA INICIO NIVEL ITEM -->
+
+                            <div class="modal fade" id="ModalFechaInicioItem{{t.0.id}}" tabindex="-1" role="dialog" aria-labelledby="ModalFechaInicioItem{{t.0.id}}Title" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLongTitle">Fecha inicio ITEM</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    </div>
+                                    <div class="modal-body">
+                
+            
+                                    <h6><small>Se modificara la fecha del item {{t.0.nombre}}</small> </h6>
+                                    
+                                    <form method="POST" style="margin: 15px;">
+
+                                        {% csrf_token %}
+                    
+                                        <div class="input-group mb-3">
+                                        
+                                                <input name="{{t.0.id}}-fecha_inicio_item" type="date" class="form-control form-control" value="{{t.0.fecha_inicio|date:"Y-m-d"}}" aria-label="Amount" style="width: 100px;">
+                                            
+                                        </div>
+
+                                        <button type="submit" class="btn btn-light">Modificar</button>
+                                    
+                                    </form>
+                                    
+                                    </div>
+                                    <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            
+                                    </div>
+                                </div>
+                                </div>
+
+                            </div>
                             {% if t.0.fecha_final %}
-                            <td class="celdafechaplanif" style="color: rgb({% fecha_final_planif t.0.fecha_final t.0.estado%});">{{t.0.fecha_final|date:"d-m-Y"}}</td>
+                            <td class="celdafechaplanif">
+                                <a type="button" data-toggle="modal" data-target="#ModalFechaFinalItem{{t.0.id}}" style="color: rgb({% fecha_final_planif t.0.fecha_final t.0.estado%});">
+                                    {{t.0.fecha_final|date:"d-m-Y"}}</a></td>
                             {% else %}
                 
-                            <td class="celdafechaplanif">---</td>
+                            <td class="celdafechaplanif">
+                                <a type="button" data-toggle="modal" data-target="#ModalFechaFinalItem{{t.0.id}}" style="color: rgb({% fecha_final_planif t.0.fecha_final t.0.estado%});">
+                                    ---</a></td></td>
                 
                             {% endif %}
+
+                            <!-- MODAL FECHA FINAL NIVEL ITEM -->
+
+                            <div class="modal fade" id="ModalFechaFinalItem{{t.0.id}}" tabindex="-1" role="dialog" aria-labelledby="ModalFechaFinalItem{{t.0.id}}Title" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLongTitle">Fecha final ITEM</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    </div>
+                                    <div class="modal-body">
+                
+            
+                                    <h6><small>Se modificara la fecha del item {{t.0.nombre}}</small> </h6>
+                                    
+                                    <form method="POST" style="margin: 15px;">
+
+                                        {% csrf_token %}
+                    
+                                        <div class="input-group mb-3">
+                                        
+                                                <input name="{{t.0.id}}-fecha_final_item" type="date" class="form-control form-control" value="{{t.0.fecha_final|date:"Y-m-d"}}" aria-label="Amount" style="width: 100px;">
+                                            
+                                        </div>
+
+                                        <button type="submit" class="btn btn-light">Modificar</button>
+                                    
+                                    </form>
+                                    
+                                    </div>
+                                    <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            
+                                    </div>
+                                </div>
+                                </div>
+
+                            </div> 
                 
                             {% if t.0.archivo_vigente %}
                             <td class="celdaadjplanif"><small>
@@ -818,6 +906,7 @@
                 </tbody>
             </thead>
         </table>
+    </div>
     </div>
 
 

@@ -334,6 +334,18 @@ def documentacionamp(request, id_proyecto, id_estado, id_week):
 
         for d in request.POST.items():
 
+            if "fecha_final_item" in d[0]:
+                id_item = d[0].split('-')
+                b = ItemEtapa.objects.get(id= int(id_item[0]))
+                b.fecha_final = d[1]
+                b.save()
+
+            if "fecha_inicio_item" in d[0]:
+                id_item = d[0].split('-')
+                b = ItemEtapa.objects.get(id= int(id_item[0]))
+                b.fecha_inicio = d[1]
+                b.save()
+
             if "fecha_final_subitem" in d[0]:
                 id_subitem = d[0].split('-')
                 b = SubItem.objects.get(id= int(id_subitem[0]))
