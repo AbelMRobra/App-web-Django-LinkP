@@ -302,7 +302,12 @@ def documentacion(request):
         else:
             avance_general = 0.0
 
-        lp = Lp.objects.filter(proyecto = p)[0]
+        if len(Lp.objects.filter(proyecto = p)) > 0:
+
+            lp = Lp.objects.filter(proyecto = p)[0]
+
+        else:
+            lp = 0
 
         datos.append((p, sub_datos, dias_faltantes, avance_general, dias_faltantes_2, lp))
 
