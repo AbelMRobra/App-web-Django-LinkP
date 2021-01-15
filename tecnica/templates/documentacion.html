@@ -33,7 +33,7 @@
                     <a href="{% url 'Documentacion Amp' i.0.id 0 1 %}" class="btn btn-light">
 
             
-                        <img src="{% static 'img/agrandar.png' %}" alt="" style="max-width:20px; height:auto; vertical-align: bottom;"> Planificación
+                        <img src="{% static 'img/agrandar.png' %}" alt="" style="max-width:20px; height:auto; vertical-align: bottom;"> <b>Planificación</b>
     
                     </a>
 
@@ -48,14 +48,14 @@
             <div class="card-body">
               <div style="display: inline-block; text-align: left; vertical-align: middle; margin-top: 15px;">
       
-                <h6 style="font-family: Arial, Helvetica, sans-serif;">Responsable: </h6> 
+                <h6 style="font-family: Arial, Helvetica, sans-serif;">Lider de proyecto: </h6> 
               </div>
       
-              {% if presupuestador %}
+              {% if i.5 %}
           
                 <div style="display: inline-block; vertical-align: middle;">
           
-                  <img src="{{presupuestador.imagenlogo.url}}"  class="img-fluid" alt="..." style="max-width: 40px; height:auto;">
+                  <img src="{{i.5.0.imagenlogo.url}}"  class="img-fluid" alt="..." style="max-width: 40px; height:auto; vertical-align: middle;">
               
                 </div>
       
@@ -63,7 +63,7 @@
       
                 <div style="display: inline-block; text-align: left; vertical-align: middle; margin-top: 15px;">
       
-                  <h6 style="font-family: Arial, Helvetica, sans-serif;">Sin asignación </h6> 
+                  <h6 style="font-family: Arial, Helvetica, sans-serif;">S/A </h6> 
                 </div>
       
                 {% endif %}

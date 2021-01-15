@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.shortcuts import redirect
 from proyectos.models import Proyectos
-from .models import Etapas, ItemEtapa, TecnicaMensaje, SubItem, SubSubItem
+from .models import Etapas, ItemEtapa, TecnicaMensaje, SubItem, SubSubItem, Lp
 from rrhh.models import datosusuario
 import datetime
 from datetime import date, timedelta
@@ -302,7 +302,9 @@ def documentacion(request):
         else:
             avance_general = 0.0
 
-        datos.append((p, sub_datos, dias_faltantes, avance_general, dias_faltantes_2))
+        lp = Lp.objects.filter(proyecto = p)
+
+        datos.append((p, sub_datos, dias_faltantes, avance_general, dias_faltantes_2, lp))
 
     return render(request, "documentacion.html", {"datos":datos, "hoy":hoy})
 

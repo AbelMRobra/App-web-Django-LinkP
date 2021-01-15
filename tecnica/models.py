@@ -5,6 +5,16 @@ from rrhh.models import datosusuario
 
 # Create your models here.
 
+class Lp(models.Model):
+    proyecto = models.ForeignKey(Proyectos, on_delete=models.CASCADE, verbose_name="Proyecto")
+    responsable = models.ForeignKey(datosusuario, on_delete=models.CASCADE, verbose_name="Responsable")
+
+    class Meta:
+        
+        verbose_name="Lider de proyecto"
+        verbose_name_plural="Lideres de proyectos"
+
+
 class Etapas(models.Model):
     proyecto = models.ForeignKey(Proyectos, on_delete=models.CASCADE, verbose_name="Proyecto")
     nombre = models.CharField(max_length=200, verbose_name="Nombre de la etapa")
