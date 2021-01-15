@@ -76,7 +76,7 @@
 
                 <div>
       
-                    <small style="font-family: Arial, Helvetica, sans-serif;">Inicio: 
+                    <small style="font-family: Arial, Helvetica, sans-serif;">Inicio de obra: 
                         {% if i.4 == "NO DEFINIDO"%}
 
                         No definido
@@ -86,9 +86,9 @@
                             {% if i.4 > 0 %}
                             <b>{{i.4}} dias</b>
                             {% elif i.4 == 0 %}
-                            <b style="color: rgb(197, 173, 54);">HOY INICIA</b>
+                            <b style="color: rgb(243, 239, 108);">HOY INICIA</b>
                             {% else %}
-                            <b style="color: rgb(46, 149, 72);">INICIADO</b>
+                            <b style="color: rgb(135, 243, 108);">INICIADO</b>
                             {% endif %}
 
                         {% endif %}
@@ -99,13 +99,13 @@
       
                 <div>
       
-                  <small style="font-family: Arial, Helvetica, sans-serif;">Final: 
+                  <small style="font-family: Arial, Helvetica, sans-serif;">Final de obra: 
                     {% if i.2 > 0 %}
                     <b>{{i.2}} dias</b>
                     {% elif i.2 == 0 %}
-                    <b style="color: rgb(197, 173, 54);">HOY SE ENTREGA</b>
+                    <b style="color: rgb(243, 239, 108);">HOY SE ENTREGA</b>
                     {% else %}
-                    <b style="color: rgb(46, 149, 72);">ENTREGADO</b>
+                    <b style="color: rgb(135, 243, 108);">ENTREGADO</b>
                     {% endif %}</small> 
       
                 </div>
