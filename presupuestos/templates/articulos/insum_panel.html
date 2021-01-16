@@ -4,65 +4,67 @@
 
 {% block content %}
 
-<div class = "jumbotron" style="background-color: white; margin-bottom: 0px;">
+<div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;">
 
-    <h3 style="text-align: center; color: #138D75  ;">Panel de cambios de Articulos</h3>
-    <div style="text-align: center;">
+    <h1 class="titulopagina">Panel maestro de Articulos</h1>
+    <p class="modulo"><b>Modulo: </b>Presupuestos</p>
 
-        <p><small>Solo un miembro del área de <strong>Presupuestos/I+D</strong> puede ver esta pantalla</small> <br> <small><small>Si no eres de está área, notificar a <strong>AR</strong></small></small>  </p>
+     <b><hr class = "my-4" style="width: 75%;"></b>
 
-    </div>
-     <b><hr class = "my-4" style="width: 75%; border-color: #138D75  ;"></b>
-     <form method="get" class="form-group" style="text-align: center;">
-        <div>
+        <form method="get" class="form-group" style="text-align: center;">
+        <div class="form-control">
             {{ myfilter.form }}
+
         </div>
         <div>
-            <button class="btn btn-success" type="submit" style="margin-top: 1%;">Buscar</button>          
+            <button class="btn btn-dark" type="submit" style="margin-top: 1%;">Buscar</button>          
         </div>
      </form>
-     <b><hr class = "my-4" style="width: 100%; border-color: #138D75  ;"></b>
-     <div style="margin-bottom: 1%;">
-        <a href="/presupuestos/insumcreate"><button class="btn btn-success" type="submit">Crear articulo</button></a>  
+    
+     <b><hr class = "my-4" style="width: 100%;"></b>
+     <div style="margin: 2px; text-align: left;">
+        <a href="{% url 'Lista de insumos' %}" class="btn btn-secondary"><img src="{% static 'img/flecha-izquierda.png' %}" alt="" style="max-width:15px; height:auto;"> Volver</a>
+        <a href="/presupuestos/insumcreate" class="btn btn-light">
+            <img src="{% static 'img/anadir.png' %}" alt="" style="max-width:20px; height:auto; vertical-align: middle;">
+                <b>Añadir</b></a></a>  
+
      </div>
       
-
-    {% if articulos %} 
 
     <table class = "table table-hover" style="text-align: center;">
         <thead>
 
-            <tr class = "table-success">
-                <th scope = "row"> <font style = "vertical-align: heredar;"> CODIGO </font></th>
-                <th scope = "row"> <font style = "vertical-align: heredar;"> NOMBRE DEL ARTICULO </font></th>
-                <th scope = "row"> <font style = "vertical-align: heredar;"> UN </font></th>
-                <th scope = "row"> <font style = "vertical-align: heredar;"> VALOR </font></th>
-                <th scope = "row"> <font style = "vertical-align: heredar;"> FECHA DE CREACIÓN </font></th>
-                <th scope = "row"> <font style = "vertical-align: heredar;"> CONSTANTE </font></th> 
-                <th scope = "row"> <font style = "vertical-align: heredar;"> EDITAR </font></th>
-                <th scope = "row"> <font style = "vertical-align: heredar;">ELIMINAR </font></th>
+            <tr class = "table-dark"> 
+                <th style="text-align: left;">NOMBRE</th>
+                <th scope = "row"> CODIGO </th>
+                <th scope = "row"> UN </th>
+                <th scope = "row"> VALOR </th>
+                <th scope = "row"> CREACIÓN </th>
+                <th scope = "row"> CONSTANTE </th> 
+
 
             </tr>
         </thead>
 
         <tbody>
 
-            
-
             {% for i in articulos|slice:"20" %}
-            <tr class = "table-light">
-                <td> <b>{{i.codigo}}</b> </td>
-                <td>{{i.nombre}}</td>
+            <tr class = "table-light" style="font-size: 12px;">
+                
+                <td style="text-align: left;">
+                    <a href="{% url 'Editar_insumo' i.codigo %}" class="btn btn-light" style="padding: 1px;">
+                    <img src="{% static 'img/editar.png' %}" alt="" style="max-width:15px; height:auto; vertical-align: top;">
+                    </a></a> 
+                    <a href="{% url 'Eliminar_insumo' i.codigo %}" class="btn btn-light" style="padding: 1px;">
+                    <img src="{% static 'img/eliminar.png' %}" alt="" style="max-width:15px; height:auto; vertical-align: top; ">
+                    </a></a> 
+                    {{i.nombre}}</td>
+                    <td> <b>{{i.codigo}}</b> </td>
                 <td>{{i.unidad}}</td>
                 <td>${{i.valor|floatformat:2}}</td>
                 <td>{{i.fecha_c}}</td>
                 <td>{{i.constante}}</td>
-                <td> <a class = "btn btn-outline-success" href="{% url 'Editar_insumo' i.codigo %}">Editar</a>
-                
-                </td>
-                <td> <a class = "btn btn-outline-danger" href="{% url 'Eliminar_insumo' i.codigo %}">Eliminar</a>
-                
-                </td>
+               
             </tr>
         </tbody>
 
@@ -70,27 +72,14 @@
 
         </table>
 
-        <div>
-            <small>El listado puede continuar, el maximo de filas visibles es de 20</small>
-        </div>
+
         <div style="text-align: center;">
             <p> <small>-- Link<strong>P</strong> --</small> </p>
     
          </div>
 
-     {% else %}
-            <div>
-                <h3>No existe registros actualmente</h3>
-            </div>
-            
-
-    {% endif %}
-        
-
-    
-
                     
 </div>
- 
+
     
 {% endblock %}

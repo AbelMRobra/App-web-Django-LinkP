@@ -388,3 +388,18 @@ font-size: 9px;
 border-top: solid 1px #969895;
 
 }
+
+.titulopagina {
+font-size: 30px;
+color: #353531;
+font-family: Arial, Helvetica, sans-serif;
+
+}
+
+.modulo {
+font-size: 12px;
+color: #353531;
+font-style: inherit;
+font-family: Arial, Helvetica, sans-serif;
+
+}

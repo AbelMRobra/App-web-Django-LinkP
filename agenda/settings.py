@@ -39,22 +39,28 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'users',
+    'django.contrib.humanize',
     'projects.apps.ProjectsConfig',
     'django_filters',
+    'apptags',
+
+    # trthy apps
+    'rest_framework',
+    'import_export',
+
+    # local apps
+    'users',   
     'compras',
     'proyectos',
     'presupuestos',
-    'computos',
-    'import_export',
+    'computos',   
     'registro',
-    'ventas',
-    'django.contrib.humanize',
+    'ventas',  
     'sigma',
     'finanzas',
     'rrhh',
     'tecnica',
-    'apptags',
+    
 ]
 
 MIDDLEWARE = [

@@ -1,7 +1,7 @@
 from django.urls import path, re_path
 from django.conf.urls import url
 from . import views
-from .views import ReporteExplosion, ReporteExplosionCap
+from .views import ReporteExplosion, ReporteExplosionCap, ArticulosListApiView
 from django.contrib.auth.decorators import login_required
 
 urlpatterns = [
@@ -44,6 +44,9 @@ urlpatterns = [
     url(r'^desde/$', login_required(views.desde), name = 'Indicador de precios'),
     url(r'^informe/$', login_required(views.InformeArea), name = 'Informe de área'),
     url(r'^parametros/$', login_required(views.parametros), name = 'Parametros'),
+
+    #----------------URL SERVICIOS -----------------------------------------
+    url(r'^api/articulos/search$', ArticulosListApiView.as_view(), name = 'Articulo Buscar'),
     
     
     

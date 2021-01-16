@@ -12,3 +12,5 @@ class ArticulosFilter(django_filters.FilterSet):
         fields = [
          
         ]
+
+        

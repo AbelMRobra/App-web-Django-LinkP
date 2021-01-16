@@ -6,9 +6,9 @@
 
 {% block content %}
 
-<div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;">
+<div id="app" class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;">
 
-    <h3 style="font-family: Arial, Helvetica, sans-serif;">Seguimiento de proyectos</h3>
+    <h1 class="titulopagina">Seguimiento de documentación</h1>
 
     <div>
 
@@ -19,13 +19,16 @@
 
     <div>
 
-        <small style="color: rgb({{datos.0.color}}); font-family: Arial, Helvetica, sans-serif;"><b>{{ datos.0.nombre }}</b> </small>
-    
-
+        <p class="modulo" style="color: rgb({{datos.0.color}})"><b>{{ datos.0.nombre }}</b> </p>
+        <p class="modulo"><b>Modulo: </b>Documentación O.T</p>
+        
 
     </div>
+    
+    
+    
 
-    <small style="font-family: Arial, Helvetica, sans-serif;"><b>Modulo:</b> Documentación O.T</small>
+    
 
     <b><hr class = "my-4" style="width: 100%; border-color: rgba({{datos.proyecto.color}}, 0.5;"></b>
 
@@ -183,7 +186,7 @@
 
                     {% for t in i.1 %}
 
-                    <table>
+                    <table id="Tabla-Gannt">
 
                         <!--  NIVEL ITEM -->
 
@@ -665,7 +668,7 @@
                                     <td  class="celdacharlaplanif"></td>
                                     <td class="celdaestadoplanif" style="color: rgb({{k.estado|estadoplan}})"><a type="button" data-toggle="modal" data-target="#ModalEstadoSubSubItem{{k.id}}"><b>{{k.estado}}</b></a></td>
 
-                                        <!-- Modal fecha estado SubSubitem -->
+                                        <!-- Modal estado SubSubitem -->
                                 <div class="modal fade" id="ModalEstadoSubSubItem{{k.id}}" tabindex="-1" role="dialog" aria-labelledby="ModalEstadoSubSubItem{{k.id}}Title" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered" role="document">
                                     <div class="modal-content">
@@ -677,7 +680,7 @@
                                         </div>
                                         <div class="modal-body">
                                         <h6><small>Se modificara el estado del subitem {{k.nombre}}</small> </h6>                                    
-                                        <form method="POST" style="margin: 15px;">
+                                        <form method="POST" id="Estado Subsubitem {{k.id}}" style="margin: 15px;">
     
                                             {% csrf_token %}
                         
@@ -728,10 +731,67 @@
                                     
                                                     </select>
                                             </div>
-    
+
                                             <button type="submit" class="btn btn-light">Modificar</button>
-                                        
+    
                                         </form>
+
+                                        
+
+                                        
+                                        <!--
+
+                                            <button onclick="GuardarDatosEstadoSSI{{k.id}}()" class="btn btn-light">Modificar</button>
+
+                                            <script>
+                                            function getCookie(name) {
+                                                var cookieValue = null;
+                                                if (document.cookie && document.cookie !== '') {
+                                                    var cookies = document.cookie.split(';');
+                                                    for (var i = 0; i < cookies.length; i++) {
+                                                        var cookie = cookies[i].trim();
+                                                        // Does this cookie string begin with the name we want?
+                                                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                                                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                                                            break;
+                                                        }
+                                                    }
+                                                }
+                                                return cookieValue;
+                                            }
+
+                                            function GuardarDatosEstadoSSI{{k.id}}() {
+
+                                                var form = new FormData(document.getElementById('Estado Subsubitem {{k.id}}'));
+                                                var table= document.getElementById('Tabla-Gannt');
+                                                //
+                                                fetch("{% url 'Documentacion Amp' datos.0.id 0 1 %}", {
+                                                    method: "POST",
+                                                    body: form,
+                                                    headers: {
+                                                        "X-CSRFToken": getCookie('csrftoken'),
+                                                        "X-Requested-With": "XMLHttpRequest" 
+                                                    }
+                                                }).then(
+                                                    function(response) {
+                                                        return response.json()
+                                                    }
+                                                ).then(
+                                                    function(data) {
+                                                        array_sus = data.Informacion;
+                                                    }
+                                                );
+                                                var table= document.getElementById('Tabla-Gannt'),load();
+
+                                            }
+
+                                            
+
+                                        </script>
+
+
+                                        -->
+                                        
                                         
                                         </div>
                                         <div class="modal-footer">
@@ -923,6 +983,9 @@
 
      </div>                  
 </div>
+
+<script type="text/javascript" src="{% static 'vue/vue.js' %}"></script>
+<script type="text/javascript" src="{% static 'vue/apps/documentacionamp.js' %}"></script>
  
     
 {% endblock %}

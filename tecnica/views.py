@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.http import JsonResponse
 from django.shortcuts import redirect
 from proyectos.models import Proyectos
 from .models import Etapas, ItemEtapa, TecnicaMensaje, SubItem, SubSubItem, Lp
@@ -669,8 +670,12 @@ def documentacionamp(request, id_proyecto, id_estado, id_week):
 
     datos = [p, sub_datos, dias_faltantes, avance_general, dias_faltantes_2]
 
-    
-    return render(request, "documentacionamp.html", {"datos":datos, "hoy":hoy, "fechas_semana":fechas_semana, "fecha_semana_actual":fecha_semana_actual, "mensaje":mensaje, "week":week})
+
+    if request.is_ajax():
+        data = [{"datos":datos, "hoy":hoy, "fechas_semana":fechas_semana, "fecha_semana_actual":fecha_semana_actual, "mensaje":mensaje, "week":week}]
+        return JsonResponse({'Informacion':data})
+    else:
+        return render(request, "documentacionamp.html", {"datos":datos, "hoy":hoy, "fechas_semana":fechas_semana, "fecha_semana_actual":fecha_semana_actual, "mensaje":mensaje, "week":week})
 
 def ganttet(request, id_proyecto):
 

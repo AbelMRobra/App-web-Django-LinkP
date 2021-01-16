@@ -1,3 +1,4 @@
+from rest_framework.generics import ListAPIView
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.views.generic.base import TemplateView  
@@ -18,7 +19,7 @@ import datetime
 from datetime import date
 from openpyxl import Workbook
 from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
-
+from .serializers import ArtSerializer
 
 def insum_list(request):
 
@@ -2975,7 +2976,15 @@ def debugsaldo(id_proyecto):
 
         return mensaje
     
+# ---> Aqui empiezan los servicios
 
+class ArticulosListApiView(ListAPIView):
+    serializer_class = ArtSerializer
+
+    def get_queryset(self):
+        kword = self.request.query_params.get('kword', '')
+
+        return Articulos.objects.filter(nombre__icontains = kword)[0:20]|Articulos.objects.filter(codigo__icontains = kword)[0:20]
 
 
 
