@@ -12,7 +12,7 @@ from datetime import date, timedelta
 
 def bbddgroup(request):
 
-    etapas = Etapas.objects.values_list('nombre', flat = True).order_by('-nombre')
+    etapas = Etapas.objects.values_list('nombre', flat = True).order_by('nombre')
 
     etapas = list(set(etapas))
 
@@ -20,20 +20,24 @@ def bbddgroup(request):
 
     for e in etapas:
 
-        items = ItemEtapa.objects.filter(etapa__nombre = e).values_list('nombre', flat = True).order_by('-nombre')
+        items = ItemEtapa.objects.filter(etapa__nombre = e).values_list('nombre', flat = True).order_by('nombre')
 
+        items = list(set(items))
+        
         list_subitems = []
         
         for i in items:
 
-            subitems = SubItem.objects.filter(item__nombre = i).values_list('nombre', flat = True).order_by('-nombre')
+            subitems = SubItem.objects.filter(item__nombre = i).values_list('nombre', flat = True).order_by('nombre')
 
+            subitems = list(set(subitems))
             list_subsubitems = []
       
             for s in subitems:
 
-                subsubitems = SubSubItem.objects.filter(subitem__nombre = s).values_list('nombre', flat = True).order_by('-nombre')
+                subsubitems = SubSubItem.objects.filter(subitem__nombre = s).values_list('nombre', flat = True).order_by('nombre')
 
+                subsubitems = list(set(subsubitems))
                 list_subsubitems.append((s, subsubitems))
 
             list_subitems.append((i, list_subsubitems))
