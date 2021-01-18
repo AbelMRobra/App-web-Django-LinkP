@@ -5,3 +5,4 @@ class ArtSerializer(serializers.ModelSerializer):
     class Meta:
         model = Articulos
         fields = ('__all__')
+

@@ -8,226 +8,41 @@
 
 <div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;">
 
-    <h3 style="font-family: Arial, Helvetica, sans-serif;">Seguimiento de proyectos</h3>
+    <h1 class="titulopagina">BBDD Group - Plantilla madre</h1>
+    <p class="modulo"><b>Modulo: </b>Documentación O.T</p>
 
-    <div>
+    <b><hr class = "my-4" style="width: 100%; border-color: rgba({{datos.proyecto.color}}, 0.5;"></b>
 
-        <img src="{{datos_item.etapa.proyecto.iamgen.url}}"  class="img-fluid" alt="..." style="max-width:200px;width:auto;height:auto; margin-top: 5px; margin-bottom: 5px;">
+    {% for d in datos %}
 
+    <ul class="list-group" style="width: 350px;">
 
-    </div>
+        
+        <li class="list-group-item list-group-item-action active">{{d.0}}</li>
 
-    <div>
+        {% for i in d.1 %}
+        <li class="list-group-item d-flex justify-content-between align-items-center item">{{i.0}}<img src="{% static 'img/clonar.png' %}" alt="" style="max-width:20px; height:auto; margin: 2px;"></li>
 
-        <small style="color: rgb({{datos_item.etapa.proyecto.color}}); font-family: Arial, Helvetica, sans-serif;"><b>{{ datos_item.etapa.proyecto.nombre }}</b> </small>
-    
+        {% for s in i.1 %}
 
+        <li class="list-group-item d-flex justify-content-between align-items-center subitem">{{s.0}}<img src="{% static 'img/clonar.png' %}" alt="" style="max-width:20px; height:auto; margin: 2px;"></li>
+       
+        {% for ss in s.1 %}
 
-    </div>
+        <li class="list-group-item d-flex justify-content-between align-items-center subsubitem">{{ss}}<img src="{% static 'img/clonar.png' %}" alt="" style="max-width:20px; height:auto; margin: 2px;"></li>
 
-    <small style="font-family: Arial, Helvetica, sans-serif;"><b>Modulo:</b> Documentación O.T</small>
+        {% endfor %}
 
-    <b><hr class = "my-4" style="width: 100%; "></b>
+        {% endfor %}
 
-    <div style="text-align: left; margin: 3px;">
+        {% endfor %}
 
-        <a href="#" class="btn btn-light"><img src="{% static 'img/flecha-izquierda.png' %}" alt="" style="max-width:15px; height:auto; margin: 2px;"> Volver</a>
-   
+        
+    </ul>
 
-    </div>
+    <b><hr class = "my-4" style="width: 100%; border-color: rgba({{datos.proyecto.color}}, 0.5;"></b>
 
-    
-     
-    <table class = "table table-hover" style="text-align: left;" >
-        <tbody>
-
-            <tr class = "table-dark">
-                <td colspan="10"><small><b>{{datos_item.nombre}}</b></small></td>
-
-
-            </tr>
-
-            <tr class = "table-active">
-                <td><small><b>SUBITEM</b></small></td>
-                <td><small><b>ESTADO</b></small></td>
-                <td><small><b>RESP.</b></small></td>
-                <td><small><b>INICIO (P)</b></small></td>
-                <td><small><b>FINAL (P)</b></small></td>
-                <td><small><b>INICIO</b></small></td>
-                <td><small><b>FINAL</b></small></td>
-                <td><small><b>ADJ.</b></small></td>
-                <td><small><b></b></small></td>
-
-            </tr>
-
-            {% for i in datos_sub %}
-
-            <tr class = "table-light">  
-                
-                
-            
-                <td style="width: 30%;">
-                               
-                    <small><b>{{i.orden|floatformat:0}}.</b> {{i.nombre}}</small>
-
-                </td>
-
-
-                {% if i.estado == 'LISTO' %}
-                <td style="width: 10%; color: rgb(124, 209, 107)"><small>
-
-
-                    <b>{{i.estado}}</b> 
-                
-                
-                </small></td>
-
-                {% elif i.estado == 'TRABAJANDO' %}
-
-                <td style="width: 10%; color: rgb(209, 176, 107)"><small>
-
-
-                    <b>{{i.estado}}</b> 
-                
-                
-                </small></td>
-
-                {% elif i.estado == 'PROBLEMAS' %}
-
-                <td style="width: 10%; color: rgb(209, 119, 107)"><small>
-
-
-                    <b>{{i.estado}}</b> 
-                
-                
-                </small></td>
-
-                {% else %}
-
-                <td style="width: 10%;"><small>
-
-
-                    <b>{{i.estado}}</b> 
-                
-                
-                </small></td>
-
-                {% endif %}
-
-
-                <td style="width: 5%;"><small>
-
-                    {% if i.responsable %}
-                    
-                    <img src="{{i.responsable.imagenlogo.url}}"  class="img-fluid" alt="..." style="max-width: 30px; height:auto;">
-                    
-                    {% else %}
-
-                    S/A
-
-                    {% endif %}
-
-                </small></td>
-
-                {% if i.fecha_estimada_i %}
-                <td style="width: 10%;"><small>{{i.fecha_estimada_i|date:"Y-m-d"}}</small></td>
-                {% else %}
-
-                <td style="width: 10%;"><small>NO DEFINIDIO</small></td>
-
-                {% endif %}
-                {% if i.fecha_estimada_f %}
-                <td style="width: 10%;"><small>{{i.fecha_estimada_f|date:"Y-m-d"}}</small></td>
-                {% else %}
-
-                <td style="width: 10%;"><small>NO DEFINIDIO</small></td>
-
-                {% endif %}
-
-                {% if i.fecha_inicio %}
-
-                {% if i.fecha_inicio|fecha_prueba == 1 and i.estado == "ESPERA" %}
-
-                <td style="width: 10%; color: rgb(238, 48, 14);"><small>{{i.fecha_inicio|date:"Y-m-d"}}</small></td>
-
-                {% elif i.fecha_inicio|fecha_prueba == 1 and i.estado != "ESPERA" %}
-                
-                <td style="width: 10%; color: rgb(41, 166, 60);"><small>{{i.fecha_inicio|date:"Y-m-d"}}</small></td>
-                
-                
-                {% else %}
-
-                <td style="width: 10%;"><small>{{i.fecha_inicio|date:"Y-m-d"}}</small></td>
-
-                {% endif %}
-
-                {% else %}
-
-                <td style="width: 10%; color: rgb(119, 127, 120);"><small>NO DEFINIDIO</small></td>
-
-                {% endif %}
-                {% if i.fecha_final %}
-
-                {% if i.fecha_final|fecha_prueba == 1 and i.estado != "LISTO" %}
-
-                <td style="width: 10%; color: rgb(238, 48, 14 );"><small>{{i.fecha_final|date:"Y-m-d"}}</small></td>
-                
-                {% elif i.fecha_final|fecha_prueba == 1 and i.estado == "LISTO" %}
-
-                <td style="width: 10%; color: rgb(41, 166, 60);"><small>{{i.fecha_final|date:"Y-m-d"}}</small></td>
-                
-
-                {% else %}
-                <td style="width: 10%;"><small>{{i.fecha_final|date:"Y-m-d"}}</small></td>
-                {% endif %}
-                
-                
-                {% else %}
-
-                <td style="width: 10%; color: rgb(119, 127, 120)"><small>NO DEFINIDIO</small></td>
-
-                {% endif %}
-
-                {% if i.archivo_vigente %}
-                <td style="width: 5%;"><small>
-
-                    <a href="#">
-
-                        <img src="{% static 'img/archivo-adjunto.png' %}" alt="" style="max-width:20px; height:auto; margin: 2px;"  >
-                
-                    </a>
-
-
-                </small></td>
-
-                {% else %}
-
-                <td style="width: 5%;"><small>S/D</small></td>
-
-                {% endif %}
-
-                <td style="width: 5%;">
-
-                    <a href="#" class="btn btn-sm btn-light"><img src="{% static 'img/documento.png' %}" alt="" style="max-width:15px; height:auto;"></a>
-                </td>
-
-
-                </tr>
-
-
-                {% endfor %}
-
-                
-
-                </tbody>
-
-    </table>
-
-    <div style="text-align: left; margin: 5px;">
-
-        <a href="#" style="text-decoration:none" class="btn btn-sm btn-light"><img src="{% static 'img/agregar-archivo.png' %}" alt="" style="max-width:20px; height:auto; margin: 2px;"> <small><b>Agregar subitem</b> </small> </a>
-
-    </div>
+    {% endfor %}
 
     <div style="margin-top: 2rem;">
         <p> <small>-- Link<strong>P</strong> --</small> </p>

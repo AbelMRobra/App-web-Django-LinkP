@@ -10,12 +10,37 @@ from datetime import date, timedelta
 # Create your views here.
 
 
-def bbddgroup(request, id_item):
+def bbddgroup(request):
 
-    datos_item = []
-    datos_sub = []
+    etapas = Etapas.objects.values_list('nombre', flat = True).order_by('-nombre')
 
-    return render(request, 'bbdgroup.html', {"datos_item":datos_item, "datos_sub":datos_sub})
+    etapas = list(set(etapas))
+
+    datos = []
+
+    for e in etapas:
+
+        items = ItemEtapa.objects.filter(etapa__nombre = e).values_list('nombre', flat = True).order_by('-nombre')
+
+        list_subitems = []
+        
+        for i in items:
+
+            subitems = SubItem.objects.filter(item__nombre = i).values_list('nombre', flat = True).order_by('-nombre')
+
+            list_subsubitems = []
+      
+            for s in subitems:
+
+                subsubitems = SubSubItem.objects.filter(subitem__nombre = s).values_list('nombre', flat = True).order_by('-nombre')
+
+                list_subsubitems.append((s, subsubitems))
+
+            list_subitems.append((i, list_subsubitems))
+
+        datos.append((e, list_subitems))
+
+    return render(request, 'bbdgroup.html', {'datos':datos})
 
 def agregarsubitem(request, id_item):
 

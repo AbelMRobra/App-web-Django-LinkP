@@ -2982,9 +2982,15 @@ class ArticulosListApiView(ListAPIView):
     serializer_class = ArtSerializer
 
     def get_queryset(self):
-        kword = self.request.query_params.get('kword', '')
+        kword = self.request.query_params.get('kword')
 
-        return Articulos.objects.filter(nombre__icontains = kword)[0:20]|Articulos.objects.filter(codigo__icontains = kword)[0:20]
+        if kword == None:
+
+            return Articulos.objects.all()[0:40]
+
+        else:
+
+            return Articulos.objects.filter(nombre__icontains = kword)[0:40]|Articulos.objects.filter(codigo__icontains = kword)[0:40]
 
 
 
