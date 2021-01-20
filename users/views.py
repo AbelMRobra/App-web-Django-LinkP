@@ -10,7 +10,7 @@ from proyectos.models import Proyectos, Unidades
 from ventas.models import VentasRealizadas
 from compras.models import Compras, Comparativas
 from registro.models import RegistroValorProyecto
-from rrhh.models import datosusuario, mensajesgenerales, NotaDePedido, Vacaciones, MonedaLink
+from rrhh.models import datosusuario, mensajesgenerales, NotaDePedido, Vacaciones, MonedaLink, EntregaMoneda
 import datetime
 from datetime import date
 import pandas as pd
@@ -19,7 +19,68 @@ from django.contrib.auth.models import User
 
 def monedalink(request):
 
-    return render(request, 'users/monedaslink.html')
+    usuario = datosusuario.objects.get(identificacion = request.user)
+
+    if request.method == 'POST':
+
+        monedas = MonedaLink.objects.filter(usuario_portador = usuario)
+
+        monedas_disponibles = []
+
+        for m in monedas:
+
+            if len(EntregaMoneda.objects.filter(moneda = m)) == 0:
+
+                monedas_disponibles.append(m)
+
+        index_num = 0
+
+        for i in range(int(request.POST["cantidad"])):
+
+            b = EntregaMoneda(
+                moneda = monedas_disponibles[index_num],
+                usuario_recibe = datosusuario.objects.get(id = int(request.POST["usuario"])),
+                mensaje = request.POST["mensaje"])
+                
+
+            b.save()
+
+            index_num += 1
+
+
+    list_usuarios = datosusuario.objects.all().exclude(identificacion = request.user)
+
+    monedas = MonedaLink.objects.filter(usuario_portador = usuario)
+
+    monedas_disponibles = 0
+
+    for m in monedas:
+
+        if len(EntregaMoneda.objects.filter(moneda = m)) == 0:
+
+            monedas_disponibles += 1
+
+    monedas_recibidas = len(EntregaMoneda.objects.filter(usuario_recibe = usuario))
+    recibidas_list = EntregaMoneda.objects.filter(usuario_recibe = usuario).values_list("mensaje", flat = True)
+
+    recibidas_list = list(set(recibidas_list))
+
+    recibidas = []
+
+    for r in recibidas_list:
+
+        data = EntregaMoneda.objects.filter(usuario_recibe = usuario, mensaje = r)
+
+        usuarios_entrega = ""
+
+        for d in data:
+
+            if str(d.moneda.usuario_portador.identificacion) not in usuarios_entrega:
+                usuarios_entrega = usuarios_entrega + str(d.moneda.usuario_portador.identificacion) + ""
+
+        recibidas.append((len(data), r, usuarios_entrega))
+  
+    return render(request, 'users/monedaslink.html', {"recibidas":recibidas, "monedas_recibidas":monedas_recibidas, "monedas_disponibles":monedas_disponibles, "list_usuarios":list_usuarios})
 
 def vacaciones(request):
 

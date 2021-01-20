@@ -14,63 +14,169 @@
 
       </div>       
       <hr class="my-4" style="width: 100%; ">
+    
+      <div style="text-align: left;">
 
-      
+        <!-- Aqui empieza la cabeza del acordeon -->
 
-      <div style="text-align: left; margin-left: 20%; width: 70%;">
+        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
 
-        <h6>¿Qué son las Linkcoins?</h6>
+        <div class="panel panel-default" style="margin: 5px;">
 
-        <div style="width: 60%; display: inline-block;  vertical-align: middle; margin-top: 5px;">
+        <div class="panel-heading" role="tab" id="heading">
 
-            <p>Las Linkcoins es nuestro propio sistema de premios! Cada moneda equivale a <strong>0.01 M3 de Hº</strong> y todos los meses que trabajes con nosotros recibiras 10 de estas bellezas </p>
+        <a style="margin: 5px;" class="btn btn-light collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse" aria-expanded="false" aria-controls="collapse">
 
+            <img src="{% static 'img/informacion.png' %}" alt="" style="max-width:20px; height:auto; vertical-align: middle;"> <b>¿Qué son las Linkcoins?</b>
+
+        </a>
         </div>
 
-        <div style="width: 20%; display: inline-block; vertical-align: top; text-align: center;">
+        <!-- Aqui empieza el contenido del acordeon -->
 
-            <img src="{% static 'img/monedalinkpila.png' %}" alt="" style="max-width:100px; height:auto; margin-left: 5px; vertical-align: bottom;">
+        <div id="collapse" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading">
 
+            <div class="card text-white bg-dark mb-3" style="max-width: 20rem; height: 400px; display: inline-block;">
+                <div class="card-header">
+                    Nuestro sistema de premios!
+                    <img src="{% static 'img/monedalinkpila.png' %}" alt="" style="max-width:30px; height:auto; margin-left: 5px; vertical-align: bottom;">
+                    </div>
+                <div class="card-body">
+                  <h4 class="card-title">Recolecta!</h4>
+                  
+                  <p class="card-text">Cada moneda tiene un valor de 0.01 M3 de Hº y las puedes intercambiar todos los meses por premios!, las monedas que recibes no se vencen asi que cuanto mas recolectes, mejores premios podras tener!</p>
+                </div>
+            </div>
+
+            <div class="card text-white bg-secondary mb-3" style="max-width: 20rem; height: 350px; display: inline-block;  vertical-align: bottom;">
+                <div class="card-header">Un vinculo con tus compañeros
+                <img src="{% static 'img/juntos.png' %}" alt="" style="max-width:30px; height:auto; margin-left: 5px; vertical-align: bottom;">
+            </div>
+                <div class="card-body">
+                  <h4 class="card-title">Comparte!</h4>
+                  <p class="card-text">Todos los meses que trabajes con nosotros recibiras 10 monedas, estas monedas por si solas no tienen mucha utilidad, pero cuando la compartes generan valor al que las recibe!</p>
+                </div>
+            </div>
+
+            <div class="card bg-light mb-3" style="max-width: 20rem; height: 300px; display: inline-block; vertical-align: bottom;">
+                <div class="card-header">Una oportunidad para valorar
+                <img src="{% static 'img/varmonedas.png' %}" alt="" style="max-width:30px; height:auto; margin-left: 5px; vertical-align: bottom;">
+            </div>
+                <div class="card-body">
+                  <h4 class="card-title">Premia!</h4>
+                  <p class="card-text">Durante el año habra monedas <strong style="color: #229608;">especiales</strong> que daran premios unicos al que mas recolecte! El empleado del año, el compañero mas divertido .. Con tu voto sabremos quien es merecedor de ese titulo!</p>
+                </div>
+            </div>
+
+
+    </div>
+</div>
+
+</div>
+
+</div>
+
+<hr class="my-4" style="width: 100%;">
+
+<div style="text-align: left; display: inline-block;">       
+    <p class = "texto_resumen">Monedas recolectadas: <b>{{monedas_recibidas}}</b> <img src="{% static 'img/monedalink.png' %}" alt="" style="max-width:19px; height:auto; vertical-align: top;">
+       | Monedas disponibles: <b>{{monedas_disponibles}}</b> <img src="{% static 'img/monedalink.png' %}" alt="" style="max-width:19px; height:auto; vertical-align: top;"></p>
+    <p class = "texto_resumen"></p> 
+
+</div>
+
+<div style="margin: 3px;">
+
+    <button type="button" data-toggle="modal" data-target="#ModalPremio" class="btn btn-light" name="subir_item" value="{{t.0.id}}"><img src="{% static 'img/regalo.png' %}" alt="" style="max-width:25px; height:auto; vertical-align: bottom;"><b>Dar monedas</b></button>
+
+    <!-- Modal fecha estado Subitem -->
+    <div class="modal fade" id="ModalPremio" tabindex="-1" role="dialog" aria-labelledby="ModalPremioTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">Entrega de monedas!</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">
+                                              
+            <form method="POST" style="margin: 15px;">
+
+                {% csrf_token %}
+
+                <h6><small>Elige al usuario</small> </h6>  
+
+                <div class="input-group mb-3">
+                           
+                        <select name="usuario" class="custom-select" style="width: 300px;">
+
+                            {% for i in list_usuarios %}
         
+                            <option value="{{i.id}}" selected>{{i.identificacion}}</option>
+        
+                            {% endfor %}
+        
+                        </select>
+                </div>
+
+                <h6><small>Cantidad de monedas</small> </h6>  
+
+                <div class="input-group mb-3">
+                           
+                    <input name="cantidad" max="{{monedas_disponibles}}" step="0" type="number" class="form-control form-control" style="width: 300px;">
+                </div>
+
+                <h6><small>Deja un mensaje</small> </h6>  
+
+                <div class="input-group mb-3">
+
+                    <textarea class="form-control" id="exampleTextarea" rows="3" name="mensaje"></textarea>
+
+                </div>
+
+                <button type="submit" class="btn btn-light"><img src="{% static 'img/regalo.png' %}" alt="" style="max-width:25px; height:auto; vertical-align: bottom;"> <b>Regalar</b></button>
+            
+            </form>
+            
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+    
+            </div>
         </div>
-        
-      </div>
-
-      <div style="text-align: left; margin-left: 20%; width: 70%;  margin-top: 10px;">
-
-        <div style="width: 20%; display: inline-block; vertical-align: top; text-align: center;">
-
-            <img src="{% static 'img/juntos.png' %}" alt="" style="max-width:100px; height:auto; margin-right: 5px; vertical-align: bottom;">
-
-        
-        </div>
-
-
-
-        <div style="width: 60%; display: inline-block;  vertical-align: middle;">
-
-            <p>Las monedas de por si solas no tienen mucha utilidad, pero cuando la compartes generan valor al que las recibe! Todas las monedas que recibas durante el año formaran un fondo que podras canjear por premios todos los meses</p>
-
         </div>
 
     </div>
+</div>
 
-    <div style="text-align: left; margin-left: 20%; width: 70%; margin-top: 10px;">
+<table class = "table table-hover">
 
-        <div style="width: 60%; display: inline-block;  vertical-align: middle; ">
+    <tr class = "table-dark">                       
+        <td style="text-align: left;" colspan="3"><b> Monedas recibidas!</b></td>
 
-            <p>Pero eso no es todo!, durante el año habra monedas <strong style="color: #229608;">especiales</strong> que daran premios unicos al que mas recolecte! El empleado del año, el compañero mas divertido .. Con tu voto sabremos quien es merecedor de ese titulo y LINK le dara una sorpresa a esas personas!</p>
+    </tr>
 
-        </div>
+    {% for i in recibidas %}
 
-        <div style="width: 20%; display: inline-block; vertical-align: top; text-align: center;">
-
-            <img src="{% static 'img/varmonedas.png' %}" alt="" style="max-width:150px; height:auto; margin-left: 5px; vertical-align: bottom;">
-
+    <tr class = "table-light">
         
-        </div>
-        
-      </div>
+        <td style="max-width: 30px;"><b>{{i.2}}</b></td>
+        <td style="max-width: 30px;">{{i.0}} <img src="{% static 'img/monedalink.png' %}" alt="" style="max-width:17px; height:auto; vertical-align: top; margin-top: 2px;"></td>
+        <td style="text-align: left;"><b>Mensaje:</b> <i>"{{i.1}}"</i> </td>
+
+    </tr>
+
+    {% endfor %}
+
+
+</table>
+
+
+
+
+
+    
 
 
 
@@ -78,9 +184,11 @@
     <p> <small>-- Link<strong>P</strong> --</small> </p>
 
  </div>
+
+</div>
     
                 
-</div>
+
 
 
 {% endblock %}
