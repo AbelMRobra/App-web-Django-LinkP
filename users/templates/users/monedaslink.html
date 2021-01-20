@@ -150,14 +150,16 @@
     </div>
 </div>
 
-<table class = "table table-hover">
 
-    <tr class = "table-dark">                       
-        <td style="text-align: left;" colspan="3"><b> Linkcoins recibidas!</b></td>
-
-    </tr>
 
     {% if recibidas %}
+
+    <table class = "table table-hover">
+
+        <tr class = "table-dark">                       
+            <td style="text-align: left;" colspan="3"><b> Linkcoins recibidas!</b></td>
+    
+        </tr>
 
     {% for i in recibidas %}
 
@@ -171,6 +173,9 @@
 
     {% endfor %}
 
+    </table>
+
+    
     {% else %}
 
     <p class = "texto_resumen">Aun no has recibido Linkcoins!</p> 
@@ -178,7 +183,7 @@
     {% endif %}
 
 
-</table>
+
 
 
 
