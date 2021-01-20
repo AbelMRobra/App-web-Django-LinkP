@@ -81,7 +81,7 @@
 <div style="text-align: left; display: inline-block;">       
     <p class = "texto_resumen">Linkcoins recolectadas: <b>{{monedas_recibidas}}</b> <img src="{% static 'img/monedalink.png' %}" alt="" style="max-width:19px; height:auto; vertical-align: top;">
        | Linkcoins disponibles: <b>{{monedas_disponibles}}</b> <img src="{% static 'img/monedalink.png' %}" alt="" style="max-width:19px; height:auto; vertical-align: top;"></p>
-    <p class = "texto_resumen"></p> 
+    
 
 </div>
 
@@ -157,6 +157,8 @@
 
     </tr>
 
+    {% if recibidas %}
+
     {% for i in recibidas %}
 
     <tr class = "table-light">
@@ -168,6 +170,12 @@
     </tr>
 
     {% endfor %}
+
+    {% else %}
+
+    <p class = "texto_resumen">Aun no has recibido Linkcoins!</p> 
+
+    {% endif %}
 
 
 </table>

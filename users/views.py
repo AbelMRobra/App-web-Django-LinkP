@@ -143,7 +143,9 @@ def guia(request):
 
         datos = 0
 
-    return render(request, "users/guia.html", {"datos":datos, "otros_datos":otros_datos})
+    monedas_recibidas = len(EntregaMoneda.objects.filter(usuario_recibe = usuario))
+
+    return render(request, "users/guia.html", {"datos":datos, "otros_datos":otros_datos, "monedas_recibidas":monedas_recibidas})
 
 def dashboard(request):
 
