@@ -143,6 +143,8 @@ def guia(request):
 
         datos = 0
 
+    usuario = datosusuario.objects.get(identificacion = request.user)
+
     monedas_recibidas = len(EntregaMoneda.objects.filter(usuario_recibe = usuario))
 
     return render(request, "users/guia.html", {"datos":datos, "otros_datos":otros_datos, "monedas_recibidas":monedas_recibidas})
