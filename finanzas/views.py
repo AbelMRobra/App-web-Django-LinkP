@@ -219,7 +219,6 @@ class PdfPrueba(View):
 
         return response
 
-
 def mandarmail(request, id_cuenta):
 
     datos = CuentaCorriente.objects.get(id = id_cuenta)
@@ -300,8 +299,7 @@ def mandarmail(request, id_cuenta):
             mensaje = "error"
 
     return render(request, 'mandarmail.html', {"datos":datos, "mensaje":mensaje})
-
-       
+     
 def resumencredinv(request):
 
     busqueda = 1
@@ -339,7 +337,6 @@ def resumencredinv(request):
 
     return render(request, 'resumencredinv.html', {"datos":datos})
 
-
 def eliminar_pago(request, id_pago):
 
     pago = Pago.objects.get(id = id_pago)
@@ -351,7 +348,6 @@ def eliminar_pago(request, id_pago):
         return redirect('Pagos', id_cuota = pago.cuota.id)
 
     return render(request, 'eliminar_pago.html', {"pago":pago})
-
 
 def editar_cuota(request, id_cuota):
 
@@ -459,7 +455,6 @@ def agregar_cuota(request, id_cuenta):
         return redirect('Cuenta corriente venta', id_cliente = cuenta.id)
 
     return render(request, 'agregar_cuota.html', {"cuenta":cuenta})
-
 
 def deudores(request, id_proyecto):
 
@@ -787,7 +782,6 @@ def crearcuenta(request, id_proyecto):
 
     return render(request, 'crearcuenta.html', {"datos":datos, "proyecto":proyecto})
 
-
 def ctacteproyecto(request, id_proyecto):
 
     proyecto = Proyectos.objects.get(id = id_proyecto)
@@ -795,7 +789,6 @@ def ctacteproyecto(request, id_proyecto):
     datos = CuentaCorriente.objects.filter(venta__proyecto = proyecto)
 
     return render(request, 'ctacteproyecto.html', {"proyecto":proyecto, "datos":datos})
-
 
 def EliminarCuentaCorriente(request, id_cuenta):
 
@@ -813,9 +806,6 @@ def EliminarCuentaCorriente(request, id_cuenta):
         return redirect('Cuenta corriente proyecto', id_proyecto = datos.venta.proyecto.id)
 
     return render(request, 'eliminar_cuenta.html', {"datos":datos, "otros_datos":otros_datos})
-
-### Armando resumen de cuenta corriente
-
 
 def totalcuentacte(request, id_proyecto):
 
@@ -997,8 +987,6 @@ def totalcuentacte(request, id_proyecto):
             datos_segundos.append((datos_terceros, total, total_horm, total_link, total_horm_link, total_proy, total_horm_proy))
             
     return render(request, 'totalcuentas.html', {"fechas":fechas, "datos":datos_segundos, "datos_primero":datos_primeros, "total_fechas":total_fecha, "listado":listado, "proy":proy, "cantidad_cuentas":cantidad_cuentas, "otros_datos":otros_datos})
-
-
 
 def resumenctacte(request, id_cliente):
 
@@ -1192,7 +1180,6 @@ def estructura_boleto(request, id_cliente):
 
     return render(request, 'ctacte_boleto.html', {"ctacte":ctacte, "datos_cuenta":datos_cuenta, "datos_totales":datos_totales})
 
-
 def boleto(request, id_cuenta, id_cuota):
 
     ctacte = CuentaCorriente.objects.get(id = id_cuenta)
@@ -1226,8 +1213,6 @@ def boleto(request, id_cuenta, id_cuota):
 
     return render(request, 'boleto.html', {"ctacte":ctacte, "nombre_cuotas":nombre_cuotas})
 
-
-
 def panelctacote(request):
 
     datos_ventas = VentasRealizadas.objects.all()
@@ -1251,7 +1236,6 @@ def panelctacote(request):
                 return redirect('Cuenta corriente proyecto', id_proyecto=i[1])
 
     return render(request, 'panelctacte.html', {"datos":datos})
-
 
 def consultapagos(request, id_proyecto):
 
@@ -1538,7 +1522,6 @@ def modhonorarios(request):
 
     return render(request, 'modificar_hono.html', {"honorarios":honorarios})
 
-
 def ingresounidades(request, estado, proyecto):
 
     estado_marcado = estado
@@ -1624,7 +1607,6 @@ def ingresounidades(request, estado, proyecto):
 
 
     return render(request, 'ingresounidades.html',{'datos':datos, 'estado':estado_marcado, 'proyecto':proyecto_marcado, 'listado':listado})
-
 
 def indicelink(request):
 
@@ -2293,7 +2275,6 @@ def almacenero(request):
 
     return render(request, 'almacenero.html', {"datos":datos} )
 
-
 def movimientoadmin(request):
 
     if request.method == 'POST':
@@ -2322,7 +2303,6 @@ def movimientoadmin(request):
 
     return render(request, 'movimientoadmin.html', {'datos':datos})
 
-
 def subirmovimiento(request):
 
     if request.method == 'POST':
@@ -2339,7 +2319,6 @@ def subirmovimiento(request):
 
     return render(request, 'crearmovimiento.html')
 
-
 def borrarmovimiento(request, id_mov):
 
     datos = MovimientoAdmin.objects.get(id = id_mov)
@@ -2352,7 +2331,6 @@ def borrarmovimiento(request, id_mov):
 
 
     return render(request, 'borrarmovimiento.html', {'datos':datos})
-
 
 def retirodesocios(request):
 
@@ -2389,8 +2367,21 @@ def retirodesocios(request):
 
     return render(request, 'retirodesocios.html', {'datos':datos, 'total_pesos':total_pesos, 'total_h':total_h, 'proyectos':proyectos})
 
-
 def arqueo_diario(request):
+
+    if request.method == 'POST':
+
+        #try:
+
+        b = Arqueo(
+            fecha = request.POST['fecha'],
+            arqueo = request.FILES['adjunto'],
+        )
+
+        b.save()
+
+        #except:
+            #pass
 
     data_cruda = Arqueo.objects.order_by("-fecha")
 

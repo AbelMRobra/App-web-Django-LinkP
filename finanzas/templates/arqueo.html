@@ -10,11 +10,11 @@
 <div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;" > 
 
     <div >
-        <h2 style="font-family: Arial, Helvetica, sans-serif;">Arqueos diarios</h2>
 
-        <h6 style="font-family: Arial, Helvetica, sans-serif;"> Fecha del arqueo: {{ data_cruda.0.fecha }}</h6>
+        <h1 class="titulopagina">Arqueo diario</h1>
+        <p class="modulo"><b>Modulo: </b>Finanzas</p>
 
-        <small style="font-family: Arial, Helvetica, sans-serif;"><b>Modulo:</b> Finanzas - Arqueo </small>
+        
 
 
         <b><hr class = "my-4" style="width: 100%; "></b>
@@ -23,14 +23,65 @@
 
     <div style="text-align: left;">
 
-        <h5 style="font-family: Arial, Helvetica, sans-serif;">Resumen de los datos</h5>
+        <h6 style="font-family: Arial, Helvetica, sans-serif;">
+            <a type="button" data-toggle="modal" data-target="#ModalArqueo">
+                <img src="{% static 'img/anadir.png' %}" alt="" style="max-width:20px; height:auto;">
+            </a> 
+            Resumen de los datos</h6>
+        <p class = "texto_resumen"> Fecha del ultimo arqueo: <b>{{ data_cruda.0.fecha }}</b></p>
+        <p class = "texto_resumen">Total en efectivo: <b>$ {{otros_datos.2|floatformat:0|intcomma}}</b></p>
+        <p class = "texto_resumen">Total en bancos: <b>$ {{otros_datos.4|floatformat:0|intcomma}}</b></p>
+        <p class = "texto_resumen">Total en cheques: <b>$ {{otros_datos.3|floatformat:0|intcomma}}</b></p>
+        <p class = "texto_resumen">Total de Dolares: <b> U$D {{otros_datos.0|floatformat:0|intcomma}}</b></p>
+        <p class = "texto_resumen">Total de Euros: <b>€ {{otros_datos.1|floatformat:0|intcomma}}</b></p>
+        <p class = "texto_resumen">Total en caja consolidada: <b>$ {{otros_datos.5|floatformat:0|intcomma}}</b></p>
+    </div>
 
-        <h6>Total en efectivo: <small>$ {{otros_datos.2|floatformat:0|intcomma}}</small></h6>
-        <h6>Total en bancos: <small>$ {{otros_datos.4|floatformat:0|intcomma}}</small></h6>
-        <h6>Total en cheques: <small>$ {{otros_datos.3|floatformat:0|intcomma}}</small></h6>
-        <h6>Total de Dolares: <small> U$D {{otros_datos.0|floatformat:0|intcomma}}</small></h6>
-        <h6>Total de Euros: <small>€ {{otros_datos.1|floatformat:0|intcomma}}</small></h6>
-        <h6>Total en caja consolidada: <small>$ {{otros_datos.5|floatformat:0|intcomma}}</small></h6>
+    <!-- Modal fecha estado Subitem -->
+    <div class="modal fade" id="ModalArqueo" tabindex="-1" role="dialog" aria-labelledby="ModalArqueo" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">Cargar un archivo</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">                                    
+            <form method="POST" style="margin: 15px;" enctype="multipart/form-data" id="upload-image-form">
+
+                {% csrf_token %}
+
+                <h6>Fecha del arqueo</h6>  
+
+                <div class="input-group mb-3">
+                           
+                    <input name="fecha" type="date" class="form-control form-control" style="width: 300px;">
+                </div>
+
+                <h6>Archivo</h6>  
+
+                <div class="input-group mb-3">
+                           
+                    <input name="adjunto" type="file" class="form-control form-control" style="width: 300px;">
+                </div>
+
+                <button type="submit" class="btn btn-light">
+                <img src="{% static 'img/upload.png' %}" alt="" style="max-width:20px; height:auto;">
+                <b>Cargar</b></button>
+
+                {{ form.as_p }}
+            
+            </form>
+            
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+    
+            </div>
+        </div>
+        </div>
+
     </div>
 
 
