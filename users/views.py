@@ -16,6 +16,12 @@ from datetime import date
 import pandas as pd
 import numpy as np
 from django.contrib.auth.models import User
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+from email.mime.base import MIMEBase
+from email import encoders
+from agenda import settings
 
 def monedalink(request):
 
@@ -46,6 +52,41 @@ def monedalink(request):
             b.save()
 
             index_num += 1
+
+        try:
+
+            # Establecemos conexion con el servidor smtp de gmail
+            mailServer = smtplib.SMTP(settings.EMAIL_HOST, settings.EMAIL_PORT)
+            mailServer.ehlo()
+            mailServer.starttls()
+            mailServer.ehlo()
+            mailServer.login(settings.EMAIL_HOST_USER, settings.EMAIL_HOST_PASSWORD)
+
+            # Construimos el mensaje simple
+            
+            mensaje = MIMEText("""
+            
+            Recibiste una moneda!,
+
+            "{}"
+
+            - {}
+
+            """.format(b.mensaje, request.user.username))
+            mensaje['From']=settings.EMAIL_HOST_USER
+            mensaje['To']=b.usuario_recibe.email
+            mensaje['Subject']="Recibiste una moneda!!"
+
+
+            # Envio del mensaje
+
+            mailServer.sendmail(settings.EMAIL_HOST_USER,
+                            b.usuario_recibe.email,
+                            mensaje.as_string())
+
+        except:
+
+            pass
 
 
     list_usuarios = datosusuario.objects.all().exclude(identificacion = request.user)
