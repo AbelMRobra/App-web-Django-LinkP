@@ -38,8 +38,8 @@ class SubSubItemResource(resources.ModelResource):
         model = SubSubItem
 
 class SubSubItemAdmin(ImportExportModelAdmin, admin.ModelAdmin):
-    list_display = ('item', 'nombre')
-    search_fields = ('item__nombre','nombre')
+    list_display = ('subitem', 'nombre')
+    search_fields = ('subitem__nombre','nombre')
     resources_class = SubSubItemResource
 
 class LpResource(resources.ModelResource):
