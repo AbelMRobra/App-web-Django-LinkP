@@ -47,30 +47,21 @@
             </div>
         </div>
     </div>
+
+    <div class="right-sidebar">
+      <div class="slimscrollright">
+          <div class="rpanel-title"> Panel de servicio <span><i class="ti-close right-side-toggle"></i></span> </div>
+          <div class="r-panel-body">
+              <ul class="m-t-20 chatonline">
+                  <li><a href="{% url 'Password' %}"><span>Cambio de contraseña</span></a></li>
+                  <li><a href="{% url 'Password' %}"><span>Calendario de vacaciones</span></a></li>
+              </ul>
+
+          </div>
+      </div>
+  </div>
   </div>
 </div>
 </div>
-
-
-
-
-        <hr class="my-4" style="width: 75%; ">
-
-        <div style="margin-left: 12.5%;">
-
-          <a href="{% url 'Password' %}" class="btn btn-secondary">Contraseña</a>
-
-          <a href="{% url 'Holidays' %}" class="btn btn-secondary">Vacaciones</a>
-
-          <button href="#" class="btn btn-secondary">Evaluaciones</button>
-
-        </div>
-
-        
-
-
-        
-
-
 
         {% endblock %}
