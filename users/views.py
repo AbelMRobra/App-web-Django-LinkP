@@ -541,7 +541,7 @@ def inicio(request):
 
         if len(compras) > 0:
 
-            mensaje_oc = "Tienes {} ordenes de compra rechazadas!".format(len(compras))
+            mensaje_oc = "Tienes {} O.C rechazadas!".format(len(compras))
         
 
     datos_logo = 0
@@ -645,7 +645,13 @@ def inicio(request):
 
     barras = sorted(barras,reverse=True, key=lambda tup: tup[1])
 
-    return render(request, "users/inicio.html", {"datos_barras":barras, "datos_logo":datos_logo, "mensaje_oc":mensaje_oc, "mensajesdeldia":mensajesdeldia, "datos_mensajeria":datos_mensajeria, "lista_grupos":lista_grupos})
+
+    miembros = datosusuario.objects.all().order_by("identificacion").exclude(estado = "NO ACTIVO")
+
+    cantidad_m = len(datosusuario.objects.all())
+    cantidad_p = len(Proyectos.objects.all())
+
+    return render(request, "users/inicio2.html", {"cantidad_p":cantidad_p, "cantidad_m":cantidad_m, "datos_barras":barras, "datos_logo":datos_logo, "mensaje_oc":mensaje_oc, "mensajesdeldia":mensajesdeldia, "datos_mensajeria":datos_mensajeria, "lista_grupos":lista_grupos, "miembros":miembros})
 
 def welcome(request):
     # Si estamos identificados devolvemos la portada
@@ -697,7 +703,7 @@ def login(request):
                 # Hacemos el login manualmente
                 do_login(request, user)
                 # Y le redireccionamos a la portada
-                return redirect('/')
+                return redirect('/inicio')
 
         else:
 

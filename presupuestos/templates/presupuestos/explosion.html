@@ -1,122 +1,144 @@
-{% extends "users/inicio.html" %}
+{% extends "users/inicio2.html" %}
 
 {% load static %}
 {% load humanize %}
+{% load apptags_extras %}
 
 {% block content %}
 
-<div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;">
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Explosión de insumos - <b style="color: rgb({{datos.proyecto.color}}) ;">{{datos.proyecto}}</b></h4>
+                <h6 class="card-subtitle">Detalle de los articulos del proyecto</h6>
+                <div class="table-responsive m-t-40">
+                    <div>
+                        <div class="dt-buttons">
 
-    
-    <h3 style="color: rgb({{datos.proyecto.color}})">Explosión de insumos</h3>
-    
-    <img src="{{datos.proyecto.iamgen.url}}"  class="img-fluid" alt="..." style="max-width:20%;width:auto;height:auto; margin-top: 1rem;">
+                            <a href= "{% url 'Descarga Exp' id_proyecto=datos.proyecto.id %}" class="dt-button buttons-copy buttons-html5">Excel</a>
 
+                        </div>
 
-    <h6 style="text-align: center; color: rgb({{datos.proyecto.color}}) ;">{{datos.proyecto}}</h6>
-     
-    
-    <b><hr class = "my-4" style="width: 75%; border-color:  rgba({{datos.proyecto.color}}, 0.5)"></b>
+                        <div class="dataTables_filter">
+                            <form method="POST">
 
-     <form method="POST" style="text-align: center;">
+                                {% csrf_token %}
 
-        {% csrf_token %}
+                            <label>
+                                Buscar:
+                                <input name="palabra" type="search">
+                            </label>
 
-        <div style="display: inline-block; margin-left: 1rem;">
+                        </form>
 
-            <label for="palabra"><h6>Buscar</h6></label>
-
-        </div>
-        
-        <div style="display: inline-block; margin-left: 1rem; ">
-
-            <input name="palabra" type="text" class="form-control form-control" placeholder="Buscar por palabra" list="art" style="width: 30rem;">
-
-        </div>
-
-        <div>
-            <button class="btn btn-dark" type="submit" style="margin-top: 1%;">Buscar</button>          
-        </div>       
-
-     </form>
-
-     
-     <hr class = "my-4" style="width: 100%; border-color: rgba({{datos.proyecto.color}}, 0.5) ;"></b>
-    
-    
-     {% if datos %} 
-
-    <div>
-
-        <table class = "table table-hover" style="text-align: center;">
-            <thead>
-    
-                <tr class = "table-dark">
-                    <th scope = "row" style="vertical-align: middle;">ARTICULO</th>
-                    <th scope = "row" style="vertical-align: middle;">CANTIDAD PRESUPUESTO</th>
-                    <th scope = "row" style="vertical-align: middle;">VALOR </th>
-                    <th scope = "row" style="vertical-align: middle;">COMPRADO</th>
-                    <th scope = "row" style="vertical-align: middle;">CANTIDAD PENDIENTE</th>
-                    <th scope = "row" style="vertical-align: middle;">SALDO </th>            
-                </tr>
-            </thead>
-    
-            <tbody>
-    
+                        </div>
+                    </div>
                 
+                    <table id="example23" class="display nowrap table table-hover table-striped table-bordered" cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Presup.</th>
+                                <th>Valor</th>
+                                <th>Comprado</th>
+                                <th>Pendiente</th>
+                                <th>Saldo</th>
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Presup.</th>
+                                <th>Valor</th>
+                                <th>Comprado.</th>
+                                <th>Pendiente</th>
+                                <th>Saldo</th>
+                            </tr>
+                        </tfoot>
+                        <tbody>
+                            <tr>
+                                {% for i in datos.datos|slice:"30" %}
     
-                {% for i in datos.datos|slice:"30" %}
-    
-                <tr class = "table-light">
-                    <td style="width: 30%;"><b>{{i.0}}</b></td>
-                    <td style="width: 15%;"> {{i.1|floatformat:0|intcomma}} ({{i.0.unidad}})</td>
-                    <td style="width: 10%;"> ${{i.0.valor|floatformat:0|intcomma}}</td>
-                    <td style="width: 15%;"> {{i.2|floatformat:0|intcomma}} ({{i.0.unidad}})</td> 
-                    <td style="width: 15%;"> {{i.3|floatformat:0|intcomma}} ({{i.0.unidad}})</td>
-                    <td style="width: 15%;"> ${{i.4|floatformat:0|intcomma}}</td>                        
-                </tr>
-            </tbody>
-    
-                {% endfor %}
-    
-            </table>
+                                <tr>
+                                    <td>{{i.0}}</td>
+                                    <td> {{i.1|floatformat:0|intcomma}} ({{i.0.unidad}})</td>
+                                    <td> ${{i.0.valor|floatformat:0|intcomma}}</td>
+                                    <td> {{i.2|floatformat:0|intcomma}} ({{i.0.unidad}})</td> 
+                                    <td> {{i.3|floatformat:0|intcomma}} ({{i.0.unidad}})</td>
+                                    <td> ${{i.4|floatformat:0|intcomma}}</td>                        
+                                </tr>
 
-    </div>
+                                {% endfor %}
+                            </tr>
 
-    <hr class = "my-4" style="width: 100%; border-color: rgba({{datos.proyecto.color}}, 0.5) ;"></b>
-
-    <div>
-        <small>El listado puede continuar, el maximo de filas visibles es de 30</small>
-    </div>
-
-    <hr class = "my-4" style="width: 100%; border-color: rgba({{datos.proyecto.color}}, 0.5) ;"></b>
-
-
-
-    <div style="text-align:center">
-       <a href= "{% url 'Descarga Exp' id_proyecto=datos.proyecto.id %}" class="btn btn-success" style="margin-top: 1%;" > Descargar Excel</a>          
-   </div>  
-
-
-
-    <div style="margin-top: 10%;">
-        <p> <small>-- Link<strong>P</strong> --</small> </p>
-
-     </div>
-
-    
-
-
-     {% else %}
-            <div>
-                <h6>No existe registros actualmente</h6>
+                        </tbody>
+                    </table>
+                </div>
             </div>
-        
-    {% endif %}
-        
+        </div>
+            <script src="{% static 'adminpro/assets/plugins/sparkline/jquery.sparkline.min.js' %}"></script>
+            <!--Custom JavaScript -->
+            <script src="{% static 'adminpro/js/custom.min.js' %}"></script>
+            <!-- This is data table -->
+            <script src="{% static 'adminpro/assets/plugins/datatables/jquery.dataTables.min.js' %}"></script>
+            <!-- start - This is for export functionality only -->
+            <script src="https://cdn.datatables.net/buttons/1.2.2/js/dataTables.buttons.min.js"></script>
+            <script src="https://cdn.datatables.net/buttons/1.2.2/js/buttons.flash.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>
+            <script src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.min.js"></script>
+            <script src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js"></script>
+            <script src="https://cdn.datatables.net/buttons/1.2.2/js/buttons.html5.min.js"></script>
+            <script src="https://cdn.datatables.net/buttons/1.2.2/js/buttons.print.min.js"></script>
 
-   
-                    
+        <script>
+            $(document).ready(function() {
+                $('#myTable').DataTable();
+                $(document).ready(function() {
+                    var table = $('#example').DataTable({
+                        "columnDefs": [{
+                            "visible": false,
+                            "targets": 2
+                        }],
+                        "order": [
+                            [2, 'asc']
+                        ],
+                        "displayLength": 25,
+                        "drawCallback": function(settings) {
+                            var api = this.api();
+                            var rows = api.rows({
+                                page: 'current'
+                            }).nodes();
+                            var last = null;
+                            api.column(2, {
+                                page: 'current'
+                            }).data().each(function(group, i) {
+                                if (last !== group) {
+                                    $(rows).eq(i).before('<tr class="group"><td colspan="5">' + group + '</td></tr>');
+                                    last = group;
+                                }
+                            });
+                        }
+                    });
+                    // Order by the grouping
+                    $('#example tbody').on('click', 'tr.group', function() {
+                        var currentOrder = table.order()[0];
+                        if (currentOrder[0] === 2 && currentOrder[1] === 'asc') {
+                            table.order([2, 'desc']).draw();
+                        } else {
+                            table.order([2, 'asc']).draw();
+                        }
+                    });
+                });
+            });
+            $('#example23').DataTable({
+                dom: 'Bfrtip',
+                buttons: [
+                    'copy', 'csv', 'excel', 'pdf', 'print'
+                ]
+            });
+            </script>
+               
 </div>
  
     

@@ -1,73 +1,47 @@
-{% extends "users/inicio.html" %}
+{% extends "users/inicio2.html" %}
 
 {% load static %}
+{% load apptags_extras %}
 
 {% block content %}
-
-<div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;">
-
-    <h3>Listado de Constantes</h3>
-    <h6 > <small>Indices y divisas que actualizan datos</small> </h6>
-     <b><hr class = "my-4" style="width: 100%;"></b>
-
-
-    {% if constantes %}  
-
-        <table class = "table table-hover">
-            <thead>
-    
-                <tr class = "table-dark">
-                    <th scope = "row"> <font style = "vertical-align: heredar;">  NOMBRE </font> </th>
-                    <th scope = "row"> <font style = "vertical-align: heredar;">  VALOR </font>  </th>
-                    <th scope = "row"> <font style = "vertical-align: heredar;">  DESCRIPCIÓN </font>  </th>
-                    <th scope = "row"> <font style = "vertical-align: heredar;">  ULTIMA ACTUALIZACIÓN </font>  </th>
+<div class="col-12">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">
+                {% if request.user|has_group:"PRESUPUESTO NIVEL 3" %}
+                <a class="btn btn-secondary btn-outline" href="/presupuestos/cons_panel">
                     
-    
-                </tr>
-            </thead>
-    
-            <tbody>
-    
-                {% for i in constantes %}
-                <tr class = "table-light">
-                    <td style="width: 20%;"> <b>{{i.nombre}}</b> </td>
-                    <td style="width: 10%;"></tdstyle>${{i.valor}}</td>
-                    <td style="width: 40%;"></tdstyle> <b>{{i.descrip}}</b> </td>
-                    <td style="width: 30%;"></tdstyle> {{i.fecha_a}} </td>
+                    <img src="{% static 'img/iniciar-sesion.png' %}" alt="" style="max-width:20px; height:auto; vertical-align: middle;">
                     
-    
-                </tr>
-                {% endfor %}
+                </a>{% endif %} Base de datos de constantes</h4>
+            <h6 class="card-subtitle">Estas constantes actualizan las variables pesificadas en la BBDD</code></h6>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Valor</th>
+                            <th>Ultima Act</th>
+                            
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for i in constantes %}
+                        <tr>
+                            <td>{{i.nombre}}</td>
+                            <td>${{i.valor|floatformat:2}}</td>
+                            <td><span class="text-muted"><i class="fa fa-clock-o"></i> {{i.fecha_a|date:"d M Y"}}</span> </td>
+                            
+      
+                        </tr>
 
-            </tbody>
- 
+                        {% endfor %}
 
-            </table>        
-
-            {% if perms.constante.view %}
-
-            <b><hr class = "my-4" style="width: 100%; "></b>
-
-            <div>
-                   <a href="/presupuestos/cons_panel" class="btn btn-success">Acceso al panel de cambios</a>          
+                    </tbody>
+                </table>
             </div>
-    
-            {% endif %}
-
-         {% else %}
-
-                <div>
-                    <h3>Aun no se han cargado constantes</h3>
-                </div>
-                
-    
-        {% endif %}
-
-        <div style="margin-top: 2rem;">
-            <p> <small>-- Link<strong>P</strong> --</small> </p>
-    
-            </div>
-            
+        </div>
+    </div>
 </div>
 
 

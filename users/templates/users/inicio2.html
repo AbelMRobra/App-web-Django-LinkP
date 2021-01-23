@@ -1,0 +1,470 @@
+{% load static %}
+{% load apptags_extras %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'css/hint.css' %}">
+    <link rel="stylesheet" href="{% static 'css/styleabel.css' %}">  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link rel="shortcut icon" href="{% static 'img/icolinkp.ico' %}" />
+    
+    <!-- Hojas de estilos AdminPro -->
+
+    <link href="{% static 'adminpro/assets/plugins/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'adminpro/assets/plugins/perfect-scrollbar/css/perfect-scrollbar.css' %}" rel="stylesheet">
+    <link href="{% static 'adminpro/assets/plugins/chartist-js/dist/chartist.min.css' %}" rel="stylesheet">
+    <link href="{% static 'adminpro/assets/plugins/chartist-plugin-tooltip-master/dist/chartist-plugin-tooltip.css' %}" rel="stylesheet">
+    <link href="{% static 'adminpro/assets/plugins/c3-master/c3.min.css' %}" rel="stylesheet">
+    <link href="{% static 'adminpro/assets/plugins/toast-master/css/jquery.toast.css' %}" rel="stylesheet">
+    <link href="{% static 'adminpro/main/css/style.css' %}" rel="stylesheet">
+    <link href="{% static 'adminpro/main/css/pages/dashboard1.css' %}" rel="stylesheet">
+    <link href="{% static 'adminpro/main/css/colors/default-dark.css' %}" id="theme" rel="stylesheet">
+
+    <title>Link-P</title>
+
+</head>
+<body class="fix-header fix-sidebar card-no-border">
+  <!-- ============================================================== -->
+  <!-- Preloader - style you can find in spinners.css -->
+  <!-- ============================================================== -->
+  <div class="preloader">
+      <div class="loader">
+          <div class="loader__figure"></div>
+          <p class="loader__label">LINK-P</p>
+      </div>
+  </div>
+  <!-- ============================================================== -->
+  <!-- Main wrapper - style you can find in pages.scss -->
+  <!-- ============================================================== -->
+  <div id="main-wrapper">
+      <!-- ============================================================== -->
+      <!-- Topbar header - style you can find in pages.scss -->
+      <!-- ============================================================== -->
+      <header class="topbar">
+          <nav class="navbar top-navbar navbar-expand-md navbar-light">
+              <!-- ============================================================== -->
+              <!-- Logo -->
+              <!-- ============================================================== -->
+              <div class="navbar-header">
+                  <a class="navbar-brand" href="/inicio">
+                     
+                      <!--End Logo icon -->
+                      <!-- Logo text --><span>
+                       <!-- dark Logo text -->
+                       <img src="{% static 'img/logolinkp2.png' %}" style="max-width: 130px;"  alt="homepage" class="dark-logo" />
+                       <!-- Light Logo text -->    
+                       <img src="{% static 'img/logolinkp2.png' %}" style="max-width: 130px;" class="light-logo" alt="homepage" /></span> </a>
+              </div>
+              <!-- ============================================================== -->
+              <!-- End Logo -->
+              <!-- ============================================================== -->
+              <div class="navbar-collapse">
+                  <!-- ============================================================== -->
+                  <!-- toggle and nav items -->
+                  <!-- ============================================================== -->
+                  <ul class="navbar-nav mr-auto">
+                      <!-- This is  -->
+                      <li class="nav-item"> <a class="nav-link nav-toggler hidden-md-up waves-effect waves-dark" href="javascript:void(0)"><i class="ti-menu"></i></a> </li>
+                      <li class="nav-item"> <a class="nav-link sidebartoggler hidden-sm-down waves-effect waves-dark" href="javascript:void(0)"><i class="ti-menu"></i></a> </li>
+                      
+                  </ul>
+
+              </div>
+          </nav>
+      </header>
+      <!-- ============================================================== -->
+      <!-- End Topbar header -->
+      <!-- ============================================================== -->
+      <!-- ============================================================== -->
+      <!-- Left Sidebar - style you can find in sidebar.scss  -->
+      <!-- ============================================================== -->
+      <aside class="left-sidebar">
+          <!-- Sidebar scroll-->
+          <div class="scroll-sidebar">
+              <!-- Sidebar navigation-->
+              <nav class="sidebar-nav">
+                  <ul id="sidebarnav">
+                        
+                    <li class="user-profile">
+
+                      {% if datos_logo %}
+                      <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><img src="{{datos_logo.imagenlogo.url}}" alt="user" /><span class="hide-menu">{{user.username}}</span></a>
+                      
+                      {% else %}
+
+                      <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><span class="hide-menu">{{user.username}}</span></a>
+
+                      {% endif %}
+                      
+                      <ul aria-expanded="false" class="collapse">
+                              <li><a href="/guia">Mi perfil</a></li>
+                              <li><a href="/logout">Logout</a></li>
+                          </ul>
+                      </li>
+                      <li class="nav-devider"></li>
+                      <li class="nav-small-cap">ESPACIOS DE TRABAJO</li>
+                      <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i class="mdi mdi-widgets"></i><span class="hide-menu">Presupuestos</span></a>
+                          <ul aria-expanded="false" class="collapse">
+                            {% if request.user|has_group:"PRESUPUESTO NIVEL 1" %}
+
+                              <li><a href="/presupuestos/cons_list">Base de constantes</a></li>
+                              <li><a href="/presupuestos/registro">Historico de indices</a></li>
+                              <li><a href="/presupuestos/insum_list">Listado de articulos</a></li>
+                              <li><a href="/presupuestos/analisis_list">Biblioteca - APU</a></li>
+
+                              {% if request.user|has_group:"PRESUPUESTO NIVEL 2" %}
+                              <li class="nav-devider"></li>
+                              <li><a href="/presupuestos/presupuestos">Control de presupuestos</a></li>
+
+                              {% endif %}
+
+                              {% if request.user|has_group:"PRESUPUESTO NIVEL 2" %}
+                              <li class="nav-devider"></li>
+                              <li><a href="/presupuestos/desde">Indicador de precios</a></li>
+                              <li><a href="/presupuestos/informe">Informe del área</a></li>
+
+                              {% endif %}
+
+                            {% else %}
+
+                            <li>No tienes permisos para ver este espacio</li>
+
+                            {% endif %}
+
+                          </ul>
+                      </li>
+                      <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i class="mdi mdi-widgets"></i><span class="hide-menu">Administración</span></a>
+                        <ul aria-expanded="false" class="collapse">
+                            <li><a href="index.html">C.B.A</a></li>
+                        </ul>
+                    </li>
+                    <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i class="mdi mdi-widgets"></i><span class="hide-menu">Finanzas</span></a>
+                      <ul aria-expanded="false" class="collapse">
+                          <li><a href="index.html">C.B.A</a></li>
+                      </ul>
+                  </li>
+                  <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i class="mdi mdi-widgets"></i><span class="hide-menu">Compras</span></a>
+                    <ul aria-expanded="false" class="collapse">
+                      {% if request.user|has_group:"COMPRAS NIVEL 1" %}
+                        <li><a href="/compras/proveedores">Proveedores</a> </li>
+                        {% if request.user|has_group:"COMPRAS NIVEL 2" %}  
+                        <li class="nav-devider"></li>
+                        <li><a href="{% url 'Comparativas' 0 0 %}">Solicitudes de compras</a></li>
+                        {% endif %}
+                        {% if request.user|has_group:"COMPRAS NIVEL 3" %}  
+                        <li class="nav-devider"></li>
+                        <li><a href="/compras/compras/0">Registros de compras </a></li>
+                        {% endif %}
+                        {% if request.user|has_group:"COMPRAS NIVEL 4" %}  
+                        <li class="nav-devider"></li>
+                        <li><a href="{% url 'OC autorizadas' 0 %}">Ordenes de compras autorizadas</a></li>
+                        {% endif %}
+                        {% if request.user|has_group:"COMPRAS NIVEL 5" %}  
+                        <li class="nav-devider"></li>
+                        <li><a href="/compras/analisiscompras">Analisis de compras</a></li>
+                        <li><a href="/compras/informecompras">Informe de compras</a></li>
+                        {% endif %}
+                        {% else %}
+
+                        <li>No tienes permisos para ver este espacio</li>
+
+                        {% endif %}
+                    </ul>
+                </li>
+                <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i class="mdi mdi-widgets"></i><span class="hide-menu">Oficina tecnica</span></a>
+                  <ul aria-expanded="false" class="collapse">
+
+                      {% if request.user|has_group:"TECNICA NIVEL 1" %}
+                      <li><a href="/rrhh/notasdepedido/0/0">Correspondencia</a></li>
+
+                      {% if request.user|has_group:"TECNICA NIVEL 2" %}
+
+                      <li class="nav-devider"></li>
+
+                      <li><a href="/tecnica/documentacion">Seguimiento de documentación</a></li>
+
+                      {% endif %}
+
+                      {% else %}
+
+                            <li>No tienes permisos para ver este espacio</li>
+
+                            {% endif %}
+                  </ul>
+              </li>
+              <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i class="mdi mdi-widgets"></i><span class="hide-menu">Comercialización</span></a>
+                <ul aria-expanded="false" class="collapse">
+                    <li><a href="index.html">C.B.A</a></li>
+                </ul>
+            </li>
+            <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i class="mdi mdi-widgets"></i><span class="hide-menu">Postventa</span></a>
+              <ul aria-expanded="false" class="collapse">
+                  <li><a href="index.html">C.B.A</a></li>
+              </ul>
+          </li>
+
+          <li class="nav-small-cap">SIGMA</li>
+
+          <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i class="mdi mdi-widgets"></i><span class="hide-menu">Generales</span></a>
+            <ul aria-expanded="false" class="collapse">
+                <li><a href="index.html">C.B.A</a></li>
+            </ul>
+        </li>
+                   </ul>
+              </nav>
+              <!-- End Sidebar navigation -->
+          </div>
+          <!-- End Sidebar scroll-->
+      </aside>
+      <!-- ============================================================== -->
+      <!-- End Left Sidebar - style you can find in sidebar.scss  -->
+      <!-- ============================================================== -->
+      <!-- ============================================================== -->
+      <!-- Page wrapper  -->
+      <!-- ============================================================== -->
+      <div class="page-wrapper">
+
+        {% block content %}
+            <!-- ============================================================== -->
+            <!-- Bread crumb and right sidebar toggle -->
+            <!-- ============================================================== -->
+
+            <div class="container-fluid">
+            <div class="row page-titles">
+              <div class="col-md-5 align-self-center">
+                  <h3 class="text-themecolor">Un resumen de LINK-P</h3>
+              </div>
+
+
+          </div>
+          <!-- ============================================================== -->
+          <!-- End Bread crumb and right sidebar toggle -->
+          <!-- ============================================================== -->
+          
+              <!-- ============================================================== -->
+              <!-- Stats box -->
+              <!-- ============================================================== -->
+              <div class="row">
+                <div class="col-lg-3">
+                  <div class="card bg-primary">
+                      <div class="card-body">
+                          <div class="d-flex no-block">
+                              <div class="m-r-20 align-self-center"><img src="{% static 'adminpro/assets/images/icon/staff-w.png' %}" alt="Income" /></div>
+                              <div class="align-self-center">
+                                  <h6 class="text-white m-t-10 m-b-0">Usuarios registrados</h6>
+                                  <h2 class="m-t-0 text-white">{{cantidad_m}}</h2></div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+
+                  <div class="col-lg-3">
+                      <div class="card bg-success">
+                          <div class="card-body">
+                              <div class="d-flex no-block">
+                                  <div class="m-r-20 align-self-center"><img src="{% static 'adminpro/assets/images/icon/expense-w.png' %}" alt="Income" /></div>
+                                  <div class="align-self-center">
+                                      <h6 class="text-white m-t-10 m-b-0">Proyectos cargados</h6>
+                                      <h2 class="m-t-0 text-white">{{cantidad_p}}</h2></div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="col-lg-3">
+                      <div class="card bg-info">
+                          <div class="card-body">
+                              <div class="d-flex no-block">
+                                  <div class="m-r-20 align-self-center"><img src="{% static 'adminpro/assets/images/icon/assets-w.png' %}" alt="Income" /></div>
+                                  <div class="align-self-center">
+                                      <h6 class="text-white m-t-10 m-b-0">Dias desde que inicio</h6>
+                                      <h2 class="m-t-0 text-white">987,563</h2></div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  
+              </div>
+
+            </div>
+          
+              <!-- ============================================================== -->
+              <!-- Bread crumb and right sidebar toggle -->
+              <!-- ============================================================== -->
+
+              {% if datos_mensajeria %}
+
+              <div class="container-fluid r-aside">
+
+              <div>
+                <h4 class="card-title"><span class="lstick"></span>
+                <img src="{% static 'img/advertir.png' %}" alt="" style="max-width:20px; height:auto; margin: 2px; vertical-align: top;"> Tienes correspondencia!</h4></div>
+
+              <div style="margin: 5px;">
+                <a  href="/rrhh/notasdepedido/0/0">
+                  Toca aqui para ver la correspondencia
+                </a>
+
+              </div>
+
+            </div>
+
+              {% endif %}
+
+              {% if mensaje_oc %}
+
+              <div class="container-fluid r-aside">
+
+              <div>
+                <h4 class="card-title"><span class="lstick"></span>
+                  <img src="{% static 'img/advertir.png' %}" alt="" style="max-width:20px; height:auto; margin: 2px; vertical-align: top;"> Mensaje sobre ordenes de compra!</h4></div>
+
+
+              <div style="margin: 5px;">
+
+                {{mensaje_oc}}
+
+              </div>
+
+            </div>
+
+              {% endif %}
+
+            
+
+              <div class="container-fluid r-aside">
+
+
+              <div>
+                <h4 class="card-title"><span class="lstick"></span>Nuestra empresa!</h4></div>
+
+              <div class="table-responsive m-t-20 no-wrap">
+                <table class="table vm no-th-brd pro-of-month">
+                    <thead>
+                        <tr>
+                            <th colspan="2">Usuario</th>
+                            <th>Área</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                      {% for m in miembros %}
+                        <tr>
+                          <td><span class="round"><img src="{{m.imagenlogo.url}}" alt="user" width="50"></span></td>
+                            <td>
+                                <h6>{{m.identificacion}}</h6><small class="text-muted">{{m.cargo}}</small></td>
+                            <td>{{m.area}}</td>
+
+                        </tr>
+
+                      {% endfor %}
+
+                    </tbody>
+                </table>
+            </div>
+
+            <aside class="right-side-panel">
+
+            <div class="row">
+              <div class="col-md-12 m-t-10">
+                  <div class="card">
+                      <img class="card-img-top img-responsive" src="{% static 'img/blue.png' %}" alt="Card image cap">
+                      <div class="card-body">
+                          <h3 class="font-normal">TORRE BLUE ABRIL 2021</h3>
+                          <span class="label label-info label-rounded">Proyectos</span>
+                          <p class="m-b-0 m-t-20">A pocos meses de la entrega de la primera torre del plan puedo</p>
+                      </div>
+                  </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-12 m-t-10">
+                  <div class="card">
+                      <img class="card-img-top img-responsive" src="{% static 'img/car2.jpg' %}" alt="Card image cap">
+                      <div class="card-body">
+                          <h3 class="font-normal">LINK-P tips</h3>
+                          <span class="label label-info label-rounded">Tips</span>
+                          <p class="m-b-0 m-t-20">Recuerda que el soft se desconecta luego de 2 horas, guarda tu trabajo y evita pasar tus credenciales!</p>
+                      </div>
+                  </div>
+              </div>
+            </div>
+
+          
+
+            </aside>
+
+          
+
+          {% endblock %}
+          <!-- ============================================================== -->
+          <!-- End Container fluid  -->
+          <!-- ============================================================== -->
+          <!-- ============================================================== -->
+          <!-- footer -->
+          <!-- ============================================================== -->
+          <footer class="footer"> © Link-P </footer>
+          <!-- ============================================================== -->
+          <!-- End footer -->
+          <!-- ============================================================== -->
+      </div>
+      <!-- ============================================================== -->
+      <!-- End Page wrapper  -->
+      <!-- ============================================================== -->
+  </div>
+
+        <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+        <!-- scripts AdminPro -->
+
+      <script src="{% static 'adminpro/assets/plugins/jquery/jquery.min.js' %}"></script>
+      <script src="{% static 'adminpro/assets/plugins/bootstrap/js/popper.min.js' %}"></script>
+      <script src="{% static 'adminpro/assets/plugins/bootstrap/js/bootstrap.min.js' %}"></script>
+      <script src="{% static 'adminpro/main/js/perfect-scrollbar.jquery.min.js' %}"></script>
+      <script src="{% static 'adminpro/main/js/waves.js' %}"></script>
+      <script src="{% static 'adminpro/main/js/sidebarmenu.js' %}"></script>
+      <script src="{% static 'adminpro/main/js/custom.min.js' %}"></script>
+      <script src="{% static 'adminpro/assets/plugins/sparkline/jquery.sparkline.min.js' %}"></script>
+      <script src="{% static 'adminpro/assets/plugins/chartist-js/dist/chartist.min.js' %}"></script>
+      <script src="{% static 'adminpro/assets/plugins/chartist-plugin-tooltip-master/dist/chartist-plugin-tooltip.min.js' %}"></script>
+      <script src="{% static 'adminpro/assets/plugins/d3/d3.min.js' %}"></script>
+      <script src="{% static 'adminpro/assets/plugins/c3-master/c3.min.js' %}"></script>
+      <script src="{% static 'adminpro/main/js/dashboard1.js' %}"></script>
+      <script src="{% static 'adminpro/assets/plugins/styleswitcher/jQuery.style.switcher.js' %}"></script>
+
+      </body>
+
+      
+</html>
+
+
+<script>
+
+function count(){
+  var counter = { var: 0 };
+  TweenMax.to(counter, 3, {
+    var: 100, 
+    onUpdate: function () {
+      var number = Math.ceil(counter.var);
+      $('.counter').html(number);
+      if(number === counter.var){ count.kill(); }
+    },
+    onComplete: function(){
+      count();
+    },    
+    ease:Circ.easeOut
+  });
+}
+
+count();
+
+
+</script>
+
+

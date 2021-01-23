@@ -1,63 +1,111 @@
 {% load static %}
+{% load apptags_extras %}
 
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
-    <link rel="stylesheet" href="{% static 'css/estiloabel.css' %}">
-    <link rel="shortcut icon" href="{% static 'img/icolinkp.ico' %}" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>LINK-P</title>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- Favicon icon -->
+    <link rel="shortcut icon" href="{% static 'img/icolinkp.ico' %}" />
+    <title>Link-P</title>
+    <!-- Bootstrap Core CSS -->
+    <link href="{% static 'adminpro/assets/plugins/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <!-- page css -->
+    <link href="{% static 'adminpro/main/css/pages/login-register-lock.css' %}" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="{% static 'adminpro/main/css/style.css' %}" rel="stylesheet">
+    
+    <!-- You can change the theme colors from here -->
+    <link href="{% static 'adminpro/main/css/colors/default-dark.css' %}" id="theme" rel="stylesheet">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
 </head>
 
-<body background="{% static 'img/dark_wood.png' %}">
-
-    <div class= "conteiner">
-
-        <div class="jumbotron" style="margin-top: 5%; background-color: rgba(11, 32, 68, 0.8);">
-
-            <div class="boxlogin" style="width: 100%;">
-
-                <h1 class="display-3" style="color: #F3EAE5 ;" > <b>LINK-</b><b style="color: #19C6C6 ;">P</b></h1>
-
-                <hr class="my-4" style="background-color: #F3EAE5; width: 50%;">
-                
-                <h2 style="color: #F3EAE5 ;">Iniciar sesión</h2>
-
-                <hr class="my-4" style="background-color: #F3EAE5; width: 50%">
-
-
-            <form method="POST" style="width: 100%">
-
-            
-                {% csrf_token %}
-
-                <div class="form-group">
-                    <label style="color: #F3EAE5 ;">  Usuario:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  </label>
-                    {{ form.username }}
-                </div>
-                <div class="form-group">
-                    <label style="color: #F3EAE5 ;">Contraseña:</label>
-                    {{ form.password }}
-                </div>
-                <hr class="my-4">
-                <button type="submit" class="btn btn-success">Log in</button>
-            
-            </form>
-
-            {% block content %}
-            
-                {% endblock %}
-
-
-
-            </div>           
-          </div>
+<body  class="card-no-border">
+    <!-- ============================================================== -->
+    <!-- Preloader - style you can find in spinners.css -->
+    <!-- ============================================================== -->
+    <div class="preloader">
+        <div class="loader">
+            <div class="loader__figure"></div>
+            <p class="loader__label">Link-P</p>
+        </div>
     </div>
+    <!-- ============================================================== -->
+    <!-- Main wrapper - style you can find in pages.scss -->
+    <!-- ============================================================== -->
+    <section id="wrapper">
+        <div class="login-register" style="background-image:url({% static 'img/oficina.jpg' %});">
+            <div class="login-box card">
+                <div class="card-body">
+                    <form class="form-horizontal form-material" id="loginform" method="POST">
+                        {% csrf_token %}
+                        <h3 class="box-title m-b-20">Link-P</h3>
+                        <div class="form-group ">
+                            <div class="col-xs-12">
+                                <input class="form-control" type="text" required="" placeholder="Username" name="username"> </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-xs-12">
+                                <input class="form-control" type="password" required="" placeholder="Password" name="password"> </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-md-12">
+                                <div class="checkbox checkbox-info pull-left p-t-0">
+                                    <input id="checkbox-signup" type="checkbox" class="filled-in chk-col-light-blue">
+                                    <label for="checkbox-signup"> Remember me </label>
+                                </div> <a href="javascript:void(0)" id="to-recover" class="text-dark pull-right"></a> </div>
+                        </div>
+                        <div class="form-group text-center">
+                            <div class="col-xs-12 p-b-20">
+                                <button class="btn btn-block btn-lg btn-info btn-rounded" type="submit">Log In</button>
+                            </div>
+                        </div>
+
+
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- ============================================================== -->
+    <!-- End Wrapper -->
+    <!-- ============================================================== -->
+    <!-- ============================================================== -->
+    <!-- All Jquery -->
+    <!-- ============================================================== -->
+    <script src="{% static 'adminpro/assets/plugins/jquery/jquery.min.js' %}"></script>
+    <!-- Bootstrap tether Core JavaScript -->
+    <script src="{% static 'adminpro/assets/plugins/bootstrap/js/popper.min.js' %}"></script>
+    <script src="{% static 'adminpro/assets/plugins/bootstrap/js/bootstrap.min.js' %}"></script>
+    <!--Custom JavaScript -->
+    <script type="text/javascript">
+        $(function() {
+            $(".preloader").fadeOut();
+        });
+        $(function() {
+            $('[data-toggle="tooltip"]').tooltip()
+        });
+        // ============================================================== 
+        // Login and Recover Password 
+        // ============================================================== 
+        $('#to-recover').on("click", function() {
+            $("#loginform").slideUp();
+            $("#recoverform").fadeIn();
+        });
+    </script>
+    
 </body>
 
-
 </html>
-
