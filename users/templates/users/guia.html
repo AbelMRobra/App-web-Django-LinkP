@@ -48,61 +48,11 @@
         </div>
     </div>
   </div>
-
-      <div class="jumbotron" style="background-color: white; margin-top: 2%;">
-
-        <div style="text-align: center;">
-          <h3> Tu espacio personal</h3>
-          <h4 style="font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif">{{request.user.first_name}} {{request.user.last_name}}</h4>
-
-        </div>       
-        <hr class="my-4" style="width: 75%; ">
-
-        {% if datos %}
-
-        <h5 style="margin-left: 12.5%;">Tu perfil</h5>
-
-        <div style="text-align: center;">
-
-          <img src="{{datos.imagenlogo.url}}"  class="imgRedondaGrande" alt="...">
-
-        </div>
-       
-        <div style="text-align: left; margin-left: 12.5%; margin-top: 20px;">
+</div>
+</div>
 
 
-          <div>
 
-            <small><b>Área que perteneces:</b> {{datos.area}}</small>
-          
-
-          </div>
-
-          <div>
-
-            <small><b>Cargo que ocupas:</b> {{datos.cargo}}</small>
-          
-
-          </div>
-
-          <div>
-
-            <small><b>Email:</b> {{datos.email}}</small>
-          
-
-          </div>
-
-          {% if request.user %}
-
-          <div>
-
-            <small><b>Linkcoins que tienes:</b> {{monedas_recibidas}} <a href="{% url 'Moneda Link' %}" style="text-decoration: none;"><img src="{% static 'img/monedalink.png' %}" alt="" style="max-width:20px; height:auto; margin: 2px; vertical-align: bottom;"></a> </small> 
-
-          </div>
-
-          {% endif %}
-
-        </div>
 
         <hr class="my-4" style="width: 75%; ">
 
