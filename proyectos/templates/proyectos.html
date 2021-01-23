@@ -23,80 +23,29 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <td> <b><img src="{{i.iamgen.url}}"  class="img-fluid" alt="..." style="max-width: 70px; height:auto;"></b> </td>
-                <td style="color: rgb({{i.color}}); vertical-align: middle;"> <b>{{i.nombre}}</b> </td>
-                <td class="priority-5">{{i.descrip}}</td>
 
-                {% if i.fecha_i %}
-                <td>{{i.fecha_i|date:"Y-m-d"}}</td>
+                            {% for i in datos %}
 
-                {% else %}
+                            <tr>
 
-                <td>No definida</td>
+                                <td> <b><img src="{{i.iamgen.url}}"  class="img-fluid" alt="..." style="max-width: 50px; height:auto;"></b> </td>
+                                <td>{{i.nombre}}</td>
+                                
+                                {% if i.fecha_i %}
+                                <td>{{i.fecha_i|date:"d-M-Y"}}</td>
 
-                {% endif %}
-                <td class="priority-5">{{i.fecha_f|date:"Y-m-d"}}</td>
-                <td> <b>{{i.m2}} m2</b> </td>
-            </tr>
+                                {% else %}
 
-            {% endif %}
+                                <td>No definida</td>
 
-
-            {% endfor %}
-
-            {% elif request.user.username == "AR" or request.user.username == "PL"  %}
-
-            {% for i in datos %}
-
-            <tr class = "table-light">
-
-                <td> <b><img src="{{i.iamgen.url}}"  class="img-fluid" alt="..." style="max-width: 50px; height:auto;"></b> </td>
-                <td>{{i.nombre}}</td>
-                {% if i.fecha_i %}
-                <td>{{i.fecha_i|date:"d-M-Y"}}</td>
-
-                {% else %}
-
-                <td>No definida</td>
-
-                {% endif %}
-                <td>{{i.fecha_f|date:"d-M-Y"}}</td>
-                <td><span class="label label-info" style="background-color: rgb({{i.color}});">{{i.m2}} m2</span></td>
-            </tr>
+                                {% endif %}
+                                <td>{{i.fecha_f|date:"d-M-Y"}}</td>
+                                <td><span class="label label-info" style="background-color: rgb({{i.color}});">{{i.m2}} m2</span></td>
+                            </tr>
 
 
-            {% endfor %}
+                            {% endfor %}
 
-            {% else %}
-
-            
-            {% for i in datos %}
-
-            {% if not "SEMINARIO" in i.nombre %}
-
-            <tr class = "table-light">
-
-                <td><img src="{{i.iamgen.url}}"  class="img-fluid" alt="..." style="max-width: 50px; height:auto;"></td>
-                <td> {{i.nombre}}</td>
-                {% if i.fecha_i %}
-                <td>{{i.fecha_i|date:"d-M-Y"}}</td>
-
-                {% else %}
-
-                <td>No definida</td>
-
-                {% endif %}
-                <td>{{i.fecha_f|date:"d-M-Y"}}</td>
-                <td><span class="label label-info" style="background-color: rgb({{i.color}});">{{i.m2}} m2</span></td>
-            </tr>
-
-            {% endif %}
-
-
-            {% endfor %}
-
-            
-            {% endif %}
 
 
                         </tbody>
