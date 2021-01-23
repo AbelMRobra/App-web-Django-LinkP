@@ -1,4 +1,4 @@
-{% extends "users/inicio.html" %}
+{% extends "users/inicio2.html" %}
 {% load apptags_extras %}
 
 {% load static %}
@@ -40,7 +40,7 @@
                       {{datos.email}}
                         <br/>
                         <br/>
-                        <abbr title="Phone">Linkcoins: </abbr> {{monedas_recibidas}} <a href="{% url 'Moneda Link' %}" style="text-decoration: none;"><img src="{% static 'img/monedalink.png' %}" alt="" style="max-width:20px; height:auto; margin: 2px; vertical-align: bottom;"></a>
+                        Linkcoins: {{monedas_recibidas}} <a href="{% url 'Moneda Link' %}" style="text-decoration: none;"><img src="{% static 'img/monedalink.png' %}" alt="" style="max-width:20px; height:auto; margin: 2px; vertical-align: bottom;"></a>
                     </address>
                     {% endif %}
                 </div>
