@@ -1,43 +1,29 @@
-{% extends "users/inicio.html" %}
+{% extends "users/inicio2.html" %}
 
 {% load static %}
 
 {% block content %}
 
-<div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;">
-
-    <h3 style="font-family: Arial, Helvetica, sans-serif;">Panel - Proyectos</h3>
-    <h6 style="font-family: Arial, Helvetica, sans-serif;"> <small>Todos tus proyectos</small> </h6>
-
-     <b><hr class = "my-4" style="width: 100%;"></b>
-
-    {% if datos %} 
-
-    <table class = "table table-hover" style="text-align: center;">
-        <thead>
-
-            <tr class = "table-dark">
-                <th scope = "row" style="vertical-align: middle;" colspan="2"> PROYECTO</th>
-                <th scope = "row" style="vertical-align: middle;" class="priority-5">DESCRIPCIÓN </th>
-                <th scope = "row" style="vertical-align: middle;">FECHA INICIO </th>
-                <th scope = "row" style="vertical-align: middle;" class="priority-5">FECHA DE ENTREGA</th>
-                <th scope = "row" style="vertical-align: middle;">TAMAÑO</th> 
-
-            </tr>
-        </thead>
-
-        <tbody>
-
-            {% if request.user.username == "HC" %}
-
-            {% for i in datos %}
-
-            {% if "DIANCO" in i.nombre %}
-
-           
-            <tr class = "table-light">
-
-                <td> <b><img src="{{i.iamgen.url}}"  class="img-fluid" alt="..." style="max-width: 70px; height:auto;"></b> </td>
+<div class="row">
+    <!-- column -->
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Listado de proyectos</h4>
+                <h6 class="card-subtitle">Proyectos cargados</h6>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Logo</th>
+                                <th>Nombre</th>
+                                <th>Inicio</th>
+                                <th>Final</th>
+                                <th>Tamaño</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <td> <b><img src="{{i.iamgen.url}}"  class="img-fluid" alt="..." style="max-width: 70px; height:auto;"></b> </td>
                 <td style="color: rgb({{i.color}}); vertical-align: middle;"> <b>{{i.nombre}}</b> </td>
                 <td class="priority-5">{{i.descrip}}</td>
 
@@ -58,25 +44,24 @@
 
             {% endfor %}
 
-            {% elif request.user.username == "ar" or request.user.username == "PL"  %}
+            {% elif request.user.username == "AR" or request.user.username == "PL"  %}
 
             {% for i in datos %}
 
             <tr class = "table-light">
 
-                <td> <b><img src="{{i.iamgen.url}}"  class="img-fluid" alt="..." style="max-width: 70px; height:auto;"></b> </td>
-                <td style="color: rgb({{i.color}}); vertical-align: middle;"> <b>{{i.nombre}}</b> </td>
-                <td class="priority-5">{{i.descrip}}</td>
+                <td> <b><img src="{{i.iamgen.url}}"  class="img-fluid" alt="..." style="max-width: 50px; height:auto;"></b> </td>
+                <td>{{i.nombre}}</td>
                 {% if i.fecha_i %}
-                <td>{{i.fecha_i|date:"Y-m-d"}}</td>
+                <td>{{i.fecha_i|date:"d-M-Y"}}</td>
 
                 {% else %}
 
                 <td>No definida</td>
 
                 {% endif %}
-                <td class="priority-5">{{i.fecha_f|date:"Y-m-d"}}</td>
-                <td> <b>{{i.m2}} m2</b> </td>
+                <td>{{i.fecha_f|date:"d-M-Y"}}</td>
+                <td><span class="label label-info" style="background-color: rgb({{i.color}});">{{i.m2}} m2</span></td>
             </tr>
 
 
@@ -91,19 +76,18 @@
 
             <tr class = "table-light">
 
-                <td> <b><img src="{{i.iamgen.url}}"  class="img-fluid" alt="..." style="max-width: 70px; height:auto;"></b> </td>
-                <td style="color: rgb({{i.color}}); vertical-align: middle;"> <b>{{i.nombre}}</b> </td>
-                <td class="priority-5">{{i.descrip}}</td>
+                <td><img src="{{i.iamgen.url}}"  class="img-fluid" alt="..." style="max-width: 50px; height:auto;"></td>
+                <td> {{i.nombre}}</td>
                 {% if i.fecha_i %}
-                <td>{{i.fecha_i|date:"Y-m-d"}}</td>
+                <td>{{i.fecha_i|date:"d-M-Y"}}</td>
 
                 {% else %}
 
                 <td>No definida</td>
 
                 {% endif %}
-                <td class="priority-5">{{i.fecha_f|date:"Y-m-d"}}</td>
-                <td> <b>{{i.m2}} m2</b> </td>
+                <td>{{i.fecha_f|date:"d-M-Y"}}</td>
+                <td><span class="label label-info" style="background-color: rgb({{i.color}});">{{i.m2}} m2</span></td>
             </tr>
 
             {% endif %}
@@ -114,29 +98,14 @@
             
             {% endif %}
 
-        
 
-    </tbody>
-
-
-    </table>
-
-
-     {% else %}
-
-            <div>
-                <h6>Todavia no hay proyectos cargados!</h6>
+                        </tbody>
+                    </table>
+                </div>
             </div>
-            
+        </div>
+    </div>
 
-    {% endif %}
-
-    <div style="margin-top: 2rem;">
-        <p> <small>-- Link<strong>P</strong> --</small> </p>
-
-     </div>
-                          
-</div>
- 
+<
     
 {% endblock %}
