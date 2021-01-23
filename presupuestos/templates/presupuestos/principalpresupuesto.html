@@ -1,72 +1,71 @@
-{% extends "users/inicio.html" %}
+{% extends "users/inicio2.html" %}
 
 {% load humanize %}
 {% load static %}
 
 {% block content %}
 
-<div class = "jumbotron" style="background-color: white; margin-bottom: 0px;">
+  <!-- ============================================================== -->
+  <!-- Container fluid  -->
+  <!-- ============================================================== -->
+  <div class="container-fluid r-aside">
+      <!-- ============================================================== -->
+      <!-- Bread crumb and right sidebar toggle -->
+      <!-- ============================================================== -->
+      <div class="row page-titles">
+          <div class="col-md-5 align-self-center">
+              <h3 class="text-themecolor">Control de presupuestos</h3>
+          </div>
 
-    <div style="text-align: center;">
-
-      <h3 style="color: rgb({{datos.0.0.color}}); font-family: Arial, Helvetica, sans-serif;">Control de presupuesto</h3>
-
-      
-    
-      {% if datos %}
-
-
-      <div>
-
-
-        <a href=" {% url 'Presupuesto de reposición abierto'  datos.0.0.id %}">
-
-          <img src="{{datos.0.0.iamgen.url}}"  class="img-fluid" alt="..." style="max-width:200px; height:auto; margin-top: 1rem; margin-bottom: 10px;">
-
-        </a>
 
       </div>
 
+    </div>
 
-      <h6 style="color: rgb({{datos.0.0.color}}); font-family: Arial, Helvetica, sans-serif;">{{datos.0.0.nombre}}</h6>
 
-     
+    <div class="container-fluid r-aside">
+
+
+
+
+      {% if datos %}
+
+      <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+  
+                  <h4 class="card-title" style="color: rgb({{datos.0.0.color}})"><img src="{{datos.0.0.iamgen.url}}"  class="img-fluid" alt="..." style="max-width:70px; height:auto; vertical-align: middle;">
+                    {{datos.0.0.nombre}}</h4>
+
+
       
     </div>
+  </div>
+</div>
+</div>
 
     {% endif %}
 
-    <div style="text-align: center;">
-
-
-      <small style="font-family: Arial, Helvetica, sans-serif;"> <b>Modulo:</b> Presupuestos</small>
-
-    </div>
 
     
-    
-     <b><hr class = "my-4" style="width: 75%; border-color: rgba({{datos.0.0.color}}, 0.5) ;"></b>
-
-
      {% if proyectos %}
 
-     <div style="text-align: center; width: 350px; height: 210px; display: inline-block; margin: 20px; vertical-align: top; border: 2px solid rgb(11, 32, 68); border-radius: 5%;">
+     <div class="row">
+      <div class="col-12">
+          <div class="card">
+              <div class="card-body">
 
-      <div style="margin: 15px;">
+                <h4 class="card-title">Listado de proyectos</h4>
 
           <form method="POST">
 
               {% csrf_token %}
+  
    
-              <div>
-   
-              <h6 style= "font-family: Arial, Helvetica, sans-serif; color: rgb(11, 32, 68); ">Listado de proyectos</h6>
-              
-             </div>
-   
-             <select name="proyecto" class="custom-select" style="width: 280px; margin-top: 10px;">
+              <select name="proyecto" class="form-control">
 
-              {% if request.user.username == "HC" %}
+                {% if request.user.username == "HC" %}
 
               {% for i in proyectos %}
 
@@ -107,12 +106,13 @@
               {% endif %}
 
 
-            </select>
-                
-                
+
+              </select>
+              
    
-                <div>
-                  <button class="btn btn-dark" type="submit" style="margin-top: 10px;"><img src="{% static 'img/buscar2.png' %}" alt="" style="max-width:20px; height:auto;"> Buscar</button>          
+              
+                <div style="text-align: right; margin-top: 5px;">
+                  <button class="btn waves-effect waves-light btn-primary" type="submit">Buscar</button>          
               </div>
               
           </form>
@@ -121,53 +121,201 @@
 
 
       </div>
-     
-
- </div>
-
-     
-
+    </div>
+  </div>
+</div>
     {% endif %}
 
     {% if datos %}
 
+    <div class="row">
+
+      
 
 
-    <div style="text-align: center;">
+      <div class="col-lg-6 col-xlg-4">
 
-        <div style="vertical-align: middle;">
+        <div class="card">
+          <div class="card-body">
+              <div class="d-flex no-block">
+                  <div class="m-r-20 align-self-center"><span class="lstick m-r-20"></span></div>
+                  <div class="align-self-center">
+                    <div>
 
-          <a href="{% url 'Panel de presupuestos por capitulo' datos.0.0.id %}" style="color: black;">
-                 
-            <div class="card text-white bg-secondary mb-3" style="display: inline-block; width: 310px; height: 150px; vertical-align: top; margin: 10px;">
-                
-                  <div class="card-body">
-                    <h5 class="card-title" style="font-family: Arial, Helvetica, sans-serif;">Valor de reposición</h5>
-                    <h6 style="font-family: Arial, Helvetica, sans-serif;">$ {{datos.0.1|floatformat:0|intcomma}}</h6>
-                    <small style="font-family: Arial, Helvetica, sans-serif;">* Valor sin IVA actualizado a la fecha</small>
-                  </div>
-                </div>
-          
-              </a>
-          
-          <a href="{% url 'Saldo por capitulo' datos.0.0.id %}" style="color: black;">
-          
-              <div class="card text-white bg-dark mb-3" style="display: inline-block; width: 310px; height: 150px; vertical-align: top; margin: 10px;">
-                    
-                  <div class="card-body">
-                      <h5 class="card-title" style="font-family: Arial, Helvetica, sans-serif;">Saldo del proyecto</h5>
-                      <h6 style="font-family: Arial, Helvetica, sans-serif;">$ {{datos.0.2|floatformat:0|intcomma}}</h6>
-                      <small style="font-family: Arial, Helvetica, sans-serif;">* Descontando compras registradas</small>
-                  </div>
-                </div>
-          
-              </a>
-          
-              <div style="display: inline-block; width: 310px; margin: 10px;">
-          
-                <canvas id="myChart2"></canvas>
-            
+                      <h4 class="card-title">Presupuesto detallado</h4></div>
+                      <div style="margin-top: 5px;"><a class="btn waves-effect waves-light btn-primary" href="{% url 'Presupuesto de reposición abierto' datos.0.0.id %}"> Abrir</a></div></div>
               </div>
+          </div>
+      </div>
+
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex no-block">
+                    <div class="m-r-20 align-self-center"><span class="lstick m-r-20"></span><a href="{% url 'Panel de presupuestos por capitulo' datos.0.0.id %}"><img src="{% static 'adminpro/assets/images/icon/expense.png' %}" alt="Income" /></a></div>
+                    <div class="align-self-center">
+                        <h6 class="text-muted m-t-10 m-b-0">Valor de reposición</h6>
+                        <h2 class="m-t-0">$ {{datos.0.1|floatformat:0|intcomma}}</h2></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+          <div class="card-body">
+              <div class="d-flex no-block">
+                  <div class="m-r-20 align-self-center"><span class="lstick m-r-20"></span><a href="{% url 'Saldo por capitulo' datos.0.0.id %}"><img src="{% static 'adminpro/assets/images/icon/expense.png' %}" alt="Income" /></a> </div>
+                  <div class="align-self-center">
+                      <h6 class="text-muted m-t-10 m-b-0">Saldo del proyecto</h6>
+                      <h2 class="m-t-0">$ {{datos.0.2|floatformat:0|intcomma}}</h2></div>
+              </div>
+          </div>
+      </div>
+
+    </div>
+
+      <div class="col-lg-6 col-xlg-4">
+        <div class="card">
+            <div class="card-body">
+              <div class="card-body little-profile text-center">
+                <div>
+
+                  <h4 class="card-title">Responsable</h4></div>
+                <div class="pro-img m-t-20"><img src="{{presupuestador.imagenlogo.url}}" alt="user"></div>
+                <h3 class="m-b-0">{{presupuestador.identificacion}}</h3>
+                <h6 class="text-muted">{{presupuestador.cargo}}</h6>
+                <h6 class="text-muted m-t-10 m-b-0">{{presupuestador.email}}</h6>
+            </div>
+            </div>
+        </div>
+    </div>
+    
+
+
+
+  </div>
+
+  <div class="row">
+
+    <div class="col-lg-6 col-xlg-4">
+
+      <div class="card">
+
+        <div class="card-body">
+
+      <div>
+
+      <h4 class="card-title"><span class="lstick"></span> Avance del proyecto</h4></div>
+
+      
+
+      <div style="display: inline-block; width: 310px; margin: 10px;">
+          
+        <canvas id="myChart2"></canvas>
+    
+      </div>
+
+    </div>
+
+      </div>
+    </div>
+
+      <div class="col-lg-6 col-xlg-4">
+
+        <div class="card">
+
+          <div class="card-body">
+        <div>
+
+          <h4 class="card-title"><span class="lstick"></span>Variaciones</h4></div>
+
+          <div style="text-align: left;">
+
+            <small>Ultimos 30 dias: 
+              
+              {% if variacion > 0 %}
+              <b style="font-family: Arial, Helvetica, sans-serif; color: #34CE15;">+ {{variacion|floatformat:2}} % </b>
+
+              {% elif variacion == 0 %}
+
+              <b style="font-family: Arial, Helvetica, sans-serif; color: #1563CE;">= {{variacion|floatformat:2}} % </b>
+
+
+              {% else %}
+
+              <b style="font-family: Arial, Helvetica, sans-serif; color: #CE3115;">- {{variacion|floatformat:2}} % </b>
+
+
+              {% endif %}
+            
+            
+            </small>
+
+          </div>
+
+          {% if variacion_year != 0 %}
+
+          <div style="text-align: left;">
+
+            <small>Desde el {{variacion_year.0}}: 
+              
+              {% if variacion_year.1 > 0 %}
+              
+              <b style="font-family: Arial, Helvetica, sans-serif; color: #34CE15;">+ {{variacion_year.1|floatformat:2}} % </b>
+
+
+              {% else %}
+
+              <b style="font-family: Arial, Helvetica, sans-serif; color: #CE3115;">- {{variacion_year.1|floatformat:2}} % </b>
+
+
+              {% endif %}
+            
+            
+            </small>
+
+          </div>
+
+          {% endif %}
+
+          {% if variacion_year_2 != 0 %}
+
+          <div style="text-align: left;">
+
+            <small>Desde el {{variacion_year_2.0}}: 
+              
+              {% if variacion_year_2.1 > 0 %}
+              
+              <b style="font-family: Arial, Helvetica, sans-serif; color: #34CE15;">+ {{variacion_year_2.1|floatformat:2}} % </b>
+
+
+              {% else %}
+
+              <b style="font-family: Arial, Helvetica, sans-serif; color: #CE3115;">- {{variacion_year_2.1|floatformat:2}} % </b>
+
+
+              {% endif %}
+            
+            
+            </small>
+
+          </div>
+
+          {% endif %}
+
+        </div>
+
+        <div class="button-group">
+          <a href="{% url 'Creditos de proyectos' datos.0.0.id %}" class="btn waves-effect waves-light btn-primary">Credito</a>
+          <a href="{% url 'Creditos de proyectos' datos.0.0.id %}" class="btn waves-effect waves-light btn-success">F.D.R.</a>
+          <a href="{% url 'Creditos de proyectos' datos.0.0.id %}" class="btn waves-effect waves-light btn-info">Anticipos</a>
+  
+      </div>
+  
+      </div>
+
+    </div>
+
+  </div>
+ 
                
               <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
               <script>
@@ -196,187 +344,26 @@
               </script>
           
           
-              
-          
-             </div>
-          
-             <div>
-          
-              
-          
-              <div class="card text-white bg-dark mb-3" style="display: inline-block; width: 310px; height: 150px; vertical-align: top;  margin: 10px;">
-                
-                <div class="card-body">
-                  <div style="display: inline-block; text-align: left; vertical-align: middle; margin-top: 15px;">
-          
-                    <h6 style="font-family: Arial, Helvetica, sans-serif;">Responsable: </h6> 
-                  </div>
-          
-                  {% if presupuestador %}
-              
-                    <div style="display: inline-block; vertical-align: middle;">
-              
-                      <img src="{{presupuestador.imagenlogo.url}}"  class="img-fluid" alt="..." style="max-width: 40px; height:auto;">
-                  
+        
+     <div class="col-md-12">
+      <div class="card">
+          <div class="card-body">
+              <div class="d-flex">
+                  <div>
+                      <h3 class="card-title m-b-5"><span class="lstick"></span>Variación del precio de reposición</h3>
+                      <h6 class="card-subtitle">Ultimos 60 dias</h6></div>
+
                     </div>
-          
-                    {% else %}
-          
-                    <div style="display: inline-block; text-align: left; vertical-align: middle; margin-top: 15px;">
-          
-                      <h6 style="font-family: Arial, Helvetica, sans-serif;">Sin asignación </h6> 
-                    </div>
-          
-                    {% endif %}
-          
-                    <div>
-          
-                      <small style="font-family: Arial, Helvetica, sans-serif;">Superficie estimada: {{datos.0.0.m2|floatformat:0}}m2 </small> 
-          
-                    </div>
-          
-          
-                    <div>
-          
-                      <small style="font-family: Arial, Helvetica, sans-serif;">Entrega: {{datos.0.0.fecha_f}} </small> 
-          
-                    </div>
-                  </div>
-              </div>
-          
-              <div class="card text-white bg-secondary mb-3" style="display: inline-block; width: 310px; height: 150px; vertical-align: top; margin: 10px;">
-                
-                <div class="card-body">
-                  <div style="margin: 2px;">
-                    <a href="{% url 'Creditos de proyectos' datos.0.0.id %}" style="color: seashell;"><img src="{% static 'img/flecha-derecha.png' %}" alt="" style="max-width:20px; height:auto; margin: 2px;"> Creditos varios</a>
-              
-                  </div>
-                  <div style="margin: 2px;">
-            
-                    <a href="{% url 'Fondos de reparo' datos.0.0.id %}" style="color: seashell;"><img src="{% static 'img/flecha-derecha.png' %}" alt="" style="max-width:20px; height:auto; margin: 2px;"> Fondos de reparo</a>
-               
-            
-                  </div>
-            
-                  <div style="margin: 2px;">
-            
-                    <a href="{% url 'Anticipos' datos.0.0.id %}" style="color: seashell;"><img src="{% static 'img/flecha-derecha.png' %}" alt="" style="max-width:20px; height:auto; margin: 2px;"> Anticipos</a>
-                
-                  </div>
-                </div>
-              </div>
-          
-              <div class="card text-white bg-dark mb-3" style="display: inline-block; width: 310px; height: 150px; vertical-align: top;  margin: 10px;">
-                
-                <div class="card-body">
-                  <div style="display: inline-block; text-align: left; vertical-align: middle; margin-top: 15px;">
-          
-                    <h6 style="font-family: Arial, Helvetica, sans-serif;">Variación</h6> 
-                  </div>
-          
-          
-                    <div style="text-align: left;">
 
-                      <small>Ultimos 30 dias: 
-                        
-                        {% if variacion > 0 %}
-                        <b style="font-family: Arial, Helvetica, sans-serif; color: #34CE15;">+ {{variacion|floatformat:2}} % </b>
+                      <div style="height:250px;">
 
-                        {% elif variacion == 0 %}
-
-                        <b style="font-family: Arial, Helvetica, sans-serif; color: #1563CE;">= {{variacion|floatformat:2}} % </b>
-
-
-                        {% else %}
-
-                        <b style="font-family: Arial, Helvetica, sans-serif; color: #CE3115;">- {{variacion|floatformat:2}} % </b>
-
-
-                        {% endif %}
+                        <canvas id="myChart"></canvas>
                       
-                      
-                      </small>
-          
-                    </div>
+                      </div>
 
-                    {% if variacion_year != 0 %}
-
-                    <div style="text-align: left;">
-
-                      <small>Desde el {{variacion_year.0}}: 
-                        
-                        {% if variacion_year.1 > 0 %}
-                        
-                        <b style="font-family: Arial, Helvetica, sans-serif; color: #34CE15;">+ {{variacion_year.1|floatformat:2}} % </b>
-
-
-                        {% else %}
-
-                        <b style="font-family: Arial, Helvetica, sans-serif; color: #CE3115;">- {{variacion_year.1|floatformat:2}} % </b>
-
-
-                        {% endif %}
-                      
-                      
-                      </small>
-          
-                    </div>
-
-                    {% endif %}
-
-                    {% if variacion_year_2 != 0 %}
-
-                    <div style="text-align: left;">
-
-                      <small>Desde el {{variacion_year_2.0}}: 
-                        
-                        {% if variacion_year_2.1 > 0 %}
-                        
-                        <b style="font-family: Arial, Helvetica, sans-serif; color: #34CE15;">+ {{variacion_year_2.1|floatformat:2}} % </b>
-
-
-                        {% else %}
-
-                        <b style="font-family: Arial, Helvetica, sans-serif; color: #CE3115;">- {{variacion_year_2.1|floatformat:2}} % </b>
-
-
-                        {% endif %}
-                      
-                      
-                      </small>
-          
-                    </div>
-
-                    {% endif %}
-          
-          
-          
-
-          
-                  </div>
-              </div>
-          
-                
-          
-          
-             </div>
-          
     </div>
-
-        <b><hr class = "my-4" style="width: 100%; border-color: rgba({{datos.0.0.color}}, 0.5) ;"></b>
-
-      <div style="text-align: center; margin-top: 3%; margin-bottom: 1.5%;">
-
-        <h6 style="font-family: Arial, Helvetica, sans-serif;"> Variación de los ultimos 60 dias del valor de reposición </h6>
-
-     </div>
-
-     <div style="text-align: center;">
-
-      <canvas id="myChart" height="80px"></canvas>
-
-
-     </div>
+  </div>
+</div>
 
       
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
@@ -396,7 +383,7 @@
                 datasets: [
                 {
                     label: 'Valor de reposición',
-                    backgroundColor: 'rgb({{datos.0.0.color}}, 0.8)',
+                    backgroundColor: 'rgb({{datos.0.0.color}}, 0.3)',
                     borderColor: 'rgb({{datos.0.0.color}})',
                     fill: true,
                     data: [
@@ -451,13 +438,11 @@
     
         
     {% endif %}
-    <div style="text-align: center; margin-top: 2%;">
-        <p style="font-family: Arial, Helvetica, sans-serif;"> <small>-- Link<strong>P</strong> --</small> </p>
-
-     </div>
 
    
-                    
+                   
+</div>
+
 </div>
  
     
