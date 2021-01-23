@@ -139,12 +139,47 @@
                       </li>
                       <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i class="mdi mdi-widgets"></i><span class="hide-menu">Administración</span></a>
                         <ul aria-expanded="false" class="collapse">
-                            <li><a href="index.html">C.B.A</a></li>
+
+                          {% if request.user|has_group:"ADMIN NIVEL 1" %}
+
+                            <li><a href="/finanzas/panelctacte">Cuentas corrientes</a></li>
+                            <li><a href="{% url 'Movimiento administración' %}">Movimiento de administración</a></li>
+                            <li><a href="{% url 'Deudores' 0 %}">Seguimiento de cuentas</a></li>
+                            <li><a href="{% url 'Panel de pagos total' 0 %} ">Seguimiento de pagos</a></li>
+
+                            {% else %}
+
+                            <li>No tienes permisos para ver este espacio</li>
+
+                            {% endif %}
+
                         </ul>
                     </li>
                     <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i class="mdi mdi-widgets"></i><span class="hide-menu">Finanzas</span></a>
                       <ul aria-expanded="false" class="collapse">
-                          <li><a href="index.html">C.B.A</a></li>
+
+                        {% if request.user|has_group:"FINANZAS NIVEL 1" %}
+                        <li><a href="{% url 'Arqueo diario' %}">Arqueo diario</a></li>
+
+                        {% if request.user|has_group:"FINANZAS NIVEL 2" %}
+
+                        <li class="nav-devider"></li>
+                        <li><a href="/finanzas/almacenero">Analisis de proyectos</a></li>
+                        <li><a href="{% url 'Unidades señadas' 0 0 %}">Control de unidades</a></li>
+                        <li><a href="/ventas/panelunidades">Disponibilidad y asignación</a></li>
+                        <li><a href="{% url 'Honorarios' %}">Honorarios</a></li>
+                        <li><a href="{% url 'Indice Link' %}">Índice LINK</a></li>
+                        <li><a href="{% url 'Retiro de socios' %}">Retiros de socios</a></li>
+            
+
+                        {% endif %}
+
+                        {% else %}
+
+                            <li>No tienes permisos para ver este espacio</li>
+
+                            {% endif %}
+
                       </ul>
                   </li>
                   <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i class="mdi mdi-widgets"></i><span class="hide-menu">Compras</span></a>
