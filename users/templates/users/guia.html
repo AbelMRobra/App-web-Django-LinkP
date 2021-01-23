@@ -5,6 +5,50 @@
 
 {% block content %}
 
+
+<div class="page-wrapper">
+            
+  <!-- ============================================================== -->
+  <!-- Container fluid  -->
+  <!-- ============================================================== -->
+  <div class="container-fluid">
+  <!-- ============================================================== -->
+  <!-- Bread crumb and right sidebar toggle -->
+  <!-- ============================================================== -->
+  <div class="row page-titles">
+      <div class="col-md-5 align-self-center">
+          <h3 class="text-themecolor">Tu perfil</h3>
+      </div>
+
+      <div class="">
+          <button class="right-side-toggle waves-effect waves-light btn-inverse btn btn-circle btn-sm pull-right m-l-10"><i class="ti-settings text-white"></i></button>
+      </div>
+  </div>
+
+  <div class="row">
+    <!-- .col -->
+    <div class="col-md-6 col-lg-6 col-xlg-4">
+        <div class="card card-body">
+            <div class="row">
+                <div class="col-md-4 col-lg-3 text-center">
+                    <a href="#">{% if datos %}<img src="{{datos.imagenlogo.url}}" alt="user" class="img-circle img-responsive">{% else %}<img src="{% static 'img/grupo.png' %}" alt="user" class="img-circle img-responsive">{% endif %}</a>
+                </div>
+                <div class="col-md-8 col-lg-9">
+                    <h3 class="box-title m-b-0">{{request.user.first_name}} {{request.user.last_name}}</h3>{% if datos %} <small>{{datos.cargo}}</small>{% else %}<small>Invitado</small>{% endif %}
+                    {% if datos %}
+                    <address>
+                      {{datos.email}}
+                        <br/>
+                        <br/>
+                        <abbr title="Phone">Linkcoins: </abbr> {{monedas_recibidas}} <a href="{% url 'Moneda Link' %}" style="text-decoration: none;"><img src="{% static 'img/monedalink.png' %}" alt="" style="max-width:20px; height:auto; margin: 2px; vertical-align: bottom;"></a>
+                    </address>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+
       <div class="jumbotron" style="background-color: white; margin-top: 2%;">
 
         <div style="text-align: center;">
@@ -74,134 +118,7 @@
 
         
 
-        <hr class="my-4" style="width: 75%; ">
 
-        <div style="text-align: center;">
-
-          <h5>Nuestra empresa</h5> 
-        </div>
-
-        <hr class="my-4" style="width: 75%; ">
-
-        <table class = "table table-hover" style="text-align: center; margin-top: 5px; width: 75%; margin-left: 12.5%;" >
-          <thead>
-  
-              <tr class = "table-dark">
-                  {% for i in otros_datos %}
-                  <th scope = "row" style="vertical-align: middle;"> <small> <strong>{{i.0.0}}</strong> </small> </th>
-                  {% endfor %}
-                  </tr>
-                 </thead>
-
-                 <tbody>
-
-                  <tr class = "table-light">
-                    {% for c in otros_datos %}
-                      <td>
-                        {% for d in c.1 %}
-                         <div>
-                           
-                          <span class="hint--top hint--danger" aria-label="Soy {{d.identificacion}}, me desempeño como {{d.cargo}}"><img src="{{d.imagenlogo.url}}"  class="img-fluid" alt="..." style="max-width: 50px; height:auto; margin-top: 5px;"></span>
-                         </div>
-
-                         {% endfor %}
-                        
-                        </td>
-                      {% endfor %}
-
-                      </tr>
-
-                 </tbody>
-        </table> 
-        
-
-        <!-- 
-        
-
-        <div style=" margin-left: 12.5%; margin-top: 10px;">
-
-          <img src="{{i.imagenlogo.url}}"  class="img-fluid" alt="..." style="max-width: 30px; height:auto;">
-          
-          
-          <small style="color: #F3EAE5;">{{i.identificacion}} - <b>Área</b>: {{i.area}} - <b>Cargo</b>: {{i.cargo}} </small>
-
-
-        </div>
-
-        
-
-        {% endif %}
-
-        <h5 style="color: #F3EAE5; margin-left: 12.5%;">Información general!</h5>
-
-        <div style="text-align: left;">
-
-          <div style="display: inline-block; width: 300px; margin-left: 12.5%; vertical-align: top; margin-top: 20px;">
-
-            <img src="{% static 'img/car2.jpg' %}" width="300px" >
-                
-  
-          </div>
-  
-          <div style="display: inline-block; width: 300px; margin-left: 12.5%; margin-top: 20px; ">
-  
-            <h6 style="color: #F3EAE5">¿Qué es LINK-P?</h6>
-            <small style="color: #F3EAE5"> Es una APP-WEB que recolecta y procesa datos! ayuda a que todos estemos conectados y podamos tener siempre la información actualizada</small>
-                
-  
-          </div>
-
-
-        </div>
-
-        <div style="text-align: left;">
-
-          
-  
-          <div style="display: inline-block; width: 300px; margin-left: 12.5%; margin-top: 20px; ">
-  
-            <h6 style="color: #F3EAE5">¿Qué cuidados debo tener?</h6>
-            <small style="color: #F3EAE5"> Esta aplicación maneja datos de nuestra empresa, y como con otros sistemas, se debe ser prudente con su manejo!</small>
-            <small style="color: #E54D38"> No pases tu información de logeo. </small>
-            <small style="color: #F3EAE5">LINK-P se desconecta automaticamente despues de 1 hora o cuando cierres el navegador</small>
-                
-  
-          </div>
-
-          <div style="display: inline-block; width: 300px; margin-left: 12.5%; margin-top: 20px; vertical-align: top;">
-
-            <img src="{% static 'img/car3.jpg' %}" width="300px" >
-                
-  
-          </div>
-
-
-        </div>
-
-        {% if otros_datos %}
-
-        <hr class="my-4" style="background-color: #F3EAE5; width: 75%; ">
-
-        
-
-        {% endif %}
-
-        -->
-
-        <hr class="my-4" style="background-color: #F3EAE5; width: 50%; ">
-
-        <div style="text-align: center;">
-          <p> <small style="color:#F3EAE5;">-- Link<strong>P</strong> --</small> </p>
-  
-       </div>
-
-      </div>
-
-      
-
-      
-
-        
         
 
 
