@@ -1,9 +1,58 @@
-{% extends "users/inicio.html" %}
+{% extends "users/inicio2.html" %}
 
 {% load static %}
 {% load humanize %}
 
 {% block content %}
+
+<div class="container-fluid r-aside">
+    <!-- ============================================================== -->
+    <!-- Bread crumb and right sidebar toggle -->
+    <!-- ============================================================== -->
+    <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+            <h3 class="text-themecolor">Arqueo diario</h3>
+        </div>
+
+    </div>
+
+  </div>
+
+  <div class="row">
+    <div class="col-lg-6 col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex">
+                    <div>
+                        <h4 class="card-title"><span class="lstick"></span>Resumen de datos</h4></div>
+
+                </div>
+
+                <div>
+                    <h6>Ultimo arqueo: {{ data_cruda.0.fecha }}</h6><small class="text-muted">De esta fecha se alimenta los datos</small></td>
+                </div>
+                <div>
+                    <h6>Efectivo: $ {{otros_datos.2|floatformat:0|intcomma}}</h6><small class="text-muted">Liquides en pesos</small></td>
+                </div>
+                <div>
+                    <h6>Bancos: $ {{otros_datos.4|floatformat:0|intcomma}}</h6><small class="text-muted">Suma de todos los bancos</small></td>
+                </div>
+                <div>
+                    <h6>Cheques: $ {{otros_datos.3|floatformat:0|intcomma}}</h6><small class="text-muted">Suma de valores cheques a cobrar</small></td>
+                </div>
+                <div>
+                    <h6>Dolares: U$D {{otros_datos.0|floatformat:0|intcomma}}</h6><small class="text-muted">Liquides en dolares</small></td>
+                </div>
+                <div>
+                    <h6>Euros: € {{otros_datos.1|floatformat:0|intcomma}}</h6><small class="text-muted">Liquides en Euros</small></td>
+                </div>
+                <div>
+                    <h6>Total: $ {{otros_datos.5|floatformat:0|intcomma}}</h6><small class="text-muted">Canja consolidada en pesos</small></td>
+                </div>
+
+            </div>
+        </div>
+    </div>
 
 
 
