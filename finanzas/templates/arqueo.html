@@ -28,8 +28,9 @@
 
                 </div>
 
-                <div>
-                    <h6>Ultimo arqueo: {{ data_cruda.0.fecha }}</h6><small class="text-muted">De esta fecha se alimenta los datos</small></td>
+                <div class="m-t-10">
+                    <h5 class="m-b-0 font-medium">Ultimo arqueo: {{ data_cruda.0.fecha }}</h5>
+                    <h6 class="text-muted">De esta fecha se alimenta los datos</h6>
                 </div>
                 <div>
                     <h6>Efectivo: $ {{otros_datos.2|floatformat:0|intcomma}}</h6><small class="text-muted">Liquides en pesos</small></td>
