@@ -596,7 +596,7 @@ def mensajescomparativas(request, id_comparativa):
 
     datos = Comparativas.objects.get(id = id_comparativa)
 
-    mensajes = len(ComparativasMensaje.objects.filter(comparativa__id = id_comparativa).order_by("-fecha"))
+    mensajes = ComparativasMensaje.objects.filter(comparativa__id = id_comparativa).order_by("-fecha")
 
     return render(request, 'mensajescomparativas.html', {'datos':datos, 'mensajes':mensajes})
 

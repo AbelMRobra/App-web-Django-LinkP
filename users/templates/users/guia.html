@@ -5,20 +5,154 @@
 
 {% block content %}
 
+<div class="container-fluid r-aside">
+    <!-- ============================================================== -->
+    <!-- Bread crumb and right sidebar toggle -->
+    <!-- ============================================================== -->
+    <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+            <h3 class="text-themecolor">Tu perfil</h3>
+        </div>
 
-<div class="page-wrapper">
+    </div>
+
+  </div>
+
+
+
+    <div class="row">
+
+    
+        <div class="col-lg-6 col-xlg-4">
+
             
-  <!-- ============================================================== -->
-  <!-- Container fluid  -->
-  <!-- ============================================================== -->
-  <div class="container-fluid">
-  <!-- ============================================================== -->
-  <!-- Bread crumb and right sidebar toggle -->
-  <!-- ============================================================== -->
-  <div class="row page-titles">
-      <div class="col-md-5 align-self-center">
-          <h3 class="text-themecolor">Tu perfil</h3>
-      </div>
+  
+                        <div class="card">
+                            <div class="card-body">
+                              <div class="card-body little-profile text-center">
+                                <div>
+                
+                                  <h4 class="card-title">{{request.user.first_name}} {{request.user.last_name}}</h4></div>
+                                <div class="pro-img m-t-20">{% if datos %}<img src="{{datos.imagenlogo.url}}" alt="user" class="img-circle img-responsive">{% else %}<img src="{% static 'img/grupo.png' %}" alt="user" class="img-circle img-responsive">{% endif %}</div>
+                                <h3 class="m-b-0">{% if datos %} <small>{{datos.area}}</small>{% else %}<small>Invitado</small>{% endif %}</h3>
+                                <h6 class="text-muted">{% if datos %} <small>{{datos.cargo}}</small>{% else %}<small>Invitado</small>{% endif %}</h6>
+                                <h6 class="text-muted m-t-10 m-b-0">{{datos.email}}</h6>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+
+        <div class="col-lg-6 col-xlg-4">
+        <div class="card">
+            <div class="card-body">
+
+        <h4 class="card-title">Linkcoins</h4>
+
+        {% if datos %}
+        <h6 class="text-muted m-t-10 m-b-0">Recibidas: <b>{{monedas_recibidas}}</b> <img src="{% static 'img/monedalink.png' %}" alt="" style="max-width:19px; height:auto; vertical-align: top;"></h6>
+        <h6 class="text-muted m-t-10 m-b-0">Disponibles: <b>{{monedas_disponibles}}</b> <img src="{% static 'img/monedalink.png' %}" alt="" style="max-width:19px; height:auto; vertical-align: top;"></h6>
+        <div style="margin-top: 15px;">
+            <button type="button" data-toggle="modal" data-target="#ModalPremio" class="btn waves-effect waves-light btn-rounded btn-sm btn-secondary" name="subir_item" value="{{t.0.id}}"><img src="{% static 'img/regalo.png' %}" alt="" style="max-width:25px; height:auto; vertical-align: bottom;"> Regalar</button>
+
+        </div>
+        
+    <!-- Modal fecha estado Subitem -->
+    <div class="modal fade" id="ModalPremio" tabindex="-1" role="dialog" aria-labelledby="ModalPremioTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">Entrega de monedas!</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">
+                                              
+            <form method="POST" style="margin: 15px;">
+
+                {% csrf_token %}
+
+                <h6><small>Elige al usuario</small> </h6>  
+
+                <div class="input-group mb-3">
+                           
+                        <select name="usuario" class="custom-select" style="width: 300px;">
+
+                            {% for i in list_usuarios %}
+        
+                            <option value="{{i.id}}" selected>{{i.identificacion}}</option>
+        
+                            {% endfor %}
+        
+                        </select>
+                </div>
+
+                <h6><small>Cantidad de Linkcoins</small> </h6>  
+
+                <div class="input-group mb-3">
+                           
+                    <input name="cantidad" max="{{monedas_disponibles}}" step="0" type="number" class="form-control form-control" style="width: 300px;">
+                </div>
+
+                <h6><small>Deja un mensaje</small> </h6>  
+
+                <div class="input-group mb-3">
+
+                    <textarea class="form-control" id="exampleTextarea" rows="3" name="mensaje"></textarea>
+
+                </div>
+
+                <button type="submit" class="btn waves-effect waves-light btn-rounded btn-secondary"><img src="{% static 'img/regalo.png' %}" alt="" style="max-width:25px; height:auto; vertical-align: bottom;"> Regalar</button>
+            
+            </form>
+            
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+    
+            </div>
+        </div>
+        </div>
+
+    </div>
+        
+        <div class="table-responsive m-t-40">
+            <table class="table stylish-table">
+                <thead>
+                    <tr>
+                        <th>User</th>
+                        <th>Cantidad</th>
+                        <th>Mensaje</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for i in recibidas %}
+                    <tr>
+                        <td style="width:50px;"><span class="round">{{i.2}}</span></td>
+
+                        <td>{{i.0}} <img src="{% static 'img/monedalink.png' %}" alt="" style="max-width:17px; height:auto; vertical-align: top; margin-top: 2px;"></td>
+                        <td><b>Mensaje:</b> <i>"{{i.1}}"</i></td>
+                    </tr>
+                    {% endfor %}
+ 
+                </tbody>
+            </table>
+        </div>
+
+        {% else %}
+
+        <h6 class="text-muted m-t-10 m-b-0">No estas habilitado para esta sección</h6>
+
+        {% endif %}
+
+
+            </div>
+        </div>
+        </div>
+    </div>
+
+            
+
 
       <div class="">
           <button class="right-side-toggle waves-effect waves-light btn-inverse btn btn-circle btn-sm pull-right m-l-10"><i class="ti-settings text-white"></i></button>
@@ -27,26 +161,6 @@
 
   <div class="row">
     <!-- .col -->
-    <div class="col-md-6 col-lg-6 col-xlg-4">
-        <div class="card card-body">
-            <div class="row">
-                <div class="col-md-4 col-lg-3 text-center">
-                    <a href="#">{% if datos %}<img src="{{datos.imagenlogo.url}}" alt="user" class="img-circle img-responsive">{% else %}<img src="{% static 'img/grupo.png' %}" alt="user" class="img-circle img-responsive">{% endif %}</a>
-                </div>
-                <div class="col-md-8 col-lg-9">
-                    <h3 class="box-title m-b-0">{{request.user.first_name}} {{request.user.last_name}}</h3>{% if datos %} <small>{{datos.cargo}}</small>{% else %}<small>Invitado</small>{% endif %}
-                    {% if datos %}
-                    <address>
-                      {{datos.email}}
-                        <br/>
-                        <br/>
-                        Linkcoins: {{monedas_recibidas}} <a href="{% url 'Moneda Link' %}" style="text-decoration: none;"><img src="{% static 'img/monedalink.png' %}" alt="" style="max-width:20px; height:auto; margin: 2px; vertical-align: bottom;"></a>
-                    </address>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-    </div>
 
     <div class="right-sidebar">
       <div class="slimscrollright">

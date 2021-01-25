@@ -159,9 +159,117 @@ def password(request):
 
 def guia(request):
 
-    datos = 0
+    try:
 
-    otros_datos = 0
+        usuario = datosusuario.objects.get(identificacion = request.user)
+
+    except:
+
+        usuario = 0
+
+    if request.method == 'POST':
+
+        monedas = MonedaLink.objects.filter(usuario_portador = usuario)
+
+        monedas_disponibles = []
+
+        for m in monedas:
+
+            if len(EntregaMoneda.objects.filter(moneda = m)) == 0:
+
+                monedas_disponibles.append(m)
+
+        index_num = 0
+
+        for i in range(int(request.POST["cantidad"])):
+
+            b = EntregaMoneda(
+                moneda = monedas_disponibles[index_num],
+                usuario_recibe = datosusuario.objects.get(id = int(request.POST["usuario"])),
+                mensaje = request.POST["mensaje"])
+                
+
+            b.save()
+
+            index_num += 1
+
+        try:
+
+            # Establecemos conexion con el servidor smtp de gmail
+            mailServer = smtplib.SMTP(settings.EMAIL_HOST, settings.EMAIL_PORT)
+            mailServer.ehlo()
+            mailServer.starttls()
+            mailServer.ehlo()
+            mailServer.login(settings.EMAIL_HOST_USER, settings.EMAIL_HOST_PASSWORD)
+
+            # Construimos el mensaje simple
+            
+            mensaje = MIMEText("""
+            
+            Recibiste una moneda!,
+
+            "{}"
+
+            - {}
+
+            """.format(b.mensaje, request.user.username))
+            mensaje['From']=settings.EMAIL_HOST_USER
+            mensaje['To']=b.usuario_recibe.email
+            mensaje['Subject']="Recibiste una moneda!!"
+
+
+            # Envio del mensaje
+
+            mailServer.sendmail(settings.EMAIL_HOST_USER,
+                            b.usuario_recibe.email,
+                            mensaje.as_string())
+
+        except:
+
+            pass
+
+    try:
+        list_usuarios = datosusuario.objects.all().exclude(identificacion = request.user)
+
+        monedas = MonedaLink.objects.filter(usuario_portador = usuario)
+
+        monedas_disponibles = 0
+
+        for m in monedas:
+
+            if len(EntregaMoneda.objects.filter(moneda = m)) == 0:
+
+                monedas_disponibles += 1
+
+        monedas_recibidas = len(EntregaMoneda.objects.filter(usuario_recibe = usuario))
+        recibidas_list = EntregaMoneda.objects.filter(usuario_recibe = usuario).values_list("mensaje", flat = True)
+
+        recibidas_list = list(set(recibidas_list))
+
+        recibidas = []
+
+        for r in recibidas_list:
+
+            data = EntregaMoneda.objects.filter(usuario_recibe = usuario, mensaje = r)
+
+            usuarios_entrega = ""
+
+            for d in data:
+
+                if str(d.moneda.usuario_portador.identificacion) not in usuarios_entrega:
+                    usuarios_entrega = usuarios_entrega + str(d.moneda.usuario_portador.identificacion) + ""
+
+            recibidas.append((len(data), r, usuarios_entrega))
+
+        datos = 0
+
+        otros_datos = 0
+
+    except:
+        recibidas = 0
+        monedas_recibidas = 0
+        monedas_disponibles = 0
+        list_usuarios = 0
 
     try:
         datos = datosusuario.objects.get(identificacion = request.user)
@@ -184,11 +292,16 @@ def guia(request):
 
         datos = 0
 
-    usuario = datosusuario.objects.get(identificacion = request.user)
+    try:
+
+        usuario = datosusuario.objects.get(identificacion = request.user)
+
+    except:
+        usuario = 0
 
     monedas_recibidas = len(EntregaMoneda.objects.filter(usuario_recibe = usuario))
 
-    return render(request, "users/guia.html", {"datos":datos, "otros_datos":otros_datos, "monedas_recibidas":monedas_recibidas})
+    return render(request, "users/guia.html", {"datos":datos, "otros_datos":otros_datos, "recibidas":recibidas, "monedas_recibidas":monedas_recibidas, "monedas_disponibles":monedas_disponibles, "list_usuarios":list_usuarios})
 
 def dashboard(request):
 
@@ -651,7 +764,11 @@ def inicio(request):
     cantidad_m = len(datosusuario.objects.all())
     cantidad_p = len(Proyectos.objects.all())
 
-    return render(request, "users/inicio2.html", {"cantidad_p":cantidad_p, "cantidad_m":cantidad_m, "datos_barras":barras, "datos_logo":datos_logo, "mensaje_oc":mensaje_oc, "mensajesdeldia":mensajesdeldia, "datos_mensajeria":datos_mensajeria, "lista_grupos":lista_grupos, "miembros":miembros})
+    hoy = datetime.date.today()
+    inicio = datetime.date(2020, 5, 1)
+    dias_funcionando = (hoy - inicio).days
+
+    return render(request, "users/inicio2.html", {"dias_funcionando":dias_funcionando, "cantidad_p":cantidad_p, "cantidad_m":cantidad_m, "datos_barras":barras, "datos_logo":datos_logo, "mensaje_oc":mensaje_oc, "mensajesdeldia":mensajesdeldia, "datos_mensajeria":datos_mensajeria, "lista_grupos":lista_grupos, "miembros":miembros})
 
 def welcome(request):
     # Si estamos identificados devolvemos la portada
