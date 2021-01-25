@@ -1,457 +1,308 @@
-{% extends "users/inicio.html" %}
+{% extends "users/inicio2.html" %}
 
 {% load static %}
 {% load humanize %}
 
 {% block content %}
+<div class="col-lg-12 col-xlg-6 button-group">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Solicitudes de compra</h4>
+            <h6 class="card-subtitle">Ordenes de compra o comparativas para ser aprobadas</h6>
 
-<div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;">
+            <div style="text-align: left;">
+        
+                 <div class="dropdown">
+                    <button class="dropbtn btn btn-primary">{{mensaje_creador}}</button>
+                    <div class="dropdown-content">
+                      <a href="{% url 'Comparativas' estado 0 %}">Todos</a>
+                      {% for i in list_creadores %}
+        
+                      <a href="{% url 'Comparativas' estado i.id %}">{{i.identificacion}}</a>
+        
+                      {% endfor %}
+        
+                    </div>
+                  </div>
+        
+        
+                  <div class="dropdown">
+                    <button class="dropbtn btn btn-primary">{{mensaje}}</button>
+                    <div class="dropdown-content">
+                      <a href="{% url 'Comparativas' 0 creador %}">Todos</a>
+        
+                      <a href="{% url 'Comparativas' 1 creador %}">En espera ({{espera}})</a>
+                      <a href="{% url 'Comparativas' 2 creador %}">Adjunto listo ({{adjunto}})</a> 
+                      <a href="{% url 'Comparativas' 4 creador %}">Autorizadas ({{autorizada}})</a>
+                      <a href="{% url 'Comparativas' 3 creador %}">Rechazadas ({{rechazada}})</a>
+                        
+        
+                    </div>
+                  </div>
+        
+        
+            <a href= "{% url 'Cargar O.C para autorizar' %}" class="btn btn-outline-info"style="text-align: end; margin-top: 5px;" > Nueva solicitud</a>
+        
+        
+            <a href= "{% url 'Descarga Comparativas' %}" class="btn btn-outline-success" style="text-align: end; margin-top: 5px;" > <img src="{% static 'img/sobresalir.png' %}" alt="" style="max-width:20px; height:auto;"> Descargar Excel</a>
+        
+            <div class ="dataTables_filter">
 
-    <h3 style="font-family: Arial, Helvetica, sans-serif;">Solicitudes de compras</h3>
-    <small style="font-family: Arial, Helvetica, sans-serif;"><b>Modulo:</b> Circuito de compras </small>
+                <form method="POST">
+        
+                    {% csrf_token %}
+                <label>
+                    Search:
+                    <input type="search" class placeholder aria-controls="example23" name="palabra">
+                </label>
 
-     <div style="text-align:center">
+            </form>
+
+            </div>
+            <div class="table-responsive">
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>User</th>
+                            <th>Proveedor</th>
+                            <th>O.C</th>
+                            <th>Valor</th>
+                            <th>Fecha</th>
+                            <th>Adjuntos</th>
+                            <th style="min-width: 150px;">Autorizar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                            {% for i in datos|slice:"120" %}
+                            <tr>
+                            <td>
+                                <span class="round round-primary"><img src="{{i.0.imagenlogo.url}}"  alt="user" width="50"></span>
+                                </td>
+                            <td>{{i.2.proveedor.name}} <a href="{% url 'Mensajes en comparativas' i.2.id %}"><img src="{% if i.1 %}{% static 'img/charla.png' %}{% else %}{% static 'img/charlar.png' %}{% endif %}" alt="" style="max-width:15px; height:auto; margin: 1px;"></a> 
+                                <h6 class="card-subtitle">{{i.2.numero|upper}}</h6>
+                            </td>
+                            {% if i.2.o_c %}
+                            <td>
+                                <div>{{i.2.o_c|upper}}</div>
+                         
+                            {% else %}
+                            <td><div>S/R</div> 
+                            {% endif %}
+                            {% if i.2.estado == "ESPERA" %}
+                            <div class="label label-table label-info">Espera</div>
+        
+                            {% endif %}
+        
+                            {% if i.2.estado == "AUTORIZADA" %}
+
+
+        
+                            {% if i.2.comentario %}
+                                
+                            <span class="hint--left hint--danger"aria-label="{{i.comentario}}">
+        
+                            {% endif %}
+                            
+                            <div class="label label-table label-success">Autorizada</div>
+        
+                            {% if i.2.comentario %}
+                            
+                            </span>
+        
+                            {% endif %}
+                        
+      
+        
+                            {% endif %}
+        
+                            {% if i.2.estado == "NO AUTORIZADA" %}
+        
+        
+        
+                                {% if i.2.comentario %}
+                                
+                                
+                                <span class="hint--left hint--danger" aria-label="{{i.2.comentario}}">
+        
+                                    {% endif %}
+                                
+                                
+                                    <div class="label label-table label-danger">Rechazada</div>
+        
+                                {% if i.2.comentario %}
+                            
+                                    </span>
+        
+                                    {% endif %}
+    
+        
+                            {% endif %}
+        
+                            {% if i.2.estado == "ADJUNTO ✓" %}
+        
+        
+                                {% if i.2.comentario %}
+                                
+                                
+                                <span class="hint--left hint--danger" aria-label="{{i.2.comentario}}">
+        
+                                    {% endif %}
+                                
+                                
+                                    <div class="label label-table label-warning">Adjunto</div>
+        
+                                {% if i.2.comentario %}
+                            
+                                    </span>
+        
+                                    {% endif %}
+                              
+                            {% endif %}
+                            </td>
+                            <td>${{i.2.monto|floatformat:0|intcomma}}</td> 
+                            <td><span class="text-muted"><i class="fa fa-clock-o"></i> {{i.2.fecha_c|date:"d M Y"}}</span> </td>
+                            <td>
+                            <a href="{{ i.2.adjunto.url }}" class="btn btn-sm btn-warning"><span class="hint--left hint--warning" aria-label="Es una imagen de comparativas o remitos!">VER</span></a>
+                            
+                            {% if i.2.adj_oc %}
+                            
+                            <a href="{{ i.2.adj_oc.url }}" class="btn btn-sm btn-success"><span class="hint--left hint--success" aria-label="Una copia de la O.C!, puedes buscarla en TANGO tambien!">VER</span></a>
+                            
+                            {% endif %}
+                            </td>
+                            {% if request.user.username == "PL" or request.user.username == "AR" or request.user.username == "ar" or request.user.username == "SP" %}
+                            {% if request.user.username == "SP" and "POSTV" in i.2.numero %}
+        
+                            <td style="width: 8%;" >
+                                
+                                <form action="" method="POST">
+                                    {% csrf_token %}
+        
+        
+                                    {% if estado == "0" or estado == "1" or estado == "3" or estado == "5" %}
+        
+                                    <div style="display: inline-block; max-width: 45%;">
+        
+                                        <button class="btn btn-sm btn-warning" type="submit"  name = "ADJAPROB" value="{{i.2.id}}"><span class="hint--left hint--warning" aria-label="El adjunto esta Ok!">✓</span></button>
+        
+                                    </div>
+        
+                                    {% endif %}
+        
+                                    {% if estado == "0" or estado == "2" or estado == "3" or estado == "5"  %}
+        
+                                    <div style="display: inline-block; max-width: 45%;">
+        
+                                        <button class="btn btn-sm btn-success" type="submit"  name = "APROBADA" value="{{i.2.id}}"><span class="hint--left hint--success" aria-label="Esta todo listo para el pago!">✓</span></button>
+        
+                                    </div>
+        
+                                    {% endif %}
+        
+                                    <div style="display: inline-block; max-width: 45%;">
+        
+                                        <button class="btn btn-sm btn-danger" type="submit" name = "NO APROBADA" value="{{i.2.id}}"><span class="hint--left hint--danger" aria-label="Deja un comentario para que revisen!">X</span></button>
+                                    
+                                    </div>
+        
+                                    
+                                    
+                                    <div class="form-group" style="margin-top: 10%;">
+        
+        
+                                        <input type="text" name="MENSAJE" class="form-control form-control-sm" placeholder="Comentario" id="inputDefault">
+                                
+        
+                                    </div>
+        
+                                </form>
+                                
+                            </td>
+        
+        
+                            {% elif request.user.username == "PL" and i.0.identificacion == "MES" %}
+        
+                            <td style="width: 8%;" >
+                            
+                                <strong>Autoriza SP! <img src="{% static 'img/gracias.png' %}" alt="" style="max-width:25px; height:auto;"  > </strong>
+                            </td>
+        
+                            {% elif request.user.username == "SP" and i.0.identificacion != "MES" %}
+        
+                            <td style="width: 8%;" >
+                            
+                                <strong>Autoriza PL! <img src="{% static 'img/gracias.png' %}" alt="" style="max-width:25px; height:auto;"  > </strong>
+                            </td>
+        
+                            {% else %}
+        
+                            <td style="width: 8%;" >
+                                
+                                <form action="" method="POST">
+                                    {% csrf_token %}
+        
+        
+                                    {% if estado == "0" or estado == "1" or estado == "3" or estado == "5" %}
+        
+                                    <div style="display: inline-block; max-width: 45%;">
+        
+                                        <button class="btn btn-sm btn-warning" type="submit"  name = "ADJAPROB" value="{{i.2.id}}"><span class="hint--left hint--warning" aria-label="El adjunto esta Ok!">✓</span></button>
+        
+                                    </div>
+        
+                                    {% endif %}
+        
+                                    {% if estado == "0" or estado == "2" or estado == "3" or estado == "5" %}
+        
+                                    <div style="display: inline-block; max-width: 45%;">
+        
+                                        <button class="btn btn-sm btn-success" type="submit"  name = "APROBADA" value="{{i.2.id}}"><span class="hint--left hint--success" aria-label="Esta todo listo para el pago!">✓</span></button>
+        
+                                    </div>
+        
+                                    {% endif %}
+        
+                                    <div style="display: inline-block; max-width: 45%;">
+        
+                                        <button class="btn btn-sm btn-danger" type="submit" name = "NO APROBADA" value="{{i.2.id}}"><span class="hint--left hint--danger" aria-label="Deja un comentario para que revisen!">X</span></button>
+                                    
+                                    </div>
+        
+                                    
+                                    
+                                    <div class="form-group" style="margin-top: 10%;">
+        
+        
+                                        <input type="text" name="MENSAJE" class="form-control form-control-sm" placeholder="Comentario" id="inputDefault">
+                                
+        
+                                    </div>
+        
+                                </form>
+                                
+                            </td>
+                            {% endif %}
+        
+                            {% endif %}
+                        </tr>
+                            {% endfor %}
                   
-    </div> 
-
-
-    <b><hr class = "my-4" style="width: 100%;"></b>
-
-    <div style="text-align: left;">
         
-
-        <form method="POST" style="text-align: left;">
-
-            {% csrf_token %}
-    
-            <div style="display: inline-block; margin-left: 1rem;">
-    
-                <label for="palabra"><h6 style="font-family: Arial, Helvetica, sans-serif;">Buscar</h6></label>
-    
+                    </tbody>
+                </table>
             </div>
-            
-            <div style="display: inline-block; margin-left: 1rem; ">
-    
-                <input name="palabra" type="text" class="form-control form-control" placeholder="Buscar por palabra" list="art" style="width: 250px;">
-    
+        
             </div>
-           
-          
-    
-         </form>
-
-         <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
-            <button type="button" class="btn btn-primary">{{mensaje_creador}}</button>
-            <div class="btn-group" role="group">
-                <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
-                <div class="dropdown-menu" aria-labelledby="btnGroupDrop1" style="">
-                    <div style="margin: 2px;">
-    
-                        <a href="{% url 'Comparativas' estado 0 %}" style="margin-top: 5px;" >Todos</a>
-    
-                    </div>
-
-                    {% for i in list_creadores %}
-    
-                    <div style="margin: 2px;">
-    
-                        <a href="{% url 'Comparativas' estado i.id %}" style="margin-top: 5px;" >{{i.identificacion}}</a> 
-                    
-                    </div>
-
-                    {% endfor %}
-    
- 
-                                              
-                </div>
-            </div>
-            </div>
-
-
-    <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
-        <button type="button" class="btn btn-primary">{{mensaje}}</button>
-        <div class="btn-group" role="group">
-            <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
-            <div class="dropdown-menu" aria-labelledby="btnGroupDrop1" style="">
-                <div style="margin: 2px;">
-
-                    <a href="{% url 'Comparativas' 0 creador %}" style="margin-top: 5px;" >Todas</a>
-
-                </div>
-                <div style="margin: 2px;">
-
-                    <a href="{% url 'Comparativas' 1 creador %}" style="margin-top: 5px; color: rgb(83, 82, 65);" >En espera ({{espera}})</a>
-
-                </div>
-
-                <div style="margin: 2px;">
-
-                    <a href="{% url 'Comparativas' 2 creador %}" style="margin-top: 5px; color: rgb(208, 125, 32);" >Adjunto listo ({{adjunto}})</a> 
-                
-                </div>
-
-                <div style="margin: 2px;">
-
-                    <a href="{% url 'Comparativas' 4 creador %}" style="margin-top: 5px; color: rgb(37, 159, 76 );" >Autorizadas ({{autorizada}})</a>
-                
-                </div>
-
-                <div style="margin: 2px;">
-
-                    <a href="{% url 'Comparativas' 3 creador %}" style="margin-top: 5px; color: rgb(192, 63, 50 );" >Rechazadas ({{rechazada}})</a>
-                
-                </div>
-                
-                
-                             
-                
-                
-            </div>
-        </div>
-        </div>
-
-
-
-    <a href= "{% url 'Cargar O.C para autorizar' %}" class="btn btn-outline-info"style="text-align: end; margin-top: 5px;" > <img src="{% static 'img/agregar-archivo.png' %}" alt="" style="max-width:20px; height:auto;"  > Nueva solicitud</a>
-
-
-    <a href= "{% url 'Descarga Comparativas' %}" class="btn btn-outline-success" style="text-align: end; margin-top: 5px;" > <img src="{% static 'img/sobresalir.png' %}" alt="" style="max-width:20px; height:auto;"  > Descargar Excel</a>
-
-
-    </div>
-
-
-     
-    {% if datos %} 
-       
-        <table class = "table table-hover" style="text-align: center; margin-top: 5px;" >
-            <thead>
-    
-                <tr class = "table-dark">
-                    <th scope = "row" style="vertical-align: middle;" ><small><b></b></small></th>
-                    <th scope = "row" style="vertical-align: middle;" ><small><b></b></small></th>
-                    <th scope = "row" style="vertical-align: middle;" class="priority-5"><small><b>Nº REF</b></small></th>
-                    <th scope = "row" style="vertical-align: middle;" class="priority-4"> <small><b>Nº O.C</b></small></th>
-                    <th scope = "row" style="vertical-align: middle;"> <small><b>PROVEEDOR</b></small></th>
-                    <th scope = "row" style="vertical-align: middle;" class="priority-4"> <small><b>PROYECTO</b></small> </th>
-                    <th scope = "row" style="vertical-align: middle;" class="priority-4"><small><b>MONTO</b></small></th>
-                    <th scope = "row" style="vertical-align: middle;" class="priority-3"><small><b>ESTADO</b></small></th>
-                    <th scope = "row" style="vertical-align: middle;" class="priority-4"><small><b>FECHA</b></small></th>
-                    <th scope = "row" style="vertical-align: middle;"><small><b>ARCHIVO</b></small></th>
-                    <th scope = "row" style="vertical-align: middle;"><small><b>O.C</b></small></th>
-
-                    {% if request.user.username == "PL" or request.user.username == "AR" or request.user.username == "ar" or request.user.username == "ar" or request.user.username == "SP" %}
-
-                    <th scope = "row" style="vertical-align: middle;"><small><b>AUTORIZAR</b></small></th>
-                    
-                    {% endif %}
-
-                </tr>
-            </thead>
-
+        
                
-    
-            <tbody>
-
-                
-               
-                {% for i in datos|slice:"120" %}
-
-                <tr class = "table-light">
-                    
-                    <td style="width: 1%;" > <small> <strong> 
-
-
-                        {% if i.1 %}
-                        
-                        
-                        <a href="{% url 'Mensajes en comparativas' i.2.id%}"><img src="{% static 'img/charla.png' %}" alt="" style="max-width:20px; height:auto;"  ></a>         
-                    
-                        {% else %}
-
-
-                        <a href="{% url 'Mensajes en comparativas' i.2.id%}"><img src="{% static 'img/charlar.png' %}" alt="" style="max-width:20px; height:auto;"  ></a>         
-                    
-
-
-                        {% endif %}
-                    
-                    
-                    </a> </strong></small></td>
-                    <td style="width: 1%;" >
-
-                        {% if i.0 %}
-                        
-                        <img src="{{i.0.imagenlogo.url}}"  class="img-fluid" alt="..." style="max-width: 30px; height:auto;">
-
-                        {% endif %}
-                    
-                    </td>
-                    <td style="width: 3%;" class="priority-5"> <small> <strong>{{i.2.numero|upper}}</strong></small></td>
-
-                    {% if i.2.adj_oc %}
-
-                    <td style="width: 3%;" class="priority-4"> <small> <strong>{{i.2.o_c}}</strong></small></td>
-
-                    {% else %}
-
-                    <td style="width: 5%;" class="priority-4"><small>S/C</small> </td>
-                    
-
-                    {% endif %}
-
-                    <td style="width: 8%;" > <small>{{i.2.proveedor.name}}</small> </td>
-                        <td style="width: 5%;" class="priority-4" > <small><strong>{{i.2.proyecto|upper}}</strong></small></td>              
-                    <td style="width: 5%;" class="priority-4" ><small>${{i.2.monto|floatformat:0|intcomma}}</small> </td>
-
-                    {% if i.2.estado == "ESPERA" %}
-                    <td style="width: 5%; color: rgb(83, 82, 65);" class="priority-3" >  <small><strong>{{i.2.estado}}</strong></small></td>
-
-                    {% endif %}
-
-                    {% if i.2.estado == "AUTORIZADA" %}
-
-
-
-
-                    <td style="width: 5%; color: rgb(37, 159, 76 );" class="priority-3">  
-
-                    {% if i.2.comentario %}
-                        
-                        
-                    <span class="hint--left hint--danger"aria-label="{{i.comentario}}">
-
-                    {% endif %}
-                    
-                    
-                    
-                    
-                    <small><strong>O.C AUTORIZADA</strong></small>
-
-                    {% if i.2.comentario %}
-                    
-                </span>
-
-                {% endif %}
-                
-                
-                </td>
-
-  
-        
-                    
-                    {% endif %}
-
-                    {% if i.2.estado == "NO AUTORIZADA" %}
-                    <td style="width: 4%; color: rgb(192, 63, 50 );"  class="priority-3">
-
-
-                        {% if i.2.comentario %}
-                        
-                        
-                        <span class="hint--left hint--danger" aria-label="{{i.2.comentario}}">
-
-                            {% endif %}
-                        
-                        
-                        <small><strong>RECHAZADA</strong></small>
-
-                        {% if i.2.comentario %}
-                    
-                            </span>
-
-                            {% endif %}
-                    
-                    </td>
-
-                    {% endif %}
-
-                    {% if i.2.estado == "ADJUNTO ✓" %}
-                    <td style="width: 4%; color: rgb(208, 125, 32);"  class="priority-3">
-
-
-                        {% if i.2.comentario %}
-                        
-                        
-                        <span class="hint--left hint--danger" aria-label="{{i.2.comentario}}">
-
-                            {% endif %}
-                        
-                        
-                        <small><strong>ADJUNTO AUTORIZADO</strong></small>
-
-                        {% if i.2.comentario %}
-                    
-                            </span>
-
-                            {% endif %}
-                    
-                    </td>
-
-                    {% endif %}
-                    <td style="width: 9%;" class="priority-4"><small>{{i.2.fecha_c}}</small> </td>
-                    <td style="width: 5%;"><a href="{{ i.2.adjunto.url }}" class="btn btn-sm btn-warning"><span class="hint--left hint--warning" aria-label="Es una imagen de comparativas o remitos!">VER</span></a></td>
-                    
-                    {% if i.2.adj_oc %}
-                    
-                    <td style="width: 3%;"><a href="{{ i.2.adj_oc.url }}" class="btn btn-sm btn-success"><span class="hint--left hint--success" aria-label="Una copia de la O.C!, puedes buscarla en TANGO tambien!">VER</span></a></td>
-                    
-                    {% else %}
-
-                    <td style="width: 3%;"><small>S/C</small> </td>
-
-                    {% endif %}
-
-                    {% if request.user.username == "PL" or request.user.username == "AR" or request.user.username == "ar" or request.user.username == "SP" %}
-
-
-                    {% if request.user.username == "SP" and "POSTV" in i.2.numero %}
-
-                    <td style="width: 8%;" >
-                        
-                        <form action="" method="POST">
-                            {% csrf_token %}
-
-
-                            {% if estado == "0" or estado == "1" or estado == "3" or estado == "5" %}
-
-                            <div style="display: inline-block; max-width: 45%;">
-
-                                <button class="btn btn-sm btn-warning" type="submit"  name = "ADJAPROB" value="{{i.2.id}}"><span class="hint--left hint--warning" aria-label="El adjunto esta Ok!">✓</span></button>
-
-                            </div>
-
-                            {% endif %}
-
-                            {% if estado == "0" or estado == "2" or estado == "3" or estado == "5"  %}
-
-                            <div style="display: inline-block; max-width: 45%;">
-
-                                <button class="btn btn-sm btn-success" type="submit"  name = "APROBADA" value="{{i.2.id}}"><span class="hint--left hint--success" aria-label="Esta todo listo para el pago!">✓</span></button>
-
-                            </div>
-
-                            {% endif %}
-
-                            <div style="display: inline-block; max-width: 45%;">
-
-                                <button class="btn btn-sm btn-danger" type="submit" name = "NO APROBADA" value="{{i.2.id}}"><span class="hint--left hint--danger" aria-label="Deja un comentario para que revisen!">X</span></button>
-                            
-                            </div>
-
-                            
-                            
-                            <div class="form-group" style="margin-top: 10%;">
-
-
-                                <input type="text" name="MENSAJE" class="form-control form-control-sm" placeholder="Comentario" id="inputDefault">
-                        
-
-                            </div>
-
-                        </form>
-                        
-                    </td>
-
-
-                    {% elif request.user.username == "PL" and i.0.identificacion == "MES" %}
-
-                    <td style="width: 8%;" >
-                    
-                        <strong>Autoriza SP! <img src="{% static 'img/gracias.png' %}" alt="" style="max-width:25px; height:auto;"  > </strong>
-                    </td>
-
-                    {% elif request.user.username == "SP" and i.0.identificacion != "MES" %}
-
-                    <td style="width: 8%;" >
-                    
-                        <strong>Autoriza PL! <img src="{% static 'img/gracias.png' %}" alt="" style="max-width:25px; height:auto;"  > </strong>
-                    </td>
-
-                    {% else %}
-
-                    <td style="width: 8%;" >
-                        
-                        <form action="" method="POST">
-                            {% csrf_token %}
-
-
-                            {% if estado == "0" or estado == "1" or estado == "3" or estado == "5" %}
-
-                            <div style="display: inline-block; max-width: 45%;">
-
-                                <button class="btn btn-sm btn-warning" type="submit"  name = "ADJAPROB" value="{{i.2.id}}"><span class="hint--left hint--warning" aria-label="El adjunto esta Ok!">✓</span></button>
-
-                            </div>
-
-                            {% endif %}
-
-                            {% if estado == "0" or estado == "2" or estado == "3" or estado == "5" %}
-
-                            <div style="display: inline-block; max-width: 45%;">
-
-                                <button class="btn btn-sm btn-success" type="submit"  name = "APROBADA" value="{{i.2.id}}"><span class="hint--left hint--success" aria-label="Esta todo listo para el pago!">✓</span></button>
-
-                            </div>
-
-                            {% endif %}
-
-                            <div style="display: inline-block; max-width: 45%;">
-
-                                <button class="btn btn-sm btn-danger" type="submit" name = "NO APROBADA" value="{{i.2.id}}"><span class="hint--left hint--danger" aria-label="Deja un comentario para que revisen!">X</span></button>
-                            
-                            </div>
-
-                            
-                            
-                            <div class="form-group" style="margin-top: 10%;">
-
-
-                                <input type="text" name="MENSAJE" class="form-control form-control-sm" placeholder="Comentario" id="inputDefault">
-                        
-
-                            </div>
-
-                        </form>
-                        
-                    </td>
-                    {% endif %}
-
-                    {% endif %}
-
-                    
-                {% endfor %}
-            </tbody>
-             
-    
-            </table>
-    
-    <b><hr class = "my-4" style="width: 100%;"></b>
-
-
-     {% else %}
-            <div style="margin-top: 2rem;">
-                <h7>No hay solicitudes!</h7>
-            </div>
-
-            {% endif %}
-
-            <b><hr class = "my-4" style="width: 75%;"></b>
-
-
-            
-
-
-
-    <div style="margin-top: 2rem;">
-        <p> <small>-- Link<strong>P</strong> --</small> </p>
-
-     </div>
-        
-    
-
-                    
-</div>
+¡
+<script src="{% static 'adminpro/assets/plugins/sticky-kit-master/dist/sticky-kit.min.js' %}"></script>
+<script src="{% static 'adminpro/main/js/perfect-scrollbar.jquery.min.js' %}"></script>
+<script src="{% static 'adminpro/main/js/sidebarmenu.js' %}"></script>
+<script src="{% static 'adminpro/main/js/waves.js' %}"></script>
  
     
 {% endblock %}
+

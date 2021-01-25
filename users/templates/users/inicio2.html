@@ -5,15 +5,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
-    <link rel="stylesheet" href="{% static 'css/hint.css' %}">
     <link rel="stylesheet" href="{% static 'css/styleabel.css' %}">  
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <link rel="shortcut icon" href="{% static 'img/icolinkp.ico' %}" />
     
     <!-- Hojas de estilos AdminPro -->
-
+    <link rel="stylesheet" href="{% static 'css/styleabel.css' %}"> 
     <link href="{% static 'adminpro/assets/plugins/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
     <link href="{% static 'adminpro/assets/plugins/perfect-scrollbar/css/perfect-scrollbar.css' %}" rel="stylesheet">
     <link href="{% static 'adminpro/assets/plugins/chartist-js/dist/chartist.min.css' %}" rel="stylesheet">
@@ -286,7 +284,15 @@
             </li>
             <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i class="mdi mdi-widgets"></i><span class="hide-menu">Postventa</span></a>
               <ul aria-expanded="false" class="collapse">
-                  <li><a href="index.html">C.B.A</a></li>
+                {% if request.user|has_group:"POSTVENTA NIVEL 1" %}
+  
+                  <li><a href="{% url 'Reclamos Postventa' %}">Reclamos</a></li>
+
+                  {% else %}
+
+                    <li>No tienes permisos para ver este espacio</li>
+
+                            {% endif %}
               </ul>
           </li>
 
@@ -294,7 +300,15 @@
 
           <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i class="mdi mdi-widgets"></i><span class="hide-menu">Generales</span></a>
             <ul aria-expanded="false" class="collapse">
-                <li><a href="index.html">C.B.A</a></li>
+              {% if perms.sigma.view_inventario %}
+                <li><a href="/sigma/inventario">Inventario</a></li>
+                <li><a href="/sigma/tareas">Tareas de la constructora</a></li>
+
+                {% else %}
+
+                <li>No tienes permisos para ver este espacio</li>
+
+                        {% endif %}
             </ul>
         </li>
                    </ul>
