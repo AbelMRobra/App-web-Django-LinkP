@@ -32,23 +32,29 @@
                     <h5 class="m-b-0 font-medium">Ultimo arqueo: {{ data_cruda.0.fecha }}</h5>
                     <h6 class="text-muted">De esta fecha se alimenta los datos</h6>
                 </div>
-                <div>
-                    <h6>Efectivo: $ {{otros_datos.2|floatformat:0|intcomma}}</h6><small class="text-muted">Liquides en pesos</small></td>
+                <div class="m-t-10">
+                    <h5 class="m-b-0 font-medium">Efectivo: $ {{otros_datos.2|floatformat:0|intcomma}}</h5>
+                    <h6 class="text-muted">Liquides en pesos</h6>
                 </div>
-                <div>
-                    <h6>Bancos: $ {{otros_datos.4|floatformat:0|intcomma}}</h6><small class="text-muted">Suma de todos los bancos</small></td>
+                <div class="m-t-10">
+                    <h5 class="m-b-0 font-medium">Bancos: $ {{otros_datos.4|floatformat:0|intcomma}}</h5>
+                    <h6 class="text-muted">Suma de todos los bancos</h6>
                 </div>
-                <div>
-                    <h6>Cheques: $ {{otros_datos.3|floatformat:0|intcomma}}</h6><small class="text-muted">Suma de valores cheques a cobrar</small></td>
+                <div class="m-t-10">
+                    <h5 class="m-b-0 font-medium">Cheques: $ {{otros_datos.3|floatformat:0|intcomma}}</h5>
+                    <h6 class="text-muted">Suma de valores cheques a cobrar</h6>
                 </div>
-                <div>
-                    <h6>Dolares: U$D {{otros_datos.0|floatformat:0|intcomma}}</h6><small class="text-muted">Liquides en dolares</small></td>
+                <div class="m-t-10">
+                    <h5 class="m-b-0 font-medium">Dolares: U$D {{otros_datos.0|floatformat:0|intcomma}}</h5>
+                    <h6 class="text-muted">Liquides en dolares</h6>
                 </div>
-                <div>
-                    <h6>Euros: € {{otros_datos.1|floatformat:0|intcomma}}</h6><small class="text-muted">Liquides en Euros</small></td>
+                <div class="m-t-10">
+                    <h5 class="m-b-0 font-medium">Euros: € {{otros_datos.1|floatformat:0|intcomma}}</h5>
+                    <h6 class="text-muted">Liquides en Euros</h6>
                 </div>
-                <div>
-                    <h6>Total: $ {{otros_datos.5|floatformat:0|intcomma}}</h6><small class="text-muted">Canja consolidada en pesos</small></td>
+                <div class="m-t-10">
+                    <h5 class="m-b-0 font-medium">Total: $ {{otros_datos.5|floatformat:0|intcomma}}</h5>
+                    <h6 class="text-muted">Canja consolidada en pesos</h6>
                 </div>
 
             </div>
@@ -202,11 +208,36 @@
 
    <b><hr class = "my-4" style="width: 100%; "></b>
 
-   <canvas id="myChart" height="70px" width="auto"></canvas>
+   <canvas id="myChart2" height="70px" width="auto"></canvas>
 
 
    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
-   <script>
+   
+       <script>
+            
+            var ctx = document.getElementById('myChart2').getContext('2d');
+            var chart = new Chart(ctx, {
+                // The type of chart we want to create
+                type: 'doughnut',
+                // The data for our dataset
+                data: {
+                datasets: [{        
+                    data: [Math.round({{grafico.0.1|floatformat:0}})/1000000, Math.round({{grafico.0.2|floatformat:0}})/1000000, Math.round({{grafico.0.3|floatformat:0}})/1000000, Math.round({{grafico.0.4|floatformat:0}})/1000000],
+                    backgroundColor: ['rgb(56, 229, 98 , 0.5)', 'rgb(25, 71, 175 , 0.5)', 'rgb(222, 65, 37  , 0.5)', 'rgb(231, 206, 27  , 0.5)'],    
+                }],
+      
+                labels: ['Moneda extranjera', 'Efectivo', 'Banco', 'Cheque' ]
+              },
+                options: {
+                  legend: {
+                      position: 'right'
+                  },
+                },
+      
+              });
+      
+        </script>
+        <script>
        var ctx = document.getElementById('myChart').getContext('2d');
        var chart = new Chart(ctx, {
            // The type of chart we want to create
