@@ -24,12 +24,41 @@
             <div class="card-body">
                 <div class="d-flex">
                     <div>
-                        <a type="button" data-toggle="modal" data-target="#ModalArqueo">
-                    
-                            <img src="{% static 'img/anadir.png' %}" alt="" style="max-width:20px; height:auto; vertical-align: middle;">
-                            
-                        </a><h4 class="card-title"><span class="lstick"></span>Resumen de datos</h4></div>
+                        <span class="lstick"></span>Resumen de datos</h4></div>
 
+                </div>
+
+                <div class="m-t-10">
+                    <h5 class="m-b-0 font-medium">Ultimo arqueo: {{ data_cruda.0.fecha }}</h5>
+                    <h6 class="text-muted">De esta fecha se alimenta los datos</h6>
+                </div>
+                <div class="m-t-10">
+                    <h5 class="m-b-0 font-medium">Efectivo: $ {{otros_datos.2|floatformat:0|intcomma}}</h5>
+                    <h6 class="text-muted">Liquides en pesos</h6>
+                </div>
+                <div class="m-t-10">
+                    <h5 class="m-b-0 font-medium">Bancos: $ {{otros_datos.4|floatformat:0|intcomma}}</h5>
+                    <h6 class="text-muted">Suma de todos los bancos</h6>
+                </div>
+                <div class="m-t-10">
+                    <h5 class="m-b-0 font-medium">Cheques: $ {{otros_datos.3|floatformat:0|intcomma}}</h5>
+                    <h6 class="text-muted">Suma de valores cheques a cobrar</h6>
+                </div>
+                <div class="m-t-10">
+                    <h5 class="m-b-0 font-medium">Dolares: U$D {{otros_datos.0|floatformat:0|intcomma}}</h5>
+                    <h6 class="text-muted">Liquides en dolares</h6>
+                </div>
+                <div class="m-t-10">
+                    <h5 class="m-b-0 font-medium">Euros: € {{otros_datos.1|floatformat:0|intcomma}}</h5>
+                    <h6 class="text-muted">Liquides en Euros</h6>
+                </div>
+                <div class="m-t-10">
+                    <h5 class="m-b-0 font-medium">Total: $ {{otros_datos.5|floatformat:0|intcomma}}</h5>
+                    <h6 class="text-muted">Canja consolidada en pesos</h6>
+                </div>
+                <div style="margin-top: 15px;">
+                    <button type="button" data-toggle="modal" data-target="#ModalArqueo" class="btn waves-effect waves-light btn-rounded btn-sm btn-secondary" ><img src="{% static 'img/anadir.png' %}" alt="" style="max-width:25px; height:auto; vertical-align: bottom;"> Nuevo arqueo</button>
+        
                 </div>
 
                 <!-- Modal fecha estado Subitem -->
@@ -80,36 +109,6 @@
                 </div>
 
                 <!-- Final del modal -->
-
-
-                <div class="m-t-10">
-                    <h5 class="m-b-0 font-medium">Ultimo arqueo: {{ data_cruda.0.fecha }}</h5>
-                    <h6 class="text-muted">De esta fecha se alimenta los datos</h6>
-                </div>
-                <div class="m-t-10">
-                    <h5 class="m-b-0 font-medium">Efectivo: $ {{otros_datos.2|floatformat:0|intcomma}}</h5>
-                    <h6 class="text-muted">Liquides en pesos</h6>
-                </div>
-                <div class="m-t-10">
-                    <h5 class="m-b-0 font-medium">Bancos: $ {{otros_datos.4|floatformat:0|intcomma}}</h5>
-                    <h6 class="text-muted">Suma de todos los bancos</h6>
-                </div>
-                <div class="m-t-10">
-                    <h5 class="m-b-0 font-medium">Cheques: $ {{otros_datos.3|floatformat:0|intcomma}}</h5>
-                    <h6 class="text-muted">Suma de valores cheques a cobrar</h6>
-                </div>
-                <div class="m-t-10">
-                    <h5 class="m-b-0 font-medium">Dolares: U$D {{otros_datos.0|floatformat:0|intcomma}}</h5>
-                    <h6 class="text-muted">Liquides en dolares</h6>
-                </div>
-                <div class="m-t-10">
-                    <h5 class="m-b-0 font-medium">Euros: € {{otros_datos.1|floatformat:0|intcomma}}</h5>
-                    <h6 class="text-muted">Liquides en Euros</h6>
-                </div>
-                <div class="m-t-10">
-                    <h5 class="m-b-0 font-medium">Total: $ {{otros_datos.5|floatformat:0|intcomma}}</h5>
-                    <h6 class="text-muted">Canja consolidada en pesos</h6>
-                </div>
 
             </div>
         </div>
@@ -184,20 +183,25 @@
                             <tr class = "table-light">
             
             
-                                {% if i.0 %}
-            
-            
-                                <td style="vertical-align: middle;"> <img src="{{i.0.iamgen.url}}"  class="img-fluid" alt="..." style="max-width: 70px; height:auto;"> </td>
-                                
-                                {% else %}
-            
-                                <td style="width: 5%; vertical-align: middle;"> <b>NO</b> </td> 
                                 
             
-                                {% endif %}
+            
+                                <td style="vertical-align: middle;">
+                                    
+                                    <div>
+                                        {% if i.0 %}
+        
+                                        <img src="{{i.0.iamgen.url}}"  class="img-fluid" alt="..." style="height: 30px; width: auto;">
+                                        {% else %}
+            
+                                        Sin vinculación 
+                                        
+                    
+                                        {% endif %}
+                                    </div>
+            
+                                    <span class="label label-info">{{ i.1 }}</span></td>
                                 
-                                
-                                <td style="width: 15%; vertical-align: middle;"> {{ i.1 }}</td> 
                                 <td style="width: 10%; vertical-align: middle;">${{ i.2|floatformat:0|intcomma }}</td>
                                 <td style="width: 10%; vertical-align: middle;">${{ i.7|floatformat:0|intcomma }}</td>
                                 <td style="width: 10%; vertical-align: middle;">${{ i.5|floatformat:0|intcomma }}</td>
