@@ -70,7 +70,9 @@
                             <th>Valor</th>
                             <th>Fecha</th>
                             <th>Adjuntos</th>
+                            {% if request.user.username == "PL" or request.user.username == "AR" or request.user.username == "ar" or request.user.username == "SP" %}
                             <th style="min-width: 150px;">Autorizar</th>
+                            {% endif %}
                         </tr>
                     </thead>
                     <tbody>
