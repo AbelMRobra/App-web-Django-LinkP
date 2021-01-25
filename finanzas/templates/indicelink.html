@@ -5,153 +5,158 @@
 
 {% block content %}
 
+<div class="container-fluid r-aside">
+    <!-- ============================================================== -->
+    <!-- Bread crumb and right sidebar toggle -->
+    <!-- ============================================================== -->
+    <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+            <h3 class="text-themecolor">Indice Link</h3>
+        </div>
 
-
-<div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;" > 
-
-    <div >
-        <h2 style="font-family: Arial, Helvetica, sans-serif;">Indice LINK</h2>
-
-        <small style="font-family: Arial, Helvetica, sans-serif;"><b>Modulo:</b> Finanzas </small>
-
-
-        <b><hr class = "my-4" style="width: 100%; "></b>
-    
     </div>
 
+  </div>
 
-    <div>
 
+  
 
-        <div style="text-align: left; margin: 5px;">
+  <div class="col-12">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Composición del indice</h4>
+            <h6 class="card-subtitle">Resumen de los datos conjuntos de proyectos y honorarios</h6>
+            <div style="text-align: left; margin: 5px;">
 
-            <a class="badge badge-dark" href="{% url 'Indice Link' %}" >PESOS</a>
+                <a class="dropbtn btn btn-info" href="{% url 'Indice Link' %}" >Pesos</a>
+            
+                <a class="dropbtn btn btn-dark" href="{% url 'Indice Link moneda' 7 %}" >Hormigon</a>
+            
+                <a class="dropbtn btn btn-success" href="{% url 'Indice Link moneda' 2 %}" >U.S.D.</a>
+            
+                </div>
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Proyecto</th>
+                            <th>Saldo de caja</th>
+                            <th>Pend. Gasto</th>
+                            <th>Pend. Ingreso</th>
+                            <th>Margen</th>
+                            <th>Descuentos</th>
+                            <th>Margen final</th>
+  
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for i in datos_completos %}  
     
-            <a class="badge badge-secondary" href="{% url 'Indice Link moneda' 7 %}" >HORMIGON</a>
+                        <tr class = "table-light">
+        
+                            {% if "#300" in i.0.proyecto.nombre %}
+        
+                            <td> 
+                                
+                                <div>
+        
+                                    <img src="{{i.0.proyecto.iamgen.url}}"  class="img-fluid" alt="..." style="max-width: 70px; height:auto;">
+                                
+                                </div>
+        
+                                <span class="label label-info" style="background-color: rgb({{i.0.proyecto.color}});">#300</span>
+                                 
+                            
+                            </td> 
+                            
+                            {% else %}
+        
+                            <td>
+        
+        
+                                <div>
+        
+                                    <img src="{{i.0.proyecto.iamgen.url}}"  class="img-fluid" alt="..." style="max-width: 70px; height:auto;">
+                                
+                                </div>
+        
+                                <span class="label label-info" style="background-color: rgb({{i.0.proyecto.color}});">{{ i.0.proyecto.nombre}}</span>                  
+                            
+                            </td> 
+                            
+        
+                            {% endif %}
+                            
+                            
+                            <td style="width: 10%; vertical-align: middle;"><small>$ {{ i.1|floatformat:0|intcomma }}</small> </td> 
+                            <td style="width: 10%; vertical-align: middle;"><small>$ {{ i.2|floatformat:0|intcomma }}</small> </td> 
+                            <td style="width: 10%; vertical-align: middle; vertical-align: middle;"><small>$ {{ i.3|floatformat:0|intcomma }}</small></td> 
+                            <td style="width: 8%; vertical-align: middle;"><small><b>$ {{i.4|floatformat:0|intcomma }}</b></small></td>
+                            <td style="width: 10%; vertical-align: middle;"><small>- $ {{ i.5|floatformat:0|intcomma }}</small> </td> 
+                            <td style="width: 10%; vertical-align: middle;"><small><b>$ {{ i.6|floatformat:0|intcomma }}</b> </small> </td>     
+                        </tr>
+                    </tbody>
+        
+                    {% endfor %}
+        
+                    <tbody>
+            
+                        <tr class = "table-dark">
+                            <td style="width: 10%; vertical-align: middle;"><small><b>RESULTADO</b></small> </td>
+                            <td  class="priority-5" style="width: 5%; vertical-align: middle;"><small><b>$ {{datos_finales.0.0|floatformat:0|intcomma }}</b> </small> </td> 
+                            <td  class="priority-5" style="width: 10%; vertical-align: middle;"><small><b>$ {{datos_finales.0.1|floatformat:0|intcomma }}</b></small> </td> 
+                            <td style="width: 10%; vertical-align: middle; vertical-align: middle;"><small><b>$ {{datos_finales.0.2|floatformat:0|intcomma}}</b></small> </td> 
+                            <td style="width: 10%; vertical-align: middle;"><small><b>$ {{datos_finales.0.4|floatformat:0|intcomma }}</b></small> </td>
+                            <td style="width: 10%; vertical-align: middle;"><small><b>- $ {{ datos_finales.0.3|floatformat:0|intcomma}}</b></small> </td> 
+                            <td style="width: 10%; vertical-align: middle;"><small><b>$ {{ datos_finales.0.5|floatformat:0|intcomma }}</b></small> </td>
+                    </tr>
+                        <tr class = "table-light">
+                            <td style="width: 10%; vertical-align: middle;"><small><b>HONORARIOS</b></small></td>
+                            <td  class="priority-5" style="width: 5%; vertical-align: middle;"><small>$ {{datos_finales_2.11|floatformat:0|intcomma }}</small></td> 
+                            <td  class="priority-5" style="width: 10%; vertical-align: middle;"><small>$ {{datos_finales_2.2|floatformat:0|intcomma }}</small></td> 
+                            <td style="width: 10%; vertical-align: middle; vertical-align: middle;"><small><b>$ {{datos_finales_2.1|floatformat:0|intcomma }}</b></small></td> 
+                            <td style="width: 10%; vertical-align: middle;"><small><b>$ {{datos_finales_2.0|floatformat:0|intcomma }}</b></small></td>
+                            <td style="width: 10%; vertical-align: middle; vertical-align: middle;"></td> 
+                            <td style="width: 10%; vertical-align: middle; vertical-align: middle;"><small><b>$ {{datos_finales_2.3|floatformat:0|intcomma }}</b></small></td>
+        
+                        </tr>
+                        <tr class = "table-dark">
+                            <td style="width: 10%; vertical-align: middle;"> <small><b>RESULTADO</b></small> </td>
+                            <td  class="priority-5" style="width: 5%; vertical-align: middle;"><small><b>$ {{datos_finales_2.12|floatformat:0|intcomma }}</b></small></td> 
+                            <td  class="priority-5" style="width: 10%; vertical-align: middle;"><small><b>$ {{datos_finales_2.5|floatformat:0|intcomma }}</b></small></td> 
+                            <td style="width: 10%; vertical-align: middle; vertical-align: middle;"><small><b>$ {{datos_finales_2.4|floatformat:0|intcomma }}</b></small></td> 
+                            <td style="width: 10%; vertical-align: middle;"><small><b>$ {{datos_finales_2.6|floatformat:0|intcomma }}</b></small></td>
+                            <td style="width: 10%; vertical-align: middle; vertical-align: middle;"><small><b>- $ {{ datos_finales.0.3|floatformat:0|intcomma}}</b></small> </td> 
+                            <td style="width: 10%; vertical-align: middle; vertical-align: middle;"><small><b>$ {{datos_finales_2.7|floatformat:0|intcomma }}</b></small> </td>
+                        </tr>
+                    </tbody>
 
-            <a class="badge badge-success" href="{% url 'Indice Link moneda' 2 %}" >USD</a>
-
+                </table>
             </div>
-        <table class = "table table-hover" style="text-align: center;">
-            <thead>
-    
-                <tr class = "table-dark">
-                    <th scope = "row" style="vertical-align: middle;"><small><b>PROYECTO</b></small></th>                   
-                    <th scope = "row" style="vertical-align: middle;"><small><b>SALDO DE CAJA</b></small></th>
-                    <th scope = "row" style="vertical-align: middle;"><small><b>PEND. GASTO</b></small></th>
-                    <th scope = "row" style="vertical-align: middle;"><small><b>PEND. INGRESO</b></small></th>
-                    <th scope = "row" style="vertical-align: middle;"><small><b>MARGEN</b></small> </th>
-                    <th scope = "row" style="vertical-align: middle;"><small><b>DESCUENTOS</b></small></th>
-                    <th scope = "row" style="vertical-align: middle;"><small><b>MARGEN FINAL</b></small></th>
-                </tr>
-            </thead>
-            {% for i in datos_completos %}   
-            <tbody>
-    
-                <tr class = "table-light">
-
-
-                    {% if "#300" in i.0.proyecto.nombre %}
-
-                    <td style="color: rgb({{i.0.proyecto.color}}); vertical-align: middle;"> 
-                        
-                        <div>
-
-                            <img src="{{i.0.proyecto.iamgen.url}}"  class="img-fluid" alt="..." style="max-width: 70px; height:auto;">
-                        
-                        </div>
-
-                        <small><b>#300</b></small>
-                         
-                    
-                    </td> 
-                    
-                    {% else %}
-
-                    <td style="width: 10%; color: rgb({{i.0.proyecto.color}}); vertical-align: middle;">
-
-
-                        <div>
-
-                            <img src="{{i.0.proyecto.iamgen.url}}"  class="img-fluid" alt="..." style="max-width: 70px; height:auto;">
-                        
-                        </div>
-
-                        <small><b>{{ i.0.proyecto.nombre}}</b> </small>                  
-                    
-                    </td> 
-                    
-
-                    {% endif %}
-                    
-                    
-                    <td style="width: 10%; vertical-align: middle;"><small>$ {{ i.1|floatformat:0|intcomma }}</small> </td> 
-                    <td style="width: 10%; vertical-align: middle;"><small>$ {{ i.2|floatformat:0|intcomma }}</small> </td> 
-                    <td style="width: 10%; vertical-align: middle; vertical-align: middle;"><small>$ {{ i.3|floatformat:0|intcomma }}</small></td> 
-                    <td style="width: 8%; vertical-align: middle;"><small><b>$ {{i.4|floatformat:0|intcomma }}</b></small></td>
-                    <td style="width: 10%; vertical-align: middle;"><small>- $ {{ i.5|floatformat:0|intcomma }}</small> </td> 
-                    <td style="width: 10%; vertical-align: middle;"><small><b>$ {{ i.6|floatformat:0|intcomma }}</b> </small> </td>     
-                </tr>
-            </tbody>
-
-            {% endfor %}
-
-            <tbody>
-    
-                <tr class = "table-dark">
-                    <td style="width: 10%; vertical-align: middle;"><small><b>RESULTADO PROYECTOS</b></small> </td>
-                    <td  class="priority-5" style="width: 5%; vertical-align: middle;"><small><b>$ {{datos_finales.0.0|floatformat:0|intcomma }}</b> </small> </td> 
-                    <td  class="priority-5" style="width: 10%; vertical-align: middle;"><small><b>$ {{datos_finales.0.1|floatformat:0|intcomma }}</b></small> </td> 
-                    <td style="width: 10%; vertical-align: middle; vertical-align: middle;"><small><b>$ {{datos_finales.0.2|floatformat:0|intcomma}}</b></small> </td> 
-                    <td style="width: 10%; vertical-align: middle;"><small><b>$ {{datos_finales.0.4|floatformat:0|intcomma }}</b></small> </td>
-                    <td style="width: 10%; vertical-align: middle;"><small><b>- $ {{ datos_finales.0.3|floatformat:0|intcomma}}</b></small> </td> 
-                    <td style="width: 10%; vertical-align: middle;"><small><b>$ {{ datos_finales.0.5|floatformat:0|intcomma }}</b></small> </td>
-            </tr>
-                <tr class = "table-light">
-                    <td style="width: 10%; vertical-align: middle;"><small><b>HONORARIOS</b></small></td>
-                    <td  class="priority-5" style="width: 5%; vertical-align: middle;"><small>$ {{datos_finales_2.11|floatformat:0|intcomma }}</small></td> 
-                    <td  class="priority-5" style="width: 10%; vertical-align: middle;"><small>$ {{datos_finales_2.2|floatformat:0|intcomma }}</small></td> 
-                    <td style="width: 10%; vertical-align: middle; vertical-align: middle;"><small><b>$ {{datos_finales_2.1|floatformat:0|intcomma }}</b></small></td> 
-                    <td style="width: 10%; vertical-align: middle;"><small><b>$ {{datos_finales_2.0|floatformat:0|intcomma }}</b></small></td>
-                    <td style="width: 10%; vertical-align: middle; vertical-align: middle;"></td> 
-                    <td style="width: 10%; vertical-align: middle; vertical-align: middle;"><small><b>$ {{datos_finales_2.3|floatformat:0|intcomma }}</b></small></td>
-
-                </tr>
-                <tr class = "table-dark">
-                    <td style="width: 10%; vertical-align: middle;"> <small><b>RESULTADO COMPLETO</b></small> </td>
-                    <td  class="priority-5" style="width: 5%; vertical-align: middle;"><small><b>$ {{datos_finales_2.12|floatformat:0|intcomma }}</b></small></td> 
-                    <td  class="priority-5" style="width: 10%; vertical-align: middle;"><small><b>$ {{datos_finales_2.5|floatformat:0|intcomma }}</b></small></td> 
-                    <td style="width: 10%; vertical-align: middle; vertical-align: middle;"><small><b>$ {{datos_finales_2.4|floatformat:0|intcomma }}</b></small></td> 
-                    <td style="width: 10%; vertical-align: middle;"><small><b>$ {{datos_finales_2.6|floatformat:0|intcomma }}</b></small></td>
-                    <td style="width: 10%; vertical-align: middle; vertical-align: middle;"><small><b>- $ {{ datos_finales.0.3|floatformat:0|intcomma}}</b></small> </td> 
-                    <td style="width: 10%; vertical-align: middle; vertical-align: middle;"><small><b>$ {{datos_finales_2.7|floatformat:0|intcomma }}</b></small> </td>
-                </tr>
-            </tbody>
-
-
-
-        </table> 
-
-
-          
-   </div>
-
-   <b><hr class = "my-4" style="width: 100%; "></b> 
-
-   <div style="margin-bottom: 2rem;">
-    <h5 style="font-family: Arial, Helvetica, sans-serif;">Variación historica del Indice</h5>
+        </div>
+    </div>
 </div>
 
-    <div style="margin-top: 0.5rem; width: 100%;">
 
-        <div style= "text-align: center;">
-            <small><strong>-- Valor del indice --</strong></small>
-        </div>
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex">
+                    <div>
+                        <h3 class="card-title m-b-5"><span class="lstick"></span>Variación del indice</h3>
+                        <h6 class="card-subtitle">Registros de los datos</h6></div>
+
+                    </div>
 
 
-        <div>
-               <canvas id="myChart" height="70px" width="auto"></canvas>
-        </div>
+                        <canvas id="myChart" height="100px" ></canvas>
+                    
+                
+
+    </div>
+    </div>
+    </div>
+
 
 
 
@@ -246,14 +251,5 @@
     </script>
 
 
-    </div>
-
-
-    <div>
-        <p style="font-family: Arial, Helvetica, sans-serif;"> <small>-- Link<strong>P</strong> --</small> </p>
-
-     </div>
-
-
-</div>
+ 
 {% endblock %}
