@@ -132,19 +132,19 @@
                 <table class="table vm font-14">
                     <tr>
                         <td class="b-0">Moneda extranjera</td>
-                        <td class="text-right font-medium b-0"><script>document.write(Math.round({{grafico.0.1|floatformat:0}})/Math.round({{otros_datos.5|floatformat:0}})*100)</script>%</td>
+                        <td class="text-right font-medium b-0"><script>document.write(Math.round(Math.round({{grafico.0.1|floatformat:0}})/Math.round({{otros_datos.5|floatformat:0}})*100))</script>%</td>
                     </tr>
                     <tr>
                         <td>Efectivo</td>
-                        <td class="text-right font-medium">30.8%</td>
+                        <td class="text-right font-medium"><script>document.write(Math.round(Math.round({{grafico.0.2|floatformat:0}})/Math.round({{otros_datos.5|floatformat:0}})*100))</script>%</td>
                     </tr>
                     <tr>
                         <td>Banco</td>
-                        <td class="text-right font-medium">7.7%</td>
+                        <td class="text-right font-medium"><script>document.write(Math.round(Math.round({{grafico.0.3|floatformat:0}})/Math.round({{otros_datos.5|floatformat:0}})*100))</script>%</td>
                     </tr>
                     <tr>
                         <td>Cheque</td>
-                        <td class="text-right font-medium">23.1%</td>
+                        <td class="text-right font-medium"><script>document.write(Math.round(Math.round({{grafico.0.4|floatformat:0}})/Math.round({{otros_datos.5|floatformat:0}})*100))</script>%</td>
                     </tr>
                 </table>
 
