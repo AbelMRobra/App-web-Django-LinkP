@@ -132,7 +132,7 @@
                 <table class="table vm font-14">
                     <tr>
                         <td class="b-0">Moneda extranjera</td>
-                        <td class="text-right font-medium b-0">38.5%</td>
+                        <td class="text-right font-medium b-0"><script>window.print(Math.round({{grafico.0.1|floatformat:0}})/Math.round({{otros_datos.5|floatformat:0}})*100)</script>%</td>
                     </tr>
                     <tr>
                         <td>Efectivo</td>
@@ -191,16 +191,14 @@
                                     <div>
                                         {% if i.0 %}
         
-                                        <img src="{{i.0.iamgen.url}}"  class="img-fluid" alt="..." style="height: 30px; width: auto;">
+                                        <span class="label label-success">{{ i.1 }}</span>
                                         {% else %}
             
-                                        Sin vinculación 
+                                        <span class="label label-info">{{ i.1 }}</span>
                                         
                     
                                         {% endif %}
-                                    </div>
-            
-                                    <span class="label label-info">{{ i.1 }}</span></td>
+                                    </div></td>
                                 
                                 <td style="width: 10%; vertical-align: middle;">${{ i.2|floatformat:0|intcomma }}</td>
                                 <td style="width: 10%; vertical-align: middle;">${{ i.7|floatformat:0|intcomma }}</td>
