@@ -147,7 +147,7 @@
                 <table class="table vm font-14">
                     <tr>
                         <td class="b-0">Moneda extranjera</td>
-                        <td class="text-right font-medium b-0"><script>document.write(Math.round(Math.round({{grafico.0.1|floatformat:0}})/Math.round({{otros_datos.6|floatformat:0}})*100))</script>%</td>
+                        <td class="text-right font-medium b-0"><script>document.write(Math.round(Math.round({{otros_datos.7|floatformat:0}})/Math.round({{otros_datos.6|floatformat:0}})*100))</script>%</td>
                     </tr>
                     <tr>
                         <td>Efectivo</td>
@@ -243,7 +243,7 @@
                 // The data for our dataset
                 data: {
                 datasets: [{        
-                    data: [Math.round({{grafico.0.1|floatformat:0}})/1000000, Math.round({{grafico.0.2|floatformat:0}})/1000000, Math.round({{grafico.0.3|floatformat:0}})/1000000, Math.round({{grafico.0.4|floatformat:0}})/1000000],
+                    data: [Math.round({{otros_datos.7|floatformat:0}})/1000000, Math.round({{grafico.0.2|floatformat:0}})/1000000, Math.round({{grafico.0.3|floatformat:0}})/1000000, Math.round({{grafico.0.4|floatformat:0}})/1000000],
                     backgroundColor: ['rgb(56, 229, 98 , 0.5)', 'rgb(25, 71, 175 , 0.5)', 'rgb(222, 65, 37  , 0.5)', 'rgb(231, 206, 27  , 0.5)'],    
                 }],
       

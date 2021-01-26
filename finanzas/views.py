@@ -2427,6 +2427,8 @@ def arqueo_diario(request):
     consolidados = 0
 
     consolidado_actual = 0
+
+    moneda_extranjera_actual = 0
   
     datos_grafico = [porcentaje_usd, porcentaje_euros, porcentaje_pesos]
 
@@ -2456,13 +2458,15 @@ def arqueo_diario(request):
 
         consolidados = consolidados + consolidado
 
+        moneda_extranjera_actual = moneda_extranjera_actual + data_frame.loc[numero, 'USD']*cambio_usd + data_frame.loc[numero, 'EUROS']*cambio_euro
+
         consolidado_actual = consolidado_actual + consolidado - data_frame.loc[numero, 'MONEDA EXTRANJERA'] + data_frame.loc[numero, 'USD']*cambio_usd + data_frame.loc[numero, 'EUROS']*cambio_euro
 
         datos.append((proyecto, data_frame.loc[numero, 'PROYECTO'], data_frame.loc[numero, 'EFECTIVO'], data_frame.loc[numero, 'USD'], data_frame.loc[numero, 'EUROS'], data_frame.loc[numero, 'CHEQUES'], data_frame.loc[numero, 'MONEDA EXTRANJERA'], banco, consolidado))
 
         numero += 1
 
-    otros_datos = [usd, euro, pesos, cheques, bancos, consolidados, consolidado_actual]
+    otros_datos = [usd, euro, pesos, cheques, bancos, consolidados, consolidado_actual, moneda_extranjera_actual]
 
 
     grafico = []
