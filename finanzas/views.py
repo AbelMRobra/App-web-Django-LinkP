@@ -2411,7 +2411,7 @@ def arqueo_diario(request):
     euro = sum(array_euro)
 
     cambio_usd = data_frame['CAMBIO USD'][0]
-    camdio_euro = data_frame['CAMBIO EURO'][0]
+    cambio_euro = data_frame['CAMBIO EURO'][0]
 
     pesos_usd = usd*Constantes.objects.get(nombre = "USD_BLUE").valor
     pesos_euros = euro*Constantes.objects.get(nombre = "EURO_BLUE").valor
