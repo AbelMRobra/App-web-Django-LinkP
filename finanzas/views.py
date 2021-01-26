@@ -2410,6 +2410,9 @@ def arqueo_diario(request):
 
     euro = sum(array_euro)
 
+    cambio_usd = data_frame['CAMBIO USD'][0]
+    camdio_euro = data_frame['CAMBIO EURO'][0]
+
     pesos_usd = usd*Constantes.objects.get(nombre = "USD_BLUE").valor
     pesos_euros = euro*Constantes.objects.get(nombre = "EURO_BLUE").valor
 
@@ -2493,7 +2496,7 @@ def arqueo_diario(request):
     grafico = sorted(grafico, key=lambda tup: tup[0])
 
 
-    return render(request, 'arqueo.html', {'datos':datos, 'data_cruda':data_cruda, 'otros_datos':otros_datos, 'grafico':grafico})
+    return render(request, 'arqueo.html', {'datos':datos, 'data_cruda':data_cruda, 'otros_datos':otros_datos, 'grafico':grafico, 'camdio_usd':cambio_usd, 'cambio_euro':cambio_euro})
 
 
 def registro_almacenero(request, id_proyecto, fecha):
