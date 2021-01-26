@@ -2496,7 +2496,7 @@ def arqueo_diario(request):
     grafico = sorted(grafico, key=lambda tup: tup[0])
 
 
-    return render(request, 'arqueo.html', {'datos':datos, 'data_cruda':data_cruda, 'otros_datos':otros_datos, 'grafico':grafico, 'camdio_usd':cambio_usd, 'cambio_euro':cambio_euro})
+    return render(request, 'arqueo.html', {'datos':datos, 'data_cruda':data_cruda, 'otros_datos':otros_datos, 'grafico':grafico, 'cambio_usd':cambio_usd, 'cambio_euro':cambio_euro})
 
 
 def registro_almacenero(request, id_proyecto, fecha):
