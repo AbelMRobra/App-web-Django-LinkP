@@ -66,7 +66,7 @@
                     <!-- Este es el total de la caja {{otros_datos.5|floatformat:0|intcomma}}-->
                 </div>
                 <div class="m-t-10">
-                    <h5 class="m-b-0 font-medium">Total: $ <script>document.write(Math.round({{otros_datos.2|floatformat:0|intcomma}}) + Math.round({{otros_datos.3|floatformat:0|intcomma}}) + Math.round({{otros_datos.4|floatformat:0|intcomma}}) + Math.round({{otros_datos.0|floatformat:0|intcomma}})*Math.round({{ cambio_usd|floatformat:0|intcomma }}) + Math.round({{otros_datos.0|floatformat:1|intcomma}})*Math.round({{ cambio_euro|floatformat:0|intcomma }}))</script></h5>
+                    <h5 class="m-b-0 font-medium">Total: $ {{otros_datos.6|floatformat:0|intcomma}}</h5>
                     <h6 class="text-muted">Canja consolidada en pesos a valores de hoy</h6>
 
                     <!-- Este es el total de la caja {{otros_datos.5|floatformat:0|intcomma}}-->
@@ -147,19 +147,19 @@
                 <table class="table vm font-14">
                     <tr>
                         <td class="b-0">Moneda extranjera</td>
-                        <td class="text-right font-medium b-0"><script>document.write(Math.round(Math.round({{grafico.0.1|floatformat:0}})/Math.round({{otros_datos.5|floatformat:0}})*100))</script>%</td>
+                        <td class="text-right font-medium b-0"><script>document.write(Math.round(Math.round({{grafico.0.1|floatformat:0}})/Math.round({{otros_datos.6|floatformat:0}})*100))</script>%</td>
                     </tr>
                     <tr>
                         <td>Efectivo</td>
-                        <td class="text-right font-medium"><script>document.write(Math.round(Math.round({{grafico.0.2|floatformat:0}})/Math.round({{otros_datos.5|floatformat:0}})*100))</script>%</td>
+                        <td class="text-right font-medium"><script>document.write(Math.round(Math.round({{grafico.0.2|floatformat:0}})/Math.round({{otros_datos.6|floatformat:0}})*100))</script>%</td>
                     </tr>
                     <tr>
                         <td>Banco</td>
-                        <td class="text-right font-medium"><script>document.write(Math.round(Math.round({{grafico.0.3|floatformat:0}})/Math.round({{otros_datos.5|floatformat:0}})*100))</script>%</td>
+                        <td class="text-right font-medium"><script>document.write(Math.round(Math.round({{grafico.0.3|floatformat:0}})/Math.round({{otros_datos.6|floatformat:0}})*100))</script>%</td>
                     </tr>
                     <tr>
                         <td>Cheque</td>
-                        <td class="text-right font-medium"><script>document.write(Math.round(Math.round({{grafico.0.4|floatformat:0}})/Math.round({{otros_datos.5|floatformat:0}})*100))</script>%</td>
+                        <td class="text-right font-medium"><script>document.write(Math.round(Math.round({{grafico.0.4|floatformat:0}})/Math.round({{otros_datos.6|floatformat:0}})*100))</script>%</td>
                     </tr>
                 </table>
 
