@@ -2383,7 +2383,7 @@ def arqueo_diario(request):
         #except:
             #pass
 
-    data_cruda = Arqueo.objects.order_by("-fecha")
+    data_cruda = Arqueo.objects.order_by("fecha")
 
 
     data = data_cruda[0]
@@ -2497,7 +2497,6 @@ def arqueo_diario(request):
 
 
     return render(request, 'arqueo.html', {'datos':datos, 'data_cruda':data_cruda, 'otros_datos':otros_datos, 'grafico':grafico, 'cambio_usd':cambio_usd, 'cambio_euro':cambio_euro})
-
 
 def registro_almacenero(request, id_proyecto, fecha):
 

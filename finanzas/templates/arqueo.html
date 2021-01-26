@@ -60,8 +60,21 @@
                     <h6 class="text-muted">Liquidez en Euros, tipo de cambio ${{ cambio_euro|floatformat:0|intcomma }}</h6>
                 </div>
                 <div class="m-t-10">
-                    <h5 class="m-b-0 font-medium">Total: $ {{otros_datos.5|floatformat:0|intcomma}}</h5>
-                    <h6 class="text-muted">Canja consolidada en pesos</h6>
+                    <h5 class="m-b-0 font-medium">Total historico: $ {{otros_datos.5|floatformat:0|intcomma}}</h5>
+                    <h6 class="text-muted">Canja consolidada en pesos historica</h6>
+
+                    <!-- Este es el total de la caja {{otros_datos.5|floatformat:0|intcomma}}-->
+                </div>
+                <div class="m-t-10">
+                    <h5 class="m-b-0 font-medium">Total: $ <script>document.write(
+                        Math.round(otros_datos.2|floatformat:0|intcomma) +
+                        Math.round(otros_datos.3|floatformat:0|intcomma) +
+                        Math.round(otros_datos.4|floatformat:0|intcomma) + 
+                        Math.round(otros_datos.0|floatformat:0|intcomma){{ cambio_usd|floatformat:0|intcomma }}+
+                        Math.round(otros_datos.0|floatformat:1|intcomma){{ cambio_euro|floatformat:0|intcomma }} )</script></h5>
+                    <h6 class="text-muted">Canja consolidada en pesos a valores de hoy</h6>
+
+                    <!-- Este es el total de la caja {{otros_datos.5|floatformat:0|intcomma}}-->
                 </div>
                 <div style="margin-top: 15px;">
                     <button type="button" data-toggle="modal" data-target="#ModalArqueo" class="btn waves-effect waves-light btn-rounded btn-sm btn-secondary" ><img src="{% static 'img/anadir.png' %}" alt="" style="max-width:25px; height:auto; vertical-align: bottom;"> Nuevo arqueo</button>
@@ -176,7 +189,7 @@
                                 <th>Banco</th>
                                 <th>Cheques</th>
                                 <th>Moneda Ext.</th>
-                                <th>Caja consolidada</th>
+                                <th>Caja Historica</th>
                                 <th>Dolares</th>
                                 <th>Euros</th>
       
