@@ -474,3 +474,13 @@ display: block;
 .dropdown:hover .dropbtn {
 background-color: #745af2;
 }
+
+
+.chatmensajes{
+padding: 10px;
+height: 400px;
+width: 400px;
+overflow: hidden;
+overflow-y: scroll 
+}
+
