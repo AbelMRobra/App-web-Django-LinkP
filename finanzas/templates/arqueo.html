@@ -164,7 +164,7 @@
                     <table class="table table-bordered">
                         <thead>
                             <tr>
-                                <th style="max-width: 200px;">Proyecto</th>
+                                <th>Proyecto</th>
                                 <th>Efectivo</th>
                                 <th>Banco</th>
                                 <th>Cheques</th>
@@ -180,13 +180,9 @@
 
                             {% for i in datos %}  
                 
-                            <tr class = "table-light">
+                            <tr>
             
-            
-                                
-            
-            
-                                <td style="vertical-align: middle;">
+                                <td>
                                     
                                     <div>
                                         {% if i.0 %}
@@ -200,13 +196,13 @@
                                         {% endif %}
                                     </div></td>
                                 
-                                <td style="width: 10%; vertical-align: middle;">${{ i.2|floatformat:0|intcomma }}</td>
-                                <td style="width: 10%; vertical-align: middle;">${{ i.7|floatformat:0|intcomma }}</td>
-                                <td style="width: 10%; vertical-align: middle;">${{ i.5|floatformat:0|intcomma }}</td>
-                                <td style="width: 10%; vertical-align: middle;">${{ i.6|floatformat:0|intcomma }}</td>
-                                <td style="width: 10%; vertical-align: middle;">${{ i.8|floatformat:0|intcomma }}</td>
-                                <td style="width: 10%; vertical-align: middle; color: rgb(89, 171, 70);">U$S {{ i.3|floatformat:0|intcomma }}</td>
-                                <td style="width: 10%; vertical-align: middle; color: rgb(76, 88, 173)">€ {{ i.4|floatformat:0|intcomma }}</td>
+                                <td>${{ i.2|floatformat:0|intcomma }}</td>
+                                <td>${{ i.7|floatformat:0|intcomma }}</td>
+                                <td>${{ i.5|floatformat:0|intcomma }}</td>
+                                <td>${{ i.6|floatformat:0|intcomma }}</td>
+                                <td>${{ i.8|floatformat:0|intcomma }}</td>
+                                <td style="color: rgb(89, 171, 70);">U$S {{ i.3|floatformat:0|intcomma }}</td>
+                                <td style="color: rgb(76, 88, 173)">€ {{ i.4|floatformat:0|intcomma }}</td>
                                
             
                             </tr>
