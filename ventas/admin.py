@@ -26,8 +26,8 @@ class VentasRealizadasResource(resources.ModelResource):
         model = VentasRealizadas
         
 class VentasRealizadasAdmin(ImportExportModelAdmin, admin.ModelAdmin):
-    list_display = ('proyecto', 'fecha', 'comprador')
-    search_fields = ('proyecto__nombre', 'fecha', 'comprador')
+    list_display = ('proyecto', 'unidad', 'fecha', 'comprador')
+    search_fields = ('proyecto__nombre','unidad__nombre_unidad','unidad__piso_unidad', 'fecha', 'comprador')
     resources_class = VentasRealizadasResource
 
 class EstudioMercadoResource(resources.ModelResource):

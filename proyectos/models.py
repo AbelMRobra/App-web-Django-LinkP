@@ -100,4 +100,4 @@ class Unidades(models.Model):
         verbose_name_plural="Unidades"
 
     def __str__(self):
-        return '{}'.format(self.proyecto)
+        return '{} - {}'.format(self.piso_unidad, self.nombre_unidad)
