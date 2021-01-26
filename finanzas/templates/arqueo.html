@@ -67,11 +67,11 @@
                 </div>
                 <div class="m-t-10">
                     <h5 class="m-b-0 font-medium">Total: $ <script>document.write(
-                        Math.round(otros_datos.2|floatformat:0|intcomma) +
-                        Math.round(otros_datos.3|floatformat:0|intcomma) +
-                        Math.round(otros_datos.4|floatformat:0|intcomma) + 
-                        Math.round(otros_datos.0|floatformat:0|intcomma){{ cambio_usd|floatformat:0|intcomma }}+
-                        Math.round(otros_datos.0|floatformat:1|intcomma){{ cambio_euro|floatformat:0|intcomma }} )</script></h5>
+                        Math.round({{otros_datos.2|floatformat:0|intcomma}}) +
+                        Math.round({{otros_datos.3|floatformat:0|intcomma}}) +
+                        Math.round({{otros_datos.4|floatformat:0|intcomma}}) + 
+                        Math.round({{otros_datos.0|floatformat:0|intcomma}})*{{ cambio_usd|floatformat:0|intcomma }}+
+                        Math.round({{otros_datos.0|floatformat:1|intcomma}})*{{ cambio_euro|floatformat:0|intcomma }})</script></h5>
                     <h6 class="text-muted">Canja consolidada en pesos a valores de hoy</h6>
 
                     <!-- Este es el total de la caja {{otros_datos.5|floatformat:0|intcomma}}-->
