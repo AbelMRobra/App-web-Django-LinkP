@@ -2413,7 +2413,7 @@ def arqueo_diario(request):
         #except:
             #pass
 
-    data_cruda = Arqueo.objects.order_by("fecha")
+    data_cruda = Arqueo.objects.order_by("-fecha")
 
 
     data = data_cruda[0]
