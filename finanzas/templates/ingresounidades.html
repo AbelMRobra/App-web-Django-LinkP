@@ -33,31 +33,14 @@
             <h6 class="card-subtitle">Este panel modifica propiedades de la unidad</h6>
 
             <div style="text-align: left;">
-        
-                 <div class="dropdown">
-                    <button class="dropbtn btn btn-primary">Todas</button>
+                <div class="dropdown">
+                    <button class="dropbtn btn btn-primary">{{proyecto_marcado}}</button>
                     <div class="dropdown-content">
-
-                    <a href="{% url 'Unidades señadas' 0 proyecto %}" >Todas</a>
-
-                    <a href="{% url 'Unidades señadas' 1 proyecto %}" >Señadas (S)</a>
-
-                    <a href="{% url 'Unidades señadas' 3 proyecto %}" >Pend. Comisión (C)</a>
-
-                    <a href="{% url 'Unidades señadas' 2 proyecto %}" >Pend. IIBB (IB)</a>
-        
-                    </div>
-                  </div>
-        
-        
-                  <div class="dropdown">
-                    <button class="dropbtn btn btn-primary">Proyecto</button>
-                    <div class="dropdown-content">
-                        <a href="{% url 'Unidades señadas' estado 0 %}" >Todos los proyectos</a>
+                        <a href="{% url 'Unidades señadas' estado 0 %}" >Todos</a>
 
                         {% for i in listado %}
                 
-                        <a style="background-color: rgb({{i.color}});" href="{% url 'Unidades señadas' estado i.id %}" >{{i.nombre}}</a>
+                        <a href="{% url 'Unidades señadas' estado i.id %}" >{{i.nombre}}</a>
                 
                         {% endfor %}
                     </div>
@@ -82,7 +65,6 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            <th>Proyecto</th>
                             <th>Unidad</th>
                             <th>Asignación</th>
                             <th>Estado</th>
@@ -96,17 +78,31 @@
 
                         {% for i in datos|slice:"100" %}
                         <tr>
-                        <td><span class="label label-info" style="background-color: rgb({{i.unidad.proyecto.color}});">{{i.unidad.proyecto.nombre}}</span>  </td> 
-
-                        <td>{{i.unidad.piso_unidad}} - {{i.unidad.nombre_unidad}} 
+          
+                        <td>
+                            <span class="label label-info" style="background-color: rgb({{i.unidad.proyecto.color}});">{{i.unidad.proyecto.nombre}}</span>
+                            <div>
+                                {{i.unidad.piso_unidad}} - {{i.unidad.nombre_unidad}} 
                             <h6 class="card-subtitle">{{i.comprador}}</h6>
+
+                            </div>
+                            
                         </td>
                         
 
                         <form method="POST">
                             {% csrf_token %}
-                        <td>{{i.asignacion}}</td>
-                        <td>{{i.unidad.estado}}</td>
+                        <td><select name="asig" class="custom-select form-control">
+                            <option value="PROYECTO" {% if i.unidad.asig == 'PROYECTO'%} selected {% endif %}>PROYECTO</option>
+                            <option value="TERRENO" {% if i.unidad.asig == 'TERRENO'%} selected {% endif %}>TERRENO</option>
+                            <option value="HON. LINK" {% if i.unidad.asig == 'HON. LINK'%} selected {% endif %}>HON. LINK</option>
+                            <option value="SOCIOS" {% if i.unidad.asig == 'SOCIOS'%} select {% endif %}>SOCIOS</option>
+                        </select></td>
+                        <td><select name="estado" class="custom-select form-control">
+                            <option value="SEÑADA" {% if i.unidad.estado == 'SEÑADA'%} selected {% endif %}>SEÑADA</option>
+                            <option value="VENDIDA" {% if i.unidad.estado == 'VENDIDA'%} selected {% endif %}>VENDIDA</option>
+                            <option value="DISPONIBLE" {% if i.unidad.estado == 'DISPONIBLE'%} selected {% endif %}>DISPONIBLE</option>
+                        </select></td>
                         <td>
                             {% if i.unidad.estado_iibb == 'SI' %}
                             <div class="switch">
@@ -149,177 +145,15 @@
 
                     </tbody>
                     </table>
-
-                        
-
-
-<div class = "jumbotron" style="background-color: white; margin-bottom: 0px;">
-    <div style="text-align: center;">
-        <h2>Panel de control de unidades Administración</h2>
-
-        <div>
-
-            <small>
-
-
-                {% if estado == "0" %}
-                
-                
-                
-                Estado: TODOS 
-    
-                {% elif estado == "1" %}
-    
-    
-                Estado: Unidades SEÑADAS
-    
-                {% elif estado == "2" %}
-    
-                Estado: Unidades con IIBB no pagados
-    
-                {% elif estado == "3" %}
-    
-                Estado: Unidades con comisiones no pagadas
-    
-                {% endif %}        
-            
-            
-            </small>  
-
-
-        </div>
-
-        <div>
-
-            <small>
-
-
-                {% if proyecto == "0" %}
-                
-                
-                
-                Proyecto: TODOS 
-
-                {% endif %}        
-            
-            
-            </small>  
-
-
-        </div>
-        
-    </div>
-
-    <b><hr class = "my-4" style="width: 100%; "></b>
-
-    <div style="text-align: left;">
-
-        
-
-        
-
-    
-        </div>
-
-        <div style="text-align: left; margin-top: 0.5%;">
-
-            
-    
-            
-    
-        
             </div>
-    
-
-
-    <div class = "tableconteinerabel">
-
-             
-
-
-    <table class = "table table-hover" style="text-align: center; margin-top: 0.5%;">
-        <thead>
-
-            <tr class = "table-dark">
-                <th scope = "row"> <small>FECHA</small></th>
-                <th scope = "row"> <small>PROYECTO</small></th>
-                <th scope = "row"> <small>COMPRADOR</small></th>
-                <th scope = "row"> <small>PISO</small></th>
-                <th scope = "row"> <small> ESTADO </small></th>
-                <th scope = "row"> <small> IIBB </small></th>
-                <th scope = "row"> <small> COMISION </small></th>
-                <th scope = "row"> <small> SUPERFICIE </small></th>
-                <th scope = "row"> <small>  ASIGNACION </small></th>
-            
-                <th scope = "row"> <small> INGRESAR </small></th>
-                 
-
-            </tr>
-        </thead>
-
-        <tbody>   
-
-            {% for i in datos|slice:"100" %}
-            <tr class = "table-light">
-                <td> <b> <small>{{i.fecha}}</small> </b></td>
-                <td> <b> <small>{{i.unidad.proyecto.nombre}}</small> </b></td>       
-                <td> <b> <small>{{i.comprador}}</small> </b> </td>
-                <td> <b> <small>{{i.unidad.piso_unidad}} - {{i.unidad.nombre_unidad}} </small> </b> </td>
-                <td> <b> <small> <b></b>  </small> </b> </td>
-                <td> <b> <small> <b></b> </small> </b> </td>
-                <td> <b> <small> <b>{{i.unidad.estado_comision}}</b> </small> </b> </td>
-                <td> <b> <small></small> </b> </td>
-                <td> <b> <small></small></b> </td>
-            
-                <td>
-                    
-                    <form method="POST">
-
-                        {% csrf_token %}
-
-
-                        <button class="btn btn-sm btn-warning" type="submit" name="ingresar" value="{{i.unidad.id}}" >S</button>
+            </div>
+        </div>
+    </div>
+  </div>
 
                         
 
-                        <button class="btn btn-sm btn-dark" type="submit" name="comision" value="{{i.unidad.id}}" >C</button>
 
-                        <button class="btn btn-sm btn-dark" type="submit" name="iibb" value="{{i.unidad.id}}" >IB</button>
-
-                    </form>
-
-                    
-                </td>
-
-
-            </tr>
-            {% endfor %}
-        </tbody>
-     
-
-
-    </table>
-
-    </div>
-
-
-
-    <b><hr class = "my-4" style="width: 100%;"></b>
-
-
-    <div style="text-align: center;">
-        <small>El listado puede continuar, se limita el numero de filas visibles</small>
-    </div>
-
-
-
-    <div style="text-align: center; margin-top: 2rem;">
-        <p> <small>-- Link<strong>P</strong> --</small> </p>
-
-     </div>
-
-                    
-</div>
  
     
 {% endblock %}

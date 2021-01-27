@@ -15,7 +15,7 @@ from django.views.generic.base import TemplateView
 from django.conf import settings
 from presupuestos.models import Proyectos, Presupuestos, Constantes, Modelopresupuesto, Registrodeconstantes
 from .models import Almacenero, CuentaCorriente, Cuota, Pago, RegistroAlmacenero, ArchivosAdmFin, Arqueo, RetirodeSocios, MovimientoAdmin, Honorarios
-from proyectos.models import Unidades
+from proyectos.models import Unidades, Proyectos
 from ventas.models import Pricing, VentasRealizadas
 from datetime import date, timedelta
 from openpyxl import Workbook
@@ -1532,11 +1532,21 @@ def ingresounidades(request, estado, proyecto):
 
             print(i)
 
-            if i[0] == 'ingresar':
+            if i[0] == 'estado':
 
-                unidad = Unidades.objects.get(id = i[1])
+                unidad = Unidades.objects.get(id = int(request.POST['nombre']))
 
-                unidad.estado = "VENDIDA"
+                unidad.estado = i[1]
+
+                unidad.save()
+
+            if i[0] == 'asig':
+
+                print("Llego a asignacion")
+
+                unidad = Unidades.objects.get(id = int(request.POST['nombre']))
+
+                unidad.asig = i[1]
 
                 unidad.save()
 
@@ -1568,7 +1578,6 @@ def ingresounidades(request, estado, proyecto):
 
     estado_marcado = estado
 
-    proyecto_marcado = proyecto
 
     listado = []
 
@@ -1581,48 +1590,59 @@ def ingresounidades(request, estado, proyecto):
     listado = set(list(listado))
 
     if proyecto == "0":
-
-        if estado == "0":
-
-            datos = VentasRealizadas.objects.all().order_by('unidad__piso_unidad')
-
-        if estado == "1":
-
-            datos = VentasRealizadas.objects.filter(unidad__estado = "SEÑADA")
-
-        if estado == "2":
-
-            datos = VentasRealizadas.objects.filter(unidad__estado_iibb = "NO")
-
-        if estado == "3":
-
-            datos = VentasRealizadas.objects.filter(unidad__estado_comision = "NO")
-
+        proyecto_marcado = "Proyecto"
+        datos = VentasRealizadas.objects.all()
     else:
-
-        if estado == "0":
-
-            datos = VentasRealizadas.objects.filter(proyecto__id = proyecto).exclude(unidad__estado_iibb = "SI", unidad__estado_comision = "SI")
-
-        if estado == "1":
-
-            datos = VentasRealizadas.objects.filter(unidad__estado = "SEÑADA", proyecto__id = proyecto)
-
-        if estado == "2":
-
-            datos = VentasRealizadas.objects.filter(unidad__estado_iibb = "NO", proyecto__id = proyecto)
-
-        if estado == "3":
-
-            datos = VentasRealizadas.objects.filter(unidad__estado_comision = "NO", proyecto__id = proyecto)
-
-
+        proyecto_marcado = Proyectos.objects.get(id = int(proyecto)).nombre
+        datos = VentasRealizadas.objects.filter(proyecto__id = int(proyecto))
     
+    # -----------> Aqui empieza el filtro
 
+    if request.method == 'POST':
 
+        palabra_buscar = request.POST.items()
+        
+        for i in palabra_buscar:
 
+            datos_viejos = datos
 
-    return render(request, 'ingresounidades.html',{'datos':datos, 'estado':estado_marcado, 'proyecto':proyecto_marcado, 'listado':listado})
+            if i[0] == "palabra":
+        
+                palabra_buscar = i[1]
+
+                datos = []
+
+            if str(palabra_buscar) == "":
+
+                datos = datos_viejos
+
+            else:
+            
+                for i in datos_viejos:
+
+                    palabra =(str(palabra_buscar))
+
+                    lista_palabra = palabra.split()
+
+                    buscar = (str(i.proyecto.nombre)+str(i.unidad.asig)+str(i.unidad.nombre_unidad)+str(i.unidad.estado)+str(i.comprador))
+
+                    contador = 0
+
+                    for palabra in lista_palabra:
+
+                        contador2 = 0
+
+                        if palabra.lower() in buscar.lower():
+    
+                            contador += 1
+
+                    if contador == len(lista_palabra):
+
+                        datos.append(i)
+
+    # -----------> Aqui termina el filtro
+
+    return render(request, 'ingresounidades.html',{'datos':datos, 'estado':estado_marcado, 'proyecto_marcado':proyecto_marcado, 'listado':listado})
 
 def indicelink(request):
 
