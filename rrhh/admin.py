@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import datosusuario, mensajesgenerales, NotaDePedido, Vacaciones, MonedaLink, EntregaMoneda
+from .models import datosusuario, mensajesgenerales, NotaDePedido, Vacaciones, MonedaLink, EntregaMoneda, Anuncios
 from import_export import resources
 from import_export.admin import ImportExportModelAdmin
 
@@ -59,9 +59,20 @@ class EntregaMonedaAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     search_fields = ('moneda__nombre', 'fecha')
     resources_class = EntregaMonedaResource
 
+class AnunciosResource(resources.ModelResource):
+    class Meta:
+        model = Anuncios
+
+class AnunciosAdmin(admin.ModelAdmin):
+    list_display = ('titulo', 'categoria')
+    search_fields = ('titulo', 'categoria')
+    resources_class = AnunciosResource
+
+
 admin.site.register(datosusuario, DatosUserAdmin)
 admin.site.register(mensajesgenerales, MensajesGeneralesAdmin)
 admin.site.register(NotaDePedido, NotasDePedidoAdmin)
 admin.site.register(Vacaciones, VacacionesAdmin)
 admin.site.register(MonedaLink, MonedaLinkAdmin)
 admin.site.register(EntregaMoneda, EntregaMonedaAdmin)
+admin.site.register(Anuncios, AnunciosAdmin)

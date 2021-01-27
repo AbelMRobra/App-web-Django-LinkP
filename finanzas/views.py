@@ -2045,8 +2045,6 @@ def consolidado(request):
 
     return render(request, 'consolidado.html', {"datos_completos":datos_completos, 'datos_finales':datos_finales, "datos_registro":datos_registro, "fechas":fechas, "datos_finales_2":datos_finales_2})
 
-#Copia del consolidado en Hº
-
 def indicelinkmoneda(request, id_moneda):
 
     moneda = Constantes.objects.get(id = id_moneda)

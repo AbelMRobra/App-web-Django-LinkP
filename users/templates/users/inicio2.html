@@ -504,46 +504,26 @@
 
               <h3 class="p-relative"><span class="lstick"></span> Novedades</h3>
 
+              {% for i in anuncios %}
               <div class="row">
                 <div class="col-md-12 m-t-10">
                     <div class="card">
-                        <img class="card-img-top img-responsive" src="{% static 'img/coins.jpg' %}" alt="Card image cap">
+                        <img class="card-img-top img-responsive" src="{{i.imagen.url}}" alt="Card image cap">
                         <div class="card-body">
-                            <h3 class="font-normal">LINKCOINS</h3>
+                            <h3 class="font-normal">{{i.titulo}}</h3>
+                            {% if i.categoria == "COMUNIDAD" %}
                             <span class="label label-success label-rounded">Comunidad Link</span>
-                            <p class="m-b-0 m-t-20">Ahora puedes usar tus Linkcoins ingresando a tu perfil</p>
+                            {% elif i.categoria == "PROYECTOS" %}
+                            <span class="label label-danger label-rounded">Proyectos</span>
+                            {% else %}
+                            <span class="label label-info label-rounded">Link-P anuncios</span>
+                            {% endif %}
+                            <p class="m-b-0 m-t-20">{{i.descrip}}</p>
                         </div>
                     </div>
                 </div>
               </div>
-
-            <div class="row">
-              <div class="col-md-12 m-t-10">
-                  <div class="card">
-                      <img class="card-img-top img-responsive" src="{% static 'img/blue.png' %}" alt="Card image cap">
-                      <div class="card-body">
-                          <h3 class="font-normal">TORRE BLUE ABRIL 2021</h3>
-                          <span class="label label-danger label-rounded">Proyectos</span>
-                          <p class="m-b-0 m-t-20">A pocos meses de la entrega de la primera torre del plan puedo</p>
-                      </div>
-                  </div>
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="col-md-12 m-t-10">
-                  <div class="card">
-                      <img class="card-img-top img-responsive" src="{% static 'img/car2.jpg' %}" alt="Card image cap">
-                      <div class="card-body">
-                          <h3 class="font-normal">LINK-P Tips</h3>
-                          <span class="label label-info label-rounded">Tips</span>
-                          <p class="m-b-0 m-t-20">Recuerda que el soft se desconecta luego de 2 horas, guarda tu trabajo y evita pasar tus credenciales!</p>
-                      </div>
-                  </div>
-              </div>
-            </div>
-
-          
+              {% endfor %}
 
             </aside>
 

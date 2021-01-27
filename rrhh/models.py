@@ -120,3 +120,31 @@ class EntregaMoneda(models.Model):
 
     def __str__(self):
         return self.mensaje
+
+
+class Anuncios(models.Model):
+
+    class categoria(models.TextChoices):
+
+            LINKP = "LINKP"
+            COMUNIDAD = "COMUNIDAD"
+            PROYECTOS = "PROYECTOS"
+
+    class activo(models.TextChoices):
+
+            SI = "SI"
+            NO = "NO"
+
+
+    titulo = models.CharField(max_length=300, verbose_name="Nombre del anuncio")
+    descrip = models.CharField(max_length=300, verbose_name="Descripción corta")
+    imagen = models.ImageField(verbose_name="Imagen")
+    categoria = models.CharField(choices=categoria.choices, max_length=20, verbose_name="Categoria")
+    activo = models.CharField(choices=activo.choices, max_length=20, verbose_name="Activo")
+
+    class Meta:
+        verbose_name="Anuncio"
+        verbose_name_plural="Anuncios"
+
+    def __str__(self):
+        return self.titulo
