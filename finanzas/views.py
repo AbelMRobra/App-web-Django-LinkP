@@ -1530,8 +1530,6 @@ def ingresounidades(request, estado, proyecto):
 
         for i in proyecto_elegido:
 
-            print(i)
-
             if i[0] == 'estado':
 
                 unidad = Unidades.objects.get(id = int(request.POST['nombre']))
@@ -1541,8 +1539,6 @@ def ingresounidades(request, estado, proyecto):
                 unidad.save()
 
             if i[0] == 'asig':
-
-                print("Llego a asignacion")
 
                 unidad = Unidades.objects.get(id = int(request.POST['nombre']))
 
