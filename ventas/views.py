@@ -1049,8 +1049,6 @@ def panelunidades(request):
                                 
                                 desde = "NO DEFINIDO"
 
-
-
                             datos_tabla_unidad.append((dato, m2, desde, dato.id))
                             
                             m2_totales = m2_totales + m2
@@ -1058,7 +1056,6 @@ def panelunidades(request):
                             if dato.tipo == "COCHERA":
                                 cocheras += 1
                             
-
 
             cantidad = len(datos_tabla_unidad)
 
@@ -1527,7 +1524,7 @@ def pricing(request, id_proyecto):
 
 def panelpricing(request):
 
-    proyectos = Unidades.objects.all()
+    proyectos = Unidades.objects.all().exclude(nombre = "2UO")
 
 
     datos  = []

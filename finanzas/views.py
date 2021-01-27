@@ -1524,6 +1524,48 @@ def modhonorarios(request):
 
 def ingresounidades(request, estado, proyecto):
 
+    if request.method == 'POST':
+
+        proyecto_elegido = request.POST.items()
+
+        for i in proyecto_elegido:
+
+            print(i)
+
+            if i[0] == 'ingresar':
+
+                unidad = Unidades.objects.get(id = i[1])
+
+                unidad.estado = "VENDIDA"
+
+                unidad.save()
+
+            if i[0] == 'comisionsi':
+
+                unidad = Unidades.objects.get(id = int(request.POST['nombre']))
+                unidad.estado_comision = "SI"
+                unidad.save()
+
+            if i[0] == 'comisionno':
+
+                unidad = Unidades.objects.get(id = int(request.POST['nombre']))
+                unidad.estado_comision = "NO"
+                unidad.save()
+
+            if i[0] == 'iibbsi':
+
+                unidad = Unidades.objects.get(id = int(request.POST['nombre']))
+                unidad.estado_iibb = "SI"
+                unidad.save()
+
+            if i[0] == 'iibbno':
+
+                unidad = Unidades.objects.get(id = int(request.POST['nombre']))
+                unidad.estado_iibb = "NO"
+                unidad.save()
+
+
+
     estado_marcado = estado
 
     proyecto_marcado = proyecto
@@ -1542,7 +1584,7 @@ def ingresounidades(request, estado, proyecto):
 
         if estado == "0":
 
-            datos = VentasRealizadas.objects.all().exclude(unidad__estado_iibb = "SI", unidad__estado_comision = "SI")
+            datos = VentasRealizadas.objects.all().order_by('unidad__piso_unidad')
 
         if estado == "1":
 
@@ -1575,35 +1617,9 @@ def ingresounidades(request, estado, proyecto):
             datos = VentasRealizadas.objects.filter(unidad__estado_comision = "NO", proyecto__id = proyecto)
 
 
-    if request.method == 'POST':
+    
 
-        proyecto_elegido = request.POST.items()
 
-        for i in proyecto_elegido:
-
-            if i[0] == 'ingresar':
-
-                unidad = Unidades.objects.get(id = i[1])
-
-                unidad.estado = "VENDIDA"
-
-                unidad.save()
-
-            if i[0] == 'comision':
-
-                unidad = Unidades.objects.get(id = i[1])
-
-                unidad.estado_comision = "SI"
-
-                unidad.save()
-
-            if i[0] == 'iibb':
-
-                unidad = Unidades.objects.get(id = i[1])
-
-                unidad.estado_iibb = "SI"
-
-                unidad.save()
 
 
     return render(request, 'ingresounidades.html',{'datos':datos, 'estado':estado_marcado, 'proyecto':proyecto_marcado, 'listado':listado})

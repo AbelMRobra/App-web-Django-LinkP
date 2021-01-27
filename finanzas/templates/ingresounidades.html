@@ -1,9 +1,157 @@
-{% extends "users/inicio.html" %}
+{% extends "users/inicio2.html" %}
 
 {% load static %}
 {% load humanize %}
 
 {% block content %}
+
+<div class="container-fluid r-aside">
+    <!-- ============================================================== -->
+    <!-- Bread crumb and right sidebar toggle -->
+    <!-- ============================================================== -->
+    <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+            <h3 class="text-themecolor">Panel de administración de unidades</h3>
+        </div>
+
+        <div class="col-md-7 align-self-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+                <li class="breadcrumb-item">Panel</li>
+
+            </ol>
+        </div>
+
+    </div>
+
+  </div>
+
+  <div class="col-lg-12 col-xlg-6 button-group">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Listado de unidades</h4>
+            <h6 class="card-subtitle">Este panel modifica propiedades de la unidad</h6>
+
+            <div style="text-align: left;">
+        
+                 <div class="dropdown">
+                    <button class="dropbtn btn btn-primary">Todas</button>
+                    <div class="dropdown-content">
+
+                    <a href="{% url 'Unidades señadas' 0 proyecto %}" >Todas</a>
+
+                    <a href="{% url 'Unidades señadas' 1 proyecto %}" >Señadas (S)</a>
+
+                    <a href="{% url 'Unidades señadas' 3 proyecto %}" >Pend. Comisión (C)</a>
+
+                    <a href="{% url 'Unidades señadas' 2 proyecto %}" >Pend. IIBB (IB)</a>
+        
+                    </div>
+                  </div>
+        
+        
+                  <div class="dropdown">
+                    <button class="dropbtn btn btn-primary">Proyecto</button>
+                    <div class="dropdown-content">
+                        <a href="{% url 'Unidades señadas' estado 0 %}" >Todos los proyectos</a>
+
+                        {% for i in listado %}
+                
+                        <a style="background-color: rgb({{i.color}});" href="{% url 'Unidades señadas' estado i.id %}" >{{i.nombre}}</a>
+                
+                        {% endfor %}
+                    </div>
+                  </div>
+        
+
+            <div class ="dataTables_filter">
+
+                <form method="POST">
+        
+                    {% csrf_token %}
+                <label>
+                    Search:
+                    <input type="search" class placeholder aria-controls="example23" name="palabra">
+                </label>
+
+            </form>
+
+            </div>
+            <div class="table-responsive">
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Proyecto</th>
+                            <th>Unidad</th>
+                            <th>Asignación</th>
+                            <th>Estado</th>
+                            <th>II.BB pagados</th>
+                            <th>Comisión pagada</th>
+                            <th>Modificar</th>
+ 
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        {% for i in datos|slice:"100" %}
+                        <tr>
+                        <td><span class="label label-info" style="background-color: rgb({{i.unidad.proyecto.color}});">{{i.unidad.proyecto.nombre}}</span>  </td> 
+
+                        <td>{{i.unidad.piso_unidad}} - {{i.unidad.nombre_unidad}} 
+                            <h6 class="card-subtitle">{{i.comprador}}</h6>
+                        </td>
+                        
+
+                        <form method="POST">
+                            {% csrf_token %}
+                        <td>{{i.asignacion}}</td>
+                        <td>{{i.unidad.estado}}</td>
+                        <td>
+                            {% if i.unidad.estado_iibb == 'SI' %}
+                            <div class="switch">
+                            <label ><b style="color: green;">SI</b>  
+                                <input type="checkbox" name="iibbno"><span class="lever switch-col-red"></span><b style="color: red;">NO</b></label>
+                            </div>
+
+                            {% else %}
+                            <div class="switch">
+                                <label><b style="color: red;">NO</b>
+                                    <input type="checkbox" name="iibbsi"><span class="lever"></span><b style="color: green;">SI</b></label>
+                            </div>
+
+                            {% endif %}
+                        
+                        </td>
+                        <td>
+                            {% if i.unidad.estado_comision == 'SI' %}
+                            <div class="switch">
+                            <label ><b style="color: green;">SI</b>  
+                                <input type="checkbox" name="comisionno"><span class="lever switch-col-red"></span><b style="color: red;">NO</b></label>
+                            </div>
+
+                            {% else %}
+                            <div class="switch">
+                                <label><b style="color: red;">NO</b>
+                                    <input type="checkbox" name="comisionsi"><span class="lever"></span><b style="color: green;">SI</b></label>
+                            </div>
+
+                            {% endif %}
+                        
+                            </td>
+                        <td style="text-align: center;"><button type="submit" name="nombre" value="{{i.unidad.id}}" class="btn btn-info btn-circle"><i class="fa fa-check"></i></button></td>
+
+                        </form>
+
+                    </tr>
+
+                    {% endfor %}
+
+                    </tbody>
+                    </table>
+
+                        
+
 
 <div class = "jumbotron" style="background-color: white; margin-bottom: 0px;">
     <div style="text-align: center;">
@@ -66,13 +214,7 @@
 
     <div style="text-align: left;">
 
-        <a class="badge badge-secondary" href="{% url 'Unidades señadas' 0 proyecto %}" >Todas</a>
-
-        <a class="badge badge-warning" href="{% url 'Unidades señadas' 1 proyecto %}" >Señadas (S)</a>
-
-        <a class="badge badge-dark" href="{% url 'Unidades señadas' 3 proyecto %}" >Pend. Comisión (C)</a>
-
-        <a class="badge badge-dark" href="{% url 'Unidades señadas' 2 proyecto %}" >Pend. IIBB (IB)</a>
+        
 
         
 
@@ -81,15 +223,7 @@
 
         <div style="text-align: left; margin-top: 0.5%;">
 
-            <a class="badge badge-secondary" href="{% url 'Unidades señadas' estado 0 %}" >Todos los proyectos</a>
-
-            {% for i in listado %}
-    
-            <a class="badge badge-warning" style="background-color: rgb({{i.color}});" href="{% url 'Unidades señadas' estado i.id %}" >{{i.nombre}}</a>
-    
-
-
-            {% endfor %}
+            
     
             
     
@@ -131,11 +265,11 @@
                 <td> <b> <small>{{i.unidad.proyecto.nombre}}</small> </b></td>       
                 <td> <b> <small>{{i.comprador}}</small> </b> </td>
                 <td> <b> <small>{{i.unidad.piso_unidad}} - {{i.unidad.nombre_unidad}} </small> </b> </td>
-                <td> <b> <small> <b>{{i.unidad.estado}}</b>  </small> </b> </td>
-                <td> <b> <small> <b>{{i.unidad.estado_iibb}}</b> </small> </b> </td>
+                <td> <b> <small> <b></b>  </small> </b> </td>
+                <td> <b> <small> <b></b> </small> </b> </td>
                 <td> <b> <small> <b>{{i.unidad.estado_comision}}</b> </small> </b> </td>
-                <td> <b> <small>{{i.m2|floatformat:2}}m2</small> </b> </td>
-                <td> <b> <small>{{i.asignacion}}</small></b> </td>
+                <td> <b> <small></small> </b> </td>
+                <td> <b> <small></small></b> </td>
             
                 <td>
                     
