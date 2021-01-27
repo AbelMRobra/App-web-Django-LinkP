@@ -105,7 +105,7 @@
                                 <span class="round round-primary"><img src="{{i.0.imagenlogo.url}}"  alt="user" width="50"></span>
                                 </td>
                             <td>{{i.2.proveedor.name}} <a href="{% url 'Mensajes en comparativas' i.2.id %}"><img src="{% if i.1 %}{% static 'img/charla.png' %}{% else %}{% static 'img/charlar.png' %}{% endif %}" alt="" style="max-width:15px; height:auto; margin: 1px;"></a> 
-                                <h6 class="card-subtitle">{{i.2.numero|upper}}</h6>
+                                <h6 class="card-subtitle">{{i.2.proyecto|upper}} - {{i.2.numero|upper}}</h6>
                             </td>
                             {% if i.2.o_c %}
                             <td>
