@@ -35,7 +35,7 @@ def reportereclamos(request):
 
     for p in list_project:
         listos = len(ReclamosPostventa.objects.filter(proyecto = p[0], estado = "LISTO"))
-        trabajando = len(ReclamosPostventa.objects.filter(proyecto = p[0], estado = "TRABJANDO"))
+        trabajando = len(ReclamosPostventa.objects.filter(proyecto = p[0], estado = "TRABAJANDO"))
         problemas = len(ReclamosPostventa.objects.filter(proyecto = p[0], estado = "PROBLEMAS"))
         espera = len(ReclamosPostventa.objects.filter(proyecto = p[0], estado = "ESPERA"))
         status_data.append((listos, trabajando, problemas, espera))
@@ -43,7 +43,7 @@ def reportereclamos(request):
     category_data = sorted(category_data, key=lambda x: x[1], reverse=True)
 
     listos = len(ReclamosPostventa.objects.filter(estado = "LISTO"))
-    trabajando = len(ReclamosPostventa.objects.filter(estado = "TRABJANDO"))
+    trabajando = len(ReclamosPostventa.objects.filter(estado = "TRABAJANDO"))
     problemas = len(ReclamosPostventa.objects.filter(estado = "PROBLEMAS"))
     todos = len(ReclamosPostventa.objects.all())
     general_data = [listos, trabajando, problemas, todos]
