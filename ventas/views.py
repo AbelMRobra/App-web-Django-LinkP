@@ -16,6 +16,39 @@ from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
 from django.views.generic.base import TemplateView 
 from django.http import HttpResponse 
 
+def reportereclamos(request):
+
+    list_category = ReclamosPostventa.objects.all().values_list('clasificacion')
+    list_category = list(set(list_category))
+
+    list_project = ReclamosPostventa.objects.all().values_list('proyecto')
+    list_project = list(set(list_project))
+
+    category_data = []
+
+    for l in list_category:
+        porcentual_l = len(ReclamosPostventa.objects.filter(clasificacion = l[0]))/len(ReclamosPostventa.objects.all())*100
+
+        category_data.append((l[0], porcentual_l))
+
+    status_data = []
+
+    for p in list_project:
+        listos = len(ReclamosPostventa.objects.filter(proyecto = p[0], estado = "LISTO"))
+        trabajando = len(ReclamosPostventa.objects.filter(proyecto = p[0], estado = "TRABJANDO"))
+        problemas = len(ReclamosPostventa.objects.filter(proyecto = p[0], estado = "PROBLEMAS"))
+        espera = len(ReclamosPostventa.objects.filter(proyecto = p[0], estado = "ESPERA"))
+        status_data.append((listos, trabajando, problemas, espera))
+
+    category_data = sorted(category_data, key=lambda x: x[1], reverse=True)
+
+    listos = len(ReclamosPostventa.objects.filter(estado = "LISTO"))
+    trabajando = len(ReclamosPostventa.objects.filter(estado = "TRABJANDO"))
+    problemas = len(ReclamosPostventa.objects.filter(estado = "PROBLEMAS"))
+    todos = len(ReclamosPostventa.objects.all())
+    general_data = [listos, trabajando, problemas, todos]
+
+    return render(request, 'reporte_reclamo.html', {'general_data':general_data, 'satus_data':status_data, 'category_data':category_data, 'list_project':list_project})
 
 def reclamo(request, id_reclamo):
 

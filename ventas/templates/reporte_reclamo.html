@@ -1,0 +1,185 @@
+{% extends "users/inicio2.html" %}
+
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+
+<div class="container-fluid r-aside">
+    <!-- ============================================================== -->
+    <!-- Cabeza de la pagina -->
+    <!-- ============================================================== -->
+    <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+            <h3 class="text-themecolor">Reporte reclamo</h3>
+        </div>
+
+        <div class="col-md-7 align-self-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'Reclamos Postventa' %}">Reclamos</a></li>
+                <li class="breadcrumb-item">Reporte</li>
+
+            </ol>
+        </div>
+
+    </div>
+
+  </div>
+
+  <div class="row">
+
+    <div class="col-lg-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex">
+                    <div class="m-r-20 align-self-center"><img src="{% static 'adminpro/assets/images/icon/income.png' %}" alt="Income" /></div>
+                    <div class="align-self-center">
+                        <h6 class="text-muted m-t-10 m-b-0">Total de casos</h6>
+                        <h2 class="m-t-0">{{general_data.3}}</h2></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex">
+                    <div class="m-r-20 align-self-center"><button class="btn btn-success btn-circle"><i class="fa fa-check"></i> </button></div>
+                    <div class="align-self-center">
+                        <h6 class="text-muted m-t-10 m-b-0">Resueltos</h6>
+                        <h2 class="m-t-0">{{general_data.0}}</h2></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex">
+                    <div class="m-r-20 align-self-center"><button class="btn btn-warning btn-circle"><i class="fa fa-clock-o"></i> </button></div>
+                    <div class="align-self-center">
+                        <h6 class="text-muted m-t-10 m-b-0">Trabajando</h6>
+                        <h2 class="m-t-0">{{general_data.1}}</h2></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex">
+                    <div class="m-r-20 align-self-center"><button class="btn btn-danger btn-circle"><i class="fa fa-exclamation"></i> </button></div>
+                    <div class="align-self-center">
+                        <h6 class="text-muted m-t-10 m-b-0">Problemas</h6>
+                        <h2 class="m-t-0">{{general_data.2}}</h2></div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-6 col-md-12">
+        <div class="card">
+
+            <div class="card-body">
+    
+          <div>
+    
+          <h4 class="card-title"><span class="lstick"></span> Cantidad por proyecto</h4></div>
+        
+          <div>
+              
+            <canvas id="myChart2" height="300"></canvas>
+        
+          </div>
+    
+        </div>
+    
+          </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    <script>
+        var ctx = document.getElementById('myChart2').getContext('2d');
+        var barChartData = {
+			labels: [{% for p in list_project %} '{{p.0}}', {%endfor%}],
+			datasets: [{
+				label: 'Espera',
+				backgroundColor: [{% for p in list_project %}'rgba(64, 75, 156, 0.5)', {%endfor%}],
+				data: [
+                {% for s in satus_data %}
+                    {{s.3}},
+                {%endfor%}
+
+				]
+			}, {
+				label: 'Listo',
+				backgroundColor: [{% for p in list_project %} 'rgba(36, 233, 33 , 0.5)', {%endfor%}],
+				data: [
+                {% for s in satus_data %}
+                    {{s.0}},
+                {%endfor%}
+				]
+			}, {
+				label: 'Trabajando',
+				backgroundColor: [{% for p in list_project %}'rgba(224, 233, 33 , 0.5)', {%endfor%}],
+				data: [
+                {% for s in satus_data %}
+                    {{s.1}},
+                {%endfor%}
+				]
+            }, {
+            label: 'Problemas',
+				backgroundColor: [{% for p in list_project %}'rgba(233, 45, 33  , 0.5)', {%endfor%}],
+				data: [
+                {% for s in satus_data %}
+                    {{s.2}},
+                {%endfor%}
+				]
+			}]
+
+		};
+        var stackedBar = new Chart(ctx, {
+            type: 'bar',
+            data: barChartData,
+            options: {
+                scales: {
+                    xAxes: [{
+                        stacked: true
+                    }],
+                    yAxes: [{
+                        stacked: true
+                    }]
+                }
+            }
+        });
+
+    </script>
+
+    <div class="col-lg-6 col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title"><span class="lstick"></span>Tipos de reclamo</h4>
+                <table class="table browser m-t-30 no-border">
+                    <tbody>
+
+                        {% for c in category_data %}
+                        <tr>
+                            <td>{{c.0|lower|capfirst}}</td>
+                            <td class="text-right">{{c.1|floatformat:0}}%</td>
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+  {% endblock %}
