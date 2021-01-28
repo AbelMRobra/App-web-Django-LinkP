@@ -135,7 +135,6 @@ class Anuncios(models.Model):
             SI = "SI"
             NO = "NO"
 
-
     titulo = models.CharField(max_length=300, verbose_name="Nombre del anuncio")
     descrip = models.CharField(max_length=300, verbose_name="Descripción corta")
     imagen = models.ImageField(verbose_name="Imagen")

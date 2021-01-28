@@ -1,4 +1,4 @@
-{% extends "users/inicio.html" %}
+{% extends "users/inicio2.html" %}
 {% load apptags_extras %}
 
 {% load static %}
@@ -6,146 +6,126 @@
 
 {% block content %}
 
-<div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;">
-
-    <h3 style="font-family: Arial, Helvetica, sans-serif;">Reclamos de postventa</h3>
-    <small style="font-family: Arial, Helvetica, sans-serif;"><b>Modulo:</b> Postventa</small>
-
-    <b><hr class = "my-4" style="width: 100%;"></b>
-
-     <form method="POST" style="text-align: left;">
-
-        {% csrf_token %}
-
-        <div style="display: inline-block; margin-left: 1rem;">
-
-            <label for="palabra"><h6 style="font-family: Arial, Helvetica, sans-serif;">Buscar</h6></label>
-
+<div class="container-fluid r-aside">
+    <!-- ============================================================== -->
+    <!-- Cabeza de la pagina -->
+    <!-- ============================================================== -->
+    <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+            <h3 class="text-themecolor">Reclamos de postventa</h3>
         </div>
-        
-        <div style="display: inline-block; margin-left: 1rem; ">
 
-            <input name="palabra" type="text" class="form-control form-control" placeholder="Buscar por palabra" list="art" style="width: 250px;">
+        <div class="col-md-7 align-self-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+                <li class="breadcrumb-item">Reclamos</li>
 
+            </ol>
         </div>
-       
-      
-
-     </form>
-
-    <b><hr class = "my-4" style="width: 100%; "></b>
-
-    <div style="text-align: left; margin: 5px;">
-
-        <a href="#" style="text-decoration:none" class="btn btn-sm btn-light"><img src="{% static 'img/reportar.png' %}" alt="" style="max-width:20px; height:auto; margin: 2px;"> <small><b>Reporte</b> </small> </a>
-
-        <a href="{% url 'Crear reclamo' %}" style="text-decoration:none" class="btn btn-sm btn-light"><img src="{% static 'img/agregar-archivo.png' %}" alt="" style="max-width:20px; height:auto; margin: 2px;"> <small><b>Agregar reclamo</b> </small> </a>
 
     </div>
 
- 
-    <table class = "table table-hover">
-        <tbody>
+  </div>
 
-            <tr class = "table-dark">
-                <td><small><b></b></small></td>
-                <td><small><b>Nº</b></small></td>
-                <td><small><b>PROYECTO</b></small></td>
-                <td><small><b>UNIDAD</b></small></td>
-                <td><small><b>PROPIETARIO</b></small></td>
-                <td><small><b>CONTACTO</b></small></td>
-                <td><small><b>FECHA R.</b></small></td>
-                <td><small><b>ESTADO</b></small></td>
-                <td><small><b>RESP.</b></small></td>
-                <td><small><b>FECHA S.</b></small></td>
+  <div class="col-lg-12 col-xlg-6 button-group">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Panel de solicitudes</h4>
+            <h6 class="card-subtitle">Ordenes de compra o comparativas para ser aprobadas</h6>
 
+            <div style="text-align: left;">
+        
+
+            <a href= "{% url 'Crear reclamo' %}" class="btn btn-outline-info"style="text-align: end; margin-top: 5px;" > Nuevo reclamo</a>
+        
+        
+     
+            <div class ="dataTables_filter">
+
+                <form method="POST">
+        
+                    {% csrf_token %}
+                <label>
+                    Search:
+                    <input type="search" class placeholder aria-controls="example23" name="palabra">
+                </label>
+
+            </form>
+
+            </div>
+
+            <div class="table-responsive">
+
+                <table class="table">
+                    <thead>
+
+            <tr>
+                <td>Nº</td>
+                <td>Unidad</td>
+                <td>Propietario</td>
+                <td>Fechas</td>
+                <td>Estado</td>
+                <td>Resp.</td>
 
             </tr>
 
             {% for i in datos %}
-
-            <tr class = "table-light">  
-                 
-                <td><a href="{% url 'Reclamo' i.id %}" style="text-decoration: none;"><img src="{% static 'img/anadir.png' %}" alt="" style="max-width:20px; height:auto; margin: 2px;"></a></td>
-                <td><small><b>{{i.numero}}</b></small></td>
-                <td><small><b>{{i.proyecto}}</b></small></td>
-                <td><small>{{i.unidad}}</small></td>
-                <td><small><b>{{i.propietario}}</b></small></td>
-                <td><small>{{i.usuario}}</small></td>
-                <td><small>{{i.fecha_reclamo|date:"Y-m-d"}}</small></td>
+            
+            <tr>  
+                
+                <td>{{i.numero}}</td>
+                <td>{{i.proyecto}} 
+                    <h6 class="card-subtitle">{{i.unidad}}</h6>
+                </td>
+                <td><a href="{% url 'Reclamo' i.id %}">{{i.propietario}}
+                    <h6 class="card-subtitle">Contacto: {{i.usuario}}</h6></a></td>
+                <td><span class="text-muted"><i class="fa fa-exclamation-circle"></i> {{i.fecha_reclamo|date:"d M Y"}}</span>
+                    {% if i.fecha_solucion %}
+                    <h6 class="card-subtitle"><i class="fa fa-check-circle"></i> {{i.fecha_solucion|date:"d M Y"}}</h6>
+                    {% endif %}
+                    </td>
 
 
                 {% if i.estado == 'LISTO' %}
-                <td style="width: 10%; color: rgb(124, 209, 107)"><small>
-
-
-                    <b>{{i.estado}}</b> 
-                
-                
-                </small></td>
+                <td>
+                    <div class="label label-table label-success">{{i.estado}}</div>
+                    </td>
 
                 {% elif i.estado == 'TRABAJANDO' %}
 
-                <td style="width: 10%; color: rgb(209, 176, 107)"><small>
-
-
-                    <b>{{i.estado}}</b> 
-                
-                
-                </small></td>
+                <td><div class="label label-table label-warning">{{i.estado}}</div></td></td>
 
                 {% elif i.estado == 'PROBLEMAS' %}
 
-                <td style="width: 10%; color: rgb(209, 119, 107)"><small>
-
-
-                    <b>{{i.estado}}</b> 
-                
-                
-                </small></td>
+                <td><div class="label label-table label-danger">{{i.estado}}</div></td></td>
 
                 {% else %}
 
-                <td style="width: 10%;"><small>
-
-
-                    <b>{{i.estado}}</b> 
-                
-                
-                </small></td>
+                <td><div class="label label-table label-info">{{i.estado}}</div></td></td>
 
                 {% endif %}
 
 
-                <td><small>
+                <td>
 
                     {% if i.responsable %}
+
                     
-                    <img src="{{i.responsable.imagenlogo.url}}"  class="img-fluid" alt="..." style="max-width: 30px; height:auto;">
-                    
-                    {% else %}
-
-                    S/A
-
-                    {% endif %}
-
-                </small></td>
-
-                <td><small>
-
-                    {% if i.fecha_solucion %}
-                    
-                    <b>{{i.fecha_solucion|date:"Y-m-d"}}</b>
+                    <span class="round round-primary"><img src="{{i.responsable.imagenlogo.url}}"  alt="user" width="50"></span>
+                                
                     
                     {% else %}
 
-                    S/S
+                    <span class="round round-primary"><img src="{% static 'img/anonimo2.png' %}"  alt="user" width="50"></span>
 
                     {% endif %}
 
-                </small></td>
+                </td>
 
-                
+
+
+            </tr>
+            
                 {% endfor %}
 
                 

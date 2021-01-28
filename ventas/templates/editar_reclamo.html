@@ -11,14 +11,15 @@
     <!-- ============================================================== -->
     <div class="row page-titles">
         <div class="col-md-5 align-self-center">
-            <h3 class="text-themecolor">Agregar reclamo</h3>
+            <h3 class="text-themecolor">Editar reclamo numero {{datos.numero}}</h3>
         </div>
 
         <div class="col-md-7 align-self-center">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
                 <li class="breadcrumb-item"><a href="{% url 'Reclamos Postventa' %}">Reclamos</a></li>
-                <li class="breadcrumb-item">Nuevo reclamo</li>
+                <li class="breadcrumb-item"><a href="{% url 'Reclamo' datos.id %}">{{datos.numero}}</a></li>
+                <li class="breadcrumb-item">Editar</li>
 
             </ol>
         </div>
@@ -52,7 +53,7 @@
             
             <div style="display: inline-block; margin: 10px; ">
     
-                <input name="numero" type="number" class="form-control form-control" placeholder=".." style="width: 300px;" required="true">
+                <input name="numero" type="number" class="form-control form-control" value="{{datos.numero}}" style="width: 300px;" required="true">
     
             </div>
 
@@ -69,7 +70,7 @@
             
             <div style="display: inline-block; margin: 10px; ">
     
-                <input name="fecha" type="date" class="form-control form-control"  style="width: 300px;" required="true">
+                <input name="fecha" type="date" class="form-control form-control" value="{{datos.fecha_reclamo|date:'Y-m-d'}}"  style="width: 300px;" required="true">
     
             </div>
 
@@ -87,7 +88,7 @@
             
             <div style="display: inline-block; margin: 10px; ">
     
-                <input name="proyecto" type="search" class="form-control form-control" list="proyectos_postventa" style="width: 300px;">
+                <input name="proyecto" value="{{datos.proyecto}}" type="search" class="form-control form-control" list="proyectos_postventa" style="width: 300px;">
     
             </div>
 
@@ -104,7 +105,7 @@
             
             <div style="display: inline-block; margin: 10px; ">
     
-                <input name="unidad" type="text" class="form-control form-control" placeholder="Piso - Numero " style="width: 300px;">
+                <input name="unidad" value="{{datos.unidad}}" type="text" class="form-control form-control" placeholder="Piso - Numero " style="width: 300px;">
     
             </div>
 
@@ -123,7 +124,7 @@
             
             <div style="display: inline-block; margin: 10px; ">
     
-                <input name="propietario" type="text" class="form-control form-control" style="width: 300px;" placeholder="Dueño de la unidad" required="true">
+                <input name="propietario" value="{{datos.propietario}}" type="text" class="form-control form-control" style="width: 300px;" placeholder="Dueño de la unidad" required="true">
     
             </div>
 
@@ -140,7 +141,7 @@
             
             <div style="display: inline-block; margin: 10px; ">
     
-                <input name="usuario" type="text" class="form-control form-control" style="width: 300px;" placeholder="Persona quien realiza el reclamo" required="true">
+                <input name="usuario" value="{{datos.usuario}}" type="text" class="form-control form-control" style="width: 300px;" placeholder="Persona quien realiza el reclamo" required="true">
     
             </div>
 
@@ -157,7 +158,7 @@
             
             <div style="display: inline-block; margin: 10px; ">
     
-                <input name="telefono" type="number" class="form-control form-control" placeholder="Telefono del contacto" style="width: 300px;">
+                <input name="telefono" value="{{datos.telefono}}" type="number" class="form-control form-control" placeholder="Telefono del contacto" style="width: 300px;">
     
             </div>
 
@@ -174,7 +175,7 @@
             
             <div style="display: inline-block; margin: 10px; ">
     
-                <input name="email" type="text" class="form-control form-control" placeholder="Email del contacto" style="width: 300px;" >
+                <input name="email" value="{{datos.email}}" type="text" class="form-control form-control" placeholder="Email del contacto" style="width: 300px;" >
     
             </div>
 
@@ -192,7 +193,24 @@
             
             <div style="display: inline-block; margin: 10px; ">
     
-                <input name="clasificacion" type="search" class="form-control form-control" list="clasificacion" style="width: 300px;">
+                <input name="clasificacion" value="{{datos.clasificacion}}" type="search" class="form-control form-control" list="clasificacion" style="width: 300px;">
+    
+            </div>
+
+
+        </div>
+
+        <div style="margin: 5px">
+
+            <div style="display: inline-block; margin: 10px; width: 200px;">
+
+                <label for="responsable"><h6>Responsable</h6></label>
+    
+            </div>
+            
+            <div style="display: inline-block; margin: 10px; ">
+    
+                <input name="responsable" {% if datos.responsable %}value="{{datos.responsable}}"{% endif %} type="search" class="form-control form-control" list="responsable" style="width: 300px;">
     
             </div>
 
@@ -207,7 +225,7 @@
     
             </div>
             
-            <textarea class="form-control" id="exampleTextarea" rows="3" name="descripcion"></textarea>
+            <textarea class="form-control" id="exampleTextarea" rows="3" name="descripcion">{{datos.descripcion}}</textarea>
 
 
         </div>
@@ -247,6 +265,16 @@
 
     </datalist>
 
+
+    <datalist id="responsable"> 
+
+        {% for i in responsable %}
+        
+        <option value="{{ i.0 }}">({{i.0}})</option>
+
+        {% endfor %}
+
+    </datalist>
 
 
 {% endblock %}

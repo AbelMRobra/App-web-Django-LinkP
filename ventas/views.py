@@ -2,6 +2,7 @@ from django.shortcuts import render
 from .models import EstudioMercado, PricingResumen
 from proyectos.models import Unidades, Proyectos
 from finanzas.models import Almacenero
+from rrhh.models import datosusuario
 from ventas.models import Pricing, ArchivosAreaVentas, VentasRealizadas, ArchivoFechaEntrega, ArchivoVariacionHormigon, ReclamosPostventa
 from presupuestos.models import Constantes, Desde, Registrodeconstantes
 from datetime import date
@@ -18,7 +19,38 @@ from django.http import HttpResponse
 
 def reclamo(request, id_reclamo):
 
+    if request.method == 'POST':
+
+        datos = request.POST.items()
+
+        for i in datos:
+
+            if i[0] == "LISTO":
+
+                reclamo = ReclamosPostventa.objects.get(id = id_reclamo)
+                reclamo.fecha_solucion = datetime.date.today()
+                reclamo.estado = "LISTO"
+                reclamo.save()
+
+            if i[0] == "TRABAJANDO":
+
+                reclamo = ReclamosPostventa.objects.get(id = id_reclamo)
+
+                reclamo.estado = "TRABAJANDO"
+                reclamo.fecha_solucion = None
+                reclamo.save()
+
+            if i[0] == "PROBLEMAS":
+
+                reclamo = ReclamosPostventa.objects.get(id = id_reclamo)
+
+                reclamo.estado = "PROBLEMAS"
+                reclamo.fecha_solucion = None
+                reclamo.save()
+
     datos = ReclamosPostventa.objects.get(id = id_reclamo)
+
+    
 
     return render(request, 'reclamo.html', {'datos':datos})
 
@@ -31,6 +63,7 @@ def crearreclamo(request):
 
         b = ReclamosPostventa(
                 numero = request.POST['numero'],
+                fecha_reclamo = request.POST['fecha'],
                 propietario = request.POST['propietario'],
                 usuario = request.POST['usuario'],
                 telefono = request.POST['telefono'],
@@ -48,9 +81,40 @@ def crearreclamo(request):
 
     return render(request, 'agregarreclamo.html', {'proyectos':proyectos, 'clasificacion':clasificacion})
 
+def editarreclamo(request, id_reclamo):
+
+    datos = ReclamosPostventa.objects.get(id = id_reclamo)
+
+    proyectos = list(set(ReclamosPostventa.objects.values_list('proyecto')))
+    clasificacion = list(set(ReclamosPostventa.objects.values_list('clasificacion')))
+    responsable = list(set(datosusuario.objects.values_list('identificacion')))
+
+    if request.method == 'POST':
+        reclamo = ReclamosPostventa.objects.get(id = id_reclamo)
+        reclamo.numero = request.POST['numero']
+        reclamo.fecha_reclamo = request.POST['fecha']
+        reclamo.propietario = request.POST['propietario']
+        reclamo.usuario = request.POST['usuario']
+        reclamo.telefono = request.POST['telefono']
+        reclamo.email = request.POST['email']
+        reclamo.proyecto = request.POST['proyecto']
+        reclamo.unidad = request.POST['unidad']
+        reclamo.clasificacion = request.POST['clasificacion']
+        reclamo.descripcion = request.POST['descripcion']
+        try:
+            usuario = datosusuario.objects.get(identificacion = request.POST['responsable'])
+            reclamo.responsable = usuario
+            reclamo.save()
+        except:
+            reclamo.save()
+
+        return redirect('Reclamo', id_reclamo = datos.id)
+
+    return render(request, 'editar_reclamo.html', {'responsable':responsable, 'datos':datos, 'proyectos':proyectos, 'clasificacion':clasificacion})
+
 def reclamospostventa(request):
 
-    datos = ReclamosPostventa.objects.all().order_by("-fecha_reclamo")
+    datos = ReclamosPostventa.objects.all().order_by("-numero")
 
     #----> Aqui empieza el filtro
 

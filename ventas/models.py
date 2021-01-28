@@ -152,7 +152,7 @@ class ReclamosPostventa(models.Model):
     email = models.CharField(max_length=100, verbose_name = "Email", blank=True, null=True)
     proyecto = models.CharField(max_length=100, verbose_name = "Proyecto")
     unidad = models.CharField(max_length=100, verbose_name = "Unidad")
-    fecha_reclamo = models.DateField(auto_now_add=True, verbose_name="Fecha del reclamo")
+    fecha_reclamo = models.DateField(verbose_name="Fecha del reclamo")
     fecha_solucion = models.DateField(verbose_name="Fecha del reclamo", blank=True, null=True)
     estado = models.CharField(choices=Estado.choices, max_length=40, verbose_name="Estado", default="ESPERA")
     responsable =  models.ForeignKey(datosusuario, on_delete=models.CASCADE, verbose_name="Responsable", blank=True, null=True)

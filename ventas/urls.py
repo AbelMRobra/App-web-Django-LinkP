@@ -8,6 +8,7 @@ from django.contrib.auth.decorators import login_required
 urlpatterns = [
     url(r'^reclamospostventa$', login_required(views.reclamospostventa), name = 'Reclamos Postventa'),
     url(r'^reclamo/(?P<id_reclamo>\d+)/$', login_required(views.reclamo), name = 'Reclamo'),
+    url(r'^editarreclamo/(?P<id_reclamo>\d+)/$', login_required(views.editarreclamo), name = 'Editar reclamo'),
     url(r'^crearreclamo$', login_required(views.crearreclamo), name = 'Crear reclamo'),
     url(r'^estmerc$', login_required(views.estmercado), name = 'Estudio de mercado'),
     url(r'^panelunidades$', login_required(views.panelunidades), name = 'Panel de unidades'),
