@@ -48,7 +48,24 @@ def reportereclamos(request):
     todos = len(ReclamosPostventa.objects.all())
     general_data = [listos, trabajando, problemas, todos]
 
-    return render(request, 'reporte_reclamo.html', {'general_data':general_data, 'satus_data':status_data, 'category_data':category_data, 'list_project':list_project})
+    days = []
+
+    data_list = ReclamosPostventa.objects.filter(estado = "LISTO")
+
+    for i in data_list:
+        if i.fecha_solucion:
+            inicio = i.fecha_reclamo
+            final = i.fecha_solucion
+            dias = (final - inicio).days
+            days.append(dias)
+
+    days = np.array(days)
+    promedio = np.mean(days)
+    maximo = np.max(days)
+    minimo = np.min(days)
+    
+
+    return render(request, 'reporte_reclamo.html', {'minimo':minimo, 'maximo':maximo,'promedio':promedio,'general_data':general_data, 'satus_data':status_data, 'category_data':category_data, 'list_project':list_project})
 
 def reclamo(request, id_reclamo):
 

@@ -105,9 +105,11 @@
     <script>
         var ctx = document.getElementById('myChart2').getContext('2d');
         var barChartData = {
-			labels: [{% for p in list_project %} '{{p.0}}', {%endfor%}],
+            labels: [{% for p in list_project %} '{{p.0}}', {%endfor%}],
 			datasets: [{
-				label: 'Espera',
+                
+                label: 'Espera',
+                BbarEspesor: 2,
 				backgroundColor: [{% for p in list_project %}'rgba(64, 75, 156, 0.5)', {%endfor%}],
 				data: [
                 {% for s in satus_data %}
@@ -160,6 +162,15 @@
     </script>
 
     <div class="col-lg-6 col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title"><span class="lstick"></span>Tiempo de solución</h4>
+                <h6>Promedio: {{promedio}} dias <i class="fa fa-clock-o"></i></h6>
+                <h6>Maximo: {{maximo}} dias <i class="fa fa-clock-o"></i></h6>
+                <h6>Minimo: {{minimo}} dias <i class="fa fa-clock-o"></i></h6>  
+            </div>
+        </div>
+
         <div class="card">
             <div class="card-body">
                 <h4 class="card-title"><span class="lstick"></span>Tipos de reclamo</h4>
