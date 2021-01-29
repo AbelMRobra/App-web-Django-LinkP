@@ -82,7 +82,7 @@
                     </thead>
                     <tbody>
 
-                        {% for i in datos %}
+                        {% for i in datos|slice:"120" %}
                         <tr>
                             <td>
                                 <span class="round round-primary"><img src="{{i.0.imagenlogo.url}}"  alt="user" width="50"></span>
