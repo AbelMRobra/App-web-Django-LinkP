@@ -188,11 +188,11 @@
                             <td>${{i.2.monto|floatformat:0|intcomma}}</td> 
                             <td><span class="text-muted"><i class="fa fa-clock-o"></i> {{i.2.fecha_c|date:"d M Y"}}</span> </td>
                             <td>
-                            <a href="{{ i.2.adjunto.url }}" class="btn btn-sm btn-warning"><span class="hint--left hint--warning" aria-label="Es una imagen de comparativas o remitos!">VER</span></a>
+                            <a href="{{ i.2.adjunto.url }}" class="btn btn-sm btn-warning">VER</a>
                             
                             {% if i.2.adj_oc %}
                             
-                            <a href="{{ i.2.adj_oc.url }}" class="btn btn-sm btn-success"><span class="hint--left hint--success" aria-label="Una copia de la O.C!, puedes buscarla en TANGO tambien!">VER</span></a>
+                            <a href="{{ i.2.adj_oc.url }}" class="btn btn-sm btn-success">VER</a>
                             
                             {% endif %}
                             </td>
