@@ -16,5 +16,8 @@ urlpatterns = [
     url(r'^dashboard$', views.dashboard, name = 'Dashboard'),
     url(r'^password$', login_required(views.password), name = 'Password'),
     url(r'^vacaciones$', login_required(views.vacaciones), name = 'Holidays'),
+    url(r'^informes$', login_required(views.informes), name = 'Informes'),
+    url(r'^informescrear$', login_required(views.informescrear), name = 'Informes crear'),
+    url(r'^verinformes/(?P<id_informe>\d+)/$', login_required(views.verinforme), name = 'Ver informes'),
 
 ]

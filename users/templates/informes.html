@@ -1,0 +1,123 @@
+{% extends "users/inicio2.html" %}
+{% load apptags_extras %}
+
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+
+<div class="container-fluid r-aside">
+    <!-- ============================================================== -->
+    <!-- Cabeza de la pagina -->
+    <!-- ============================================================== -->
+    <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+            <h3 class="text-themecolor">Informes mensuales</h3>
+        </div>
+
+        <div class="col-md-7 align-self-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+                <li class="breadcrumb-item">Informes</li>
+
+            </ol>
+        </div>
+
+    </div>
+
+  </div>
+
+  <div class="row">
+  <div class="col-lg-6 col-md-12">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title"><span class="lstick"></span>Informes asignados</h4>
+            <h6 class="card-subtitle">Detalles de los informes mensuales</h6>
+            <div style="text-align: left;">
+        
+
+            <a href= "{% url 'Informes crear' %}" class="btn waves-effect waves-light btn-outline-info"style="text-align: end; margin-top: 5px;" >Nuevo informe</a>
+            
+            <div class ="dataTables_filter">
+
+                <form method="POST">
+        
+                    {% csrf_token %}
+                <label>
+                    Search:
+                    <input type="search" class placeholder aria-controls="example23" name="palabra">
+                </label>
+
+            </form>
+
+            </div>
+        </div>
+
+            <div class="table-responsive">
+
+                <table class="table">
+                    <thead>
+
+            <tr>
+                <td>Fecha</td>
+                <td>Revisado</td>
+
+
+            </tr>
+                    </thead>
+                    <tbody>
+                        {% for i in informes_data %}
+                        <tr>
+                            <td><a href="{% url 'Ver informes' i.id %}">{{i.fecha}}</a></td>
+                            {% if i.devolucion %}
+                            <td>SI</td>
+                            {% else %}
+                            <td>NO</td>
+                            {% endif %}
+                        </tr>
+
+                        {% endfor %}
+                    </tbody>
+
+
+        </table>
+
+              
+    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6 col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title"><span class="lstick"></span>Tareas pendientes</h4>
+                    <h6 class="card-subtitle">Detalles de los informes mensuales</h6>
+    
+        
+                    <div class="table-responsive">
+        
+                    <table class="table">
+
+                        <tbody>
+                            <tr>
+                                <td>Tarea asignada muy mucho demasiado larga numero 1</td>
+                                <td style="min-width: 200px;"><form  method="POST"> 
+                                    {% csrf_token %}
+                                <button type="submit" name="LISTO" class="btn btn-success btn-circle"><i class="fa fa-check"></i> </button>
+                                <button type="submit" name="TRABAJANDO" class="btn btn-warning btn-circle"><i class="fa fa-clock-o"></i> </button>
+                                <button type="submit" name="PROBLEMAS" class="btn btn-danger btn-circle"><i class="fa fa-exclamation"></i> </button>
+                                </form></td>
+                            </tr>
+                        </tbody>        
+                </table>
+        
+                      
+            </div>
+                        </div>
+                    </div>
+                </div>
+      </div>
+    </div>
+
+  {% endblock %}

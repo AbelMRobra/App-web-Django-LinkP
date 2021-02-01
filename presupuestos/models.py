@@ -1,6 +1,7 @@
 from django.db import models
 from proyectos.models import Proyectos
 from computos.models import Tipologias
+from rrhh.models import datosusuario
 
 # Modelo para constantes
 
@@ -190,5 +191,41 @@ class PorcentajeCapitulo(models.Model):
         verbose_name="Incidencia del capitulo"
         verbose_name_plural="incidencia del capitulo"
 
+class InformeMensual(models.Model):
+
+    fecha = models.DateField(verbose_name="Fecha del informe")
+    user = models.ForeignKey(datosusuario, on_delete=models.CASCADE, verbose_name="Capitulo")
+    informe = models.TextField(verbose_name="Descripción de la causa", blank=True, null=True)
+    devolucion = models.TextField(verbose_name="Devolución", blank=True, null=True)
+
+    class Meta:
+        verbose_name="Informe mensual"
+        verbose_name_plural="Informes mensuales"
+
+class TareasProgramadas(models.Model):
+
+    class Estado(models.TextChoices):
+        LISTO = "LISTO"
+        TRABAJANDO = "TRABAJANDO"
+        ESPERA = "ESPERA"
+        PROBLEMAS = "PROBLEMAS"
+
+    tarea = models.CharField(max_length=200, verbose_name="Tareas programadas")
+    informe = models.ForeignKey(InformeMensual, on_delete=models.CASCADE, verbose_name="Informe")
+    estado = models.CharField(choices=Estado.choices, max_length=20, verbose_name="Estado de las tareas")
+
+    class Meta:
+        verbose_name="Tarea"
+        verbose_name_plural="Tareas"
+
+class Bitacoras(models.Model):
+    fecha = models.DateField(verbose_name="Fecha del informe", auto_now=True)
+    proyecto= models.ForeignKey(Proyectos, on_delete=models.CASCADE, verbose_name = "Proyecto")
+    informe = models.ForeignKey(InformeMensual, on_delete=models.CASCADE, verbose_name="Informe", blank=True, null=True)
+    informe = models.TextField(verbose_name="Descripción de la causa")
+
+    class Meta:
+        verbose_name="Bitacora"
+        verbose_name_plural="Bitacoras"
 
 

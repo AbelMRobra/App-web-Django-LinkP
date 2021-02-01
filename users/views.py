@@ -5,7 +5,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login as do_login
 from django.contrib.auth.forms import UserCreationForm
 from finanzas.models import Almacenero, RegistroAlmacenero, Arqueo, RetirodeSocios, Honorarios
-from presupuestos.models import Presupuestos
+from presupuestos.models import Presupuestos, InformeMensual, TareasProgramadas, Bitacoras
 from proyectos.models import Proyectos, Unidades
 from ventas.models import VentasRealizadas
 from compras.models import Compras, Comparativas
@@ -837,3 +837,34 @@ def logout(request):
     do_logout(request)
     # Redireccionamos a la portada
     return redirect('/')
+
+def informes(request):
+
+    informes_data = InformeMensual.objects.filter(user__identificacion = request.user)
+
+    return render(request, 'informes.html', {'informes_data':informes_data})
+
+def verinforme(request, id_informe):
+
+    informes_data = InformeMensual.objects.get(id = id_informe)
+
+    return render(request, 'informes_informe.html', {'informes_data':informes_data})
+
+def informescrear(request):
+
+    usuarios = datosusuario.objects.all().order_by("identificacion")
+
+
+    if request.method == "POST":
+
+        user = datosusuario.objects.get(id = request.POST['user'])
+
+        b = InformeMensual(
+            fecha = request.POST['fecha'],
+            user = user,
+        )
+
+        b.save()
+
+        return redirect('Informes')
+    return render(request, 'informes_crear.html', {'usuarios':usuarios})

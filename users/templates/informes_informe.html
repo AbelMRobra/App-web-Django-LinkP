@@ -1,0 +1,201 @@
+{% extends "users/inicio2.html" %}
+
+{% load humanize %}
+
+{% load static %}
+
+{% block content %}
+
+<div class="container-fluid r-aside">
+    <!-- ============================================================== -->
+    <!-- Cabeza de la pagina -->
+    <!-- ============================================================== -->
+    <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+            <h3 class="text-themecolor">Informe fecha {{informes_data.fecha}}</h3>
+        </div>
+
+        <div class="col-md-7 align-self-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'Informes' %}">Informes</a></li>
+                <li class="breadcrumb-item">Informe</li>
+
+            </ol>
+        </div>
+
+    </div>
+
+  </div>
+
+  <div class="row">
+    <div class="col-lg-6 col-md-12">
+    <div class="card">
+        <div class="card-body">
+
+            <div class="d-flex">
+                <div>
+                    <h4 class="card-title"><span class="lstick"></span>Detalle del informe</h4>
+                    <h6 class="text-muted">Información relevante sucedido durante el mes</h6></div>
+
+            </div>
+            
+            <div class="m-t-10">
+                <p style="white-space: pre-wrap;">is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum{{informe.informe}}</p>
+                
+            </div>
+
+        </div>
+    </div>
+
+    
+</div>
+<div class="col-lg-6 col-md-12">
+    <div class="card">
+        <div class="card-body">
+
+            <div class="d-flex">
+                <div>
+                    <h4 class="card-title"><span class="lstick"></span>Escribir informe o sumar bitacoras</h4>
+                    <h6 class="text-muted">Editar, asignar resposable o eliminar</h6></div>
+                    </div>
+                   
+            </div>
+            
+            <div class="m-t-10" style="margin: 15px;">
+                <a href="#" class="btn btn-info btn-circle"><i class="fa fa-list"></i> </a>
+                <button type="button" class="btn btn-info btn-circle"><i class="ti-trash"></i> </button>
+
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+
+            <div class="d-flex">
+                    <h4 class="card-title"><span class="lstick"></span>Devolución del informe</h4>
+                    <h6 class="text-muted">{{datos.clasificacion}}</h6></div>
+
+                    {% if informe.devolucion %}
+                    <div class="m-t-10">
+                        <p style="white-space: pre-wrap;">{{informe.devolucion}</p>
+                        
+                    </div>
+                    {% else %}
+                    <div class="m-t-10">
+                        <p style="white-space: pre-wrap;">The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham</p>
+                        
+                    </div>
+
+                    {% endif %}
+
+        
+    </div>
+    
+
+    
+</div>
+
+</div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+    <div class="card">
+        <div class="card-body">
+
+            <div class="d-flex">
+                <div>
+                    <h4 class="card-title"><span class="lstick"></span>Tareas programadas</h4>
+                    <h6 class="text-muted">Tareas asignadas a principios de mes como objetivo mensual</h6></div>
+                    </div>
+
+                    <div class="table-responsive">
+        
+                        <table class="table">
+        
+                            <tbody>
+                                <tr>
+                                    <td><div>Tarea asignada muy mucho demasiado larga numero 1</div> 
+                                        <div class="label label-table label-success">Listo</div>
+                                    </td>
+                                    <td style="min-width: 200px; text-align: center;"><form  method="POST"> 
+                                        {% csrf_token %}
+                                    <button type="submit" name="LISTO" class="btn btn-success btn-circle"><i class="fa fa-check"></i> </button>
+                                    <button type="submit" name="TRABAJANDO" class="btn btn-warning btn-circle"><i class="fa fa-clock-o"></i> </button>
+                                    <button type="submit" name="PROBLEMAS" class="btn btn-danger btn-circle"><i class="fa fa-exclamation"></i> </button>
+                                    </form></td>
+                                </tr>
+                                <tr>
+                                    <td><div>Tarea asignada muy mucho demasiado larga numero 2</div> 
+                                        <div class="label label-table label-warning">Trabajando</div>
+                                    </td>
+                                    <td style="min-width: 200px; text-align: center;"><form  method="POST"> 
+                                        {% csrf_token %}
+                                    <button type="submit" name="LISTO" class="btn btn-success btn-circle"><i class="fa fa-check"></i> </button>
+                                    <button type="submit" name="TRABAJANDO" class="btn btn-warning btn-circle"><i class="fa fa-clock-o"></i> </button>
+                                    <button type="submit" name="PROBLEMAS" class="btn btn-danger btn-circle"><i class="fa fa-exclamation"></i> </button>
+                                    </form></td>
+                                </tr>
+                                <tr>
+                                    <td><div>Tarea asignada muy mucho demasiado larga numero 3</div> 
+                                        <div class="label label-table label-danger">Problemas</div></td>
+                                    <td style="min-width: 200px; text-align: center;"><form  method="POST"> 
+                                        {% csrf_token %}
+                                    <button type="submit" name="LISTO" class="btn btn-success btn-circle"><i class="fa fa-check"></i> </button>
+                                    <button type="submit" name="TRABAJANDO" class="btn btn-warning btn-circle"><i class="fa fa-clock-o"></i> </button>
+                                    <button type="submit" name="PROBLEMAS" class="btn btn-danger btn-circle"><i class="fa fa-exclamation"></i> </button>
+                                    </form></td>
+                                </tr>
+                            </tbody>        
+                    </table>
+            
+                          
+                </div>  
+
+            </div>
+            
+            
+    </div>
+</div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+    <div class="card">
+        <div class="card-body">
+
+            <div class="d-flex">
+                <div>
+                    <h4 class="card-title"><span class="lstick"></span>Bitacoras realizadas</h4>
+                    </div>
+                    </div>
+
+                    <div class="table-responsive">
+        
+                        <table class="table">
+        
+                            <tbody>
+                                <tr>
+                                    <td>TORRE BLUE</td>
+                                    <td>Re-calculo de losa 2</td>
+                                    <td style="min-width: 200px; text-align: center;"><form  method="POST"> 
+                                        {% csrf_token %}
+                                    <button type="submit" name="LISTO" class="btn btn-info btn-circle"><i class="fa fa-check"></i> </button>
+
+                                    </form></td>
+                                </tr>
+                            </tbody>        
+                    </table>
+            
+                          
+                </div>  
+
+            </div>
+            
+            
+    </div>
+</div>
+</div>
+
+  
+{% endblock %}

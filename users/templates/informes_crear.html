@@ -1,0 +1,107 @@
+{% extends "users/inicio2.html" %}
+
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+
+<div class="container-fluid r-aside">
+    <!-- ============================================================== -->
+    <!-- Cabeza de la pagina -->
+    <!-- ============================================================== -->
+    <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+            <h3 class="text-themecolor">Agregar informe</h3>
+        </div>
+
+        <div class="col-md-7 align-self-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'Informes' %}">Informes</a></li>
+                <li class="breadcrumb-item">Nuevo informe</li>
+
+            </ol>
+        </div>
+
+    </div>
+
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex">
+                    <div>
+                        <h4 class="card-title"><span class="lstick"></span>Formulario del reclamo</h4>
+                        <h6 class="text-muted">Completar todos los datos</h6></div>
+    
+                </div>
+
+    <form  role="form"  enctype="multipart/form-data" action="" method="POST" id="upload-image-form" style="margin: 30px;"> 
+        {% csrf_token %}
+
+
+        <div style="margin: 5px">
+
+            <div style="display: inline-block; margin: 10px; width: 200px;">
+
+                <label for="fecha"><h6>Fecha del informe</h6></label>
+    
+            </div>
+            
+            <div style="display: inline-block; margin: 10px; ">
+    
+                <input name="fecha" type="date" class="form-control form-control"  style="width: 300px;" required="true">
+    
+            </div>
+
+
+        </div>
+
+        <div style="margin: 5px">
+
+            <div style="display: inline-block; margin: 10px; width: 200px;">
+
+                <label for="user"><h6>Responsable</h6></label>
+    
+            </div>
+            
+            <div style="display: inline-block; margin: 10px; ">
+    
+                <input name="user" type="search" class="form-control form-control"  style="width: 300px;" list="usuarios"  required="true">
+    
+            </div>
+
+
+        </div>
+
+        <div style="text-align: right;">
+            <button type="submit" class="btn btn-primary">Subir</button>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+
+          
+
+
+        {{ form.as_p }}
+    </form>
+
+
+
+    <datalist id="usuarios"> 
+
+        {% for i in usuarios %}
+        
+        <option value="{{ i.id }}">({{i.identificacion}})</option>
+
+        {% endfor %}
+
+    </datalist>
+
+
+
+{% endblock %}
