@@ -6,12 +6,34 @@
     <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
     <link rel="stylesheet" href="{% static 'css/hint.css' %}">
     <link rel="stylesheet" href="{% static 'css/styleabel.css' %}">
+    <!-- Hojas de estilos AdminPro -->
+    <link rel="stylesheet" href="{% static 'css/styleabel.css' %}"> 
+    <link href="{% static 'adminpro/assets/plugins/bootstrap-select/bootstrap-select.min.css' %}" rel="stylesheet" />
+    <link href="{% static 'adminpro/assets/plugins/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'adminpro/assets/plugins/perfect-scrollbar/css/perfect-scrollbar.css' %}" rel="stylesheet">
+    <link href="{% static 'adminpro/assets/plugins/chartist-js/dist/chartist.min.css' %}" rel="stylesheet">
+    <link href="{% static 'adminpro/assets/plugins/chartist-plugin-tooltip-master/dist/chartist-plugin-tooltip.css' %}" rel="stylesheet">
+    <link href="{% static 'adminpro/assets/plugins/c3-master/c3.min.css' %}" rel="stylesheet">
+    <link href="{% static 'adminpro/assets/plugins/toast-master/css/jquery.toast.css' %}" rel="stylesheet">
+    <link href="{% static 'adminpro/main/css/style.css' %}" rel="stylesheet">
+    <link href="{% static 'adminpro/main/css/pages/dashboard1.css' %}" rel="stylesheet">
+    <link href="{% static 'adminpro/main/css/colors/default.css' %}" id="theme" rel="stylesheet">
+    <link href="{% static 'adminpro/main/css/pages/chat-app-page.css' %}" rel="stylesheet">
+    <link href="{% static 'adminpro/main/css/pages/file-upload.css' %}" rel="stylesheet">
+    <link href="{% static 'adminpro/assets/plugins/multiselect/css/multi-select.css' %}" rel="stylesheet" type="text/css" />
+    <link href="{% static 'adminpro/assets/plugins/bootstrap-tagsinput/dist/bootstrap-tagsinput.css' %}" rel="stylesheet" />
+    <link href="{% static 'adminpro/assets/plugins/bootstrap-touchspin/dist/jquery.bootstrap-touchspin.min.css' %}" rel="stylesheet" />
+    <link href="{% static 'adminpro/assets/plugins/multiselect/css/multi-select.css' %}" rel="stylesheet" type="text/css" />
+    <link href="{% static 'adminpro/assets/plugins/bootstrap-datepicker/bootstrap-datepicker.min.css' %}" rel="stylesheet" type="text/css" />
+    <link href="{% static 'adminpro/assets/plugins/select2/dist/css/select2.min.css' %}" rel="stylesheet" type="text/css" />
+    <link href="{% static 'adminpro/assets/plugins/switchery/dist/switchery.min.css' %}" rel="stylesheet" />
+    <link href="{% static 'adminpro/assets/plugins/bootstrap-select/bootstrap-select.min.css' %}" rel="stylesheet" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
 </head>
 
 <body>
-    <div style="text-align: left;">
+    <div style="text-align: left; margin-bottom: 20px;">
     
         <img src="{{cabecera}}"  class="img-fluid" alt="..." style="width:100%; height:auto;">
 
@@ -22,12 +44,7 @@
 
         <div style="text-align: center;">
     
-            <div style="text-align: left;">
-    
-                <img src="{{logo}}"  class="img-fluid" alt="..." style="width:30mm; height:auto; margin-top: 5px; margin-bottom: 5px;">
-      
-    
-            </div>
+
     
     
             <div>
@@ -88,7 +105,7 @@
                 <thead>
         
                     <tr style="background-color: rgb(81, 75, 74); text-align: left; height: 28px; vertical-align: bottom;">
-                        <th scope = "row" style="color: rgb(247, 241, 240);" colspan="2"><b> DATOS DEL PAGO ACTUAL</b></th>                        
+                        <th scope = "row" style="color: rgb(247, 241, 240);" colspan="3"><b>DATOS DEL PAGO ACTUAL</b></th>                        
                     </tr>
                 </thead>
         
@@ -119,6 +136,17 @@
                     </tr>
                    
                     {% endfor %}
+
+                    <tr style="height: 25px; ">
+                        <td style="width: 20px;"><small><b></b></small></td>
+                        <td><small><b>Total a pagar</b> </small></td>
+                        <td><small></small></td>
+                        <td><small></small></td>
+                        <td><small></small></td>
+                        <td><small><b>$ {{total_mes|floatformat:0|intcomma}}</b></small></td>
+                        <td><small></small></td>
+              
+                    </tr>
                 </tbody>
         
             </table>
@@ -137,7 +165,7 @@
             <thead>
     
                 <tr style="background-color: rgb(81, 75, 74); text-align: left; height: 28px; vertical-align: bottom;">
-                    <th scope = "row" style="color: rgb(247, 241, 240);" colspan="2"><b>RESUMEN DE CUENTA</b></th>                        
+                    <th scope = "row" style="color: rgb(247, 241, 240);" colspan="3"><b>RESUMEN DE CUENTA</b></th>                        
                 </tr>
             </thead>
     
@@ -224,4 +252,29 @@
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+<!-- scripts AdminPro -->
+
+<script src="{% static 'adminpro/assets/plugins/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'adminpro/assets/plugins/bootstrap/js/popper.min.js' %}"></script>
+<script src="{% static 'adminpro/assets/plugins/bootstrap/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'adminpro/main/js/perfect-scrollbar.jquery.min.js' %}"></script>
+<script src="{% static 'adminpro/main/js/waves.js' %}"></script>
+<script src="{% static 'adminpro/main/js/sidebarmenu.js' %}"></script>
+<script src="{% static 'adminpro/main/js/custom.min.js' %}"></script>
+<script src="{% static 'adminpro/assets/plugins/sparkline/jquery.sparkline.min.js' %}"></script>
+<script src="{% static 'adminpro/assets/plugins/chartist-js/dist/chartist.min.js' %}"></script>
+<script src="{% static 'adminpro/assets/plugins/chartist-plugin-tooltip-master/dist/chartist-plugin-tooltip.min.js' %}"></script>
+<script src="{% static 'adminpro/assets/plugins/d3/d3.min.js' %}"></script>
+<script src="{% static 'adminpro/assets/plugins/c3-master/c3.min.js' %}"></script>
+<script src="{% static 'adminpro/main/js/dashboard1.js' %}"></script>
+<script src="{% static 'adminpro/assets/plugins/styleswitcher/jQuery.style.switcher.js' %}"></script>
+<script src="{% static 'adminpro/main/js/chat.js' %}"></script>
+<script src="{% static 'assets/plugins/switchery/dist/switchery.min.js' %}"></script>
+<script src="{% static 'assets/plugins/select2/dist/js/select2.full.min.js' %}" type="text/javascript"></script>
+<script src="{% static 'assets/plugins/bootstrap-select/bootstrap-select.min.js' %}" type="text/javascript"></script>
+<script src="{% static 'adminpro/assets/plugins/bootstrap-select/bootstrap-select.min.js' %}" type="text/javascript"></script>
+<script src="{% static 'assets/plugins/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js' %}"></script>
+<script src="{% static 'assets/plugins/bootstrap-touchspin/dist/jquery.bootstrap-touchspin.min.js' %}" type="text/javascript"></script>
+<script type="text/javascript" src="{% static 'assets/plugins/multiselect/js/jquery.multi-select.js' %}"></script>
 

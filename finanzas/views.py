@@ -188,8 +188,11 @@ class PdfPrueba(View):
 
         cuotas_vencimiento = Cuota.objects.filter(cuenta_corriente = ctacte, fecha__range = (fecha_1, fecha_2))
 
+        total_mes = 0
+        
         for c in cuotas_vencimiento:
             pesos = c.precio*c.constante.valor
+            total_mes = total_mes + pesos
             venc_cuotas.append((c, pesos))
 
         datos_vencimiento = [venc_cuotas, vencimiento]
@@ -203,9 +206,10 @@ class PdfPrueba(View):
         'datos_cuotas':datos_cuotas,
         'datos_vencimiento':datos_vencimiento, 
         'saldo_total_pesos':saldo_total_pesos,
+        'total_mes':total_mes,
         'fecha':datetime.date.today(),
         'logo':'{}{}'.format(settings.STATIC_URL, 'img/link.png'),
-        'cabecera':'{}{}'.format(settings.STATIC_URL, 'img/cabecera.png'),
+        'cabecera':'{}{}'.format(settings.STATIC_URL, 'img/fondo.png'),
         'fondo':'{}{}'.format(settings.STATIC_URL, 'img/fondo.jpg')}
         html = template.render(contexto)
         response = HttpResponse(content_type = "application/pdf")
