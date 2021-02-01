@@ -154,16 +154,12 @@
                    
                     {% endfor %}
 
-                    <tr style="height: 25px; ">
-                        <td style="width: 20px;"><small><b></b></small></td>
-                        <td><small><b>Total a pagar</b> </small></td>
-                        <td><small></small></td>
-                        <td><small></small></td>
-                        <td><small></small></td>
-                        <td><small><b>$ {{total_mes|floatformat:0|intcomma}}</b></small></td>
-                        <td><small></small></td>
-              
+                    <tr style="height: 25px; background-color: rgb(81, 75, 74);">
+                        <td style="text-align: center; color: rgb(247, 241, 240);" colspan="5"><b>TOTAL A PAGAR</b></td>
+                        <td style="color: rgb(247, 241, 240);"><b>$ {{total_mes|floatformat:0|intcomma}}</b></td>
+        
                     </tr>
+
                 </tbody>
         
             </table>
@@ -232,9 +228,6 @@
             </tbody>
     
         </table>
-    
-    
-            <h3>Proxima cuota: $ {{datos_cuotas.0.1|floatformat:0|intcomma}}** vence en {{datos_cuotas.0.0|date:"F Y"}}</h3>
     
           </div>
     
