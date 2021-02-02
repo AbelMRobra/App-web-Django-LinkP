@@ -1940,17 +1940,19 @@ def consolidado(request):
 
             else:
 
-                precio_promedio_contado = sumatoria_contado/m2_totales
+                if "2UO" in dato.proyecto.nombre:
+
+                    precio_promedio_contado = 98029
+
+                else:
+
+                    precio_promedio_contado = sumatoria_contado/m2_totales
 
         else:
 
             if "#300" in dato.proyecto.nombre:
 
                 precio_promedio_contado = 133979
-
-            if "2UO" in dato.proyecto.nombre:
-
-                precio_promedio_contado = 98029
 
             else:
 
