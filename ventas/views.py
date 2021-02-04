@@ -152,7 +152,8 @@ def editarreclamo(request, id_reclamo):
         reclamo.unidad = request.POST['unidad']
         reclamo.clasificacion = request.POST['clasificacion']
         reclamo.descripcion = request.POST['descripcion']
-        reclamo.fecha_solucion = request.POST['fecha_solucion']
+        if request.POST['fecha_solucion']:
+            reclamo.fecha_solucion = request.POST['fecha_solucion']
         try:
             usuario = datosusuario.objects.get(identificacion = request.POST['responsable'])
             reclamo.responsable = usuario
