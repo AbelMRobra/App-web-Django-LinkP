@@ -137,7 +137,8 @@ def editarreclamo(request, id_reclamo):
 
     proyectos = list(set(ReclamosPostventa.objects.values_list('proyecto')))
     clasificacion = list(set(ReclamosPostventa.objects.values_list('clasificacion')))
-    responsable = list(set(datosusuario.objects.values_list('identificacion')))
+    responsable = datosusuario.objects.values_list('identificacion')
+    print(responsable)
 
     if request.method == 'POST':
         reclamo = ReclamosPostventa.objects.get(id = id_reclamo)
@@ -151,6 +152,7 @@ def editarreclamo(request, id_reclamo):
         reclamo.unidad = request.POST['unidad']
         reclamo.clasificacion = request.POST['clasificacion']
         reclamo.descripcion = request.POST['descripcion']
+        reclamo.fecha_solucion = request.POST['fecha_solucion']
         try:
             usuario = datosusuario.objects.get(identificacion = request.POST['responsable'])
             reclamo.responsable = usuario
@@ -1439,8 +1441,8 @@ def pricing(request, id_proyecto):
 
             #Aqui calculamos el contado/financiado
             
-            contado = desde*m2           
-
+            contado = desde*m2
+         
             values = [0]
 
             for m in range((meses)):

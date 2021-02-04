@@ -229,7 +229,7 @@ def guia(request):
             pass
 
     try:
-        list_usuarios = datosusuario.objects.all().exclude(identificacion = request.user)
+        list_usuarios = datosusuario.objects.all().exclude(identificacion = request.user).exclude(estado = "NO ACTIVO")
 
         monedas = MonedaLink.objects.filter(usuario_portador = usuario)
 

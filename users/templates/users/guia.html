@@ -48,7 +48,7 @@
 
         <h4 class="card-title">Linkcoins</h4>
 
-        {% if datos %}
+        {% if datos and datos.estado == "ACTIVO" %}
         <h6 class="text-muted m-t-10 m-b-0">Recibidas: <b>{{monedas_recibidas}}</b> <img src="{% static 'img/monedalink.png' %}" alt="" style="max-width:19px; height:auto; vertical-align: top;"></h6>
         <h6 class="text-muted m-t-10 m-b-0">Disponibles: <b>{{monedas_disponibles}}</b> <img src="{% static 'img/monedalink.png' %}" alt="" style="max-width:19px; height:auto; vertical-align: top;"></h6>
         <div style="margin-top: 15px;">
