@@ -119,7 +119,10 @@
                                 </td>
                                 <td style="width: 150px;">{% if i.fecha_inicio %}<span class="text-muted"><i class="fa fa-clock-o"></i> {{i.fecha_inicio|date:"d-m-Y"}}</span>{% else %} Sin asignar {% endif%} </td>
                                 <td style="width: 150px;">{% if i.fecha_final %}<span class="text-muted"><i class="fa fa-clock-o"></i> {{i.fecha_final|date:"d-m-Y"}}</span>{% else %} Sin asignar {% endif%} </td>
-                                <td {% if i.responsable %} style="text-align: center;"{% endif %}>{% if i.responsable %}<img src="{{i.responsable.imagenlogo.url}}" alt="user" width="50">{% else %} Sin asignar {% endif %}</td>
+                                <td {% if i.responsable %} style="text-align: center;"{% endif %}>{% if i.responsable %}<span class="image-list m-t-10">
+                                    <a href="#"><img src="{{i.imagenlogo.url}}" class="img-circle" alt="user" width="40" /></a>
+            
+                                </span>{% else %} Sin asignar {% endif %}</td>
                                 <td style="width: 50px;">Adj.</td>
                             </tr>
 
