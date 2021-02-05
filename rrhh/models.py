@@ -121,7 +121,6 @@ class EntregaMoneda(models.Model):
     def __str__(self):
         return self.mensaje
 
-
 class Anuncios(models.Model):
 
     class categoria(models.TextChoices):
@@ -147,3 +146,40 @@ class Anuncios(models.Model):
 
     def __str__(self):
         return self.titulo
+
+class Seguimiento(models.Model):
+
+    class estados(models.TextChoices):
+
+        ESPERA = "ESPERA"
+        TRABAJANDO = "TRABAJANDO"
+        PROBLEMAS = "PROBLEMAS"
+        LISTO = "LISTO"
+
+    class areas(models.TextChoices):
+
+        PRESUPUESTO = "PRESUPUESTOS"
+        COMPRAS_CONTRATACIONES = "COMPRAS Y CONTRATACIONES"
+        EQUIPO_TECNICO = "EQUIPO TECNICO"
+        ADMINISTRACION_FINANZAS = "ADMINISTRACIÓN Y FINANZAS"
+        COMERCIALIZACION_MARKETING = "COMERCIALIZACIÓN Y MARKETING"
+        RR_HH = "RECURSOS HUMANOS"
+        DIRECCION = "DIRECCIÓN"
+        OBRA = "OBRA"
+
+    orden = models.IntegerField(verbose_name="Orden de la tarea")
+    area = models.CharField(choices=areas.choices, max_length=100, verbose_name="Area")
+    nombre = models.CharField(max_length=200, verbose_name="Nombre de la tarea")
+    proyecto =  models.ForeignKey(Proyectos, on_delete=models.CASCADE, verbose_name="Proyecto")
+    estado = models.CharField(choices=estados.choices, default=estados.ESPERA, max_length=20, verbose_name="Estado")
+    fecha_inicio = models.DateField(verbose_name="Fecha de inicio", blank=True, null=True)
+    fecha_final = models.DateField(verbose_name="Fecha final", blank=True, null=True)
+    responsable =  models.ForeignKey(datosusuario, on_delete=models.CASCADE, verbose_name="Responsable", blank=True, null=True)
+    adjunto = models.FileField(verbose_name="Adjunto", blank=True, null=True)
+
+    class Meta:
+        verbose_name="Seguimiento"
+        verbose_name_plural="Seguimientos"
+
+    def __str__(self):
+        return self.nombre

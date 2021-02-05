@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from .models import Proyectos, Unidades, ProyectosTerceros
 
+
 # Create your views here.
 
 def adminunidades(request):
@@ -43,8 +44,6 @@ def adminunidades(request):
 
     return render(request, 'adminunidades.html', {'datos_completo':datos_completo, 'total_propia':total_propia, 'total_balcon':total_balcon, 'total_patio':total_patio, 'total_comun':total_comun, 'total_total':total_total,
      'total_unidades':total_unidades, 'comun_total':comun_total})
-
-
 
 def proyectos(request):
 

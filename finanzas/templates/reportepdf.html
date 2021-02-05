@@ -59,7 +59,7 @@
             <b><hr class = "my-4" style="width: 100%;"></b>
 
                     <div style="text-align: center;">
-                        <h1 style="font-family: sans-serif"> Resumen de la cuenta </h1>
+                        <h1 style="font-family: sans-serif">Resumen de la cuenta</h1>
                     </div>
                     
             
@@ -122,7 +122,7 @@
                 <thead>
         
                     <tr style="background-color: rgb(81, 75, 74); text-align: left; height: 28px; vertical-align: bottom;">
-                        <th scope = "row" style="color: rgb(247, 241, 240);" colspan="3"><b>DATOS DEL PAGO ACTUAL</b></th>                        
+                        <th scope = "row" style="color: rgb(247, 241, 240);" colspan="3">DATOS DEL PAGO ACTUAL</th>                        
                     </tr>
                 </thead>
         
@@ -155,8 +155,8 @@
                     {% endfor %}
 
                     <tr style="height: 25px; background-color: rgb(81, 75, 74);">
-                        <td style="text-align: center; color: rgb(247, 241, 240);" colspan="5"><b>TOTAL A PAGAR</b></td>
-                        <td style="color: rgb(247, 241, 240);"><b>$ {{total_mes|floatformat:0|intcomma}}</b></td>
+                        <td style="text-align: center; color: rgb(247, 251, 245);" colspan="5"><b>TOTAL A PAGAR</b></td>
+                        <td style="color: rgb(247, 251, 245);"><b>$ {{total_mes|floatformat:0|intcomma}}</b></td>
         
                     </tr>
 
@@ -178,7 +178,7 @@
             <thead>
     
                 <tr style="background-color: rgb(81, 75, 74); text-align: left; height: 28px; vertical-align: bottom;">
-                    <th scope = "row" style="color: rgb(247, 241, 240);" colspan="3"><b>RESUMEN DE CUENTA</b></th>                        
+                    <th scope = "row" style="color: rgb(247, 241, 240);" colspan="3">RESUMEN DE CUENTA</th>                        
                 </tr>
             </thead>
     
@@ -220,8 +220,8 @@
                 {% endfor %}
     
                 <tr style="height: 25px; background-color: rgb(81, 75, 74);">
-                    <td style="text-align: center; color: rgb(247, 241, 240);" colspan="6"><b>SALDO TOTAL DE LA CUENTA</b></td>
-                    <td style="color: rgb(247, 241, 240);"><b>$ {{saldo_total_pesos|floatformat:0|intcomma}}</b></td>
+                    <td style="text-align: center; color: rgb(247, 241, 240);" colspan="6">SALDO TOTAL DE LA CUENTA</td>
+                    <td style="color: rgb(247, 241, 240);">$ {{saldo_total_pesos|floatformat:0|intcomma}}</td>
     
                 </tr>
             
@@ -242,6 +242,15 @@
             </div>
             <div>
                 <small>Sección CI (CI RUBROS DE OBRA) Código 544 – HORMIGONES – ELABORADO 0130 (Hormigón H21) </small>
+            </div>
+            <div>
+                <small>Numero de cuenta: {{ctacte.venta.unidad.proyecto.numero_cuenta}}</small>
+            </div>
+            <div>
+                <small>Dirección Lamadrid 377 4to B, San Miguel del Tucumán, Tucumán</small>
+            </div>
+            <div>
+                <small>Horarios de atención: 08:30 a 12:30</small>
             </div>
             <div>
                 <small><b>Importante: Precio vigente hasta el ultimo dia del mes corriente</b> </small>

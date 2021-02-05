@@ -10,7 +10,7 @@ from proyectos.models import Proyectos, Unidades
 from ventas.models import VentasRealizadas
 from compras.models import Compras, Comparativas
 from registro.models import RegistroValorProyecto
-from rrhh.models import datosusuario, mensajesgenerales, NotaDePedido, Vacaciones, MonedaLink, EntregaMoneda, Anuncios
+from rrhh.models import datosusuario, mensajesgenerales, NotaDePedido, Vacaciones, MonedaLink, EntregaMoneda, Anuncios, Seguimiento
 import datetime
 from datetime import date
 import pandas as pd
@@ -868,3 +868,93 @@ def informescrear(request):
 
         return redirect('Informes')
     return render(request, 'informes_crear.html', {'usuarios':usuarios})
+
+def tablerorega(request, id_proyecto, id_area, id_estado):
+
+    if id_proyecto != "0":
+        proyecto_el = Proyectos.objects.get(id = int(id_proyecto))
+    else:
+        proyecto_el = 0
+
+    estado = "Estado"
+
+    diccionario = {'1': "ADMINISTRACIÓN Y FINANZAS",
+    '2': "COMPRAS Y CONTRATACIONES",
+    '3': "COMERCIALIZACIÓN Y MARKETING",
+    '4': "DIRECCIÓN",
+    '5': "PRESUPUESTOS",
+    '6': "OBRA",
+    '7': "EQUIPO TECNICO",
+    '8': "RECURSOS HUMANOS"}
+
+    if id_area == "0":
+        area = "Área"
+    else:
+        area = diccionario[id_area]
+
+    if id_area == "0":
+        list_areas = Seguimiento.objects.all().values_list('area')
+    else:
+        list_areas = Seguimiento.objects.filter(area = diccionario[id_area]).values_list('area')
+    list_project_dummy = Seguimiento.objects.all().values_list('proyecto')
+    list_project = []
+
+    for l in list_project_dummy:
+        proyecto = Proyectos.objects.get(id = int(l[0]))
+        list_project.append(proyecto)
+
+    data = []
+
+    for l in list_areas:
+
+        if id_proyecto == "0":
+            if id_estado == "0":
+                data_list = Seguimiento.objects.filter(area = l[0])
+                data.append((l, data_list))
+            elif id_estado == "1":
+                data_list = Seguimiento.objects.filter(area = l[0]).exclude(estado = "LISTO")
+                data.append((l, data_list))
+                estado = "Activos"
+            elif id_estado == "2":
+                data_list = Seguimiento.objects.filter(area = l[0], estado = "TRABAJANDO")
+                data.append((l, data_list))
+                estado = "Trabajando"
+            elif id_estado == "3":
+                data_list = Seguimiento.objects.filter(area = l[0], estado = "PROBLEMAS")
+                data.append((l, data_list))
+                estado = "Problemas"
+            elif id_estado == "4":
+                data_list = Seguimiento.objects.filter(area = l[0], estado = "LISTO")
+                data.append((l, data_list))
+                estado = "Listo"
+            else:
+                data_list = Seguimiento.objects.filter(area = l[0], estado = "ESPERA")
+                data.append((l, data_list))
+                estado = "Espera"
+
+        else:
+            if id_estado == "0":
+                data_list = Seguimiento.objects.filter(area = l[0], proyecto__id = int(id_proyecto))
+                data.append((l, data_list))
+            elif id_estado == "1":
+                data_list = Seguimiento.objects.filter(area = l[0], proyecto__id = int(id_proyecto)).exclude(estado = "LISTO")
+                data.append((l, data_list))
+                estado = "Activos"
+            elif id_estado == "2":
+                data_list = Seguimiento.objects.filter(area = l[0], proyecto__id = int(id_proyecto), estado = "TRABAJANDO")
+                data.append((l, data_list))
+                estado = "Trabajando"
+            elif id_estado == "3":
+                data_list = Seguimiento.objects.filter(area = l[0], proyecto__id = int(id_proyecto), estado = "PROBLEMAS")
+                data.append((l, data_list))
+                estado = "Problemas"
+            elif id_estado == "4":
+                data_list = Seguimiento.objects.filter(area = l[0], proyecto__id = int(id_proyecto), estado = "LISTO")
+                data.append((l, data_list))
+                estado = "Listo"
+            else:
+                data_list = Seguimiento.objects.filter(area = l[0], proyecto__id = int(id_proyecto), estado = "ESPERA")
+                data.append((l, data_list))
+                estado = "Espera"
+
+    return render(request, 'seguimiento.html', {'area':area, 'estado':estado, 'proyecto':proyecto_el, 'data':data, 'list_project':list_project, 'id_estado':id_estado, 'id_area':id_area, 'id_proyecto':id_proyecto})

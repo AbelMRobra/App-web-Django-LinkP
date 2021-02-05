@@ -19,5 +19,6 @@ urlpatterns = [
     url(r'^informes$', login_required(views.informes), name = 'Informes'),
     url(r'^informescrear$', login_required(views.informescrear), name = 'Informes crear'),
     url(r'^verinformes/(?P<id_informe>\d+)/$', login_required(views.verinforme), name = 'Ver informes'),
+    url(r'^tablerorega/(?P<id_proyecto>\d+)/(?P<id_area>\d+)/(?P<id_estado>\d+)/$', login_required(views.tablerorega), name = 'Tablero Rega'),
 
 ]

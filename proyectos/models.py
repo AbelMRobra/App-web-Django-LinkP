@@ -1,5 +1,6 @@
 from django.db import models
 
+
 # Create your models here.
 
 class Proyectos(models.Model):
@@ -12,6 +13,7 @@ class Proyectos(models.Model):
     fecha_i = models.DateField(verbose_name="Fecha de inicio", blank=True, null=True)
     fecha_a = models.DateField(auto_now=True, verbose_name="Fecha de actualización")
     m2 =  models.FloatField(verbose_name="Tamaño de la obra")
+    numero_cuenta =  models.IntegerField(verbose_name="Numero de cuenta corriente", blank=True, null=True)
     desde = models.FloatField(null=True, blank=True, verbose_name="Precio desde")
     tasa_f = models.FloatField(null=True, blank=True, verbose_name="Tasa de finan.")
     descuento_cochera = models.FloatField(null=True, blank=True, verbose_name="Descuento cochera")
@@ -43,7 +45,6 @@ class ProyectosTerceros(models.Model):
 
     def __str__(self):
         return self.nombre
-
 
 class Unidades(models.Model):
 
@@ -101,3 +102,4 @@ class Unidades(models.Model):
 
     def __str__(self):
         return '{} - {}'.format(self.piso_unidad, self.nombre_unidad)
+

@@ -131,6 +131,18 @@
                             <li><a href="/proyectos">Listado</a></li>
                         </ul>
                     </li>
+
+                    {% if user.username == "AR" %}
+
+                    <li class="nav-small-cap">TABLEROS</li>
+
+                    <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i class="mdi mdi-gauge"></i><span class="hide-menu">Seguimiento</span></a>
+                      <ul aria-expanded="false" class="collapse">
+                          <li><a href="{% url 'Tablero Rega' 0 0 0%}">R.E.G.A</a></li>
+                      </ul>
+                  </li>
+
+                  {% endif %}
                       <li class="nav-small-cap">ESPACIOS DE TRABAJO</li>
                       <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i class="mdi mdi-widgets"></i><span class="hide-menu">Presupuestos</span></a>
                           <ul aria-expanded="false" class="collapse">
