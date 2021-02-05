@@ -32,8 +32,10 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body">
+                <h4 class="card-title">Filtros del tablero</h4>
+                <h6 class="card-subtitle">Selecciona las condiciones de los datos</h6>
                 <div class="dropdown">
-                    <button class="dropbtn btn btn-primary">{% if proyecto %} {{proyecto.nombre}} {% else %}Proyecto{% endif %}</button>
+                    <button class="dropbtn btn btn-primary" style="background-color: rgb({{proyecto.color}}); border-color: rgb({{proyecto.color}})">{% if proyecto %} {{proyecto.nombre}} {% else %}Proyecto{% endif %}</button>
                     <div class="dropdown-content">
                         <a href="{% url 'Tablero Rega' 0 id_area id_estado %}">Todos</a>
                         {% for p in list_project %}
@@ -44,7 +46,7 @@
                     </div>
                 </div>
                 <div class="dropdown">
-                    <button class="dropbtn btn btn-primary">{{area}}</button>
+                    <button class="dropbtn btn btn-primary" style="background-color: rgb({{area.1}}); border-color: rgb({{area.1}})">{{area.0}}</button>
                     <div class="dropdown-content">
                     <a href="{% url 'Tablero Rega' id_proyecto 0 id_estado %}">Todas</a>
                     <a href="{% url 'Tablero Rega' id_proyecto 1 id_estado %}">Administración</a>
@@ -129,6 +131,24 @@
                 {% else %}
                 <h6 class="card-subtitle">No tiene tareas que cumplan con estas condiciones</h6>
                 {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Usuarios del tablero</h4>
+                    <h6 class="card-subtitle">Solo los usuarios presentados tienen acceso a este lugar</h6>
+                    {% for u in list_users %}
+                    <span class="image-list m-t-10">
+                        <a href="#"><img src="{{u.imagenlogo.url}}" class="img-circle" alt="user" width="40" /></a>
+
+                    </span>
+                    {% endfor %}
+                </div>
             </div>
         </div>
     </div>

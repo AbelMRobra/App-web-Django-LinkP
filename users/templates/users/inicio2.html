@@ -132,13 +132,13 @@
                         </ul>
                     </li>
 
-                    {% if user.username == "AR" %}
+                    {% if request.user|has_group:"REGA NIVEL 1" %}
 
                     <li class="nav-small-cap">TABLEROS</li>
 
                     <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i class="mdi mdi-gauge"></i><span class="hide-menu">Seguimiento</span></a>
                       <ul aria-expanded="false" class="collapse">
-                          <li><a href="{% url 'Tablero Rega' 0 0 0%}">R.E.G.A</a></li>
+                          <li><a href="{% url 'Tablero Rega' 0 0 1 %}">R.E.G.A</a></li>
                       </ul>
                   </li>
 

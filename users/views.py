@@ -22,6 +22,7 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.base import MIMEBase
 from email import encoders
 from agenda import settings
+from django.contrib.auth import models
 
 def monedalink(request):
 
@@ -871,6 +872,16 @@ def informescrear(request):
 
 def tablerorega(request, id_proyecto, id_area, id_estado):
 
+    group=models.Group.objects.get(name='REGA NIVEL 1')
+    users=group.user_set.all()
+    list_users = []
+    for user in list_users:
+        try:
+            us = datosusuario.objects.get(identificacion = user.username)
+            list_users.append(us)
+        except:
+            pass
+
     if id_proyecto != "0":
         proyecto_el = Proyectos.objects.get(id = int(id_proyecto))
     else:
@@ -878,17 +889,17 @@ def tablerorega(request, id_proyecto, id_area, id_estado):
 
     estado = "Estado"
 
-    diccionario = {'1': "ADMINISTRACIÓN Y FINANZAS",
-    '2': "COMPRAS Y CONTRATACIONES",
-    '3': "COMERCIALIZACIÓN Y MARKETING",
-    '4': "DIRECCIÓN",
-    '5': "PRESUPUESTOS",
-    '6': "OBRA",
-    '7': "EQUIPO TECNICO",
-    '8': "RECURSOS HUMANOS"}
+    diccionario = {'1': ("ADMINISTRACIÓN Y FINANZAS", "55, 172, 99 "),
+    '2': ("COMPRAS Y CONTRATACIONES", "161, 200, 58"),
+    '3': ("COMERCIALIZACIÓN Y MARKETING", "248, 46, 126 "),
+    '4': ("DIRECCIÓN", "204, 194, 69 "),
+    '5': ("PRESUPUESTOS", "69, 204, 202 "),
+    '6': ("OBRA", "239, 144, 49 "),
+    '7': ("EQUIPO TECNICO", "198, 77, 77 "),
+    '8': ("RECURSOS HUMANOS", "34, 96, 231 ")}
 
     if id_area == "0":
-        area = "Área"
+        area = ["Área",""]
     else:
         area = diccionario[id_area]
 
@@ -896,7 +907,7 @@ def tablerorega(request, id_proyecto, id_area, id_estado):
         list_areas = Seguimiento.objects.all().values_list('area')
         list_areas = list(set(list_areas))
     else:
-        list_areas = Seguimiento.objects.filter(area = diccionario[id_area]).values_list('area')
+        list_areas = Seguimiento.objects.filter(area = diccionario[id_area][0]).values_list('area')
         list_areas = list(set(list_areas))
     list_project_dummy = Seguimiento.objects.all().values_list('proyecto')
     list_project_dummy = list(set(list_project_dummy))
@@ -960,4 +971,4 @@ def tablerorega(request, id_proyecto, id_area, id_estado):
                 data.append((l, data_list))
                 estado = "Espera"
 
-    return render(request, 'seguimiento.html', {'area':area, 'estado':estado, 'proyecto':proyecto_el, 'data':data, 'list_project':list_project, 'id_estado':id_estado, 'id_area':id_area, 'id_proyecto':id_proyecto})
+    return render(request, 'seguimiento.html', {'list_users':list_users, 'area':area, 'estado':estado, 'proyecto':proyecto_el, 'data':data, 'list_project':list_project, 'id_estado':id_estado, 'id_area':id_area, 'id_proyecto':id_proyecto})
