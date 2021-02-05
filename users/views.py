@@ -894,9 +894,12 @@ def tablerorega(request, id_proyecto, id_area, id_estado):
 
     if id_area == "0":
         list_areas = Seguimiento.objects.all().values_list('area')
+        list_areas = list(set(list_areas))
     else:
         list_areas = Seguimiento.objects.filter(area = diccionario[id_area]).values_list('area')
+        list_areas = list(set(list_areas))
     list_project_dummy = Seguimiento.objects.all().values_list('proyecto')
+    list_project_dummy = list(set(list_project_dummy))
     list_project = []
 
     for l in list_project_dummy:
