@@ -96,8 +96,8 @@
                                 <th>Tarea</th>
                                 <th>Inicio</th>
                                 <th>Final</th>
-                                <th>Responsable</th>
-                                <th>Adjunto</th>
+                                <th>Resp.</th>
+                                <th>Adj.</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -106,7 +106,7 @@
                                 {% if proyecto == 0 %}
                                 <td style="color: rgb({{i.proyecto.color}}); width: 150px">{{i.proyecto.nombre}}</td>
                                 {% endif %}
-                                <td style="width: 400px;"><div>{{i.nombre}}</div>
+                                <td style="width: 400px;"><div>{{i.nombre|lower|capfirst}}</div>
                                     {% if i.estado == "LISTO" %} 
                                     <div class="label label-table label-success">Listo</div>
                                     {% elif i.estado == "TRABAJANDO" %} 
