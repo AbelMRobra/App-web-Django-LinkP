@@ -875,7 +875,7 @@ def tablerorega(request, id_proyecto, id_area, id_estado):
     group=models.Group.objects.get(name='REGA NIVEL 1')
     users=group.user_set.all()
     list_users = []
-    for user in list_users:
+    for user in users:
         try:
             us = datosusuario.objects.get(identificacion = user.username)
             list_users.append(us)
