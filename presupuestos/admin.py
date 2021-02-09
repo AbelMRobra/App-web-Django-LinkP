@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Constantes, Articulos, DatosProyectos, Presupuestos, Prametros, Desde, Analisis, CompoAnalisis, Capitulos, Modelopresupuesto, Registrodeconstantes
+from .models import Constantes, Articulos, DatosProyectos, Presupuestos, Prametros, Desde, Analisis, CompoAnalisis, Capitulos, Modelopresupuesto, Registrodeconstantes, InformeMensual, Bitacoras
 from import_export import resources
 from import_export.admin import ImportExportModelAdmin
 
@@ -68,6 +68,24 @@ class RegistrodeConstanteAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     search_fields = ('constante__nombre', 'valor', 'fecha')
     resources_class = RegistrodeConstanteResource
 
+class InformeMensualResource(resources.ModelResource):
+    class Meta:
+        model = InformeMensual
+
+class InformeMensualAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    list_display = ('fecha', 'user')
+    search_fields = ('fecha', 'user__identificacion')
+    resources_class = InformeMensualResource
+
+class BitacorasResource(resources.ModelResource):
+    class Meta:
+        model = Bitacoras
+
+class BitacorasAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    list_display = ('fecha', 'proyecto')
+    search_fields = ('fecha', 'proyecto__nombre')
+    resources_class = BitacorasResource
+
 admin.site.register(Constantes, ConstantesAdmin)
 admin.site.register(Registrodeconstantes, RegistrodeConstanteAdmin)
 admin.site.register(Capitulos, CapituloAdmin)
@@ -79,3 +97,5 @@ admin.site.register(Desde)
 admin.site.register(Analisis, AnalisisAdmin)
 admin.site.register(CompoAnalisis, CompoAnalisisAdmin)
 admin.site.register(Modelopresupuesto, ModelopresupuestoAdmin)
+admin.site.register(InformeMensual, InformeMensualAdmin)
+admin.site.register(Bitacoras, BitacorasAdmin)

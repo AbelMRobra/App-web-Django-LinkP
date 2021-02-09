@@ -28,7 +28,7 @@
     <div class="card">
         <div class="card-body">
             <h4 class="card-title">
-                {% if request.user|has_group:"PRESUPUESTO NIVEL 3" %}
+                {% if request.user|has_group:"PRESUPUESTO NIVEL 10" %}
                 <a class="btn btn-secondary btn-outline" href="/presupuestos/cons_panel">
                     
                     <img src="{% static 'img/iniciar-sesion.png' %}" alt="" style="max-width:20px; height:auto; vertical-align: middle;">

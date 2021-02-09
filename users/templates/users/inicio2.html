@@ -118,7 +118,9 @@
                       
                       <ul aria-expanded="false" class="collapse">
                               <li><a href="/guia">Mi perfil</a></li>
-                              <!-- <li><a href="/informes">Informes</a></li> --> 
+                              {% if request.user|has_group:"PRESUPUESTO NIVEL 10" %}
+                              <li><a href="/informes">Informes</a></li>
+                              {% endif %}
                               <li><a href="/logout">Logout</a></li>
                           </ul>
                       </li>
@@ -580,13 +582,13 @@
       <script src="{% static 'adminpro/main/js/dashboard1.js' %}"></script>
       <script src="{% static 'adminpro/assets/plugins/styleswitcher/jQuery.style.switcher.js' %}"></script>
       <script src="{% static 'adminpro/main/js/chat.js' %}"></script>
-      <script src="{% static 'assets/plugins/switchery/dist/switchery.min.js' %}"></script>
-    <script src="{% static 'assets/plugins/select2/dist/js/select2.full.min.js' %}" type="text/javascript"></script>
-    <script src="{% static 'assets/plugins/bootstrap-select/bootstrap-select.min.js' %}" type="text/javascript"></script>
+      <script src="{% static 'adminpro/assets/plugins/switchery/dist/switchery.min.js' %}"></script>
+    <script src="{% static 'adminpro/assets/plugins/select2/dist/js/select2.full.min.js' %}" type="text/javascript"></script>
+    <script src="{% static 'adminpro/assets/plugins/bootstrap-select/bootstrap-select.min.js' %}" type="text/javascript"></script>
       <script src="{% static 'adminpro/assets/plugins/bootstrap-select/bootstrap-select.min.js' %}" type="text/javascript"></script>
-      <script src="{% static 'assets/plugins/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js' %}"></script>
-    <script src="{% static 'assets/plugins/bootstrap-touchspin/dist/jquery.bootstrap-touchspin.min.js' %}" type="text/javascript"></script>
-    <script type="text/javascript" src="{% static 'assets/plugins/multiselect/js/jquery.multi-select.js' %}"></script>
+      <script src="{% static 'adminpro/assets/plugins/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js' %}"></script>
+    <script src="{% static 'adminpro/assets/plugins/bootstrap-touchspin/dist/jquery.bootstrap-touchspin.min.js' %}" type="text/javascript"></script>
+    <script type="text/javascript" src="{% static 'adminpro/assets/plugins/multiselect/js/jquery.multi-select.js' %}"></script>
 
       
 

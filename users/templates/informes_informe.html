@@ -1,6 +1,7 @@
 {% extends "users/inicio2.html" %}
 
 {% load humanize %}
+{% load apptags_extras %}
 
 {% load static %}
 
@@ -41,7 +42,7 @@
             </div>
             
             <div class="m-t-10">
-                <p style="white-space: pre-wrap;">is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum{{informe.informe}}</p>
+                <p style="white-space: pre-wrap;">{{informes_data.informe}}</p>
                 
             </div>
 
@@ -55,18 +56,50 @@
         <div class="card-body">
 
             <div class="d-flex">
-                <div>
-                    <h4 class="card-title"><span class="lstick"></span>Escribir informe o sumar bitacoras</h4>
-                    <h6 class="text-muted">Editar, asignar resposable o eliminar</h6></div>
-                    </div>
+
+                    <a type="button" data-toggle="modal" data-target="#ModalEscribir" name="subir_item" value="{{informes_data.id}}"><span class="lstick"></span><img src="{% static 'adminpro/assets/images/icon/income.png' %}" alt="Income" class="img-circle" > Editar informe </a>
+                        <!-- Modal fecha estado Subitem -->
+                        <div class="modal fade" id="ModalEscribir" tabindex="-1" role="dialog" aria-labelledby="ModalEscribirTitle" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLongTitle">Escribe el informe</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                </div>
+                                <div class="modal-body">
+                                                                
+                                <form method="POST" style="margin: 15px;">
+        
+                                    {% csrf_token %}
+        
+                                    <h6><small>Detalles destacables sucedidos en el mes</small> </h6>  
+        
+                                    <div class="input-group mb-3">
+        
+                                        <textarea class="form-control" id="exampleTextarea" rows="6" name="mensaje">{{informes_data.informe}}</textarea>
+        
+                                    </div>
+        
+                                    <button type="submit" class="btn waves-effect waves-light btn-rounded btn-secondary">Modificar</button>
+                                
+                                </form>
+                                
+                                </div>
+                                <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        
+                                </div>
+                            </div>
+                            </div>
+        
+                        </div>
+
                    
             </div>
             
-            <div class="m-t-10" style="margin: 15px;">
-                <a href="#" class="btn btn-info btn-circle"><i class="fa fa-list"></i> </a>
-                <button type="button" class="btn btn-info btn-circle"><i class="ti-trash"></i> </button>
-
-        </div>
+            
     </div>
     <div class="card">
         <div class="card-body">
@@ -82,7 +115,7 @@
                     </div>
                     {% else %}
                     <div class="m-t-10">
-                        <p style="white-space: pre-wrap;">The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham</p>
+                        <p style="white-space: pre-wrap;">Aun no has recibido una devolución de este informe</p>
                         
                     </div>
 
@@ -97,6 +130,7 @@
 
 </div>
 </div>
+</div>
 
 <div class="row">
     <div class="col-12">
@@ -105,7 +139,51 @@
 
             <div class="d-flex">
                 <div>
-                    <h4 class="card-title"><span class="lstick"></span>Tareas programadas</h4>
+                    <h4 class="card-title">
+                        {% if request.user|has_group:"MANDO MEDIO" %}
+                        <a class="btn btn-secondary btn-outline" type="button" data-toggle="modal" data-target="#ModalTarea" name="subir_item">
+                    
+                        <img src="{% static 'img/iniciar-sesion.png' %}" alt="" style="max-width:20px; height:auto; vertical-align: middle;">
+                        
+                    </a>{% endif %} Tareas programadas</h4>
+
+                    <!-- Modal tareas-->
+                    <div class="modal fade" id="ModalTarea" tabindex="-1" role="dialog" aria-labelledby="ModalTareaTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">Ingrese una tarea</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            </div>
+                            <div class="modal-body">
+                                                            
+                            <form method="POST" style="margin: 15px;">
+    
+                                {% csrf_token %}
+    
+                                <h6><small>Describa la tarea brevemente</small> </h6>  
+    
+                                <div class="input-group mb-3">
+    
+                                    <input name="tareas" type="text" class="form-control form-control" style="width: 300px;">
+    
+                                </div>
+    
+                                <button type="submit" class="btn waves-effect waves-light btn-rounded btn-secondary">ingresar</button>
+                            
+                            </form>
+                            
+                            </div>
+                            <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    
+                            </div>
+                        </div>
+                        </div>
+    
+                    </div>
                     <h6 class="text-muted">Tareas asignadas a principios de mes como objetivo mensual</h6></div>
                     </div>
 
@@ -114,38 +192,28 @@
                         <table class="table">
         
                             <tbody>
+                                {% for t in tareas_data%}
                                 <tr>
-                                    <td><div>Tarea asignada muy mucho demasiado larga numero 1</div> 
+                                    <td><div>{{t.tarea}}</div> 
+                                        {% if t.estado == "LISTO" %}
                                         <div class="label label-table label-success">Listo</div>
-                                    </td>
-                                    <td style="min-width: 200px; text-align: center;"><form  method="POST"> 
-                                        {% csrf_token %}
-                                    <button type="submit" name="LISTO" class="btn btn-success btn-circle"><i class="fa fa-check"></i> </button>
-                                    <button type="submit" name="TRABAJANDO" class="btn btn-warning btn-circle"><i class="fa fa-clock-o"></i> </button>
-                                    <button type="submit" name="PROBLEMAS" class="btn btn-danger btn-circle"><i class="fa fa-exclamation"></i> </button>
-                                    </form></td>
-                                </tr>
-                                <tr>
-                                    <td><div>Tarea asignada muy mucho demasiado larga numero 2</div> 
+                                        {% elif t.estado == "TRABAJANDO" %}
                                         <div class="label label-table label-warning">Trabajando</div>
+                                        {% elif t.estado == "PROBLEMAS" %}
+                                        <div class="label label-table label-danger">Problemas</div>
+                                        {% else %}
+                                        <div class="label label-table label-info">Espera</div>
+                                        {% endif %}
                                     </td>
                                     <td style="min-width: 200px; text-align: center;"><form  method="POST"> 
                                         {% csrf_token %}
-                                    <button type="submit" name="LISTO" class="btn btn-success btn-circle"><i class="fa fa-check"></i> </button>
-                                    <button type="submit" name="TRABAJANDO" class="btn btn-warning btn-circle"><i class="fa fa-clock-o"></i> </button>
-                                    <button type="submit" name="PROBLEMAS" class="btn btn-danger btn-circle"><i class="fa fa-exclamation"></i> </button>
+                                        <button type="submit" value="{{t.id}}" name="LISTO" class="btn btn-success btn-circle"><i class="fa fa-check"></i> </button>
+                                        <button type="submit" value="{{t.id}}" name="TRABAJANDO" class="btn btn-warning btn-circle"><i class="fa fa-clock-o"></i> </button>
+                                        <button type="submit" value="{{t.id}}" name="PROBLEMAS" class="btn btn-danger btn-circle"><i class="fa fa-exclamation"></i> </button>
                                     </form></td>
                                 </tr>
-                                <tr>
-                                    <td><div>Tarea asignada muy mucho demasiado larga numero 3</div> 
-                                        <div class="label label-table label-danger">Problemas</div></td>
-                                    <td style="min-width: 200px; text-align: center;"><form  method="POST"> 
-                                        {% csrf_token %}
-                                    <button type="submit" name="LISTO" class="btn btn-success btn-circle"><i class="fa fa-check"></i> </button>
-                                    <button type="submit" name="TRABAJANDO" class="btn btn-warning btn-circle"><i class="fa fa-clock-o"></i> </button>
-                                    <button type="submit" name="PROBLEMAS" class="btn btn-danger btn-circle"><i class="fa fa-exclamation"></i> </button>
-                                    </form></td>
-                                </tr>
+                                {% endfor %}
+ 
                             </tbody>        
                     </table>
             
@@ -166,7 +234,71 @@
 
             <div class="d-flex">
                 <div>
-                    <h4 class="card-title"><span class="lstick"></span>Bitacoras realizadas</h4>
+                    <h4 class="card-title"><span class="lstick"></span><a class="btn btn-secondary btn-outline" type="button" data-toggle="modal" data-target="#ModalBitacora" name="subir_item">
+                    
+                        <img src="{% static 'img/iniciar-sesion.png' %}" alt="" style="max-width:20px; height:auto; vertical-align: middle;">
+                        
+                    </a> Bitacoras realizadas</h4>
+                    <!-- Modal Bitacoras -->
+                    <div class="modal fade" id="ModalBitacora" tabindex="-1" role="dialog" aria-labelledby="ModalTareaTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">Bitacoras de proyectos</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            </div>
+                            <div class="modal-body">
+                                                            
+                            <form method="POST" style="margin: 15px;">
+    
+                                {% csrf_token %}
+
+                                <h6><small>Proyecto</small> </h6>  
+
+                                <div class="input-group mb-3">
+                                        
+                                        <select name="proyecto" class="custom-select" style="width: 300px;">
+
+                                            {% for p in project_list %}
+                        
+                                            <option value="{{p.id}}" selected>{{p.nombre}}</option>
+                        
+                                            {% endfor %}
+                        
+                                        </select>
+                                </div>
+    
+                                <h6><small>Titulo</small> </h6>  
+    
+                                <div class="input-group mb-3">
+    
+                                    <input name="titulo" type="text" class="form-control form-control" style="width: 300px;">
+    
+                                </div>
+
+                                <h6><small>Describción</small> </h6>  
+    
+                                <div class="input-group mb-3">
+    
+                                    <textarea class="form-control" id="exampleTextarea" rows="6" name="descrip"></textarea>
+    
+                                </div>
+    
+                                <button type="submit" class="btn waves-effect waves-light btn-rounded btn-secondary">ingresar</button>
+                            
+                            </form>
+                            
+                            </div>
+                            <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    
+                            </div>
+                        </div>
+                        </div>
+    
+                    </div>
                     </div>
                     </div>
 
@@ -175,15 +307,45 @@
                         <table class="table">
         
                             <tbody>
-                                <tr>
-                                    <td>TORRE BLUE</td>
-                                    <td>Re-calculo de losa 2</td>
-                                    <td style="min-width: 200px; text-align: center;"><form  method="POST"> 
-                                        {% csrf_token %}
-                                    <button type="submit" name="LISTO" class="btn btn-info btn-circle"><i class="fa fa-check"></i> </button>
+                                {% for b in bitacoras_data %}
+                                <tr>                                    
+                                    <td>{{b.proyecto.nombre}}</td>
+                                    <td>{{b.fecha|date:"Y-m-d"}}</td>
+                                    <td> <a style="color: blue;" data-toggle="modal" data-target="#ModalBitacora{{b.id}}" name="Bitacora">{{b.titulo}}</a></td>
 
-                                    </form></td>
+                                    <!-- Modal de las Bitacoras -->
+                    <div class="modal fade" id="ModalBitacora{{b.id}}" tabindex="-1" role="dialog" aria-labelledby="ModalTareaTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">Bitacora</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            </div>
+                            <div class="modal-body">
+
+                            <form method="POST" style="margin: 15px;">
+
+                            {% csrf_token %}
+                                                            
+                            <textarea class="form-control" id="exampleTextarea" rows="6" name="descrip2" >{{b.descrip}}</textarea>
+
+                            <button type="submit" class="btn waves-effect waves-light btn-rounded btn-secondary" name="bitacora" value="{{b.id}}">Modificar</button>
+                            
+                            </form>
+                            <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    
+                            </div>
+                        </div>
+                        </div>
+    
+                    </div>
+                                    
+
                                 </tr>
+                                {% endfor %}
                             </tbody>        
                     </table>
             

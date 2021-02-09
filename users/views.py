@@ -615,7 +615,6 @@ def inicio(request):
         lista_grupos = str(lista_grupos)+"-"+str(g.name)
 
     # Esta parte es para Pablo
-
     
     mensajesdeldia = mensajesgenerales.objects.all()
 
@@ -728,6 +727,8 @@ def inicio(request):
 
     Registro_presupuestos = RegistroValorProyecto.objects.filter(fecha =date)
 
+    # -----------------> Aqui guardo por dia la información de presupuesto
+
     if len(Registro_presupuestos) == 0:
 
         presupuestos = Presupuestos.objects.all()
@@ -743,7 +744,10 @@ def inicio(request):
             )
 
             b.save()
+        # -----------------> Aprovecho para mandar el mail a Emilia recordando los casos de postventa
 
+        #if hoy.weekday() == 0 or hoy.weekday() == 5:
+            
 
     barras = []
 
@@ -831,6 +835,7 @@ def login(request):
             return render(request, "users/logine.html", {'form': form}) 
 
     # Si llegamos al final renderizamos el formulario
+
     return render(request, "users/login.html", {'form': form})
 
 def logout(request):
@@ -841,15 +846,86 @@ def logout(request):
 
 def informes(request):
 
-    informes_data = InformeMensual.objects.filter(user__identificacion = request.user)
+    if request.method == 'POST':
 
-    return render(request, 'informes.html', {'informes_data':informes_data})
+        data_post = request.POST.items()
+
+        for d in data_post:
+
+            if d[0] == "LISTO":
+                    tarea = TareasProgramadas.objects.get(id = int(d[1]))
+                    tarea.estado = "LISTO"
+                    tarea.save()
+            if d[0] == "TRABAJANDO":
+                tarea = TareasProgramadas.objects.get(id = int(d[1]))
+                tarea.estado = "TRABAJANDO"
+                tarea.save()
+            if d[0] == "PROBLEMAS":
+                tarea = TareasProgramadas.objects.get(id = int(d[1]))
+                tarea.estado = "PROBLEMAS"
+                tarea.save()
+
+        
+
+    informes_data = InformeMensual.objects.filter(user__identificacion = request.user).order_by('-fecha')
+    tareas_data = TareasProgramadas.objects.filter(informe__user__identificacion = request.user).exclude(estado = "LISTO")
+
+    return render(request, 'informes.html', {'tareas_data':tareas_data, 'informes_data':informes_data})
 
 def verinforme(request, id_informe):
 
+    project_list = Proyectos.objects.all()
+
     informes_data = InformeMensual.objects.get(id = id_informe)
 
-    return render(request, 'informes_informe.html', {'informes_data':informes_data})
+    if request.method == 'POST':
+
+        data_post = request.POST.items()
+
+        for d in data_post:
+            if d[0] == "mensaje":
+                informes_data.informe = d[1]
+                informes_data.save()
+
+            if d[0] == "tareas":
+                b = TareasProgramadas(
+                    tarea = request.POST['tareas'],
+                    informe = informes_data,
+                    estado = "ESPERA",
+                )
+                b.save()
+
+            if d[0] == "LISTO":
+                tarea = TareasProgramadas.objects.get(id = int(d[1]))
+                tarea.estado = "LISTO"
+                tarea.save()
+            if d[0] == "TRABAJANDO":
+                tarea = TareasProgramadas.objects.get(id = int(d[1]))
+                tarea.estado = "TRABAJANDO"
+                tarea.save()
+            if d[0] == "PROBLEMAS":
+                tarea = TareasProgramadas.objects.get(id = int(d[1]))
+                tarea.estado = "PROBLEMAS"
+                tarea.save()
+            if d[0] == "titulo":
+                d = Bitacoras(
+                    titulo = request.POST['titulo'],
+                    proyecto = Proyectos.objects.get(id = int(request.POST['proyecto'])),
+                    descrip = request.POST['descrip'],
+                    informe = informes_data,
+                )
+
+                d.save()
+            if d[0] == "descrip2":
+                bitacora = Bitacoras.objects.get(id = int(request.POST['bitacora']))
+                bitacora.descrip = request.POST['descrip2']
+                bitacora.save()
+
+
+    tareas_data = TareasProgramadas.objects.filter(informe = informes_data)
+    bitacoras_data = Bitacoras.objects.filter(informe = informes_data)
+
+    return render(request, 'informes_informe.html', {'bitacoras_data':bitacoras_data, 'project_list':project_list, 'informes_data':informes_data, 'tareas_data':tareas_data})
 
 def informescrear(request):
 

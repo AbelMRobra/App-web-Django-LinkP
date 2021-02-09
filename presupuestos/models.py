@@ -220,9 +220,10 @@ class TareasProgramadas(models.Model):
 
 class Bitacoras(models.Model):
     fecha = models.DateField(verbose_name="Fecha del informe", auto_now=True)
+    titulo = models.CharField(max_length=200, verbose_name="Titulo", blank=True, null=True)
     proyecto= models.ForeignKey(Proyectos, on_delete=models.CASCADE, verbose_name = "Proyecto")
     informe = models.ForeignKey(InformeMensual, on_delete=models.CASCADE, verbose_name="Informe", blank=True, null=True)
-    informe = models.TextField(verbose_name="Descripción de la causa")
+    descrip = models.TextField(verbose_name="Descripción de la causa", blank=True, null=True)
 
     class Meta:
         verbose_name="Bitacora"
