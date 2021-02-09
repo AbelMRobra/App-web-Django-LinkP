@@ -17,7 +17,7 @@
         <div class="col-md-7 align-self-center">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
-                <li class="breadcrumb-item">Biblioteca de Analisis de P U</li>
+                <li class="breadcrumb-item">Biblioteca de A.P.U</li>
             </ol>
         </div>
 
@@ -34,7 +34,7 @@
                         src="{% static 'img/iniciar-sesion.png' %}" alt=""
                         style="max-width:20px; height:auto; vertical-align: middle;">
 
-                </a>{% endif %} Biblioteca de Analisis de PU
+                </a>{% endif %} Biblioteca de A.P.U
             </h4>
             <h6 class="card-subtitle">
                 Analisis de Precio Unitario
@@ -55,7 +55,7 @@
                     {% for i in datos %}
                     <tr>
                         <td> {{i.0.codigo}} </td>
-                        <td><a href="{% url 'Composición Analisis' i.0.codigo %}">{{i.0.nombre}}</a></td>
+                        <td><a href="{% url 'Composición Analisis' i.0.codigo %}">{{i.0.nombre|lower|capfirst}}</a></td>
                         <td>{{i.0.unidad}}</td>
                         <td>${{i.1|floatformat:2}}</td>
                     </tr>
