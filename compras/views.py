@@ -1185,61 +1185,27 @@ def comparativas(request, estado, creador):
 
 def compras(request, id_proyecto):
 
+    if id_proyecto == "0":
+        proyecto = 0
+    else:
+        proyecto = Proyectos.objects.get(id = id_proyecto)
+
     #Aqui armamos un listado
 
-    proyectos = Proyectos.objects.order_by("nombre")
+    if request.user.username == "HC":
+        proyectos = Proyectos.objects.filter(nombre = "DIANCO - LAMADRID 1137")
+    else:
+        proyectos = Proyectos.objects.order_by("nombre")
 
     if id_proyecto == "0":
 
-        datos = Compras.objects.order_by("-fecha_c")
-
-    else:
-
-        datos = Compras.objects.filter(proyecto = id_proyecto).order_by("-fecha_c")
-
-    #Aqui empieza el filtro
-
-    if request.method == 'POST':
-
-        palabra_buscar = request.POST.items()
-
-        datos_viejos = datos
-
-        datos = []   
-
-        for i in palabra_buscar:
-
-            if i[0] == "palabra":
-        
-                palabra_buscar = i[1]
-
-        if str(palabra_buscar) == "":
-
-            datos = datos_viejos
-
+        if request.user.username == "HC":
+            datos = Compras.objects.filter(proyecto__nombre = "DIANCO - LAMADRID 1137").order_by("-fecha_c")
         else:
+            datos = Compras.objects.all().order_by("-fecha_c")
+    else:
         
-            for i in datos_viejos:
-
-                palabra =(str(palabra_buscar))
-
-                lista_palabra = palabra.split()
-
-                buscar = (str(i.proyecto)+str(i.proveedor)+str(i.articulo)+str(i.cantidad)+str(i.fecha_c)+str(i.documento))
-
-                contador = 0
-
-                for palabra in lista_palabra:
-
-                    contador2 = 0
-
-                    if palabra.lower() in buscar.lower():
-  
-                        contador += 1
-
-                if contador == len(lista_palabra):
-
-                    datos.append(i)
+        datos = Compras.objects.filter(proyecto = id_proyecto).order_by("-fecha_c")
 
     compras = []
 
@@ -1255,11 +1221,10 @@ def compras(request, id_proyecto):
 
         else:
             total = dato.cantidad*dato.precio
-            v = ((dato.precio/dato.precio_presup) - 1)*100
+            v = -((dato.precio/dato.precio_presup) - 1)*100
             compras.append((2,dato, total, v))
 
-
-    return render(request, 'compras.html', {'compras':compras, 'proyectos':proyectos})
+    return render(request, 'compras.html', {'compras':compras, 'proyectos':proyectos, 'proyecto':proyecto})
 
 def certificados(request):
 

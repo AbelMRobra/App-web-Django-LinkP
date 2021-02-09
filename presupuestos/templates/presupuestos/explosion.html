@@ -11,7 +11,7 @@
         <div class="card">
             <div class="card-body">
                 <h4 class="card-title">Explosión de insumos - <b
-                        style="color: rgb({{datos.proyecto.color}}) ;">{{datos.proyecto}}</b></h4>
+                        style="color: rgb({{datos.proyecto.color}});">{{datos.proyecto}}</b></h4>
                 <h6 class="card-subtitle">Detalle de los articulos del proyecto</h6>
                 <div class="table-responsive m-t-40">
                     <div>
@@ -34,13 +34,13 @@
                                 <th>Saldo</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody style="font-size: 12px;">
                             {% for i in datos.datos %}
                             <tr>
                                 <td>{{i.0|lower|capfirst}}</td>
-                                <td> {{i.1|floatformat:0|intcomma}} ({{i.0.unidad}})</td>
+                                <td> {{i.1|floatformat:0|intcomma}} ({{i.0.unidad|lower|capfirst}})</td>
                                 <td> ${{i.0.valor|floatformat:0|intcomma}}</td>
-                                <td> {{i.2|floatformat:0|intcomma}} ({{i.0.unidad}})</td>
+                                <td> {{i.2|floatformat:0|intcomma}} ({{i.0.unidad|lower|capfirst}})</td>
                                 <td> {{i.3|floatformat:0|intcomma}} ({{i.0.unidad}})</td>
                                 <td> ${{i.4|floatformat:0|intcomma}}</td>
                             </tr>

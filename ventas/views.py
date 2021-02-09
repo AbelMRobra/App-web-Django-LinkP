@@ -138,7 +138,6 @@ def editarreclamo(request, id_reclamo):
     proyectos = list(set(ReclamosPostventa.objects.values_list('proyecto')))
     clasificacion = list(set(ReclamosPostventa.objects.values_list('clasificacion')))
     responsable = datosusuario.objects.values_list('identificacion')
-    print(responsable)
 
     if request.method == 'POST':
         reclamo = ReclamosPostventa.objects.get(id = id_reclamo)

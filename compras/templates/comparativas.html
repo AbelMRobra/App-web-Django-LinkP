@@ -33,35 +33,40 @@
             <h6 class="card-subtitle">Ordenes de compra o comparativas para ser aprobadas</h6>
 
             <div style="text-align: left;">
-        
-                 <div class="dropdown">
-                    <button class="dropbtn btn btn-primary">{{mensaje_creador}}</button>
-                    <div class="dropdown-content">
-                      <a href="{% url 'Comparativas' estado 0 %}">Todos</a>
+
+                <!-- Boton para creador-->
+                <div class="btn-group">
+                    <button type="button" class="btn btn-info dropdown-toggle"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onclick="myFunction()">
+                        {{mensaje_creador}}
+                    </button>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="{% url 'Comparativas' estado 0 %}">Todos</a>
                       {% for i in list_creadores %}
         
-                      <a href="{% url 'Comparativas' estado i.id %}">{{i.identificacion}}</a>
+                      <a class="dropdown-item" href="{% url 'Comparativas' estado i.id %}">{{i.identificacion}}</a>
         
                       {% endfor %}
-        
+
                     </div>
-                  </div>
-        
-        
-                  <div class="dropdown">
-                    <button class="dropbtn btn btn-primary">{{mensaje}}</button>
-                    <div class="dropdown-content">
-                      <a href="{% url 'Comparativas' 0 creador %}">Todos</a>
-        
-                      <a href="{% url 'Comparativas' 1 creador %}">En espera ({{espera}})</a>
-                      <a href="{% url 'Comparativas' 2 creador %}">Adjunto listo ({{adjunto}})</a> 
-                      <a href="{% url 'Comparativas' 4 creador %}">Autorizadas ({{autorizada}})</a>
-                      <a href="{% url 'Comparativas' 3 creador %}">Rechazadas ({{rechazada}})</a>
-                        
-        
+                </div>
+
+                <div class="btn-group">
+                    <button type="button" class="btn btn-info dropdown-toggle"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onclick="myFunction()">
+                        {{mensaje}}
+                    </button>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="{% url 'Comparativas' 0 creador %}">Todos</a>
+                        <a class="dropdown-item" href="{% url 'Comparativas' 1 creador %}">En espera ({{espera}})</a>
+                        <a class="dropdown-item" href="{% url 'Comparativas' 2 creador %}">Adjunto listo ({{adjunto}})</a> 
+                        <a class="dropdown-item" href="{% url 'Comparativas' 4 creador %}">Autorizadas ({{autorizada}})</a>
+                        <a class="dropdown-item" href="{% url 'Comparativas' 3 creador %}">Rechazadas ({{rechazada}})</a>
+
                     </div>
-                  </div>
+                </div>
         
+                  
         
             <a href= "{% url 'Cargar O.C para autorizar' %}" class="btn btn-outline-info"style="text-align: end; margin-top: 5px;" > Nueva solicitud</a>
         
@@ -319,9 +324,12 @@
             </div>
         
             </div>
+        </div>
+    </div>
+</div>
         
                
-¡
+
 <script src="{% static 'adminpro/assets/plugins/sticky-kit-master/dist/sticky-kit.min.js' %}"></script>
 <script src="{% static 'adminpro/main/js/perfect-scrollbar.jquery.min.js' %}"></script>
 <script src="{% static 'adminpro/main/js/sidebarmenu.js' %}"></script>

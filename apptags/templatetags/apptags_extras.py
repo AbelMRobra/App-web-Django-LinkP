@@ -49,6 +49,41 @@ def prueba_planificacion(self):
         return "122, 118, 117"
 
 @register.simple_tag
+def is_past_evaluacion1(prueba):
+
+    if prueba < 0:
+
+       return "34, 201, 24 "
+    else:
+        return "201, 55, 24"
+
+@register.simple_tag
+def is_past_evaluacion2(prueba):
+
+    if prueba == None:
+
+        return "32, 34, 161"
+
+    elif prueba >= 0:
+
+       return "34,187,51"
+    else:
+        return "187,33,36"
+
+@register.simple_tag
+def is_past_evaluacion3(prueba):
+
+    if prueba == None:
+
+        return "32, 34, 161"
+
+    elif prueba == "PREVISTO":
+
+       return "34, 201, 24 "
+    else:
+        return "201, 55, 24"
+
+@register.simple_tag
 def fecha_final_planif(fecha, estado):
 
     if fecha:
