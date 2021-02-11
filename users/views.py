@@ -883,6 +883,7 @@ def verinforme(request, id_informe):
         data_post = request.POST.items()
 
         for d in data_post:
+            print(d)
             if d[0] == "mensaje":
                 informes_data.informe = d[1]
                 informes_data.save()
@@ -1050,3 +1051,4 @@ def tablerorega(request, id_proyecto, id_area, id_estado):
                 estado = "Espera"
 
     return render(request, 'seguimiento.html', {'list_project_all':list_project_all, 'list_users':list_users, 'area':area, 'estado':estado, 'proyecto':proyecto_el, 'data':data, 'list_project':list_project, 'id_estado':id_estado, 'id_area':id_area, 'id_proyecto':id_proyecto})
+
