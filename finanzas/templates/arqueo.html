@@ -18,7 +18,7 @@
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
                 <li class="breadcrumb-item"><a href="{% url 'Arqueos diario' %}">Inicio</a></li>
-                <li class="breadcrumb-item">{{ data_cruda.0.fecha|data:"d-j-Y" }}</li>
+                <li class="breadcrumb-item">{{ data_cruda.0.fecha|date:"d-j-Y" }}</li>
             </ol>
         </div>
 
