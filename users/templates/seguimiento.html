@@ -201,9 +201,9 @@
     
                                     <select name="proyecto" class="custom-select" style="width: 300px;">
 
-                                        {% for u in list_users %}
+                                        {% for i in list_users %}
                     
-                                        <option value="{{i.id}}" selected>{{i.identificacion}}</option>
+                                        <option value="{{i.id}}" {% if responsable.identificacion == i.identificacion %}selected{% endif %}>{{i.identificacion}}</option>
                     
                                         {% endfor %}
                     
