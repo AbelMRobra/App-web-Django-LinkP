@@ -57,7 +57,7 @@
                                 {% for i in data %}
                                 <tr>                                    
 
-                                    <td> <a href="{% url 'Arqueo diario' i.id %}">{{i.fecha|date:"d-j-Y"}}</a></td>    
+                                    <td> <a href="{% url 'Arqueo diario' i.id %}">{{i.fecha|date:"d-m-Y"}}</a></td>    
 
                                 </tr>
                                 {% endfor %}
