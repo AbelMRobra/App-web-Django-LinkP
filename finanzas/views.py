@@ -2408,26 +2408,11 @@ def retirodesocios(request):
 
     return render(request, 'retirodesocios.html', {'datos':datos, 'total_pesos':total_pesos, 'total_h':total_h, 'proyectos':proyectos})
 
-def arqueo_diario(request):
+def arqueo_diario(request, id_arqueo):
 
-    if request.method == 'POST':
+    data_cruda = Arqueo.objects.get(id = id_arqueo)
 
-        #try:
-
-        b = Arqueo(
-            fecha = request.POST['fecha'],
-            arqueo = request.FILES['adjunto'],
-        )
-
-        b.save()
-
-        #except:
-            #pass
-
-    data_cruda = Arqueo.objects.order_by("-fecha")
-
-
-    data = data_cruda[0]
+    data = data_cruda
 
     data_frame = pd.read_excel(data.arqueo)
 
@@ -2546,6 +2531,12 @@ def arqueo_diario(request):
 
 
     return render(request, 'arqueo.html', {'datos':datos, 'data_cruda':data_cruda, 'otros_datos':otros_datos, 'grafico':grafico, 'cambio_usd':cambio_usd, 'cambio_euro':cambio_euro})
+
+def arqueos(request):
+
+    data = Arqueo.objects.all().order_by('-fecha')
+
+    return render(request, 'arqueos.html', {'data':data})
 
 def registro_almacenero(request, id_proyecto, fecha):
 

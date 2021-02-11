@@ -17,7 +17,8 @@
         <div class="col-md-7 align-self-center">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
-                <li class="breadcrumb-item">Arqueo</li>
+                <li class="breadcrumb-item"><a href="{% url 'Arqueos diario' %}">Inicio</a></li>
+                <li class="breadcrumb-item">{{ data_cruda.0.fecha|data:"d-j-Y" }}</li>
             </ol>
         </div>
 
@@ -36,7 +37,7 @@
                 </div>
 
                 <div class="m-t-10">
-                    <h5 class="m-b-0 font-medium">Ultimo arqueo: {{ data_cruda.0.fecha }}</h5>
+                    <h5 class="m-b-0 font-medium">Fecha del arqueo: {{ data_cruda.0.fecha }}</h5>
                     <h6 class="text-muted">De esta fecha se alimenta los datos</h6>
                 </div>
                 <div class="m-t-10">

@@ -54,7 +54,7 @@
 
                         <div style="text-align: left; display: inline-block;">
 
-                            {% if request.user|has_group:"COMPRAS NIVEL 2" and request.user != "HC" %}
+                            {% if request.user|has_group:"COMPRAS NIVEL 2" and request.user.username != "HC" %}
 
                             <a href="/compras/cargacompras" class="btn btn-outline-info"
                                 style="text-align: end; margin-top: 5px;">

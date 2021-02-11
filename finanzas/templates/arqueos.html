@@ -1,0 +1,76 @@
+{% extends "users/inicio2.html" %}
+
+{% load humanize %}
+{% load apptags_extras %}
+
+{% load static %}
+
+{% block content %}
+
+<div class="container-fluid r-aside">
+    <!-- ============================================================== -->
+    <!-- Cabeza de la pagina -->
+    <!-- ============================================================== -->
+    <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+            <h3 class="text-themecolor">Arqueos diarios</h3>
+        </div>
+
+        <div class="col-md-7 align-self-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+                <li class="breadcrumb-item">Arqueos</li>
+
+            </ol>
+        </div>
+
+    </div>
+
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+    <div class="card">
+        <div class="card-body">
+
+            <div class="d-flex">
+                <div>
+                    <h4 class="card-title"><span class="lstick"></span>
+                    Arqueos cargados</h4>
+
+                    </div>
+                    </div>
+
+                    <div class="table-responsive">
+        
+                        <table class="table">
+                            <thead>
+                                <tr>                                    
+                                    <td>Fecha del arqueo</td>
+                              
+                                </tr>
+
+                            </thead>
+        
+                            <tbody>
+                                {% for i in data %}
+                                <tr>                                    
+
+                                    <td> <a href="{% url 'Arqueo diario' i.id %}">{{i.fecha}}</a></td>    
+
+                                </tr>
+                                {% endfor %}
+                            </tbody>        
+                    </table>
+            
+                          
+                </div>  
+
+            </div>
+            
+            
+    </div>
+</div>
+</div>
+
+{% endblock %}
