@@ -57,7 +57,7 @@
                     <tbody>
                         {% for i in informes_data %}
                         <tr>
-                            <td><img src="{{i.responsable.imagenlogo.url}}" alt="user" width="40" class="img-circle"></td>
+                            <td><img src="{{i.user.imagenlogo.url}}" alt="user" width="40" class="img-circle"></td>
                             <td><a href="{% url 'Ver informes' i.id %}">{{i.fecha}}</a></td>
                             {% if i.devolucion %}
                             <td style="text-align: center;">SI</td>
