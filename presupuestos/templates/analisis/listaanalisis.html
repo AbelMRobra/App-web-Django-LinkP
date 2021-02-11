@@ -58,7 +58,7 @@
                         <td> {{i.0.codigo}} </td>
                         <td><a href="{% url 'Composición Analisis' i.0.codigo %}">{{i.0.nombre|lower|capfirst}}</a></td>
                         <td>{{i.0.unidad}}</td>
-                        <td>${{i.1|floatformat:2}}</td>
+                        <td>${{i.1|floatformat:0|intcomma}}</td>
                     </tr>
                     {% endfor %}
 

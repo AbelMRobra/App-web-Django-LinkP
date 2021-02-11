@@ -230,7 +230,7 @@ def guia(request):
             pass
 
     try:
-        list_usuarios = datosusuario.objects.all().exclude(identificacion = request.user).exclude(estado = "NO ACTIVO")
+        list_usuarios = datosusuario.objects.all().exclude(identificacion = request.user).order_by("identificacion").exclude(estado = "NO ACTIVO")
 
         monedas = MonedaLink.objects.filter(usuario_portador = usuario)
 
@@ -948,6 +948,8 @@ def informescrear(request):
 
 def tablerorega(request, id_proyecto, id_area, id_estado):
 
+    list_project_all = Proyectos.objects.all()
+
     group=models.Group.objects.get(name='REGA NIVEL 1')
     users=group.user_set.all()
     list_users = []
@@ -1047,4 +1049,4 @@ def tablerorega(request, id_proyecto, id_area, id_estado):
                 data.append((l, data_list))
                 estado = "Espera"
 
-    return render(request, 'seguimiento.html', {'list_users':list_users, 'area':area, 'estado':estado, 'proyecto':proyecto_el, 'data':data, 'list_project':list_project, 'id_estado':id_estado, 'id_area':id_area, 'id_proyecto':id_proyecto})
+    return render(request, 'seguimiento.html', {'list_project_all':list_project_all, 'list_users':list_users, 'area':area, 'estado':estado, 'proyecto':proyecto_el, 'data':data, 'list_project':list_project, 'id_estado':id_estado, 'id_area':id_area, 'id_proyecto':id_proyecto})
