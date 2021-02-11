@@ -866,8 +866,12 @@ def informes(request):
                 tarea.save()
 
         
+    groups = request.user.groups.all().values_list('name', flat=True)
 
-    informes_data = InformeMensual.objects.filter(user__identificacion = request.user).order_by('-fecha')
+    if "MANDO MEDIO" in groups:
+         informes_data = InformeMensual.objects.all().order_by('-fecha')
+    else:
+        informes_data = InformeMensual.objects.filter(user__identificacion = request.user).order_by('-fecha')
     tareas_data = TareasProgramadas.objects.filter(informe__user__identificacion = request.user).exclude(estado = "LISTO")
 
     return render(request, 'informes.html', {'tareas_data':tareas_data, 'informes_data':informes_data})
@@ -917,14 +921,17 @@ def verinforme(request, id_informe):
                 )
 
                 d.save()
-            if d[0] == "descrip2":
-                bitacora = Bitacoras.objects.get(id = int(request.POST['bitacora']))
-                bitacora.descrip = request.POST['descrip2']
-                bitacora.save()
+            try:
+                if d[0] == "descrip2":
+                    bitacora = Bitacoras.objects.get(id = int(request.POST['bitacora']))
+                    bitacora.descrip = request.POST['descrip2']
+                    bitacora.save()
+            except:
+                pass
 
 
     tareas_data = TareasProgramadas.objects.filter(informe = informes_data)
-    bitacoras_data = Bitacoras.objects.filter(informe = informes_data)
+    bitacoras_data = Bitacoras.objects.filter(informe = informes_data).order_by("-fecha")
 
     return render(request, 'informes_informe.html', {'bitacoras_data':bitacoras_data, 'project_list':project_list, 'informes_data':informes_data, 'tareas_data':tareas_data})
 
