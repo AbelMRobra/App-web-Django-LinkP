@@ -235,6 +235,13 @@
                             
                                 <strong>Autoriza SP! <img src="{% static 'img/gracias.png' %}" alt="" style="max-width:25px; height:auto;"  > </strong>
                             </td>
+
+                            {% elif request.user.username != "SP" and "POSTV" in i.2.numero %}
+
+                            <td>
+                       
+                                <strong>Autoriza SP! <img src="{% static 'img/gracias.png' %}" alt="" style="max-width:25px; height:auto;"  > </strong>
+                            </td>
         
                             {% elif request.user.username == "SP" and i.0.identificacion != "MES" %}
         
