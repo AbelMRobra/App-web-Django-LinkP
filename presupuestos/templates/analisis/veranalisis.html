@@ -56,8 +56,8 @@
 
                             <tr>
                                 <td> <b>{{i.0.articulo.codigo}}</b> </td>
-                                <td>{{i.0.articulo.nombre}} </td>
-                                <td>{{i.0.articulo.unidad}}</td>
+                                <td>{{i.0.articulo.nombre|lower|capfirst}} </td>
+                                <td>{{i.0.articulo.unidad|lower|capfirst}}</td>
                                 <td>${{i.0.articulo.valor|floatformat:0|intcomma}}</td>
                                 <td>{{i.0.cantidad}}</td>
                                 <td>${{i.1|floatformat:0|intcomma}}</td>
@@ -66,9 +66,11 @@
 
 
                             </tr>
+
+                            {% endfor %}
                         </tbody>
 
-                        {% endfor %}
+                        
 
                     </table>
 
