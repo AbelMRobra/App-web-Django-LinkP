@@ -1,100 +1,109 @@
-{% extends "users/inicio.html" %}
+{% extends "users/inicio2.html" %}
 
 {% load static %}
 
 {% block content %}
 
-<div class = "jumbotron" style="background-color: white; margin-bottom: 0px;">
 
-    <h3 style="text-align: center; color: #138D75  ;">Panel de Analisis de Precio Unitario</h3>
-     <b><hr class = "my-4" style="width: 75%; border-color: #138D75  ;"></b>
-     <form method="POST" style="text-align: center;">
 
-        {% csrf_token %}
-
-        <div style="display: inline-block; margin-left: 1rem;">
-
-            <label for="palabra"><h6>Buscar</h6></label>
-
-        </div>
-        
-        <div style="display: inline-block; margin-left: 1rem; ">
-
-            <input name="palabra" type="text" class="form-control form-control" placeholder="Buscar por palabra" list="art" style="width: 30rem;">
-
+<div class="container-fluid r-aside">
+    <!-- ============================================================== -->
+    <!-- Bread crumb and right sidebar toggle -->
+    <!-- ============================================================== -->
+    <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+            <h3 class="text-themecolor">Panel de Analisis de Precio Unitario</h3>
         </div>
 
-        <div>
-            <button class="btn btn-success" type="submit" style="margin-top: 1%;">Buscar</button>          
-        </div>       
+        <div class="col-md-7 align-self-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+                <li class="breadcrumb-item">Panel de Analisis de Precio Unitario</li>
+            </ol>
+        </div>
 
-     </form>
-     <b><hr class = "my-4" style="width: 100%; border-color: #138D75  ;"></b>
-
-     <div style="margin-bottom: 0.5rem; text-align: center;">
-        <a href="/presupuestos/crearanalisis"><button class="btn btn-success" type="submit">Crear analisis</button></a>  
-     </div>
-    
-    {% if datos %} 
-
-    <table class = "table table-hover" style="text-align: center;">
-        <thead>
-
-            <tr class = "table-success">
-                <th scope = "row">CODIGO</th>
-                <th scope = "row">NOMBRE DEL ANALISIS</th>
-                <th scope = "row">UN</th>
-                <th scope = "row">VALOR</th>
-                <th scope = "row">EDITAR</th>
-                <th scope = "row">ELIMINAR</th>
-
-                
-            </tr>
-        </thead>
-
-        <tbody>
-
-            
-
-            {% for i in datos|slice:"20"  %}
-
-            <tr class = "table-light">
-                <td style="width: 20%;"> <b>{{i.0.codigo}}</b> </td>
-                <td style="width: 30%;"> <a href="{% url 'Composición Analisis' i.0.codigo %}" style="color: black;">{{i.0.nombre}}</a> </td>
-                <td style="width: 10%;">{{i.0.unidad}}</td>
-                <td style="width: 10%;">${{i.1|floatformat:2}}</td>
-                <td style="width: 15%;"><a class = "btn btn-outline-success" href="{% url 'Modificar analisis' i.0.codigo %}">Editar</a>
-                </td>
-                <td style="width: 15%;"><a class = "btn btn-outline-danger" href="#">Eliminar</a>
-                </td>
-                
-                
-            </tr>
-        </tbody>
-
-            {% endfor %}
-
-     {% else %}
-            <div>
-                <h3>No existe registros actualmente</h3>
-            </div>
-            
-
-    {% endif %}
-        
-
-    </table>
-    <div>
-        <small>El listado puede continuar, el maximo de filas visibles es de 20</small>
     </div>
 
-    <div style="text-align: center;">
-        <p> <small>-- Link<strong>P</strong> --</small> </p>
-
-     </div>
-
-                    
 </div>
- 
-    
+
+
+<div class="row">
+    <div class="col-12">
+        <div class="card overflow-auto">
+            <div class="card-body ">
+
+                <div style="margin-bottom: 0.5rem;">
+                    <a href="/presupuestos/crearanalisis"><button class="btn btn-success" type="submit">Crear
+                            analisis</button></a>
+                </div>
+
+                {% if datos %}
+
+                <table id="example" class="table table-striped table-bordered" style="width:100%">
+
+                    <thead>
+                        <tr>
+                            <th>Codigo</th>
+                            <th>Nombre Del Analisis</th>
+                            <th>Un.</th>
+                            <th>Valor</th>
+                            <th>Editar</th>
+                            <th>Eliminar</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        {% for i in datos %}
+
+                        <tr>
+                            <td> <b>{{i.0.codigo}}</b> </td>
+                            <td> <a href="{% url 'Composición Analisis' i.0.codigo %}">{{i.0.nombre|lower|capfirst}}</a> </td>
+                            <td>{{i.0.unidad|lower|capfirst}}</td>
+                            <td>${{i.1|floatformat:2}}</td>
+                            <td><a class="btn btn-success"
+                                    href="{% url 'Modificar analisis' i.0.codigo %}">Editar</a>
+                            </td>
+                            <td><a class="btn btn-danger" href="#">Eliminar</a>
+                            </td>
+
+
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+
+
+
+
+                    {% else %}
+                    <div>
+                        <h3>No existe registros actualmente</h3>
+                    </div>
+
+
+                    {% endif %}
+
+
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js" defer></script>
+<script src="https://cdn.datatables.net/1.10.23/js/dataTables.bootstrap4.min.js" defer></script>
+
+
+
+<script>
+    $(document).ready(function () {
+        $('#example').DataTable();
+    });
+</script>
+
+
+
 {% endblock %}

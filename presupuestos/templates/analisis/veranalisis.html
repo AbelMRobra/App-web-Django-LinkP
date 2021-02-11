@@ -1,4 +1,4 @@
-{% extends "users/inicio.html" %}
+{% extends "users/inicio2.html" %}
 
 
 {% load humanize %}
@@ -7,82 +7,91 @@
 
 {% block content %}
 
-<div class = "jumbotron" style="background-color: white; margin-bottom: 0px;">
-
-    <h3 style="text-align: center; ">{{ datos.analisis.nombre }}</h3>
-     <b><hr class = "my-4" style="width: 75%; "></b>
-
-     <b><hr class = "my-4" style="width: 100%; "></b>     
-
-    {% if datos %} 
-
-    <table class = "table table-hover" style="text-align: center;">
-        <thead>
-
-            <tr class = "table-dark">
-                <th scope = "row" style="vertical-align: middle;"> CODIGO </th>
-                <th scope = "row" style="vertical-align: middle;">NOMBRE DEL ARTICULO</th>
-                <th scope = "row" style="vertical-align: middle;">UN </th>
-                <th scope = "row" style="vertical-align: middle;">VALOR </th>
-                <th scope = "row" style="vertical-align: middle;">CANTIDAD </th>
-                <th scope = "row" style="vertical-align: middle;">TOTALES </th>
-                <th scope = "row" style="vertical-align: middle;">INC </th>
-
-
-                
-            </tr>
-        </thead>
-
-        <tbody>
-
-            
-
-            {% for i in datos.lista_final %}
-
-            <tr class = "table-light">
-                <td> <b>{{i.0.articulo.codigo}}</b> </td>
-                <td>{{i.0.articulo.nombre}} </td>
-                <td>{{i.0.articulo.unidad}}</td>
-                <td>${{i.0.articulo.valor|floatformat:0|intcomma}}</td>
-                <td>{{i.0.cantidad}}</td>
-                <td>${{i.1|floatformat:0|intcomma}}</td>
-                <td>{{i.2|floatformat:2}}%</td>
-
-                
-                
-            </tr>
-        </tbody>
-
-        {% endfor %}
-
-    </table>
-
-            
-
-            <div style="text-align: center; margin-bottom: 2rem;">
-                <small>  <strong>TOTAL DEL ANALISIS: ${{datos.total|floatformat:0|intcomma}}</strong> </small>
+<div>
+    <div class="container-fluid r-aside">
+        <!-- ============================================================== -->
+        <!-- Bread crumb and right sidebar toggle -->
+        <!-- ============================================================== -->
+        <div class="row page-titles">
+            <div class="col-md-5 align-self-center">
+                <h3 class="text-themecolor">{{ datos.analisis.nombre|lower|capfirst}}</h3>
             </div>
 
-            {% for i in datos.lista_final %}
-
-            <div >
-                <small> {{i.0.articulo.nombre}} --> {{i.0.articulo.descrip}} </small>
+            <div class="col-md-7 align-self-center">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+                    <li class="breadcrumb-item">{{ datos.analisis.nombre|lower|capfirst}}</li>
+                </ol>
             </div>
-            {% endfor %}
 
-            <div style="text-align: center;">
-                <p> <small>-- Link<strong>P</strong> --</small> </p>
-        
-             </div>
-            
+        </div>
 
-    {% endif %}
-        
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card overflow-auto">
+                <div class="card-body">
+
+                    {% if datos %}
+
+                    <table class="table table-striped table-bordered" style="width:100%">
+                        <thead>
+
+                            <tr>
+                                <th> Codigo</th>
+                                <th>Nombre del Articulo</th>
+                                <th>Un.</th>
+                                <th>Valor</th>
+                                <th>Cantidad</th>
+                                <th>Total</th>
+                                <th>Inc.</th>
+
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            {% for i in datos.lista_final %}
+
+                            <tr>
+                                <td> <b>{{i.0.articulo.codigo}}</b> </td>
+                                <td>{{i.0.articulo.nombre}} </td>
+                                <td>{{i.0.articulo.unidad}}</td>
+                                <td>${{i.0.articulo.valor|floatformat:0|intcomma}}</td>
+                                <td>{{i.0.cantidad}}</td>
+                                <td>${{i.1|floatformat:0|intcomma}}</td>
+                                <td>{{i.2|floatformat:2}}%</td>
 
 
 
-                    
+                            </tr>
+                        </tbody>
+
+                        {% endfor %}
+
+                    </table>
+
+
+
+                    <div style="text-align: center; margin-bottom: 2rem;">
+                        <small> <strong>TOTAL DEL ANALISIS: ${{datos.total|floatformat:0|intcomma}}</strong> </small>
+                    </div>
+
+                    {% for i in datos.lista_final %}
+
+                    <div>
+                        <small> {{i.0.articulo.nombre}} --> {{i.0.articulo.descrip}} </small>
+                    </div>
+                    {% endfor %}
+
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
- 
-    
+
+
 {% endblock %}
