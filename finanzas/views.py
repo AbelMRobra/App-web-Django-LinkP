@@ -2497,35 +2497,35 @@ def arqueo_diario(request, id_arqueo):
 
     grafico = []
 
-    for n in data_cruda:
+    n = data_cruda
 
-        frame = pd.read_excel(n.arqueo)
+    frame = pd.read_excel(n.arqueo)
 
-        array_extranjera = np.array(frame['MONEDA EXTRANJERA'])
+    array_extranjera = np.array(frame['MONEDA EXTRANJERA'])
 
-        extranjera = sum(array_extranjera)
+    extranjera = sum(array_extranjera)
 
-        array_efectivo = np.array(frame['EFECTIVO'])
+    array_efectivo = np.array(frame['EFECTIVO'])
 
-        efectivo = sum(array_efectivo)
+    efectivo = sum(array_efectivo)
 
-        #Aqui sumamos los bancos
+    #Aqui sumamos los bancos
 
-        banco = 0
+    banco = 0
 
-        for m in nombre_columnas:
+    for m in nombre_columnas:
 
-            if "BANCO" in m:
+        if "BANCO" in m:
 
-                array_banco = np.array(frame[m])
+            array_banco = np.array(frame[m])
 
-                banco = banco +  sum(array_banco)
+            banco = banco +  sum(array_banco)
 
-        array_cheque = np.array(frame['CHEQUES'])
+    array_cheque = np.array(frame['CHEQUES'])
 
-        cheque = sum(array_cheque)
+    cheque = sum(array_cheque)
 
-        grafico.append((n.fecha, extranjera, efectivo, banco, cheque))
+    grafico.append((n.fecha, extranjera, efectivo, banco, cheque))
 
     grafico = sorted(grafico, key=lambda tup: tup[0])
 
