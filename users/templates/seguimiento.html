@@ -139,9 +139,9 @@
     
                                     <select name="proyecto" class="custom-select" style="width: 300px;">
 
-                                        {% for i in list_project_all %}
+                                        {% for p in list_project_all %}
                     
-                                        <option value="{{i.id}}" selected>{{i.nombre}}</option>
+                                        <option  {% if p.nombre == i.proyecto.nombre %} selected {% endif %}>{{p.nombre}}</option>
                     
                                         {% endfor %}
                     
@@ -169,7 +169,7 @@
     
                                 <div class="input-group mb-3">
     
-                                    <select name="proyecto" class="custom-select" style="width: 300px;">
+                                    <select name="estado" class="custom-select" style="width: 300px;">
                     
                                         <option {% if i.estado == "ESPERA" %}selected{% endif%}>ESPERA</option>
                                         <option {% if i.estado == "TRABAJANDO" %}selected{% endif%}>TRABAJANDO</option>
@@ -201,9 +201,9 @@
     
                                     <select name="proyecto" class="custom-select" style="width: 300px;">
 
-                                        {% for i in list_users %}
+                                        {% for u in list_users %}
                     
-                                        <option value="{{i.id}}" {% if responsable.identificacion == i.identificacion %}selected{% endif %}>{{i.identificacion}}</option>
+                                        <option value="{{u.id}}" {% if responsable.identificacion == u.identificacion %}selected{% endif %}>{{i.identificacion}}</option>
                     
                                         {% endfor %}
                     
