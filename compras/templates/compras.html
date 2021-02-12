@@ -32,7 +32,7 @@
         <div class="card">
             <div class="card-body">
                 <h4 class="card-title">Registro de compras {% if proyecto %}- <b
-                        style="color: rgb({{proyecto.color}});">{{proyecto.nombre}}</b> {% endif %}</h4>
+                        style="color: rgb({{proyecto.color}});">{{proyecto.nombre}}</b>{% else %} Ultimas 500 compras {% endif %}</h4>
                 <h6 class="card-subtitle">Detalle de las compras realizadas por proyecto</h6>
                 <div class="table-responsive m-t-40">
                     <div class="dt-buttons">
@@ -45,8 +45,9 @@
                                 Proyecto {% endif %}
                             </button>
                             <div class="dropdown-menu">
+                                <a class="dropdown-item" href="{% url 'Compras' 0 %}">Ultimas 500</a>
                                 {% for i in proyectos %}
-                                <a class="dropdown-item" href="{% url 'Compras' i.id %}">{{i.nombre}}</a>
+                                <a class="dropdown-item" href="{% url 'Compras' i.id %}">{{i.nombre|lower|capfirst}}</a>
                                 {% endfor %}
 
                             </div>

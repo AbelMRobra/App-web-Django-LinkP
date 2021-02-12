@@ -1202,7 +1202,7 @@ def compras(request, id_proyecto):
         if request.user.username == "HC":
             datos = Compras.objects.filter(proyecto__nombre = "DIANCO - LAMADRID 1137").order_by("-fecha_c")
         else:
-            datos = Compras.objects.all().order_by("-fecha_c")
+            datos = Compras.objects.all().order_by("-fecha_c")[0:500]
     else:
         
         datos = Compras.objects.filter(proyecto = id_proyecto).order_by("-fecha_c")
