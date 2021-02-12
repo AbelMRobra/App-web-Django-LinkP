@@ -21,4 +21,11 @@ urlpatterns = [
     url(r'^verinformes/(?P<id_informe>\d+)/$', login_required(views.verinforme), name = 'Ver informes'),
     url(r'^tablerorega/(?P<id_proyecto>\d+)/(?P<id_area>\d+)/(?P<id_estado>\d+)/$', login_required(views.tablerorega), name = 'Tablero Rega'),
 
+    # Templates de minutas
+
+    url(r'minutas$', views.minutas, name = 'Minutas Listas'),
+    url(r'minutascrear$', views.minutascrear, name = 'Minutas Crear'),
+    url(r'minutasmodificar$', views.minutasmodificar, name = 'Minutas Modificar'),
+    url(r'minutasid$', views.minutasid, name = 'Minutas Id'),
+
 ]

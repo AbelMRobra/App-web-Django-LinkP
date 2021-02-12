@@ -1059,3 +1059,14 @@ def tablerorega(request, id_proyecto, id_area, id_estado):
 
     return render(request, 'seguimiento.html', {'list_project_all':list_project_all, 'list_users':list_users, 'area':area, 'estado':estado, 'proyecto':proyecto_el, 'data':data, 'list_project':list_project, 'id_estado':id_estado, 'id_area':id_area, 'id_proyecto':id_proyecto})
 
+def minutas(request):
+    return render(request, 'minutas/minutasLista.html')
+
+def minutascrear(request):
+    return render(request, 'minutas/minutasCrear.html')
+
+def minutasmodificar(request):
+    return render(request, 'minutas/minutasModificar.html')
+
+def minutasid(request):
+    return render(request, 'minutas/minutasId.html')

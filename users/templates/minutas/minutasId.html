@@ -1,0 +1,72 @@
+{% extends "users/inicio2.html" %}
+
+{% load static %}
+
+{% block content %}
+
+<div class="container-fluid r-aside">
+    <!-- ============================================================== -->
+    <!-- Bread crumb and right sidebar toggle -->
+    <!-- ============================================================== -->
+    <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+            <h3 class="text-themecolor">Programacion de ayer</h3>
+        </div>
+
+        <div class="col-md-7 align-self-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+                <li class="breadcrumb-item">Programacion de ayer</li>
+            </ol>
+        </div>
+
+    </div>
+
+</div>
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body ">
+
+                <h3>Programacion de ayer</h3>
+
+                <div class="bg-light p-3">
+                    <div class="row">
+
+                        <div class="col-lg-6 col-md-6 row-sm">
+
+                            <h5>Integrantes</h5>
+
+                            <p>abel, luciano, agos, jose</p>
+
+                        </div>
+                        <div class="col-lg-6 col-md-6 row-sm">
+
+                            <h5>Fecha</h5>
+
+                            <p>24.5.2020</p>
+
+                        </div>
+
+
+
+                    </div>
+                    <div class="row p-3">
+
+                        <h5>Informacion</h5>
+
+                        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Praesentium pariatur vel dolor
+                            minima mollitia quaerat optio harum aliquid voluptatem! Ipsum deleniti impedit quisquam
+                            excepturi quasi exercitationem vel iusto, voluptatibus doloribus.</p>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}

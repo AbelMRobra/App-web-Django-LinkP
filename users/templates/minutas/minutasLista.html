@@ -1,0 +1,112 @@
+{% extends "users/inicio2.html" %}
+
+{% load static %}
+{% load apptags_extras %}
+
+{% block content %}
+
+
+<div class="container-fluid r-aside">
+    <!-- ============================================================== -->
+    <!-- Bread crumb and right sidebar toggle -->
+    <!-- ============================================================== -->
+    <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+            <h3 class="text-themecolor">Minutas</h3>
+        </div>
+
+        <div class="col-md-7 align-self-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+                <li class="breadcrumb-item">Minutas</li>
+            </ol>
+        </div>
+
+    </div>
+</div>
+
+<div class="row ">
+    <div class="col-12">
+        <div class="card overflow-auto">
+            <div class="card-body">
+                <div class="row d-flex justify-items-between">
+                    <div class="col">
+
+                        <h4 class="card-title">
+                            Minutas
+                        </h4>
+                        <h6 class="card-subtitle">
+                            Lista de minutas realizadas
+                        </h6>
+                    </div>
+                    <div class="col-2">
+                        <a class="btn btn-info" href="{% url 'Minutas Crear' %}">Crear Nueva</a>
+                    </div>
+                </div>
+
+                <table id="example" class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Tema</th>
+                            <th>Fecha</th>
+                            <th>Editar</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><a href="{% url 'Minutas Id' %}">Programacion del dia </a></td>
+                            <td> 24/5/2020</td>
+                            <td><a class="btn btn-success" href="{% url 'Minutas Modificar' %}">Editar</a></td>
+                        </tr>
+                        <tr>
+                            <td><a href="{% url 'Minutas Id' %}">Programacion ayer</a></td>
+                            <td> 21/5/2020</td>
+                            <td><a class="btn btn-success" href="{% url 'Minutas Modificar' %}">Editar</a></td>
+                        </tr>
+                        <tr>
+                            <td><a href="{% url 'Minutas Id' %}">Programacion hoy </a></td>
+                            <td> 24/5/2020</td>
+                            <td><a class="btn btn-success" href="{% url 'Minutas Modificar' %}">Editar</a></td>
+                        </tr>
+                        <tr>
+                            <td><a href="{% url 'Minutas Id' %}"> Programacion mañana</a></td>
+                            <td> 1/5/2020</td>
+                            <td><a class="btn btn-success" href="{% url 'Minutas Modificar' %}">Editar</a></td>
+                        </tr>
+                        <tr>
+                            <td><a href="{% url 'Minutas Id' %}">lista tareas </a></td>
+                            <td> 4/5/2020</td>
+                            <td><a class="btn btn-success" href="{% url 'Minutas Modificar' %}">Editar</a></td>
+                        </tr>
+
+                    </tbody>
+                    <tfoot>
+
+                        <tr>
+                            <th>Tema</th>
+                            <th>Fecha</th>
+                        </tr>
+
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js" defer></script>
+<script src="https://cdn.datatables.net/1.10.23/js/dataTables.bootstrap4.min.js" defer></script>
+
+
+
+<script>
+    $(document).ready(function () {
+        $('#example').DataTable();
+    });
+</script>
+
+
+{% endblock %}

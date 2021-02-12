@@ -1,0 +1,93 @@
+{% extends "users/inicio2.html" %}
+
+{% load static %}
+
+{% block content %}
+
+<div class="container-fluid r-aside">
+    <!-- ============================================================== -->
+    <!-- Bread crumb and right sidebar toggle -->
+    <!-- ============================================================== -->
+    <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+            <h3 class="text-themecolor">Crear Minuta</h3>
+        </div>
+
+        <div class="col-md-7 align-self-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+                <li class="breadcrumb-item">Crear Minuta</li>
+            </ol>
+        </div>
+
+    </div>
+
+</div>
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body ">
+
+                <form method="POST">
+
+                    <h3> Datos generales</h3>
+
+                    <div>
+                        <small> Escrbir informacion relevante sobre la minuta del dia
+                        </small>
+                    </div>
+
+                    <div class="bg-light p-3">
+                        <div class="row">
+
+                            <div class="col-lg-6 col-md-6 row-sm">
+                                <label for="tema">
+                                    <h5>Temas</h5>
+                                </label>
+
+                                <input type="text" name="tema" class="form-control form-control"
+                                    placeholder="Solo numeros">
+
+                            </div>
+
+                            <div class="col-lg-6 col-md-6 row-sm">
+
+                                <label for="integrantes">
+                                    <h5>Integrantes</h5>
+                                </label>
+
+                                <input type="text" name="integrantes" class="form-control form-control">
+
+                            </div>
+
+                            
+                        </div>
+                        <div class="row p-3">
+
+                            <label for="informacion">
+                                <h5>Informacion</h5>
+                            </label>
+
+                            <textarea name="Text1" cols="40" rows="5" class="form-control form-control"
+                                name="informacion"></textarea>
+
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-center my-3">
+                        <button type="submit" class="btn btn-success">Cargar minuta</button>
+
+                    </div>
+
+
+                </form>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}
