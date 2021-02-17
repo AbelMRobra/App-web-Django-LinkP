@@ -10,14 +10,14 @@
     <!-- ============================================================== -->
     <div class="row page-titles">
         <div class="col-md-5 align-self-center">
-            <h3 class="text-themecolor">Programacion de ayer</h3>
+            <h3 class="text-themecolor">Detalle de minuta</h3>
         </div>
 
         <div class="col-md-7 align-self-center">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
                 <li class="breadcrumb-item"><a href="{% url 'Minutas Listas' %}">Minutas</a></li>
-                <li class="breadcrumb-item">Programacion de ayer</li>
+                <li class="breadcrumb-item">Detalle</li>
             </ol>
         </div>
     </div>
@@ -28,44 +28,78 @@
         <div class="card">
             <div class="card-body ">
 
-                <h3>Programacion de ayer</h3>
+                <h4 class="card-title"><span class="lstick m-r-20"></span>{{data.nombre|lower|capfirst}}</h4>
 
-                <div class="bg-light p-3">
-                    <div class="row">
 
-                        <div class="col-lg-6 col-md-6 row-sm">
+                <div class="row">
+                    <div class="col-lg-6">
 
-                            <h5>Integrantes</h5>
+                        <h5>Creador</h5>
 
-                            <p>abel, luciano, agos, jose</p>
-
-                        </div>
-                        <div class="col-lg-6 col-md-6 row-sm">
-
-                            <h5>Fecha</h5>
-
-                            <p>24.5.2020</p>
-
-                        </div>
+                        <img src="{{data.creador.imagenlogo.url}}" alt="user" width="40" class="img-circle"> {{data.creador.identificacion}}
 
                     </div>
-                    <div class="row">
-                        <div class="col-lg-6 col-md-6 row-sm">
 
-                            <h5>Tema-Acuerdo</h5>
-                            <p>hacer tareas </p>
+                    
+                    <div class="col-lg-6">
 
-                        </div>
-                        <div class="col-lg-6 col-md-6 row-sm">
+                        <h5>Fecha</h5>
 
-                            <h5>Responsable</h5>
+                        <p>{{data.fecha}}</p>
 
-                            <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit</p>
-
-                        </div>
                     </div>
+
+
                 </div>
 
+                <div class="row">
+
+                    <div class="col-lg-6">
+
+                        <h5>Integrantes</h5>
+
+                        <p>{{data.integrantes}}</p>
+
+                    </div>
+
+                    
+
+                </div>
+
+                    
+
+
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body ">
+                <h4 class="card-title"><span class="lstick m-r-20"></span>Temas y acuerdos realizados</h4>
+
+                <div class="table-responsive">
+
+                    <table class="table">
+
+                        <tbody>
+                            {% if acuerdos %}
+                            {% for a in acuerdos %}
+                            <tr>
+                                <td>{{a.tema}}</td>
+                                <td>{{a.responsable}}</td>
+                            </tr>
+
+                            {% endfor %}
+                            {% else %}
+                            <tr>
+                                <td>No se realizaron acuerdos en esta minuta</td>
+                            </tr>
+                            {% endif %}
+                        </tbody>
+
+                    </table>
+                </div>
             </div>
         </div>
     </div>

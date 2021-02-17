@@ -10,7 +10,7 @@ from proyectos.models import Proyectos, Unidades
 from ventas.models import VentasRealizadas
 from compras.models import Compras, Comparativas
 from registro.models import RegistroValorProyecto
-from rrhh.models import datosusuario, mensajesgenerales, NotaDePedido, Vacaciones, MonedaLink, EntregaMoneda, Anuncios, Seguimiento
+from rrhh.models import datosusuario, mensajesgenerales, NotaDePedido, Vacaciones, MonedaLink, EntregaMoneda, Anuncios, Seguimiento, Minutas, Acuerdos
 import datetime
 from datetime import date
 import pandas as pd
@@ -1060,13 +1060,76 @@ def tablerorega(request, id_proyecto, id_area, id_estado):
     return render(request, 'seguimiento.html', {'list_project_all':list_project_all, 'list_users':list_users, 'area':area, 'estado':estado, 'proyecto':proyecto_el, 'data':data, 'list_project':list_project, 'id_estado':id_estado, 'id_area':id_area, 'id_proyecto':id_proyecto})
 
 def minutas(request):
-    return render(request, 'minutas/minutasLista.html')
+
+    data = Minutas.objects.all().order_by("-fecha")
+
+    return render(request, 'minutas/minutasLista.html', {'data':data})
 
 def minutascrear(request):
-    return render(request, 'minutas/minutasCrear.html')
+
+    mensaje = 0
+
+    if request.method == 'POST':
+
+        datos_p = request.POST.items()
+
+        try:
+
+            minuta = Minutas(
+                nombre = request.POST['nombre'],
+                integrantes = request.POST['integrantes'],
+                fecha = request.POST['fecha'],
+                creador = datosusuario.objects.get(identificacion = request.user.username),
+            )
+
+            minuta.save()
+
+        except:
+
+            mensaje = "Algún dato de la minuta no esta completo o el creador no esta registrado"
+
+        tema = 0
+
+        for t in datos_p:
+
+            print(t)
+            
+            if "tema" in t[0]:
+
+                if t[1] != "":
+
+                    tema = t[1] 
+                else:
+                    tema = 0
+            if "responsable" in t[0]:
+                if tema != 0:
+                    try:
+                        b = Acuerdos(
+                            minuta = minuta,
+                            tema = tema,                     
+                        )
+
+                        if t[1] != "":
+                            b.responsable = datosusuario.objects.get(identificacion = t[1]) 
+
+                        b.save()
+
+                    except:
+                        mensaje = "Error en la carga de temas"
+
+        if mensaje == 0:
+            return redirect('Minutas Listas')
+
+
+    return render(request, 'minutas/minutasCrear.html', {'mensaje':mensaje})
 
 def minutasmodificar(request):
     return render(request, 'minutas/minutasModificar.html')
 
-def minutasid(request):
-    return render(request, 'minutas/minutasId.html')
+def minutasid(request, id_minuta):
+
+    data = Minutas.objects.get(id = int(id_minuta))
+
+    acuerdos = Acuerdos.objects.filter(minuta = data)
+
+    return render(request, 'minutas/minutasId.html', {'data':data, 'acuerdos':acuerdos})

@@ -32,8 +32,8 @@
                 <div class="row d-flex justify-items-between">
                     <div class="col">
 
-                        <h4 class="card-title">
-                            Minutas
+                        <h4 class="card-title"><span class="lstick m-r-20"></span>
+                            Listado de minutas
                         </h4>
                         <h6 class="card-subtitle">
                             Lista de minutas realizadas
@@ -55,51 +55,22 @@
                         </tr>
                     </thead>
                     <tbody>
+
+                        {% for i in data %}
                         <tr>
                             <td>
-                                <div><img src="{% static 'img/blockchain.png' %}" class="rounded" style="width: 40px;"
-                                        alt=""><span class="ml-2">JNT</span></div>
+                                <div><img src="{{i.creador.imagenlogo.url}}" class="rounded" style="width: 40px;"
+                                        alt=""><span class="ml-2">{{i.creador.identificacion}}</span></div>
                             </td>
-                            <td><a href="{% url 'Minutas Id' %}">Programacion del dia </a></td>
-                            <td> 24/5/2020</td>
+                            <td><a href="{% url 'Minutas Id' i.id %}">{{i.nombre|lower|capfirst}}</a></td>
+                            <td>{{i.fecha}}</td>
                             <td><a class="btn btn-success" href="{% url 'Minutas Modificar' %}">Editar</a></td>
                         </tr>
-                        <tr>
-                            <td>
-                                <div><img src="{% static 'img/blockchain.png' %}" class="rounded" style="width: 40px;"
-                                        alt=""><span class="ml-2">JNT</span></div>
-                            </td>
-                            <td><a href="{% url 'Minutas Id' %}">Programacion ayer</a></td>
-                            <td> 21/5/2020</td>
-                            <td><a class="btn btn-success" href="{% url 'Minutas Modificar' %}">Editar</a></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div><img src="{% static 'img/blockchain.png' %}" class="rounded" style="width: 40px;"
-                                        alt=""><span class="ml-2">JNT</span></div>
-                            </td>
-                            <td><a href="{% url 'Minutas Id' %}">Programacion hoy </a></td>
-                            <td> 24/5/2020</td>
-                            <td><a class="btn btn-success" href="{% url 'Minutas Modificar' %}">Editar</a></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div><img src="{% static 'img/blockchain.png' %}" class="rounded" style="width: 40px;"
-                                        alt=""><span class="ml-2">JNT</span></div>
-                            </td>
-                            <td><a href="{% url 'Minutas Id' %}"> Programacion mañana</a></td>
-                            <td> 1/5/2020</td>
-                            <td><a class="btn btn-success" href="{% url 'Minutas Modificar' %}">Editar</a></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div><img src="{% static 'img/blockchain.png' %}" class="rounded" style="width: 40px;"
-                                        alt=""><span class="ml-2">JNT</span></div>
-                            </td>
-                            <td><a href="{% url 'Minutas Id' %}">lista tareas </a></td>
-                            <td> 4/5/2020</td>
-                            <td><a class="btn btn-success" href="{% url 'Minutas Modificar' %}">Editar</a></td>
-                        </tr>
+
+                        {% endfor %}
+
+
+
 
                     </tbody>
                     <tfoot>

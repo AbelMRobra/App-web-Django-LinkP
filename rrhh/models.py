@@ -201,6 +201,7 @@ class Acuerdos(models.Model):
 
     minuta = models.ForeignKey(Minutas, on_delete=models.CASCADE, verbose_name="Minutas")
     tema = models.CharField(max_length=400, verbose_name="Tema/acuerdo")
+    responsable = models.ForeignKey(datosusuario, on_delete=models.CASCADE, verbose_name="Responsable", blank=True, null=True)
 
     class Meta:
         verbose_name="Acuerdo"

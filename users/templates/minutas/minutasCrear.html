@@ -26,40 +26,69 @@
 
 
 <div class="row">
+    <form method="POST">
     <div class="col-12">
         <div class="card">
             <div class="card-body ">
+                    {% csrf_token %}
 
-                <form method="POST">
-
-                    <h3> Datos generales</h3>
+                    <h3> Minuta</h3>
 
                     <div>
-                        <small> Escrbir informacion relevante sobre la minuta del dia
+                        <small> Datos generales de la minuta
                         </small>
                     </div>
 
                     <div class="bg-light p-3">
 
                         <div class="row">
-                            <div class="col-lg-6 col-md-6 row-sm">
-                                <label for="temageneral">
+                            <div class="col-12">
+                                <label for="temageneral" style="width: 300px;">
                                     <h5>Temas del dia</h5>
                                 </label>
 
-                                <input type="text" name="temageneral" class="form-control form-control"
-                                    placeholder="Temas del dia">
+                                <input type="text" name="nombre" class="form-control form-control"
+                                    placeholder="Temas del dia" style="width: 300px;">
 
                             </div>
 
-                            <div class="col-lg-6 col-md-6 row-sm">
+                            <div class="col-12">
 
-                                <label for="integrantes">
+                                <label for="integrantes" style="width: 300px;">
+                                    <h5>Fecha</h5>
+                                </label>
+
+                                <input type="date" name="fecha" class="form-control form-control" style="width: 300px;">
+
+                            </div>
+
+                        
+                            <div class="col-12">
+
+                                <label for="integrantes" style="width: 300px;">
                                     <h5>Integrantes</h5>
                                 </label>
 
-                                <input type="text" name="integrantes" class="form-control form-control">
+                                <input type="text" name="integrantes" class="form-control form-control" style="width: 300px;">
 
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body ">
+
+                        <div>
+
+                            <h3>Acuerdos y temas</h3>
+
+                            <div>
+                                <small style="color: red;">{% if mensaje %} {{mensaje}} {% endif %}
+                                </small>
                             </div>
 
                         </div>
@@ -73,36 +102,63 @@
                         </div>
                         <div class="campoarticulos">
 
-                            <div class="campo">
+                            <div class="row bg-light py-3 d-flex">
 
-                                <div class="row bg-light py-3 d-flex">
+                                <div class="col-lg-6 col-md-6 row-sm">
 
+                                    <label for="tema">
+                                        <h6>Tema-Acuerdo</h6>
+                                    </label>
 
-                                    <div class="col-lg-6 col-md-6 row-sm">
-
-                                        <label for="tema">
-                                            <h6>Tema-Acuerdo</h6>
-                                        </label>
-
-                                        <input name="tema" type="text" class="form-control form-control"
-                                            placeholder="Tema o acuerdo a tratar" list="art">
-
-                                    </div>
-
-                                    <div class="col-lg-6 col-md-6 row-sm">
-
-                                        <label for="responsable">
-                                            <h6>Responsable</h6>
-                                        </label>
-
-                                        <input name="responsable" type="text" step="any"
-                                            class="form-control form-control" placeholder="Responsable">
-
-                                    </div>
+                                    <input name="tema" type="text" class="form-control form-control"
+                                        placeholder="Tema o acuerdo a tratar">
 
                                 </div>
 
+                                <div class="col-lg-6 col-md-6 row-sm" >
 
+                                    <label for="responsable">
+                                        <h6>Responsable</h6>
+                                    </label>
+
+                                    <input name="responsable" type="text"
+                                        class="form-control form-control" placeholder="Responsable" >
+
+                                </div>
+
+                            </div>
+
+                            <div class="campo d-none">
+
+                                <div class="row bg-light py-3 d-flex">
+            
+            
+                                    <div class="col-lg-6 col-md-6 row-sm">
+            
+                                        <label>
+                                            <h6>Tema-Acuerdo</h6>
+                                        </label>
+            
+                                        <input name="tema1" type="text" class="form-control form-control"
+                                            placeholder="Tema o acuerdo a tratar">
+            
+                                    </div>
+            
+                                    <div class="col-lg-6 col-md-6 row-sm">
+            
+                                        <label>
+                                            <h6>Responsable</h6>
+                                        </label>
+            
+                                        <input name="responsable1" type="text" class="form-control form-control"
+                                            placeholder="Responsable">
+            
+                                    </div>
+            
+                                </div>
+                                <button class="btn btn-link fa fa-trash d-flex align-content-end" id="button-delete"
+                                    aria-hidden="true" onclick="deleteItem(this)" class=""></button>
+            
                             </div>
                         </div>
 
@@ -113,44 +169,13 @@
 
                     </div>
 
-                </form>
-                <div class="campo2 d-none">
-
-                    <div class="row bg-light py-3 d-flex">
-
-
-                        <div class="col-lg-6 col-md-6 row-sm">
-
-                            <label for="tema">
-                                <h6>Tema-Acuerdo</h6>
-                            </label>
-
-                            <input name="tema" type="text" class="form-control form-control"
-                                placeholder="Tema o acuerdo a tratar" list="art">
-
-                        </div>
-
-                        <div class="col-lg-6 col-md-6 row-sm">
-
-                            <label for="responsable">
-                                <h6>Responsable</h6>
-                            </label>
-
-                            <input name="responsable" type="text" step="any" class="form-control form-control"
-                                placeholder="Responsable">
-
-                        </div>
-
-                    </div>
-                    <button class="btn btn-link fa fa-trash d-flex align-content-end" id="button-delete"
-                        aria-hidden="true" onclick="deleteItem(this)" class=""></button>
-
-                </div>
-
             </div>
         </div>
+    </form>
     </div>
-</div>
+
+
+
 
 
 <script>
@@ -160,8 +185,8 @@
     function myFunction() {
 
         i++
-        $(".campo2").clone().appendTo(".campoarticulos").attr("class", "campo2-" + i).attr("id", "campo2-" + i)
-        $(".campoarticulos").last().find('.campo2').find('input').each(function (index) {
+        $(".campo").clone().appendTo(".campoarticulos").attr("class", "campo-" + i).attr("id", "campo-" + i)
+        $(".campoarticulos").last().find('.campo').find('input').each(function (index) {
 
             $(this).attr("name", $(this).attr("name") + i);
         });

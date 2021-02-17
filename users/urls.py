@@ -26,6 +26,6 @@ urlpatterns = [
     url(r'minutas$', views.minutas, name = 'Minutas Listas'),
     url(r'minutascrear$', views.minutascrear, name = 'Minutas Crear'),
     url(r'minutasmodificar$', views.minutasmodificar, name = 'Minutas Modificar'),
-    url(r'minutasid$', views.minutasid, name = 'Minutas Id'),
+    url(r'minutasid/(?P<id_minuta>\d+)/$', views.minutasid, name = 'Minutas Id'),
 
 ]
