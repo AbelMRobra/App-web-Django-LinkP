@@ -1,5 +1,5 @@
 {% extends "users/inicio2.html" %}
-
+{% load humanize %}
 {% load static %}
 
 {% block content %}
@@ -43,12 +43,10 @@
 
                     <thead>
                         <tr>
-                            <th>Codigo</th>
                             <th>Nombre Del Analisis</th>
+                            <th>Codigo</th>
                             <th>Un.</th>
                             <th>Valor</th>
-                            <th>Editar</th>
-                            <th>Eliminar</th>
                         </tr>
                     </thead>
 
@@ -57,15 +55,18 @@
                         {% for i in datos %}
 
                         <tr>
-                            <td> <b>{{i.0.codigo}}</b> </td>
-                            <td> <a href="{% url 'Composición Analisis' i.0.codigo %}">{{i.0.nombre|lower|capfirst}}</a> </td>
+                            <td>
+                                <a href="{% url 'Modificar analisis' i.0.codigo %}" class="btn" style="padding: 1px;">
+                                    <img src="{% static 'img/editar.png' %}" alt=""
+                                        style="max-width:15px; height:auto; vertical-align: top;">
+                                </a></a>
+                                <a href="#" class="btn" style="padding: 1px;">
+                                    <img src="{% static 'img/eliminar.png' %}" alt=""
+                                        style="max-width:15px; height:auto; vertical-align: top; ">
+                                </a></a> <a href="{% url 'Composición Analisis' i.0.codigo %}">{{i.0.nombre|lower|capfirst}}</a> </td>
                             <td>{{i.0.unidad|lower|capfirst}}</td>
-                            <td>${{i.1|floatformat:2}}</td>
-                            <td><a class="btn btn-success"
-                                    href="{% url 'Modificar analisis' i.0.codigo %}">Editar</a>
-                            </td>
-                            <td><a class="btn btn-danger" href="#">Eliminar</a>
-                            </td>
+                            <td> <b>{{i.0.codigo}}</b> </td>                            
+                            <td>${{i.1|floatformat:0|intcomma}}</td>
 
 
                         </tr>

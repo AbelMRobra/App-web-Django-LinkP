@@ -32,8 +32,9 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body">
-                <h4 class="card-title">Filtros del tablero</h4>
-                <h6 class="card-subtitle">Selecciona las condiciones de los datos</h6>
+                <h4 class="card-title">Herramientas del tablero</h4>
+                <h6 class="card-subtitle">Agrega o filtra los datos</h6>
+                <a href="{% url 'Tablero Rega Add' %}" class="btn btn-info">Add</a>
                 <div class="dropdown">
                     <button class="dropbtn btn btn-primary" style="background-color: rgb({{proyecto.color}}); border-color: rgb({{proyecto.color}})">{% if proyecto %} {{proyecto.nombre}} {% else %}Proyecto{% endif %}</button>
                     <div class="dropdown-content">
@@ -84,7 +85,7 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body">
-                <h4 class="card-title">ÁREA {{d.0.0}}</h4>
+                <h4 class="card-title"><span class="lstick"></span>ÁREA {{d.0.0}}</h4>
                 {% if d.1 %}               
                 <div class="table-responsive">
                     <table class="table">
@@ -152,8 +153,15 @@
     
                                 <div class="input-group mb-3">
     
-                                    <input name="tareas" type="text" class="form-control form-control" style="width: 300px;">
-    
+                                    <select name="area" class="custom-select" style="width: 300px;">
+
+                                        {% for a in areas %}
+                    
+                                        <option  {% if a == i.area %} selected {% endif %}>{{a}}</option>
+                    
+                                        {% endfor %}
+                    
+                                    </select>
                                 </div>
     
                                 <h6><small>Nombre</small> </h6>  
@@ -183,7 +191,7 @@
     
                                 <div class="input-group mb-3">
     
-                                    <input name="tareas" type="date" class="form-control form-control" style="width: 300px;">
+                                    <input name="fechai" type="date" class="form-control form-control" style="width: 300px;">
     
                                 </div>
 
@@ -191,7 +199,7 @@
     
                                 <div class="input-group mb-3">
     
-                                    <input name="tareas" type="date" class="form-control form-control" style="width: 300px;">
+                                    <input name="fechaf" type="date" class="form-control form-control" style="width: 300px;">
     
                                 </div>
 
@@ -199,18 +207,18 @@
     
                                 <div class="input-group mb-3">
     
-                                    <select name="proyecto" class="custom-select" style="width: 300px;">
+                                    <select name="responsable" class="custom-select" style="width: 300px;">
 
                                         {% for u in list_users %}
                     
-                                        <option value="{{u.id}}" {% if responsable.identificacion == u.identificacion %}selected{% endif %}>{{i.identificacion}}</option>
+                                        <option value="{{u.id}}" {% if responsable.identificacion == u.identificacion %}selected{% endif %}>{{u.identificacion}}</option>
                     
                                         {% endfor %}
                     
                                     </select>
                                 </div>
     
-                                <button type="submit" class="btn waves-effect waves-light btn-rounded btn-secondary">ingresar</button>
+                                <button type="submit" class="btn waves-effect waves-light btn-rounded btn-secondary" name="id" value="{{i.id}}">ingresar</button>
                             
                             </form>
                             
@@ -228,7 +236,7 @@
                                 <td {% if i.responsable %} style="text-align: center; width: 50px;"{% endif %} style="width: 50px;">{% if i.responsable %}<span class="image-list m-t-10">
                                     <a href="#"><img src="{{i.responsable.imagenlogo.url}}" class="img-circle" alt="user" width="40" /></a>
             
-                                </span>{% else %} Sin asignar {% endif %}</td>
+                                </span>{% else %} S/A {% endif %}</td>
                                 <td style="width: 50px;">Adj.</td>
                             </tr>
 
@@ -246,6 +254,7 @@
 
     
     {% endfor %}
+    </div>
 
     <div class="row">
 
@@ -266,7 +275,7 @@
     </div>
 
 
-  </div>
+  
 
 
   {% endblock %}

@@ -956,6 +956,27 @@ def informescrear(request):
 
 def tablerorega(request, id_proyecto, id_area, id_estado):
 
+    if request.method == "POST":
+
+        tarea = Seguimiento.objects.get(id = int(request.POST['id']))
+        tarea.area = request.POST['area']
+        tarea.nombre = request.POST['nombre']
+        tarea.estado = request.POST['estado']
+        tarea.proyecto = Proyectos.objects.get(nombre = request.POST['proyecto'])
+        tarea.responsable = datosusuario.objects.get(id = int(request.POST['responsable']))
+        tarea.save()
+
+        try:
+            tarea.fecha_inicial = request.POST['fechai']
+            tarea.save()
+        except:
+            pass
+        try:
+            tarea.fecha_final = request.POST['fechaf']
+            tarea.save()
+        except:
+            pass
+
     list_project_all = Proyectos.objects.all()
 
     group=models.Group.objects.get(name='REGA NIVEL 1')
@@ -974,6 +995,14 @@ def tablerorega(request, id_proyecto, id_area, id_estado):
         proyecto_el = 0
 
     estado = "Estado"
+
+    areas = ["ADMINISTRACIÓN Y FINANZAS", "COMPRAS Y CONTRATACIONES",
+    "COMERCIALIZACIÓN Y MARKETING",
+    "DIRECCIÓN",
+    "PRESUPUESTOS",
+    "OBRA",
+    "EQUIPO TECNICO",
+    "RECURSOS HUMANOS"]
 
     diccionario = {'1': ("ADMINISTRACIÓN Y FINANZAS", "55, 172, 99 "),
     '2': ("COMPRAS Y CONTRATACIONES", "161, 200, 58"),
@@ -1057,7 +1086,61 @@ def tablerorega(request, id_proyecto, id_area, id_estado):
                 data.append((l, data_list))
                 estado = "Espera"
 
-    return render(request, 'seguimiento.html', {'list_project_all':list_project_all, 'list_users':list_users, 'area':area, 'estado':estado, 'proyecto':proyecto_el, 'data':data, 'list_project':list_project, 'id_estado':id_estado, 'id_area':id_area, 'id_proyecto':id_proyecto})
+    return render(request, 'seguimiento.html', {'list_project_all':list_project_all, 'list_users':list_users, 'area':area, 'estado':estado, 'proyecto':proyecto_el, 'data':data, 'list_project':list_project, 'id_estado':id_estado, 'id_area':id_area, 'id_proyecto':id_proyecto, 'areas':areas})
+
+def tableroregaadd(request):
+
+    group=models.Group.objects.get(name='REGA NIVEL 1')
+    users=group.user_set.all()
+    list_users = []
+    for user in users:
+        try:
+            us = datosusuario.objects.get(identificacion = user.username)
+            list_users.append(us)
+        except:
+            pass
+
+    areas = ["ADMINISTRACIÓN Y FINANZAS", "COMPRAS Y CONTRATACIONES",
+    "COMERCIALIZACIÓN Y MARKETING",
+    "DIRECCIÓN",
+    "PRESUPUESTOS",
+    "OBRA",
+    "EQUIPO TECNICO",
+    "RECURSOS HUMANOS"]
+
+    proyecto = Proyectos.objects.all().order_by("nombre")
+
+    if request.method == "POST":
+
+        datos_p = request.POST.items()
+        
+        tarea = Seguimiento(
+            orden = len(Seguimiento.objects.filter(area = request.POST['area'])),
+            area = request.POST['area'],
+            proyecto = Proyectos.objects.get(id = int(request.POST['proyecto'])),
+            nombre = request.POST['nombre'],
+            responsable = datosusuario.objects.get(identificacion = request.POST['responsable'])
+
+        )
+
+        tarea.save()
+
+        try:
+            tarea.fecha_inicio = request.POST['fechai']
+            tarea.save()
+        except:
+            pass
+
+        try:
+            tarea.fecha_final = request.POST['fechaf']
+            tarea.save()
+        except:
+            pass
+
+        return redirect('Tablero Rega', id_proyecto = 0, id_area = 0, id_estado = 1)
+
+
+    return render(request, 'seguimiento_add.html', {'areas':areas, 'proyecto':proyecto, 'list_users':list_users})
 
 def minutas(request):
 
@@ -1126,8 +1209,28 @@ def minutasmodificar(request):
 
 def minutasid(request, id_minuta):
 
+    group=models.Group.objects.get(name='REGA NIVEL 1')
+    users=group.user_set.all()
+    list_users = []
+    for user in users:
+        try:
+            us = datosusuario.objects.get(identificacion = user.username)
+            list_users.append(us)
+        except:
+            pass
+
+    if request.method == 'POST':
+        datos_p = request.POST.items()
+        for d in datos_p:
+            print(d)
+            if d[0] == "tema":
+                acuerdo = Acuerdos.objects.get(id = int(request.POST['id']))
+                acuerdo.tema = request.POST['tema']
+                acuerdo.responsable = datosusuario.objects.get(identificacion = request.POST['responsable'])
+                acuerdo.save()
+
     data = Minutas.objects.get(id = int(id_minuta))
 
     acuerdos = Acuerdos.objects.filter(minuta = data)
 
-    return render(request, 'minutas/minutasId.html', {'data':data, 'acuerdos':acuerdos})
+    return render(request, 'minutas/minutasId.html', {'data':data, 'acuerdos':acuerdos, 'list_users':list_users})

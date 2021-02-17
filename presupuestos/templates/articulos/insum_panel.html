@@ -1,5 +1,5 @@
 {% extends "users/inicio2.html" %}
-
+{% load humanize %}
 {% load static %}
 
 {% block content %}
@@ -60,11 +60,11 @@
             <tr style="font-size: 12px;">
 
                 <td style="text-align: left;">
-                    <a href="{% url 'Editar_insumo' i.codigo %}" class="btn btn-light" style="padding: 1px;">
+                    <a href="{% url 'Editar_insumo' i.codigo %}" class="btn" style="padding: 1px;">
                         <img src="{% static 'img/editar.png' %}" alt=""
                             style="max-width:15px; height:auto; vertical-align: top;">
                     </a></a>
-                    <a href="{% url 'Eliminar_insumo' i.codigo %}" class="btn btn-light" style="padding: 1px;">
+                    <a href="{% url 'Eliminar_insumo' i.codigo %}" class="btn" style="padding: 1px;">
                         <img src="{% static 'img/eliminar.png' %}" alt=""
                             style="max-width:15px; height:auto; vertical-align: top; ">
                     </a></a>
@@ -72,7 +72,7 @@
                 </td>
                 <td> <b>{{i.codigo}}</b> </td>
                 <td>{{i.unidad}}</td>
-                <td>${{i.valor|floatformat:2}}</td>
+                <td>${{i.valor|floatformat:0|intcomma}}}</td>
                 <td>{{i.fecha_c}}</td>
                 <td>{{i.constante}}</td>
 

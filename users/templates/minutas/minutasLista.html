@@ -50,10 +50,9 @@
                             <th>Creador</th>
                             <th>Tema</th>
                             <th>Fecha</th>
-                            <th>Editar</th>
-
                         </tr>
                     </thead>
+
                     <tbody>
 
                         {% for i in data %}
@@ -64,7 +63,7 @@
                             </td>
                             <td><a href="{% url 'Minutas Id' i.id %}">{{i.nombre|lower|capfirst}}</a></td>
                             <td>{{i.fecha}}</td>
-                            <td><a class="btn btn-success" href="{% url 'Minutas Modificar' %}">Editar</a></td>
+                         
                         </tr>
 
                         {% endfor %}
