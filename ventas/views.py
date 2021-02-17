@@ -526,7 +526,7 @@ def historialventa(request):
 
 def folleto(request):
 
-    datos = Proyectos.objects.filter(folleto__isnull = False)
+    datos = Proyectos.objects.all()
 
     proyecto = 0
 
