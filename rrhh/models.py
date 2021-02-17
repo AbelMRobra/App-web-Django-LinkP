@@ -183,3 +183,29 @@ class Seguimiento(models.Model):
 
     def __str__(self):
         return self.nombre
+
+class Minutas(models.Model):
+    creador = models.ForeignKey(datosusuario, on_delete=models.CASCADE, verbose_name="Creador")
+    nombre = models.CharField(max_length=200, verbose_name="Nombre de la minuta")
+    fecha = models.DateField(verbose_name="Fecha", blank=True, null=True)
+    integrantes = models.CharField(max_length=200, verbose_name="Integrantes")
+
+    class Meta:
+        verbose_name="Minuta"
+        verbose_name_plural="Minutas"
+
+    def __str__(self):
+        return self.nombre
+
+class Acuerdos(models.Model):
+
+    minuta = models.ForeignKey(Minutas, on_delete=models.CASCADE, verbose_name="Minutas")
+    tema = models.CharField(max_length=400, verbose_name="Tema/acuerdo")
+
+    class Meta:
+        verbose_name="Acuerdo"
+        verbose_name_plural="Acuerdos"
+
+    def __str__(self):
+        return self.tema
+    

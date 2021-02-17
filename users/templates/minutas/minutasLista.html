@@ -44,9 +44,10 @@
                     </div>
                 </div>
 
-                <table id="example" class="table table-striped table-bordered">
+                <table id="example" class="table ">
                     <thead>
                         <tr>
+                            <th>Creador</th>
                             <th>Tema</th>
                             <th>Fecha</th>
                             <th>Editar</th>
@@ -55,26 +56,46 @@
                     </thead>
                     <tbody>
                         <tr>
+                            <td>
+                                <div><img src="{% static 'img/blockchain.png' %}" class="rounded" style="width: 40px;"
+                                        alt=""><span class="ml-2">JNT</span></div>
+                            </td>
                             <td><a href="{% url 'Minutas Id' %}">Programacion del dia </a></td>
                             <td> 24/5/2020</td>
                             <td><a class="btn btn-success" href="{% url 'Minutas Modificar' %}">Editar</a></td>
                         </tr>
                         <tr>
+                            <td>
+                                <div><img src="{% static 'img/blockchain.png' %}" class="rounded" style="width: 40px;"
+                                        alt=""><span class="ml-2">JNT</span></div>
+                            </td>
                             <td><a href="{% url 'Minutas Id' %}">Programacion ayer</a></td>
                             <td> 21/5/2020</td>
                             <td><a class="btn btn-success" href="{% url 'Minutas Modificar' %}">Editar</a></td>
                         </tr>
                         <tr>
+                            <td>
+                                <div><img src="{% static 'img/blockchain.png' %}" class="rounded" style="width: 40px;"
+                                        alt=""><span class="ml-2">JNT</span></div>
+                            </td>
                             <td><a href="{% url 'Minutas Id' %}">Programacion hoy </a></td>
                             <td> 24/5/2020</td>
                             <td><a class="btn btn-success" href="{% url 'Minutas Modificar' %}">Editar</a></td>
                         </tr>
                         <tr>
+                            <td>
+                                <div><img src="{% static 'img/blockchain.png' %}" class="rounded" style="width: 40px;"
+                                        alt=""><span class="ml-2">JNT</span></div>
+                            </td>
                             <td><a href="{% url 'Minutas Id' %}"> Programacion mañana</a></td>
                             <td> 1/5/2020</td>
                             <td><a class="btn btn-success" href="{% url 'Minutas Modificar' %}">Editar</a></td>
                         </tr>
                         <tr>
+                            <td>
+                                <div><img src="{% static 'img/blockchain.png' %}" class="rounded" style="width: 40px;"
+                                        alt=""><span class="ml-2">JNT</span></div>
+                            </td>
                             <td><a href="{% url 'Minutas Id' %}">lista tareas </a></td>
                             <td> 4/5/2020</td>
                             <td><a class="btn btn-success" href="{% url 'Minutas Modificar' %}">Editar</a></td>
@@ -104,7 +125,11 @@
 
 <script>
     $(document).ready(function () {
-        $('#example').DataTable();
+        $('#example').DataTable({
+            "paging": false,
+            "searching": false,
+            "info": false
+        });
     });
 </script>
 

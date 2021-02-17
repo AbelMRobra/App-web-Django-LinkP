@@ -1,46 +1,54 @@
-{% extends "users/inicio.html" %}
+{% extends "users/inicio2.html" %}
 
 {% load static %}
 
 {% block content %}
 
-<div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;">
-
-    <h1 class="titulopagina">Panel maestro de Articulos</h1>
-    <p class="modulo"><b>Modulo: </b>Presupuestos</p>
-
-     <b><hr class = "my-4" style="width: 75%;"></b>
-
-        <form method="get" class="form-group" style="text-align: center;">
-        <div class="form-control">
-            {{ myfilter.form }}
-
+<div class="container-fluid r-aside">
+    <!-- ============================================================== -->
+    <!-- Bread crumb and right sidebar toggle -->
+    <!-- ============================================================== -->
+    <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+            <h3 class="text-themecolor">Panel maestro de Articulos</h3>
         </div>
-        <div>
-            <button class="btn btn-dark" type="submit" style="margin-top: 1%;">Buscar</button>          
+
+        <div class="col-md-7 align-self-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+                <li class="breadcrumb-item"><a href="/presupuestos/insum_list">Listado de Articulos</a></li>
+                <li class="breadcrumb-item">Panel maestro de Articulos</li>
+            </ol>
         </div>
-     </form>
-    
-     <b><hr class = "my-4" style="width: 100%;"></b>
-     <div style="margin: 2px; text-align: left;">
-        <a href="{% url 'Lista de insumos' %}" class="btn btn-secondary"><img src="{% static 'img/flecha-izquierda.png' %}" alt="" style="max-width:15px; height:auto;"> Volver</a>
+
+    </div>
+
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card  overflow-auto">
+            <div class="card-body ">
+
+    <div style="margin: 2px; text-align: left;">
+
         <a href="/presupuestos/insumcreate" class="btn btn-light">
-            <img src="{% static 'img/anadir.png' %}" alt="" style="max-width:20px; height:auto; vertical-align: middle;">
-                <b>Añadir</b></a></a>  
+            <img src="{% static 'img/anadir.png' %}" alt=""
+                style="max-width:20px; height:auto; vertical-align: middle;">
+            <b>Añadir</b></a></a>
 
-     </div>
-      
+    </div>
 
-    <table class = "table table-hover" style="text-align: center;">
+
+    <table id="example" class="table table-striped table-bordered" style="width:100%">
         <thead>
-
-            <tr class = "table-dark"> 
-                <th style="text-align: left;">NOMBRE</th>
-                <th scope = "row"> CODIGO </th>
-                <th scope = "row"> UN </th>
-                <th scope = "row"> VALOR </th>
-                <th scope = "row"> CREACIÓN </th>
-                <th scope = "row"> CONSTANTE </th> 
+            <tr>
+                <th>Nombre</th>
+                <th> Codigo </th>
+                <th> Un. </th>
+                <th> Valor </th>
+                <th> Creacion </th>
+                <th> Constante </th>
 
 
             </tr>
@@ -48,38 +56,52 @@
 
         <tbody>
 
-            {% for i in articulos|slice:"20" %}
-            <tr class = "table-light" style="font-size: 12px;">
-                
+            {% for i in articulos %}
+            <tr style="font-size: 12px;">
+
                 <td style="text-align: left;">
                     <a href="{% url 'Editar_insumo' i.codigo %}" class="btn btn-light" style="padding: 1px;">
-                    <img src="{% static 'img/editar.png' %}" alt="" style="max-width:15px; height:auto; vertical-align: top;">
-                    </a></a> 
+                        <img src="{% static 'img/editar.png' %}" alt=""
+                            style="max-width:15px; height:auto; vertical-align: top;">
+                    </a></a>
                     <a href="{% url 'Eliminar_insumo' i.codigo %}" class="btn btn-light" style="padding: 1px;">
-                    <img src="{% static 'img/eliminar.png' %}" alt="" style="max-width:15px; height:auto; vertical-align: top; ">
-                    </a></a> 
-                    {{i.nombre}}</td>
-                    <td> <b>{{i.codigo}}</b> </td>
+                        <img src="{% static 'img/eliminar.png' %}" alt=""
+                            style="max-width:15px; height:auto; vertical-align: top; ">
+                    </a></a>
+                    {{i.nombre|lower|capfirst}}
+                </td>
+                <td> <b>{{i.codigo}}</b> </td>
                 <td>{{i.unidad}}</td>
                 <td>${{i.valor|floatformat:2}}</td>
                 <td>{{i.fecha_c}}</td>
                 <td>{{i.constante}}</td>
-               
+
             </tr>
+            {% endfor %}
         </tbody>
 
-            {% endfor %}
 
-        </table>
+    </table>
 
 
-        <div style="text-align: center;">
-            <p> <small>-- Link<strong>P</strong> --</small> </p>
-    
-         </div>
 
-                    
+</div>
+</div>
+</div>
 </div>
 
-    
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js" defer></script>
+<script src="https://cdn.datatables.net/1.10.23/js/dataTables.bootstrap4.min.js" defer></script>
+
+
+
+<script>
+    $(document).ready(function () {
+        $('#example').DataTable();
+
+    });
+</script>
+
+
 {% endblock %}

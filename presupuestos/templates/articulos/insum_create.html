@@ -1,38 +1,53 @@
-
-{% extends "users/inicio.html" %}
+{% extends "users/inicio2.html" %}
 
 {% load static %}
 
 {% block content %}
 
-<div class = "jumbotron" style="background-color: white; margin-bottom: 0px;" >
 
-    <h3 style="text-align: center; color: #138D75  ;">Crear un articulo</h3>
-     <b><hr class = "my-4" style="width: 75%; border-color: #138D75  ;"></b>
-
-    <div class = "jumbotron" style="width: 60%; margin-left: 20%;">
-
-        <form method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-
-            <p>{{f.mensaje}}</p>
-
-            <div style="text-align: center;">
-
-                <button type='submit' class = "btn btn-outline-success">Guardar</button>
-                      
-            </div>      
-        </form>
-
-        <div style="text-align: center; margin-top: 2%;">
-
-            <a href="/presupuestos/insum_panel"><button type='submit' class = "btn btn-outline-danger">Volver</button></a>
-        
+<div class="container-fluid r-aside">
+    <!-- ============================================================== -->
+    <!-- Bread crumb and right sidebar toggle -->
+    <!-- ============================================================== -->
+    <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+            <h3 class="text-themecolor">Crear un articulo</h3>
         </div>
 
-        
+        <div class="col-md-7 align-self-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+                <li class="breadcrumb-item"><a href="/presupuestos/insum_panel">Panel de Articulos</a></li>
+                <li class="breadcrumb-item">Crear un articulo</li>
+            </ol>
+        </div>
 
+    </div>
+
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body ">
+
+                <div class="d-flex justify-content-center">
+
+                    <form method="post">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+
+                        <p>{{f.mensaje}}</p>
+
+                        <div style="text-align: center;">
+
+                            <button type='submit' class="btn btn-success">Guardar</button>
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
