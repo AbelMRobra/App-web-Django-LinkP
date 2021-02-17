@@ -1092,8 +1092,6 @@ def minutascrear(request):
 
         for t in datos_p:
 
-            print(t)
-            
             if "tema" in t[0]:
 
                 if t[1] != "":
