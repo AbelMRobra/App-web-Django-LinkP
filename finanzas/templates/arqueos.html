@@ -47,9 +47,59 @@
                         <table class="table">
                             <thead>
                                 <tr>                                    
-                                    <td>Fecha del arqueo</td>
+                                    <td><a type="button" data-toggle="modal" data-target="#ModalArqueo" ><img src="{% static 'img/add.png' %}" alt="" style="max-width:25px; height:auto; vertical-align: bottom;"></a>
+                                    Fecha del arqueo</td>
                               
                                 </tr>
+
+                                <!-- Modal fecha estado Subitem -->
+                <div class="modal fade" id="ModalArqueo" tabindex="-1" role="dialog" aria-labelledby="ModalArqueo" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Cargar un archivo</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        </div>
+                        <div class="modal-body">                                    
+                        <form method="POST" style="margin: 15px;" enctype="multipart/form-data" id="upload-image-form">
+
+                            {% csrf_token %}
+
+                            <h6>Fecha del arqueo</h6>  
+
+                            <div class="input-group mb-3">
+                                    
+                                <input name="fecha" type="date" class="form-control form-control" style="width: 300px;">
+                            </div>
+
+                            <h6>Archivo</h6>  
+
+                            <div class="input-group mb-3">
+                                    
+                                <input name="adjunto" type="file" class="form-control form-control" style="width: 300px;">
+                            </div>
+
+                            <button type="submit" class="btn btn-light">
+                            <img src="{% static 'img/upload.png' %}" alt="" style="max-width:20px; height:auto;">
+                            <b>Cargar</b></button>
+
+                            {{ form.as_p }}
+                        
+                        </form>
+                        
+                        </div>
+                        <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                
+                        </div>
+                    </div>
+                    </div>
+
+                </div>
+
+                <!-- Final del modal -->
 
                             </thead>
         
@@ -57,7 +107,7 @@
                                 {% for i in data %}
                                 <tr>                                    
 
-                                    <td> <a href="{% url 'Arqueo diario' i.id %}">{{i.fecha|date:"d-m-Y"}}</a></td>    
+                                    <td> <a href="{% url 'Arqueo diario' i.id %}">Arqueo con fecha {{i.fecha|date:"d-m-Y"}}</a> - Nombre del archivo: "{{i.arqueo}}"</td>    
 
                                 </tr>
                                 {% endfor %}

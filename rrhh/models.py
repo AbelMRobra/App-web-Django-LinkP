@@ -199,9 +199,16 @@ class Minutas(models.Model):
 
 class Acuerdos(models.Model):
 
+    class estados(models.TextChoices):
+
+        CHECK = "CHECK"
+        NO_CHECK = "NO CHECK"
+
+
     minuta = models.ForeignKey(Minutas, on_delete=models.CASCADE, verbose_name="Minutas")
     tema = models.CharField(max_length=400, verbose_name="Tema/acuerdo")
     responsable = models.ForeignKey(datosusuario, on_delete=models.CASCADE, verbose_name="Responsable", blank=True, null=True)
+    estado = models.CharField(choices=estados.choices, default=estados.NO_CHECK, max_length=20, verbose_name="Estado")
 
     class Meta:
         verbose_name="Acuerdo"

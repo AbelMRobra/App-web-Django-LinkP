@@ -151,7 +151,7 @@
                                         <td> <a href="#" style="color: blue;" data-toggle="modal"
                                             data-target="#ModalTema{{a.id}}">{{a.tema}}</a>
                                         </td>
-
+                                        <td >{% if a.fecha_limite %}{{a.fecha_limite|date:"Y-m-j"}}{% else %}Sin fecha{% endif %}</td>
                                         <td >{% if a.responsable %}{{a.responsable}}{% else %}S/A{% endif %}</td>
                                         
                                         <!-- Modal de las responsable -->
