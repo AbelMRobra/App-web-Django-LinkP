@@ -43,11 +43,26 @@
 
                             <div class="col-12">
                                 <label for="temageneral" style="width: 300px;">
+                                    <h5>Creador</h5>
+                                </label>
+
+                                <select name="creador" class="form-control form-control" style="width: 300px;">
+                       
+                                    {% for l in list_users %}
+                                    <option {% if data.creador == l %} selected {% endif %}>{{l.identificacion}}</option>
+                                    {% endfor %}
+                                    
+                                    </select>
+
+                            </div>
+
+                            <div class="col-12">
+                                <label for="temageneral" style="width: 300px;">
                                     <h5>Nombre</h5>
                                 </label>
 
                                 <input type="text" name="nombre" class="form-control form-control"
-                                    value="{{datos.nombre|lower|capfirst}}" style="width: 300px;">
+                                    value="{{data.nombre|lower|capfirst}}" style="width: 300px;">
 
                             </div>
 
@@ -58,7 +73,7 @@
                                 </label>
 
                                 <input type="date" name="fecha" class="form-control form-control" style="width: 300px;"
-                                value="{{datos.fecha}}">
+                                value="{{data.fecha|date:'Y-m-j'}}">
 
                             </div>
 
@@ -71,7 +86,7 @@
 
                                 <input type="text" name="integrantes" class="form-control form-control"
                                     style="width: 300px;"
-                                    value="{{datos.integrantes}}"
+                                    value="{{data.integrantes}}"
                                     >
 
                             </div>

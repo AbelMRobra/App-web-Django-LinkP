@@ -24,9 +24,9 @@ urlpatterns = [
 
     # Templates de minutas
 
-    url(r'minutas$', views.minutas, name = 'Minutas Listas'),
-    url(r'minutascrear$', views.minutascrear, name = 'Minutas Crear'),
-    url(r'minutasmodificar$', views.minutasmodificar, name = 'Minutas Modificar'),
-    url(r'minutasid/(?P<id_minuta>\d+)/$', views.minutasid, name = 'Minutas Id'),
+    url(r'minutas$', login_required(views.minutas), name = 'Minutas Listas'),
+    url(r'minutascrear$', login_required(views.minutascrear), name = 'Minutas Crear'),
+    url(r'minutasmodificar/(?P<id_minuta>\d+)/$', login_required(views.minutasmodificar), name = 'Minutas Modificar'),
+    url(r'minutasid/(?P<id_minuta>\d+)/$', login_required(views.minutasid), name = 'Minutas Id'),
 
 ]

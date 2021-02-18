@@ -1204,8 +1204,30 @@ def minutascrear(request):
 
     return render(request, 'minutas/minutasCrear.html', {'mensaje':mensaje})
 
-def minutasmodificar(request):
-    return render(request, 'minutas/minutasModificar.html')
+def minutasmodificar(request, id_minuta):
+
+    group=models.Group.objects.get(name='REGA NIVEL 1')
+    users=group.user_set.all()
+    list_users = []
+    for user in users:
+        try:
+            us = datosusuario.objects.get(identificacion = user.username)
+            list_users.append(us)
+        except:
+            pass
+
+    data = Minutas.objects.get(id = int(id_minuta))
+
+    if request.method == 'POST':
+        data.creador = datosusuario.objects.get(identificacion = request.POST['creador'])
+        data.nombre = request.POST['nombre']
+        data.fecha = request.POST['fecha']
+        data.integrantes = request.POST['integrantes']
+        data.save()
+        return redirect('Minutas Id', id_minuta = data.id)
+
+
+    return render(request, 'minutas/minutasModificar.html', {'data':data, 'list_users':list_users})
 
 def minutasid(request, id_minuta):
 
