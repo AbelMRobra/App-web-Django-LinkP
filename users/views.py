@@ -263,9 +263,9 @@ def guia(request):
             
         rey_2 = EntregaMoneda.objects.all().values_list("usuario_recibe").exclude(usuario_recibe__id = int(mode(rey_l)[0]))
 
-        print(rey_2)
         if int(usuario.id) == int(mode(rey_2)[0]):
             rey = 2
+
 
         monedas_recibidas = len(EntregaMoneda.objects.filter(usuario_recibe = usuario))
         recibidas_list = EntregaMoneda.objects.filter(usuario_recibe = usuario).values_list("mensaje", flat = True)
