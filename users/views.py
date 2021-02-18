@@ -1222,12 +1222,30 @@ def minutasid(request, id_minuta):
     if request.method == 'POST':
         datos_p = request.POST.items()
         for d in datos_p:
-            print(d)
             if d[0] == "tema":
                 acuerdo = Acuerdos.objects.get(id = int(request.POST['id']))
                 acuerdo.tema = request.POST['tema']
-                acuerdo.responsable = datosusuario.objects.get(identificacion = request.POST['responsable'])
-                acuerdo.save()
+                try:
+                    acuerdo.responsable = datosusuario.objects.get(identificacion = request.POST['responsable'])
+                    acuerdo.save()
+                except:
+                    acuerdo.responsable = None
+                    acuerdo.save()
+
+            if d[0] == "acuerdo":
+                b = Acuerdos(
+                    tema = request.POST['acuerdo'],
+                    minuta = Minutas.objects.get(id = int(id_minuta))
+                )
+                try:
+                    b.responsable = datosusuario.objects.get(identificacion = request.POST['responsable'])
+                    b.save()
+                except:
+                    b.save()
+
+            if d[0] == "delete":
+                acuerdo = Acuerdos.objects.get(id = int(request.POST['delete']))
+                acuerdo.delete()
 
     data = Minutas.objects.get(id = int(id_minuta))
 
