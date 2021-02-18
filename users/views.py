@@ -23,6 +23,7 @@ from email.mime.base import MIMEBase
 from email import encoders
 from agenda import settings
 from django.contrib.auth import models
+from statistics import mode
 
 def monedalink(request):
 
@@ -160,6 +161,9 @@ def password(request):
 
 def guia(request):
 
+    amor = 0
+    rey = 0
+
     try:
 
         usuario = datosusuario.objects.get(identificacion = request.user)
@@ -179,7 +183,7 @@ def guia(request):
             if len(EntregaMoneda.objects.filter(moneda = m)) == 0:
 
                 monedas_disponibles.append(m)
-
+        
         index_num = 0
 
         for i in range(int(request.POST["cantidad"])):
@@ -242,6 +246,21 @@ def guia(request):
 
                 monedas_disponibles += 1
 
+
+        # Aqui el premio del amor
+
+        if len(monedas) == monedas_disponibles:
+            amor = 0
+        else:
+            amor = 1
+
+        # Aqui el premio del rey
+
+        rey_l = EntregaMoneda.objects.all().values_list("usuario_recibe")
+
+        if int(usuario.id) == int(mode(rey_l)[0]):
+            rey = 1
+
         monedas_recibidas = len(EntregaMoneda.objects.filter(usuario_recibe = usuario))
         recibidas_list = EntregaMoneda.objects.filter(usuario_recibe = usuario).values_list("mensaje", flat = True)
 
@@ -302,7 +321,7 @@ def guia(request):
 
     monedas_recibidas = len(EntregaMoneda.objects.filter(usuario_recibe = usuario))
 
-    return render(request, "users/guia.html", {"datos":datos, "otros_datos":otros_datos, "recibidas":recibidas, "monedas_recibidas":monedas_recibidas, "monedas_disponibles":monedas_disponibles, "list_usuarios":list_usuarios})
+    return render(request, "users/guia.html", {"rey":rey, "amor":amor, "datos":datos, "otros_datos":otros_datos, "recibidas":recibidas, "monedas_recibidas":monedas_recibidas, "monedas_disponibles":monedas_disponibles, "list_usuarios":list_usuarios})
 
 def dashboard(request):
 

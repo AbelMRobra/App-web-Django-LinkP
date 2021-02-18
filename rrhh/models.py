@@ -209,6 +209,7 @@ class Acuerdos(models.Model):
     tema = models.CharField(max_length=400, verbose_name="Tema/acuerdo")
     responsable = models.ForeignKey(datosusuario, on_delete=models.CASCADE, verbose_name="Responsable", blank=True, null=True)
     estado = models.CharField(choices=estados.choices, default=estados.NO_CHECK, max_length=20, verbose_name="Estado")
+    fecha_limite = models.DateField(verbose_name="Fecha limite", blank=True, null=True)
 
     class Meta:
         verbose_name="Acuerdo"

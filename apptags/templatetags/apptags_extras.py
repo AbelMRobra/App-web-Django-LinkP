@@ -3,6 +3,7 @@ from django import template
 import datetime
 from datetime import date
 from datetime import datetime, timedelta 
+from rrhh.models import datosusuario
 
 register = template.Library()
 
@@ -82,6 +83,13 @@ def is_past_evaluacion3(prueba):
        return "34, 201, 24 "
     else:
         return "201, 55, 24"
+
+@register.simple_tag
+def usuario(identificacion):
+
+    data = datosusuario.objects.get(identificacion = identificacion)
+
+    return data.imagenlogo.url
 
 @register.simple_tag
 def fecha_final_planif(fecha, estado):

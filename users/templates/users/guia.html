@@ -42,16 +42,58 @@
                         </div>
                     </div>
 
-        <div class="col-lg-6 col-xlg-4">
+                    <div class="col-lg-6 col-xlg-4">
+
+            
+  
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title"><span class="lstick m-r-20"></span>Logros desbloqueados</h4>
+                            </div>
+
+                            <table class="table stylish-table">
+
+                                <tbody>
+
+                                    <tr>
+                                        {% if datos.estado == "ACTIVO" %}
+                                        <td><img src="{% static 'img/cheque.png' %}" alt="" style="max-width:17px; height:auto; vertical-align: top; margin-top: 2px;"> <b>Staff</b>: <i>Eres un miembro de la empresa!</i></td>
+                                        {% endif %}
+                                    </tr>
+
+                                    <tr>
+                                        {% if datos.email %}
+                                        <td><img src="{% static 'img/email.png' %}" alt="" style="max-width:17px; height:auto; vertical-align: top; margin-top: 2px;"> <b>Email</b>: <i>Ahora podremos comunicarnos si notamos algo</i></td>
+                                        {% endif %}
+                                    </tr>
+
+                                    <tr>
+                                        {% if amor %}
+                                        <td><img src="{% static 'img/amor.png' %}" alt="" style="max-width:17px; height:auto; vertical-align: top; margin-top: 2px;"> <b>Dar</b>: <i>Tus compañeros valoran tu reconocimiento :)</i></td>
+                                        {% endif %}
+                                    </tr>
+
+                                    <tr>
+                                        {% if rey == 1 %}
+                                        <td><img src="{% static 'img/estrella.png' %}" alt="" style="max-width:17px; height:auto; vertical-align: top; margin-top: 2px;"> <b>Top #1</b>: <i>Eres el usuario con mas Linkcoins!</i></td>
+                                        {% endif %}
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+        <div class="col-12">
         <div class="card">
             <div class="card-body">
 
-        <h4 class="card-title">Linkcoins</h4>
+        <h4 class="card-title"><span class="lstick m-r-20"></span>Linkcoins</h4>
 
         {% if datos and datos.estado == "ACTIVO" %}
         <h6 class="text-muted m-t-10 m-b-0">Recibidas: <b>{{monedas_recibidas}}</b> <img src="{% static 'img/monedalink.png' %}" alt="" style="max-width:19px; height:auto; vertical-align: top;"></h6>
         <h6 class="text-muted m-t-10 m-b-0">Disponibles: <b>{{monedas_disponibles}}</b> <img src="{% static 'img/monedalink.png' %}" alt="" style="max-width:19px; height:auto; vertical-align: top;"></h6>
-        <div style="margin-top: 15px;">
+        <div style="margin-top: 15px; margin-bottom: 30px;">
             <button type="button" data-toggle="modal" data-target="#ModalPremio" class="btn waves-effect waves-light btn-rounded btn-sm btn-secondary" name="subir_item" value="{{t.0.id}}"><img src="{% static 'img/regalo.png' %}" alt="" style="max-width:25px; height:auto; vertical-align: bottom;"> Regalar</button>
 
         </div>
@@ -115,23 +157,27 @@
         </div>
 
     </div>
+
+
+    <h4 class="card-title">Monedas recibidas</h4>
         
         <div class="table-responsive m-t-40">
             <table class="table stylish-table">
                 <thead>
                     <tr>
-                        <th>User</th>
-                        <th>Cantidad</th>
+                        <th style="text-align: center;">User</th>
+                        <th style="text-align: center;">Cantidad</th>
                         <th>Mensaje</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for i in recibidas %}
                     <tr>
-                        <td style="width:50px;"><span class="round">{{i.2}}</span></td>
+                        <td style="text-align: center;"><img src="{% usuario i.2 %}" class="rounded" style="width: 40px;"
+                            alt=""><span class="ml-2">{{i.2}}</span></td>
 
-                        <td>{{i.0}} <img src="{% static 'img/monedalink.png' %}" alt="" style="max-width:17px; height:auto; vertical-align: top; margin-top: 2px;"></td>
-                        <td><b>Mensaje:</b> <i>"{{i.1}}"</i></td>
+                        <td style="text-align: center;">{{i.0}} <img src="{% static 'img/monedalink.png' %}" alt="" style="max-width:17px; height:auto; vertical-align: top; margin-top: 2px;"></td>
+                        <td style="width: 80%;"><b>Mensaje:</b> <i>"{{i.1}}"</i></td>
                     </tr>
                     {% endfor %}
  
