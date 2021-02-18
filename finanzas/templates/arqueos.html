@@ -105,9 +105,16 @@
         
                             <tbody>
                                 {% for i in data %}
-                                <tr>                                    
-
+                                <tr>  
+                                    
                                     <td> <a href="{% url 'Arqueo diario' i.id %}">Arqueo con fecha {{i.fecha|date:"d-m-Y"}}</a> - Nombre del archivo: "{{i.arqueo}}"</td>    
+                                    <td><form method="POST">
+                                        <button class="btn btn-link fa fa-trash d-flex align-content-end" type="submit" name="delete" value="{{i.id}}" style="text-decoration: none;"></button>
+
+                                        {% csrf_token %}
+                                    </form>
+
+                                    </td>                                  
 
                                 </tr>
                                 {% endfor %}

@@ -2535,12 +2535,18 @@ def arqueo_diario(request, id_arqueo):
 def arqueos(request):
 
     if request.method == 'POST':
-        b = Arqueo(
-            fecha = request.POST['fecha'],
-            arqueo = request.FILES['adjunto']
-        )
+        datos_p = request.POST.items()
+        for d in datos_p:
+            if d[0] == "fecha":
+                b = Arqueo(
+                    fecha = request.POST['fecha'],
+                    arqueo = request.FILES['adjunto']
+                )
 
-        b.save()
+                b.save()
+            if d[0] == "delete":
+                arqueo = Arqueo.objects.get(id = int(request.POST['delete']))
+                arqueo.delete()
 
     data = Arqueo.objects.all().order_by('-fecha')
 
