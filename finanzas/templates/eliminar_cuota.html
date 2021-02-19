@@ -1,32 +1,55 @@
-{% extends "users/inicio.html" %}
+{% extends "users/inicio2.html" %}
 
 {% load static %}
 
 {% block content %}
 
+<div class="container-fluid r-aside">
 
-<div class = "jumbotron" style="background-color: white; margin-bottom: 0px;">
-
-    <div class = "jumbotron" style="width: 70%; text-align: center; margin-left: 15%;">
-
-        <h3> ¿Desea eliminar la cuota?</h3>
-        <b><hr class = "my-4" style="width: 100%;"></b>
-
-        <div>
-
-            <form method="post">
-                {% csrf_token %}
-        
-                <button type='submit' class = "btn btn-outline-danger">Eliminar</button>
-                <a class = "btn btn-outline-success" href="{% url 'Cuenta corriente venta' cuota.cuenta_corriente.id %}">Volver</a>
-        
-            </form>
-
-
+    <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+            <h3 class="text-themecolor">Eliminar Cuota</h3>
         </div>
 
-        
+        <div class="col-md-7 align-self-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'Cuenta corriente venta' cuota.cuenta_corriente.id %}">Cta Cte Cliente</a></li>
+                <li class="breadcrumb-item">Eliminar Cuota</li>
+            </ol>
+        </div>
 
+    </div>
+
+</div>
+
+<div class="row ">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="row d-flex justify-content-center">
+                    <div class="col-6 bg-light p-4 border rounded" style="text-align: center;">
+
+                        <h3> ¿Está seguro de eliminar la cuota?</h3>
+                        <h6>Esta acción no se puede restaurar</h6>
+                        <div style="margin-top: 15px;">
+
+                            <form method="post">
+                                {% csrf_token %}
+
+                                <button type='submit' class="btn btn-danger">Eliminar</button>
+                            
+                            </form>
+
+
+                        </div>
+
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 

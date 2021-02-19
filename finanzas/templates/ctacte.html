@@ -1,4 +1,4 @@
-{% extends "users/inicio.html" %}
+{% extends "users/inicio2.html" %}
 
 {% load static %}
 {% load humanize %}
@@ -7,140 +7,176 @@
 
 
 
-<div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;" > 
+<div class="container-fluid r-aside">
 
-    <div style="text-align: center;">
-
-        <h2 style="font-family: Arial, Helvetica, sans-serif;">Cuentas corrientes</h2>
-
-        <div>
-
-            <img src="{{ctacte.venta.unidad.proyecto.iamgen.url}}"  class="img-fluid" alt="..." style="max-width:200px;width:auto;height:auto; margin-top: 5px; margin-bottom: 5px;">
-  
-
+    <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+            <h3 class="text-themecolor">Cuentas corrientes</h3>
         </div>
 
-        <div>
-
-            <small style="color: rgb({{ctacte.venta.unidad.proyecto.color}}); font-family: Arial, Helvetica, sans-serif;"><b>{{ctacte.venta.comprador}} ({{ctacte.venta.unidad.piso_unidad}} - {{ctacte.venta.unidad.nombre_unidad}}) </b> </small>
-        
-
+        <div class="col-md-7 align-self-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+                <li class="breadcrumb-item"><a
+                    href="{% url 'Cuenta corriente proyecto' ctacte.venta.unidad.proyecto.id %}">Panel</a>
+            </li>
+                <li class="breadcrumb-item">Cuenta</li>
+            </ol>
         </div>
 
-        
-
-        <div>
-            <small><b>Modulo:</b> Cuentas corrientes </small>
-        </div>
-        <b><hr class = "my-4" style="width: 100%; "></b>
-    
-
-    <div class = "tableconteinerabel">
-
-        <div style="text-align: left;">
-
-            <a href="{% url 'Resumen cuenta corriente' ctacte.id %}" class="btn btn-outline-primary"><img src="{% static 'img/reportar.png' %}" alt="" style="max-width:20px; height:auto;"> Resumen</a>
-
-            <a href="{% url 'Cuenta corriente venta boleto' ctacte.id %}" class="btn btn-outline-primary"><img src="{% static 'img/buscar.png' %}" alt="" style="max-width:20px; height:auto;"> Boleto</a>
-
-            <a href="{% url 'Agregar cuota' ctacte.id %}" class="btn btn-outline-info"><img src="{% static 'img/agregar-archivo.png' %}" alt="" style="max-width:20px; height:auto;"> Nueva cuota</a>
-
-            <a href= "{% url 'Descargar cuenta' id_cuenta=ctacte.id %}" class="btn btn-outline-success" style="text-align: end; margin-top: 5px;" > <img src="{% static 'img/sobresalir.png' %}" alt="" style="max-width:20px; height:auto;"  > Descargar Excel</a>
-
-        </div>
-
-        <table class = "table table-hover" style="text-align: center; margin-top: 5px;">
-            <thead>
-    
-                <tr class = "table-dark">
-                    <th style="vertical-align: middle;" scope = "row"> <small>FECHA CUOTA</small></th>
-                    <th style="vertical-align: middle;"  scope = "row" class="priority-3"> <small>BOLETO</small></th>
-                    <th style="vertical-align: middle;"  scope = "row" class="priority-3"> <small>CONCEPTO</small></th>
-                    <th style="vertical-align: middle;"  scope = "row" class="priority-5" > <small>MONEDA (MD) </small></th>
-                    <th style="vertical-align: middle;"  scope = "row" class="priority-4"> <small> VALOR EN (MD) </small></th>
-                    <th style="vertical-align: middle;"  scope = "row" class="priority-4"> <small> PAGADO EN (MD) </small></th>
-                    <th style="vertical-align: middle;"  scope = "row"> <small> SALDO EN (MD) </small></th>
-                    <th style="vertical-align: middle;"  scope = "row"> <small> VALOR DE MD</small></th>
-                    <th style="vertical-align: middle;"  scope = "row"> <small> SALDO EN PESOS </small></th>
-                    <th style="vertical-align: middle;"  scope = "row"> <small> INGRESAR PAGO </small></th>
-                    <th style="vertical-align: middle;"  scope = "row" class="priority-3"> <small> EDITAR </small></th>
-                    <th style="vertical-align: middle;"  scope = "row" class="priority-3"> <small> ELIMINAR </small></th>
-
-                </tr>
-            </thead>
-    
-            <tbody>   
-    
-                {% for i in datos_cuenta %}
-                <tr class = "table-light">
-                    
-                    <td> <b> <small> <b>{{i.0.fecha}}</b> </small> </b></td>    
-                    <td class="priority-3"> <b> <small>
-
-                        
-
-                            {% if i.0.boleto == "NO BOLETO" %}
-                        
-                        <a href="{% url 'Boleto en cuota' ctacte.id i.0.id %}"><b style="color: #CE2615;"> ⚫ </b></a>    
-
-                        {% else %}
-
-                        <a href="{% url 'Boleto en cuota' ctacte.id i.0.id %}"><b style="color: #34CE15;">{{i.0.porc_boleto|floatformat:2}} </b></a>
-
-                        {% endif %}
-
-
-                        
-
-                    </small> </b> </td>
-
-                    <td class="priority-3"> <b> <small>{{i.0.concepto|upper}}</small> </b> </td>
-                    <td class="priority-5"> <b> <small>{{i.0.constante.nombre}}</small> </b> </td>
-
-                    <td class="priority-4"> <b> <small>{{i.0.precio|floatformat:2}}</small> </b> </td>
-
-                    <td class="priority-4"> <b> <small>{{i.1|floatformat:2}}</small> </b> </td>
-                    <td> <b> <small>{{i.2|floatformat:2}}</small> </b> </td>
-
-                    {% if i.5 == 0 %}
-                    <td> <b> <small>${{i.0.constante.valor|floatformat:0|intcomma}}</small> </b> </td>
-
-                    {% else %}
-
-                    <td> <b> <small>${{i.5|floatformat:0|intcomma}}</small> </b> </td>
-
-                    {% endif %}
-                    <td> <b> <small> <b>${{i.3|floatformat:0|intcomma}}</b> </small></b> </td>
-                    <td> <b><a href="{% url 'Pagos' i.0.id %}" class="btn btn-sm btn-success" >Ingresar</a>
-                    </b> </td>
-                    <td class="priority-3"> <b><a href="{% url 'Editar cuota' i.0.id %}"><img src="{% static 'img/documento.png' %}" alt="" style="max-width:20px; height:auto;"></a>
-                    </b> </td>
-                    <td class="priority-3"> <b><a href="{% url 'Eliminar cuota' i.0.id %}"><img src="{% static 'img/borrar.png' %}" alt="" style="max-width:20px; height:auto;"></a>
-                    </b> </td>
-                   
-    
-    
-    
-                </tr>
-                {% endfor %}
-            </tbody>
-         
-    
-    
-        </table>
-    
-        </div>
-
-
-    <div style="text-align: center; margin-top: 10%;">
-        <p style="font-family: Arial, Helvetica, sans-serif;"> <small>-- Link<strong>P</strong> --</small> </p>
-
-     </div>
-
-    
-    
+    </div>
 
 </div>
 
+<div class="row ">
+    <div class="col-12">
+        <div class="card overflow-auto">
+            <div class="card-body">
+
+                <div style="text-align: center; margin-bottom: 50px;">
+                    <img src="{{ctacte.venta.unidad.proyecto.iamgen.url}}" class="img-fluid" alt="..."
+                        style="max-width:200px;width:auto;height:auto; margin-top: 5px; margin-bottom: 5px;">
+                </div>
+
+
+                
+
+                    <div style="text-align: left; display: inline-block;">
+
+                        <a href="{% url 'Agregar cuota' ctacte.id %}" style="text-decoration: none;"data-toggle="tooltip" data-placement="right" title="" data-original-title="Agregar cuota"><img
+                            src="{% static 'img/add.png' %}" alt=""
+                            style="max-width:20px; height:auto;"></a>
+
+                        <a href="{% url 'Resumen cuenta corriente' ctacte.id %}" style="text-decoration: none; margin-left: 10px;" data-toggle="tooltip" data-placement="right" title="" data-original-title="Resumen de la cuenta"><img
+                                src="{% static 'img/reporte.png' %}" alt="" style="max-width:20px; height:auto;"></a>
+
+                        <a href="{% url 'Cuenta corriente venta boleto' ctacte.id %}"
+                        style="text-decoration: none;  margin-left: 10px;" data-toggle="tooltip" data-placement="right" title="" data-original-title="Panel de boleto"><img src="{% static 'img/cuenta.png' %}" alt=""
+                                style="max-width:20px; height:auto;"></a>
+
+                        
+
+                        <a href="{% url 'Descargar cuenta' id_cuenta=ctacte.id %}"
+                            style="text-align: end; margin-top: 5px; text-decoration: none;  margin-left: 10px;" data-toggle="tooltip" data-placement="right" title="" data-original-title="Descargar Excel"> <img src="{% static 'img/sobresalir.png' %}"
+                                alt="" style="max-width:20px; height:auto;"></a>
+
+                        
+
+                    </div>
+
+                    <div style="text-align: left; display: inline-block; margin-left: 20px;">
+
+                        <h5
+                                style="color: rgb({{ctacte.venta.unidad.proyecto.color}})">{{ctacte.venta.comprador}}
+                                    ({{ctacte.venta.unidad.piso_unidad}} - {{ctacte.venta.unidad.nombre_unidad}}) 
+                            </h5>
     
+                    </div>
+
+                    <table id="example" class="table table-striped table-bordered" style="width:100%">
+                        <thead>
+
+                            <tr>
+                                <th>Concepto</th>
+                                <th style="text-align: center;">B</th>
+                                <th>Fecha</th>
+                                <th>Moneda</th>
+                                <th>Total</th>
+                                <th>Pago</th>
+                                <th>Saldo</th>
+                                <th>Cotización</th>
+                                <th>  Saldo en pesos </th>
+                                <th>  Pagos </th>
+
+                            </tr>
+                        </thead>
+
+                        <tbody style="font-size: 12px;">
+
+                            {% for i in datos_cuenta %}
+                            <tr>
+                                <td>
+                                    <div style="display: inline-block;"><a href="{% url 'Eliminar cuota' i.0.id %}"><img src="{% static 'img/eliminar.png' %}" alt=""
+                                        style="max-width:13px; height:auto;"></a></div>
+                                    <div style="display: inline-block;"><a href="{% url 'Editar cuota' i.0.id %}" ><img src="{% static 'img/editar.png' %}" alt=""
+                                        style="max-width:10px; height:auto;"></a></div>
+                                    <div style="display: inline-block;"> {{i.0.concepto|upper}}</div>
+                                    
+                                    
+                                        
+                                        </td>
+                                <td style="text-align: center;" >
+
+
+
+                                    {% if i.0.boleto == "NO BOLETO" %}
+
+                                    <a href="{% url 'Boleto en cuota' ctacte.id i.0.id %}"><b
+                                            style="color: #CE2615;"> ⚫ </a>
+
+                                    {% else %}
+
+                                    <a href="{% url 'Boleto en cuota' ctacte.id i.0.id %}"><b
+                                            style="color: #34CE15;">{{i.0.porc_boleto|floatformat:2}} </a>
+
+                                    {% endif %}
+
+
+                                  </td>
+
+                        
+
+                                <td>{{i.0.fecha|date:"j-m-Y"}}</td>
+                                
+                                <td> {{i.0.constante.nombre}}</td>
+
+                                <td> {{i.0.precio|floatformat:2}}</td>
+
+                                <td> {{i.1|floatformat:2}}</td>
+                                <td> {{i.2|floatformat:2}}</td>
+
+                                {% if i.5 == 0 %}
+                                <td> ${{i.0.constante.valor|floatformat:0|intcomma}}</td>
+
+                                {% else %}
+
+                                <td> ${{i.5|floatformat:0|intcomma}}</td>
+
+                                {% endif %}
+                                <td> ${{i.3|floatformat:0|intcomma}} </td>
+                                <td><a href="{% url 'Pagos' i.0.id %}" class="btn btn-sm btn-success">Ingresar</a>
+                                     </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+
+                    </table>
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js" defer></script>
+<script src="https://cdn.datatables.net/1.10.23/js/dataTables.bootstrap4.min.js" defer></script>
+
+
+
+<script>
+    $(document).ready(function () {
+        $('#example').DataTable({
+            "paging": false,
+            "searching": false,
+            "info": false
+        });
+    });
+</script>
+
+
+
 {% endblock %}

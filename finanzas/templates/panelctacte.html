@@ -1,112 +1,79 @@
-{% extends "users/inicio.html" %}
+{% extends "users/inicio2.html" %}
 
 {% load static %}
 {% load humanize %}
 
 {% block content %}
 
+<div class="container-fluid r-aside">
+    <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+            <h3 class="text-themecolor">Administración de Cuentas Corrientes</h3>
+        </div>
 
-<div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;" > 
+        <div class="col-md-7 align-self-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+                <li class="breadcrumb-item">Administración de Cuentas Corrientes</li>
+            </ol>
+        </div>
+    </div>
+</div>
 
-    <div style="text-align: center;">
 
-        <h2 style="font-family: Arial, Helvetica, sans-serif;" >Administración de Cuentas Corrientes</h2>
+<div class="row">
+    <div class="col-lg-6 col-xlg-4">
+        <div class="card p-1">
+            <div class="card-body">
 
-        <small><b>Modulo:</b> Cuentas corrientes </small>
+                <form method="POST">
 
+                    {% csrf_token %}
 
-        <b><hr class = "my-4" style="width: 75%; "></b>
-    
+                    <label>Cuentas de un proyecto</label>
+                    <select name="proyecto" class="custom-select">
+
+                        {% for i in datos %}
+
+                        <option value="{{i.0}}">{{i.1}}</option>
+
+                        {% endfor %}
+                    </select>
+
+                    <div class="my-4" style="text-align: right;">
+                        <button class="btn btn-primary" type="submit">
+                            Buscar</button>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
     </div>
 
 
-    <div style="text-align: center; width: 350px; height: 210px; display: inline-block; margin: 20px; vertical-align: top; border: 2px solid rgb(11, 32, 68); border-radius: 5%;">
 
-        <div style="margin: 15px;">
-
-            <form method="POST">
-
-                {% csrf_token %}
-     
+    <div class="col-lg-6 col-xlg-4">
+        <div class="card">
+            <div class="card-body text-center">
                 <div>
-     
-                <h6 style= "font-family: Arial, Helvetica, sans-serif; color: rgb(11, 32, 68); ">Cuentas de un proyecto</h6>
-                
-               </div>
-     
-               <select name="proyecto" class="custom-select" style="width: 200px; margin-top: 5px;">
-
-
-                {% for i in datos %}
-    
-    
-                   <option value="{{i.0}}">{{i.1}}</option>
-    
-                {% endfor %}
-    
-    
-                 </select>
-                  
-                  
-     
-                  <div>
-                    <button class="btn btn-dark" type="submit" style="margin-top: 10px;"><img src="{% static 'img/buscar2.png' %}" alt="" style="max-width:20px; height:auto;"> Buscar</button>          
+                    <h6>Resumen de cuentas</h6>
                 </div>
-                
-            </form>
-     
-            <b><hr class = "my-4" style="width: 75%; "></b>
 
+                <div>
+                    <img src="{% static 'img/capas.png' %}" alt="" style="max-width:70px; height:auto; margin: 15px;">
+                </div>
+
+                <a href="{% url 'Total cuenta' 0 %}"><button class="btn btn-dark">
+                        Ver reporte!</button></a>
+
+            </div>
 
         </div>
-       
-
-   </div>
-
-
-   <div style="text-align: center; width: 350px; height: 210px; display: inline-block; margin: 20px; vertical-align: top; border: 2px solid rgb(11, 32, 68); border-radius: 5%;">
-
-    <div style="margin: 15px;">
-
-        <div>
-     
-            <h6 style= "font-family: Arial, Helvetica, sans-serif; color: rgb(11, 32, 68);">Resumen de cuentas</h6>
-
-
-            
-           </div>
-
-           
-
-           <div>
-
-            <img src="{% static 'img/grupo.png' %}" alt="" style="max-width:40px; height:auto;">
-           </div>
-
-
     </div>
-
-    <div style="margin: 15px; ">
-
-        <a href="{% url 'Total cuenta' 0 %}"><button class="btn btn-dark"><img src="{% static 'img/reportar.png' %}" alt="" style="max-width:20px; height:auto;"> Ver reporte!</button></a>
-
-    </div>
-
-    <b><hr class = "my-4" style="width: 75%; "></b>
-
 </div>
 
-   <b><hr class = "my-4" style="width: 50%; "></b>
 
-
-    <div style="text-align: center; margin-top: 10%;">
-
-        <p style="font-family: Arial, Helvetica, sans-serif;"> <small>-- Link<strong>P</strong> --</small> </p>
-
-     </div>
-
-
-</div>
 
 
 {% endblock %}
