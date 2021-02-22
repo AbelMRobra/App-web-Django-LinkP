@@ -22,6 +22,10 @@ urlpatterns = [
     url(r'^tablerorega/(?P<id_proyecto>\d+)/(?P<id_area>\d+)/(?P<id_estado>\d+)/$', login_required(views.tablerorega), name = 'Tablero Rega'),
     url(r'^tableroregaadd$', login_required(views.tableroregaadd), name = 'Tablero Rega Add'),
 
+    # Templates de anuncis
+
+    url(r'anuncios$', login_required(views.anuncios), name = 'Anuncios'),
+
     # Templates de minutas
 
     url(r'minutas$', login_required(views.minutas), name = 'Minutas Listas'),

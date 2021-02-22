@@ -145,6 +145,9 @@
                 {% if request.user|has_group:"PRESUPUESTO NIVEL 10" %}
                 <li><a href="/informes">Informes</a></li>
                 {% endif %}
+                {% if request.user|has_group:"ANUNCIOS NIVEL 10" %}
+                <li><a href="{% url 'Anuncios' %}">Anuncios</a></li>
+                {% endif %}
                 <li><a href="/logout">Logout</a></li>
               </ul>
             </li>

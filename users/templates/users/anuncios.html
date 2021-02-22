@@ -1,0 +1,268 @@
+{% extends "users/inicio2.html" %}
+
+{% load humanize %}
+{% load apptags_extras %}
+
+{% load static %}
+
+{% block content %}
+
+<div class="container-fluid r-aside">
+    <!-- ============================================================== -->
+    <!-- Cabeza de la pagina -->
+    <!-- ============================================================== -->
+    <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+            <h3 class="text-themecolor">Anuncios informativos</h3>
+        </div>
+
+        <div class="col-md-7 align-self-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+                <li class="breadcrumb-item">Anuncios</li>
+
+            </ol>
+        </div>
+
+    </div>
+
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+
+                <div class="d-flex">
+                    <div>
+                        <h4 class="card-title"><span class="lstick"></span>
+                            Anuncios realizados</h4>
+                        <h6 class="card-subtitle">Registros</h6>
+
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <td><a type="button" data-toggle="modal" data-target="#ModalArqueo"><img
+                                            src="{% static 'img/add.png' %}" alt=""
+                                            style="max-width:25px; height:auto; vertical-align: bottom;"></a>
+                                    Detalle </td>
+
+                            </tr>
+
+                            <!-- Modal fecha estado Subitem -->
+                            <div class="modal fade" id="ModalArqueo" tabindex="-1" role="dialog"
+                                aria-labelledby="ModalArqueo" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLongTitle">Cargar un anuncio</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form method="POST" style="margin: 15px;" enctype="multipart/form-data"
+                                                id="upload-image-form">
+
+                                                {% csrf_token %}
+
+                                                <h6>Titulo</h6>
+
+                                                <div class="input-group mb-3">
+
+                                                    <input name="titulo" type="text" class="form-control form-control"
+                                                        style="width: 300px;">
+                                                </div>
+
+                                                <h6>Descripción corta</h6>
+
+                                                <div class="input-group mb-3">
+
+                                                    <input name="descrip" type="text" class="form-control form-control"
+                                                        style="width: 300px;">
+
+                                                </div>
+
+                                                <h6>Categoria</h6>
+
+                                                <div class="input-group mb-3">
+
+                                                    <select class="form-control" id="exampleFormControlSelect1"
+                                                        name="categoria" style="width: 300px;">
+                                                        <option>LINKP</option>
+                                                        <option>COMUNIDAD</option>
+                                                        <option>PROYECTOS</option>
+                                                    </select>
+
+                                                </div>
+
+                                                <h6>Imagen</h6>
+
+                                                <div class="input-group mb-3">
+
+                                                    <input name="imagen" type="file" class="form-control form-control"
+                                                        style="width: 300px;">
+                                                </div>
+
+                                                <button type="submit" class="btn btn-light" name="NUEVO">
+                                                    <img src="{% static 'img/upload.png' %}" alt=""
+                                                        style="max-width:20px; height:auto;">
+                                                    <b>Cargar</b></button>
+
+                                                {{ form.as_p }}
+
+                                            </form>
+
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-dismiss="modal">Close</button>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <!-- Final del modal -->
+
+                        </thead>
+
+                        <tbody>
+                            {% for i in data %}
+                            <tr>
+
+                                <td>
+                                    <div>
+                                        <div class="col-12">
+                                            <a type="button" data-toggle="modal"
+                                                data-target="#ModalAnuncio{{i.id}}">{{i.titulo}}</a> - <div
+                                                class="label label-table label-{% if i.activo == "SI" %}success{% else %}danger{% endif %}">{{i.activo}}</div></span>
+
+                                        </div>
+                                        <div class="col">
+                                            <h6>
+                                                Descripción: "{{i.descrip}}"
+
+                                            </h6>
+                                        </div>
+
+                                    </div>
+                                </td>
+                                <!-- Modal fecha estado Subitem -->
+                                <div class="modal fade" id="ModalAnuncio{{i.id}}" tabindex="-1" role="dialog"
+                                    aria-labelledby="ModalAnuncio{{i.id}}" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLongTitle">Modificar un anuncio
+                                                </h5>
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                    aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form method="POST" style="margin: 15px;" enctype="multipart/form-data"
+                                                    id="upload-image-form">
+
+                                                    {% csrf_token %}
+
+                                                    <h6>Titulo</h6>
+
+                                                    <div class="input-group mb-3">
+
+                                                        <input name="titulo" type="text"
+                                                            class="form-control form-control" style="width: 300px;"
+                                                            value="{{i.titulo}}">
+                                                    </div>
+
+                                                    <h6>Descripción corta</h6>
+
+                                                    <div class="input-group mb-3">
+
+                                                        <input name="descrip" type="text"
+                                                            class="form-control form-control" style="width: 300px;"
+                                                            value="{{i.descrip}}">
+
+                                                    </div>
+
+                                                    <h6>Categoria</h6>
+
+                                                    <div class="input-group mb-3">
+                                                        <select class="form-control" id="exampleFormControlSelect1"
+                                                            name="categoria" style="width: 300px;">
+                                                            <option>LINKP</option>
+                                                            <option>COMUNIDAD</option>
+                                                            <option>PROYECTOS</option>
+                                                        </select>
+                                                    </div>
+                                                    
+                                                    <div class="input-group mb-3">
+                                                        <select class="form-control" name="activo"
+                                                            style="width: 300px;">
+                                                            <option {% if i.activo == "SI" %}selected{% endif%}>SI</option>
+                                                            <option {% if i.activo == "NO" %}selected{% endif%}>NO</option>
+                                                        </select>
+                                                    </div>
+
+                                                    <h6>Imagen</h6>
+
+                                                    <div class="input-group mb-3">
+
+                                                        <input name="imagen" type="file"
+                                                            class="form-control form-control" style="width: 300px;">
+                                                    </div>
+
+                                                    <button type="submit" class="btn btn-light" value="{{i.id}}" name="ID">
+                                                        <img src="{% static 'img/upload.png' %}" alt=""
+                                                            style="max-width:20px; height:auto;">
+                                                        <b>Cargar</b></button>
+
+                                                    {{ form.as_p }}
+
+                                                </form>
+
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-dismiss="modal">Close</button>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <!-- Final del modal -->
+                                <td>
+                                    <form method="POST">
+                                        <button class="btn btn-link fa fa-trash d-flex align-content-end" type="submit"
+                                            name="delete" value="{{i.id}}" style="text-decoration: none;"></button>
+
+                                        {% csrf_token %}
+                                    </form>
+
+                                </td>
+
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+
+
+                </div>
+
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}

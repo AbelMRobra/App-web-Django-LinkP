@@ -798,7 +798,7 @@ def inicio(request):
     inicio = datetime.date(2020, 5, 1)
     dias_funcionando = (hoy - inicio).days
     monedas = len(EntregaMoneda.objects.filter(fecha__gte = datetime.date.today(), usuario_recibe__identificacion = request.user))
-    anuncios = Anuncios.objects.all().exclude(activo = "NO")
+    anuncios = Anuncios.objects.all().exclude(activo = "NO").order_by("-id")
 
 
     return render(request, "users/inicio2.html", {"anuncios":anuncios, "monedas":monedas, "dias_funcionando":dias_funcionando, "cantidad_p":cantidad_p, "cantidad_m":cantidad_m, "datos_barras":barras, "datos_logo":datos_logo, "mensaje_oc":mensaje_oc, "mensajesdeldia":mensajesdeldia, "datos_mensajeria":datos_mensajeria, "lista_grupos":lista_grupos, "miembros":miembros})
@@ -1166,6 +1166,47 @@ def tableroregaadd(request):
 
 
     return render(request, 'seguimiento_add.html', {'areas':areas, 'proyecto':proyecto, 'list_users':list_users})
+
+def anuncios(request):
+
+    if request.method == 'POST':
+
+        datos_p = request.POST.items()
+
+        for d in datos_p:
+            if d[0] == "ID":
+                anuncio = Anuncios.objects.get(id = int(request.POST["ID"]))
+                anuncio.titulo = request.POST["titulo"]
+                anuncio.categoria = request.POST["categoria"]
+                anuncio.descrip = request.POST["descrip"]
+                anuncio.activo = request.POST["activo"]
+                try:
+                    anuncio.imagen = request.FILES['imagen']
+                    anuncio.save()
+                except:
+                    anuncio.save()
+            
+            if d[0] == "NUEVO":
+
+                b = Anuncios(
+                    titulo = request.POST["titulo"],
+                    categoria = request.POST["categoria"],
+                    descrip = request.POST["descrip"],
+                    activo = "SI",
+                    imagen = request.FILES['imagen']
+                )
+
+                b.save()
+
+            if d[0] == "delete":
+                anuncio = Anuncios.objects.get(id = int(request.POST["delete"]))
+                anuncio.delete()
+
+
+    data = Anuncios.objects.all().order_by("-id")
+
+    return render(request, 'users/anuncios.html', {"data":data})
+
 
 def minutas(request):
 
