@@ -254,10 +254,10 @@
 
 
                     {% for i in datos_registro  %}
-                    Math.round({{i.1|floatformat:0}}/1000),  
+                    Math.round({{i.1|floatformat:0}}/1000000),  
                                      
                     {% endfor %}
-                    Math.round({{datos_finales_2.7|floatformat:0}}/1000),
+                    Math.round({{datos_finales_2.7|floatformat:0}}/1000000),
                     ]
 
                     {% endif %}
@@ -307,9 +307,9 @@
                     {% else %}
 
                     {% for i in datos_registro %}
-                    Math.round({{i.0|floatformat:0}}/1000),                   
+                    Math.round({{i.0|floatformat:0}}/1000000),                   
                     {% endfor %}
-                    Math.round({{datos_finales_2.6|floatformat:0}}/1000),
+                    Math.round({{datos_finales_2.6|floatformat:0}}/1000000),
 
                     {% endif %}
                     ]
@@ -338,11 +338,11 @@
                                 min: 0,
 
                                 {% if id_moneda == "1" %}
-                                stepSize: 2,
+                                stepSize: 10,
                                 {% elif id_moneda == "0" %}
                                 stepSize: 100,
                                 {% else %}
-                                stepSize: 100,
+                                stepSize: 1,
                                 {% endif %}
                                 callback: function(label, index, labels) {
 
@@ -355,7 +355,7 @@
                                     
                                     {% else %}
 
-                                    return 'U$D '+label+ ' Mil';
+                                    return 'U$D '+label+ ' Millones';
 
                                     {% endif %}
                                     
