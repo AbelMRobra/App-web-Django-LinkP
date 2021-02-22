@@ -14,7 +14,8 @@
         <div class="col-md-7 align-self-center">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
-                <li class="breadcrumb-item"><a href="{% url 'Cuenta corriente venta' cuota.cuenta_corriente.id %}">Cta Cte Cliente</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'Cuenta corriente venta' cuota.cuenta_corriente.id %}">Cta
+                        Cte Cliente</a></li>
                 <li class="breadcrumb-item">Eliminar Cuota</li>
             </ol>
         </div>
@@ -23,29 +24,33 @@
 
 </div>
 
-<div class="row ">
+<div class="row">
     <div class="col-12">
         <div class="card">
-            <div class="card-body">
-                <div class="row d-flex justify-content-center">
-                    <div class="col-6 bg-light p-4 border rounded" style="text-align: center;">
+            <div class="card-body row">
+                <div class="col-12 justify-content-center">
 
-                        <h3> ¿Está seguro de eliminar la cuota?</h3>
-                        <h6>Esta acción no se puede restaurar</h6>
-                        <div style="margin-top: 15px;">
+                    <div class="row d-flex justify-content-center">
+                        <div class="col col-md-12 col-lg-12 text-center">
 
-                            <form method="post">
-                                {% csrf_token %}
+                            <h3> ¿Está seguro de eliminar la cuota?</h3>
+                            <h6>Esta acción no se puede restaurar</h6>
+                            <div style="margin-top: 15px;">
 
-                                <button type='submit' class="btn btn-danger">Eliminar</button>
-                            
-                            </form>
+                                <form method="post">
+                                    {% csrf_token %}
+                                    <div class="row d-flex justify-content-center">
+
+                                    <button type='submit' class="btn btn-danger">Eliminar</button>
+                                    </div>
+                                </form>
+
+
+                            </div>
+
 
 
                         </div>
-
-
-
                     </div>
                 </div>
             </div>

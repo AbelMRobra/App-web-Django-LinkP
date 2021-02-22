@@ -1,4 +1,4 @@
-{% extends "users/inicio.html" %}
+{% extends "users/inicio2.html" %}
 
 {% load static %}
 {% load humanize %}
@@ -6,259 +6,239 @@
 {% block content %}
 
 
+<div class="container-fluid r-aside">
 
-<div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;" > 
-
-    <div style="text-align: center;">
-
-        <div>
-
-            <img src="{{ctacte.venta.unidad.proyecto.iamgen.url}}"  class="img-fluid" alt="..." style="max-width:300px; height:auto; margin-top: 5px; margin-bottom: 5px;">
-  
-
-        </div>
-
-        <div>
-
-            <small style="color: rgb({{ctacte.venta.unidad.proyecto.color}}); font-family: Arial, Helvetica, sans-serif;"><b>{{ ctacte.venta.unidad.proyecto.nombre }}</b> </small>
-        
-
-        </div>
-
-        <div style="text-align: left; margin-top: 2%;">
-
-            <h6>Fecha de la venta: <small>{{ctacte.venta.fecha}}</small> </h6>
-            <h6>Cliente: <small>{{ctacte.venta.comprador}}</small> </h6>
-            <h6>Unidad: <small>{{ctacte.venta.unidad.piso_unidad}} - {{ctacte.venta.unidad.nombre_unidad}}</small></h6>
-            
-            {% if ctacte.venta.unidad.tipo == "DEPARTAMENTO" %}
-
-            <h6>Tipo: <small>{{ctacte.venta.unidad.tipo}} {{ctacte.venta.unidad.tipologia}} de {{ctacte.venta.m2|floatformat:2}} m2</small></h6>
-            
-
-            {% elif  ctacte.venta.unidad.tipo == "COCHERA" %}
-
-            <h6>Tipo: <small>{{ctacte.venta.unidad.tipo}} de {{ctacte.venta.m2|floatformat:2}} m2</small></h6>
-            
-
-            {% elif  ctacte.venta.unidad.tipo == "LOCAL" %}
-
-            <h6>Tipo: <small>{{ctacte.venta.unidad.tipo}} de {{ctacte.venta.m2|floatformat:2}} m2</small></h6>
-           
-
-            {% endif %}
-            
-
-        </div>
-        <b><hr class = "my-4" style="width: 100%; "></b>
-    
-    
+  <div class="row page-titles">
+    <div class="col-md-5 align-self-center">
+      <h3 class="text-themecolor">Resumen</h3>
     </div>
 
-    {% for i in datos %}
+    <div class="col-md-7 align-self-center">
 
-    {% if i.5 < 1 %}
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+        <li class="breadcrumb-item">Resumen</li>
+      </ol>
 
-    <div class="card border-success mb-3" style="display: inline-block; width: 310px; height: 250px; vertical-align: top;  margin: 10px;">
-                
-        <div class="card-body">
-
-            
-          
-            <div style="display: inline-block; text-align: left; vertical-align: top; margin-top: 10px;">
-  
-            <h6 style="font-family: Arial, Helvetica, sans-serif;"> {{i.0|upper}}</h6> 
-          
-            </div>
-
-            <div>
-  
-              <small style="font-family: Arial, Helvetica, sans-serif;"><b>Moneda:</b> {{i.1.nombre}} ($ {{i.1.valor|floatformat:2}}) </small> 
-  
-            </div>
-
-            <div>
-  
-                <small style="font-family: Arial, Helvetica, sans-serif;"><b>Monto total:</b> {{i.2|floatformat:2}} </small> 
-    
-              </div>
-
-              <div>
-  
-                <small style="font-family: Arial, Helvetica, sans-serif;"><b>Pagado:</b> {{i.4|floatformat:2}} </small> 
-    
-              </div>
-
-              
-              <div>
-  
-                <small style="font-family: Arial, Helvetica, sans-serif;"><b>Saldo:</b> {{i.5|floatformat:2}} </small> 
-    
-              </div>
-
-              <div>
-  
-                <small style="font-family: Arial, Helvetica, sans-serif;"><b>Saldo en pesos:</b> $ {{i.6|floatformat:0|intcomma}} </small> 
-    
-              </div>
-
-              <div>
-  
-                <small style="font-family: Arial, Helvetica, sans-serif;"><b>Cuotas:</b> {{i.3}} </small> 
-    
-              </div>
-
-              <div style="text-align: center; vertical-align: top;">
-
-                <img src="{% static 'img/cheque.png' %}" alt="" style="max-width:20px; height:auto;">
-
-            </div>
-  
-  
-  
-          </div>
-      </div>
-
-      {% elif  i.4 > 0 %}
-
-
-      <div class="card border-primary mb-3" style="display: inline-block; width: 310px; height: 250px; vertical-align: top;  margin: 10px;">
-                
-        <div class="card-body">
-          <div style="display: inline-block; text-align: left; vertical-align: middle; margin-top: 10px;">
-  
-            <h6 style="font-family: Arial, Helvetica, sans-serif;">{{i.0|upper}}</h6> 
-          </div>
-  
-  
-    
-            <div>
-  
-              <small style="font-family: Arial, Helvetica, sans-serif;"><b>Moneda:</b> {{i.1.nombre}} ($ {{i.1.valor|floatformat:2}}) </small> 
-  
-            </div>
-
-            <div>
-  
-                <small style="font-family: Arial, Helvetica, sans-serif;"><b>Monto total:</b> {{i.2|floatformat:2}} </small> 
-    
-              </div>
-
-              <div>
-  
-                <small style="font-family: Arial, Helvetica, sans-serif;"><b>Pagado:</b> {{i.4|floatformat:2}} </small> 
-    
-              </div>
-
-              
-              <div>
-  
-                <small style="font-family: Arial, Helvetica, sans-serif;"><b>Saldo:</b> {{i.5|floatformat:2}} </small> 
-    
-              </div>
-
-              <div>
-  
-                <small style="font-family: Arial, Helvetica, sans-serif;"><b>Saldo en pesos:</b> $ {{i.6|floatformat:0|intcomma}} </small> 
-    
-              </div>
-
-              <div>
-  
-                <small style="font-family: Arial, Helvetica, sans-serif;"><b>Cuotas:</b> {{i.3}} </small> 
-    
-              </div>
-  
-  
-  
-          </div>
-      </div>
-
-
-
-      {% else %}
-
-      <div class="card border-secondary mb-3" style="display: inline-block; width: 310px; height: 250px; vertical-align: top;  margin: 10px;">
-                
-        <div class="card-body">
-          <div style="display: inline-block; text-align: left; vertical-align: middle; margin-top: 10px;">
-  
-            <h6 style="font-family: Arial, Helvetica, sans-serif;">{{i.0|upper}}</h6> 
-          </div>
-  
-  
-    
-            <div>
-  
-              <small style="font-family: Arial, Helvetica, sans-serif;"><b>Moneda:</b> {{i.1.nombre}} ($ {{i.1.valor|floatformat:2}}) </small> 
-  
-            </div>
-
-            <div>
-  
-                <small style="font-family: Arial, Helvetica, sans-serif;"><b>Monto total:</b> {{i.2|floatformat:2}} </small> 
-    
-              </div>
-
-              <div>
-  
-                <small style="font-family: Arial, Helvetica, sans-serif;"><b>Pagado:</b> {{i.4|floatformat:2}} </small> 
-    
-              </div>
-
-              
-              <div>
-  
-                <small style="font-family: Arial, Helvetica, sans-serif;"><b>Saldo:</b> {{i.5|floatformat:2}} </small> 
-    
-              </div>
-
-              <div>
-  
-                <small style="font-family: Arial, Helvetica, sans-serif;"><b>Saldo en pesos:</b> $ {{i.6|floatformat:0|intcomma}} </small> 
-    
-              </div>
-
-              <div>
-  
-                <small style="font-family: Arial, Helvetica, sans-serif;"><b>Cuotas:</b> {{i.3}} </small> 
-    
-              </div>
-  
-  
-  
-          </div>
-      </div>
-
-
-      {% endif %}
-
-      {% endfor %}
-
-
-      <b><hr class = "my-4" style="width: 100%; "></b>
-
-
-      <h5>Saldo total de la cuenta: <small>${{saldo_total_pesos|floatformat:0|intcomma}}</small> </h5>
-
-      <h6>Proxima cuota: <small>${{datos_cuotas.0.1|floatformat:0|intcomma}} vence en {{datos_cuotas.0.0|date:"F Y"}} </small> </h6>
-
-
-
-        <b><hr class = "my-4" style="width: 100%; "></b>
-
-
-
-
-    <div style="text-align: center; margin-top: 10%;">
-        <p> <small>-- Link<strong>P</strong> --</small> </p>
-
-     </div>
-
-    
-    
-
+    </div>
+  </div>
 </div>
 
-    
+<div class="row">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body row">
+        <div class="col-12 justify-content-center">
+
+          <div class="row d-flex justify-content-center">
+            <div class="col col-md-12 col-lg-12 text-center">
+
+              <img src="{{ctacte.venta.unidad.proyecto.iamgen.url}}" class="img-fluid" alt="..."
+                style="max-width:200px;width:auto;height:auto; margin-top: 5px; margin-bottom: 5px;">
+            </div>
+            <div class="text-center mt-3">
+
+              <h5 style="color: rgb({{ctacte.venta.unidad.proyecto.color}})">
+                {{ctacte.venta.unidad.proyecto.nombre}}</h5>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-body">
+
+              <h6>Fecha de la venta:{{ctacte.venta.fecha}} </h6>
+              <h6>Cliente:{{ctacte.venta.comprador}} </h6>
+              <h6>Unidad:{{ctacte.venta.unidad.piso_unidad}} - {{ctacte.venta.unidad.nombre_unidad}}</h6>
+
+              {% if ctacte.venta.unidad.tipo == "DEPARTAMENTO" %}
+
+              <h6>Tipo:{{ctacte.venta.unidad.tipo}} {{ctacte.venta.unidad.tipologia}} de
+                {{ctacte.venta.m2|floatformat:2}}
+                m2
+              </h6>
+
+              {% elif ctacte.venta.unidad.tipo == "COCHERA" %}
+
+              <h6>Tipo:{{ctacte.venta.unidad.tipo}} de {{ctacte.venta.m2|floatformat:2}} m2</h6>
+
+              {% elif ctacte.venta.unidad.tipo == "LOCAL" %}
+
+              <h6>Tipo:{{ctacte.venta.unidad.tipo}} de {{ctacte.venta.m2|floatformat:2}} m2</h6>
+
+              {% endif %}
+
+            </div>
+
+          </div>
+
+          {% for i in datos %}
+
+          {% if i.5 < 1 %} <div class="card bg-white border border-success mb-3"
+            style="display: inline-block; width: 310px; height: 250px; vertical-align: top;  margin: 10px;">
+
+            <div class="card-body">
+
+              <div class="row d-flex justify-content-center">
+
+                <div class="col col-md-12 col-lg-12 text-center">
+
+                  <div class="row">
+
+                    <div class="col-12 text-center mb-3"
+                      style="display: inline-block; text-align: left; vertical-align: middle; margin-top: 10px;">
+                      <h4> {{i.0|upper}}</h4>
+                    </div>
+
+                    <div class="col-6">
+                      <p><b>Moneda:</b> {{i.1.nombre}} ($ {{i.1.valor|floatformat:2}}) </p>
+                    </div>
+
+                    <div class="col-6">
+                      <p><b>Monto total:</b> {{i.2|floatformat:2}} </p>
+                    </div>
+
+                    <div class="col-6">
+                      <p><b>Pagado:</b> {{i.4|floatformat:2}} </p>
+                    </div>
+
+
+                    <div class="col-6">
+                      <p><b>Saldo:</b> {{i.5|floatformat:2}} </p>
+                    </div>
+
+                    <div class="col-6">
+                      <p><b>Saldo en pesos:</b> $ {{i.6|floatformat:0|intcomma}} </p>
+                    </div>
+
+                    <div class="col-6">
+                      <p><b>Cuotas:</b> {{i.3}} </p>
+                    </div>
+
+                    <div style="text-align: center; vertical-align: top;">
+                      <img src="{% static 'img/cheque.png' %}" alt="" style="max-width:20px; height:auto;">
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+
+        {% elif i.4 > 0 %}
+
+
+        <div class="card bg-white border border-primary mb-3">
+
+          <div class="card-body">
+
+            <div class="row d-flex justify-content-center">
+              <div class="col col-md-6 col-lg-6 text-center">
+
+                <div class="row">
+
+                  <div class="col-12 text-center mb-3"
+                    style="display: inline-block; text-align: left; vertical-align: middle; margin-top: 10px;">
+                    <h4>{{i.0|upper}}</h4>
+                  </div>
+
+                  <div class="col-6">
+                    <p><b>Moneda:</b> {{i.1.nombre}} ($ {{i.1.valor|floatformat:2}}) </p>
+                  </div>
+
+                  <div class="col-6">
+                    <p><b>Monto total:</b> {{i.2|floatformat:2}} </p>
+                  </div>
+
+                  <div class="col-6">
+                    <p><b>Pagado:</b> {{i.4|floatformat:2}} </p>
+                  </div>
+
+                  <div class="col-6">
+                    <p><b>Saldo:</b> {{i.5|floatformat:2}} </p>
+                  </div>
+
+                  <div class="col-6">
+                    <p><b>Saldo en pesos:</b> $ {{i.6|floatformat:0|intcomma}} </p>
+                  </div>
+
+                  <div class="col-6">
+                    <p><b>Cuotas:</b> {{i.3}} </p>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
+        {% else %}
+
+        <div class="card bg-white border border-secondary mb-3">
+
+          <div class="card-body">
+
+            <div class="row d-flex justify-content-center">
+              <div class="col col-md-12 col-lg-12 text-center">
+
+                <div class="row">
+
+                  <div class="col-12 text-center mb-3"
+                    style="display: inline-block; text-align: left; vertical-align: middle; margin-top: 10px;">
+                    <h4>{{i.0|upper}}</h4>
+                  </div>
+
+                  <div class="col-6">
+                    <p><b>Moneda:</b> {{i.1.nombre}} ($ {{i.1.valor|floatformat:2}}) </p>
+                  </div>
+
+                  <div class="col-6">
+                    <p><b>Monto total:</b> {{i.2|floatformat:2}} </p>
+                  </div>
+
+                  <div class="col-6">
+                    <p><b>Pagado:</b> {{i.4|floatformat:2}} </p>
+                  </div>
+
+
+                  <div class="col-6">
+                    <p><b>Saldo:</b> {{i.5|floatformat:2}} </p>
+                  </div>
+
+                  <div class="col-6">
+                    <p><b>Saldo en pesos:</b> $ {{i.6|floatformat:0|intcomma}} </p>
+                  </div>
+
+                  <div class="col-6">
+                    <p><b>Cuotas:</b> {{i.3}} </p>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+
+{% endif %}
+
+{% endfor %}
+
+<div class="row">
+  <div class="col-12 text-center">
+    <h5>Saldo total de la cuenta:${{saldo_total_pesos|floatformat:0|intcomma}}</h5>
+
+    <h6>Proxima cuota:${{datos_cuotas.0.1|floatformat:0|intcomma}} vence en {{datos_cuotas.0.0|date:"F Y"}}</h6>
+  </div>
+</div>
+
+
+
+
 {% endblock %}

@@ -1645,13 +1645,20 @@ def ingresounidades(request, estado, proyecto):
 
     return render(request, 'ingresounidades.html',{'datos':datos, 'estado':estado_marcado, 'proyecto_marcado':proyecto_marcado, 'listado':listado})
 
-def indicelink(request):
+def indicelink(request, id_moneda):
+
+    id_moneda = id_moneda
+
+    if id_moneda == "0":
+        moneda = 1
+    if id_moneda == "1":
+        moneda = Constantes.objects.get(id = 7).valor
+    if id_moneda == "2":
+        moneda = Constantes.objects.get(id = 1).valor
 
     datos = Almacenero.objects.all()
-
     datos_completos = []
     datos_finales = []
-
     saldo_caja_total = 0
     pendiente_gastar_total = 0
     ingresos_total = 0
@@ -1674,6 +1681,182 @@ def indicelink(request):
         almacenero.pendiente_iva_ventas = iva_compras
 
         almacenero.save()
+
+        # Calculamos las 2 diferencias de fechas que necesitamos
+
+        ahora = datetime.datetime.utcnow()
+
+        meses_costo = dato.proyecto.fecha_f.month - dato.proyecto.fecha_i.month
+        meses_ingreso = dato.proyecto.fecha_f.month - ahora.month
+
+        print(meses_costo)
+        print(meses_ingreso)
+       
+
+        # Calculo el resto de las cosas
+
+        retiro_socios = sum(np.array(RetirodeSocios.objects.values_list('monto_pesos').filter(proyecto = dato.proyecto)))
+        saldo_caja = almacenero.cuotas_cobradas - almacenero.gastos_fecha - almacenero.Prestamos_dados - retiro_socios + almacenero.tenencia
+        saldo_caja_total = saldo_caja_total + saldo_caja
+        pend_gast = almacenero.pendiente_admin + almacenero.pendiente_comision + presupuesto.saldo_mat + presupuesto.saldo_mo + presupuesto.imprevisto + presupuesto.credito + presupuesto.fdr - almacenero.pendiente_adelantos + almacenero.pendiente_iva_ventas + almacenero.pendiente_iibb_tem +almacenero.cheques_emitidos
+        pendiente_gastar_total = pendiente_gastar_total + pend_gast
+        prest_cobrar = almacenero.prestamos_proyecto + almacenero.prestamos_otros 
+        total_ingresos = prest_cobrar + almacenero.cuotas_a_cobrar + almacenero.ingreso_ventas + almacenero.financiacion 
+        ingresos_total = ingresos_total + total_ingresos
+        margen = total_ingresos - pend_gast + saldo_caja
+        descuento = almacenero.ingreso_ventas*0.06
+        descuento_total = descuento_total + descuento
+        margen_2 = margen - descuento 
+               
+        datos_completos.append((dato, saldo_caja/moneda, pend_gast/moneda, total_ingresos/moneda, margen/moneda, descuento/moneda, margen_2/moneda))
+
+    # -----------------> Aqui calculo los totalizadores
+
+    margen1_total = ingresos_total - pendiente_gastar_total + saldo_caja_total
+    margen2_total = margen1_total - descuento_total
+
+
+    # -----------------> Aqui calculo la parte de honorarios
+
+    honorarios = Honorarios.objects.order_by("-fecha")
+    caja_actual = honorarios[0].caja_actual
+    subtotal_1 = honorarios[0].cuotas + honorarios[0].ventas
+    ingresos = subtotal_1 + honorarios[0].creditos
+    comision = honorarios[0].comision_venta*honorarios[0].ventas
+    subtotal_2 = honorarios[0].estructura_gio + honorarios[0].aportes + honorarios[0].socios + comision
+    costos = subtotal_2  + honorarios[0].deudas
+    honorario = ingresos - costos + honorarios[0].caja_actual
+    honorarios2 = honorario
+
+    # -----------------> Aqui calculo los totalizadores con los honorarios
+
+    caja_total = caja_actual + saldo_caja_total
+    costos_totales = pendiente_gastar_total + costos
+    ingresos_totales = ingresos_total + ingresos
+    margen1_completo = margen1_total + honorario
+    margen2_completo = margen1_completo - descuento_total
+
+    # -----------------> Información para graficos
+
+    retiro_honorarios = 0
+    honorarios_beneficio2 = 0
+    honorarios_beneficio1 = 0
+
+    datos_finales.append((saldo_caja_total , pendiente_gastar_total, ingresos_total, descuento_total, margen1_total, margen2_total))
+
+    datos_finales_2 = [honorario, ingresos, costos, honorarios2, ingresos_totales, costos_totales, margen1_completo , margen2_completo, retiro_honorarios, honorarios_beneficio2, honorarios_beneficio1, caja_actual, caja_total]
+
+    # -----------------> Bucle para moneda
+
+    datos_finales = np.array(datos_finales)/moneda
+    datos_finales_2 = np.array(datos_finales_2)/moneda
+
+    # -----------------> Esta es la parte del historico
+
+    datos_historicos = RegistroAlmacenero.objects.order_by("fecha")
+
+    fechas = []
+
+    for d in datos_historicos:
+
+        if not d.fecha in fechas:
+
+            fechas.append(d.fecha)
+
+    datos_registro = []
+
+    for fecha in fechas:
+
+        datos = RegistroAlmacenero.objects.filter(fecha = fecha)
+
+        saldo_caja_total = 0
+        pendiente_gastar_total = 0
+        ingresos_total = 0
+        descuento_total = 0
+        honorario = 0
+
+
+        for dato in datos:
+
+            almacenero = dato
+
+            #Calculo el resto de las cosas
+
+            retiro_socios = almacenero.retiro_socios
+            saldo_caja = almacenero.cuotas_cobradas - almacenero.gastos_fecha - almacenero.Prestamos_dados - retiro_socios + almacenero.tenencia
+            
+            pend_gast = almacenero.pendiente_admin + almacenero.pendiente_comision + almacenero.saldo_mat + almacenero.saldo_mo + almacenero.imprevisto + almacenero.credito + almacenero.fdr - almacenero.pendiente_adelantos + almacenero.pendiente_iva_ventas + almacenero.pendiente_iibb_tem +almacenero.cheques_emitidos
+            
+            prest_cobrar = almacenero.prestamos_proyecto + almacenero.prestamos_otros
+            total_ingresos = prest_cobrar + almacenero.cuotas_a_cobrar + almacenero.ingreso_ventas + almacenero.financiacion
+            
+            margen = total_ingresos - pend_gast + saldo_caja
+            descuento = almacenero.ingreso_ventas*0.06
+            
+            margen_2 = margen - descuento
+            honorario = almacenero.honorarios
+
+            pendiente_gastar_total = pendiente_gastar_total + pend_gast
+            saldo_caja_total = saldo_caja_total + saldo_caja
+            descuento_total = descuento_total + descuento
+            ingresos_total = ingresos_total + total_ingresos
+
+            # Me falta calcular la parte de honorarios
+
+
+        margen1 = ingresos_total - pendiente_gastar_total + honorario + saldo_caja_total
+        margen2 = margen1 - descuento_total
+
+        if id_moneda == "0":
+
+            datos_registro.append((margen1, margen2))
+
+        if id_moneda == "1":
+
+            fecha_valor = datetime.date(fecha.year, fecha.month, 1)
+            
+            valor = Registrodeconstantes.objects.get(fecha=fecha_valor, constante__id = 7)
+
+            datos_registro.append((margen1/valor.valor, margen2/valor.valor))
+
+        if id_moneda == "2":
+
+            fecha_valor = datetime.date(fecha.year, fecha.month, 1)
+            
+            valor = Registrodeconstantes.objects.get(fecha=fecha_valor, constante__id = 1)
+
+            datos_registro.append((margen1/valor.valor, margen2/valor.valor))
+
+
+        
+
+    return render(request, 'indicelink.html', {"id_moneda":id_moneda, "datos_completos":datos_completos, 'datos_finales':datos_finales, "datos_registro":datos_registro, "fechas":fechas, "datos_finales_2":datos_finales_2})
+
+def indicelinkajustado(request):
+
+    datos = Almacenero.objects.all()
+    datos_completos = []
+    datos_finales = []
+    saldo_caja_total = 0
+    pendiente_gastar_total = 0
+    ingresos_total = 0
+    descuento_total = 0
+
+    for dato in datos:
+
+        presupuesto = "NO"
+        pricing = "NO"
+        almacenero = dato
+        presupuesto = Presupuestos.objects.get(proyecto = dato.proyecto)
+
+        # Aqui calculo el IVA sobre compras
+
+        iva_compras = (presupuesto.imprevisto + presupuesto.saldo_mat + presupuesto.saldo_mo + presupuesto.credito + presupuesto.fdr)*0.07875
+
+        almacenero.pendiente_iva_ventas = iva_compras
+
+        almacenero.save()
+        
 
         # Calculo el resto de las cosas
 
@@ -2773,8 +2956,6 @@ class DescargarCuentacorriente(TemplateView):
         response["Content-Disposition"] = contenido
         wb.save(response)
         return response
-
-
 
 class DescargarTotalCuentas(TemplateView):
 

@@ -1,165 +1,205 @@
-{% extends "users/inicio.html" %}
+{% extends "users/inicio2.html" %}
 
 {% load static %}
 {% load humanize %}
 
 {% block content %}
 
-<div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;">
 
+<div class="container-fluid r-aside">
 
-    <div>
-
-        <img src="{{cuota.cuenta_corriente.venta.unidad.proyecto.iamgen.url}}"  class="img-fluid" alt="..." style="max-width:20%;width:auto;height:auto; margin-top: 1rem; margin-bottom: 3%;">
-
-
-    </div>
-    
-    <h2 style="color: rgb({{cuota.cuenta_corriente.venta.unidad.proyecto.color}})" >Cuenta corriente cliente: {{cuota.cuenta_corriente.venta.comprador}} </h2>
-
-    <small><strong>{{cuota.cuenta_corriente.venta.unidad.proyecto.nombre}}: {{cuota.cuenta_corriente.venta.unidad.piso_unidad}} - {{cuota.cuenta_corriente.venta.unidad.nombre_unidad}}</strong></small>
-
-    <div>
-
-        <small> Cuota del mes: {{cuota.fecha}}</small>
-
-
-    </div>
-    <b><hr class = "my-4" style="width: 75%;"></b>
-
-    <div>
-        <h6>Agregar un pago</h6>
-
-    </div>
-
-    <b><hr class = "my-4" style="width: 75%;"></b>
-
-    <div style=" background-color: rgba(63, 95, 179, 0.3); width: 50%; margin-left: 25%;">
-
-
-
-                <form method="POST">
-        
-                    {% csrf_token %}
-        
-        
-                    <b><hr class = "my-4" style="width: 100%; "></b>
-
-                    <div class = "campoctacte">
-
-                        <div class = "campo">
-
-
-                            <div style="display: inline-block;">
-            
-                                <label for="fecha"><h6>Fecha del pago</h6></label>
-                    
-                            </div>
-                    
-                            <div style="margin-bottom: 2%; width: 30%; margin-left: 35%;">
-                    
-                                <input name="fecha" type="date" class="form-control form-control">
-                    
-                            </div>
-
-                            <div style="display: inline-block;">
-            
-                                <label for="precio2"><h6>Valor aportado en pesos</h6></label>
-                    
-                            </div>
-                    
-                            <div class="input-group mb-3" style="margin-bottom: 2%; width: 50%; margin-left: 25%;">
-                
-                                <div class="input-group-prepend">
-                
-                                    <span class="input-group-text">$</span>
-                
-                                </div>
-                
-                                <input name="precio2" type="number" step="0.01" class="form-control form-control" aria-label="Amount">
-                                
-                            </div>
-            
-            
-                    <div style="display: inline-block;">
-            
-                        <label for="precio1"><h6>Cotización de moneda dura</h6></label>
-            
-                    </div>
-            
-                    <div class="input-group mb-3" style="margin-bottom: 2%; width: 50%; margin-left: 25%;">
-        
-                        <div class="input-group-prepend">
-        
-                            <span class="input-group-text">$</span>
-        
-                        </div>
-        
-                        <input name="precio1" type="number" step="0.01" class="form-control form-control" aria-label="Amount">
-                        
-                    </div>
-
-                    
-
-                    <div style="display: inline-block;">
-            
-                        <label for="documento1"><h6>Documento 1</h6></label>
-            
-                    </div>
-            
-                    <div class="input-group mb-3" style="margin-bottom: 2%; width: 50%; margin-left: 25%;">
-        
-        
-                        <input name="documento1" type="text" class="form-control form-control" aria-label="Amount" placeholder="Documento de referencia">
-                        
-                    </div>
-
-                    <div style="display: inline-block;">
-            
-                        <label for="documento2"><h6>Documento 2</h6></label>
-            
-                    </div>
-            
-                    <div class="input-group mb-3" style="margin-bottom: 2%; width: 50%; margin-left: 25%;">
-        
-        
-                        <input name="documento2" type="text" class="form-control form-control" aria-label="Amount" placeholder="Documento de referencia">
-                        
-                    </div>
-    
-        
-                      <b><hr class = "my-4" style="width: 100%; "></b>
-
+    <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+            <h3 class="text-themecolor">Agregar Pagos</h3>
         </div>
-        
+
+        <div class="col-md-7 align-self-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+                <li class="breadcrumb-item">Agregar Pagos</li>
+            </ol>
+        </div>
     </div>
-                  
-              <div style="margin-top: 2%; ">
-    
-                <button type="submit" class="btn btn-primary" >Agregar</button>
-    
-              </div>
-        
-
-        </form>
-
-        <b><hr class = "my-4" style="width: 100%; "></b>
-
-    
-    </div>
-
-
-
-    <b><hr class = "my-4" style="width: 50%;"></b>
-
-
-
-    <div style="text-align: center; margin-top: 2rem;">
-        <p> <small>-- Link<strong>P</strong> --</small> </p>
-
-     </div>
-
-                    
 </div>
-    
-{% endblock %}
+
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body row">
+                <div class="col-12 justify-content-center">
+
+                    <div class="row d-flex justify-content-center">
+                        <div class="col col-md-12 col-lg-12 text-center">
+
+                            <img src="{{cuota.cuenta_corriente.venta.unidad.proyecto.iamgen.url}}" class="img-fluid"
+                                alt="..."
+                                style="max-width:200px;width:auto;height:auto; margin-top: 5px; margin-bottom: 5px;">
+                        </div>
+                        <div class="text-center mt-3">
+
+                            <h2 style="color: rgb({{cuota.cuenta_corriente.venta.unidad.proyecto.color}})">
+                                Cuenta corriente cliente:
+                                {{cuota.cuenta_corriente.venta.comprador}}</h2>
+                            <h5>
+                                {{cuota.cuenta_corriente.venta.unidad.proyecto.nombre}}:
+                                {{cuota.cuenta_corriente.venta.unidad.piso_unidad}} -
+                                {{cuota.cuenta_corriente.venta.unidad.nombre_unidad}}</h5>
+                            <h5> Cuota del mes: {{cuota.fecha}} </h5>
+                            <h5 class="mt-4"> Agregar un Pago </h5>
+                        </div>
+                    </div>
+
+                    <div class="row d-flex justify-content-center">
+                        <div class="col col-md-12 col-lg-6">
+                            <div class="row">
+                                <div class="col bg-light border rounded p-4 ">
+
+
+                                    <form method="POST">
+
+                                        {% csrf_token %}
+
+                                        <div class="campoctacte">
+
+                                            <div class="campo">
+
+                                                <div style="display: inline-block;">
+
+                                                    <label for="fecha">
+                                                        <h6>Fecha del pago</h6>
+                                                    </label>
+
+                                                </div>
+
+                                                <div class="row d-flex justify-content-center my-3">
+                                                    <div class="col col-md-8 col-lg-8">
+                                                        <div>
+                                                            <input name="fecha" type="date"
+                                                                class="form-control form-control">
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div style="display: inline-block;">
+
+                                                    <label for="precio2">
+                                                        <h6>Valor aportado en pesos</h6>
+                                                    </label>
+
+                                                </div>
+
+                                                <div class="row d-flex justify-content-center mt-3">
+                                                    <div class="col col-md-8 col-lg-8">
+                                                        <div class="input-group mb-3">
+
+                                                            <div class="input-group-prepend">
+
+                                                                <span class="input-group-text">$</span>
+
+                                                            </div>
+
+                                                            <input name="precio2" type="number" step="0.01"
+                                                                class="form-control form-control" aria-label="Amount">
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+                                                <div style="display: inline-block;">
+
+                                                    <label for="precio1">
+                                                        <h6>Cotización de moneda dura</h6>
+                                                    </label>
+
+                                                </div>
+
+                                                <div class="row d-flex justify-content-center mt-3">
+                                                    <div class="col col-md-8 col-lg-8">
+                                                        <div class="input-group mb-3">
+
+                                                            <div class="input-group-prepend">
+
+                                                                <span class="input-group-text">$</span>
+
+                                                            </div>
+
+                                                            <input name="precio1" type="number" step="0.01"
+                                                                class="form-control form-control" aria-label="Amount">
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+
+                                                <div style="display: inline-block;">
+
+                                                    <label for="documento1">
+                                                        <h6>Documento 1</h6>
+                                                    </label>
+
+                                                </div>
+
+                                                <div class="row d-flex justify-content-center my-3">
+                                                    <div class="col col-md-8 col-lg-8">
+                                                        <div>
+
+
+                                                            <input name="documento1" type="text"
+                                                                class="form-control form-control" aria-label="Amount"
+                                                                placeholder="Documento de referencia">
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div style="display: inline-block;">
+
+                                                    <label for="documento2">
+                                                        <h6>Documento 2</h6>
+                                                    </label>
+
+                                                </div>
+
+                                                <div class="row d-flex justify-content-center my-3">
+                                                    <div class="col col-md-8 col-lg-8">
+                                                        <div>
+
+
+                                                            <input name="documento2" type="text"
+                                                                class="form-control form-control" aria-label="Amount"
+                                                                placeholder="Documento de referencia">
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+                                        <div class="row d-flex justify-content-center mt-4">
+                                            <div class="col-lg-6 text-center">
+
+                                                <button type="submit" class="btn btn-primary">Agregar</button>
+
+                                            </div>
+                                        </div>
+
+
+                                    </form>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    {% endblock %}

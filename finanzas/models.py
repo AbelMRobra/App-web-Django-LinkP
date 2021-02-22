@@ -6,6 +6,12 @@ from presupuestos.models import Constantes
 # Create your models here.
 
 class Almacenero(models.Model):
+
+    class Estado(models.TextChoices):
+        SI = "SI"
+        NO = "NO"
+
+
     proyecto = models.ForeignKey(Proyectos, on_delete=models.CASCADE, verbose_name = "Proyecto")
     cheques_emitidos = models.FloatField(null=True, blank=True, verbose_name="Cheques emitidos")
     gastos_fecha = models.FloatField(null=True, blank=True, verbose_name="Gastos a la fecha")
@@ -25,7 +31,7 @@ class Almacenero(models.Model):
     unidades_socios = models.FloatField(null=True, blank=True, verbose_name="Unidades de Socios", editable=False)
     tenencia = models.FloatField(null=True, blank=True, verbose_name="Resultado por tenencia", default=0)
     financiacion = models.FloatField(null=True, blank=True, verbose_name="Recargo por financiacion", default=0)
-
+    auto_cta = models.CharField(choices=Estado.choices, max_length=20, verbose_name="Cuenta corriente automatica", default="NO")
 
     class Meta:
         verbose_name="Almacenero"

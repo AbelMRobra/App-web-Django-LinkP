@@ -26,11 +26,21 @@
             <h6 class="card-subtitle">Resumen de los datos conjuntos de proyectos y honorarios</h6>
             <div style="text-align: left; margin: 5px;">
 
-                <a class="dropbtn btn btn-info" href="{% url 'Indice Link' %}" >Pesos</a>
-            
-                <a class="dropbtn btn btn-dark" href="{% url 'Indice Link moneda' 7 %}" >Hormigon</a>
-            
-                <a class="dropbtn btn btn-success" href="{% url 'Indice Link moneda' 2 %}" >U.S.D.</a>
+                <a href="#" style="text-decoration: none;"data-toggle="tooltip" data-placement="right" title="" data-original-title="Ajustar por tiempo"><img
+                    src="{% static 'img/eficiencia.png' %}" alt=""
+                    style="max-width:30px; height:auto;"></a>
+
+                <a href="{% url 'Indice Link' 0 %}" style="text-decoration: none; margin-left: 15px;"data-toggle="tooltip" data-placement="right" title="" data-original-title="Ver en pesos"><img
+                    src="{% static 'img/$coin-01.png' %}" alt=""
+                    style="max-width:30px; height:auto;"></a>
+
+                <a href="{% url 'Indice Link' 1 %}" style="text-decoration: none; margin-left: 15px;"data-toggle="tooltip" data-placement="right" title="" data-original-title="Ver en Hº"><img
+                    src="{% static 'img/Hcoin-03-03.png' %}" alt=""
+                    style="max-width:30px; height:auto;"></a>
+
+                <a href="{% url 'Indice Link' 2 %}" style="text-decoration: none; margin-left: 15px;"data-toggle="tooltip" data-placement="right" title="" data-original-title="Ver en dolar oficial"><img
+                    src="{% static 'img/USDcoin-02-02.png' %}" alt=""
+                    style="max-width:30px; height:auto;"></a>
             
                 </div>
             <div class="table-responsive">
@@ -86,12 +96,18 @@
                             {% endif %}
                             
                             
-                            <td style="width: 10%; vertical-align: middle;"><small>$ {{ i.1|floatformat:0|intcomma }}</small> </td> 
-                            <td style="width: 10%; vertical-align: middle;"><small>$ {{ i.2|floatformat:0|intcomma }}</small> </td> 
-                            <td style="width: 10%; vertical-align: middle; vertical-align: middle;"><small>$ {{ i.3|floatformat:0|intcomma }}</small></td> 
-                            <td style="width: 8%; vertical-align: middle;"><small><b>$ {{i.4|floatformat:0|intcomma }}</b></small></td>
-                            <td style="width: 10%; vertical-align: middle;"><small>- $ {{ i.5|floatformat:0|intcomma }}</small> </td> 
-                            <td style="width: 10%; vertical-align: middle;"><small><b>$ {{ i.6|floatformat:0|intcomma }}</b> </small> </td>     
+                            <td style="width: 10%; vertical-align: middle;"><small>
+                                {% if id_moneda == "2" %}U$D{% elif id_moneda == "0" %}${% endif %} {{ i.1|floatformat:0|intcomma }} {% if id_moneda == "1" %}M3 Hº{% endif %}</small> </td> 
+                            <td style="width: 10%; vertical-align: middle;"><small>
+                                {% if id_moneda == "2" %}U$D{% elif id_moneda == "0" %}${% endif %} {{ i.2|floatformat:0|intcomma }} {% if id_moneda == "1" %}M3 Hº{% endif %}</small> </td> 
+                            <td style="width: 10%; vertical-align: middle; vertical-align: middle;"><small>
+                                {% if id_moneda == "2" %}U$D{% elif id_moneda == "0" %}${% endif %} {{ i.3|floatformat:0|intcomma }} {% if id_moneda == "1" %}M3 Hº{% endif %}</small></td> 
+                            <td style="width: 8%; vertical-align: middle;"><small><b>
+                                {% if id_moneda == "2" %}U$D{% elif id_moneda == "0" %}${% endif %} {{i.4|floatformat:0|intcomma }} {% if id_moneda == "1" %}M3 Hº{% endif %}</b></small></td>
+                            <td style="width: 10%; vertical-align: middle;"><small>
+                                - {% if id_moneda == "2" %}U$D{% elif id_moneda == "0" %}${% endif %} {{ i.5|floatformat:0|intcomma }} {% if id_moneda == "1" %}M3 Hº{% endif %}</small> </td> 
+                            <td style="width: 10%; vertical-align: middle;"><small><b>
+                                {% if id_moneda == "2" %}U$D{% elif id_moneda == "0" %}${% endif %} {{ i.6|floatformat:0|intcomma }} {% if id_moneda == "1" %}M3 Hº{% endif %}</b> </small> </td>     
                         </tr>
                     </tbody>
         
@@ -101,31 +117,48 @@
             
                         <tr class = "table-dark">
                             <td style="width: 10%; vertical-align: middle;"><small><b>RESULTADO</b></small> </td>
-                            <td  class="priority-5" style="width: 5%; vertical-align: middle;"><small><b>$ {{datos_finales.0.0|floatformat:0|intcomma }}</b> </small> </td> 
-                            <td  class="priority-5" style="width: 10%; vertical-align: middle;"><small><b>$ {{datos_finales.0.1|floatformat:0|intcomma }}</b></small> </td> 
-                            <td style="width: 10%; vertical-align: middle; vertical-align: middle;"><small><b>$ {{datos_finales.0.2|floatformat:0|intcomma}}</b></small> </td> 
-                            <td style="width: 10%; vertical-align: middle;"><small><b>$ {{datos_finales.0.4|floatformat:0|intcomma }}</b></small> </td>
-                            <td style="width: 10%; vertical-align: middle;"><small><b>- $ {{ datos_finales.0.3|floatformat:0|intcomma}}</b></small> </td> 
-                            <td style="width: 10%; vertical-align: middle;"><small><b>$ {{ datos_finales.0.5|floatformat:0|intcomma }}</b></small> </td>
+                            <td  class="priority-5" style="width: 5%; vertical-align: middle;"><small><b>
+                                {% if id_moneda == "2" %}U$D{% elif id_moneda == "0" %}${% endif %} {{datos_finales.0.0|floatformat:0|intcomma }} {% if id_moneda == "1" %}M3 Hº{% endif %}</b> </small> </td> 
+                            <td  class="priority-5" style="width: 10%; vertical-align: middle;"><small><b>
+                                {% if id_moneda == "2" %}U$D{% elif id_moneda == "0" %}${% endif %} {{datos_finales.0.1|floatformat:0|intcomma }} {% if id_moneda == "1" %}M3 Hº{% endif %}</b></small> </td> 
+                            <td style="width: 10%; vertical-align: middle; vertical-align: middle;"><small><b>
+                                {% if id_moneda == "2" %}U$D{% elif id_moneda == "0" %}${% endif %} {{datos_finales.0.2|floatformat:0|intcomma}} {% if id_moneda == "1" %}M3 Hº{% endif %}</b></small> </td> 
+                            <td style="width: 10%; vertical-align: middle;"><small><b>
+                                {% if id_moneda == "2" %}U$D{% elif id_moneda == "0" %}${% endif %} {{datos_finales.0.4|floatformat:0|intcomma }} {% if id_moneda == "1" %}M3 Hº{% endif %}</b></small> </td>
+                            <td style="width: 10%; vertical-align: middle;"><small><b>- 
+                                {% if id_moneda == "2" %}U$D{% elif id_moneda == "0" %}${% endif %} {{ datos_finales.0.3|floatformat:0|intcomma}} {% if id_moneda == "1" %}M3 Hº{% endif %}</b></small> </td> 
+                            <td style="width: 10%; vertical-align: middle;"><small><b>
+                                {% if id_moneda == "2" %}U$D{% elif id_moneda == "0" %}${% endif %} {{ datos_finales.0.5|floatformat:0|intcomma }} {% if id_moneda == "1" %}M3 Hº{% endif %}</b></small> </td>
                     </tr>
                         <tr class = "table-light">
                             <td style="width: 10%; vertical-align: middle;"><small><b>HONORARIOS</b></small></td>
-                            <td  class="priority-5" style="width: 5%; vertical-align: middle;"><small>$ {{datos_finales_2.11|floatformat:0|intcomma }}</small></td> 
-                            <td  class="priority-5" style="width: 10%; vertical-align: middle;"><small>$ {{datos_finales_2.2|floatformat:0|intcomma }}</small></td> 
-                            <td style="width: 10%; vertical-align: middle; vertical-align: middle;"><small><b>$ {{datos_finales_2.1|floatformat:0|intcomma }}</b></small></td> 
-                            <td style="width: 10%; vertical-align: middle;"><small><b>$ {{datos_finales_2.0|floatformat:0|intcomma }}</b></small></td>
+                            <td  class="priority-5" style="width: 5%; vertical-align: middle;"><small>
+                                {% if id_moneda == "2" %}U$D{% elif id_moneda == "0" %}${% endif %} {{datos_finales_2.11|floatformat:0|intcomma }} {% if id_moneda == "1" %}M3 Hº{% endif %}</small></td> 
+                            <td  class="priority-5" style="width: 10%; vertical-align: middle;"><small>
+                                {% if id_moneda == "2" %}U$D{% elif id_moneda == "0" %}${% endif %} {{datos_finales_2.2|floatformat:0|intcomma }} {% if id_moneda == "1" %}M3 Hº{% endif %}</small></td> 
+                            <td style="width: 10%; vertical-align: middle; vertical-align: middle;"><small><b>
+                                {% if id_moneda == "2" %}U$D{% elif id_moneda == "0" %}${% endif %} {{datos_finales_2.1|floatformat:0|intcomma }} {% if id_moneda == "1" %}M3 Hº{% endif %}</b></small></td> 
+                            <td style="width: 10%; vertical-align: middle;"><small><b>
+                                {% if id_moneda == "2" %}U$D{% elif id_moneda == "0" %}${% endif %} {{datos_finales_2.0|floatformat:0|intcomma }} {% if id_moneda == "1" %}M3 Hº{% endif %}</b></small></td>
                             <td style="width: 10%; vertical-align: middle; vertical-align: middle;"></td> 
-                            <td style="width: 10%; vertical-align: middle; vertical-align: middle;"><small><b>$ {{datos_finales_2.3|floatformat:0|intcomma }}</b></small></td>
+                            <td style="width: 10%; vertical-align: middle; vertical-align: middle;"><small><b>
+                                {% if id_moneda == "2" %}U$D{% elif id_moneda == "0" %}${% endif %} {{datos_finales_2.3|floatformat:0|intcomma }} {% if id_moneda == "1" %}M3 Hº{% endif %}</b></small></td>
         
                         </tr>
                         <tr class = "table-dark">
                             <td style="width: 10%; vertical-align: middle;"> <small><b>RESULTADO</b></small> </td>
-                            <td  class="priority-5" style="width: 5%; vertical-align: middle;"><small><b>$ {{datos_finales_2.12|floatformat:0|intcomma }}</b></small></td> 
-                            <td  class="priority-5" style="width: 10%; vertical-align: middle;"><small><b>$ {{datos_finales_2.5|floatformat:0|intcomma }}</b></small></td> 
-                            <td style="width: 10%; vertical-align: middle; vertical-align: middle;"><small><b>$ {{datos_finales_2.4|floatformat:0|intcomma }}</b></small></td> 
-                            <td style="width: 10%; vertical-align: middle;"><small><b>$ {{datos_finales_2.6|floatformat:0|intcomma }}</b></small></td>
-                            <td style="width: 10%; vertical-align: middle; vertical-align: middle;"><small><b>- $ {{ datos_finales.0.3|floatformat:0|intcomma}}</b></small> </td> 
-                            <td style="width: 10%; vertical-align: middle; vertical-align: middle;"><small><b>$ {{datos_finales_2.7|floatformat:0|intcomma }}</b></small> </td>
+                            <td  class="priority-5" style="width: 5%; vertical-align: middle;"><small><b>
+                                {% if id_moneda == "2" %}U$D{% elif id_moneda == "0" %}${% endif %} {{datos_finales_2.12|floatformat:0|intcomma }} {% if id_moneda == "1" %}M3 Hº{% endif %}</b></small></td> 
+                            <td  class="priority-5" style="width: 10%; vertical-align: middle;"><small><b>
+                                {% if id_moneda == "2" %}U$D{% elif id_moneda == "0" %}${% endif %} {{datos_finales_2.5|floatformat:0|intcomma }} {% if id_moneda == "1" %}M3 Hº{% endif %}</b></small></td> 
+                            <td style="width: 10%; vertical-align: middle; vertical-align: middle;"><small><b>
+                                {% if id_moneda == "2" %}U$D{% elif id_moneda == "0" %}${% endif %} {{datos_finales_2.4|floatformat:0|intcomma }} {% if id_moneda == "1" %}M3 Hº{% endif %}</b></small></td> 
+                            <td style="width: 10%; vertical-align: middle;"><small><b>
+                                {% if id_moneda == "2" %}U$D{% elif id_moneda == "0" %}${% endif %} {{datos_finales_2.6|floatformat:0|intcomma }} {% if id_moneda == "1" %}M3 Hº{% endif %}</b></small></td>
+                            <td style="width: 10%; vertical-align: middle; vertical-align: middle;"><small><b>- 
+                                {% if id_moneda == "2" %}U$D{% elif id_moneda == "0" %}${% endif %} {{ datos_finales.0.3|floatformat:0|intcomma}} {% if id_moneda == "1" %}M3 Hº{% endif %}</b></small> </td> 
+                            <td style="width: 10%; vertical-align: middle; vertical-align: middle;"><small><b>
+                                {% if id_moneda == "2" %}U$D{% elif id_moneda == "0" %}${% endif %} {{datos_finales_2.7|floatformat:0|intcomma }} {% if id_moneda == "1" %}M3 Hº{% endif %}</b></small> </td>
                         </tr>
                     </tbody>
 
@@ -178,33 +211,110 @@
 
                 {
                     label: 'Valor final',
+
+                    {% if id_moneda == "1" %}
+                    backgroundColor: 'rgb(80, 86, 74, 0.5)',
+                    borderColor: 'rgb(80, 86, 74, 65)',
+
+                    {% elif id_moneda == "0" %}
+
                     backgroundColor: 'rgb(26, 197, 179 , 0.3)',
                     borderColor: 'rgb(26, 197, 179 )',
+
+                    {% else %}
+
+                    backgroundColor: 'rgb(23, 185, 92 , 0.5)',
+                    borderColor: 'rgb(23, 185, 92, 65)',
+
+                    {% endif %}
+                    
                     fill: true,
                     borderWidth: 1,
                     lineTension: 0,
                     data: [
+
+                    {% if id_moneda == "1" %}
+                    {% for i in datos_registro  %}
+                    Math.round({{i.1|floatformat:0}}/1000),  
+                                     
+                    {% endfor %}
+                    Math.round({{datos_finales_2.7|floatformat:0}}/1000),
+                    ]
+
+                    {% elif id_moneda == "0" %}
+
                     {% for i in datos_registro  %}
                     Math.round({{i.1|floatformat:0}}/1000000),  
                                      
                     {% endfor %}
                     Math.round({{datos_finales_2.7|floatformat:0 }}/1000000),
                     ]
+
+                    {% else %}
+
+
+                    {% for i in datos_registro  %}
+                    Math.round({{i.1|floatformat:0}}/1000),  
+                                     
+                    {% endfor %}
+                    Math.round({{datos_finales_2.7|floatformat:0}}/1000),
+                    ]
+
+                    {% endif %}
+                    
                 },
 
                 {
                     label: 'Valor antes de descuento',
+
+                    {% if id_moneda == "1" %}
+                    backgroundColor: 'rgb(9, 10, 10 , 0.5)',
+                    borderColor: 'rgb(9, 10, 10 )',
+
+                    {% elif id_moneda == "0" %}
+
                     backgroundColor: 'rgb(26, 83, 197 , 0.3)',
                     borderColor: 'rgb(26, 83, 197 )',
+
+                    {% else %}
+
+                    backgroundColor: 'rgb(23, 185, 149 , 0.5)',
+                    borderColor: 'rgb(23, 185, 149 )',
+
+                    {% endif %}
+                    
                     fill: '-1',
                     borderWidth: 1,
                     lineTension: 0,
                     data: [
+
+
+                    {% if id_moneda == "1" %}
+
+
+                    {% for i in datos_registro %}
+                    Math.round({{i.0|floatformat:0}}/1000),                   
+                    {% endfor %}
+                    Math.round({{datos_finales_2.6|floatformat:0}}/1000),
+
+                    {% elif id_moneda == "0" %}
+
                     {% for i in datos_registro %}
                     Math.round({{i.0|floatformat:0}}/1000000),                   
                     {% endfor %}
                     Math.round({{datos_finales_2.6|floatformat:0 }}/1000000),
+                    
+                    {% else %}
+
+                    {% for i in datos_registro %}
+                    Math.round({{i.0|floatformat:0}}/1000),                   
+                    {% endfor %}
+                    Math.round({{datos_finales_2.6|floatformat:0}}/1000),
+
+                    {% endif %}
                     ]
+
+                   
                 }],
 
             },
@@ -228,7 +338,20 @@
                                 min: 0,
                                 stepSize: 100,
                                 callback: function(label, index, labels) {
+
+                                    {% if id_moneda == "1" %}
+                                    return label+ ' Mil M3';
+
+                                    {% elif id_moneda == "0" %}
+
                                     return '$ '+label+ ' M';
+                                    
+                                    {% else %}
+
+                                    return 'U$D '+label+ ' Mil';
+
+                                    {% endif %}
+                                    
                                     
                                 }
                             },
