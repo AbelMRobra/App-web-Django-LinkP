@@ -1689,10 +1689,6 @@ def indicelink(request, id_moneda):
         meses_costo = dato.proyecto.fecha_f.month - dato.proyecto.fecha_i.month
         meses_ingreso = dato.proyecto.fecha_f.month - ahora.month
 
-        print(meses_costo)
-        print(meses_ingreso)
-       
-
         # Calculo el resto de las cosas
 
         retiro_socios = sum(np.array(RetirodeSocios.objects.values_list('monto_pesos').filter(proyecto = dato.proyecto)))
