@@ -338,16 +338,16 @@
                                 min: 0,
 
                                 {% if id_moneda == "1" %}
-                                stepSize: 1000,
+                                stepSize: 2,
                                 {% elif id_moneda == "0" %}
                                 stepSize: 100,
                                 {% else %}
-                                stepSize: 10000,
+                                stepSize: 100,
                                 {% endif %}
                                 callback: function(label, index, labels) {
 
                                     {% if id_moneda == "1" %}
-                                    return label+ ' Mil M3';
+                                    return label+ 'mil M3';
 
                                     {% elif id_moneda == "0" %}
 
