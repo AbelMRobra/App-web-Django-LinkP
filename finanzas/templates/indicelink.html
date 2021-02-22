@@ -336,7 +336,14 @@
                         {
                             ticks: {
                                 min: 0,
+
+                                {% if id_moneda == "1" %}
+                                stepSize: 1000,
+                                {% elif id_moneda == "0" %}
                                 stepSize: 100,
+                                {% else %}
+                                stepSize: 10000,
+                                {% endif %}
                                 callback: function(label, index, labels) {
 
                                     {% if id_moneda == "1" %}
