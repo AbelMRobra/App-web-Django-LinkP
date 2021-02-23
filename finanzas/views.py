@@ -1719,16 +1719,18 @@ def indicelink(request, id_moneda, id_time):
             # Calculamos la logica de los meses
             #===================================================
 
-            ahora = datetime.datetime.utcnow()
+            ahora = datetime.date.today()
 
-            if (dato.proyecto.fecha_i.month - ahora.month) > 0:
+            if dato.proyecto.fecha_i > ahora:
                 meses_costo = dato.proyecto.fecha_f.month - dato.proyecto.fecha_i.month
                 meses_costo = int(meses_costo/2 + dato.proyecto.fecha_i.month - ahora.month)
             else:
-                if (dato.proyecto.fecha_f.month - ahora.month) > 0:
+                if dato.proyecto.fecha_f > ahora:
                     meses_costo = int((dato.proyecto.fecha_f.month - ahora.month)/2)
                 else:
-                    meses_costo = 0           
+                    meses_costo = 0   
+
+                    
 
             meses_ingreso = int((dato.proyecto.fecha_f.month - ahora.month)/2)
 
