@@ -1721,9 +1721,16 @@ def indicelink(request, id_moneda, id_time):
 
             ahora = datetime.datetime.utcnow()
 
-            meses_costo = dato.proyecto.fecha_f.month - dato.proyecto.fecha_i.month
-            meses_costo = meses_costo + dato.proyecto.fecha_i.month - ahora.month
-            meses_ingreso = dato.proyecto.fecha_f.month - ahora.month
+            if (dato.proyecto.fecha_i.month - ahora.month) > 0:
+                meses_costo = dato.proyecto.fecha_f.month - dato.proyecto.fecha_i.month
+                meses_costo = meses_costo/2 + dato.proyecto.fecha_i.month - ahora.month
+            else:
+                if (dato.proyecto.fecha_f.month - ahora.month) > 0:
+                    meses_costo = (dato.proyecto.fecha_f.month - ahora.month)/2
+                else:
+                    meses_costo = 0           
+
+            meses_ingreso = (dato.proyecto.fecha_f.month - ahora.month)/2
 
             if meses_costo:
                 array_costo = np.zeros(meses_costo, dtype = int)
