@@ -2046,7 +2046,7 @@ def InformeArea(request):
 
     for proyecto in proyectos:
 
-        if "#300 - Torre" in proyecto.nombre and "infra" not in proyecto.nombre:
+        if "#300" in proyecto.nombre and "infra" not in proyecto.nombre:
 
             m2_300 = m2_300 + proyecto.m2
 
