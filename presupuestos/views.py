@@ -2090,7 +2090,7 @@ def InformeArea(request):
                 total_ant = datos_presup.anticipos
                 imprevisto = datos_presup.imprevisto
 
-                saldo_total = valor_proyecto_materiales + valor_proyecto_mo + total_creditos + total_fdr - total_ant + imprevisto
+                saldo_total = valor_proyecto_materiales + valor_proyecto_mo + total_creditos + total_fdr + total_ant + imprevisto
 
                 proy_presup.append((proyecto, valor_proyecto, vr_M2, valor_proyecto_materiales, valor_proyecto_mo, total_creditos, saldo_total, total_fdr, total_ant, imprevisto))
             except:
