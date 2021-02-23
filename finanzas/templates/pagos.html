@@ -1,138 +1,135 @@
-{% extends "users/inicio.html" %}
+{% extends "users/inicio2.html" %}
 
 {% load static %}
 {% load humanize %}
 
 {% block content %}
 
+<div class="container-fluid r-aside">
 
-
-<div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;" > 
-
-    <div style="text-align: center;">
-
-        <h2 style="font-family: Arial, Helvetica, sans-serif,">Pagos realizados</h2>
-
-        <h3 style="color: rgb({{cuota.cuenta_corriente.venta.unidad.proyecto.color}}); font-family: Arial, Helvetica, sans-serif,">{{cuota.cuenta_corriente.venta.comprador}}</h3>
-
-
-        <div>
-
-            <img src="{{cuota.cuenta_corriente.venta.unidad.proyecto.iamgen.url}}"  class="img-fluid" alt="..." style="max-width:20%;width:auto;height:auto; margin-top: 1rem; margin-bottom: 3%;">
-  
-
-        </div>
-        
-        
-        <small style="font-family: Arial, Helvetica, sans-serif,"><strong>{{cuota.cuenta_corriente.venta.unidad.proyecto.nombre}}: {{cuota.cuenta_corriente.venta.unidad.piso_unidad}} - {{cuota.cuenta_corriente.venta.unidad.nombre_unidad}}</strong></small>
-
-        <div>
-
-            <small style="font-family: Arial, Helvetica, sans-serif,"> Cuota del mes: {{cuota.fecha}}</small>
-
-
+    <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+            <h3 class="text-themecolor">Pagos Realizados</h3>
         </div>
 
-        <div>
-            <small style="font-family: Arial, Helvetica, sans-serif,"><b>Modulo</b>: Cuentas corrientes </small>
-        
+        <div class="col-md-7 align-self-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'Cuenta corriente venta' cuota.cuenta_corriente.id %}">Cta
+                        Cte Cliente</a>
+                </li>
+                <li class="breadcrumb-item">Pagos Realizados</li>
+            </ol>
         </div>
-
-
-        <b><hr class = "my-4" style="width: 100%; "></b>
-    
-    
     </div>
-
-    <div style="text-align: left;" >
-
-        <a href="{% url 'Cuenta corriente venta' cuota.cuenta_corriente.id %}" class="btn btn-outline-secondary"><img src="{% static 'img/flecha-izquierda.png' %}" alt="" style="max-width:20px; height:auto;"> Volver al panel</a>
-
-        <a href="{% url 'Agregar pagos' cuota.id %}" class="btn btn-outline-info"><img src="{% static 'img/agregar-archivo.png' %}" alt="" style="max-width:20px; height:auto;"> Nuevo pago</a>
-
-        
-    
-
-    </div>
-
-
-    {% if datos %}
-
-
-    <div class = "tableconteinerabel">
-
-        <table class = "table table-hover" style="text-align: center; margin-top: 5px;">
-            <thead>
-    
-                <tr class = "table-dark">
-                    <th scope = "row"> <small>FECHA PAGO</small></th>
-                    <th scope = "row"> <small>MONEDA (MD) </small></th>
-                    <th scope = "row"> <small>COTIZACIÓN</small></th> 
-                    <th scope = "row"> <small>MONTO PESOS</small></th>                    
-                    <th scope = "row"> <small> DOCUMENTO 1 </small></th>
-                    <th scope = "row"> <small> DOCUMENTO 2 </small></th>
-                    <th scope = "row"> <small> EDITAR </small></th>
-                    <th scope = "row"> <small> ELIMINAR </small></th>
-
-                </tr>
-            </thead>
-    
-            <tbody>   
-    
-                {% for i in datos|slice:"200" %}
-                <tr class = "table-light">
-
-                    <td> <b> <small> <b>{{i.0.fecha}}</b> </small> </b></td>    
-                    <td> <b> <small>{{i.0.pago|floatformat:2}}</small> </b> </td>
-
-                    <td> <b> <small>${{i.1|floatformat:0|intcomma}}</small> </b> </td>
-
-                    <td> <b> <small>${{i.0.pago_pesos|floatformat:0|intcomma}}</small> </b> </td>
-                    <td> <b> <small>{{i.0.documento_1}}</small> </b> </td>
-                    <td> <b> <small>{{i.0.documento_2}}</small> </b> </td>
-
-                    <td> <b><a href="{% url 'Editar pagos' i.0.id %}" class="btn btn-sm btn-info" >Editar</a>
-                    </b> </td>
-                    <td> <b><a href="{% url 'Eliminar pago' i.0.id %}" class="btn btn-sm btn-danger" >Eliminar</a>
-                    </b> </td>
-
-                    
-    
-                </tr>
-                {% endfor %}
-            </tbody>
-         
-    
-    
-        </table>
-    
-        </div>
-
-        {% else %}
-
-        <b><hr class = "my-4" style="width: 100%; "></b>
-
-        <div style="margin: 15px;">
-        
-        
-        <h6 style="font-family: Arial, Helvetica, sans-serif,">No se registraron pagos todavia!</h6>
-        </div>
-
-
-        {% endif %}
-
-        
-
-
-    <div style="text-align: center; margin-top: 10%;">
-        <p style="font-family: Arial, Helvetica, sans-serif,">  <small>-- Link<strong>P</strong> --</small> </p>
-
-     </div>
-
-    
-    
-
 </div>
 
-    
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body row">
+                <div class="col-12 justify-content-center">
+
+                    <div class="row d-flex justify-content-center">
+                        <div class="col col-md-12 col-lg-12 text-center">
+
+                            <img src="{{cuota.cuenta_corriente.venta.unidad.proyecto.iamgen.url}}" class="img-fluid"
+                                alt="..."
+                                style="max-width:200px;width:auto;height:auto; margin-top: 5px; margin-bottom: 5px;">
+                        </div>
+                        <div class="text-center mt-3">
+
+                            <h2 style="color: rgb({{cuota.cuenta_corriente.venta.unidad.proyecto.color}})">
+                                {{cuota.cuenta_corriente.venta.comprador}}</h2>
+                            <h5>
+                                {{cuota.cuenta_corriente.venta.unidad.proyecto.nombre}}:
+                                {{cuota.cuenta_corriente.venta.unidad.piso_unidad}} -
+                                {{cuota.cuenta_corriente.venta.unidad.nombre_unidad}}</h5>
+                            <h5> Cuota del mes: {{cuota.fecha}} </h5>
+                        </div>
+                    </div>
+
+                    <div style="text-align: left;">
+
+                        <a href="{% url 'Agregar pagos' cuota.id %}" class="mx-2"><img
+                                src="{% static 'img/add.png' %}" alt=""
+                                style="max-width:20px; height:auto;"></a>
+                    </div>
+
+
+                    {% if datos %}
+
+                    <div class="tableconteinerabel">
+
+                        <table id="example" class="table table-striped table-bordered" style="width:100%">
+
+                            <thead>
+                                <tr>
+                                    <th>Fecha pago</th>
+                                    <th>Moneda (MD) </th>
+                                    <th>Cotizacion</th>
+                                    <th>Monto pesos</th>
+                                    <th>Documento 1</th>
+                                    <th>Documento 2</th>
+                                    <th>Editar </th>
+                                    <th>Eliminar </th>
+
+                                </tr>
+                            </thead>
+
+                            <tbody>
+
+                                {% for i in datos|slice:"200" %}
+                                <tr>
+                                    <td>{{i.0.fecha}} </td>
+                                    <td>{{i.0.pago|floatformat:2}} </td>
+                                    <td>${{i.1|floatformat:0|intcomma}} </td>
+                                    <td>${{i.0.pago_pesos|floatformat:0|intcomma}} </td>
+                                    <td>{{i.0.documento_1}}</td>
+                                    <td>{{i.0.documento_2}}</td>
+                                    <td><a href="{% url 'Editar pagos' i.0.id %}" class="btn btn-sm btn-info">Editar</a>
+                                    </td>
+                                    <td><a href="{% url 'Eliminar pago' i.0.id %}"
+                                            class="btn btn-sm btn-danger">Eliminar</a></td>
+
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                    {% else %}
+
+                    <div class="mt-5 text-center">
+
+                        <h6>No se registraron pagos todavia!</h6>
+                    </div>
+
+
+                    {% endif %}
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js" defer></script>
+<script src="https://cdn.datatables.net/1.10.23/js/dataTables.bootstrap4.min.js" defer></script>
+
+
+<script>
+    $(document).ready(function () {
+        $('#example').DataTable({
+            "paging": false,
+            "searching": false,
+            "info": false
+        });
+    });
+</script>
+
+
 {% endblock %}

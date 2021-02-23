@@ -46,24 +46,24 @@
           <div class="card">
             <div class="card-body">
 
-              <h6>Fecha de la venta:{{ctacte.venta.fecha}} </h6>
-              <h6>Cliente:{{ctacte.venta.comprador}} </h6>
-              <h6>Unidad:{{ctacte.venta.unidad.piso_unidad}} - {{ctacte.venta.unidad.nombre_unidad}}</h6>
+              <h6>Fecha de la venta: {{ctacte.venta.fecha}} </h6>
+              <h6>Cliente: {{ctacte.venta.comprador}} </h6>
+              <h6>Unidad: {{ctacte.venta.unidad.piso_unidad}} - {{ctacte.venta.unidad.nombre_unidad}}</h6>
 
               {% if ctacte.venta.unidad.tipo == "DEPARTAMENTO" %}
 
-              <h6>Tipo:{{ctacte.venta.unidad.tipo}} {{ctacte.venta.unidad.tipologia}} de
+              <h6>Tipo: {{ctacte.venta.unidad.tipo}} {{ctacte.venta.unidad.tipologia}} de
                 {{ctacte.venta.m2|floatformat:2}}
                 m2
               </h6>
 
               {% elif ctacte.venta.unidad.tipo == "COCHERA" %}
 
-              <h6>Tipo:{{ctacte.venta.unidad.tipo}} de {{ctacte.venta.m2|floatformat:2}} m2</h6>
+              <h6>Tipo: {{ctacte.venta.unidad.tipo}} de {{ctacte.venta.m2|floatformat:2}} m2</h6>
 
               {% elif ctacte.venta.unidad.tipo == "LOCAL" %}
 
-              <h6>Tipo:{{ctacte.venta.unidad.tipo}} de {{ctacte.venta.m2|floatformat:2}} m2</h6>
+              <h6>Tipo: {{ctacte.venta.unidad.tipo}} de {{ctacte.venta.m2|floatformat:2}} m2</h6>
 
               {% endif %}
 
@@ -73,20 +73,19 @@
 
           {% for i in datos %}
 
-          {% if i.5 < 1 %} <div class="card bg-white border rounded border-success mb-3"
-            style="display: inline-block; width: 310px; height: 250px; vertical-align: top;  margin: 10px;">
+          {% if i.5 < 1 %}
+          <div class="card mb-3">
 
             <div class="card-body">
-
+  
               <div class="row d-flex justify-content-center">
-
-                <div class="col col-md-12 col-lg-12 text-center">
-
+                <div class="col col-md-12 col-lg-6 text-center">
+  
                   <div class="row">
-
-                    <div class="col-12 text-center mb-3"
+  
+                    <div class="col-12 text-center mb-3 rounded bg-success"
                       style="display: inline-block; text-align: left; vertical-align: middle; margin-top: 10px;">
-                      <h4> {{i.0|upper}}</h4>
+                      <h4 class="text-light mt-2">{{i.0|upper}}</h4>
                     </div>
 
                     <div class="col-6">
@@ -114,7 +113,7 @@
                       <p><b>Cuotas:</b> {{i.3}} </p>
                     </div>
 
-                    <div style="text-align: center; vertical-align: top;">
+                    <div class="col-12 text-center">
                       <img src="{% static 'img/cheque.png' %}" alt="" style="max-width:20px; height:auto;">
                     </div>
 
@@ -126,19 +125,18 @@
 
         {% elif i.4 > 0 %}
 
-
-        <div class="card bg-white border rounded border-primary mb-3">
+        <div class="card mb-3">
 
           <div class="card-body">
 
             <div class="row d-flex justify-content-center">
-              <div class="col col-md-12 col-lg-12 text-center">
+              <div class="col col-md-12 col-lg-6 text-center">
 
                 <div class="row">
 
-                  <div class="col-12 text-center mb-3"
+                  <div class="col-12 text-center mb-3 rounded bg-primary"
                     style="display: inline-block; text-align: left; vertical-align: middle; margin-top: 10px;">
-                    <h4>{{i.0|upper}}</h4>
+                    <h4 class="text-light mt-2">{{i.0|upper}}</h4>
                   </div>
 
                   <div class="col-6">
@@ -175,18 +173,18 @@
 
         {% else %}
 
-        <div class="card bg-white border rounded border-secondary mb-3">
+        <div class="card mb-3">
 
           <div class="card-body">
 
             <div class="row d-flex justify-content-center">
-              <div class="col col-md-12 col-lg-12 text-center">
+              <div class="col col-md-12 col-lg-6 text-center">
 
                 <div class="row">
 
-                  <div class="col-12 text-center mb-3"
+                  <div class="col-12 text-center mb-3 rounded bg-secondary"
                     style="display: inline-block; text-align: left; vertical-align: middle; margin-top: 10px;">
-                    <h4>{{i.0|upper}}</h4>
+                    <h4 class="mt-2 text-light">{{i.0|upper}}</h4>
                   </div>
 
                   <div class="col-6">

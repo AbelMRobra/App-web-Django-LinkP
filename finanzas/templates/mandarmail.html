@@ -22,116 +22,96 @@
                 <li class="breadcrumb-item">Enviar correo cuenta</li>
             </ol>
         </div>
-
     </div>
-
 </div>
 
-<div class="row ">
+<div class="row">
     <div class="col-12">
-        <div class="card overflow-auto">
-            <div class="card-body">
+        <div class="card">
+            <div class="card-body row">
+                <div class="col-12 justify-content-center">
 
-                <div class="d-flex row justify-content-center">
+                    <div class="row d-flex justify-content-center">
+                        <div class="col col-md-12 col-lg-12 text-center">
 
-                    <div class="d-flex- flex-col text-center">
-
-                        <div class="row mt-3">
                             <img src="{{datos.venta.proyecto.iamgen.url}}" class="img-fluid" alt="..."
                                 style="max-width:200px;width:auto;height:auto; margin-top: 5px; margin-bottom: 5px;">
                         </div>
-                        <div class="row d-flex justify-content-center mt-3">
+                        <div class="text-center mt-3">
                             <h5 style="color: rgb({{datos.venta.proyecto.color}})">
                                 {{ datos.venta.proyecto.nombre}}
                             </h5>
                             <h5>{{ datos.venta.comrpador }}</h5>
                         </div>
-
                     </div>
+                    <form role="form" enctype="multipart/form-data" action="" method="POST" id="upload-image-form"
+                        style="margin: 30px;">
+                        {% csrf_token %}
 
-                </div>
+                        <div>
+                            <div style="display: inline-block; margin: 10px; width: 200px;">
 
+                                <label for="email">
+                                    <h6>Email de la cuenta</h6>
+                                </label>
 
-                <form role="form" enctype="multipart/form-data" action="" method="POST" id="upload-image-form"
-                    style="margin: 30px;">
-                    {% csrf_token %}
+                            </div>
 
+                            <div style="display: inline-block; margin: 10px; ">
 
-                    <div>
+                                <input name="email" type="text" class="form-control form-control"
+                                    value="{{datos.venta.email}}" list="provee" style="width: 300px;">
 
-                        <div style="display: inline-block; margin: 10px; width: 200px;">
+                            </div>
+                        </div>
 
-                            <label for="email">
-                                <h6>Email de la cuenta</h6>
-                            </label>
+                        <button type="submit" class="btn btn-info"><img
+                                src="{% static 'img/correo-electronico.png' %}" alt=""
+                                style="max-width:22px; height:auto; vertical-align: top;"> Enviar</button>
+
+                        {{ form.as_p }}
+                    </form>
+
+                    {% if mensaje %}
+
+                    {% if mensaje == "ok" %}
+
+                    <div class="row">
+                        <div class="col-12 d-flex justify-content-center">
+                            <img src="{% static 'img/aceptado.png' %}" class="img-fluid" alt="..."
+                                style="max-width:30px;width:auto;">
 
                         </div>
 
-                        <div style="display: inline-block; margin: 10px; ">
+                        <div class="col d-flex justify-content-center text-success">
+                            <small"><b>Email
+                                    enviado exitosamente!</b> </small>
 
-                            <input name="email" type="text" class="form-control form-control"
-                                value="{{datos.venta.email}}" list="provee" style="width: 300px;">
+                        </div>
+                    </div>
+
+                    {% else %}
+                    <div class="row">
+                        <div class="col-12 d-flex justify-content-center">
+
+                            <img src="{% static 'img/rechazado.png' %}" class="img-fluid" alt="..."
+                                style="max-width:30px;width:auto;height:auto; margin-bottom: 5px;">
 
                         </div>
 
+                        <div class="col d-flex justify-content-center text-danger">
+                            <small><b>Ocurrio
 
+                                    un error durante el envio!</b> </small>
+
+                        </div>
                     </div>
 
+                    {% endif %}
 
-                    <button type="submit" class="btn btn-outline-info"><img src="{% static 'img/correo-electronico.png' %}"
-                            alt="" style="max-width:22px; height:auto; vertical-align: top;"> Enviar</button>
-
-
-                    {{ form.as_p }}
-                </form>
-
-                {% if mensaje %}
-
-                {% if mensaje == "ok" %}
-
-                <div>
-
-                    <img src="{% static 'img/aceptado.png' %}" class="img-fluid" alt="..."
-                        style="max-width:30px;width:auto;">
-
+                    {% endif %}
 
                 </div>
-
-                <div>
-
-                    <small
-                        style="color: rgb(43, 209, 38); font-family: Arial, Helvetica, sans-serif; margin-bottom: 5px;"><b>Email
-                            enviado exitosamente!</b> </small>
-
-
-
-                </div>
-
-                {% else %}
-
-                <div>
-
-                    <img src="{% static 'img/rechazado.png' %}" class="img-fluid" alt="..."
-                        style="max-width:30px;width:auto;height:auto; margin-bottom: 5px;">
-
-
-                </div>
-
-                <div>
-
-                    <small
-                        style="color: rgb(212, 63, 19); font-family: Arial, Helvetica, sans-serif; margin-bottom: 5px;"><b>Ocurrio
-                            un error durante el envio!</b> </small>
-
-
-                </div>
-
-                {% endif %}
-
-                {% endif %}
-
-          
-
             </div>
         </div>
     </div>

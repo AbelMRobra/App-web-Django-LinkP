@@ -149,6 +149,8 @@ def vacaciones(request):
 
 def password(request):
 
+    mensaje = 0
+
     if request.method == 'POST':
 
         usuario = User.objects.get(id = request.user.id)
@@ -157,7 +159,9 @@ def password(request):
 
         usuario.save()
 
-    return render(request, "users/password.html")
+        mensaje = 1
+
+    return render(request, "users/password.html", {'mensaje':mensaje})
 
 def guia(request):
 
