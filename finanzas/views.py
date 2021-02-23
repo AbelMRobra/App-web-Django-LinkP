@@ -1751,7 +1751,10 @@ def indicelink(request, id_moneda, id_time):
 
         cuenta_corriente = almacenero.cuotas_a_cobrar
         total_ingresos = prest_cobrar  + almacenero.ingreso_ventas + almacenero.financiacion 
-        
+
+        if id_time == "0":
+            total_ingresos = total_ingresos + cuenta_corriente
+            
         if id_time == "1" and almacenero.auto_cta == "NO":
             total_ingresos = total_ingresos + cuenta_corriente
             array_ingreso_1 = np.append(array_ingreso, [total_ingresos])
