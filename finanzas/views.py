@@ -1733,12 +1733,12 @@ def indicelink(request, id_moneda, id_time):
             meses_ingreso = int((dato.proyecto.fecha_f.month - ahora.month)/2)
 
             if meses_costo:
-                array_costo = np.zeros(meses_costo, dtype = int)
+                array_costo = np.zeros((meses_costo + 1), dtype = int)
             else:
                 array_costo =np.zeros(1, dtype = int)
 
-            if meses_ingreso:
-                array_ingreso = np.zeros(meses_ingreso, dtype = int)
+            if meses_ingreso > 0:
+                array_ingreso = np.zeros((meses_ingreso+1), dtype = int)
             else:
                 array_ingreso = np.zeros(1, dtype = int)
 
