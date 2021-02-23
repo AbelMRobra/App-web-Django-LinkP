@@ -1645,8 +1645,9 @@ def ingresounidades(request, estado, proyecto):
 
     return render(request, 'ingresounidades.html',{'datos':datos, 'estado':estado_marcado, 'proyecto_marcado':proyecto_marcado, 'listado':listado})
 
-def indicelink(request, id_moneda):
+def indicelink(request, id_moneda, id_time):
 
+    id_time = id_time
     id_moneda = id_moneda
 
     if id_moneda == "0":
@@ -1654,7 +1655,7 @@ def indicelink(request, id_moneda):
     if id_moneda == "1":
         moneda = Constantes.objects.get(id = 7).valor
     if id_moneda == "2":
-        moneda = Constantes.objects.get(id = 1).valor
+        moneda = Constantes.objects.get(id = 2).valor
 
     datos = Almacenero.objects.all()
     datos_completos = []
@@ -1682,30 +1683,204 @@ def indicelink(request, id_moneda):
 
         almacenero.save()
 
-        # Calculamos las 2 diferencias de fechas que necesitamos
+        
+        # Calculamos los 2 valores de cuenta corriente (Pendiente y Cobrado)
 
-        ahora = datetime.datetime.utcnow()
+        if almacenero.auto_cta == "SI":
 
-        meses_costo = dato.proyecto.fecha_f.month - dato.proyecto.fecha_i.month
-        meses_ingreso = dato.proyecto.fecha_f.month - ahora.month
+            cuota = Cuota.objects.filter(cuenta_corriente__venta__proyecto = dato.proyecto)
+
+            total_pesos = 0
+            total_pagado_pesos = 0
+            total_pagado_historico = 0
+            
+            if len(cuota) > 0:
+
+                for c in cuota:
+
+                    moneda_cuota = c.constante
+                    total_pesos = total_pesos + c.precio*moneda_cuota.valor
+                    pagos = Pago.objects.filter(cuota = c)
+
+                    for p in pagos:
+                        total_pagado_pesos = total_pagado_pesos + p.pago*moneda_cuota.valor
+                        total_pagado_historico = total_pagado_historico + p.pago_pesos
+            
+            saldo_pesos = total_pesos - total_pagado_pesos
+            almacenero.cuotas_a_cobrar = saldo_pesos
+            almacenero.cuotas_cobradas = total_pagado_historico
+            almacenero.save()
 
         # Calculo el resto de las cosas
+
+        if id_time == "1":
+
+            #===================================================
+            # Calculamos la logica de los meses
+            #===================================================
+
+            ahora = datetime.datetime.utcnow()
+
+            meses_costo = dato.proyecto.fecha_f.month - dato.proyecto.fecha_i.month
+            meses_costo = meses_costo + dato.proyecto.fecha_i.month - ahora.month
+            meses_ingreso = dato.proyecto.fecha_f.month - ahora.month
+
+            if meses_costo:
+                array_costo = np.zeros(meses_costo, dtype = int)
+            else:
+                array_costo =np.zeros(1, dtype = int)
+
+            if meses_ingreso:
+                array_ingreso = np.zeros(meses_ingreso, dtype = int)
+            else:
+                array_ingreso = np.zeros(1, dtype = int)
 
         retiro_socios = sum(np.array(RetirodeSocios.objects.values_list('monto_pesos').filter(proyecto = dato.proyecto)))
         saldo_caja = almacenero.cuotas_cobradas - almacenero.gastos_fecha - almacenero.Prestamos_dados - retiro_socios + almacenero.tenencia
         saldo_caja_total = saldo_caja_total + saldo_caja
+
+
         pend_gast = almacenero.pendiente_admin + almacenero.pendiente_comision + presupuesto.saldo_mat + presupuesto.saldo_mo + presupuesto.imprevisto + presupuesto.credito + presupuesto.fdr - almacenero.pendiente_adelantos + almacenero.pendiente_iva_ventas + almacenero.pendiente_iibb_tem +almacenero.cheques_emitidos
+        
+        if id_time == "1":
+            array_costo = np.append(array_costo, [pend_gast])
+            pend_gast = np.npv(rate=(dato.proyecto.tasa_f/100), values=array_costo)
+     
         pendiente_gastar_total = pendiente_gastar_total + pend_gast
         prest_cobrar = almacenero.prestamos_proyecto + almacenero.prestamos_otros 
-        total_ingresos = prest_cobrar + almacenero.cuotas_a_cobrar + almacenero.ingreso_ventas + almacenero.financiacion 
+
+        cuenta_corriente = almacenero.cuotas_a_cobrar
+        total_ingresos = prest_cobrar  + almacenero.ingreso_ventas + almacenero.financiacion 
+        
+        if id_time == "1" and almacenero.auto_cta == "NO":
+            total_ingresos = total_ingresos + cuenta_corriente
+            array_ingreso_1 = np.append(array_ingreso, [total_ingresos])
+            total_ingresos = np.npv(rate=(dato.proyecto.tasa_f/100), values=array_ingreso_1)
+      
+        if id_time == "1" and almacenero.auto_cta == "SI":
+
+
+            #===================================================
+            # Armamos el flujo de cuentas corriente
+            #===================================================
+
+            #===================================================
+            # Armamos las fechas necesarias
+            #===================================================
+
+            #Establecemos un rango para hacer el cash de ingreso
+        
+            fecha_inicial_hoy = datetime.date.today()
+
+            fecha_inicial_2 = datetime.date(fecha_inicial_hoy.year, fecha_inicial_hoy.month, 1)
+
+            fechas = []
+
+            #Aqui buscamos la ultima fecha
+
+            fecha_ultima = Cuota.objects.filter(cuenta_corriente__venta__proyecto = dato.proyecto).order_by("-fecha")
+
+            contador = 0
+            
+            contador_year = 1
+
+            fecha_cargar = fecha_inicial_2
+
+            while fecha_cargar < fecha_ultima[0].fecha:
+
+                if (fecha_inicial_2.month + contador) == 13:
+                    
+                    year = fecha_inicial_2.year + contador_year
+                    
+                    fecha_cargar = date(year, 1, fecha_inicial_2.day)
+
+                    fechas.append(fecha_cargar)
+                    
+                    contador_year += 1
+
+                    contador = - (12 - contador)
+
+                else:
+
+                    mes = fecha_inicial_2.month + contador
+
+                    year = fecha_inicial_2.year + contador_year - 1
+
+                    fecha_cargar = date(year, mes, fecha_inicial_2.day)
+
+                    fechas.append(fecha_cargar)
+
+                contador += 1
+            
+            #===================================================
+            # Armamos el cash
+            #===================================================
+            
+            array_cuotas = []
+
+            fecha_inicial = 0
+
+            for f in fechas:
+
+                total = 0
+                
+                if fecha_inicial == 0:
+
+                        fecha_inicial = fecha_inicial_hoy
+                else:
+
+                    cuotas = Cuota.objects.filter(fecha__range = (fecha_inicial, f), cuenta_corriente__venta__proyecto = dato.proyecto)
+                        
+                    pagos = Pago.objects.filter(fecha__range = (fecha_inicial, f), cuota__cuenta_corriente__venta__proyecto = dato.proyecto)
+
+                    total_cuotas_proyecto = 0
+                    total_pagado_proyecto = 0
+
+                    if len(cuotas)>0:
+
+                        for c in cuotas:
+
+                            if c.cuenta_corriente.venta.unidad.asig == "PROYECTO":
+
+                                total_cuotas_proyecto = total_cuotas_proyecto + c.precio*c.constante.valor 
+
+                    if len(pagos)>0:
+
+                        for p in pagos:
+
+                            if p.cuota.cuenta_corriente.venta.unidad.asig == "PROYECTO":
+
+                                total_pagado_proyecto = total_pagado_proyecto + p.pago*p.cuota.constante.valor 
+
+                    saldo = total_cuotas_proyecto - total_pagado_proyecto
+
+                    #Aqui calculamos el saldo de cuotas de LINK
+                    
+                    array_cuotas.append(saldo)
+
+                    fecha_inicial = f
+
+
+
+            cuenta_corriente = np.npv(rate=(dato.proyecto.tasa_f/100), values=array_cuotas)
+            array_ingreso_1 = np.append(array_ingreso, [total_ingresos])
+            total_ingresos = np.npv(rate=(dato.proyecto.tasa_f/100), values=array_ingreso_1) + cuenta_corriente
+
+
         ingresos_total = ingresos_total + total_ingresos
         margen = total_ingresos - pend_gast + saldo_caja
         descuento = almacenero.ingreso_ventas*0.06
+
+        if id_time == "1":
+            array_ingreso_2 = np.append(array_ingreso, [descuento])
+            descuento = np.npv(rate=(dato.proyecto.tasa_f/100), values=array_ingreso_2)
+
         descuento_total = descuento_total + descuento
         margen_2 = margen - descuento 
                
         datos_completos.append((dato, saldo_caja/moneda, pend_gast/moneda, total_ingresos/moneda, margen/moneda, descuento/moneda, margen_2/moneda))
 
+    
     # -----------------> Aqui calculo los totalizadores
 
     margen1_total = ingresos_total - pendiente_gastar_total + saldo_caja_total
@@ -1819,14 +1994,12 @@ def indicelink(request, id_moneda):
 
             fecha_valor = datetime.date(fecha.year, fecha.month, 1)
             
-            valor = Registrodeconstantes.objects.get(fecha=fecha_valor, constante__id = 1)
+            valor = Registrodeconstantes.objects.get(fecha=fecha_valor, constante__id = 2)
 
             datos_registro.append((margen1/valor.valor, margen2/valor.valor))
+  
 
-
-        
-
-    return render(request, 'indicelink.html', {"id_moneda":id_moneda, "datos_completos":datos_completos, 'datos_finales':datos_finales, "datos_registro":datos_registro, "fechas":fechas, "datos_finales_2":datos_finales_2})
+    return render(request, 'indicelink.html', {"id_time":id_time, "id_moneda":id_moneda, "datos_completos":datos_completos, 'datos_finales':datos_finales, "datos_registro":datos_registro, "fechas":fechas, "datos_finales_2":datos_finales_2})
 
 def indicelinkajustado(request):
 
@@ -2413,7 +2586,7 @@ def almacenero(request):
     lista = 0
 
     if request.method == 'POST':
-        
+
         try:
 
             #Trae el proyecto elegido

@@ -1,4 +1,4 @@
-{% extends "users/inicio.html" %}
+{% extends "users/inicio2.html" %}
 
 {% load static %}
 {% load humanize %}
@@ -6,144 +6,139 @@
 {% block content %}
 
 
+<div class="container-fluid r-aside">
 
-<div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;" > 
-
-    <div style="text-align: center;">
-
-
-        <h2 style="color: rgb({{ctacte.venta.unidad.proyecto.color}})" >Resumen de cuentas corrientes</h2>
-
-
-        {% if proy %}
-
-        <div>
-
-            <img src="{{proy.iamgen.url}}"  class="img-fluid" alt="..." style="max-width:20%;width:auto;height:auto; margin-top: 1rem;">
-  
-
+    <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+            <h3 class="text-themecolor">Resumen de cuentas corriente</h3>
         </div>
 
+        <div class="col-md-7 align-self-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
 
-        {% endif %}
-
-        <b><hr class = "my-4" style="width: 100%; "></b>
-    
-
-        <div style="text-align: left;">
-        
-        <h6>Cantidad de cuentas cargadas: <small>{{cantidad_cuentas|intcomma}}</small></h6>
-        <h6>Monto en Hº cobrado: <small>{{otros_datos.0|floatformat:0|intcomma}} M3</small></h6>
-        <h6>Monto en Hº adeudado: <small> {{otros_datos.1|floatformat:0|intcomma}} M3</small></h6>
-        <h6>Monto en Hº pendiente: <small>{{otros_datos.2|floatformat:0|intcomma}} M3</small></h6>
-
-
-        <b><hr class = "my-4" style="width: 75%; "></b>
-    
+                <li class="breadcrumb-item">Resumen de cta cte</li>
+            </ol>
+        </div>
     </div>
-
-
-    <div style="text-align: left; margin-top: 0.5%;">
-
-        <a style="margin: 3px;" class="badge badge-secondary" href="{% url 'Total cuenta' 0 %}" >Todos los proyectos</a>
-
-
-        {% for i in listado %}
-    
-            <a class="badge badge-warning" style="background-color: rgb({{i.color}}); margin: 3px;" href="{% url 'Total cuenta' i.id %}" >{{i.nombre}}</a>
-    
-
-
-            {% endfor %}
-
-            <a style="margin: 3px;" class="badge badge-success" href="{% url 'Descargar resumen total de cuenta' %}"><img src="{% static 'img/sobresalir.png' %}" alt="" style="max-width:12px; height:auto;"> Descargar Excel</a>
-    
-
-
-    
-    
-        </div>
-
-
-    <div class = "tableconteinerabel">
-
-
-        <table class = "table table-hover" style="text-align: center; margin-top: 0.0%;">
-            <thead>
-    
-                <tr class = "table-dark">
-
-                    <th scope = "row"> <b><small>FECHA</small></b> </th>
-
-                    <th scope = "row"> <b><small>TOTAL INGRESOS</small></b> </th>
-
-                    <th scope = "row"> <b><small>TOTAL INGRESOS Hº</small></b> </th>
-
-                    <th scope = "row"> <b><small>TOTAL INGRESOS LINK</small></b> </th>
-
-                    <th scope = "row"> <b><small>TOTAL INGRESOS LINK (Hº)</small></b> </th>
-
-                    <th scope = "row"> <b><small>TOTAL INGRESOS PROYECTO</small></b> </th>
-
-                    <th scope = "row"> <b><small>TOTAL INGRESOS PROYECTO (Hº)</small></b> </th>
-
-
-                </tr>
-
-
-            
-            
-            
-            
-            </thead>
-
-
-    
-            <tbody>  
-                
-                {% for i in datos %}
-    
-                <tr class = "table-light">
-
-                    <td> <b> <small> <b>{{i.0.0.0|date:"SHORT_DATE_FORMAT" }}</b> </small> </b></td>
-
-                    <td> <b> <small> <b>${{i.1|floatformat:0|intcomma}}</b> </small> </b></td>
-
-                    <td> <b> <small> <b>{{i.2|floatformat:3}} M3</b> </small> </b></td>
-
-                    <td> <b> <small> <b>${{i.3|floatformat:0|intcomma}}</b> </small> </b></td>
-
-                    <td> <b> <small> <b>{{i.4|floatformat:3}} M3</b> </small> </b></td>
-
-                    <td> <b> <small> <b>${{i.5|floatformat:0|intcomma}}</b> </small> </b></td>
-
-                    <td> <b> <small> <b>{{i.6|floatformat:3}} M3</b> </small> </b></td>
-                    
-    
-                </tr>
-
-                {% endfor %}
-
-
-
-            </tbody>
-         
-    
-    
-        </table>
-    
-        </div>
-
-
-    <div style="text-align: center; margin-top: 10%;">
-        <p> <small>-- Link<strong>P</strong> --</small> </p>
-
-     </div>
-
-    
-    
-
 </div>
 
-    
+
+<div class="row ">
+    <div class="col-12">
+        <div class="card overflow-auto">
+            <div class="card-body">
+
+                <div style="text-align: center;">
+
+
+                    <h2 style="color: rgb({{ctacte.venta.unidad.proyecto.color}})">Resumen de cuentas corrientes</h2>
+
+                    {% if proy %}
+                    <div>
+
+                        <img src="{{proy.iamgen.url}}" class="img-fluid mb-4" alt="..."
+                            style="max-width:200px;width:auto;height:auto; margin-top: 1rem;">
+
+                    </div>
+
+                    {% endif %}
+
+                    <div style="text-align: left;">
+
+                        <h6>Cantidad de cuentas cargadas: {{cantidad_cuentas|intcomma}}</h6>
+                        <h6>Monto en Hº cobrado: {{otros_datos.0|floatformat:0|intcomma}} M3</h6>
+                        <h6>Monto en Hº adeudado: {{otros_datos.1|floatformat:0|intcomma}} M3</h6>
+                        <h6>Monto en Hº pendiente: {{otros_datos.2|floatformat:0|intcomma}} M3</h6>
+
+                    </div>
+
+
+                    <div style="text-align: left; margin-top: 0.5%; margin-top: 20px;">
+
+                        <a style="margin: 3px;" class="btn btn-sn btn-secondary" href="{% url 'Total cuenta' 0 %}">Conjunto</a>
+
+
+                        {% for i in listado %}
+
+                        <a class="btn btn-sn btn-info" style="background-color: rgb({{i.color}}); margin: 3px;"
+                            href="{% url 'Total cuenta' i.id %}">{{i.nombre|lower|capfirst}}</a>
+
+                        {% endfor %}
+
+                        <a style="margin: 3px;" class="mx-2" href="{% url 'Descargar resumen total de cuenta' %}"><img
+                                src="{% static 'img/sobresalir.png' %}" alt="" style="max-width:20px; height:auto;"></a>
+
+                    </div>
+
+
+                    <div class="tableconteinerabel">
+
+
+                        <table id="example" class="table table-striped table-bordered mt-1" style="width:100%">
+                            <thead>
+
+                                <tr>
+                                    <th rowspan="2" style="vertical-align: middle; text-align: center;" >Fecha</th>
+                                    <th colspan="2" style="vertical-align: middle; text-align: center;" >Todas las unidades</th>
+                                    <th colspan="2" style="vertical-align: middle; text-align: center;" >Unidades Link</th>
+                                    <th colspan="2" style="vertical-align: middle; text-align: center;" > Unidades Proyecto</th>
+                                    </tr>
+
+                                <tr>
+                                    <th>Pesos</th>
+                                    <th>Hormigon</th>
+                                    <th>Pesos</th>
+                                    <th>Hormigon</th>
+                                    <th>Pesos</th>
+                                    <th>Hormigon</th>
+                                    </tr>
+                            </thead>
+
+                            <tbody>
+
+                                {% for i in datos %}
+
+                                <tr>
+                                    <td> <small>{{i.0.0.0|date:"SHORT_DATE_FORMAT" }} </small> </td>
+                                    <td> <small>${{i.1|floatformat:0|intcomma}} </small> </td>
+                                    <td> <small>{{i.2|floatformat:3}} M3 </small> </td>
+                                    <td> <small>${{i.3|floatformat:0|intcomma}} </small> </td>
+                                    <td> <small>{{i.4|floatformat:3}} M3 </small> </td>
+                                    <td> <small>${{i.5|floatformat:0|intcomma}} </small> </td>
+                                    <td> <small>{{i.6|floatformat:3}} M3 </small> </td>
+                                </tr>
+
+                                {% endfor %}
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js" defer></script>
+<script src="https://cdn.datatables.net/1.10.23/js/dataTables.bootstrap4.min.js" defer></script>
+
+
+
+<script>
+    $(document).ready(function () {
+        $('#example').DataTable({
+            "paging": false,
+            "searching": false,
+            "info": false
+        });
+    });
+</script>
+
+
+
 {% endblock %}

@@ -26,20 +26,30 @@
             <h6 class="card-subtitle">Resumen de los datos conjuntos de proyectos y honorarios</h6>
             <div style="text-align: left; margin: 5px;">
 
-                <a href="#" style="text-decoration: none;"data-toggle="tooltip" data-placement="right" title="" data-original-title="Ajustar por tiempo"><img
-                    src="{% static 'img/eficiencia.png' %}" alt=""
+                {% if id_time == "0" %}
+
+                <a href="{% url 'Indice Link' id_moneda 1 %}" style="text-decoration: none;"data-toggle="tooltip" data-placement="right" title="" data-original-title="Ajustar por tiempo"><img
+                    src="{% static 'img/icono_ajustado.png' %}" alt=""
                     style="max-width:30px; height:auto;"></a>
 
-                <a href="{% url 'Indice Link' 0 %}" style="text-decoration: none; margin-left: 15px;"data-toggle="tooltip" data-placement="right" title="" data-original-title="Ver en pesos"><img
-                    src="{% static 'img/$coin-01.png' %}" alt=""
+                {% else %}
+
+                <a href="{% url 'Indice Link' id_moneda 0 %}" style="text-decoration: none;"data-toggle="tooltip" data-placement="right" title="" data-original-title="Indice sin ajuste"><img
+                    src="{% static 'img/icono_bolsa.png' %}" alt=""
                     style="max-width:30px; height:auto;"></a>
 
-                <a href="{% url 'Indice Link' 1 %}" style="text-decoration: none; margin-left: 15px;"data-toggle="tooltip" data-placement="right" title="" data-original-title="Ver en Hº"><img
-                    src="{% static 'img/Hcoin-03-03.png' %}" alt=""
+                {% endif %}
+
+                <a href="{% url 'Indice Link' 0 id_time %}" style="text-decoration: none; margin-left: 15px;"data-toggle="tooltip" data-placement="right" title="" data-original-title="Ver en pesos"><img
+                    src="{% static 'img/icono_pesos.png' %}" alt=""
                     style="max-width:30px; height:auto;"></a>
 
-                <a href="{% url 'Indice Link' 2 %}" style="text-decoration: none; margin-left: 15px;"data-toggle="tooltip" data-placement="right" title="" data-original-title="Ver en dolar oficial"><img
-                    src="{% static 'img/USDcoin-02-02.png' %}" alt=""
+                <a href="{% url 'Indice Link' 1 id_time %}" style="text-decoration: none; margin-left: 15px;"data-toggle="tooltip" data-placement="right" title="" data-original-title="Ver en Hº"><img
+                    src="{% static 'img/icono_hormigon.png' %}" alt=""
+                    style="max-width:30px; height:auto;"></a>
+
+                <a href="{% url 'Indice Link' 2 id_time %}" style="text-decoration: none; margin-left: 15px;"data-toggle="tooltip" data-placement="right" title="" data-original-title="Ver en dolar blue"><img
+                    src="{% static 'img/icono_dolar.png' %}" alt=""
                     style="max-width:30px; height:auto;"></a>
             
                 </div>
