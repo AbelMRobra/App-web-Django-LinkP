@@ -97,9 +97,11 @@
       
                           <tbody>
                               {% for i in datos.data %}
+
+                              {% if  i.evo_usd %}
                               <tr>  
                                   
-                                  <td> <a href="{{i.evo_usd.url}}">Archivo fecha {{i.fecha|date:"d-m-Y"}}</a> - Nombre del archivo: "{{i.evo_usd}}"</td>    
+                                  <td> <a href="{{i.evo_usd.url}}">Archivo fecha {{i.fecha|date:"d-m-Y"}}</a> - Nombre del archivo: "{{i.evo_usd.name}}"</td>    
                                   <td><form method="POST">
                                       <button class="btn btn-link fa fa-trash d-flex align-content-end" type="submit" name="delete" value="{{i.id}}" style="text-decoration: none;"></button>
 
@@ -109,6 +111,8 @@
                                   </td>                                  
 
                               </tr>
+
+                              {% endif %}
                               {% endfor %}
                           </tbody>        
                   </table>
