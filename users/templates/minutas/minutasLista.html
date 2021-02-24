@@ -65,11 +65,15 @@
                             <td><a href="{% url 'Minutas Id' i.id %}">{{i.nombre|lower|capfirst}}</a></td>
                             <td>{{i.fecha}}</td>
                              <td>
+                                 {% if request.user.username == i.creador.identificacion %}
                                  <form method="POST">
                                         <button class="btn btn-link fa fa-trash d-flex align-content-end" type="submit" name="delete" value="{{i.id}}" style="text-decoration: none;"></button>
 
                                         {% csrf_token %}
                                     </form>
+                                {% else %}
+
+                                {% endif %}
 
                                     </td>  
                          
