@@ -1841,7 +1841,7 @@ def indicelink(request, id_moneda, id_time):
 
                     cuotas = Cuota.objects.filter(fecha__range = (fecha_inicial, f), cuenta_corriente__venta__proyecto = dato.proyecto, cuenta_corriente__venta__unidad__asig = "PROYECTO")
                         
-                    pagos = Pago.objects.filter(fecha__range = (fecha_inicial, f), cuota__cuenta_corriente__venta__proyecto = dato.proyecto, cuenta_corriente__venta__unidad__asig = "PROYECTO")
+                    pagos = Pago.objects.filter(fecha__range = (fecha_inicial, f), cuota__cuenta_corriente__venta__proyecto = dato.proyecto, cuota__cuenta_corriente__venta__unidad__asig = "PROYECTO")
 
                     total_cuotas_proyecto = 0
                     total_pagado_proyecto = 0
