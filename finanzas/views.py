@@ -1788,7 +1788,7 @@ def indicelink(request, id_moneda, id_time):
 
             #Aqui buscamos la ultima fecha
 
-            fecha_ultima = Cuota.objects.filter(cuenta_corriente__venta__proyecto = dato.proyecto).order_by("-fecha")
+            fecha_ultima = Cuota.objects.filter(cuenta_corriente__venta__proyecto = dato.proyecto, cuenta_corriente__venta__unidad__asig = "PROYECTO").order_by("-fecha")
 
             contador = 0
             
@@ -1839,9 +1839,9 @@ def indicelink(request, id_moneda, id_time):
                         fecha_inicial = fecha_inicial_hoy
                 else:
 
-                    cuotas = Cuota.objects.filter(fecha__range = (fecha_inicial, f), cuenta_corriente__venta__proyecto = dato.proyecto)
+                    cuotas = Cuota.objects.filter(fecha__range = (fecha_inicial, f), cuenta_corriente__venta__proyecto = dato.proyecto, cuenta_corriente__venta__unidad__asig = "PROYECTO")
                         
-                    pagos = Pago.objects.filter(fecha__range = (fecha_inicial, f), cuota__cuenta_corriente__venta__proyecto = dato.proyecto)
+                    pagos = Pago.objects.filter(fecha__range = (fecha_inicial, f), cuota__cuenta_corriente__venta__proyecto = dato.proyecto, cuenta_corriente__venta__unidad__asig = "PROYECTO")
 
                     total_cuotas_proyecto = 0
                     total_pagado_proyecto = 0
