@@ -1,36 +1,51 @@
-{% extends "users/inicio.html" %}
+{% extends "users/inicio2.html" %}
 
 {% load static %}
 
 {% block content %}
 
-<div class = "jumbotron" style="background-color: white; margin-bottom: 0px;" >
+<div class="container-fluid r-aside">
 
-    <h3 style="text-align: center; color: #138D75 ;">Crear una constante</h3>
-     <b><hr class = "my-4" style="width: 75%; border-color: ##138D75 ;"></b>
-
-    <div class = "jumbotron" style="width: 60%; margin-left: 20%; background-color: rgba(25, 111, 61, 0.3);">
-
-
-        <form method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-
-            <div style="text-align: center;">
-                <button type='submit' class = "btn btn-outline-success">Guardar</button>
-            </div>
-    
-            
-    
-        </form>
-
-        <div style="text-align: center; margin-top: 2%;">
-
-            <a href="/presupuestos/cons_panel"><button type='submit' class = "btn btn-outline-danger">Volver</button></a>
-        
+    <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+            <h3 class="text-themecolor">Crear una constante</h3>
         </div>
 
+        <div class="col-md-7 align-self-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+                <li class="breadcrumb-item"><a href="/presupuestos/cons_panel">Panel de cambios</a></li>
+                <li class="breadcrumb-item">Crear una constante</li>
+            </ol>
+        </div>
     </div>
 </div>
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="row d-flex justify-content-center">
+                    <div class="col col-md-12 col-lg-6">
+                        <div class="row">
+                            <div class="col bg-light border rounded p-4 ">
+
+                                <form method="post">
+                                    {% csrf_token %}
+                                    {{ form.as_p }}
+
+                                    <div style="text-align: center;">
+                                        <button type='submit' class="btn btn-success">Guardar</button>
+                                    </div>
+
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 {% endblock %}

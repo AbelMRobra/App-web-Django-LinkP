@@ -1216,7 +1216,6 @@ def anuncios(request):
 
     return render(request, 'users/anuncios.html', {"data":data})
 
-
 def minutas(request):
 
     if request.method == 'POST':
