@@ -545,30 +545,25 @@ def folleto(request):
 
 def evousd(request):
 
-    busqueda = 1
-    datos_almacenados = ArchivosAreaVentas.objects.filter(evo_usd__isnull = False)
-    datos = 0
-    fecha = 0
+    if request.method == 'POST':
+        datos_p = request.POST.items()
+        for d in datos_p:
+            if d[0] == "fecha":
+                b = ArchivosAreaVentas(
+                    fecha = request.POST['fecha'],
+                    evo_usd = request.FILES['adjunto']
+                )
+
+                b.save()
+            if d[0] == "delete":
+                archivo = ArchivosAreaVentas.objects.get(id = int(request.POST['delete']))
+                archivo.evo_usd = None
+                archivo.save()
+
 
     data = ArchivosAreaVentas.objects.filter(evo_usd__isnull = False).order_by("-fecha")
 
-    if request.method == 'POST':
-
-        #Trae los datos elegidos
-        datos_elegidos = request.POST.items()
-
-        for dato in datos_elegidos:
-
-            if dato[0] == "fecha":
-                datos = ArchivosAreaVentas.objects.get(fecha = dato[1])
-                busqueda = 0
-                fecha = dato[1]
-
-
-    datos = {"data":data,
-    "busqueda":busqueda,
-    "datos":datos,
-    "fecha":fecha}
+    datos = {"data":data}
 
     return render(request, 'evousd.html', {"datos":datos})
 
