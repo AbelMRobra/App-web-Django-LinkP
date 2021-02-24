@@ -1,76 +1,81 @@
-{% extends "users/inicio.html" %}
+{% extends "users/inicio2.html" %}
 
 {% load static %}
 {% load humanize %}
 
 {% block content %}
 
-
-
-<div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;" > 
-
-    <div style="text-align: center;">
-        <h2>Evolución del USD/m2</h2>
-
-        {% if datos.fecha %}
-
-        <h6>Fecha del adjunto: {{datos.fecha}}</h6>
-
-        {% endif %}
-
-        <small>Evolucón del valor real del m2</small>
-
-
-        <b><hr class = "my-4" style="width: 75%;"></b>
-    
+<div class="container-fluid r-aside">
+  <div class="row page-titles">
+    <div class="col-md-5 align-self-center">
+      <h3 class="text-themecolor">Evolucion en USD</h3>
     </div>
 
-    <div style="text-align: center;">
-       <form method="POST">
+    <div class="col-md-7 align-self-center">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+        <li class="breadcrumb-item">Evolucion en USD</li>
+      </ol>
+    </div>
+  </div>
+</div>
 
-           {% csrf_token %}
+<div class="row">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body row">
+        <div class="col-12 justify-content-center">
+          <div style="text-align: center;">
+            <h2>Evolución del USD/m2</h2>
 
-           <select name="fecha" class="custom-select" style="width: 20%;">
+            {% if datos.fecha %}
 
+            <h6>Fecha del adjunto: {{datos.fecha}}</h6>
 
-               {% for i in datos.fechas %}
+            {% endif %}
 
-               <option value="{{i.1}}">{{i.0}}</option>
+            <small>Evolucón del valor real del m2</small>
+          </div>
 
-               {% endfor %}
+          <div style="text-align: center; margin-bottom: 20%;">
+            <form method="POST">
 
+              {% csrf_token %}
 
+              <select name="fecha" class="custom-select" style="width: 20%;">
 
-             </select>
-             <div>
-               <small> Seleccione una fecha para cargar el archivo</small>
-             </div>
+                {% for i in datos.fechas %}
 
+                <option value="{{i.1}}">{{i.0}}</option>
 
+                {% endfor %}
 
-             <div>
-               <button class="btn btn-dark" type="submit" style="margin-top: 1%;">Buscar</button>          
-           </div>
-           
-       </form>
+              </select>
+              <div>
+                <small> Seleccione una fecha para cargar el archivo</small>
+              </div>
 
+              <div>
+                <button class="btn btn-dark" type="submit" style="margin-top: 1%;  width: 150px;">Buscar</button>
+              </div>
+
+            </form>
+
+          </div>
+
+          {% if datos.datos %}
+
+          <div>
+            <a href="{{ datos.datos.evo_usd.url }}" class="btn btn-info" style="margin-top: 1%;  width: 150px;">Ver Informe!</a>
+          </div>
+
+          {% endif %}
+
+        </div>
       </div>
-
-       {% if datos.datos %}
-
-       <div>
-          <a href="{{ datos.datos.evo_usd.url }}" class="btn btn-info" style="margin-top: 1%;">Ver Informe!</a>
-       </div>
-
-       {% endif %}
-       
-       <div style="text-align: center; margin-top: 10%;">
-        <p> <small>-- Link<strong>P</strong> --</small> </p>
-
-     </div>
-       
-       
-   </div>
+    </div>
+  </div>
+</div>
 
 
 {% endblock %}

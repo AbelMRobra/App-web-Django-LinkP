@@ -1,4 +1,4 @@
-{% extends "users/inicio.html" %}
+{% extends "users/inicio2.html" %}
 {% load apptags_extras %}
 
 {% load static %}
@@ -6,7 +6,138 @@
 
 {% block content %}
 
-{% if perms.ventas.view_pricing %} 
+{% if request.user|has_group:"VENTAS NIVEL 3" %} 
+
+<div class="container-fluid r-aside">
+
+    <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+            <h3 class="text-themecolor">Pricing</h3>
+        </div>
+
+        <div class="col-md-7 align-self-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+                <li class="breadcrumb-item"><a
+                    href="/ventas/cargarventa">Panel</a>
+            </li>
+                <li class="breadcrumb-item">Pricing</li>
+            </ol>
+        </div>
+    </div>
+</div>
+
+
+<div class="row ">
+    <div class="col-12">
+        <div class="card overflow-auto">
+            <div class="card-body">
+
+                <div style="text-align: center; margin-bottom: 50px;">
+                    <img src="{{datos.proyecto.iamgen.url}}" class="img-fluid" alt="..."
+                        style="max-width:200px;width:auto;height:auto; margin-top: 5px; margin-bottom: 5px;">
+                </div>
+
+                    <div style="text-align: left; display: inline-block;">
+                        <a href="#" style="text-decoration: none;"data-toggle="tooltip" data-placement="right" title="" data-original-title="Agregar cuota"><img
+                            src="{% static 'img/add.png' %}" alt=""
+                            style="max-width:20px; height:auto;"></a>
+                        <a href="#" style="text-decoration: none; margin-left: 10px;" data-toggle="tooltip" data-placement="right" title="" data-original-title="Resumen de la cuenta"><img
+                                src="{% static 'img/reporte.png' %}" alt="" style="max-width:20px; height:auto;"></a>
+                        <a href="#"
+                        style="text-decoration: none;  margin-left: 10px;" data-toggle="tooltip" data-placement="right" title="" data-original-title="Panel de boleto"><img src="{% static 'img/cuenta.png' %}" alt=""
+                                style="max-width:20px; height:auto;"></a>
+                        <a href="{% url 'Descargar del pricing' datos.proyecto.id %}"
+                            style="text-align: end; margin-top: 5px; text-decoration: none;  margin-left: 10px;" data-toggle="tooltip" data-placement="right" title="" data-original-title="Descargar Excel"> <img src="{% static 'img/sobresalir.png' %}"
+                                alt="" style="max-width:20px; height:auto;"></a>
+
+                    </div>
+
+                    <div style="text-align: left; display: inline-block; margin-left: 20px;">
+
+                        <h5
+                                style="color: rgb({{datos.proyecto.color}})">Pricing del proyecto {{datos.proyecto.nombre}}
+                            </h5>
+                    </div>
+
+                    <table id="example" class="table table-striped table-bordered" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>Unidad</th>
+                                <th>Tipologia</th>
+                                <th data-toggle="tooltip" data-placement="right" title="" data-original-title="Superficie Equivalente">Sup*</th>
+                                <th>Asignación</th>
+                                <th>Estado</th>
+                                <th>Contado</th>
+                                <th data-toggle="tooltip" data-placement="right" title="" data-original-title="Superficie Equivalente">Financiado</th>
+                                <th>Pagos</th>
+                            </tr>
+                        </thead>
+
+                        <tbody style="font-size: 14px;">   
+    
+                            {% for i in datos.datos_unidades %}
+                            <tr>
+                                <td> <a href=" {% url 'Cotizador' i.0.id %}" style="color: rgb({{datos.proyecto.color}});"><b>{{i.0.piso_unidad}} - {{i.0.nombre_unidad}}</b></a> </td>
+                                
+                                {% if i.0.tipo == "DEPARTAMENTO" %}
+                                
+                                <td> <img src="{% static 'img/piso.png' %}" alt="" style="max-width:15px; height:auto; margin: 2px;" >DEPTO
+                                <h6 class="card-subtitle" style="margin-top: 1px; font-size: 12px;">{{i.0.tipologia}}</h6></td>
+                                
+                                {% elif i.0.tipo == "LOCAL"%}
+            
+                                <td> <img src="{% static 'img/tienda.png' %}" alt="" style="max-width:15px; height:auto; margin: 2px;" >{{i.0.tipo}}
+                                <h6 class="card-subtitle" style="margin-top: 1px; font-size: 12px;">{{i.0.tipologia}}</h6></td>
+                                
+                                
+                                {% else %}
+            
+                                <td> <img src="{% static 'img/coche.png' %}" alt="" style="max-width:15px; height:auto; margin: 2px;" >{{i.0.tipo}}
+                                <h6 class="card-subtitle" style=" margin-top: 1px; font-size: 12px;">{{i.0.tipologia}}</h6></td>
+            
+            
+                                {% endif %}
+
+                                <td>{{i.1|floatformat:2}} m2</td>
+                                <td>{{i.0.asig|lower|capfirst}}</td>
+                                
+                                {% if i.9 != 0 and perms.ventas.view_ventasrealizadas %}
+                      
+                                <td><div class="label label-table label-{% if i.0.estado == "DISPONIBLE" %}success{% elif i.0.estado == "SEÑADA" %}warning{% else %}info{% endif %}">{{i.0.estado|lower|capfirst}}</div></td>
+
+                                {% else %}
+            
+                                <td><div class="label label-table label-{% if i.0.estado == "DISPONIBLE" %}success{% elif i.0.estado == "SEÑADA" %}warning{% else %}info{% endif %}">{{i.0.estado|lower|capfirst}}</div></td>
+            
+                                {% endif %}
+            
+                                {% if i.2 >= 0 %}
+                                <td>$ {{i.4|floatformat:0|intcomma}}
+                                    <h6 class="card-subtitle" style="margin-top: 1px; font-size: 12px;">Por M2: $ {{i.2|floatformat:0|intcomma}}</h6> </td>
+                                <td>$ {{i.5|floatformat:0|intcomma}}
+                                    <h6 class="card-subtitle" style="margin-top: 1px; font-size: 12px;">Por M2: $ {{i.6|floatformat:0|intcomma}}</h6> </td>
+                                </td>
+
+                                <td>Anticipo: $ {{i.7|floatformat:0|intcomma}}
+                                    <h6 class="card-subtitle" style="margin-top: 1px; font-size: 12px;">Cuotas ({{datos.meses}}): $ {{i.8|floatformat:0|intcomma}}</h6>
+                                </td>
+                                
+                                {% else %}
+                
+                                <td>{{i.4|lower|capfirst}}</td>
+                                <td>{{i.2|lower|capfirst}}</td>
+                                <td>{{i.2|lower|capfirst}}</td>
+                         
+                
+                                {% endif %}
+                                
+                                
+                
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
 
 <div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;">
     <div style="text-align: left; justify-content: left;">
@@ -153,93 +284,7 @@
                 </tr>
             </thead>
     
-            <tbody>   
-    
-                {% for i in datos.datos_unidades %}
-                <tr class = "table-light">
-                    <td style="width: 2%;"> <a href=" {% url 'Cotizador' i.0.id %}" style="color: rgb({{datos.proyecto.color}});"> <small> <b>{{i.0.piso_unidad}} - {{i.0.nombre_unidad}}</b> </small></a> </td>
-                    
-                    {% if i.0.tipo == "DEPARTAMENTO" %}
-                    
-                    <td style="width: 8%;"> <img src="{% static 'img/piso.png' %}" alt="" style="max-width:15px; height:auto; margin: 2px;"  > <small> <b>DEPTO</b> </small> </td>
-                    
-                    {% elif i.0.tipo == "LOCAL"%}
-
-                    <td style="width: 8%;"> <img src="{% static 'img/tienda.png' %}" alt="" style="max-width:15px; height:auto; margin: 2px;"  > <small> <b>{{i.0.tipo}}</b> </small> </td>
-                   
-                    
-                    
-                    {% else %}
-
-                    <td style="width: 8%;"> <img src="{% static 'img/coche.png' %}" alt="" style="max-width:15px; height:auto; margin: 2px;"  > <small> <b>{{i.0.tipo}}</b> </small> </td>
-                   
-
-
-                    {% endif %}
-                    
-                    <td style="width: 3%;"> <b> <small>{{i.0.tipologia}}</small> </b> </td>
-                    <td style="width: 5%;"> <b> <small>{{i.1|floatformat:2}}m2</small></b> </td>
-                    <td style="width: 5%;" class="priority-4"> <b> <small> {{i.0.asig}} </small> </b> </td>
-                    
-                    {% if i.9 != 0 and perms.ventas.view_ventasrealizadas %}
-
-                    {% if i.0.estado == "DISPONIBLE" %}
-
-                    <td style="width: 5%; color: #1CB433  ;"> <b> <small> <span class="hint--top hint--success" aria-label= " {% for d in i.9 %} {{d.tipo_venta}} el {{d.fecha}} a {{d.comprador}} {% endfor %}"> <b><u>{{i.0.estado}}</u></b></small> </b> </span> </td>
-                    
-                    {% elif i.0.estado == "SEÑADA" %}
-
-                    <td style="width: 5%; color: #DADA1B ;"> <b> <small> <span class="hint--top hint--warning" aria-label= " {% for d in i.9 %} {{d.tipo_venta}} el {{d.fecha}} a {{d.comprador}} {% endfor %}"><b><u>{{i.0.estado}}</u></b></small> </b> </span> </td>
-                             
-                    {% else %}
-
-                    <td style="width: 5%; "> <b> <small> <span class="hint--top hint--info" aria-label= " {% for d in i.9 %} {{d.tipo_venta}} el {{d.fecha}} a {{d.comprador}} {% endfor %}"><b><u>{{i.0.estado}}</u></b></small> </b> </span> </td>
-                    
-                    {% endif %}
-
-                    {% else %}
-
-                    {% if i.0.estado == "DISPONIBLE" %}
-
-                    <td style="width: 5%; color: #1CB433  ;"> <b> <small> <b>{{i.0.estado}}</b> </small> </b> </td>
-
-                    {% elif i.0.estado == "SEÑADA" %}
-
-                    <td style="width: 5%; color: #DADA1B ;"> <b> <small> <b>{{i.0.estado}}</b> </small> </b> </td>
-                    
-                    {% else %}
-
-                    <td style="width: 5%; "> <b> <small> <b>{{i.0.estado}}</b> </small> </b> </td>
-
-                    {% endif %}
-
-                    {% endif %}
-
-
-                    {% if i.2 >= 0 %}
-                    <td style="width: 5%;"> <b> <small>${{i.4|floatformat:0|intcomma}}</small> </b> </td>
-                    <td style="width: 5%;"> <small><b>${{i.2|floatformat:0|intcomma}}</b> </small></td>
-                    <td style="width: 5%;" class="priority-5"> <b> <small>${{i.5|floatformat:0|intcomma}}</small> </b> </td>
-                    <td style="width: 5%;" class="priority-5"> <b> <small>${{i.6|floatformat:0|intcomma}}</small> </b> </td>
-                    <td style="width: 5%;" class="priority-5"> <b> <small>${{i.7|floatformat:0|intcomma}}</small> </b> </td>
-                    <td style="width: 5%;" class="priority-5"> <b> <small>${{i.8|floatformat:0|intcomma}}</small> </b> </td>
-                    
-                    {% else %}
-    
-                    <td style="width: 5%;"> <b> <small>{{i.4}}</small> </b> </td>
-                    <td style="width: 5%;"> <b> <small>{{i.2}}</small> </b> </td>
-                    <td style="width: 5%;" class="priority-5"> <b> <small>{{i.2}}</small> </b> </td>
-                    <td style="width: 5%;" class="priority-5"> <b> <small>{{i.2}}</small> </b> </td>
-                    <td style="width: 5%;" class="priority-5"> <b> <small>{{i.2}}</small> </b> </td>
-                    <td style="width: 5%;" class="priority-5"> <b> <small>{{i.2}}</small> </b> </td>
-    
-                    {% endif %}
-                    
-                    
-    
-                </tr>
-                {% endfor %}
-            </tbody>
+            
          
     
     

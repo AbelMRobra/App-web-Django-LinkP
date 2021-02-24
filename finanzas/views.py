@@ -1730,8 +1730,6 @@ def indicelink(request, id_moneda, id_time):
                 else:
                     meses_costo = 0   
 
-                    
-
             meses_ingreso = int((dato.proyecto.fecha_f.month - ahora.month)/2)
 
             if meses_costo:
@@ -1828,7 +1826,7 @@ def indicelink(request, id_moneda, id_time):
             # Armamos el cash
             #===================================================
             
-            array_cuotas = []
+            array_cuotas = [0]
 
             fecha_inicial = 0
 
