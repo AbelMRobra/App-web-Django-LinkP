@@ -804,8 +804,13 @@ def inicio(request):
     monedas = len(EntregaMoneda.objects.filter(fecha__gte = datetime.date.today(), usuario_recibe__identificacion = request.user))
     anuncios = Anuncios.objects.all().exclude(activo = "NO").order_by("-id")
 
+    #######################################
+    # Parte de minutas
+    #######################################
 
-    return render(request, "users/inicio2.html", {"anuncios":anuncios, "monedas":monedas, "dias_funcionando":dias_funcionando, "cantidad_p":cantidad_p, "cantidad_m":cantidad_m, "datos_barras":barras, "datos_logo":datos_logo, "mensaje_oc":mensaje_oc, "mensajesdeldia":mensajesdeldia, "datos_mensajeria":datos_mensajeria, "lista_grupos":lista_grupos, "miembros":miembros})
+    minutas_cantidad = len(Acuerdos.objects.filter(responsable__identificacion = request.user.username))
+
+    return render(request, "users/inicio2.html", {"minutas_cantidad":minutas_cantidad, "anuncios":anuncios, "monedas":monedas, "dias_funcionando":dias_funcionando, "cantidad_p":cantidad_p, "cantidad_m":cantidad_m, "datos_barras":barras, "datos_logo":datos_logo, "mensaje_oc":mensaje_oc, "mensajesdeldia":mensajesdeldia, "datos_mensajeria":datos_mensajeria, "lista_grupos":lista_grupos, "miembros":miembros})
 
 def welcome(request):
     # Si estamos identificados devolvemos la portada
@@ -1367,4 +1372,6 @@ def minutasid(request, id_minuta):
 
     acuerdos = Acuerdos.objects.filter(minuta = data)
 
-    return render(request, 'minutas/minutasId.html', {'data':data, 'acuerdos':acuerdos, 'list_users':list_users})
+    acuerdos_viejos = Acuerdos.objects.filter(minuta__id__lt = data.id, estado = "NO CHECK")
+
+    return render(request, 'minutas/minutasId.html', {'data':data, 'acuerdos':acuerdos, 'acuerdos_viejos':acuerdos_viejos, 'list_users':list_users})

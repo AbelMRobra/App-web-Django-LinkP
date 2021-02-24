@@ -469,6 +469,26 @@
       <!-- Bread crumb and right sidebar toggle -->
       <!-- ============================================================== -->
 
+      {% if minutas_cantidad %}
+
+      <div class="container-fluid r-aside">
+
+        <div>
+          <h4 class="card-title"><span class="lstick"></span>
+            <img src="{% static 'img/advertir.png' %}" alt=""
+              style="max-width:20px; height:auto; margin: 2px; vertical-align: top; margin-right: 10px;">Acuerdos y temas pendientes en minutas
+          </h4>
+        </div>
+
+        <div style="margin: 5px;">
+          {{request.user.first_name}}, en las minutas tienes {{minutas_cantidad}} acuerdos/temas pendientes. 
+
+        </div>
+
+      </div>
+
+      {% endif %}
+
       {% if datos_mensajeria %}
 
       <div class="container-fluid r-aside">
@@ -476,7 +496,7 @@
         <div>
           <h4 class="card-title"><span class="lstick"></span>
             <img src="{% static 'img/advertir.png' %}" alt=""
-              style="max-width:20px; height:auto; margin: 2px; vertical-align: top;"> Tienes correspondencia!
+              style="max-width:20px; height:auto; margin: 2px; vertical-align: top; margin-right: 10px;"> Tienes correspondencia!
           </h4>
         </div>
 
@@ -498,7 +518,7 @@
         <div>
           <h4 class="card-title"><span class="lstick"></span>
             <img src="{% static 'img/advertir.png' %}" alt=""
-              style="max-width:20px; height:auto; margin: 2px; vertical-align: top;"> Mensaje sobre ordenes de compra!
+              style="max-width:20px; height:auto; margin: 2px; vertical-align: top; margin-right: 10px;"> Mensaje sobre ordenes de compra!
           </h4>
         </div>
 
@@ -520,7 +540,7 @@
         <div>
           <h4 class="card-title"><span class="lstick"></span>
             <img src="{% static 'img/regalosi.png' %}" alt=""
-              style="max-width:20px; height:auto; margin: 2px; vertical-align: top;"> Recibiste una Linkcoin!
+              style="max-width:20px; height:auto; margin: 2px; vertical-align: top; margin-right: 10px;"> Recibiste una Linkcoin!
           </h4>
         </div>
 
