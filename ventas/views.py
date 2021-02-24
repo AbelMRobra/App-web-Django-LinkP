@@ -550,15 +550,7 @@ def evousd(request):
     datos = 0
     fecha = 0
 
-    fechas = []
-
-    for dato in datos_almacenados:
-        if dato.evo_usd: 
-            fechas.append((dato.fecha, str(dato.fecha)))
-
-    fechas = list(set(fechas))
-
-    fechas.sort( reverse=True)
+    data = ArchivosAreaVentas.objects.filter(evo_usd__isnull = False).order_by("-fecha")
 
     if request.method == 'POST':
 
@@ -573,7 +565,7 @@ def evousd(request):
                 fecha = dato[1]
 
 
-    datos = {"fechas":fechas,
+    datos = {"data":data,
     "busqueda":busqueda,
     "datos":datos,
     "fecha":fecha}
