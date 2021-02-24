@@ -372,11 +372,29 @@
         </div>
     </div>
 </div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+
+
 <script>
+     
+$(window).scroll(function () {
+            sessionStorage.scrollTop = $(this).scrollTop();
+        });
+        $(document).ready(function () {
+            if (sessionStorage.scrollTop != "undefined") {
+                $(window).scrollTop(sessionStorage.scrollTop);
+            }
+        });
+</script>
+
+<script>
+
 
     function deleteItem(btn) {
         var row = btn.parentNode.parentNode;
         row.parentNode.removeChild(row);
+
     }
 </script>
 
