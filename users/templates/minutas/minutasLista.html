@@ -50,6 +50,7 @@
                             <th>Creador</th>
                             <th>Tema</th>
                             <th>Fecha</th>
+                            <th></th>
                         </tr>
                     </thead>
 
@@ -63,6 +64,14 @@
                             </td>
                             <td><a href="{% url 'Minutas Id' i.id %}">{{i.nombre|lower|capfirst}}</a></td>
                             <td>{{i.fecha}}</td>
+                             <td>
+                                 <form method="POST">
+                                        <button class="btn btn-link fa fa-trash d-flex align-content-end" type="submit" name="delete" value="{{i.id}}" style="text-decoration: none;"></button>
+
+                                        {% csrf_token %}
+                                    </form>
+
+                                    </td>  
                          
                         </tr>
 

@@ -1214,6 +1214,14 @@ def anuncios(request):
 
 def minutas(request):
 
+    if request.method == 'POST':
+        datos_p = request.POST.items()
+        for d in datos_p:
+
+            if d[0] == "delete":
+                minuta = Minutas.objects.get(id = int(request.POST['delete']))
+                minuta.delete()
+
     data = Minutas.objects.all().order_by("-fecha")
 
     return render(request, 'minutas/minutasLista.html', {'data':data})
@@ -1323,6 +1331,22 @@ def minutasid(request, id_minuta):
                 except:
                     acuerdo.responsable = None
                     acuerdo.save()
+
+                try:
+                    acuerdo.fecha_limite = request.POST['fecha_limite']
+                    acuerdo.save()
+                except:
+                    pass
+
+            if d[0] == "check":
+                acuerdo = Acuerdos.objects.get(id = int(request.POST['check']))
+                acuerdo.estado = "CHECK"
+                acuerdo.save()
+
+            if d[0] == "no_check":
+                acuerdo = Acuerdos.objects.get(id = int(request.POST['no_check']))
+                acuerdo.estado = "NO CHECK"
+                acuerdo.save()
 
             if d[0] == "acuerdo":
                 b = Acuerdos(

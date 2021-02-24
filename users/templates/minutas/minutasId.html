@@ -69,8 +69,6 @@
         <div class="card">
             <div class="card-body ">
                 <div class="d-flex">
-                    <div>
-
 
                         <h4 class="card-title"><span class="lstick m-r-20"></span>
 
@@ -78,9 +76,9 @@
                                 data-target="#ModalAcuerdo" name="subir_item">
 
                                 <img src="{% static 'img/add.png' %}" alt=""
-                                    style="max-width:20px; height:auto; vertical-align: middle;"> </a> Temas y acuerdos
+                                    style="max-width:20px; height:auto; vertical-align: middle; margin-right: 15px;"> </a> Temas y acuerdos
                             realizados
-                        </h4>
+                        </h4></div>
 
 
                         <!-- Modal Bitacoras -->
@@ -134,25 +132,37 @@
                         </div>
 
                         <!-- empieza la tabla -->
-                        <div class="table-responsive">
+                        <div>
 
                             <table class="table">
 
                                 <tbody>
                                     {% if acuerdos %}
                                     {% for a in acuerdos %}
-                                    <tr>
+                                    <tr style="vertical-align: middle;">
                                         <td>
                                             <form method="POST">
 
                                                 {% csrf_token %}
                                             <button class="btn btn-link fa fa-trash d-flex align-content-end" type="submit" name="delete" value="{{a.id}}"></button></form>
                                         </td>
-                                        <td> <a href="#" style="color: blue;" data-toggle="modal"
+                                        <td style="width: 70%;"> <a href="#" style="color: blue;" data-toggle="modal"
                                             data-target="#ModalTema{{a.id}}">{{a.tema}}</a>
                                         </td>
-                                        <td >{% if a.fecha_limite %}{{a.fecha_limite|date:"Y-m-j"}}{% else %}Sin fecha{% endif %}</td>
-                                        <td >{% if a.responsable %}{{a.responsable}}{% else %}S/A{% endif %}</td>
+                                        <td style="width: 14%;" >{% if a.fecha_limite %}{{a.fecha_limite|date:"Y-m-j"}}{% else %}Sin fecha{% endif %}</td>
+                                        <td style="width: 8%;">{% if a.responsable %}{{a.responsable}}{% else %}S/A{% endif %}</td>
+                                        <td style="width: 8%;" >{% if a.estado == "CHECK" %}
+                                            <form method="POST">
+                                                {% csrf_token %}
+                                                <button  class="btn btn-link fa d-flex align-content-end" type="submit" style="text-decoration: none;" name="no_check" value="{{a.id}}"><img src="{% static 'img/cheque.png' %}" alt=""
+                                                    style="max-width:20px; height:auto; vertical-align: top"></button>
+                                                
+                                            </form>{% else %}<form method="POST">
+                                                {% csrf_token %}
+                                                <button class="btn btn-link fa d-flex align-content-end" type="submit" style="text-decoration: none;" name="check" value="{{a.id}}"><img src="{% static 'img/advertir.png' %}" alt=""
+                                                    style="max-width:20px; height:auto; vertical-align: top"></button>{% endif %}
+                                                
+                                            </form></td>
                                         
                                         <!-- Modal de las responsable -->
                                         <div class="modal fade" id="ModalTema{{a.id}}" tabindex="-1"
@@ -194,6 +204,16 @@
                                                                     {% endfor %}
                                                                     
                                                                     </select>
+
+                                                            </div>
+
+                                                            <h6><small>Fecha a cumplir</small> </h6>
+
+                                                            <div class="input-group mb-3">
+
+                                                                <input name="fecha_limite" type="date"
+                                                                    class="form-control form-control"
+                                                                    style="width: 300px;" value="{{a.fecha_limite|date:'Y-m-j'}}">
 
                                                             </div>
 
