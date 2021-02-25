@@ -218,38 +218,27 @@ def reclamospostventa(request):
 
 def informeventa(request):
 
-    busqueda = 1
-    datos_pricing = ArchivosAreaVentas.objects.filter(informe_venta__isnull = False)
-    datos = 0
-    fecha = 0
-
-    fechas = []
-
-    for dato in datos_pricing:
-        if dato.informe_venta: 
-            fechas.append((dato.fecha, str(dato.fecha)))
-
-    fechas = list(set(fechas))
-
-    fechas.sort( reverse=True)
-
     if request.method == 'POST':
-
-        #Trae los datos elegidos
         datos_elegidos = request.POST.items()
 
         for dato in datos_elegidos:
 
             if dato[0] == "fecha":
-                datos = ArchivosAreaVentas.objects.get(fecha = dato[1])
-                busqueda = 0
-                fecha = dato[1]
+                datos = ArchivosAreaVentas(
+                      fecha = request.POST['fecha'],
+                    informe_venta = request.FILES['adjunto']
+                )
+              
+                datos.save()
+            if dato[0] == "delete":
+                archivo = ArchivosAreaVentas.objects.get(id = int(request.POST['delete']))
+                archivo.informe_venta = None
+                archivo.save()
 
 
-    datos = {"fechas":fechas,
-    "busqueda":busqueda,
-    "datos":datos,
-    "fecha":fecha}
+    data = ArchivosAreaVentas.objects.filter(informe_venta__isnull = False).order_by("-fecha")
+
+    datos = {"data":data}
 
     return render(request, 'informe_venta.html', {"datos":datos})
 
@@ -593,75 +582,56 @@ def encuestapostventa(request):
 
 def invmer(request):
 
-    busqueda = 1
-    datos_pricing = ArchivosAreaVentas.objects.filter(invest_mercado__isnull = False)
-    datos = 0
-    fecha = 0
-
-    fechas = []
-
-    for dato in datos_pricing:
-        if dato.invest_mercado: 
-            fechas.append((dato.fecha, str(dato.fecha)))
-
-    fechas = list(set(fechas))
-
-    fechas.sort( reverse=True)
-
     if request.method == 'POST':
 
-        #Trae los datos elegidos
         datos_elegidos = request.POST.items()
 
         for dato in datos_elegidos:
 
             if dato[0] == "fecha":
-                datos = ArchivosAreaVentas.objects.get(fecha = dato[1])
-                busqueda = 0
-                fecha = dato[1]
+                datos = ArchivosAreaVentas(
+                    fecha = request.POST['fecha'],
+                    invest_mercado = request.FILES['adjunto']
+                    )
+              
+
+                datos.save()
+            if dato[0] == "delete":
+                archivo = ArchivosAreaVentas.objects.get(id = int(request.POST['delete']))
+                archivo.invest_mercado = None
+                archivo.save()
 
 
-    datos = {"fechas":fechas,
-    "busqueda":busqueda,
-    "datos":datos,
-    "fecha":fecha}
+    data = ArchivosAreaVentas.objects.filter(invest_mercado__isnull = False).order_by("-fecha")
+
+    datos = {"data":data}
 
     return render(request, 'inv_merc.html', {"datos":datos})
 
 def informe_redes(request):
 
-    busqueda = 1
-    datos_pricing = ArchivosAreaVentas.objects.filter(informe_redes__isnull = False)
-    datos = 0
-    fecha = 0
-
-    fechas = []
-
-    for dato in datos_pricing:
-        if dato.informe_redes: 
-            fechas.append((dato.fecha, str(dato.fecha)))
-
-    fechas = list(set(fechas))
-
-    fechas.sort( reverse=True)
-
     if request.method == 'POST':
-
-        #Trae los datos elegidos
         datos_elegidos = request.POST.items()
 
         for dato in datos_elegidos:
 
             if dato[0] == "fecha":
-                datos = ArchivosAreaVentas.objects.get(fecha = dato[1])
-                busqueda = 0
-                fecha = dato[1]
+                datos = ArchivosAreaVentas(
+                      fecha = request.POST['fecha'],
+                    informe_redes = request.FILES['adjunto']
+                )
+
+                datos.save()
+            if dato[0] == "delete":
+                archivo = ArchivosAreaVentas.objects.get(id = int(request.POST['delete']))
+                archivo.informe_redes = None
+                archivo.save()
 
 
-    datos = {"fechas":fechas,
-    "busqueda":busqueda,
-    "datos":datos,
-    "fecha":fecha}
+
+    data = ArchivosAreaVentas.objects.filter(informe_redes__isnull = False).order_by("-fecha")
+
+    datos = {"data":data}
 
     return render(request, 'informe_redes.html', {"datos":datos})
 
@@ -718,21 +688,6 @@ def fechaentrega(request):
 
 def radiografia(request):
 
-    busqueda = 1
-    datos_pricing = ArchivosAreaVentas.objects.filter(radiografia_cliente__isnull = False)
-    datos = 0
-    fecha = 0
-
-    fechas = []
-
-    for dato in datos_pricing:
-        if dato.radiografia_cliente: 
-            fechas.append((dato.fecha, str(dato.fecha)))
-
-    fechas = list(set(fechas))
-
-    fechas.sort( reverse=True)
-
     if request.method == 'POST':
 
         #Trae los datos elegidos
@@ -741,14 +696,21 @@ def radiografia(request):
         for dato in datos_elegidos:
 
             if dato[0] == "fecha":
-                datos = ArchivosAreaVentas.objects.get(fecha = dato[1])
-                busqueda = 0
-                fecha = dato[1]
+                datos = ArchivosAreaVentas(
+                    fecha = request.POST['fecha'],
+                    radiografia_cliente = request.FILES['adjunto']
+                )
+                
+                datos.save()
+            if dato[0] == "delete":
+                archivo = ArchivosAreaVentas.objects.get(id = int(request.POST['delete']))
+                archivo.radiografia_cliente = None
+                archivo.save()
 
-    datos = {"fechas":fechas,
-    "busqueda":busqueda,
-    "datos":datos,
-    "fecha":fecha}
+
+    data = ArchivosAreaVentas.objects.filter(radiografia_cliente__isnull = False).order_by("-fecha")
+
+    datos = {"data":data}
 
     return render(request, 'radiografiaclientes.html', {"datos":datos})
 
