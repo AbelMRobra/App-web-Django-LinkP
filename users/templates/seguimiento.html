@@ -211,7 +211,7 @@
 
                                         {% for u in list_users %}
                     
-                                        <option value="{{u.id}}" {% if responsable.identificacion == u.identificacion %}selected{% endif %}>{{u.identificacion}}</option>
+                                        <option value="{{u.id}}" {% if i.responsable.identificacion == u.identificacion %}selected{% endif %}>{{u.identificacion}}</option>
                     
                                         {% endfor %}
                     
@@ -274,8 +274,22 @@
         </div>
     </div>
 
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 
-  
+
+<script>
+     
+$(window).scroll(function () {
+            sessionStorage.scrollTop = $(this).scrollTop();
+        });
+        $(document).ready(function () {
+            if (sessionStorage.scrollTop != "undefined") {
+                $(window).scrollTop(sessionStorage.scrollTop);
+            }
+        });
+</script>
 
 
   {% endblock %}
+
+  

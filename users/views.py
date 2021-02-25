@@ -1001,7 +1001,7 @@ def tablerorega(request, id_proyecto, id_area, id_estado):
         tarea.save()
 
         try:
-            tarea.fecha_inicial = request.POST['fechai']
+            tarea.fecha_inicio = request.POST['fechai']
             tarea.save()
         except:
             pass
