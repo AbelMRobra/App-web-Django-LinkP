@@ -569,38 +569,25 @@ def evousd(request):
 
 def encuestapostventa(request):
 
-    busqueda = 1
-    datos_pricing = ArchivosAreaVentas.objects.filter(encuesta_postventa__isnull = False)
-    datos = 0
-    fecha = 0
-
-    fechas = []
-
-    for dato in datos_pricing:
-        if dato.encuesta_postventa: 
-            fechas.append((dato.fecha, str(dato.fecha)))
-
-    fechas = list(set(fechas))
-
-    fechas.sort( reverse=True)
-
     if request.method == 'POST':
-
-        #Trae los datos elegidos
         datos_elegidos = request.POST.items()
-
         for dato in datos_elegidos:
 
             if dato[0] == "fecha":
-                datos = ArchivosAreaVentas.objects.get(fecha = dato[1])
-                busqueda = 0
-                fecha = dato[1]
+                b = ArchivosAreaVentas(
+                    fecha = request.POST['fecha'],
+                    encuesta_postventa = request.FILES['adjunto']
+                )
+          
+                b.save()
+            if dato[0] == "delete":
+                archivo = ArchivosAreaVentas.objects.get(id = int(request.POST['delete']))
+                archivo.encuesta_postventa = None
+                archivo.save()
 
+    data = ArchivosAreaVentas.objects.filter(encuesta_postventa__isnull = False).order_by("-fecha")
 
-    datos = {"fechas":fechas,
-    "busqueda":busqueda,
-    "datos":datos,
-    "fecha":fecha}
+    datos = {"data":data}
 
     return render(request, 'encuestapostventa.html', {"datos":datos})
 
@@ -680,64 +667,54 @@ def informe_redes(request):
 
 def cajaarea(request):
 
-    busqueda = 1
-    datos_pricing = ArchivosAreaVentas.objects.filter(caja_area__isnull = False)
-    datos = 0
-    fecha = 0
-
-    fechas = []
-
-    for dato in datos_pricing:
-        if dato.caja_area: 
-            fechas.append((dato.fecha, str(dato.fecha)))
-
-    fechas = list(set(fechas))
-
-    fechas.sort( reverse=True)
-
     if request.method == 'POST':
 
         #Trae los datos elegidos
         datos_elegidos = request.POST.items()
 
-        for dato in datos_elegidos:
+        for d in datos_elegidos:
 
-            if dato[0] == "fecha":
-                datos = ArchivosAreaVentas.objects.get(fecha = dato[1])
-                busqueda = 0
-                fecha = dato[1]
+            if d[0] == "fecha":
+                datos = ArchivosAreaVentas(fecha = request.POST['fecha'],
+                caja_area = request.FILES['adjunto']
+                )
 
+                datos.save()         
 
-    datos = {"fechas":fechas,
-    "busqueda":busqueda,
-    "datos":datos,
-    "fecha":fecha}
+            if d[0] == "delete":
+                archivo = ArchivosAreaVentas.objects.get(id = int(request.POST['delete']))    
+                archivo.caja_area = None
+                archivo.save()
+
+    data = ArchivosAreaVentas.objects.filter(caja_area__isnull = False).order_by("-fecha")        
+
+    datos = {"data":data}
 
     return render(request, 'caja_area.html', {"datos":datos})
 
 def fechaentrega(request):
 
-    datos = ArchivoFechaEntrega.objects.order_by("-fecha")
-
-    busqueda = 0
-
     if request.method == 'POST':
+         datos_elegidos = request.POST.items()
+         for dato in datos_elegidos:
+            if dato[0] == "fecha":
+                b = ArchivoFechaEntrega(
+                            fecha = request.POST['fecha'],
+                            archivo = request.FILES['adjunto']
+                )
 
-        try:
-
-            b = ArchivoFechaEntrega(
-
-                archivo = request.FILES['adjunto'],
-            )
-
-            b.save()
-
-        except:
-            
-            busqueda = ArchivoFechaEntrega.objects.get(id = request.POST['fecha'])  
+                b.save()
+            if dato[0] == "delete":
+                archivo = ArchivoFechaEntrega.objects.get(id = int(request.POST['delete']))
+                archivo.archivo = None
+                archivo.save()
 
 
-    return render(request, 'fechaentrega.html', {"datos":datos, "busqueda":busqueda})
+    data = ArchivoFechaEntrega.objects.filter(archivo__isnull = False).order_by("-fecha")
+
+    datos = {"data":data}
+
+    return render(request, 'fechaentrega.html', {"datos":datos})
 
 def radiografia(request):
 

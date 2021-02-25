@@ -1,76 +1,143 @@
-{% extends "users/inicio.html" %}
+{% extends "users/inicio2.html" %}
 
 {% load static %}
 {% load humanize %}
 
 {% block content %}
 
+<div class="container-fluid r-aside">
+    <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+            <h3 class="text-themecolor">Informe de venta</h3>
+        </div>
 
-
-<div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;" > 
-
-    <div style="text-align: center;">
-        <h2>Informe de venta</h2>
-
-        {% if datos.fecha %}
-
-        <h6>Fecha del adjunto: {{datos.fecha}}</h6>
-
-        {% endif %}
-
-        <small>Área comercial</small>
-
-
-        <b><hr class = "my-4" style="width: 75%;"></b>
-    
+        <div class="col-md-7 align-self-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+                <li class="breadcrumb-item">Informe de venta</li>
+            </ol>
+        </div>
     </div>
+</div>
 
-    <div style="text-align: center;">
-       <form method="POST">
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
 
-           {% csrf_token %}
+                <div class="d-flex">
+                    <div>
+                        <h4 class="card-title"><span class="lstick"></span>
+                            Informe de venta</h4>
+                        <h6 class="card-subtitle">Area comercial</h6>
 
-           <select name="fecha" class="custom-select" style="width: 20%;">
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+
+                    <table class="table">
+                        <thead>
+                            <tr style="vertical-align: middle;">
+                                <td><a type="button" data-toggle="modal" data-target="#ModalVenta"><img
+                                            src="{% static 'img/add.png' %}" alt=""
+                                            style="max-width:20px; height:auto; vertical-align: middle;"></a>
+                                    Informes cargados</td>
+
+                            </tr>
+
+                            <!-- Modal fecha estado Subitem -->
+                            <div class="modal fade" id="ModalVenta" tabindex="-1" role="dialog"
+                                aria-labelledby="ModalVenta" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLongTitle">Cargar un archivo</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form method="POST" style="margin: 15px;" enctype="multipart/form-data"
+                                                id="upload-image-form">
+
+                                                {% csrf_token %}
+
+                                                <h6>Fecha del archivo</h6>
+
+                                                <div class="input-group mb-3">
+
+                                                    <input name="fecha" type="date" class="form-control form-control"
+                                                        style="width: 300px;">
+                                                </div>
+
+                                                <h6>Archivo</h6>
+
+                                                <div class="input-group mb-3">
+
+                                                    <input name="adjunto" type="file" class="form-control form-control"
+                                                        style="width: 300px;">
+                                                </div>
+
+                                                <button type="submit" class="btn btn-light">
+                                                    <img src="{% static 'img/upload.png' %}" alt=""
+                                                        style="max-width:20px; height:auto;">
+                                                    <b>Cargar</b></button>
+
+                                                {{ form.as_p }}
+
+                                            </form>
+
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-dismiss="modal">Close</button>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <!-- Final del modal -->
+
+                        </thead>
+
+                        <tbody>
+                            {% for i in datos.data %}
+
+                            {% if i.informe_venta %}
+                            <tr>
+
+                                <td> <a href="{{i.informe_venta.url}}">Archivo fecha {{i.fecha|date:"d-m-Y"}}</a> - Nombre del
+                                    archivo: "{{i.informe_venta.name}}"</td>
+                                <td>
+                                    <form method="POST">
+                                        <button class="btn btn-link fa fa-trash d-flex align-content-end" type="submit"
+                                            name="delete" value="{{i.id}}" style="text-decoration: none;"></button>
+
+                                        {% csrf_token %}
+                                    </form>
+
+                                </td>
+
+                            </tr>
+
+                            {% endif %}
+                            {% endfor %}
+                        </tbody>
+                    </table>
 
 
-               {% for i in datos.fechas %}
+                </div>
 
-               <option value="{{i.1}}">{{i.0}}</option>
-
-               {% endfor %}
+            </div>
 
 
+        </div>
+    </div>
+</div>
 
-             </select>
-             <div>
-               <small> Seleccione una fecha para cargar el archivo</small>
-             </div>
-
-
-
-             <div>
-               <button class="btn btn-dark" type="submit" style="margin-top: 1%;">Buscar</button>          
-           </div>
-           
-       </form>
-
-      </div>
-
-       {% if datos.datos %}
-
-       <div>
-          <a href="{{ datos.datos.informe_venta.url }}" class="btn btn-info" style="margin-top: 1%;">Ver Informe!</a>
-       </div>
-
-       {% endif %}
-       
-       <div style="text-align: center; margin-top: 10%;">
-        <p> <small>-- Link<strong>P</strong> --</small> </p>
-
-     </div>
-       
-       
-   </div>
 
 
 {% endblock %}

@@ -1,193 +1,160 @@
-
-{% extends "users/inicio.html" %}
+{% extends "users/inicio2.html" %}
 
 {% load static %}
 {% load humanize %}
 
 {% block content %}
 
-{% if perms.ventas.view_pricing %} 
+{% if perms.ventas.view_pricing %}
 
-<div class = "jumbotron" style="background-color: white; margin-bottom: 0px;">
-    <div style="text-align: center;">
-        <h3 style="font-family: Arial, Helvetica, sans-serif;">Ventas realizadas</h3>
-        <small style="font-family: Arial, Helvetica, sans-serif;"><b>Modulo:</b> Ventas </small> 
-    </div>
+<div class="container-fluid r-aside">
 
-    <b><hr class = "my-4" style="width: 100%; "></b>
-    
-
-    <div>
-
-        <div style="margin: 5px;">
-
-            <form method="POST">
-
-                {% csrf_token %}
-        
-                <div style="display: inline-block;  vertical-align: middle;">
-        
-                    <h6>Buscar</h6>
-            
-            
-                </div>
-                
-                <div style="display: inline-block; margin-left: 1%;  vertical-align: middle;">
-            
-                    <input name="palabra" type="text" class="form-control form-control" placeholder="Buscar por palabra" list="art" style="width: 300px;">
-            
-                </div>
-        
-       
-        
-            </form>
-
-
+    <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+            <h3 class="text-themecolor">Ventas Realizadas</h3>
         </div>
 
-        <div style="margin: 5px;">
-
-            <a href= "{% url 'Cargar una Venta' %}" class="btn btn-outline-info"style="text-align: end; " > <img src="{% static 'img/agregar-archivo.png' %}" alt="" style="max-width:20px; height:auto;"  > Nueva venta</a>
-    
-    
-        <a href= "{% url 'Descargar ventas' %}" class="btn btn-outline-success" style="text-align: end; " > <img src="{% static 'img/sobresalir.png' %}" alt="" style="max-width:20px; height:auto;"  > Descargar Excel</a>
-    
-
-
+        <div class="col-md-7 align-self-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+                <li class="breadcrumb-item">Ventas Realizadas</li>
+            </ol>
         </div>
-
-        
-    
-        
-    
-    
-
-
-
     </div>
+</div>
 
 
-   
+<div class="row ">
+    <div class="col-12">
+        <div class="card overflow-auto">
+            <div class="card-body">
 
-    <div class = "tableconteinerabel">
+                <div style="text-align: center; margin-bottom: 50px;">
+                    <h3>Registros de ventas</h3>
+                </div>
 
-             
+                <div>
+                    <div style="margin: 5px;">
 
-
-    <table class = "table table-hover" style="text-align: center;">
-        <thead>
-
-            <tr class = "table-dark">
-                <th scope = "row" style="vertical-align: middle;"> <small><b></b></small></th>
-                <th scope = "row" style="vertical-align: middle;"> <small> <b>FECHA</b></small></th>
-                <th scope = "row" style="vertical-align: middle;"> <small><b>PROYECTO</b> </small></th>
-                <th scope = "row" style="vertical-align: middle;"> <small><b>COMPRADOR</b> </small></th>
-                <th scope = "row" style="vertical-align: middle;"> <small><b>ESTADO</b> </small></th>
-                <th scope = "row" style="vertical-align: middle;"> <small><b>UNIDAD</b> </small></th>
-                <th scope = "row" style="vertical-align: middle;"> <small><b>SUP.</b>  </small></th>
-                <th scope = "row" style="vertical-align: middle;"> <small><b>ASIGNACION</b>   </small></th>
-                <th scope = "row" style="vertical-align: middle;"> <small><b>PRECIO DE VENTA</b> </small>   </th>
-                <th scope = "row" style="vertical-align: middle;"> <small><b>PRECIO DE CONTADO</b> </small>   </th>
-
-                
-
-                {% if user.username == "AR" or user.username == "ar" %}
-
-                <th scope = "row" style="vertical-align: middle;"> <small><b></b>  </small></th>
+                        <a href="{% url 'Cargar una Venta' %}" class="mx-2" style="text-align: end; " data-toggle="tooltip" data-placement="right" title="" data-original-title="Cargar una venta">
+                            <img src="{% static 'img/add.png' %}" alt="" style="max-width:20px; height:auto;"></a>
 
 
-                {% endif %}
-                 
+                        <a href="{% url 'Descargar ventas' %}" class="mx-2" style="text-align: end; " data-toggle="tooltip" data-placement="right" title="" data-original-title="Descagar Excel"> <img
+                                src="{% static 'img/sobresalir.png' %}" alt="" style="max-width:20px; height:auto;">
+                        </a>
 
-            </tr>
-        </thead>
+                    </div>
+                </div>
 
-        <tbody>   
+                <div class="tableconteinerabel">
+                    <table id="example" class="table table-striped table-bordered" style="width:100%">
+                        <thead style="font-size: 14px;">
 
-            {% for i in datos|slice:"200" %}
-            <tr class = "table-light">
+                            <tr>
+                                <th></th>
+                                <th>Fecha</th>
+                                <th>Unidad</th>
+                                <th>Comprador</th>
+                                <th>Estado</th>
+                                <th>Sup.</th>
+                                <th>Asign.</th>
+                                <th>Precio Venta</th>
+                                <th>Precio Contado</th>
 
-                <td style="width: 5%;">
-                    <a href="{% url 'Detalle venta' i.id %}"><img src="{% static 'img/buscar.png' %}" alt="" style="max-width:15px; height:auto;"></a>
-        
+                                {% if user.username == "AR" or user.username == "ar" %}
+
+                                <th></th>
+
+                                {% endif %}
+                            </tr>
+                        </thead>
+
+                        <tbody style="font-size: 12px;">
+
+                            {% for i in datos %}
+                            <tr>
+
+                                <td>
+                                    <a href="{% url 'Detalle venta' i.id %}" class="fa fa-book fa-lg" data-toggle="tooltip" data-placement="right" title="" data-original-title="Detalles de la venta"></a>
+
+                                    <a href="{% url 'Editar venta' i.id %}" data-toggle="tooltip" data-placement="right" title="" data-original-title="Editar venta"><i class="fa fa-pencil-square-o fa-lg"
+                                        aria-hidden="true"></i></a>
+
+                                </td>
+                                <td>{{i.fecha|date:"d-m-Y"}}</td>
+                                <td style="color: rgb({{i.unidad.proyecto.color}})"> 
+                                        <b>{{i.unidad.proyecto.nombre|lower|capfirst}}</b>
+                                    <div> {{i.unidad.piso_unidad|lower|capfirst}} -
+
+                                        {% if "0" in i.unidad.nombre_unidad %}
+
+                                        {{i.unidad.nombre_unidad|floatformat:0}} -
+
+                                        {% else %}
+
+                                        {{i.unidad.nombre_unidad|lower|capfirst}} -
+
+                                        {% endif %}
+
+                                        {{i.unidad.tipologia|lower|capfirst}}</div></td>
+                                <td style="width: 150px;"> <b> {{i.comprador|lower|capfirst}} </b> </td>
+
+                                {% if i.estado == "ACTIVA" %}
+
+                                <td style="color: rgb(81, 169, 104 )"><b>{{i.estado}}</b>
+                                </td>
+
+                                {% else %}
+
+                                <td style="color: rgb(169, 88, 81 )"> <b>{{i.estado}}</b>
+                                </td>
+
+                                {% endif %}
+                                <td> <b> {{i.m2|floatformat:2}}m2 </b> </td>
+                                <td> <b> {{i.asignacion}}</b> </td>
+                                <td>  <b>${{i.precio_venta|floatformat:0|intcomma}}</b>
+                                    </td>
+                                <td>  <b>${{i.precio_contado|floatformat:0|intcomma}}</b>
+                                    </td>
+
+                                {% if user.username == "AR" or user.username == "ar" %}
+
+                                <td> <a class="fa fa-trash fa-lg" href="{% url 'Eliminar venta' i.id %}" data-toggle="tooltip" data-placement="left" title="" data-original-title="Eliminar venta"></a>
+                                    </b> </td>
+
+                                {% endif %}
 
 
-                    <a href="{% url 'Editar venta' i.id %}" ><img src="{% static 'img/documento.png' %}" alt="" style="max-width:15px; height:auto;"></a>
-        
-                </td>
-                <td style="width: 8%;"> <b> <small>{{i.fecha|date:"Y-m-j"}}</small> </b></td>
-                <td style="color: rgb({{i.unidad.proyecto.color}}); width: 8%">  <small> <b>{{i.unidad.proyecto.nombre}}</b></small></td>       
-                <td style="width: 20%;"> <b> <small>{{i.comprador}}</small> </b> </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
 
-                {% if i.estado == "ACTIVA" %}
-
-                <td style="color: rgb(81, 169, 104 ); width: 8%;"><small><b>{{i.estado}}</b></small></td>
-
-                {% else %}
-
-                <td style="color: rgb(169, 88, 81 ); width: 8%;"><small> <b>{{i.estado}}</b></small></td>
-
-                {% endif %}
-                <td style="width: 15%;"> <b> <small>{{i.unidad.piso_unidad}} -
-
-                    {% if "0" in i.unidad.nombre_unidad %}
-
-                     {{i.unidad.nombre_unidad|floatformat:0}} -
-
-                    {% else %}
-
-                     {{i.unidad.nombre_unidad}} -
-
-                    {% endif %}
-
-                     {{i.unidad.tipologia}}
-
-
-
-                </small> </b> </td>
-                <td  style="width: 5%;"> <b> <small>{{i.m2|floatformat:2}}m2</small> </b> </td>
-                <td  style="width: 8%;"> <b> <small>{{i.asignacion}}</small></b> </td>
-                <td  style="width: 15%;"> <small> <b>${{i.precio_venta|floatformat:0|intcomma}}</b> </small></td>
-                <td  style="width: 15%;"> <small> <b>${{i.precio_contado|floatformat:0|intcomma}}</b> </small></td>
-               
-                {% if user.username == "AR" or user.username == "ar" %}
-
-                <td> <a href="{% url 'Eliminar venta' i.id %}" ><img src="{% static 'img/borrar.png' %}" alt="" style="max-width:20px; height:auto;"  ></a>
-                </b> </td>
-
-                {% endif %}
-
-
-            </tr>
-            {% endfor %}
-        </tbody>
-     
-
-
-    </table>
-
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
-
-
-
-    <b><hr class = "my-4" style="width: 100%;"></b>
-
-
-    <div style="text-align: center;">
-        <small>El listado puede continuar, se limita el numero de filas visibles</small>
-    </div>
-
-
-    <div style="text-align: center; margin-top: 2rem;">
-        <p> <small>-- Link<strong>P</strong> --</small> </p>
-
-     </div>
-
-                    
 </div>
 
 {% endif %}
- 
-    
-{% endblock %}
 
+
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js" defer></script>
+<script src="https://cdn.datatables.net/1.10.23/js/dataTables.bootstrap4.min.js" defer></script>
+
+
+
+<script>
+    $(document).ready(function () {
+        $('#example').DataTable({
+            "paging": false,
+            "ordering": false,
+            "info": false
+        });
+    });
+</script>
+
+
+{% endblock %}

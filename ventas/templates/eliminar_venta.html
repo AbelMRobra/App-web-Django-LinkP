@@ -1,47 +1,60 @@
-{% extends "users/inicio.html" %}
+{% extends "users/inicio2.html" %}
 
 {% load static %}
 {% load humanize %}
 
 {% block content %}
 
-<div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;">
-    <div>
-        <h2>Eliminar el registro {{ datos.unidad.proyecto }} - {{ datos.unidad.piso_unidad }} - {{ datos.unidad.nombre_unidad }} a {{ datos.comprador }}  </h2>
-        <small>Esta operación elimina toda la información del registro</small>  
+<div class="container-fluid r-aside">
+
+    <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+            <h3 class="text-themecolor">Eliminar venta</h3>
+        </div>
+
+        <div class="col-md-7 align-self-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'Cargar Venta' %}">Ventas Realizadas</a>
+                </li>
+                <li class="breadcrumb-item">Eliminar venta</li>
+            </ol>
+        </div>
     </div>
-
-    <b><hr class = "my-4" style="width: 75%;" ></b>
-
-    <form method="POST">
-
-        {% csrf_token %}
-
-        <div style="display: inline-block;">
-            <a href="{% url 'Cargar Venta' %}" class="btn btn-primary">Volver al panel</a>
-        </div>
-        <div style="display: inline-block; margin-left: 5%;">
-
-            <button class="btn btn-danger" type="submit">Eliminar registro</button>
-
-        </div>
-    
-    </form>
-
-
-
-
-    <b><hr class = "my-4" style="width: 50%; "></b>
-
-
-
-    <div style="text-align: center; margin-top: 2rem;">
-        <p> <small>-- Link<strong>P</strong> --</small> </p>
-
-     </div>
-
-                    
 </div>
- 
-    
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body row">
+                <div class="col-12 justify-content-center">
+
+                    <div class="row d-flex justify-content-center">
+                        <div class="col col-md-12 col-lg-12 text-center">
+
+                            <h2>Eliminar el registro {{ datos.unidad.proyecto}} - {{datos.unidad.piso_unidad}} -
+                                {{datos.unidad.nombre_unidad }} a {{ datos.comprador }} </h2>
+                            <small>Esta operación elimina toda la información del registro</small>
+
+                            <div class="mt-3">
+
+                                <form method="POST">
+
+                                    {% csrf_token %}
+
+                                    <div class="row d-flex justify-content-center">
+                                        <button class="btn btn-danger" type="submit">Eliminar registro</button>
+
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 {% endblock %}

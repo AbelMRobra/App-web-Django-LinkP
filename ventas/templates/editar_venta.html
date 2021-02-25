@@ -1,180 +1,244 @@
-{% extends "users/inicio.html" %}
+{% extends "users/inicio2.html" %}
 
 {% load static %}
 {% load humanize %}
 
 {% block content %}
 
-<div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;">
-    <div>
-        <h2>Editar un registro</h2>
-        <small>Modifique los campos</small>  
+<div class="container-fluid r-aside">
+
+    <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+            <h3 class="text-themecolor">Editar venta</h3>
+        </div>
+
+        <div class="col-md-7 align-self-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'Cargar Venta' %}">Registros</a></li>
+                <li class="breadcrumb-item">Editar venta</li>
+            </ol>
+        </div>
     </div>
-
-    <b><hr class = "my-4" style="width: 75%; "></b>
-
-    <div style=" background-color: rgba(63, 95, 179, 0.3); width: 50%; margin-left: 25%;">
-
-        <form method="POST" >
-
-            {% csrf_token %}
-
-            <div style="display: inline-block; margin-top: 5%;">
-
-                <label for="unidad"><h6>Nombre de la unidad</h6></label>
-    
-            </div>
-    
-            <div style="margin-bottom: 2%; width: 80%; margin-left: 10%;">
-    
-                <input name="unidad" type="text" class="form-control form-control" placeholder="{{datos.proyecto.nombre}} - {{datos.unidad.piso_unidad}} - {{datos.unidad.nombre_unidad}}" readonly=True>
-    
-            </div>
-    
-            
-            <div style="display: inline-block;">
-    
-                <label for="comprador"><h6>Comprador</h6></label>
-    
-            </div>
-    
-            <div style="margin-bottom: 2%; width: 70%; margin-left: 15%;">
-    
-                <input name="comprador" type="text" class="form-control form-control" value="{{datos.comprador}}">
-    
-            </div>
-    
-            <div style="display: inline-block;">
-    
-                <label for="precio_venta"><h6>Precio de venta</h6></label>
-    
-            </div>
-    
-            <div class="input-group mb-3" style="margin-bottom: 2%; width: 50%; margin-left: 25%;">
-
-                <div class="input-group-prepend">
-
-                    <span class="input-group-text">$</span>
-
-                </div>
-
-                <input name="precio_venta" type="number" class="form-control form-control" aria-label="Amount" placeholder="{{datos.precio_venta}}">
-                
-            </div>
-
-            <div style="display: inline-block;">
-    
-                <label for="precio_contado"><h6>Precio de contado</h6></label>
-    
-            </div>
-    
-            <div class="input-group mb-3" style="margin-bottom: 2%; width: 50%; margin-left: 25%;">
-
-                <div class="input-group-prepend">
-
-                    <span class="input-group-text">$</span>
-
-                </div>
-
-                <input name="precio_contado" type="number" class="form-control form-control" aria-label="Amount" placeholder="{{datos.precio_contado}}">
-                
-            </div>
-    
-            <div style="display: inline-block;">
-    
-                <label for="anticipo"><h6>Anticipo</h6></label>
-    
-            </div>
-
-    
-            <div class="input-group mb-3" style="margin-bottom: 2%; width: 50%; margin-left: 25%;">
-
-                <div class="input-group-prepend">
-
-                    <span class="input-group-text">$</span>
-
-                </div>
-
-                <input name="anticipo" type="number" class="form-control form-control" placeholder="{{datos.anticipo}}">
-            
-            </div>
-    
-    
-            <div style="display: inline-block;">
-    
-                <label for="cuotas"><h6>Cuotas restantes</h6></label>
-    
-            </div>
-    
-            <div style="margin-bottom: 2%; width: 30%; margin-left: 35%;">
-    
-                <input name="cuotas" type="number" class="form-control form-control" placeholder="{{datos.cuotas_pend}}">
-    
-            </div>
-
-            <div style="display: inline-block;">
-    
-                <label for="fecha"><h6>Fecha de la operación</h6></label>
-    
-            </div>
-    
-            <div style="margin-bottom: 2%; width: 30%; margin-left: 35%;">
-    
-                <input name="fecha" type="date" class="form-control form-control">
-
-                
-    
-            </div>
-
-            <small>Fecha actual {{datos.fecha}} </small>
-
-                
-            <div class="form-group" style="width: 80%; margin-left: 10%; margin-bottom: 2%;">
-                <label for="observaciones"> <h6>Observaciones de la operación</h6></label>
-                <textarea name="observaciones" class="form-control"  rows="3">{{datos.observaciones}}</textarea>
-              </div>
-    
-            <div class="custom-control custom-radio">
-                <input type="radio" id="customRadio1" name="tipo_venta" class="custom-control-input" value="VENTA" {% if datos.tipo_venta == "VENTA" %} checked="" {% endif %}>
-                <label class="custom-control-label" for="customRadio1">VENTA</label>
-              </div>
-
-              <div class="custom-control custom-radio">
-                <input type="radio" id="customRadio2" name="tipo_venta" class="custom-control-input" value="CANJE"  {% if datos.tipo_venta == "CANJE" %} checked="" {% endif %}>
-                <label class="custom-control-label" for="customRadio2">CANJE</label>
-              </div>
-
-
-
-
-                  
-              <div style="margin-top: 2%;">
-    
-                <button type="submit" class="btn btn-primary" style="margin-bottom: 5%;" >Editar registro</button>
-    
-              </div>
-        
-
-        </form>
-
-
-        
-        
-    
-    </div>
-
-
-    <b><hr class = "my-4" style="width: 50%; "></b>
-
-
-
-    <div style="text-align: center; margin-top: 2rem;">
-        <p> <small>-- Link<strong>P</strong> --</small> </p>
-
-     </div>
-
-                    
 </div>
- 
-    
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body row">
+                <div class="col-12 justify-content-center">
+                    <div>
+                        <h2><span class="lstick m-r-20"></span>Editar un registro</h2>
+                        <small>Modifique los campos</small>
+                    </div>
+
+                    <div class="row d-flex justify-content-center">
+                        <div class="col col-md-12 col-lg-6">
+                            <div class="row">
+                                <div class="col bg-light border rounded p-4 ">
+
+                                    <form method="POST">
+
+                                        {% csrf_token %}
+
+                                        <div style="display: inline-block; margin-top: 5%;">
+
+                                            <label for="unidad">
+                                                <h6>Nombre de la unidad</h6>
+                                            </label>
+
+                                        </div>
+
+                                        <div class="row d-flex justify-content-center mt-3">
+                                            <div class="col col-md-8 col-lg-8">
+
+                                                <input name="unidad" type="text" class="form-control form-control"
+                                                    placeholder="{{datos.proyecto.nombre}} - {{datos.unidad.piso_unidad}} - {{datos.unidad.nombre_unidad}}"
+                                                    readonly=True>
+
+                                            </div>
+                                        </div>
+
+
+                                        <div>
+
+                                            <label for="comprador">
+                                                <h6>Comprador</h6>
+                                            </label>
+
+                                        </div>
+                                        <div class="row d-flex justify-content-center mt-3">
+                                            <div class="col col-md-8 col-lg-8">
+
+                                                <input name="comprador" type="text" class="form-control form-control"
+                                                    value="{{datos.comprador}}">
+
+                                            </div>
+                                        </div>
+
+                                        <div>
+
+                                            <label for="precio_venta">
+                                                <h6>Precio de venta</h6>
+                                            </label>
+
+                                        </div>
+
+                                        <div class="row d-flex justify-content-center mt-3">
+                                            <div class="col col-md-8 col-lg-8">
+                                                <div class="input-group mb-3">
+
+
+                                                    <div class="input-group-prepend">
+
+                                                        <span class="input-group-text">$</span>
+
+                                                    </div>
+
+                                                    <input name="precio_venta" type="number"
+                                                        class="form-control form-control" aria-label="Amount"
+                                                        placeholder="{{datos.precio_venta}}">
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div>
+
+                                            <label for="precio_contado">
+                                                <h6>Precio de contado</h6>
+                                            </label>
+
+                                        </div>
+
+                                        <div class="row d-flex justify-content-center mt-3">
+                                            <div class="col col-md-8 col-lg-8">
+                                                <div class="input-group mb-3">
+
+
+                                                    <div class="input-group-prepend">
+
+                                                        <span class="input-group-text">$</span>
+
+                                                    </div>
+
+                                                    <input name="precio_contado" type="number"
+                                                        class="form-control form-control" aria-label="Amount"
+                                                        placeholder="{{datos.precio_contado}}">
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div>
+
+                                            <label for="anticipo">
+                                                <h6>Anticipo</h6>
+                                            </label>
+
+                                        </div>
+
+
+                                        <div class="row d-flex justify-content-center mt-3">
+                                            <div class="col col-md-8 col-lg-8">
+                                                <div class="input-group mb-3">
+
+
+                                                    <div class="input-group-prepend">
+
+                                                        <span class="input-group-text">$</span>
+
+                                                    </div>
+
+                                                    <input name="anticipo" type="number"
+                                                        class="form-control form-control"
+                                                        placeholder="{{datos.anticipo}}">
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <div>
+
+                                            <label for="cuotas">
+                                                <h6>Cuotas restantes</h6>
+                                            </label>
+
+                                        </div>
+
+                                        <div class="row d-flex justify-content-center my-3">
+                                            <div class="col col-md-8 col-lg-8">
+
+                                                <input name="cuotas" type="number" class="form-control form-control"
+                                                    placeholder="{{datos.cuotas_pend}}">
+
+                                            </div>
+                                        </div>
+
+                                        <div>
+
+                                            <label for="fecha">
+                                                <h6>Fecha de la operación</h6>
+                                            </label>
+
+                                        </div>
+
+                                        <div class="row d-flex justify-content-center mt-3">
+                                            <div class="col col-md-8 col-lg-8">
+
+                                                <input name="fecha" type="date" class="form-control form-control">
+                                            </div>
+                                        </div>
+                                        <div class="text-center">
+                                            <small>Fecha actual {{datos.fecha}} </small>
+
+                                        </div>
+
+                                        <div class="row d-flex justify-content-center mt-3">
+                                            <div class="col col-md-8 col-lg-8">
+                                                <label for="observaciones">
+                                                    <h6>Observaciones de la operación</h6>
+                                                </label>
+                                                <textarea name="observaciones" class="form-control"
+                                                    rows="3">{{datos.observaciones}}</textarea>
+                                            </div>
+                                        </div>
+
+                                        <div class="row d-flex justify-content-center mt-3">
+                                            <div class="col col-md-8 col-lg-8">
+                                                <div class="custom-control custom-radio">
+                                                    <input type="radio" id="customRadio1" name="tipo_venta" class="custom-control-input" value="VENTA" {% if datos.tipo_venta == "VENTA" %} checked="" {% endif %}>
+                                                    <label class="custom-control-label" for="customRadio1">VENTA</label>
+                                                </div>
+                            
+                                               <div class="custom-control custom-radio">
+                                                  <input type="radio" id="customRadio2" name="tipo_venta" class="custom-control-input" value="CANJE"  {% if datos.tipo_venta == "CANJE" %} checked="" {% endif %}>
+                                                  <label class="custom-control-label" for="customRadio2">CANJE</label>
+                                               </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row d-flex justify-content-center mt-4">
+                                            <div class="col-lg-6 text-center">
+
+                                                <button type="submit" class="btn btn-primary"
+                                                    style="margin-bottom: 5%;">Editar registro</button>
+
+                                            </div>
+                                        </div>
+
+
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 {% endblock %}
