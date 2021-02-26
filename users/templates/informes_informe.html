@@ -36,7 +36,8 @@
 
             <div class="d-flex">
                 <div>
-                    <h4 class="card-title"><span class="lstick"></span>Detalle del informe</h4>
+                    <h4 class="card-title"><span class="lstick"></span><a type="button" data-toggle="modal" data-target="#ModalEscribir" name="subir_item" value="{{informes_data.id}}"><i class="fa fa-pencil-square-o fa-lg"
+                        aria-hidden="true" style="margin-right: 15px;"></i></a>Detalle del informe</h4>
                     <h6 class="text-muted">Información relevante sucedido durante el mes</h6></div>
 
             </div>
@@ -51,56 +52,47 @@
 
     
 </div>
-<div class="col-lg-6 col-md-12">
-    <div class="card">
-        <div class="card-body">
 
-            <div class="d-flex">
+<!-- Modal fecha estado Subitem -->
+<div class="modal fade" id="ModalEscribir" tabindex="-1" role="dialog" aria-labelledby="ModalEscribirTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Escribe el informe</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        </div>
+        <div class="modal-body">
+                                        
+        <form method="POST" style="margin: 15px;">
 
-                    <a type="button" data-toggle="modal" data-target="#ModalEscribir" name="subir_item" value="{{informes_data.id}}"><span class="lstick"></span><img src="{% static 'adminpro/assets/images/icon/income.png' %}" alt="Income" class="img-circle" > Editar informe </a>
-                        <!-- Modal fecha estado Subitem -->
-                        <div class="modal fade" id="ModalEscribir" tabindex="-1" role="dialog" aria-labelledby="ModalEscribirTitle" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLongTitle">Escribe el informe</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                                </div>
-                                <div class="modal-body">
-                                                                
-                                <form method="POST" style="margin: 15px;">
-        
-                                    {% csrf_token %}
-        
-                                    <h6><small>Detalles destacables sucedidos en el mes</small> </h6>  
-        
-                                    <div class="input-group mb-3">
-        
-                                        <textarea class="form-control" id="exampleTextarea" rows="6" name="mensaje">{{informes_data.informe}}</textarea>
-        
-                                    </div>
-        
-                                    <button type="submit" class="btn waves-effect waves-light btn-rounded btn-secondary">Modificar</button>
-                                
-                                </form>
-                                
-                                </div>
-                                <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        
-                                </div>
-                            </div>
-                            </div>
-        
-                        </div>
+            {% csrf_token %}
 
-                   
+            <h6><small>Detalles destacables sucedidos en el mes</small> </h6>  
+
+            <div class="input-group mb-3">
+
+                <textarea class="form-control" id="exampleTextarea" rows="6" name="mensaje">{{informes_data.informe}}</textarea>
+
             </div>
-            
-            
+
+            <button type="submit" class="btn waves-effect waves-light btn-rounded btn-secondary">Modificar</button>
+        
+        </form>
+        
+        </div>
+        <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+        </div>
     </div>
+    </div>
+
+</div>
+
+<div class="col-lg-6 col-md-12">
+    
     <div class="card">
         <div class="card-body">
 
@@ -108,9 +100,9 @@
                     <h4 class="card-title"><span class="lstick"></span>Devolución del informe</h4>
                     <h6 class="text-muted">{{datos.clasificacion}}</h6></div>
 
-                    {% if informe.devolucion %}
+                    {% if informes_data.devolucion %}
                     <div class="m-t-10">
-                        <p style="white-space: pre-wrap;">{{informe.devolucion}</p>
+                        <p style="white-space: pre-wrap;">{{informes_data.devolucion}</p>
                         
                     </div>
                     {% else %}
@@ -130,7 +122,7 @@
 
 </div>
 </div>
-</div>
+
 
 <div class="row">
     <div class="col-12">
