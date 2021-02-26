@@ -10,7 +10,7 @@ from proyectos.models import Proyectos, Unidades
 from ventas.models import VentasRealizadas
 from compras.models import Compras, Comparativas
 from registro.models import RegistroValorProyecto
-from rrhh.models import datosusuario, mensajesgenerales, NotaDePedido, Vacaciones, MonedaLink, EntregaMoneda, Anuncios, Seguimiento, Minutas, Acuerdos
+from rrhh.models import datosusuario, mensajesgenerales, NotaDePedido, Vacaciones, MonedaLink, EntregaMoneda, Anuncios, Seguimiento, Minutas, Acuerdos, PremiosMonedas
 import datetime
 from datetime import date
 import pandas as pd
@@ -167,6 +167,8 @@ def guia(request):
 
     amor = 0
     rey = 0
+    otros_datos = 0
+    monedas_disponibles_canje = 0
 
     try:
 
@@ -240,10 +242,14 @@ def guia(request):
     try:
         list_usuarios = datosusuario.objects.all().exclude(identificacion = request.user).order_by("identificacion").exclude(estado = "NO ACTIVO")
 
+        ########################################
+        # Calculo de monedas disponibles para dar
+        ########################################
+
         monedas = MonedaLink.objects.filter(usuario_portador = usuario)
 
         monedas_disponibles = 0
-
+        
         for m in monedas:
 
             if len(EntregaMoneda.objects.filter(moneda = m)) == 0:
@@ -251,14 +257,18 @@ def guia(request):
                 monedas_disponibles += 1
 
 
-        # Aqui el premio del amor
+        ########################################
+        # Precio por DAR
+        ########################################
 
         if len(monedas) == monedas_disponibles:
             amor = 0
         else:
             amor = 1
 
-        # Aqui el premio del rey
+        ########################################
+        # Premio al puesto numero 1 y 2
+        ########################################
 
         rey_l = EntregaMoneda.objects.all().values_list("usuario_recibe")
 
@@ -270,8 +280,12 @@ def guia(request):
         if int(usuario.id) == int(mode(rey_2)[0]):
             rey = 2
 
+        ########################################
+        # Calculo de monedas recibidas 
+        ########################################
 
         monedas_recibidas = len(EntregaMoneda.objects.filter(usuario_recibe = usuario))
+        monedas_disponibles_canje = len(EntregaMoneda.objects.filter(usuario_recibe = usuario, moneda__activo = "NO"))
         recibidas_list = EntregaMoneda.objects.filter(usuario_recibe = usuario).values_list("mensaje", flat = True)
 
         recibidas_list = list(set(recibidas_list))
@@ -331,7 +345,13 @@ def guia(request):
 
     monedas_recibidas = len(EntregaMoneda.objects.filter(usuario_recibe = usuario))
 
-    return render(request, "users/guia.html", {"rey":rey, "amor":amor, "datos":datos, "otros_datos":otros_datos, "recibidas":recibidas, "monedas_recibidas":monedas_recibidas, "monedas_disponibles":monedas_disponibles, "list_usuarios":list_usuarios})
+    return render(request, "users/guia.html", {"rey":rey, "amor":amor, "datos":datos, "otros_datos":otros_datos, "recibidas":recibidas, "monedas_recibidas":monedas_recibidas, "monedas_disponibles":monedas_disponibles, "monedas_disponibles_canje":monedas_disponibles_canje, "list_usuarios":list_usuarios})
+
+def canjemonedas(request):
+
+    premios = PremiosMonedas.objects.all()
+
+    return render(request, "users/canjemonedas.html", {"premios":premios})
 
 def dashboard(request):
 
@@ -921,7 +941,7 @@ def verinforme(request, id_informe):
         data_post = request.POST.items()
 
         for d in data_post:
-            
+
             if d[0] == "mensaje":
                 informes_data.informe = d[1]
                 informes_data.save()

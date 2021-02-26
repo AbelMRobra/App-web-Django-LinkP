@@ -47,6 +47,7 @@ class datosusuario(models.Model):
 
 
     identificacion = models.CharField(max_length=200, verbose_name="Identificacion")
+    nombre = models.CharField(max_length=200, verbose_name="Identificacion", blank=True, null=True,)
     imagen = models.CharField(max_length=200, verbose_name="Imagen", blank=True, null=True, editable=False)
     imagenlogo = models.ImageField(verbose_name="Imagen", blank=True, null=True)
     area = models.CharField(max_length=200, verbose_name="Area", blank=True, null=True)
@@ -96,14 +97,30 @@ class mensajesgenerales(models.Model):
 
 class MonedaLink(models.Model):
 
+    class activo(models.TextChoices):
+
+            SI = "SI"
+            NO = "NO"
+
     nombre = models.CharField(verbose_name="Nombre de la moneda", blank=True, null=True, max_length=200)
     usuario_portador = models.ForeignKey(datosusuario, on_delete=models.CASCADE, verbose_name="Usuario Portador")
     fecha = models.DateField(auto_now_add=True, verbose_name="Fecha")
     tipo = models.CharField(verbose_name="Tipo de moneda", blank=True, null=True, max_length=200)
+    activo = models.CharField(choices=activo.choices, max_length=20, default="NO", verbose_name="Activo")
 
     class Meta:
         verbose_name="Moneda link"
         verbose_name_plural="Monedas link"
+
+    def __str__(self):
+        return self.nombre
+
+class PremiosMonedas(models.Model):
+    nombre = models.CharField(verbose_name="Nombre del premio", max_length=200)
+    cantidad = models.IntegerField(verbose_name="Cantidad de monedas")
+    class Meta:
+        verbose_name="Premio"
+        verbose_name_plural="Premios"
 
     def __str__(self):
         return self.nombre

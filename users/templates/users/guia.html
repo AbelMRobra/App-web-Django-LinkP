@@ -98,11 +98,17 @@
         <h4 class="card-title"><span class="lstick m-r-20"></span>Linkcoins</h4>
 
         {% if datos and datos.estado == "ACTIVO" %}
-        <h6 class="text-muted m-t-10 m-b-0">Recibidas: <b>{{monedas_recibidas}}</b> <img src="{% static 'img/monedalink.png' %}" alt="" style="max-width:19px; height:auto; vertical-align: top;"></h6>
-        <h6 class="text-muted m-t-10 m-b-0">Disponibles: <b>{{monedas_disponibles}}</b> <img src="{% static 'img/monedalink.png' %}" alt="" style="max-width:19px; height:auto; vertical-align: top;"></h6>
+        <h6 class="text-muted m-t-10 m-b-0">Recibidas de tus compañeros: <b>{{monedas_recibidas}}</b> <img src="{% static 'img/monedalink.png' %}" alt="" style="max-width:19px; height:auto; vertical-align: top;"></h6>
+        <h6 class="text-muted m-t-10 m-b-0">Disponibles para canjear: <b>{{monedas_disponibles_canje}}</b> <img src="{% static 'img/monedalink.png' %}" alt="" style="max-width:19px; height:auto; vertical-align: top;"></h6>
+        <h6 class="text-muted m-t-10 m-b-0">Disponibles para regalar: <b>{{monedas_disponibles}}</b> <img src="{% static 'img/monedalink.png' %}" alt="" style="max-width:19px; height:auto; vertical-align: top;"></h6>
         <div style="margin-top: 15px; margin-bottom: 30px;">
-            <button type="button" data-toggle="modal" data-target="#ModalPremio" class="btn waves-effect waves-light btn-rounded btn-sm btn-secondary" name="subir_item" value="{{t.0.id}}"><img src="{% static 'img/regalo.png' %}" alt="" style="max-width:25px; height:auto; vertical-align: bottom;"> Regalar</button>
+            <a type="button" style="text-decoration: none;" data-toggle="modal" data-target="#ModalPremio"  name="subir_item" value="{{t.0.id}}"><img src="{% static 'img/regalo2.png' %}" alt="" style="max-width:25px; height:auto; vertical-align: bottom; margin-right: 15px;" data-toggle="tooltip" data-placement="right" title="" data-original-title="Regalar monedas"> </a>
+            
+            {% if request.user.username == "AR" %}
+            
+            <a href="{% url 'Canje de monedas' %}" style="text-decoration: none;"><img src="{% static 'img/canje.png' %}" alt="" style="max-width:25px; height:auto; vertical-align: bottom;" data-toggle="tooltip" data-placement="right" title="" data-original-title="Canjear monedas"> </a>
 
+            {% endif %}
         </div>
         
     <!-- Modal fecha estado Subitem -->
@@ -129,7 +135,7 @@
 
                             {% for i in list_usuarios %}
         
-                            <option value="{{i.id}}" selected>{{i.identificacion}}</option>
+                            <option value="{{i.id}}" selected> {{i.nombre}}</option>
         
                             {% endfor %}
         
@@ -151,7 +157,7 @@
 
                 </div>
 
-                <button type="submit" class="btn waves-effect waves-light btn-rounded btn-secondary"><img src="{% static 'img/regalo.png' %}" alt="" style="max-width:25px; height:auto; vertical-align: bottom;"> Regalar</button>
+                <button type="submit" class="btn waves-effect waves-light btn-rounded btn-secondary"><img src="{% static 'img/regalo2.png' %}" alt="" style="max-width:25px; height:auto; vertical-align: bottom;"> Regalar</button>
             
             </form>
             
@@ -231,4 +237,4 @@
 </div>
 </div>
 
-        {% endblock %}
+{% endblock %}

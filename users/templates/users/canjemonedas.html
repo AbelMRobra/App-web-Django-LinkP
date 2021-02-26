@@ -1,0 +1,54 @@
+{% extends "users/inicio2.html" %}
+{% load apptags_extras %}
+
+{% load static %}
+
+{% block content %}
+
+<div class="container-fluid r-aside">
+    <!-- ============================================================== -->
+    <!-- Bread crumb and right sidebar toggle -->
+    <!-- ============================================================== -->
+    <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+            <h3 class="text-themecolor">Canje de monedas</h3>
+        </div>
+
+    </div>
+
+  </div>
+
+  <div class="row">
+
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+            <h4 class="card-title"><span class="lstick m-r-20"></span>Tabla de canjes</h4>
+
+            <div class="table-responsive m-t-40">
+                <table class="table stylish-table">
+                    <thead>
+                        <tr>
+                            <th>Premios</th>
+                            <th style="text-align: center;">Monedas necesarias</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for i in premios %}
+                        <tr>
+                            <td>{{i.nombre|lower|capfirst}}</td>
+                            <td style="text-align: center;">{{i.cantidad}}</td>
+                        </tr>
+                        {% endfor %}
+     
+                    </tbody>
+                </table>
+            </div>
+
+            </div>
+        </div>
+    </div>
+  </div>
+
+
+{% endblock %}

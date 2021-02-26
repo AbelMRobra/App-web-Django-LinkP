@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 urlpatterns = [
     url(r'^$', views.welcome, name = 'Bienvenido'),
     url(r'^guia$', login_required(views.guia), name = 'Guia'),
+    url(r'^canjemoneda$', login_required(views.canjemonedas), name = 'Canje de monedas'),
     url(r'^moneda$', views.monedalink, name = 'Moneda Link'),
     url(r'^register$', views.register, name = 'Registro'),
     url(r'^login$', views.login, name = 'Login'),
