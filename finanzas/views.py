@@ -2927,32 +2927,34 @@ def arqueos(request):
 
                 Fecha del mismo: {}
 
-                Entra a Link-P para chequearlo
+                Entra a Link-P para chequearlo www.linkp.online
+
+                Finanzas -> Arqueo
 
                 Gracias!
 
                 Saludos!
                 """.format(request.user.username, request.POST['fecha']))
                 mensaje['From']=settings.EMAIL_HOST_USER
-                destino = [datosusuario.objects.get(identificacion = "SP").email,
-                datosusuario.objects.get(identificacion = "PL").email,
-                datosusuario.objects.get(identificacion = "CA").email,
-                datosusuario.objects.get(identificacion = "AR").email,
-                datosusuario.objects.get(identificacion = "AP").email,
-                datosusuario.objects.get(identificacion = "ALM").email]
-                mensaje['To']=','.join(destino)
-                mensaje['Subject']="Se cargo un arqueo con fecha {}".format(request.POST['fecha'])
+                destino = [str(datosusuario.objects.get(identificacion = "AR").email),
+                str(datosusuario.objects.get(identificacion = "AP").email),
+                str( datosusuario.objects.get(identificacion = "ALM").email),
+                str(datosusuario.objects.get(identificacion = "PL").email),
+                str(datosusuario.objects.get(identificacion = "SP").email),
+                str(datosusuario.objects.get(identificacion = "CA").email)]
+
+                for d in destino:
+                    mensaje['To']= d
+                    mensaje['Subject']="Se cargo un arqueo con fecha {}".format(request.POST['fecha'])
 
 
-                # Envio del mensaje
+                    # Envio del mensaje
 
-                mailServer.sendmail(settings.EMAIL_HOST_USER,
-                                mensaje['To'],
-                                mensaje.as_string())
+                    mailServer.sendmail(settings.EMAIL_HOST_USER,
+                                    d,
+                                    mensaje.as_string())
 
-                #except:
 
-                    #pass
             if d[0] == "delete":
                 arqueo = Arqueo.objects.get(id = int(request.POST['delete']))
                 arqueo.delete()
