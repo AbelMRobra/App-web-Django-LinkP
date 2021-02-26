@@ -98,9 +98,9 @@
         <h4 class="card-title"><span class="lstick m-r-20"></span>Linkcoins</h4>
 
         {% if datos and datos.estado == "ACTIVO" %}
-        <h6 class="text-muted m-t-10 m-b-0">Recibidas de tus compañeros: <b>{{monedas_recibidas}}</b> <img src="{% static 'img/monedalink.png' %}" alt="" style="max-width:19px; height:auto; vertical-align: top;"></h6>
-        <h6 class="text-muted m-t-10 m-b-0">Disponibles para canjear: <b>{{monedas_disponibles_canje}}</b> <img src="{% static 'img/monedalink.png' %}" alt="" style="max-width:19px; height:auto; vertical-align: top;"></h6>
-        <h6 class="text-muted m-t-10 m-b-0">Disponibles para regalar: <b>{{monedas_disponibles}}</b> <img src="{% static 'img/monedalink.png' %}" alt="" style="max-width:19px; height:auto; vertical-align: top;"></h6>
+        <h6 class="text-muted m-t-10 m-b-0">Recibidas de tus compañeros: <b>{{monedas_recibidas}}</b> <img src="{% static 'img/monedalink2.png' %}" alt="" style="max-width:17px; height:auto; vertical-align: top;"></h6>
+        <h6 class="text-muted m-t-10 m-b-0">Disponibles para canjear: <b>{{monedas_disponibles_canje}}</b> <img src="{% static 'img/monedalink2.png' %}" alt="" style="max-width:17px; height:auto; vertical-align: top;"></h6>
+        <h6 class="text-muted m-t-10 m-b-0">Disponibles para regalar: <b>{{monedas_disponibles}}</b> <img src="{% static 'img/monedalink2.png' %}" alt="" style="max-width:17px; height:auto; vertical-align: top;"></h6>
         <div style="margin-top: 15px; margin-bottom: 30px;">
             <a type="button" style="text-decoration: none;" data-toggle="modal" data-target="#ModalPremio"  name="subir_item" value="{{t.0.id}}"><img src="{% static 'img/regalo2.png' %}" alt="" style="max-width:25px; height:auto; vertical-align: bottom; margin-right: 15px;" data-toggle="tooltip" data-placement="right" title="" data-original-title="Regalar monedas"> </a>
             
@@ -186,10 +186,10 @@
                 <tbody>
                     {% for i in recibidas %}
                     <tr>
-                        <td style="text-align: center;"><img src="{% usuario i.2 %}" class="rounded" style="width: 40px;"
+                        <td style="text-align: left;"><img src="{% usuario i.2 %}" class="rounded" style="width: 40px;"
                             alt=""><span class="ml-2">{{i.2}}</span></td>
 
-                        <td style="text-align: center;">{{i.0}} <img src="{% static 'img/monedalink.png' %}" alt="" style="max-width:17px; height:auto; vertical-align: top; margin-top: 2px;"></td>
+                        <td style="text-align: center;">{{i.0}} <img src="{% static 'img/monedalink2.png' %}" alt="" style="max-width:17px; height:auto; vertical-align: top; margin-top: 2px;"></td>
                         <td style="width: 80%;"><b>Mensaje:</b> <i>"{{i.1}}"</i></td>
                     </tr>
                     {% endfor %}

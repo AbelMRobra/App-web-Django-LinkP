@@ -37,7 +37,7 @@
                         {% for i in premios %}
                         <tr>
                             <td>{{i.nombre|lower|capfirst}}</td>
-                            <td style="text-align: center;">{{i.cantidad}}</td>
+                            <td style="text-align: center;">{{i.cantidad}}  <img src="{% static 'img/monedalink2.png' %}" alt="" style="max-width:21px; height:auto; vertical-align: top;"></td>
                         </tr>
                         {% endfor %}
      
