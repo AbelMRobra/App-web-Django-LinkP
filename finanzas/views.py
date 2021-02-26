@@ -25,6 +25,7 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from email.mime.base import MIMEBase
 from email import encoders
+from rrhh.models import datosusuario
 
 
 # Create your views here.
@@ -2906,9 +2907,57 @@ def arqueos(request):
                 )
 
                 b.save()
+
+                #try:
+
+                # Establecemos conexion con el servidor smtp de gmail
+                mailServer = smtplib.SMTP(settings.EMAIL_HOST, settings.EMAIL_PORT)
+                mailServer.ehlo()
+                mailServer.starttls()
+                mailServer.ehlo()
+                mailServer.login(settings.EMAIL_HOST_USER, settings.EMAIL_HOST_PASSWORD)
+
+                # Construimos el mensaje simple
+                
+                mensaje = MIMEText("""
+                
+                Buenas!,
+
+                {} acaba de cargar un arqueo
+
+                Fecha del mismo: {}
+
+                Entra a Link-P para chequearlo
+
+                Gracias!
+
+                Saludos!
+                """.format(request.user.username, request.POST['fecha']))
+                mensaje['From']=settings.EMAIL_HOST_USER
+                destino = [datosusuario.objects.get(identificacion = "SP").email,
+                datosusuario.objects.get(identificacion = "PL").email,
+                datosusuario.objects.get(identificacion = "CA").email,
+                datosusuario.objects.get(identificacion = "AR").email,
+                datosusuario.objects.get(identificacion = "AP").email,
+                datosusuario.objects.get(identificacion = "ALM").email]
+                mensaje['To']=','.join(destino)
+                mensaje['Subject']="Se cargo un arqueo con fecha {}".format(request.POST['fecha'])
+
+
+                # Envio del mensaje
+
+                mailServer.sendmail(settings.EMAIL_HOST_USER,
+                                mensaje['To'],
+                                mensaje.as_string())
+
+                #except:
+
+                    #pass
             if d[0] == "delete":
                 arqueo = Arqueo.objects.get(id = int(request.POST['delete']))
                 arqueo.delete()
+
+        
 
     data = Arqueo.objects.all().order_by('-fecha')
 
