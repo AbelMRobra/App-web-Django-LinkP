@@ -921,7 +921,7 @@ def verinforme(request, id_informe):
         data_post = request.POST.items()
 
         for d in data_post:
-            print(d)
+            
             if d[0] == "mensaje":
                 informes_data.informe = d[1]
                 informes_data.save()
