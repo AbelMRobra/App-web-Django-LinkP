@@ -2934,7 +2934,7 @@ def arqueos(request):
                 Saludos!
                 """.format(request.user.username, request.POST['fecha']))
                 mensaje['From']=settings.EMAIL_HOST_USER
-                destino = [str(datosusuario.objects.get(identificacion = "AR").email),
+                destino = [str(datosusuario.objects.get(identificacion = "GB").email),
                 str(datosusuario.objects.get(identificacion = "AP").email),
                 str( datosusuario.objects.get(identificacion = "ALM").email),
                 str(datosusuario.objects.get(identificacion = "PL").email),
