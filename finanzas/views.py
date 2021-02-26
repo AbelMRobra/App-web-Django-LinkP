@@ -2927,9 +2927,7 @@ def arqueos(request):
 
                 Fecha del mismo: {}
 
-                Entra a Link-P para chequearlo www.linkp.online
-
-                Finanzas -> Arqueo
+                Entra a Link-P para chequearlo www.linkp.online/finanzas/arqueos/
 
                 Gracias!
 
