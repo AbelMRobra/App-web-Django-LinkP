@@ -1,17 +1,34 @@
-{% extends "users/inicio.html" %}
+{% extends "users/inicio2.html" %}
 
 {% load static %}
 {% load humanize %}
 
 {% block content %}
 
+<div class="container-fluid r-aside">
+    <!-- ============================================================== -->
+    <!-- Bread crumb and right sidebar toggle -->
+    <!-- ============================================================== -->
+    <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+            <h3 class="text-themecolor">Panel de control precios</h3>
+        </div>
+
+        <div class="col-md-7 align-self-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+                <li class="breadcrumb-item">Panel de control</li>
+            </ol>
+        </div>
+    </div>
+</div>
+
+
 <div class = "jumbotron" style="background-color: white; margin-bottom: 0px;">
     <div style="text-align: center;">
         <h2>Panel de control - Precios</h2>
         <small>Trabajo en conjunto: </small><small><strong>PRESUPUESTO - DIRECCIÓN - FINANZAS - VENTAS</strong></small>  
     </div>
-
-    <b><hr class = "my-4" style="width: 100%; border-color: black ;"></b>
 
     <div style="margin-bottom: 2rem;">
 
@@ -24,28 +41,22 @@
 
     <div class = "tableconteinerabel">
 
-        <table class = "table table-hover" style="text-align: center;">
+        <table id="example" class="table table-striped table-bordered" style="width:100%">
             <thead>
-    
-                <tr class = "table-dark">
-                    <th scope = "row" >PROYECTO</th>
-                    <th scope = "row">MINIMO </th>
-                    <th scope = "row">MINIMO USD </th>
-                    <th scope = "row">OBJETIVO  </th>
-                    <th scope = "row"> OBJETIVO USD  </th>
-                    <th scope = "row">ULTIMO PRICING </th>
-                    <th scope = "row">ULT. ACTUALIZACIÓN </th>
-                    
-    
+                <tr>
+                    <th >Proyecto</th>
+                    <th>Minimo</th>
+                    <th>Minimo USD </th>
+                    <th>Objetivo  </th>
+                    <th> Objetivo USD  </th>
+                    <th>Ultimo pricing </th>
+                    <th>Ult. actualizacion </th>
                 </tr>
             </thead>
-    
             <tbody>
     
-                
-    
                 {% for i in datos.datos %}
-                <tr class = "table-light">
+                <tr>
                     <td> <b>{{i.parametros}}</b> </td>
                     <td>$ {{i.valor_costo|floatformat:0|intcomma}}</td>
                     <td style="color: darkgreen;"> <b>U$A {{i.valor_costo_usd|floatformat:0|intcomma}}</b> </td>
@@ -53,29 +64,20 @@
                     <td style="color: darkgreen;"> <b>U$A {{i.valor_final_usd|floatformat:0|intcomma}}</b> </td>
                     <td>$ {{i.pricing|floatformat:0|intcomma}}</td>
                     <td>{{i.parametros.proyecto.fecha_a}}</td>
-                    
-                
                 </tr>
             </tbody>
     
                 {% endfor %}
-            </table>
-
+        </table>
 
     </div>
-
-
-        
 
      {% else %}
             <div style="text-align: center;">
                 <h3>No existe registros actualmente</h3>
             </div>
             
-
     {% endif %}
-        
-
     
     <div>
         <p><small> <strong>Minimo</strong> es el valor para cubrir los costos</small></p>
@@ -87,7 +89,6 @@
         <a href="/presupuestos/parametros"><button class="btn btn-success" type="submit">Ver parametros</button></a>  
      </div>
 
-    <b><hr class = "my-4" style="width: 100%; border-color: black ;"></b>
     
     <div style="margin-bottom: 2rem;">
 
@@ -108,20 +109,16 @@
 
                 {% endfor %}
 
-
               </select>
               <div>
                 <small> Seleccione el proyecto</small>
               </div>
-              
 
               <div>
                 <button class="btn btn-dark" type="submit" style="margin-top: 1%;">Analizar</button>          
             </div>
             
         </form>
-
-        
     </div>
 
     {% if datos.graficos %}
@@ -273,8 +270,6 @@
 
 </div>
 
-    
-
     <div style="text-align: center ;">
 
         <div style="margin-top: 0.5rem; width: 20%; display: inline-block; margin-left: 0.5rem;">
@@ -306,7 +301,6 @@
     </script>
         </script>
     
-    
         </div>
 
         <div style="margin-top: 0.5rem; width: 20%; display: inline-block; margin-left: 2rem;">
@@ -335,20 +329,10 @@
         </script>
         </script>
     
-    
         </div>
-
-
     </div>
 
-
     {% endif %}
-
-    <div style="text-align: center; margin-top: 2rem;">
-        <p> <small>-- Link<strong>P</strong> --</small> </p>
-
-     </div>
-
                     
 </div>
  
