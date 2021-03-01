@@ -27,6 +27,78 @@
     </div>
 </div>
 
+<div class="card border-dark mb-3" style="display: inline-block; width: 300px; height: 180px; vertical-align: top; margin: 5px;">
+    <div class="card-header">Precio base</div>  
+    <div class="card-body">
+        <h6> 
+
+            {% if request.user|has_group:"MANDO MEDIO" %}
+
+            <a type="button" data-toggle="modal" data-target="#exampleModalCenter">
+                <img src="{% static 'img/documento.png' %}" alt="" style="max-width:20px; height:auto;"  >
+            </a>
+
+            {% endif %}
+            
+            
+            Actual: <small>${{datos.proyecto.desde|floatformat:0|intcomma}}</small></h6>
+
+            
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLongTitle">Estas por modificar el precio del pricing!</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+
+
+                      Cuando lo modifiques, espera unos segundos a que cargue todo!
+                      
+                      <form method="GET" style="margin: 15px;">
+    
+                        <div class="input-group mb-3">
+                    
+                                <div class="input-group-prepend">
+                    
+                                    <span class="input-group-text">$</span>
+                        
+                                </div>
+                        
+                                <input name="precio_venta" type="number" class="form-control form-control" aria-label="Amount" style="width: 100px;">
+                             
+                        </div>
+                    
+                    </form>
+                    
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+               
+                    </div>
+                  </div>
+                </div>
+
+            </div>
+
+    <small>*Precio base que por una serie de parametros arma el precio de la unidad</small>
+    </div>
+  </div>
+
+
+<div class="card border-dark mb-3" style="display: inline-block; width: 300px; height: 180px; vertical-align: top; margin: 5px;">
+    <div class="card-header">Promedio de reposición</div>  
+    <div class="card-body">
+        <h6>Prom. contado: <small>${{datos.otros_datos.0.4|floatformat:0|intcomma}}</small></h6>
+        <h6>Prom. financiado: <small>${{datos.otros_datos.0.5|floatformat:0|intcomma}}</small></h6>
+        <small>*unidades de proyecto usando sup. equivalente</small>
+    </div>
+  </div>
+
 
 <div class="row ">
     <div class="col-12">
@@ -39,13 +111,10 @@
                 </div>
 
                     <div style="text-align: left; display: inline-block;">
-                        <a href="#" style="text-decoration: none;"data-toggle="tooltip" data-placement="right" title="" data-original-title="Agregar cuota"><img
-                            src="{% static 'img/add.png' %}" alt=""
-                            style="max-width:20px; height:auto;"></a>
-                        <a href="#" style="text-decoration: none; margin-left: 10px;" data-toggle="tooltip" data-placement="right" title="" data-original-title="Resumen de la cuenta"><img
-                                src="{% static 'img/reporte.png' %}" alt="" style="max-width:20px; height:auto;"></a>
+                        <a href="#" style="text-decoration: none;"data-toggle="tooltip" data-placement="right" title="" data-original-title="Editar precio base"><i class="fa fa-pencil-square-o fa-lg"
+                            aria-hidden="true"></i></a>
                         <a href="#"
-                        style="text-decoration: none;  margin-left: 10px;" data-toggle="tooltip" data-placement="right" title="" data-original-title="Panel de boleto"><img src="{% static 'img/cuenta.png' %}" alt=""
+                        style="text-decoration: none;  margin-left: 10px;" data-toggle="tooltip" data-placement="right" title="" data-original-title="Admin pricing de unidades"><img src="{% static 'img/casa.png' %}" alt=""
                                 style="max-width:20px; height:auto;"></a>
                         <a href="{% url 'Descargar del pricing' datos.proyecto.id %}"
                             style="text-align: end; margin-top: 5px; text-decoration: none;  margin-left: 10px;" data-toggle="tooltip" data-placement="right" title="" data-original-title="Descargar Excel"> <img src="{% static 'img/sobresalir.png' %}"
@@ -138,183 +207,11 @@
                             {% endfor %}
                         </tbody>
                     </table>
-
-<div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;">
-    <div style="text-align: left; justify-content: left;">
-
-        <div style="display: inline-block; vertical-align: middle; width: 250px; margin: 20px;">
-            <img src="{{datos.proyecto.iamgen.url}}"  class="img-fluid" alt="..." style="width:auto;height:auto; ">
-
-
+            </div>
         </div>
-
-        <div style="display: inline-block; vertical-align: middle; width: 300px;  margin: 20px;">
-            <h4 style="color: rgb({{datos.proyecto.color}}); " >{{ datos.proyecto.nombre }} </h4>
-            <h5 style="color: rgb({{datos.proyecto.color}}); " >Pricing de unidades </h5>
-
-
-        </div>
-
-        <div style="vertical-align: middle; margin: 20px; text-align: right;">
-
-            <form method="POST" >
-
-                {% csrf_token %}
-
-                    <div style="display: inline-block;">
-
-                        <input name="palabra" type="text" class="form-control form-control" placeholder="Buscar por palabra" list="art" width="300px">
-
-
-
-                    </div>
-        
-        
-                    
-                    <img src="{% static 'img/buscar2.png' %}" alt="" style="max-width:25px; height:auto;"  >
-        
-             </form>
-
-            
-        </div>
-    
     </div>
+</div>
 
-
-    <b><hr class = "my-4" style="width: 100%; border-color: rgba({{datos.proyecto.color}}, 0.5);"></b>
-
-
-
-    {% if datos.datos_unidades %}
-
-    
-    <div class="card border-dark mb-3" style="display: inline-block; width: 300px; height: 180px; vertical-align: top; margin: 5px;">
-        <div class="card-header">Precio base</div>  
-        <div class="card-body">
-            <h6> 
-
-                {% if request.user|has_group:"MANDO MEDIO" %}
-
-                <a type="button" data-toggle="modal" data-target="#exampleModalCenter">
-                    <img src="{% static 'img/documento.png' %}" alt="" style="max-width:20px; height:auto;"  >
-                </a>
-
-                {% endif %}
-                
-                
-                Actual: <small>${{datos.proyecto.desde|floatformat:0|intcomma}}</small></h6>
-
-                
-                <!-- Modal -->
-                <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered" role="document">
-                      <div class="modal-content">
-                        <div class="modal-header">
-                          <h5 class="modal-title" id="exampleModalLongTitle">Estas por modificar el precio del pricing!</h5>
-                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                          </button>
-                        </div>
-                        <div class="modal-body">
-    
-    
-                          Cuando lo modifiques, espera unos segundos a que cargue todo!
-                          
-                          <form method="GET" style="margin: 15px;">
-        
-                            <div class="input-group mb-3">
-                        
-                                    <div class="input-group-prepend">
-                        
-                                        <span class="input-group-text">$</span>
-                            
-                                    </div>
-                            
-                                    <input name="precio_venta" type="number" class="form-control form-control" aria-label="Amount" style="width: 100px;">
-                                 
-                            </div>
-                        
-                        </form>
-                        
-                        </div>
-                        <div class="modal-footer">
-                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                   
-                        </div>
-                      </div>
-                    </div>
-
-                </div>
-
-        <small>*Precio base que por una serie de parametros arma el precio de la unidad</small>
-        </div>
-      </div>
-
-
-    <div class="card border-dark mb-3" style="display: inline-block; width: 300px; height: 180px; vertical-align: top; margin: 5px;">
-        <div class="card-header">Promedio de reposición</div>  
-        <div class="card-body">
-            <h6>Prom. contado: <small>${{datos.otros_datos.0.4|floatformat:0|intcomma}}</small></h6>
-            <h6>Prom. financiado: <small>${{datos.otros_datos.0.5|floatformat:0|intcomma}}</small></h6>
-            <small>*unidades de proyecto usando sup. equivalente</small>
-        </div>
-      </div>
-
-    <div class = "tableconteinerabel">
-
-        <table class = "table table-hover" style="text-align: center;">
-            <thead>
-    
-                <tr class = "table-dark">
-                    <th scope = "row" style="vertical-align: middle;"> <small>PISO/NOM</small> </th>
-                    <th scope = "row"style="vertical-align: middle;" colspan="2"> <small>TIPOLOGIA</small>  </th>
-                    <th scope = "row"style="vertical-align: middle;"> <small>SUPERFICIE</small> </th>
-                    <th scope = "row"style="vertical-align: middle;" class="priority-4"> <small>ASIGNACIÓN</small> </th>
-                    <th scope = "row"style="vertical-align: middle;"> <small>ESTADO</small> </th>
-                    <th scope = "row"style="vertical-align: middle;"> <small>CONTADO</small> </th>
-                    <th scope = "row"style="vertical-align: middle;"> <small>CONT./M2</small> </th>
-                    
-                    <th scope = "row"style="vertical-align: middle;" class="priority-5"> <small>FINANCIADO</small> </th>
-                    <th scope = "row"style="vertical-align: middle;" class="priority-5"> <small>FINAN./M2</small> </th>
-                    <th scope = "row"style="vertical-align: middle;" class="priority-5"> <small>ANTICIPO ({{datos.anticipo}}%)</small> </th>
-                    <th scope = "row"style="vertical-align: middle;" class="priority-5"> <small>CUOTAS ({{datos.meses}})</small> </th>
-
-                     
-    
-                </tr>
-            </thead>
-    
-            
-         
-    
-    
-        </table>
-
-
-    </div>
-
-    
-
-
-
-    {% endif %}
-
-    {% if datos.mensaje == 1 %}
-
-    <div style="text-align: center; margin-top: 10%;">
-    
-        <h6>No hay unidades que cumplan esas condiciones!</h6>
-    
-    </div>
-
-    
-
-    {% endif %}
-
-    <div>
-        <a href="{% url 'Descargar del pricing' datos.proyecto.id %}"><img src="{% static 'img/sobresalir.png' %}" alt="" style="max-width:25px; height:auto;"  ></a>
-
-    </div>
 
     <div style="text-align: center; margin-top: 2rem;">
         <p> <small>-- Link<strong>P</strong> --</small> </p>

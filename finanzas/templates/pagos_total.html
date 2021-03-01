@@ -1,88 +1,92 @@
-{% extends "users/inicio.html" %}
+{% extends "users/inicio2.html" %}
 
 {% load static %}
 {% load humanize %}
 
 {% block content %}
 
+<div class="container-fluid r-aside">
+    <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+            <h3 class="text-themecolor">Registro de pagos</h3>
+        </div>
 
+        <div class="col-md-7 align-self-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+                <li class="breadcrumb-item">Registro de pagos</li>
+            </ol>
+        </div>
+    </div>
+</div>
 
-<div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;" > 
+<div class="jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;">
 
     <div style="text-align: center;">
-       
-        <h2 style="font-family: Arial, Helvetica, sans-serif;">Registro de pagos</h2>  
-        
-        <small style="font-family: Arial, Helvetica, sans-serif;"><b>Modulo:</b>  Cuentas Corrientes</small>
-       
+        <h2>Registro de pagos</h2>
     </div>
 
-
-    <b><hr class = "my-4" style="width: 100%; "></b>
     <div style="text-align: left;">
 
         <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
             <button type="button" class="btn btn-primary">{{mensaje}}</button>
             <div class="btn-group" role="group">
-                <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+                <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false"></button>
                 <div class="dropdown-menu" aria-labelledby="btnGroupDrop1" style="">
                     <div style="margin: 2px;">
-    
-                        <a href="{% url 'Panel de pagos total' 0 %}" style="margin-top: 5px;" >Todos</a>
-    
+
+                        <a href="{% url 'Panel de pagos total' 0 %}" style="margin-top: 5px;">Todos</a>
+
                     </div>
-    
+
                     {% for i in list_proyectos %}
-    
+
                     <div style="margin: 2px;">
-    
-                        <a href="{% url 'Panel de pagos total' i.0.id %}" style="margin-top: 5px;" >{{i.0.nombre}} ({{i.1}})</a> 
-                    
+
+                        <a href="{% url 'Panel de pagos total' i.0.id %}" style="margin-top: 5px;">{{i.0.nombre}}
+                            ({{i.1}})</a>
+
                     </div>
-    
+
                     {% endfor %}
-    
-    
-                                              
                 </div>
             </div>
-            </div>
-
+        </div>
     </div>
 
-    
+    <div class="tableconteinerabel">
 
-
-    <div class = "tableconteinerabel">
-
-        <table class = "table table-hover" style="text-align: center; margin-top: 5px;">
+        <table class="table table-hover" style="text-align: center; margin-top: 5px;">
             <thead>
-    
-                <tr class = "table-dark">
-                    <th scope = "row" style="vertical-align: middle;"> <small>PROYECTO</small></th>
-                    <th scope = "row" style="vertical-align: middle;"> <small>CLIENTE</small></th>
-                    <th scope = "row" style="vertical-align: middle;"> <small>UNIDAD</small></th>
-                    <th scope = "row" style="vertical-align: middle;"> <small>FECHA PAGO</small></th>
-                    <th scope = "row" style="vertical-align: middle;"> <small>MONEDA (MD) </small></th>
-                    <th scope = "row" style="vertical-align: middle;"> <small>COTIZACIÓN</small></th> 
-                    <th scope = "row" style="vertical-align: middle;"> <small>MONTO PESOS</small></th>                    
-                    <th scope = "row" style="vertical-align: middle;"> <small> DOCUMENTO 1 </small></th>
-                    <th scope = "row" style="vertical-align: middle;"> <small> DOCUMENTO 2 </small></th>
+
+                <tr class="table-dark">
+                    <th scope="row" style="vertical-align: middle;"> <small>PROYECTO</small></th>
+                    <th scope="row" style="vertical-align: middle;"> <small>CLIENTE</small></th>
+                    <th scope="row" style="vertical-align: middle;"> <small>UNIDAD</small></th>
+                    <th scope="row" style="vertical-align: middle;"> <small>FECHA PAGO</small></th>
+                    <th scope="row" style="vertical-align: middle;"> <small>MONEDA (MD) </small></th>
+                    <th scope="row" style="vertical-align: middle;"> <small>COTIZACIÓN</small></th>
+                    <th scope="row" style="vertical-align: middle;"> <small>MONTO PESOS</small></th>
+                    <th scope="row" style="vertical-align: middle;"> <small> DOCUMENTO 1 </small></th>
+                    <th scope="row" style="vertical-align: middle;"> <small> DOCUMENTO 2 </small></th>
 
                 </tr>
             </thead>
-    
-            <tbody>   
-    
+
+            <tbody>
+
                 {% for i in datos|slice:"200" %}
-                <tr class = "table-light">
-                    <td style="color: rgb({{i.0.cuota.cuenta_corriente.venta.proyecto.color}});"> <b> <small> <b>{{i.0.cuota.cuenta_corriente.venta.proyecto.nombre}}</b> </small> </b></td>
-                    <td> <b> <small> {{i.0.cuota.cuenta_corriente.venta.comprador}} </small> </b></td> 
-                    <td> <b> <small>{{i.0.cuota.cuenta_corriente.venta.unidad.piso_unidad}} - {{i.0.cuota.cuenta_corriente.venta.unidad.nombre_unidad}} </small> </b></td>  
-                    <td> <b> <small> {{i.0.fecha|date:"Y-m-d"}} </small> </b></td>    
+                <tr class="table-light">
+                    <td style="color: rgb({{i.0.cuota.cuenta_corriente.venta.proyecto.color}});"> <b> <small>
+                                <b>{{i.0.cuota.cuenta_corriente.venta.proyecto.nombre}}</b> </small> </b></td>
+                    <td> <b> <small> {{i.0.cuota.cuenta_corriente.venta.comprador}} </small> </b></td>
+                    <td> <b> <small>{{i.0.cuota.cuenta_corriente.venta.unidad.piso_unidad}} -
+                                {{i.0.cuota.cuenta_corriente.venta.unidad.nombre_unidad}} </small> </b></td>
+                    <td> <b> <small> {{i.0.fecha|date:"Y-m-d"}} </small> </b></td>
                     <td> <b> <small>{{i.0.pago|floatformat:2}}</small> </b> </td>
 
-                    <td> <b> <small> <b>${{i.1|floatformat:0|intcomma}}</b>  </small> </b> </td>
+                    <td> <b> <small> <b>${{i.1|floatformat:0|intcomma}}</b> </small> </b> </td>
 
                     <td> <b> <small> <b>${{i.0.pago_pesos|floatformat:0|intcomma}}</b> </small> </b> </td>
 
@@ -106,33 +110,36 @@
                     <td> <b> <small>Sin registro</small> </b> </td>
 
                     {% endif %}
-    
+
                 </tr>
                 {% endfor %}
             </tbody>
-         
-    
+
+
         </table>
-    
-        </div>
 
-        <b><hr class = "my-4" style="width: 100%; "></b>
+    </div>
 
-        <div>
-            <small style="font-family: Arial, Helvetica, sans-serif;">El listado puede continuar, se limita el numero de filas visibles</small>
-        </div>
+    <b>
+        <hr class="my-4" style="width: 100%; ">
+    </b>
+
+    <div>
+        <small style="font-family: Arial, Helvetica, sans-serif;">El listado puede continuar, se limita el numero de
+            filas visibles</small>
+    </div>
 
 
     <div style="text-align: center; margin-top: 10%;">
 
         <p style="font-family: Arial, Helvetica, sans-serif;"> <small>-- Link<strong>P</strong> --</small> </p>
 
-     </div>
+    </div>
 
-    
-    
+
+
 
 </div>
 
-    
+
 {% endblock %}
