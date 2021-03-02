@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import EstudioMercado, PricingResumen
+from .models import EstudioMercado, PricingResumen, FeaturesProjects, FeaturesUni
 from proyectos.models import Unidades, Proyectos
 from finanzas.models import Almacenero
 from rrhh.models import datosusuario
@@ -1273,7 +1273,7 @@ def pricing(request, id_proyecto):
 
     proyecto = Proyectos.objects.get(id = id_proyecto)
 
-    datos = Unidades.objects.filter(proyecto = proyecto)
+    datos = Unidades.objects.filter(proyecto = proyecto).order_by("-orden")
 
     mensaje = 0
     otros_datos = 0
@@ -1334,87 +1334,66 @@ def pricing(request, id_proyecto):
 
             basura = 1
         
-        try:
-            param_uni = Pricing.objects.get(unidad = dato)
-            desde = dato.proyecto.desde
-            aumento = 1
+        #try:
 
-            if dato.tipo == "COCHERA":
-                aumento = aumento*dato.proyecto.descuento_cochera
+        contado = m2*dato.proyecto.desde
 
-            if param_uni.frente == "SI":
-                aumento = aumento*dato.proyecto.recargo_frente
+        features_unidad = FeaturesUni.objects.filter(unidad = dato)
 
-            if param_uni.piso_intermedio == "SI":
-                aumento = aumento*dato.proyecto.recargo_piso_intermedio
+        for f2 in features_unidad:
 
-            if param_uni.cocina_separada == "SI":
-                aumento = aumento*dato.proyecto.recargo_cocina_separada
+            contado = contado*f2.feature.inc
 
-            if param_uni.local == "SI":
-                aumento = aumento*dato.proyecto.recargo_local
+        desde = round((contado/m2), 4)
 
-            if param_uni.menor_45_m2 == "SI":
-                aumento = aumento*dato.proyecto.recargo_menor_45
+        #Aqui calculamos el contado/financiado
+        
+        values = [0]
 
-            if param_uni.menor_50_m2 == "SI":
-                aumento = aumento*dato.proyecto.recargo_menor_50
+        for m in range((meses)):
+            values.append(1)
 
-            if param_uni.otros == "SI":
-                aumento = aumento*dato.proyecto.recargo_otros 
+        anticipo = 0.4
 
-            desde = desde*round(aumento, 4)
+        valor_auxiliar = np.npv(rate=(dato.proyecto.tasa_f/100), values=values)
 
-            #Aqui calculamos el contado/financiado
+        incremento = (meses/(1-anticipo)/(((anticipo/(1-anticipo))*meses)+valor_auxiliar))
+
+        financiado = contado*incremento
+
+        financiado_m2 = financiado/m2
+        
+        fin_ant = financiado*anticipo
+
+        valor_cuotas = (financiado - fin_ant)/meses
+
+        #Aqui actualizamos los datos del almacenero
+
+        if (dato.estado == "DISPONIBLE" and dato.asig == "PROYECTO") or (dato.asig == "SOCIOS") or (dato.estado == "SEÑADA" and dato.asig == "PROYECTO"):
             
-            contado = desde*m2
-         
-            values = [0]
+            ingreso_ventas = ingreso_ventas + contado
 
-            for m in range((meses)):
-                values.append(1)
+            if dato.asig == "SOCIOS":
 
-            anticipo = 0.4
+                unidades_socios = unidades_socios + contado
 
-            valor_auxiliar = np.npv(rate=(dato.proyecto.tasa_f/100), values=values)
+        #Aqui calculamos IIBB -> IIBB en estado "NO" -- HON.LINK o TERRENO
 
-            incremento = (meses/(1-anticipo)/(((anticipo/(1-anticipo))*meses)+valor_auxiliar))
+        if (dato.estado_iibb == "NO"):
 
-            financiado = contado*incremento
-
-            financiado_m2 = financiado/m2
-            
-            fin_ant = financiado*anticipo
-
-            valor_cuotas = (financiado - fin_ant)/meses
-
-            #Aqui actualizamos los datos del almacenero
-
-            if (dato.estado == "DISPONIBLE" and dato.asig == "PROYECTO") or (dato.asig == "SOCIOS") or (dato.estado == "SEÑADA" and dato.asig == "PROYECTO"):
-                
-                ingreso_ventas = ingreso_ventas + contado
-
-                if dato.asig == "SOCIOS":
-
-                    unidades_socios = unidades_socios + contado
-
-            #Aqui calculamos IIBB -> IIBB en estado "NO" -- HON.LINK o TERRENO
-
-            if (dato.estado_iibb == "NO"):
-
-                iibb = iibb + contado
+            iibb = iibb + contado
 
 
-            #Aqui calculamos comision -> comsion en estado "NO" -- PROYECTO (No socios)
+        #Aqui calculamos comision -> comsion en estado "NO" -- PROYECTO (No socios)
 
-            if (dato.estado_comision == "NO" and dato.asig == "PROYECTO"):
+        if (dato.estado_comision == "NO" and dato.asig == "PROYECTO"):
 
-                comision = comision + contado*0.03 
+            comision = comision + contado*0.03 
 
-        except:
+        #except:
 
-            desde = "NO DEFINIDO"
-            contado = "NO DEFINIDO"
+            #desde = "NO DEFINIDO"
+            #contado = "NO DEFINIDO"
 
         venta = 0
 
@@ -2061,6 +2040,69 @@ def cotizador(request, id_unidad):
         resultados.append(importe_aporte_h)
 
     return render(request, 'cotizador.html', {'datos':datos, 'resultados':resultados, 'precio_contado':precio_contado, 'm2':m2})
+
+def featuresproject(request, id_proj):
+
+    if request.method == 'POST':
+        data_post = request.POST.items()
+        for d in data_post:
+
+            if d[0] != 'csrfmiddlewaretoken':
+                aux = d[0].split(sep='&')
+
+                if len(FeaturesUni.objects.filter(feature__nombre = aux[0], unidad = int(aux[1]))) == 1 and d[1] == "NO":
+                    feature_un = FeaturesUni.objects.filter(feature__nombre = aux[0], unidad = int(aux[1]))
+                    feature_un.delete()
+
+                if len(FeaturesUni.objects.filter(feature__nombre = aux[0], unidad = int(aux[1]))) == 0 and d[1] == "SI":
+                
+                    unidad = Unidades.objects.get(id = int(aux[1]))
+                    feature = FeaturesProjects.objects.get(proyecto = unidad.proyecto, nombre = aux[0])
+                
+                    feature_un = FeaturesUni(
+                        feature = feature,
+                        unidad = unidad)
+                    feature_un.save()
+
+    unidades = Unidades.objects.filter(proyecto__id = id_proj).order_by("-orden")
+  
+    features = FeaturesProjects.objects.filter(proyecto__id = id_proj)
+
+    data = []
+
+    for u in unidades:
+
+        unid_features = []
+
+        for f in features:
+            if len(FeaturesUni.objects.filter(feature = f, unidad = u)) == 1:
+                unid_features.append(("SI", f))
+            if len(FeaturesUni.objects.filter(feature = f, unidad = u)) == 0:
+                unid_features.append(("NO", f))
+
+        if u.sup_equiv > 0:
+
+            m2 = round(u.sup_equiv, 2)
+
+        else:
+
+            m2 = round((u.sup_propia + u.sup_balcon + u.sup_comun + u.sup_patio), 2)
+
+        base = m2*u.proyecto.desde
+        final = base
+
+        features_unidad = FeaturesUni.objects.filter(unidad = u)
+
+        for f2 in features_unidad:
+
+            final = final*f2.feature.inc
+
+        u.contado = final
+        u.save()
+
+        data.append((u, unid_features, m2, base, final))
+
+    return render(request, 'featuresproject.html', {'features':features, 'data':data})
 
 class descargadeventas(TemplateView):
 

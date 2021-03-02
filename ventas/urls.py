@@ -35,7 +35,14 @@ urlpatterns = [
     url(r'^resumenprecio$', login_required(views.resumenprecio), name = 'Resumen de precio'),
     url(r'^cargarventa$', login_required(views.cargarventa), name = 'Cargar Venta'),
     url(r'^cargar_venta$', login_required(views.cargar_venta), name = 'Cargar una Venta'),
+    url(r'^featuresproject/(?P<id_proj>\d+)/$', login_required(views.featuresproject), name = 'Features Project'),
+
+    ###########################
+    # URL de descarga
+    ###########################    
     url(r'^descargarventas/$', login_required(descargadeventas.as_view()), name = 'Descargar ventas'),
     url(r'^descargapricing/(?P<id_proyecto>\d+)/$', login_required(DescargaPricing.as_view()), name = 'Descargar del pricing'),
+    
+  
 
 ]

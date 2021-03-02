@@ -2910,38 +2910,40 @@ def arqueos(request):
 
                 #try:
 
-                # Establecemos conexion con el servidor smtp de gmail
-                mailServer = smtplib.SMTP(settings.EMAIL_HOST, settings.EMAIL_PORT)
-                mailServer.ehlo()
-                mailServer.starttls()
-                mailServer.ehlo()
-                mailServer.login(settings.EMAIL_HOST_USER, settings.EMAIL_HOST_PASSWORD)
-
-                # Construimos el mensaje simple
-                
-                mensaje = MIMEText("""
-                
-                Buenas!,
-
-                {} acaba de cargar un arqueo
-
-                Fecha del mismo: {}
-
-                Entra a Link-P para chequearlo www.linkp.online/finanzas/arqueos/
-
-                Gracias!
-
-                Saludos!
-                """.format(request.user.username, request.POST['fecha']))
-                mensaje['From']=settings.EMAIL_HOST_USER
                 destino = [str(datosusuario.objects.get(identificacion = "GB").email),
                 str(datosusuario.objects.get(identificacion = "AP").email),
                 str( datosusuario.objects.get(identificacion = "ALM").email),
                 str(datosusuario.objects.get(identificacion = "PL").email),
                 str(datosusuario.objects.get(identificacion = "SP").email),
+                str(datosusuario.objects.get(identificacion = "AR").email),
                 str(datosusuario.objects.get(identificacion = "CA").email)]
 
                 for d in destino:
+
+                    # Establecemos conexion con el servidor smtp de gmail
+                    mailServer = smtplib.SMTP(settings.EMAIL_HOST, settings.EMAIL_PORT)
+                    mailServer.ehlo()
+                    mailServer.starttls()
+                    mailServer.ehlo()
+                    mailServer.login(settings.EMAIL_HOST_USER, settings.EMAIL_HOST_PASSWORD)
+
+                    # Construimos el mensaje simple
+                    
+                    mensaje = MIMEText("""
+                    
+                    Buenas!,
+
+                    {} acaba de cargar un arqueo
+
+                    Fecha del mismo: {}
+
+                    Entra a Link-P para chequearlo www.linkp.online/finanzas/arqueos/
+
+                    Gracias!
+
+                    Saludos!
+                    """.format(request.user.username, request.POST['fecha']))
+                    mensaje['From']=settings.EMAIL_HOST_USER
                     mensaje['To']= d
                     mensaje['Subject']="Se cargo un arqueo con fecha {}".format(request.POST['fecha'])
 

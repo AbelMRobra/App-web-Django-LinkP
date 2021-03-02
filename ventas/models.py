@@ -167,3 +167,25 @@ class ReclamosPostventa(models.Model):
         return self.propietario
 
 
+class FeaturesProjects(models.Model):
+    proyecto = models.ForeignKey(Proyectos, on_delete=models.CASCADE, verbose_name = "Proyecto")
+    nombre = models.CharField(max_length=100, verbose_name = "Nombre")
+    inc = models.FloatField(verbose_name="Porcentaje de variación")
+
+    class Meta:
+        verbose_name="Feature Project"
+        verbose_name_plural="Features Project"
+
+    def _str_(self):
+        return '{}'.format(self.nombre)
+
+class FeaturesUni(models.Model):
+    unidad = models.ForeignKey(Unidades, on_delete=models.CASCADE, verbose_name = "Unidades")
+    feature = models.ForeignKey(FeaturesProjects, on_delete=models.CASCADE, verbose_name = "Feature")
+
+    class Meta:
+        verbose_name="Feature Project"
+        verbose_name_plural="Features Project"
+
+    def _str_(self):
+        return '{}'.format(self.feature.nombre)
