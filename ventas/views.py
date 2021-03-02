@@ -1052,46 +1052,19 @@ def panelunidades(request):
 
                                 m2 = round((dato.sup_propia + dato.sup_balcon + dato.sup_comun + dato.sup_patio), 2)
                             
-                            try:
-                                param_uni = Pricing.objects.get(unidad = dato)
-                                desde = dato.proyecto.desde
-                                aumento = 1
+                            contado = m2*dato.proyecto.desde
 
-                                if dato.tipo == "COCHERA":
-                                    aumento = aumento*dato.proyecto.descuento_cochera
+                            features_unidad = FeaturesUni.objects.filter(unidad = dato)
 
-                                if param_uni.frente == "SI":
-                                    aumento = aumento*dato.proyecto.recargo_frente
+                            for f2 in features_unidad:
 
-                                if param_uni.piso_intermedio == "SI":
-                                    aumento =aumento*dato.proyecto.recargo_piso_intermedio
+                                contado = contado*f2.feature.inc
 
-                                if param_uni.cocina_separada == "SI":
-                                    aumento = aumento*dato.proyecto.recargo_cocina_separada
+                            monto_total = monto_total + contado
 
-                                if param_uni.local == "SI":
-                                    aumento = aumento*dato.proyecto.recargo_local
+                            desde = round((contado/m2), 4)
 
-                                if param_uni.menor_45_m2 == "SI":
-                                    aumento = aumento*dato.proyecto.recargo_menor_45
-
-                                if param_uni.menor_50_m2 == "SI":
-                                    aumento = aumento*dato.proyecto.recargo_menor_50
-
-                                if param_uni.otros == "SI":
-                                    aumento = aumento*dato.proyecto.recargo_otros 
-
-                                desde = desde*round(aumento, 4)
-                                desde = desde*m2 
-                                monto_total = monto_total + desde 
-
-                                m2 = dato.sup_propia + dato.sup_balcon + dato.sup_comun + dato.sup_patio
-
-                            except:
-                                
-                                desde = "NO DEFINIDO"
-
-                            datos_tabla_unidad.append((dato, m2, desde, dato.id))
+                            datos_tabla_unidad.append((dato, m2, contado, dato.id))
                             
                             m2_totales = m2_totales + m2
                             

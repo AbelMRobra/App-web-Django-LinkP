@@ -15,7 +15,7 @@
         <div class="col-md-7 align-self-center">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
-                <li class="breadcrumb-item"><a href="{% url 'Pricing' data.0.0.id %}">Pricing</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'Pricing' data.0.0.proyecto.id %}">Pricing</a></li>
                 <li class="breadcrumb-item">Caracteristicas</li>
             </ol>
         </div>
@@ -27,7 +27,7 @@
             <div class="card-body">
 
                 <div class="table-responsive">
-                    <table id="example" class="table table-striped table-bordered" style="width:99%">
+                    <table id="example" class="table table-striped table-bordered" data-show-columns="true" style="width:99%">
                         <thead  style="font-size: 14px;" >
                             <tr>
                                 <th>Unidad</th>
@@ -81,7 +81,7 @@
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js" defer></script>
 <script src="https://cdn.datatables.net/1.10.23/js/dataTables.bootstrap4.min.js" defer></script>
-
+<script src="extensions/sticky-header/bootstrap-table-sticky-header.js"></script>
 
 <script>
      
