@@ -987,7 +987,7 @@ def estmercado(request):
 
 def panelunidades(request):
 
-    datos = Unidades.objects.all().order_by("-orden")
+    datos = Unidades.objects.all().order_by("orden")
 
     proyectos = []
 
@@ -1246,7 +1246,7 @@ def pricing(request, id_proyecto):
 
     proyecto = Proyectos.objects.get(id = id_proyecto)
 
-    datos = Unidades.objects.filter(proyecto = proyecto).order_by("-orden")
+    datos = Unidades.objects.filter(proyecto = proyecto).order_by("orden")
 
     mensaje = 0
     otros_datos = 0
