@@ -2012,13 +2012,13 @@ def indicelink(request, id_moneda, id_time):
 
     return render(request, 'indicelink.html', {"id_time":id_time, "id_moneda":id_moneda, "datos_completos":datos_completos, 'datos_finales':datos_finales, "datos_registro":datos_registro, "fechas":fechas, "datos_finales_2":datos_finales_2})
 
-def estudioindice(request, fecha_1, fecha_2):
+def estudioindice(request, fecha1, fecha2):
 
-    fecha_1 = datetime.date(year = int(fecha_i[0:4]), month=int(fecha_i[4:6]), day=int(fecha_i[6:8]))
-    fecha_2= datetime.date(year = int(fecha_f[0:4]), month=int(fecha_f[4:6]), day=int(fecha_f[6:8]))
+    fecha_1 = datetime.date(year = int(fecha1[0:4]), month=int(fecha1[4:6]), day=int(fecha1[6:8]))
+    fecha_2= datetime.date(year = int(fecha2[0:4]), month=int(fecha2[4:6]), day=int(fecha2[6:8]))
 
     registro_2 = RegistroAlmacenero.objects.filter(fecha= fecha_2)
-    registro_1 = RegistroAlmacenero.objects.filter(fecha= fecha_2)
+    registro_1 = RegistroAlmacenero.objects.filter(fecha= fecha_1)
 
     proyectos_agregados = []
     proyectos_eliminados = []
@@ -2035,6 +2035,8 @@ def estudioindice(request, fecha_1, fecha_2):
                 ingresos_diferencia.append((r.proyecto, (r.ingreso_ventas/r_aux.ingreso_ventas - 1)))
         except:
             proyectos_agregados.append(r.proyecto)
+
+    print(ingresos_diferencia)
 
     return render(request, 'estudio_indice.html')
 

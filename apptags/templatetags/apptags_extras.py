@@ -22,6 +22,20 @@ def date_informe(fecha_informe):
 
         return 0
 
+@register.filter('logo')
+def logo(identificacion):
+
+    try:
+
+        usuario = datosusuario.objects.get(identificacion = identificacion)
+
+        return usuario.imagenlogo.url
+
+
+    except:
+
+        return "{% static 'img/avatar.png' %}"
+
 @register.filter('has_group')
 def has_group(user, group_name):
     """

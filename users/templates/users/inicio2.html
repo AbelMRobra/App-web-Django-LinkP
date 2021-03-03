@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="extensions/sticky-header/bootstrap-table-sticky-header.css">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <link rel="shortcut icon" href="{% static 'img/icolinkp.ico' %}" />
+  <link rel="shortcut icon" href="{% static 'img/LinkIco21.ico' %}" />
 
   <!-- Hojas de estilos AdminPro -->
   <!--  -->
@@ -81,16 +81,16 @@
             <!-- Logo icon --><b>
               <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
               <!-- Dark Logo icon -->
-              <img src="{% static 'img/blockchain.png' %}" style="max-width: 40px;" alt="homepage" class="dark-logo" />
+              <img src="{% static 'img/IconoP.png' %}" style="max-width: 55px; vertical-align: bottom;" alt="homepage" class="dark-logo" />
               <!-- Light Logo icon -->
-              <img src="{% static 'img/blockchain.png' %}" style="max-width: 40px;" alt="homepage" class="light-logo" />
+              <img src="{% static 'img/IconoP.png' %}" style="max-width: 55px; vertical-align: bottom;" alt="homepage" class="light-logo" />
             </b>
             <!--End Logo icon -->
             <!-- Logo text --><span>
               <!-- dark Logo text -->
-              <img src="{% static 'img/logolinkp2.png' %}" style="max-width: 120px;" alt="homepage" class="dark-logo" />
+              <img src="{% static 'img/Linkp.png' %}" style="max-width: 80px; vertical-align: bottom;" alt="homepage" class="dark-logo" />
               <!-- Light Logo text -->
-              <img src="{% static 'img/logolinkp2.png' %}" style="max-width: 120px;" class="light-logo"
+              <img src="{% static 'img/Linkp.png' %}" style="max-width: 80px; vertical-align: bottom;" class="light-logo"
                 alt="homepage" />
             </span>
           </a>
@@ -130,16 +130,8 @@
 
             <li class="user-profile">
 
-              {% if datos_logo %}
               <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><img
-                  src="{{datos_logo.imagenlogo.url}}" alt="user" /><span class="hide-menu">{{user.username}}</span></a>
-
-              {% else %}
-
-              <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><span
-                  class="hide-menu">{{user.username}}</span></a>
-
-              {% endif %}
+                  src="{{ request.user.username|logo }}" alt="user" /><span class="hide-menu">{{user.username}}</span></a>
 
               <ul aria-expanded="false" class="collapse">
                 <li><a href="/guia">Mi perfil</a></li>

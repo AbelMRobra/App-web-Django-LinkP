@@ -1457,60 +1457,8 @@ def pricing(request, id_proyecto):
     otros_datos.append((m2_totales, cantidad, departamentos, cocheras, promedio_contado, promedio_financiado))
 
     datos_unidades = datos_tabla_unidad
-    
-    #Aqui empieza el filtro
-
-    if request.method == 'POST':
-
-        palabra_buscar = request.POST.items()
-
-        datos_viejos = datos_unidades
-
-        datos = []   
-
-        for i in palabra_buscar:
-
-            if i[0] == "palabra":
-        
-                palabra_buscar = i[1]
-
-        if str(palabra_buscar) == "":
-
-            datos = datos_viejos
-
-        else:
-        
-            for i in datos_viejos:
-
-                palabra =(str(palabra_buscar))
-
-                lista_palabra = palabra.split()
-
-                buscar = (str(i[0].tipo)+str(i[0].asig)+str(i[0].piso_unidad)+str(i[0].nombre_unidad)+str(i[0].estado)+str(i[0].tipologia))
-
-                contador = 0
-
-                for palabra in lista_palabra:
-
-                    contador2 = 0
-
-                    if palabra.lower() in buscar.lower():
-  
-                        contador += 1
-
-                if contador == len(lista_palabra):
-
-                    datos.append(i)
-
-        datos_unidades = datos
-    
-    #Aqui termina el filtro
 
     anticipo = anticipo*100
-
-
-    datos_unidades.sort(key=lambda datos_unidades: datos_unidades[3], reverse=False)
-
 
     datos = {"proyecto":proyecto, "datos":datos, "mensaje":mensaje, "datos_unidades":datos_unidades, "otros_datos":otros_datos, "anticipo":anticipo, "meses":meses}
 
