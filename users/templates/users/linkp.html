@@ -1,0 +1,53 @@
+{% extends "users/inicio2.html" %}
+
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+
+<div class="container-fluid r-aside">
+
+    <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+            <h3 class="text-themecolor">Una pagina escondida</h3>
+        </div>
+
+
+    </div>
+</div>
+
+<div class="row ">
+    <div class="col-lg-4 col-xlg-3 col-md-5">
+    <div class="card">
+        <div class="card-body">
+            <center class="m-t-30"> <img src="{% static 'img/WhatsApp Image 2021-03-03 at 10.48.03 AM.jpeg' %}" class="img-circle" width="150" />
+                <h4 class="card-title m-t-10">Creador de Link-P</h4>
+                <h6 class="card-subtitle">Abel Maximiliano Robra</h6>
+                <div class="row text-center justify-content-md-center">
+                </div>
+            </center>
+        </div>
+    </div>
+</div>
+
+    <div class="col-lg-8 col-xlg-9 col-md-7">
+
+        <div class="m-t-20 row">
+            <div class="col-md-3 col-xs-12"><img src="{% static 'img/python-logo-4k-i6.jpg' %}" alt="user" class="img-responsive radius" /></div>
+            <div class="col-md-9 col-xs-12">
+                <h4 class="card-title" style="color: rgb(48, 177, 218 );">¿Por qué Python?</h4>
+                <p>Link-P es un software completamente realizado con python y el framework Django. Este lenguaje es uno de los mas usados en el mundo, tiene una gran comunidad y muchas bibliotecas para hacer de todo, pero lo mejor es que es el lenguaje mas usado para Machine Learning y Data Science en general, por eso lo elegi :P</p></div>
+        </div>
+
+        <div class="m-t-20 row">
+            <div class="col-md-3 col-xs-12"><img src="{% static 'img/unnamed.jpg' %}" alt="user" class="img-responsive radius" /></div>
+            <div class="col-md-9 col-xs-12">
+                <h4 class="card-title" style="color: rgb(124, 34, 161 );">¿Sabés lo que es un Easter Egg?</h4>
+                <p>Todo programa es una obra de arte, y es una tradición esconder pequeños lugares, mensajes o recompensas por los soft. Y como descubriste esta pagina ganaste el logro <b style="color: darkmagenta;">Curioso</b> (siempre y cuando seas usuario), sigue buscando que hay mas que encontrar ..</p></div>
+        </div>
+    </div>
+</div>
+       
+
+
+{% endblock %}

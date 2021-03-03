@@ -234,4 +234,16 @@ class Acuerdos(models.Model):
 
     def __str__(self):
         return self.tema
+
+class Logros(models.Model):
+    usuario = models.ForeignKey(datosusuario, on_delete=models.CASCADE, verbose_name="Responsable", blank=True, null=True)
+    nombre = models.CharField(max_length=400, verbose_name="Nombre del logro")
+    descrip = models.CharField(max_length=400, verbose_name="Descripción")
+
+    class Meta:
+        verbose_name="Logro"
+        verbose_name_plural="Logros"
+
+    def __str__(self):
+        return self.nombre
     

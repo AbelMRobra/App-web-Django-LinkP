@@ -36,10 +36,13 @@
 
                 <div class="d-flex">
                     <div>
-                        <h4 class="card-title"><span class="lstick"></span><a type="button" data-toggle="modal"
+                        <h4 class="card-title"><span class="lstick"></span>
+                            {% if informes_data.fecha|date_informe %}
+                            <a type="button" data-toggle="modal"
                                 data-target="#ModalEscribir" name="subir_item" value="{{informes_data.id}}"><i
                                     class="fa fa-pencil-square-o fa-lg" aria-hidden="true"
-                                    style="margin-right: 15px;"></i></a>Detalle del informe</h4>
+                                    style="margin-right: 15px;"></i></a>
+                            {% endif %} Detalle del informe</h4>
                         <h6 class="text-muted">Información relevante sucedido durante el mes</h6>
                     </div>
 
@@ -213,6 +216,7 @@
                                     <div class="label label-table label-info">Espera</div>
                                     {% endif %}
                                 </td>
+                                {% if informes_data.fecha|date_informe %}
                                 <td style="min-width: 200px; text-align: center;">
                                     <form method="POST">
                                         {% csrf_token %}
@@ -225,6 +229,7 @@
                                         </button>
                                     </form>
                                 </td>
+                                {% endif %}
                             </tr>
                             {% endfor %}
 
@@ -248,13 +253,16 @@
 
                 <div class="d-flex">
                     <div>
-                        <h4 class="card-title"><span class="lstick"></span><a class="btn btn-secondary btn-outline"
+                        <h4 class="card-title"><span class="lstick"></span>
+                            
+                            {% if informes_data.fecha|date_informe %}
+                            <a class="btn btn-secondary btn-outline"
                                 type="button" data-toggle="modal" data-target="#ModalBitacora" name="subir_item">
 
                                 <img src="{% static 'img/iniciar-sesion.png' %}" alt=""
                                     style="max-width:20px; height:auto; vertical-align: middle;">
 
-                            </a> Bitacoras realizadas</h4>
+                            </a>{% endif %} Bitacoras realizadas</h4>
                         <!-- Modal Bitacoras -->
                         <div class="modal fade" id="ModalBitacora" tabindex="-1" role="dialog"
                             aria-labelledby="ModalTareaTitle" aria-hidden="true">
@@ -332,8 +340,10 @@
                             <tr>
                                 <td>{{b.proyecto.nombre}}</td>
                                 <td>{{b.fecha|date:"Y-m-d"}}</td>
-                                <td> <a href="#" style="color: blue;" data-toggle="modal"
-                                        data-target="#ModalBitacora{{b.id}}" name="Bitacora">{{b.titulo}}</a></td>
+                                <td>{% if informes_data.fecha|date_informe %} <a href="#" style="color: blue;" data-toggle="modal"
+                                        data-target="#ModalBitacora{{b.id}}" name="Bitacora">{{b.titulo}}</a>
+                                    
+                                    {% else %}{{b.titulo}}{% endif %}</td>
 
                                 <!-- Modal de las Bitacoras -->
                                 <div class="modal fade" id="ModalBitacora{{b.id}}" tabindex="-1" role="dialog"

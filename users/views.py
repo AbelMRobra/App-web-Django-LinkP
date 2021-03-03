@@ -10,7 +10,7 @@ from proyectos.models import Proyectos, Unidades
 from ventas.models import VentasRealizadas
 from compras.models import Compras, Comparativas
 from registro.models import RegistroValorProyecto
-from rrhh.models import datosusuario, mensajesgenerales, NotaDePedido, Vacaciones, MonedaLink, EntregaMoneda, Anuncios, Seguimiento, Minutas, Acuerdos, PremiosMonedas
+from rrhh.models import datosusuario, mensajesgenerales, NotaDePedido, Vacaciones, MonedaLink, EntregaMoneda, Anuncios, Seguimiento, Minutas, Acuerdos, PremiosMonedas, Logros
 import datetime
 from datetime import date
 import pandas as pd
@@ -24,6 +24,25 @@ from email import encoders
 from agenda import settings
 from django.contrib.auth import models
 from statistics import mode
+
+def linkp(request):
+
+    try:
+        user = datosusuario.objects.get(identificacion = request.user.username)
+
+        if len(Logros.objects.filter(usuario = user, nombre = "Curioso")) == 0:
+
+            b = Logros(
+                usuario = user,
+                nombre = "Curioso",
+                descrip = "Encontraste una pagina secreta ;)"
+            )
+
+            b.save()
+    except:
+        pass
+
+    return render(request, 'users/linkp.html')
 
 def monedalink(request):
 
@@ -345,7 +364,18 @@ def guia(request):
 
     monedas_recibidas = len(EntregaMoneda.objects.filter(usuario_recibe = usuario))
 
-    return render(request, "users/guia.html", {"rey":rey, "amor":amor, "datos":datos, "otros_datos":otros_datos, "recibidas":recibidas, "monedas_recibidas":monedas_recibidas, "monedas_disponibles":monedas_disponibles, "monedas_disponibles_canje":monedas_disponibles_canje, "list_usuarios":list_usuarios})
+
+    ########################################
+    # Logros
+    ########################################
+
+    try:
+        logros = Logros.objects.filter(usuario = datosusuario.objects.get(identificacion = request.user))
+    
+    except:
+        logros = 0
+
+    return render(request, "users/guia.html", {"logros":logros, "rey":rey, "amor":amor, "datos":datos, "otros_datos":otros_datos, "recibidas":recibidas, "monedas_recibidas":monedas_recibidas, "monedas_disponibles":monedas_disponibles, "monedas_disponibles_canje":monedas_disponibles_canje, "list_usuarios":list_usuarios})
 
 def canjemonedas(request):
 

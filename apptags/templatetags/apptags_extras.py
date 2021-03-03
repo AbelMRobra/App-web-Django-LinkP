@@ -7,6 +7,21 @@ from rrhh.models import datosusuario
 
 register = template.Library()
 
+@register.filter('date_informe')
+def date_informe(fecha_informe):
+
+    hoy = date.today()
+
+    fecha_cierre_informe = date(fecha_informe.year, (fecha_informe.month + 1), 4)
+
+    if fecha_cierre_informe > hoy:
+
+        return 1
+
+    else:
+
+        return 0
+
 @register.filter('has_group')
 def has_group(user, group_name):
     """
@@ -225,5 +240,7 @@ def thisweek(fecha_inicial_tw, fecha_final_tw):
 
         else:
             return 0
+
+
 
 
