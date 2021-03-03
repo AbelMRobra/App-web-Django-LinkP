@@ -54,36 +54,47 @@
                         <table class="table stylish-table">
 
                             <tbody>
-
+                                {% if datos.estado == "ACTIVO" %}
                                 <tr>
-                                    {% if datos.estado == "ACTIVO" %}
+                                    
                                     <td><img src="{% static 'img/cheque.png' %}" alt="" style="max-width:17px; height:auto; vertical-align: top; margin-top: 2px;"> <b>Staff</b>: <i>Eres un miembro de la empresa!</i></td>
-                                    {% endif %}
+                                    
                                 </tr>
-
+                                {% endif %}
+                                {% if datos.email %}
                                 <tr>
-                                    {% if datos.email %}
+                                    
                                     <td><img src="{% static 'img/email.png' %}" alt="" style="max-width:17px; height:auto; vertical-align: top; margin-top: 2px;"> <b>Email</b>: <i>Ahora podremos comunicarnos si notamos algo</i></td>
-                                    {% endif %}
+                                    
                                 </tr>
-
+                                {% endif %}
+                                {% if amor %}
                                 <tr>
-                                    {% if amor %}
+                                    
                                     <td><img src="{% static 'img/amor.png' %}" alt="" style="max-width:17px; height:auto; vertical-align: top; margin-top: 2px;"> <b>Dar</b>: <i>Tus compañeros valoran tu reconocimiento :)</i></td>
-                                    {% endif %}
+                                    
                                 </tr>
-
+                                {% endif %}
+                                {% if rey == 1 %}
                                 <tr>
-                                    {% if rey == 1 %}
+                                    
                                     <td><img src="{% static 'img/estrella.png' %}" alt="" style="max-width:17px; height:auto; vertical-align: top; margin-top: 2px;"> <b>Top #1</b>: <i>Eres el usuario con mas Linkcoins!</i></td>
-                                    {% endif %}
+                                    
                                 </tr>
-
+                                {% endif %}
+                                {% if rey == 2 %}
                                 <tr>
-                                    {% if rey == 2 %}
+                                    
                                     <td><img src="{% static 'img/estrella2.png' %}" alt="" style="max-width:17px; height:auto; vertical-align: top; margin-top: 2px;"> <b>Top #2</b>: <i>¿Qué haras con tantas Linkcoins?</i></td>
-                                    {% endif %}
+                                    
                                 </tr>
+                                {% endif %}
+
+                                {% if argentino %}
+                                <tr>                                   
+                                    <td><img src="{% static 'img/argentina.png' %}" alt="" style="max-width:17px; height:auto; vertical-align: top; margin-top: 2px;"> <b>Argentino</b>: <i>Boluda/o es una palabra 100% Argentina</i></td>
+                                </tr>
+                                {% endif %}
 
                                 {% if logros %}
                                 {% for i in logros %}

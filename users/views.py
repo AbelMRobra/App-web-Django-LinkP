@@ -364,6 +364,12 @@ def guia(request):
 
     monedas_recibidas = len(EntregaMoneda.objects.filter(usuario_recibe = usuario))
 
+    ########################################
+    # Logros Argentino
+    ########################################
+
+    argentino = len(EntregaMoneda.objects.filter(moneda__usuario_portador__identificacion = request.user.username, mensaje__icontains = "bolud"))
+
 
     ########################################
     # Logros
@@ -375,7 +381,7 @@ def guia(request):
     except:
         logros = 0
 
-    return render(request, "users/guia.html", {"logros":logros, "rey":rey, "amor":amor, "datos":datos, "otros_datos":otros_datos, "recibidas":recibidas, "monedas_recibidas":monedas_recibidas, "monedas_disponibles":monedas_disponibles, "monedas_disponibles_canje":monedas_disponibles_canje, "list_usuarios":list_usuarios})
+    return render(request, "users/guia.html", {"argentino":argentino, "logros":logros, "rey":rey, "amor":amor, "datos":datos, "otros_datos":otros_datos, "recibidas":recibidas, "monedas_recibidas":monedas_recibidas, "monedas_disponibles":monedas_disponibles, "monedas_disponibles_canje":monedas_disponibles_canje, "list_usuarios":list_usuarios})
 
 def canjemonedas(request):
 
