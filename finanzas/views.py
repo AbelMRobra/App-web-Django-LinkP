@@ -2012,6 +2012,32 @@ def indicelink(request, id_moneda, id_time):
 
     return render(request, 'indicelink.html', {"id_time":id_time, "id_moneda":id_moneda, "datos_completos":datos_completos, 'datos_finales':datos_finales, "datos_registro":datos_registro, "fechas":fechas, "datos_finales_2":datos_finales_2})
 
+def estudioindice(request, fecha_1, fecha_2):
+
+    fecha_1 = datetime.date(year = int(fecha_i[0:4]), month=int(fecha_i[4:6]), day=int(fecha_i[6:8]))
+    fecha_2= datetime.date(year = int(fecha_f[0:4]), month=int(fecha_f[4:6]), day=int(fecha_f[6:8]))
+
+    registro_2 = RegistroAlmacenero.objects.filter(fecha= fecha_2)
+    registro_1 = RegistroAlmacenero.objects.filter(fecha= fecha_2)
+
+    proyectos_agregados = []
+    proyectos_eliminados = []
+
+    ingresos_diferencia = []
+
+    costos_diferencia = []
+
+    for r in registro_2:
+        try:
+            r_aux = RegistroAlmacenero.objects.filter(fecha= fecha_1, proyecto = r.proyecto)
+
+            if abs((r.ingreso_ventas-r_aux.ingreso_ventas)/r_aux.ingreso_ventas) > 0.03:
+                ingresos_diferencia.append((r.proyecto, (r.ingreso_ventas/r_aux.ingreso_ventas - 1)))
+        except:
+            proyectos_agregados.append(r.proyecto)
+
+    return render(request, 'estudio_indice.html')
+
 def indicelinkajustado(request):
 
     datos = Almacenero.objects.all()

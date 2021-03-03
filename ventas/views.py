@@ -987,7 +987,7 @@ def estmercado(request):
 
 def panelunidades(request):
 
-    datos = Unidades.objects.all()
+    datos = Unidades.objects.all().order_by("-orden")
 
     proyectos = []
 
@@ -2037,7 +2037,7 @@ def featuresproject(request, id_proj):
                         unidad = unidad)
                     feature_un.save()
 
-    unidades = Unidades.objects.filter(proyecto__id = id_proj).order_by("-orden")
+    unidades = Unidades.objects.filter(proyecto__id = id_proj).order_by("orden")
   
     features = FeaturesProjects.objects.filter(proyecto__id = id_proj)
 
