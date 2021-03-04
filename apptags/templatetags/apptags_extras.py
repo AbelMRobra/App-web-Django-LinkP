@@ -149,6 +149,16 @@ def fecha_inicio_planif(fecha_i, estado_i):
             return "122, 118, 117"
 
 @register.simple_tag
+def sp():
+
+    try:
+        aux = datosusuario.objects.get(identificacion = "SP").imagenlogo
+        return aux.url
+
+    except:
+        return "{% static 'img/avatar.png' %}"
+
+@register.simple_tag
 def gannt(fecha_gant, fecha_inicial, fecha_final):
 
     hoy = date.today()

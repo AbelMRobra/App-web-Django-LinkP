@@ -379,7 +379,7 @@ def guia(request):
         logros = Logros.objects.filter(usuario = datosusuario.objects.get(identificacion = request.user))
     
     except:
-        logros = 0
+        logros = 0  
 
     return render(request, "users/guia.html", {"argentino":argentino, "logros":logros, "rey":rey, "amor":amor, "datos":datos, "otros_datos":otros_datos, "recibidas":recibidas, "monedas_recibidas":monedas_recibidas, "monedas_disponibles":monedas_disponibles, "monedas_disponibles_canje":monedas_disponibles_canje, "list_usuarios":list_usuarios})
 
@@ -866,7 +866,20 @@ def inicio(request):
 
     minutas_cantidad = len(Acuerdos.objects.filter(responsable__identificacion = request.user.username, estado="NO CHECK"))
 
-    return render(request, "users/inicio2.html", {"minutas_cantidad":minutas_cantidad, "anuncios":anuncios, "monedas":monedas, "dias_funcionando":dias_funcionando, "cantidad_p":cantidad_p, "cantidad_m":cantidad_m, "datos_barras":barras, "datos_logo":datos_logo, "mensaje_oc":mensaje_oc, "mensajesdeldia":mensajesdeldia, "datos_mensajeria":datos_mensajeria, "lista_grupos":lista_grupos, "miembros":miembros})
+
+    ########################################
+    # OC observadas por SP
+    ########################################
+
+    sp_oc = []
+
+    aux_sp = len(Comparativas.objects.filter(creador = request.user.username, visto = "VISTO NO CONFORME"))
+    aux_sp_2 = Comparativas.objects.filter(creador = request.user.username, visto = "VISTO NO CONFORME").values_list("o_c")
+
+    sp_oc.append(aux_sp)
+    sp_oc.append(aux_sp_2)
+
+    return render(request, "users/inicio2.html", {"sp_oc":sp_oc, "minutas_cantidad":minutas_cantidad, "anuncios":anuncios, "monedas":monedas, "dias_funcionando":dias_funcionando, "cantidad_p":cantidad_p, "cantidad_m":cantidad_m, "datos_barras":barras, "datos_logo":datos_logo, "mensaje_oc":mensaje_oc, "mensajesdeldia":mensajesdeldia, "datos_mensajeria":datos_mensajeria, "lista_grupos":lista_grupos, "miembros":miembros})
 
 def welcome(request):
     # Si estamos identificados devolvemos la portada
