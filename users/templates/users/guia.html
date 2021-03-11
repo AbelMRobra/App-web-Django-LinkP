@@ -160,12 +160,13 @@
             <div class="input-group mb-3">
                         
                     <select name="usuario" class="custom-select" style="width: 300px;">
-
+                        {% if list_usuarios %}
                         {% for i in list_usuarios %}
     
                         <option value="{{i.id}}" selected> {{i.nombre}}</option>
     
                         {% endfor %}
+                        {% endif %}
     
                     </select>
             </div>
