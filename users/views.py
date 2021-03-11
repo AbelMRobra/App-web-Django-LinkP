@@ -307,7 +307,7 @@ def guia(request):
         ########################################
         # Calculo de monedas recibidas 
         ########################################
-        print("paso 4")
+  
         monedas_recibidas = len(EntregaMoneda.objects.filter(usuario_recibe = usuario))
         monedas_disponibles_canje = len(EntregaMoneda.objects.filter(usuario_recibe = usuario, moneda__activo = "NO"))
         recibidas_list = EntregaMoneda.objects.filter(usuario_recibe = usuario).values_list("mensaje", flat = True)
@@ -315,7 +315,7 @@ def guia(request):
         recibidas_list = list(set(recibidas_list))
 
         recibidas = []
-        print("paso 5")
+   
         for r in recibidas_list:
 
             data = EntregaMoneda.objects.filter(usuario_recibe = usuario, mensaje = r)
@@ -332,7 +332,7 @@ def guia(request):
         datos = 0
 
         otros_datos = 0
-        print("paso 6")
+ 
     except:
         recibidas = 0
         monedas_recibidas = 0
