@@ -292,6 +292,7 @@ def guia(request):
 
         rey_l = EntregaMoneda.objects.all().values_list("usuario_recibe", flat = True)
         print("Paso 3")
+        print(int(mode(rey_l)))
         if int(usuario.id) == int(mode(rey_l)):
             rey = 1
             
