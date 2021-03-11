@@ -212,6 +212,7 @@
                 </tr>
             </thead>
             <tbody>
+                {% if recibidas %}
                 {% for i in recibidas %}
                 <tr>
                     <td style="text-align: left;"><img src="{% usuario i.2 %}" class="rounded" style="width: 40px;"
@@ -221,6 +222,7 @@
                     <td style="width: 80%;"><b>Mensaje:</b> <i>"{{i.1}}"</i></td>
                 </tr>
                 {% endfor %}
+                {% endif %}
 
             </tbody>
         </table>
