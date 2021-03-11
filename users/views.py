@@ -259,9 +259,9 @@ def guia(request):
             pass
 
     try:
-        print("Paso 1")
+
         list_usuarios = datosusuario.objects.all().exclude(identificacion = request.user).order_by("identificacion").exclude(estado = "NO ACTIVO")
-        print("Paso 2")
+
         ########################################
         # Calculo de monedas disponibles para dar
         ########################################
@@ -285,21 +285,21 @@ def guia(request):
             amor = 0
         else:
             amor = 1
-        print("Paso 3")
+
         ########################################
         # Premio al puesto numero 1 y 2
         ########################################
 
-        rey_l = EntregaMoneda.objects.all().values_list("usuario_recibe")
+        rey_l = EntregaMoneda.objects.all().values_list("usuario_recibe", flat = True)
 
-        if int(usuario.id) == int(mode(rey_l)[0]):
+        if int(usuario.id) == int(mode(rey_l)):
             rey = 1
             
-        rey_2 = EntregaMoneda.objects.all().values_list("usuario_recibe").exclude(usuario_recibe__id = int(mode(rey_l)[0]))
+        rey_2 = EntregaMoneda.objects.all().values_list("usuario_recibe", flat = True).exclude(usuario_recibe__id = int(mode(rey_l)))
 
-        if int(usuario.id) == int(mode(rey_2)[0]):
+        if int(usuario.id) == int(mode(rey_2)):
             rey = 2
-        print("Paso 4")
+
         ########################################
         # Calculo de monedas recibidas 
         ########################################
