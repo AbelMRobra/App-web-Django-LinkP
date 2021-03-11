@@ -291,16 +291,20 @@ def guia(request):
         ########################################
 
         rey_l = EntregaMoneda.objects.all().values_list("usuario_recibe", flat = True)
-        print("Paso 3")
-        print(int(mode(rey_l)))
-        if int(usuario.id) == int(mode(rey_l)):
-            rey = 1
+        try:
+            if int(usuario.id) == int(mode(rey_l)):
+                rey = 1
+        except:
+            pass
             
         rey_2 = EntregaMoneda.objects.all().values_list("usuario_recibe", flat = True).exclude(usuario_recibe__id = int(mode(rey_l)))
 
-        if int(usuario.id) == int(mode(rey_2)):
-            rey = 2
-        print("Paso 4")
+        try:
+            if int(usuario.id) == int(mode(rey_2)):
+                rey = 2
+        except:
+            pass
+        
         ########################################
         # Calculo de monedas recibidas 
         ########################################
@@ -312,7 +316,7 @@ def guia(request):
         recibidas_list = list(set(recibidas_list))
 
         recibidas = []
-        print("Paso 5")
+
         for r in recibidas_list:
 
             data = EntregaMoneda.objects.filter(usuario_recibe = usuario, mensaje = r)
@@ -329,7 +333,7 @@ def guia(request):
         datos = 0
 
         otros_datos = 0
-        print("Paso 6")
+
     except:
         recibidas = 0
         monedas_recibidas = 0
