@@ -1583,8 +1583,7 @@ def ingresounidades(request, estado, proyecto):
 
     listado = []
 
-    datos_proyectos = datos = VentasRealizadas.objects.all().exclude(unidad__estado_iibb = "SI", unidad__estado_comision = "SI")
-
+    datos_proyectos = datos = VentasRealizadas.objects.all()
     for d in datos_proyectos:
 
         listado.append(d.proyecto)
@@ -1593,10 +1592,10 @@ def ingresounidades(request, estado, proyecto):
 
     if proyecto == "0":
         proyecto_marcado = "Proyecto"
-        datos = VentasRealizadas.objects.all()
+        datos = VentasRealizadas.objects.all().order_by("-unidad__orden")
     else:
         proyecto_marcado = Proyectos.objects.get(id = int(proyecto)).nombre
-        datos = VentasRealizadas.objects.filter(proyecto__id = int(proyecto))
+        datos = VentasRealizadas.objects.filter(proyecto__id = int(proyecto)).order_by("-unidad__orden")
     
     # -----------> Aqui empieza el filtro
 
