@@ -56,14 +56,10 @@
 
                         <tr>
                             <td>
-                                <a href="{% url 'Modificar analisis' i.0.codigo %}" class="btn" style="padding: 1px;">
-                                    <img src="{% static 'img/editar.png' %}" alt=""
-                                        style="max-width:15px; height:auto; vertical-align: top;">
-                                </a></a>
-                                <a href="#" class="btn" style="padding: 1px;">
-                                    <img src="{% static 'img/eliminar.png' %}" alt=""
-                                        style="max-width:15px; height:auto; vertical-align: top; ">
-                                </a></a> <a href="{% url 'Composición Analisis' i.0.codigo %}">{{i.0.nombre|lower|capfirst}}</a> </td>
+                                <a href="{% url 'Modificar analisis' i.0.codigo %}" class="fa fa-pencil-square-o " style="padding: 1px;">
+                                </a>
+                                <a href="#" class="fa fa-trash" style="padding: 1px;">
+                                </a><a href="{% url 'Composición Analisis' i.0.codigo %}">{{i.0.nombre|lower|capfirst}}</a> </td>
                             <td>{{i.0.unidad|lower|capfirst}}</td>
                             <td> <b>{{i.0.codigo}}</b> </td>                            
                             <td>${{i.1|floatformat:0|intcomma}}</td>

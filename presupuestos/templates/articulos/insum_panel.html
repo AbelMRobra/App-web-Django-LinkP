@@ -32,10 +32,8 @@
 
     <div style="margin: 2px; text-align: left;">
 
-        <a href="/presupuestos/insumcreate" class="btn btn-light">
-            <img src="{% static 'img/anadir.png' %}" alt=""
-                style="max-width:20px; height:auto; vertical-align: middle;">
-            <b>Añadir</b></a></a>
+        <a href="/presupuestos/insumcreate" class="fa fa-plus-circle">
+           <span style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif"><b>Añadir</b></span> </a>
 
     </div>
 
@@ -60,14 +58,10 @@
             <tr style="font-size: 12px;">
 
                 <td style="text-align: left;">
-                    <a href="{% url 'Editar_insumo' i.codigo %}" class="btn" style="padding: 1px;">
-                        <img src="{% static 'img/editar.png' %}" alt=""
-                            style="max-width:15px; height:auto; vertical-align: top;">
-                    </a></a>
-                    <a href="{% url 'Eliminar_insumo' i.codigo %}" class="btn" style="padding: 1px;">
-                        <img src="{% static 'img/eliminar.png' %}" alt=""
-                            style="max-width:15px; height:auto; vertical-align: top; ">
-                    </a></a>
+                    <a href="{% url 'Editar_insumo' i.codigo %}" class="fa fa-pencil-square-o fa-lg" style="padding: 1px;">
+                    </a>
+                    <a href="{% url 'Eliminar_insumo' i.codigo %}" class="fa fa-trash fa-lg" style="padding: 1px;">
+                    </a>
                     {{i.nombre|lower|capfirst}}
                 </td>
                 <td> <b>{{i.codigo}}</b> </td>

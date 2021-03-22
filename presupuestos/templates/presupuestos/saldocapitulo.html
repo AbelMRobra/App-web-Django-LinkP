@@ -1,4 +1,4 @@
-{% extends "users/inicio.html" %}
+{% extends "users/inicio2.html" %}
 
 {% load humanize %}
 
@@ -7,93 +7,129 @@
 
 {% block content %}
 
-<div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;">
 
-    <h3 style="color: rgb({{datos.proyecto.color}}); font-family: Arial, Helvetica, sans-serif;">Saldo del proyecto</h3>
-
-    
-    <div>
-
-        <img src="{{datos.proyecto.iamgen.url}}"  class="img-fluid" alt="..." style="max-width:200px;width:auto;height:auto; margin-top: 1rem;">
-
-
-
-    </div>
-
-    <h6 style="color: rgb({{datos.proyecto.color}}); font-family: Arial, Helvetica, sans-serif;  margin-top: 10px;">{{datos.proyecto.nombre}}</h6>
-
-    
-    <div style="text-align: center;">
-
-
-        <small style="font-family: Arial, Helvetica, sans-serif;"> <b>Modulo:</b> Presupuestos</small>
-      
-  
-  
-      </div>
-  
-     <b><hr class = "my-4" style="width: 75%; border-color: rgba({{datos.proyecto.color}}, 0.5) ;"></b>
-
-     <div style="text-align: center;">
-        <a href="{% url 'Explosión de insumos' id_proyecto=datos.proyecto.id %}" class="btn btn-dark">Explosión de insumos</a>          
-        
-    </div>
- 
- <b><hr class = "my-4" style="width: 100%; border-color: rgba({{datos.proyecto.color}}, 0.5) ;"></b>
-
-    <table class = "table table-hover" style="text-align: center; width: 100%;">
-        <thead>
-
-            <tr class = "table-dark">
-                <th scope = "row" style="vertical-align: middle;" class="priority-3">Nº</th>
-                <th scope = "row" style="vertical-align: middle; text-align: left;">CAPITULO</th>
-                <th scope = "row" style="vertical-align: middle;" class="priority-5">VALOR DEL CAPITULO</th>
-                <th scope = "row" style="vertical-align: middle;">SALDO</th>
-                <th scope = "row" style="vertical-align: middle;" class="priority-4">AVANCE</th>
-                <th scope = "row" style="vertical-align: middle;" class="priority-3">INC</th>                
-            </tr>
-        </thead>
-
-        <tbody>
-
-
-        {% for i in datos.datos %}
-
-            <tr class = "table-light">
-                <td style="width: 5%; color: rgb({{datos.proyecto.color}})" class="priority-3"><b>{{i.0}}</b></td>
-                <td style="width: 30%; text-align: left;"> <b><a href="{% url 'Articulos saldo de presupuesto' id_proyecto=datos.proyecto.id id_capitulo=i.1.id %}" style="color: black;">{{i.1}}</a></b></td>
-                <td style="width: 15%;" class="priority-5" > ${{i.2|floatformat:0|intcomma}} </td>
-                <td style="width: 15%;"> ${{i.3|floatformat:0|intcomma}} </td>
-                <td style="width: 15%;" class="priority-4"> {{i.4|floatformat:0|intcomma}}% </td>
-                <td style="width: 10%;" class="priority-3"> <b>{{i.5|floatformat:0|intcomma}}% </b> </td>                         
-            </tr>
-
-        {% endfor %}
-        </tbody>
-
-
-        </table>
-
-        <div style="text-align: center;">
-            <h6 style="color: rgb({{datos.proyecto.color}}); font-family: Arial, Helvetica, sans-serif;">Saldo del proyecto a la fecha: ${{datos.saldo|floatformat:0|intcomma}}</h6>
+<div class="container-fluid r-aside">
+    <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+            <h3 class="text-themecolor">Saldo del proyecto</h3>
         </div>
 
-        <div style="text-align: center; margin-top: 3%; margin-bottom: 2%;">
-            <a href="{% url 'Descarga Exp Cap' id_proyecto=datos.proyecto.id %}" class="btn btn-success">Excel de saldo por capitulos</a>          
-    
+        <div class="col-md-7 align-self-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+                <li class="breadcrumb-item">Saldo</li>
+            </ol>
         </div>
-    
-        <small style="font-family: Arial, Helvetica, sans-serif;"> <b>--Esta descarga puede durar algunos minutos--</b>   </small>
-
-        <div style="text-align: center; margin-top: 2rem;">
-
-            <p style="font-family: Arial, Helvetica, sans-serif;"> <small>-- Link<strong>P</strong> --</small> </p>
-
-    
-         </div>
-   
-                    
+    </div>
 </div>
- 
-    
+
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body row">
+                <div class="col-12 justify-content-center">
+
+                    <div class="row d-flex justify-content-center">
+                        <div class="col col-md-12 col-lg-12 text-center">
+
+                            <img src="{{datos.proyecto.iamgen.url}}" class="img-fluid" alt="..."
+                                style="max-width:200px;width:auto;height:auto; margin-top: 1rem;">
+
+                        </div>
+                        <div class="text-center my-3">
+                            <h6
+                                style="color: rgb({{datos.proyecto.color}}); font-family: Arial, Helvetica, sans-serif;  margin-top: 10px;">
+                                {{datos.proyecto.nombre}}</h6>
+
+                            <a href="{% url 'Explosión de insumos' id_proyecto=datos.proyecto.id %}"
+                                class="btn btn-info">Explosión de
+                                insumos</a>
+
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+
+                        <table id="example" class="table table-striped table-bordered" style="width:100%">
+
+                            <thead>
+                                <tr>
+                                    <th>Nº</th>
+                                    <th>Capitulo</th>
+                                    <th>Valor del capitulo</th>
+                                    <th>Saldo</th>
+                                    <th>Avance</th>
+                                    <th>Inc.</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                {% for i in datos.datos %}
+
+                                <tr>
+                                    <td style="width: 30px; color: rgb({{datos.proyecto.color}})">
+                                        <b>{{i.0}}</b>
+                                    </td>
+                                    <td> <b><a
+                                                href="{% url 'Articulos saldo de presupuesto' id_proyecto=datos.proyecto.id id_capitulo=i.1.id %}">{{i.1|lower|capfirst}}</a></b>
+                                    </td>
+                                    <td> ${{i.2|floatformat:0|intcomma}} </td>
+                                    <td> ${{i.3|floatformat:0|intcomma}} </td>
+                                    <td> {{i.4|floatformat:0|intcomma}}% </td>
+                                    <td> <b>{{i.5|floatformat:0|intcomma}}% </b>
+                                    </td>
+                                </tr>
+
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+
+
+                    <div style="text-align: center;">
+                        <h6 style="color: rgb({{datos.proyecto.color}})">
+                            Saldo del proyecto
+                            a la fecha: ${{datos.saldo|floatformat:0|intcomma}}</h6>
+                    </div>
+
+                    <div style="text-align: center; margin-top: 3%; margin-bottom: 2%;">
+                        <div>
+
+                            <a href="{% url 'Descarga Exp Cap' id_proyecto=datos.proyecto.id %}"
+                                class="btn btn-success">Excel de saldo por
+                                capitulos</a>
+                        </div>
+                        <div class="col mt-3">
+                            <small> <b>--Esta descarga puede durar
+                                    algunos minutos--</b>
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js" defer></script>
+<script src="https://cdn.datatables.net/1.10.23/js/dataTables.bootstrap4.min.js" defer></script>
+
+<script>
+    $(document).ready(function () {
+        $('#example').DataTable({
+            "paging": false,
+            "searching": false,
+            "ordering": false,
+            "info": false
+        });
+    });
+</script>
+
+
 {% endblock %}

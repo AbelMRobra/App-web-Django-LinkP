@@ -1,323 +1,293 @@
-{% extends "users/inicio.html" %}
-
-{% load humanize %}
+{% extends "users/inicio2.html" %}
 
 {% load static %}
+{% load humanize %}
 
 {% block content %}
 
-<div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;">
+<div class="container-fluid r-aside">
+    <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+            <h3 class="text-themecolor">Orden de servicio</h3>
+        </div>
 
-
-
-    {% if datos.tipo == "NP" %}
-
-    <h3 style="text-align: center; color: rgb({{datos.proyecto.color}}); font-family: Arial, Helvetica, sans-serif;">Nota de pedido</h3>
-
-    {% else %}
-
-
-    <h3 style="text-align: center; color: rgb({{datos.proyecto.color}}); font-family: Arial, Helvetica, sans-serif;">Orden de servicio</h3>
-
-
-    {% endif %}
-    <div>
-
-        <img src="{{datos.proyecto.iamgen.url}}"  class="img-fluid" alt="..." style="max-width:200px;width:auto;height:auto; margin-top: 1rem; margin-bottom: 10px;">
-  
-
-
+        <div class="col-md-7 align-self-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+                <li class="breadcrumb-item">Orden de servicio</li>
+            </ol>
+        </div>
     </div>
-
-    <h6 style="text-align: center; color: rgb({{datos.proyecto.color}}); font-family: Arial, Helvetica, sans-serif;">{{datos.proyecto.nombre}}</h6>
-
-    
-
-    <div style="text-align: center;">
-
-
-        <small style="font-family: Arial, Helvetica, sans-serif;"> <b>Modulo:</b> Comunicación</small>
-      
-  
-  
-      </div>
-    
-     <b><hr class = "my-4" style="width: 100%; border-color: rgba({{datos.proyecto.color}}, 0.5;"></b>
-
-
-
-     <div style="text-align: left;">
-
-        <h6>Información general:</h6>
-
-        <div>
-            <small> <b>Nº: </b> {{datos.numero}}</small>
-        </div>
-        <div>
-            <small> <b>REFERENCIA: </b>{{datos.titulo}}</small>
-        </div>
-        <div>
-            <small> <b>CREADOR: </b>{{datos.creador}}</small>
-        </div>
-        <div>
-            <small> <b>DESTINATARIO: </b>{{datos.destinatario}}</small>
-        </div>
-        <div>
-            <small> <b>SE COPIA A: </b>{{datos.copia}}</small>
-        </div>
-
-        {% if datos.visto %}
-        <div>
-            <small> <b>FIRMADO POR: </b>{{datos.visto}}</small>
-        </div>
-
-        {% else %}
-
-        <div>
-            <small> <b>FIRMADO POR: </b>Aun nadie a firmado!</small>
-        </div>
-
-
-        {% endif %}
-
-        <div>
-            <small> <b>FECHA DE CREACIÓN: </b>{{datos.fecha_creacion}}</small>
-        </div>
-
-
-        <div>
-            <small> <b>ULTIMA ACTUALZIACIÓN: </b>{{datos.fecha_actualiacion}}</small>
-        </div>
-        <div>
-            <small> <b>FECHA REQUERIDA: </b>{{datos.fecha_requerida}}</small>
-        </div>
-
-        <div>
-
-            {%if datos.creador == user.username %}
-            <a href="{% url 'Editar correspondencia' datos.id %}" class="btn btn-sm btn-light"><img src="{% static 'img/documento.png' %}" alt="" style="max-width:20px; height:auto;"></a>
-            {% endif %}
-
-
-            {% if user.username in datos.copia or user.username in datos.destinatario or datos.creador == user.username %}
-            
-
-            <button type="button" class="btn btn-sm btn-light" data-toggle="modal" data-target="#exampleModalCenter" style="border-radius: 0.6;">
-                <img src="{% static 'img/charlar.png' %}" alt="" style="max-width:20px; height:auto;">
-              </button>
-
-  
-            {% endif %}
-
-            <!-- Modal -->
-    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLongTitle">Escribe un comentario!</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-
-                <form action="" method="POST">
-
-                    {% csrf_token %}
-        
-                    <input class="col-form-label col-form-label-lg" type="text" placeholder="Escriba aqui ..." id="inputLarge" name="COMENTARIO" style="margin: 5px; width: 50%;">
-             
-        
-                </form>
-              </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-       
-            </div>
-          </div>
-        </div>
-      </div>
-        
-        </div>
-
-
-     </div>
-
-     <b><hr class = "my-4" style="width: 100%; border-color: rgba({{datos.proyecto.color}}, 0.5;"></b>
-
-     <div style="display: inline-block; max-width: 300px;  margin: 20px;">
-
-        <h6>Envio de documentación:
-
-            {% if datos.envio_documentacion == "SI" %}
-            
-            
-            <small style="color: rgb(186, 55, 39);"> SI</small>
-
-            {% else %}
-
-            <small> NO</small>
-
-            {% endif %}
-        
-        
-        
-        </h6>
-
-    </div>
-
-    <div style="display: inline-block; max-width: 300px; margin: 20px;">
-
-
-        <h6>Cambio de proyecto:
-
-            {% if datos.cambio_proyecto == "SI" %}
-            
-            
-            <small style="color: rgb(186, 55, 39);"> SI</small>
-
-            {% else %}
-
-            <small> NO</small>
-
-            {% endif %}
-        
-        
-        
-        </h6>
-    
-    
-    
-    </div>
-
-
-    <div style="display: inline-block; max-width: 300px;  margin: 20px;">
-
-
-        <h6>Comunicación general:
-
-            {% if datos.comunicacion_general == "SI" %}
-            
-            
-            <small style="color: rgb(186, 55, 39);"> SI</small>
-
-            {% else %}
-
-            <small> NO</small>
-
-            {% endif %}
-        
-        
-        
-        </h6>
-
-    
-    
-    
-    </div>
-
-        
-
-     <b><hr class = "my-4" style="width: 100%; border-color: rgba({{datos.proyecto.color}}, 0.5;"></b>
-
-     <div style="text-align: justify;">
-
-        {% if datos.adjuntos %}
-
-        <div style="text-align: right;">
-
-            <a href="{{ datos.adjuntos.url }}">
-
-                <img src="{% static 'img/archivo-adjunto.png' %}" alt="" style="max-width:50px; height: auto; margin: 5px;"   >
-
-
-            </a>
-            
-        </div>
-
-        {% endif %}
-
-        
-        <h6>Descripción:</h6>
-
-        <p style="white-space: pre-wrap;"> {{datos.descripcion}} </p>
-
-     </div>
-
-     
-
-
-     <b><hr class = "my-4" style="width: 100%; border-color: rgba({{datos.proyecto.color}}, 0.5;"></b>
-
-
-     {% if user.username in datos.copia or user.username in datos.destinatario %}
-
-
-     {% if user.username in datos.visto %}
-
-     <div style="text-align: right; margin: 20px;">
-
-        <Small>Ya firmaste esta correspondencia!</Small>
-    </div>
-
-     {% else %}
-
-     <div style="text-align: right; margin: 20px;">
-
-        <form action="" method="POST">
-
-
-            {% csrf_token %}
-
-            <button class="btn btn-success" type="submit"  name = "FIRMA" value="{{user.username}}"><span class="hint--left hint--success" aria-label="Este boton representa tu firma!">FIRMAR</span></button>
-    
-
-
-        </form>
-
-    </div>
-
-    {% endif %}
-
-    {% endif %}
-
-    {% if comentarios %}
-
-
-    {% for i in comentarios %}
-
-
-    <div style="text-align: left; margin-top: 10px; vertical-align: bottom;">
-    
-        <img src="{{i.usuario.imagenlogo.url}}"  class="img-fluid" alt="..." style="max-width: 40px; height:auto;">
-
-        <div style="display: inline-block; background-color: rgba(11, 32, 68); border-radius: 5px;">
-
-            <small style="margin: 5px; color: white;"> {{ i.comentario }}</small>
-
-        </div>
-         
-
-    </div>
-
-    {% endfor %}
-
-    {% endif %}
-
-
-
-
-
-
-    <div style="text-align: center;">
-        <p style="font-family: Arial, Helvetica, sans-serif;"> <small>-- Link<strong>P</strong> --</small> </p>
-
-     </div>
-        
-
-   
-                    
 </div>
- 
-    
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body row">
+                <div class="col-12 justify-content-center">
+
+                    <div class="row d-flex justify-content-center">
+                        <div class="col col-md-12 col-lg-12 text-center">
+
+                            <img src="{{datos.proyecto.iamgen.url}}" class="img-fluid" alt="..."
+                                style="max-width:200px;width:auto;height:auto; margin-top: 1rem; margin-bottom: 10px;">
+                        </div>
+                        <div class="text-center mt-3">
+                            {% if datos.tipo == "NP" %}
+
+                            <h3
+                                style="text-align: center; color: rgb({{datos.proyecto.color}}); font-family: Arial, Helvetica, sans-serif;">
+                                Nota de pedido</h3>
+
+                            {% else %}
+
+
+                            <h3
+                                style="text-align: center; color: rgb({{datos.proyecto.color}}); font-family: Arial, Helvetica, sans-serif;">
+                                Orden de servicio</h3>
+
+
+                            {% endif %}
+
+                            <h6
+                                style="text-align: center; color: rgb({{datos.proyecto.color}}); font-family: Arial, Helvetica, sans-serif;">
+                                {{datos.proyecto.nombre}}</h6>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="my-3">
+
+                            {%if datos.creador == user.username %}
+                            <a href="{% url 'Editar correspondencia' datos.id %}" class="fa fa-pencil-square-o fa-lg"></a>
+                            {% endif %}
+
+                            {% if user.username in datos.copia or user.username in datos.destinatario or datos.creador == user.username %}
+
+                            <button type="button" class="btn mb-1" data-toggle="modal"
+                                data-target="#exampleModalCenter"> <a href="#" class=" fa fa-comments-o fa-lg"></a>
+                            </button>
+
+                            {% endif %}
+
+                            {% if datos.adjuntos %}
+
+                                <a href="{{ datos.adjuntos.url }}" class=" fa fa-paperclip fa-lg"></a>
+                    
+
+                            {% endif %}
+
+
+                            <!-- Modal -->
+                            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+                                aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLongTitle">Escribe un
+                                                comentario!</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+
+                                            <form action="" method="POST">
+
+                                                {% csrf_token %}
+
+                                                <input class="col-form-label col-form-label-lg" type="text"
+                                                    placeholder="Escriba aqui ..." id="inputLarge" name="COMENTARIO"
+                                                    style="margin: 5px; width: 90%;">
+                                            </form>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-dismiss="modal">Close</button>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="text-align: left;">
+
+                            <h6>Información general:</h6>
+
+                            <div>
+                                <small> <b>Nº: </b> {{datos.numero}}</small>
+                            </div>
+                            <div>
+                                <small> <b>Referencia: </b>{{datos.titulo}}</small>
+                            </div>
+                            <div>
+                                <small> <b>Creador: </b>{{datos.creador}}</small>
+                            </div>
+                            <div>
+                                <small> <b>Destinatario: </b>{{datos.destinatario}}</small>
+                            </div>
+                            <div>
+                                <small> <b>Se copia a: </b>{{datos.copia}}</small>
+                            </div>
+
+                            {% if datos.visto %}
+                            <div>
+                                <small> <b>Firmado por: </b>{{datos.visto}}</small>
+                            </div>
+
+                            {% else %}
+
+                            <div>
+                                <small> <b>Firmado por: </b>Aun nadie a firmado!</small>
+                            </div>
+
+                            {% endif %}
+
+                            <div>
+                                <small> <b>Fecha de creacion: </b>{{datos.fecha_creacion}}</small>
+                            </div>
+
+                            <div>
+                                <small> <b>Ultima actualziacion: </b>{{datos.fecha_actualiacion}}</small>
+                            </div>
+                            <div>
+                                <small> <b>Fecha requerida: </b>{{datos.fecha_requerida}}</small>
+                            </div>
+                        </div>
+
+                        <b>
+                            <hr class="my-4" style="width: 100%; border-color: rgba({{datos.proyecto.color}}, 0.5;">
+                        </b>
+
+                        <div class="row d-flex justify-content-between">
+                            <div class="col col-md-4 col-lg-4">
+
+                                <h6>Envio de documentación:
+
+                                    {% if datos.envio_documentacion == "SI" %}
+
+                                    <small style="color: rgb(186, 55, 39);"> SI</small>
+
+                                    {% else %}
+
+                                    <small> NO</small>
+
+                                    {% endif %}
+
+                                </h6>
+                            </div>
+
+                            <div class="col col-md-4 col-lg-4">
+
+                                <h6>Cambio de proyecto:
+
+                                    {% if datos.cambio_proyecto == "SI" %}
+
+                                    <small style="color: rgb(186, 55, 39);"> SI</small>
+
+                                    {% else %}
+
+                                    <small> NO</small>
+
+                                    {% endif %}
+
+                                </h6>
+                            </div>
+
+                            <div class="col col-md-4 col-lg-4">
+
+                                <h6>Comunicación general:
+
+                                    {% if datos.comunicacion_general == "SI" %}
+
+                                    <small style="color: rgb(186, 55, 39);"> SI</small>
+
+                                    {% else %}
+
+                                    <small> NO</small>
+
+                                    {% endif %}
+
+                                </h6>
+                            </div>
+                        </div>
+
+                        <b>
+                            <hr class="my-4" style="width: 100%; border-color: rgba({{datos.proyecto.color}}, 0.5;">
+                        </b>
+
+                        <div style="text-align: justify;">
+
+                                                      <h6>Descripción:</h6>
+
+                            <p style="white-space: pre-wrap;"> {{datos.descripcion}} </p>
+
+                        </div>
+
+                        <b>
+                            <hr class="my-4" style="width: 100%; border-color: rgba({{datos.proyecto.color}}, 0.5;">
+                        </b>
+
+
+                        {% if user.username in datos.copia or user.username in datos.destinatario %}
+
+
+                        {% if user.username in datos.visto %}
+
+                        <div style="text-align: right; margin: 20px;">
+
+                            <Small>Ya firmaste esta correspondencia!</Small>
+                        </div>
+
+                        {% else %}
+
+                        <div style="text-align: right; margin: 20px;">
+
+                            <form action="" method="POST">
+
+
+                                {% csrf_token %}
+
+                                <button class="btn btn-success" type="submit" name="FIRMA"
+                                    value="{{user.username}}"><span class="hint--left hint--success"
+                                        aria-label="Este boton representa tu firma!">FIRMAR</span></button>
+                            </form>
+
+                        </div>
+
+                        {% endif %}
+
+                        {% endif %}
+
+                        {% if comentarios %}
+
+                        {% for i in comentarios %}
+
+
+                        <div style="text-align: left; margin-top: 10px; vertical-align: bottom;">
+
+                            <img src="{{i.usuario.imagenlogo.url}}" class="img-fluid" alt="..."
+                                style="max-width: 40px; height:auto;">
+
+                            <div style="display: inline-block; background-color: rgba(11, 32, 68); border-radius: 5px;">
+
+                                <small style="margin: 5px; color: white;"> {{ i.comentario }}</small>
+
+                            </div>
+
+                        </div>
+
+                        {% endfor %}
+
+                        {% endif %}
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 {% endblock %}

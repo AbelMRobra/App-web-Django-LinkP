@@ -1,4 +1,4 @@
-{% extends "users/inicio.html" %}
+{% extends "users/inicio2.html" %}
 
 {% load humanize %}
 
@@ -6,91 +6,126 @@
 
 {% block content %}
 
-<div class = "jumbotron" style="background-color: white; margin-bottom: 0px;">
 
-    <h3 style="text-align: center; color: rgb({{datos.proyecto.color}}); font-family: Arial, Helvetica, sans-serif;">{{datos.capitulo.0.nombre}}</h3>
-
-    <h4 style="text-align: center; color: rgb({{datos.proyecto.color}}); font-family: Arial, Helvetica, sans-serif;">Articulos pendientes de compra</h4>
-
-    
-    <div style="text-align: center;">
-
-        <img src="{{datos.proyecto.iamgen.url}}"  class="img-fluid" alt="..." style="max-width:200px;width:auto;height:auto; margin-top: 1rem; margin-bottom: 10px;">
-
-    </div>
-
-    <h6 style="text-align: center; color: rgb({{datos.proyecto.color}}); font-family: Arial, Helvetica, sans-serif;"> {{datos.proyecto.nombre}}</h6>
-
-    <b><hr class = "my-4" style="width: 100%; border-color: #17B5B5 ;"></b>
-    
-    {% if datos.datos_saldo %}
- 
- 
-
-    <table class = "table table-hover" style="text-align: center;">
-        <thead>
-
-            <tr class = "table-dark">
-                <th scope = "row" style="vertical-align: middle; text-align: left;">ARTICULO</th>
-                <th scope = "row" style="vertical-align: middle;" > VALOR</th>
-                <th scope = "row" style="vertical-align: middle;">CANTIDAD</th>
-                <th scope = "row" style="vertical-align: middle;" class="priority-4">SALDO</th>
-                <th scope = "row" style="vertical-align: middle;" class="priority-5"> INC</th>                
-            </tr>
-        </thead>
-
-        <tbody>
-
-            
-
-
-        {% for i in datos.datos_saldo %}
-
-            <tr class = "table-light">
-                <td style="width: 40%; text-align: left;"><b>{{i.0.nombre}} ({{i.0.unidad}})</b></td>
-                <td style="width: 15%;" >${{i.0.valor|floatformat:0|intcomma}}</td>
-                <td style="width: 15%;">{{i.1|floatformat:0|intcomma}}</td>
-                <td style="width: 20%;" class="priority-4"> ${{i.2|floatformat:0|intcomma}} </td>
-                <td style="width: 10%;" class="priority-5"> <b>{{i.3|floatformat:0|intcomma}}% </b> </td>                         
-            </tr>
-
-        {% endfor %}
-        </tbody>
-
-
-        </table>
-
-        <div style="text-align: center;">
-
-            <h6 style="font-family: Arial, Helvetica, sans-serif;">El saldo del capitulo es ${{datos.saldo|floatformat:0|intcomma}}</h6>
-
+<div class="container-fluid r-aside">
+    <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+            <h3 class="text-themecolor">Saldo articulo</h3>
         </div>
 
-
-    {% else %}
-
-    <div style="text-align: center;">
-        <h6> No existen articulos pendientes en este capitulo! </h6>
-        <small> Si esto es un error o es necesario hacer modificaciones, envie un mail a <b>lg@linkinversiones.com.ar</b></small>
+        <div class="col-md-7 align-self-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+                <li class="breadcrumb-item">Saldo Art.</li>
+            </ol>
+        </div>
     </div>
-
-    <div style="text-align: center; margin-top: 2%; margin-bottom: 10%;">
-        <img src="{% static 'img/comunicaciones.png' %}" style="width: 10%; height: 10%;">
-    </div>
-
-
-
-    {% endif %}
-
-
-    <div style="text-align: center;">
-        
-        <p style="font-family: Arial, Helvetica, sans-serif;"> <small>-- Link<strong>P</strong> --</small> </p>
-
-     </div>
-   
-                    
 </div>
- 
-    
+
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body row">
+                <div class="col-12 justify-content-center">
+
+                    <div class="row d-flex justify-content-center">
+                        <div class="col col-md-12 col-lg-12 text-center">
+
+                            <h3 style="text-align: center; color: rgb({{datos.proyecto.color}})">
+                                {{datos.capitulo.0.nombre}}</h3>
+
+                            <h4 style="text-align: center; color: rgb({{datos.proyecto.color}})">Articulos pendientes de
+                                compra</h4>
+
+                            <img src="{{datos.proyecto.iamgen.url}}" class="img-fluid" alt="..."
+                                style="max-width:200px;width:auto;height:auto; margin-top: 1rem; margin-bottom: 10px;">
+
+                        </div>
+                        <div class="text-center my-3">
+
+                            <h6 style="text-align: center; color: rgb({{datos.proyecto.color}})">
+                                {{datos.proyecto.nombre}}</h6>
+
+                        </div>
+                        {% if datos.datos_saldo %}
+
+
+                        <div class="table-responsive">
+
+                            <table id="example" class="table table-striped table-bordered" style="width:100%">
+                                <thead>
+
+                                    <tr>
+                                        <th>Articulos</th>
+                                        <th>Valor</th>
+                                        <th>Cantidad</th>
+                                        <th>Saldo</th>
+                                        <th>Inc.</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+
+                                    {% for i in datos.datos_saldo %}
+                                    <tr>
+                                        <td><b>{{i.0.nombre|lower|capfirst}} ({{i.0.unidad}})</b>
+                                        </td>
+                                        <td>${{i.0.valor|floatformat:0|intcomma}}</td>
+                                        <td>{{i.1|floatformat:0|intcomma}}</td>
+                                        <td> ${{i.2|floatformat:0|intcomma}}
+                                        </td>
+                                        <td> <b>{{i.3|floatformat:0|intcomma}}%
+                                            </b> </td>
+                                    </tr>
+
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div style="text-align: center" class="my-3">
+
+                            <h6>El saldo del capitulo es
+                                ${{datos.saldo|floatformat:0|intcomma}}</h6>
+
+                        </div>
+
+                        {% else %}
+
+                        <div style="text-align: center;">
+                            <h6> No existen articulos pendientes en este capitulo! </h6>
+                            <small> Si esto es un error o es necesario hacer modificaciones, envie un mail a
+                                <b>lg@linkinversiones.com.ar</b></small>
+                        </div>
+
+                        <div style="text-align: center; margin-top: 2%; margin-bottom: 10%;">
+                            <img src="{% static 'img/comunicaciones.png' %}" style="width: 10%; height: 10%;">
+                        </div>
+
+
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js" defer></script>
+<script src="https://cdn.datatables.net/1.10.23/js/dataTables.bootstrap4.min.js" defer></script>
+
+<script>
+    $(document).ready(function () {
+        $('#example').DataTable({
+            "paging": false,
+            "searching": false,
+            "info": false
+        });
+    });
+</script>
+
+
 {% endblock %}

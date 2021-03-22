@@ -15,14 +15,18 @@
     <link rel="shortcut icon" href="{% static 'img/LinkIco21.ico' %}" />
     <title>Link-P</title>
     <!-- Bootstrap Core CSS -->
-    <link href="{% static 'adminpro/assets/plugins/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <!-- <link href="{% static 'adminpro/assets/plugins/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet"> -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
     <!-- page css -->
-    <link href="{% static 'adminpro/main/css/pages/login-register-lock.css' %}" rel="stylesheet">
+    <!-- <link href="{% static 'adminpro/main/css/pages/login-register-lock.css' %}" rel="stylesheet"> -->
     <!-- Custom CSS -->
-    <link href="{% static 'adminpro/main/css/style.css' %}" rel="stylesheet">
-    
+    <!-- <link href="{% static 'adminpro/main/css/style.css' %}" rel="stylesheet"> -->
+    <link href="{% static 'adminpro/main/css/spinners.css' %}" rel="stylesheet">
+    <link href="{% static 'css/login.css' %}" rel="stylesheet">
+
     <!-- You can change the theme colors from here -->
-    <link href="{% static 'adminpro/main/css/colors/default-dark.css' %}" id="theme" rel="stylesheet">
+    <!-- <link href="{% static 'adminpro/main/css/colors/default-dark.css' %}" id="theme" rel="stylesheet"> -->
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -31,98 +35,103 @@
 <![endif]-->
 </head>
 
-<body  class="card-no-border">
-    <!-- ============================================================== -->
-    <!-- Preloader - style you can find in spinners.css -->
-    <!-- ============================================================== -->
+<body class="card-no-border">
     <div class="preloader">
         <div class="loader">
             <div class="loader__figure"></div>
             <p class="loader__label">Link-P</p>
         </div>
     </div>
-    <!-- ============================================================== -->
-    <!-- Main wrapper - style you can find in pages.scss -->
-    <!-- ============================================================== -->
-    <section id="wrapper">
-        <div class="login-register" style="background-image:url({% static 'img/oficina.jpg' %});">
-            <div class="login-box card">
-                <div class="card-body">
-                    <form class="form-horizontal form-material" id="loginform" method="POST">
-                        {% csrf_token %}
-                        <h3 class="box-title m-b-20">Link-P</h3>
-                        <div class="form-group ">
-                            <div class="col-xs-12">
-                                <input class="form-control" type="text" required="" placeholder="Username" name="username" id="username"> </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-xs-12">
-                                <input class="form-control" type="password" required="" placeholder="Password" name="password"> </div>
-                        </div>
-                        <div class="form-group row">
-                            <div class="col-md-12">
-                                <div class="checkbox checkbox-info pull-left p-t-0">
-                                    <input id="checkbox-signup" type="checkbox" class="filled-in chk-col-light-blue" value="lsRememberMe">
-                                    <label for="checkbox-signup"> Remember me </label>
-                                </div> <a href="javascript:void(0)" id="to-recover" class="text-dark pull-right"></a> </div>
-                        </div>
-                        <div class="form-group text-center">
-                            <div class="col-xs-12 p-b-20">
-                                <input class="btn btn-block btn-lg btn-info btn-rounded" type="submit" onclick="lsRememberMe()" value="Login"></input>
+
+    <div class="d-flex justify-content-center"
+        style="background-image:url({% static 'img/oficina.jpg' %}); height: 100vh; opacity: 90%;">
+        <div class="row align-self-center bg-transparency rounded col-10 col-md-6 col-lg-3">
+            <form id="loginform" method="POST">
+                {% csrf_token %}
+                <div class="px-2 py-4">
+                    <div class="text-center mb-2">
+                        <img src="{% static 'img/Linkp.png' %}" alt="" style="width: 100px;">
+                    </div>
+                    <div class="my-3">
+                        <div class="my-1 ">
+                            <div class="col-12">
+                                <input class="" type="text" required="" placeholder="Usuario"
+                                    name="username" id="username">
                             </div>
                         </div>
+                        <div>
+                            <div>
+                                <input class="" type="password" required="" placeholder="Contraseña"
+                                    name="password">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <div>
+                            <div class="checkbox checkbox-info pull-left">
+                                <input id="checkbox-signup" type="checkbox" class="filled-in chk-col-light-blue"
+                                    value="lsRememberMe">
+                                <label for="checkbox-signup"> Recuerdame </label>
+                            </div> <a href="javascript:void(0)" id="to-recover" class="text-dark pull-right"></a>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <div>
+                            <input class="btn btn-block btn-primary btn-rounded" type="submit" onclick="lsRememberMe()"
+                                value="Acceder" style="width: 100px;"></input>
+                        </div>
+                    </div>
 
-                        {% block content %}
+                    {% block content %}
 
-                        {% endblock %}
-
-
-                    </form>
+                    {% endblock %}
 
                 </div>
-            </div>
+            </form>
         </div>
-    </section>
-    <!-- ============================================================== -->
-    <!-- End Wrapper -->
-    <!-- ============================================================== -->
-    <!-- ============================================================== -->
-    <!-- All Jquery -->
-    <!-- ============================================================== -->
-    <script src="{% static 'adminpro/assets/plugins/jquery/jquery.min.js' %}"></script>
-    <!-- Bootstrap tether Core JavaScript -->
-    <script src="{% static 'adminpro/assets/plugins/bootstrap/js/popper.min.js' %}"></script>
-    <script src="{% static 'adminpro/assets/plugins/bootstrap/js/bootstrap.min.js' %}"></script>
-    <!--Custom JavaScript -->
-    <script type="text/javascript">
-        $(function() {
-            $(".preloader").fadeOut();
-        });
-        $(function() {
-            $('[data-toggle="tooltip"]').tooltip()
-        });
-        // ============================================================== 
-        // Login and Recover Password 
-        // ============================================================== 
-        $('#to-recover').on("click", function() {
-            $("#loginform").slideUp();
-            $("#recoverform").fadeIn();
-        });
-    </script>
+    </div>
 
-    <script>
-        const rmCheck = document.getElementById("checkbox-signup"),
-            emailInput = document.getElementById("username");
+</body>
+<!-- ============================================================== -->
+<!-- End Wrapper -->
+<!-- ============================================================== -->
+<!-- ============================================================== -->
+<!-- All Jquery -->
+<!-- ============================================================== -->
+<script src="{% static 'adminpro/assets/plugins/jquery/jquery.min.js' %}"></script>
+<!-- Bootstrap tether Core JavaScript -->
+<script src="{% static 'adminpro/assets/plugins/bootstrap/js/popper.min.js' %}"></script>
+<script src="{% static 'adminpro/assets/plugins/bootstrap/js/bootstrap.min.js' %}"></script>
+<!--Custom JavaScript -->
+<script type="text/javascript">
+    $(function () {
+        $(".preloader").fadeOut();
+    });
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    });
+    // ============================================================== 
+    // Login and Recover Password 
+    // ============================================================== 
+    $('#to-recover').on("click", function () {
+        $("#loginform").slideUp();
+        $("#recoverform").fadeIn();
+    });
+</script>
 
-        if (localStorage.checkbox && localStorage.checkbox !== "") {
+<script>
+    const rmCheck = document.getElementById("checkbox-signup"),
+        emailInput = document.getElementById("username");
+
+    if (localStorage.checkbox && localStorage.checkbox !== "") {
         rmCheck.setAttribute("checked", "checked");
         emailInput.value = localStorage.username;
-        } else {
+    } else {
         rmCheck.removeAttribute("checked");
         emailInput.value = "";
-        }
+    }
 
-        function lsRememberMe() {
+    function lsRememberMe() {
         if (rmCheck.checked && emailInput.value !== "") {
             localStorage.username = emailInput.value;
             localStorage.checkbox = rmCheck.value;
@@ -130,9 +139,9 @@
             localStorage.username = "";
             localStorage.checkbox = "";
         }
-        }
-    </script>
-    
-</body>
+    }
+</script>
+
+
 
 </html>

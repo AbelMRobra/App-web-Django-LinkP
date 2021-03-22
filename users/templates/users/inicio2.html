@@ -81,16 +81,16 @@
             <!-- Logo icon --><b>
               <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
               <!-- Dark Logo icon -->
-              <img src="{% static 'img/IconoP.png' %}" style="max-width: 55px; vertical-align: middle;" alt="homepage" class="dark-logo" />
+              <img src="{% static 'img/IconoP.png' %}" style="max-width: 55px; vertical-align: bottom; margin-bottom: 12px;" alt="homepage" class="dark-logo" />
               <!-- Light Logo icon -->
-              <img src="{% static 'img/IconoP.png' %}" style="max-width: 55px; vertical-align: middle;" alt="homepage" class="light-logo" />
+              <img src="{% static 'img/IconoP.png' %}" style="max-width: 55px; vertical-align: bottom; margin-bottom: 12px;" alt="homepage" class="light-logo" />
             </b>
             <!--End Logo icon -->
             <!-- Logo text --><span>
               <!-- dark Logo text -->
-              <img src="{% static 'img/Linkp.png' %}" style="max-width: 80px; vertical-align: middle;" alt="homepage" class="dark-logo" />
+              <img src="{% static 'img/Linkp.png' %}" style="max-width: 80px; vertical-align: bottom; margin-bottom: 12px;" alt="homepage" class="dark-logo" />
               <!-- Light Logo text -->
-              <img src="{% static 'img/Linkp.png' %}" style="max-width: 80px; vertical-align: middle;" class="light-logo"
+              <img src="{% static 'img/Linkp.png' %}" style="max-width: 80px; vertical-align: bottom; margin-bottom: 12px;" class="light-logo"
                 alt="homepage" />
             </span>
           </a>
@@ -461,28 +461,6 @@
       <!-- ============================================================== -->
       <!-- Bread crumb and right sidebar toggle -->
       <!-- ============================================================== -->
-
-      {% if sp_oc.0 %}
-
-      <div class="container-fluid r-aside">
-
-        <div>
-          <h4 class="card-title"><span class="lstick"></span>
-            <img src="{% sp %}" alt=""
-              style="max-width:40px; height:auto; margin: 2px; vertical-align: middle; margin-right: 10px;">Hay O.C que necesito aclaración
-          </h4>
-        </div>
-
-        <div style="margin: 5px;">
-          <p>Por favor comunicate conmigo para aclararme las siguientes OC: {% for i in sp_oc.1 %}<b>{{i.0}},</b> {% endfor %} revisa si no hay mensajes escritos dentro de la comparativa</p>
-           
-
-        </div>
-
-      </div>
-
-      {% endif %}
-
 
       {% if minutas_cantidad %}
 

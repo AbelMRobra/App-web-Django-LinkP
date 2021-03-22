@@ -1,257 +1,281 @@
-{% extends "users/inicio.html" %}
+{% extends "users/inicio2.html" %}
 
 {% load static %}
 {% load humanize %}
 
 {% block content %}
 
-<div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;">
-
-    <h3 style="font-family: Arial, Helvetica, sans-serif;">Formulario de correspondencia</h3>
-    <small style="font-family: Arial, Helvetica, sans-serif;"><b>Modulo:</b> Comunicación </small>
-
-
-
-    <form  role="form"  enctype="multipart/form-data" action="" method="POST" id="upload-image-form" style="margin: 30px;"> 
-        {% csrf_token %}
-
-        <div style="margin: 5px">
-
-            <div style="display: inline-block; margin: 10px; width: 200px;">
-
-                <label for="corres"><h6>Tipo de correspondencia</h6></label>
-    
-            </div>
-
-
-            <div class="form-check" style="display: inline-block; margin: 5px;">
-                <label class="form-check-label">
-                  <input type="radio" class="form-check-input" name="corres" id="optionsRadios1" value="NP">
-                  NOTA DE PEDIDO
-                </label>
-              </div>
-              <div class="form-check" style="display: inline-block;  margin: 5px;">
-                <label class="form-check-label" style="display: inline-block;">
-                  <input type="radio" class="form-check-input" name="corres" id="optionsRadios2" value="OS" checked="">
-                  ORDEN DE SERVICIO
-                </label>
-              </div>
+<div class="container-fluid r-aside">
+    <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+            <h3 class="text-themecolor">Formulario de correspondencia</h3>
         </div>
 
-        <div style="margin: 5px">
-
-            <div style="display: inline-block; margin: 10px; width: 200px;">
-
-                <label for="proyecto"><h6>Proyecto</h6></label>
-    
-            </div>
-            
-            <div style="display: inline-block; margin: 10px; ">
-    
-                <input name="proyecto" type="search" class="form-control form-control" style="width: 300px;" list="proy">
-    
-            </div>
-
-
+        <div class="col-md-7 align-self-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+                <li class="breadcrumb-item">Formulario de correspondencia</li>
+            </ol>
         </div>
+    </div>
+</div>
 
-        
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body row">
+                <div class="col-12 justify-content-center">
 
-        <div style="margin: 5px">
+                    <div class="row d-flex justify-content-center">
+                        <div class="col col-md-12 col-lg-8">
+                            <div class="row">
+                                <div class="col bg-light border rounded p-3">
 
-            <div style="display: inline-block; margin: 10px; width: 200px;">
+                                    <form role="form" enctype="multipart/form-data" action="" method="POST"
+                                        id="upload-image-form">
+                                        {% csrf_token %}
 
-                <label for="titulo"><h6>Titulo</h6></label>
-    
+
+                                        <div>
+                                            <label for="corres">
+                                                <h6>Tipo de correspondencia</h6>
+                                            </label>
+                                        </div>
+
+                                        <div class="row d-flex justify-content-center my-3">
+                                            <div class="col col-md-8 col-lg-8">
+                                                <div class="row">
+                                                    <div class="form-check col-6">
+                                                        <input type="radio" class="custom-control-input" name="corres"
+                                                            id="optionsRadios1" value="NP">
+                                                        <label class="form-check-label" for="optionsRadios1">NOTA DE
+                                                            PEDIDO</label>
+                                                    </div>
+                                                    <div class="form-check col-6">
+                                                        <input type="radio" class="custom-control-input" name="corres"
+                                                            id="optionsRadios2" value="OS" checked="">
+                                                        <label class="form-check-label" for="optionsRadios2">ORDEN DE
+                                                            SERVICIO</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div>
+
+                                            <label for="proyecto">
+                                                <h6>Proyecto</h6>
+                                            </label>
+
+                                        </div>
+
+                                        <div class="row d-flex justify-content-center my-3">
+                                            <div class="col col-md-8 col-lg-8">
+                                                <input name="proyecto" type="search" class="form-control form-control"
+                                                    list="proy">
+
+                                            </div>
+                                        </div>
+
+                                        <div>
+                                            <label for="titulo">
+                                                <h6>Titulo</h6>
+                                            </label>
+                                        </div>
+
+                                        <div class="row d-flex justify-content-center my-3">
+                                            <div class="col col-md-8 col-lg-8">
+                                                <input name="titulo" type="text" class="form-control form-control"
+                                                    placeholder="Ejemplo: 'PROBLEMAS EN LOSA 3' ">
+
+                                            </div>
+                                        </div>
+
+                                        <div>
+                                            <label for="desti">
+                                                <h6>Destinatario</h6>
+                                            </label>
+                                        </div>
+
+                                        <div class="row d-flex justify-content-center my-3">
+                                            <div class="col col-md-8 col-lg-8">
+                                                <input name="desti" type="text" class="form-control form-control"
+                                                    placeholder="Ejemplo: AR">
+
+                                            </div>
+                                        </div>
+
+                                        <div>
+                                            <label for="copia">
+                                                <h6>En copia a</h6>
+                                            </label>
+
+                                        </div>
+
+                                        <div class="row d-flex justify-content-center my-3">
+                                            <div class="col col-md-8 col-lg-8">
+                                                <input name="copia" type="text" class="form-control form-control"
+                                                    placeholder="Ejemplo: AR - CP - JM">
+
+                                            </div>
+                                        </div>
+
+                                        <small style=" color: rgb(192, 63, 50 );">*Se debe completar exactamente como el
+                                            ejemplo
+                                            respetando las mayusculas</small>
+
+                                        <div>
+                                            <label for="fechareq">
+                                                <h6>Fecha requerida</h6>
+                                            </label>
+                                        </div>
+
+                                        <div class="row d-flex justify-content-center my-3">
+                                            <div class="col col-md-8 col-lg-8">
+                                                <input name="fechareq" type="text" class="form-control form-control"
+                                                    placeholder="Ejemplo: 16/03/2021 o URGENTE">
+
+                                            </div>
+
+
+                                        </div>
+
+                                        <div>
+                                            <label for="comugral">
+                                                <h6>¿Comunicación general?</h6>
+                                            </label>
+                                        </div>
+
+
+                                        <div class="row d-flex justify-content-center my-3">
+                                            <div class="col col-md-8 col-lg-8">
+                                                <div class="row">
+                                                    <div class="form-check col-6">
+                                                        <input type="radio" class="form-check-input" name="comugral"
+                                                            id="comugral1" value="SI">
+                                                        <label class="form-check-label" for="comugral1">
+                                                            SI
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check col-6">
+                                                        <input type="radio" class="form-check-input" name="comugral"
+                                                            id="comugral" value="NO" checked="">
+                                                        <label class="form-check-label" for="comugral">
+                                                            NO
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div>
+                                            <label for="camproy">
+                                                <h6>¿Cambia el proyecto?</h6>
+                                            </label>
+                                        </div>
+
+
+                                        <div class="row d-flex justify-content-center my-3">
+                                            <div class="col col-md-8 col-lg-8">
+                                                <div class="row">
+                                                    <div class="form-check col-6">
+                                                        <input type="radio" class="form-check-input" name="camproy"
+                                                            id="camproy1" value="SI">
+                                                        <label class="form-check-label" for="camproy1">
+                                                            SI
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check col-6">
+                                                        <input type="radio" class="form-check-input" name="camproy"
+                                                            id="camproy" value="NO" checked="">
+                                                        <label class="form-check-label" for="camproy">
+                                                            NO
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div>
+                                            <label for="envdoc">
+                                                <h6>¿Envia documentación?</h6>
+                                            </label>
+                                        </div>
+
+
+                                        <div class="row d-flex justify-content-center my-3">
+                                            <div class="col col-md-8 col-lg-8">
+                                                <div class="row">
+                                                    <div class="form-check col-6">
+                                                        <input type="radio" class="form-check-input" name="envdoc"
+                                                            id="envdoc1" value="SI">
+                                                        <label class="form-check-label" for="envdoc1">
+                                                            SI
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check col-6">
+                                                        <input type="radio" class="form-check-input" name="envdoc"
+                                                            id="envdoc" value="NO" checked="">
+                                                        <label class="form-check-label" for="envdoc">
+                                                            NO
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div>
+                                            <label for="archivo">
+                                                <h6>Adjunto </h6>
+                                            </label>
+                                        </div>
+                                        <div class="row d-flex justify-content-center my-3">
+                                            <div class="col col-md-8 col-lg-8">
+
+                                                <input type="file" class="form-control-file" name="archivo"
+                                                    aria-describedby="fileHelp">
+
+                                            </div>
+                                        </div>
+
+                                        <div>
+                                            <div>
+                                                <label for="descripcion">
+                                                    <h6>Descripción del problema</h6>
+                                                </label>
+                                            </div>
+                                            <textarea class="form-control" id="exampleTextarea" rows="3"
+                                                name="descripcion"></textarea>
+
+                                        </div>
+
+                                        <div class="row d-flex justify-content-center my-3">
+                                            <div class="col-lg-6 text-center">
+                                                <button type="submit" class="btn btn-primary">Subir</button>
+                                            </div>
+                                        </div>
+
+                                        {{ form.as_p }}
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <datalist id="proy">
+
+                        {% for i in proyectos %}
+
+                        <option value="{{ i.nombre }}">({{i.id}})</option>
+
+                        {% endfor %}
+
+                    </datalist>
+
+                </div>
             </div>
-            
-            <div style="display: inline-block; margin: 10px; ">
-    
-                <input name="titulo" type="text" class="form-control form-control" style="width: 300px;" placeholder="Ejemplo: 'PROBLEMAS EN LOSA 3' ">
-    
-            </div>
-
-
         </div>
-
-        <div style="margin: 5px">
-
-            <div style="display: inline-block; margin: 10px; width: 200px;">
-
-                <label for="desti"><h6>Destinatario</h6></label>
-    
-            </div>
-            
-            <div style="display: inline-block; margin: 10px; ">
-    
-                <input name="desti" type="text" class="form-control form-control" style="width: 300px;" placeholder="Ejemplo: AR">
-    
-            </div>
-
-
-        </div>
-
-
-        <div style="margin: 5px">
-
-            <div style="display: inline-block; margin: 10px; width: 200px;">
-
-                <label for="copia"><h6>En copia a</h6></label>
-    
-            </div>
-            
-            <div style="display: inline-block; margin: 10px; ">
-    
-                <input name="copia" type="text" class="form-control form-control" style="width: 300px;" placeholder="Ejemplo: AR - CP - JM">
-    
-            </div>
-
-        </div>
-
-        <small style=" color: rgb(192, 63, 50 );">*Se debe completar exactamente como el ejemplo respetando las mayusculas</small>
-
-
-        <div style="margin: 5px">
-
-            <div style="display: inline-block; margin: 10px; width: 200px;">
-
-                <label for="fechareq"><h6>Fecha requerida</h6></label>
-    
-            </div>
-            
-            <div style="display: inline-block; margin: 10px; ">
-    
-                <input name="fechareq" type="text" class="form-control form-control" style="width: 300px;" placeholder="Ejemplo: 16/03/2021 o URGENTE">
-    
-            </div>
-
-
-        </div>
-
-        <div style="margin: 5px">
-
-            <div style="display: inline-block; margin: 10px; width: 200px;">
-
-                <label for="comugral"><h6>¿Comunicación general?</h6></label>
-    
-            </div>
-
-
-            <div class="form-check" style="display: inline-block; margin: 5px;">
-                <label class="form-check-label">
-                  <input type="radio" class="form-check-input" name="comugral" id="optionsRadios1" value="SI">
-                  SI
-                </label>
-              </div>
-              <div class="form-check" style="display: inline-block;  margin: 5px;">
-                <label class="form-check-label" style="display: inline-block;">
-                  <input type="radio" class="form-check-input" name="comugral" id="optionsRadios2" value="NO" checked="">
-                  NO
-                </label>
-              </div>
-        </div>
-
-        <div style="margin: 5px">
-
-            <div style="display: inline-block; margin: 10px; width: 200px;">
-
-                <label for="camproy"><h6>¿Cambia el proyecto?</h6></label>
-    
-            </div>
-
-
-            <div class="form-check" style="display: inline-block; margin: 5px;">
-                <label class="form-check-label">
-                  <input type="radio" class="form-check-input" name="camproy" id="optionsRadios1" value="SI">
-                  SI
-                </label>
-              </div>
-              <div class="form-check" style="display: inline-block;  margin: 5px;">
-                <label class="form-check-label" style="display: inline-block;">
-                  <input type="radio" class="form-check-input" name="camproy" id="optionsRadios2" value="NO" checked="">
-                  NO
-                </label>
-              </div>
-        </div>
-
-        <div style="margin: 5px">
-
-            <div style="display: inline-block; margin: 10px; width: 200px;">
-
-                <label for="envdoc"><h6>¿Envia documentación?</h6></label>
-    
-            </div>
-
-
-            <div class="form-check" style="display: inline-block; margin: 5px;">
-                <label class="form-check-label">
-                  <input type="radio" class="form-check-input" name="envdoc" id="optionsRadios1" value="SI">
-                  SI
-                </label>
-              </div>
-              <div class="form-check" style="display: inline-block;  margin: 5px;">
-                <label class="form-check-label" style="display: inline-block;">
-                  <input type="radio" class="form-check-input" name="envdoc" id="optionsRadios2" value="NO" checked="">
-                  NO
-                </label>
-              </div>
-        </div>
-
-        <div style="margin: 5px">
-
-            <div style="display: inline-block; margin: 10px;; width: 200px;">
-
-                <label for="archivo"><h6>Adjunto </h6></label>
-    
-            </div>
-            
-            <div style="display: inline-block; margin: 10px; ">
-    
-                <input type="file" class="form-control-file" name="archivo" aria-describedby="fileHelp" >
-    
-            </div>
-
-
-        </div>
-
-        <div style="margin: 5px">
-
-            <div style="display: inline-block; margin: 10px; width: 300px;">
-
-                <label for="descripcion"><h6>Descripción del problema</h6></label>
-    
-            </div>
-            
-            <textarea class="form-control" id="exampleTextarea" rows="3" name="descripcion"></textarea>
-
-        </div>
-
-
-          <button type="submit" class="btn btn-primary">Subir</button>
-
-
-        {{ form.as_p }}
-    </form>
-
-    <datalist id="proy"> 
-
-        {% for i in proyectos %}
-        
-        <option value="{{ i.nombre }}">({{i.id}})</option>
-
-        {% endfor %}
-
-    </datalist>
-
-
-<div style="margin-top: 2rem;">
-    <p> <small>-- Link<strong>P</strong> --</small> </p>
-
- </div>
-    
-
-
-                
+    </div>
 </div>
 
 

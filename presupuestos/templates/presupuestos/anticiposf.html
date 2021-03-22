@@ -1,102 +1,123 @@
-{% extends "users/inicio.html" %}
+{% extends "users/inicio2.html" %}
 
 {% load static %}
 {% load humanize %}
 
 {% block content %}
 
-<div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;">
 
-    <h3 style=" color: rgb({{datos.proyecto.color}}) ;">Anticipos Financieros {{datos.proyecto}}</h3>
-
-    <img src="{{datos.proyecto.iamgen.url}}"  class="img-fluid" alt="..." style="max-width:20%;width:auto;height:auto; margin-top: 1rem;">
-  
-
-     <b><hr class = "my-4" style="width: 75%; border-color: rgba({{datos.proyecto.color}}, 0.5) ;"></b>
-
-
-    {% if datos.datos %} 
-
-    <form method="POST" style="text-align: center;">
-
-        {% csrf_token %}
-
-        <div style="display: inline-block; margin-left: 1rem;">
-
-            <label for="palabra"><h6>Buscar</h6></label>
-
-        </div>
-        
-        <div style="display: inline-block; margin-left: 1rem; ">
-
-            <input name="palabra" type="text" class="form-control form-control" placeholder="Buscar por palabra" list="art" style="width: 30rem;">
-
+<div class="container-fluid r-aside">
+    <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+            <h3 class="text-themecolor">Anticipos Financieros</h3>
         </div>
 
-        <div>
-            <button class="btn btn-dark" type="submit" style="margin-top: 1%;">Buscar</button>          
-        </div>       
-
-     </form>
-
-     <hr class = "my-4" style="width: 100%; border-color: rgba({{datos.proyecto.color}}, 0.5) ;"></b>
-
-    <div>
-
-        <table class = "table table-hover" style="text-align: center;">
-            <thead>
-    
-                <tr class = "table-dark">
-                    <th scope = "row" style="vertical-align: middle;">PROVEEDOR</th>
-                    <th scope = "row" style="vertical-align: middle;">DESCRPCIÓN</th>
-                    <th scope = "row" style="vertical-align: middle;">CONTACTO</th>                       
-                    <th scope = "row" style="vertical-align: middle;">MONDO ADELANTADO</th>           
-                </tr>
-            </thead>
-    
-            <tbody>
-  
-                {% for i in datos.datos %}
-    
-                <tr class = "table-light">
-                    <td style="width: 20%;"><b>{{i.0.name}}</b></td>                    
-                    <td style="width: 30%;"> {{i.0.descrip}}</td>
-                    <td style="width: 30%;"> {{i.0.phone}}</td>
-                    <td style="width: 20%;"> ${{i.1|floatformat:0|intcomma}}</td>                     
-                </tr>
-            </tbody>
-    
-                {% endfor %}
-    
-            </table>
-
+        <div class="col-md-7 align-self-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+                <li class="breadcrumb-item">Anticipos</li>
+            </ol>
+        </div>
     </div>
-
-    <div>
-        <h6 style=" color: rgb({{datos.proyecto.color}}) ;">Valor total en anticipos: ${{datos.valor_fdr|floatformat:0|intcomma}}</h6>
-    </div>
-
-
-     {% else %}
-     <div>
-        <h6> Este proyecto no tiene anticipos financieros </h6>
-        <small> Sigue asi</small>
-    </div>
-
-    <div style="margin-top: 2%; margin-bottom: 10%;">
-        <img src="{% static 'img/comunicaciones.png' %}" style="max-width:10%;width:auto;height:auto; margin-top: 1rem;">
-    </div>
-        
-    {% endif %}
-    <div style="margin-top: 2rem;">
-        <p> <small>-- Link<strong>P</strong> --</small> </p>
-
-     </div>
-        
-
-   
-                    
 </div>
- 
-    
+
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body row">
+                <div class="col-12 justify-content-center">
+
+                    <div class="row d-flex justify-content-center">
+                        <div class="col col-md-12 col-lg-12 text-center">
+
+                            <img src="{{datos.proyecto.iamgen.url}}" class="img-fluid" alt="..."
+                                style="max-width:200px;width:auto;height:auto; margin-top: 1rem;">
+
+                        </div>
+                        <div class="text-center my-3">
+                            <h6 style="color: rgb({{datos.proyecto.color}});  margin-top: 10px;">
+                                Anticipos Financieros {{datos.proyecto}}</h6>
+
+
+                        </div>
+                    </div>
+
+                    {% if datos.datos %}
+
+                    <div class="table-responsive">
+
+                        <table id="example" class="table table-striped table-bordered" style="width:100%">
+
+                            <thead>
+
+                                <tr>
+                                    <th>Proveedor</th>
+                                    <th>Descripcion</th>
+                                    <th>Contacto</th>
+                                    <th>Monto adelantado</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+
+                                {% for i in datos.datos %}
+
+                                <tr>
+                                    <td><b>{{i.0.name}}</b></td>
+                                    <td> {{i.0.descrip}}</td>
+                                    <td> {{i.0.phone}}</td>
+                                    <td> ${{i.1|floatformat:0|intcomma}}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+
+
+                        </table>
+
+                    </div>
+
+                    <div>
+                        <h6 style=" color: rgb({{datos.proyecto.color}}) ;">Valor total en anticipos:
+                            ${{datos.valor_fdr|floatformat:0|intcomma}}</h6>
+                    </div>
+
+
+                    {% else %}
+                    <div class="text-center">
+                        <h6> Este proyecto no tiene anticipos financieros </h6>
+                        <small> Sigue asi</small>
+                    </div>
+
+                    <div class="text-center"  style="margin-top: 2%; margin-bottom: 10%;">
+                        <img src="{% static 'img/comunicaciones.png' %}"
+                            style="max-width:10%;width:auto;height:auto; margin-top: 1rem;">
+                    </div>
+
+                    {% endif %}
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js" defer></script>
+<script src="https://cdn.datatables.net/1.10.23/js/dataTables.bootstrap4.min.js" defer></script>
+
+<script>
+    $(document).ready(function () {
+        $('#example').DataTable({
+            "paging": false,
+            "searching": false,
+            "ordering": false,
+            "info": false
+        });
+    });
+</script>
+
+
+
 {% endblock %}

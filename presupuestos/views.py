@@ -2414,28 +2414,16 @@ def Creditocapitulo(id_proyecto):
 
             if "SOLO MANO DE OBRA" in str(i.analisis.nombre):
 
-                computos = Computos.objects.filter(tipologia = i.vinculacion, proyecto = proyecto)
-
-                cantidad = 0
-
-                for r in computos:
-                    cantidad = cantidad + r.valor_vacio
+                cantidad = sum(np.array(Computos.objects.filter(tipologia = i.vinculacion, proyecto = proyecto).values_list("valor_vacio", flat = True)))
 
                 crudo_analisis.append((i.analisis, cantidad))
 
             else:
-
-                computos = Computos.objects.filter(tipologia = i.vinculacion, proyecto = proyecto)
-
-                cantidad = 0
-
-                for r in computos:
-                    cantidad = cantidad + r.valor_lleno
-
+                cantidad = sum(np.array(Computos.objects.filter(tipologia = i.vinculacion, proyecto = proyecto).values_list("valor_lleno", flat = True)))
+                
                 crudo_analisis.append((i.analisis, cantidad))
 
     crudo_articulos = []
-
 
     for c in crudo_analisis:
 
@@ -2464,10 +2452,9 @@ def Creditocapitulo(id_proyecto):
                 cantidad = cantidad + c[1]
         datos.append((i, cantidad))
 
-
     compras = Compras.objects.filter(proyecto = proyecto)
 
-    #Este auxiliar arma una cadena de texto de todos los articulos necesarios
+    # Este auxiliar arma una cadena de texto de todos los articulos necesarios
 
     comprado_aux = ""
 
@@ -2492,8 +2479,7 @@ def Creditocapitulo(id_proyecto):
         
             datos.append((i[0], i[1], comprado, cantidad_saldo, saldo ))
 
-    #Esta parte arma los articulos que no estan en el presupuesto, compara el nombre si esta adentro de la cadena auxiliar 
-
+    # Esta parte arma los articulos que no estan en el presupuesto, compara el nombre si esta adentro de la cadena auxiliar 
 
     for compra in compras:
         if str(compra.articulo.nombre) not in comprado_aux and compra.proyecto == proyecto and str(compra.articulo.nombre)!="FONDO DE REPARO ACT. UOCRA" and str(compra.articulo.nombre)!="ANTICIPO FINANCIERO ACT. UOCRA" :

@@ -1,212 +1,191 @@
-{% extends "users/inicio.html" %}
+{% extends "users/inicio2.html" %}
 
 {% load static %}
 {% load humanize %}
 
 {% block content %}
 
-<div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;">
-
-    <h3 style="font-family: Arial, Helvetica, sans-serif;">Correspondencia</h3>
-
-    <small style="font-family: Arial, Helvetica, sans-serif;"><b>Modulo:</b> Comunicación </small>
-
-     <b><hr class = "my-4" style="width: 100%;"></b>
-
-     <form method="POST" style="text-align: left;">
-
-        {% csrf_token %}
-
-        <div style="display: inline-block; margin-left: 1rem;">
-
-            <label for="palabra"><h6 style="font-family: Arial, Helvetica, sans-serif;">Buscar</h6></label>
-
+<div class="container-fluid r-aside">
+    <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+            <h3 class="text-themecolor">Correspondencia</h3>
         </div>
-        
-        <div style="display: inline-block; margin-left: 1rem; ">
 
-            <input name="palabra" type="text" class="form-control form-control" placeholder="Buscar por palabra" list="art" style="width: 250px;">
-
+        <div class="col-md-7 align-self-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+                <li class="breadcrumb-item">Correspondencia</li>
+            </ol>
         </div>
-       
-      
-
-     </form>
-
-    <b><hr class = "my-4" style="width: 100%;"></b>
-
-    {% if request.user.username != "HC" %}
-
-    <div style="text-align: left;">
-
-        <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
-            <button type="button" class="btn btn-primary">Proyecto</button>
-            <div class="btn-group" role="group">
-                <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
-                <div class="dropdown-menu" aria-labelledby="btnGroupDrop1" style="">
-
-
-                    <div style="margin: 2px;">
-    
-                        <a href="{% url 'Notas de pedido' '0' tipo %}" style="margin-top: 5px; color:  rgb({{i.color}})" >TODOS</a>
-    
-                    </div>
-
-                    {% for i in lista_proyectos %}
-    
-                    <div style="margin: 2px;">
-    
-                        <a href="{% url 'Notas de pedido' i.id tipo %}" style="margin-top: 5px; color:  rgb({{i.color}})" >{{i.nombre}}</a>
-    
-                    </div>
-
-                    {% endfor %}
-
-        
-                    
-                </div>
-            </div>
-            </div>
-
-        <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
-            <button type="button" class="btn btn-primary">Tipo</button>
-            <div class="btn-group" role="group">
-                <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
-                <div class="dropdown-menu" aria-labelledby="btnGroupDrop1" style="">
-
-                    <div style="margin: 2px;">
-    
-                        <a href="{% url 'Notas de pedido' id_proyecto '0' %}" style="margin-top: 5px;)" >TODO</a>
-    
-                    </div>
-
-    
-                    <div style="margin: 2px;">
-    
-                        <a href="{% url 'Notas de pedido' id_proyecto '1' %}" style="margin-top: 5px;)" >NOTAS DE PEDIDO</a>
-    
-                    </div>
-
-
-                    <div style="margin: 2px;">
-    
-                        <a href="{% url 'Notas de pedido' id_proyecto '2' %}" style="margin-top: 5px;)" >ORDENES DE SERVICIO</a>
-    
-                    </div>
-
-        
-                    
-                </div>
-            </div>
-            </div>
-    
-    
-        <div style="text-align: left; display: inline-block;">
-
-    
-            <a href= "{% url 'Crear correspondencia' %}" class="btn btn-outline-info" style="text-align: end; margin-top: 5px;" > <b>+</b> Nueva correspondencia</a>
-    
-        
-            </div>
-    
     </div>
-
-    {% endif %}
-
-
-    
-    
-    
-    
-
-    <div class = "tableconteinerabel">
-        <table class = "table table-hover" style="text-align: center; margin-top: 5px;" >
-            <thead>
-    
-                <tr class = "table-dark">
-                    <th scope = "row" style="vertical-align: middle;"> <small> <strong>TIPO</strong> </small> </th>
-                    <th scope = "row" style="vertical-align: middle;"> <small> <strong>Nº</strong> </small> </th>
-                    <th scope = "row" style="vertical-align: middle;"> <small> <strong>PROYECTO</strong> </small> </th>
-                    <th scope = "row" style="vertical-align: middle;"> <small> <strong>CREADOR</strong> </small> </th>
-                    <th scope = "row" style="vertical-align: middle;"><small> <strong>DESTINATARIO</strong> </small> </th>
-                    <th scope = "row" style="vertical-align: middle;"><small> <strong>TITULO</strong> </small> </th>                    
-                    <th scope = "row" style="vertical-align: middle;" class="priority-5"> <small> <strong>FECHA DE CREACIÓN</strong> </small></th>
-                    <th scope = "row" style="vertical-align: middle;"> <small> <strong>ADJUNTOS</strong> </small></th>
-                    <th scope = "row" style="vertical-align: middle;"> <small> <strong>FIRMA</strong> </small></th>
-                    
-                </tr>
-            </thead>
-    
-            <tbody>
-
-                
-               
-                {% for i in datos %}
-
-                <tr class = "table-light">
-                    <td style="width: 5%;"> <small> <strong>{{i.tipo}}</strong></small></td> 
-                    <td style="width: 5%;"> <small> <strong>{{i.numero}}</strong></small></td> 
-                    <td style="width: 10%;"> <small> <strong>{{i.proyecto}}</strong></small></td>              
-                    <td style="width: 8%;"> <small>{{i.creador}}</small></td>
-                    <td style="width: 8%;" > <small>{{i.destinatario}}</small></td>
-                    <td style="width: 20%;"><small> <a href=" {% url 'Nota de pedido' i.id %}"><b>{{i.titulo}}</b></a>  </small> </td>
-                    <td style="width: 20%;" class="priority-5"> <small>{{i.fecha_creacion}}</small></td>
-
-                    {% if i.adjuntos %}
-
-                    <td style="width: 5%;"> <small><a href="{{i.adjuntos.url}}"><img src="{% static 'img/archivo-adjunto.png' %}" alt="" style="max-width:25px; height: auto; margin: 5px;"   ></a></small></td>
-
-                    {% else %}
-
-                    <td style="width: 5%;"> <small>NO</small></td>
-
-                    {% endif %}
-
-                    {% if user.username in i.copia or user.username in i.destinatario %}
-
-                        {% if user.username in i.visto %}
-
-                        <td style="width: 10%;  color: rgb(59, 186, 39);"> <small> <b>Ya firmaste!</b> </small></td>
-
-                        {% else %}
-
-                        <td style="width: 10%; color: rgb(186, 55, 39);"> <small><b>Pendiente de firmar!</b></small></td>
-
-                        {% endif %}
-
-                    {% else %}
-
-                    <td style="width: 10%;"> <small><b>No firmas</b></small></td>
-
-                    {% endif %}
-
-
-
-                </tr>
-
-                    {% endfor %}
-
-            </table>
-    </div>
-
-    <b><hr class = "my-4" style="width: 100%;"></b>
-
-
-        <div>
-            <small style="font-family: Arial, Helvetica, sans-serif;">El listado puede continuar, se limita el numero de filas visibles</small>
-        </div>
-
-
-    <div style="margin-top: 2rem;">
-
-        <p style="font-family: Arial, Helvetica, sans-serif;"> <small>-- Link<strong>P</strong> --</small> </p>
-
-     </div>
-        
-    
-
-                    
 </div>
- 
-    
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body row">
+                <div class="col-12 justify-content-center">
+
+                    {% if request.user.username != "HC" %}
+
+                    <div style="text-align: left;">
+
+                        <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+                            <button type="button" class="btn btn-primary">Proyecto</button>
+                            <div class="btn-group" role="group">
+                                <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+                                <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+
+                                    <div style="margin: 2px;">
+
+                                        <a href="{% url 'Notas de pedido' '0' tipo %}"
+                                            style="margin-top: 5px; color:  rgb({{i.color}})">TODOS</a>
+
+                                    </div>
+
+                                    {% for i in lista_proyectos %}
+
+                                    <div style="margin: 2px;">
+
+                                        <a href="{% url 'Notas de pedido' i.id tipo %}"
+                                            style="margin-top: 5px; color:  rgb({{i.color}})">{{i.nombre}}</a>
+
+                                    </div>
+
+                                    {% endfor %}
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+                            <button type="button" class="btn btn-primary">Tipo</button>
+                            <div class="btn-group" role="group">
+                                <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+                                <div class="dropdown-menu" aria-labelledby="btnGroupDrop1" style="">
+
+                                    <div style="margin: 2px;">
+
+                                        <a href="{% url 'Notas de pedido' id_proyecto '0' %}"
+                                            style="margin-top: 5px;)">Todo</a>
+
+                                    </div>
+
+                                    <div style="margin: 2px;">
+
+                                        <a href="{% url 'Notas de pedido' id_proyecto '1' %}"
+                                            style="margin-top: 5px;">Notas de pedido</a>
+                                    </div>
+
+                                    <div style="margin: 2px;">
+
+                                        <a href="{% url 'Notas de pedido' id_proyecto '2' %}"
+                                            style="margin-top: 5px;)">Ordenes de servicio</a>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="text-align: left; display: inline-block;">
+
+                            <a href="{% url 'Crear correspondencia' %}" class="fa fa-plus-circle ml-1">
+                                <span style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif"><b>Añadir</b></span> </a>
+
+                        </div>
+                    </div>
+
+                    {% endif %}
+
+
+                    <div class="tableconteinerabel">
+                        <table id="example" class="table table-striped table-bordered" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>Titulo</th>
+                                    <th>Firma</th>
+                                    <th>Tipo</th>
+                                    <th>Nº</th>
+                                    <th>Proyecto</th>
+                                    <th>Creador</th>
+                                    <th>Dest.</th>
+                                    <th>Fecha</th>
+                                    <th>Adj.</th>
+                                    
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                {% for i in datos %}
+
+                                <tr style="font-size: 14px;">
+                                    <td><a href=" {% url 'Nota de pedido' i.id %}"><b>{{i.titulo|lower|capfirst}}</b></a></td>
+                                    
+                                    {% if user.username in i.copia or user.username in i.destinatario %}
+
+                                    {% if user.username in i.visto %}
+
+                                    <td style="color: rgb(59, 186, 39);"><b>Firmado!</b></td>
+
+                                    {% else %}
+
+                                    <td style="color: rgb(186, 55, 39);"><b>Pendiente!</b></td>
+
+                                    {% endif %}
+
+                                    {% else %}
+
+                                    <td><b>No firmas</b></td>
+                                    {% endif %}
+
+                                    <td>{{i.tipo}}
+                                    </td>
+                                    <td>{{i.numero}}</td>
+                                    <td>{{i.proyecto|lower|capfirst}}</td>
+                                    <td>{{i.creador}}</td>
+                                    <td>{{i.destinatario}}</td>
+                                    <td>{{i.fecha_creacion|date:"d-m-Y"}}</td>
+
+                                    {% if i.adjuntos %}
+
+                                    <td><a href="{{i.adjuntos.url}}"><img src="{% static 'img/archivo-adjunto.png' %}"
+                                                alt="" style="max-width:25px; height: auto; margin: 5px;"></a></td>
+
+                                    {% else %}
+
+                                    <td>NO</td>
+
+                                    {% endif %}
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js" defer></script>
+<script src="https://cdn.datatables.net/1.10.23/js/dataTables.bootstrap4.min.js" defer></script>
+
+
+
+<script>
+    $(document).ready(function () {
+        $('#example').DataTable({
+            "paging": false,
+            "ordering": false,
+            "info": false,
+
+        });
+    });
+</script>
+
+
 {% endblock %}

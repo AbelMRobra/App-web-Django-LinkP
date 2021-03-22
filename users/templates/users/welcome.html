@@ -2,64 +2,50 @@
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+    <!-- <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}"> -->
     <link rel="stylesheet" href="{% static 'css/styleabel.css' %}">
     <link rel="shortcut icon" href="{% static 'img/icolinkp.ico' %}" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LINK-P</title>
 </head>
 
-<body background="{% static 'img/dark_wood.png' %}">
+<body>
+<body background="{% static 'img/fondoinicio.png' %}" style="height: auto; overflow: hidden;">
+
+    <div class="row d-flex align-content-center" style="text-align: center; height: 80vh;">
+        <div>
+            <div class="jumbotron">
+                <!-- <div class="jumbotron" style="background-color: rgba(11, 32, 68, 0.8);"> -->
+                <h1 class="mb-3" style="color: #F3EAE5;">
+                    ¡BIENVENIDO!</h1>
+                <h4 class="mb-3" style="color: #F3EAE5;"> Que bueno es verte de nuevo
+                    {{request.user.first_name}} {{request.user.last_name}} !</h4>
 
 
-    <div class= "conteiner" style="text-align: center">
+            </div>
 
-        <div class="jumbotron" style="margin-top: 3%; background-color: rgba(11, 32, 68, 0.8);">
-            <h2 class="display-4" style="color: #F3EAE5; font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif">¡Bienvenido!</h2>
+            <div class="mt-4">
+                <a href="/logout" class="btn btn-danger"><img src="{% static 'img/logout.png' %}" alt=""
+                        style="width:20px; height:auto; vertical-align: bottom;"> Log out </a>
 
-            <h4 style="color: #F3EAE5; font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif">{{request.user.first_name}} {{request.user.last_name}}</h4>
+                <a href="/inicio" class="btn btn-light">Ingresar <img src="{% static 'img/flecha-derecha.png' %}" alt=""
+                        style="width:20px; height:auto; vertical-align: bottom;"></a>
 
-
-                <hr class="my-4" style="background-color: #F3EAE5; width: 75%">
-
-
-                <h6 style="color: #F3EAE5 ; font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif">APP-WEB LINK-<b style="color: #19C6C6 ;">P</b> 
-                </h6>
-                
-
-            <small style="color: #F3EAE5 ; font-family: Arial, Helvetica,">versión <b>3.00</b> 
-            </small>
+            </div>
         </div>
-
-            <div style="margin-top: 3%;">
-
-                <a href="/logout" class="btn btn-danger"><img src="{% static 'img/logout.png' %}" alt="" style="max-width:20px; height:auto; vertical-align: bottom;"> Log out </a>
-    
-
-                <a href="/inicio" class="btn btn-light">Ingresar <img src="{% static 'img/flecha-derecha.png' %}" alt="" style="max-width:20px; height:auto; vertical-align: bottom;"></a>
-    
-                
-               </div>
-
-
-               <div style="text-align: center; margin-top: 5%;">
-                <p style="font-family: Arial, Helvetica, sans-serif; color: #F3EAE5 ;"> <small>-- Link<strong>P</strong> --</small> </p>
-        
-             </div>
-
-        
-          
-
-
-
     </div>
-    
-    
-
-
-
+    <footer class="text-center">
+        <h6 style="color: #F3EAE5 ;">
+            APP-WEB LINK-<b style="color: #19C6C6 ;">P</b>
+        </h6>
+        <small style="color: #F3EAE5 ; font-family: Arial, Helvetica,">versión <b>3.00</b>
+        </small>
+    </footer>
 </body>
 
 

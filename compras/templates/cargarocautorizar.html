@@ -1,170 +1,181 @@
-{% extends "users/inicio.html" %}
+{% extends "users/inicio2.html" %}
 
 {% load static %}
 {% load humanize %}
 
 {% block content %}
 
-<div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;">
+<div class="container-fluid r-aside">
 
-    <h3 style="font-family: Arial, Helvetica, sans-serif;">Formulario de solicitud</h3>
-    <small style="font-family: Arial, Helvetica, sans-serif;"><b>Modulo:</b> Circuito de compras </small>
-
-
-
-    <form  role="form"  enctype="multipart/form-data" action="" method="POST" id="upload-image-form" style="margin: 30px;"> 
-        {% csrf_token %}
-
-
-        <div style="margin: 5px">
-
-            <div style="display: inline-block; margin: 10px; width: 200px;">
-
-                <label for="proveedor"><h6>Proveedor</h6></label>
-    
-            </div>
-            
-            <div style="display: inline-block; margin: 10px; ">
-    
-                <input name="proveedor" type="search" class="form-control form-control" placeholder="Nombre del proveedor" list="provee" style="width: 300px;">
-    
-            </div>
-
-
+    <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+            <h3 class="text-themecolor">Formulario de solicitud</h3>
         </div>
 
-        <div style="margin: 5px">
-
-            <div style="display: inline-block; margin: 10px; width: 200px;">
-
-                <label for="proyecto"><h6>Proyecto</h6></label>
-    
-            </div>
-            
-            <div style="display: inline-block; margin: 10px; ">
-    
-                <input name="proyecto" type="text" class="form-control form-control" placeholder="Escribir en MAYUSCULAS" style="width: 300px;">
-    
-            </div>
-
-
+        <div class="col-md-7 align-self-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'Comparativas' 0 0 %}">Solicitud</a></li>
+                <li class="breadcrumb-item">Formulario de solicitud</li>
+            </ol>
         </div>
+    </div>
+</div>
 
-        <div  style="margin: 5px">
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body row">
+                <div class="col-12 justify-content-center">
+                    <div>
+                        <h2>Nueva solicitud</h2>
+                        <small>Complete la informacion de la solicutad</small>
+                     
+                    </div>
 
-            <div style="display: inline-block; margin: 10px; width: 200px;">
+                    <div class="row d-flex justify-content-center mt-4">
+                        <div class="col col-md-12 col-lg-6">
+                            <div class="row">
+                                <div class="col bg-light border rounded p-4 ">
 
-                <label for="referencia"><h6>Referencia</h6></label>
-    
+                                    <form role="form" enctype="multipart/form-data" action="" method="POST"
+                                        id="upload-image-form">
+                                        {% csrf_token %}
+
+                                        <div>
+                                            <label for="proveedor">
+                                                <h6>Proveedor</h6>
+                                            </label>
+                                        </div>
+
+                                        <div class="row d-flex justify-content-center my-3">
+                                            <div class="col col-md-8 col-lg-8">
+
+                                                <input name="proveedor" type="search" class="form-control form-control"
+                                                    placeholder="Nombre del proveedor" list="provee">
+
+                                            </div>
+                                        </div>
+
+                                        <div>
+                                            <label for="proyecto">
+                                                <h6>Proyecto</h6>
+                                            </label>
+
+                                        </div>
+
+                                        <div class="row d-flex justify-content-center my-3">
+                                            <div class="col col-md-8 col-lg-8">
+
+
+                                                <input name="proyecto" type="text" class="form-control form-control"
+                                                    placeholder="Escribir en MAYUSCULAS">
+
+                                            </div>
+                                        </div>
+
+                                        <div>
+                                            <label for="referencia">
+                                                <h6>Referencia</h6>
+                                            </label>
+                                        </div>
+
+                                        <div class="row d-flex justify-content-center my-3">
+                                            <div class="col col-md-8 col-lg-8">
+
+                                                <input name="referencia" type="text" class="form-control form-control"
+                                                    placeholder="Ejemplo 'TEC' o 'PRESUP'">
+
+                                            </div>
+                                        </div>
+
+                                        <div>
+                                            <label for="valor">
+                                                <h6>Valor final de la solicitud</h6>
+                                            </label>
+                                        </div>
+
+                                        <div class="row d-flex justify-content-center my-3">
+                                            <div class="col col-md-8 col-lg-8">
+
+                                                <input name="valor" step="0.01" type="number"
+                                                    class="form-control form-control" placeholder="$">
+
+                                            </div>
+                                        </div>
+
+                                        <div>
+                                            <label for="imagen">
+                                                <h6>Adjunto (PNG o JPEG)</h6>
+                                            </label>
+                                        </div>
+                                        <div class="row d-flex justify-content-center my-3">
+                                            <div class="col col-md-8 col-lg-8">
+
+                                                <input type="file" class="form-control-file" name="imagen"
+                                                    aria-describedby="fileHelp">
+
+                                            </div>
+                                        </div>
+
+                                        <div>
+                                            <label for="numerooc">
+                                                <h6>Numero de O.C</h6>
+                                            </label>
+                                        </div>
+
+                                        <div class="row d-flex justify-content-center my-3">
+                                            <div class="col col-md-8 col-lg-8">
+
+                                                <input name="numerooc" type="text" class="form-control form-control"
+                                                    placeholder="Formato ejemplo: '99-123'" >
+
+                                            </div>
+                                        </div>
+
+                                        <div>
+                                            <label for="oc">
+                                                <h6>Orden de compra</h6>
+                                            </label>
+                                        </div>
+
+                                        <div class="row d-flex justify-content-center my-3">
+                                            <div class="col col-md-8 col-lg-8">
+
+                                                <input type="file" class="form-control-file" name="oc"
+                                                    aria-describedby="fileHelp">
+
+                                            </div>
+                                        </div>
+
+                                        <div class="row d-flex justify-content-center mt-4">
+                                            <div class="col-lg-6 text-center">
+                                                <button type="submit" class="btn btn-primary">Subir</button>
+                                            </div>
+                                        </div>
+
+
+                                        {{ form.as_p }}
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <datalist id="provee">
+
+                        {% for i in proveedores %}
+
+                        <option value="{{ i.name }}">({{i.id}})</option>
+
+                        {% endfor %}
+
+                    </datalist>
+
+                </div>
             </div>
-            
-            <div style="display: inline-block; margin: 10px; ">
-    
-                <input name="referencia" type="text" class="form-control form-control" placeholder="Ejemplo 'TEC' o 'PRESUP'" style="width: 300px;">
-    
-            </div>
-
-
         </div>
-
-        <div style="margin: 5px">
-
-            <div style="display: inline-block; margin: 10px;  width: 200px;">
-
-                <label for="valor"><h6>Valor final de la solicitud</h6></label>
-    
-            </div>
-    
-            <div style="display: inline-block; margin: 10px; "> 
-    
-                <input name="valor" step="0.01" type="number" class="form-control form-control" placeholder="$" style="width: 300px;">
-    
-            </div>
-
-
-        </div>
-
-        
-
-        <div style="margin: 5px">
-
-            <div style="display: inline-block; margin: 10px;; width: 200px;">
-
-                <label for="imagen"><h6>Adjunto (PNG o JPEG)</h6></label>
-    
-            </div>
-            
-            <div style="display: inline-block; margin: 10px; ">
-    
-                <input type="file" class="form-control-file" name="imagen" aria-describedby="fileHelp" >
-    
-            </div>
-
-
-        </div>
-
-        <div  style="margin: 5px">
-
-            <div style="display: inline-block; margin: 10px; width: 200px;">
-
-                <label for="numerooc"><h6>Numero de O.C</h6></label>
-    
-            </div>
-            
-            <div style="display: inline-block; margin: 10px; ">
-    
-                <input name="numerooc" type="text" class="form-control form-control" placeholder="Formato ejemplo: '99-123'" style="width: 300px;">
-    
-            </div>
-
-
-        </div>
-
-        <div style="margin: 5px">
-
-            <div style="display: inline-block; margin: 10px;; width: 200px;">
-
-                <label for="oc"><h6>Orden de compra</h6></label>
-    
-            </div>
-            
-            <div style="display: inline-block; margin: 10px; ">
-    
-                <input type="file" class="form-control-file" name="oc" aria-describedby="fileHelp" >
-    
-            </div>
-
-
-        </div>
-
-
-
-          <button type="submit" class="btn btn-primary">Subir</button>
-
-
-        {{ form.as_p }}
-    </form>
-
-    <a href="{% url 'Comparativas' 0 0 %}" class="btn btn-secondary"><img src="{% static 'img/flecha-izquierda.png' %}" alt="" style="max-width:15px; height:auto; margin: 2px;"> Volver</a>
-
-    <datalist id="provee"> 
-
-        {% for i in proveedores %}
-        
-        <option value="{{ i.name }}">({{i.id}})</option>
-
-        {% endfor %}
-
-    </datalist>
-
-<div style="margin-top: 2rem;">
-    <p> <small>-- Link<strong>P</strong> --</small> </p>
-
- </div>
-    
-
-
-                
+    </div>
 </div>
 
 
