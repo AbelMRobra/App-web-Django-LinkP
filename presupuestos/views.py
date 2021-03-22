@@ -2980,7 +2980,9 @@ class ArticulosListApiView(ListAPIView):
 
 
 
+def registro_contable(request):
 
+    return render(request, 'registro_contable.html', f )
 
 
 

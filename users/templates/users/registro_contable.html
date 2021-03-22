@@ -1,0 +1,57 @@
+{% extends "users/inicio2.html" %}
+{% load apptags_extras %}
+
+{% load static %}
+
+{% block content %}
+<div class="container-fluid r-aside">
+    <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+            <h3 class="text-themecolor">Resgistro Contable </h3>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="row">
+
+    </div>
+    <div class="col-12 col-lg-4 text-center">
+        <p><b>Ingresos</b></p>
+        <p class="text-info"><b>0,00</b></p>
+    </div>
+    <div class="col-12 col-lg-4 text-center">
+        <p><b>Gastos</b></p>
+        <p class="text-danger"><b>0,00</b></p>
+    </div>
+    <div class="col-12 col-lg-4 text-center">
+        <p><b>Balance</b></p>
+        <p><b>0,00</b></p>
+    </div>
+    <div class="table-responsive">
+
+        <table id="example" class="table table-striped table-bordered" style="width:100%">
+            <thead>
+                <tr>
+                    <th> Categoria </th>
+                    <th> Cuenta/Nota </th>
+                    <th> Monto </th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr>
+                    <td>
+                        <b>Entrenamiento</b>
+                    </td>
+                    <td><div>
+                        <div><p>Nota numero 1</p></div>
+                        <div><p>Efectivo</p></div>
+                    </div></td>
+                    <td> {{i.2|floatformat:0|intcomma}}%</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}

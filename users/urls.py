@@ -35,4 +35,9 @@ urlpatterns = [
     url(r'minutasmodificar/(?P<id_minuta>\d+)/$', login_required(views.minutasmodificar), name = 'Minutas Modificar'),
     url(r'minutasid/(?P<id_minuta>\d+)/$', login_required(views.minutasid), name = 'Minutas Id'),
 
+
+    # Template de registro contable
+      url(r'registro_contable$', login_required(views.registro_contable), name = 'Registro Contable'),
+
+
 ]

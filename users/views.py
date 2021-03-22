@@ -1448,3 +1448,8 @@ def minutasid(request, id_minuta):
     acuerdos_viejos = Acuerdos.objects.filter(minuta__id__lt = data.id, estado = "NO CHECK")
 
     return render(request, 'minutas/minutasId.html', {'data':data, 'acuerdos':acuerdos, 'acuerdos_viejos':acuerdos_viejos, 'list_users':list_users})
+
+
+def registro_contable(request):
+  
+    return render(request, "users/registro_contable.html")
