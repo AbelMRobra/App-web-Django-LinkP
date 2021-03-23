@@ -175,6 +175,22 @@
             {% endif %}
             <li class="nav-small-cap">ESPACIOS DE TRABAJO</li>
             <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i
+              class="zmdi zmdi-accounts"></i><span class="hide-menu">Recursos Humanos</span></a>
+          <ul aria-expanded="false" class="collapse">
+            {% if request.user|has_group:"RRHH NIVEL 1" %}
+
+            <li><a href="{% url 'Datos personal' %}">Datos del personal</a></li>
+
+            {% else %}
+
+                <li>No tienes permisos para ver este espacio</li>
+
+
+            {% endif %}
+
+          </ul>
+        </li>
+            <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i
                   class="zmdi zmdi-chart"></i><span class="hide-menu">Presupuestos</span></a>
               <ul aria-expanded="false" class="collapse">
                 {% if request.user|has_group:"PRESUPUESTO NIVEL 1" %}

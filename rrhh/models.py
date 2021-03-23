@@ -47,7 +47,7 @@ class datosusuario(models.Model):
 
 
     identificacion = models.CharField(max_length=200, verbose_name="Identificacion")
-    nombre = models.CharField(max_length=200, verbose_name="Identificacion", blank=True, null=True,)
+    nombre = models.CharField(max_length=200, verbose_name="Nombre, Apellido", blank=True, null=True,)
     imagen = models.CharField(max_length=200, verbose_name="Imagen", blank=True, null=True, editable=False)
     imagenlogo = models.ImageField(verbose_name="Imagen", blank=True, null=True)
     area = models.CharField(max_length=200, verbose_name="Area", blank=True, null=True)

@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.shortcuts import redirect
-from .models import NotaDePedido, datosusuario, ComentariosCorrespondencia
+from .models import NotaDePedido, datosusuario, ComentariosCorrespondencia, EntregaMoneda
 from proyectos.models import Proyectos
 import datetime
 import smtplib
@@ -39,6 +39,22 @@ def editarcorrespondencia(request, id_nota):
                 
 
     return render(request, 'editarcorres.html', {"datos":datos, "proyectos":proyectos})
+
+def datospersonal(request):
+
+    usuarios_datos = datosusuario.objects.all()
+
+    usuarios = []
+
+    for u in usuarios_datos:
+        lc_recibidas = len(EntregaMoneda.objects.filter(usuario_recibe = u))
+        usuarios.append([u, lc_recibidas])
+
+    usuarios_totales = len(datosusuario.objects.all())
+    usuarios_activos = len(datosusuario.objects.filter(estado = "ACTIVO"))
+    datos = [usuarios_totales, usuarios_activos]
+
+    return render(request, 'datospersonal.html', {'usuarios':usuarios, 'datos':datos})
 
 def crearcorrespondencia(request):
 

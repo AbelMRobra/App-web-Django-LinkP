@@ -1,0 +1,108 @@
+{% extends "users/inicio2.html" %}
+{% load apptags_extras %}
+
+{% load static %}
+
+{% block content %}
+
+<div class="container-fluid r-aside">
+    <!-- ============================================================== -->
+    <!-- Bread crumb and right sidebar toggle -->
+    <!-- ============================================================== -->
+    <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+            <h3 class="text-themecolor">Datos del personal</h3>
+        </div>
+
+    </div>
+
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Información general</h4>
+                <h6 class="card-subtitle">Estadisticas y datos generales</h6>
+                <div class="row m-t-40">
+                    <!-- Column -->
+                    <div class="col-md-6 col-lg-3 col-xlg-3">
+                        <div class="card">
+                            <div class="box bg-info text-center">
+                                <h1 class="font-light text-white">{{datos.0}}</h1>
+                                <h6 class="text-white">Usuarios totales</h6>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Column -->
+                    <div class="col-md-6 col-lg-3 col-xlg-3">
+                        <div class="card">
+                            <div class="box bg-success text-center">
+                                <h1 class="font-light text-white">{{datos.1}}</h1>
+                                <h6 class="text-white">Activos</h6>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Column -->
+                    <div class="col-md-6 col-lg-3 col-xlg-3">
+                        <div class="card">
+                            <div class="box bg-primary text-center">
+                                <h1 class="font-light text-white">X?</h1>
+                                <h6 class="text-white">Emmm</h6>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Column -->
+                    <div class="col-md-6 col-lg-3 col-xlg-3">
+                        <div class="card">
+                            <div class="box bg-dark text-center">
+                                <h1 class="font-light text-white">X?</h1>
+                                <h6 class="text-white">Emm 2</h6>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Column -->
+                </div>
+                <div class="table-responsive">
+                    <table id="demo-foo-addrow" class="table m-t-30 table-hover no-wrap contact-list" data-page-size="10">
+                        <thead>
+                            <tr>
+                                <th>Usuario</th>
+                                <th>ID</th>
+                                <th>Email</th>
+                                <th>Área</th>
+                                <th>Puesto</th>
+                                <th>Estado</th>
+                                <th>Ingreso</th>
+                                <th style="text-align: center;"> <img src="{% static 'img/monedalink2.png' %}" alt="user" class="img-circle" style="width: 20px;"/></th>
+         
+                            </tr>
+                        </thead>
+                        <tbody style="font-size: 14px;">
+                            {% for u in usuarios %}
+                            <tr>
+                                <td>
+                                    <img src="{{u.0.imagenlogo.url}}" alt="user" class="img-circle" style="width: 35px;" /> - {{u.0.nombre}}
+                                </td>
+                                <td>{{u.0.identificacion}}</td>
+                                <td>{{u.0.email}}</td>
+                                <td>{{u.0.area|lower|capfirst}}</td>
+                                <td>{{u.0.cargo|lower|capfirst}}</td>
+                                <td><span {% if u.0.estado == 'ACTIVO' %}class="label label-success"{% else %}class="label label-danger"{% endif %}>{{u.0.estado}}</span> </td>
+                                <td>{{u.0.fecha_ingreso|date:"d-m-Y"}}</td>
+                                <td style="text-align: center;">{{u.1}}</td>
+ 
+                            </tr>
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+  {% endblock %}
