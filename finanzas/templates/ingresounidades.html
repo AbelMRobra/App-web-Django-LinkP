@@ -80,10 +80,10 @@
                         <tr>
           
                         <td>
-                            <span class="label label-info" style="background-color: rgb({{i.unidad.proyecto.color}});">{{i.unidad.proyecto.nombre}}</span>
+                            <span class="label label-info" style="background-color: rgb({{i.unidad.proyecto.color}});">{{i.proyecto.nombre}}</span>
                             <div>
-                                {{i.unidad.piso_unidad}} - {{i.unidad.nombre_unidad}} 
-                            <h6 class="card-subtitle">{{i.comprador}}</h6>
+                                {{i.piso_unidad}} - {{i.nombre_unidad}} 
+                            <h6 class="card-subtitle"></h6>
 
                             </div>
                             
@@ -93,18 +93,18 @@
                         <form method="POST">
                             {% csrf_token %}
                         <td><select name="asig" class="custom-select form-control">
-                            <option value="PROYECTO" {% if i.unidad.asig == 'PROYECTO'%} selected {% endif %}>PROYECTO</option>
-                            <option value="TERRENO" {% if i.unidad.asig == 'TERRENO'%} selected {% endif %}>TERRENO</option>
-                            <option value="HON. LINK" {% if i.unidad.asig == 'HON. LINK'%} selected {% endif %}>HON. LINK</option>
-                            <option value="SOCIOS" {% if i.unidad.asig == 'SOCIOS'%} select {% endif %}>SOCIOS</option>
+                            <option value="PROYECTO" {% if i.asig == 'PROYECTO'%} selected {% endif %}>PROYECTO</option>
+                            <option value="TERRENO" {% if i.asig == 'TERRENO'%} selected {% endif %}>TERRENO</option>
+                            <option value="HON. LINK" {% if i.asig == 'HON. LINK'%} selected {% endif %}>HON. LINK</option>
+                            <option value="SOCIOS" {% if i.asig == 'SOCIOS'%} select {% endif %}>SOCIOS</option>
                         </select></td>
                         <td><select name="estado" class="custom-select form-control">
-                            <option value="SEÑADA" {% if i.unidad.estado == 'SEÑADA'%} selected {% endif %}>SEÑADA</option>
-                            <option value="VENDIDA" {% if i.unidad.estado == 'VENDIDA'%} selected {% endif %}>VENDIDA</option>
-                            <option value="DISPONIBLE" {% if i.unidad.estado == 'DISPONIBLE'%} selected {% endif %}>DISPONIBLE</option>
+                            <option value="SEÑADA" {% if i.estado == 'SEÑADA'%} selected {% endif %}>SEÑADA</option>
+                            <option value="VENDIDA" {% if i.estado == 'VENDIDA'%} selected {% endif %}>VENDIDA</option>
+                            <option value="DISPONIBLE" {% if i.estado == 'DISPONIBLE'%} selected {% endif %}>DISPONIBLE</option>
                         </select></td>
                         <td>
-                            {% if i.unidad.estado_iibb == 'SI' %}
+                            {% if i.estado_iibb == 'SI' %}
                             <div class="switch">
                             <label ><b style="color: green;">SI</b>  
                                 <input type="checkbox" name="iibbno"><span class="lever switch-col-red"></span><b style="color: red;">NO</b></label>
@@ -120,7 +120,7 @@
                         
                         </td>
                         <td>
-                            {% if i.unidad.estado_comision == 'SI' %}
+                            {% if i.estado_comision == 'SI' %}
                             <div class="switch">
                             <label ><b style="color: green;">SI</b>  
                                 <input type="checkbox" name="comisionno"><span class="lever switch-col-red"></span><b style="color: red;">NO</b></label>
@@ -135,7 +135,7 @@
                             {% endif %}
                         
                             </td>
-                        <td style="text-align: center;"><button type="submit" name="nombre" value="{{i.unidad.id}}" class="btn btn-info btn-circle"><i class="fa fa-check"></i></button></td>
+                        <td style="text-align: center;"><button type="submit" name="nombre" value="{{i.id}}" class="btn btn-info btn-circle"><i class="fa fa-check"></i></button></td>
 
                         </form>
 

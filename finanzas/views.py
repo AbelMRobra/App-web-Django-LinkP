@@ -1583,7 +1583,7 @@ def ingresounidades(request, estado, proyecto):
 
     listado = []
 
-    datos_proyectos = datos = VentasRealizadas.objects.all()
+    datos_proyectos = datos = Unidades.objects.all()
     for d in datos_proyectos:
 
         listado.append(d.proyecto)
@@ -1592,10 +1592,10 @@ def ingresounidades(request, estado, proyecto):
 
     if proyecto == "0":
         proyecto_marcado = "Proyecto"
-        datos = VentasRealizadas.objects.all().order_by("-unidad__orden")
+        datos = Unidades.objects.all().order_by("orden")
     else:
         proyecto_marcado = Proyectos.objects.get(id = int(proyecto)).nombre
-        datos = VentasRealizadas.objects.filter(proyecto__id = int(proyecto)).order_by("-unidad__orden")
+        datos = Unidades.objects.filter(proyecto__id = int(proyecto)).order_by("orden")
     
     # -----------> Aqui empieza el filtro
 
@@ -1625,7 +1625,7 @@ def ingresounidades(request, estado, proyecto):
 
                     lista_palabra = palabra.split()
 
-                    buscar = (str(i.proyecto.nombre)+str(i.unidad.asig)+str(i.unidad.nombre_unidad)+str(i.unidad.estado)+str(i.comprador))
+                    buscar = (str(i.asig)+str(i.nombre_unidad)+str(i.estado))
 
                     contador = 0
 

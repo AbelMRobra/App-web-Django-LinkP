@@ -1,4 +1,4 @@
-{% extends "users/inicio.html" %}
+{% extends "users/inicio2.html" %}
 
 {% load humanize %}
 
@@ -6,199 +6,208 @@
 
 {% block content %}
 
-<div class = "jumbotron" style="background-color: white; margin-bottom: 0px;">
 
-    <h3 style="text-align: center; color: rgb({{datos.proyecto.color}}); font-family: Arial, Helvetica, sans-serif;">Tareas de la constructora</h3>
-    
-    <div style="text-align: center">
+<div class="container-fluid r-aside">
 
-        <img src="{% static 'img/sigma.png' %}"  class="img-fluid" alt="..." style="max-width:200px;width:auto;height:auto; margin: 20px;">
-  
+    <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+            <h3 class="text-themecolor">Tareas de la constructora</h3>
+        </div>
 
+        <div class="col-md-7 align-self-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+                <li class="breadcrumb-item">Tareas</li>
+            </ol>
+        </div>
     </div>
-
-    <div style="text-align: center">
-
-        <small> <b>Modulo:</b> Control de rendimiento</small>
-
-
-    </div>
-    
-
-
-    <b><hr class = "my-4" style="width: 100%;"></b>
-
- 
-
-    <form method="POST" style="text-align: left;">
-
-        {% csrf_token %}
-
-        <div style="display: inline-block; margin: 5px;">
-
-            <label for="palabra"><h6>Buscar</h6></label>
-
-        </div>
-        
-        <div style="display: inline-block; margin: 5px; ">
-
-            <input name="palabra" type="text" class="form-control form-control" placeholder="Buscar por palabra" list="art" style="width: 250px;">
-
-        </div>
-
-        
-
-        </form>
-
-
-
-     
- 
-    <a href= "{% url 'Crear tareas' %}" class="btn btn-outline-danger"style="text-align: end; " > <img src="{% static 'img/agregar-archivo.png' %}" alt="" style="max-width:20px; height:auto;"  > Nueva tarea</a>
-    
-
-    <table class = "table table-hover" style="text-align: center; margin-top: 1%;">
-        <thead>
-
-            <tr class = "table-dark">
-                <th scope = "row" style="vertical-align: middle;"></th>
-                <th scope = "row" style="vertical-align: middle;"> TAREA </th>
-                <th scope = "row" style="vertical-align: middle;">  UNIDAD </th>
-                <th scope = "row" style="vertical-align: middle;">  VINCULACIÓN </th>
-                <th scope = "row" style="vertical-align: middle;">  HS/UNIDAD </th>
-                <th scope = "row" style="vertical-align: middle;">  SUBTAREAS </th>
-                                      
-            </tr>
-        </thead>
-
-        <tbody>
-
-            
-
-            {% for i in datos %}
-
-            <tr class = "table-light">
-                <td style="width: 10%;"><b><img src="{% static 'img/documento.png' %}" alt="" style="max-width:20px; height:auto;"  ></b>
-                <a href="{% url 'Eliminar tarea' i.0.id %}"><img src="{% static 'img/borrar.png' %}" alt="" style="max-width:20px; height:auto;"></a></td>
-                <td style="width: 30%;"><b>{{i.0.nombre}}</b></td>
-                <td style="width: 8%;"> {{i.0.unidad}}</td>
-
-                {% if i.0.vinculacion %}
-                <td style="width: 20%;">$ {{i.0.vinculacion.valor|floatformat:0|intcomma}}</td>
-
-                {% else %}
-
-                <td style="width: 20%;">No vinculado</td>
-
-                {% endif %}
-                <td style="width: 15%;">{{i.0.rend}} hs/{{i.0.unidad}}</td>
-                <td style="width: 10%;"> 
-
-                    <div>
-
-                        <button type="button" class="btn btn-outline-danger" data-toggle="modal" data-target="#exampleModalCenter{{i.0.id}}">Subtareas</button>
-                        
-                    </div>
-            
-                    <!-- Modal -->
-                    <div class="modal fade" id="exampleModalCenter{{i.0.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered" role="document">
-                          <div class="modal-content">
-                            <div class="modal-header">
-                              <h6 class="modal-title" id="exampleModalLongTitle">{{i.0.nombre}}</h6>
-                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                              </button>
-                            </div>
-                            <div class="modal-body">
-            
-            
-                              Esta tarea esta compuesta por:
-
-                              <table class = "table table-hover" style="text-align: center; margin-top: 1%;">
-                                <thead>
-                        
-                                    <tr class = "table-dark">
-                                        <th></th>
-                                        <th scope = "row" style="vertical-align: middle;"> <small>TAREA</small>  </th>
-                                        <th scope = "row" style="vertical-align: middle;"> <small>UNIDAD</small> </th>
-                                        <th scope = "row" style="vertical-align: middle;"> <small>HS(UNIDAD</small> </th>
-                                        
-                                                              
-                                    </tr>
-                                </thead>
-                        
-                                <tbody>
-
-                                    {% for n in i.1%}
-
-                                    <tr class = "table-light">
-                                        <td style="width: 10%;">
-                                            <a href="#"><img src="{% static 'img/documento.png' %}" alt="" style="max-width:20px; height:auto;"  ></a>
-                                            <a href="{% url 'Eliminar subtarea' n.id %}"><img src="{% static 'img/borrar.png' %}" alt="" style="max-width:20px; height:auto;"  ></a>
-
-                                        </td>
-                                        <td style="width: 20%;"> <small><b>{{n.nombre}}</b></small> </td>
-                                        <td style="width: 10%;"> <small>{{n.unidad}}</small> </td>
-                                        <td style="width: 10%;"> <small>{{n.rend}} HS/{{i.0.unidad}}</small> </td>
-                                        
-
-
-                                    </tr>
-
-                                    {% endfor %}
-                                        
-
-
-
-                                </tbody>
-
-                            </table>
-
-                            <a href= "{% url 'Crear subtareas' i.0.id %}" class="btn btn-outline-danger"style="text-align: end; " > <img src="{% static 'img/agregar-archivo.png' %}" alt="" style="max-width:20px; height:auto;"  > Nueva subtarea</a>
-    
-                              
-                              
-                            
-                            
-                            
-                            </div>
-                            <div class="modal-footer">
-                              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                       
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                
-                
-                
-                
-                
-                </td>
-                         
-            </tr>
-        </tbody>
-
-            {% endfor %}
-
-        </table>
-
-        <div>
-            <small>El listado puede continuar, el maximo de filas visibles es de 20</small>
-        </div>
-
-
-    <div style="text-align: center;">
-        <p> <small>-- Link<strong>P</strong> --</small> </p>
-
-     </div>
-        
-
-
-   
-                    
 </div>
- 
-    
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body row">
+                <div class="col-12 justify-content-center">
+
+                    <div class="row d-flex justify-content-center">
+                        <div class="col col-md-12 col-lg-12 text-center">
+                            <img src="{% static 'img/sigma.png' %}" class="img-fluid" alt="..."
+                                style="max-width:200px;width:auto;height:auto; margin: 20px;">
+                        </div>
+                    </div>
+
+                    <a href="{% url 'Crear tareas' %}" class="btn">
+                        <img src="{% static 'img/add.png' %}" alt="" style="max-width:20px; height:auto;"> Nueva
+                        tarea</a>
+
+
+                    <div class="table-responsive">
+
+                        <table id="example" class="table table-striped table-bordered" style="width:100%">
+                            <thead>
+
+                                <tr>
+                                    <th></th>
+                                    <th> Tarea </th>
+                                    <th> Unidad </th>
+                                    <th> Vinculacion </th>
+                                    <th> HS/Unidad </th>
+                                    <th> Subtareas </th>
+
+                                </tr>
+                            </thead>
+
+                            <tbody>
+
+                                {% for i in datos %}
+
+                                <tr>
+                                    <td><a href="#" class="fa fa-pencil-square-o fa-lg"></a>
+                                        <a href="{% url 'Eliminar tarea' i.0.id %}" class="fa fa-trash fa-lg"></a>
+                                    </td>
+                                    <td><b>{{i.0.nombre|lower|capfirst}}</b></td>
+                                    <td> {{i.0.unidad}}</td>
+
+                                    {% if i.0.vinculacion %}
+                                    <td>$ {{i.0.vinculacion.valor|floatformat:0|intcomma}}</td>
+
+                                    {% else %}
+
+                                    <td>No vinculado</td>
+
+                                    {% endif %}
+                                    <td>{{i.0.rend}} hs/{{i.0.unidad}}</td>
+                                    <td>
+
+                                        <div>
+
+                                            <button type="button" class="btn btn-info" data-toggle="modal"
+                                                data-target="#exampleModalCenter{{i.0.id}}">Subtareas</button>
+
+                                        </div>
+
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="exampleModalCenter{{i.0.id}}" tabindex="-1"
+                                            role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h6 class="modal-title" id="exampleModalLongTitle">
+                                                            {{i.0.nombre}}</h6>
+                                                        <button type="button" class="close" data-dismiss="modal"
+                                                            aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+
+
+                                                        Esta tarea esta compuesta por:
+                                                        <div class="table-responsive">
+
+                                                            <table id="example1"
+                                                                class="table table-striped table-bordered"
+                                                                style="width:100%">
+                                                                <thead>
+
+                                                                    <tr>
+                                                                        <th></th>
+                                                                        <th>Tarea</th>
+                                                                        <th>Unidad</th>
+                                                                        <th>HS(unidad)</th>
+                                                                    </tr>
+                                                                </thead>
+
+                                                                <tbody>
+
+                                                                    {% for n in i.1%}
+
+                                                                    <tr>
+                                                                        <td style="width: 45px">
+                                                                            <a href="#"class="fa fa-pencil-square-o fa-lg"></a>
+                                                                            <a
+                                                                                href="{% url 'Eliminar subtarea' n.id %}"  class="fa fa-trash fa-lg"></a>
+
+                                                                        </td>
+                                                                        <td>
+                                                                            <small>{{n.nombre|lower|capfirst}}</small>
+                                                                        </td>
+                                                                        <td>
+                                                                            <small>{{n.unidad}}</small>
+                                                                        </td>
+                                                                        <td> <small>{{n.rend}}
+                                                                                HS/{{i.0.unidad}}</small> </td>
+
+                                                                    </tr>
+
+                                                                    {% endfor %}
+
+                                                                </tbody>
+
+                                                            </table>
+                                                        </div>
+
+                                                        <a href="{% url 'Crear subtareas' i.0.id %}"
+                                                            class="btn" style="text-align: end; ">
+                                                            <img src="{% static 'img/add.png' %}" alt=""
+                                                                style="max-width:20px; height:auto;"> Nueva subtarea</a>
+
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary"
+                                                            data-dismiss="modal">Close</button>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js" defer></script>
+<script src="https://cdn.datatables.net/1.10.23/js/dataTables.bootstrap4.min.js" defer></script>
+
+
+
+<script>
+    $(document).ready(function () {
+        $('#example').DataTable({
+            "paging": false,
+            "ordering": false,
+            "info": false
+
+        });
+    });
+</script>
+
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js" defer></script>
+<script src="https://cdn.datatables.net/1.10.23/js/dataTables.bootstrap4.min.js" defer></script>
+
+
+
+<script>
+    $(document).ready(function () {
+        $('#example1').DataTable({
+            "paging": false,
+            "ordering": false,
+            "info": false
+
+        });
+    });
+</script>
+
+
 {% endblock %}

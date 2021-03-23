@@ -1,396 +1,386 @@
-{% extends "users/inicio.html" %}
+{% extends "users/inicio2.html" %}
 
 {% load static %}
 {% load humanize %}
 
 {% block content %}
 
+<div class="container-fluid r-aside">
 
+    <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+            <h3 class="text-themecolor">Analisis conjunto de proyectos</h3>
+        </div>
 
-<div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;" > 
+        <div class="col-md-7 align-self-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+                <li class="breadcrumb-item">Analisis conjunto</li>
+            </ol>
+        </div>
 
-    <div >
-        <h2 style="font-family: Arial, Helvetica, sans-serif;">Analisis conjunto de proyectos</h2>
-
-        <small style="font-family: Arial, Helvetica, sans-serif;"><b>Modulo:</b> Finanzas </small>
-
-
-        <b><hr class = "my-4" style="width: 100%; "></b>
-    
     </div>
 
-
-    <div>
-
-        <table class = "table table-hover" style="text-align: center;">
-            <thead>
-    
-                <tr class = "table-dark">
-                    <th scope = "row" style="vertical-align: middle;"><small><b>PROYECTO</b></small></th>                   
-                    <th scope = "row" style="vertical-align: middle;" class="priority-4"><small><b>INGRESOS</b></small></th>
-                    <th scope = "row" style="vertical-align: middle;" class="priority-4"><small><b>COSTOS</b></small></th>
-                    <th scope = "row" style="vertical-align: middle;" class="priority-4"><small><b>TENENCIA</b></small></th>
-                    <th scope = "row" style="vertical-align: middle;" class="priority-4"><small><b>FINANCIACIÓN</b></small></th>
-                    <th scope = "row" style="vertical-align: middle;"><small><b>BENEFICIO</b></small></th>
-                    <th scope = "row" style="vertical-align: middle;"><small><b></b></small></th>
-                    <th scope = "row" style="vertical-align: middle;"><small><b>DESCUENTOS</b></small></th>
-                    <th scope = "row" style="vertical-align: middle;"><small><b>RETIROS</b></small></th>
-                    <th scope = "row" style="vertical-align: middle;"><small><b>BENEFICIO 2</b></small> </th>
-                    <th scope = "row" style="vertical-align: middle;"><small><b></b></small> </th>
-                    <th scope = "row" style="vertical-align: middle;"><small><b>PROM. CONT</b></small> </th>
-
-                   
-                </tr>
-            </thead>
-            {% for i in datos_completos %}   
-            <tbody>
-    
-                <tr class = "table-light">
+</div>
 
 
-                    {% if "#300" in i.0.proyecto.nombre %}
+<div class="col-12">
+    <div class="card">
+        <div class="card-body">
 
-                    <td style="width: 10%; color: rgb({{i.0.proyecto.color}}); vertical-align: middle;"> 
-                        
-                        <div>
+            <div class="table-responsive">
 
-                            <img src="{{i.0.proyecto.iamgen.url}}"  class="img-fluid" alt="..." style="max-width: 70px; height:auto;">
-                        
-                        </div>
+                <table class="table" style="text-align: center;" style="width: 99%;">
+                    <thead>
 
-                        <small><b>#300</b></small>
-                         
-                    
-                    </td> 
-                    
-                    {% else %}
-
-                    <td style="width: 10%; color: rgb({{i.0.proyecto.color}}); vertical-align: middle;">
-
-
-                        <div>
-
-                            <img src="{{i.0.proyecto.iamgen.url}}"  class="img-fluid" alt="..." style="max-width: 70px; height:auto;">
-                        
-                        </div>
-
-                        <small><b>{{ i.0.proyecto.nombre}}</b> </small>                  
-                    
-                    </td> 
-                    
-
-                    {% endif %}
-                    
-                    
-                    <td style="width: 10%; vertical-align: middle;"><small>$ {{ i.2|floatformat:0|intcomma }}</small> </td> 
-                    <td style="width: 10%; vertical-align: middle;"><small>$ {{ i.1|floatformat:0|intcomma }}</small> </td> 
-                    <td style="width: 10%; vertical-align: middle;"><small>$ {{ i.0.tenencia|floatformat:0|intcomma }}</small> </td> 
-                    <td style="width: 10%; vertical-align: middle;"><small>$ {{ i.0.financiacion|floatformat:0|intcomma }}</small> </td> 
-                    <td style="width: 10%; vertical-align: middle; vertical-align: middle;"><small><b>$ {{ i.3|floatformat:0|intcomma }}</b></small></td>
-                    <td style="vertical-align: middle; vertical-align: middle;"><small><b>{{ i.4|floatformat:0|intcomma }}%</b></small></td> 
-                    <td style="width: 10%; vertical-align: middle;"><small>- $ {{ i.11|floatformat:0|intcomma }}</small> </td> 
-                    <td style="width: 10%; vertical-align: middle;"><small>- $ {{ i.10|floatformat:0|intcomma }}</small> </td> 
-                    <td style="width: 10%; vertical-align: middle;"><small><b>$ {{ i.7|floatformat:0|intcomma }}</b></small> </td> 
-                    <td style="vertical-align: middle;"><small><b>{{ i.8|floatformat:0|intcomma }}%</b></small> </td> 
-                    <td style="width: 10%; vertical-align: middle; color: #323BA9;">
-                        
-                        
-                        <small><b>$ {{ i.9|floatformat:0|intcomma }}</b> </small> 
+                        <tr class="table-dark">
+                            <th scope="row" style="vertical-align: middle;"><small><b>Proyecto</b></small></th>
+                            <th scope="row" style="vertical-align: middle;"><small><b>Ingresos</b></small></th>
+                            <th scope="row" style="vertical-align: middle;"><small><b>Costos</b></small></th>
+                            <th scope="row" style="vertical-align: middle;"><small><b>Tendencia</b></small></th>
+                            <th scope="row" style="vertical-align: middle;"><small><b>Financiacion</b></small></th>
+                            <th scope="row" style="vertical-align: middle;"><small><b>Beneficio</b></small></th>
+                            <th scope="row" style="vertical-align: middle;"><small><b></b></small></th>
+                            <th scope="row" style="vertical-align: middle;"><small><b>Descuento</b></small></th>
+                            <th scope="row" style="vertical-align: middle;"><small><b>Retiros</b></small></th>
+                            <th scope="row" style="vertical-align: middle;"><small><b>Beneficio 2</b></small> </th>
+                            <th scope="row" style="vertical-align: middle;"><small><b></b></small> </th>
+                            <th scope="row" style="vertical-align: middle;"><small><b>Prom. Cont</b></small> </th>
 
 
-                        <div>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for i in datos_completos %}
 
-                            {% if i.6 > 0 %}
+                        <tr class="table-light">
 
-                            <small style="color:#2FD627;"><b>PRG</b></small>
+                            {% if "#300" in i.0.proyecto.nombre %}
 
+                            <td style="width: 10%; color: rgb({{i.0.proyecto.color}}); vertical-align: middle;">
+
+                                <div>
+
+                                    <img src="{{i.0.proyecto.iamgen.url}}" class="img-fluid" alt="..."
+                                        style="max-width: 70px; height:auto;">
+
+                                </div>
+
+                                <small><b>#300</b></small>
+
+                            </td>
 
                             {% else %}
 
-                            <small style="color: #D64127;"><b>PRG</b></small>
+                            <td style="width: 10%; color: rgb({{i.0.proyecto.color}}); vertical-align: middle;">
 
+                                <div>
 
-                            {% endif %}
+                                    <img src="{{i.0.proyecto.iamgen.url}}" class="img-fluid" alt="..."
+                                        style="max-width: 70px; height:auto;">
 
+                                </div>
 
-                            {% if i.5 > 180 %}
+                                <small><b>{{ i.0.proyecto.nombre}}</b> </small>
 
-                            <small style="color: #2FD627;"><b> PRP</b></small>
-
-                            {% elif i.5 > 100 %}
-
-                            <small style="color: #D6C127;"><b> PRP</b></small>
-
-                            {% else %}
-
-                            <small style="color: #D64127;"><b >PRP</b></small>
-
+                            </td>
 
                             {% endif %}
 
+                            <td style=" vertical-align: middle;"><small>$ {{ i.2|floatformat:0|intcomma }}</small> </td>
+                            <td style=" vertical-align: middle;"><small>$ {{ i.1|floatformat:0|intcomma }}</small> </td>
+                            <td style=" vertical-align: middle;"><small>$ {{ i.0.tenencia|floatformat:0|intcomma }}</small> </td>
+                            <td style=" vertical-align: middle;"><small>$ {{ i.0.financiacion|floatformat:0|intcomma }}</small> </td>
+                            <td style=" vertical-align: middle;"><small><b>$ {{ i.3|floatformat:0|intcomma }}</b></small></td>
+                            <td style="vertical-align: middle;"><small><b>{{ i.4|floatformat:0|intcomma }}%</b></small></td>
+                            <td style=" vertical-align: middle;"><small>- $ {{ i.11|floatformat:0|intcomma }}</small></td>
+                            <td style=" vertical-align: middle;"><small>- $ {{ i.10|floatformat:0|intcomma }}</small></td>
+                            <td style=" vertical-align: middle;"><small><b>$ {{ i.7|floatformat:0|intcomma }}</b></small> </td>
+                            <td style="vertical-align: middle;"><small><b>{{ i.8|floatformat:0|intcomma }}%</b></small> </td>
+                            <td style=" vertical-align: middle; color: #323BA9;">
 
+                                <small><b>$ {{ i.9|floatformat:0|intcomma }}</b> </small>
 
-                        </div>
-                    
-                    </td>
+                                <div>
 
-                </tr>
-            </tbody>
+                                    {% if i.6 > 0 %}
 
-            {% endfor %}
+                                    <small style="color:#2FD627;"><b>PRG</b></small>
 
-            <tbody>
-    
-                <tr class = "table-dark">
-                    <td style="width: 10%; vertical-align: middle;"><small><b>RESULTADO</b></small> </td>
-                    <td  class="priority-5" style="width: 5%; vertical-align: middle;"><small><b>$ {{datos_finales.0.0|floatformat:0|intcomma }}</b> </small> </td> 
-                    <td  class="priority-5" style="width: 10%; vertical-align: middle;"><small><b>$ {{datos_finales.0.1|floatformat:0|intcomma }}</b></small> </td> 
-                    <td  class="priority-5" style="width: 10%; vertical-align: middle;"><small><b>$ {{datos_finales.0.9|floatformat:0|intcomma }}</b></small> </td> 
-                    <td  class="priority-5" style="width: 10%; vertical-align: middle;"><small><b>$ {{datos_finales.0.10|floatformat:0|intcomma }}</b></small> </td> 
-                    <td style="width: 10%; vertical-align: middle; vertical-align: middle;"><small><b>$ {{datos_finales.0.2|floatformat:0|intcomma}}</b></small> </td>
-                    <td style="vertical-align: middle; vertical-align: middle;"><small><b>{{datos_finales.0.3|floatformat:0|intcomma }}%</b></small> </td> 
-                    <td style="width: 10%; vertical-align: middle; vertical-align: middle;"><small><b>- $ {{ datos_finales.0.4|floatformat:0|intcomma}}</b></small> </td> 
-                    <td style="width: 10%; vertical-align: middle; vertical-align: middle;"><small><b>- $ {{ datos_finales.0.7|floatformat:0|intcomma }}</b></small> </td>
-                    <td style="width: 10%; vertical-align: middle; vertical-align: middle;"><small><b>$ {{datos_finales.0.6|floatformat:0|intcomma }}</b></small> </td>
-                    <td style="vertical-align: middle; vertical-align: middle;"><small><b>{{datos_finales.0.5|floatformat:0|intcomma }}%</b></small> </td> 
-                    <td style="width: 10%; vertical-align: middle;"></td>
-                </tr>
+                                    {% else %}
 
-            </tbody>
+                                    <small style="color: #D64127;"><b>PRG</b></small>
 
-        </table> 
+                                    {% endif %}
 
+                                    {% if i.5 > 180 %}
 
-          
-   </div>
+                                    <small style="color: #2FD627;"><b> PRP</b></small>
 
-   <b><hr class = "my-4" style="width: 100%; "></b> 
+                                    {% elif i.5 > 100 %}
 
-   <div style="margin-bottom: 2rem;">
-    <h5 style="font-family: Arial, Helvetica, sans-serif;">Variación historica</h5>
+                                    <small style="color: #D6C127;"><b> PRP</b></small>
+
+                                    {% else %}
+
+                                    <small style="color: #D64127;"><b>PRP</b></small>
+
+                                    {% endif %}
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+
+                    <tbody>
+
+                        <tr class="table-dark">
+                            <td style=" vertical-align: middle;"><small><b>RESULTADO</b></small> </td>
+                            <td style=" vertical-align: middle;"><small><b>$ {{datos_finales.0.0|floatformat:0|intcomma }}</b> </small> </td>
+                            <td style=" vertical-align: middle;"><small><b>$ {{datos_finales.0.1|floatformat:0|intcomma }}</b></small> </td>
+                            <td style=" vertical-align: middle;"><small><b>$ {{datos_finales.0.9|floatformat:0|intcomma }}</b></small> </td>
+                            <td style=" vertical-align: middle;"><small><b>$ {{datos_finales.0.10|floatformat:0|intcomma }}</b></small> </td>
+                            <td style=" vertical-align: middle; "><small><b>$ {{datos_finales.0.2|floatformat:0|intcomma}}</b></small> </td>
+                            <td style="vertical-align: middle;"><small><b>{{datos_finales.0.3|floatformat:0|intcomma }}%</b></small> </td>
+                            <td style=" vertical-align: middle;"><small><b>- $ {{ datos_finales.0.4|floatformat:0|intcomma}}</b></small> </td>
+                            <td style=" vertical-align: middle;"><small><b>- $ {{ datos_finales.0.7|floatformat:0|intcomma }}</b></small> </td>
+                            <td style=" vertical-align: middle;"><small><b>$ {{datos_finales.0.6|floatformat:0|intcomma }}</b></small> </td>
+                            <td style="vertical-align: middle;"><small><b>{{datos_finales.0.5|floatformat:0|intcomma }}%</b></small> </td>
+                            <td style=" vertical-align: middle;"></td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            <b>
+                <hr class="my-4" style="width: 100%; ">
+            </b>
+
+            <div style="margin-bottom: 2rem;">
+                <h5 style="font-family: Arial, Helvetica, sans-serif;">Variación historica</h5>
+            </div>
+
+            <div style="margin-top: 0.5rem; width: 100%;">
+
+                <div style="text-align: center;">
+                    <small><strong>-- Composición del beneficio --</strong></small>
+                </div>
+
+                <canvas id="myChart" style="width: 100%; min-height: 70px"></canvas>
+
+            </div>
+
+            <div class="mt-4">
+
+                <div style="text-align: center;">
+                    <small><strong>-- Variación costos e ingresos --</strong></small>
+                </div>
+
+                <canvas id="myChart2" style="width: 100%; min-height: 70px"></canvas>
+
+            </div>
+
+        </div>
+    </div>
 </div>
 
-    <div style="margin-top: 0.5rem; width: 100%;">
 
-        <div style= "text-align: center;">
-            <small><strong>-- Composición del beneficio --</strong></small>
-        </div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+<script>
+     var ctx = document.getElementById('myChart').getContext('2d');
+     var chart = new Chart(ctx, {
+         // The type of chart we want to create
+         type: 'line',
 
-        <canvas id="myChart" height="70px" width="auto"></canvas>
+         // The data for our dataset
+         data: {
 
+             labels: [
+                 {% for i in fechas %}
+                 '{{i}}',                   
+                 {% endfor %}
+                 'Hoy'
+                 ],
+             datasets: [
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
-    <script>
-        var ctx = document.getElementById('myChart').getContext('2d');
-        var chart = new Chart(ctx, {
-            // The type of chart we want to create
-            type: 'line',
+             {
+                 label: 'Margen final',
+                 backgroundColor: 'rgb(24, 230, 52, 0.5)',
+                 borderColor: 'rgb(24, 230, 52)',
+                 fill: true,
+                 borderWidth: 1,
+                 lineTension: 0,
+                 data: [
+                 {% for i in datos_registro %}
+                 Math.round({{i.0.3|floatformat:0}}/1000000),                   
+                 {% endfor %}
+                 Math.round({{datos_finales_2.2|floatformat:0 }}/1000000),
+                 ]
+             },
 
-            // The data for our dataset
-            data: {
+             {
+                 label: 'Margen antes de descuento',
+                 backgroundColor: 'rgb(230, 214, 24, 0.5)',
+                 borderColor: 'rgb(230, 214, 24)',
+                 fill: '-1',
+                 borderWidth: 1,
+                 lineTension: 0,
+                 data: [
+                 {% for i in datos_registro %}
+                 Math.round({{i.0.4|floatformat:0}}/1000000),                   
+                 {% endfor %}
+                 Math.round({{ datos_finales_2.3|floatformat:0 }}/1000000),
+                 ]
+             },
 
-                labels: [
-                    {% for i in fechas %}
-                    '{{i}}',                   
-                    {% endfor %}
-                    'Hoy'
-                    ],
-                datasets: [
+             {
+                 label: 'Margen antes de retiro',
+                 backgroundColor: 'rgb(24, 40, 230, 0.5)',
+                 borderColor: 'rgb(24, 40, 230)',
+                 fill: '-1',
+                 borderWidth: 1,
+                 lineTension: 0,
+                 data: [
+                 {% for i in datos_registro  %}
+                 Math.round({{i.0.2|floatformat:0}}/1000000),  
+                                  
+                 {% endfor %}
+                 Math.round({{datos_finales_2.4|floatformat:0 }}/1000000),
+                 ]
+             },
 
-                {
-                    label: 'Margen final',
-                    backgroundColor: 'rgb(24, 230, 52, 0.5)',
-                    borderColor: 'rgb(24, 230, 52)',
-                    fill: true,
-                    borderWidth: 1,
-                    lineTension: 0,
-                    data: [
-                    {% for i in datos_registro %}
-                    Math.round({{i.0.3|floatformat:0}}/1000000),                   
-                    {% endfor %}
-                    Math.round({{datos_finales_2.2|floatformat:0 }}/1000000),
-                    ]
-                },
+             ],
 
-                {
-                    label: 'Margen antes de descuento',
-                    backgroundColor: 'rgb(230, 214, 24, 0.5)',
-                    borderColor: 'rgb(230, 214, 24)',
-                    fill: '-1',
-                    borderWidth: 1,
-                    lineTension: 0,
-                    data: [
-                    {% for i in datos_registro %}
-                    Math.round({{i.0.4|floatformat:0}}/1000000),                   
-                    {% endfor %}
-                    Math.round({{ datos_finales_2.3|floatformat:0 }}/1000000),
-                    ]
-                },
+         },
 
-                {
-                    label: 'Margen antes de retiro',
-                    backgroundColor: 'rgb(24, 40, 230, 0.5)',
-                    borderColor: 'rgb(24, 40, 230)',
-                    fill: '-1',
-                    borderWidth: 1,
-                    lineTension: 0,
-                    data: [
-                    {% for i in datos_registro  %}
-                    Math.round({{i.0.2|floatformat:0}}/1000000),  
-                                     
-                    {% endfor %}
-                    Math.round({{datos_finales_2.4|floatformat:0 }}/1000000),
-                    ]
-                },
+         // Configuration options go here
+         options: {
 
-                ],
+             scales: {
 
-            },
+                 xAxes: [
+                     {
 
-            // Configuration options go here
-            options: {
+                         stacked: true,
+                         display: false,
 
-                scales: {
+                     }
+                 ],
+                 yAxes: [
+                     {
+                         ticks: {
+                             min: 0,
+                             stepSize: 50,
+                             callback: function(label, index, labels) {
+                                 return '$ '+label+ ' M';
+                                 
+                             }
+                         },
+                         scaleLabel: {
+                             display: true,
+                             labelString: '1M = $1.000.000'
+                         },
 
-                    xAxes: [
-                        {
+                         stacked: false
+                     }
+                 ],
+             },
+         }
 
-                            stacked: true,
-                            display: false,
+     });
+     
+</script>
+ 
 
-                        }
-                    ],
-                    yAxes: [
-                        {
-                            ticks: {
-                                min: 0,
-                                stepSize: 50,
-                                callback: function(label, index, labels) {
-                                    return '$ '+label+ ' M';
-                                    
-                                }
-                            },
-                            scaleLabel: {
-                                display: true,
-                                labelString: '1M = $1.000.000'
-                            },
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+<script>
+ var ctx = document.getElementById('myChart2').getContext('2d');
+ var chart = new Chart(ctx, {
+     // The type of chart we want to create
+     type: 'line',
 
-                            stacked: false
-                        }
-                    ],
-                },
-            }
+     // The data for our dataset
+     data: {
+         labels: [
+             {% for i in fechas %}
+             '{{i}}',                   
+             {% endfor %}
+             'Hoy'
+             ],
+         datasets: [{
+             label: 'Costo del proyecto',
+             backgroundColor: 'rgb(206, 38, 21 , 0.5)',
+             borderColor: 'rgb(206, 38, 21 )',
+             fill: true,
+             borderWidth: 1,
+             lineTension: 0,
+             data: [
+             {% for i in datos_registro  %}
+             Math.round({{i.0.1|floatformat:0}}/1000000),
+             {% endfor %}  
+             Math.round({{ datos_finales.0.1|floatformat:0 }}/1000000),                 
+             
+             ]
+         },
+         {
+             label: 'Ingresos del proyecto',
+             backgroundColor: 'rgb(35, 211, 27 , 0.5)',
+             borderColor: 'rgb(35, 211, 27)',
+             fill: '-1',
+             borderWidth: 1,
+             lineTension: 0,
+             data: [
+             {% for i in datos_registro %}
+             Math.round({{i.0.0|floatformat:0}}/1000000),                   
+             {% endfor %}
+             Math.round({{ datos_finales.0.0|floatformat:0 }}/1000000),
+             ]
+         }],
 
-        });
-        
+     },
 
-        
-    </script>
+     // Configuration options go here
+     options: {
 
+         scales: {
 
-    </div>
+             xAxes: [
+                 {
 
-    <div style="margin-top: 5px;">
+                     stacked: true,
+                     display: false,
 
-        <div style= "text-align: center;">
-            <small><strong>-- Variación costos e ingresos --</strong></small>
-        </div>
+                 }
+             ],
+             yAxes: [
+                 {
+                     ticks: {
+                         min: 2000,
+                         stepSize: 100,
+                         callback: function(label, index, labels) {
+                             return '$ '+label + ' M';
+                             
+                         }
+                     },
+                     scaleLabel: {
+                         display: true,
+                         labelString: '1 M = $1.000.000'
+                     },
 
-        <canvas id="myChart2" height="70px" width="auto"></canvas>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
-    <script>
-        var ctx = document.getElementById('myChart2').getContext('2d');
-        var chart = new Chart(ctx, {
-            // The type of chart we want to create
-            type: 'line',
+                     stacked: false
+                 }
+             ],
+         },
+         }
+ });
 
-            // The data for our dataset
-            data: {
-                labels: [
-                    {% for i in fechas %}
-                    '{{i}}',                   
-                    {% endfor %}
-                    'Hoy'
-                    ],
-                datasets: [{
-                    label: 'Costo del proyecto',
-                    backgroundColor: 'rgb(206, 38, 21 , 0.5)',
-                    borderColor: 'rgb(206, 38, 21 )',
-                    fill: true,
-                    borderWidth: 1,
-                    lineTension: 0,
-                    data: [
-                    {% for i in datos_registro  %}
-                    Math.round({{i.0.1|floatformat:0}}/1000000),
-                    {% endfor %}  
-                    Math.round({{ datos_finales.0.1|floatformat:0 }}/1000000),                 
-                    
-                    ]
-                },
-                {
-                    label: 'Ingresos del proyecto',
-                    backgroundColor: 'rgb(35, 211, 27 , 0.5)',
-                    borderColor: 'rgb(35, 211, 27)',
-                    fill: '-1',
-                    borderWidth: 1,
-                    lineTension: 0,
-                    data: [
-                    {% for i in datos_registro %}
-                    Math.round({{i.0.0|floatformat:0}}/1000000),                   
-                    {% endfor %}
-                    Math.round({{ datos_finales.0.0|floatformat:0 }}/1000000),
-                    ]
-                }],
-
-            },
-
-            // Configuration options go here
-            options: {
-
-                scales: {
-
-                    xAxes: [
-                        {
-
-                            stacked: true,
-                            display: false,
-
-                        }
-                    ],
-                    yAxes: [
-                        {
-                            ticks: {
-                                min: 2000,
-                                stepSize: 100,
-                                callback: function(label, index, labels) {
-                                    return '$ '+label + ' M';
-                                    
-                                }
-                            },
-                            scaleLabel: {
-                                display: true,
-                                labelString: '1 M = $1.000.000'
-                            },
-
-                            stacked: false
-                        }
-                    ],
-                },
-                }
-        });
-        
-
-        
-    </script>
+</script>
 
 
-    </div>
-
-    <div>
-        <p style="font-family: Arial, Helvetica, sans-serif;"> <small>-- Link<strong>P</strong> --</small> </p>
-
-     </div>
-
-
-</div>
 {% endblock %}

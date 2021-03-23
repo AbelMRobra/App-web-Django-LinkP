@@ -1,4 +1,4 @@
-{% extends "users/inicio.html" %}
+{% extends "users/inicio2.html" %}
 
 {% load static %}
 {% load humanize %}
@@ -6,24 +6,35 @@
 {% block content %}
 
 
+<div class="container-fluid r-aside">
+    <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+            <h3 class="text-themecolor">Resumen de honorarios</h3>
+        </div>
+
+        <div class="col-md-7 align-self-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+                <li class="breadcrumb-item">Resumen</li>
+            </ol>
+        </div>
+    </div>
+</div>
+
 
 <div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;" > 
 
     <div >
-        <h2 style="font-family: Arial, Helvetica, sans-serif;">Resumen de honorarios</h2>
+        <h2>Resumen de honorarios</h2>
 
-        <small style="font-family: Arial, Helvetica, sans-serif;"><b>Modulo:</b> Honorarios </small>
-
-
-        <b><hr class = "my-4" style="width: 100%; "></b>
-    
     </div>
 
     <div style="margin-bottom: 2rem;">
-        <h5 style="font-family: Arial, Helvetica, sans-serif;"><a href="{% url 'Modificar Honorarios' %}"><img src="{% static 'img/documento.png' %}" alt="" style="max-width:20px; height:auto;"></a> Detalle de honorarios</h5>
+        <h5><a href="{% url 'Modificar Honorarios' %}"class="fa fa-pencil-square-o fa-lg"></a> Detalle de honorarios</h5>
     </div>
 
-    <div class="card border-success mb-3" style="display: inline-block; width: 310px; height: 340px; vertical-align: top; margin: 10px;">
+    <div class="row">
+    <div class="card bg-light  mb-3 col-lg-4 col-12 border" style=" vertical-align: top;">
         <div class="card-header">Ingresos</div>  
         <div class="card-body">
             <h6>Cuotas a cobrar: <small>$ {{honorarios.0.cuotas|floatformat:0|intcomma}}</small></h6>
@@ -36,7 +47,7 @@
       </div>
 
 
-        <div class="card border-danger mb-3" style="display: inline-block; width: 310px; height: 340px; vertical-align: top; margin: 10px;">
+        <div class="card bg-light  mb-3 col-lg-4 col-12 border" style=" vertical-align: top;">
             <div class="card-header">Costos</div>
             <div class="card-body">
                 <h6>Gastos de estr.y GIO: <small>$ {{honorarios.0.estructura_gio|floatformat:0|intcomma}}</small></h6>
@@ -51,7 +62,7 @@
             </div>
           </div>
 
-          <div class="card border-primary mb-3" style="display: inline-block; width: 310px; height: 340px; vertical-align: top; margin: 10px;">
+          <div class="card bg-light  mb-3 col-lg-4 col-12 border" style=" vertical-align: top;">
             <div class="card-header">Beneficio</div>
             <div class="card-body">
                 <h6 style="margin-bottom: 10px;">Caja actual: <small>$ {{honorarios.0.caja_actual|floatformat:0|intcomma}}</small></h6>
@@ -91,49 +102,46 @@
 
             </div>
           </div>
+          </div>
 
     <div style="text-align: left;">
         <small>* Estimación a 48 meses </small>
     </div>
     
 
-    <b><hr class = "my-4" style="width: 100%; "></b>
-
-
+ 
     <div>
 
         <div style="margin-bottom: 2rem;">
-            <h5 style="font-family: Arial, Helvetica, sans-serif;">Disponibilidades por proyecto</h5>
+            <h5>Disponibilidades por proyecto</h5>
         </div>
-        <table class = "table table-hover" style="text-align: center;">
+        <table class = "table" style="text-align: center; width: 99%;">
             <thead>
     
                 <tr class = "table-dark">
-                    <th scope = "row" style="vertical-align: middle;" rowspan="2">  PROYECTO </th>
-                    <th scope = "row" style="vertical-align: middle;" rowspan="2"> CONT.PROM.DISP</th>                   
-                    <th scope = "row" style="vertical-align: middle;" colspan="4"> UNIDADES PENDIENTES</th>
-                    <th scope = "row" style="vertical-align: middle;" colspan="2"> CTAS CTES</th>
+                    <th scope = "row" style="vertical-align: middle;" rowspan="2">  Proyecto </th>
+                    <th scope = "row" style="vertical-align: middle;" rowspan="2"> Cont.Prom.disp</th>                   
+                    <th scope = "row" style="vertical-align: middle;" colspan="4"> Unidades pendientes</th>
+                    <th scope = "row" style="vertical-align: middle;" colspan="2"> Ctas Ctes</th>
                     <th scope = "row" style="vertical-align: middle;" rowspan="2"> TOTAL</th>
 
                 </tr>
 
                 <tr class = "table-dark">
 
-                    <th scope = "row" style="vertical-align: middle;"> DEPART.</th>
-                    <th scope = "row" style="vertical-align: middle;"> COCHERAS</th> 
+                    <th scope = "row" style="vertical-align: middle;"> Depart.</th>
+                    <th scope = "row" style="vertical-align: middle;"> Cocheras</th> 
                     <th scope = "row" style="vertical-align: middle;"> M2</th> 
-                    <th scope = "row" style="vertical-align: middle;"> TOTAL Hº</th>
-                    <th scope = "row" style="vertical-align: middle;"> ADEUDADO Hº</th>
-                    <th scope = "row" style="vertical-align: middle;"> PENDIENTE Hº</th>                    
+                    <th scope = "row" style="vertical-align: middle;"> Total Hº</th>
+                    <th scope = "row" style="vertical-align: middle;"> Adeudado Hº</th>
+                    <th scope = "row" style="vertical-align: middle;"> Pendiente Hº</th>                    
   
                 </tr>
             </thead>
             {% for i in datos_totales %}   
             <tbody>
     
-                <tr class = "table-light">
-
-
+                <tr>
                     <td style="vertical-align: middle;">
                         
                         <img src="{{i.0.0.iamgen.url}}"  class="img-fluid" alt="..." style="max-width: 70px; height:auto;"> 
@@ -142,7 +150,6 @@
 
                             <small style="color: rgb({{i.0.color}})"><b>{{ i.0.nombre}}</b></small>
                         </div>
-                    
                     
                     </td>
                     <td class="priority-4" style="width: 10%; vertical-align: middle;">$ {{ i.5|floatformat:0|intcomma }}</td>                      
@@ -156,27 +163,11 @@
                     
 
                 </tr>
+                {% endfor %}
             </tbody>
-
-            {% endfor %}
-
-            
-
         </table> 
-
-
           
    </div>
-
-   <b><hr class = "my-4" style="width: 100%; "></b> 
-
-
-
-    <div>
-        <p style="font-family: Arial, Helvetica, sans-serif;"> <small>-- Link<strong>P</strong> --</small> </p>
-
-     </div>
-
 
 </div>
 {% endblock %}

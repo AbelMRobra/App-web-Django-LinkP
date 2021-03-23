@@ -87,10 +87,9 @@
                                     <td>${{i.0.pago_pesos|floatformat:0|intcomma}} </td>
                                     <td>{{i.0.documento_1}}</td>
                                     <td>{{i.0.documento_2}}</td>
-                                    <td><a href="{% url 'Editar pagos' i.0.id %}" class="btn btn-sm btn-info">Editar</a>
+                                    <td><a href="{% url 'Editar pagos' i.0.id %}" ><div class="fa fa-pencil-square-o fa-lg"></div></a>
                                     </td>
-                                    <td><a href="{% url 'Eliminar pago' i.0.id %}"
-                                            class="btn btn-sm btn-danger">Eliminar</a></td>
+                                    <td><a href="{% url 'Eliminar pago' i.0.id %}"><div class="fa fa-trash fa-lg"></div></a></td>
 
                                 </tr>
                                 {% endfor %}

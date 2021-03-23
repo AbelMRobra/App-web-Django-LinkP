@@ -1,159 +1,185 @@
-{% extends "users/inicio.html" %}
+{% extends "users/inicio2.html" %}
 
 {% load static %}
 {% load humanize %}
 
 {% block content %}
 
-<div class = "jumbotron" style="background-color: white; margin-bottom: 0px;">
-    <div style="text-align: center;">
-        <h2>Panel de control - Unidades</h2>
-        <small>Trabajo en conjunto: </small><small><strong>FINANZAS - VENTAS</strong></small>  
+<div class="container-fluid r-aside">
+  <div class="row page-titles">
+    <div class="col-md-5 align-self-center">
+      <h3 class="text-themecolor">Panel de control de unidades</h3>
     </div>
 
-    {% if datos.mensaje == 0 or datos.mensaje == 1 %}
-
-    <b><hr class = "my-4" style="width: 100%; border-color: black ;"></b>
-
-    
-    
-    <div style="margin-bottom: 2rem;">
-
-        <h3>Analisis de unidades {% if datos.graficos %} {{ datos.proyecto.nombre }} {% endif %}</h3>
-        <small> Seleccione las preferencias para buscar un listado de unidades que cumplan ese requerimiento</small>
-
+    <div class="col-md-7 align-self-center">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+        <li class="breadcrumb-item">Panel de control</li>
+      </ol>
     </div>
+  </div>
+</div>
 
-    
-    
-    <div style="text-align: center;" >
-        <form method="POST">
+<div class="row">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body row">
+        <div class="col-12 justify-content-center">
 
-            {% csrf_token %}
+          {% if datos.mensaje == 0 or datos.mensaje == 1 %}
 
-            <div style="text-align: left; display: inline-block; vertical-align: top;">
+          <div style="margin-bottom: 2rem;">
 
-            <h6>Proyectos</h6>
+            <h3>Analisis de unidades {% if datos.graficos %} {{ datos.proyecto.nombre }} {% endif %}</h3>
+            <small> Seleccione las preferencias para buscar un listado de unidades que cumplan ese requerimiento</small>
 
-            {% for i in datos.proyectos %}
+          </div>
 
+          <div class="row d-flex justify-content-center">
+            <div class="col col-md-12 col-lg-8">
+              <div class="row">
+                <div class="col bg-light border rounded p-3">
+                  <form method="POST">
 
-            <div class="custom-control custom-checkbox">           
-                <input type="checkbox" name="{{i.nombre}}" class="custom-control-input" id="customCheck{{i.id}}" checked="">
-                <label class="custom-control-label" for="customCheck{{i.id}}">{{i.nombre}}</label>
-        
+                    {% csrf_token %}
+                    <div class="row">
+                      <div class="col-10 col-md-4 col-lg-4">
+
+                        <h6>Proyectos</h6>
+
+                        {% for i in datos.proyectos %}
+
+                        <div>
+                          <input type="checkbox" name="{{i.nombre}}" id="customCheck{{i.id}}" checked=""
+                            class="filled-in chk-col-light-blue">
+                          <label for="customCheck{{i.id}}">{{i.nombre}}</label>
+
+                        </div>
+
+                        {% endfor %}
+                      </div>
+
+                      <div class="col-10 col-md-4 col-lg-4">
+
+                        <h6>Asignación</h6>
+
+                        <div>
+                          <input type="checkbox" name="Asignacion1" value="PROYECTO"
+                            class="filled-in chk-col-light-blue" id="customCheckProyecto" checked="">
+                          <label for="customCheckProyecto">PROYECTO</label>
+
+                        </div>
+                        <div>
+                          <input type="checkbox" name="Asignacion2" value="HON. LINK"
+                            class="filled-in chk-col-light-blue" id="customCheckLink" checked="">
+                          <label for="customCheckLink">HONOR. LINK</label>
+
+                        </div>
+                        <div>
+                          <input type="checkbox" name="Asignacion3" value="TERRENO" class="filled-in chk-col-light-blue"
+                            id="customCheckTerreno" checked="">
+                          <label for="customCheckTerreno">TERRENO</label>
+
+                        </div>
+
+                        <div>
+                          <input type="checkbox" name="Asignacion4" value="SOCIOS" class="filled-in chk-col-light-blue"
+                            id="customCheckSocios" checked="">
+                          <label for="customCheckSocios">SOCIOS</label>
+
+                        </div>
+                      </div>
+
+                      <div class="col-10 col-md-4 col-lg-4">
+
+                        <h6>Disponibilidad</h6>
+
+                        <div>
+                          <input type="checkbox" name="Disponibilidad" class="filled-in chk-col-light-blue"
+                            id="customCheckDisp" value="DISPONIBLE" checked="">
+                          <label for="customCheckDisp">DISPONIBLE</label>
+
+                        </div>
+                        <div>
+                          <input type="checkbox" name="Disponibilidad2" class="filled-in chk-col-light-blue"
+                            id="customCheckVend" value="VENDIDA" checked="">
+                          <label for="customCheckVend">VENDIDA</label>
+                        </div>
+
+                        <div>
+                          <input type="checkbox" name="Disponibilidad3" class="filled-in chk-col-light-blue"
+                            id="customCheckSeñ" value="SEÑADA" checked="">
+                          <label for="customCheckSeñ">SEÑADA</label>
+                        </div>
+                      </div>
+
+                    </div>
+                    <div class="row d-flex justify-content-center mt-3">
+                      <div class="col-lg-6 text-center">
+                        <button class="btn btn-info" type="submit" style="margin-top: 1%;">Buscar</button>
+                      </div>
+                    </div>
+
+                  </form>
+
+                </div>
               </div>
-
-              {% endfor %}
             </div>
-
-            <div style="text-align: left; display: inline-block; margin-left: 15%; vertical-align: top;">
-
-                <h6>Asignación</h6>
-
-                <div class="custom-control custom-checkbox">
-                    <input type="checkbox" name="Asignacion1" value="PROYECTO" class="custom-control-input" id="customCheckProyecto" checked="">
-                    <label class="custom-control-label" for="customCheckProyecto">PROYECTO</label>
-    
-                  </div>
-                  <div class="custom-control custom-checkbox">
-                    <input type="checkbox" name="Asignacion2" value="HON. LINK" class="custom-control-input" id="customCheckLink" checked="">
-                    <label class="custom-control-label" for="customCheckLink">HONOR. LINK</label>
-    
-                  </div>
-                  <div class="custom-control custom-checkbox">
-                    <input type="checkbox" name="Asignacion3" value="TERRENO" class="custom-control-input" id="customCheckTerreno" checked="">
-                    <label class="custom-control-label" for="customCheckTerreno">TERRENO</label>
-    
-                  </div>
-
-                  <div class="custom-control custom-checkbox">
-                    <input type="checkbox" name="Asignacion4" value="SOCIOS" class="custom-control-input" id="customCheckSocios" checked="">
-                    <label class="custom-control-label" for="customCheckSocios">SOCIOS</label>
-    
-                  </div>
-
-
-            </div>
-
-            <div style="text-align: left; display: inline-block; margin-left: 15%; vertical-align: top;">
-
-                <h6>Disponibilidad</h6>
-
-                <div class="custom-control custom-checkbox">
-                    <input type="checkbox" name="Disponibilidad" class="custom-control-input" id="customCheckDisp" value="DISPONIBLE" checked="">
-                    <label class="custom-control-label" for="customCheckDisp">DISPONIBLE</label>
-    
-                  </div>
-                  <div class="custom-control custom-checkbox">
-                    <input type="checkbox" name="Disponibilidad2" class="custom-control-input" id="customCheckVend" value="VENDIDA" checked="">
-                    <label class="custom-control-label" for="customCheckVend">VENDIDA</label>
-    
-                  </div>
-
-                  <div class="custom-control custom-checkbox">
-                    <input type="checkbox" name="Disponibilidad3" class="custom-control-input" id="customCheckSeñ" value="SEÑADA" checked="">
-                    <label class="custom-control-label" for="customCheckSeñ">SEÑADA</label>
-    
-                  </div>
- 
-            </div>
-
-              <div>
-                <button class="btn btn-dark" type="submit" style="margin-top: 1%;">Buscar</button>          
-            </div>
-            
-        </form>
-
-        
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
+</div>
 
-    {% endif %}
+{% endif %}
 
-    {% if datos.datos_unidades %}
+{% if datos.datos_unidades %}
+<div class="row">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body row">
+        <div class="col-12 justify-content-center">
 
-    <b><hr class = "my-4" style="width: 100%; border-color: black ;"></b>
+          <h3>Resumen de datos</h3>
 
-    <h3>Resumen de datos</h3>
+          <div>
 
-    <div>
-
-    <h6>Cantidad de unidades: <small>{{datos.otros_datos.0.1}}</small> </h6>
-    <h6>Departamentos: <small>{{datos.otros_datos.0.2}}</small> </h6>
-    <h6>Cocheras: <small>{{datos.otros_datos.0.3}} </small></h6>
-    <h6>Superficie total de las unidades: <small>{{datos.otros_datos.0.0|floatformat:2}}m2</small> </h6>
-    <h6>Monto total de las unidades: <small>$ {{datos.otros_datos.0.4|floatformat:0|intcomma}}</small> </h6>
+            <h6>Cantidad de unidades: <small>{{datos.otros_datos.0.1}}</small> </h6>
+            <h6>Departamentos: <small>{{datos.otros_datos.0.2}}</small> </h6>
+            <h6>Cocheras: <small>{{datos.otros_datos.0.3}} </small></h6>
+            <h6>Superficie total de las unidades: <small>{{datos.otros_datos.0.0|floatformat:2}}m2</small> </h6>
+            <h6>Monto total de las unidades: <small>$ {{datos.otros_datos.0.4|floatformat:0|intcomma}}</small> </h6>
 
 
-    </div>
+          </div>
 
 
 
-    <b><hr class = "my-4" style="width: 100%; border-color: black ;"></b>
+          <b>
+            <hr class="my-4" style="width: 100%; border-color: black ;">
+          </b>
 
-    <h6>Listado de unidades</h6>
+          <h6>Listado de unidades</h6>
 
-    <table class = "table table-hover" style="text-align: center; margin-top: 2%;">
-        <thead>
+          <table id="example" class="table table-striped table-bordered" style="width:100%">
+            <thead>
+              <tr>
+                <th>Proyecto </th>
+                <th>Ubicacion </th>
+                <th>Tipo</th>
+                <th>Superficie</th>
+                <th>Estado</th>
+                <th>P. Contado</th>
+                <th>Asignacion</th>
+                <th>Editar</th>
+              </tr>
+            </thead>
 
-            <tr class = "table-dark">
-                <th scope = "row"> PROYECTO </th>
-                <th scope = "row" colspan="2"> UBICACIÓN </th>
-                <th scope = "row"> TIPO </th>
-                <th scope = "row"> SUPERFICIE </th>
-                <th scope = "row"> ESTADO </th>
-                <th scope = "row"> P. CONTADO </th>
-                <th scope = "row">ASIGNACIÓN </th>
-                <th scope = "row">EDITAR </th>
-                 
+            <tbody>
 
-            </tr>
-        </thead>
-
-        <tbody>   
-
-            {% for i in datos.datos_unidades %}
-            <tr class = "table-light">
+              {% for i in datos.datos_unidades %}
+              <tr>
                 <td> <b>{{i.0.proyecto}}</b></td>
                 <td> {{i.0.piso_unidad}} </td>
                 <td> {{i.0.nombre_unidad}} </td>
@@ -180,35 +206,48 @@
 
                 <td> <a class="btn btn-sm btn-success" href="{% url 'Editar asignacion' i.0.id %}">Editar</a> </td>
 
-            </tr>
-            {% endfor %}
-        </tbody>
-     
-
-
-    </table>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
 
 
 
-    {% endif %}
+          {% endif %}
 
-    {% if datos.mensaje == 1 %}
+          {% if datos.mensaje == 1 %}
 
-    <div style="text-align: center; margin-top: 10%;">
-    
-        <h6>No hay unidades que cumplan esas condiciones!</h6>
-    
+          <div style="text-align: center; margin-top: 10%;">
+
+            <h6>No hay unidades que cumplan esas condiciones!</h6>
+
+          </div>
+
+          {% endif %}
+
+        </div>
+      </div>
     </div>
-
-    {% endif %}
-
-    <div style="text-align: center; margin-top: 2rem;">
-        <p> <small>-- Link<strong>P</strong> --</small> </p>
-
-     </div>
-
-                    
+  </div>
 </div>
- 
-    
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js" defer></script>
+<script src="https://cdn.datatables.net/1.10.23/js/dataTables.bootstrap4.min.js" defer></script>
+
+
+
+<script>
+  $(document).ready(function () {
+    $('#example').DataTable({
+      "paging": false,
+      "ordering": false,
+      "info": false,
+
+    });
+  });
+</script>
+
+
 {% endblock %}

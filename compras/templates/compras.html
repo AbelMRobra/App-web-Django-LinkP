@@ -75,6 +75,7 @@
                     <table id="example" class="table " style="width:100%">
                         <thead>
                             <tr>
+                                <th> Fecha </th>
                                 {% if proyecto == 0%}
                                 <th>Proyecto</th>
                                 {% endif %}
@@ -83,7 +84,7 @@
                                 <th> Cant.</th>
                                 <th> Precio </th>
                                 <th> Total </th>
-                                <th> Fecha </th>
+                                
                                 <th> Rend.</th>
                             </tr>
                         </thead>
@@ -93,6 +94,7 @@
                             {% for i in compras %}
 
                             <tr>
+                                <td> {{i.1.fecha_c|date:"d-m-Y"}} </td>
                                 {% if proyecto == 0%}
                                 <td><b>{{i.1.proyecto|lower|capfirst}}</b> </td>
                                 {% endif %}
@@ -106,7 +108,7 @@
                                 <td> {{i.1.cantidad|floatformat:0|intcomma}}</td>
                                 <td> ${{i.1.precio|floatformat:0|intcomma}}</td>
                                 <td> ${{i.2|floatformat:0|intcomma}}</td>
-                                <td> {{i.1.fecha_c|date:"J-m-Y"}} </td>
+                                
                                 <td>
                                     <div style="color: rgb({% is_past_evaluacion1 i.3 %});">{{i.3|floatformat:2}}%</div>
                                     <div style="color: rgb({% is_past_evaluacion2 i.1.partida %});">

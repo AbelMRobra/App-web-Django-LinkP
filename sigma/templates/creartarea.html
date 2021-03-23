@@ -1,120 +1,136 @@
-{% extends "users/inicio.html" %}
+{% extends "users/inicio2.html" %}
 
 {% load static %}
 {% load humanize %}
 
 {% block content %}
 
-<div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;">
+<div class="container-fluid r-aside">
 
-    <h3 style="font-family: Arial, Helvetica, sans-serif;">Formulario para crear tarea</h3>
-    <small style="font-family: Arial, Helvetica, sans-serif;"><b>Modulo:</b> Control de rendimiento </small>
-
-
-
-    <form  role="form"  enctype="multipart/form-data" action="" method="POST" id="upload-image-form" style="margin: 30px;"> 
-        {% csrf_token %}
-
-
-        <div style="margin: 5px">
-
-            <div style="display: inline-block; margin: 10px; width: 200px;">
-
-                <label for="nombre"><h6>Nombre de la tarea</h6></label>
-    
-            </div>
-            
-            <div style="display: inline-block; margin: 10px; ">
-    
-                <input name="nombre" type="text" class="form-control form-control" placeholder="Nombre de la tarea" style="width: 300px;">
-    
-            </div>
-
-
-
+    <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+            <h3 class="text-themecolor">Formulario para crear cuentas corrientes</h3>
         </div>
 
-        <div style="margin: 5px">
-
-            <div style="display: inline-block; margin: 10px; width: 200px;">
-
-                <label for="unidad"><h6>Unidad</h6></label>
-    
-            </div>
-            
-            <div style="display: inline-block; margin: 10px; ">
-    
-                <input name="unidad" type="text" class="form-control form-control" placeholder="Ejemplo M2, M3, UN" style="width: 300px;">
-    
-            </div>
-
-
+        <div class="col-md-7 align-self-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'tareas' %}">Panel</a>
+                </li>
+                <li class="breadcrumb-item">Crear cuenta</li>
+            </ol>
         </div>
+    </div>
+</div>
 
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body row">
+                <div class="col-12 justify-content-center">
 
+                    <div class="row d-flex justify-content-center">
+                        <div class="col col-md-12 col-lg-12 text-center">
+                            <h3>Formulario para crear tarea</h3>
 
-        <div style="margin: 5px">
-
-            <div style="display: inline-block; margin: 10px;  width: 200px;">
-
-                <label for="rend"><h6>Rendimiento esperado</h6></label>
-    
-            </div>
-    
-            <div style="display: inline-block; margin: 10px; "> 
-    
-                <div class="input-group mb-3">
-                    
-                    <input name="rend" type="number" step="0.01" class="form-control" aria-label="Amount (to the nearest dollar)" style="width: 100px;">
-                    <div class="input-group-append">
-                      <span class="input-group-text">Hs/Unidad</span>
+                        </div>
                     </div>
-                  </div>
+                    <div class="row d-flex justify-content-center">
+                        <div class="col col-md-12 col-lg-6">
+                            <div class="row">
+                                <div class="col bg-light border rounded">
 
+
+                                    <form role="form" enctype="multipart/form-data" action="" method="POST"
+                                        id="upload-image-form">
+                                        {% csrf_token %}
+
+
+                                        <div class="mt-2">
+                                            <label for="nombre">
+                                                <h6>Nombre de la tarea</h6>
+                                            </label>
+                                        </div>
+                                        <div class="row d-flex justify-content-center mt-1">
+                                            <div class="col col-md-10 col-lg-10">
+                                                <div>
+                                                    <input name="nombre" type="text" class="form-control form-control"
+                                                        placeholder="Nombre de la tarea">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="mt-2">
+                                            <label for="unidad">
+                                                <h6>Unidad</h6>
+                                            </label>
+                                        </div>
+
+                                        <div class="row d-flex justify-content-center mt-1">
+                                            <div class="col col-md-10 col-lg-10">
+                                                <div>
+                                                    <input name="unidad" type="text" class="form-control form-control"
+                                                        placeholder="Ejemplo M2, M3, UN">
+
+                                                </div>
+
+
+                                            </div>
+                                        </div>
+
+                                        <div class="mt-2">
+                                            <label for="rend">
+                                                <h6>Rendimiento esperado</h6>
+                                            </label>
+                                        </div>
+
+                                        <div class="row d-flex justify-content-center mt-1">
+                                            <div class="col col-md-10 col-lg-10">
+                                                <div>
+                                                    <div class="input-group mb-3">
+                                                        <input name="rend" type="number" step="0.01"
+                                                            class="form-control"
+                                                            aria-label="Amount (to the nearest dollar)">
+                                                        <div class="input-group-append">
+                                                            <span class="input-group-text">Hs/Unidad</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="mt-2">
+                                            <label for="descripcion">
+                                                <h6>Descripción</h6>
+                                            </label>
+                                        </div>
+
+                                        <div class="row d-flex justify-content-center mt-1">
+                                            <div class="col col-md-10 col-lg-10">
+                                                <div>
+                                                    <textarea name="descripcion" class="form-control"
+                                                        id="exampleTextarea"></textarea>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row d-flex justify-content-center my-3">
+                                            <div class="col-lg-6 text-center">
+
+                                                <button type="submit" class="btn btn-primary">Subir</button>
+                                            </div>
+                                        </div>
+
+                                        {{ form.as_p }}
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-
-
         </div>
-
-        <div  style="margin: 5px,">
-
-            <div style="display: inline-block; margin: 10px; width: 200px; vertical-align: middle;">
-
-                <label for="descripcion"><h6>Descripción</h6></label>
-    
-            </div>
-            
-            <div style="display: inline-block; margin: 10px;  vertical-align: middle;">
-    
-                <textarea name="descripcion" class="form-control" id="exampleTextarea" rows="3" style="width: 300px"></textarea>
-
-            </div>
-
-
-        </div>
-
-        
-
-
-
-          <button type="submit" class="btn btn-primary">Subir</button>
-
-
-        {{ form.as_p }}
-    </form>
-
-    <a class = "btn btn-secondary" href="{% url 'tareas' %}"> <img src="{% static 'img/flecha-izquierda.png' %}" alt="" style="max-width:20px; height:auto;"> Volver</a>
-        
-
-
-<div style="margin-top: 2rem;">
-    <p> <small>-- Link<strong>P</strong> --</small> </p>
-
- </div>
-    
-
-
-                
+    </div>
 </div>
 
 

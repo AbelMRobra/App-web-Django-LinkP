@@ -1,37 +1,51 @@
-{% extends "users/inicio.html" %}
+{% extends "users/inicio2.html" %}
 
 {% load static %}
 
 {% block content %}
 
-
-<div class = "jumbotron" style="background-color: white; margin-bottom: 0px;">
-
-    <div class = "jumbotron" style="width: 70%; text-align: center; margin-left: 15%;">
-
-        <h3> ¿Está seguro que quiere eliminar la siguiente subtarea?</h3>
-        <h4 style="color: rgb(232, 109, 87);"> {{datos.nombre}}</h4>
-        <h6>Tarea madre: {{datos.vinculacion.nombre}}</h6>
-        <b><hr class = "my-4" style="width: 100%;"></b>
-
-        <div>
-
-            <form method="post">
-                {% csrf_token %}
-
-                <a class = "btn btn-outline-secondary" href="{% url 'tareas' %}"> <img src="{% static 'img/flecha-izquierda.png' %}" alt="" style="max-width:20px; height:auto;"> Volver</a>
-        
-        
-                <button type='submit' class = "btn btn-outline-danger">Eliminar</button>
-                
-            </form>
-
-
+<div class="container-fluid r-aside">
+    <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+            <h3 class="text-themecolor">Eliminar subtarea</h3>
         </div>
 
-        
-
+        <div class="col-md-7 align-self-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'tareas' %}">Panel</a>
+                </li>
+                <li class="breadcrumb-item">Eliminar subtarea</li>
+            </ol>
+        </div>
     </div>
 </div>
 
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body row">
+                <div class="col-12 justify-content-center">
+
+                    <div class="row d-flex justify-content-center">
+                        <div class="col col-md-12 col-lg-12 text-center">
+                            <h3> ¿Está seguro que quiere eliminar la siguiente subtarea?</h3>
+                            <h4 style="color: rgb(232, 109, 87);"> {{datos.nombre}}</h4>
+
+                            <div>
+
+                                <form method="post">
+                                    {% csrf_token %}
+
+                                    <button type='submit' class="btn btn-danger">Eliminar</button>
+
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

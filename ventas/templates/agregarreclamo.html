@@ -6,9 +6,6 @@
 {% block content %}
 
 <div class="container-fluid r-aside">
-    <!-- ============================================================== -->
-    <!-- Cabeza de la pagina -->
-    <!-- ============================================================== -->
     <div class="row page-titles">
         <div class="col-md-5 align-self-center">
             <h3 class="text-themecolor">Agregar reclamo</h3>
@@ -22,230 +19,260 @@
 
             </ol>
         </div>
-
     </div>
+</div>
 
-  </div>
-
-  <div class="row">
+<div class="row">
     <div class="col-12">
         <div class="card">
             <div class="card-body">
                 <div class="d-flex">
                     <div>
                         <h4 class="card-title"><span class="lstick"></span>Formulario del reclamo</h4>
-                        <h6 class="text-muted">Completar todos los datos</h6></div>
-    
+                        <h6 class="text-muted">Completar todos los datos</h6>
+                    </div>
+
                 </div>
 
-    <form  role="form"  enctype="multipart/form-data" action="" method="POST" id="upload-image-form" style="margin: 30px;"> 
-        {% csrf_token %}
+                <div class="row d-flex justify-content-center">
+                    <div class="col col-md-12 col-lg-6">
+                        <div class="row">
+                            <div class="col bg-light border rounded p-4 ">
+
+                                <form role="form" enctype="multipart/form-data" action="" method="POST"
+                                    id="upload-image-form">
+                                    {% csrf_token %}
 
 
-        <div style="margin: 5px">
+                                    <div>
 
-            <div style="display: inline-block; margin: 10px; width: 200px;">
+                                        <label for="numero">
+                                            <h6>Nº del reclamo</h6>
+                                        </label>
 
-                <label for="numero"><h6>Nº del reclamo</h6></label>
-    
+                                    </div>
+
+                                    <div class="row d-flex justify-content-center my-3">
+                                        <div class="col col-md-10 col-lg-10">
+                                            <div>
+
+                                                <input name="numero" type="number" class="form-control form-control"
+                                                    placeholder=".." required="true">
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div>
+
+                                        <label for="numero">
+                                            <h6>Fecha</h6>
+                                        </label>
+
+                                    </div>
+
+                                    <div class="row d-flex justify-content-center my-3">
+                                        <div class="col col-md-10 col-lg-10">
+                                            <div>
+
+                                                <input name="fecha" type="date" class="form-control form-control"
+                                                    required="true">
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div>
+
+                                        <label for="proyecto">
+                                            <h6>Proyecto</h6>
+                                        </label>
+
+                                    </div>
+
+                                    <div class="row d-flex justify-content-center my-3">
+                                        <div class="col col-md-10 col-lg-10">
+                                            <div>
+
+                                                <input name="proyecto" type="search" class="form-control form-control"
+                                                    list="proyectos_postventa">
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div>
+
+                                        <label for="unidad">
+                                            <h6>Unidad</h6>
+                                        </label>
+
+                                    </div>
+
+                                    <div class="row d-flex justify-content-center my-3">
+                                        <div class="col col-md-10 col-lg-10">
+                                            <div>
+
+                                                <input name="unidad" type="text" class="form-control form-control"
+                                                    placeholder="Piso - Numero ">
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div>
+
+                                        <label for="propietario">
+                                            <h6>Propietario</h6>
+                                        </label>
+
+                                    </div>
+
+                                    <div class="row d-flex justify-content-center my-3">
+                                        <div class="col col-md-10 col-lg-10">
+                                            <div>
+
+                                                <input name="propietario" type="text" class="form-control form-control"
+                                                    placeholder="Dueño de la unidad" required="true">
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div>
+
+                                        <label for="usuario">
+                                            <h6>Contacto</h6>
+                                        </label>
+
+                                    </div>
+
+                                    <div class="row d-flex justify-content-center my-3">
+                                        <div class="col col-md-10 col-lg-10">
+                                            <div>
+
+                                                <input name="usuario" type="text" class="form-control form-control"
+                                                    placeholder="Persona quien realiza el reclamo" required="true">
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div>
+
+                                        <label for="telefono">
+                                            <h6>Telefono</h6>
+                                        </label>
+
+                                    </div>
+
+                                    <div class="row d-flex justify-content-center my-3">
+                                        <div class="col col-md-10 col-lg-10">
+                                            <div>
+
+                                                <input name="telefono" type="number" class="form-control form-control"
+                                                    placeholder="Telefono del contacto">
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div>
+
+                                        <label for="email">
+                                            <h6>Email</h6>
+                                        </label>
+
+                                    </div>
+
+                                    <div class="row d-flex justify-content-center my-3">
+                                        <div class="col col-md-10 col-lg-10">
+                                            <div>
+
+                                                <input name="email" type="text" class="form-control form-control"
+                                                    placeholder="Email del contacto">
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div>
+
+                                        <label for="clasificacion">
+                                            <h6>Clasificación</h6>
+                                        </label>
+
+                                    </div>
+
+                                    <div class="row d-flex justify-content-center my-3">
+                                        <div class="col col-md-10 col-lg-10">
+                                            <div>
+
+                                                <input name="clasificacion" type="search"
+                                                    class="form-control form-control" list="clasificacion">
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div>
+
+                                        <label for="descripcion">
+                                            <h6>Descripción</h6>
+                                        </label>
+
+                                    </div>
+
+                                    <div class="row d-flex justify-content-center my-3">
+                                        <div class="col col-md-10 col-lg-10">
+                                            <div>
+                                                <textarea class="form-control" id="exampleTextarea" rows="3"
+                                                name="descripcion"></textarea>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                              
+
+                                    <div class="row d-flex justify-content-center mt-4">
+                                        <div class="col-lg-6 text-center">
+                                            <button type="submit" class="btn btn-primary">Subir</button>
+                                        </div>
+                                    </div>
+                                    {{ form.as_p }}
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            
-            <div style="display: inline-block; margin: 10px; ">
-    
-                <input name="numero" type="number" class="form-control form-control" placeholder=".." style="width: 300px;" required="true">
-    
-            </div>
-
-
-        </div>
-
-        <div style="margin: 5px">
-
-            <div style="display: inline-block; margin: 10px; width: 200px;">
-
-                <label for="numero"><h6>Fecha</h6></label>
-    
-            </div>
-            
-            <div style="display: inline-block; margin: 10px; ">
-    
-                <input name="fecha" type="date" class="form-control form-control"  style="width: 300px;" required="true">
-    
-            </div>
-
-
-        </div>
-
-
-        <div style="margin: 5px">
-
-            <div style="display: inline-block; margin: 10px; width: 200px;">
-
-                <label for="proyecto"><h6>Proyecto</h6></label>
-    
-            </div>
-            
-            <div style="display: inline-block; margin: 10px; ">
-    
-                <input name="proyecto" type="search" class="form-control form-control" list="proyectos_postventa" style="width: 300px;">
-    
-            </div>
-
-
-        </div>
-
-        <div style="margin: 5px">
-
-            <div style="display: inline-block; margin: 10px; width: 200px;">
-
-                <label for="unidad"><h6>Unidad</h6></label>
-    
-            </div>
-            
-            <div style="display: inline-block; margin: 10px; ">
-    
-                <input name="unidad" type="text" class="form-control form-control" placeholder="Piso - Numero " style="width: 300px;">
-    
-            </div>
-
-
-        </div>
-
-        
-
-        <div style="margin: 5px">
-
-            <div style="display: inline-block; margin: 10px; width: 200px;">
-
-                <label for="propietario"><h6>Propietario</h6></label>
-    
-            </div>
-            
-            <div style="display: inline-block; margin: 10px; ">
-    
-                <input name="propietario" type="text" class="form-control form-control" style="width: 300px;" placeholder="Dueño de la unidad" required="true">
-    
-            </div>
-
-
-        </div>
-
-        <div style="margin: 5px">
-
-            <div style="display: inline-block; margin: 10px; width: 200px;">
-
-                <label for="usuario"><h6>Contacto</h6></label>
-    
-            </div>
-            
-            <div style="display: inline-block; margin: 10px; ">
-    
-                <input name="usuario" type="text" class="form-control form-control" style="width: 300px;" placeholder="Persona quien realiza el reclamo" required="true">
-    
-            </div>
-
-
-        </div>
-
-        <div style="margin: 5px">
-
-            <div style="display: inline-block; margin: 10px; width: 200px;">
-
-                <label for="telefono"><h6>Telefono</h6></label>
-    
-            </div>
-            
-            <div style="display: inline-block; margin: 10px; ">
-    
-                <input name="telefono" type="number" class="form-control form-control" placeholder="Telefono del contacto" style="width: 300px;">
-    
-            </div>
-
-
-        </div>
-
-        <div style="margin: 5px">
-
-            <div style="display: inline-block; margin: 10px; width: 200px;">
-
-                <label for="email"><h6>Email</h6></label>
-    
-            </div>
-            
-            <div style="display: inline-block; margin: 10px; ">
-    
-                <input name="email" type="text" class="form-control form-control" placeholder="Email del contacto" style="width: 300px;" >
-    
-            </div>
-
-
-        </div>
-
-
-        <div style="margin: 5px">
-
-            <div style="display: inline-block; margin: 10px; width: 200px;">
-
-                <label for="clasificacion"><h6>Clasificación</h6></label>
-    
-            </div>
-            
-            <div style="display: inline-block; margin: 10px; ">
-    
-                <input name="clasificacion" type="search" class="form-control form-control" list="clasificacion" style="width: 300px;">
-    
-            </div>
-
-
-        </div>
-
-        <div style="margin: 5px">
-
-            <div style="display: inline-block; margin: 10px; width: 200px;">
-
-                <label for="descripcion"><h6>Descripción</h6></label>
-    
-            </div>
-            
-            <textarea class="form-control" id="exampleTextarea" rows="3" name="descripcion"></textarea>
-
-
-        </div>
-
-
-        <div style="text-align: right;">
-            <button type="submit" class="btn btn-primary">Subir</button>
         </div>
     </div>
 </div>
-</div>
-</div>
-
-          
 
 
-        {{ form.as_p }}
-    </form>
 
-    <datalist id="proyectos_postventa"> 
 
-        {% for i in proyectos %}
-        
-        <option value="{{i.0}}">({{i.0}})</option>
 
-        {% endfor %}
+<datalist id="proyectos_postventa">
 
-    </datalist>
+    {% for i in proyectos %}
 
-    <datalist id="clasificacion"> 
+    <option value="{{i.0}}">({{i.0}})</option>
 
-        {% for i in clasificacion %}
-        
-        <option value="{{ i.0 }}">({{i.0}})</option>
+    {% endfor %}
 
-        {% endfor %}
+</datalist>
 
-    </datalist>
+<datalist id="clasificacion">
+
+    {% for i in clasificacion %}
+
+    <option value="{{ i.0 }}">({{i.0}})</option>
+
+    {% endfor %}
+
+</datalist>
 
 
 

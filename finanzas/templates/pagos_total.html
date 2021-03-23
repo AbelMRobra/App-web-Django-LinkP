@@ -20,126 +20,131 @@
     </div>
 </div>
 
-<div class="jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;">
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body row">
+                <div class="col-12 justify-content-center">
 
-    <div style="text-align: center;">
-        <h2>Registro de pagos</h2>
-    </div>
 
-    <div style="text-align: left;">
-
-        <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
-            <button type="button" class="btn btn-primary">{{mensaje}}</button>
-            <div class="btn-group" role="group">
-                <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
-                    aria-haspopup="true" aria-expanded="false"></button>
-                <div class="dropdown-menu" aria-labelledby="btnGroupDrop1" style="">
-                    <div style="margin: 2px;">
-
-                        <a href="{% url 'Panel de pagos total' 0 %}" style="margin-top: 5px;">Todos</a>
-
+                    <div style="text-align: center;">
+                        <h2>Registro de pagos</h2>
                     </div>
 
-                    {% for i in list_proyectos %}
+                    <div style="text-align: left;">
 
-                    <div style="margin: 2px;">
+                        <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+                            <button type="button" class="btn btn-primary">{{mensaje}}</button>
+                            <div class="btn-group" role="group">
+                                <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+                                <div class="dropdown-menu" aria-labelledby="btnGroupDrop1" style="">
+                                    <div style="margin: 2px;">
 
-                        <a href="{% url 'Panel de pagos total' i.0.id %}" style="margin-top: 5px;">{{i.0.nombre}}
-                            ({{i.1}})</a>
+                                        <a href="{% url 'Panel de pagos total' 0 %}" style="margin-top: 5px;">Todos</a>
 
+                                    </div>
+
+                                    {% for i in list_proyectos %}
+
+                                    <div style="margin: 2px;">
+
+                                        <a href="{% url 'Panel de pagos total' i.0.id %}"
+                                            style="margin-top: 5px;">{{i.0.nombre}}
+                                            ({{i.1}})</a>
+
+                                    </div>
+
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
-                    {% endfor %}
+                    <div class="tableconteinerabel">
+
+                        <table id="example" class="table table-striped table-bordered mt-4">
+
+                            <thead style="font-size: 14px;">
+
+                                <tr>
+                                    <th>Proyecto</th>
+                                    <th>Cliente</th>
+                                    <th>Unidad</th>
+                                    <th>Fecha pago</th>
+                                    <th>Moneda (MD) </th>
+                                    <th>Cotizacion</th>
+                                    <th>Monto pesos</th>
+                                    <th> Documento 1 </th>
+                                    <th> Documento 2 </th>
+
+                                </tr>
+                            </thead>
+
+                            <tbody style="font-size: 12px;">
+
+                                {% for i in datos%}
+                                <tr>
+                                    <td style="color: rgb({{i.0.cuota.cuenta_corriente.venta.proyecto.color}});">{{i.0.cuota.cuenta_corriente.venta.proyecto.nombre}}</td>
+                                    <td> {{i.0.cuota.cuenta_corriente.venta.comprador|lower|capfirst}}</td>
+                                    <td>{{i.0.cuota.cuenta_corriente.venta.unidad.piso_unidad}} -
+                                                {{i.0.cuota.cuenta_corriente.venta.unidad.nombre_unidad}}
+                                    </td>
+                                    <td> {{i.0.fecha|date:"Y-m-d"}}</td>
+                                    <td>{{i.0.pago|floatformat:2}}</td>
+
+                                    <td>${{i.1|floatformat:0|intcomma}}</td>
+
+                                    <td>${{i.0.pago_pesos|floatformat:0|intcomma}}
+                                    </td>
+
+                                    {% if i.0.documento_1 %}
+
+                                    <td>{{i.0.documento_1}}</td>
+
+                                    {% else %}
+
+                                    <td>SIN REGISTRO</td>
+
+                                    {% endif %}
+
+
+                                    {% if i.0.documento_2 %}
+
+                                    <td>{{i.0.documento_2}}</td>
+
+                                    {% else %}
+
+                                    <td>Sin registro</td>
+
+                                    {% endif %}
+
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+
+
+                        </table>
+
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-
-    <div class="tableconteinerabel">
-
-        <table class="table table-hover" style="text-align: center; margin-top: 5px;">
-            <thead>
-
-                <tr class="table-dark">
-                    <th scope="row" style="vertical-align: middle;"> <small>PROYECTO</small></th>
-                    <th scope="row" style="vertical-align: middle;"> <small>CLIENTE</small></th>
-                    <th scope="row" style="vertical-align: middle;"> <small>UNIDAD</small></th>
-                    <th scope="row" style="vertical-align: middle;"> <small>FECHA PAGO</small></th>
-                    <th scope="row" style="vertical-align: middle;"> <small>MONEDA (MD) </small></th>
-                    <th scope="row" style="vertical-align: middle;"> <small>COTIZACIÓN</small></th>
-                    <th scope="row" style="vertical-align: middle;"> <small>MONTO PESOS</small></th>
-                    <th scope="row" style="vertical-align: middle;"> <small> DOCUMENTO 1 </small></th>
-                    <th scope="row" style="vertical-align: middle;"> <small> DOCUMENTO 2 </small></th>
-
-                </tr>
-            </thead>
-
-            <tbody>
-
-                {% for i in datos|slice:"200" %}
-                <tr class="table-light">
-                    <td style="color: rgb({{i.0.cuota.cuenta_corriente.venta.proyecto.color}});"> <b> <small>
-                                <b>{{i.0.cuota.cuenta_corriente.venta.proyecto.nombre}}</b> </small> </b></td>
-                    <td> <b> <small> {{i.0.cuota.cuenta_corriente.venta.comprador}} </small> </b></td>
-                    <td> <b> <small>{{i.0.cuota.cuenta_corriente.venta.unidad.piso_unidad}} -
-                                {{i.0.cuota.cuenta_corriente.venta.unidad.nombre_unidad}} </small> </b></td>
-                    <td> <b> <small> {{i.0.fecha|date:"Y-m-d"}} </small> </b></td>
-                    <td> <b> <small>{{i.0.pago|floatformat:2}}</small> </b> </td>
-
-                    <td> <b> <small> <b>${{i.1|floatformat:0|intcomma}}</b> </small> </b> </td>
-
-                    <td> <b> <small> <b>${{i.0.pago_pesos|floatformat:0|intcomma}}</b> </small> </b> </td>
-
-                    {% if i.0.documento_1 %}
-
-                    <td> <b> <small>{{i.0.documento_1}}</small> </b> </td>
-
-                    {% else %}
-
-                    <td> <b> <small>SIN REGISTRO</small> </b> </td>
-
-                    {% endif %}
-
-
-                    {% if i.0.documento_2 %}
-
-                    <td> <b> <small>{{i.0.documento_2}}</small> </b> </td>
-
-                    {% else %}
-
-                    <td> <b> <small>Sin registro</small> </b> </td>
-
-                    {% endif %}
-
-                </tr>
-                {% endfor %}
-            </tbody>
-
-
-        </table>
-
-    </div>
-
-    <b>
-        <hr class="my-4" style="width: 100%; ">
-    </b>
-
-    <div>
-        <small style="font-family: Arial, Helvetica, sans-serif;">El listado puede continuar, se limita el numero de
-            filas visibles</small>
-    </div>
-
-
-    <div style="text-align: center; margin-top: 10%;">
-
-        <p style="font-family: Arial, Helvetica, sans-serif;"> <small>-- Link<strong>P</strong> --</small> </p>
-
-    </div>
-
-
-
-
 </div>
 
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js" defer></script>
+<script src="https://cdn.datatables.net/1.10.23/js/dataTables.bootstrap4.min.js" defer></script>
+
+<script>
+    $(document).ready(function () {
+        $('#example').DataTable({
+            "paging": false,
+            "ordering": false,
+            "info": false
+        });
+    });
+</script>
 
 {% endblock %}

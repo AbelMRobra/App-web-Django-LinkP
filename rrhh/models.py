@@ -54,7 +54,7 @@ class datosusuario(models.Model):
     cargo = models.CharField(max_length=200, verbose_name="Cargo", blank=True, null=True)
     email = models.CharField(max_length=200, verbose_name="Email", blank=True, null=True)
     estado = models.CharField(choices=estados.choices, default=estados.ACTIVO, max_length=20, verbose_name="Estado")
-    #fecha_ingreso = models.DateField(verbose_name = "Fecha de ingreso", blank=True, null=True)
+    fecha_ingreso = models.DateField(verbose_name = "Fecha de ingreso", blank=True, null=True)
 
 
     class Meta:

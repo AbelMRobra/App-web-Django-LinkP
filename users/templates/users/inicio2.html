@@ -12,6 +12,8 @@
 
   <link rel="shortcut icon" href="{% static 'img/LinkIco21.ico' %}" />
 
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css">
   <!-- Hojas de estilos AdminPro -->
   <!--  -->
   <!--  -->
@@ -173,7 +175,7 @@
             {% endif %}
             <li class="nav-small-cap">ESPACIOS DE TRABAJO</li>
             <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i
-                  class="mdi mdi-widgets"></i><span class="hide-menu">Presupuestos</span></a>
+                  class="zmdi zmdi-chart"></i><span class="hide-menu">Presupuestos</span></a>
               <ul aria-expanded="false" class="collapse">
                 {% if request.user|has_group:"PRESUPUESTO NIVEL 1" %}
 
@@ -204,7 +206,7 @@
               </ul>
             </li>
             <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i
-                  class="mdi mdi-widgets"></i><span class="hide-menu">Administración</span></a>
+                  class="zmdi zmdi-file"></i><span class="hide-menu">Administración</span></a>
               <ul aria-expanded="false" class="collapse">
 
                 {% if request.user|has_group:"ADMIN NIVEL 1" %}
@@ -223,7 +225,7 @@
               </ul>
             </li>
             <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i
-                  class="mdi mdi-widgets"></i><span class="hide-menu">Finanzas</span></a>
+                  class="zmdi zmdi-money"></i><span class="hide-menu">Finanzas</span></a>
               <ul aria-expanded="false" class="collapse">
 
                 {% if request.user|has_group:"FINANZAS NIVEL 1" %}
@@ -251,7 +253,7 @@
               </ul>
             </li>
             <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i
-                  class="mdi mdi-widgets"></i><span class="hide-menu">Compras</span></a>
+                  class="zmdi zmdi-card"></i><span class="hide-menu">Compras</span></a>
               <ul aria-expanded="false" class="collapse">
                 {% if request.user|has_group:"COMPRAS NIVEL 1" %}
                 <li><a href="/compras/proveedores">Proveedores</a> </li>
@@ -280,7 +282,7 @@
               </ul>
             </li>
             <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i
-                  class="mdi mdi-widgets"></i><span class="hide-menu">Oficina tecnica</span></a>
+                  class="zmdi zmdi-city"></i><span class="hide-menu">Oficina tecnica</span></a>
               <ul aria-expanded="false" class="collapse">
 
                 {% if request.user|has_group:"TECNICA NIVEL 1" %}
@@ -302,7 +304,7 @@
               </ul>
             </li>
             <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i
-                  class="mdi mdi-widgets"></i><span class="hide-menu">Comercialización</span></a>
+                  class="zmdi zmdi-mall"></i><span class="hide-menu">Comercialización</span></a>
               <ul aria-expanded="false" class="collapse">
 
                 {% if request.user|has_group:"VENTAS NIVEL 1" %}
@@ -348,7 +350,7 @@
               </ul>
             </li>
             <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i
-                  class="mdi mdi-widgets"></i><span class="hide-menu">Postventa</span></a>
+                  class="zmdi zmdi-calendar"></i><span class="hide-menu">Postventa</span></a>
               <ul aria-expanded="false" class="collapse">
                 {% if request.user|has_group:"POSTVENTA NIVEL 1" %}
 
@@ -365,7 +367,7 @@
             <li class="nav-small-cap">SIGMA</li>
 
             <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i
-                  class="mdi mdi-widgets"></i><span class="hide-menu">Generales</span></a>
+                  class="zmdi zmdi-city-alt"></i><span class="hide-menu">Generales</span></a>
               <ul aria-expanded="false" class="collapse">
                 {% if perms.sigma.view_inventario %}
                 <li><a href="/sigma/inventario">Inventario</a></li>
