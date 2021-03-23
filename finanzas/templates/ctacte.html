@@ -116,8 +116,8 @@
 
                                 <td> {{i.0.precio|floatformat:2}}</td>
 
-                                <td> {{i.1|floatformat:2}}</td>
-                                <td> {{i.2|floatformat:2}}</td>
+                                <td > {{i.1|floatformat:2}}</td>
+                                <td {% if i.2 == 0 %} style="color: #1FC730;" {% endif %}> {{i.2|floatformat:2}}</td>
 
                                 {% if i.5 == 0 %}
                                 <td> ${{i.0.constante.valor|floatformat:0|intcomma}}</td>

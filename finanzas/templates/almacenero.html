@@ -267,6 +267,12 @@
 
                             <tr>
 
+                                <td><h6>Otros inmuebles</h6> </td>
+                                <td><h6>${{datos.datos.2.inmuebles|floatformat:0|intcomma}}</h6></td>
+                            </tr>
+
+                            <tr>
+
                                 <td><h6 style="color: #3FB360;">Total de ingresos</h6> </td>
                                 <td><h6 style="color: #3FB360;">${{datos.datos.3.3|floatformat:0|intcomma}}</h6></td>
                             </tr>
@@ -433,6 +439,11 @@
                     <div class="m-t-10">
                         <h5 class="m-b-0 font-medium">Retiros en efectivo: - ${{datos.datos.3.10|floatformat:0|intcomma}}</h5>
                         <h6 class="text-muted">Realizados durante el proyecto</h6>
+                    </div>
+
+                    <div class="m-t-10">
+                        <h5 class="m-b-0 font-medium">Unidades de socios: - ${{datos.datos.2.unidades_socios|floatformat:0|intcomma}}</h5>
+                        <h6 class="text-muted">Asignadas</h6>
                     </div>
 
                     <div class="m-t-10">

@@ -31,7 +31,9 @@ class Almacenero(models.Model):
     unidades_socios = models.FloatField(null=True, blank=True, verbose_name="Unidades de Socios", editable=False)
     tenencia = models.FloatField(null=True, blank=True, verbose_name="Resultado por tenencia", default=0)
     financiacion = models.FloatField(null=True, blank=True, verbose_name="Recargo por financiacion", default=0)
+    inmuebles = models.FloatField(null=True, blank=True, verbose_name="Inmuebles", default=0)
     auto_cta = models.CharField(choices=Estado.choices, max_length=20, verbose_name="Cuenta corriente automatica", default="NO")
+
 
     class Meta:
         verbose_name="Almacenero"
@@ -69,6 +71,7 @@ class RegistroAlmacenero(models.Model):
     honorarios = models.FloatField(null=True, blank=True, verbose_name="Honorarios", default=0)
     tenencia = models.FloatField(null=True, blank=True, verbose_name="Resultado por tenencia", default=0)
     financiacion = models.FloatField(null=True, blank=True, verbose_name="Recargo por financiacion", default=0)
+    inmuebles = models.FloatField(null=True, blank=True, verbose_name="Inmuebles", default=0)
 
     class Meta:
         verbose_name="RegistroAlmacenero"

@@ -1134,6 +1134,12 @@ def ctactecliente(request, id_cliente):
         else:
             cotizacion = pago_pesos/pago_cuota
 
+        if abs(saldo_cuota/cuota.precio) < 0.03:
+            cuota.precio = pago_cuota
+            cuota.save()
+            saldo_cuota = 0
+            saldo_pesos = 0
+
         datos_cuenta.append((cuota, pago_cuota, saldo_cuota, saldo_pesos, pagos_realizados, cotizacion))
 
     datos_cuenta = sorted(datos_cuenta, key=lambda datos: datos[0].fecha)
@@ -2660,13 +2666,13 @@ def almacenero(request):
                     
                     descuento = almacenero.ingreso_ventas*0.06 
                     
-                    total_ingresos = prest_cobrar + almacenero.cuotas_cobradas + almacenero.cuotas_a_cobrar + almacenero.ingreso_ventas + almacenero.tenencia + almacenero.financiacion
+                    total_ingresos = prest_cobrar + almacenero.cuotas_cobradas + almacenero.cuotas_a_cobrar + almacenero.ingreso_ventas + almacenero.tenencia + almacenero.financiacion + almacenero.inmuebles
                     saldo_caja = almacenero.cuotas_cobradas - almacenero.gastos_fecha - almacenero.Prestamos_dados + almacenero.tenencia
                     saldo_proyecto = total_ingresos - total_costo
                     rentabilidad = (saldo_proyecto/total_costo)*100
 
                     total_ingresos_pesimista = total_ingresos - descuento
-                    saldo_proyecto_pesimista = total_ingresos_pesimista - total_costo  - retiro_socios
+                    saldo_proyecto_pesimista = total_ingresos_pesimista - total_costo  - retiro_socios - almacenero.unidades_socios
                     rentabilidad_pesimista = (saldo_proyecto_pesimista/total_costo)*100
 
                     #Cargo todo a datos

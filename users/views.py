@@ -810,6 +810,7 @@ def inicio(request):
                 honorarios = honorario,
                 tenencia = alma.tenencia,
                 financiacion = alma.financiacion,
+                inmuebles = alma.inmuebles,
 
             )
 
