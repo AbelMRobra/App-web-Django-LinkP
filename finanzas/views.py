@@ -1134,11 +1134,12 @@ def ctactecliente(request, id_cliente):
         else:
             cotizacion = pago_pesos/pago_cuota
 
-        if abs(saldo_cuota/cuota.precio) < 0.03:
-            cuota.precio = pago_cuota
-            cuota.save()
-            saldo_cuota = 0
-            saldo_pesos = 0
+        if cuota.precio != 0:
+            if abs(saldo_cuota/cuota.precio) < 0.03:
+                cuota.precio = pago_cuota
+                cuota.save()
+                saldo_cuota = 0
+                saldo_pesos = 0
 
         datos_cuenta.append((cuota, pago_cuota, saldo_cuota, saldo_pesos, pagos_realizados, cotizacion))
 
