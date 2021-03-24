@@ -47,8 +47,8 @@
                     <div class="col-md-6 col-lg-3 col-xlg-3">
                         <div class="card">
                             <div class="box bg-primary text-center">
-                                <h1 class="font-light text-white">X?</h1>
-                                <h6 class="text-white">Emmm</h6>
+                                <h1 class="font-light text-white">{% for u in usuarios %} {% if u.0.fecha_nacimiento|este_mes %} <img src="{{u.0.imagenlogo.url}}" alt="user" class="img-circle" style="width: 35px;"/>{% endif %}{% endfor %}</h1>
+                                <h6 class="text-white">Cumples del mes</h6>
                             </div>
                         </div>
                     </div>
@@ -74,7 +74,7 @@
                                 <th>Área</th>
                                 <th>Puesto</th>
                                 <th>Estado</th>
-                                <th>Ingreso</th>
+                                <th style="text-align: center;">Ingreso</th>
                                 <th style="text-align: center;"> <img src="{% static 'img/monedalink2.png' %}" alt="user" class="img-circle" style="width: 20px;"/></th>
          
                             </tr>
@@ -83,14 +83,44 @@
                             {% for u in usuarios %}
                             <tr>
                                 <td>
-                                    <img src="{{u.0.imagenlogo.url}}" alt="user" class="img-circle" style="width: 35px;" /> - {{u.0.nombre}}
+                                    <a type="button" style="text-decoration: none;" data-toggle="modal" data-target="#ModalTarjeta{{u.0.id}}">
+                                    <img src="{{u.0.imagenlogo.url}}" alt="user" class="img-circle" style="width: 35px;" /> - {{u.0.nombre}}</a>
                                 </td>
+
+                                <!-- Modal anuncio -->
+                                <div class="modal fade" id="ModalTarjeta{{u.0.id}}" tabindex="-1" role="dialog" aria-labelledby="ModalPremioTitle" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLongTitle">{{u.0.nombre}}</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                        </div>
+                                        <div class="modal-body">
+                                                                        
+                                        <p style="white-space: pre-wrap;">Trabaja con Link desde {% if u.0.fecha_ingreso %} {{u.0.fecha_ingreso|date:"d-m-Y"}} {% else %} .. algún momento {% endif %}, pertenece al área de {{u.0.area|lower}} como {{u.0.cargo|lower}}. 
+
+<b>Datos:</b>
+Telefono: {% if u.0.Telefono %} {{u.0.Telefono}} {% else %} No lo tengo agendado {% endif %}
+Email de la empresa: {% if u.0.email %} {{u.0.email}} {% else %} No lo anotaron {% endif %}
+Cumpleaños: {% if u.0.fecha_nacimiento %} El {{u.0.fecha_nacimiento|date:"d"}} de {{u.0.fecha_nacimiento|date:"M"}} {% else %} No lo anotaron {% endif %}
+Año de nacimiento: {% if u.0.fecha_nacimiento %} {{u.0.fecha_nacimiento|date:"Y"}} {% else %} No lo anotaron {% endif %}
+
+<b>Comentarios de la oficina de RRHH:</b> 
+
+{% if u.0.Comentarios %} {{u.0.Comentarios}} {% else %} Aun no se ha registrado nada {% endif %}</p>
+                                    </div>
+                                    </div>
+
+                                </div>
+                            </div>
                                 <td>{{u.0.identificacion}}</td>
                                 <td>{{u.0.email}}</td>
                                 <td>{{u.0.area|lower|capfirst}}</td>
                                 <td>{{u.0.cargo|lower|capfirst}}</td>
                                 <td><span {% if u.0.estado == 'ACTIVO' %}class="label label-success"{% else %}class="label label-danger"{% endif %}>{{u.0.estado}}</span> </td>
-                                <td>{{u.0.fecha_ingreso|date:"d-m-Y"}}</td>
+                                <td>{{u.0.fecha_ingreso|date:"d-m-Y"}} <span class="label label-rouded label-info pull-right">{{u.0.fecha_ingreso|years}}</span></td>
                                 <td style="text-align: center;">{{u.1}}</td>
  
                             </tr>

@@ -78,6 +78,32 @@ def prueba_planificacion(self):
     if self == "ESPERA":
         return "122, 118, 117"
 
+@register.filter('este_mes')
+def este_mes(self):
+
+    hoy = date.today()
+
+    if self == None:
+        return 0
+    else:
+
+        if self.month == hoy.month:
+
+            return 1
+        else:
+            return 0
+
+@register.filter('years')
+def este_mes(self):
+
+    hoy = date.today()
+
+    if self == None:
+        return 0
+    else:
+
+        return hoy.year - self.year 
+
 @register.simple_tag
 def is_past_evaluacion1(prueba):
 
@@ -86,6 +112,8 @@ def is_past_evaluacion1(prueba):
        return "34, 201, 24 "
     else:
         return "201, 55, 24"
+
+
 
 @register.simple_tag
 def is_past_evaluacion2(prueba):
