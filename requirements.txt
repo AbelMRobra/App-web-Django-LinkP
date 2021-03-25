@@ -46,7 +46,7 @@ python-dateutil==2.8.1
 python-decouple==3.3
 PyTweening==1.0.3
 pytz==2019.3
-PyYAML==5.3.1
+PyYAML==5.4
 reportlab==3.5.56
 schedule==0.6.0
 scipy==1.5.4
