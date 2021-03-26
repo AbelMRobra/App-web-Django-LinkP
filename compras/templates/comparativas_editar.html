@@ -1,0 +1,185 @@
+{% extends "users/inicio2.html" %}
+
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+
+<div class="container-fluid r-aside">
+
+    <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+            <h3 class="text-themecolor">Editar un formulario</h3>
+        </div>
+
+        <div class="col-md-7 align-self-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'Comparativas' 0 0 %}">Solicitud</a></li>
+                <li class="breadcrumb-item">Edición</li>
+            </ol>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body row">
+                <div class="col-12 justify-content-center">
+                    <div>
+                        <h2>Comparativa nº {{comparativa.id}}</h2>
+                        <small>Modifique los datos que necesite</small>
+                     
+                    </div>
+
+                    <div class="row d-flex justify-content-center mt-4">
+                        <div class="col col-md-12 col-lg-6">
+                            <div class="row">
+                                <div class="col bg-light border rounded p-4 ">
+
+                                    <form role="form" enctype="multipart/form-data" action="" method="POST"
+                                        id="upload-image-form">
+                                        {% csrf_token %}
+
+                                        <div>
+                                            <label for="proveedor">
+                                                <h6>Proveedor</h6>
+                                            </label>
+                                        </div>
+
+                                        <div class="row d-flex justify-content-center my-3">
+                                            <div class="col col-md-8 col-lg-8">
+
+                                                <input name="proveedor" type="search" class="form-control form-control"
+                                                    value="{{comparativa.proveedor.name}}" list="provee">
+
+                                            </div>
+                                        </div>
+
+                                        <div>
+                                            <label for="proyecto">
+                                                <h6>Proyecto</h6>
+                                            </label>
+
+                                        </div>
+
+                                        <div class="row d-flex justify-content-center my-3">
+                                            <div class="col col-md-8 col-lg-8">
+
+
+                                                <input name="proyecto" type="text" class="form-control form-control"
+                                                value="{{comparativa.proyecto}}">
+
+                                            </div>
+                                        </div>
+
+                                        <div>
+                                            <label for="referencia">
+                                                <h6>Referencia</h6>
+                                            </label>
+                                        </div>
+
+                                        <div class="row d-flex justify-content-center my-3">
+                                            <div class="col col-md-8 col-lg-8">
+
+                                                <input name="referencia" type="text" class="form-control form-control"
+                                                value="{{comparativa.numero}}">
+
+                                            </div>
+                                        </div>
+
+                                        <div>
+                                            <label for="valor">
+                                                <h6>Valor final de la solicitud</h6>
+                                            </label>
+                                        </div>
+
+                                        <div class="row d-flex justify-content-center my-3">
+                                            <div class="col col-md-8 col-lg-8">
+
+                                                <input name="valor" step="0.01" type="number"
+                                                    class="form-control form-control" 
+                                                    value="{{comparativa.monto}}">
+
+                                            </div>
+                                        </div>
+
+                                        <div>
+                                            <label for="imagen">
+                                                <h6>Adjunto (PNG o JPEG): {{comparativa.adjunto}}</h6>
+                                            </label>
+                                        </div>
+                                        <div class="row d-flex justify-content-center my-3">
+                                            <div class="col col-md-8 col-lg-8">
+
+                                                <input type="file" class="form-control-file" name="imagen"
+                                                    aria-describedby="fileHelp">
+
+                                            </div>
+                                        </div>
+
+                                        <div>
+                                            <label for="numerooc">
+                                                <h6>Numero de O.C</h6>
+                                            </label>
+                                        </div>
+
+                                        <div class="row d-flex justify-content-center my-3">
+                                            <div class="col col-md-8 col-lg-8">
+
+                                                <input name="numerooc" type="text" class="form-control form-control"
+                                                value="{{comparativa.o_c}}">
+
+                                            </div>
+                                        </div>
+
+                                        <div>
+                                            <label for="oc">
+                                                <h6>Orden de compra: {{comparativa.adj_oc}}</h6>
+                                            </label>
+                                        </div>
+
+                                        <div class="row d-flex justify-content-center my-3">
+                                            <div class="col col-md-8 col-lg-8">
+
+                                                <input type="file" class="form-control-file" name="oc"
+                                                    aria-describedby="fileHelp">
+
+                                            </div>
+                                        </div>
+
+                                        <div class="row d-flex justify-content-center mt-4">
+                                            <div class="col-lg-6 text-center">
+                                                <button type="submit" class="btn btn-primary">Subir</button>
+                                            </div>
+                                        </div>
+
+
+                                        {{ form.as_p }}
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <datalist id="provee">
+
+                        {% for i in proveedores %}
+
+                        <option value="{{ i.name }}">({{i.id}})</option>
+
+                        {% endfor %}
+
+                    </datalist>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+{% endblock %}

@@ -56,6 +56,38 @@ def cargarocautorizar(request):
         
     return render(request, 'cargarocautorizar.html', {'proveedores':proveedores})
 
+def editarcomparativas(request, id_comp):
+
+    proveedores = Proveedores.objects.all()
+
+    comparativa = Comparativas.objects.get(id = id_comp)
+
+    if request.method == "POST":
+
+        datos = request.POST.items()
+
+        comparativa.proveedor = Proveedores.objects.get(name=request.POST['proveedor'])
+        comparativa.proyecto = request.POST['proyecto']
+        comparativa.numero  = request.POST['referencia']
+        comparativa.monto = float(request.POST['valor'])
+        comparativa.o_c = request.POST['numerooc']
+        try:
+            comparativa.adjunto = request.FILES['imagen']
+            comparativa.save()
+        except:
+            comparativa.save()
+        
+        try:
+            comparativa.adj_oc = request.FILES['oc']
+            comparativa.save()
+        except:
+            pass
+        
+        return redirect('Comparativas', estado = 0, creador = 0)
+
+        
+    return render(request, 'comparativas_editar.html', {'proveedores':proveedores, 'comparativa':comparativa})
+
 def funcionstock():
 
     compras = Compras.objects.filter(tipo = "ANT")
@@ -655,6 +687,15 @@ def descargacomparativas(request):
     return render(request, 'descargacom.html')
 
 def comparativas(request, estado, creador):
+
+    # Codigo para fecha de pagos
+
+    fecha_inicial = datetime.date(2021, 3, 26)
+
+    fecha_pago = datetime.date(2021, 3, 26)
+
+    while fecha_pago <= fecha_inicial:
+        fecha_pago = fecha_pago + datetime.timedelta(days=14)
    
     if creador == "0":
         mensaje_creador = "Creador"
@@ -1181,7 +1222,7 @@ def comparativas(request, estado, creador):
     return render(request, 'comparativas.html', {'mensaje_creador':mensaje_creador, 
     'list_creadores':list_creadores, 'datos':datos, "estado":estado, 
     "creador":creador, "mensaje":mensaje, "espera":num_espera, "autorizada":num_autorizada, 
-    "rechazada":num_rechazada, "adjunto":num_adj})
+    "rechazada":num_rechazada, "adjunto":num_adj, "fecha_pago":fecha_pago})
 
 def compras(request, id_proyecto):
 

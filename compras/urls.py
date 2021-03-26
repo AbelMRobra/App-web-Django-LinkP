@@ -10,6 +10,7 @@ urlpatterns = [
     url(r'^cargacompras$', login_required(views.cargacompras), name = 'Carga compras'),
     url(r'^compras/(?P<id_proyecto>\d+)/$', login_required(views.compras), name = 'Compras'),
     url(r'^comparativas/(?P<estado>\d+)/(?P<creador>\d+)$', login_required(views.comparativas), name = 'Comparativas'),
+    url(r'^comparativas/(?P<id_comp>\d+)$', login_required(views.editarcomparativas), name = 'Editar comparativas'),
     url(r'^mensajecomparativas/(?P<id_comparativa>\d+)/$', login_required(views.mensajescomparativas), name = 'Mensajes en comparativas'),
     url(r'^ocautorizadas/(?P<estado>\d+)/$', login_required(views.panelvisto), name = 'OC autorizadas'),
     url(r'^listaretiros$', login_required(views.listaretiros), name = 'Lista de retiros'),

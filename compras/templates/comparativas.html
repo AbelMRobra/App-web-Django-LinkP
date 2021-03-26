@@ -31,7 +31,7 @@
 
 
 <div class="row">
-<div class="col-lg-12 col-xlg-6 button-group">
+<div class="col-lg-9 col-xlg-9 button-group">
     <div class="card">
         <div class="card-body">
             <h4 class="card-title">Panel de solicitudes</h4>
@@ -39,9 +39,17 @@
 
             <div style="text-align: left;">
 
+
+                <a href= "{% url 'Cargar O.C para autorizar' %}" class="btn" ><i
+                        class="fa fa-plus-circle  text-info"><span class="text-info ml-2"
+                            style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif"><b>Añadir</b></span></i></a>
+                <a href= " url 'Descarga Comparativas' %}" class="btn" ><i
+                    class="fa fa-file-excel-o  text-success"><span class="text-success ml-2"
+                        style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif"><b>Excel</b></span></i></a>
+
                 <!-- Boton para creador-->
                 <div class="btn-group">
-                    <button type="button" class="btn btn-primary dropdown-toggle"
+                    <button type="button" class="btn dropdown-toggle text-primary ml-2"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onclick="myFunction()">
                         {{mensaje_creador}}
                     </button>
@@ -57,7 +65,7 @@
                 </div>
 
                 <div class="btn-group">
-                    <button type="button" class="btn btn-primary dropdown-toggle"
+                    <button type="button" class="btn dropdown-toggle text-primary ml-2"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onclick="myFunction()">
                         {{mensaje}}
                     </button>
@@ -72,12 +80,6 @@
                 </div>
         
                   
-        
-            <a href= "{% url 'Cargar O.C para autorizar' %}" class="btn btn-outline-info"style="text-align: end; margin-top: 5px;" > Nueva solicitud</a>
-        
-        
-            <a href= "{% url 'Descarga Comparativas' %}" class="btn btn-outline-success" style="text-align: end; margin-top: 5px;" > <img src="{% static 'img/sobresalir.png' %}" alt="" style="max-width:20px; height:auto;"> Excel</a>
-        
             <div class ="dataTables_filter">
 
                 <form method="POST">
@@ -96,186 +98,148 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            <th>User</th>
+                            <th style="text-align: center; width: 30px;">User</th>
                             <th>Proveedor</th>
-                            <th>O.C</th>
                             <th>Valor</th>
-                            <th>Fecha</th>
-                            <th>Adjuntos</th>
-                            {% if request.user.username == "PL" or request.user.username == "AR" or request.user.username == "ar" or request.user.username == "SP" %}
-                            <th style="min-width: 150px;">Autorizar</th>
-                            {% endif %}
+                            <th>O.C</th>
+                            <th style="text-align: center;">Autoriza</th>
+
                         </tr>
                     </thead>
                     <tbody style="font-size: 14px;">
                         
                             {% for i in datos|slice:"120" %}
                             <tr>
+                            <td style="text-align: center;">
+                                <img src="{{i.0.imagenlogo.url}}" width="40" class="img-circle">
+                                <h6 class="card-subtitle" style="font-size: 12px; margin-top: 2px;"><span class="text-muted"> {{i.2.fecha_c|date:"d/m/Y"}}</span></h6></td>
                             <td>
-                                <img src="{{i.0.imagenlogo.url}}" alt="user" width="40" class="img-circle"></td>
-                            <td>{{i.2.proveedor.name|lower|capfirst}} <a href="{% url 'Mensajes en comparativas' i.2.id %}"><img src="{% if i.1 %}{% static 'img/charla.png' %}{% else %}{% static 'img/charlar.png' %}{% endif %}" alt="" style="max-width:15px; height:auto; margin: 1px;"></a> 
-                                <h6 class="card-subtitle" style="font-size: 14px; margin-top: 1px;">{{i.2.proyecto|lower|capfirst}} - {{i.2.numero|lower|capfirst}}</h6>
+                                {% if i.2.estado == "ESPERA" %}
+                                <i class="fa fa-hourglass-end" aria-hidden="true" style="color: blue;"></i>      
+                                {% endif %}       
+                                {% if i.2.estado == "AUTORIZADA" %}
+                                {% if i.2.comentario %}  
+                                <span class="hint--left hint--danger"aria-label="{{i.comentario}}">
+                                {% endif %}
+                                <i class="fa fa-check" aria-hidden="true" style="color: green;"></i>
+                                {% if i.2.comentario %}
+                                </span>
+                                {% endif %}
+                                {% endif %}
+                                {% if i.2.estado == "NO AUTORIZADA" %}
+                                    {% if i.2.comentario %}
+                                    <span class="hint--left hint--danger" aria-label="{{i.2.comentario}}">
+            
+                                        {% endif %}
+                                
+                                        <i class="fa fa-times" aria-hidden="true" style="color: darkred;"></i>
+            
+                                    {% if i.2.comentario %}
+                                
+                                        </span>
+            
+                                        {% endif %}
+                                {% endif %}
+            
+                                {% if i.2.estado == "ADJUNTO ✓" %}        
+                                    {% if i.2.comentario %}
+                                    
+                                    <span class="hint--left hint--danger" aria-label="{{i.2.comentario}}">
+            
+                                        {% endif %}
+                                        <i class="fa fa-check" aria-hidden="true" style="color: orange;"></i>
+                                    {% if i.2.comentario %}
+                                        </span>
+                                        {% endif %}
+                                {% endif %}
+                                
+                                
+                                <!-- Condicional para editar -->
+                                
+                                {% if i.2.estado != "AUTORIZADA" and i.2.creador == user.username %}
+                                <a href="{% url 'Editar comparativas' i.2.id %}">{{i.2.proveedor.name|lower|capfirst}} </a>
+                                {% else %}       
+                                {{i.2.proveedor.name|lower|capfirst}} 
+                                {% endif %} 
+                                
+                                <!-- Iconos y otros datos -->
+                                <h6 class="card-subtitle" style="font-size: 14px; margin-top: 2px;">
+                                    <a href="{% url 'Mensajes en comparativas' i.2.id %}" class=" fa fa-comments-o fa-lg"></a>
+                                    <a href="{{ i.2.adjunto.url }}" class=" fa fa-paperclip fa-lg"></a> 
+                                    {% if i.2.adj_oc %}
+                                    <a href="{{ i.2.adj_oc.url }}"><img src="{% static 'img/OC.png' %}" style="max-width:20px; height:auto;"></a>
+                                    {% endif %}
+                                    {{i.2.proyecto|lower|capfirst}} - {{i.2.numero|lower|capfirst}}</h6>
                             </td>
+                            <td style="font-size: 14px;"><b>$ {{i.2.monto|floatformat:0|intcomma}}</b></td> 
                             {% if i.2.o_c %}
                             <td>
                                 <div>{{i.2.o_c|upper}}</div>
                          
                             {% else %}
-                            <td><div>S/R</div> 
+                            <td><div> -</div> 
                             {% endif %}
-                            {% if i.2.estado == "ESPERA" %}
-                            <div class="label label-table label-info">Espera</div>
-        
-                            {% endif %}
-        
-                            {% if i.2.estado == "AUTORIZADA" %}
+                            
+                            </td>
+                            
+
+                            <td style="text-align: center;"> 
 
 
-        
-                            {% if i.2.comentario %}
-                                
-                            <span class="hint--left hint--danger"aria-label="{{i.comentario}}">
-        
-                            {% endif %}
-                            
-                            <div class="label label-table label-success">Autorizada</div>
-        
-                            {% if i.2.comentario %}
-                            
-                            </span>
-        
-                            {% endif %}
-                        
-      
-        
-                            {% endif %}
-        
-                            {% if i.2.estado == "NO AUTORIZADA" %}
-        
-        
-        
-                                {% if i.2.comentario %}
-                                
-                                
-                                <span class="hint--left hint--danger" aria-label="{{i.2.comentario}}">
-        
-                                    {% endif %}
-                                
-                                
-                                    <div class="label label-table label-danger">Rechazada</div>
-        
-                                {% if i.2.comentario %}
-                            
-                                    </span>
-        
-                                    {% endif %}
+                                {% if "POSTV" in i.2.numero or i.0.identificacion == "MES" %}
+
+                                <img src="{% static 'img/SP.png' %}" width="40" class="img-circle">
+
+                                    {% if request.user.username == "SP" %}
+
+                                    <form action="" method="POST">
+                                        {% csrf_token %}
     
-        
-                            {% endif %}
-        
-                            {% if i.2.estado == "ADJUNTO ✓" %}
-        
-        
-                                {% if i.2.comentario %}
-                                
-                                
-                                <span class="hint--left hint--danger" aria-label="{{i.2.comentario}}">
-        
+                                        <div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
+                                            {% if estado == "0" or estado == "1" or estado == "3" or estado == "5" %}
+                                            <button type="submit" class="btn" name = "ADJAPROB" value="{{i.2.id}}" ><i class="fa fa-check" style="color: orange;"></i></button>
+                                            {% endif %}
+                                            {% if estado == "0" or estado == "2" or estado == "3" or estado == "5" %}
+                                            <button type="submit" class="btn"   name = "APROBADA" value="{{i.2.id}}" ><i class="fa fa-check" style="color: green;"></i></button>
+                                            {% endif %}
+                                            <button type="submit" class="btn"  name = "NO APROBADA" value="{{i.2.id}}" ><i class="fa fa-times" style="color: darkred;"></i></button>
+                                        </div>
+                        
+                                    </form>
+
                                     {% endif %}
-                                
-                                
-                                    <div class="label label-table label-warning">Adjunto</div>
-        
-                                {% if i.2.comentario %}
-                            
-                                    </span>
-        
+
+                                {% else %}
+                                    <img src="{% static 'img/PL.png' %}" width="40" class="img-circle"> 
+
+                                    {% if request.user.username == "PL" %}
+
+                                    <form action="" method="POST">
+                                        {% csrf_token %}
+    
+                                        <div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
+                                            {% if estado == "0" or estado == "1" or estado == "3" or estado == "5" %}
+                                            <button type="submit" class="btn" name = "ADJAPROB" value="{{i.2.id}}" ><i class="fa fa-check" style="color: orange;"></i></button>
+                                            {% endif %}
+                                            {% if estado == "0" or estado == "2" or estado == "3" or estado == "5" %}
+                                            <button type="submit" class="btn"   name = "APROBADA" value="{{i.2.id}}" ><i class="fa fa-check" style="color: green;"></i></button>
+                                            {% endif %}
+                                            <button type="submit" class="btn"  name = "NO APROBADA" value="{{i.2.id}}" ><i class="fa fa-times" style="color: darkred;"></i></button>
+                                        </div>
+            
+
+            
+                                    </form>
+
                                     {% endif %}
-                              
-                            {% endif %}
-                            </td>
-                            <td>${{i.2.monto|floatformat:0|intcomma}}</td> 
-                            <td><span class="text-muted"><i class="fa fa-clock-o"></i> {{i.2.fecha_c|date:"d M Y"}}</span> </td>
-                            <td>
-                                <div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
-                                    <a href="{{ i.2.adjunto.url }}" class="btn btn-warning" style="font-size: 14px;">Adj</a>              
-                                    {% if i.2.adj_oc %}
-                                    <a href="{{ i.2.adj_oc.url }}" class="btn btn-success" style="font-size: 14px;">O.C</a>
-                                    {% endif %}
-                                </div>
-                            
-                            </td>
-                            {% if request.user.username == "PL" or request.user.username == "AR" or request.user.username == "ar" or request.user.username == "SP" %}
-                            {% if request.user.username == "SP" and "POSTV" in i.2.numero %}
-                            <td>                                          
-                                <form action="" method="POST">
-                                    {% csrf_token %}
 
-                                    <div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
-                                        {% if estado == "0" or estado == "1" or estado == "3" or estado == "5" %}
-                                        <button type="submit"  name = "ADJAPROB" value="{{i.2.id}}"class="btn btn-warning"><i class="fa fa-check"></i></button>
-                                        {% endif %}
-                                        {% if estado == "0" or estado == "2" or estado == "3" or estado == "5" %}
-                                        <button type="submit"  name = "APROBADA" value="{{i.2.id}}" class="btn btn-success"><i class="fa fa-check"></i></button>
-                                        {% endif %}
-                                        <button type="submit" name = "NO APROBADA" value="{{i.2.id}}" class="btn btn-danger"><i class="fa fa-close"></i></button>
-                                    </div>
-        
-                                    <div>
-        
-                                        <input type="text" name="MENSAJE" class="form-control form-control-sm" placeholder="Comentario" id="inputDefault">
-                                       
-                                    </div>
-        
-                                </form></td>
-                
-                            {% elif request.user.username == "PL" and i.0.identificacion == "MES" %}
-        
-                            <td>
-                            
-                                <strong>Autoriza SP! <img src="{% static 'img/gracias.png' %}" alt="" style="max-width:25px; height:auto;"  > </strong>
-                            </td>
+                                
 
-                            {% elif request.user.username != "SP" and "POSTV" in i.2.numero %}
+                                {% endif %}
 
-                            <td>
-                       
-                                <strong>Autoriza SP! <img src="{% static 'img/gracias.png' %}" alt="" style="max-width:25px; height:auto;"  > </strong>
-                            </td>
-        
-                            {% elif request.user.username == "SP" and i.0.identificacion != "MES" %}
-        
-                            <td>
-                            
-                                <strong>Autoriza PL! <img src="{% static 'img/gracias.png' %}" alt="" style="max-width:25px; height:auto;"  > </strong>
-                            </td>
-        
-                            {% else %}
-        
-                            <td>                                          
-                                <form action="" method="POST">
-                                    {% csrf_token %}
 
-                                    <div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
-                                        {% if estado == "0" or estado == "1" or estado == "3" or estado == "5" %}
-                                        <button type="submit"  name = "ADJAPROB" value="{{i.2.id}}"class="btn btn-warning"><i class="fa fa-check"></i></button>
-                                        {% endif %}
-                                        {% if estado == "0" or estado == "2" or estado == "3" or estado == "5" %}
-                                        <button type="submit"  name = "APROBADA" value="{{i.2.id}}" class="btn btn-success"><i class="fa fa-check"></i></button>
-                                        {% endif %}
-                                        <button type="submit" name = "NO APROBADA" value="{{i.2.id}}" class="btn btn-danger"><i class="fa fa-close"></i></button>
-                                    </div>
-        
-                                    <div>
-        
-                                        <input type="text" name="MENSAJE" class="form-control form-control-sm" placeholder="Comentario" id="inputDefault">
-                                       
-                                    </div>
-        
-                                </form></td>
-                            {% endif %}
-        
-                            {% endif %}
+                                </td>
+
                         </tr>
                             {% endfor %}
                   
@@ -289,6 +253,26 @@
     </div>
 </div>
 </div>
+
+<aside class="right-side-panel">
+    <h3 class="p-relative"><span class="lstick"></span>¿Como funciona?</h3>
+    <div class="row">
+        
+        <div class="col-md-12 m-t-10">
+          <div class="card">
+            <div class="card-body">
+            <img src="{% static 'img/animation_500_kmqk33n8.gif' %}" alt="Funny image" width="150px">
+            <p>Para ingresar una nueva solicitud has click en <b style="color: blue;">Añadir</b> y completa el formulario</p>
+            <p> Cuando este cargado apareceras en el listado con iconos que muestran adjuntos o una sala de chat</p>
+            <p> <i class="fa fa-comments-o fa-lg" style="color: #1d5acb;"></i> - <i class=" fa fa-paperclip fa-lg" style="color: #1d5acb;"></i> - <img src="{% static 'img/OC.png' %}" style="max-width:20px; height:auto; vertical-align: middle;"></p>
+            <p> Durante la semana sera aprobada por quien corresponda, <b style="color: blue;">revisa</b>  el estado</p>
+            <p><i class="fa fa-hourglass-end" aria-hidden="true" style="color: blue;"></i> - <i class="fa fa-times" aria-hidden="true" style="color: darkred;"></i> - <i class="fa fa-check" aria-hidden="true" style="color: orange;"></i> - <i class="fa fa-check" aria-hidden="true" style="color: green;"></i></p>
+            <p>Proxima fecha de pago: {{fecha_pago|date:"d-m-Y"}}</p>
+        </div>
+            </div>
+        </div>
+    </div>
+  </aside>
 
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 
