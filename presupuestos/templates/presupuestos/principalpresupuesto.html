@@ -41,8 +41,8 @@
                   </div>
 
       
-    </div>
-  </div>
+              </div>
+            </div>
 
 
 
@@ -53,86 +53,102 @@
      {% if proyectos %}
 
      <div class="row">
-      <div class="col-12">
+      <div class="col-12 col-md-8 col-lg-8 justify-content-center">
           <div class="card">
               <div class="card-body">
 
                 <h4 class="card-title">Listado de proyectos</h4>
 
-          <form method="POST">
+                  <form method="POST">
 
-              {% csrf_token %}
-  
-   
-              <select name="proyecto" class="form-control">
+                      {% csrf_token %}
+          
+          
+                      <select name="proyecto" class="form-control">
 
-                {% if request.user.username == "HC" %}
+                        {% if request.user.username == "HC" %}
 
-              {% for i in proyectos %}
+                      {% for i in proyectos %}
 
-              {% if "DIANCO" in i.nombre %}
+                      {% if "DIANCO" in i.nombre %}
 
-             
-              <option value="{{i.id}}">{{i.nombre}}</option>
+                    
+                      <option value="{{i.id}}">{{i.nombre}}</option>
 
-              {% endif %}
-
-
-              {% endfor %}
-
-              {% elif request.user.username == "AR" or request.user.username == "PL"  %}
-
-              {% for i in proyectos %}
-
-              <option value="{{i.id}}">{{i.nombre}}</option>
+                      {% endif %}
 
 
-              {% endfor %}
+                      {% endfor %}
 
-              {% else %}
+                      {% elif request.user.username == "AR" or request.user.username == "PL"  %}
 
-              
-              {% for i in proyectos %}
+                      {% for i in proyectos %}
 
-              {% if not "SEMINARIO" in i.nombre %}
-
-              <option value="{{i.id}}">{{i.nombre}}</option>
-
-              {% endif %}
+                      <option value="{{i.id}}">{{i.nombre}}</option>
 
 
-              {% endfor %}
+                      {% endfor %}
 
-              
-              {% endif %}
+                      {% else %}
 
+                      
+                      {% for i in proyectos %}
 
+                      {% if not "SEMINARIO" in i.nombre %}
 
-              </select>
-              
-   
-              
-                <div style="text-align: right; margin-top: 5px;">
-                  <button class="btn waves-effect waves-light btn-primary" type="submit">Buscar</button>          
-              </div>
-              
-          </form>
-   
-          <b><hr class = "my-4" style="width: 75%; "></b>
+                      <option value="{{i.id}}">{{i.nombre}}</option>
+
+                      {% endif %}
 
 
+                      {% endfor %}
+
+                      
+                      {% endif %}
+
+
+
+                      </select>
+                      
+          
+                      
+                        <div style="text-align: right; margin-top: 5px;">
+                          <button class="btn waves-effect waves-light btn-primary" type="submit">Buscar</button>          
+                      </div>
+                      
+                  </form>
+          
+                  <b><hr class = "my-4" style="width: 75%; "></b>
+
+
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-</div>
+
+      <aside class="right-side-panel">
+        <h3 class="p-relative"><span class="lstick"></span>¿Como funciona?</h3>
+        <div class="row">
+            
+            <div class="col-md-12 m-t-10">
+              <div class="card">
+                <div class="card-body">
+                <img src="{% static 'img/animation_500_kmqk33n8.gif' %}" alt="Funny image" width="150px">
+                <p>Selecciona un proyecto del listado y podras acceder a toda la información disponible del área de presupuesto, como computos, estimaciones y avances.</p>
+                <p>Cualquier consulta, habla con el responsable del proyecto!</p>
+            </div>
+                </div>
+            </div>
+        </div>
+
+
+        </div>
+      </aside>
     {% endif %}
 
     {% if datos %}
 
     <div class="row">
-
-      
-
 
       <div class="col-lg-6 col-xlg-4">
 

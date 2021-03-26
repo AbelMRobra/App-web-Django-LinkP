@@ -11,6 +11,13 @@
         <div class="col-md-5 align-self-center">
             <h3 class="text-themecolor">Registro Contable </h3>
         </div>
+
+        <div class="col-md-7 align-self-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+                <li class="breadcrumb-item">Registro Contable</li>
+            </ol>
+        </div>
     </div>
 </div>
 <div class="row">
@@ -531,37 +538,31 @@
                         <!-- modelo prueba -->
                     </div>
                 </div>
-                <div class="col-12 col-md-4 col-lg-4 justify-content-center">
-                    <div>
-                        <h3>Descripciones</h3>
-                        <p>Esto contiene la descripcion detallada sobre los elementos de la tabla</p>
-                    </div>
-                    <div>
-                        <h4 class="text-success">Ingresos</h4>
-                        <p>Breve descripcion del elemento</p>
-                    </div>
-                    <div>
-                        <h4 class="text-danger">Gastos</h4>
-                        <p>Breve descripcion del elemento</p>
-                    </div>
-                    <div>
-                        <h4 class="text-info">Balance</h4>
-                        <p>Breve descripcion del elemento</p>
-                    </div>
-                    <div>
-                        <h4>Categoria</h4>
-                        <p>Breve descripcion del elemento</p>
-                    </div>
-                    <div>
-                        <h4>Cuenta</h4>
-                        <p>Breve descripcion del elemento</p>
-                    </div>
 
-                </div>
+                
             </div>
         </div>
     </div>
 </div>
+
+<aside class="right-side-panel">
+    <h3 class="p-relative"><span class="lstick"></span> ¿Como funciona?</h3>
+    <div class="row">
+        
+        <div class="col-md-12 m-t-10">
+          <div class="card">
+            <div class="card-body">
+            <img src="{% static 'img/animation_500_kmqi3zbx.gif' %}" alt="Funny image" width="150px">
+            <p>Registro contable es un modulo diseñado para el seguimiento personal de tu contabilidad. Aqui podras anotar gastos e ingresos y ver resumenes semanales o graficos que te ayuden a monitorear tus finanzas!</p>
+            <p> Solo tu puedes ver esta pantalla, tu información no sera usada en otra parte del soft</p>
+        </div>
+            </div>
+        </div>
+    </div>
+
+
+    </div>
+</aside>
 
 <datalist id="list_cat_gasto">
 
