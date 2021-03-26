@@ -1508,7 +1508,7 @@ def registro_contable(request):
 
     ### Cuadros generales
 
-    cat_ingresos = RegistroContable.objects.filter(usuario = user, estado = "INGRESOS", fecha__range=[fecha_inicial, fecha_final]).values_list("categoria", flat=True)
+    cat_ingresos = RegistroContable.objects.filter(usuario = user, estado = "INGRESOS", fecha__range=[fecha_inicial, fecha_final]).values_list("categoria", flat=True).distinct()
 
     pie_ingresos = []
 
@@ -1517,7 +1517,7 @@ def registro_contable(request):
         color = (np.random.randint(100, 200), np.random.randint(100, 200), np.random.randint(100, 200))
         pie_ingresos.append([ci, aux, color])
 
-    cat_gastos = RegistroContable.objects.filter(usuario = user, estado = "GASTOS", fecha__range=[fecha_inicial, fecha_final]).values_list("categoria", flat=True)
+    cat_gastos = RegistroContable.objects.filter(usuario = user, estado = "GASTOS", fecha__range=[fecha_inicial, fecha_final]).values_list("categoria", flat=True).distinct()
 
     pie_gastos = []
 
