@@ -421,7 +421,8 @@
                                             },
                                               options: {
                                                 legend: {
-                                                    position: 'right'
+                                                    display: false
+
                                                 },
                                               },
                                     
@@ -443,7 +444,7 @@
                                                 {% for i in pie_gastos %}
                                                 <tr>
                                                     
-                                                    <td>{{i.0}}</td>
+                                                    <td style="color: rgb{{i.2}};"><b>{{i.0}}</b></td>
                                                     <td>$ {{i.1|floatformat:0|intcomma}}</td>
                                                     
                                                 </tr>
@@ -489,7 +490,7 @@
                                             },
                                               options: {
                                                 legend: {
-                                                    position: 'right'
+                                                    display: false
                                                 },
                                               },
                                     
@@ -511,7 +512,7 @@
                                                 {% for i in pie_ingresos %}
                                                 <tr>
                                                     
-                                                    <td>{{i.0}}</td>
+                                                    <td style="color: rgb{{i.2}};"><b>{{i.0}}</b></td>
                                                     <td>$ {{i.1|floatformat:0|intcomma}}</td>
                                                     
                                                 </tr>
