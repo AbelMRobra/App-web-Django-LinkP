@@ -251,4 +251,26 @@ class Logros(models.Model):
 
     def __str__(self):
         return self.nombre
+
+class RegistroContable(models.Model):
+
+    class estados(models.TextChoices):
+
+        INGRESOS = "INGRESOS"
+        GASTOS = "GASTOS"
+
+    usuario = models.ForeignKey(datosusuario, on_delete=models.CASCADE, verbose_name="Usuario")
+    fecha = models.DateField(verbose_name="Fecha")
+    estado = models.CharField(choices=estados.choices, default=estados.INGRESOS, max_length=20, verbose_name="Ingreso o gasto")
+    cuenta = models.CharField(max_length=400, verbose_name="Cuenta")
+    categoria = models.CharField(max_length=400, verbose_name="Categoria")
+    importe = models.FloatField(verbose_name="Importe")
+    nota = models.CharField(max_length=400, verbose_name="Nota")
+
+    class Meta:
+        verbose_name="Registro"
+        verbose_name_plural="Registros"
+
+    def __str__(self):
+        return self.nota
     

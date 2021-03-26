@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import datosusuario, mensajesgenerales, NotaDePedido, Vacaciones, MonedaLink, EntregaMoneda, Anuncios, Seguimiento, PremiosMonedas
+from .models import datosusuario, mensajesgenerales, NotaDePedido, Vacaciones, MonedaLink, EntregaMoneda, Anuncios, Seguimiento, PremiosMonedas, RegistroContable
 from import_export import resources
 from import_export.admin import ImportExportModelAdmin
 
@@ -13,6 +13,15 @@ class DatosUserAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = ('identificacion', 'area',  'cargo')
     search_fields = ('identificacion', 'area',  'cargo')
     resources_class = DatosUserResource
+
+class RegistroContableResource(resources.ModelResource):
+    class Meta:
+        model = RegistroContable
+
+class RegistroContableAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    list_display = ('usuario', 'nota',  'categoria')
+    search_fields = ('usuari__identificacion', 'nota',  'categoria')
+    resources_class = RegistroContableResource
 
 class MensajesGeneralesResource(resources.ModelResource):
     class Meta:
@@ -87,6 +96,7 @@ class CanjeMonedasAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     resources_class = CanjeMonedasResource
 
 
+admin.site.register(RegistroContable, RegistroContableAdmin)
 admin.site.register(datosusuario, DatosUserAdmin)
 admin.site.register(PremiosMonedas, CanjeMonedasAdmin)
 admin.site.register(mensajesgenerales, MensajesGeneralesAdmin)

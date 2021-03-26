@@ -2,12 +2,14 @@
 {% load apptags_extras %}
 
 {% load static %}
+{% load humanize %}
 
 {% block content %}
+
 <div class="container-fluid r-aside">
     <div class="row page-titles">
         <div class="col-md-5 align-self-center">
-            <h3 class="text-themecolor">Resgistro Contable </h3>
+            <h3 class="text-themecolor">Registro Contable </h3>
         </div>
     </div>
 </div>
@@ -15,124 +17,605 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body row">
-                <div class="col-12 justify-content-center">
-                    <div class="row m-2">
-                        <a href="#" class="fa fa-plus-circle "> <span style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif"><b>Añadir</b></span></a>
-                    </div>
+                <div class="col-12 col-md-8 col-lg-8 justify-content-center">
                     <div class="row">
-
-                        <div class="col-12 col-lg-4 text-center">
-                            <p><b>Ingresos</b></p>
-                            <p class="text-info"><b>0,00</b></p>
-                        </div>
-                        <div class="col-12 col-lg-4 text-center">
-                            <p><b>Gastos</b></p>
-                            <p class="text-danger"><b>0,00</b></p>
-                        </div>
-                        <div class="col-12 col-lg-4 text-center">
-                            <p><b>Balance</b></p>
-                            <p><b>0,00</b></p>
+                        <div class="col-12">
+                            <ul class="nav nav-tabs">
+                                <li class="active"><a data-toggle="tab" href="#diario">Registro</a></li>
+                                <li ><a data-toggle="tab" href="#semanal">Semanal</a></li>
+                                <li><a data-toggle="tab" href="#mensual">Mensual</a></li>
+                                <li><a data-toggle="tab" href="#total">Resumen</a></li>
+                            </ul>
                         </div>
                     </div>
-                    <div class="table-responsive">
-                        <table id="example" class="table table-striped table-bordered " style="width:100%">
-                            <thead class="bg-secondary">
-                                <tr>
-                                    <th> Dia </th>
-                                    <th> Ingresos </th>
-                                    <th> Gastos </th>
-                                </tr>
-                            </thead>
 
-                            <tbody>
-                                <tr>
-                                    <td>22/3/2020</td>
+                    <div class="tab-content">
+                        <div id="diario" class="tab-pane fade  in active">
+                            <div class="row m-2">
+                                <button type="button" class="btn" data-toggle="modal" data-target="#ModalCuenta1"><i
+                                        class="fa fa-plus-circle  text-info"><span class="text-info ml-2"
+                                            style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif"><b>Añadir</b></span></i></button>
+                            </div>
+                            <div class="row">
+
+                                <div class="col-4 text-center">
+                                    <p><b>Ingresos</b></p>
+                                    <span class="text-success"><b>$ {{ingresos|floatformat:0|intcomma}}</b></span>
                                     
-                                    <td class="text-success"><b>$ 20000</b></td>
-                                    <td class="text-danger"><b>$ 31000</b></td>
-                                </tr>
-                            </tbody>
-                            
-                            <thead class="bg-secondary">
-                                <tr>
-                                    <th style="width: 200px;"> Categoria </th>
-                                    <th> Cuenta/Nota </th>
-                                    <th> Monto </th>
-                                </tr>
-                            </thead>
+                                </div>
+                                <div class="col-4 text-center">
+                                    <p><b>Gastos</b></p>
+                                    <span class="text-danger"><b>$ {{gastos|floatformat:0|intcomma}}</b></span>
+                                    
+                                </div>
+                                <div class="col-4 text-center">
+                                    <p><b>Balance</b></p>
+                                    <span class="text-info"><b>$ {{balance|floatformat:0|intcomma}}</b></span>
+                                    
+                                </div>
+                            </div>
+                            <h3>{{hoy|date:"M"}}</h3>
+                            <div class="table-responsive">
 
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        <b>Sueldo</b>
-                                    </td>
-                                    <td>
-                                        <div>
-                                            <div>
-                                                <p>Nota numero 1</p>
-                                            </div>
-                                            <div>
-                                                <p>Efectivo</p>
+                                {% for d in datos %}
+                                <table id="example" class="table table-bordered "
+                                    style="width:100%; font-size: 14px;">
+
+                                    <thead>
+                                        <tr>
+                                            <td><h4>{{d.0|date:"d"}}</h4> </td>
+                                            <td class="text-success" style="text-align: right;"><b>$ {{d.2|floatformat:0|intcomma}}</b></td>
+                                            <td class="text-danger" style="text-align: right;"><b>$ {{d.3|floatformat:0|intcomma}}</b></td>
+
+                                        </tr>
+                                    </thead>
+
+                                    <thead class="bg-secondary">
+                                        <tr>
+                                            <th style="max-width: 100px;"> Categoria </th>
+                                            <th> Cuenta/Nota </th>
+                                            <th> Monto </th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody style="font-size: 12px;">
+                                        {% for i in d.1 %}
+                                        <tr>
+                                            <td style="width: 100px;">
+                                                <p>{{i.categoria}}</p>
+                                            </td>
+                                            <td style="padding 1px;">
+                                                <div>
+                                                    <div>
+                                                        <h6 style="font-size: 12px;">{{i.nota}}</h6>
+                                                        <h6 class="card-subtitle" style="font-size: 10px;">{{i.cuenta}}</h6>
+                                                    </div>
+
+                                                </div>
+                                            </td>
+                                            <td {% if i.estado == "INGRESOS" %}class="text-success"{% else %}class="text-danger"{% endif%}>$ {{i.importe|floatformat:0|intcomma}}</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+
+                                </table>
+                                {% endfor %}
+                            </div>
+                            <!-- Modal item -->
+                            <div class="modal fade" id="ModalCuenta1" tabindex="-1" role="dialog"
+                                aria-labelledby="ModalCuenta1" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLongTitle">Cargar un elemento</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="tab-content">
+                                                <ul class="nav nav-tabs">
+                                                    <li class="active"><a data-toggle="tab" href="#ingreso">Ingreso</a>
+                                                    </li>
+                                                    <li><a data-toggle="tab" href="#gasto">Gasto</a></li>
+                                                   
+                                                    </li>
+                                                </ul>
+                                                <div id="ingreso" class="tab-pane fade in active">
+                                                    <form method="POST" style="margin: 15px;"
+                                                        enctype="multipart/form-data" id="upload-image-form">
+
+                                                        {% csrf_token %}
+                                                        <h6>Fecha</h6>
+
+                                                        <div class="input-group mb-3">
+
+                                                            <input name="fecha" type="date"
+                                                                class="form-control form-control" style="width: 300px;">
+                                                        </div>
+
+                                                        <h6>Cuenta</h6>
+
+                                                        <div class="input-group mb-3">
+
+                                                            <input name="cuenta" type="search" class="form-control form-control"
+                                                            placeholder="Efectivo/Tarjeta de credito" list="provee">
+
+                                                        </div>
+
+                                                        <h6>Categoria</h6>
+
+                                                        <div class="input-group mb-3">
+
+                                                            <input name="categoria" type="search" class="form-control form-control"
+                                                            placeholder="Sueldo Mensual/Plus" list="list_cat_ing">
+
+                                                        </div>
+
+                                                        <h6>Importe</h6>
+
+                                                        <div class="input-group mb-3">
+
+                                                            <input name="importe" type="number"
+                                                                class="form-control form-control border border-success"
+                                                                style="width: 300px;">
+                                                        </div>
+
+                                                        <h6>Nota</h6>
+
+                                                        <div class="input-group mb-3">
+
+                                                            <input name="nota" type="text"
+                                                                class="form-control form-control" style="width: 300px;">
+                                                        </div>
+
+                                                        <button type="submit" class="btn btn-light" name="tipo" value="INGRESOS">
+                                                            <img src="{% static 'img/upload.png' %}" alt=""
+                                                                style="max-width:20px; height:auto;">
+                                                            <b>Cargar</b></button>
+
+
+                                                    </form>
+
+                                                </div>
+                                                <div id="gasto" class="tab-pane fade">
+                                                    <form method="POST" style="margin: 15px;"
+                                                        enctype="multipart/form-data" id="upload-image-form">
+                                                        {% csrf_token %}
+                                                        <h6>Fecha</h6>
+
+                                                        <div class="input-group mb-3">
+
+                                                            <input name="fecha" type="date"
+                                                                class="form-control form-control" style="width: 300px;">
+                                                        </div>
+
+                                                        <h6>Cuenta</h6>
+
+                                                        <div class="input-group mb-3">
+
+                                                            <input name="cuenta" type="search" class="form-control form-control"
+                                                            placeholder="Efectivo/Tarjeta de credito" list="provee">
+
+                                                        </div>
+
+                                                        <h6>Categoria</h6>
+
+                                                        <div class="input-group mb-3">
+
+                                                            <input name="categoria" type="search" class="form-control form-control"
+                                                            placeholder="Combustible/Comida" list="list_cat_gasto">
+
+                                                        </div>
+
+                                                        <h6>Importe</h6>
+
+                                                        <div class="input-group mb-3">
+
+                                                            <input name="importe" type="number"
+                                                                class="form-control form-control border border-danger"
+                                                                style="width: 300px;">
+                                                        </div>
+
+                                                        <h6>Nota</h6>
+
+                                                        <div class="input-group mb-3">
+
+                                                            <input name="nota" type="text"
+                                                                class="form-control form-control" style="width: 300px;">
+                                                        </div>
+
+                                                        <button type="submit" class="btn btn-light" name="tipo" value="GASTOS">
+                                                            <img src="{% static 'img/upload.png' %}" alt=""
+                                                                style="max-width:20px; height:auto;">
+                                                            <b>Cargar</b></button>
+
+
+                                                    </form>
+
+                                                </div>
+                                                
                                             </div>
                                         </div>
-                                    </td>
-                                    <td>$ 40000</td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <b>Entrenamiento</b>
-                                    </td>
-                                    <td>
-                                        <div>
-                                            <div>
-                                                <p>Nota numero 1</p>
-                                            </div>
-                                            <div>
-                                                <p>Efectivo</p>
-                                            </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-dismiss="modal">Close</button>
+
                                         </div>
-                                    </td>
-                                    <td>$ 10000</td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <b>Comida</b>
-                                    </td>
-                                    <td>
-                                        <div>
-                                            <div>
-                                                <p>Nota numero 1</p>
-                                            </div>
-                                            <div>
-                                                <p>Efectivo</p>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>$ 1000</td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <b>Tarjetas</b>
-                                    </td>
-                                    <td>
-                                        <div>
-                                            <div>
-                                                <p>Nota numero 1</p>
-                                            </div>
-                                            <div>
-                                                <p>Efectivo</p>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>$ 20000</td>
-                                </tr>
-                            </tbody>
-                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Final del modal -->
+                        </div>
+                        <div id="semanal" class="tab-pane fade">
+                            <div class="row" style="margin-top: 5px;">
+
+                                <div class="col-4 text-center">
+                                    <p><b>Ingresos</b></p>
+                                    <span class="text-success"><b>$ {{ingresos|floatformat:0|intcomma}}</b></span>
+                                    
+                                </div>
+                                <div class="col-4 text-center">
+                                    <p><b>Gastos</b></p>
+                                    <span class="text-danger"><b>$ {{gastos|floatformat:0|intcomma}}</b></span>
+                                    
+                                </div>
+                                <div class="col-4 text-center">
+                                    <p><b>Balance</b></p>
+                                    <span class="text-info"><b>$ {{balance|floatformat:0|intcomma}}</b></span>
+                                    
+                                </div>
+                            </div>
+                            <h3>Semanal</h3>
+                            <div class="table-responsive">
+                                <table id="example" class="table table-striped table-bordered "
+                                    style="width:100%; font-size: 14px;">
+                                    <thead class="bg-secondary">
+                                        <tr>
+                                            <th> Dia </th>
+                                            <th> Ingresos </th>
+                                            <th> Gastos </th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        <tr>
+                                            <td>28/3 - 03/4</td>
+                                            
+                                            <td class="text-success"><b>$ 2000</b></td>
+                                            <td class="text-danger"><b>$ 100</b></td>
+                                        </tr>
+                                        <tr>
+                                            <td>21/3 - 27/4</td>
+                                            
+                                            <td class="text-success"><b>$ 200</b></td>
+                                            <td class="text-danger"><b>$ 30</b></td>
+                                        </tr>
+                                        <tr>
+                                            <td>14/3 - 20/4</td>
+                                            
+                                            <td class="text-success"><b>$ 20000</b></td>
+                                            <td class="text-danger"><b>$ 3100</b></td>
+                                        </tr>
+                                        <tr>
+                                            <td>7/3 - 13/4</td>
+
+                                            <td class="text-success"><b>$ 20</b></td>
+                                            <td class="text-danger"><b>$ 31</b></td>
+                                        </tr>
+                                        <tr>
+                                            <td>28/3 - 6/4</td>
+
+                                            <td class="text-success"><b>$ 200000</b></td>
+                                            <td class="text-danger"><b>$ 31000</b></td>
+                                        </tr>
+                                    </tbody>
+
+                                </table>
+                            </div>
+                        </div>
+                        <div id="mensual" class="tab-pane fade">
+                            <div class="row" style="margin-top: 5px;">
+
+                                <div class="col-4 text-center">
+                                    <p><b>Ingresos</b></p>
+                                    <span class="text-success"><b>$ {{ingresos|floatformat:0|intcomma}}</b></span>
+                                    
+                                </div>
+                                <div class="col-4 text-center">
+                                    <p><b>Gastos</b></p>
+                                    <span class="text-danger"><b>$ {{gastos|floatformat:0|intcomma}}</b></span>
+                                    
+                                </div>
+                                <div class="col-4 text-center">
+                                    <p><b>Balance</b></p>
+                                    <span class="text-info"><b>$ {{balance|floatformat:0|intcomma}}</b></span>
+                                    
+                                </div>
+                            </div>
+
+                            <h3>Mensual</h3>
+                            <div class="table-responsive">
+                                <table id="example" class="table table-striped table-bordered "
+                                    style="width:100%; font-size: 14px;">
+                                    <thead class="bg-secondary">
+                                        <tr>
+                                            <th> Mes </th>
+                                            <th> Ingresos </th>
+                                            <th> Gastos </th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        <tr>
+                                            <td>Marzo</td>
+                                            
+                                            <td class="text-success"><b>$ 20000</b></td>
+                                            <td class="text-danger"><b>$ 1000</b></td>
+                                        </tr>   <tr>
+                                            <td>Febrero</td>
+                                            
+                                            <td class="text-success"><b>$ 2000</b></td>
+                                            <td class="text-danger"><b>$ 100</b></td>
+                                        </tr>   <tr>
+                                            <td>Enero</td>
+                                            
+                                            <td class="text-success"><b>$ 5000000</b></td>
+                                            <td class="text-danger"><b>$ 100000</b></td>
+                                        </tr>
+                                    </tbody>
+                                  
+                                </table>
+                            </div>
+                        </div>
+                        <div id="total" class="tab-pane fade">
+
+                            <div class="row" style="margin-top: 5px;">
+
+                                <div class="col-4 text-center">
+                                    <p><b>Ingresos</b></p>
+                                    <span class="text-success"><b>$ {{ingresos|floatformat:0|intcomma}}</b></span>
+                                    
+                                </div>
+                                <div class="col-4 text-center">
+                                    <p><b>Gastos</b></p>
+                                    <span class="text-danger"><b>$ {{gastos|floatformat:0|intcomma}}</b></span>
+                                    
+                                </div>
+                                <div class="col-4 text-center">
+                                    <p><b>Balance</b></p>
+                                    <span class="text-info"><b>$ {{balance|floatformat:0|intcomma}}</b></span>
+                                    
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="card-body">
+                                    <h6>Gastos {{hoy|date:"M"}}</h6>
+                                </div>
+
+                            </div>
+
+                            <div class="row" style=" vertical-align: top;">
+                                <div class="col-lg-6 col-xlg-4" >
+                                    <div class="card-body">                    
+
+                                        <canvas id="myChart" width="50%"></canvas>
+                        
+                                        <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+                                      <script>
+                                    
+                                          var ctx = document.getElementById('myChart').getContext('2d');
+                                          var chart = new Chart(ctx, {
+                                              // The type of chart we want to create
+                                              type: 'doughnut',
+                                              // The data for our dataset
+                                              data: {
+                                              datasets: [{        
+                                                  data: [{% for i in pie_gastos %} {{i.1}}, {% endfor %}],
+                                                  backgroundColor: [{% for i in pie_gastos %} 'rgb{{i.2}}', {% endfor %}],    
+                                              }],
+                                    
+                                              labels: [{% for i in pie_gastos %} '{{i.0}}', {% endfor %}]
+                                            },
+                                              options: {
+                                                legend: {
+                                                    position: 'right'
+                                                },
+                                              },
+                                    
+                                            });
+                                    
+                                      </script>
+                        
+                                    </div>
+
+                                </div>
+
+                                <div class="col-lg-6 col-xlg-4">
+                                    <div class="card-body"> 
+                                    <div>
+                                        <table id="example" class="table table-striped table-bordered "
+                                            style="width:100%; font-size: 12px;">
+
+                                            <tbody>
+                                                {% for i in pie_gastos %}
+                                                <tr>
+                                                    
+                                                    <td>{{i.0}}</td>
+                                                    <td>$ {{i.1|floatformat:0|intcomma}}</td>
+                                                    
+                                                </tr>
+                                                {% endfor %}
+                                            </tbody>
+        
+        
+                                        </table>
+                                    </div>
+                                </div>
+                                </div>
+                                
+                              </div>
+
+                            <div class="row">
+                                <div class="card-body">
+                                    <h6>Ingresos {{hoy|date:"M"}}</h6>
+                                </div>
+
+                            </div>
+
+                            <div class="row" style=" vertical-align: top;">
+                                <div class="col-lg-6 col-xlg-4" >
+                                    <div class="card-body">                    
+
+                                        <canvas id="myChart2" width="50%"></canvas>
+                        
+                                        <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+                                      <script>
+                                    
+                                          var ctx = document.getElementById('myChart2').getContext('2d');
+                                          var chart = new Chart(ctx, {
+                                              // The type of chart we want to create
+                                              type: 'doughnut',
+                                              // The data for our dataset
+                                              data: {
+                                              datasets: [{        
+                                                  data: [{% for i in pie_ingresos %} {{i.1}}, {% endfor %}],
+                                                  backgroundColor: [{% for i in pie_ingresos %} 'rgb{{i.2}}', {% endfor %}],    
+                                              }],
+                                    
+                                              labels: [{% for i in pie_ingresos %} '{{i.0}}', {% endfor %}]
+                                            },
+                                              options: {
+                                                legend: {
+                                                    position: 'right'
+                                                },
+                                              },
+                                    
+                                            });
+                                    
+                                      </script>
+                        
+                                    </div>
+
+                                </div>
+
+                                <div class="col-lg-6 col-xlg-4">
+                                    <div class="card-body"> 
+                                    <div>
+                                        <table id="example" class="table table-striped table-bordered "
+                                            style="width:100%; font-size: 12px;">
+
+                                            <tbody>
+                                                {% for i in pie_ingresos %}
+                                                <tr>
+                                                    
+                                                    <td>{{i.0}}</td>
+                                                    <td>$ {{i.1|floatformat:0|intcomma}}</td>
+                                                    
+                                                </tr>
+                                                {% endfor %}
+                                            </tbody>
+        
+        
+                                        </table>
+                                    </div>
+                                </div>
+                                </div>
+                                
+                              </div>
+                            
+                        </div>
+                        <!-- modelo prueba -->
                     </div>
+                </div>
+                <div class="col-12 col-md-4 col-lg-4 justify-content-center">
+                    <div>
+                        <h3>Descripciones</h3>
+                        <p>Esto contiene la descripcion detallada sobre los elementos de la tabla</p>
+                    </div>
+                    <div>
+                        <h4 class="text-success">Ingresos</h4>
+                        <p>Breve descripcion del elemento</p>
+                    </div>
+                    <div>
+                        <h4 class="text-danger">Gastos</h4>
+                        <p>Breve descripcion del elemento</p>
+                    </div>
+                    <div>
+                        <h4 class="text-info">Balance</h4>
+                        <p>Breve descripcion del elemento</p>
+                    </div>
+                    <div>
+                        <h4>Categoria</h4>
+                        <p>Breve descripcion del elemento</p>
+                    </div>
+                    <div>
+                        <h4>Cuenta</h4>
+                        <p>Breve descripcion del elemento</p>
+                    </div>
+
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<datalist id="list_cat_gasto">
+
+    {% for i in list_cat_gasto %}
+
+    <option value="{{ i }}"></option>
+
+    {% endfor %}
+
+</datalist>
+
+<datalist id="list_cat_ing">
+
+    {% for i in list_cat_ing %}
+
+    <option value="{{ i }}"></option>
+
+    {% endfor %}
+
+</datalist>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<!-- <script>
+
+    function openTab(evt, tabName) {
+        var i, tabcontentlist, tablinks;
+        tabcontentlist = document.getElementsByClassName("tabcontentlist");
+        for (i = 0; i < tabcontentlist.length; i++) {
+            tabcontentlist[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("nav-link");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+        document.getElementById(tabName).style.display = "block";
+        evt.currentTarget.className += " active";
+    }
+</script>
+
+
+<script>
+    function openTabModal(evt, tabName) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("nav-link-modal");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+        document.getElementById(tabName).style.display = "block";
+        evt.currentTarget.className += " active";
+    }
+</script> -->
 
 {% endblock %}
