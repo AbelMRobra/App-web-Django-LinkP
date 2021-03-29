@@ -5,19 +5,20 @@
 
 {% block content %}
 
-<div class="container-fluid r-aside">
+<div class="container-fluid">
     <!-- ============================================================== -->
     <!-- Cabeza de la pagina -->
     <!-- ============================================================== -->
     <div class="row page-titles">
         <div class="col-md-5 align-self-center">
-            <h3 class="text-themecolor">Revisión y control de pagos</h3>
+            <h3 class="text-themecolor">Check de ordenes autorizadas</h3>
         </div>
 
         <div class="col-md-7 align-self-center">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
-                <li class="breadcrumb-item">Revisión</li>
+                <li class="breadcrumb-item"><a href="{% url 'Principal compras' %}">Panel</a></li>
+                <li class="breadcrumb-item">Check</li>
 
             </ol>
         </div>
@@ -29,25 +30,27 @@
   <div class="col-lg-12 col-xlg-6 button-group">
     <div class="card">
         <div class="card-body">
-            <h4 class="card-title">Ordenes de compra autorizadas</h4>
-            <h6 class="card-subtitle">Todas las listadas fueron previamente autorizadas por PL</h6>
+            <h4 class="card-title">Listado de ordenes autorizadas</h4>
+            <h6 class="card-subtitle">Todas las OC estan autorizadas por un socio gerente</h6>
 
             <div style="text-align: left;">
 
-                <div class="dropdown">
-                    <button class="dropbtn btn btn-primary">Estado</button>
-                    <div class="dropdown-content">
-                        <a href="{% url 'OC autorizadas' 0 %}">Todas</a>
-                        <a href="{% url 'OC autorizadas' 2 %}">Observadas</a> 
-                        <a href="{% url 'OC autorizadas' 4 %}">Vistas</a>
-                        <a href="{% url 'OC autorizadas' 3 %}">No vistas</a>
-              
+                <a href= "{% url 'Comparativas' 5 0 %}" class="btn waves-effect waves-light text-success"style="text-align: end; margin-top: 5px;" >Ordenes a firmar</a>
+        
+                <div class="btn-group">
+                    <button type="button" class="btn dropdown-toggle text-primary ml-2"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onclick="myFunction()">
+                        Estado
+                    </button>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="{% url 'OC autorizadas' 0 %}">Todas</a>
+                        <a class="dropdown-item" href="{% url 'OC autorizadas' 2 %}">Observadas</a>
+                        <a class="dropdown-item" href="{% url 'OC autorizadas' 4 %}">Vistas</a> 
+                        <a class="dropdown-item" href="{% url 'OC autorizadas' 3 %}">No vistas</a>
+
                     </div>
-                  </div>
-            <a href= "{% url 'Comparativas' 5 0 %}" class="btn waves-effect waves-light btn-outline-primary"style="text-align: end; margin-top: 5px;" >Tus O.C</a>
-        
-        
-     
+                </div>
+
             <div class ="dataTables_filter">
 
                 <form method="POST">
@@ -73,7 +76,6 @@
                             <th>Proveedor</th>
                             <th>O.C</th>
                             <th>Valor</th>
-                            <th>Fecha</th>
                             {% if request.user.username == "SP" or request.user.username == "AR" or request.user.username == "ar" %}
                             <th>Check</th>
                             {% endif %}
@@ -85,14 +87,16 @@
                         <tr>
                             <td>
                                 <span class="round round-primary"><img src="{{i.0.imagenlogo.url}}"  alt="user" width="50"></span>
+                                <h6 class="card-subtitle" style="font-size: 12px; margin-top: 2px;"><span class="text-muted"> {{i.2.fecha_c|date:"d/m/Y"}}</span></h6></td>
                                 </td>
-                            <td>{{i.2.proveedor.name|lower|capfirst}} <a href="{% url 'Mensajes en comparativas' i.2.id %}"><img src="{% if i.1 %}{% static 'img/charla.png' %}{% else %}{% static 'img/charlar.png' %}{% endif %}" alt="" style="max-width:15px; height:auto; margin: 1px;"></a> 
-                                <h6 class="card-subtitle">{{i.2.proyecto|upper}} - {{i.2.numero|upper}}</h6>
-                                <div><a href="{{ i.2.adjunto.url }}" class="btn btn-xs btn-warning">Adjunto</a>
-                                    {% if i.2.adj_oc %}
-                                    <a href="{{ i.2.adj_oc.url }}" class="btn btn-xs btn-success">O.C</a>
-                                    {% endif %}
-
+                            <td>{{i.2.proveedor.name|lower|capfirst}} 
+                                <h6 class="card-subtitle" style="font-size: 14px; margin-top: 2px;">
+                                <a href="{% url 'Mensajes en comparativas' i.2.id %}" class=" fa fa-comments-o fa-lg"></a>
+                                <a href="{{ i.2.adjunto.url }}" class=" fa fa-paperclip fa-lg"></a> 
+                                {% if i.2.adj_oc %}
+                                <a href="{{ i.2.adj_oc.url }}"><img src="{% static 'img/OC.png' %}" style="max-width:20px; height:auto;"></a>
+                                {% endif %}
+                                {{i.2.proyecto|lower|capfirst}} - {{i.2.numero|lower|capfirst}}</h6>
                             </td>
                             <td>
                                 <div>{{i.2.o_c|upper}}</div>
@@ -121,7 +125,7 @@
             
                                 {% endif %}
                                 <td>${{i.2.monto|floatformat:0|intcomma}}</td> 
-                            <td><span class="text-muted"><i class="fa fa-clock-o"></i> {{i.2.fecha_c|date:"d M Y"}}</span> </td>
+
                             {% if request.user.username == "SP" or request.user.username == "AR" or request.user.username == "ar" %}
                             <td>
                         

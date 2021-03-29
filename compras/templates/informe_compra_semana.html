@@ -9,13 +9,14 @@
 <div class="container-fluid r-aside">
     <div class="row page-titles">
         <div class="col-md-5 align-self-center">
-            <h3 class="text-themecolor">Informe de rendimiento de compras</h3>
+            <h3 class="text-themecolor">Analisis de periodos</h3>
         </div>
 
         <div class="col-md-7 align-self-center">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
-                <li class="breadcrumb-item">Informe de rendimiento</li>
+                <li class="breadcrumb-item"><a href="{% url 'Principal compras' %}">Panel</a></li>
+                <li class="breadcrumb-item">Analisis</li>
             </ol>
         </div>
     </div>
@@ -29,8 +30,8 @@
                 <div class="col-12 justify-content-center">
 
                     <div>
-                        <h2>Informe del rendimiento de compras</h2>
-                        <small>Analisis de las compras/certificados en un periodo</small>
+                        <h2>Analisis de compras según lo proyectado</h2>
+                        <small>Precio registrado vs precio en base de datos</small>
                     </div>
 
                     {% if datos %}

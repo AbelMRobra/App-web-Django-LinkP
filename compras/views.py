@@ -535,7 +535,7 @@ def panelvisto(request, estado):
 
     if estado == "0":
 
-        datos_base = Comparativas.objects.filter(estado = "AUTORIZADA").order_by("-fecha_c")
+        datos_base = Comparativas.objects.filter(estado = "AUTORIZADA", fecha_c__gte = "2021-02-01").order_by("-fecha_c")
 
         datos = []
 
@@ -552,7 +552,7 @@ def panelvisto(request, estado):
             datos.append((usuario, mensajes, d))
     if estado == "3":
 
-        datos_base = Comparativas.objects.filter(estado = "AUTORIZADA", visto="NO_VISTO").order_by("-fecha_c")
+        datos_base = Comparativas.objects.filter(estado = "AUTORIZADA", fecha_c__gte = "2021-02-01", visto="NO_VISTO").order_by("-fecha_c")
     
         datos = []
 
@@ -571,7 +571,7 @@ def panelvisto(request, estado):
     
     if estado == "2":
 
-        datos_base = Comparativas.objects.filter(estado = "AUTORIZADA", visto="VISTO NO CONFORME").order_by("-fecha_c")
+        datos_base = Comparativas.objects.filter(estado = "AUTORIZADA", fecha_c__gte = "2021-02-01", visto="VISTO NO CONFORME").order_by("-fecha_c")
     
         datos = []
 
@@ -590,7 +590,7 @@ def panelvisto(request, estado):
     
     if estado == "4":
 
-        datos_base = Comparativas.objects.filter(estado = "AUTORIZADA", visto="VISTO").order_by("-fecha_c")
+        datos_base = Comparativas.objects.filter(estado = "AUTORIZADA", fecha_c__gte = "2021-02-01", visto="VISTO").order_by("-fecha_c")
 
         datos = []
 
