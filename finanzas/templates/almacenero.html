@@ -29,92 +29,112 @@
 
 
   <div class="row">
+      <div class="col-lg-9">
 
-    <div class="col-lg-6 col-xlg-4">
-
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="card-body little-profile text-center">
-
-                            <h4 class="card-title">Estudios individuales</h4> </div>
-
-                            <form method="POST">
-
-                                {% csrf_token %}
-                     
-                                <div class="form-group">
-                     
-                                    <label>Seleccione un proyecto</label>
-                     
-                                    <select class="form-control" name="proyecto" >
-                     
-                                    {% if request.user.username != "HC" %}
-                     
-                                    {% for i in datos.proyectos %}
-                     
-                                    {% if not "DIANCO" in i.nombre %}
-                     
-                                    <option value="{{i.0}}">{{i.1}}</option>
-                     
-                     
-                                    {% endif %}
-                     
-                                    {% endfor %}
-                     
-                                    {% else %}
-                     
-                                    {% for i in datos.proyectos %}
-                     
-                                    {% if "DIANCO" in i.nombre %}
-                                    <option value="{{i.id}}">{{i.nombre}}</option>
-                     
-                                    {% endif %}
-                     
-                                    {% endfor %}
-                     
-                                    
-                                    {% endif %}
-                     
-                     
-                                  </select>
-                                  
-                                  <div style="text-align: right;">
-                                    <button class="btn btn-primary" type="submit" style="margin-top: 10px;"> Buscar</button>          
-                                </div>
-                                
-                            </form>
+        <div class="col-lg-6 col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <div class="card-body little-profile text-center">
+    
+                    <h4 class="card-title">Estudios individuales</h4> </div>
+    
+                    <form method="POST">
+    
+                        {% csrf_token %}
+                
+                        <div class="form-group">
+                
+                            <label>Seleccione un proyecto</label>
+                
+                            <select class="form-control" name="proyecto" >
+                
+                            {% if request.user.username != "HC" %}
+                
+                            {% for i in datos.proyectos %}
+                
+                            {% if not "DIANCO" in i.nombre %}
+                
+                            <option value="{{i.0}}">{{i.1}}</option>
+                
+                
+                            {% endif %}
+                
+                            {% endfor %}
+                
+                            {% else %}
+                
+                            {% for i in datos.proyectos %}
+                
+                            {% if "DIANCO" in i.nombre %}
+                            <option value="{{i.id}}">{{i.nombre}}</option>
+                
+                            {% endif %}
+                
+                            {% endfor %}
+                
+                            
+                            {% endif %}
+                
+                
+                            </select>
+                            
+                            <div style="text-align: right;">
+                            <button class="btn btn-primary" type="submit" style="margin-top: 10px;"> Buscar</button>          
                         </div>
+                        
+                    </form>
+                </div>
 
-                        </div>
+                
+            </div>
+        </div>
+            <div class="col-lg-12 col-md-6">
+                <div class="card">
+                <div class="card-body">
+                    <div class="card-body little-profile text-center">
+                        <div>
+                            <h4 class="card-title">Analisis conjunto</h4></div>
+                            <h6 class="text-muted m-t-10 m-b-0">Resultado de todos los proyectos</h6>
+                            <div>
+                
+                            <img src="{% static 'img/capas.png' %}" alt="" style="max-width:70px; height:auto; margin: 15px;">
+                            </div>
+                
+                    <div style="margin: 15px; ">
+                
+                        <a href="{% url 'Consolidado' %}"><button class="btn btn-dark"> Reporte </button></a>
+                
                     </div>
                 </div>
-                    <div class="col-lg-6 col-xlg-4">
+                </div>
 
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="card-body little-profile text-center">
-                                    <div>
-                                        <h4 class="card-title">Analisis conjunto</h4></div>
-                                        <h6 class="text-muted m-t-10 m-b-0">Resultado de todos los proyectos</h6>
-                                       <div>
-                            
-                                        <img src="{% static 'img/capas.png' %}" alt="" style="max-width:70px; height:auto; margin: 15px;">
-                                       </div>
-                            
-                            
-      
-                            
-                                <div style="margin: 15px; ">
-                            
-                                    <a href="{% url 'Consolidado' %}"><button class="btn btn-dark"> Reporte </button></a>
-                            
-                                </div>
-                            </div>
-                            </div>
-                        </div>
-                    </div>
+                </div>
+
+        </div>
+    </div>
+</div>
+
+    <aside class="right-side-panel">
+        <h3 class="p-relative"><span class="lstick"></span>¿Como funciona?</h3>
+        <div class="row">
+            
+            <div class="col-md-12 m-t-10">
+                <div class="card">
+                <div class="card-body">
+                <img src="{% static 'img/animation_500_kmqq9uxg.gif' %}" alt="Funny image" width="150px">
+                <p>Los estudios individuales muestran el clasico "almacenero", con información del área financiera y del área de presupuesto, solo seleccione un proyecto y haga click en <b style="color: purple;">buscar</b></p>
+                <p>El analisis en conjunto mostrara el comportamiento de todos los proyectos cargados en LinkP</p>
+                
+            </div>
+                </div>
+            </div>
+        </div>
     
-  </div>
+    
+        </div>
+        </aside>
+                    
+   
 
    {% endif %}
 

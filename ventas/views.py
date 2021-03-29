@@ -1420,7 +1420,11 @@ def pricing(request, id_proyecto):
     almacenero.save()
     almacenero.pendiente_comision = comision
     almacenero.save()
-    almacenero.pendiente_iibb_tem = (almacenero.cuotas_a_cobrar + iibb + almacenero.pendiente_iibb_tem_link)*0.02235
+
+    #################### Comento el calculo de IIBB
+
+    # almacenero.pendiente_iibb_tem = (almacenero.cuotas_a_cobrar + iibb + almacenero.pendiente_iibb_tem_link)*0.02235
+    
     almacenero.save()
 
     cantidad = len(datos_tabla_unidad)
