@@ -82,18 +82,18 @@
 
                                 <tr>
                                     <th rowspan="2" style="vertical-align: middle; text-align: center;" >Fecha</th>
-                                    <th colspan="2" style="vertical-align: middle; text-align: center;" >Todas las unidades</th>
-                                    <th colspan="2" style="vertical-align: middle; text-align: center;" >Unidades Link</th>
-                                    <th colspan="2" style="vertical-align: middle; text-align: center;" > Unidades Proyecto</th>
+                                    <th colspan="2" class="text-info" style="vertical-align: middle; text-align: center;" >Todas las unidades</th>
+                                    <th colspan="2" class="text-success" style="vertical-align: middle; text-align: center;" >Unidades Link</th>
+                                    <th colspan="2" class="text-warning" style="vertical-align: middle; text-align: center;" > Unidades Proyecto</th>
                                     </tr>
 
                                 <tr>
-                                    <th>Pesos</th>
-                                    <th>Hormigon</th>
-                                    <th>Pesos</th>
-                                    <th>Hormigon</th>
-                                    <th>Pesos</th>
-                                    <th>Hormigon</th>
+                                    <th style="text-align: center;">Pesos</th>
+                                    <th style="text-align: center;">Hormigon</th>
+                                    <th style="text-align: center;">Pesos</th>
+                                    <th style="text-align: center;">Hormigon</th>
+                                    <th style="text-align: center;">Pesos</th>
+                                    <th style="text-align: center;">Hormigon</th>
                                     </tr>
                             </thead>
 
@@ -103,12 +103,12 @@
 
                                 <tr>
                                     <td> <small>{{i.0.0.0|date:"d-m-Y" }} </small> </td>
-                                    <td> <small>${{i.1|floatformat:0|intcomma}} </small> </td>
-                                    <td> <small>{{i.2|floatformat:3}} M3 </small> </td>
-                                    <td> <small>${{i.3|floatformat:0|intcomma}} </small> </td>
-                                    <td> <small>{{i.4|floatformat:3}} M3 </small> </td>
-                                    <td> <small>${{i.5|floatformat:0|intcomma}} </small> </td>
-                                    <td> <small>{{i.6|floatformat:3}} M3 </small> </td>
+                                    <td class="text-info"> <small>${{i.1|floatformat:0|intcomma}} </small> </td>
+                                    <td class="text-info"> <small>{{i.2|floatformat:3}} M3 </small> </td>
+                                    <td class="text-success"> <small>${{i.3|floatformat:0|intcomma}} </small> </td>
+                                    <td class="text-success"> <small>{{i.4|floatformat:3}} M3 </small> </td>
+                                    <td class="text-warning"> <small>${{i.5|floatformat:0|intcomma}} </small> </td>
+                                    <td class="text-warning"> <small>{{i.6|floatformat:3}} M3 </small> </td>
                                 </tr>
 
                                 {% endfor %}
