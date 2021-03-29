@@ -52,7 +52,7 @@
                             <thead>
 
                                 <tr>
-                                    <th style="vertical-align: middle; text-align: center;" >Cliente</th>
+                                    <th style="vertical-align: middle;" >Cliente</th>
                                     <th style="vertical-align: middle; text-align: center;" >Proyecto</th>
                                     <th style="vertical-align: middle; text-align: center;" >Unidad</th>
                                     <th style="vertical-align: middle; text-align: center;" >Cobrado</th>
@@ -68,7 +68,7 @@
                                 {% for i in datos %}
 
                                 <tr>
-                                    <td> <small>{{i.0.venta.comprador}} </small> </td>
+                                    <td style="text-align: left;"> <small>{{i.0.venta.comprador}} </small> </td>
                                     <td style="color: rgb({{i.0.venta.proyecto.color}});"> <small><b>{{i.0.venta.proyecto}}</b>  </small> </td>
                                     <td> <small>{{i.0.venta.unidad.piso_unidad}} -  {{i.0.venta.unidad.nombre_unidad}} </small> </td>
                                     <td> <small>$ {{i.1|floatformat:0|intcomma}} </small> </td>

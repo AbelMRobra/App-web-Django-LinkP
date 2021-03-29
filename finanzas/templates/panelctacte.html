@@ -24,9 +24,9 @@
 <div class="row">
     <div class="col-lg-3 col-xlg-4">
         <div class="card p-1">
-            <div class="card-body">
+            <div class="card-body text-center">
 
-                <div style="margin-bottom: 15px;">
+                <div style="margin-bottom: 45px;">
                     <h6>Panel de administración</h6>
                 </div>
 
@@ -44,7 +44,7 @@
                         {% endfor %}
                     </select>
 
-                    <div class="my-4" style="text-align: right;">
+                    <div class="my-4" >
                         <button class="btn btn-primary" type="submit">
                             Buscar</button>
                     </div>
@@ -96,17 +96,59 @@
     </div>
 </div>
 
+<div class="row">
+    <div class="col-lg-3 col-xlg-4">
+        <div class="card">
+            <div class="card-body text-center">
+                <div>
+                    <h6>Registro de pagos</h6>
+                </div>
+
+                <div>
+                    <img src="{% static 'img/animation_500_kmv0qjoi.gif' %}" alt="" style="max-width:100px; height:auto; margin: 5px;">
+                </div>
+
+                <a href="{% url 'Panel de pagos total' 0 %}"><button class="btn btn-dark">
+                        Ingresar</button></a>
+
+            </div>
+
+        </div>
+    </div>
+
+    <div class="col-lg-3 col-xlg-4">
+        <div class="card">
+            <div class="card-body text-center">
+                <div>
+                    <h6>Deudores en M3</h6>
+                </div>
+
+                <div>
+                    <img src="{% static 'img/animation_500_kmv0kdl0.gif' %}" alt="" style="max-width:100px; height:auto; margin: 5px;">
+                </div>
+
+                <a href="{% url 'Deudores' 0 %}"><button class="btn btn-warning">
+                        Ingresar</button></a>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
 <aside class="right-side-panel">
-    <h3 class="p-relative"><span class="lstick"></span>Resumen</h3>
+    <h3 class="p-relative"><span class="lstick"></span>¿Comó se usa?</h3>
     <div class="row">
         
         <div class="col-md-12 m-t-10">
           <div class="card">
             <div class="card-body">
             <img src="{% static 'img/animation_500_kmqk33n8.gif' %}" alt="Funny image" width="150px">
-            <p><b class="text-primary">Panel de administración</b> Te permite crear cuentas corrientes, incorporar cuotas y pagos</p>
+            <p><b class="text-primary">Panel de administración</b> te permite crear cuentas corrientes, incorporar cuotas y pagos</p>
             <p><b class="text-success">Estados de cuenta</b> es un resumen con los datos mas importantes de tus cuentas</p>
-            <p><b class="text-info">Flujo de ingresos</b> Mostrara el flujo de ingresos a 24 meses</p>
+            <p><b class="text-info">Flujo de ingresos</b> mostrará el flujo de ingresos a 24 meses</p>
+            <p><b class="text-dark">Registro de pagos</b> registro de todos los pagos cargados</p>
+            <p><b class="text-warning">Deudores en M3</b> mostrará la deuda en nuestra moenda oficial</p>
         </div>
             </div>
         </div>
