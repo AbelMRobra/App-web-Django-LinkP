@@ -3083,7 +3083,7 @@ def cuentacte_resumen(request):
         
         datos.append((c, pagos, adeudado, pendiente))
 
-    return render(request, 'ctacte_Resumen.html', {"datos":datos})
+    return render(request, 'ctacte_resumen.html', {"datos":datos})
 
 class DescargarCuentacorriente(TemplateView):
 
