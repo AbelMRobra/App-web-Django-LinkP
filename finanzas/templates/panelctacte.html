@@ -2,7 +2,7 @@
 
 {% load static %}
 {% load humanize %}
-
+{% load apptags_extras %}
 {% block content %}
 
 <div class="container-fluid r-aside">
@@ -23,14 +23,16 @@
 
 <div class="row">
     <div class="col-lg-3 col-xlg-4">
-        <div class="card p-1">
+        <div class="card">
             <div class="card-body text-center">
 
-                <div style="margin-bottom: 45px;">
+                <div>
                     <h6>Panel de administración</h6>
                 </div>
 
-                <form method="POST">
+                {% if request.user|has_group:"ADMIN NIVEL 1" %}
+
+                <form method="POST" style="margin-top: 30px;">
 
                     {% csrf_token %}
 
@@ -51,6 +53,16 @@
 
                 </form>
 
+                {% else %}
+
+                <div>
+                    <img src="{% static 'img/animation_500_kmuydpt0.gif' %}" alt="" style="max-width:100px; height:auto; margin: 5px;">
+                </div>
+
+                <a href="#"><button class="btn btn-secondary">
+                    No habilitado</button></a>
+                {% endif %}
+
             </div>
         </div>
     </div>
@@ -66,8 +78,16 @@
                     <img src="{% static 'img/animation_500_kmqi3zbx.gif' %}" alt="" style="max-width:100px; height:auto; margin: 5px;">
                 </div>
 
+                {% if request.user|has_group:"ADMIN NIVEL 1" %}
+
                 <a href="{% url 'Resumen de cuentas' %}"><button class="btn btn-success">
                         Ingresar</button></a>
+
+                {% else %}
+
+                <a href="#"><button class="btn btn-secondary">
+                    No habilitado</button></a>
+                {% endif %}
 
             </div>
 
@@ -86,9 +106,15 @@
                 <div>
                     <img src="{% static 'img/animation_500_kmux2bxi.gif' %}" alt="" style="max-width:100px; height:auto; margin: 5px;">
                 </div>
+                {% if request.user|has_group:"ADMIN NIVEL 1" %}
 
                 <a href="{% url 'Total cuenta' 0 %}"><button class="btn btn-info">
                         Ingresar</button></a>
+                {% else %}
+
+                <a href="#"><button class="btn btn-secondary">
+                    No habilitado</button></a>
+                {% endif %}
 
             </div>
 
@@ -107,10 +133,15 @@
                 <div>
                     <img src="{% static 'img/animation_500_kmv0qjoi.gif' %}" alt="" style="max-width:100px; height:auto; margin: 5px;">
                 </div>
+                {% if request.user|has_group:"ADMIN NIVEL 1" %}
 
                 <a href="{% url 'Panel de pagos total' 0 %}"><button class="btn btn-dark">
                         Ingresar</button></a>
+                        {% else %}
 
+                        <a href="#"><button class="btn btn-secondary">
+                            No habilitado</button></a>
+                        {% endif %}
             </div>
 
         </div>
@@ -126,10 +157,15 @@
                 <div>
                     <img src="{% static 'img/animation_500_kmv0kdl0.gif' %}" alt="" style="max-width:100px; height:auto; margin: 5px;">
                 </div>
+                {% if request.user|has_group:"ADMIN NIVEL 1" %}
 
                 <a href="{% url 'Deudores' 0 %}"><button class="btn btn-warning">
                         Ingresar</button></a>
+                        {% else %}
 
+                        <a href="#"><button class="btn btn-secondary">
+                            No habilitado</button></a>
+                        {% endif %}
             </div>
 
         </div>
@@ -143,12 +179,12 @@
         <div class="col-md-12 m-t-10">
           <div class="card">
             <div class="card-body">
-            <img src="{% static 'img/animation_500_kmqk33n8.gif' %}" alt="Funny image" width="150px">
+            <img src="{% static 'img/animation_500_kmv3afam.gif' %}" alt="Funny image" width="200px">
             <p><b class="text-primary">Panel de administración</b> te permite crear cuentas corrientes, incorporar cuotas y pagos</p>
             <p><b class="text-success">Estados de cuenta</b> es un resumen con los datos mas importantes de tus cuentas</p>
             <p><b class="text-info">Flujo de ingresos</b> mostrará el flujo de ingresos a 24 meses</p>
             <p><b class="text-dark">Registro de pagos</b> registro de todos los pagos cargados</p>
-            <p><b class="text-warning">Deudores en M3</b> mostrará la deuda en nuestra moenda oficial</p>
+            <p><b class="text-warning">Deudores en M3</b> mostrará la deuda en nuestra moneda oficial</p>
         </div>
             </div>
         </div>

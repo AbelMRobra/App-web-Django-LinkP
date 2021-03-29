@@ -223,9 +223,10 @@
                   class="zmdi zmdi-file"></i><span class="hide-menu">Administración</span></a>
               <ul aria-expanded="false" class="collapse">
 
+                <li><a href="/finanzas/panelctacte">Cuentas corrientes</a></li>
+
                 {% if request.user|has_group:"ADMIN NIVEL 1" %}
 
-                <li><a href="/finanzas/panelctacte">Cuentas corrientes</a></li>
                 <li><a href="{% url 'Movimiento administración' %}">Movimiento de administración</a></li>
 
                 {% else %}
@@ -268,30 +269,7 @@
             <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i
                   class="zmdi zmdi-card"></i><span class="hide-menu">Compras</span></a>
               <ul aria-expanded="false" class="collapse">
-                {% if request.user|has_group:"COMPRAS NIVEL 1" %}
-                <li><a href="/compras/proveedores">Proveedores</a> </li>
-                {% if request.user|has_group:"COMPRAS NIVEL 2" %}
-                <li class="nav-devider"></li>
-                <li><a href="{% url 'Comparativas' 0 0 %}">Solicitudes de compras</a></li>
-                {% endif %}
-                {% if request.user|has_group:"COMPRAS NIVEL 3" %}
-                <li class="nav-devider"></li>
-                <li><a href="/compras/compras/0">Registros de compras </a></li>
-                {% endif %}
-                {% if request.user|has_group:"COMPRAS NIVEL 4" %}
-                <li class="nav-devider"></li>
-                <li><a href="{% url 'OC autorizadas' 0 %}">Ordenes de compras autorizadas</a></li>
-                {% endif %}
-                {% if request.user|has_group:"COMPRAS NIVEL 5" %}
-                <li class="nav-devider"></li>
-                <li><a href="/compras/analisiscompras">Analisis de compras</a></li>
-                <li><a href="/compras/informecompras">Informe de compras</a></li>
-                {% endif %}
-                {% else %}
-
-                <li>No tienes permisos para ver este espacio</li>
-
-                {% endif %}
+                <li><a href="{% url 'Principal compras' %}">Circuito de compras</a> </li>
               </ul>
             </li>
             <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i

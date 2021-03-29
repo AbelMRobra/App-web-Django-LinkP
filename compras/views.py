@@ -26,7 +26,9 @@ from openpyxl import Workbook
 from openpyxl.styles import Alignment, Border, Font, PatternFill, Side 
 from django.views.generic.base import TemplateView  
 
+def principalcompras(request):
 
+    return render(request, "principalcompras.html")
 
 def cargarocautorizar(request):
 
