@@ -1764,7 +1764,7 @@ def indicelink(request, id_moneda, id_time):
         prest_cobrar = almacenero.prestamos_proyecto + almacenero.prestamos_otros 
 
         cuenta_corriente = almacenero.cuotas_a_cobrar
-        total_ingresos = prest_cobrar  + almacenero.ingreso_ventas + almacenero.financiacion 
+        total_ingresos = prest_cobrar  + almacenero.ingreso_ventas + almacenero.financiacion + almacenero.inmuebles
 
         if id_time == "0":
             total_ingresos = total_ingresos + cuenta_corriente
@@ -1976,7 +1976,7 @@ def indicelink(request, id_moneda, id_time):
             pend_gast = almacenero.pendiente_admin + almacenero.pendiente_comision + almacenero.saldo_mat + almacenero.saldo_mo + almacenero.imprevisto + almacenero.credito + almacenero.fdr - almacenero.pendiente_adelantos + almacenero.pendiente_iva_ventas + almacenero.pendiente_iibb_tem +almacenero.cheques_emitidos
             
             prest_cobrar = almacenero.prestamos_proyecto + almacenero.prestamos_otros
-            total_ingresos = prest_cobrar + almacenero.cuotas_a_cobrar + almacenero.ingreso_ventas + almacenero.financiacion
+            total_ingresos = prest_cobrar + almacenero.cuotas_a_cobrar + almacenero.ingreso_ventas + almacenero.financiacion + almacenero.inmuebles
             
             margen = total_ingresos - pend_gast + saldo_caja
             descuento = almacenero.ingreso_ventas*0.06
@@ -3057,6 +3057,33 @@ def registro_almacenero(request, id_proyecto, fecha):
     }
 
     return render(request, 'historicoalmacenero.html', {"datos":datos} )
+
+def cuentacte_resumen(request):
+
+    data = CuentaCorriente.objects.all()
+
+    fecha_inicial_hoy = datetime.date.today()
+
+    datos = []
+
+    for c in data:
+
+        pagos = sum(np.array(Pago.objects.values_list('pago_pesos').filter(fecha__lt = fecha_inicial_hoy, cuota__cuenta_corriente = c)))
+        
+        cuotas_anteriores_h = sum(np.array(Cuota.objects.values_list('precio').filter(fecha__lt = fecha_inicial_hoy, constante__id = 7, cuenta_corriente = c)))*Constantes.objects.get(id = 7).valor
+        cuotas_anteriores_usd = sum(np.array(Cuota.objects.values_list('precio').filter(fecha__lt = fecha_inicial_hoy, constante__id = 1, cuenta_corriente = c)))*Constantes.objects.get(id = 1).valor
+        pagos_anteriores_h = sum(np.array(Pago.objects.values_list('pago').filter(fecha__lt = fecha_inicial_hoy, cuota__constante__id = 7, cuota__cuenta_corriente = c)))*Constantes.objects.get(id = 7).valor
+        pagos_anteriores_usd = sum(np.array(Pago.objects.values_list('pago').filter(fecha__lt = fecha_inicial_hoy, cuota__constante__id = 1, cuota__cuenta_corriente = c)))*Constantes.objects.get(id = 1).valor
+        cuotas_posteriores_h = sum(np.array(Cuota.objects.values_list('precio').filter(fecha__gt = fecha_inicial_hoy, constante__id = 7, cuenta_corriente = c)))*Constantes.objects.get(id = 7).valor
+        cuotas_posteriores_usd = sum(np.array(Cuota.objects.values_list('precio').filter(fecha__gt = fecha_inicial_hoy, constante__id = 1, cuenta_corriente = c)))*Constantes.objects.get(id = 1).valor
+        
+        
+        adeudado = cuotas_anteriores_h + cuotas_anteriores_usd - pagos_anteriores_h - pagos_anteriores_usd
+        pendiente = cuotas_posteriores_h + cuotas_posteriores_usd
+        
+        datos.append((c, pagos, adeudado, pendiente))
+
+    return render(request, 'ctacte_Resumen.html', {"datos":datos})
 
 class DescargarCuentacorriente(TemplateView):
 

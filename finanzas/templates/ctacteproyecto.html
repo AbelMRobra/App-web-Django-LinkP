@@ -6,17 +6,18 @@
 {% block content %}
 
 
-<div class="container-fluid r-aside">
+<div class="container-fluid ">
 
     <div class="row page-titles">
         <div class="col-md-5 align-self-center">
-            <h3 class="text-themecolor">Cuenta Corriente Proyecto</h3>
+            <h3 class="text-themecolor">Panel de administración</h3>
         </div>
 
         <div class="col-md-7 align-self-center">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
-                <li class="breadcrumb-item">Cta Cte Proyecto</li>
+                <li class="breadcrumb-item"><a href="{% url 'Panel cuentas corrientes' %}">Panel</a></li>
+                <li class="breadcrumb-item">Administración</li>
             </ol>
         </div>
 
@@ -38,11 +39,9 @@
 
           
                 <div style="margin: 5px;">
-
-                    <a href="{% url 'Crear cuenta corriente' proyecto.id %}" class="btn btn-info"
-                        style="text-align: end; ">
-                        Nueva
-                        cuenta</a>
+                    <a href="{% url 'Crear cuenta corriente' proyecto.id %}" class="btn" ><i
+                        class="fa fa-plus-circle  text-info"><span class="text-info ml-2"
+                            style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif"><b>Añadir cuenta</b></span></i></a>
 
                 </div>
 
@@ -59,8 +58,8 @@
                             <th>Sup.</th>
                             <th>Asignacion</th>
                             <th>Precio de venta</th>
-                            <th> Panel</th>
-                            <th style="min-width: 100px;">Acciones</th>
+                            <th style="text-align: center;"> Panel</th>
+                            <th style="min-width: 100px; text-align: center;">Acciones</th>
                         </tr>
                     </thead>
 
@@ -87,23 +86,14 @@
                             <td>{{i.venta.asignacion|lower|capfirst}}</td>
                             <td>${{i.venta.precio_venta|floatformat:0|intcomma}}</td>
 
-                            <td><a href="{% url 'Cuenta corriente venta' i.id %}" class="btn btn-sm btn-success"><span
+                            <td style="text-align: center;"><a href="{% url 'Cuenta corriente venta' i.id %}" class="btn btn-sm btn-success"><span
                                         class="hint--left hint--danger"
                                         aria-label="Accede a la cuenta corriente!">Ingresar</span></a>
                             </td>
-                            <td>
-                                <a href="{% url 'Reporte de pdf de cuentas corrientes' i.id %}"><span
-                                        class="hint--left hint--danger" aria-label="PDF resumen de cuenta!"><img
-                                            src="{% static 'img/pdf.png' %}" alt=""
-                                            style="max-width:20px; height:auto;"></span></a>
-                                <a href="{% url 'Mandar email' i.id %}"><span class="hint--left hint--danger"
-                                        aria-label="Mandar un email al cliente con su resumen!"><img
-                                            src="{% static 'img/email.png' %}" alt=""
-                                            style="max-width:20px; height:auto;"></span></a>
-                                <a href="{% url 'Detalle venta' i.venta.id %}"><span class="hint--left hint--danger"
-                                        aria-label="Anotaciones realizadas en la venta!"><img
-                                            src="{% static 'img/publicalo.png' %}" alt=""
-                                            style="max-width:20px; height:auto;"></span></a>
+                            <td style="text-align: center;">
+                                <a href="{% url 'Reporte de pdf de cuentas corrientes' i.id %}" class="fa fa-file-pdf-o"></a>
+                                <a href="{% url 'Mandar email' i.id %}"  class="fa fa-envelope-o"></a>
+                                <a href="{% url 'Detalle venta' i.venta.id %}"  class="fa fa-comment"></a>
                                 <a href="{% url 'Eliminar cuenta corriente' i.id %}"> <span
                                         class="hint--left hint--danger" aria-label="Elimina la cuenta corriente!"><div class="fa fa-trash fa-lg"></div></span> </a>
                             </td>

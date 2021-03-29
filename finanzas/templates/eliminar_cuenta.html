@@ -11,14 +11,15 @@
 
     <div class="row page-titles">
         <div class="col-md-5 align-self-center">
-            <h3 class="text-themecolor">Eliminar cuenta</h3>
+            <h3 class="text-themecolor">Eliminar cuenta corriente</h3>
         </div>
 
         <div class="col-md-7 align-self-center">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'Panel cuentas corrientes' %}">Panel</a></li>
                 <li class="breadcrumb-item"><a
-                        href="{% url 'Cuenta corriente proyecto' datos.venta.proyecto.id %}">Biblioteca de A.P.U</a>
+                    href="{% url 'Cuenta corriente proyecto' datos.venta.unidad.proyecto.id %}">Admin</a></li>
                 </li>
                 <li class="breadcrumb-item">Eliminar cuenta</li>
             </ol>
@@ -35,25 +36,24 @@
                 <div class="col-12 justify-content-center">
 
                     <div class="row d-flex justify-content-center">
-                        <div class="col col-md-12 col-lg-12 text-center">
+                        <div class="col col-md-12 col-lg-12">
 
-                            <h3> ¿Está seguro de eliminar la cuenta
+                            <h3> ¿Estás seguro de eliminar la cuenta
                                 corriente de
                                 {{datos.venta.comprador}}?</h3>
 
-                            <div>
-                                <h6>Tenga en cuenta que esta cuenta tiene
-                                    asociada:</h6>
+                            <div style="margin-top: 15px;">
+                                <h6>Link P te invita un momento a pensar en esta acción, si eliminas la cuenta corriente no podremos volver a generar esta información</h6>
+                                <h6>Algunos datos que tambien borraras son:</h6>
 
-                                <div>
-                                    <small><b>Cuotas:</b>
-                                        {{otros_datos.0}}</small>
+                                <div style="margin-top: 15px;">
+                                    <b class="text-warning">Cuotas que tiene esta cuenta:</b>
+                                        {{otros_datos.0}}
                                 </div>
 
                                 <div>
-                                    <small><b>Pagos:</b>
-                                        {{otros_datos.1}}</small>
-                                </div>
+                                    <b class="text-warning">Pagos registrados:</b>
+                                        {{otros_datos.1}}
                             </div>
 
                             <div>
@@ -74,5 +74,24 @@
         </div>
     </div>
 </div>
+
+<aside class="right-side-panel">
+    <h3 class="p-relative"><span class="lstick"></span>Hey!</h3>
+    <div class="row">
+        
+        <div class="col-md-12 m-t-10">
+          <div class="card">
+            <div class="card-body">
+            <img src="{% static 'img/animation_500_kmuydpt0.gif' %}" alt="Funny image" width="150px">
+            <p>Estas por eliminar <b class="text-danger">datos</b> de forma permanente</p>
+
+        </div>
+            </div>
+        </div>
+    </div>
+
+
+    </div>
+  </aside>
 
 {% endblock %}

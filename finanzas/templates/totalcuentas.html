@@ -6,18 +6,18 @@
 {% block content %}
 
 
-<div class="container-fluid r-aside">
+<div class="container-fluid">
 
     <div class="row page-titles">
         <div class="col-md-5 align-self-center">
-            <h3 class="text-themecolor">Resumen de cuentas corriente</h3>
+            <h3 class="text-themecolor">Flujo de ingresos</h3>
         </div>
 
         <div class="col-md-7 align-self-center">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
-
-                <li class="breadcrumb-item">Resumen de cta cte</li>
+                <li class="breadcrumb-item"><a href="{% url 'Panel cuentas corrientes' %}">Panel</a></li>
+                <li class="breadcrumb-item">Flujo</li>
             </ol>
         </div>
     </div>
@@ -32,7 +32,7 @@
                 <div style="text-align: center;">
 
 
-                    <h2 style="color: rgb({{ctacte.venta.unidad.proyecto.color}})">Resumen de cuentas corrientes</h2>
+                    <h2 style="color: rgb({{ctacte.venta.unidad.proyecto.color}})">Flujo de ingresos 24 meses</h2>
 
                     {% if proy %}
                     <div>
@@ -56,18 +56,20 @@
 
                     <div style="text-align: left; margin-top: 0.5%; margin-top: 20px;">
 
-                        <a style="margin: 3px;" class="btn btn-sn btn-secondary" href="{% url 'Total cuenta' 0 %}">Conjunto</a>
+                        <a href= " {% url 'Descargar resumen total de cuenta' %}" class="btn" ><i
+                            class="fa fa-file-excel-o  text-success"><span class="text-success ml-2"
+                                style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif"><b>Excel</b></span></i></a>
+
+                        <a style="margin: 3px;" class="btn" href="{% url 'Total cuenta' 0 %}"><b>Conjunto</b></a>
 
 
                         {% for i in listado %}
 
-                        <a class="btn btn-sn btn-info" style="background-color: rgb({{i.color}}); margin: 3px;"
-                            href="{% url 'Total cuenta' i.id %}">{{i.nombre|lower|capfirst}}</a>
+                        <a class="btn " style="color: rgb({{i.color}}); margin: 3px;"
+                            href="{% url 'Total cuenta' i.id %}"><b>{{i.nombre|lower|capfirst}}</b> </a>
 
                         {% endfor %}
 
-                        <a style="margin: 3px;" class="mx-2" href="{% url 'Descargar resumen total de cuenta' %}"><img
-                                src="{% static 'img/sobresalir.png' %}" alt="" style="max-width:20px; height:auto;"></a>
 
                     </div>
 
@@ -100,7 +102,7 @@
                                 {% for i in datos %}
 
                                 <tr>
-                                    <td> <small>{{i.0.0.0|date:"SHORT_DATE_FORMAT" }} </small> </td>
+                                    <td> <small>{{i.0.0.0|date:"d-m-Y" }} </small> </td>
                                     <td> <small>${{i.1|floatformat:0|intcomma}} </small> </td>
                                     <td> <small>{{i.2|floatformat:3}} M3 </small> </td>
                                     <td> <small>${{i.3|floatformat:0|intcomma}} </small> </td>

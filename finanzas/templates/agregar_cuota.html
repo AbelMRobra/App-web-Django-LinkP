@@ -5,7 +5,7 @@
 
 {% block content %}
 
-<div class="container-fluid r-aside">
+<div class="container-fluid">
 
     <div class="row page-titles">
         <div class="col-md-5 align-self-center">
@@ -14,7 +14,10 @@
 
         <div class="col-md-7 align-self-center">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'Panel cuentas corrientes' %}">Panel</a></li>
+                <li class="breadcrumb-item"><a
+                    href="{% url 'Cuenta corriente proyecto' cuenta.venta.unidad.proyecto.id %}">Admin</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'Cuenta corriente venta' cuenta.id %}">Cuenta</a></li>
                 <li class="breadcrumb-item">Nueva Cuota</li>
             </ol>
         </div>

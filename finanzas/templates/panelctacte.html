@@ -8,13 +8,13 @@
 <div class="container-fluid r-aside">
     <div class="row page-titles">
         <div class="col-md-5 align-self-center">
-            <h3 class="text-themecolor">Administración de Cuentas Corrientes</h3>
+            <h3 class="text-themecolor">Panel de cuentas corrientes</h3>
         </div>
 
         <div class="col-md-7 align-self-center">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
-                <li class="breadcrumb-item">Administración de Cuentas Corrientes</li>
+                <li class="breadcrumb-item">Panel</li>
             </ol>
         </div>
     </div>
@@ -22,15 +22,19 @@
 
 
 <div class="row">
-    <div class="col-lg-6 col-xlg-4">
+    <div class="col-lg-3 col-xlg-4">
         <div class="card p-1">
             <div class="card-body">
+
+                <div style="margin-bottom: 15px;">
+                    <h6>Panel de administración</h6>
+                </div>
 
                 <form method="POST">
 
                     {% csrf_token %}
 
-                    <label>Cuentas de un proyecto</label>
+                    
                     <select name="proyecto" class="custom-select">
 
                         {% for i in datos %}
@@ -51,21 +55,40 @@
         </div>
     </div>
 
-
-
-    <div class="col-lg-6 col-xlg-4">
+    <div class="col-lg-3 col-xlg-6">
         <div class="card">
             <div class="card-body text-center">
                 <div>
-                    <h6>Resumen de cuentas</h6>
+                    <h6>Estados de cuenta</h6>
                 </div>
 
                 <div>
-                    <img src="{% static 'img/capas.png' %}" alt="" style="max-width:70px; height:auto; margin: 15px;">
+                    <img src="{% static 'img/animation_500_kmqi3zbx.gif' %}" alt="" style="max-width:100px; height:auto; margin: 5px;">
                 </div>
 
-                <a href="{% url 'Total cuenta' 0 %}"><button class="btn btn-dark">
-                        Ver reporte!</button></a>
+                <a href="{% url 'Resumen de cuentas' %}"><button class="btn btn-success">
+                        Ingresar</button></a>
+
+            </div>
+
+        </div>
+    </div>
+
+
+
+    <div class="col-lg-3 col-xlg-6">
+        <div class="card">
+            <div class="card-body text-center">
+                <div>
+                    <h6>Flujo de ingresos</h6>
+                </div>
+
+                <div>
+                    <img src="{% static 'img/animation_500_kmux2bxi.gif' %}" alt="" style="max-width:100px; height:auto; margin: 5px;">
+                </div>
+
+                <a href="{% url 'Total cuenta' 0 %}"><button class="btn btn-info">
+                        Ingresar</button></a>
 
             </div>
 
@@ -73,6 +96,22 @@
     </div>
 </div>
 
+<aside class="right-side-panel">
+    <h3 class="p-relative"><span class="lstick"></span>Resumen</h3>
+    <div class="row">
+        
+        <div class="col-md-12 m-t-10">
+          <div class="card">
+            <div class="card-body">
+            <img src="{% static 'img/animation_500_kmqk33n8.gif' %}" alt="Funny image" width="150px">
+            <p><b class="text-primary">Panel de administración</b> Te permite crear cuentas corrientes, incorporar cuotas y pagos</p>
+            <p><b class="text-success">Estados de cuenta</b> es un resumen con los datos mas importantes de tus cuentas</p>
+            <p><b class="text-info">Flujo de ingresos</b> Mostrara el flujo de ingresos a 24 meses</p>
+        </div>
+            </div>
+        </div>
+    </div>
+  </aside>
 
 
 

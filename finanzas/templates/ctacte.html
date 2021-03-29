@@ -7,18 +7,19 @@
 
 
 
-<div class="container-fluid r-aside">
+<div class="container-fluid">
 
     <div class="row page-titles">
         <div class="col-md-5 align-self-center">
-            <h3 class="text-themecolor">Cuentas corrientes</h3>
+            <h3 class="text-themecolor">Administración de cuenta</h3>
         </div>
 
         <div class="col-md-7 align-self-center">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'Panel cuentas corrientes' %}">Panel</a></li>
                 <li class="breadcrumb-item"><a
-                    href="{% url 'Cuenta corriente proyecto' ctacte.venta.unidad.proyecto.id %}">Panel</a>
+                    href="{% url 'Cuenta corriente proyecto' ctacte.venta.unidad.proyecto.id %}">Admin</a>
             </li>
                 <li class="breadcrumb-item">Cuenta</li>
             </ol>
@@ -37,18 +38,18 @@
                 </div>
 
                     <div style="text-align: left; display: inline-block;">
-                        <a href="{% url 'Agregar cuota' ctacte.id %}" style="text-decoration: none;"data-toggle="tooltip" data-placement="right" title="" data-original-title="Agregar cuota"><img
-                            src="{% static 'img/add.png' %}" alt=""
-                            style="max-width:20px; height:auto;"></a>
-                        <a href="{% url 'Resumen cuenta corriente' ctacte.id %}" style="text-decoration: none; margin-left: 10px;" data-toggle="tooltip" data-placement="right" title="" data-original-title="Resumen de la cuenta"><img
-                                src="{% static 'img/reporte.png' %}" alt="" style="max-width:20px; height:auto;"></a>
-                        <a href="{% url 'Cuenta corriente venta boleto' ctacte.id %}"
-                        style="text-decoration: none;  margin-left: 10px;" data-toggle="tooltip" data-placement="right" title="" data-original-title="Panel de boleto"><img src="{% static 'img/cuenta.png' %}" alt=""
-                                style="max-width:20px; height:auto;"></a>
-                        <a href="{% url 'Descargar cuenta' id_cuenta=ctacte.id %}"
-                            style="text-align: end; margin-top: 5px; text-decoration: none;  margin-left: 10px;" data-toggle="tooltip" data-placement="right" title="" data-original-title="Descargar Excel"> <img src="{% static 'img/sobresalir.png' %}"
-                                alt="" style="max-width:20px; height:auto;"></a>
-
+                        <a href="{% url 'Agregar cuota' ctacte.id %}" class="btn" ><i
+                            class="fa fa-plus-circle  text-info"><span class="text-info ml-2"
+                                style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif"><b>Añadir cuota</b></span></i></a>
+                        <a href= " {% url 'Resumen cuenta corriente' ctacte.id  %}" class="btn" ><i
+                            class="fa fa-file-text-o text-info"><span class="text-info ml-2"
+                                style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif"><b>Resumen</b></span></i></a>
+                        <a href= " {% url 'Cuenta corriente venta boleto' ctacte.id  %}" class="btn" ><i
+                            class="fa fa-eercast text-info"><span class="text-info ml-2"
+                                style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif"><b>B</b></span></i></a>
+                        <a href= " {% url 'Descargar cuenta' id_cuenta=ctacte.id  %}" class="btn" ><i
+                            class="fa fa-file-excel-o  text-success"><span class="text-success ml-2"
+                                style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif"><b>Excel</b></span></i></a>
                     </div>
 
                     <div style="text-align: left; display: inline-block; margin-left: 20px;">
@@ -80,10 +81,8 @@
                             {% for i in datos_cuenta %}
                             <tr>
                                 <td>
-                                    <div style="display: inline-block;"><a href="{% url 'Eliminar cuota' i.0.id %}"><img src="{% static 'img/eliminar.png' %}" alt=""
-                                        style="max-width:13px; height:auto;"></a></div>
-                                    <div style="display: inline-block;"><a href="{% url 'Editar cuota' i.0.id %}" ><img src="{% static 'img/editar.png' %}" alt=""
-                                        style="max-width:10px; height:auto;"></a></div>
+                                    <div style="display: inline-block;"><a class="fa fa-trash d-flex align-content-end" style="text-decoration: none;" href="{% url 'Eliminar cuota' i.0.id %}"></a></div>
+                                    <div style="display: inline-block;"><a class="fa fa-pencil" href="{% url 'Editar cuota' i.0.id %}" ></a></div>
                                     <div style="display: inline-block;"> {{i.0.concepto|upper}}</div>
                                     
                                     
