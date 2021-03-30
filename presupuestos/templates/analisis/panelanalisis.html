@@ -6,7 +6,7 @@
 
 
 
-<div class="container-fluid r-aside">
+<div class="container-fluid ">
     <!-- ============================================================== -->
     <!-- Bread crumb and right sidebar toggle -->
     <!-- ============================================================== -->
@@ -18,7 +18,8 @@
         <div class="col-md-7 align-self-center">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
-                <li class="breadcrumb-item">Panel de Analisis de Precio Unitario</li>
+                <li class="breadcrumb-item"><a href="{% url 'Panel de presupuestos' %}">Panel</a></li>
+                <li class="breadcrumb-item">A.P.U</li>
             </ol>
         </div>
 
@@ -32,10 +33,11 @@
         <div class="card overflow-auto">
             <div class="card-body ">
 
-                <div style="margin-bottom: 0.5rem;">
-                    <a href="/presupuestos/crearanalisis"><button class="btn btn-success" type="submit">Crear
-                            analisis</button></a>
-                </div>
+                <a href="/presupuestos/crearanalisis" class="btn" ><i
+                    class="fa fa-plus-circle  text-info"><span class="text-info ml-2"
+                        style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif"><b>Añadir A.P.U</b></span></i></a>
+
+
 
                 {% if datos %}
 
@@ -59,7 +61,7 @@
                                 <a href="{% url 'Modificar analisis' i.0.codigo %}" class="fa fa-pencil-square-o " style="padding: 1px;">
                                 </a>
                                 <a href="#" class="fa fa-trash" style="padding: 1px;">
-                                </a><a href="{% url 'Composición Analisis' i.0.codigo %}">{{i.0.nombre|lower|capfirst}}</a> </td>
+                                </a><a href="{% url 'Composición Analisis' i.0.codigo %}"> {{i.0.nombre|lower|capfirst}}</a> </td>
                             <td>{{i.0.unidad|lower|capfirst}}</td>
                             <td> <b>{{i.0.codigo}}</b> </td>                            
                             <td>${{i.1|floatformat:0|intcomma}}</td>

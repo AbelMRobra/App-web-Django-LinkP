@@ -8,25 +8,25 @@
 
     <div class="row page-titles">
         <div class="col-md-5 align-self-center">
-            <h3 class="text-themecolor">Crear una constante</h3>
+            <h3 class="text-themecolor">{% if escenario%}Editar{% else %}Crear{% endif%} una constante</h3>
         </div>
 
         <div class="col-md-7 align-self-center">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
-                <li class="breadcrumb-item"><a href="/presupuestos/cons_panel">Panel de cambios</a></li>
-                <li class="breadcrumb-item">Crear una constante</li>
+                <li class="breadcrumb-item"><a href="{% url 'Panel de presupuestos' %}">Panel</a></li>
+                <li class="breadcrumb-item"><a href="/presupuestos/cons_panel">Constantes</a></li>
+                <li class="breadcrumb-item">{% if escenario%}Editar{% else %}Crear{% endif%}</li>
             </ol>
         </div>
     </div>
 </div>
 <div class="row">
-    <div class="col-12">
+    <div class="col-9">
         <div class="card">
             <div class="card-body">
                 <div class="row d-flex justify-content-center">
-                    <div class="col col-md-12 col-lg-6">
-                        <div class="row">
+                    <div class="col col-md-9 col-lg-6">
+
                             <div class="col bg-light border rounded p-4 ">
 
                                 <form method="post">
@@ -39,13 +39,32 @@
 
                                 </form>
                             </div>
-                        </div>
+
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<aside class="right-side-panel">
+    <h3 class="p-relative"><span class="lstick"></span>Hey!</h3>
+    <div class="row">
+        
+        <div class="col-md-12 m-t-10">
+          <div class="card">
+            <div class="card-body">
+            <img src="{% static 'img/animation_500_kmuydpt0.gif' %}" alt="Funny image" width="150px">
+            <p>Estas por crear o editar un <b class="text-danger">dato sensible</b>. Solo el responsable de PRESPUESTOS puede estar aqui, si no lo eres no modifiques nada, podrias provocar un gran daño</p>
+
+        </div>
+            </div>
+        </div>
+    </div>
+
+
+    </div>
+  </aside>
 
 
 {% endblock %}

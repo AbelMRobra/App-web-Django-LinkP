@@ -6,16 +6,17 @@
 
 {% block content %}
 
-<div class="container-fluid r-aside">
+<div class="container-fluid ">
     <div class="row page-titles">
         <div class="col-md-5 align-self-center">
-            <h3 class="text-themecolor">Biblioteca de Analisis de P U</h3>
+            <h3 class="text-themecolor">Analisís de precios unitarios</h3>
         </div>
 
         <div class="col-md-7 align-self-center">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
-                <li class="breadcrumb-item">Biblioteca de A.P.U</li>
+                <li class="breadcrumb-item"><a href="{% url 'Panel de presupuestos' %}">Panel</a></li>
+                <li class="breadcrumb-item">Biblioteca</li>
             </ol>
         </div>
     </div>
@@ -27,7 +28,7 @@
         <div class="card-body ">
             <h4 class="card-title">
                 {% if request.user|has_group:"PRESUPUESTO NIVEL 10" %}
-                <a class="btn btn-secondary btn-outline" href="/presupuestos/panelanalisis"><img
+                <a class="btn" href="/presupuestos/panelanalisis"><img
                         src="{% static 'img/iniciar-sesion.png' %}" alt=""
                         style="max-width:20px; height:auto; vertical-align: middle;">
 

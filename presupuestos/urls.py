@@ -42,7 +42,7 @@ urlpatterns = [
     #----------------OTROS URL -----------------------------------------    
     url(r'^datos/$', login_required(views.proyectos), name = 'Datos de proyectos'),
     url(r'^desde/$', login_required(views.desde), name = 'Indicador de precios'),
-    url(r'^informe/$', login_required(views.InformeArea), name = 'Informe de área'),
+    url(r'^informe/$', login_required(views.InformeArea), name = 'Informe de presupuesto'),
     url(r'^parametros/$', login_required(views.parametros), name = 'Parametros'),
 
     #----------------URL SERVICIOS -----------------------------------------

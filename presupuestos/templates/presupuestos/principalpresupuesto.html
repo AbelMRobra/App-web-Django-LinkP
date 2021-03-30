@@ -2,7 +2,7 @@
 
 {% load humanize %}
 {% load static %}
-
+{% load apptags_extras %}
 {% block content %}
 
   <!-- ============================================================== -->
@@ -14,13 +14,13 @@
       <!-- ============================================================== -->
       <div class="row page-titles">
           <div class="col-md-5 align-self-center">
-              <h3 class="text-themecolor">Control de presupuestos</h3>
+              <h3 class="text-themecolor">Panel de presupuestos</h3>
           </div>
 
           <div class="col-md-7 align-self-center">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
-                <li class="breadcrumb-item">Presupuestos</li>
+                <li class="breadcrumb-item">Panel</li>
             </ol>
         </div>
 
@@ -53,78 +53,226 @@
      {% if proyectos %}
 
      <div class="row">
-      <div class="col-12 col-md-8 col-lg-8 justify-content-center">
-          <div class="card">
-              <div class="card-body">
+     <div class="col-lg-3 col-xlg-6">
+      <div class="card">
+          <div class="card-body text-center">
+              <div>
+                  <h6>Base de constantes</h6>
+              </div>
 
-                <h4 class="card-title">Listado de proyectos</h4>
+              <div>
+                  <img src="{% static 'img/animation_500_kmv80aa7.gif' %}" alt="" style="max-width:100px; height:auto; margin: 5px;">
+              </div>
 
-                  <form method="POST">
-
-                      {% csrf_token %}
-          
-          
-                      <select name="proyecto" class="form-control">
-
-                        {% if request.user.username == "HC" %}
-
-                      {% for i in proyectos %}
-
-                      {% if "DIANCO" in i.nombre %}
-
-                    
-                      <option value="{{i.id}}">{{i.nombre}}</option>
-
-                      {% endif %}
+              {% if request.user|has_group:"PRESUPUESTO NIVEL 1" %}
 
 
-                      {% endfor %}
+              <a href="{% url 'Cons_list' %}"><button class="btn btn-dark">
+                      Ingresar</button></a>
 
-                      {% elif request.user.username == "AR" or request.user.username == "PL"  %}
+              {% else %}
 
-                      {% for i in proyectos %}
-
-                      <option value="{{i.id}}">{{i.nombre}}</option>
-
-
-                      {% endfor %}
-
-                      {% else %}
-
-                      
-                      {% for i in proyectos %}
-
-                      {% if not "SEMINARIO" in i.nombre %}
-
-                      <option value="{{i.id}}">{{i.nombre}}</option>
-
-                      {% endif %}
-
-
-                      {% endfor %}
-
-                      
-                      {% endif %}
-
-
-
-                      </select>
-                      
-          
-                      
-                        <div style="text-align: right; margin-top: 5px;">
-                          <button class="btn waves-effect waves-light btn-primary" type="submit">Buscar</button>          
-                      </div>
-                      
-                  </form>
-          
-                  <b><hr class = "my-4" style="width: 75%; "></b>
-
+              <a href="#"><button class="btn btn-secondary">
+                  No habilitado</button></a>
+              {% endif %}
 
           </div>
-        </div>
+
       </div>
+  </div>
+  <div class="col-lg-3 col-xlg-6">
+    <div class="card">
+        <div class="card-body text-center">
+            <div>
+                <h6>Articulos</h6>
+            </div>
+
+            <div>
+                <img src="{% static 'img/animation_500_kmv3c5aa.gif' %}" alt="" style="max-width:100px; height:auto; margin: 5px;">
+            </div>
+
+            {% if request.user|has_group:"PRESUPUESTO NIVEL 1" %}
+
+
+            <a href="{% url 'Lista de insumos' %}"><button class="btn btn-success">
+                    Ingresar</button></a>
+
+            {% else %}
+
+            <a href="#"><button class="btn btn-secondary">
+                No habilitado</button></a>
+            {% endif %}
+
+        </div>
+
     </div>
+</div>
+<div class="col-lg-3 col-xlg-6">
+  <div class="card">
+      <div class="card-body text-center">
+          <div>
+              <h6>Biblioteca de APU</h6>
+          </div>
+
+          <div>
+              <img src="{% static 'img/animation_500_kmv74u8k.gif' %}" alt="" style="max-width:100px; height:auto; margin: 5px;">
+          </div>
+
+          {% if request.user|has_group:"PRESUPUESTO NIVEL 1" %}
+
+
+          <a href="{% url 'Lista de analisis' %}"><button class="btn btn-warning">
+                  Ingresar</button></a>
+
+          {% else %}
+
+          <a href="#"><button class="btn btn-secondary">
+              No habilitado</button></a>
+          {% endif %}
+
+      </div>
+
+  </div>
+</div>
+</div>
+
+<div class="row">
+  <div class="col-lg-3 col-xlg-6">
+    <div class="card">
+      <div class="card-body text-center">
+
+          <div>
+              <h6>Control de presupuesto</h6>
+          </div>
+
+          {% if request.user|has_group:"PRESUPUESTO NIVEL 2" %}
+
+          <form method="POST" style="margin-top: 30px;">
+
+              {% csrf_token %}
+
+              
+              <select name="proyecto" class="form-control">
+
+                {% if request.user.username == "HC" %}
+
+              {% for i in proyectos %}
+
+              {% if "DIANCO" in i.nombre %}
+
+            
+              <option value="{{i.id}}">{{i.nombre}}</option>
+
+              {% endif %}
+
+
+              {% endfor %}
+
+              {% elif request.user.username == "AR" or request.user.username == "PL"  %}
+
+              {% for i in proyectos %}
+
+              <option value="{{i.id}}">{{i.nombre}}</option>
+
+
+              {% endfor %}
+
+              {% else %}
+
+              
+              {% for i in proyectos %}
+
+              {% if not "SEMINARIO" in i.nombre %}
+
+              <option value="{{i.id}}">{{i.nombre}}</option>
+
+              {% endif %}
+
+
+              {% endfor %}
+
+              
+              {% endif %}
+
+
+
+              </select>
+
+              <div class="my-4" >
+                  <button class="btn btn-danger" type="submit">
+                      Buscar</button>
+              </div>
+
+          </form>
+
+          {% else %}
+
+          <div>
+              <img src="{% static 'img/animation_500_kmuydpt0.gif' %}" alt="" style="max-width:100px; height:auto; margin: 5px;">
+          </div>
+
+          <a href="#"><button class="btn btn-secondary">
+              No habilitado</button></a>
+          {% endif %}
+
+      </div>
+  </div>
+</div>
+<div class="col-lg-3 col-xlg-6">
+ <div class="card">
+     <div class="card-body text-center">
+         <div>
+             <h6>Indicador de precios</h6>
+         </div>
+
+         <div>
+             <img src="{% static 'img/animation_500_kmv96y5d.gif' %}" alt="" style="max-width:100px; height:auto; margin: 5px;">
+         </div>
+
+         {% if request.user|has_group:"PRESUPUESTO NIVEL 3" %}
+
+
+         <a href="{% url 'Indicador de precios' %}"><button class="btn btn-info">
+                 Ingresar</button></a>
+
+         {% else %}
+
+         <a href="#"><button class="btn btn-secondary">
+             No habilitado</button></a>
+         {% endif %}
+
+     </div>
+
+ </div>
+</div>
+<div class="col-lg-3 col-xlg-6">
+<div class="card">
+   <div class="card-body text-center">
+       <div>
+           <h6>Informe de área</h6>
+       </div>
+
+       <div>
+           <img src="{% static 'img/animation_500_kmqi3zbx.gif' %}" alt="" style="max-width:100px; height:auto; margin: 5px;">
+       </div>
+
+       {% if request.user|has_group:"PRESUPUESTO NIVEL 3" %}
+
+
+       <a href="{% url 'Informe de presupuesto' %}"><button class="btn btn-primary">
+               Ingresar</button></a>
+
+       {% else %}
+
+       <a href="#"><button class="btn btn-secondary">
+           No habilitado</button></a>
+       {% endif %}
+
+   </div>
+
+</div>
+</div>
+</div>
 
       <aside class="right-side-panel">
         <h3 class="p-relative"><span class="lstick"></span>¿Como funciona?</h3>
@@ -134,8 +282,12 @@
               <div class="card">
                 <div class="card-body">
                 <img src="{% static 'img/animation_500_kmv3afam.gif' %}" alt="Funny image" width="200px">
-                <p>Selecciona un proyecto del listado y podras acceder a toda la información disponible del área de presupuesto, como computos, estimaciones y avances.</p>
-                <p>Cualquier consulta, habla con el responsable del proyecto!</p>
+                <p><b class="text-dark">Constantes</b> son los valores por lo cual toda la base de presupuestos se actualizará</p>
+                <p><b class="text-success">Articulos</b> administras la base de datos de insumos</p>
+                <p><b class="text-warning">Biblioteca APU</b> son los analisis usados para armar los presupuestos</p>
+                <p><b class="text-danger">Control</b> muestra presupuestos e información de avance y monitoreo</p>
+                <p><b class="text-info">Indicador de precios</b> es una referencia en función del costo</p>
+                <p><b class="text-primary">Informe de área</b> muestra información global</p>
             </div>
                 </div>
             </div>

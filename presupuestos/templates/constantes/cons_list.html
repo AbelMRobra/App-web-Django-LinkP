@@ -5,7 +5,7 @@
 
 {% block content %}
 
-<div class="container-fluid r-aside">
+<div class="container-fluid ">
     <!-- ============================================================== -->
     <!-- Bread crumb and right sidebar toggle -->
     <!-- ============================================================== -->
@@ -17,6 +17,7 @@
         <div class="col-md-7 align-self-center">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'Panel de presupuestos' %}">Panel</a></li>
                 <li class="breadcrumb-item">Constantes</li>
             </ol>
         </div>
@@ -29,7 +30,7 @@
         <div class="card-body">
             <h4 class="card-title">
                 {% if request.user|has_group:"PRESUPUESTO NIVEL 10" %}
-                <a class="btn btn-secondary btn-outline" href="/presupuestos/cons_panel">
+                <a class="btn" href="/presupuestos/cons_panel">
                     
                     <img src="{% static 'img/iniciar-sesion.png' %}" alt="" style="max-width:20px; height:auto; vertical-align: middle;">
                     

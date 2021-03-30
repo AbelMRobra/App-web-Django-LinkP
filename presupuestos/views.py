@@ -190,6 +190,8 @@ def insum_delete(request, id_articulos):
 
 def cons_create(request):
 
+    escenario = 0
+
     if request.method == 'POST':
         form = ConsForm(request.POST)
         if form.is_valid():
@@ -199,7 +201,7 @@ def cons_create(request):
     else:
         form = ConsForm()
 
-    f = {'form':form}
+    f = {'form':form, "escenario": escenario}
     return render(request, 'constantes/cons_create.html', f )
 
 def cons_list(request):
@@ -219,6 +221,8 @@ def cons_panel(request):
     return render(request, 'constantes/cons_panel.html', c )
 
 def cons_edit(request, id_cons):
+
+    escenario = 1
 
     cons = Constantes.objects.get(id=id_cons)
 
@@ -278,7 +282,7 @@ def cons_edit(request, id_cons):
 
         return redirect('Cons_panel')
     
-    return render(request, 'constantes/cons_create.html', {'form':form})
+    return render(request, 'constantes/cons_create.html', {'form':form, "escenario": escenario})
 
 def cons_delete(request, id_cons):
 

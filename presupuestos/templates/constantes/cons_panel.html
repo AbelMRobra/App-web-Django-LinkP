@@ -5,17 +5,18 @@
 
 {% block content %}
 
-<div class="container-fluid r-aside">
+<div class="container-fluid">
 
     <div class="row page-titles">
         <div class="col-md-5 align-self-center">
-            <h3 class="text-themecolor">Panel de cambios</h3>
+            <h3 class="text-themecolor">Administración de constantes</h3>
         </div>
 
         <div class="col-md-7 align-self-center">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
-                <li class="breadcrumb-item">Panel de cambios</li>
+                <li class="breadcrumb-item"><a href="{% url 'Panel de presupuestos' %}">Panel</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'Cons_list' %}">Constantes</a></li>
+                <li class="breadcrumb-item">Admin</li>
             </ol>
         </div>
     </div>
@@ -28,15 +29,12 @@
                 <div class="col-12 justify-content-center">
                     <div class="mb-2">
 
-
-                        <h4 class="card-title">
-
-                            <a href="/presupuestos/cons_create">
-
-                                <img src="{% static 'img/add.png' %}" alt=""
-                                    style="max-width:20px; height:auto; vertical-align: middle; margin-right: 15px;">
-                            </a> Nueva constante
-                        </h4>
+                        <div style="margin: 5px;">
+                            <a href="/presupuestos/cons_create" class="btn" ><i
+                                class="fa fa-plus-circle  text-info"><span class="text-info ml-2"
+                                    style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif"><b>Añadir constante</b></span></i></a>
+        
+                        </div>
 
                     </div>
 
@@ -51,7 +49,7 @@
                                     <th>Nombre</th>
                                     <th>Valor</th>
                                     <th>Descripcion</th>
-                                    <th>Editar</th>
+                                    <th style="text-align: center">Editar</th>
                                     {% if request.user|has_group:"SUPREMO" %}
                                     <th>Eliminar</th>
                                     {% endif%}
@@ -66,7 +64,7 @@
                                     <td><b>{{i.nombre}}</b> </td>
                                     <td>${{i.valor}}</td>
                                     <td>{{i.descrip}}</td>
-                                    <td>
+                                    <td style="text-align: center">
                                         <a href="{% url 'Editar_cons' i.id %}"><i class="fa fa-pencil-square-o fa-lg"
                                                 aria-hidden="true"></i></a>
                                     </td>

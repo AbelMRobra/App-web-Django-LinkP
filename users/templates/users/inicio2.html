@@ -191,32 +191,7 @@
             <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i
                   class="zmdi zmdi-chart"></i><span class="hide-menu">Presupuestos</span></a>
               <ul aria-expanded="false" class="collapse">
-                {% if request.user|has_group:"PRESUPUESTO NIVEL 1" %}
-
-                <li><a href="/presupuestos/cons_list">Base de constantes</a></li>
-                <li><a href="/presupuestos/registro">Historico de indices</a></li>
-                <li><a href="/presupuestos/insum_list">Listado de articulos</a></li>
-                <li><a href="/presupuestos/analisis_list">Biblioteca - APU</a></li>
-
-                {% if request.user|has_group:"PRESUPUESTO NIVEL 2" %}
-                <li class="nav-devider"></li>
-                <li><a href="/presupuestos/presupuestos">Control de presupuestos</a></li>
-
-                {% endif %}
-
-                {% if request.user|has_group:"PRESUPUESTO NIVEL 3" %}
-                <li class="nav-devider"></li>
-                <li><a href="/presupuestos/desde">Indicador de precios</a></li>
-                <li><a href="/presupuestos/informe">Informe del área</a></li>
-
-                {% endif %}
-
-                {% else %}
-
-                <li>No tienes permisos para ver este espacio</li>
-
-                {% endif %}
-
+                <li><a href="{% url 'Panel de presupuestos' %}">App de presupuestos</a></li>
               </ul>
             </li>
             <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i
