@@ -12,7 +12,7 @@
     <!-- ============================================================== -->
     <div class="row page-titles">
         <div class="col-md-5 align-self-center">
-            <h3 class="text-themecolor">Minutas</h3>
+            <h3 class="text-themecolor">Minutas de reuniones</h3>
         </div>
 
         <div class="col-md-7 align-self-center">
@@ -26,7 +26,7 @@
 </div>
 
 <div class="row ">
-    <div class="col-12">
+    <div class="col-9">
         <div class="card overflow-auto">
             <div class="card-body">
                 <div class="row d-flex justify-items-between">
@@ -36,18 +36,24 @@
                             Listado de minutas
                         </h4>
                         <h6 class="card-subtitle">
-                            Lista de minutas realizadas
+                            Solo podras ver las minutas que creaste o que seas un integrante
                         </h6>
                     </div>
-                    <div class="col-2">
-                        <a class="btn btn-info" href="{% url 'Minutas Crear' %}">Crear Nueva</a>
+
+                    <div class="row m-2">
+                        <a href="{% url 'Minutas Crear' %}"><i
+                                class="fa fa-plus-circle  text-info"><span class="text-info ml-2"
+                                    style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif"><b>Nueva minuta</b></span></i></a>
                     </div>
+
+ 
                 </div>
 
                 <table id="example" class="table ">
                     <thead>
                         <tr>
                             <th>Creador</th>
+                            <th>Reunión</th>
                             <th>Tema</th>
                             <th>Fecha</th>
                             <th></th>
@@ -62,8 +68,10 @@
                                 <div><img src="{{i.creador.imagenlogo.url}}" class="rounded" style="width: 40px;"
                                         alt=""><span class="ml-2">{{i.creador.identificacion}}</span></div>
                             </td>
-                            <td><a href="{% url 'Minutas Id' i.id %}">{{i.nombre|lower|capfirst}}</a></td>
-                            <td>{{i.fecha}}</td>
+                            <td>REGA</td>
+                            <td><a href="{% url 'Minutas Id' i.id %}">{{i.nombre|lower|capfirst}}</a>
+                                <h6 class="card-subtitle">Integrantes: {{i.integrantes}}</h6></td>
+                            <td>{{i.fecha|date:"Y-m-d"}}</td>
                              <td>
                                  {% if request.user.username == i.creador.identificacion %}
                                  <form method="POST">
@@ -98,6 +106,25 @@
         </div>
     </div>
 </div>
+
+<aside class="right-side-panel">
+    <h3 class="p-relative"><span class="lstick"></span> ¿Comó funciona?</h3>
+    <div class="row">
+        
+        <div class="col-md-12 m-t-10">
+          <div class="card">
+            <div class="card-body">
+            <img src="{% static 'img/animation_500_kmw63xso.gif' %}" alt="Funny image" width="150px">
+            <p> Crea una nueva minuta haciendo click en <i class="fa fa-plus-circle  text-info"></i></p>
+            <p> Cuando la estes creando <b class="text-warning">no olvides</b>  de leer las indicaciones escritas a la derecha</p>
+        </div>
+            </div>
+        </div>
+    </div>
+
+
+    </div>
+</aside>
 
 
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>

@@ -1497,7 +1497,7 @@ def registro_contable(request):
         try:
             if request.POST['eliminar']:
                 registro = RegistroContable.objects.get(id = request.POST['eliminar'])
-                registro.save()
+                registro.delete()
         except:
             pass
 
@@ -1557,8 +1557,8 @@ def registro_contable(request):
         pie_gastos.append([cg, aux, color])
 
 
-    list_cat_gasto = RegistroContable.objects.filter(usuario = user, estado = "GASTOS").values_list("categoria", flat=True)
-    list_cat_ing = RegistroContable.objects.filter(usuario = user, estado = "INGRESOS").values_list("categoria", flat=True)
+    list_cat_gasto = RegistroContable.objects.filter(usuario = user, estado = "GASTOS").values_list("categoria", flat=True).distinct()
+    list_cat_ing = RegistroContable.objects.filter(usuario = user, estado = "INGRESOS").values_list("categoria", flat=True).distinct()
 
 
     ## Esquema mensual
