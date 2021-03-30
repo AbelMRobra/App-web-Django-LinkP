@@ -26,15 +26,11 @@
 
 
 <div class = "jumbotron" style="background-color: white; margin-bottom: 0px;">
-    <div style="text-align: center;">
-        <h2>Panel de control - Precios</h2>
-        <small>Trabajo en conjunto: </small><small><strong>PRESUPUESTO - DIRECCIÓN - FINANZAS - VENTAS</strong></small>  
-    </div>
 
     <div style="margin-bottom: 2rem;">
 
-        <h3>Precio de referencia de los proyectos</h3>
-        <p><small> El precio de referencia se calcula a partir del costo de obra y los parametros fijos desginados por la dirección y/o departamento financiero</small></p>
+        <h3>Precio de referencia</h3>
+        <p>Referencia realizada con un modelo basado en el costo </p>
 
     </div>   
        
@@ -50,7 +46,7 @@
                     <th>Minimo USD </th>
                     <th>Objetivo  </th>
                     <th> Objetivo USD  </th>
-                    <th>Ultimo pricing </th>
+                    <th>Desde pricing</th>
                     <th>Ult. actualizacion </th>
                 </tr>
             </thead>
@@ -58,17 +54,19 @@
     
                 {% for i in datos.datos %}
                 <tr>
-                    <td> <b>{{i.parametros}}</b> </td>
+                    <td> <b style="color: rgb({{i.parametros.proyecto.color}});">{{i.parametros.proyecto|lower|capfirst}}</b> </td>
                     <td>$ {{i.valor_costo|floatformat:0|intcomma}}</td>
                     <td style="color: darkgreen;"> <b>U$A {{i.valor_costo_usd|floatformat:0|intcomma}}</b> </td>
                     <td>$ {{i.valor_final|floatformat:0|intcomma}}</td>
                     <td style="color: darkgreen;"> <b>U$A {{i.valor_final_usd|floatformat:0|intcomma}}</b> </td>
-                    <td>$ {{i.pricing|floatformat:0|intcomma}}</td>
-                    <td>{{i.parametros.proyecto.fecha_a}}</td>
+                    <td>$ {{i.parametros.proyecto.desde|floatformat:0|intcomma}}</td>
+                    <td>{{i.parametros.proyecto.fecha_a|date:"Y-m-d"}}</td>
                 </tr>
-            </tbody>
+            
     
                 {% endfor %}
+
+            </tbody>
         </table>
 
     </div>
