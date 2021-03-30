@@ -1467,7 +1467,37 @@ def registro_contable(request):
                 nota = request.POST['nota'],
             )
 
-            b.save()
+            try:
+                b.adjunto = request.FILES['adjunto']
+                b.save()
+
+            except:
+                b.save()
+
+        except:
+            pass
+
+        try:
+
+            if request.POST['editar']:
+                registro = RegistroContable.objects.get(id = request.POST['editar'])
+                registro.fecha = request.POST['fecha']
+                registro.cuenta = request.POST['cuenta']
+                registro.categortia = request.POST['categoria']
+                registro.importe = request.POST['importe']
+                registro.nota = request.POST['nota']
+                try:
+                    registro.adjunto = request.FILES['adjunto']
+                    registro.save()
+
+                except:
+                    registro.save()
+        except:
+            pass
+        try:
+            if request.POST['eliminar']:
+                registro = RegistroContable.objects.get(id = request.POST['eliminar'])
+                registro.save()
         except:
             pass
 
@@ -1514,7 +1544,7 @@ def registro_contable(request):
 
     for ci in cat_ingresos:
         aux = sum(np.array(RegistroContable.objects.filter(usuario = user, estado = "INGRESOS", fecha__range=[fecha_inicial, fecha_final], categoria = ci).values_list("importe", flat=True)))
-        color = (np.random.randint(100, 200), np.random.randint(100, 200), np.random.randint(100, 200))
+        color = (np.random.randint(0, 40)+(np.random.choice([20, 180])), np.random.randint(0, 40)+(np.random.choice([20, 180])), np.random.randint(0, 40)+(np.random.choice([20, 180])))
         pie_ingresos.append([ci, aux, color])
 
     cat_gastos = RegistroContable.objects.filter(usuario = user, estado = "GASTOS", fecha__range=[fecha_inicial, fecha_final]).values_list("categoria", flat=True).distinct()
@@ -1523,11 +1553,54 @@ def registro_contable(request):
 
     for cg in cat_gastos:
         aux = sum(np.array(RegistroContable.objects.filter(usuario = user, estado = "GASTOS", fecha__range=[fecha_inicial, fecha_final], categoria = cg).values_list("importe", flat=True)))
-        color = (np.random.randint(100, 200), np.random.randint(100, 200), np.random.randint(100, 200))
+        color = (np.random.randint(0, 40)+(np.random.choice([20, 180])), np.random.randint(0, 40)+(np.random.choice([20, 180])), np.random.randint(0, 40)+(np.random.choice([20, 180])))
         pie_gastos.append([cg, aux, color])
 
 
     list_cat_gasto = RegistroContable.objects.filter(usuario = user, estado = "GASTOS").values_list("categoria", flat=True)
     list_cat_ing = RegistroContable.objects.filter(usuario = user, estado = "INGRESOS").values_list("categoria", flat=True)
 
-    return render(request, "users/registro_contable.html", {'list_cat_ing':list_cat_ing, 'list_cat_gasto':list_cat_gasto, 'pie_gastos':pie_gastos, 'pie_ingresos':pie_ingresos, 'hoy':hoy, 'datos':datos, "ingresos":ingresos, "gastos":gastos, "balance":balance})
+
+    ## Esquema mensual
+
+    fecha_1 = RegistroContable.objects.all().order_by("fecha")[0].fecha
+    fechas = []
+
+    fecha_auxiliar = datetime.date(fecha_1.year, fecha_1.month, 1)
+
+    if fecha_1.month == 12:
+
+        fecha_auxiliar_2 = datetime.date(fecha_1.year + 1, 1, 1)
+
+    else:
+
+        fecha_auxiliar_2 = datetime.date(fecha_1.year, fecha_1.month + 1, 1)
+
+    data_month = []
+
+    while len(RegistroContable.objects.filter(usuario = user, fecha__gte = fecha_auxiliar, fecha__lte = fecha_auxiliar_2)):
+
+        mes = fecha_auxiliar
+        ingresos = sum(np.array(RegistroContable.objects.filter(usuario = user, estado = "INGRESOS", fecha__range=[fecha_auxiliar, fecha_auxiliar_2]).values_list("importe", flat=True)))
+        gastos = sum(np.array(RegistroContable.objects.filter(usuario = user, estado = "GASTOS", fecha__range=[fecha_auxiliar, fecha_auxiliar_2]).values_list("importe", flat=True)))
+        balance = ingresos - gastos
+        data_month.append((mes, ingresos, gastos, balance))
+
+        if fecha_auxiliar.month == 12:
+
+            fecha_auxiliar = datetime.date(fecha_auxiliar.year + 1, 1, 1)
+
+        else:
+
+            fecha_auxiliar = datetime.date(fecha_auxiliar.year, fecha_auxiliar.month + 1, 1)
+
+        if fecha_auxiliar_2.month == 12:
+
+            fecha_auxiliar_2 = datetime.date(fecha_auxiliar_2.year + 1, 1, 1)
+
+        else:
+
+            fecha_auxiliar_2 = datetime.date(fecha_auxiliar_2.year, fecha_auxiliar_2.month + 1, 1)
+
+
+    return render(request, "users/registro_contable.html", {'data_month':data_month, 'list_cat_ing':list_cat_ing, 'list_cat_gasto':list_cat_gasto, 'pie_gastos':pie_gastos, 'pie_ingresos':pie_ingresos, 'hoy':hoy, 'datos':datos, "ingresos":ingresos, "gastos":gastos, "balance":balance})

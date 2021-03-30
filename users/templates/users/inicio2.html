@@ -112,6 +112,11 @@
 
           </ul>
 
+          <li>
+            <a class="nav-link waves-effect waves-dark" href="{% url 'Registro Contable' %}" ><img src="{% static 'img/pig.png' %}" alt="" width="30px"></a>
+            
+          </li>
+
         </div>
       </nav>
     </header>
@@ -140,9 +145,6 @@
                 {% endif %}
                 {% if request.user|has_group:"ANUNCIOS NIVEL 10" %}
                 <li><a href="{% url 'Anuncios' %}">Anuncios</a></li>
-                {% endif %}
-                {% if request.user|has_group:"PRESUPUESTO NIVEL 10" %}
-                <li><a href="{% url 'Registro Contable' %}">Registro contable</a></li>
                 {% endif %}
                 <li><a href="/logout">Logout</a></li>
               </ul>

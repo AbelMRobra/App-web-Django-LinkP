@@ -266,6 +266,7 @@ class RegistroContable(models.Model):
     categoria = models.CharField(max_length=400, verbose_name="Categoria")
     importe = models.FloatField(verbose_name="Importe")
     nota = models.CharField(max_length=400, verbose_name="Nota")
+    adjunto = models.FileField(verbose_name="Adjunto", blank=True, null=True)
 
     class Meta:
         verbose_name="Registro"

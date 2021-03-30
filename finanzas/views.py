@@ -909,11 +909,11 @@ def totalcuentacte(request, id_proyecto):
     total_cobrado = (pagos_anteriores_h, pagos_anteriores_usd)
     total_pendiente = total_original - total_cobrado
     total_acobrar= (cuotas_posteriores_h + cuotas_posteriores_usd)
-
-
+    
     h = Constantes.objects.get(nombre = "Hº VIVIENDA")
+    total = total_cobrado[0]/h.valor + total_pendiente[0]/h.valor + total_acobrar[0]/h.valor
 
-    otros_datos = [total_cobrado[0]/h.valor, total_pendiente[0]/h.valor, total_acobrar[0]/h.valor]
+    otros_datos = [total_cobrado[0]/h.valor, total_pendiente[0]/h.valor, total_acobrar[0]/h.valor, total] 
     
 
     #Aqui buscamos agrupar proyecto - sumatorias de cuotas y pagos - mes
@@ -1135,7 +1135,7 @@ def ctactecliente(request, id_cliente):
             cotizacion = pago_pesos/pago_cuota
 
         if cuota.precio != 0:
-            if abs(saldo_cuota/cuota.precio) < 0.03:
+            if abs(saldo_cuota/cuota.precio) < 0.01:
                 cuota.precio = pago_cuota
                 cuota.save()
                 saldo_cuota = 0

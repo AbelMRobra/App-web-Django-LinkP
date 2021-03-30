@@ -206,7 +206,7 @@
                     <td><small>{{i.2|floatformat:2}}</small></td>
                     <td><small>{{i.4|floatformat:2}}</small></td>
                     <td><small>{{i.5|floatformat:2}}</small></td>
-                    {% if i.5 < 1 %}
+                    {% if (i.5/1.2) < 0.01 %}
                     <td style="font-family: Arial, Helvetica, sans-serif; color:#319537 ;"><small><b>PAGADO</b></small></td>
                     {% elif  i.4 > 0 %}
                     <td style="font-family: Arial, Helvetica, sans-serif; color:#2D61BD ;"><small><b>$ {{i.6|floatformat:0|intcomma}}</b></small></td>
