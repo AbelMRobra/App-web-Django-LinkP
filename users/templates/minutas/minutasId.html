@@ -205,13 +205,11 @@
 
                                                             <div class="input-group mb-3">
 
-                                                                <select name="responsable" class="form-control form-control" style="width: 300px;">
-                                                                    <option value=""></option>
-                                                                    {% for l in list_users %}
-                                                                    <option {% if a.responsable == l %} selected {% endif %}>{{l.identificacion}}</option>
-                                                                    {% endfor %}
-                                                                    
-                                                                    </select>
+                                                                    <div class="input-group mb-3">
+
+                                                                        <input name="responsable" type="text"
+                                                                            class="form-control form-control"
+                                                                            style="width: 300px;" value="{{a.responsable}}">
 
                                                             </div>
 
@@ -225,10 +223,13 @@
 
                                                             </div>
 
-                                                            <button type="submit"
-                                                                class="btn waves-effect waves-light btn-rounded btn-secondary"
-                                                                name="id"
-                                                                value="{{a.id}}">Modificar</button>
+                                                            <div class="row m-2">
+                                                                <button type="submit" class="btn" name="id"
+                                                                value="{{a.id}}"><i
+                                                                        class="fa fa-pencil-square-o text-info"><span class="text-info ml-2"
+                                                                            style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif"><b>Modificar</b></span></i></button>
+                                                            </div>
+
 
                                                         </form>
                                                         <div class="modal-footer">
@@ -261,6 +262,8 @@
                             </h4></div>
 
                             <div>
+
+                                {% if data.reunion %}
 
                                 <table class="table">
     
@@ -324,14 +327,12 @@
                                                                 <h6><small>Responsable</small> </h6>
     
                                                                 <div class="input-group mb-3">
-    
-                                                                    <select name="responsable" class="form-control form-control" style="width: 300px;">
-                                                                        <option value=""></option>
-                                                                        {% for l in list_users %}
-                                                                        <option {% if a.responsable == l %} selected {% endif %}>{{l.identificacion}}</option>
-                                                                        {% endfor %}
-                                                                        
-                                                                        </select>
+
+
+                                                                    <input name="responsable" type="text"
+                                                                        class="form-control form-control"
+                                                                        style="width: 300px;" value="{{a.responsable}}">
+
     
                                                                 </div>
     
@@ -345,10 +346,12 @@
     
                                                                 </div>
     
-                                                                <button type="submit"
-                                                                    class="btn waves-effect waves-light btn-rounded btn-secondary"
-                                                                    name="id"
-                                                                    value="{{a.id}}">Modificar</button>
+                                                                <div class="row m-2">
+                                                                    <button type="submit" class="btn" name="id"
+                                                                    value="{{a.id}}"><i
+                                                                            class="fa fa-pencil-square-o text-info"><span class="text-info ml-2"
+                                                                                style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif"><b>Modificar</b></span></i></button>
+                                                                </div>
     
                                                             </form>
                                                             <div class="modal-footer">
@@ -373,6 +376,12 @@
                                     </tbody>
     
                                 </table>
+
+                                {% else %}
+
+                                <p>Esta minuta no tiene vinculación</p>
+
+                                {% endif %}
                             </div>
                     </div>
                 </div>

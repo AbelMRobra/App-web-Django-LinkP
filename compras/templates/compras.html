@@ -89,7 +89,7 @@
                             {% for i in compras %}
 
                             <tr>
-                                <td> {{i.1.fecha_c|date:"d-m-Y"}} </td>
+                                <td> {{i.1.fecha_c|date:"Y-m-d"}} </td>
                                 {% if proyecto == 0%}
                                 <td><b>{{i.1.proyecto|lower|capfirst}}</b> </td>
                                 {% endif %}
@@ -133,7 +133,9 @@
 <script>
 
     $(document).ready(function () {
-        $('#example').DataTable();
+        $('#example').DataTable({
+            "order": [[ 0, "desc" ]],
+        });
     });
 </script>
 

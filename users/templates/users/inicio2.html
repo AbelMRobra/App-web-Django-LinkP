@@ -111,10 +111,70 @@
                 href="javascript:void(0)"><i class="ti-menu"></i></a> </li>
 
           </ul>
+
+          {% if dias_funcionando %}
+
+          <ul class="navbar-nav my-lg-0">
+
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle waves-effect waves-dark" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <img src="{% static 'img/acuerdos.png' %}" alt="" width="30px">
+                <div class="notify">{% if minutas_cantidad %}<span class="heartbit"></span> <span class="point"></span>{% endif %}</div>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right mailbox animated bounceInDown">
+                <ul>
+                    <li>
+                        <div class="drop-title">Acuerdos pendientes ({{minutas_cantidad}})</div>
+                    </li>
+                    <li>
+                        <div class="message-center">
+
+                            
+                            {% if minutas_cantidad %}
+
+                            {% for m in minutas_cantidad_data %}
+
+                            <!-- Message -->
+                            <a href="{% url 'Minutas Id' m.minuta.id %}">
+                              {% if m.fecha_limite %}
+                              <div class="btn btn-success btn-circle"><i class="ti-calendar"></i></div>
+                              {% else %}
+                              <div class="btn btn-danger btn-circle"><i class="fa fa-link"></i></div>
+                              {% endif %}
+                              <div class="mail-contnet">
+                                  <h5>{{m.minuta.nombre}}</h5> <span class="mail-desc"> {{m}}</span></div>
+                              </a>
+
+                            {% endfor %}
+
+                              {% endif %}
+
+                        </div>
+                    </li>
+                    <li>
+                        <a class="nav-link text-center" href="{% url 'Minutas Listas' %}"> <strong>Ir al panel de minutas</strong> <i class="fa fa-angle-right"></i> </a>
+                    </li>
+                </ul>
+            </div>
+        </li>
+
+      </ul>
+
+      {% else %}
+
+      <ul class="navbar-nav my-lg-0">
+        <li>
+          <a class="nav-link waves-effect waves-dark" href="{% url 'Minutas Listas' %}" ><img src="{% static 'img/acuerdos.png' %}" alt="" width="30px"></a>
+          
+        </li>
+      </ul>
+
+      {% endif %}
+      <ul class="navbar-nav my-lg-0">
           <li>
             <a class="nav-link waves-effect waves-dark" href="{% url 'Registro Contable' %}" ><img src="{% static 'img/pig.png' %}" alt="" width="30px"></a>
             
           </li>
+        </ul>
 
         </div>
       </nav>
@@ -167,7 +227,6 @@
                   class="mdi mdi-gauge"></i><span class="hide-menu">Seguimiento</span></a>
               <ul aria-expanded="false" class="collapse">
                 <li><a href="{% url 'Tablero Rega' 0 0 1 %}">R.E.G.A</a></li>
-                <li><a href="{% url 'Minutas Listas' %}">Minutas</a></li>
               </ul>
             </li>
 
@@ -430,26 +489,7 @@
       <!-- Bread crumb and right sidebar toggle -->
       <!-- ============================================================== -->
 
-      {% if minutas_cantidad %}
-
-      <div class="container-fluid r-aside">
-
-        <div>
-          <h4 class="card-title"><span class="lstick"></span>
-            <img src="{% static 'img/advertir.png' %}" alt=""
-              style="max-width:20px; height:auto; margin: 2px; vertical-align: top; margin-right: 10px;">Acuerdos y temas pendientes en minutas
-          </h4>
-        </div>
-
-        <div style="margin: 5px;">
-          {{request.user.first_name}}, en las minutas tienes {{minutas_cantidad}} acuerdos/temas pendientes. 
-
-        </div>
-
-      </div>
-
-      {% endif %}
-
+    
       {% if datos_mensajeria %}
 
       <div class="container-fluid r-aside">

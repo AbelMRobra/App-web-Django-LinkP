@@ -871,7 +871,7 @@ def inicio(request):
 
     minutas_cantidad = len(Acuerdos.objects.filter(responsable__identificacion = request.user.username, estado="NO CHECK"))
 
-
+    minutas_cantidad_data = Acuerdos.objects.filter(responsable__identificacion = request.user.username, estado="NO CHECK")
     ########################################
     # OC observadas por SP
     ########################################
@@ -884,7 +884,7 @@ def inicio(request):
     sp_oc.append(aux_sp)
     sp_oc.append(aux_sp_2)
 
-    return render(request, "users/inicio2.html", {"sp_oc":sp_oc, "minutas_cantidad":minutas_cantidad, "anuncios":anuncios, "monedas":monedas, "dias_funcionando":dias_funcionando, "cantidad_p":cantidad_p, "cantidad_m":cantidad_m, "datos_barras":barras, "datos_logo":datos_logo, "mensaje_oc":mensaje_oc, "mensajesdeldia":mensajesdeldia, "datos_mensajeria":datos_mensajeria, "lista_grupos":lista_grupos, "miembros":miembros})
+    return render(request, "users/inicio2.html", {"minutas_cantidad_data":minutas_cantidad_data, "sp_oc":sp_oc, "minutas_cantidad":minutas_cantidad, "anuncios":anuncios, "monedas":monedas, "dias_funcionando":dias_funcionando, "cantidad_p":cantidad_p, "cantidad_m":cantidad_m, "datos_barras":barras, "datos_logo":datos_logo, "mensaje_oc":mensaje_oc, "mensajesdeldia":mensajesdeldia, "datos_mensajeria":datos_mensajeria, "lista_grupos":lista_grupos, "miembros":miembros})
 
 def welcome(request):
     # Si estamos identificados devolvemos la portada
