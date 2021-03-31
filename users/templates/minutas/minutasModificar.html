@@ -4,7 +4,7 @@
 
 {% block content %}
 
-<div class="container-fluid r-aside">
+<div class="container-fluid">
     <!-- ============================================================== -->
     <!-- Bread crumb and right sidebar toggle -->
     <!-- ============================================================== -->
@@ -15,9 +15,9 @@
 
         <div class="col-md-7 align-self-center">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
-                <li class="breadcrumb-item"><a href="{% url 'Minutas Listas' %}">Minutas</a></li>
-                <li class="breadcrumb-item">Modificar Minuta</li>
+                <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Panel</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'Minutas Listas' %}">Minuta</a></li>
+                <li class="breadcrumb-item">Modificar</li>
             </ol>
         </div>
 
@@ -87,6 +87,19 @@
                                 <input type="text" name="integrantes" class="form-control form-control"
                                     style="width: 300px;"
                                     value="{{data.integrantes}}"
+                                    >
+
+                            </div>
+
+                            <div class="col-12">
+
+                                <label for="integrantes" style="width: 300px;">
+                                    <h5>Reunión</h5>
+                                </label>
+
+                                <input type="text" name="reunion" class="form-control form-control"
+                                    style="width: 300px;"
+                                    value="{% if i.reunion %}{{i.reunion}}{% else %}{% endif %}"
                                     >
 
                             </div>

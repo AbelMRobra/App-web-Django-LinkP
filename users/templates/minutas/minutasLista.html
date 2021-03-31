@@ -52,10 +52,11 @@
                 <table id="example" class="table ">
                     <thead>
                         <tr>
+                            <th>Fecha</th>
                             <th>Creador</th>
                             <th>Reunión</th>
                             <th>Tema</th>
-                            <th>Fecha</th>
+                            
                             <th></th>
                         </tr>
                     </thead>
@@ -63,15 +64,17 @@
                     <tbody>
 
                         {% for i in data %}
+                        {% if user.username in creador.identificacion or user.username in i.integrantes%}
                         <tr>
+                            <td>{{i.fecha|date:"Y-m-d"}}</td>
                             <td>
                                 <div><img src="{{i.creador.imagenlogo.url}}" class="rounded" style="width: 40px;"
                                         alt=""><span class="ml-2">{{i.creador.identificacion}}</span></div>
                             </td>
-                            <td>REGA</td>
+                            <td>{% if i.reunion %}{{i.reunion}}{% else %}-{% endif %}</td>
                             <td><a href="{% url 'Minutas Id' i.id %}">{{i.nombre|lower|capfirst}}</a>
-                                <h6 class="card-subtitle">Integrantes: {{i.integrantes}}</h6></td>
-                            <td>{{i.fecha|date:"Y-m-d"}}</td>
+                                <h6 class="card-subtitle" style="margin-top: 3px;">Integrantes: {{i.integrantes}}</h6></td>
+                            
                              <td>
                                  {% if request.user.username == i.creador.identificacion %}
                                  <form method="POST">
@@ -86,6 +89,7 @@
                                     </td>  
                          
                         </tr>
+                        {% endif %}
 
                         {% endfor %}
 
@@ -93,14 +97,7 @@
 
 
                     </tbody>
-                    <tfoot>
 
-                        <tr>
-                            <th>Tema</th>
-                            <th>Fecha</th>
-                        </tr>
-
-                    </tfoot>
                 </table>
             </div>
         </div>
@@ -114,7 +111,7 @@
         <div class="col-md-12 m-t-10">
           <div class="card">
             <div class="card-body">
-            <img src="{% static 'img/animation_500_kmw63xso.gif' %}" alt="Funny image" width="150px">
+            <img src="{% static 'img/animation_500_kmxh5wei.gif' %}" alt="Funny image" width="150px">
             <p> Crea una nueva minuta haciendo click en <i class="fa fa-plus-circle  text-info"></i></p>
             <p> Cuando la estes creando <b class="text-warning">no olvides</b>  de leer las indicaciones escritas a la derecha</p>
         </div>
@@ -137,7 +134,6 @@
     $(document).ready(function () {
         $('#example').DataTable({
             "paging": false,
-            "searching": false,
             "info": false
         });
     });

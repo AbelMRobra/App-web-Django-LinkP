@@ -5,7 +5,7 @@
 
 {% block content %}
 
-<div class="container-fluid r-aside">
+<div class="container-fluid">
     <!-- ============================================================== -->
     <!-- Bread crumb and right sidebar toggle -->
     <!-- ============================================================== -->
@@ -17,8 +17,8 @@
         <div class="col-md-7 align-self-center">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
-                <li class="breadcrumb-item"><a href="{% url 'Minutas Listas' %}">Minutas</a></li>
-                <li class="breadcrumb-item">Detalle</li>
+                <li class="breadcrumb-item"><a href="{% url 'Minutas Listas' %}">Panel</a></li>
+                <li class="breadcrumb-item">Minuta</li>
             </ol>
         </div>
     </div>
@@ -29,7 +29,12 @@
         <div class="card">
             <div class="card-body ">
 
-                <h4 class="card-title"><span class="lstick m-r-20"></span>{{data.nombre|lower|capfirst}}</h4>
+                <h4 class="card-title"><span class="lstick m-r-20"></span><a href="{% url 'Minutas Modificar' data.id %}"><i
+                    class="fa fa-pencil-square-o text-info"><span class="text-info ml-2"
+                        style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif"></span></i></a> {{data.nombre|lower|capfirst}}</h4>
+                <div class="row m-2">
+                    
+                </div>
 
                 <div class="row">
                     <div class="col-lg-6">
@@ -51,6 +56,14 @@
 
                     <div class="col-lg-6">
 
+                        <h5>Reunión</h5>
+
+                        <p>{% if i.reunion %}{{i.reunion}}{% else %}{% endif %}</p>
+
+                    </div>
+
+                    <div class="col-lg-6">
+
                         <h5>Integrantes</h5>
 
                         <p>{{data.integrantes}}</p>
@@ -58,8 +71,6 @@
                     </div>
 
                 </div>
-
-                <a href="{% url 'Minutas Modificar' data.id %}" class="btn btn-outline-info">Modificar</a>
 
             </div>
         </div>
@@ -70,17 +81,14 @@
             <div class="card-body ">
                 <div class="d-flex">
 
-                        <h4 class="card-title"><span class="lstick m-r-20"></span>
-
-                            <a href="#" data-toggle="modal"
-                                data-target="#ModalAcuerdo" name="subir_item">
-
-                                <img src="{% static 'img/add.png' %}" alt=""
-                                    style="max-width:20px; height:auto; vertical-align: middle; margin-right: 15px;"> </a> Temas y acuerdos
-                            realizados
-                        </h4></div>
-
-
+                        <h4 class="card-title"><span class="lstick m-r-20"></span><a href="#" data-toggle="modal"
+                            data-target="#ModalAcuerdo" name="subir_item"><i
+                                    class="fa fa-plus-circle text-info"><span class="text-info ml-2"
+                                        style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif"></span></i></a>Temas y acuerdos realizados
+                        </h4>
+                    
+                        </div>
+ 
                         <!-- Modal Bitacoras -->
                         <div class="modal fade" id="ModalAcuerdo" tabindex="-1" role="dialog"
                             aria-labelledby="ModalAcuerdoCrearTitle" aria-hidden="true">

@@ -211,6 +211,7 @@ class Minutas(models.Model):
     nombre = models.CharField(max_length=200, verbose_name="Nombre de la minuta")
     fecha = models.DateField(verbose_name="Fecha", blank=True, null=True)
     integrantes = models.CharField(max_length=200, verbose_name="Integrantes")
+    reunion = models.CharField(max_length=200, verbose_name="Reunión", blank=True, null=True)
 
     class Meta:
         verbose_name="Minuta"

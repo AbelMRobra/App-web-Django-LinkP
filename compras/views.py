@@ -550,6 +550,7 @@ def panelvisto(request, estado):
                 usuario = 0
 
             datos.append((usuario, mensajes, d))
+
     if estado == "3":
 
         datos_base = Comparativas.objects.filter(estado = "AUTORIZADA", fecha_c__gte = "2021-02-01", visto="NO_VISTO").order_by("-fecha_c")

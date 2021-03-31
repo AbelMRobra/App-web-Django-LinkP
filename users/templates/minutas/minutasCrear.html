@@ -16,8 +16,8 @@
         <div class="col-md-7 align-self-center">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
-                <li class="breadcrumb-item"><a href="{% url 'Minutas Listas' %}">Minutas</a></li>
-                <li class="breadcrumb-item">Crear Minuta</li>
+                <li class="breadcrumb-item"><a href="{% url 'Minutas Listas' %}">Panel</a></li>
+                <li class="breadcrumb-item">Crear</li>
             </ol>
         </div>
 
@@ -69,113 +69,58 @@
                                     <h5>Integrantes</h5>
                                 </label>
 
-                                <input type="text" name="integrantes" class="form-control form-control" style="width: 300px;">
+                                <input type="text" name="integrantes" class="form-control form-control" style="width: 300px;" placeholder="Ejemplo: AR - LA - CA">
+
+                            </div>
+
+                            <div class="col-12">
+
+                                <label for="reunion" style="width: 300px;">
+                                    <h5>Reunión</h5>
+                                </label>
+
+                                <input type="text" name="reunion" class="form-control form-control" style="width: 300px;" placeholder="Nombre para vincular">
 
                             </div>
 
                         </div>
+
+                        
+
+                    </div>
+
+                    <div class="row m-2">
+                        <button type="submit" class="btn"><i
+                                class="fa fa-upload text-info"><span class="text-info ml-2"
+                                    style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif"><b>Crear minuta</b></span></i></button>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-12">
-            <div class="card">
-                <div class="card-body ">
-
-                        <div>
-
-                            <h3>Acuerdos y temas</h3>
-
-                            <div>
-                                <small style="color: red;">{% if mensaje %} {{mensaje}} {% endif %}
-                                </small>
-                            </div>
-
-                        </div>
-
-                        <div class="d-flex justify-content-end py-3">
-
-                            <button type="button" class="btn btn-outline-primary" onclick="myFunction()">Agregar
-                                campos</button>
-
-
-                        </div>
-                        <div class="campoarticulos">
-
-                            <div class="row bg-light py-3 d-flex">
-
-                                <div class="col-lg-6 col-md-6 row-sm">
-
-                                    <label for="tema">
-                                        <h6>Tema-Acuerdo</h6>
-                                    </label>
-
-                                    <input name="tema" type="text" class="form-control form-control"
-                                        placeholder="Tema o acuerdo a tratar">
-
-                                </div>
-
-                                <div class="col-lg-6 col-md-6 row-sm" >
-
-                                    <label for="responsable">
-                                        <h6>Responsable</h6>
-                                    </label>
-
-                                    <input name="responsable" type="text"
-                                        class="form-control form-control" placeholder="Responsable" >
-
-                                </div>
-
-                            </div>
-
-                            <div class="campo d-none">
-
-                                <div class="row bg-light py-3 d-flex">
-            
-            
-                                    <div class="col-lg-6 col-md-6 row-sm">
-            
-                                        <label>
-                                            <h6>Tema-Acuerdo</h6>
-                                        </label>
-            
-                                        <input name="tema1" type="text" class="form-control form-control"
-                                            placeholder="Tema o acuerdo a tratar">
-            
-                                    </div>
-            
-                                    <div class="col-lg-6 col-md-6 row-sm">
-            
-                                        <label>
-                                            <h6>Responsable</h6>
-                                        </label>
-            
-                                        <input name="responsable1" type="text" class="form-control form-control"
-                                            placeholder="Responsable">
-            
-                                    </div>
-            
-                                </div>
-                                <button class="btn btn-link fa fa-trash d-flex align-content-end" id="button-delete"
-                                    aria-hidden="true" onclick="deleteItem(this)" class=""></button>
-            
-                            </div>
-                        </div>
-
-                    </div>
-
-                    <div class="d-flex justify-content-center my-3">
-                        <button type="submit" class="btn btn-success">Cargar minuta</button>
-
-                    </div>
-
-            </div>
-        </div>
+  
     </form>
     </div>
 
 
-
+    <aside class="right-side-panel">
+        <h3 class="p-relative"><span class="lstick"></span> ¿Comó funciona?</h3>
+        <div class="row">
+            
+            <div class="col-md-12 m-t-10">
+              <div class="card">
+                <div class="card-body">
+                <img src="{% static 'img/animation_500_kmw63xso.gif' %}" alt="Funny image" width="150px">
+                <p> Completa el formulario para avanzar</p>
+                <p> <b class="text-danger">Ten presente</b> que los integrantes tienen que estar registrados en el soft y debes usar su <b class="text-danger">identificador</b>, ejemplo el identificador de Abel es AR</p>
+                <p> Por ultimo, si es una reunión recurrente pon un nombre unico asi todas las minutas se vinculan</p>
+            </div>
+                </div>
+            </div>
+        </div>
+    
+    
+        </div>
+    </aside>
 
 
 <script>

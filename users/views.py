@@ -1318,45 +1318,17 @@ def minutascrear(request):
                 nombre = request.POST['nombre'],
                 integrantes = request.POST['integrantes'],
                 fecha = request.POST['fecha'],
+                reunion = request.POST['reunion'],
                 creador = datosusuario.objects.get(identificacion = request.user.username),
             )
 
             minuta.save()
 
+            return redirect('Minutas Id', id_minuta = minuta.id)
+
         except:
 
             mensaje = "Algún dato de la minuta no esta completo o el creador no esta registrado"
-
-        tema = 0
-
-        for t in datos_p:
-
-            if "tema" in t[0]:
-
-                if t[1] != "":
-
-                    tema = t[1] 
-                else:
-                    tema = 0
-            if "responsable" in t[0]:
-                if tema != 0:
-                    try:
-                        b = Acuerdos(
-                            minuta = minuta,
-                            tema = tema,                     
-                        )
-
-                        if t[1] != "":
-                            b.responsable = datosusuario.objects.get(identificacion = t[1]) 
-
-                        b.save()
-
-                    except:
-                        mensaje = "Error en la carga de temas"
-
-        if mensaje == 0:
-            return redirect('Minutas Listas')
-
 
     return render(request, 'minutas/minutasCrear.html', {'mensaje':mensaje})
 
@@ -1379,6 +1351,7 @@ def minutasmodificar(request, id_minuta):
         data.nombre = request.POST['nombre']
         data.fecha = request.POST['fecha']
         data.integrantes = request.POST['integrantes']
+        data.reunion = request.POST['reunion']
         data.save()
         return redirect('Minutas Id', id_minuta = data.id)
 
@@ -1445,7 +1418,7 @@ def minutasid(request, id_minuta):
 
     acuerdos = Acuerdos.objects.filter(minuta = data)
 
-    acuerdos_viejos = Acuerdos.objects.filter(minuta__id__lt = data.id, estado = "NO CHECK")
+    acuerdos_viejos = Acuerdos.objects.filter(minuta__id__lt = data.id, estado = "NO CHECK", minuta__reunion = data.reunion)
 
     return render(request, 'minutas/minutasId.html', {'data':data, 'acuerdos':acuerdos, 'acuerdos_viejos':acuerdos_viejos, 'list_users':list_users})
 
