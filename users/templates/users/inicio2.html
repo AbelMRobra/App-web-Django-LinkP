@@ -117,7 +117,7 @@
           <ul class="navbar-nav my-lg-0">
 
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle waves-effect waves-dark" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <img src="{% static 'img/acuerdos.png' %}" alt="" width="30px">
+            <a class="nav-link dropdown-toggle waves-effect waves-dark" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <img src="{% static 'img/acuerdos2.png' %}" alt="" width="30px">
                 <div class="notify">{% if minutas_cantidad %}<span class="heartbit"></span> <span class="point"></span>{% endif %}</div>
             </a>
             <div class="dropdown-menu dropdown-menu-right mailbox animated bounceInDown">
@@ -163,10 +163,149 @@
 
       <ul class="navbar-nav my-lg-0">
         <li>
-          <a class="nav-link waves-effect waves-dark" href="{% url 'Minutas Listas' %}" ><img src="{% static 'img/acuerdos.png' %}" alt="" width="30px"></a>
+          <a class="nav-link waves-effect waves-dark" href="{% url 'Minutas Listas' %}" ><img src="{% static 'img/acuerdos2.png' %}" alt="" width="30px"></a>
           
         </li>
       </ul>
+
+      {% endif %}
+
+      {% if mensaje_oc %}
+
+      <ul class="navbar-nav my-lg-0">
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle waves-effect waves-dark" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <img src="{% static 'img/OCblanco2.png' %}" alt="" width="30px">
+              <div class="notify"><span class="heartbit"></span> <span class="point"></span></div>
+          </a>
+          <div class="dropdown-menu dropdown-menu-right mailbox animated bounceInDown">
+              <ul>
+                  <li>
+                      <div class="drop-title">
+                        
+                        {% if user.username == "PL" %}
+                        OC pendientes de aprobar ({{mensaje_oc.2}})
+                        {% elif user.username == "SP" %}
+                        OC pendientes de aprobar ({{mensaje_oc.2}})
+                        {% else %}
+                        OC rechazadas/observadas ({{mensaje_oc.2}})
+                        {% endif %}
+                      
+                      </div>
+                  </li>
+                  <li>
+
+                    {% if user.username == "PL" %}
+                    <div class="message-center">
+
+                      {% for m in mensaje_oc.0 %}
+
+                      <!-- Message -->
+                      <a href="{% url 'Mensajes en comparativas' m.id %}">
+
+                        <div class="btn btn-info btn-circle" style="margin-right: 5px;">{{m.creador}}</div>
+                        <div class="mail-contnet">
+                          <h5>{{m.proveedor|lower|capfirst}}</h5> <span class="mail-desc">{{m.proyecto|lower|capfirst}}</span></div>
+
+                        </a>
+
+                      {% endfor %}
+
+                      {% for m in mensaje_oc.1 %}
+
+                      <!-- Message -->
+                      <a href="{% url 'Mensajes en comparativas' m.id %}">
+
+                        <div class="btn btn-warning btn-circle" style="margin-right: 5px;">{{m.creador}}</div>
+                        <div class="mail-contnet">
+                          <h5>{{m.proveedor|lower|capfirst}}</h5> <span class="mail-desc">{{m.proyecto|lower|capfirst}}</span></div>
+
+                        </a>
+
+                      {% endfor %}
+
+                  </div>
+                </li>
+                <li>
+                    <a class="nav-link text-center" href="{% url 'Comparativas' 0 0 %}"> <strong>Solicitudes de compra</strong> <i class="fa fa-angle-right"></i> </a>
+                </li>
+
+                  {% elif user.username == "SP" %}
+                    <div class="message-center">
+
+                      {% for m in mensaje_oc.0 %}
+
+                      <!-- Message -->
+                      <a href="{% url 'Mensajes en comparativas' m.id %}">
+
+                        <div class="btn btn-info btn-circle" style="margin-right: 5px;">{{m.creador}}</div>
+                        <div class="mail-contnet">
+                          <h5>{{m.proveedor|lower|capfirst}}</h5> <span class="mail-desc">{{m.proyecto|lower|capfirst}}</span></div>
+
+                        </a>
+
+                      {% endfor %}
+
+                      {% for m in mensaje_oc.1 %}
+
+                      <!-- Message -->
+                      <a href="{% url 'Mensajes en comparativas' m.id %}">
+
+                        <div class="btn btn-info btn-circle" style="margin-right: 5px;">{{m.creador}}</div>
+                        <div class="mail-contnet">
+                          <h5>{{m.proveedor|lower|capfirst}}</h5> <span class="mail-desc">{{m.proyecto|lower|capfirst}}</span></div>
+
+                        </a>
+
+                      {% endfor %}
+
+                  </div>
+                </li>
+                <li>
+                    <a class="nav-link text-center" href="{% url 'Comparativas' 5 0 %}"> <strong>Solicitudes de compra</strong> <i class="fa fa-angle-right"></i> </a>
+                </li>
+
+                    {% else %}
+                      <div class="message-center">
+
+                          {% for m in mensaje_oc.0 %}
+
+                          <!-- Message -->
+                          <a href="{% url 'Mensajes en comparativas' m.id %}">
+
+                            <div class="btn btn-red btn-circle" style="margin-right: 5px;"><img src="{% static 'img/PL.png' %}" width="35"></div>
+                            <div class="mail-contnet">
+                              <h5>{{m.proveedor|lower|capfirst}}</h5> <span class="mail-desc">{{m.proyecto|lower|capfirst}}</span></div>
+
+                            </a>
+
+                          {% endfor %}
+
+                          {% for m in mensaje_oc.1 %}
+
+                          <!-- Message -->
+                          <a href="{% url 'Mensajes en comparativas' m.id %}">
+
+                            <div class="btn btn-warning btn-circle" style="margin-right: 5px;"><img src="{% static 'img/SP.png' %}" width="35" class="img-circle"></div>
+                            <div class="mail-contnet">
+                              <h5>{{m.proveedor|lower|capfirst}}</h5> <span class="mail-desc">{{m.proyecto|lower|capfirst}}</span></div>
+
+                            </a>
+
+                          {% endfor %}
+
+                      </div>
+                    </li>
+                    <li>
+                        <a class="nav-link text-center" href="{% url 'Comparativas' 0 0 %}"> <strong>Solicitudes de compra</strong> <i class="fa fa-angle-right"></i> </a>
+                    </li>
+                      {% endif %}
+                  
+              </ul>
+          </div>
+      </li>
+
+    </ul>
 
       {% endif %}
       <ul class="navbar-nav my-lg-0">
@@ -512,28 +651,7 @@
 
       {% endif %}
 
-      {% if mensaje_oc %}
-
-      <div class="container-fluid r-aside">
-
-        <div>
-          <h4 class="card-title"><span class="lstick"></span>
-            <img src="{% static 'img/advertir.png' %}" alt=""
-              style="max-width:20px; height:auto; margin: 2px; vertical-align: top; margin-right: 10px;"> Mensaje sobre ordenes de compra!
-          </h4>
-        </div>
-
-
-        <div style="margin: 5px;">
-
-          {{mensaje_oc}}
-
-        </div>
-
-      </div>
-
-      {% endif %}
-
+      
       {% if monedas %}
 
       <div class="container-fluid r-aside">

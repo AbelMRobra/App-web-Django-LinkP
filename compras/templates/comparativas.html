@@ -187,7 +187,7 @@
                             <td style="text-align: center;"> 
 
 
-                                {% if "POSTV" in i.2.numero or i.0.identificacion == "MES" %}
+                                {% if "post" in i.2.numero|lower or i.0.identificacion == "MES" %}
 
                                 <img src="{% static 'img/SP.png' %}" width="40" class="img-circle">
 

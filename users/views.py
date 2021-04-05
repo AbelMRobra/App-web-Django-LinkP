@@ -725,7 +725,7 @@ def inicio(request):
 
         if len(compras_espera) > 0 or len(compras_adjunto_ok) > 0:
         
-            mensaje_oc = "Pablo!, tienes {} O.C en espera y {} solo en adjunto!".format(len(compras_espera), len(compras_adjunto_ok))
+            mensaje_oc = [compras_espera, compras_adjunto_ok, (len(compras_espera) + len(compras_adjunto_ok))]
         
     elif usuario == "SP":
 
@@ -734,17 +734,16 @@ def inicio(request):
 
         if len(compras) > 0 or len(compras_2) > 0:
         
-            mensaje_oc = '''Seba!, tienes {} ordenes de compra para autorizar!
-            
-            
-            '''.format(len(compras) + len(compras_2))
+            mensaje_oc = [compras, compras_2, (len(compras) + len(compras_2))]
 
     else:
-        compras = Comparativas.objects.filter(estado = "NO AUTORIZADA", creador = usuario)
 
-        if len(compras) > 0:
+        data_1 = Comparativas.objects.filter(estado = "NO AUTORIZADA", creador = usuario)
+        data_2 = Comparativas.objects.filter(visto = "VISTO NO CONFORME", creador = usuario, fecha_c__gte = "2021-02-01")
 
-            mensaje_oc = "Tienes {} O.C rechazadas!".format(len(compras))
+        if len(data_1) > 0 or len(data_2) > 0:
+
+            mensaje_oc = [data_1, data_2, (len(data_1) + len(data_2))]
         
 
     datos_logo = 0
