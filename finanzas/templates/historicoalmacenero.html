@@ -136,11 +136,13 @@
                     <h6>Pendiente de ingresar: {{datos.2.0|intcomma}} %</h6>
                     <h6>Saldo de caja: {{datos.2.2|intcomma}} %</h6>
                     <h6>Descuentos: {{datos.2.1|intcomma}} %</h6>
+                    <h6>Honorarios: {{datos.2.4|intcomma}} %</h6>
 
                 </div>
 
                 <div style="margin-top: 15px;">
                     <h3 class="text-info">Variación especificas</h3>
+                    <h6>Honorarios: $ {{datos.2.5|intcomma}}</h6>
                     <div class="table-responsive">
                         <table class="table table-bordered">
                             <thead>
@@ -154,7 +156,7 @@
           
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody style="font-size: 14px;">
                                 {% for v in var_especifica %}  
             
                                 <tr>

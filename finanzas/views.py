@@ -2258,7 +2258,7 @@ def registro_almacenero(request):
 
             datos.append((round(margen2_1, 2), round(margen2_2, 2), round((margen2_2/margen2_1 -1 )*100, 2), round((margen2_2 - margen2_1), 2)))
             datos.append((fecha_1, fecha_2))
-            datos.append((round((ingresos_total_2/ingresos_total_1 -1 )*100), round((descuento_total_2/descuento_total_1 -1 )*100), round((saldo_caja_total_2/saldo_caja_total_1 -1 )*100), round((pendiente_gastar_total_2/pendiente_gastar_total_1 -1 )*100)))
+            datos.append((round((ingresos_total_2/ingresos_total_1 -1 )*100), round((descuento_total_2/descuento_total_1 -1 )*100), round((saldo_caja_total_2/saldo_caja_total_1 -1 )*100), round((pendiente_gastar_total_2/pendiente_gastar_total_1 -1 )*100), round((honorario_2/honorario_1 -1 )*100), round(honorario_2 - honorario_1)))
 
     
     return render(request, 'historicoalmacenero.html', {"datos":datos, "mensaje":mensaje, "var_especifica":var_especifica })
