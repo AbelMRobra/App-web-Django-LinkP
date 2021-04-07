@@ -164,10 +164,40 @@
 
                                     <th>{{v.0|lower|capfirst}}</th>
                                     <th>$ {{v.1.0|floatformat:0|intcomma}}</th>
-                                    <th>$ {{v.1.1|floatformat:0|intcomma}}</th>
+                                    <th><a href="#" data-toggle="modal" data-target="#ModalIngresos{{v.0.id}}">$ {{v.1.1|floatformat:0|intcomma}}</a> </th>
+
+                                    <!-- Modal lista de ingresos-->
+                                    <div class="modal fade" id="ModalIngresos{{v.0.id}}" tabindex="-1" role="dialog" aria-labelledby="ModalIngresos{{v.0.id}}" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLongTitle">Gastos de {{v.0|lower|capfirst}}</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                            </div>
+                                            <div class="modal-body">
+                                            <h6 class="text-info">----- Administración -----</h6> 
+                                            
+                                            <h6> Cuotas a cobrar: $ {{v.1.7.1|floatformat:0|intcomma}}</h6>
+                                            <h6> Ingresos por venta: $ {{v.1.7.2|floatformat:0|intcomma}}</h6>
+                                            <h6> Financiación: $ {{v.1.7.3|floatformat:0|intcomma}}</h6> 
+                                            <h6> Inmuebles a vender: $ {{v.1.7.4|floatformat:0|intcomma}}</h6> 
+                                            <h6> Prestamos: $ {{v.1.7.0|floatformat:0|intcomma}}</h6>
+
+                                            
+                                            </div>
+                                            <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    
+                                            </div>
+                                        </div>
+                                        </div>
+
+                                    </div>
                                     <th><a href="#" data-toggle="modal" data-target="#ModalGastos{{v.0.id}}">$ {{v.1.2|floatformat:0|intcomma}}</a></th>
 
-                                    <!-- Modal fecha estado Subitem -->
+                                    <!-- Modal lista de gastos-->
                                     <div class="modal fade" id="ModalGastos{{v.0.id}}" tabindex="-1" role="dialog" aria-labelledby="ModalGastos{{v.0.id}}" aria-hidden="true">
                                         <div class="modal-dialog modal-dialog-centered" role="document">
                                         <div class="modal-content">
@@ -202,8 +232,35 @@
                                         </div>
 
                                     </div>
-                                    <th>$ {{v.1.3|floatformat:0|intcomma}}</th>
+                                    <th><a href="#" data-toggle="modal" data-target="#ModalCaja{{v.0.id}}">$ {{v.1.3|floatformat:0|intcomma}}</a> </th>
+                                    <!-- Modal lista de caja -->
+                                    <div class="modal fade" id="ModalCaja{{v.0.id}}" tabindex="-1" role="dialog" aria-labelledby="ModalCaja{{v.0.id}}" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLongTitle">Gastos de {{v.0|lower|capfirst}}</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                            </div>
+                                            <div class="modal-body">
+                                            <h6 class="text-info">----- Administración -----</h6> 
+                                            <h6> Cuotas cobradas: $ {{v.1.6.0|floatformat:0|intcomma}}</h6>
+                                            <h6> Gastos a la fecha: $ {{v.1.6.1|floatformat:0|intcomma}}</h6>
+                                            <h6> Prestamos: $ {{v.1.6.2|floatformat:0|intcomma}}</h6>
+                                            <h6> Retiros: $ {{v.1.6.3|floatformat:0|intcomma}}</h6>
+                                            <h6> Tenencias: $ {{v.1.6.4|floatformat:0|intcomma}}</h6> 
+         
+                                            
+                                            </div>
+                                            <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    
+                                            </div>
+                                        </div>
+                                        </div>
 
+                                    </div>
                 
                                 </tr>
 

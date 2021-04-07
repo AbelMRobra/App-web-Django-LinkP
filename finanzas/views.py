@@ -2199,10 +2199,10 @@ def registro_almacenero(request):
                 # Variación ultra especifica
 
                 list_gasto = [(aux.pendiente_admin - almacenero.pendiente_admin), (aux.pendiente_admin - almacenero.pendiente_admin), (aux.pendiente_comision - almacenero.pendiente_comision), (aux.saldo_mat - almacenero.saldo_mat), (aux.saldo_mo - almacenero.saldo_mo), (aux.imprevisto - almacenero.imprevisto), (aux.credito - almacenero.credito), (aux.fdr - almacenero.fdr), (aux.pendiente_adelantos - almacenero.pendiente_adelantos), (aux.pendiente_iva_ventas - almacenero.pendiente_iva_ventas), (aux.pendiente_iibb_tem - almacenero.pendiente_iibb_tem), (aux.cheques_emitidos - almacenero.cheques_emitidos), ]
+                list_caja = [(aux.cuotas_cobradas - almacenero.cuotas_cobradas), (aux.gastos_fecha - almacenero.gastos_fecha), (aux.Prestamos_dados - almacenero.Prestamos_dados), (retiro_socios_aux - retiro_socios_1), (aux.tenencia - almacenero.tenencia)]
+                list_ingresos = [(prest_cobrar_aux - prest_cobrar_1), (aux.cuotas_a_cobrar - almacenero.cuotas_a_cobrar), (aux.ingreso_ventas - almacenero.ingreso_ventas), (aux.financiacion - almacenero.financiacion), (aux.inmuebles - almacenero.inmuebles)]
                 
-                
-                
-                var_especifica.append((almacenero.proyecto, [(margen_aux - margen_1), (total_ingresos_aux - total_ingresos_1), (pend_gast_aux - pend_gast_1), (saldo_caja_aux - saldo_caja_1), (descuento_aux - descuento_1), list_gasto]))
+                var_especifica.append((almacenero.proyecto, [(margen_aux - margen_1), (total_ingresos_aux - total_ingresos_1), (pend_gast_aux - pend_gast_1), (saldo_caja_aux - saldo_caja_1), (descuento_aux - descuento_1), list_gasto, list_caja, list_ingresos]))
                 
                 # Suma a los totalizadores
 
