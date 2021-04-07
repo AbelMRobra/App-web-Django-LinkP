@@ -307,7 +307,7 @@
     var numbers = [];
 
     var testElements = document.getElementsByClassName('margen').item(0).innerHTML;
-    var testElements = parseFloat(testElements)
+    var testElements = parseFloat(testElements.replace(',','').replace(',',''))
     numbers.push(testElements)
 
     var sum = numbers.reduce(function (a, b) {
@@ -316,41 +316,7 @@
 
     document.getElementById("margen").innerHTML = sum
 
-    var numbers = [];
 
-    var testElements = document.getElementsByClassName('ingresos').item(0).innerHTML;
-    var testElements = parseFloat(testElements)
-    numbers.push(testElements)
-
-    var sum = numbers.reduce(function (a, b) {
-        return a + b;
-    }, 0);
-
-    document.getElementById("ingresos").innerHTML = sum
-
-    var numbers = [];
-
-    var testElements = document.getElementsByClassName('gastos').item(0).innerHTML;
-    var testElements = parseFloat(testElements)
-    numbers.push(testElements)
-
-    var sum = numbers.reduce(function (a, b) {
-        return a + b;
-    }, 0);
-
-    document.getElementById("gastos").innerHTML = sum
-
-    var numbers = [];
-
-    var testElements = document.getElementsByClassName('caja').item(0).innerHTML;
-    var testElements = parseFloat(testElements)
-    numbers.push(testElements)
-
-    var sum = numbers.reduce(function (a, b) {
-        return a + b;
-    }, 0);
-
-    document.getElementById("caja").innerHTML = sum
 </script>
 
 <script>
