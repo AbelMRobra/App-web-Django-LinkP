@@ -163,7 +163,7 @@
                                 <tr>
 
                                     <th>{{v.0|lower|capfirst}}</th>
-                                    <th>$ <span class="margen">{{v.1.0|floatformat:0|intcomma}}</span></th>
+                                    <th>$ {{v.1.0|floatformat:0|intcomma}} <i>({{v.1.8|floatformat:0}} %)</i></th>
                                     <th><a href="#" data-toggle="modal" data-target="#ModalIngresos{{v.0.id}}">$ <span class="ingresos">{{v.1.1|floatformat:0|intcomma}}</span> {% if v.1.1 < 0 %}<i class="fa fa-arrow-down text-danger"></i>{% else %}<i class="fa fa-arrow-up text-success"></i>{% endif %}</a> </th>
 
                                     <!-- Modal lista de ingresos-->
