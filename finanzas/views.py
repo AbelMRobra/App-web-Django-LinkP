@@ -2043,9 +2043,7 @@ def registro_almacenero(request):
 
         # --> Prueba de cambio
 
-        elif (len(datos_fecha1) > len(datos_fecha2)):
-
-            # --> En este caso se agrego algún proyecto
+        elif (len(datos_fecha1) != len(datos_fecha2)):
 
             proyectos_fecha1 = RegistroAlmacenero.objects.filter(fecha = fecha_1).values_list('proyecto', flat = True).distinct()
             proyectos_fecha2 = RegistroAlmacenero.objects.filter(fecha = fecha_2).values_list('proyecto', flat = True).distinct()
@@ -2056,7 +2054,110 @@ def registro_almacenero(request):
                 if p not in proyectos_fecha2:
                     proyectos_agregados.append(p)
 
-            mensaje = "En este periodo se agregaron proyectos"
+            mensaje = (3, "Hubo variación con la cantidad de proyectos")
+
+            almacenero_1 = datos_fecha1
+
+            saldo_caja_total_1 = 0
+            pendiente_gastar_total_1 = 0
+            ingresos_total_1 = 0
+            descuento_total_1 = 0
+            honorario_1 = 0
+
+            for dato in almacenero_1:
+
+                almacenero = dato
+
+                # Calculo el resto de las cosas
+
+                retiro_socios_1 = almacenero.retiro_socios
+                saldo_caja_1 = almacenero.cuotas_cobradas - almacenero.gastos_fecha - almacenero.Prestamos_dados - retiro_socios_1 + almacenero.tenencia
+                pend_gast_1 = almacenero.pendiente_admin + almacenero.pendiente_comision + almacenero.saldo_mat + almacenero.saldo_mo + almacenero.imprevisto + almacenero.credito + almacenero.fdr - almacenero.pendiente_adelantos + almacenero.pendiente_iva_ventas + almacenero.pendiente_iibb_tem +almacenero.cheques_emitidos                
+                prest_cobrar_1 = almacenero.prestamos_proyecto + almacenero.prestamos_otros
+                total_ingresos_1 = prest_cobrar_1 + almacenero.cuotas_a_cobrar + almacenero.ingreso_ventas + almacenero.financiacion + almacenero.inmuebles
+                margen_1 = total_ingresos_1 - pend_gast_1 + saldo_caja_1
+                descuento_1 = almacenero.ingreso_ventas*0.06
+                
+                try:
+                    # Variación especifica
+
+                    aux = RegistroAlmacenero.objects.get(fecha = fecha_2, proyecto = almacenero.proyecto)
+
+                    retiro_socios_aux = aux.retiro_socios
+                    saldo_caja_aux = aux.cuotas_cobradas - aux.gastos_fecha - aux.Prestamos_dados - retiro_socios_aux + aux.tenencia
+                    pend_gast_aux = aux.pendiente_admin + aux.pendiente_comision + aux.saldo_mat + aux.saldo_mo + aux.imprevisto + aux.credito + aux.fdr - aux.pendiente_adelantos + aux.pendiente_iva_ventas + aux.pendiente_iibb_tem +aux.cheques_emitidos                
+                    prest_cobrar_aux = aux.prestamos_proyecto + aux.prestamos_otros
+                    total_ingresos_aux = prest_cobrar_aux + aux.cuotas_a_cobrar + aux.ingreso_ventas + aux.financiacion + aux.inmuebles
+                    margen_aux = total_ingresos_aux - pend_gast_aux + saldo_caja_aux
+                    descuento_aux = aux.ingreso_ventas
+
+                    var_especifica.append((almacenero.proyecto, [(margen_aux - margen_1), (total_ingresos_aux - total_ingresos_1), (pend_gast_aux - pend_gast_1), (saldo_caja_aux - saldo_caja_1), (descuento_aux - descuento_1)]))
+
+                except:
+                    var_especifica.append((almacenero.proyecto, [(margen_1), (total_ingresos_1), (pend_gast_1), (saldo_caja_1), (descuento_1)]))
+
+                # Suma a los totalizadores
+
+                margen_2_1 = margen_1 - descuento_1
+                pendiente_gastar_total_1 = pendiente_gastar_total_1 + pend_gast_1
+                saldo_caja_total_1 = saldo_caja_total_1 + saldo_caja_1
+                descuento_total_1 = descuento_total_1 + descuento_1
+                ingresos_total_1 = ingresos_total_1 + total_ingresos_1
+
+
+                # Honorarios
+                
+                honorario_1 = almacenero.honorarios
+
+
+            margen1_1 = ingresos_total_1 - pendiente_gastar_total_1 + honorario_1 + saldo_caja_total_1
+            margen2_1 = margen1_1 - descuento_total_1
+
+
+            almacenero_2 = datos_fecha2
+
+            saldo_caja_total_2 = 0
+            pendiente_gastar_total_2 = 0
+            ingresos_total_2 = 0
+            descuento_total_2 = 0
+            honorario_2 = 0
+
+            for dato in almacenero_2:
+
+                almacenero = dato
+
+                #Calculo el resto de las cosas
+
+                retiro_socios_2 = almacenero.retiro_socios
+                saldo_caja_2 = almacenero.cuotas_cobradas - almacenero.gastos_fecha - almacenero.Prestamos_dados - retiro_socios_2 + almacenero.tenencia
+                
+                pend_gast_2 = almacenero.pendiente_admin + almacenero.pendiente_comision + almacenero.saldo_mat + almacenero.saldo_mo + almacenero.imprevisto + almacenero.credito + almacenero.fdr - almacenero.pendiente_adelantos + almacenero.pendiente_iva_ventas + almacenero.pendiente_iibb_tem +almacenero.cheques_emitidos
+                
+                prest_cobrar_2 = almacenero.prestamos_proyecto + almacenero.prestamos_otros
+                total_ingresos_2 = prest_cobrar_2 + almacenero.cuotas_a_cobrar + almacenero.ingreso_ventas + almacenero.financiacion + almacenero.inmuebles
+                
+                margen_2 = total_ingresos_2 - pend_gast_2 + saldo_caja_2
+                descuento_2 = almacenero.ingreso_ventas*0.06
+                
+                margen_2_2 = margen_2 - descuento_2
+                honorario_2 = almacenero.honorarios
+
+                pendiente_gastar_total_2 = pendiente_gastar_total_2 + pend_gast_2
+                saldo_caja_total_2 = saldo_caja_total_2 + saldo_caja_2
+                descuento_total_2 = descuento_total_2 + descuento_2
+                ingresos_total_2 = ingresos_total_2 + total_ingresos_2
+
+                # Me falta calcular la parte de honorarios
+
+            margen1_2 = ingresos_total_2 - pendiente_gastar_total_2 + honorario_2 + saldo_caja_total_2
+            margen2_2 = margen1_2 - descuento_total_2
+
+            mensaje = (2, "Se encontrarons los registros!, ambas fechas tienen la misma cantidad de proyectos")
+
+            datos.append((round(margen2_1, 2), round(margen2_2, 2), round((margen2_2/margen2_1 -1 )*100, 2), round((margen2_2 - margen2_1), 2)))
+            datos.append((fecha_1, fecha_2))
+            datos.append((round((ingresos_total_2/ingresos_total_1 -1 )*100), round((descuento_total_2/descuento_total_1 -1 )*100), round((saldo_caja_total_2/saldo_caja_total_1 -1 )*100), round((pendiente_gastar_total_2/pendiente_gastar_total_1 -1 )*100)))
+
 
         elif (len(datos_fecha1) == len(datos_fecha2)):
 
