@@ -269,10 +269,10 @@
                             <tfoot>
 
                                     <th></th>
-                                    <th>$ <span id = 'margen'></span></th>
-                                    <th>$ <span id = 'ingresos'></span></th>
-                                    <th>$ <span id = 'gastos'></span></th>
-                                    <th>$ <span id = 'caja'></span></th>
+                                    <th>$ <span id = 'margen'>{{datos_finales.3|floatformat:0|intcomma}}</span></th>
+                                    <th>$ <span id = 'ingresos'>{{datos_finales.0|floatformat:0|intcomma}}</span></th>
+                                    <th>$ <span id = 'gastos'>{{datos_finales.1|floatformat:0|intcomma}}</span></th>
+                                    <th>$ <span id = 'caja'>{{datos_finales.2|floatformat:0|intcomma}}</span></th>
 
                             </tfoot>
                 
@@ -302,22 +302,6 @@
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js" defer></script>
 <script src="https://cdn.datatables.net/1.10.23/js/dataTables.bootstrap4.min.js" defer></script>
-
-<script>
-    var numbers = [];
-
-    var testElements = document.getElementsByClassName('margen').item(0).innerHTML;
-    var testElements = parseFloat(testElements.replace(',','').replace(',',''))
-    numbers.push(testElements)
-
-    var sum = numbers.reduce(function (a, b) {
-        return a + b;
-    }, 0);
-
-    document.getElementById("margen").innerHTML = sum
-
-
-</script>
 
 <script>
     $(document).ready(function () {
