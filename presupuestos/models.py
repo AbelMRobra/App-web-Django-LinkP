@@ -164,6 +164,8 @@ class Modelopresupuesto(models.Model):
     analisis= models.ForeignKey(Analisis, on_delete=models.CASCADE, verbose_name="Analisis")
     vinculacion= models.ForeignKey(Tipologias, on_delete=models.CASCADE, null=True, blank=True, verbose_name="Vinculación")
     cantidad= models.FloatField(verbose_name="Cantidad", null=True, blank=True)
+    orden = models.IntegerField(verbose_name="Orden", null=True, blank=True)
+    comentario = models.CharField(verbose_name="Comentario" ,max_length=200, null=True, blank=True)
 
     class Meta:
         verbose_name="Modelo presupuesto"

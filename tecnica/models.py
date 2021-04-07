@@ -124,3 +124,20 @@ class TecnicaMensaje(models.Model):
         
     def __str__(self):
         return self.mensaje
+
+class RegistroDesvios(models.Model):
+    fecha = models.DateField(verbose_name="Fecha")
+    proyecto = models.ForeignKey(Proyectos, on_delete=models.CASCADE, verbose_name="Proyecto")
+    creador = models.ForeignKey(datosusuario, on_delete=models.CASCADE, verbose_name="Usuario")
+    nombre = models.CharField(verbose_name="Nombre del desvio", max_length=200)
+    descrip = models.TextField(verbose_name="Descripción")
+    dias = models.IntegerField(verbose_name="Dias de desvios")
+    adjunto = models.FileField(verbose_name="Adjunto", blank=True, null=True)
+
+    class Meta:
+
+        verbose_name="Registro de desvio"
+        verbose_name_plural="Registros de desvios"
+        
+    def __str__(self):
+        return self.mensaje

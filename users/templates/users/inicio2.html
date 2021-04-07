@@ -411,6 +411,8 @@
                   class="zmdi zmdi-money"></i><span class="hide-menu">Finanzas</span></a>
               <ul aria-expanded="false" class="collapse">
 
+                <!-- <li><a href="{% url 'Principal Finanzas' %}">App finanzas</a></li> --> 
+
                 {% if request.user|has_group:"FINANZAS NIVEL 1" %}
                 <li><a href="{% url 'Arqueos diario' %}">Arqueo diario</a></li>
 
@@ -445,6 +447,7 @@
             <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i
                   class="zmdi zmdi-city"></i><span class="hide-menu">Oficina tecnica</span></a>
               <ul aria-expanded="false" class="collapse">
+                <li><a href="{% url 'Principal Tecnica' %}">Panel principal</a></li>
 
                 {% if request.user|has_group:"TECNICA NIVEL 1" %}
                 <li><a href="/rrhh/notasdepedido/0/0">Correspondencia</a></li>

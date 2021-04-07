@@ -8,7 +8,7 @@ urlpatterns = [
     #----------------URL PARA FIANANZAS -----------------------------------------
 
     url(r'^almacenero/$', login_required(views.almacenero), name = 'Almacenero'),
-
+    url(r'^principalfinanzas/$', login_required(views.principalfinanzas), name = 'Principal Finanzas'),
 
 
     #----------------URL CUENTAS CORRIENTES -----------------------------------------
@@ -43,7 +43,7 @@ urlpatterns = [
     url(r'^retirodesocios/$', login_required(views.retirodesocios), name = 'Retiro de socios'),
     url(r'^arqueo/(?P<id_arqueo>\d+)$', login_required(views.arqueo_diario), name = 'Arqueo diario'),
     url(r'^arqueos/$', login_required(views.arqueos), name = 'Arqueos diario'),
-    url(r'^historicoalmacenero/(?P<id_proyecto>\d+)/(?P<fecha>\d+)$', login_required(views.registro_almacenero), name = 'Historico almacenero'),
+    url(r'^historicoalmacenero/$', login_required(views.registro_almacenero), name = 'Historico almacenero'),
     url(r'^consolidado/$', login_required(views.consolidado), name = 'Consolidado'),
     url(r'^indicelink/(?P<id_moneda>\d+)/(?P<id_time>\d+)$', login_required(views.indicelink), name = 'Indice Link'),
     url(r'^estudioindicelink/(?P<fecha1>\d+)/(?P<fecha2>\d+)/$', login_required(views.estudioindice), name = 'Estudio indice Link'),

@@ -1,0 +1,214 @@
+{% extends "users/inicio2.html" %}
+
+{% load static %}
+{% load apptags_extras %}
+
+{% block content %}
+
+
+<div class="container-fluid r-aside">
+    <!-- ============================================================== -->
+    <!-- Bread crumb and right sidebar toggle -->
+    <!-- ============================================================== -->
+    <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+            <h3 class="text-themecolor">Registros de desvios</h3>
+        </div>
+
+        <div class="col-md-7 align-self-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'Registros de desvios' %}">Panel</a></li>
+                <li class="breadcrumb-item">Registros</li>
+            </ol>
+        </div>
+
+    </div>
+</div>
+
+<div class="row ">
+    <div class="col-9">
+        <div class="card overflow-auto">
+            <div class="card-body">
+                <div class="row d-flex justify-items-between">
+                    <div class="col">
+
+                        <h4 class="card-title"><span class="lstick m-r-20"></span>
+                            Listado de acontecimientos
+                        </h4>
+                        <h6 class="card-subtitle">
+                            Registros de demoras por de los proyectos
+                        </h6>
+                    </div>
+
+                    <div class="row m-2">
+                        <a href="#" data-toggle="modal"
+                        data-target="#ModalAcuerdo"><i
+                                class="fa fa-plus-circle  text-info"><span class="text-info ml-2"
+                                    style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif"><b>Nuevo registro</b></span></i></a>
+                    </div>
+
+                    <!-- Modal Bitacoras -->
+                    <div class="modal fade" id="ModalAcuerdo" tabindex="-1" role="dialog"
+                    aria-labelledby="ModalAcuerdoCrearTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLongTitle">Nuevo registro</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+
+                                <form method="POST" style="margin: 15px;">
+
+                                    {% csrf_token %}
+
+                                    <h6><small>Fecha</small> </h6>
+
+                                    <div class="input-group mb-3">
+
+                                        <input name="fecha" type="date" class="form-control form-control"
+                                            style="width: 300px;">
+                                    </div>
+
+                                    <h6><small>Proyecto</small> </h6>
+
+                                    <div class="input-group mb-3">
+
+                                        <select  name="proyecto" class="form-control form-control"
+                                            style="width: 300px;">
+
+                                            {% for p in proyectos %}
+
+                                            <option value="{{p.id}}">{{p}}</option>
+
+                                            {% endfor %}
+
+                                        </select>
+
+                                    </div>
+
+                                    <h6><small>Nombre</small> </h6>
+
+                                    <div class="input-group mb-3">
+
+                                        <input name="nombre" type="text" class="form-control form-control"
+                                            style="width: 300px;">
+
+                                    </div>
+
+                                    <h6><small>Dias</small> </h6>
+
+                                    <div class="input-group mb-3">
+
+                                        <input name="dias" type="number" step="1" class="form-control form-control"
+                                            style="width: 300px;">
+
+                                    </div>
+
+                                    <h6><small>Descripción</small> </h6>
+
+                                    <div class="input-group mb-3">
+
+                                        <textarea name="descrip" class="form-control form-control"
+                                            style="width: 300px;">
+
+                                        </textarea>
+
+                                    </div>
+
+                                    <button type="submit"
+                                        class="btn waves-effect waves-light btn-rounded btn-secondary">Cargar</button>
+
+                                </form>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary"
+                                    data-dismiss="modal">Close</button>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+ 
+                </div>
+
+                <table id="example" class="table ">
+                    <thead>
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Proyecto</th>
+                            <th>Creador</th>
+                            <th>Nombre</th>
+                            <th>Dias</th>
+                        
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        {% for i in data %}
+
+                        <tr>
+                            <td>{{i.fecha|date:"Y-m-d"}}</td>
+                            <td>{{i.proyecto|lower|capfirst}}</td>
+                            <td>{{i.creador.identificacion}}</td>
+                            <td><a href="{% url 'Registros ID' i.id%}">{{i.nombre|lower|capfirst}}</a></td>
+                            <td>{{i.dias}}</td>
+                         
+                        </tr>
+      
+                        {% endfor %}
+
+
+
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<aside class="right-side-panel">
+    <h3 class="p-relative"><span class="lstick"></span> ¿Comó funciona?</h3>
+    <div class="row">
+        
+        <div class="col-md-12 m-t-10">
+          <div class="card">
+            <div class="card-body">
+            <img src="{% static 'img/animation_500_kmuydpt0.gif' %}" alt="Funny image" width="200px">
+            <p> No funciona</p>
+        </div>
+            </div>
+        </div>
+    </div>
+
+
+    </div>
+</aside>
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js" defer></script>
+<script src="https://cdn.datatables.net/1.10.23/js/dataTables.bootstrap4.min.js" defer></script>
+
+
+
+<script>
+    $(document).ready(function () {
+        $('#example').DataTable({
+            "order": [[ 0, "desc" ]],
+            "paging": false,
+            "info": false
+        });
+    });
+</script>
+
+
+{% endblock %}

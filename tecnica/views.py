@@ -2,13 +2,45 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from django.shortcuts import redirect
 from proyectos.models import Proyectos
-from .models import Etapas, ItemEtapa, TecnicaMensaje, SubItem, SubSubItem, Lp
+from .models import Etapas, ItemEtapa, TecnicaMensaje, SubItem, SubSubItem, Lp, RegistroDesvios
 from rrhh.models import datosusuario
 import datetime
 from datetime import date, timedelta
 
 # Create your views here.
 
+def registrodesvios(request):
+
+    if request.method == 'POST':
+
+        user = datosusuario.objects.get(identificacion = request.user.username)
+        proyecto = Proyectos.objects.get(id = request.POST['proyecto'])
+
+        b = RegistroDesvios(
+            fecha = request.POST['fecha'],
+            proyecto = proyecto,
+            creador = user,
+            nombre = request.POST['nombre'],
+            descrip = request.POST['descrip'],
+            dias = request.POST['dias'],
+
+        )
+
+        b.save()
+
+    data = RegistroDesvios.objects.all().order_by('fecha')
+
+    proyectos = Proyectos.objects.all()
+
+    return render(request, 'registros_panel.html', {'data':data, 'proyectos':proyectos})
+
+def registrodesviosid(request, id_registro):
+
+    return render(request, 'registro_id.html')
+
+def principaltecnica(request):
+
+    return render(request, 'tecnica_principal.html')
 
 def bbddgroup(request):
 

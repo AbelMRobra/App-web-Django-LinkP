@@ -1,272 +1,213 @@
-{% extends "users/inicio.html" %}
+{% extends "users/inicio2.html" %}
+
 
 {% load static %}
 {% load humanize %}
 
 {% block content %}
 
-
-
-<div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;" > 
-
-    <div style="text-align: center;">
-
-        <h2 style="font-family: Arial, Helvetica, sans-serif;">Historico CBA</h2>
-
-        <small style="font-family: Arial, Helvetica, sans-serif;" > <b>Modulo:</b> Finanzas</small>
-
-        <b><hr class = "my-4" style="width: 75%; "></b>
-    
-    </div>
-
-
-    <div style="margin-bottom: 2rem;">
-
-    <img src="{{datos.datos.0.iamgen.url}}"  class="img-fluid" alt="..." style="max-width:250px; height:auto; margin-bottom: 2rem;">
-
-
-    <h3 style="color: rgb({{datos.datos.0.color}});">{{datos.datos.0.nombre}}</h3>
-
-    
-    </div>
-
-    
-
-    <div style="background-color: rgba({{datos.datos.0.color}}, 0.2) ;">
-
-        <hr class = "my-4" style="width: 100%; border-color: rgba({{datos.datos.0.color}}, 0.5);">
-
-        <h5> Resumen de los datos </h5>
-
-        <hr class = "my-4" style="width: 100%; border-color: rgba({{datos.datos.0.color}}, 0.5);">
-
-
-    </div>
-
-    
-
-    
-
-    
-
-    <div  style="text-align: left;">
-
-    <h6>Saldo de caja a la fecha: <small>$ {{datos.datos.3.5|floatformat:0|intcomma}}</small>  </h6>
-    <h6>Costos del proyecto: <small>$ {{datos.datos.3.2|floatformat:0|intcomma}}</small>  </h6>
-    <h6>Ingresos del proyecto: <small>$ {{datos.datos.3.3|floatformat:0|intcomma}}</small>  </h6>
-    <h6>Saldo del proyecto: <small>$ {{datos.datos.3.6|floatformat:0|intcomma}}</small>  </h6>
-    <h6>Rentabilidad: <small>{{datos.datos.3.4|floatformat:0|intcomma}}%</small>  </h6>
-    <p><small style="color: #5DB150;">Valor del USD BLUE: $ {{datos.usd.valor}}</small></p>
-
-
-    
-
-    </div>
-
-    
-
-    <div style="background-color: rgba({{datos.datos.0.color}}, 0.2) ;">
-
-        <hr class = "my-4" style="width: 100%; border-color: rgba({{datos.datos.0.color}}, 0.5);">
-
-        <h5> Desglose completo </h5>
-
-        <hr class = "my-4" style="width: 100%; border-color: rgba({{datos.datos.0.color}}, 0.5);">
-
-
-    </div>
-
-
-    <div style="display: inline-block; width: 350px; margin: 20px;">
-
-        <h5>Ingresos del proyecto</h5>
-        <hr class = "my-4" style="width: 70%; border-color: rgba({{datos.datos.0.color}}, 0.3);">
-
-
-        <div style="display: inline-block; width: 170px; vertical-align: top; text-align: left;">
-             
-
-            <h6>Prestamos a cobrar:</h6>
-            <h6><small>Prestamos a proyectos:</small></h6>
-            <h6><small>Prestamos a otros:</small></h6>
-            <h6>Cuotas cobradas:</h6>
-            <h6>Cuotas a cobrar:</h6>
-            <h6>Ingreso por ventas:</h6>
-            <h6> <small>(Unidades de Socios):</small> </h6>
-            
-    
-            
+<div class="container-fluid r-aside">
+    <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+            <h3 class="text-themecolor">Analisis historico</h3>
         </div>
 
-        <div style="display: inline-block; width: 170px; vertical-align: top; text-align: right;">
-             
-
-            <h6>$ {{datos.datos.3.1|floatformat:0|intcomma}}   </h6>
-            <h6><small>$ {{datos.datos.2.prestamos_proyecto|floatformat:0|intcomma}}  </small></h6>
-            <h6><small>$ {{datos.datos.2.prestamos_otros|floatformat:0|intcomma}}</small></h6>
-            <h6>$ {{datos.datos.2.cuotas_cobradas|floatformat:0|intcomma}}  </h6>
-            <h6>$ {{datos.datos.2.cuotas_a_cobrar|floatformat:0|intcomma}}  </h6>
-            <h6>$ {{datos.datos.2.ingreso_ventas|floatformat:0|intcomma}}  </h6>
-            <h6> <small> $ {{datos.datos.2.unidades_socios|floatformat:0|intcomma}}  </small></h6>
-            
-            
+        <div class="col-md-7 align-self-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'Indice Link' 0 0 %}">Indice</a></li>
+                <li class="breadcrumb-item">Historico</li>
+            </ol>
         </div>
-
-        <div style="vertical-align: top; margin-top: 2%;">
-            <h6 style="color: #3FB360;">Ingresos totales: ${{datos.datos.3.3|floatformat:0|intcomma}}</h6>
-    
-        </div >
-
-
     </div>
-
-    <div style="display: inline-block; width: 350px; margin: 20px;">
-
-        <h5>Ingresos del proyecto dia TANTO</h5>
-        <hr class = "my-4" style="width: 70%; border-color: rgba({{datos.datos.0.color}}, 0.3);">
-
-
-        <div style="display: inline-block; width: 170px; vertical-align: top; text-align: left;">
-             
-
-            <h6>Prestamos a cobrar:</h6>
-            <h6><small>Prestamos a proyectos:</small></h6>
-            <h6><small>Prestamos a otros:</small></h6>
-            <h6>Cuotas cobradas:</h6>
-            <h6>Cuotas a cobrar:</h6>
-            <h6>Ingreso por ventas:</h6>
-            <h6> <small>(Unidades de Socios):</small> </h6>
-            
-    
-            
-        </div>
-
-        <div style="display: inline-block; width: 170px; vertical-align: top; text-align: right;">
-             
-
-            <h6>$ </h6>
-            <h6><small>$ {{datos.registro.saldo_mo}}  </small></h6>
-            <h6><small>$ {{datos.registro.prestamos_otros|floatformat:0|intcomma}}</small></h6>
-            <h6>$ {{datos.datos.2.cuotas_cobradas|floatformat:0|intcomma}}  </h6>
-            <h6>$ {{datos.datos.2.cuotas_a_cobrar|floatformat:0|intcomma}}  </h6>
-            <h6>$ {{datos.datos.2.ingreso_ventas|floatformat:0|intcomma}}  </h6>
-            <h6> <small> $ {{datos.datos.2.unidades_socios|floatformat:0|intcomma}}  </small></h6>
-            
-            
-        </div>
-
-        <div style="vertical-align: top; margin-top: 2%;">
-            <h6 style="color: #3FB360;">Ingresos totales: ${{datos.datos.3.3|floatformat:0|intcomma}}</h6>
-    
-        </div >
-
-
-    </div>
-
-    <div style="display: inline-block; width: 350px; vertical-align: top; margin: 20px;">
-
-        <h5>Costos del proyecto</h5>
-        <hr class = "my-4" style="width: 70%; border-color: rgba({{datos.datos.0.color}}, 0.3);">
-
-        <div style="display: inline-block; width: 170px; vertical-align: top; text-align: left;">
-
-        <h6>Gastado a la fecha:</h6>
-        <h6>Cheques emitidos:</h6>
-               
-        <h6>Pendiente de gastar: </h6>
-        <h6><small>Administración:</small></h6>
-        <h6><small>Comisión:</small></h6>
-        <h6><small>Materiales:</small></h6>
-        <h6><small>MO y subcontratos:</small></h6>
-        <h6><small>Imprevistos:</small></h6>
-        <h6><small>Creditos de materiales:</small></h6>
-        <h6><small>Fondos de reparo:</small></h6>
-        <h6><small>Adelantos: </small></h6>
-        <h6><small>I.V.A sobre compras: </small></h6>
-        <h6><small>II.BB + T.E.M:</small></h6>
-        <h6>Prestamos otorgados:</h6>
-        
-        </div>
-
-        <div style="display: inline-block; width: 170px; vertical-align: top; text-align: right;">
-
-            <h6>$ {{datos.datos.2.gastos_fecha|floatformat:0|intcomma}} </h6>
-        <h6>$ {{datos.datos.2.cheques_emitidos|floatformat:0|intcomma}} </h6>
-               
-        <h6>$ {{datos.datos.3.0|floatformat:0|intcomma}}   </h6>
-        <h6><small>$ {{datos.datos.2.pendiente_admin|floatformat:0|intcomma}}   </small></h6>
-        <h6><small>$ {{datos.datos.2.pendiente_comision|floatformat:0|intcomma}}   </small></h6>
-        <h6><small>$ {{datos.datos.1.saldo_mat|floatformat:0|intcomma}}  </small></h6>
-        <h6><small>$ {{datos.datos.1.saldo_mo|floatformat:0|intcomma}}  </small></h6>
-        <h6><small>$ {{datos.datos.1.imprevisto|floatformat:0|intcomma}}  </small></h6>
-        <h6><small>$ {{datos.datos.1.credito|floatformat:0|intcomma}}  </small></h6>
-        <h6><small>${{datos.datos.1.fdr|floatformat:0|intcomma}}</small></h6>
-        <h6><small>$ - {{datos.datos.2.pendiente_adelantos|floatformat:0|intcomma}}   </small></h6>
-        <h6><small>$ {{datos.datos.2.pendiente_iva_ventas|floatformat:0|intcomma}}   </small></h6>
-        <h6><small>$ {{datos.datos.2.pendiente_iibb_tem|floatformat:0|intcomma}}</small></h6>
-        <h6>$ {{datos.datos.2.Prestamos_dados|floatformat:0|intcomma}}  </h6>
-        
-        </div>
-
-        
-
-        
-
-
-        <div style="vertical-align: top; margin-top: 2%;">
-            <h6 style="color: #B3513F ; vertical-align: bottom;" >Total del costo: ${{datos.datos.3.2|floatformat:0|intcomma}}</h6>
-    
-        </div>
-
-    </div>
-
-
-
-
-    
-
-
-    
-
-    <div style="margin-top: 5%; margin-bottom: 5%;">
-        <h6 style="color: rgb({{datos.datos.0.color}})">BENEFICIO: $ {{datos.datos.3.6|floatformat:0|intcomma}}</h6>
-        <h5 style="margin-top: 1%; color: rgb({{datos.datos.0.color}})">RENDIMIENTO: {{datos.datos.3.4|floatformat:0|intcomma}}%</h5>
-    </div>
-
-    <div style="background-color: rgba({{datos.datos.0.color}}, 0.2);">
-
-        <hr class = "my-4" style="width: 100%; border-color: rgba({{datos.datos.0.color}}, 0.5);">
-
-        <h5> Escenario pesimista </h5>
-
-        <hr class = "my-4" style="width: 100%; border-color: rgba({{datos.datos.0.color}}, 0.5);">
-
-
-    </div>
-
-    <div style="text-align: left;">
-        <h6>Descuento de sobre unidades en venta/socios (6%): - ${{datos.datos.3.7|floatformat:0|intcomma}} </h6>
-    </div>
-
-
-    <div style="margin-top: 5%; margin-bottom: 5%;">
-        <h6 style="color: rgb({{datos.datos.0.color}})">BENEFICIO DESPUES DE DESCUENTO: $ {{datos.datos.3.8|floatformat:0|intcomma}}</h6>
-        <h5 style="margin-top: 1%; color: rgb({{datos.datos.0.color}})">RENDIMIENTO: {{datos.datos.3.9|floatformat:0|intcomma}}%</h5>
-    </div>
-
-    <hr class = "my-4" style="width: 50%; border-color: rgba({{datos.datos.0.color}}, 0.5);">
-
-   
-
-    
-    
-
-
-    <div style="text-align: center; margin-top: 10%;">
-        <p style="font-family: Arial, Helvetica, sans-serif;"> <small>-- Link<strong>P</strong> --</small> </p>
-
-     </div>
-
-
 </div>
+
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body row">
+                <div class="col-12 justify-content-center">
+
+                    <div>
+                        <h2>Analisis de la variación del indice</h2>
+                        <small>Según datos almacenados</small>
+                    </div>
+
+
+                    <div class="row d-flex justify-content-center mt-3">
+                        <div class="col col-md-12 col-lg-6">
+                            <div class="row">
+                                <div class="col bg-light border rounded">
+
+                                    <form method="POST">
+
+                                        {% csrf_token %}
+                                        <div class="row">
+
+
+
+                                            <div class="col col-lg-6 my-2">
+
+                                                <div style="display: inline-block;">
+
+                                                    <label for="fechainicial">
+                                                        <h6>Fecha 1 (Estudio)</h6>
+                                                    </label>
+
+                                                </div>
+
+                                                <div style="margin-bottom: 2%; width: 100%; ">
+
+                                                    <input name="fechainicial" type="date"
+                                                        class="form-control form-control">
+
+                                                </div>
+
+                                            </div>
+
+                                            <div class="col col-lg-6 my-2">
+
+                                                <div style="display: inline-block;">
+
+                                                    <label for="fechafinal">
+                                                        <h6>Fecha 2 (Base)</h6>
+                                                    </label>
+
+                                                </div>
+
+                                                <div style="margin-bottom: 2%; width: 100%; ">
+
+                                                    <input name="fechafinal" type="date"
+                                                        class="form-control form-control">
+
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+                                        <div class="row d-flex justify-content-center my-3">
+                                            <div class="col-lg-6 text-center">
+                                                <button class="btn btn-info" type="submit"
+                                                    style="margin-top: 1%; margin-bottom: 2%;">Buscar
+                                                    datos</button>
+                                            </div>
+                                        </div>
+                                    </form>
+
+                                    
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body row">
+                <div class="col-12 justify-content-center">
+
+                {% if mensaje %}
+
+                <div>
+                    <h3 class="text-info">Estado de la solicitud</h3>
+                    <h6 {% if mensaje.0 == 1 %}class="text-danger"{% elif mensaje.0 == 2 %}class="text-success"{% endif %}>{{mensaje.1}}</h6>
+                </div>
+
+                <div style="margin-top: 15px;">
+                    <h3 class="text-info">Variación generales</h3>
+                    <h6>Valor en {{datos.1.0}}: $ {{datos.0.0|floatformat:0|intcomma}}</h6>
+                    <h6>Valor en {{datos.1.1}}: $ {{datos.0.1|floatformat:0|intcomma}}</h6>
+                    <h6>Diferencia: $ {{datos.0.3|floatformat:0|intcomma}}</h6>
+                    <h6>Variación del indice: {{datos.0.2|intcomma}} %</h6>
+
+                </div>
+
+                <div style="margin-top: 15px;">
+                    <h3 class="text-info">Variación medias</h3>
+                    <h6>Pendiente de gastar: {{datos.2.3|intcomma}} %</h6>
+                    <h6>Pendiente de ingresar: {{datos.2.0|intcomma}} %</h6>
+                    <h6>Saldo de caja: {{datos.2.2|intcomma}} %</h6>
+                    <h6>Descuentos: {{datos.2.1|intcomma}} %</h6>
+
+                </div>
+
+                <div style="margin-top: 15px;">
+                    <h3 class="text-info">Variación especificas</h3>
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Proyecto</th>
+                                    <th>Margen</th>
+                                    <th>Ingresos</th>
+                                    <th>Gastos</th>
+                                    <th>Caja</th>
+                                    <th>Descuentos</th>
+          
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for v in var_especifica %}  
+            
+                                <tr class = "table-light">
+
+                                    <th>{{v.0}}</th>
+                                    <th>$ {{v.1.0|floatformat:0|intcomma}}</th>
+                                    <th>$ {{v.1.1|floatformat:0|intcomma}}</th>
+                                    <th>$ {{v.1.2|floatformat:0|intcomma}}</th>
+                                    <th>$ {{v.1.3|floatformat:0|intcomma}}</th>
+                                    <th>$ {{v.1.4|floatformat:0|intcomma}}</th>
+                
+                                </tr>
+
+                                {% endfor %}
+                            </tbody>
+                
+                           
+                        </table>
+                    </div>
+
+                </div>
+                
+                
+
+
+                {% endif %}
+            </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js" defer></script>
+<script src="https://cdn.datatables.net/1.10.23/js/dataTables.bootstrap4.min.js" defer></script>
+
+<script>
+    $(document).ready(function () {
+        $('#example').DataTable({
+            "paging": false,
+            "ordering": false,
+            "info": false
+        });
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $('#example1').DataTable({
+            "paging": false,
+            "ordering": false,
+            "info": false
+        });
+    });
+</script>
+
 {% endblock %}
