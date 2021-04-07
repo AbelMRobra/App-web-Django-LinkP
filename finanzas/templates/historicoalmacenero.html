@@ -152,8 +152,7 @@
                                     <th>Ingresos</th>
                                     <th>Gastos</th>
                                     <th>Caja</th>
-                                    <th>Descuentos</th>
-          
+
                                 </tr>
                             </thead>
                             <tbody style="font-size: 14px;">
@@ -161,12 +160,12 @@
             
                                 <tr>
 
-                                    <th>{{v.0}}</th>
+                                    <th>{{v.0|lower|capfirst}}</th>
                                     <th>$ {{v.1.0|floatformat:0|intcomma}}</th>
                                     <th>$ {{v.1.1|floatformat:0|intcomma}}</th>
                                     <th>$ {{v.1.2|floatformat:0|intcomma}}</th>
                                     <th>$ {{v.1.3|floatformat:0|intcomma}}</th>
-                                    <th>$ {{v.1.4|floatformat:0|intcomma}}</th>
+
                 
                                 </tr>
 
