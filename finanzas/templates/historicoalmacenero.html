@@ -187,6 +187,10 @@
 
                                             
                                             </div>
+
+                                            <div class="modal-body">
+                                                <h6>Total: $ {{v.1.1|floatformat:0|intcomma}} </h6>
+                                            </div>
                                             <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                                     
@@ -222,9 +226,19 @@
                                             <h6 class="text-warning">----- Impuestos -----</h6> 
                                             <h6> IVA: $ {{v.1.5.9|floatformat:0|intcomma}}</h6>
                                             <h6> IIBB: $ {{v.1.5.10|floatformat:0|intcomma}}</h6>
+
+                                            
                                             
                                             </div>
+
+                                            <div class="modal-body">
+                                                <h6>Total: $ {{v.1.2|floatformat:0|intcomma}} </h6>
+                                            </div>
+
+                                            
                                             <div class="modal-footer">
+
+                                                
                                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                                     
                                             </div>
@@ -253,6 +267,10 @@
          
                                             
                                             </div>
+
+                                            <div class="modal-body">
+                                                <h6>Total: $ {{v.1.3|floatformat:0|intcomma}} </h6>
+                                            </div>
                                             <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                                     
@@ -268,7 +286,7 @@
                             </tbody>
                             <tfoot>
 
-                                    <th></th>
+                                    <th>Total</th>
                                     <th>$ <span id = 'margen'>{{datos_finales.3|floatformat:0|intcomma}}</span></th>
                                     <th>$ <span id = 'ingresos'>{{datos_finales.0|floatformat:0|intcomma}}</span></th>
                                     <th>$ <span id = 'gastos'>{{datos_finales.1|floatformat:0|intcomma}}</span></th>
