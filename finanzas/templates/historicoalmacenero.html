@@ -45,6 +45,24 @@
                                         {% csrf_token %}
                                         <div class="row">
 
+                                            <div class="col col-lg-6 my-2">
+
+                                                <div style="display: inline-block;">
+
+                                                    <label for="fechafinal">
+                                                        <h6>Fecha 2 (Base)</h6>
+                                                    </label>
+
+                                                </div>
+
+                                                <div style="margin-bottom: 2%; width: 100%; ">
+
+                                                    <input name="fechafinal" type="date"
+                                                        class="form-control form-control">
+
+                                                </div>
+
+                                            </div>
 
 
                                             <div class="col col-lg-6 my-2">
@@ -66,24 +84,7 @@
 
                                             </div>
 
-                                            <div class="col col-lg-6 my-2">
-
-                                                <div style="display: inline-block;">
-
-                                                    <label for="fechafinal">
-                                                        <h6>Fecha 2 (Base)</h6>
-                                                    </label>
-
-                                                </div>
-
-                                                <div style="margin-bottom: 2%; width: 100%; ">
-
-                                                    <input name="fechafinal" type="date"
-                                                        class="form-control form-control">
-
-                                                </div>
-
-                                            </div>
+                                            
 
                                         </div>
 
@@ -121,8 +122,8 @@
                     <h6 {% if mensaje.0 == 1 %}class="text-danger"{% elif mensaje.0 == 2 %}class="text-success"{% endif %}>{{mensaje.1}}</h6>
                 </div>
 
-                <div style="margin-top: 15px;">
-                    <h3 class="text-info">Variación generales</h3>
+                <div style="margin-top: 25px;">
+                    <h4 class="text-info">Variación generales</h4>
                     <h6>Valor en {{datos.1.0}}: $ {{datos.0.0|floatformat:0|intcomma}}</h6>
                     <h6>Valor en {{datos.1.1}}: $ {{datos.0.1|floatformat:0|intcomma}}</h6>
                     <h6>Diferencia: $ {{datos.0.3|floatformat:0|intcomma}}</h6>
@@ -130,8 +131,8 @@
 
                 </div>
 
-                <div style="margin-top: 15px;">
-                    <h3 class="text-info">Variación medias</h3>
+                <div style="margin-top: 25px;">
+                    <h4 class="text-info">Variación medias</h4>
                     <h6>Pendiente de gastar: {{datos.2.3|intcomma}} %</h6>
                     <h6>Pendiente de ingresar: {{datos.2.0|intcomma}} %</h6>
                     <h6>Saldo de caja: {{datos.2.2|intcomma}} %</h6>
@@ -140,9 +141,10 @@
 
                 </div>
 
-                <div style="margin-top: 15px;">
-                    <h3 class="text-info">Variación especificas</h3>
+                <div style="margin-top: 25px;">
+                    <h4 class="text-info">Variación especificas</h4>
                     <h6>Honorarios: $ {{datos.2.5|intcomma}}</h6>
+                    <h6>Descripción de los proyectos</h6>
                     <div class="table-responsive">
                         <table class="table table-bordered">
                             <thead>
@@ -163,7 +165,43 @@
                                     <th>{{v.0|lower|capfirst}}</th>
                                     <th>$ {{v.1.0|floatformat:0|intcomma}}</th>
                                     <th>$ {{v.1.1|floatformat:0|intcomma}}</th>
-                                    <th>$ {{v.1.2|floatformat:0|intcomma}}</th>
+                                    <th><a href="#" data-toggle="modal" data-target="#ModalGastos{{v.0.id}}">$ {{v.1.2|floatformat:0|intcomma}}</a></th>
+
+                                    <!-- Modal fecha estado Subitem -->
+                                    <div class="modal fade" id="ModalGastos{{v.0.id}}" tabindex="-1" role="dialog" aria-labelledby="ModalGastos{{v.0.id}}" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLongTitle">Gastos de {{v.0|lower|capfirst}}</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                            </div>
+                                            <div class="modal-body">
+                                            <h6 class="text-info">----- Administración -----</h6> 
+                                            <h6> Pendientes de admin: $ {{v.1.5.0|floatformat:0|intcomma}}</h6>
+                                            <h6> Pendientes de comisión: $ {{v.1.5.2|floatformat:0|intcomma}}</h6>
+                                            <h6> Prestamos: $ {{v.1.5.8|floatformat:0|intcomma}}</h6>
+                                            <h6> Cheques emitidos: $ {{v.1.5.11|floatformat:0|intcomma}}</h6> 
+                                            <h6 class="text-danger">----- Obra -----</h6>                                   
+                                            <h6> Saldo de materiales: $ {{v.1.5.3|floatformat:0|intcomma}}</h6>
+                                            <h6> Saldo de mano de obra: $ {{v.1.5.4|floatformat:0|intcomma}}</h6>
+                                            <h6> Saldo de imprevisto: $ {{v.1.5.5|floatformat:0|intcomma}}</h6>
+                                            <h6> Creditos de obra: $ {{v.1.5.6|floatformat:0|intcomma}}</h6>
+                                            <h6> Fondos de reparo: $ {{v.1.5.7|floatformat:0|intcomma}}</h6>
+                                            <h6 class="text-warning">----- Impuestos -----</h6> 
+                                            <h6> IVA: $ {{v.1.5.9|floatformat:0|intcomma}}</h6>
+                                            <h6> IIBB: $ {{v.1.5.10|floatformat:0|intcomma}}</h6>
+                                            
+                                            </div>
+                                            <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    
+                                            </div>
+                                        </div>
+                                        </div>
+
+                                    </div>
                                     <th>$ {{v.1.3|floatformat:0|intcomma}}</th>
 
                 
@@ -175,7 +213,14 @@
                            
                         </table>
                     </div>
+                    <div style="margin-top: 25px;">
 
+                        <p>Ingresos se componen por: Cuotas a cobrar, ingresos por ventas, financiación, inmuebles a vender y prestamos a cobrar</p>
+                        <p>Gastos se componen por: Gastos administrativos, comisión por ventas, cheques emitidos, pendiente de IVA o IIBB y gasto de obra (materiales y mano de obras)</p>
+                        <p>Caja se compone por: Cuotas cobradas, gastos a la fecha, tenencia y retiros de socios</p>
+
+                    </div>
+                    
                 </div>
                 
                 

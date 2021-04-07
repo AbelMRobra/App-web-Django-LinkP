@@ -2196,7 +2196,13 @@ def registro_almacenero(request):
                 margen_aux = total_ingresos_aux - pend_gast_aux + saldo_caja_aux
                 descuento_aux = aux.ingreso_ventas
 
-                var_especifica.append((almacenero.proyecto, [(margen_aux - margen_1), (total_ingresos_aux - total_ingresos_1), (pend_gast_aux - pend_gast_1), (saldo_caja_aux - saldo_caja_1), (descuento_aux - descuento_1)]))
+                # Variación ultra especifica
+
+                list_gasto = [(aux.pendiente_admin - almacenero.pendiente_admin), (aux.pendiente_admin - almacenero.pendiente_admin), (aux.pendiente_comision - almacenero.pendiente_comision), (aux.saldo_mat - almacenero.saldo_mat), (aux.saldo_mo - almacenero.saldo_mo), (aux.imprevisto - almacenero.imprevisto), (aux.credito - almacenero.credito), (aux.fdr - almacenero.fdr), (aux.pendiente_adelantos - almacenero.pendiente_adelantos), (aux.pendiente_iva_ventas - almacenero.pendiente_iva_ventas), (aux.pendiente_iibb_tem - almacenero.pendiente_iibb_tem), (aux.cheques_emitidos - almacenero.cheques_emitidos), ]
+                
+                
+                
+                var_especifica.append((almacenero.proyecto, [(margen_aux - margen_1), (total_ingresos_aux - total_ingresos_1), (pend_gast_aux - pend_gast_1), (saldo_caja_aux - saldo_caja_1), (descuento_aux - descuento_1), list_gasto]))
                 
                 # Suma a los totalizadores
 
