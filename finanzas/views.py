@@ -2270,7 +2270,6 @@ def registro_almacenero(request):
     
             for v in var_especifica:
                 v[1].append((v[1][0]/((margen1_2 - honorario_2) - (margen1_1 - honorario_1))*100))
-                print(v[1])
 
     return render(request, 'historicoalmacenero.html', {"datos":datos, "mensaje":mensaje, "var_especifica":var_especifica, "datos_finales":datos_finales })
 

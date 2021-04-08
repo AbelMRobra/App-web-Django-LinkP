@@ -1421,12 +1421,35 @@ def minutasid(request, id_minuta):
 
     return render(request, 'minutas/minutasId.html', {'data':data, 'acuerdos':acuerdos, 'acuerdos_viejos':acuerdos_viejos, 'list_users':list_users})
 
-def registro_contable(request):
+def registro_contable(request, date_i):
+
+    hoy = datetime.date(int(date_i[0:4]), int(date_i[4:]), 1)
 
     user = datosusuario.objects.get(identificacion = request.user.username)
 
     if request.method == 'POST':
         datos_p = request.POST.items()
+
+        try:
+            print(request.POST['fecha_m'])
+            if request.POST['fecha_m'] == "1":
+                if hoy.month != 12:
+                    new_date_i = str(hoy.year)+str(hoy.month + 1)
+                if hoy.month == 12:
+                    new_date_i = str(hoy.year + 1)+str(1)
+
+                return redirect('Registro Contable', date_i = new_date_i)
+
+            if request.POST['fecha_m'] == "0":
+                if hoy.month != 1:
+                    new_date_i = str(hoy.year)+str(hoy.month - 1)
+                if hoy.month == 1:
+                    new_date_i = str(hoy.year - 1)+str(12)
+
+                return redirect('Registro Contable', date_i = new_date_i)
+
+        except:
+            pass
         try:
             
             b = RegistroContable(
@@ -1474,8 +1497,6 @@ def registro_contable(request):
             pass
 
     ##### Esquema diario
-
-    hoy = date.today()
 
     fecha_inicial = date(hoy.year, hoy.month, 1)
 

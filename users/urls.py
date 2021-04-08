@@ -37,7 +37,7 @@ urlpatterns = [
 
 
     # Template de registro contable
-      url(r'registro_contable$', login_required(views.registro_contable), name = 'Registro Contable'),
+      url(r'registro_contable/(?P<date_i>\d+)/$', login_required(views.registro_contable), name = 'Registro Contable'),
 
 
 ]

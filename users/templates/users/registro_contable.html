@@ -61,7 +61,7 @@
                                     
                                 </div>
                             </div>
-                            <h3>{{hoy|date:"M"}}</h3>
+                            <h3><form method="POST"> {% csrf_token %} <button type="submit" name="fecha_m" value="0" class="btn"><i class="fa fa-angle-left"></i></button> {{hoy|date:"M"}} <button type="submit" name="fecha_m" value="1" class="btn"><i class="fa fa-angle-right"></i></button></form></h3>
                             <div class="table-responsive">
 
                                 {% for d in datos %}

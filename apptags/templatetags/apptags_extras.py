@@ -22,6 +22,16 @@ def date_informe(fecha_informe):
 
         return 0
 
+@register.filter('fecha')
+def fecha(fecha):
+
+    hoy = date.today()
+    hoy = str(hoy.year)+str(hoy.month)
+
+    return hoy
+
+
+
 @register.filter('logo')
 def logo(identificacion):
 
