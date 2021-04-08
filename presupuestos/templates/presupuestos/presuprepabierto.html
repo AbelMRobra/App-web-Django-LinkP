@@ -88,7 +88,7 @@
 
                 <td style="text-align: left; width: 5%; " class="priority-4" ></td>
 
-                <td style="width: 40%; text-align: left;" colspan="2"> <small>{{ i.0.analisis.nombre }}</small>
+                <td style="width: 40%; text-align: left;" colspan="2"> <small>{{ i.0.analisis.nombre|lower|capfirst }}</small>
                     <h6 class="card-subtitle" style="font-size: 12px; margin-top: 2px;"><span class="text-muted">{% if i.0.comentario %}{{ i.0.comentario }}{% endif %}</span></h6>  </td>
                 <td style=" width: 10%; " class="priority-5"  > <small>$ {{ i.1|floatformat:0|intcomma }} </small>   </td>
                 <td style="width: 10%; " class="priority-5"  > <small>{{ i.2|floatformat:0|intcomma }} ({{ i.0.analisis.unidad }})</small>   </td>
