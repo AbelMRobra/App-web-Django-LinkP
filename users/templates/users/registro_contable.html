@@ -32,18 +32,15 @@
                                 <li ><a data-toggle="tab" href="#semanal">Semanal</a></li>
                                 <li><a data-toggle="tab" href="#mensual">Mensual</a></li>
                                 <li><a data-toggle="tab" href="#total">Resumen</a></li>
+                                <li><a data-toggle="tab" href="#explorar">Explorar</a></li>
                             </ul>
                         </div>
                     </div>
 
                     <div class="tab-content">
                         <div id="diario" class="tab-pane fade  in active">
-                            <div class="row m-2">
-                                <button type="button" class="btn" data-toggle="modal" data-target="#ModalCuenta1"><i
-                                        class="fa fa-plus-circle  text-info"><span class="text-info ml-2"
-                                            style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif"><b>Añadir</b></span></i></button>
-                            </div>
-                            <div class="row">
+                            
+                            <div class="row" style="margin-top: 15px;">
 
                                 <div class="col-4 text-center">
                                     <p><b>Ingresos</b></p>
@@ -61,7 +58,16 @@
                                     
                                 </div>
                             </div>
-                            <h3><form method="POST"> {% csrf_token %} <button type="submit" name="fecha_m" value="0" class="btn"><i class="fa fa-angle-left"></i></button> {{hoy|date:"M"}} <button type="submit" name="fecha_m" value="1" class="btn"><i class="fa fa-angle-right"></i></button></form></h3>
+
+                            <hr style="width: 100%;"></hr>
+                            <h3><form method="POST"> {% csrf_token %} <button type="submit" name="fecha_m" value="0" class="btn"><i class="fa fa-angle-left"></i></button> {{hoy|date:"M Y"}} <button type="submit" name="fecha_m" value="1" class="btn"><i class="fa fa-angle-right"></i></button></form></h3>
+                            <div class="row m-2">
+                                <button type="button" class="btn" data-toggle="modal" data-target="#ModalCuenta1"><i
+                                        class="fa fa-plus-circle  text-info"><span class="text-info ml-2"
+                                            style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif"><b>Añadir</b></span></i></button>
+                            </div>
+                            {% if datos %}
+                            
                             <div class="table-responsive">
 
                                 {% for d in datos %}
@@ -212,6 +218,11 @@
                                 </table>
                                 {% endfor %}
                             </div>
+
+                            {% else %}
+
+                            <h6>Todavia no hay registros </h6>
+                            {% endif %}
                             <!-- Modal item -->
                             <div class="modal fade" id="ModalCuenta1" tabindex="-1" role="dialog"
                                 aria-labelledby="ModalCuenta1" aria-hidden="true">
@@ -386,7 +397,7 @@
                             <!-- Final del modal -->
                         </div>
                         <div id="semanal" class="tab-pane fade">
-                            <div class="row" style="margin-top: 5px;">
+                            <div class="row" style="margin-top: 15px;">
 
                                 <div class="col-4 text-center">
                                     <p><b>Ingresos</b></p>
@@ -404,7 +415,8 @@
                                     
                                 </div>
                             </div>
-                            <h3>Semanal</h3>
+                            <hr style="width: 100%;"></hr>
+                            <h3><form method="POST"> {% csrf_token %} <button type="submit" name="fecha_m" value="0" class="btn"><i class="fa fa-angle-left"></i></button> Semanas de {{hoy|date:"M Y"}} <button type="submit" name="fecha_m" value="1" class="btn"><i class="fa fa-angle-right"></i></button></form></h3>
                             <div class="table-responsive">
                                 <table id="example" class="table table-striped table-bordered "
                                     style="width:100%; font-size: 14px;">
@@ -417,43 +429,23 @@
                                     </thead>
 
                                     <tbody>
+                                        {% for w in datos_week %}
                                         <tr>
-                                            <td>28/3 - 03/4</td>
+                                            <td>{{w.0|date:"d/m"}} - {{w.1|date:"d/m"}}</td>
                                             
-                                            <td class="text-success"><b>$ 2000</b></td>
-                                            <td class="text-danger"><b>$ 100</b></td>
+                                            <td class="text-success"><b>$ {{w.2|floatformat:0|intcomma}}</b></td>
+                                            <td class="text-danger"><b>$ {{w.3|floatformat:0|intcomma}}</b></td>
                                         </tr>
-                                        <tr>
-                                            <td>21/3 - 27/4</td>
-                                            
-                                            <td class="text-success"><b>$ 200</b></td>
-                                            <td class="text-danger"><b>$ 30</b></td>
-                                        </tr>
-                                        <tr>
-                                            <td>14/3 - 20/4</td>
-                                            
-                                            <td class="text-success"><b>$ 20000</b></td>
-                                            <td class="text-danger"><b>$ 3100</b></td>
-                                        </tr>
-                                        <tr>
-                                            <td>7/3 - 13/4</td>
 
-                                            <td class="text-success"><b>$ 20</b></td>
-                                            <td class="text-danger"><b>$ 31</b></td>
-                                        </tr>
-                                        <tr>
-                                            <td>28/3 - 6/4</td>
-
-                                            <td class="text-success"><b>$ 200000</b></td>
-                                            <td class="text-danger"><b>$ 31000</b></td>
-                                        </tr>
+                                        {% endfor %}
+     
                                     </tbody>
 
                                 </table>
                             </div>
                         </div>
                         <div id="mensual" class="tab-pane fade">
-                            <div class="row" style="margin-top: 5px;">
+                            <div class="row" style="margin-top: 15px;">
 
                                 <div class="col-4 text-center">
                                     <p><b>Ingresos</b></p>
@@ -470,7 +462,11 @@
                                     <span class="text-info"><b>$ {{balance|floatformat:0|intcomma}}</b></span>
                                     
                                 </div>
+
+                                
                             </div>
+
+                            <hr style="width: 100%;"></hr>
 
                             <h3>Mensual</h3>
                             <div class="table-responsive">
@@ -503,7 +499,7 @@
                         </div>
                         <div id="total" class="tab-pane fade">
 
-                            <div class="row" style="margin-top: 5px;">
+                            <div class="row" style="margin-top: 15px;">
 
                                 <div class="col-4 text-center">
                                     <p><b>Ingresos</b></p>
@@ -521,6 +517,10 @@
                                     
                                 </div>
                             </div>
+
+                            <hr style="width: 100%;"></hr>
+
+                            <h3><form method="POST"> {% csrf_token %} <button type="submit" name="fecha_m" value="0" class="btn"><i class="fa fa-angle-left"></i></button>{{hoy|date:"M Y"}} <button type="submit" name="fecha_m" value="1" class="btn"><i class="fa fa-angle-right"></i></button></form></h3>
 
                             <div class="row">
                                 <div class="card-body">
@@ -660,6 +660,38 @@
                               </div>
                             
                         </div>
+                        <div id="explorar" class="tab-pane fade">
+
+                            <h3 style="margin-top: 10px;">Registros realizados</h3>
+                            <div class="table-responsive">
+                                <table id="example2" class="table table-bordered "
+                                    style="width:100%; font-size: 14px;">
+                                    <thead>
+                                        <tr>
+                                            <th> Dia </th>
+                                            <th> Cuenta </th>
+                                            <th> Categoria </th>
+                                            <th> Importe </th>
+           
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        {% for i in registros_totales %}
+                                        <tr>
+                                            <td>{{i.fecha|date:"Y-m-d"}}</td>
+                                            <td>{{i.cuenta}}</td>
+                                            <td>{{i.categoria}}</td>
+                                            <td><b>$ {{i.importe|floatformat:0|intcomma}}</b></td>
+                                        </tr>
+
+                                        {% endfor %}
+     
+                                    </tbody>
+
+                                </table>
+                           
+                        </div>
                         <!-- modelo prueba -->
                     </div>
                 </div>
@@ -714,38 +746,15 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-<!-- <script>
-
-    function openTab(evt, tabName) {
-        var i, tabcontentlist, tablinks;
-        tabcontentlist = document.getElementsByClassName("tabcontentlist");
-        for (i = 0; i < tabcontentlist.length; i++) {
-            tabcontentlist[i].style.display = "none";
-        }
-        tablinks = document.getElementsByClassName("nav-link");
-        for (i = 0; i < tablinks.length; i++) {
-            tablinks[i].className = tablinks[i].className.replace(" active", "");
-        }
-        document.getElementById(tabName).style.display = "block";
-        evt.currentTarget.className += " active";
-    }
-</script>
-
 
 <script>
-    function openTabModal(evt, tabName) {
-        var i, tabcontent, tablinks;
-        tabcontent = document.getElementsByClassName("tabcontent");
-        for (i = 0; i < tabcontent.length; i++) {
-            tabcontent[i].style.display = "none";
-        }
-        tablinks = document.getElementsByClassName("nav-link-modal");
-        for (i = 0; i < tablinks.length; i++) {
-            tablinks[i].className = tablinks[i].className.replace(" active", "");
-        }
-        document.getElementById(tabName).style.display = "block";
-        evt.currentTarget.className += " active";
-    }
-</script> -->
+
+    $(document).ready(function () {
+        $('#example2').DataTable({
+            "order": [[ 0, "desc" ]],
+        });
+    });
+</script>
+
 
 {% endblock %}

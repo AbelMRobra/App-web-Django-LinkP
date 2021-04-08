@@ -695,7 +695,7 @@ def comparativas(request, estado, creador):
 
     fecha_inicial = datetime.date.today()
 
-    fecha_pago = datetime.date(2021, 3, 12)
+    fecha_pago = datetime.date(2021, 4, 16)
 
     while fecha_pago <= fecha_inicial:
         fecha_pago = fecha_pago + datetime.timedelta(days=14)

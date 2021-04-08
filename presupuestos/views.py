@@ -1310,7 +1310,7 @@ def presupuestorepcompleto(request, id_proyecto):
 
         # En este bucle revisamos el modelo
 
-        modelo = Modelopresupuesto.objects.filter(proyecto = proyecto, capitulo = c )
+        modelo = Modelopresupuesto.objects.filter(proyecto = proyecto, capitulo = c ).order_by("orden")
 
         for d in modelo:
 
@@ -1338,7 +1338,7 @@ def presupuestorepcompleto(request, id_proyecto):
 
                     # Aqui suma al listado
 
-                    listado_analisis.append((d.analisis, valor_analisis, cantidad, valor_analisis*cantidad))  
+                    listado_analisis.append((d, valor_analisis, cantidad, valor_analisis*cantidad))  
 
                     valor_capitulo = valor_capitulo + valor_analisis*cantidad
 
@@ -1361,7 +1361,7 @@ def presupuestorepcompleto(request, id_proyecto):
 
                     # Aqui suma al listado
 
-                    listado_analisis.append((d.analisis, valor_analisis, cantidad, valor_analisis*cantidad))  
+                    listado_analisis.append((d, valor_analisis, cantidad, valor_analisis*cantidad))  
 
                     valor_capitulo = valor_capitulo + valor_analisis*cantidad
 
@@ -1375,7 +1375,7 @@ def presupuestorepcompleto(request, id_proyecto):
 
                 # Aqui suma al listado
 
-                listado_analisis.append((d.analisis, valor_analisis, cantidad, valor_analisis*cantidad))
+                listado_analisis.append((d, valor_analisis, cantidad, valor_analisis*cantidad))
 
                 valor_capitulo = valor_capitulo + valor_analisis*float(d.cantidad)
 

@@ -1427,11 +1427,13 @@ def registro_contable(request, date_i):
 
     user = datosusuario.objects.get(identificacion = request.user.username)
 
+    registros_totales = RegistroContable.objects.filter(usuario = user)
+
     if request.method == 'POST':
         datos_p = request.POST.items()
 
         try:
-            print(request.POST['fecha_m'])
+ 
             if request.POST['fecha_m'] == "1":
                 if hoy.month != 12:
                     new_date_i = str(hoy.year)+str(hoy.month + 1)
@@ -1502,7 +1504,7 @@ def registro_contable(request, date_i):
 
     if hoy.month == 12:
 
-        fecha_final = date(hoy.year + 1, 12 , 1)
+        fecha_final = date(hoy.year + 1, 1 , 1)
 
     else:
 
@@ -1521,13 +1523,7 @@ def registro_contable(request, date_i):
 
         datos.append([f, data, ingresos_f, gastos_f])
 
-    ##### Generales
-
-    ingresos = sum(np.array(RegistroContable.objects.filter(usuario = user, estado = "INGRESOS").values_list("importe", flat=True)))
-
-    gastos = sum(np.array(RegistroContable.objects.filter(usuario = user, estado = "GASTOS").values_list("importe", flat=True)))
-  
-    balance = ingresos - gastos
+    
 
     ### Cuadros generales
 
@@ -1537,7 +1533,7 @@ def registro_contable(request, date_i):
 
     for ci in cat_ingresos:
         aux = sum(np.array(RegistroContable.objects.filter(usuario = user, estado = "INGRESOS", fecha__range=[fecha_inicial, fecha_final], categoria = ci).values_list("importe", flat=True)))
-        color = (np.random.randint(0, 40)+(np.random.choice([20, 180])), np.random.randint(0, 40)+(np.random.choice([20, 180])), np.random.randint(0, 40)+(np.random.choice([20, 180])))
+        color = (np.random.randint(0, 20)+(np.random.choice([20, 90])), np.random.randint(0, 20)+(np.random.choice([20, 90])), np.random.randint(0, 20)+(np.random.choice([20, 90])))
         pie_ingresos.append([ci, aux, color])
 
     cat_gastos = RegistroContable.objects.filter(usuario = user, estado = "GASTOS", fecha__range=[fecha_inicial, fecha_final]).values_list("categoria", flat=True).distinct()
@@ -1546,7 +1542,7 @@ def registro_contable(request, date_i):
 
     for cg in cat_gastos:
         aux = sum(np.array(RegistroContable.objects.filter(usuario = user, estado = "GASTOS", fecha__range=[fecha_inicial, fecha_final], categoria = cg).values_list("importe", flat=True)))
-        color = (np.random.randint(0, 40)+(np.random.choice([20, 180])), np.random.randint(0, 40)+(np.random.choice([20, 180])), np.random.randint(0, 40)+(np.random.choice([20, 180])))
+        color = (np.random.randint(0, 20)+(np.random.choice([20, 90])), np.random.randint(0, 20)+(np.random.choice([20, 90])), np.random.randint(0, 20)+(np.random.choice([20, 90])))
         pie_gastos.append([cg, aux, color])
 
 
@@ -1596,4 +1592,31 @@ def registro_contable(request, date_i):
             fecha_auxiliar_2 = datetime.date(fecha_auxiliar_2.year, fecha_auxiliar_2.month + 1, 1)
 
 
-    return render(request, "users/registro_contable.html", {'data_month':data_month, 'list_cat_ing':list_cat_ing, 'list_cat_gasto':list_cat_gasto, 'pie_gastos':pie_gastos, 'pie_ingresos':pie_ingresos, 'hoy':hoy, 'datos':datos, "ingresos":ingresos, "gastos":gastos, "balance":balance})
+    ##### Generales
+
+    ingresos = sum(np.array(RegistroContable.objects.filter(usuario = user, estado = "INGRESOS", fecha__range=[fecha_inicial, fecha_final]).values_list("importe", flat=True)))
+
+    gastos = sum(np.array(RegistroContable.objects.filter(usuario = user, estado = "GASTOS", fecha__range=[fecha_inicial, fecha_final]).values_list("importe", flat=True)))
+  
+    balance = ingresos - gastos
+
+    ##### Semana
+
+    semana = hoy.weekday()
+
+    semana_1 = hoy - datetime.timedelta(days=hoy.weekday())
+
+    semana_2 = semana_1
+
+    datos_week = []
+
+    for i in range(5):
+        semana_2 = semana_2 + datetime.timedelta(days=7)
+        ingresos_week = sum(np.array(RegistroContable.objects.filter(usuario = user, estado = "INGRESOS", fecha__range=[semana_1, semana_2]).values_list("importe", flat=True)))
+        gastos_week = sum(np.array(RegistroContable.objects.filter(usuario = user, estado = "GASTOS", fecha__range=[semana_1, semana_2]).values_list("importe", flat=True)))
+        balance_week = ingresos - gastos
+        datos_week.append((semana_1, semana_2, ingresos_week, gastos_week, balance_week))
+        semana_1 = semana_1 + datetime.timedelta(days=7)    
+
+
+    return render(request, "users/registro_contable.html", {'registros_totales':registros_totales,'datos_week':datos_week, 'data_month':data_month, 'list_cat_ing':list_cat_ing, 'list_cat_gasto':list_cat_gasto, 'pie_gastos':pie_gastos, 'pie_ingresos':pie_ingresos, 'hoy':hoy, 'datos':datos, "ingresos":ingresos, "gastos":gastos, "balance":balance})
