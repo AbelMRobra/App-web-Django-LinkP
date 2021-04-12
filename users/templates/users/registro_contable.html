@@ -100,10 +100,10 @@
                                             <td style="padding 1px;">
                                                 <div>
                                                     <div>
-                                                        <a href="#" type="button" data-toggle="modal" data-target="#ModalRegistro{{i.id}}">
+                                                        <button class="btn"  type="button" data-toggle="modal" data-target="#ModalRegistro{{i.id}}">
                                                         <h6 style="font-size: 13px;">{{i.nota}}</h6>
                                                         <h6 class="card-subtitle" style="font-size: 10px;">{% if i.adjunto %}<a href="{{ i.adjunto.url }}" class=" fa fa-paperclip fa-lg"></a>{% endif %} {{i.cuenta}}</h6>
-                                                        </a>
+                                                        </button>
                                                         <!-- Modal para editar el registro -->
                                                         <div class="modal fade" id="ModalRegistro{{i.id}}" tabindex="-1" role="dialog"
                                                         aria-labelledby="ModalRegistro{{i.id}}" aria-hidden="true">
