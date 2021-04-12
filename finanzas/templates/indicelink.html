@@ -32,27 +32,27 @@
                 {% if id_time == "0" %}
 
                 <a href="{% url 'Indice Link' id_moneda 1 %}" style="text-decoration: none;"data-toggle="tooltip" data-placement="right" title="" data-original-title="Ajustar por tiempo"><img
-                    src="{% static 'img/icono_ajustado.png' %}" alt=""
+                    src="{% static 'img/valortiepo.png' %}" alt=""
                     style="max-width:30px; height:auto;"></a>
 
                 {% else %}
 
                 <a href="{% url 'Indice Link' id_moneda 0 %}" style="text-decoration: none;"data-toggle="tooltip" data-placement="right" title="" data-original-title="Indice sin ajuste"><img
-                    src="{% static 'img/icono_bolsa.png' %}" alt=""
+                    src="{% static 'img/valortiepo.png' %}" alt=""
                     style="max-width:30px; height:auto;"></a>
 
                 {% endif %}
 
                 <a href="{% url 'Indice Link' 0 id_time %}" style="text-decoration: none; margin-left: 15px;"data-toggle="tooltip" data-placement="right" title="" data-original-title="Ver en pesos"><img
-                    src="{% static 'img/icono_pesos.png' %}" alt=""
+                    src="{% static 'img/ARS.png' %}" alt=""
                     style="max-width:30px; height:auto;"></a>
 
                 <a href="{% url 'Indice Link' 1 id_time %}" style="text-decoration: none; margin-left: 15px;"data-toggle="tooltip" data-placement="right" title="" data-original-title="Ver en Hº"><img
-                    src="{% static 'img/icono_hormigon.png' %}" alt=""
+                    src="{% static 'img/H.png' %}" alt=""
                     style="max-width:30px; height:auto;"></a>
 
                 <a href="{% url 'Indice Link' 2 id_time %}" style="text-decoration: none; margin-left: 15px;"data-toggle="tooltip" data-placement="right" title="" data-original-title="Ver en dolar blue"><img
-                    src="{% static 'img/icono_dolar.png' %}" alt=""
+                    src="{% static 'img/valores.png' %}" alt=""
                     style="max-width:30px; height:auto;"></a>
             
                 </div>

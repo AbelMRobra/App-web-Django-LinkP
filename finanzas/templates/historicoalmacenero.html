@@ -143,7 +143,7 @@
 
                 <div style="margin-top: 25px;">
                     <h4 class="text-info">Variación especificas</h4>
-                    <h6>Honorarios: $ {{datos.2.5|intcomma}} {% if datos.2.5 < 0 %}<i class="fa fa-arrow-down text-danger"></i>{% else %}<i class="fa fa-arrow-up text-success"></i>{% endif %}</h6>
+                    <h6>Honorarios: $ {{datos.2.5|intcomma}} <i {% if datos.2.5 < 0 %} class="fa fa-arrow-down text-danger" {% else %} class="fa fa-arrow-up text-success" {% endif %}>({{datos.2.6|intcomma}}) %</i></h6>
                     <h6>Descripción de los proyectos</h6>
                     <div class="table-responsive">
                         <table class="table table-bordered">
