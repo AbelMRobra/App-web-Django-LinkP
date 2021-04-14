@@ -278,109 +278,111 @@
                                                 </div>
                                             </td>
 
-                                                <!-- Modal para editar el registro -->
-                                                <div class="modal fade" id="ModalRegistro{{i.id}}" role="dialog"
-                                                aria-labelledby="ModalRegistro{{i.id}}" aria-hidden="true">
-                                                <div class="modal-dialog modal-dialog-centered" role="document">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title" id="exampleModalLongTitle">Editar un registro</h5>
-                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                <span aria-hidden="true">&times;</span>
-                                                            </button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            <div class="tab-content">
-                                                                <div>
-                                                                    <form method="POST" style="margin: 15px;"
-                                                                        enctype="multipart/form-data" id="upload-image-form">
+                                                
+                                            <td style="text-align: right;"> <b><h6 {% if i.estado == "INGRESOS" %}class="text-success"{% else %}class="text-danger"{% endif%}>$ {{i.importe|floatformat:0|intcomma}}</h6> </b> </td>
+                                        </tr>
 
-                                                                        {% csrf_token %}
-                                                                        <h6>Fecha</h6>
+                                            <!-- Modal para editar el registro -->
+                                            <div class="modal fade" id="ModalRegistro{{i.id}}" tabindex="-1" role="dialog"
+                                            aria-labelledby="ModalRegistro{{i.id}}" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLongTitle">Editar un registro</h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div class="tab-content">
+                                                            <div>
+                                                                <form method="POST" style="margin: 15px;"
+                                                                    enctype="multipart/form-data" id="upload-image-form">
 
-                                                                        <div class="input-group mb-3">
+                                                                    {% csrf_token %}
+                                                                    <h6>Fecha</h6>
 
-                                                                            <input name="fecha" type="date"
-                                                                                class="form-control form-control" style="width: 300px;"
-                                                                                value="{{i.fecha|date:'Y-m-d'}}" >
+                                                                    <div class="input-group mb-3">
+
+                                                                        <input name="fecha" type="date"
+                                                                            class="form-control form-control" style="width: 300px;"
+                                                                            value="{{i.fecha|date:'Y-m-d'}}" >
+                                                                    </div>
+
+                                                                    <h6>Cuenta</h6>
+
+                                                                    <div class="input-group mb-3">
+
+                                                                        <input name="cuenta" type="search" class="form-control form-control"
+                                                                        value="{{i.cuenta}}" list="provee">
+
+                                                                    </div>
+
+                                                                    <h6>Categoria</h6>
+
+                                                                    <div class="input-group mb-3">
+
+                                                                        <input name="categoria" type="search" class="form-control form-control"
+                                                                        value="{{i.categoria}}" list="list_cat_ing">
+
+                                                                    </div>
+
+                                                                    <h6>Importe</h6>
+
+                                                                    <div class="input-group mb-3">
+
+                                                                        <input name="importe" type="number"
+                                                                            class="form-control form-control border border-success"
+                                                                            style="width: 300px;" value="{{i.importe}}" >
+                                                                    </div>
+
+                                                                    <h6>Nota</h6>
+
+                                                                    <div class="input-group mb-3">
+
+                                                                        <input name="nota" type="text"
+                                                                            class="form-control form-control" style="width: 300px;"
+                                                                            value="{{i.nota}}" >
+                                                                    </div>
+
+                                                                    <div>
+                                                                        <label for="adjunto">
+                                                                            <h6>Adjunto</h6>
+                                                                        </label>
+                                                                    </div>
+                                                                    <div class="row d-flex justify-content-center my-3">
+                                                                        <div class="col col-md-8 col-lg-8">
+                            
+                                                                            <input type="file" class="form-control-file" name="adjunto"
+                                                                                aria-describedby="fileHelp">
+                            
                                                                         </div>
+                                                                    </div>
 
-                                                                        <h6>Cuenta</h6>
-
-                                                                        <div class="input-group mb-3">
-
-                                                                            <input name="cuenta" type="search" class="form-control form-control"
-                                                                            value="{{i.cuenta}}" list="provee">
-
-                                                                        </div>
-
-                                                                        <h6>Categoria</h6>
-
-                                                                        <div class="input-group mb-3">
-
-                                                                            <input name="categoria" type="search" class="form-control form-control"
-                                                                            value="{{i.categoria}}" list="list_cat_ing">
-
-                                                                        </div>
-
-                                                                        <h6>Importe</h6>
-
-                                                                        <div class="input-group mb-3">
-
-                                                                            <input name="importe" type="number"
-                                                                                class="form-control form-control border border-success"
-                                                                                style="width: 300px;" value="{{i.importe}}" >
-                                                                        </div>
-
-                                                                        <h6>Nota</h6>
-
-                                                                        <div class="input-group mb-3">
-
-                                                                            <input name="nota" type="text"
-                                                                                class="form-control form-control" style="width: 300px;"
-                                                                                value="{{i.nota}}" >
-                                                                        </div>
-
-                                                                        <div>
-                                                                            <label for="adjunto">
-                                                                                <h6>Adjunto</h6>
-                                                                            </label>
-                                                                        </div>
-                                                                        <div class="row d-flex justify-content-center my-3">
-                                                                            <div class="col col-md-8 col-lg-8">
                                 
-                                                                                <input type="file" class="form-control-file" name="adjunto"
-                                                                                    aria-describedby="fileHelp">
-                                
-                                                                            </div>
-                                                                        </div>
+                                                                    <button type="submit" name="editar" value="{{i.id}}" class="btn" ><i
+                                                                            class="fa fa-arrow-up  text-info"><span class="text-info ml-2"
+                                                                                style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif"><b>Cargar</b></span></i></button>
 
+                                                                    <button type="submit" class="btn" name="eliminar" value="{{i.id}}"><i
+                                                                        class="fa fa-trash  text-danger"><span class="text-danger ml-2"
+                                                                            style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif"><b>Eliminar</b></span></i></button>
                                     
-                                                                        <button type="submit" name="editar" value="{{i.id}}" class="btn" ><i
-                                                                                class="fa fa-arrow-up  text-info"><span class="text-info ml-2"
-                                                                                    style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif"><b>Cargar</b></span></i></button>
 
-                                                                        <button type="submit" class="btn" name="eliminar" value="{{i.id}}"><i
-                                                                            class="fa fa-trash  text-danger"><span class="text-danger ml-2"
-                                                                                style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif"><b>Eliminar</b></span></i></button>
-                                        
-
-                                                                    </form>
-
-                                                                </div>
+                                                                </form>
 
                                                             </div>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary"
-                                                                data-dismiss="modal">Close</button>
 
                                                         </div>
                                                     </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary"
+                                                            data-dismiss="modal">Close</button>
+
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <td style="text-align: right;"> <b><h6 {% if i.estado == "INGRESOS" %}class="text-success"{% else %}class="text-danger"{% endif%}>$ {{i.importe|floatformat:0|intcomma}}</h6> </b> </td>
-                                        </tr>
+                                        </div>
                                         {% endfor %}
                                     </tbody>
 

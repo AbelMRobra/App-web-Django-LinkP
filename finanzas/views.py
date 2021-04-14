@@ -3126,11 +3126,14 @@ def arqueo_diario(request, id_arqueo):
 
         banco = 0
 
+        list_bank_proj_info = []
+
         for n in nombre_columnas:
             if "BANCO" in n:
                 banco = banco + data_frame.loc[numero, n]
                 bancos = bancos + data_frame.loc[numero, n]
-
+                if data_frame.loc[numero, n] != 0:
+                    list_bank_proj_info.append((n, data_frame.loc[numero, n]))
 
         consolidado = data_frame.loc[numero, 'EFECTIVO'] + data_frame.loc[numero, 'CHEQUES'] + data_frame.loc[numero, 'MONEDA EXTRANJERA'] + banco
 
@@ -3140,7 +3143,7 @@ def arqueo_diario(request, id_arqueo):
 
         consolidado_actual = consolidado_actual + consolidado - data_frame.loc[numero, 'MONEDA EXTRANJERA'] + data_frame.loc[numero, 'USD']*cambio_usd + data_frame.loc[numero, 'EUROS']*cambio_euro
 
-        datos.append((proyecto, data_frame.loc[numero, 'PROYECTO'], data_frame.loc[numero, 'EFECTIVO'], data_frame.loc[numero, 'USD'], data_frame.loc[numero, 'EUROS'], data_frame.loc[numero, 'CHEQUES'], data_frame.loc[numero, 'MONEDA EXTRANJERA'], banco, consolidado))
+        datos.append((proyecto, data_frame.loc[numero, 'PROYECTO'], data_frame.loc[numero, 'EFECTIVO'], data_frame.loc[numero, 'USD'], data_frame.loc[numero, 'EUROS'], data_frame.loc[numero, 'CHEQUES'], data_frame.loc[numero, 'MONEDA EXTRANJERA'], banco, consolidado, list_bank_proj_info))
 
         numero += 1
 
@@ -3180,7 +3183,6 @@ def arqueo_diario(request, id_arqueo):
     grafico.append((n.fecha, extranjera, efectivo, banco, cheque))
 
     grafico = sorted(grafico, key=lambda tup: tup[0])
-
 
     return render(request, 'arqueo.html', {'datos':datos, 'data_cruda':data_cruda, 'otros_datos':otros_datos, 'grafico':grafico, 'cambio_usd':cambio_usd, 'cambio_euro':cambio_euro})
 
