@@ -6,9 +6,6 @@
 {% block content %}
 
 <div class="container-fluid">
-    <!-- ============================================================== -->
-    <!-- Bread crumb and right sidebar toggle -->
-    <!-- ============================================================== -->
     <div class="row page-titles">
         <div class="col-md-5 align-self-center">
             <h3 class="text-themecolor">Arqueo diario</h3>
@@ -24,15 +21,16 @@
 
     </div>
 
-  </div>
+</div>
 
-  <div class="row">
+<div class="row">
     <div class="col-lg-6 col-md-12">
         <div class="card">
             <div class="card-body">
                 <div class="d-flex">
                     <div>
-                        <h4 class="card-title"><span class="lstick"></span>Resumen de datos</h4></div>
+                        <h4 class="card-title"><span class="lstick"></span>Resumen de datos</h4>
+                    </div>
 
                 </div>
 
@@ -54,11 +52,13 @@
                 </div>
                 <div class="m-t-10">
                     <h5 class="m-b-0 font-medium">Dolares: U$D {{otros_datos.0|floatformat:0|intcomma}}</h5>
-                    <h6 class="text-muted">Liquidez en dolares, tipo de cambio ${{ cambio_usd|floatformat:0|intcomma }}</h6>
+                    <h6 class="text-muted">Liquidez en dolares, tipo de cambio ${{ cambio_usd|floatformat:0|intcomma }}
+                    </h6>
                 </div>
                 <div class="m-t-10">
                     <h5 class="m-b-0 font-medium">Euros: € {{otros_datos.1|floatformat:0|intcomma}}</h5>
-                    <h6 class="text-muted">Liquidez en Euros, tipo de cambio ${{ cambio_euro|floatformat:0|intcomma }}</h6>
+                    <h6 class="text-muted">Liquidez en Euros, tipo de cambio ${{ cambio_euro|floatformat:0|intcomma }}
+                    </h6>
                 </div>
                 <div class="m-t-10">
                     <h5 class="m-b-0 font-medium">Total historico: $ {{otros_datos.5|floatformat:0|intcomma}}</h5>
@@ -72,9 +72,9 @@
 
                     <!-- Este es el total de la caja {{otros_datos.5|floatformat:0|intcomma}}-->
                 </div>
-                
 
-                
+
+
 
             </div>
         </div>
@@ -85,14 +85,15 @@
             <div class="card-body">
                 <div class="d-flex">
                     <div>
-                        <h4 class="card-title"><span class="lstick"></span>Proporción</h4></div>
+                        <h4 class="card-title"><span class="lstick"></span>Proporción</h4>
+                    </div>
 
                 </div>
 
                 <div style="display: inline-block; width: 310px; margin: 10px;">
 
                     <canvas id="myChart2"></canvas>
-                
+
                 </div>
 
                 <table class="table vm font-14">
@@ -114,7 +115,8 @@
                     </tr>
                 </table>
 
-                
+
+
 
             </div>
         </div>
@@ -138,190 +140,221 @@
                                 <th>Caja Historica</th>
                                 <th>Dolares</th>
                                 <th>Euros</th>
-      
+                                <th>Excel</th>
+
                             </tr>
                         </thead>
 
                         <tbody>
 
-                            {% for i in datos %}  
-                
+                            {% for i in datos %}
+
                             <tr>
-            
+
                                 <td>
 
                                     <div>
                                         {% if i.0 %}
-        
+
                                         <span class="label label-success">{{ i.1 }}</span>
 
-                                        
+
                                         {% else %}
-            
+
                                         <span class="label label-info">{{ i.1 }}</span>
-                                        
-                    
+
+
                                         {% endif %}
-                                    </div></td>
-                                
+                                    </div>
+                                </td>
+
                                 <td>${{ i.2|floatformat:0|intcomma }}</td>
-                                <td>${{ i.7|floatformat:0|intcomma }}</td>
+                                <td><a type="button" class="text-info" data-toggle="modal" data-target="#ModalArqueo{{i.1|cut:' '|cut:'('|cut:')'}}" >${{ i.7|floatformat:0|intcomma }}</a></td>
                                 <td>${{ i.5|floatformat:0|intcomma }}</td>
                                 <td>${{ i.6|floatformat:0|intcomma }}</td>
                                 <td>${{ i.8|floatformat:0|intcomma }}</td>
                                 <td style="color: rgb(89, 171, 70);">U$S {{ i.3|floatformat:0|intcomma }}</td>
                                 <td style="color: rgb(76, 88, 173)">€ {{ i.4|floatformat:0|intcomma }}</td>
-                               
-            
+                                <td><a href="#"
+                                    style="text-align: end; margin-top: 5px; text-decoration: none;  margin-left: 10px;" data-toggle="tooltip" data-placement="right" title="" data-original-title="Descargar Excel"> <img src="{% static 'img/sobresalir.png' %}"
+                                        alt="" style="max-width:20px; height:auto;"></a></td>
+
+
                             </tr>
+                            <!-- Modal -->
+                            <div class="modal fade" id="ModalArqueo{{i.1|cut:' '|cut:'('|cut:')'}}" tabindex="-1" role="dialog" aria-labelledby="ModalArqueo" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLongTitle">Registro por bancos</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">  
+                                            {% for i in i.9 %}
+                                            <span class="font-bold">{{i.0}}</span>
+                                            
+                                            <p>${{i.1|floatformat:0|intcomma }}</p>
+                                            {% endfor %}
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                        
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             {% endfor %}
                         </tbody>
                     </table>
+
                 </div>
             </div>
         </div>
     </div>
+</div>
 
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
    
+<script>
+     
+     var ctx = document.getElementById('myChart2').getContext('2d');
+     var chart = new Chart(ctx, {
+         // The type of chart we want to create
+         type: 'doughnut',
+         // The data for our dataset
+         data: {
+         datasets: [{        
+             data: [Math.round({{otros_datos.7|floatformat:0}})/1000000, Math.round({{grafico.0.2|floatformat:0}})/1000000, Math.round({{grafico.0.3|floatformat:0}})/1000000, Math.round({{grafico.0.4|floatformat:0}})/1000000],
+             backgroundColor: ['rgb(56, 229, 98 , 0.5)', 'rgb(25, 71, 175 , 0.5)', 'rgb(222, 65, 37  , 0.5)', 'rgb(231, 206, 27  , 0.5)'],    
+         }],
 
-
-   <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
-   
-       <script>
-            
-            var ctx = document.getElementById('myChart2').getContext('2d');
-            var chart = new Chart(ctx, {
-                // The type of chart we want to create
-                type: 'doughnut',
-                // The data for our dataset
-                data: {
-                datasets: [{        
-                    data: [Math.round({{otros_datos.7|floatformat:0}})/1000000, Math.round({{grafico.0.2|floatformat:0}})/1000000, Math.round({{grafico.0.3|floatformat:0}})/1000000, Math.round({{grafico.0.4|floatformat:0}})/1000000],
-                    backgroundColor: ['rgb(56, 229, 98 , 0.5)', 'rgb(25, 71, 175 , 0.5)', 'rgb(222, 65, 37  , 0.5)', 'rgb(231, 206, 27  , 0.5)'],    
-                }],
-      
-                labels: ['Moneda extranjera', 'Efectivo', 'Banco', 'Cheque' ]
-              },
-                options: {
-                  legend: {
-                      position: 'right'
-                  },
-                },
-      
-              });
-      
-        </script>
-        <script>
-       var ctx = document.getElementById('myChart').getContext('2d');
-       var chart = new Chart(ctx, {
-           // The type of chart we want to create
-           type: 'bar',
-
-           // The data for our dataset
-           data: {
-
-               labels: [
-                   {% for i in grafico %}
-                   '{{i.0}}',                   
-                   {% endfor %}
-  
-                   ],
-               datasets: [{
-                   label: 'Moneda extranjera',
-                   backgroundColor: 'rgb(56, 229, 98 , 0.5)',
-                   borderColor: 'rgb(56, 229, 98)',
-                   borderWidth: 1,
-                   data: [
-                   {% for i in grafico  %}
-                   Math.round({{i.1|floatformat:0}})/1000000,  
-                                    
-                   {% endfor %}
-
-                   ]
-               },
-               {
-                   label: 'Efectivo',
-                   backgroundColor: 'rgb(25, 71, 175 , 0.5)',
-                   borderColor: 'rgb(25, 71, 175)',
-                   borderWidth: 1,
-                   data: [
-                   {% for i in grafico  %}
-                   Math.round({{i.2|floatformat:0}})/1000000,  
-                                    
-                   {% endfor %}
-
-                   ]
-               },
-               {
-                   label: 'Banco',
-                   backgroundColor: 'rgb(222, 65, 37  , 0.5)',
-                   borderColor: 'rgb(222, 65, 37 )',
-                   borderWidth: 1,
-                   data: [
-                   {% for i in grafico  %}
-                   Math.round({{i.3|floatformat:0}})/1000000,  
-                                    
-                   {% endfor %}
-
-                   ]
-               },
-               {
-                   label: 'Cheque',
-                   backgroundColor: 'rgb(231, 206, 27  , 0.5)',
-                   borderColor: 'rgb(231, 206, 27)',
-                   borderWidth: 1,
-                   data: [
-                   {% for i in grafico  %}
-                   Math.round({{i.4|floatformat:0}})/1000000,  
-                                    
-                   {% endfor %}
-
-                   ]
-               },],
-
+         labels: ['Moneda extranjera', 'Efectivo', 'Banco', 'Cheque' ]
+       },
+         options: {
+           legend: {
+               position: 'right'
            },
-
-           // Configuration options go here
-           options: {
-
-               scales: {
-
-                   xAxes: [
-                       {
-
-                           stacked: true,
-                           display: false,
-                           barThickness: 40,
-
-                       }
-                   ],
-                   yAxes: [
-                       {
-                            stacked: true,
-                           ticks: {
-                                beginAtZero: true,
-                               min: 0,
-                               stepSize: 10,
-                               callback: function(label, index, labels) {
-                                   return '$ '+ label + 'Millones';
-                                   
-                               }
-                           },
-                           scaleLabel: {
-                               display: true,
-                    
-                           },
-
-                       }
-                   ],
-               },
-           }
+         },
 
        });
-       
 
-       
-   </script>
+ </script>
+ <script>
+var ctx = document.getElementById('myChart').getContext('2d');
+var chart = new Chart(ctx, {
+    // The type of chart we want to create
+    type: 'bar',
+
+    // The data for our dataset
+    data: {
+
+        labels: [
+            {% for i in grafico %}
+            '{{i.0}}',                   
+            {% endfor %}
+
+            ],
+        datasets: [{
+            label: 'Moneda extranjera',
+            backgroundColor: 'rgb(56, 229, 98 , 0.5)',
+            borderColor: 'rgb(56, 229, 98)',
+            borderWidth: 1,
+            data: [
+            {% for i in grafico  %}
+            Math.round({{i.1|floatformat:0}})/1000000,  
+                             
+            {% endfor %}
+
+            ]
+        },
+        {
+            label: 'Efectivo',
+            backgroundColor: 'rgb(25, 71, 175 , 0.5)',
+            borderColor: 'rgb(25, 71, 175)',
+            borderWidth: 1,
+            data: [
+            {% for i in grafico  %}
+            Math.round({{i.2|floatformat:0}})/1000000,  
+                             
+            {% endfor %}
+
+            ]
+        },
+        {
+            label: 'Banco',
+            backgroundColor: 'rgb(222, 65, 37  , 0.5)',
+            borderColor: 'rgb(222, 65, 37 )',
+            borderWidth: 1,
+            data: [
+            {% for i in grafico  %}
+            Math.round({{i.3|floatformat:0}})/1000000,  
+                             
+            {% endfor %}
+
+            ]
+        },
+        {
+            label: 'Cheque',
+            backgroundColor: 'rgb(231, 206, 27  , 0.5)',
+            borderColor: 'rgb(231, 206, 27)',
+            borderWidth: 1,
+            data: [
+            {% for i in grafico  %}
+            Math.round({{i.4|floatformat:0}})/1000000,  
+                             
+            {% endfor %}
+
+            ]
+        },],
+
+    },
+
+    // Configuration options go here
+    options: {
+
+        scales: {
+
+            xAxes: [
+                {
+
+                    stacked: true,
+                    display: false,
+                    barThickness: 40,
+
+                }
+            ],
+            yAxes: [
+                {
+                     stacked: true,
+                    ticks: {
+                         beginAtZero: true,
+                        min: 0,
+                        stepSize: 10,
+                        callback: function(label, index, labels) {
+                            return '$ '+ label + 'Millones';
+                            
+                        }
+                    },
+                    scaleLabel: {
+                        display: true,
+             
+                    },
+
+                }
+            ],
+        },
+    }
+
+});
+
+
+
+</script>
+
 
 
 {% endblock %}

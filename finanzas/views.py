@@ -2465,6 +2465,7 @@ def consolidado(request):
         almacenero = dato
 
         presupuesto = Presupuestos.objects.get(proyecto = dato.proyecto)
+        dato_presupuesto = presupuesto
 
         # Aqui calculo el IVA sobre compras
 
@@ -2493,14 +2494,14 @@ def consolidado(request):
         ingresos_total = ingresos_total + total_ingresos
 
         saldo_caja = almacenero.cuotas_cobradas - almacenero.gastos_fecha - almacenero.Prestamos_dados
-        saldo_proyecto = total_ingresos - total_costo + almacenero.tenencia + almacenero.financiacion
+        saldo_proyecto = total_ingresos - total_costo - descuento
         tenencia_totales = tenencia_totales + almacenero.tenencia
         financiacion_totales = financiacion_totales + almacenero.financiacion
         rentabilidad = (saldo_proyecto/total_costo)*100
 
 
-        total_ingresos_pesimista = total_ingresos - descuento - retiro_socios
-        saldo_proyecto_pesimista = total_ingresos_pesimista - total_costo + almacenero.tenencia + almacenero.financiacion
+        total_ingresos_pesimista = saldo_proyecto  - retiro_socios
+        saldo_proyecto_pesimista = total_ingresos_pesimista
         rentabilidad_pesimista = (saldo_proyecto_pesimista/total_costo)*100
         retiro_totales = retiro_totales + retiro_socios 
 
@@ -2612,14 +2613,14 @@ def consolidado(request):
 
     # -----------------> Aqui termina para el precio promedio contado
 
-        datos_completos.append((dato, total_costo, total_ingresos, saldo_proyecto, rentabilidad, presupuesto, pricing, saldo_proyecto_pesimista, rentabilidad_pesimista, precio_promedio_contado, retiro_socios, descuento))
+        datos_completos.append((dato, total_costo, total_ingresos, saldo_proyecto, rentabilidad, presupuesto, pricing, saldo_proyecto_pesimista, rentabilidad_pesimista, precio_promedio_contado, retiro_socios, descuento, dato_presupuesto))
 
 
 
     # -----------------> Aqui calculo los totalizadores
 
-    beneficio_total = ingresos_total - costo_total + tenencia_totales + financiacion_totales
-    beneficio_total_pesimista = beneficio_total - descuento_total - retiro_totales
+    beneficio_total = ingresos_total - costo_total - descuento_total
+    beneficio_total_pesimista = beneficio_total - retiro_totales
     beneficio_retiros = beneficio_total - descuento_total
     rendimiento_total = beneficio_total/costo_total*100
     rendimiento_total_pesimista = beneficio_total_pesimista/costo_total*100

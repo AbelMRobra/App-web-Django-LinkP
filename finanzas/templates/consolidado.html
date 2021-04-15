@@ -28,24 +28,30 @@
     <div class="card">
         <div class="card-body">
 
-            <div class="table-responsive">
+            <div class="d-flex">
 
-                <table class="table" style="text-align: center;" style="width: 99%;">
-                    <thead>
+                <h4 class="card-title"><span class="lstick m-r-20"></span>
+                    <span class="text-info ml-2"
+                                style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif"></span>Cuadro resumen
+                </h4>
+            
+                </div>
 
-                        <tr class="table-dark">
-                            <th scope="row" style="vertical-align: middle;"><small><b>Proyecto</b></small></th>
-                            <th scope="row" style="vertical-align: middle;"><small><b>Ingresos</b></small></th>
-                            <th scope="row" style="vertical-align: middle;"><small><b>Costos</b></small></th>
-                            <th scope="row" style="vertical-align: middle;"><small><b>Tendencia</b></small></th>
-                            <th scope="row" style="vertical-align: middle;"><small><b>Financiacion</b></small></th>
-                            <th scope="row" style="vertical-align: middle;"><small><b>Beneficio</b></small></th>
-                            <th scope="row" style="vertical-align: middle;"><small><b></b></small></th>
-                            <th scope="row" style="vertical-align: middle;"><small><b>Descuento</b></small></th>
-                            <th scope="row" style="vertical-align: middle;"><small><b>Retiros</b></small></th>
-                            <th scope="row" style="vertical-align: middle;"><small><b>Beneficio 2</b></small> </th>
-                            <th scope="row" style="vertical-align: middle;"><small><b></b></small> </th>
-                            <th scope="row" style="vertical-align: middle;"><small><b>Prom. Cont</b></small> </th>
+            <div>
+
+                <table class="table" >
+                    <thead style="font-size: 14px;">
+
+                        <tr>
+                            <th style="vertical-align: middle;">Proyecto</th>
+                            <th style="vertical-align: middle;">Ingresos</th>
+                            <th style="vertical-align: middle;">Costos</th>
+                            <th style="vertical-align: middle;">Descuentos</th>
+                            <th style="vertical-align: middle;">Beneficio</th>
+                            <th style="vertical-align: middle;">Retiros</th>
+                            <th style="vertical-align: middle;">Beneficio</th>
+                            <th style="vertical-align: middle;">Tenencia</th>
+                            <th style="vertical-align: middle;">Financiación</th>
 
 
                         </tr>
@@ -53,53 +59,117 @@
                     <tbody>
                         {% for i in datos_completos %}
 
-                        <tr class="table-light">
+                        <tr class="table-light" style="font-size: 12px;">
 
                             {% if "#300" in i.0.proyecto.nombre %}
 
-                            <td style="width: 10%; color: rgb({{i.0.proyecto.color}}); vertical-align: middle;">
+                            <td style="width: 150px; color: rgb({{i.0.proyecto.color}}); vertical-align: top;">
 
-                                <div>
 
-                                    <img src="{{i.0.proyecto.iamgen.url}}" class="img-fluid" alt="..."
-                                        style="max-width: 70px; height:auto;">
-
-                                </div>
-
-                                <small><b>#300</b></small>
-
+                                #300
+                                <h6 class="card-subtitle" style="font-size: 12px; margin-top: 2px;"><span class="text-muted">$ {{ i.9|floatformat:0|intcomma }}</span></h6>
                             </td>
 
                             {% else %}
 
-                            <td style="width: 10%; color: rgb({{i.0.proyecto.color}}); vertical-align: middle;">
+                            <td style="width: 150px; color: rgb({{i.0.proyecto.color}}); vertical-align: top;">
 
-                                <div>
-
-                                    <img src="{{i.0.proyecto.iamgen.url}}" class="img-fluid" alt="..."
-                                        style="max-width: 70px; height:auto;">
-
-                                </div>
-
-                                <small><b>{{ i.0.proyecto.nombre}}</b> </small>
-
+                            {{ i.0.proyecto.nombre}}
+                            <h6 class="card-subtitle" style="font-size: 12px; margin-top: 2px;"><span class="text-muted">$ {{ i.9|floatformat:0|intcomma }}</span></h6>
                             </td>
 
                             {% endif %}
 
-                            <td style=" vertical-align: middle;"><small>$ {{ i.2|floatformat:0|intcomma }}</small> </td>
-                            <td style=" vertical-align: middle;"><small>$ {{ i.1|floatformat:0|intcomma }}</small> </td>
-                            <td style=" vertical-align: middle;"><small>$ {{ i.0.tenencia|floatformat:0|intcomma }}</small> </td>
-                            <td style=" vertical-align: middle;"><small>$ {{ i.0.financiacion|floatformat:0|intcomma }}</small> </td>
-                            <td style=" vertical-align: middle;"><small><b>$ {{ i.3|floatformat:0|intcomma }}</b></small></td>
-                            <td style="vertical-align: middle;"><small><b>{{ i.4|floatformat:0|intcomma }}%</b></small></td>
-                            <td style=" vertical-align: middle;"><small>- $ {{ i.11|floatformat:0|intcomma }}</small></td>
-                            <td style=" vertical-align: middle;"><small>- $ {{ i.10|floatformat:0|intcomma }}</small></td>
-                            <td style=" vertical-align: middle;"><small><b>$ {{ i.7|floatformat:0|intcomma }}</b></small> </td>
-                            <td style="vertical-align: middle;"><small><b>{{ i.8|floatformat:0|intcomma }}%</b></small> </td>
-                            <td style=" vertical-align: middle; color: #323BA9;">
+                            <td style=" vertical-align: top;"><a href="#" data-toggle="modal" data-target="#ModalIngresos{{i.0.id}}">$ {{ i.2|floatformat:0|intcomma }}</a></td>
 
-                                <small><b>$ {{ i.9|floatformat:0|intcomma }}</b> </small>
+                            <!-- Modal lista de ingresos-->
+                            <div class="modal fade" id="ModalIngresos{{i.0.id}}" tabindex="-1" role="dialog" aria-labelledby="ModalIngresos{{i.0.id}}" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLongTitle">Ingresos de {{i.0.proyecto.nombre|lower|capfirst}}</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    </div>
+                                    <div class="modal-body">
+                                    <h6 class="text-info">Elementos del almacenero</h6> 
+                                    <hr></hr>
+                                    <h6> Cuotas cobradas: $ {{i.0.cuotas_cobradas|floatformat:0|intcomma}}</h6>
+                                    <h6> Cuotas a cobrar: $ {{i.0.cuotas_a_cobrar|floatformat:0|intcomma}}</h6>
+                                    <h6> Ingreso por ventas: $ {{i.0.ingreso_ventas|floatformat:0|intcomma}}</h6> 
+                                    <h6> Prestamos de proyectos: $ {{i.0.prestamos_proyecto|floatformat:0|intcomma}}</h6> 
+                                    <h6> Otros prestamos: $ {{i.0.prestamos_otros|floatformat:0|intcomma}}</h6>
+
+                                    
+                                    </div>
+                                    <hr></hr>
+                                    <div class="modal-body">
+                                        <h6>Total: $ {{i.2|floatformat:0|intcomma}} </h6>
+                                    </div>
+                                    <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            
+                                    </div>
+                                </div>
+                                </div>
+
+                            </div>
+                            <td style=" vertical-align: top;"><a href="#" data-toggle="modal" data-target="#ModalGastos{{i.0.id}}">$ {{ i.1|floatformat:0|intcomma }}</a></td>
+
+                            <!-- Modal lista de ingresos-->
+                            <div class="modal fade" id="ModalGastos{{i.0.id}}" tabindex="-1" role="dialog" aria-labelledby="ModalGastos{{i.0.id}}" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLongTitle">Gastos de {{i.0.proyecto.nombre|lower|capfirst}}</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    </div>
+                                    <div class="modal-body">
+                                    <h6 class="text-info">Elementos del almacenero</h6> 
+                                    <hr></hr>
+                                    
+                                    <h6> Gastos a la fecha: $ {{i.0.gastos_fecha|floatformat:0|intcomma}}</h6>
+                                    <h6> Cheques emitidos: $ {{i.0.cheques_emitidos|floatformat:0|intcomma}}</h6>
+                                    <h6> Prestamos a devolver: $ {{i.0.Prestamos_dados|floatformat:0|intcomma}}</h6>
+                                    <h6> Pendiente en administración: $ {{i.0.pendiente_admin|floatformat:0|intcomma}}</h6>
+                                    <h6> Comisiones: $ {{i.0.pendiente_comision|floatformat:0|intcomma}}</h6>
+                                    <h6> Saldo de materiales: $ {{i.12.saldo_mat|floatformat:0|intcomma}}</h6> 
+                                    <h6> Saldo de mano de obra: $ {{i.12.saldo_mo|floatformat:0|intcomma}}</h6> 
+                                    <h6> Imprevistos: $ {{i.12.imprevisto|floatformat:0|intcomma}}</h6>
+                                    <h6> Creditos: $ {{i.12.credito|floatformat:0|intcomma}}</h6>
+                                    <h6> Fondos de reparo: $ {{i.12.fdr|floatformat:0|intcomma}}</h6>
+                                    <h6> Adelantos: - $ {{i.0.pendiente_adelantos|floatformat:0|intcomma}}</h6>
+                                    <h6> IVA: $ {{i.0.pendiente_iva_ventas|floatformat:0|intcomma}}</h6>
+                                    <h6> IIBB y TEM: $ {{i.0.pendiente_iibb_tem|floatformat:0|intcomma}}</h6>
+
+                                    
+                                    </div>
+                                    <hr></hr>
+                                    <div class="modal-body">
+                                        <h6>Total: $ {{i.1|floatformat:0|intcomma}} </h6>
+                                    </div>
+                                    <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            
+                                    </div>
+                                </div>
+                                </div>
+
+                            </div>
+                            <td style=" vertical-align: top;">- $ {{ i.11|floatformat:0|intcomma }}</td>
+                            <td style=" vertical-align: top;">$ {{ i.3|floatformat:0|intcomma }}
+                                <h6 class="card-subtitle" style="font-size: 12px; margin-top: 2px;"><span class="text-muted"> {{ i.4|floatformat:0|intcomma }}%</span></h6></td>                            
+                            <td style=" vertical-align: top;">- $ {{ i.10|floatformat:0|intcomma }}</td>
+                            <td style=" vertical-align: top;">$ {{ i.7|floatformat:0|intcomma }}
+                                <h6 class="card-subtitle" style="font-size: 12px; margin-top: 2px;"><span class="text-muted">{{ i.8|floatformat:0|intcomma }}%</span></h6></td>
+                            <td style=" vertical-align: top;">$ {{ i.0.tenencia|floatformat:0|intcomma }}</td>
+                            <td style=" vertical-align: top;">$ {{ i.0.financiacion|floatformat:0|intcomma }}</td>
+                            
+                            <!-- 
+                            <td style=" vertical-align: middle; color: #323BA9;">
 
                                 <div>
 
@@ -130,29 +200,33 @@
                                 </div>
 
                             </td>
+                            -->
 
                         </tr>
                         {% endfor %}
                     </tbody>
 
-                    <tbody>
+                    <tfoot>
 
-                        <tr class="table-dark">
-                            <td style=" vertical-align: middle;"><small><b>RESULTADO</b></small> </td>
-                            <td style=" vertical-align: middle;"><small><b>$ {{datos_finales.0.0|floatformat:0|intcomma }}</b> </small> </td>
-                            <td style=" vertical-align: middle;"><small><b>$ {{datos_finales.0.1|floatformat:0|intcomma }}</b></small> </td>
-                            <td style=" vertical-align: middle;"><small><b>$ {{datos_finales.0.9|floatformat:0|intcomma }}</b></small> </td>
-                            <td style=" vertical-align: middle;"><small><b>$ {{datos_finales.0.10|floatformat:0|intcomma }}</b></small> </td>
-                            <td style=" vertical-align: middle; "><small><b>$ {{datos_finales.0.2|floatformat:0|intcomma}}</b></small> </td>
-                            <td style="vertical-align: middle;"><small><b>{{datos_finales.0.3|floatformat:0|intcomma }}%</b></small> </td>
-                            <td style=" vertical-align: middle;"><small><b>- $ {{ datos_finales.0.4|floatformat:0|intcomma}}</b></small> </td>
-                            <td style=" vertical-align: middle;"><small><b>- $ {{ datos_finales.0.7|floatformat:0|intcomma }}</b></small> </td>
-                            <td style=" vertical-align: middle;"><small><b>$ {{datos_finales.0.6|floatformat:0|intcomma }}</b></small> </td>
-                            <td style="vertical-align: middle;"><small><b>{{datos_finales.0.5|floatformat:0|intcomma }}%</b></small> </td>
-                            <td style=" vertical-align: middle;"></td>
+                        <tr style="font-size: 12px; font-weight: bold; text-align: left;">
+                            <td style=" vertical-align: top;">Resultado</td>
+                            <td style=" vertical-align: top;">$ {{datos_finales.0.0|floatformat:0|intcomma }}</td>
+                            <td style=" vertical-align: top;">$ {{datos_finales.0.1|floatformat:0|intcomma }}</td>
+                            <td style=" vertical-align: top;">- $ {{ datos_finales.0.4|floatformat:0|intcomma}}</td>
+                            
+                            <td style=" vertical-align: top; ">$ {{datos_finales.0.2|floatformat:0|intcomma}}
+                                <h6 class="card-subtitle" style="font-size: 12px; margin-top: 2px;"><span class="text-muted">{{datos_finales.0.3|floatformat:0|intcomma }}%</span></h6>
+                            </td>
+                            <td style=" vertical-align: top;">- $ {{ datos_finales.0.7|floatformat:0|intcomma }}</td>
+                            <td style=" vertical-align: top;">$ {{datos_finales.0.6|floatformat:0|intcomma }}
+                                <h6 class="card-subtitle" style="font-size: 12px; margin-top: 2px;"><span class="text-muted">{{datos_finales.0.5|floatformat:0|intcomma }}%</span></h6>
+                            </td>
+                            <td style=" vertical-align: top;">$ {{datos_finales.0.9|floatformat:0|intcomma }}</td>
+                            <td style=" vertical-align: top;">$ {{datos_finales.0.10|floatformat:0|intcomma }}</td>
+  
                         </tr>
 
-                    </tbody>
+                    </tfoot>
 
                 </table>
 
@@ -162,9 +236,14 @@
                 <hr class="my-4" style="width: 100%; ">
             </b>
 
-            <div style="margin-bottom: 2rem;">
-                <h5 style="font-family: Arial, Helvetica, sans-serif;">Variación historica</h5>
-            </div>
+            <div class="d-flex">
+
+                <h4 class="card-title"><span class="lstick m-r-20"></span>
+                    <span class="text-info ml-2"
+                                style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif"></span>Variación historica
+                </h4>
+            
+                </div>
 
             <div style="margin-top: 0.5rem; width: 100%;">
 
@@ -172,7 +251,7 @@
                     <small><strong>-- Composición del beneficio --</strong></small>
                 </div>
 
-                <canvas id="myChart" style="width: 100%; min-height: 70px"></canvas>
+                <canvas id="myChart" height="100px"></canvas>
 
             </div>
 
@@ -182,7 +261,7 @@
                     <small><strong>-- Variación costos e ingresos --</strong></small>
                 </div>
 
-                <canvas id="myChart2" style="width: 100%; min-height: 70px"></canvas>
+                <canvas id="myChart2" height="100px"></canvas>
 
             </div>
 
@@ -210,9 +289,9 @@
              datasets: [
 
              {
-                 label: 'Margen final',
-                 backgroundColor: 'rgb(24, 230, 52, 0.5)',
-                 borderColor: 'rgb(24, 230, 52)',
+                 label: 'Beneficio',
+                 backgroundColor: 'rgb(21, 240, 225, 0.5)',
+                 borderColor: 'rgb(21, 240, 225)',
                  fill: true,
                  borderWidth: 1,
                  lineTension: 0,
@@ -225,9 +304,9 @@
              },
 
              {
-                 label: 'Margen antes de descuento',
-                 backgroundColor: 'rgb(230, 214, 24, 0.5)',
-                 borderColor: 'rgb(230, 214, 24)',
+                 label: 'Antes de descuento',
+                 backgroundColor: 'rgb(213, 21, 240 , 0.5)',
+                 borderColor: 'rgb(213, 21, 240 )',
                  fill: '-1',
                  borderWidth: 1,
                  lineTension: 0,
@@ -240,7 +319,7 @@
              },
 
              {
-                 label: 'Margen antes de retiro',
+                 label: 'Antes de retiro',
                  backgroundColor: 'rgb(24, 40, 230, 0.5)',
                  borderColor: 'rgb(24, 40, 230)',
                  fill: '-1',
@@ -276,7 +355,7 @@
                      {
                          ticks: {
                              min: 0,
-                             stepSize: 50,
+                             stepSize: 100,
                              callback: function(label, index, labels) {
                                  return '$ '+label+ ' M';
                                  
@@ -315,8 +394,8 @@
              ],
          datasets: [{
              label: 'Costo del proyecto',
-             backgroundColor: 'rgb(206, 38, 21 , 0.5)',
-             borderColor: 'rgb(206, 38, 21 )',
+             backgroundColor: 'rgb(21, 84, 240 , 0.5)',
+             borderColor: 'rgb(21, 84, 240 )',
              fill: true,
              borderWidth: 1,
              lineTension: 0,
