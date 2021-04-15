@@ -51,7 +51,7 @@
                             <th style="vertical-align: middle;">Retiros</th>
                             <th style="vertical-align: middle;">Beneficio</th>
                             <th style="vertical-align: middle;">Tenencia</th>
-                            <th style="vertical-align: middle;">Financiación</th>
+                            <th style="vertical-align: middle;">Finan.</th>
 
 
                         </tr>
@@ -66,7 +66,7 @@
                             <td style="width: 150px; color: rgb({{i.0.proyecto.color}}); vertical-align: top;">
 
 
-                                #300
+                                <b>#300</b>  
                                 <h6 class="card-subtitle" style="font-size: 12px; margin-top: 2px;"><span class="text-muted">$ {{ i.9|floatformat:0|intcomma }}</span></h6>
                             </td>
 
@@ -74,7 +74,7 @@
 
                             <td style="width: 150px; color: rgb({{i.0.proyecto.color}}); vertical-align: top;">
 
-                            {{ i.0.proyecto.nombre}}
+                            <b>{{ i.0.proyecto.nombre}}</b> 
                             <h6 class="card-subtitle" style="font-size: 12px; margin-top: 2px;"><span class="text-muted">$ {{ i.9|floatformat:0|intcomma }}</span></h6>
                             </td>
 
@@ -441,7 +441,7 @@
                  {
                      ticks: {
                          min: 2000,
-                         stepSize: 100,
+                         stepSize: 200,
                          callback: function(label, index, labels) {
                              return '$ '+label + ' M';
                              
