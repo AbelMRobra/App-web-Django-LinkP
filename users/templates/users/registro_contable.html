@@ -271,7 +271,7 @@
                                             <td style="padding 1px;">
                                                 <div>
  
-                                                    <a href="#" data-toggle="modal" data-target="#Modal{{i.id}}">
+                                                    <a href="#" data-toggle="modal" data-target="#{{i.id}}">
                                                         <h6 style="font-size: 13px;">{{i.nota}}</h6></a>
                                                         <h6 class="card-subtitle" style="font-size: 10px;">{% if i.adjunto %}<a href="{{ i.adjunto.url }}" class=" fa fa-paperclip fa-lg"></a>{% endif %} {{i.cuenta}}</h6>
                                                                                                                     
@@ -283,7 +283,7 @@
                                         </tr>
 
                                             <!-- Modal para editar el registro -->
-                                            <div id="Modal{{i.id}}" class="modal fade" tabindex="-1" role="dialog"
+                                            <div id="{{i.id}}" class="modal fade" tabindex="-1" role="dialog"
                                             aria-labelledby="ModalRegistro{{i.id}}" aria-hidden="true">
                                             <div class="modal-dialog modal-dialog-centered" role="document">
                                                 <div class="modal-content">
