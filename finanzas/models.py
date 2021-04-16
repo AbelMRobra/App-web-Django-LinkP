@@ -96,6 +96,10 @@ class Cuota(models.Model):
         BOLETO= "BOLETO"
         NO_BOLETO= "NO BOLETO"
 
+    class Pagada(models.TextChoices):
+        SI= "SI"
+        NO= "NO"
+
     cuenta_corriente = models.ForeignKey(CuentaCorriente, on_delete=models.CASCADE, verbose_name = "Cuenta corriente")
     fecha = models.DateField(verbose_name = "Fecha de venta")
     precio = models.FloatField(verbose_name="Precio de la cuota en moneda dura")
@@ -103,6 +107,7 @@ class Cuota(models.Model):
     precio_pesos = models.FloatField(verbose_name="Precio en pesos", blank=True, null=True)
     concepto = models.CharField(max_length=100, verbose_name = "Concepto", blank=True, null=True)
     boleto = models.CharField(choices=Estado.choices, max_length=20, verbose_name="Boleto", default="NO BOLETO")
+    pagada = models.CharField(choices=Pagada.choices, max_length=20, verbose_name="Pagada", default="NO")
     porc_boleto = models.FloatField(verbose_name="Porcentaje a aplicar boleto", blank=True, null=True)
     
     class Meta:

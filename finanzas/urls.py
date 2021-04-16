@@ -35,6 +35,7 @@ urlpatterns = [
     url(r'^des_resumenctacte/$', login_required(DescargarTotalCuentas.as_view()), name = 'Descargar resumen total de cuenta'),
     url(r'^des_resumenctacte/$', login_required(DescargarTotalCuentas.as_view()), name = 'Descargar resumen total de cuenta'),
     url(r'^reportepdf/(?P<id_cuenta>\d+)/$', PdfPrueba.as_view(), name = "Reporte de pdf de cuentas corrientes"),
+    url(r'^calculadora/$', login_required(views.calculadora), name = 'Calculadora'),
     #----------------URL ADMINISTRACION -----------------------------------------
 
     url(r'^movimientoadmin/$', login_required(views.movimientoadmin), name = 'Movimiento administración'),

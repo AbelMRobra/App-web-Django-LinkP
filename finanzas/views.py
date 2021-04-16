@@ -1133,14 +1133,16 @@ def ctactecliente(request, id_cliente):
         saldo_pesos = saldo_cuota*cuota.constante.valor
         pagos_realizados = Pago.objects.filter(cuota = cuota)
         saldo_cuota = cuota.precio - pago_cuota
+
         if pago_cuota == 0:
             cotizacion = 0
         else:
             cotizacion = pago_pesos/pago_cuota
 
-        if cuota.precio != 0:
-            if abs(saldo_cuota/cuota.precio) < 0.01:
+        if cuota.precio != 0 and cuota.pagada == "NO":
+            if abs(saldo_cuota*cuota.constante.valor) < 50:
                 cuota.precio = pago_cuota
+                cuota.pagada = "SI"
                 cuota.save()
                 saldo_cuota = 0
                 saldo_pesos = 0
@@ -3283,6 +3285,39 @@ def cuentacte_resumen(request):
         datos.append((c, pagos, adeudado, pendiente))
 
     return render(request, 'ctacte_resumen.html', {"datos":datos})
+
+def calculadora (request):
+
+    if request.method == 'POST':
+
+        datos_post= request.POST.items()  
+
+
+    hoy = datetime.date.today()
+
+    cuotas = Cuota.objects.filter(fecha__lte = hoy).exclude(pagada = "SI")
+
+    datos = []
+
+    for cuota in cuotas:
+
+        pago_cuota = sum(np.array(Pago.objects.filter(cuota = cuota).values_list("pago")))
+        pago_pesos = sum(np.array(Pago.objects.filter(cuota = cuota).values_list("pago_pesos")))
+        saldo_cuota = cuota.precio - pago_cuota
+        saldo_pesos = saldo_cuota*cuota.constante.valor
+
+        if cuota.precio != 0 and cuota.pagada == "NO":
+            if abs(saldo_cuota*cuota.constante.valor) < 20:
+                cuota.precio = pago_cuota
+                cuota.pagada = "SI"
+                cuota.save()
+                saldo_cuota = 0
+                saldo_pesos = 0
+
+        datos.append((cuota, saldo_cuota))
+  
+
+    return render(request, 'calculadora.html', {'datos':datos})
 
 class DescargarCuentacorriente(TemplateView):
 

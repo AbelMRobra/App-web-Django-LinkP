@@ -83,7 +83,7 @@
                                 <td>
                                     <div style="display: inline-block;"><a class="fa fa-trash d-flex align-content-end" style="text-decoration: none;" href="{% url 'Eliminar cuota' i.0.id %}"></a></div>
                                     <div style="display: inline-block;"><a class="fa fa-pencil" href="{% url 'Editar cuota' i.0.id %}" ></a></div>
-                                    <div style="display: inline-block;"> {{i.0.concepto|upper}}</div>
+                                    <div style="display: inline-block;" {% if i.0.pagada == "SI" %} class="text-success"{% endif %} > {{i.0.concepto|upper}}</div>
                                     
                                     
                                         

@@ -90,7 +90,6 @@
                 {% endif %}
 
             </div>
-
         </div>
     </div>
 
@@ -160,6 +159,29 @@
                 {% if request.user|has_group:"ADMIN NIVEL 1" %}
 
                 <a href="{% url 'Deudores' 0 %}"><button class="btn btn-warning">
+                        Ingresar</button></a>
+                        {% else %}
+
+                        <a href="#"><button class="btn btn-secondary">
+                            Sin permisos</button></a>
+                        {% endif %}
+            </div>
+
+        </div>
+    </div>
+    <div class="col-lg-3 col-xlg-4">
+        <div class="card">
+            <div class="card-body text-center">
+                <div>
+                    <h6>Calculadora</h6>
+                </div>
+
+                <div>
+                    <img src="{% static 'img/animation_500_kmqi3zbx.gif' %}" alt="" style="max-width:100px; height:auto; margin: 5px;">
+                </div>
+                {% if request.user|has_group:"ADMIN NIVEL 1" %}
+
+                <a href="{% url 'Calculadora' %}"><button class="btn btn-warning">
                         Ingresar</button></a>
                         {% else %}
 

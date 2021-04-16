@@ -1,0 +1,94 @@
+{% extends "users/inicio2.html" %}
+
+{% load static %}
+{% load humanize %}
+{% load apptags_extras %}
+{% block content %}
+
+<div class="container-fluid ">
+    <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+            <h3 class="text-themecolor">Calculadora de intereses </h3>
+        </div>
+
+        <div class="col-md-7 align-self-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'Panel cuentas corrientes' %}">Panel</a></li>
+                <li class="breadcrumb-item">Calculadora</li>
+            </ol>
+        </div>
+    </div>
+</div>
+<div class="row ">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+
+                <div class="table-responsive">
+                    <table id="example" class="table table-striped table-bordered" data-show-columns="true"
+                        style="width:99%">
+                        <thead style="font-size: 14px;">
+                            <tr>
+                                <th>Proyecto</th>
+                                <th>Cliente</th>
+                                <th>Unidad</th>
+                                <th>Deuda</th>
+                                <th>Moneda</th>
+                                <th>Fecha</th>
+                                <th style="width: 120px">Couta a aplicar</th>
+                                <th style="width: 70px">Interes</th>
+                                <th>Calcular</th>
+                            </tr>
+                        </thead>
+                        <tbody style="font-size: 14px;">
+                            {% for d in datos %}
+                            
+                                <tr>
+                                    <form method="POST"
+                                        onsubmit="return confirm('¿Esta seguro que desea calcular? Los cambios son irreversibles.');">
+                                        {% csrf_token %}
+                                    <td>
+                                        <p>{{d.0.cuenta_corriente.venta.proyecto.nombre}}</p>
+                                    </td>
+                                    <td>
+                                        <p>{{d.0.cuenta_corriente.venta.comprador}}</p>
+                                    </td>
+                                    <td>
+                                        <p>{{d.0.cuenta_corriente.venta.unidad}}</p>
+                                    </td>
+                                    <td>
+                                        <p>{{d.1|floatformat:2}}</p>
+                                    </td>
+                                    <td>
+                                        <p>{{d.0.constante.nombre}}</p>
+                                    </td>
+                                    <td>
+                                        <p>{{d.0.fecha|date:"d/m/Y"}}</p>
+                                    </td>
+                                    <!--  -->
+                                    <td> <select class="form-control" name="cuotadestino" style="width: 120px">
+                                            <option value="10/1/2021" selected>10/1/2021</option>
+                                            <option value="10/2/2021">10/2/2021</option>
+                                            <option value="10/3/2021">10/3/2021</option>
+                                            <option value="10/4/2021">10/4/2021</option>
+                                    </td>
+                                    <td><input type="number" name="interes" value="0.02" step="0.0001" class="form-control"
+                                            style="width: 100px"></th>
+                                    <td><button type="submit" name="cuotaorigen" value="{{d.0.id}}" class=" btn"><i
+                                                class="fa fa-calculator text-info"></i></button>
+                                    </td>
+                                    </form>
+                                </tr>
+                            
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
