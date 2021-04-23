@@ -1,0 +1,211 @@
+{% extends "users/inicio2.html" %}
+{% load apptags_extras %}
+
+{% load static %}
+
+{% block content %}
+
+<div class="container-fluid ">
+    <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+            <h3 class="text-themecolor">Canje de monedas</h3>
+        </div>
+        <div class="col-md-7 align-self-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+                <li class="breadcrumb-item">Tabla de canjes</li>
+            </ol>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+
+                <h4 class="card-title"><span class="lstick m-r-20"></span>Tabla de canjes realizados</h4>
+                <div class="row">
+                    <div class="col-12">
+                        <ul class="nav nav-tabs">
+                            <li class="active"><a data-toggle="tab" href="#sinentregar">Sin entregar</a></li>
+                            <li><a data-toggle="tab" href="#entregado">Entregado</a></li>
+                            <li><a data-toggle="tab" href="#total">Total</a></li>
+                            <li><a data-toggle="tab" href="#resumen">Resumen</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="tab-content">
+                    <div id="sinentregar" class="tab-pane fade  in active">
+                        <div class="row">
+                            <div class="col-12">
+
+                                <div class="table-responsive m-t-4">
+                                    <table class="table stylish-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Premios</th>
+                                                <th>Usuario</th>
+                                                <th style="text-align: right;">Costo</th>
+                                                <th style="text-align: center; vertical-align: top;">Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                            {% for d in data %}
+                                            {% if d.entregado == "NO" %}
+                                            <tr>
+                                                <td>{{d.premio}}</td>
+                                                <td>{{d.usuario.nombre}}</td>
+                                                <td style="text-align: right;">{{d.monedas}} <img
+                                                        src="{% static 'img/monedalink2.png' %}" alt=""
+                                                        style="max-width:21px; height:auto; vertical-align: top;"></td>
+                                                <!-- if entregado false -->
+
+                                                <td style="text-align: center; vertical-align: top;">
+                                                    {% if d.entregado == "SI"%}
+
+                                                    <img src="{% static 'img/cheque.png' %}" alt=""
+                                                        style="max-width:21px; height:auto; vertical-align: top;">
+
+                                                    {% else %}
+                                                    <form method="POST">
+                                                        {% csrf_token %}
+                                                        <button class="btn" type="submit" name="ENTREGADO"
+                                                            style="padding: 0%;" value="{{d.id}}"><img
+                                                                src="{% static 'img/advertir.png' %}" alt=""
+                                                                style="max-width:21px; height:auto; vertical-align: top;"></button>
+                                                    </form>
+
+                                                    {% endif %}
+                                                </td>
+
+
+                                            </tr>
+                                            {% endif %}
+                                            {% endfor %}
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="entregado" class="tab-pane fade">
+                        <div class="row">
+                            <div class="col-12">
+
+                                <div class="table-responsive m-t-4">
+                                    <table class="table stylish-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Premios</th>
+                                                <th>Usuario</th>
+                                                <th style="text-align: right;">Costo</th>
+                                                <th style="text-align: center; vertical-align: top;">Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                            {% for d in data %}
+                                            {% if d.entregado == "SI" %}
+                                            <tr>
+                                                <td>{{d.premio}}</td>
+                                                <td>{{d.usuario.nombre}}</td>
+                                                <td style="text-align: right;">{{d.monedas}} <img
+                                                        src="{% static 'img/monedalink2.png' %}" alt=""
+                                                        style="max-width:21px; height:auto; vertical-align: top;"></td>
+                                                <!-- if entregado false -->
+
+                                                <td style="text-align: center; vertical-align: top;">
+                                                    {% if d.entregado == "SI"%}
+
+                                                    <img src="{% static 'img/cheque.png' %}" alt=""
+                                                        style="max-width:21px; height:auto; vertical-align: top;">
+
+                                                    {% else %}
+                                                    <form method="POST">
+                                                        {% csrf_token %}
+                                                        <button class="btn" type="submit" name="ENTREGADO"
+                                                            style="padding: 0%;" value="{{d.id}}"><img
+                                                                src="{% static 'img/advertir.png' %}" alt=""
+                                                                style="max-width:21px; height:auto; vertical-align: top;"></button>
+                                                    </form>
+
+                                                    {% endif %}
+                                                </td>
+
+
+                                            </tr>
+                                            {% endif %}
+                                            {% endfor %}
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="total" class="tab-pane fade">
+                        <div class="row">
+                            <div class="col-12">
+
+                                <div class="table-responsive m-t-4">
+                                    <table class="table stylish-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Premios</th>
+                                                <th>Usuario</th>
+                                                <th style="text-align: right;">Costo</th>
+                                                <th style="text-align: center; vertical-align: top;">Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                            {% for d in data %}
+                                            <tr>
+                                                <td>{{d.premio}}</td>
+                                                <td>{{d.usuario.nombre}}</td>
+                                                <td style="text-align: right;">{{d.monedas}} <img
+                                                        src="{% static 'img/monedalink2.png' %}" alt=""
+                                                        style="max-width:21px; height:auto; vertical-align: top;"></td>
+                                                <!-- if entregado false -->
+
+                                                <td style="text-align: center; vertical-align: top;">
+                                                    {% if d.entregado == "SI"%}
+
+                                                    <img src="{% static 'img/cheque.png' %}" alt=""
+                                                        style="max-width:21px; height:auto; vertical-align: top;">
+
+                                                    {% else %}
+                                                    <form method="POST">
+                                                        {% csrf_token %}
+                                                        <button class="btn" type="submit" name="ENTREGADO"
+                                                            style="padding: 0%;" value="{{d.id}}"><img
+                                                                src="{% static 'img/advertir.png' %}" alt=""
+                                                                style="max-width:21px; height:auto; vertical-align: top;"></button>
+                                                    </form>
+
+                                                    {% endif %}
+                                                </td>
+
+
+                                            </tr>
+                                            {% endfor %}
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="resumen" class="tab-pane fade">
+                        <p>resumen</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

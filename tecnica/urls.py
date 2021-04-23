@@ -7,6 +7,12 @@ urlpatterns = [
     url(r'^documentacion$', login_required(views.documentacion), name = 'Documentacion'),
 
 
+    ######## ----------------> Gerenciador
+    url(r'^gerenpanel$', login_required(views.gerenciamientopanel), name = 'Panel del gerenciador'),
+    url(r'^gerenproyecto/(?P<id_proyecto>\d+)/$', login_required(views.gerenciamientoproyecto), name = 'Gerenciador - Proyecto'),
+
+
+
     ######## ----------------> Registros de desvios
 
     url(r'^registrospanel$', login_required(views.registrodesvios), name = 'Registros de desvios'),

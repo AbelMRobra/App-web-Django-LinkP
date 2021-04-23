@@ -10,7 +10,7 @@ from proyectos.models import Proyectos, Unidades
 from ventas.models import VentasRealizadas
 from compras.models import Compras, Comparativas
 from registro.models import RegistroValorProyecto
-from rrhh.models import datosusuario, mensajesgenerales, NotaDePedido, Vacaciones, MonedaLink, EntregaMoneda, Anuncios, Seguimiento, Minutas, Acuerdos, PremiosMonedas, Logros, RegistroContable
+from rrhh.models import datosusuario, mensajesgenerales, NotaDePedido, Vacaciones, MonedaLink, EntregaMoneda, Anuncios, Seguimiento, Minutas, Acuerdos, PremiosMonedas, Logros, RegistroContable, CanjeMonedas
 import datetime
 from datetime import date
 import pandas as pd
@@ -390,9 +390,178 @@ def guia(request):
 
 def canjemonedas(request):
 
-    premios = PremiosMonedas.objects.all()
+    mensaje = ""
 
-    return render(request, "users/canjemonedas.html", {"premios":premios})
+    usuario = datosusuario.objects.get(identificacion = request.user)
+
+    monedas_recibidas = len(EntregaMoneda.objects.filter(usuario_recibe = usuario))
+
+    monedas_canjear = monedas_recibidas - sum(CanjeMonedas.objects.filter(usuario = usuario).values_list("monedas", flat=True))
+
+    if request.method == 'POST':
+
+        try:
+
+            rrhh = "am@linkinversiones.com.ar"
+
+            premio_solicitado = PremiosMonedas.objects.get(id = int(request.POST['premio']))
+
+            if monedas_canjear >= premio_solicitado.cantidad:
+
+                canje = CanjeMonedas(
+                    usuario = usuario,
+                    fecha = datetime.date.today(),
+                    premio = str(premio_solicitado.nombre),
+                    monedas = int(premio_solicitado.cantidad),
+                )
+
+                canje.save()
+
+                # Establecemos conexion con el servidor smtp de gmail
+                mailServer = smtplib.SMTP(settings.EMAIL_HOST, settings.EMAIL_PORT)
+                mailServer.ehlo()
+                mailServer.starttls()
+                mailServer.ehlo()
+                mailServer.login(settings.EMAIL_HOST_USER, settings.EMAIL_HOST_PASSWORD)
+
+                # Construimos el mensaje simple
+                
+                mensaje = MIMEText("""
+                
+Hola!,
+
+{} acaba de canjear Linkcoins, el premio es {} que costo {} monedas.
+
+Deberia aparecer en el panel de seguimiento, cualquier duda hable con el área de IT
+
+Saludos!
+
+-- Link-Help 
+
+                    
+                """.format(usuario, canje.premio, canje.monedas))
+                mensaje['From']=settings.EMAIL_HOST_USER
+                mensaje['To']= rrhh
+                mensaje['Subject']="{} realizo un canje".format(usuario)
+
+
+                # Envio del mensaje
+
+                mailServer.sendmail(settings.EMAIL_HOST_USER,
+                                rrhh,
+                                mensaje.as_string())
+
+                # Establecemos conexion con el servidor smtp de gmail
+                mailServer = smtplib.SMTP(settings.EMAIL_HOST, settings.EMAIL_PORT)
+                mailServer.ehlo()
+                mailServer.starttls()
+                mailServer.ehlo()
+                mailServer.login(settings.EMAIL_HOST_USER, settings.EMAIL_HOST_PASSWORD)
+
+                # Construimos el mensaje simple
+                
+                mensaje = MIMEText("""
+                    
+Hola hola!,
+
+Acabas canjear {}  Linkcoins por el premio de {}.
+
+El área de RRHH te notificara cuando el premio este listo para retirarlo, puede demorar hasta 10 dias habiles.
+
+Si hubiera algún problema del sistema, comunicate con el área de IT para solucionarlo
+
+Que termine bien tu dia!
+
+-- Link-Help 
+
+                
+                """.format(canje.monedas, canje.premio))
+                mensaje['From']=settings.EMAIL_HOST_USER
+                mensaje['To']= usuario.email
+                mensaje['Subject']="Realizaste un canje de Linkcoins".format(usuario)
+
+
+                # Envio del mensaje
+
+                mailServer.sendmail(settings.EMAIL_HOST_USER,
+                                usuario.email,
+                                mensaje.as_string())
+
+
+                return redirect('Canje de monedas')
+
+            else:
+                mensaje = "No tienes suficientes monedas para canjear el premio seleccionado"
+
+        except:
+
+            pass
+
+        try:
+
+            if request.POST['id'] != "0":
+                premio = PremiosMonedas.objects.get(id = int(request.POST['id']))
+                premio.nombre = request.POST['nombre']
+                premio.cantidad = request.POST['cantidad']
+                premio.save()
+
+            
+
+            else:
+                b = PremiosMonedas(
+                    nombre = request.POST['nombre'],
+                    cantidad = int(request.POST['cantidad']),
+                )
+
+                b.save()
+
+        except:
+
+            pass
+
+        try:
+
+            premio = PremiosMonedas.objects.get(id = int(request.POST['borrar']))
+            premio.delete()
+
+
+        except:
+
+            pass
+
+
+    premios = PremiosMonedas.objects.all().order_by("nombre")
+
+    monedas = MonedaLink.objects.filter(usuario_portador = usuario)
+
+    monedas_recibidas = len(EntregaMoneda.objects.filter(usuario_recibe = usuario))
+
+    monedas_canjear = monedas_recibidas - sum(CanjeMonedas.objects.filter(usuario = usuario).values_list("monedas", flat=True))
+
+    monedas_disponibles = 0
+    
+    for m in monedas:
+
+        if len(EntregaMoneda.objects.filter(moneda = m)) == 0:
+
+            monedas_disponibles += 1
+
+    dato_monedas = {'monedas_recibidas':monedas_recibidas, 'monedas_disponibles':monedas_disponibles, 'monedas':monedas, 'monedas_canjear':monedas_canjear}
+  
+    return render(request, "users/canjemonedas.html", {'mensaje':mensaje, "premios":premios, 'dato_monedas':dato_monedas})
+
+def canjerealizados(request):
+
+    if request.method == 'POST':
+
+        canje = CanjeMonedas.objects.get(id = int(request.POST['ENTREGADO']))
+        canje.entregado = "SI"
+        canje.save()
+
+    data = CanjeMonedas.objects.all()
+
+    
+    return render(request, "users/canjesrealizados.html", {'data':data})
 
 def dashboard(request):
 
@@ -1333,15 +1502,11 @@ def minutascrear(request):
 
 def minutasmodificar(request, id_minuta):
 
-    group=models.Group.objects.get(name='REGA NIVEL 1')
-    users=group.user_set.all()
-    list_users = []
-    for user in users:
-        try:
-            us = datosusuario.objects.get(identificacion = user.username)
-            list_users.append(us)
-        except:
-            pass
+
+    #group=models.Group.objects.get(name='REGA NIVEL 1')
+    #users=group.user_set.all()
+
+    list_users = datosusuario.objects.filter(estado = "ACTIVO")
 
     data = Minutas.objects.get(id = int(id_minuta))
 

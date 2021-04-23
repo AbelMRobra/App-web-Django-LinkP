@@ -2,12 +2,113 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from django.shortcuts import redirect
 from proyectos.models import Proyectos
-from .models import Etapas, ItemEtapa, TecnicaMensaje, SubItem, SubSubItem, Lp, RegistroDesvios
+from compras.models import Comparativas
+from .models import Etapas, ItemEtapa, TecnicaMensaje, SubItem, SubSubItem, Lp, RegistroDesvios, GerenPlanificacion
+from presupuestos.models import Capitulos
 from rrhh.models import datosusuario
 import datetime
 from datetime import date, timedelta
 
 # Create your views here.
+
+def gerenciamientopanel(request):
+
+    today = datetime.date.today()
+
+    first_date = datetime.date(today.year, today.month, 1)
+
+    list_dates = []
+
+    aux_date = first_date
+
+    for date in range(24):
+
+        list_dates.append(aux_date)
+
+        if aux_date.month != 12:
+
+            aux_date = datetime.date(aux_date.year, aux_date.month +1, 1)
+        else:
+            aux_date = datetime.date(aux_date.year + 1, 1, 1)
+
+    proyectos = Proyectos.objects.filter(fecha_f__gte = first_date, fecha_i__lte = aux_date)
+
+    return render(request, 'geren_panel.html', {'list_dates':list_dates, 'proyectos':proyectos})
+
+def gerenciamientoproyecto(request, id_proyecto):
+
+    proyecto = Proyectos.objects.get(id = int(id_proyecto))
+
+    if request.method == 'POST':
+        try:
+            data_aux = GerenPlanificacion.objects.filter(proyecto = proyecto, capitulo__id = int(request.POST['cap']))
+            if len(data_aux) == 0:
+                b = GerenPlanificacion(
+                    proyecto = proyecto,
+                    capitulo = Capitulos.objects.get(id = int(request.POST['cap'])),
+                    fecha_i = request.POST['fecha_i']
+                )
+
+                b.save()
+
+            else:
+                data_aux[0].fecha_i = request.POST['fecha_i']
+                data_aux[0].save()
+        except:
+            data_aux = GerenPlanificacion.objects.filter(proyecto = proyecto, capitulo__id = int(request.POST['cap']))
+            if len(data_aux) == 0:
+                b = GerenPlanificacion(
+                    proyecto = proyecto,
+                    capitulo = Capitulos.objects.get(id = int(request.POST['cap'])),
+                    fecha_i = request.POST['fecha_f']
+                )
+
+                b.save()
+
+            else:
+                data_aux[0].fecha_f = request.POST['fecha_f']
+                data_aux[0].save()
+
+    capitulo = Capitulos.objects.all()
+
+    data_cap = []
+
+    for cap in capitulo:
+
+        data = GerenPlanificacion.objects.filter(proyecto = proyecto, capitulo = cap)
+
+        if len(data) == 0:
+            data_cap.append((cap, 0 ,0))
+
+        else:
+            data_cap.append((cap, data[0].fecha_i, data[0].fecha_f))
+
+    today = datetime.date.today()
+
+    first_date = datetime.date(today.year, today.month, 1)
+
+    list_dates = []
+
+    aux_date = first_date
+
+    for date in range(24):
+
+        list_dates.append(aux_date)
+
+        if aux_date.month != 12:
+
+            aux_date = datetime.date(aux_date.year, aux_date.month +1, 1)
+        else:
+            aux_date = datetime.date(aux_date.year + 1, 1, 1)
+
+    # --> Esta es la parte de las OC
+
+    nombre_proyecto = str(proyecto.nombre)
+    nombre_proyecto = nombre_proyecto.replace("TORRE", "").replace(" ", "").replace("-", "").replace("1", "").replace("2", "").replace("3", "").replace("4", "").replace("INFRA", "")
+
+    comparativas = Comparativas.objects.filter(proyecto__icontains = nombre_proyecto).exclude(estado = "AUTORIZADA").order_by("-fecha_c")
+
+    return render(request, 'gerem_proyecto.html', {'list_dates':list_dates, 'proyecto':proyecto, 'data_cap':data_cap, 'comparativas':comparativas})
 
 def registrodesvios(request):
 
@@ -403,7 +504,93 @@ def documentacionamp(request, id_proyecto, id_estado, id_week):
 
     if request.method == 'POST':
 
+        # ------------> Borrar lo que sea
+
+        try:
+            item = ItemEtapa.objects.get(id= int(request.POST['borraritem']))
+            item.delete()
+        except:
+            pass
+        try:
+            item = SubItem.objects.get(id= int(request.POST['borraritem']))
+            item.delete()
+        except:
+            pass
+        try:
+            item = SubSubItem.objects.get(id= int(request.POST['borraritem']))
+            item.delete()
+        except:
+            pass
+
+        # ------------> Editar lo que sea
+
+        try:
+            item = ItemEtapa.objects.get(id= int(request.POST['editaritem']))
+            item.nombre = request.POST['nombre']
+            item.estado = request.POST['estado']
+            if request.POST['fecha_estimada_i']:
+                item.fecha_estimada_i = request.POST['fecha_estimada_i']
+            if request.POST['fecha_estimada_f']:
+                item.fecha_estimada_f = request.POST['fecha_estimada_f']
+            if request.POST['fechai']:
+                item.fecha_iniciao = request.POST['fechai']
+            if request.POST['fechaf']:
+                item.fecha_final = request.POST['fechaf']
+            item.url =  request.POST['url']
+            try:
+                item.archivo_vigente = request.FILES['adjunto']
+                item.save()
+            except:
+                item.save()
+        except:
+            pass
+
+        try:
+            item = SubItem.objects.get(id= int(request.POST['editarsubitem']))
+            item.nombre = request.POST['nombre']
+            item.estado = request.POST['estado']
+            if request.POST['fecha_estimada_i']:
+                item.fecha_estimada_i = request.POST['fecha_estimada_i']
+            if request.POST['fecha_estimada_f']:
+                item.fecha_estimada_f = request.POST['fecha_estimada_f']
+            if request.POST['fechai']:
+                item.fecha_iniciao = request.POST['fechai']
+            if request.POST['fechaf']:
+                item.fecha_final = request.POST['fechaf']
+            item.url =  request.POST['url']
+            try:
+                item.archivo_vigente = request.FILES['adjunto']
+                item.save()
+            except:
+                item.save()
+        except:
+            pass
+
+        try:
+            item = SubSubItem.objects.get(id= int(request.POST['editarsubsubitem']))
+            item.nombre = request.POST['nombre']
+            item.estado = request.POST['estado']
+            if request.POST['fecha_estimada_i']:
+                item.fecha_estimada_i = request.POST['fecha_estimada_i']
+            if request.POST['fecha_estimada_f']:
+                item.fecha_estimada_f = request.POST['fecha_estimada_f']
+            if request.POST['fechai']:
+                item.fecha_iniciao = request.POST['fechai']
+            if request.POST['fechaf']:
+                item.fecha_final = request.POST['fechaf']
+            item.url =  request.POST['url']
+            try:
+                item.archivo_vigente = request.FILES['adjunto']
+                item.save()
+            except:
+                item.save()
+        except:
+            pass
+
         for d in request.POST.items():
+
+
+            
 
             if "fecha_final_item" in d[0]:
                 id_item = d[0].split('-')

@@ -2,6 +2,7 @@ from django.db import models
 from proyectos.models import Proyectos
 from compras.models import Contratos
 from rrhh.models import datosusuario
+from presupuestos.models import Capitulos
 
 # Create your models here.
 
@@ -124,6 +125,17 @@ class TecnicaMensaje(models.Model):
         
     def __str__(self):
         return self.mensaje
+
+class GerenPlanificacion(models.Model):
+    proyecto = models.ForeignKey(Proyectos, on_delete=models.CASCADE, verbose_name="Proyecto")
+    capitulo = models.ForeignKey(Capitulos, on_delete=models.CASCADE, verbose_name="Capitulo")
+    fecha_i = models.DateField(verbose_name="Fecha de inicio", blank=True, null=True)
+    fecha_f = models.DateField(verbose_name="Fecha final", blank=True, null=True)
+
+    class Meta:
+
+        verbose_name="Gerencia planif"
+        verbose_name_plural="Gerencia planif"
 
 class RegistroDesvios(models.Model):
     fecha = models.DateField(verbose_name="Fecha")

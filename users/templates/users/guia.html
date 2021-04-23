@@ -132,7 +132,7 @@
     <div style="margin-top: 15px; margin-bottom: 30px;">
         <a type="button" style="text-decoration: none;" data-toggle="modal" data-target="#ModalPremio"  name="subir_item" value="{{t.0.id}}"><img src="{% static 'img/regalo2.png' %}" alt="" style="max-width:25px; height:auto; vertical-align: bottom; margin-right: 15px;" data-toggle="tooltip" data-placement="right" title="" data-original-title="Regalar monedas"> </a>
         
-        {% if request.user.username == "AR" %}
+        {% if request.user.username == "AR" or request.user.username == "AM" %}
         
         <a href="{% url 'Canje de monedas' %}" style="text-decoration: none;"><img src="{% static 'img/canje.png' %}" alt="" style="max-width:25px; height:auto; vertical-align: bottom;" data-toggle="tooltip" data-placement="right" title="" data-original-title="Canjear monedas"> </a>
 

@@ -26,7 +26,7 @@
         <div class="card">
             <div class="card-body text-center">
                 <div>
-                    <h6>Notas de pedido</h6>
+                    <h6>Correspondencia</h6>
                 </div>
 
                 <div>
@@ -60,7 +60,7 @@
                     <img src="{% static 'img/animation_500_kn4to9wv.gif' %}" alt="" style="max-width:100px; height:auto; margin: 5px;">
                 </div>
 
-                {% if request.user|has_group:"TECNICA NIVEL 2" %}
+                {% if request.user|has_group:"TECNICA NIVEL 1" %}
 
 
                 <a href="{% url 'Registros de desvios' %}"><button class="btn btn-primary">
@@ -90,9 +90,9 @@
                     <img src="{% static 'img/animation_500_kmv3cy3w.gif' %}" alt="" style="max-width:100px; height:auto; margin: 5px;">
                 </div>
 
-                {% if request.user|has_group:"COMPRAS NIVEL 3" %}
+                {% if request.user|has_group:"TECNICA NIVEL 2" %}
 
-                <a href="{% url 'Compras' 0 %}"><button class="btn btn-danger">
+                <a href="/tecnica/documentacion"><button class="btn btn-danger">
                         Ingresar</button></a>
 
                 {% else %}
@@ -116,12 +116,10 @@
           <div class="card">
             <div class="card-body">
             <img src="{% static 'img/animation_500_kmv3afam.gif' %}" alt="Funny image" width="200px">
-            <p><b class="text-info">Proveedores</b> es el listado que puedes usar al solicitar una compra o registrar</p>
-            <p><b class="text-success">Solcitudes de compra</b> aqui se cargan y autorizan las O.C</p>
-            <p><b class="text-primary">Registro de compras</b> registro de las compras que descuentan el presupuesto</p>
-            <p><b class="text-dark">Check de OC</b> panel que da visto bueno a las OC para su pago</p>
-            <p><b class="text-warning">Analisis de periodos</b> estudia lo proyectado vs lo efectivo</p>
-            <p><b class="text-danger">Seguimiento general</b> son indicadores de las compras</p>
+            <p><b class="text-info">Correspondencia</b> haz notas de pedidos u ordenes de servicio</p>
+            <p><b class="text-primary">Desvios</b> anota las causas que puede demorar la entrega!</p>
+            <p><b class="text-danger">Planificación</b> de documentación de O.T</p>
+
         </div>
             </div>
         </div>

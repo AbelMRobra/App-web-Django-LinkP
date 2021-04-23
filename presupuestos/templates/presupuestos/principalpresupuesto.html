@@ -8,7 +8,7 @@
   <!-- ============================================================== -->
   <!-- Container fluid  -->
   <!-- ============================================================== -->
-  <div class="container-fluid r-aside">
+  <div class="container-fluid">
       <!-- ============================================================== -->
       <!-- Bread crumb and right sidebar toggle -->
       <!-- ============================================================== -->
@@ -309,10 +309,9 @@
               <div class="d-flex no-block">
                   <div class="m-r-20 align-self-center"><span class="lstick m-r-20"></span></div>
                   <div class="align-self-center">
-                    <div>
 
-                      <h4 class="card-title">Presupuesto detallado</h4></div>
-                      <div style="margin-top: 5px;"><a class="btn waves-effect waves-light btn-primary" href="{% url 'Presupuesto de reposición abierto' datos.0.0.id %}"> Abrir</a></div></div>
+                      <h4 class="card-title"><a href="{% url 'Presupuesto de reposición abierto' datos.0.0.id %}">Presupuesto aperturado</a></h4></div>
+
               </div>
           </div>
       </div>
@@ -347,11 +346,24 @@
               <div class="card-body little-profile text-center">
                 <div>
 
-                  <h4 class="card-title">Responsable</h4></div>
+                <h4 class="card-title">Responsable</h4></div>
                 <div class="pro-img m-t-20"><img src="{{presupuestador.imagenlogo.url}}" alt="user"></div>
-                <h3 class="m-b-0">{{presupuestador.identificacion}}</h3>
+                <h3 class="m-b-0">{{presupuestador.nombre}}</h3>
                 <h6 class="text-muted">{{presupuestador.cargo}}</h6>
-                <h6 class="text-muted m-t-10 m-b-0">{{presupuestador.email}}</h6>
+                <h6 class="text-muted m-t-10 m-b-0">{{presupuestador.email}}</h6> 
+                <div class="row" style="margin-top: 15px;">
+                  <div class="col-6" style="text-align: end;">
+                    <form method="POST" >{% csrf_token %}
+                      <input type="hidden" name="proyecto" value="{{datos.0.0.id}}">
+                      <button type="submit" name="action" value="1" class="btn fa fa-refresh text-secondary"></button></form>
+                  </div>
+                  <div class="col-6" style="text-align: start;">        
+                    <form method="POST" >{% csrf_token %}
+                      <input type="hidden" name="proyecto" value="{{datos.0.0.id}}">
+                      <button type="submit" name="action" value="2" class="btn fa fa-cloud text-secondary"></button></form>
+                  </div>
+                </div>
+
             </div>
             </div>
         </div>

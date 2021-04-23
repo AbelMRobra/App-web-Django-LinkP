@@ -1221,6 +1221,7 @@ def comparativas(request, estado, creador):
 
                             datos.append(i)
 
+    list_creadores = sorted(list_creadores)
 
     return render(request, 'comparativas.html', {'mensaje_creador':mensaje_creador, 
     'list_creadores':list_creadores, 'datos':datos, "estado":estado, 
@@ -1281,7 +1282,6 @@ def certificados(request):
     datos_enviados = {'datos':datos, 'myfilter':myfilter}
 
     return render(request, 'certificados.html', datos_enviados )
-
 
 
 # ----------------------------------------------------- VISTAS PARA PROVEEDORES ---------------------------------------------- 

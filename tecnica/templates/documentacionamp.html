@@ -1,10 +1,1246 @@
-{% extends "users/inicio.html" %}
 
-{% load static %}
 {% load humanize %}
+{% load static %}
 {% load apptags_extras %}
 
-{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="stylesheet" href="extensions/sticky-header/bootstrap-table-sticky-header.css"> 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" href="{% static 'img/LinkIco21.ico' %}" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css">
+  <!-- Hojas de estilos AdminPro -->
+  <!--  -->
+  <!--  -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.23/css/dataTables.bootstrap4.min.css">
+  <!--  -->
+  <!--  -->
+
+
+  <link rel="stylesheet" href="{% static 'css/styleabel.css' %}">
+  <link rel="stylesheet" href="{% static 'css/registro_contable.css' %}">
+  <link href="{% static 'adminpro/assets/plugins/bootstrap-select/bootstrap-select.min.css' %}" rel="stylesheet" />
+  <link href="{% static 'adminpro/assets/plugins/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'adminpro/assets/plugins/perfect-scrollbar/css/perfect-scrollbar.css' %}" rel="stylesheet">
+  <link href="{% static 'adminpro/assets/plugins/chartist-js/dist/chartist.min.css' %}" rel="stylesheet">
+  <link href="{% static 'adminpro/assets/plugins/chartist-plugin-tooltip-master/dist/chartist-plugin-tooltip.css' %}"
+    rel="stylesheet">
+  <link href="{% static 'adminpro/assets/plugins/c3-master/c3.min.css' %}" rel="stylesheet">
+  <link href="{% static 'adminpro/assets/plugins/toast-master/css/jquery.toast.css' %}" rel="stylesheet">
+  <link href="{% static 'adminpro/main/css/style.css' %}" rel="stylesheet">
+  <link href="{% static 'adminpro/main/css/pages/dashboard1.css' %}" rel="stylesheet">
+  <link href="{% static 'adminpro/main/css/colors/default.css' %}" id="theme" rel="stylesheet">
+  <link href="{% static 'adminpro/main/css/pages/chat-app-page.css' %}" rel="stylesheet">
+  <link href="{% static 'adminpro/main/css/pages/file-upload.css' %}" rel="stylesheet">
+  <link href="{% static 'adminpro/assets/plugins/multiselect/css/multi-select.css' %}" rel="stylesheet"
+    type="text/css" />
+  <link href="{% static 'adminpro/assets/plugins/bootstrap-tagsinput/dist/bootstrap-tagsinput.css' %}"
+    rel="stylesheet" />
+  <link href="{% static 'adminpro/assets/plugins/bootstrap-touchspin/dist/jquery.bootstrap-touchspin.min.css' %}"
+    rel="stylesheet" />
+  <link href="{% static 'adminpro/assets/plugins/multiselect/css/multi-select.css' %}" rel="stylesheet"
+    type="text/css" />
+  <link href="{% static 'adminpro/assets/plugins/bootstrap-datepicker/bootstrap-datepicker.min.css' %}" rel="stylesheet"
+    type="text/css" />
+  <link href="{% static 'adminpro/assets/plugins/select2/dist/css/select2.min.css' %}" rel="stylesheet"
+    type="text/css" />
+  <link href="{% static 'adminpro/assets/plugins/switchery/dist/switchery.min.css' %}" rel="stylesheet" />
+  <link href="{% static 'adminpro/assets/plugins/bootstrap-select/bootstrap-select.min.css' %}" rel="stylesheet" />
+  <title>Link-P</title>
+
+</head>
+
+<body class="fix-header fix-sidebar card-no-border">
+    <div class="preloader">
+        <div class="loader">
+          <div class="loader__figure"></div>
+          <p class="loader__label">LINK-P</p>
+        </div>
+    </div>
+      
+
+    <div id="main-wrapper">
+        <header class="topbar" style="position: relative !important;">
+          <nav class="navbar top-navbar navbar-expand-md navbar-light">
+            <div class="navbar-collapse">
+              <ul class="navbar-nav mr-auto">
+                <!-- This is  -->
+                <li class="nav-item"> <a class="nav-link nav-toggler hidden-md-up waves-effect waves-dark"
+                    href="javascript:void(0)"><i class="ti-menu"></i></a> </li>
+
+              </ul>
+              <ul class="navbar-nav my-lg-0">
+                <li>
+                  <a class="nav-link waves-effect waves-dark" href="{% url 'Documentacion Amp' datos.0.id  0 1 %}" ><img src="{% static 'img/calendario.png' %}" alt="" width="30px"></a>
+                  
+                </li>
+              </ul>
+    
+              <ul class="navbar-nav my-lg-0">
+                <li>
+                  <a class="nav-link waves-effect waves-dark" href="{% url 'Documentacion Amp' datos.0.id  0 0 %}" ><img src="{% static 'img/calendario.png' %}" alt="" width="30px"></a>
+                  
+                </li>
+              </ul>
+    
+              {% if dias_funcionando %}
+    
+              <ul class="navbar-nav my-lg-0">
+    
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle waves-effect waves-dark" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <img src="{% static 'img/acuerdos2.png' %}" alt="" width="30px">
+                    <div class="notify">{% if minutas_cantidad %}<span class="heartbit"></span> <span class="point"></span>{% endif %}</div>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right mailbox animated bounceInDown">
+                    <ul>
+                        <li>
+                            <div class="drop-title">Acuerdos pendientes ({{minutas_cantidad}})</div>
+                        </li>
+                        <li>
+                            <div class="message-center">
+    
+                                
+                                {% if minutas_cantidad %}
+    
+                                {% for m in minutas_cantidad_data %}
+    
+                                <!-- Message -->
+                                <a href="{% url 'Minutas Id' m.minuta.id %}">
+                                  {% if m.fecha_limite %}
+                                  <div class="btn btn-success btn-circle"><i class="ti-calendar"></i></div>
+                                  {% else %}
+                                  <div class="btn btn-danger btn-circle"><i class="fa fa-link"></i></div>
+                                  {% endif %}
+                                  <div class="mail-contnet">
+                                      <h5>{{m.minuta.nombre}}</h5> <span class="mail-desc"> {{m}}</span></div>
+                                  </a>
+    
+                                {% endfor %}
+    
+                                  {% endif %}
+    
+                            </div>
+                        </li>
+                        <li>
+                            <a class="nav-link text-center" href="{% url 'Minutas Listas' %}"> <strong>Ir al panel de minutas</strong> <i class="fa fa-angle-right"></i> </a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+    
+          </ul>
+        
+    
+          {% else %}
+    
+          <ul class="navbar-nav my-lg-0">
+            <li>
+              <a class="nav-link waves-effect waves-dark" href="{% url 'Minutas Listas' %}" ><img src="{% static 'img/acuerdos2.png' %}" alt="" width="30px"></a>
+              
+            </li>
+          </ul>
+    
+          {% endif %}
+    
+          {% if mensaje_oc %}
+    
+          <ul class="navbar-nav my-lg-0">
+    
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle waves-effect waves-dark" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <img src="{% static 'img/OCblanco2.png' %}" alt="" width="30px">
+                  <div class="notify"><span class="heartbit"></span> <span class="point"></span></div>
+              </a>
+              <div class="dropdown-menu dropdown-menu-right mailbox animated bounceInDown">
+                  <ul>
+                      <li>
+                          <div class="drop-title">
+                            
+                            {% if user.username == "PL" %}
+                            OC pendientes de aprobar ({{mensaje_oc.2}})
+                            {% elif user.username == "SP" %}
+                            OC pendientes de aprobar ({{mensaje_oc.2}})
+                            {% else %}
+                            OC rechazadas/observadas ({{mensaje_oc.2}})
+                            {% endif %}
+                          
+                          </div>
+                      </li>
+                      <li>
+    
+                        {% if user.username == "PL" %}
+                        <div class="message-center">
+    
+                          {% for m in mensaje_oc.0 %}
+    
+                          <!-- Message -->
+                          <a href="{% url 'Mensajes en comparativas' m.id %}">
+    
+                            <div class="btn btn-info btn-circle" style="margin-right: 5px;">{{m.creador}}</div>
+                            <div class="mail-contnet">
+                              <h5>{{m.proveedor|lower|capfirst}}</h5> <span class="mail-desc">{{m.proyecto|lower|capfirst}}</span></div>
+    
+                            </a>
+    
+                          {% endfor %}
+    
+                          {% for m in mensaje_oc.1 %}
+    
+                          <!-- Message -->
+                          <a href="{% url 'Mensajes en comparativas' m.id %}">
+    
+                            <div class="btn btn-warning btn-circle" style="margin-right: 5px;">{{m.creador}}</div>
+                            <div class="mail-contnet">
+                              <h5>{{m.proveedor|lower|capfirst}}</h5> <span class="mail-desc">{{m.proyecto|lower|capfirst}}</span></div>
+    
+                            </a>
+    
+                          {% endfor %}
+    
+                      </div>
+                    </li>
+                    <li>
+                        <a class="nav-link text-center" href="{% url 'Comparativas' 0 0 %}"> <strong>Solicitudes de compra</strong> <i class="fa fa-angle-right"></i> </a>
+                    </li>
+    
+                      {% elif user.username == "SP" %}
+                        <div class="message-center">
+    
+                          {% for m in mensaje_oc.0 %}
+    
+                          <!-- Message -->
+                          <a href="{% url 'Mensajes en comparativas' m.id %}">
+    
+                            <div class="btn btn-info btn-circle" style="margin-right: 5px;">{{m.creador}}</div>
+                            <div class="mail-contnet">
+                              <h5>{{m.proveedor|lower|capfirst}}</h5> <span class="mail-desc">{{m.proyecto|lower|capfirst}}</span></div>
+    
+                            </a>
+    
+                          {% endfor %}
+    
+                          {% for m in mensaje_oc.1 %}
+    
+                          <!-- Message -->
+                          <a href="{% url 'Mensajes en comparativas' m.id %}">
+    
+                            <div class="btn btn-info btn-circle" style="margin-right: 5px;">{{m.creador}}</div>
+                            <div class="mail-contnet">
+                              <h5>{{m.proveedor|lower|capfirst}}</h5> <span class="mail-desc">{{m.proyecto|lower|capfirst}}</span></div>
+    
+                            </a>
+    
+                          {% endfor %}
+    
+                      </div>
+                    </li>
+                    <li>
+                        <a class="nav-link text-center" href="{% url 'Comparativas' 5 0 %}"> <strong>Solicitudes de compra</strong> <i class="fa fa-angle-right"></i> </a>
+                    </li>
+    
+                        {% else %}
+                          <div class="message-center">
+    
+                              {% for m in mensaje_oc.0 %}
+    
+                              <!-- Message -->
+                              <a href="{% url 'Mensajes en comparativas' m.id %}">
+    
+                                <div class="btn btn-red btn-circle" style="margin-right: 5px;"><img src="{% static 'img/PL.png' %}" width="35"></div>
+                                <div class="mail-contnet">
+                                  <h5>{{m.proveedor|lower|capfirst}}</h5> <span class="mail-desc">{{m.proyecto|lower|capfirst}}</span></div>
+    
+                                </a>
+    
+                              {% endfor %}
+    
+                              {% for m in mensaje_oc.1 %}
+    
+                              <!-- Message -->
+                              <a href="{% url 'Mensajes en comparativas' m.id %}">
+    
+                                <div class="btn btn-warning btn-circle" style="margin-right: 5px;"><img src="{% static 'img/SP.png' %}" width="35" class="img-circle"></div>
+                                <div class="mail-contnet">
+                                  <h5>{{m.proveedor|lower|capfirst}}</h5> <span class="mail-desc">{{m.proyecto|lower|capfirst}}</span></div>
+    
+                                </a>
+    
+                              {% endfor %}
+    
+                          </div>
+                        </li>
+                        <li>
+                            <a class="nav-link text-center" href="{% url 'Comparativas' 0 0 %}"> <strong>Solicitudes de compra</strong> <i class="fa fa-angle-right"></i> </a>
+                        </li>
+                          {% endif %}
+                      
+                  </ul>
+              </div>
+          </li>
+    
+        </ul>
+    
+          {% endif %}
+          <ul class="navbar-nav my-lg-0">
+              <li>
+                <a class="nav-link waves-effect waves-dark" href="{% url 'Registro Contable' fecha|fecha %}" ><img src="{% static 'img/pig.png' %}" alt="" width="30px"></a>
+                
+              </li>
+            </ul>
+          </nav>
+        </header>
+
+    </div>
+
+    <div style="background-color: #f4f6f9; max-width: 100vw;"> 
+
+        <div class="container-fluid">
+            <div class="row page-titles">
+                <div class="col-md-5 align-self-center">
+                    <h3 class="text-themecolor">Seguimiento de documentación</h3>
+                </div>
+        
+                <div class="col-md-7 align-self-center">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+                        <li class="breadcrumb-item"><a href="{% url 'Minutas Listas' %}">Panel</a></li>
+                        <li class="breadcrumb-item">Seguimiento</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body ">
+                        <div class="table-responsive">
+
+                            <table class="table">
+
+                                <style type="text/css">
+
+                                            thead tr th{
+                                                position: sticky;
+                                                top: 0;
+                                                z-index: 10;
+                                                background-color: white;
+                                            }
+                                            .table-responsive {
+                                                height: 63vh;
+                                                overflow: scroll;
+                                            
+                                            }
+                                                
+                                </style>                                   
+
+                                {% for i in datos.1 %}
+
+                                <thead style="font-size: 14px;">
+                
+                                            <tr>
+                                                <th class="sticky" style="min-width: 250px;background-color: white;  z-index: 11;"><a href="#" class="fa fa-plus"></a> Etapa: {{i.0.nombre|lower|capfirst}} ({{i.2}})</th>
+                                                <th></th>
+                                                <th></th>
+                                                <th>Estado</th>
+                                                <th style="text-align: center;">Respon.</th>
+                                                <th style="min-width: 100px;">Inicio p.</th>
+                                                <th style="min-width: 100px;">Final p.</th>
+                                                <th style="min-width: 100px;">Inicio</th>
+                                                <th style="min-width: 100px;">Final</th>
+                                                <th>Adjunto</th>
+                                                
+                                                {% for f in fechas_semana %}
+                                
+                                                <th style="width: 100px;">{{f|date:"d/m/Y"}}</th> 
+                                                
+                                                {% endfor %}
+                                            </tr>
+                            
+                                </thead>
+
+                                <tbody>
+
+                                    {% for t in i.1 %}
+                        
+                                    <!--  NIVEL ITEM -->               
+                                    <tr style="font-size: 12px; font-weight: bold;">  
+                            
+                                            <td class="sticky item" style="background-color: white;">
+                                                <!-- <a href="{% url 'Agregar Subitem' t.0.id %}" class="fa fa-plus"></a>  -->
+                                                <a class="fa fa-plus"type="button" data-toggle="modal" data-target="#ModalSubItem{{t.0.id}}"></a> 
+                                                <!-- <a href="{% url 'Editar Item' t.0.id %}" style="text-decoration: none; color:#636762;">-> {{t.0.nombre}}</a> -->
+                                                <a type="button" data-toggle="modal" data-target="#ModalEditarItem{{t.0.id}}" style="text-decoration: none; color:#636762;">-> {{t.0.nombre}}</a> 
+                                           
+                                            </td>  
+                                             
+                                            
+                                            <!-- MODAL subitem -->
+                
+                                            <div class="modal fade" id="ModalSubItem{{t.0.id}}" tabindex="-1" role="dialog" aria-labelledby="ModalSubItem{{t.0.id}}Title" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModalLongTitle">{{t.0.nombre}}</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                    
+                                                            <form method="POST" style="margin: 15px;">
+                        
+                                                                {% csrf_token %}
+                                            
+                                                                <div class="input-group mb-3">
+                                                                
+                                                                        <input name="{{t.0.id}}-fecha_inicio_item" type="text" class="form-control form-control" value="{{t.0.fecha_inicio|date:"Y-m-d"}}" aria-label="Amount" style="width: 100px;">
+                                                                    
+                                                                </div>
+                        
+                                                                <button type="submit" class="btn btn-light">Modificar</button>
+                                                            
+                                                            </form>
+                                                        
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>               
+                                            <!-- Modal editar item -->
+                
+                                            <div class="modal fade" id="ModalEditarItem{{t.0.id}}" tabindex="-1" role="dialog" aria-labelledby="ModalEditarItem{{t.0.id}}Title" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModalLongTitle">Edición del item</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                    
+                                                            <form method="POST" enctype="multipart/form-data" style="margin: 15px;">
+                                                                {% csrf_token %}
+                                                                <div style="margin: 5px">
+                                                        
+                                                                    <div>
+                                                                        <label style="width: 120px;" for="nombre"><h6>Nombre</h6></label>
+                                                                        <input name="nombre" type="text" class="form-control form-control" value="{{t.0.nombre}}" style="width: 300px;">
+                                                                    </div>
+                                                                </div>
+                                                        
+                                                                <div style="margin: 5px">
+                                                        
+                                                                    <div>
+                                                                        <label style="width: 120px;" for="responsable"><h6>Responsable</h6></label>
+                                                                        <input name="responsable" type="text" class="form-control form-control" value="{{t.0.responsable.identificacion}}" style="width: 300px;">
+                                                                    </div>
+                                                                </div>
+                                                        
+                                                                <div  style="margin: 5px">
+                                                        
+                                                                    <div>
+                                                                        <label style="width: 120px;" for="estado"><h6>Estado</h6></label>
+                                                            
+                                                                        <select name="estado" class="custom-select" style="width: 300px;">
+                                                        
+                                                                            {% if t.0.estado == "ESPERA" %}
+                                                        
+                                                                            <option value="ESPERA" selected>ESPERA</option>
+                                                        
+                                                                            {% else %}
+                                                        
+                                                                            <option value="ESPERA">ESPERA</option>
+                                                        
+                                                                            {% endif %}
+                                                        
+                                                                            {% if t.0.estado == "TRABAJANDO" %}
+                                                        
+                                                                            <option value="TRABAJANDO" selected>TRABAJANDO</option>
+                                                        
+                                                                            {% else %}
+                                                        
+                                                                            <option value="TRABAJANDO">TRABAJANDO</option>
+                                                        
+                                                                            {% endif %}
+                                                        
+                                                                            {% if t.0.estado == "PROBLEMAS" %}
+                                                        
+                                                                            <option value="PROBLEMAS" selected>PROBLEMAS</option>
+                                                        
+                                                                            {% else %}
+                                                        
+                                                                            <option value="PROBLEMAS">PROBLEMAS</option>
+                                                        
+                                                                            {% endif %}
+                                                        
+                                                                            {% if t.0.estado == "LISTO" %}
+                                                        
+                                                                            <option value="LISTO" selected>LISTO</option>
+                                                        
+                                                                            {% else %}
+                                                        
+                                                                            <option value="LISTO">LISTO</option>
+                                                        
+                                                                            {% endif %}
+                                                        
+                                                        
+                                                                        </select>
+                                                            
+                                                                    </div>
+                                                        
+                                                        
+                                                                </div>
+                                                        
+                                                                <div style="margin: 5px">
+                                                        
+                                                                    <div>
+                                                        
+                                                                        <label style="width: 120px;" for="fecha_estimada_i"><h6>Fecha inicial P</h6></label>
+                                                                        <input name="fecha_estimada_i" type="date" class="form-control form-control" value="{{t.0.fecha_estimada_i|date:'Y-m-d'}}" style="width: 300px;">
+                                                            
+                                                                    </div>
+                                                        
+                                                                </div>
+                                                        
+                                                                <div style="margin: 5px">
+                                                        
+                                                                    <div>
+                                                                        <label style="width: 120px;" for="fechai"><h6>Fecha inicial</h6></label>
+                                                                        <input name="fechai" type="date" class="form-control form-control" value="{{t.0.fecha_inicio|date:'Y-m-d'}}" style="width: 300px;">
+                                                                    </div>
+                                                                </div>
+                                                        
+                                                                <div style="margin: 5px">
+                                                        
+                                                                    <div>
+                                                                        <label style="width: 120px;" for="fecha_estimada_f"><h6>Fecha final P</h6></label>
+                                                                        <input name="fecha_estimada_f" type="date" class="form-control form-control" value="{{t.0.fecha_estimada_f|date:'Y-m-d'}}" style="width: 300px;">
+                                                                    </div>
+                                                                </div>
+                                                        
+                                                                <div style="margin: 5px">
+                                                        
+                                                                    <div>
+                                                                        <label style="width: 120px;" for="fechaf"><h6>Fecha final</h6></label>
+                                                                        <input name="fechaf" type="date" class="form-control form-control" style="width: 300px;" value="{{t.0.fecha_final|date:'Y-m-d'}}">
+                                                                    </div>
+                                                                </div>
+                                                        
+                                                                <div style="margin: 5px">
+
+                                                                    <div>
+                                                                        <label style="width: 120px;" for="url"><h6>URL</h6></label>
+                                                                        <input name="url" type="url" class="form-control form-control" style="width: 300px;" {% if datos.url %} value="{{t.0..url}}" {% endif %}>
+                                                                    </div>
+                                                                </div>
+                                                        
+                                                                <div style="margin: 5px">
+                                                                    <div>
+                                                                        <label style="width: 120px;" for="adjunto"><h6>Adjunto</h6></label>
+                                                                        <h6><small>{{t.0.archivo_vigente}}</small></h6>
+                                                                        <input type="file" class="form-control-file" name="adjunto" aria-describedby="fileHelp" >
+                                                                    </div>
+                                                                </div>
+                                                                <div style="margin: 10px">
+                                                                    <button type="submit" name="editaritem" value="{{t.0.id}}" class="btn btn-info">Subir</button>
+                                                                    <button type="submit" name="borraritem" value="{{t.0.id}}" class="btn btn-danger">Borrar</button>
+
+
+                                                                </div>
+                                                        
+                                                                  
+                                                        
+                                                                {{ form.as_p }}
+                                                            
+                                                            </form>
+                                                        
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                                
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>  
+
+                                            <td>
+                                                <div style="display: inline-block;">
+                                                    <form action="" method="POST"> {% csrf_token %}
+                                                        <button type="submit" class="btn btn-light" style="padding: 0px;" name="subir_item" value="{{t.0.id}}"><i class="fa fa-arrow-circle-up text-info"></i></button></form></div>
+                
+                                                <div style="display: inline-block;">
+                                                    <form action="" method="POST">{% csrf_token %}
+                                                        <button type="submit" class="btn btn-light" style="padding: 0px;" name="bajar_item" value="{{t.0.id}}"><i class="fa fa-arrow-circle-down text-info"></i></button></form></div>
+                                            </td>
+                                            <!-- <td><a href="{% url 'Mensaje item' t.0.id %}" class="fa fa-comments-o"></a></td> -->
+                                            <td></td><a type="button" data-toggle="modal" data-target="#ModalMensajeItem{{t.0.id}}" style="text-decoration: none; color:#636762;"></a> </td>
+                                
+                                            <td style="color: rgb({{t.0.estado|estadoplan}})"><b>{{t.0.estado|lower|capfirst}}</b></td>            
+                                            <td style="text-align: center;">{% if t.0.responsable %}<img src="{{t.0.responsable.imagenlogo.url}}" style="width: 30px;"  class="img-fluid imagenlogoplanif" alt="...">
+                                                {% else %}<img src="{% static 'img/anonimo2.png' %}" style="width: 30px;"  class="img-fluid imagenlogoplanif" alt="...">
+                                                {% endif %}</td>
+                                
+                                            {% if t.0.fecha_estimada_i %}
+                                            <td class="celdafechaplanif" style="color: rgb({% fecha_inicio_planif t.0.fecha_estimada_i t.0.estado%});">{{t.0.fecha_estimada_i|date:"d/m/Y"}}</td>
+                                            {% else %}<td class="celdafechaplanif">--/--/----</td>{% endif %}
+                                            {% if t.0.fecha_estimada_f %}
+                                            <td class="celdafechaplanif">{{t.0.fecha_estimada_f|date:"d/m/Y"}}</td>
+                                            {% else %}<td class="celdafechaplanif">--/--/----</td>{% endif %}
+                                
+                                            
+                                            <td class="celdafechaplanif">
+                                                <a type="button" data-toggle="modal" data-target="#ModalFechaInicioItem{{t.0.id}}" style="color: rgb({% fecha_inicio_planif t.0.fecha_inicio t.0.estado%});">
+                                                    {% if t.0.fecha_inicio %}{{t.0.fecha_inicio|date:"d/m/Y"}}</a></td>
+                                                    {% else %}--/--/----{% endif %}
+                                              
+                                            <!-- MODAL FECHA INICIO NIVEL ITEM -->
+                
+                                            <div class="modal fade" id="ModalFechaInicioItem{{t.0.id}}" tabindex="-1" role="dialog" aria-labelledby="ModalFechaInicioItem{{t.0.id}}Title" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModalLongTitle">Fecha inicio ITEM</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                    
+                                                            <h6><small>Se modificara la fecha del item {{t.0.nombre}}</small> </h6>
+                                                        
+                                                            <form method="POST" style="margin: 15px;">
+                        
+                                                                {% csrf_token %}
+                                            
+                                                                <div class="input-group mb-3">
+                                                                
+                                                                        <input name="{{t.0.id}}-fecha_inicio_item" type="date" class="form-control form-control" value="{{t.0.fecha_inicio|date:"Y-m-d"}}" aria-label="Amount" style="width: 100px;">
+                                                                    
+                                                                </div>
+                        
+                                                                <button type="submit" class="btn btn-light">Modificar</button>
+                                                            
+                                                            </form>
+                                                        
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <td class="celdafechaplanif">
+                                                <a type="button" data-toggle="modal" data-target="#ModalFechaFinalItem{{t.0.id}}" style="color: rgb({% fecha_final_planif t.0.fecha_final t.0.estado%});">
+                                                    {% if t.0.fecha_final %}{{t.0.fecha_final|date:"d-m-Y"}}
+                                                    {% else %}--/--/----{% endif %}</a></td>
+                
+                                            <!-- MODAL FECHA FINAL NIVEL ITEM -->
+                
+                                            <div class="modal fade" id="ModalFechaFinalItem{{t.0.id}}" tabindex="-1" role="dialog" aria-labelledby="ModalFechaFinalItem{{t.0.id}}Title" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModalLongTitle">Fecha final ITEM</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                    
+                                
+                                                            <h6><small>Se modificara la fecha del item {{t.0.nombre}}</small> </h6>
+                                                            
+                                                            <form method="POST" style="margin: 15px;">
+                        
+                                                                {% csrf_token %}
+                                            
+                                                                <div class="input-group mb-3">
+                                                                
+                                                                        <input name="{{t.0.id}}-fecha_final_item" type="date" class="form-control form-control" value="{{t.0.fecha_final|date:"Y-m-d"}}" aria-label="Amount" style="width: 100px;">
+                                                                    
+                                                                </div>
+                        
+                                                                <button type="submit" class="btn btn-light">Modificar</button>
+                                                            
+                                                            </form>
+                                                            
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div> 
+                                
+                                            <td>{% if t.0.archivo_vigente %}
+                                            <a href="{{ t.0.archivo_vigente.url }}" class="fa fa-file-code-o text-success">
+                                                </a>{% else %}<i class="fa fa-file-excel-o text-info"></i>{% endif %}</td>
+                                
+                                            {% for f in fechas_semana %}
+                
+                                            <td style="{% gannt f t.0.fecha_inicio  t.0.fecha_final %}"></td>
+                                                        
+                                            {% endfor %}
+                                
+                                    </tr>
+                                    {% for h in t.1 %}
+                                    <!--  NIVEL SUBITEM  -->
+                                    <tr style="font-size: 10px; font-weight: bold;">
+                                        <td class="sticky subitem" style="background-color: white;"><a href="{% url 'Agregar Subsubitem' h.0.id %}" class="fa fa-plus"></a>
+                                                <a href="{% url 'Editar subitem' h.0.id %}" style="text-decoration: none; color:#636762;"> --> {{h.0.nombre}}</a></td>
+                                        <td  class="celdacharlaplanif">
+                                                            <div style="display: inline-block;">
+                                                                <form action="" method="POST">{% csrf_token %}
+                                                                    <button type="submit" class="btn btn-light" style="padding: 0px;" name="subir_subitem" value="{{h.0.id}}"><i class="fa fa-arrow-circle-up text-info "style="font-size: 12px;"></i></button></form></div>
+                        
+                                                            <div style="display: inline-block;">
+                                                                <form action="" method="POST">{% csrf_token %}
+                                                                    <button type="submit" class="btn btn-light" style="padding: 0px;" name="bajar_subitem" value="{{h.0.id}}"><i class="fa fa-arrow-circle-down text-info" style="font-size: 12px;"></i></button></form></div>
+                                        </td>
+                                        <td  class="celdacharlaplanif"></td>                    
+                                        <td class="celdaestadoplanif" style="color: rgb({{h.0.estado|estadoplan}})"><a type="button" data-toggle="modal" data-target="#ModalEstadoSubItem{{h.0.id}}">{{h.0.estado|lower|capfirst}}</a></td>                  
+                                        <!-- Modal fecha estado Subitem -->
+                                        <div class="modal fade" id="ModalEstadoSubItem{{h.0.id}}" tabindex="-1" role="dialog" aria-labelledby="ModalEstadoSubItem{{h.0.id}}Title" aria-hidden="true">
+                                                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                <h5 class="modal-title" id="exampleModalLongTitle">Estado del subitem</h5>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                <h6><small>Se modificara el estado del subitem {{h.0.nombre}}</small> </h6>                                    
+                                                                <form method="POST" style="margin: 15px;">
+                            
+                                                                    {% csrf_token %}
+                                                
+                                                                    <div class="input-group mb-3">
+                                                                               
+                                                                            <select name="{{h.0.id}}-estado_subitem" class="custom-select" style="width: 300px;">
+                            
+                                                                                {% if h.0.estado == "ESPERA" %}
+                                                            
+                                                                                <option value="ESPERA" selected>ESPERA</option>
+                                                            
+                                                                                {% else %}
+                                                            
+                                                                                <option value="ESPERA">ESPERA</option>
+                                                            
+                                                                                {% endif %}
+                                                            
+                                                                                {% if h.0.estado == "TRABAJANDO" %}
+                                                            
+                                                                                <option value="TRABAJANDO" selected>TRABAJANDO</option>
+                                                            
+                                                                                {% else %}
+                                                            
+                                                                                <option value="TRABAJANDO">TRABAJANDO</option>
+                                                            
+                                                                                {% endif %}
+                                                            
+                                                                                {% if h.0.estado == "PROBLEMAS" %}
+                                                            
+                                                                                <option value="PROBLEMAS" selected>PROBLEMAS</option>
+                                                            
+                                                                                {% else %}
+                                                            
+                                                                                <option value="PROBLEMAS">PROBLEMAS</option>
+                                                            
+                                                                                {% endif %}
+                                                            
+                                                                                {% if h.0.estado == "LISTO" %}
+                                                            
+                                                                                <option value="LISTO" selected>LISTO</option>
+                                                            
+                                                                                {% else %}
+                                                            
+                                                                                <option value="LISTO">LISTO</option>
+                                                            
+                                                                                {% endif %}
+                                                            
+                                                            
+                                                                            </select>
+                                                                    </div>
+                            
+                                                                    <button type="submit" class="btn btn-light">Modificar</button>
+                                                                
+                                                                </form>
+                                                                
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                        
+                                                                </div>
+                                                            </div>
+                                                            </div>
+                            
+                                        </div>
+                                        
+                                    
+                                        <td style="text-align: center;">{% if h.0.responsable %}
+                                                            
+                                                            <img src="{{h.0.responsable.imagenlogo.url}}" style="width: 20px;"  class="img-fluid imagenlogoplanif" alt="...">
+                                                            
+                                                            {% else %}<img src="{% static 'img/anonimo2.png' %}" style="width: 20px;" class="img-fluid imagenlogoplanif" alt="...">{% endif %}
+                                        </td>
+                                    
+                                        {% if h.0.fecha_estimada_i %}
+                                        <td class="celdafechaplanif" style="color: rgb({% fecha_inicio_planif h.0.fecha_estimada_i h.0.estado %});">{{h.0.fecha_estimada_i|date:"d/m/Y"}}</td>
+                                        {% else %}<td> --/--/----</td>{% endif %}
+                                        {% if h.0.fecha_estimada_f %}<td class="celdafechaplanif" style="color: rgb({% fecha_final_planif h.0.fecha_estimada_f h.0.estado %});">{{h.0.fecha_estimada_f|date:"d/m/Y"}}</td>
+                                        {% else %}<td> --/--/----</td>{% endif %}
+                                    
+                                        <td>{% if h.0.fecha_inicio %}
+                                        <a type="button" data-toggle="modal" data-target="#ModalFechaInicioSubItem{{h.0.id}}" style="color: rgb({% fecha_inicio_planif h.0.fecha_inicio h.0.estado %});">{{h.0.fecha_inicio|date:"d/m/Y"}}</a>
+                                        {% else %}<a type="button" data-toggle="modal" data-target="#ModalFechaInicioSubItem{{h.0.id}}">--/--/----</a>{% endif %}</td>
+                                    
+                                                
+                                        <!-- Modal fecha final Subitem -->
+                                        <div class="modal fade" id="ModalFechaInicioSubItem{{h.0.id}}" tabindex="-1" role="dialog" aria-labelledby="ModalFechaInicioSubItem{{h.0.id}}Title" aria-hidden="true">
+                                                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                <h5 class="modal-title" id="exampleModalLongTitle">Fecha inicio SUB-item</h5>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                            
+                                        
+                                                                <h6><small>Se modificara la fecha del SUB-subitem {{h.0.nombre}}</small> </h6>
+                                                                
+                                                                <form method="POST" style="margin: 15px;">
+                            
+                                                                    {% csrf_token %}
+                                                
+                                                                    <div class="input-group mb-3">
+                                                                    
+                                                                            <input name="{{h.0.id}}-fecha_inicio_subitem" type="date" class="form-control form-control" value="{{h.0.fecha_inicio|date:"Y-m-d"}}" aria-label="Amount" style="width: 100px;">
+                                                                        
+                                                                    </div>
+                            
+                                                                    <button type="submit" class="btn btn-light">Modificar</button>
+                                                                
+                                                                </form>
+                                                                
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                        
+                                                                </div>
+                                                            </div>
+                                                            </div>
+                            
+                                        </div>
+                                                                   
+                                                
+                                        <td>{% if h.0.fecha_final %}
+                                                            <a type="button" data-toggle="modal" data-target="#ModalSubItem{{h.0.id}}" style="color: rgb({% fecha_final_planif h.0.fecha_final h.0.estado%});">{{h.0.fecha_final|date:"d/m/Y"}}</a>
+                                        {% else %}<a type="button" data-toggle="modal" data-target="#ModalSubItem{{h.0.id}}">--/--/----</a>{% endif %}</td>
+                                
+                                        
+                                            <!-- Modal fecha final Subitem -->
+                                            <div class="modal fade" id="ModalSubItem{{h.0.id}}" tabindex="-1" role="dialog" aria-labelledby="ModalSubItem{{h.id}}Title" aria-hidden="true">
+                                                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                    <h5 class="modal-title" id="exampleModalLongTitle">Fecha final SUB-item</h5>
+                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                        <span aria-hidden="true">&times;</span>
+                                                                    </button>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                
+                                            
+                                                                    <h6><small>Se modificara la fecha del SUB-subitem {{h.0.nombre}}</small> </h6>
+                                                                    
+                                                                    <form method="POST" style="margin: 15px;">
+                            
+                                                                        {% csrf_token %}
+                                                    
+                                                                        <div class="input-group mb-3">
+                                                                        
+                                                                                <input name="{{h.0.id}}-fecha_final_subitem" type="date" class="form-control form-control" value="{{h.fecha_final|date:"Y-m-d"}}" aria-label="Amount" style="width: 100px;">
+                                                                            
+                                                                        </div>
+                            
+                                                                        <button type="submit" class="btn btn-light">Modificar</button>
+                                                                    
+                                                                    </form>
+                                                                    
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                            
+                                                                    </div>
+                                                                </div>
+                                                                </div>
+                            
+                                            </div>
+                                        </td>
+                                                                
+                                        {% if h.0.archivo_vigente %}
+                                        <td class="celdaadjplanif"><small>
+                                            
+                                                            <a href="{{ h.0.archivo_vigente.url }}">
+                                            
+                                                                <img src="{% static 'img/archivo-adjunto.png' %}" alt="" style="max-width:20px; height:auto; margin: 2px;"  >
+                                                        
+                                                            </a>
+                                            
+                                            
+                                        </small></td>
+                                
+                                        {% else %}
+                                
+                                        <td class="celdaadjplanif"><small>S/D</small></td>
+                                
+                                        {% endif %}
+                                
+                                        {% for f in fechas_semana %}
+                    
+                                        <td class="celdagantplanif" style="{% gannt f h.0.fecha_inicio  h.0.fecha_final %}"></td>
+                                          
+                                        {% endfor %}
+                
+                                        {% for k in h.1 %}
+                
+                                        <tr style="font-size: 10px; font-weight: bold;">  
+                                    
+                                                            <td class="sticky subsubitem" style="background-color: white;">
+                                                                <a href="{% url 'Editar subsubitem' k.id %}" style="text-decoration: none; color:#636762;">---> {{k.nombre}}</a></td>
+                                                            <td>
+                                                                <div style="display: inline-block;">
+                                                                    <form action="" method="POST">
+                                                                        {% csrf_token %}
+                                                                        <button type="submit" class="btn btn-light" style="padding: 0px;" name="subir_subsubitem" value="{{k.id}}"><i class="fa fa-arrow-circle-up text-info" style="font-size: 12px;"></i></button></form></div>
+                            
+                                                                <div style="display: inline-block;">
+                                                                    <form action="" method="POST">
+                                                                        {% csrf_token %}
+                                                                        <button type="submit" class="btn btn-light" style="padding: 0px;" name="bajar_subsubitem" value="{{k.id}}"><i class="fa fa-arrow-circle-down text-info" style="font-size: 12px;"></i></button></form></div>
+                                                            </td>
+                                                            <td  class="celdacharlaplanif"></td>
+                                                            <td class="celdaestadoplanif" style="color: rgb({{k.estado|estadoplan}})"><a type="button" data-toggle="modal" data-target="#ModalEstadoSubSubItem{{k.id}}"><b>{{k.estado|lower|capfirst}}</b></a></td>
+                        
+                                                                <!-- Modal estado SubSubitem -->
+                                                        <div class="modal fade" id="ModalEstadoSubSubItem{{k.id}}" tabindex="-1" role="dialog" aria-labelledby="ModalEstadoSubSubItem{{k.id}}Title" aria-hidden="true">
+                                                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                <h5 class="modal-title" id="exampleModalLongTitle">Estado del Sub-subitem</h5>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                <h6><small>Se modificara el estado del subitem {{k.nombre}}</small> </h6>                                    
+                                                                <form method="POST" id="Estado Subsubitem {{k.id}}" style="margin: 15px;">
+                            
+                                                                    {% csrf_token %}
+                                                
+                                                                    <div class="input-group mb-3">
+                                                                               
+                                                                            <select name="{{k.id}}-estado_subsubitem" class="custom-select" style="width: 300px;">
+                            
+                                                                                {% if k.estado == "ESPERA" %}
+                                                            
+                                                                                <option value="ESPERA" selected>ESPERA</option>
+                                                            
+                                                                                {% else %}
+                                                            
+                                                                                <option value="ESPERA">ESPERA</option>
+                                                            
+                                                                                {% endif %}
+                                                            
+                                                                                {% if k.estado == "TRABAJANDO" %}
+                                                            
+                                                                                <option value="TRABAJANDO" selected>TRABAJANDO</option>
+                                                            
+                                                                                {% else %}
+                                                            
+                                                                                <option value="TRABAJANDO">TRABAJANDO</option>
+                                                            
+                                                                                {% endif %}
+                                                            
+                                                                                {% if k.estado == "PROBLEMAS" %}
+                                                            
+                                                                                <option value="PROBLEMAS" selected>PROBLEMAS</option>
+                                                            
+                                                                                {% else %}
+                                                            
+                                                                                <option value="PROBLEMAS">PROBLEMAS</option>
+                                                            
+                                                                                {% endif %}
+                                                            
+                                                                                {% if k.estado == "LISTO" %}
+                                                            
+                                                                                <option value="LISTO" selected>LISTO</option>
+                                                            
+                                                                                {% else %}
+                                                            
+                                                                                <option value="LISTO">LISTO</option>
+                                                            
+                                                                                {% endif %}
+                                                            
+                                                            
+                                                                            </select>
+                                                                    </div>
+                        
+                                                                    <button type="submit" class="btn btn-light">Modificar</button>
+                            
+                                                                </form>
+
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                        
+                                                                </div>
+                                                            </div>
+                                                            </div>
+                            
+                                                        </div>
+                                            
+                                                    
+                                                    
+                                                                <td style="text-align: center;">{% if k.responsable %}
+                                                                    <img src="{{k.responsable.imagenlogo.url}}" style="width: 18px;"  class="img-fluid imagenlogoplanif" alt="...">
+                                                                    {% else %}<img src="{% static 'img/anonimo2.png' %}" style="width: 18px;" class="img-fluid imagenlogoplanif" alt="...">{% endif %}</td>
+                                                    
+                                                                {% if k.fecha_estimada_i %}
+                                                                <td class="celdafechaplanif"style="color: rgb({% fecha_inicio_planif k.fecha_estimada_i k.estado%});">{{k.fecha_estimada_i|date:"d/m/Y"}}</td>
+                                                                {% else %}<td>--/--/----</td>{% endif %} 
+                                                    
+                                                                {% if k.fecha_estimada_f %}
+                                                                <td tyle="color: rgb({% fecha_final_planif k.fecha_estimada_i k.estado%});">{{k.fecha_estimada_f|date:"d/m/Y"}}</td>
+                                                                {% else %}<td>--/--/----</td>{% endif %} 
+
+                                                                
+                                                                <td style="color: rgb({% fecha_inicio_planif k.fecha_inicio k.estado %});">
+                                                                    {% if k.fecha_inicio %}<a type="button" data-toggle="modal" data-target="#ModalFechaInicioSubSubItem{{k.id}}">{{k.fecha_inicio|date:"d-m-Y"}}</a>                                                
+                                                                    {% else %}<a type="button" data-toggle="modal" data-target="#ModalFechaInicioSubSubItem{{k.id}}">--/--/----</a></td>{% endif %}
+                                                                <!-- Modal fecha final Subitem -->
+                                                                <div class="modal fade" id="ModalFechaInicioSubSubItem{{k.id}}" tabindex="-1" role="dialog" aria-labelledby="ModalFechaInicioSubSubItem{{k.id}}Title" aria-hidden="true">
+                                                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                        <h5 class="modal-title" id="exampleModalLongTitle">Fecha inicio SUB-subitem</h5>
+                                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                            <span aria-hidden="true">&times;</span>
+                                                                        </button>
+                                                                        </div>
+                                                                        <div class="modal-body">
+                                                    
+                                                
+                                                                        <h6><small>Se modificara la fecha del SUB-subitem {{k.nombre}}</small> </h6>
+                                                                        
+                                                                        <form method="POST" style="margin: 15px;">
+                                    
+                                                                            {% csrf_token %}
+                                                        
+                                                                            <div class="input-group mb-3">
+                                                                            
+                                                                                    <input name="{{k.id}}-fecha_inicio_subsubitem" type="date" class="form-control form-control" value="{{k.fecha_inicio|date:"Y-m-d"}}" aria-label="Amount" style="width: 100px;">
+                                                                                
+                                                                            </div>
+                                    
+                                                                            <button type="submit" class="btn btn-light">Modificar</button>
+                                                                        
+                                                                        </form>
+                                                                        
+                                                                        </div>
+                                                                        <div class="modal-footer">
+                                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                                
+                                                                        </div>
+                                                                    </div>
+                                                                    </div>
+                                    
+                                                                </div>                                        
+                                                                   
+                                                                <td style="width: 10%; color: rgb({% fecha_final_planif k.fecha_final k.estado%});">{% if k.fecha_final %} <a type="button" data-toggle="modal" data-target="#ModalSubSubItem{{k.id}}">{{k.fecha_final|date:"d-m-Y"}}</a>                                         
+                                                                {% else %}<a type="button" data-toggle="modal" data-target="#ModalSubSubItem{{k.id}}">--/--/----</a></td>{% endif %}    
+                                                                <!-- Modal fecha final SUB-Subitem -->
+                                                                <div class="modal fade" id="ModalSubSubItem{{k.id}}" tabindex="-1" role="dialog" aria-labelledby="ModalSubSubItem{{k.id}}Title" aria-hidden="true">
+                                                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                        <h5 class="modal-title" id="exampleModalLongTitle">Fecha final SUB-subitem</h5>
+                                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                            <span aria-hidden="true">&times;</span>
+                                                                        </button>
+                                                                        </div>
+                                                                        <div class="modal-body">
+                                                    
+                                                
+                                                                        <h6><small>Se modificara la fecha del SUB-subitem {{k.nombre}}</small> </h6>
+                                                                        
+                                                                        <form method="POST" style="margin: 15px;">
+                                
+                                                                            {% csrf_token %}
+                                                        
+                                                                            <div class="input-group mb-3">
+                                                                            
+                                                                                    <input name="{{k.id}}-fecha_final_subsubitem" type="date" class="form-control form-control" value="{{k.fecha_final|date:"Y-m-d"}}" aria-label="Amount" style="width: 100px;">
+                                                                                
+                                                                            </div>
+                                
+                                                                            <button type="submit" class="btn btn-light">Modificar</button>
+                                                                        
+                                                                        </form>
+                                                                        
+                                                                        </div>
+                                                                        <div class="modal-footer">
+                                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                                
+                                                                        </div>
+                                                                    </div>
+                                                                    </div>
+                                
+                                                                </div>                                    
+                                                                {% if k.archivo_vigente %}
+                                                                <td class="celdaadjplanif"><small>                            
+                                                                    <a href="{{ k.archivo_vigente.url }}">                           
+                                                                        <img src="{% static 'img/archivo-adjunto.png' %}" alt="" style="max-width:20px; height:auto; margin: 2px;"  >
+                                                                    </a>                           
+                                                                </small></td>
+                                                                {% else %}                            
+                                                                <td class="celdaadjplanif"><small>S/D</small></td>                            
+                                                                {% endif %}                            
+                                                                {% for f in fechas_semana %}<td style="{% gannt f k.fecha_inicio k.fecha_final %}"></td>{% endfor %}                                                       
+                                        </tr>
+                                        {% endfor %}
+                                        
+                                        
+                                    </tr>
+                        
+                                            
+                            
+                                    {% endfor %}
+                                                
+                                    {% endfor %}
+
+                                </tbody>
+
+                            {% endfor %}
+                                    
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<!-- PRUEBA IMPORTACIONES -->
+
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js" defer></script>
+<script src="https://cdn.datatables.net/1.10.23/js/dataTables.bootstrap4.min.js" defer></script>
+<!--Custom JavaScript -->
+
+<script src="{% static 'adminpro/main/js/custom.min.js' %}"></script>
+<script src="{% static 'adminpro/assets/plugins/jquery/jquery.min.js' %}"></script>
+
+<script src="{% static 'adminpro/assets/plugins/jquery/jquery.min.js' %}"></script>
+<!-- Bootstrap tether Core JavaScript -->
+<script src="{% static 'adminpro/assets/plugins/bootstrap/js/popper.min.js' %}"></script>
+<script src="{% static 'adminpro/assets/plugins/bootstrap/js/bootstrap.min.js' %}"></script>
+
+<script src="{% static 'adminpro/main/js/sidebarmenu.js' %}"></script>
+<!--stickey kit -->
+<script src="{% static 'adminpro/assets/plugins/sticky-kit-master/dist/sticky-kit.min.js' %}"></script>
+<script src="{% static 'adminpro/assets/plugins/sparkline/jquery.sparkline.min.js' %}"></script>
+<!--Custom JavaScript -->
+<script src="{% static 'adminpro/main/js/custom.min.js' %}"></script>
+<!-- ============================================================== -->
+<!-- Style switcher -->
+<!-- ============================================================== -->
+<script src="{% static 'adminpro/assets/plugins/styleswitcher/jQuery.style.switcher.js' %}"></script>
+
+<!-- PRUEBA IMPORTACIONES -->
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+crossorigin="anonymous"></script>
+
+<!-- scripts AdminPro -->
+
+<script src="{% static 'adminpro/assets/plugins/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'adminpro/assets/plugins/bootstrap/js/popper.min.js' %}"></script>
+<script src="{% static 'adminpro/assets/plugins/bootstrap/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'adminpro/main/js/perfect-scrollbar.jquery.min.js' %}"></script>
+<script src="{% static 'adminpro/main/js/waves.js' %}"></script>
+<script src="{% static 'adminpro/main/js/sidebarmenu.js' %}"></script>
+<script src="{% static 'adminpro/main/js/custom.min.js' %}"></script>
+<script src="{% static 'adminpro/assets/plugins/sparkline/jquery.sparkline.min.js' %}"></script>
+<script src="{% static 'adminpro/assets/plugins/chartist-js/dist/chartist.min.js' %}"></script>
+<script
+src="{% static 'adminpro/assets/plugins/chartist-plugin-tooltip-master/dist/chartist-plugin-tooltip.min.js' %}"></script>
+<script src="{% static 'adminpro/assets/plugins/d3/d3.min.js' %}"></script>
+<script src="{% static 'adminpro/assets/plugins/c3-master/c3.min.js' %}"></script>
+<script src="{% static 'adminpro/main/js/dashboard1.js' %}"></script>
+<script src="{% static 'adminpro/assets/plugins/styleswitcher/jQuery.style.switcher.js' %}"></script>
+<script src="{% static 'adminpro/main/js/chat.js' %}"></script>
+<script src="{% static 'adminpro/assets/plugins/switchery/dist/switchery.min.js' %}"></script>
+<script src="{% static 'adminpro/assets/plugins/select2/dist/js/select2.full.min.js' %}"
+type="text/javascript"></script>
+<script src="{% static 'adminpro/assets/plugins/bootstrap-select/bootstrap-select.min.js' %}"
+type="text/javascript"></script>
+<script src="{% static 'adminpro/assets/plugins/bootstrap-select/bootstrap-select.min.js' %}"
+type="text/javascript"></script>
+<script src="{% static 'adminpro/assets/plugins/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js' %}"></script>
+<script src="{% static 'adminpro/assets/plugins/bootstrap-touchspin/dist/jquery.bootstrap-touchspin.min.js' %}"
+type="text/javascript"></script>
+<script type="text/javascript"
+src="{% static 'adminpro/assets/plugins/multiselect/js/jquery.multi-select.js' %}"></script>
+
+
+<script>
+     
+    $(window).scroll(function () {
+                sessionStorage.scrollTop = $(this).scrollTop();
+            });
+            $(document).ready(function () {
+                if (sessionStorage.scrollTop != "undefined") {
+                    $(window).scrollTop(sessionStorage.scrollTop);
+                }
+            });
+    </script>
+    
+    <script>
+    
+    
+        function deleteItem(btn) {
+            var row = btn.parentNode.parentNode;
+            row.parentNode.removeChild(row);
+    
+        }
+    </script>
+
+</body>
+
+<!--
+
+
+
 
 <div id="app" class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;">
 
@@ -113,866 +1349,7 @@
     
     <div class="contendorplanificacion" >
 
-        <table class = "table table-hover" style="text-align: left; " >
-            <thead>
-                                
-                <tr class = "table-dark">
-                <td class="sticky" style="min-width: 250px;"><small><b>TAREA</b></small></td>
-                <td class="celdacharlaplanif"><small><b></b></small></td>
-                <td class="celdacharlaplanif"><small><b></b></small></td>
-                <td class="celdaestadoplanif"><small><b>ESTADO</b></small></td>
-                <td class="celdarespplanif"><small><b>RESP.</b></small></td>
-                <td class="celdafechaplanif"><small><b>INICIO (P)</b></small></td>
-                <td class="celdafechaplanif"><small ><b>FINAL (P)</b></small></td>
-                <td class="celdafechaplanif"><small><b>INICIO</b></small></td>
-                <td class="celdafechaplanif"><small><b>FINAL</b></small></td>
-                <td class="celdaadjplanif"><small><b>ADJ.</b></small></td>
-                
-                {% for f in fechas_semana %}
-
-                <td class="diaplanificacion celdagantplanif">{{f|date:"d-m-Y"}}</td> 
-                
-                {% endfor %}
-                </tr>
-
-            </thead>
-        </table>
-
-                    <!--  EMPIEZA EL PRIMERO ACORDEON -> NIVEL ITEM  -->
-
-                    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-
-                        <div class="panel panel-default" style="margin: 5px;">
-                            
-
-                    {% for i in datos.1 %} 
-
-                    <div class="panel-heading" role="tab" id="heading{{i.0.id}}">
-
-
-                        <a style="font-family: Arial, Helvetica, sans-serif;  text-decoration:none" class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse{{i.0.id}}" aria-expanded="false" aria-controls="collapse{{i.0.id}}">
-                            <table class = "table table-hover" style="text-align: left; " >
-
-                                <tr class = "table-secondary">                       
-                                    <td class="sticky" style="min-width: 250px;"><small><b>{{i.0.nombre}} ({{i.2}})</b></small></td>
-                                    <td  class="celdacharlaplanif"> </td>
-                                    <td  class="celdacharlaplanif"> </td>
-                                    <td class="celdaestadoplanif"><small><b></b></small></td>
-                                    <td class="celdarespplanif"><small><b></b></small></td>
-                                    <td class="celdafechaplanif"><small><b></b></small></td>
-                                    <td class="celdafechaplanif"><small><b></b></small></td>
-                                    <td class="celdafechaplanif"><small><b></b></small></td>
-                                    <td class="celdafechaplanif"><small><b></b></small></td>
-                                    <td class="celdaadjplanif"><small><b></b></small></td>
-                                    {% for f in fechas_semana %}
-    
-                                    <td class="celdagantplanif"></td> 
-                            
-                                    {% endfor %}
-                    
-                                </tr>
-    
-                            
-                            
-                            </table>
-                        </a>
-
-                    </div>
-
-                    <!--  CONTENEDOR DEL PRIMER ACORDEON -> NIVEL ITEM  -->
-
-                    <div id="collapse{{i.0.id}}" class="panel-collapse collapse show" role="tabpanel" aria-labelledby="heading{{i.0.id}}">
-
-                    {% for t in i.1 %}
-
-                    <table id="Tabla-Gannt">
-
-                        <!--  NIVEL ITEM -->
-
-                        <tr class = "table-light filaitem">  
-            
-                            <td class="sticky item" style="min-width: 250px;">
-                                <a href="{% url 'Agregar Subitem' t.0.id %}" style="text-decoration: none"><img src="{% static 'img/anadir.png' %}" alt="" style="max-width:15px; height:auto; margin: 2px;"></a> 
-                                <a href="{% url 'Editar Item' t.0.id %}" style="text-decoration: none; color:#636762;">{{t.0.nombre}}</a>
-                            </td>                 
-                            <td  class="celdacharlaplanif">
-                                <div style="display: inline-block;">
-                                    <form action="" method="POST">
-                                        {% csrf_token %}
-                                        <button type="submit" class="btn btn-light" style="padding: 0px;" name="subir_item" value="{{t.0.id}}"><img src="{% static 'img/flecha-hacia-arriba.png' %}" alt="" style="max-width:15px; height:auto;"></button>
-
-                                    </form>
-                                    
-                                </div>
-
-                                <div style="display: inline-block;">
-                                    <form action="" method="POST">
-                                        {% csrf_token %}
-                                        <button type="submit" class="btn btn-light" style="padding: 0px;" name="bajar_item" value="{{t.0.id}}"><img src="{% static 'img/flecha-hacia-abajo.png' %}" alt="" style="max-width:15px; height:auto;"></button>
-
-                                    </form>
-                                    
-                                </div>
-                            </td>
-                            <td  class="celdacharlaplanif"><small>
-                                <a href="{% url 'Mensaje item' t.0.id %}"><img src="{% static 'img/charlar.png' %}" alt="" style="max-width:18px; height:auto; margin: 2px;"></a>                                     
-                            </small></td>
-                
-                            <td class="celdaestadoplanif" style="color: rgb({{t.0.estado|estadoplan}})"><b>{{t.0.estado}}</b></td>            
-                            <td class="celdarespplanif"><small>
-                
-                                {% if t.0.responsable %}
-                                
-                                <img src="{{t.0.responsable.imagenlogo.url}}"  class="img-fluid imagenlogoplanif" alt="...">
-                                
-                                {% else %}
-                
-                                S/A
-                
-                                {% endif %}
-                
-                            </small></td>
-                
-                            {% if t.0.fecha_estimada_i %}
-                            <td class="celdafechaplanif" style="color: rgb({% fecha_inicio_planif t.0.fecha_estimada_i t.0.estado%});">{{t.0.fecha_estimada_i|date:"d-m-Y"}}</td>
-                            {% else %}
-                
-                            <td class="celdafechaplanif">---</td>
-                
-                            {% endif %}
-                            {% if t.0.fecha_estimada_f %}
-                            <td class="celdafechaplanif">{{t.0.fecha_estimada_f|date:"d-m-Y"}}</td>
-                            {% else %}
-                
-                            <td class="celdafechaplanif">---</td>
-                
-                            {% endif %}
-                
-                            {% if t.0.fecha_inicio %}
-                            <td class="celdafechaplanif">
-                                <a type="button" data-toggle="modal" data-target="#ModalFechaInicioItem{{t.0.id}}" style="color: rgb({% fecha_inicio_planif t.0.fecha_inicio t.0.estado%});">
-                                    {{t.0.fecha_inicio|date:"d-m-Y"}}</a></td>
-                            {% else %}
-                
-                            <td class="celdafechaplanif">
-                                <a type="button" data-toggle="modal" data-target="#ModalFechaInicioItem{{t.0.id}}" style="color: rgb({% fecha_inicio_planif t.0.fecha_inicio t.0.estado%});">
-                                    ---</a></td>
-                
-                            {% endif %}
-
-                            <!-- MODAL FECHA INICIO NIVEL ITEM -->
-
-                            <div class="modal fade" id="ModalFechaInicioItem{{t.0.id}}" tabindex="-1" role="dialog" aria-labelledby="ModalFechaInicioItem{{t.0.id}}Title" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLongTitle">Fecha inicio ITEM</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                    </div>
-                                    <div class="modal-body">
-                
-            
-                                    <h6><small>Se modificara la fecha del item {{t.0.nombre}}</small> </h6>
-                                    
-                                    <form method="POST" style="margin: 15px;">
-
-                                        {% csrf_token %}
-                    
-                                        <div class="input-group mb-3">
-                                        
-                                                <input name="{{t.0.id}}-fecha_inicio_item" type="date" class="form-control form-control" value="{{t.0.fecha_inicio|date:"Y-m-d"}}" aria-label="Amount" style="width: 100px;">
-                                            
-                                        </div>
-
-                                        <button type="submit" class="btn btn-light">Modificar</button>
-                                    
-                                    </form>
-                                    
-                                    </div>
-                                    <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            
-                                    </div>
-                                </div>
-                                </div>
-
-                            </div>
-                            {% if t.0.fecha_final %}
-                            <td class="celdafechaplanif">
-                                <a type="button" data-toggle="modal" data-target="#ModalFechaFinalItem{{t.0.id}}" style="color: rgb({% fecha_final_planif t.0.fecha_final t.0.estado%});">
-                                    {{t.0.fecha_final|date:"d-m-Y"}}</a></td>
-                            {% else %}
-                
-                            <td class="celdafechaplanif">
-                                <a type="button" data-toggle="modal" data-target="#ModalFechaFinalItem{{t.0.id}}" style="color: rgb({% fecha_final_planif t.0.fecha_final t.0.estado%});">
-                                    ---</a></td></td>
-                
-                            {% endif %}
-
-                            <!-- MODAL FECHA FINAL NIVEL ITEM -->
-
-                            <div class="modal fade" id="ModalFechaFinalItem{{t.0.id}}" tabindex="-1" role="dialog" aria-labelledby="ModalFechaFinalItem{{t.0.id}}Title" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLongTitle">Fecha final ITEM</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                    </div>
-                                    <div class="modal-body">
-                
-            
-                                    <h6><small>Se modificara la fecha del item {{t.0.nombre}}</small> </h6>
-                                    
-                                    <form method="POST" style="margin: 15px;">
-
-                                        {% csrf_token %}
-                    
-                                        <div class="input-group mb-3">
-                                        
-                                                <input name="{{t.0.id}}-fecha_final_item" type="date" class="form-control form-control" value="{{t.0.fecha_final|date:"Y-m-d"}}" aria-label="Amount" style="width: 100px;">
-                                            
-                                        </div>
-
-                                        <button type="submit" class="btn btn-light">Modificar</button>
-                                    
-                                    </form>
-                                    
-                                    </div>
-                                    <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            
-                                    </div>
-                                </div>
-                                </div>
-
-                            </div> 
-                
-                            {% if t.0.archivo_vigente %}
-                            <td class="celdaadjplanif"><small>
-                
-                                <a href="{{ t.0.archivo_vigente.url }}">
-                
-                                    <img src="{% static 'img/archivo-adjunto.png' %}" alt="" style="max-width:20px; height:auto; margin: 2px;"  >
-                            
-                                </a>
-                
-                
-                            </small></td>
-                
-                            {% else %}
-                
-                            <td class="celdaadjplanif"><small>S/D</small></td>
-                
-                            {% endif %}
-                
-                            {% for f in fechas_semana %}
-
-                            <td class="celdagantplanif" style="{% gannt f t.0.fecha_inicio  t.0.fecha_final %}"><span class="hint--top hint--danger" aria-label="Semana del {{f}}"><small>⚫⚫⚫⚫⚫</small></span></td>
-                                     
-                            {% endfor %}
-                
-                
-                            </tr>
-    
-                            {% for h in t.1 %}
-
-
-                            <!--  NIVEL SUBITEM  -->
-    
-                        <tr class = "table-light filasubsubitem">  
-    
-                            <td class="sticky subitem" style="min-width: 250px"><a href="{% url 'Agregar Subsubitem' h.0.id %}" style="text-decoration: none"><img src="{% static 'img/anadir.png' %}" alt="" style="max-width:13px; height:auto; margin: 2px;"></a>
-                                <a href="{% url 'Editar subitem' h.0.id %}" style="text-decoration: none; color:#636762;">{{h.0.nombre}}</a></td>
-                                <td  class="celdacharlaplanif">
-                                    <div style="display: inline-block;">
-                                        <form action="" method="POST">
-                                            {% csrf_token %}
-                                            <button type="submit" class="btn btn-light" style="padding: 0px;" name="subir_subitem" value="{{h.0.id}}"><img src="{% static 'img/flecha-hacia-arriba.png' %}" alt="" style="max-width:13px; height:auto;"></button>
-
-                                        </form>
-                                        
-                                    </div>
-
-                                    <div style="display: inline-block;">
-                                        <form action="" method="POST">
-                                            {% csrf_token %}
-                                            <button type="submit" class="btn btn-light" style="padding: 0px;" name="bajar_subitem" value="{{h.0.id}}"><img src="{% static 'img/flecha-hacia-abajo.png' %}" alt="" style="max-width:13px; height:auto;"></button>
-
-                                        </form>
-                                        
-                                    </div>
-                                     
-                    
-                                </td>
-                                <td  class="celdacharlaplanif"></td>                    
-                                <td class="celdaestadoplanif" style="color: rgb({{h.0.estado|estadoplan}})"><a type="button" data-toggle="modal" data-target="#ModalEstadoSubItem{{h.0.id}}"><b>{{h.0.estado}}</b></a></td>                  
-                                <!-- Modal fecha estado Subitem -->
-                                <div class="modal fade" id="ModalEstadoSubItem{{h.0.id}}" tabindex="-1" role="dialog" aria-labelledby="ModalEstadoSubItem{{h.0.id}}Title" aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLongTitle">Estado del subitem</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                        </div>
-                                        <div class="modal-body">
-                                        <h6><small>Se modificara el estado del subitem {{h.0.nombre}}</small> </h6>                                    
-                                        <form method="POST" style="margin: 15px;">
-    
-                                            {% csrf_token %}
-                        
-                                            <div class="input-group mb-3">
-                                                       
-                                                    <select name="{{h.0.id}}-estado_subitem" class="custom-select" style="width: 300px;">
-    
-                                                        {% if h.0.estado == "ESPERA" %}
-                                    
-                                                        <option value="ESPERA" selected>ESPERA</option>
-                                    
-                                                        {% else %}
-                                    
-                                                        <option value="ESPERA">ESPERA</option>
-                                    
-                                                        {% endif %}
-                                    
-                                                        {% if h.0.estado == "TRABAJANDO" %}
-                                    
-                                                        <option value="TRABAJANDO" selected>TRABAJANDO</option>
-                                    
-                                                        {% else %}
-                                    
-                                                        <option value="TRABAJANDO">TRABAJANDO</option>
-                                    
-                                                        {% endif %}
-                                    
-                                                        {% if h.0.estado == "PROBLEMAS" %}
-                                    
-                                                        <option value="PROBLEMAS" selected>PROBLEMAS</option>
-                                    
-                                                        {% else %}
-                                    
-                                                        <option value="PROBLEMAS">PROBLEMAS</option>
-                                    
-                                                        {% endif %}
-                                    
-                                                        {% if h.0.estado == "LISTO" %}
-                                    
-                                                        <option value="LISTO" selected>LISTO</option>
-                                    
-                                                        {% else %}
-                                    
-                                                        <option value="LISTO">LISTO</option>
-                                    
-                                                        {% endif %}
-                                    
-                                    
-                                                    </select>
-                                            </div>
-    
-                                            <button type="submit" class="btn btn-light">Modificar</button>
-                                        
-                                        </form>
-                                        
-                                        </div>
-                                        <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                
-                                        </div>
-                                    </div>
-                                    </div>
-    
-                                </div>
-                    
-                    
-                                <td class="celdarespplanif"><small>
-                    
-                                    {% if h.0.responsable %}
-                                    
-                                    <img src="{{h.0.responsable.imagenlogo.url}}"  class="img-fluid imagenlogoplanif" alt="...">
-                                    
-                                    {% else %}
-                    
-                                    S/A
-                    
-                                    {% endif %}
-                    
-                                </small></td>
-                    
-                                {% if h.0.fecha_estimada_i %}
-                                <td class="celdafechaplanif" style="color: rgb({% fecha_inicio_planif h.0.fecha_estimada_i h.0.estado %});">{{h.0.fecha_estimada_i|date:"d-m-Y"}}</td>
-                                {% else %}
-                    
-                                <td class="celdafechaplanif">---</td>
-                    
-                                {% endif %}
-                                {% if h.0.fecha_estimada_f %}
-                                
-                                <td class="celdafechaplanif" style="color: rgb({% fecha_final_planif h.0.fecha_estimada_f h.0.estado %});">{{h.0.fecha_estimada_f|date:"d-m-Y"}}</td>
-                                {% else %}
-                    
-                                <td class="celdafechaplanif">---</td>
-                    
-                                {% endif %}
-                    
-                                {% if h.0.fecha_inicio %}
-                                <td class="celdafechaplanif">
-                                    <a type="button" data-toggle="modal" data-target="#ModalFechaInicioSubItem{{h.0.id}}" style="color: rgb({% fecha_inicio_planif h.0.fecha_inicio h.0.estado %});">{{h.0.fecha_inicio|date:"d-m-Y"}}</a>
-                                    </td>
-                                {% else %}
-                
-                                <td class="celdafechaplanif"><a type="button" data-toggle="modal" data-target="#ModalFechaInicioSubItem{{h.0.id}}">---</a></td>
-                    
-                                {% endif %}
-                                <!-- Modal fecha final Subitem -->
-                                <div class="modal fade" id="ModalFechaInicioSubItem{{h.0.id}}" tabindex="-1" role="dialog" aria-labelledby="ModalFechaInicioSubItem{{h.0.id}}Title" aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLongTitle">Fecha inicio SUB-item</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                        </div>
-                                        <div class="modal-body">
-                    
-                
-                                        <h6><small>Se modificara la fecha del SUB-subitem {{h.0.nombre}}</small> </h6>
-                                        
-                                        <form method="POST" style="margin: 15px;">
-    
-                                            {% csrf_token %}
-                        
-                                            <div class="input-group mb-3">
-                                            
-                                                    <input name="{{h.0.id}}-fecha_inicio_subitem" type="date" class="form-control form-control" value="{{h.0.fecha_inicio|date:"Y-m-d"}}" aria-label="Amount" style="width: 100px;">
-                                                
-                                            </div>
-    
-                                            <button type="submit" class="btn btn-light">Modificar</button>
-                                        
-                                        </form>
-                                        
-                                        </div>
-                                        <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                
-                                        </div>
-                                    </div>
-                                    </div>
-    
-                                </div>
-                                                   
-                                {% if h.0.fecha_final %}
-                                <td class="celdafechaplanif">
-                                    <a type="button" data-toggle="modal" data-target="#ModalSubItem{{h.0.id}}" style="color: rgb({% fecha_final_planif h.0.fecha_final h.0.estado%});">{{h.0.fecha_final|date:"d-m-Y"}}</a>
-                                {% else %}
-    
-                                <td class="celdafechaplanif"><a type="button" data-toggle="modal" data-target="#ModalSubItem{{h.0.id}}">---</a></td>
-                    
-                                {% endif %}
-                                    <!-- Modal fecha final Subitem -->
-                                    <div class="modal fade" id="ModalSubItem{{h.0.id}}" tabindex="-1" role="dialog" aria-labelledby="ModalSubItem{{h.id}}Title" aria-hidden="true">
-                                        <div class="modal-dialog modal-dialog-centered" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLongTitle">Fecha final SUB-item</h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                            </div>
-                                            <div class="modal-body">
-                        
-                    
-                                            <h6><small>Se modificara la fecha del SUB-subitem {{h.0.nombre}}</small> </h6>
-                                            
-                                            <form method="POST" style="margin: 15px;">
-    
-                                                {% csrf_token %}
-                            
-                                                <div class="input-group mb-3">
-                                                
-                                                        <input name="{{h.0.id}}-fecha_final_subitem" type="date" class="form-control form-control" value="{{h.fecha_final|date:"Y-m-d"}}" aria-label="Amount" style="width: 100px;">
-                                                    
-                                                </div>
-    
-                                                <button type="submit" class="btn btn-light">Modificar</button>
-                                            
-                                            </form>
-                                            
-                                            </div>
-                                            <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                    
-                                            </div>
-                                        </div>
-                                        </div>
-    
-                                    </div>
-                                </td>
-                                                
-                                {% if h.0.archivo_vigente %}
-                                <td class="celdaadjplanif"><small>
-                    
-                                    <a href="{{ h.0.archivo_vigente.url }}">
-                    
-                                        <img src="{% static 'img/archivo-adjunto.png' %}" alt="" style="max-width:20px; height:auto; margin: 2px;"  >
-                                
-                                    </a>
-                    
-                    
-                                </small></td>
-                    
-                                {% else %}
-                    
-                                <td class="celdaadjplanif"><small>S/D</small></td>
-                    
-                                {% endif %}
-                    
-                                {% for f in fechas_semana %}
         
-                                <td class="celdagantplanif" style="{% gannt f h.0.fecha_inicio  h.0.fecha_final %}"><span class="hint--top hint--danger" aria-label="Semana del {{f}}"><small>⚫⚫⚫⚫⚫</small></span></td>
-                                  
-                                {% endfor %}
-    
-                                {% for k in h.1 %}
-    
-                                <tr class ="table-light filasubsubitem">  
-            
-                                    <td class="sticky subsubitem">
-                                        <a href="{% url 'Editar subsubitem' k.id %}" style="text-decoration: none; color:#636762;">{{k.nombre}}</a></td>
-                                    <td  class="celdacharlaplanif">
-                                        <div style="display: inline-block;">
-                                            <form action="" method="POST">
-                                                {% csrf_token %}
-                                                <button type="submit" class="btn btn-light" style="padding: 0px;" name="subir_subsubitem" value="{{k.id}}"><img src="{% static 'img/flecha-hacia-arriba.png' %}" alt="" style="max-width:10px; height:auto;"></button>
-    
-                                            </form>
-                                            
-                                        </div>
-    
-                                        <div style="display: inline-block;">
-                                            <form action="" method="POST">
-                                                {% csrf_token %}
-                                                <button type="submit" class="btn btn-light" style="padding: 0px;" name="bajar_subsubitem" value="{{k.id}}"><img src="{% static 'img/flecha-hacia-abajo.png' %}" alt="" style="max-width:10px; height:auto;"></button>
-    
-                                            </form>
-                                            
-                                        </div>
-                                    </td>
-                                    <td  class="celdacharlaplanif"></td>
-                                    <td class="celdaestadoplanif" style="color: rgb({{k.estado|estadoplan}})"><a type="button" data-toggle="modal" data-target="#ModalEstadoSubSubItem{{k.id}}"><b>{{k.estado}}</b></a></td>
-
-                                        <!-- Modal estado SubSubitem -->
-                                <div class="modal fade" id="ModalEstadoSubSubItem{{k.id}}" tabindex="-1" role="dialog" aria-labelledby="ModalEstadoSubSubItem{{k.id}}Title" aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLongTitle">Estado del Sub-subitem</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                        </div>
-                                        <div class="modal-body">
-                                        <h6><small>Se modificara el estado del subitem {{k.nombre}}</small> </h6>                                    
-                                        <form method="POST" id="Estado Subsubitem {{k.id}}" style="margin: 15px;">
-    
-                                            {% csrf_token %}
-                        
-                                            <div class="input-group mb-3">
-                                                       
-                                                    <select name="{{k.id}}-estado_subsubitem" class="custom-select" style="width: 300px;">
-    
-                                                        {% if k.estado == "ESPERA" %}
-                                    
-                                                        <option value="ESPERA" selected>ESPERA</option>
-                                    
-                                                        {% else %}
-                                    
-                                                        <option value="ESPERA">ESPERA</option>
-                                    
-                                                        {% endif %}
-                                    
-                                                        {% if k.estado == "TRABAJANDO" %}
-                                    
-                                                        <option value="TRABAJANDO" selected>TRABAJANDO</option>
-                                    
-                                                        {% else %}
-                                    
-                                                        <option value="TRABAJANDO">TRABAJANDO</option>
-                                    
-                                                        {% endif %}
-                                    
-                                                        {% if k.estado == "PROBLEMAS" %}
-                                    
-                                                        <option value="PROBLEMAS" selected>PROBLEMAS</option>
-                                    
-                                                        {% else %}
-                                    
-                                                        <option value="PROBLEMAS">PROBLEMAS</option>
-                                    
-                                                        {% endif %}
-                                    
-                                                        {% if k.estado == "LISTO" %}
-                                    
-                                                        <option value="LISTO" selected>LISTO</option>
-                                    
-                                                        {% else %}
-                                    
-                                                        <option value="LISTO">LISTO</option>
-                                    
-                                                        {% endif %}
-                                    
-                                    
-                                                    </select>
-                                            </div>
-
-                                            <button type="submit" class="btn btn-light">Modificar</button>
-    
-                                        </form>
-
-                                        
-
-                                        
-                                        <!--
-
-                                            <button onclick="GuardarDatosEstadoSSI{{k.id}}()" class="btn btn-light">Modificar</button>
-
-                                            <script>
-                                            function getCookie(name) {
-                                                var cookieValue = null;
-                                                if (document.cookie && document.cookie !== '') {
-                                                    var cookies = document.cookie.split(';');
-                                                    for (var i = 0; i < cookies.length; i++) {
-                                                        var cookie = cookies[i].trim();
-                                                        // Does this cookie string begin with the name we want?
-                                                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                                                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                                                            break;
-                                                        }
-                                                    }
-                                                }
-                                                return cookieValue;
-                                            }
-
-                                            function GuardarDatosEstadoSSI{{k.id}}() {
-
-                                                var form = new FormData(document.getElementById('Estado Subsubitem {{k.id}}'));
-                                                var table= document.getElementById('Tabla-Gannt');
-                                                //
-                                                fetch("{% url 'Documentacion Amp' datos.0.id 0 1 %}", {
-                                                    method: "POST",
-                                                    body: form,
-                                                    headers: {
-                                                        "X-CSRFToken": getCookie('csrftoken'),
-                                                        "X-Requested-With": "XMLHttpRequest" 
-                                                    }
-                                                }).then(
-                                                    function(response) {
-                                                        return response.json()
-                                                    }
-                                                ).then(
-                                                    function(data) {
-                                                        array_sus = data.Informacion;
-                                                    }
-                                                );
-                                                var table= document.getElementById('Tabla-Gannt'),load();
-
-                                            }
-
-                                            
-
-                                        </script>
-
-
-                                        -->
-                                        
-                                        
-                                        </div>
-                                        <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                
-                                        </div>
-                                    </div>
-                                    </div>
-    
-                                </div>
-                    
-                            
-                            
-                                        <td class="celdarespplanif"><small>
-                            
-                                            {% if k.responsable %}
-                                            
-                                            <img src="{{k.responsable.imagenlogo.url}}"  class="img-fluid imagenlogoplanif" alt="...">
-                                            
-                                            {% else %}
-                            
-                                            S/A
-                            
-                                            {% endif %}
-                            
-                                        </small></td>
-                            
-                                        {% if k.fecha_estimada_i %}
-                                        <td class="celdafechaplanif"style="color: rgb({% fecha_inicio_planif k.fecha_estimada_i k.estado%});">{{k.fecha_estimada_i|date:"d-m-Y"}}</td>
-                                        {% else %}
-                            
-                                        <td class="celdafechaplanif">---</td>
-                            
-                                        {% endif %}
-                                        {% if k.fecha_estimada_f %}
-                                        <td class="celdafechaplanif" style="color: rgb({% fecha_final_planif k.fecha_estimada_i k.estado%});">{{k.fecha_estimada_f|date:"d-m-Y"}}</td>
-                                        {% else %}
-                            
-                                        <td class="celdafechaplanif">---</td>
-                            
-                                        {% endif %}                            
-                                        {% if k.fecha_inicio %}
-                                        <td class="celdafechaplanif" style="color: rgb({% fecha_inicio_planif k.fecha_inicio k.estado %});"><a type="button" data-toggle="modal" data-target="#ModalFechaInicioSubSubItem{{k.id}}">{{k.fecha_inicio|date:"d-m-Y"}}</a></td>                                                
-                                        {% else %}                            
-                                        <td class="celdafechaplanif"><a type="button" data-toggle="modal" data-target="#ModalFechaInicioSubSubItem{{k.id}}">---</a></td>                                
-                                        {% endif %}
-                                        <!-- Modal fecha final Subitem -->
-                                        <div class="modal fade" id="ModalFechaInicioSubSubItem{{k.id}}" tabindex="-1" role="dialog" aria-labelledby="ModalFechaInicioSubSubItem{{k.id}}Title" aria-hidden="true">
-                                            <div class="modal-dialog modal-dialog-centered" role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLongTitle">Fecha inicio SUB-subitem</h5>
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                                </div>
-                                                <div class="modal-body">
-                            
-                        
-                                                <h6><small>Se modificara la fecha del SUB-subitem {{k.nombre}}</small> </h6>
-                                                
-                                                <form method="POST" style="margin: 15px;">
-            
-                                                    {% csrf_token %}
-                                
-                                                    <div class="input-group mb-3">
-                                                    
-                                                            <input name="{{k.id}}-fecha_inicio_subsubitem" type="date" class="form-control form-control" value="{{k.fecha_inicio|date:"Y-m-d"}}" aria-label="Amount" style="width: 100px;">
-                                                        
-                                                    </div>
-            
-                                                    <button type="submit" class="btn btn-light">Modificar</button>
-                                                
-                                                </form>
-                                                
-                                                </div>
-                                                <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                        
-                                                </div>
-                                            </div>
-                                            </div>
-            
-                                        </div>                                        
-                                        {% if k.fecha_final %}    
-                                        <td class="celdafechaplanif" style="width: 10%; color: rgb({% fecha_final_planif k.fecha_final k.estado%});"><a type="button" data-toggle="modal" data-target="#ModalSubSubItem{{k.id}}">{{k.fecha_final|date:"d-m-Y"}}</a></td>                                            
-                                        {% else %}    
-                                        <td class="celdafechaplanif"><a type="button" data-toggle="modal" data-target="#ModalSubSubItem{{k.id}}">---</a></td>                            
-                                        {% endif %}    
-                                        <!-- Modal fecha final SUB-Subitem -->
-                                        <div class="modal fade" id="ModalSubSubItem{{k.id}}" tabindex="-1" role="dialog" aria-labelledby="ModalSubSubItem{{k.id}}Title" aria-hidden="true">
-                                            <div class="modal-dialog modal-dialog-centered" role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLongTitle">Fecha final SUB-subitem</h5>
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                                </div>
-                                                <div class="modal-body">
-                            
-                        
-                                                <h6><small>Se modificara la fecha del SUB-subitem {{k.nombre}}</small> </h6>
-                                                
-                                                <form method="POST" style="margin: 15px;">
-        
-                                                    {% csrf_token %}
-                                
-                                                    <div class="input-group mb-3">
-                                                    
-                                                            <input name="{{k.id}}-fecha_final_subsubitem" type="date" class="form-control form-control" value="{{k.fecha_final|date:"Y-m-d"}}" aria-label="Amount" style="width: 100px;">
-                                                        
-                                                    </div>
-        
-                                                    <button type="submit" class="btn btn-light">Modificar</button>
-                                                
-                                                </form>
-                                                
-                                                </div>
-                                                <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                        
-                                                </div>
-                                            </div>
-                                            </div>
-        
-                                        </div>                                    
-                                        {% if k.archivo_vigente %}
-                                        <td class="celdaadjplanif"><small>                            
-                                            <a href="{{ k.archivo_vigente.url }}">                           
-                                                <img src="{% static 'img/archivo-adjunto.png' %}" alt="" style="max-width:20px; height:auto; margin: 2px;"  >
-                                            </a>                           
-                                        </small></td>
-                                        {% else %}                            
-                                        <td class="celdaadjplanif"><small>S/D</small></td>                            
-                                        {% endif %}                            
-                                        {% for f in fechas_semana %}
-                                        <td class="celdagantplanif" style="{% gannt f k.fecha_inicio k.fecha_final %}"><span class="hint--top hint--danger" aria-label="Semana del {{f}}"><small>⚫⚫⚫⚫⚫</small></span> </td>                                                 
-                                        {% endfor %}                                                       
-                                        </tr>
-                                        {% endfor %}
-                    
-                    
-                                </tr>
-
-                        
-                        </tr>
-    
-                        {% endfor %}
-    
-
-                    </table>
-
-                    
-
-                    {% endfor %}
-
-
-                </div>
-
-                <div style="text-align: left; margin: 1px;">
-
-                    <a href="{% url 'Agregar Item' i.0.id %}" class="btn btn-sm btn-light">
-                        <img src="{% static 'img/anadir.png' %}" alt="" style="max-width:15px; height:auto;"> 
-                        <b style="color: #969895; font-size: 9px;">Agregar Item</b> 
-                    </a>
-
-                </div>
-
-                    
-
-
-                    {% endfor %}
-
-                    <!--  FINAL DEL PRIMER ACORDEON -> NIVEL ITEM  -->
-
-                </div>
-            </div>
-
-                </tbody>
-            </thead>
-        </table>
     </div> 
 
     <b><hr class = "my-4" style="width: 100%; border-color: rgba({{datos.proyecto.color}}, 0.5;"></b>
@@ -986,5 +1363,4 @@
 <script type="text/javascript" src="{% static 'vue/vue.js' %}"></script>
 <script type="text/javascript" src="{% static 'vue/apps/documentacionamp.js' %}"></script>
  
-    
-{% endblock %}
+-->

@@ -9,6 +9,7 @@ urlpatterns = [
     url(r'^guia$', login_required(views.guia), name = 'Guia'),
     url(r'^linkp$', login_required(views.linkp), name = 'Link P'),
     url(r'^canjemoneda$', login_required(views.canjemonedas), name = 'Canje de monedas'),
+    url(r'^canjesrealizados$', login_required(views.canjerealizados), name = 'Canjes realizados'),
     url(r'^moneda$', views.monedalink, name = 'Moneda Link'),
     url(r'^register$', views.register, name = 'Registro'),
     url(r'^login$', views.login, name = 'Login'),

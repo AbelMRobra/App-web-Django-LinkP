@@ -32,7 +32,7 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body">
-                <h4 class="card-title">Registro de compras {% if proyecto %}- <b
+                <h4 class="card-title">Compras {% if proyecto %}- <b
                         style="color: rgb({{proyecto.color}});">{{proyecto.nombre}}</b>{% else %} ultimas 500 compras {% endif %}</h4>
                 <h6 class="card-subtitle">Detalle de las compras realizadas por proyecto</h6>
                 <div class="table-responsive m-t-40">
@@ -52,7 +52,7 @@
                             
                                             <button type="button" class="btn text-info dropdown-toggle"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onclick="myFunction()">
-                                {% if proyecto %}{{proyecto.nombre}}{% else %}
+                                {% if proyecto %}{{proyecto.nombre|lower|capfirst}}{% else %}
                                 Proyecto {% endif %}
                             </button>
                             <div class="dropdown-menu">
@@ -69,7 +69,7 @@
 
                     <table id="example" class="table " style="width:100%">
                         <thead>
-                            <tr>
+                            <tr class="table-active">
                                 <th> Fecha </th>
                                 {% if proyecto == 0%}
                                 <th>Proyecto</th>

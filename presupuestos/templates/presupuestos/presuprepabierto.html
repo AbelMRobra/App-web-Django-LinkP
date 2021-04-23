@@ -16,7 +16,7 @@
         <div class="col-md-7 align-self-center">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
-                <li class="breadcrumb-item">Presupuesto de reposición</li>
+                <li class="breadcrumb-item">Presupuesto</li>
             </ol>
         </div>
     </div>
@@ -25,9 +25,6 @@
 
 <div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;">
 
-    <h3 style="text-align: center; color: rgb({{datos.proyecto.color}}); font-family: Arial, Helvetica, sans-serif;">Presupuesto de reposición</h3>
-
-    
     <div>
 
         <img src="{{datos.proyecto.iamgen.url}}"  class="img-fluid" alt="..." style="max-width:200px;width:auto;height:auto; margin-top: 1rem; margin-bottom: 10px;">
@@ -38,32 +35,20 @@
 
     <h6 style="text-align: center; color: rgb({{datos.proyecto.color}}); font-family: Arial, Helvetica, sans-serif;">{{datos.proyecto.nombre}}</h6>
 
-    
-
-    <div style="text-align: center;">
-
-
-        <small style="font-family: Arial, Helvetica, sans-serif;"> <b>Modulo:</b> Presupuestos</small>
-      
-  
-  
-      </div>
-    
+        
      <b><hr class = "my-4" style="width: 100%; border-color: rgba({{datos.proyecto.color}}, 0.5;"></b>
 
      {% if datos.datos %}
      
 
-    <table class = "table table-hover" style="text-align: center;">
+    <table class="table" style="text-align: center;">
         <thead>
 
-            <tr class = "table-dark">
-                <th scope = "row" style="vertical-align: middle;" class="priority-4">  Nº </th>
-                <th scope = "row" style="vertical-align: middle; text-align: left;">  CAPITULO/NOMBRE DEL ANALISIS </th>
-                <th scope = "row" style="vertical-align: middle; " colspan="2" class="priority-5"></th>
-                <th scope = "row" style="vertical-align: middle; " ></th>
-                <th scope = "row" style="vertical-align: middle;">  MONTO </th>
-                <th scope = "row" style="vertical-align: middle;" class="priority-5">  INC </th>               
+            <tr>
+                <th style="vertical-align: middle;" class="priority-4">  Nº </th>
+                <th style="vertical-align: middle; text-align: left;" colspan="3">  Capitulos/analisis </th>
+                <th style="vertical-align: middle;">  Estimado </th>
+                <th style="vertical-align: middle;" style="text-align: center;">  Inc. </th>               
             </tr>
         </thead>
 
@@ -73,28 +58,24 @@
 
             {% for i in datos.datos %}
 
-            <tr class = "table-light">
-                <td style="width: 5%; ; color: rgb({{datos.proyecto.color}})" class="priority-4"><b>{{i.0.id}}</b></td>
-                <td style="width: 25%; text-align: left;"> <b>{{i.0.nombre}}</b>  </td>
-                <td style="width: 26%;"  colspan="2" class="priority-5"> <small> <b></b></small> </td>
-                <td > <small> <b></b></small> </td>
-                <td style="width: 15%;"> <b>${{i.1|floatformat:0|intcomma}}</b> </td>
-                <td style="width: 15%;" class="priority-5" > <b>{{i.2|floatformat:0|intcomma}}%</b> </td>                         
+            <tr class = "table-active">
+                <td style="color: rgb({{datos.proyecto.color}})">{{i.0.id}}</td>
+                <td style="text-align: left;" colspan="3">{{i.0.nombre|lower|capfirst}}</td>
+                <td>${{i.1|floatformat:0|intcomma}}</td>
+                <td>{{i.2|floatformat:0|intcomma}}%</td>                         
             </tr>
 
             {% for i in i.3 %}
 
-            <tr class = "table-light">
+            <tr style="font-size: 12px;">
 
-                <td style="text-align: left; width: 5%; " class="priority-4" ></td>
+                <td style="text-align: left;"></td>
 
-                <td style="width: 40%; text-align: left;" colspan="2"> <small>{{ i.0.analisis.nombre|lower|capfirst }}</small>
+                <td style="text-align: left;"> {{ i.0.analisis.nombre|lower|capfirst }}
                     <h6 class="card-subtitle" style="font-size: 12px; margin-top: 2px;"><span class="text-muted">{% if i.0.comentario %}{{ i.0.comentario }}{% endif %}</span></h6>  </td>
-                <td style=" width: 10%; " class="priority-5"  > <small>$ {{ i.1|floatformat:0|intcomma }} </small>   </td>
-                <td style="width: 10%; " class="priority-5"  > <small>{{ i.2|floatformat:0|intcomma }} ({{ i.0.analisis.unidad }})</small>   </td>
-                <td style="width: 15%;" > <small>$ {{ i.3|floatformat:0|intcomma }}</small>   </td>
-
-
+                <td> $ {{ i.1|floatformat:0|intcomma }}</td>
+                <td> {{ i.2|floatformat:0|intcomma }} ({{ i.0.analisis.unidad }})</td>
+                <td> $ {{ i.3|floatformat:0|intcomma }}</td>
 
             </tr>
 
@@ -104,8 +85,6 @@
 
             {% endfor %}
         </tbody>
-
-            
 
         </table>
 

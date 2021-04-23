@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.views.generic.base import TemplateView  
 from .filters import ArticulosFilter
+from django.conf import settings
 from .form import ConsForm, ArticulosForm
 from proyectos.models import Proyectos
 from computos.models import Computos
@@ -10,12 +11,13 @@ from compras.models import Compras
 from ventas.models import PricingResumen, VentasRealizadas
 from registro.models import RegistroValorProyecto, RegistroConstantes
 from rrhh.models import datosusuario
-from .models import Articulos, Constantes, DatosProyectos, Prametros, Desde, Analisis, CompoAnalisis, Modelopresupuesto, Capitulos, Presupuestos, Registrodeconstantes, PorcentajeCapitulo
+from .models import Articulos, Constantes, DatosProyectos, Prametros, Desde, Analisis, CompoAnalisis, Modelopresupuesto, Capitulos, Presupuestos, Registrodeconstantes, PorcentajeCapitulo, PresupuestosAlmacenados
 import sqlite3
 import pandas as pd
 import numpy as np
 import json
 import datetime
+import csv
 from datetime import date
 from openpyxl import Workbook
 from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
@@ -491,68 +493,177 @@ def presupuestostotal(request):
         #Trae el proyecto elegido
 
         proyecto_elegido = request.POST.items()
+        proyecto = Proyectos.objects.get(id = int(request.POST["proyecto"]))
 
-        #Crea los datos del pricing
+        try:
+            if int(request.POST['action']) == 2:
 
-        for i in proyecto_elegido:
+                data_aux = PresupuestosAlmacenados.objects.filter(proyecto = proyecto, nombre = "vigente")
 
-            if i[0] == "proyecto":
-                proyectos = Proyectos.objects.get(id = i[1])
+                variable = PresupuestosAlmacenados(
+                    proyecto = proyecto,
+                    nombre = str("{}".format(datetime.date.today())),
+                    archivo = data_aux[0].archivo,
+                )
 
-                #Presupuestador
+                variable.save()
 
-            try:
+            if int(request.POST['action']) == 1:
+                archivo_vigente = PresupuestosAlmacenados.objects.get(proyecto = proyecto, nombre = "vigente")
+                archivo_vigente.nombre = str("{}".format(datetime.date.today()))
+                archivo_vigente.save()
+        except:
+            pass
 
-                presup_info = Presupuestos.objects.get(proyecto = proyectos)
 
-                presupuestador = datosusuario.objects.get(identificacion=presup_info.presupuestador)
 
-            except:
+        # Comprobamos si existe el fichero csv en el almacen
 
-                presupuestador = 0
+        if len(PresupuestosAlmacenados.objects.filter(proyecto = proyecto, nombre = "vigente")) == 0:
+            today = datetime.date.today()
+            wb = Workbook()
+            ws = wb.active
+            ws.title = "Almacen"
+            ws["A1"] = "Capitulo"
+            ws["B1"] = "Modelo"
+            ws["C1"] = "Analisis"
+            ws["D1"] = "Cantidad An"
+            ws["E1"] = "Articulo"
+            ws["F1"] = "Cantidad Ar"
+            ws["G1"] = "Precio"
+            ws["H1"] = "Cantidad Art Totales"
+            ws["I1"] = "Monto"
 
-        datos = []
+            contador = 2
 
-        datos_presupuesto = PresupuestoPorCapitulo(proyectos.id)
-        datos_saldo = Saldoporcapitulo(proyectos.id)
+            datos_presupuesto = PresupuestoPorCapitulo(proyecto.id)
+            capitulo = Capitulos.objects.all()
+            compo = CompoAnalisis.objects.all()
+            computo = Computos.objects.all()
+            for c in capitulo:
+                modelo = Modelopresupuesto.objects.filter(proyecto = proyecto, capitulo = c ).order_by("orden")
+                for d in modelo:
+                    cantidad = d.cantidad
+                    if d.cantidad == None:
+                        if "SOLO MANO DE OBRA" in str(d.analisis): 
+                            cantidad = 0
+                            for h in computo:
+                                if h.proyecto == proyecto and h.tipologia == d.vinculacion:
+                                    cantidad = cantidad + h.valor_vacio                      
+                            for e in compo:
+                                if e.analisis == d.analisis:
+                                    ws["A{}".format(contador)] = c.nombre
+                                    ws["B{}".format(contador)] = d.id
+                                    ws["C{}".format(contador)] = d.analisis.codigo
+                                    ws["D{}".format(contador)] = cantidad
+                                    ws["E{}".format(contador)] = e.articulo.codigo
+                                    ws["F{}".format(contador)] = e.cantidad
+                                    ws["G{}".format(contador)] = e.articulo.valor
+                                    ws["H{}".format(contador)] = e.cantidad * cantidad
+                                    ws["I{}".format(contador)] = e.cantidad * e.articulo.valor * cantidad
+                                    contador += 1
 
-        valor_reposicion = 0
+                        else:
 
-        for p in datos_presupuesto:
+                            cantidad = 0
 
-            for articulo_cantidad in p[2]:
+                            for h in computo:
 
-                valor_reposicion = (valor_reposicion + articulo_cantidad[0].valor*articulo_cantidad[1])
+                                if h.proyecto == proyecto and h.tipologia == d.vinculacion:
+                                    
+                                    cantidad = cantidad + h.valor_lleno
 
-        valor_reposicion = valor_reposicion
-        
-        valor_saldo = 0
+                            for e in compo:
 
-        valor_proyecto_materiales = 0
+                                if e.analisis == d.analisis:
 
-        for componentes in datos_saldo:
+                                    ws["A{}".format(contador)] = c.nombre
+                                    ws["B{}".format(contador)] = d.id
+                                    ws["C{}".format(contador)] = d.analisis.codigo
+                                    ws["D{}".format(contador)] = cantidad
+                                    ws["E{}".format(contador)] = e.articulo.codigo
+                                    ws["F{}".format(contador)] = e.cantidad
+                                    ws["G{}".format(contador)] = e.articulo.valor
+                                    ws["H{}".format(contador)] = e.cantidad * cantidad
+                                    ws["I{}".format(contador)] = e.cantidad * e.articulo.valor * cantidad
+                                    contador += 1
+                            
+                    else:
 
-            saldo_capitulo = 0
+                        for e in compo:
 
-            for articulos in componentes[2]:
+                            if e.analisis == d.analisis:
 
-                if articulos[1] > 0:
+                                ws["A{}".format(contador)] = c.nombre
+                                ws["B{}".format(contador)] = d.id
+                                ws["C{}".format(contador)] = d.analisis.codigo
+                                ws["D{}".format(contador)] = cantidad
+                                ws["E{}".format(contador)] = e.articulo.codigo
+                                ws["F{}".format(contador)] = e.cantidad
+                                ws["G{}".format(contador)] = e.articulo.valor
+                                ws["H{}".format(contador)] = e.cantidad * cantidad
+                                ws["I{}".format(contador)] = e.cantidad * e.articulo.valor * cantidad
+                                contador += 1
 
-                    saldo_capitulo = saldo_capitulo + articulos[0].valor*articulos[1]
+            #Establecer el nombre del archivo
+            nombre_archivo = "{}.{}Almacen.xls".format(str(proyecto.nombre).replace(" ", ""),str(today))
+            nombre_archivo
+            mUrl = settings.MEDIA_URL
+            mRoot = settings.MEDIA_ROOT
+            wb.save(mRoot + "\{}".format(nombre_archivo))
+          
+            variable = PresupuestosAlmacenados(
+                proyecto = proyecto,
+                nombre = "vigente",
+                archivo = (nombre_archivo),
+            )
 
-                    if str(articulos[0].codigo)[0] == "3":
-                        valor_proyecto_materiales = valor_proyecto_materiales + articulos[0].valor*articulos[1]               
-
-            valor_saldo = valor_saldo + saldo_capitulo
-
-        valor_proyecto_mo = valor_saldo - valor_proyecto_materiales
-
-        valor_saldo = valor_saldo
+            variable.save()
 
         try:
 
-            Saldo_act = Presupuestos.objects.get(proyecto = proyectos)
+            presup_info = Presupuestos.objects.get(proyecto = proyecto)
+            presupuestador = datosusuario.objects.get(identificacion=presup_info.presupuestador)
 
+        except:
+
+            presupuestador = 0
+
+        # Completamos los datos del tablero
+
+        archivo = PresupuestosAlmacenados.objects.filter(proyecto = proyecto, nombre = "vigente")[0].archivo
+
+        df = pd.read_excel(archivo)
+
+        valor_reposicion = sum(np.array(df['Monto'].values))
+
+
+        # saldo
+
+        list_articulos = df['Articulo'].unique()
+
+        valor_saldo = 0
+        valor_proyecto_materiales = 0
+        valor_proyecto_mo = 0
+
+        for art in list_articulos:
+            cantidad_solicitada = sum(np.array(df[df['Articulo'] == art]['Cantidad Art Totales'].values))
+            valor = Articulos.objects.get(codigo = art).valor
+            comprados = sum(np.array(Compras.objects.filter(proyecto = proyecto, articulo__codigo = art).values_list("cantidad", flat = True)))
+            saldo_art = cantidad_solicitada*valor - valor*comprados
+            if saldo_art > 0:
+                valor_saldo = valor_saldo + saldo_art
+
+                if str(art)[0] == "3":
+                    valor_proyecto_materiales += saldo_art
+                else:
+                    valor_proyecto_mo += saldo_art
+
+        # Guardamos los saldos en el almacenero
+
+        try:
+
+            Saldo_act = Presupuestos.objects.get(proyecto = proyecto)
             Saldo_act.saldo = valor_saldo
             Saldo_act.saldo_mat = valor_proyecto_materiales
             Saldo_act.saldo_mo = valor_proyecto_mo
@@ -562,6 +673,7 @@ def presupuestostotal(request):
         except:
             pass
 
+        # Crea el avance
 
         avance = 0
 
@@ -569,20 +681,25 @@ def presupuestostotal(request):
             avance = (1 - (valor_saldo/valor_reposicion))*100
             pendiente = 100 - avance
 
-        datos.append((proyectos, valor_reposicion, valor_saldo, avance, pendiente))
+        # Guarda los datos
 
-        valor_proyecto = RegistroValorProyecto.objects.filter(proyecto = proyectos)
+        datos = []
+
+        datos.append((proyecto, valor_reposicion, valor_saldo, avance, pendiente))
+
+        # Crea ek historico
+
+        valor_proyecto = RegistroValorProyecto.objects.filter(proyecto = proyecto)
 
         registro = []
 
         for valor in valor_proyecto:
 
-
             registro.append((valor.fecha, valor.precio_proyecto/1000000))
 
         try:
 
-            Presup_act = Presupuestos.objects.get(proyecto = proyectos)
+            Presup_act = Presupuestos.objects.get(proyecto = proyecto)
 
             Presup_act.valor = valor_reposicion
 
@@ -637,9 +754,83 @@ def presupuestostotal(request):
 
         proyectos = 0
 
-        
-    
     return render(request, 'presupuestos/principalpresupuesto.html', {"datos":datos, "proyectos":proyectos, "valor":registro, "presupuestador":presupuestador, "variacion":variacion, "variacion_year":variacion_year, "variacion_year_2":variacion_year_2, "variacion_anuales":variacion_anuales})
+
+def presupuestorepcompleto(request, id_proyecto):
+
+    proyecto = Proyectos.objects.get(id = id_proyecto)
+    capitulo = Capitulos.objects.all()
+    compo = CompoAnalisis.objects.all()
+    computo = Computos.objects.all()
+
+    archivo = PresupuestosAlmacenados.objects.filter(proyecto = proyecto, nombre = "vigente")[0].archivo
+    df = pd.read_excel(archivo)
+
+    crudo = []
+
+    valor_proyecto = sum(np.array(df['Monto'].values))
+
+    # En ese bucle revisamos los capitulos
+
+    for c in capitulo:
+
+        # Aqui armo el listado de analisis del capitulo
+
+        listado_analisis = []
+
+        valor_capitulo = 0
+
+        # En este bucle revisamos el modelo
+
+        modelo = Modelopresupuesto.objects.filter(proyecto = proyecto, capitulo = c ).order_by("orden")
+
+        for d in modelo:
+
+            valor_analisis = sum(np.array(df[df['Modelo'] == d.id]['Cantidad Ar'].values) * np.array(df[df['Modelo'] == d.id]['Precio'].values))
+
+            cantidad = df[df['Modelo'] == d.id]['Cantidad An'].values[0]
+
+            valor_mod = sum(np.array(df[df['Modelo'] == d.id]['Monto'].values))
+
+            listado_analisis.append((d, valor_analisis, cantidad, valor_mod))  
+
+            valor_capitulo = valor_capitulo + valor_analisis*cantidad
+        
+        crudo.append((c, valor_capitulo, 0.0, listado_analisis))
+
+    datos =[]
+
+    for i in crudo:
+        i = list(i)
+        i[2] = i[1]/valor_proyecto*100
+
+        try:
+
+            dato = PorcentajeCapitulo.objects.get(proyecto = proyecto, capitulo = i[0])
+
+            dato.porcentaje = i[2]
+
+            dato.save()
+
+        except:
+
+            b = PorcentajeCapitulo(
+                proyecto = proyecto,
+                capitulo = i[0],
+                porcentaje = i[2]
+                )
+
+            b.save()
+
+        i = tuple(i)
+        datos.append(i)
+
+    valor_proyecto_completo = valor_proyecto
+
+    datos = {"datos":datos, "proyecto":proyecto, "valor_proyecto":valor_proyecto,"valor_proyecto_completo":valor_proyecto_completo}
+
+    
+    return render(request, 'presupuestos/presuprepabierto.html', {"datos":datos})
 
 def saldocapitulo(request, id_proyecto):
 
@@ -1286,136 +1477,6 @@ def presupuestoscapitulo(request, id_proyecto):
 
     
     return render(request, 'presupuestos/presupuestocapitulo.html', {"datos":datos})
-
-def presupuestorepcompleto(request, id_proyecto):
-
-    proyecto = Proyectos.objects.get(id = id_proyecto)
-    capitulo = Capitulos.objects.all()
-    compo = CompoAnalisis.objects.all()
-    computo = Computos.objects.all()
-
-    crudo = []
-
-    valor_proyecto = 0
-
-    # En ese bucle revisamos los capitulos
-
-    for c in capitulo:
-
-        # Aqui armo el listado de analisis del capitulo
-
-        listado_analisis = []
-
-        valor_capitulo = 0
-
-        # En este bucle revisamos el modelo
-
-        modelo = Modelopresupuesto.objects.filter(proyecto = proyecto, capitulo = c ).order_by("orden")
-
-        for d in modelo:
-
-            cantidad = d.cantidad
-
-            valor_analisis = 0
-
-            if d.cantidad == None:
-
-                if "SOLO MANO DE OBRA" in str(d.analisis):
-                 
-                    for e in compo:
-
-                        if e.analisis == d.analisis:
-
-                            valor_analisis = valor_analisis + e.articulo.valor*e.cantidad
-
-                    cantidad = 0
-
-                    for h in computo:
-
-                        if h.proyecto == proyecto and h.tipologia == d.vinculacion:
-
-                            cantidad = cantidad + h.valor_vacio
-
-                    # Aqui suma al listado
-
-                    listado_analisis.append((d, valor_analisis, cantidad, valor_analisis*cantidad))  
-
-                    valor_capitulo = valor_capitulo + valor_analisis*cantidad
-
-                else:
-
-                    for e in compo:
-
-                        if e.analisis == d.analisis:
-
-                            valor_analisis = valor_analisis + e.articulo.valor*e.cantidad
-
-                    cantidad = 0
-
-                    for h in computo:
-
-                        if h.proyecto == proyecto and h.tipologia == d.vinculacion:
-                            
-                            cantidad = cantidad + h.valor_lleno
-
-
-                    # Aqui suma al listado
-
-                    listado_analisis.append((d, valor_analisis, cantidad, valor_analisis*cantidad))  
-
-                    valor_capitulo = valor_capitulo + valor_analisis*cantidad
-
-            else:
-
-                for e in compo:
-
-                    if e.analisis == d.analisis:
-
-                        valor_analisis = valor_analisis + e.articulo.valor*e.cantidad
-
-                # Aqui suma al listado
-
-                listado_analisis.append((d, valor_analisis, cantidad, valor_analisis*cantidad))
-
-                valor_capitulo = valor_capitulo + valor_analisis*float(d.cantidad)
-
-        valor_proyecto = valor_proyecto + valor_capitulo
-        
-        crudo.append((c, valor_capitulo, 0.0, listado_analisis))
-
-    datos =[]
-
-    for i in crudo:
-        i = list(i)
-        i[2] = i[1]/valor_proyecto*100
-
-        try:
-
-            dato = PorcentajeCapitulo.objects.get(proyecto = proyecto, capitulo = i[0])
-
-            dato.porcentaje = i[2]
-
-            dato.save()
-
-        except:
-
-            b = PorcentajeCapitulo(
-                proyecto = proyecto,
-                capitulo = i[0],
-                porcentaje = i[2]
-                )
-
-            b.save()
-
-        i = tuple(i)
-        datos.append(i)
-
-    valor_proyecto_completo = valor_proyecto
-
-    datos = {"datos":datos, "proyecto":proyecto, "valor_proyecto":valor_proyecto,"valor_proyecto_completo":valor_proyecto_completo}
-
-    
-    return render(request, 'presupuestos/presuprepabierto.html', {"datos":datos})
 
 def ver_analisis(request, id_analisis):
 

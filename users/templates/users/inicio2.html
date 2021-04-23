@@ -112,6 +112,10 @@
 
           </ul>
 
+          {% block app_tools %}
+
+          {% endblock %}
+
           {% if dias_funcionando %}
 
           <ul class="navbar-nav my-lg-0">
@@ -314,10 +318,11 @@
             
           </li>
         </ul>
-
-        </div>
       </nav>
     </header>
+
+        </div>
+      
     <!-- ============================================================== -->
     <!-- End Topbar header -->
     <!-- ============================================================== -->
@@ -377,6 +382,7 @@
             {% if request.user|has_group:"RRHH NIVEL 1" %}
 
             <li><a href="{% url 'Datos personal' %}">Datos del personal</a></li>
+            <li><a href="{% url 'Canjes realizados' %}">Canje de linkcoins</a></li>
 
             {% else %}
 
@@ -387,6 +393,12 @@
 
           </ul>
         </li>
+              <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i
+                class="fa fa-area-chart"></i><span class="hide-menu">Gerenciamiento</span></a>
+            <ul aria-expanded="false" class="collapse">
+              <li><a href="{% url 'Panel del gerenciador' %}">App de gerenciador</a></li>
+            </ul>
+          </li>
             <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i
                   class="zmdi zmdi-chart"></i><span class="hide-menu">Presupuestos</span></a>
               <ul aria-expanded="false" class="collapse">
@@ -448,23 +460,6 @@
                   class="zmdi zmdi-city"></i><span class="hide-menu">Oficina tecnica</span></a>
               <ul aria-expanded="false" class="collapse">
                 <li><a href="{% url 'Principal Tecnica' %}">Panel principal</a></li>
-
-                {% if request.user|has_group:"TECNICA NIVEL 1" %}
-                <li><a href="/rrhh/notasdepedido/0/0">Correspondencia</a></li>
-
-                {% if request.user|has_group:"TECNICA NIVEL 2" %}
-
-                <li class="nav-devider"></li>
-
-                <li><a href="/tecnica/documentacion">Seguimiento de documentación</a></li>
-
-                {% endif %}
-
-                {% else %}
-
-                <li>No tienes permisos para ver este espacio</li>
-
-                {% endif %}
               </ul>
             </li>
             <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i

@@ -4,6 +4,7 @@ import datetime
 from datetime import date
 from datetime import datetime, timedelta 
 from rrhh.models import datosusuario
+from tecnica.models import GerenPlanificacion
 
 register = template.Library()
 
@@ -277,6 +278,83 @@ def gannt(fecha_gant, fecha_inicial, fecha_final):
                 return "background: rgba(119, 170, 70); border-left-style: solid; border-left-color: rgb(188, 55, 27); color: rgba(255, 255, 255, .4)"
             else:
                 return "background: rgba(230, 231, 243); color: rgba(255, 255, 255, .4)"
+
+@register.simple_tag
+def ganntgerenciador(fecha_gant, fecha_inicial, fecha_final, proyecto):
+
+    if (fecha_inicial == 0) or (fecha_final == 0) or (fecha_inicial == None) or (fecha_final == None):
+
+        return None
+
+    else:
+
+        if (fecha_final >= fecha_gant):
+
+            if fecha_inicial > fecha_gant:
+
+                if (fecha_inicial.month == fecha_gant.month) and (fecha_inicial.year == fecha_gant.year):
+                    return "background: rgba({}, 0.7)".format(proyecto.color)
+
+                else:
+
+
+                    return None
+
+            else:
+
+                return "background: rgba({}, 0.7)".format(proyecto.color)
+
+@register.simple_tag
+def hitosgannt(fecha_gant, proyecto):
+
+    if (proyecto.fecha_i.month == fecha_gant.month) and (proyecto.fecha_i.year == fecha_gant.year):
+
+        return "fa fa-flag-checkered"
+
+    if (proyecto.fecha_f.month == fecha_gant.month) and (proyecto.fecha_f.year == fecha_gant.year):
+
+        return "fa fa-flag"
+
+    data_hito1 = GerenPlanificacion.objects.filter(proyecto = proyecto, capitulo__nombre = "FUNDACIONES")
+
+    if len(data_hito1) > 0:
+
+        if data_hito1[0].fecha_i != None:
+            if (data_hito1[0].fecha_i.month == fecha_gant.month) and (data_hito1[0].fecha_i.year == fecha_gant.year):
+
+                return "fa fa-star-o"
+
+    data_hito2 = GerenPlanificacion.objects.filter(proyecto = proyecto, capitulo__nombre = "MAMPOSTERIA Y TABIQUES")
+
+    if len(data_hito2) > 0:
+
+        if data_hito2[0].fecha_i != None:
+            if (data_hito2[0].fecha_i.month == fecha_gant.month) and (data_hito2[0].fecha_i.year == fecha_gant.year):
+
+                return "fa fa-th-large"
+
+    data_hito3 = GerenPlanificacion.objects.filter(proyecto = proyecto, capitulo__nombre = "TRANSPORTE VERTICAL")
+
+    if len(data_hito3) > 0:
+
+        if data_hito3[0].fecha_f != None:
+            if (data_hito3[0].fecha_f.month == fecha_gant.month) and (data_hito3[0].fecha_f.year == fecha_gant.year):
+
+                return "fa fa-building"
+
+    data_hito4 = GerenPlanificacion.objects.filter(proyecto = proyecto, capitulo__nombre = "ESTRUCTURAS COMPLEJAS Y OTROS")
+
+    if len(data_hito4) > 0:
+
+        if data_hito4[0].fecha_f != None:
+            if (data_hito4[0].fecha_f.month == fecha_gant.month) and (data_hito4[0].fecha_f.year == fecha_gant.year):
+
+                return "fa fa-star"
+
+
+
+    
+
 
 
 @register.simple_tag

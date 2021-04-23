@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import datosusuario, mensajesgenerales, NotaDePedido, Vacaciones, MonedaLink, EntregaMoneda, Anuncios, Seguimiento, PremiosMonedas, RegistroContable
+from .models import datosusuario, mensajesgenerales, NotaDePedido, Vacaciones, MonedaLink, EntregaMoneda, Anuncios, Seguimiento, PremiosMonedas, RegistroContable, CanjeMonedas, Minutas
 from import_export import resources
 from import_export.admin import ImportExportModelAdmin
 
@@ -86,19 +86,38 @@ class SeguimientoAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     search_fields = ('nombre', 'area')
     resources_class = SeguimientoResource
 
-class CanjeMonedasResource(resources.ModelResource):
+class PremiosMonedasResource(resources.ModelResource):
     class Meta:
         model = PremiosMonedas
 
-class CanjeMonedasAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+class PremiosMonedasAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = ('nombre', 'cantidad')
     search_fields = ('nombre', 'cantidad')
+    resources_class = PremiosMonedasResource
+
+class CanjeMonedasResource(resources.ModelResource):
+    class Meta:
+        model = CanjeMonedas
+
+class CanjeMonedasAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    list_display = ('usuario', 'fecha', 'premio', 'monedas', 'entregado')
+    search_fields = ('usuario__identificacion', 'fecha', 'premio', 'monedas')
     resources_class = CanjeMonedasResource
 
+class MinutasResource(resources.ModelResource):
+    
+    class Meta:
+        model = Minutas
 
+class MinutasAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    list_display = ('creador', 'reunion')
+    resources_class = MinutasResource
+
+admin.site.register(Minutas, MinutasAdmin)
 admin.site.register(RegistroContable, RegistroContableAdmin)
 admin.site.register(datosusuario, DatosUserAdmin)
-admin.site.register(PremiosMonedas, CanjeMonedasAdmin)
+admin.site.register(PremiosMonedas, PremiosMonedasAdmin)
+admin.site.register(CanjeMonedas, CanjeMonedasAdmin)
 admin.site.register(mensajesgenerales, MensajesGeneralesAdmin)
 admin.site.register(NotaDePedido, NotasDePedidoAdmin)
 admin.site.register(Vacaciones, VacacionesAdmin)

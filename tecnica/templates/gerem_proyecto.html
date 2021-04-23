@@ -1,0 +1,331 @@
+{% extends "users/inicio2.html" %}
+{% load static %}
+{% load apptags_extras %}
+{% load humanize %}
+
+
+{% block content %}
+
+<div class="container-fluid">
+    <!-- ============================================================== -->
+    <!-- Bread crumb and right sidebar toggle -->
+    <!-- ============================================================== -->
+    <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+            <h3 class="text-themecolor">Panel de gerenciamiento {{proyecto}}</h3>
+        </div>
+
+        <div class="col-md-7 align-self-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'Panel del gerenciador' %}">Panel</a></li>
+                <li class="breadcrumb-item">Proyecto</li>
+            </ol>
+        </div>
+    </div>
+
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+
+                <h4 class="card-title"><span class="lstick m-r-20"></span><span class="text-info ml-2"
+                        style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif"></span>Atajos de datos</h4>
+
+                <a href= "{% url 'Presupuesto de reposición abierto' proyecto.id %}" class="btn" ><span class="text-info ml-2"
+                        style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif"><b>Presupuesto</b></span></i></a>
+
+                    
+                <a href= "{% url 'Compras' proyecto.id %}" class="btn" ><span class="text-info ml-2"
+                    style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif"><b>Compras</b></span></i></a>
+
+                <a href= "#" class="btn" data-toggle="modal" data-target="#ModalComparativas"><span class="text-info ml-2"
+                    style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif"><b>Solicitudes (O.C)</b></span></i></a>
+
+                     <!-- Modal de fecha de inicio del capitulo -->
+                
+                     <div class="modal fade" id="ModalComparativas" tabindex="-1" role="dialog" aria-labelledby="ModalFechaInicioItem{{t.0.id}}Title" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">O.C esperando ser aprobadas</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            </div>
+                            <div class="modal-body">
+        
+                            {% for c in comparativas %}
+
+                            <h6>{{c.creador}}: {{c.proveedor}} ({{c.o_c}}) - {{c.estado}}</h6>
+
+                            {% endfor %}
+                            
+                            
+                            </div>
+                            <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    
+                            </div>
+                        </div>
+                        </div>
+
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body ">
+
+                <h4 class="card-title"><span class="lstick m-r-20"></span><span class="text-info ml-2"
+                    style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif"></span>Planificación según capitulos del presupuesto</h4>
+
+
+                    <div class="table-responsive">
+
+                        <table class="table">
+
+
+                            <style type="text/css">
+
+                                thead tr th{
+                                    position: sticky;
+                                    top: 0;
+                                    z-index: 10;
+                                    background-color: white;
+                                }
+                                .table-responsive {
+                                    height: 61vh;
+                                    overflow: scroll;
+                                
+                                }
+
+                            </style>
+                            
+
+                            <thead style="font-size: 14px;">
+    
+                                <tr>
+                                <th class="sticky" style="min-width: 250px;background-color: white;  z-index: 11;">Etapas</th>
+                                <th style="border-right: solid; border-left-color: rgba(124, 121, 120, 0.8);">Inicio</th>
+                                <th style="border-right: solid; border-left-color: rgba(124, 121, 120, 0.8);">Final</th>
+                                       
+                                {% for date in list_dates %}
+                
+                                <th style="width: 100px;">{{date|date:"m/Y"}}</th> 
+                                
+                                {% endfor %}
+                                </tr>
+                
+                            </thead>
+
+                            <tbody>
+
+                                <tr style="font-size: 12px;">
+
+                                    <td class="sticky" style="min-width: 250px;background-color: white;  z-index: 11;">Inicio</td>
+                                    <td style="border-right: solid; border-left-color: rgba(124, 121, 120, 0.8);">{{proyecto.fecha_i|date:"d/m/Y"}}</td> 
+
+                                    
+                                    <td style="border-right: solid; border-left-color: rgba(124, 121, 120, 0.8);">{{proyecto.fecha_i|date:"d/m/Y"}}</td>   
+                                    {% for date in list_dates %}
+                    
+                                    <td style='text-align: center; {% ganntgerenciador date proyecto.fecha_i proyecto.fecha_i proyecto %};'></td> 
+                                    
+                                    {% endfor %}
+                                    </tr>
+
+                                {% for cap in data_cap %}
+
+                                <tr style="font-size: 12px;">
+
+                                    <td class="sticky" style="min-width: 250px;background-color: white; ">{{cap.0|lower|capfirst}}</td>
+                                    <td style="border-right: solid; border-left-color: rgba(124, 121, 120, 0.8);">
+                                        <a href="" data-toggle="modal" data-target="#ModalFechaInicio{{cap.0.id}}">
+                                            {% if cap.1 %}{{cap.1|date:"d/m/Y"}}{% else %} --/--/---- {% endif %}
+                                        </a></td> 
+                                    
+                                        <!-- Modal de fecha de inicio del capitulo -->
+                
+                                    <div class="modal fade" id="ModalFechaInicio{{cap.0.id}}" tabindex="-1" role="dialog" aria-labelledby="ModalFechaInicioItem{{t.0.id}}Title" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLongTitle">Fecha inicio {{cap.0|lower|capfirst}}</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                            </div>
+                                            <div class="modal-body">
+                        
+                    
+                                            <h6><small>Se modificara la fecha de inicio del gannt</small> </h6>
+                                            
+                                            <form method="POST" style="margin: 15px;">
+        
+                                                {% csrf_token %}
+                            
+                                                <div class="input-group mb-3">
+                                                
+                                                        <input name="fecha_i" type="date" class="form-control form-control" value="{{cap.1|date:"Y-m-d"}}" aria-label="Amount" style="width: 100px;">
+                                                    
+                                                </div>
+        
+                                                <button type="submit" class="btn btn-info" name="cap" value="{{cap.0.id}}">Modificar</button>
+                                            
+                                            </form>
+                                            
+                                            </div>
+                                            <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    
+                                            </div>
+                                        </div>
+                                        </div>
+        
+                                    </div>
+                                    <td style="border-right: solid; border-left-color: rgba(124, 121, 120, 0.8);">
+                                        <a href="" data-toggle="modal" data-target="#ModalFechaFinal{{cap.0.id}}">
+                                            {% if cap.2 %}{{cap.2|date:"d/m/Y"}}{% else %} --/--/---- {% endif %}
+                                        </a></td>   
+                                    
+                                    <!-- Modal de fecha de inicio del capitulo -->
+                
+                                    <div class="modal fade" id="ModalFechaFinal{{cap.0.id}}" tabindex="-1" role="dialog" aria-labelledby="ModalFechaInicioItem{{t.0.id}}Title" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLongTitle">Fecha final {{cap.0|lower|capfirst}}</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                            </div>
+                                            <div class="modal-body">
+                        
+                    
+                                            <h6><small>Se modificara la fecha de inicio del gannt</small> </h6>
+                                            
+                                            <form method="POST" style="margin: 15px;">
+        
+                                                {% csrf_token %}
+                            
+                                                <div class="input-group mb-3">
+                                                
+                                                        <input name="fecha_f" type="date" class="form-control form-control" value="{{cap.2|date:"Y-m-d"}}" aria-label="Amount" style="width: 100px;">
+                                                    
+                                                </div>
+        
+                                                <button type="submit" class="btn btn-info" name="cap" value="{{cap.0.id}}">Modificar</button>
+                                            
+                                            </form>
+                                            
+                                            </div>
+                                            <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    
+                                            </div>
+                                        </div>
+                                        </div>
+        
+                                    </div>
+                                    
+                                    {% for date in list_dates %}
+                    
+                                    <td style='text-align: center; {% ganntgerenciador date cap.1 cap.2 proyecto %}'></td> 
+                                    
+                                    {% endfor %}
+                                    </tr>
+
+                                {% endfor %}
+
+                                <tr style="font-size: 12px;">
+
+                                    <td class="sticky" style="min-width: 250px;background-color: white;  z-index: 11;">Entrega</td>
+                                    <td style="border-right: solid; border-left-color: rgba(124, 121, 120, 0.8);">{{proyecto.fecha_f|date:"d/m/Y"}}</td> 
+                                    <td style="border-right: solid; border-left-color: rgba(124, 121, 120, 0.8);">{{proyecto.fecha_f|date:"d/m/Y"}}</td>   
+                                    {% for date in list_dates %}
+                    
+                                    <td style='text-align: center; {% ganntgerenciador date proyecto.fecha_f proyecto.fecha_f proyecto %};'></td> 
+                                    
+                                    {% endfor %}
+                                    </tr>
+
+                                </tr>
+
+
+                         
+
+                            </tbody>
+
+
+                            
+                        </table>
+                
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal primer registro -->
+<div class="modal fade" id="ModalIncorporar" tabindex="-1" role="dialog" aria-labelledby="ModalSubSubItem{{k.id}}Title" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Ingreso a planificaciones</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        </div>
+        <div class="modal-body">
+
+
+        <h6><small>Elige dentro de los proyectos que estas habilitado</small> </h6>
+        
+        <form method="POST" style="margin: 15px;">
+
+            {% csrf_token %}
+
+            <div class="input-group mb-3">
+            
+                    <input name="{{k.id}}-fecha_final_subsubitem" type="date" class="form-control form-control" value="{{k.fecha_final|date:"Y-m-d"}}" aria-label="Amount" style="width: 100px;">
+                
+            </div>
+
+            <button type="submit" class="btn btn-light">Modificar</button>
+        
+        </form>
+        
+        </div>
+        <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+        </div>
+    </div>
+    </div>
+
+</div>
+
+<script>
+     
+    $(window).scroll(function () {
+                sessionStorage.scrollTop = $(this).scrollTop();
+            });
+            $(document).ready(function () {
+                if (sessionStorage.scrollTop != "undefined") {
+                    $(window).scrollTop(sessionStorage.scrollTop);
+                }
+            });
+    </script>
+
+
+{% endblock %}

@@ -1,157 +1,90 @@
-{% extends "users/inicio.html" %}
+{% extends "users/inicio2.html" %}
 
 {% load static %}
 {% load humanize %}
 
 {% block content %}
 
-<div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;">
-
-    <h1 class="titulopagina">Seguimiento de documentación</h1>
-    <p class="modulo"><b>Modulo: </b>Documentación O.T</p>
-
-    <b><hr class = "my-4" style="width: 100%; border-color: rgba({{datos.proyecto.color}}, 0.5;"></b>
-
-
-        {% for i in datos %}
-
-        <div class="card bg-light mb-3" style="display: inline-block; width: 310px; height: 180px; vertical-align: top;  margin: 10px;">
-                
-            <div class="card-body">
-                <div>
-
-                    <img src="{{i.0.iamgen.url}}"  class="img-fluid" alt="..." style="max-height:50px; width:auto; margin-top: 1rem; margin-bottom: 10px;">
-            
-
-                  </div>
-            
-            
-                  <h6 style="color: rgb({{i.0.color}}); font-family: Arial, Helvetica, sans-serif;">{{i.0.nombre}}</h6>
-
-                  <div>
-
-                    <a href="{% url 'Documentacion Amp' i.0.id 0 1 %}" class="btn btn-light">
-
-            
-                        <img src="{% static 'img/agrandar.png' %}" alt="" style="max-width:20px; height:auto; vertical-align: bottom;"> <b>Planificación</b>
-    
-                    </a>
-
-
-                </div>
-
-              </div>
-          </div>
-
-        <div class="card text-white bg-dark mb-3" style="display: inline-block; width: 310px; height: 180px; vertical-align: top;  margin: 10px;">
-                
-            <div class="card-body">
-              <div style="display: inline-block; text-align: left; vertical-align: middle; margin-top: 15px;">
-      
-                <h6 style="font-family: Arial, Helvetica, sans-serif;">Lider de proyecto: </h6> 
-              </div>
-      
-              {% if i.5 %}
-          
-                <div style="display: inline-block; vertical-align: middle;">
-          
-                  <img src="{{i.5.responsable.imagenlogo.url}}"  class="img-fluid" alt="..." style="max-width: 40px; height:auto; vertical-align: middle;">
-              
-                </div>
-      
-                {% else %}
-      
-                <div style="display: inline-block; text-align: left; vertical-align: middle; margin-top: 15px;">
-      
-                  <h6 style="font-family: Arial, Helvetica, sans-serif;">S/A </h6> 
-                </div>
-      
-                {% endif %}
-      
-                <div>
-      
-                  <small style="font-family: Arial, Helvetica, sans-serif;">Superficie estimada: {{i.0.m2|floatformat:0}}m2 </small> 
-      
-                </div>
-
-                <div>
-      
-                    <small style="font-family: Arial, Helvetica, sans-serif;">Inicio de obra: 
-                        {% if i.4 == "NO DEFINIDO"%}
-
-                        No definido
-                        
-                        {% else %}
-                        
-                            {% if i.4 > 0 %}
-                            <b>{{i.4}} dias</b>
-                            {% elif i.4 == 0 %}
-                            <b style="color: rgb(243, 239, 108);">HOY INICIA</b>
-                            {% else %}
-                            <b style="color: rgb(135, 243, 108);">INICIADO</b>
-                            {% endif %}
-
-                        {% endif %}
-                    </small> 
-        
-                  </div>
-      
-      
-                <div>
-      
-                  <small style="font-family: Arial, Helvetica, sans-serif;">Final de obra: 
-                    {% if i.2 > 0 %}
-                    <b>{{i.2}} dias</b>
-                    {% elif i.2 == 0 %}
-                    <b style="color: rgb(243, 239, 108);">HOY SE ENTREGA</b>
-                    {% else %}
-                    <b style="color: rgb(135, 243, 108);">ENTREGADO</b>
-                    {% endif %}</small> 
-      
-                </div>
-              </div>
-          </div>
-
-          <div class="card bg-light mb-3" style="display: inline-block; width: 310px; height: 180px; vertical-align: top;  margin: 10px;">
-                
-            <div class="card-body">
-                      
-                  <h6 style="font-family: Arial, Helvetica, sans-serif;"><small>Avance general: <b>{{i.3}}%</b></small></h6>
-
-                  <div>
-
-                    {% for c in i.1 %}
-
-                    <small style="font-size: 10px;">{{c.0.nombre}}</small>
-
-                    <div class="progress">
-                        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: {{c.3|floatformat:0}}%; background-color: rgba({{i.0.color}}, 0.6)"></div>
-                      </div>
-                
-                
-                    {% endfor %}
-
-                </div>
-            </div>
-
-        </div>
-
-        <b><hr class = "my-4" style="width: 100%; border-color: rgba({{datos.proyecto.color}}, 0.5;"></b>
-
-
-        {% endfor %}
-        
+<div class="container-fluid">
+  <!-- ============================================================== -->
+  <!-- Bread crumb and right sidebar toggle -->
+  <!-- ============================================================== -->
+  <div class="row page-titles">
+      <div class="col-md-5 align-self-center">
+          <h3 class="text-themecolor">Panel principal de documentación</h3>
       </div>
 
-    <div style="margin-top: 2rem;">
-        <p> <small>-- Link<strong>P</strong> --</small> </p>
+      <div class="col-md-7 align-self-center">
+          <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+              <li class="breadcrumb-item">Panel</li>
+          </ol>
+      </div>
+  </div>
 
-     </div>
-        
-    
-
-                    
 </div>
- 
+
+<div class="row">
+
+    {% for i in datos %}
+    <div class="col-lg-4 col-xlg-4">
+    <div class="card">
+      <div class="card-body little-profile text-center">
+          <div class="pro-img m-t-20">
+            {% if i.5 %}<img src="{{i.5.responsable.imagenlogo.url}}"  class="img-fluid" alt="..." style="max-width: 145px; height:auto; vertical-align: middle;">
+            {% else %}<img src="{% static 'img/anonimo2.png' %}" alt="..." style="max-width: 145px; height:auto; vertical-align: middle;">{% endif %}</div>
+          <h3 class="m-b-0" style="color: rgb({{i.0.color}});">{{i.0.nombre|lower|capfirst}}</h3>
+          <h6 class="text-muted">Lider de proyecto</h6>
+          <h6 class="text-muted">{% if i.5 %}{{i.5.responsable.nombre}}{% else %} Sin asignar {% endif %}</h6>
+          <ul class="list-inline soc-pro m-t-30">
+
+            {% for c in i.1 %}
+
+            <li><i class="fa fa-dot-circle-o"> {{c.0.nombre|lower|capfirst}}: {{c.3|floatformat:0}}%</i></li>
+                                
+            {% endfor %}
+
+          </ul>
+      </div>
+      <div class="text-center bg-light">
+          <div class="row">
+              <div class="col-6  p-20 b-r">
+                  <h4 class="m-b-0 font-medium">{% if i.4 == "NO DEFINIDO"%}
+
+                    --/--/----
+                    
+                    {% else %}
+                    
+                        {% if i.4 > 0 %}
+                        {{i.4}} dias
+                        {% elif i.4 == 0 %}
+                        Hoy
+                        {% else %}
+                        Iniciado
+                        {% endif %}
+
+                    {% endif %}</h4><small>Inicio</small></div>
+              <div class="col-6  p-20">
+                  <h4 class="m-b-0 font-medium">
+                    {% if i.2 > 0 %}
+                    {{i.2}} dias
+                    {% elif i.2 == 0 %}
+                    Hoy
+                    {% else %}
+                    Entregado
+                    {% endif %}
+                  </h4><small>Entrega</small></div>
+          </div>
+      </div>
+      <div class="card-body text-center">
+          <a href="{% url 'Documentacion Amp' i.0.id 0 1 %}" class="m-t-10 m-b-20 waves-effect waves-dark btn btn-success btn-md btn-rounded">Gannt</a>
+      </div>
+    </div>
+  </div>
+
+
+    {% endfor %}
+
+</div>
     
 {% endblock %}

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Constantes, Articulos, DatosProyectos, Presupuestos, Prametros, Desde, Analisis, CompoAnalisis, Capitulos, Modelopresupuesto, Registrodeconstantes, InformeMensual, Bitacoras
+from .models import Constantes, Articulos, DatosProyectos, Presupuestos, Prametros, Desde, Analisis, CompoAnalisis, Capitulos, Modelopresupuesto, Registrodeconstantes, InformeMensual, Bitacoras, PresupuestosAlmacenados
 from import_export import resources
 from import_export.admin import ImportExportModelAdmin
 
@@ -86,6 +86,15 @@ class BitacorasAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     search_fields = ('fecha', 'proyecto__nombre')
     resources_class = BitacorasResource
 
+class PresupuestosAlmacenadosResource(resources.ModelResource):
+    class Meta:
+        model = PresupuestosAlmacenados
+
+class PresupuestosAlmacenadosAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    list_display = ('proyecto', 'nombre')
+    resources_class = PresupuestosAlmacenadosResource
+
+admin.site.register(PresupuestosAlmacenados, PresupuestosAlmacenadosAdmin)
 admin.site.register(Constantes, ConstantesAdmin)
 admin.site.register(Registrodeconstantes, RegistrodeConstanteAdmin)
 admin.site.register(Capitulos, CapituloAdmin)

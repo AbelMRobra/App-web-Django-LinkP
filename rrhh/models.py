@@ -121,8 +121,14 @@ class MonedaLink(models.Model):
         return self.nombre
 
 class PremiosMonedas(models.Model):
+
+    class Entregado(models.TextChoices):
+        NO = "NO"
+        SI = "SI"
+
     nombre = models.CharField(verbose_name="Nombre del premio", max_length=200)
     cantidad = models.IntegerField(verbose_name="Cantidad de monedas")
+    entregado = models.CharField(choices=Entregado.choices, max_length=20, verbose_name="Entregado", default="NO")
     class Meta:
         verbose_name="Premio"
         verbose_name_plural="Premios"
@@ -131,10 +137,15 @@ class PremiosMonedas(models.Model):
         return self.nombre
 
 class EntregaMoneda(models.Model):
+    class Entregado(models.TextChoices):
+        NO = "NO"
+        SI = "SI"
+
     moneda = models.ForeignKey(MonedaLink, on_delete=models.CASCADE, verbose_name="Usuario Portador")
     fecha = models.DateTimeField(auto_now_add=True, verbose_name="Fecha de la entrega")
     usuario_recibe = models.ForeignKey(datosusuario, on_delete=models.CASCADE, verbose_name="Usuario Recibe")
     mensaje = models.CharField(verbose_name="Mensaje de la entrega", blank=True, null=True, max_length=300)
+    entregado = models.CharField(choices=Entregado.choices, max_length=20, verbose_name="Entregado", default="NO")
 
     class Meta:
         verbose_name="Entrega de moneda"
@@ -142,6 +153,23 @@ class EntregaMoneda(models.Model):
 
     def __str__(self):
         return self.mensaje
+
+class CanjeMonedas(models.Model):
+    class Entregado(models.TextChoices):
+        NO = "NO"
+        SI = "SI"
+    usuario = models.ForeignKey(datosusuario, on_delete=models.CASCADE, verbose_name="Usuario")
+    fecha = models.DateTimeField(auto_now_add=True, verbose_name="Fecha")
+    premio = models.CharField(verbose_name="Nombre del premio", blank=True, null=True, max_length=300)
+    monedas = models.IntegerField(verbose_name="Monedas ocupadas")
+    entregado = models.CharField(choices=Entregado.choices, max_length=20, verbose_name="Entregado", default="NO")
+
+    class Meta:
+        verbose_name="Canje de moneda"
+        verbose_name_plural="Canje de monedas"
+
+    def __str__(self):
+        return self.premio
 
 class Anuncios(models.Model):
 

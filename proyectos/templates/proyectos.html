@@ -32,14 +32,14 @@
                                 <td>{{i.nombre}}</td>
                                 
                                 {% if i.fecha_i %}
-                                <td>{{i.fecha_i|date:"d-M-Y"}}</td>
+                                <td>{{i.fecha_i|date:"d/m/Y"}}</td>
 
                                 {% else %}
 
-                                <td>No definida</td>
+                                <td>--/--/----</td>
 
                                 {% endif %}
-                                <td>{{i.fecha_f|date:"d-M-Y"}}</td>
+                                <td>{{i.fecha_f|date:"d/m/Y"}}</td>
                                 <td><span class="label label-info" style="background-color: rgb({{i.color}});">{{i.m2}} m2</span></td>
                             </tr>
 
