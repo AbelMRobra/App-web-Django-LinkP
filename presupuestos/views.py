@@ -610,12 +610,12 @@ def presupuestostotal(request):
             nombre_archivo
             mUrl = settings.MEDIA_URL
             mRoot = settings.MEDIA_ROOT
-            wb.save(mRoot + "\{}".format(nombre_archivo))
+            wb.save(mRoot + "/{}".format(nombre_archivo))
           
             variable = PresupuestosAlmacenados(
                 proyecto = proyecto,
                 nombre = "vigente",
-                archivo = "{}\{}".format(mRoot, nombre_archivo),
+                archivo = "{}/{}".format(mRoot, nombre_archivo),
             )
 
             variable.save()
