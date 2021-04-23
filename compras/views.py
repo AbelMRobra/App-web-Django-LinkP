@@ -707,7 +707,7 @@ def comparativas(request, estado, creador):
 
         mensaje_creador = datosusuario.objects.get(id = creador).identificacion
 
-    creadores = Comparativas.objects.values_list('creador')
+    creadores = Comparativas.objects.values_list('creador').order_by('creador')
 
     creadores = list(set(creadores))
 
@@ -1221,7 +1221,6 @@ def comparativas(request, estado, creador):
 
                             datos.append(i)
 
-    list_creadores = sorted(list_creadores)
 
     return render(request, 'comparativas.html', {'mensaje_creador':mensaje_creador, 
     'list_creadores':list_creadores, 'datos':datos, "estado":estado, 
