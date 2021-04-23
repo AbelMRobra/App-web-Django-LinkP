@@ -546,7 +546,7 @@
                                                                 <div style="margin: 5px">
                                                                     <div>
                                                                         <label style="width: 120px;" for="adjunto"><h6>Adjunto</h6></label>
-                                                                        {% t.0.archivo_vigente %}
+                                                                        {% if t.0.archivo_vigente %}
                                                                         <h6><small>{{t.0.archivo_vigente.url}}</small></h6>
                                                                         {% endif %}
                                                                         <input type="file" class="form-control-file" name="adjunto" aria-describedby="fileHelp" >
