@@ -615,7 +615,7 @@ def presupuestostotal(request):
             variable = PresupuestosAlmacenados(
                 proyecto = proyecto,
                 nombre = "vigente",
-                archivo = "{}/{}".format(mRoot, nombre_archivo),
+                archivo = (nombre_archivo),
             )
 
             variable.save()
