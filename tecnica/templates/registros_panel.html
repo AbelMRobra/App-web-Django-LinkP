@@ -154,8 +154,8 @@
 
                         {% for i in data %}
 
-                        <tr>
-                            <td>{{i.fecha|date:"Y-m-d"}}</td>
+                        <tr style="font-size: 14px;">
+                            <td>{{i.fecha|date:"Y/m/d"}}</td>
                             <td>{{i.proyecto|lower|capfirst}}</td>
                             <td>{{i.creador.identificacion}}</td>
                             <td><a href="{% url 'Registros ID' i.id%}">{{i.nombre|lower|capfirst}}</a></td>

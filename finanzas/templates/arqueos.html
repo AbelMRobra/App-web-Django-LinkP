@@ -43,7 +43,7 @@
                     </div>
 
                     <div class="row m-2">
-                        <button type="button" class="btn" data-toggle="modal" data-target="#ModalArqueo"><i
+                        <button type="button" class="btn"  ><i
                                 class="fa fa-plus-circle  text-info"><span class="text-info ml-2"
                                     style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif"><b>Añadir</b></span></i></button>
                     </div>
@@ -110,7 +110,7 @@
 
                                     </td>  
                                     
-                                    <td> <h6 style="font-size: 14px;"><a href="{% url 'Arqueo diario' i.id %}">Arqueo con fecha {{i.fecha|date:"d-m-Y"}}</a></h6>
+                                    <td> <h6 style="font-size: 14px;"><a href="{% url 'Arqueo diario' i.id %}">Arqueo con fecha {{i.fecha|date:"d-m-Y"}}</a> - <a href="{{i.archivo.url}}" class="fa fa-file-excel-o text-success"></a></h6>
                                         <h6 class="card-subtitle" style="font-size: 12px;">Nombre del archivo: "{{i.arqueo}}"</h6></td>    
                                                                       
 

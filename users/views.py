@@ -430,13 +430,14 @@ def canjemonedas(request):
                 
 Hola!,
 
-{} acaba de canjear Linkcoins, el premio es {} que costo {} monedas.
+{} acaba de canjear Linkcoins, el premio es {} que costó {} monedas.
 
-Deberia aparecer en el panel de seguimiento, cualquier duda hable con el área de IT
+Podrás visualizarlo en el panel de seguimiento. Cualquier duda, comunicate con el equipo de IT.
 
 Saludos!
 
 -- Link-Help 
+
 
                     
                 """.format(usuario, canje.premio, canje.monedas))
@@ -462,15 +463,15 @@ Saludos!
                 
                 mensaje = MIMEText("""
                     
-Hola hola!,
+¡Hola!,
 
-Acabas canjear {}  Linkcoins por el premio de {}.
+Acabas canjear {}  Linkcoins por el siguiente premio: {}.
 
-El área de RRHH te notificara cuando el premio este listo para retirarlo, puede demorar hasta 10 dias habiles.
+El equipo de RRHH te notificará cuando el mismo esté disponible para retirarlo (esta gestión puede tomar hasta 10 días hábiles posteriores a la fecha límite de canje).
 
-Si hubiera algún problema del sistema, comunicate con el área de IT para solucionarlo
+Si hubiera algún problema del sistema, comunicate con el equipo de IT para solucionarlo.
 
-Que termine bien tu dia!
+Saludos,
 
 -- Link-Help 
 

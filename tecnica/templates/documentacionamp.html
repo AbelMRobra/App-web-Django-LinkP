@@ -76,7 +76,7 @@
               </ul>
               <ul class="navbar-nav my-lg-0">
                 <li>
-                  <a class="nav-link waves-effect waves-dark" href="{% url 'Documentacion Amp' datos.0.id  0 1 %}" ><img src="{% static 'img/calendario.png' %}" alt="" width="30px"></a>
+                  <a class="nav-link waves-effect waves-dark" href="{% url 'Documentacion Amp' datos.0.id  0 1 %}" ><img src="{% static 'img/gantt.png' %}" alt="" width="30px"></a>
                   
                 </li>
               </ul>
@@ -343,7 +343,45 @@
                                 <thead style="font-size: 14px;">
                 
                                             <tr>
-                                                <th class="sticky" style="min-width: 250px;background-color: white;  z-index: 11;"><a href="#" class="fa fa-plus"></a> Etapa: {{i.0.nombre|lower|capfirst}} ({{i.2}})</th>
+                                                <th class="sticky" style="min-width: 250px;background-color: white;  z-index: 11;"><a href="#" class="fa fa-plus"  type="button" data-toggle="modal" data-target="#ModalITEM{{i.0.id}}"></a> Etapa: {{i.0.nombre|lower|capfirst}} ({{i.2}})</th>
+
+                                                  <!-- Modal agregar un item a una etapa -->
+                
+                                            <div class="modal fade" id="ModalITEM{{i.0.id}}" tabindex="-1" role="dialog" aria-labelledby="ModalITEM{{i.0.id}}Title" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModalLongTitle">Agregar item a etapa {{i.0.nombre}}</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                    
+                                                            <form method="POST" style="margin: 15px;">
+                        
+                                                                {% csrf_token %}
+                                            
+                                                                <div class="input-group mb-3">
+                                                                
+                                                                        <input name="nombre" type="text" class="form-control form-control" style="width: 100px;">
+                                                                    
+                                                                </div>
+                        
+                                                                <button type="submit" class="btn btn-info" name="crearitem" value="{{i.0.id}}">Crear</button>
+                                                            
+                                                            </form>
+                                                        
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                                
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
                                                 <th></th>
                                                 <th></th>
                                                 <th>Estado</th>
@@ -372,20 +410,20 @@
                             
                                             <td class="sticky item" style="background-color: white;">
                                                 <!-- <a href="{% url 'Agregar Subitem' t.0.id %}" class="fa fa-plus"></a>  -->
-                                                <a class="fa fa-plus"type="button" data-toggle="modal" data-target="#ModalSubItem{{t.0.id}}"></a> 
+                                                <a href="#" class="fa fa-plus"  type="button" data-toggle="modal" data-target="#ModalSubItem{{t.0.id}}"><i ></i></a> 
                                                 <!-- <a href="{% url 'Editar Item' t.0.id %}" style="text-decoration: none; color:#636762;">-> {{t.0.nombre}}</a> -->
-                                                <a type="button" data-toggle="modal" data-target="#ModalEditarItem{{t.0.id}}" style="text-decoration: none; color:#636762;">-> {{t.0.nombre}}</a> 
+                                                <a href="#" type="button" data-toggle="modal" data-target="#ModalEditarItem{{t.0.id}}" style="text-decoration: none; color:#636762;">-> {{t.0.nombre}}</a> 
                                            
                                             </td>  
                                              
                                             
-                                            <!-- MODAL subitem -->
+                                            <!-- Agregar subitem a item -->
                 
                                             <div class="modal fade" id="ModalSubItem{{t.0.id}}" tabindex="-1" role="dialog" aria-labelledby="ModalSubItem{{t.0.id}}Title" aria-hidden="true">
                                                 <div class="modal-dialog modal-dialog-centered" role="document">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
-                                                            <h5 class="modal-title" id="exampleModalLongTitle">{{t.0.nombre}}</h5>
+                                                            <h5 class="modal-title" id="exampleModalLongTitle">Agregar un subitem al item {{t.0.nombre}}</h5>
                                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                                 <span aria-hidden="true">&times;</span>
                                                             </button>
@@ -398,17 +436,17 @@
                                             
                                                                 <div class="input-group mb-3">
                                                                 
-                                                                        <input name="{{t.0.id}}-fecha_inicio_item" type="text" class="form-control form-control" value="{{t.0.fecha_inicio|date:"Y-m-d"}}" aria-label="Amount" style="width: 100px;">
+                                                                        <input name="nombre" type="text" class="form-control form-control" aria-label="Amount" style="width: 100px;">
                                                                     
                                                                 </div>
                         
-                                                                <button type="submit" class="btn btn-light">Modificar</button>
+                                                                <button type="submit" name="crearsubitem" value="{{t.0.id}}" class="btn btn-info">Crear</button>
                                                             
                                                             </form>
                                                         
                                                         </div>
                                                         <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                                                 
                                                         </div>
                                                     </div>
@@ -546,9 +584,6 @@
                                                                 <div style="margin: 5px">
                                                                     <div>
                                                                         <label style="width: 120px;" for="adjunto"><h6>Adjunto</h6></label>
-                                                                        {% if t.0.archivo_vigente %}
-                                                                        <h6><small>{{t.0.archivo_vigente.url}}</small></h6>
-                                                                        {% endif %}
                                                                         <input type="file" class="form-control-file" name="adjunto" aria-describedby="fileHelp" >
                                                                     </div>
                                                                 </div>
@@ -583,20 +618,185 @@
                                                     <form action="" method="POST">{% csrf_token %}
                                                         <button type="submit" class="btn btn-light" style="padding: 0px;" name="bajar_item" value="{{t.0.id}}"><i class="fa fa-arrow-circle-down text-info"></i></button></form></div>
                                             </td>
-                                            <!-- <td><a href="{% url 'Mensaje item' t.0.id %}" class="fa fa-comments-o"></a></td> -->
-                                            <td></td><a type="button" data-toggle="modal" data-target="#ModalMensajeItem{{t.0.id}}" style="text-decoration: none; color:#636762;"></a> </td>
+                                            <td><a href="{% url 'Mensaje item' t.0.id %}" class="fa fa-comments-o"></a></td>
                                 
-                                            <td style="color: rgb({{t.0.estado|estadoplan}})"><b>{{t.0.estado|lower|capfirst}}</b></td>            
+                                            
+                                            <td class="celdaestadoplanif" style="color: rgb({{t.0.estado|estadoplan}})"><a type="button" data-toggle="modal" data-target="#ModalEstadoItem{{t.0.id}}"><b>{{t.0.estado|lower|capfirst}}</b></a></td>
+                        
+                                                    <!-- Modal estado Item -->
+                                                        <div class="modal fade" id="ModalEstadoItem{{t.0.id}}" tabindex="-1" role="dialog" aria-labelledby="ModalEstadoItem{{t.0.id}}Title" aria-hidden="true">
+                                                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                <h5 class="modal-title" id="exampleModalLongTitle">Estado del Item</h5>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                <h6><small>Se modificará el estado del subitem {{t.0.nombre}}</small> </h6>                                    
+                                                                <form method="POST" id="Estado Item {{t.0.id}}" style="margin: 15px;">
+                            
+                                                                    {% csrf_token %}
+                                                
+                                                                    <div class="input-group mb-3">
+                                                                               
+                                                                            <select name="{{t.0.id}}-estado_item" class="custom-select" style="width: 300px;">
+                            
+                                                                                {% if t.0.estado == "ESPERA" %}
+                                                            
+                                                                                <option value="ESPERA" selected>ESPERA</option>
+                                                            
+                                                                                {% else %}
+                                                            
+                                                                                <option value="ESPERA">ESPERA</option>
+                                                            
+                                                                                {% endif %}
+                                                            
+                                                                                {% if t.0.estado == "TRABAJANDO" %}
+                                                            
+                                                                                <option value="TRABAJANDO" selected>TRABAJANDO</option>
+                                                            
+                                                                                {% else %}
+                                                            
+                                                                                <option value="TRABAJANDO">TRABAJANDO</option>
+                                                            
+                                                                                {% endif %}
+                                                            
+                                                                                {% if t.0.estado == "PROBLEMAS" %}
+                                                            
+                                                                                <option value="PROBLEMAS" selected>PROBLEMAS</option>
+                                                            
+                                                                                {% else %}
+                                                            
+                                                                                <option value="PROBLEMAS">PROBLEMAS</option>
+                                                            
+                                                                                {% endif %}
+                                                            
+                                                                                {% if t.0.estado == "LISTO" %}
+                                                            
+                                                                                <option value="LISTO" selected>LISTO</option>
+                                                            
+                                                                                {% else %}
+                                                            
+                                                                                <option value="LISTO">LISTO</option>
+                                                            
+                                                                                {% endif %}
+                                                            
+                                                            
+                                                                            </select>
+                                                                    </div>
+                        
+                                                                    <button type="submit" class="btn btn-info">Modificar</button>
+                            
+                                                                </form>
+
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                                        
+                                                                </div>
+                                                            </div>
+                                                            </div>
+                            
+                                                        </div>
+
+
+
+
+
                                             <td style="text-align: center;">{% if t.0.responsable %}<img src="{{t.0.responsable.imagenlogo.url}}" style="width: 30px;"  class="img-fluid imagenlogoplanif" alt="...">
                                                 {% else %}<img src="{% static 'img/anonimo2.png' %}" style="width: 30px;"  class="img-fluid imagenlogoplanif" alt="...">
                                                 {% endif %}</td>
                                 
-                                            {% if t.0.fecha_estimada_i %}
-                                            <td class="celdafechaplanif" style="color: rgb({% fecha_inicio_planif t.0.fecha_estimada_i t.0.estado%});">{{t.0.fecha_estimada_i|date:"d/m/Y"}}</td>
-                                            {% else %}<td class="celdafechaplanif">--/--/----</td>{% endif %}
-                                            {% if t.0.fecha_estimada_f %}
-                                            <td class="celdafechaplanif">{{t.0.fecha_estimada_f|date:"d/m/Y"}}</td>
-                                            {% else %}<td class="celdafechaplanif">--/--/----</td>{% endif %}
+                                                <td class="celdafechaplanif">
+                                                    <a type="button" data-toggle="modal" data-target="#ModalFechaInicioPlanif{{t.0.id}}"  style="color: rgb({% fecha_inicio_planif t.0.fecha_estimada_i t.0.estado%});">{% if t.0.fecha_estimada_i %}
+                                                        {{t.0.fecha_estimada_i|date:"d/m/Y"}}</a></td>
+                                                        {% else %}--/--/----{% endif %}
+
+                                             <!-- MODAL FECHA INICIO PLANIF -->
+                
+                                             <div class="modal fade" id="ModalFechaInicioPlanif{{t.0.id}}" tabindex="-1" role="dialog" aria-labelledby="ModalFechaInicioPlanif{{t.0.id}}Title" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModalLongTitle">Fecha inicio planificación ITEM</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                    
+                                                            <h6><small>Se modificará la fecha del item {{t.0.nombre}}</small> </h6>
+                                                        
+                                                            <form method="POST" style="margin: 15px;">
+                        
+                                                                {% csrf_token %}
+                                            
+                                                                <div class="input-group mb-3">
+                                                                
+                                                                        <input name="{{t.0.id}}-fecha_estimada_i" type="date" class="form-control form-control" value="{{t.0.fecha_estimada_i|date:"Y-m-d"}}" aria-label="Amount" style="width: 100px;">
+                                                                    
+                                                                </div>
+                        
+                                                                <button type="submit" class="btn btn-info">Modificar</button>
+                                                            
+                                                            </form>
+                                                        
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                                
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                            
+                                            <td class="celdafechaplanif">
+                                                <a type="button" data-toggle="modal" data-target="#ModalFechaFinalPlanif{{t.0.id}}">{% if t.0.fecha_estimada_f  %}
+                                                    {{t.0.fecha_estimada_f|date:"d/m/Y"}}</a></td>
+                                                    {% else %}--/--/----{% endif %}
+
+
+                                            <!-- MODAL FECHA FINAL PLANIF ITEM -->
+                
+                                            <div class="modal fade" id="ModalFechaFinalPlanif{{t.0.id}}" tabindex="-1" role="dialog" aria-labelledby="ModalFechaFinalPlanif{{t.0.id}}Title" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModalLongTitle">Fecha final planificación ITEM</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                    
+                                                            <h6><small>Se modificará la fecha del item {{t.0.nombre}}</small> </h6>
+                                                        
+                                                            <form method="POST" style="margin: 15px;">
+                        
+                                                                {% csrf_token %}
+                                            
+                                                                <div class="input-group mb-3">
+                                                                
+                                                                        <input name="{{t.0.id}}-fecha_estimada_f" type="date" class="form-control form-control" value="{{t.0.fecha_estimada_f|date:"Y-m-d"}}" aria-label="Amount" style="width: 100px;">
+
+                                                                </div>
+                        
+                                                                <button type="submit" class="btn btn-info">Modificar</button>
+                                                            
+                                                            </form>
+                                                        
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                                
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                 
                                             
                                             <td class="celdafechaplanif">
@@ -617,7 +817,7 @@
                                                         </div>
                                                         <div class="modal-body">
                                     
-                                                            <h6><small>Se modificara la fecha del item {{t.0.nombre}}</small> </h6>
+                                                            <h6><small>Se modificará la fecha del item {{t.0.nombre}}</small> </h6>
                                                         
                                                             <form method="POST" style="margin: 15px;">
                         
@@ -629,13 +829,13 @@
                                                                     
                                                                 </div>
                         
-                                                                <button type="submit" class="btn btn-light">Modificar</button>
+                                                                <button type="submit" class="btn btn-info">Modificar</button>
                                                             
                                                             </form>
                                                         
                                                         </div>
                                                         <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                                                 
                                                         </div>
                                                     </div>
@@ -661,7 +861,7 @@
                                                         <div class="modal-body">
                                     
                                 
-                                                            <h6><small>Se modificara la fecha del item {{t.0.nombre}}</small> </h6>
+                                                            <h6><small>Se modificará la fecha del item {{t.0.nombre}}</small> </h6>
                                                             
                                                             <form method="POST" style="margin: 15px;">
                         
@@ -673,7 +873,7 @@
                                                                     
                                                                 </div>
                         
-                                                                <button type="submit" class="btn btn-light">Modificar</button>
+                                                                <button type="submit" class="btn btn-info">Modificar</button>
                                                             
                                                             </form>
                                                             
@@ -699,8 +899,206 @@
                                     {% for h in t.1 %}
                                     <!--  NIVEL SUBITEM  -->
                                     <tr style="font-size: 10px; font-weight: bold;">
-                                        <td class="sticky subitem" style="background-color: white;"><a href="{% url 'Agregar Subsubitem' h.0.id %}" class="fa fa-plus"></a>
-                                                <a href="{% url 'Editar subitem' h.0.id %}" style="text-decoration: none; color:#636762;"> --> {{h.0.nombre}}</a></td>
+                                        <td class="sticky subitem" style="background-color: white;">
+                                            <!-- <a href="{% url 'Agregar Subsubitem' h.0.id %}" class="fa fa-plus"></a> -->
+                                            <a href="#" class="fa fa-plus"type="button" data-toggle="modal" data-target="#ModalSubItem{{h.0.id}}"></a> 
+                                            <!-- <a href="{% url 'Editar subitem' h.0.id %}" style="text-decoration: none; color:#636762;"> -> {{h.0.nombre}}</a> -->
+                                            <a href="#" type="button" data-toggle="modal" data-target="#ModalEditarSubItem{{h.0.id}}" style="text-decoration: none; color:#636762;">--> {{h.0.nombre}}</a> 
+
+                                        </td>
+
+                                        <!-- modal agregar un subsubitem a un Subitem -->
+                                        <div class="modal fade" id="ModalSubItem{{h.0.id}}" tabindex="-1" role="dialog" aria-labelledby="ModalSubItem{{h.0.id}}Title" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLongTitle">Agregar un subsubitem al subitem {{h.0.nombre}}</h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+
+                                                        <form method="POST" style="margin: 15px;">
+
+                                                            {% csrf_token %}
+
+                                                            <div class="input-group mb-3">
+                                                            
+                                                                    <input name="nombre" type="text" class="form-control form-control"  aria-label="Amount" style="width: 100px;">
+                                                                
+                                                            </div>
+
+                                                            <button type="submit" class="btn btn-info" name="crearsubsubitem" value="{{h.0.id}}">Crear</button>
+                                                        
+                                                        </form>
+                                                    
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                            
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>               
+            
+                                        <!-- modal editar Subitem -->
+                                        <div class="modal fade" id="ModalEditarSubItem{{h.0.id}}" tabindex="-1" role="dialog" aria-labelledby="ModalEditarSubItem{{h.0.id}}Title" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLongTitle">Edición del subitem</h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+
+                                                        <form method="POST" style="margin: 15px;">
+                                                            {% csrf_token %}
+                                                            <div style="margin: 5px">
+                                                    
+                                                                <div>
+                                                                    <label style="width: 120px;" for="nombre"><h6>Nombre</h6></label>
+                                                                    <input name="nombre" type="text" class="form-control form-control" value="{{h.0.nombre}}" style="width: 300px;">
+                                                                </div>
+                                                            </div>
+                                                    
+                                                            <div style="margin: 5px">
+                                                    
+                                                                <div>
+                                                                    <label style="width: 120px;" for="responsable"><h6>Responsable</h6></label>
+                                                                    <input name="responsable" type="text" class="form-control form-control" value="{{h.0.responsable.identificacion}}" style="width: 300px;">
+                                                                </div>
+                                                            </div>
+                                                    
+                                                            <div  style="margin: 5px">
+                                                    
+                                                                <div>
+                                                                    <label style="width: 120px;" for="estado"><h6>Estado</h6></label>
+                                                        
+                                                                    <select name="estado" class="custom-select" style="width: 300px;">
+                                                    
+                                                                        {% if h.0.estado == "ESPERA" %}
+                                                    
+                                                                        <option value="ESPERA" selected>ESPERA</option>
+                                                    
+                                                                        {% else %}
+                                                    
+                                                                        <option value="ESPERA">ESPERA</option>
+                                                    
+                                                                        {% endif %}
+                                                    
+                                                                        {% if h.0.estado == "TRABAJANDO" %}
+                                                    
+                                                                        <option value="TRABAJANDO" selected>TRABAJANDO</option>
+                                                    
+                                                                        {% else %}
+                                                    
+                                                                        <option value="TRABAJANDO">TRABAJANDO</option>
+                                                    
+                                                                        {% endif %}
+                                                    
+                                                                        {% if h.0.estado == "PROBLEMAS" %}
+                                                    
+                                                                        <option value="PROBLEMAS" selected>PROBLEMAS</option>
+                                                    
+                                                                        {% else %}
+                                                    
+                                                                        <option value="PROBLEMAS">PROBLEMAS</option>
+                                                    
+                                                                        {% endif %}
+                                                    
+                                                                        {% if h.0.estado == "LISTO" %}
+                                                    
+                                                                        <option value="LISTO" selected>LISTO</option>
+                                                    
+                                                                        {% else %}
+                                                    
+                                                                        <option value="LISTO">LISTO</option>
+                                                    
+                                                                        {% endif %}
+                                                    
+                                                    
+                                                                    </select>
+                                                        
+                                                                </div>
+                                                    
+                                                    
+                                                            </div>
+                                                    
+                                                            <div style="margin: 5px">
+                                                    
+                                                                <div>
+                                                    
+                                                                    <label style="width: 120px;" for="fecha_estimada_i"><h6>Fecha inicial P</h6></label>
+                                                                    <input name="fecha_estimada_i" type="date" class="form-control form-control" value="{{h.0.fecha_estimada_i|date:'Y-m-d'}}" style="width: 300px;">
+                                                        
+                                                                </div>
+                                                    
+                                                            </div>
+                                                    
+                                                            <div style="margin: 5px">
+                                                    
+                                                                <div>
+                                                                    <label style="width: 120px;" for="fechai"><h6>Fecha inicial</h6></label>
+                                                                    <input name="fechai" type="date" class="form-control form-control" value="{{h.0.fecha_inicio|date:'Y-m-d'}}" style="width: 300px;">
+                                                                </div>
+                                                            </div>
+                                                    
+                                                            <div style="margin: 5px">
+                                                    
+                                                                <div>
+                                                                    <label style="width: 120px;" for="fecha_estimada_f"><h6>Fecha final P</h6></label>
+                                                                    <input name="fecha_estimada_f" type="date" class="form-control form-control" value="{{h.0.fecha_estimada_f|date:'Y-m-d'}}" style="width: 300px;">
+                                                                </div>
+                                                            </div>
+                                                    
+                                                            <div style="margin: 5px">
+                                                    
+                                                                <div>
+                                                                    <label style="width: 120px;" for="fechaf"><h6>Fecha final</h6></label>
+                                                                    <input name="fechaf" type="date" class="form-control form-control" style="width: 300px;" value="{{h.0.fecha_final|date:'Y-m-d'}}" >
+                                                                </div>
+                                                            </div>
+                                                    
+                                                            <div style="margin: 5px">
+
+                                                                <div>
+                                                                    <label style="width: 120px;" for="url"><h6>URL</h6></label>
+                                                                    <input name="url" type="url" class="form-control form-control" style="width: 300px;" {% if datos.url %} value="{{h.0..url}}" {% endif %}>
+                                                                </div>
+                                                            </div>
+                                                    
+                                                            <div style="margin: 5px">
+                                                                <div>
+                                                                    <label style="width: 120px;" for="adjunto"><h6>Adjunto</h6></label>
+                                                                    <h6><small>{{h.0.adjunto}}</small></h6>
+                                                                    <input type="file" class="form-control-file" name="adjunto" aria-describedby="fileHelp" >
+                                                                </div>
+                                                            </div>
+                                                            <div style="margin: 10px">
+                                                                <button type="submit" name="editarsubitem" value="{{h.0.id}}" class="btn btn-info">Subir</button>
+                                                                <button type="submit" name="borrarsubitem" value="{{h.0.id}}" class="btn btn-danger">Borrar</button>
+
+
+                                                            </div>
+                                                    
+                                                            
+                                                    
+                                                            {{ form.as_p }}
+                                                        
+                                                        </form>
+                                                    
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                            
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>  
+                                        <!-- modal Subitem -->
                                         <td  class="celdacharlaplanif">
                                                             <div style="display: inline-block;">
                                                                 <form action="" method="POST">{% csrf_token %}
@@ -723,7 +1121,7 @@
                                                                 </button>
                                                                 </div>
                                                                 <div class="modal-body">
-                                                                <h6><small>Se modificara el estado del subitem {{h.0.nombre}}</small> </h6>                                    
+                                                                <h6><small>Se modificará el estado del subitem {{h.0.nombre}}</small> </h6>                                    
                                                                 <form method="POST" style="margin: 15px;">
                             
                                                                     {% csrf_token %}
@@ -776,13 +1174,13 @@
                                                                             </select>
                                                                     </div>
                             
-                                                                    <button type="submit" class="btn btn-light">Modificar</button>
+                                                                    <button type="submit" class="btn btn-info">Modificar</button>
                                                                 
                                                                 </form>
                                                                 
                                                                 </div>
                                                                 <div class="modal-footer">
-                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                                                         
                                                                 </div>
                                                             </div>
@@ -798,18 +1196,105 @@
                                                             {% else %}<img src="{% static 'img/anonimo2.png' %}" style="width: 20px;" class="img-fluid imagenlogoplanif" alt="...">{% endif %}
                                         </td>
                                     
-                                        {% if h.0.fecha_estimada_i %}
-                                        <td class="celdafechaplanif" style="color: rgb({% fecha_inicio_planif h.0.fecha_estimada_i h.0.estado %});">{{h.0.fecha_estimada_i|date:"d/m/Y"}}</td>
-                                        {% else %}<td> --/--/----</td>{% endif %}
-                                        {% if h.0.fecha_estimada_f %}<td class="celdafechaplanif" style="color: rgb({% fecha_final_planif h.0.fecha_estimada_f h.0.estado %});">{{h.0.fecha_estimada_f|date:"d/m/Y"}}</td>
-                                        {% else %}<td> --/--/----</td>{% endif %}
-                                    
+                                        
+                                        <!-- -- -->
+
+                                        <td>{% if h.0.fecha_estimada_i %}
+                                            <a type="button" data-toggle="modal" data-target="#ModalFechaInicioPlanifSubItem{{h.0.id}}"  style="color: rgb({% fecha_inicio_planif h.0.fecha_estimada_i h.0.estado %});">{{h.0.fecha_estimada_i|date:"d/m/Y"}}</a>
+                                            {% else %}<a type="button" data-toggle="modal" data-target="#ModalFechaInicioPlanifSubItem{{h.0.id}}">--/--/----</a>{% endif %}</td>
+                                        
+
+                                                                                  
+                                                                                <!-- Modal fecha final planificada Subitem -->
+                                                    
+                                                                                <div class="modal fade" id="ModalFechaInicioPlanifSubItem{{h.0.id}}" tabindex="-1" role="dialog" aria-labelledby="ModalFechaInicioPlanifSubItem{{h.0.id}}Title" aria-hidden="true">
+                                                                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                                                                        <div class="modal-content">
+                                                                                            <div class="modal-header">
+                                                                                                <h5 class="modal-title" id="exampleModalLongTitle">Fecha inicio planificación subitem</h5>
+                                                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                                                    <span aria-hidden="true">&times;</span>
+                                                                                                </button>
+                                                                                            </div>
+                                                                                            <div class="modal-body">
+                                                                        
+                                                                                                <h6><small>Se modificará la fecha del subitem {{h.0.nombre}}</small> </h6>
+                                                                                            
+                                                                                                <form method="POST" style="margin: 15px;">
+                                                            
+                                                                                                    {% csrf_token %}
+                                                                                
+                                                                                                    <div class="input-group mb-3">
+                                                                                                    
+                                                                                                            <input name="{{h.0.id}}-fecha_estimada_i_subitem" type="date" class="form-control form-control" value="{{h.0.fecha_estimada_i|date:"Y-m-d"}}" aria-label="Amount" style="width: 100px;">
+                                                                                                        
+                                                                                                    </div>
+                                                            
+                                                                                                    <button type="submit" class="btn btn-info">Modificar</button>
+                                                                                                
+                                                                                                </form>
+                                                                                            
+                                                                                            </div>
+                                                                                            <div class="modal-footer">
+                                                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                                                                    
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+
+
+                                      <!-- ---- -->
+                                        <td>{% if h.0.fecha_estimada_f %}
+                                            <a type="button" data-toggle="modal" data-target="#ModalFechaFinalPlanifSubItem{{h.0.id}}"  style="color: rgb({% fecha_final_planif h.0.fecha_estimada_f h.0.estado %});">{{h.0.fecha_estimada_f|date:"d/m/Y"}}</a>
+                                            {% else %}<a type="button" data-toggle="modal" data-target="#ModalFechaFinalPlanifSubItem{{h.0.id}}">--/--/----</a>{% endif %}</td>
+                                        
+
+                                                                                  
+                                                                                <!-- Modal fecha final planificada Subitem -->
+                                                    
+                                                                                <div class="modal fade" id="ModalFechaFinalPlanifSubItem{{h.0.id}}" tabindex="-1" role="dialog" aria-labelledby="ModalFechaFinalPlanifSubItem{{h.0.id}}Title" aria-hidden="true">
+                                                                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                                                                        <div class="modal-content">
+                                                                                            <div class="modal-header">
+                                                                                                <h5 class="modal-title" id="exampleModalLongTitle">Fecha final planificación subitem</h5>
+                                                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                                                    <span aria-hidden="true">&times;</span>
+                                                                                                </button>
+                                                                                            </div>
+                                                                                            <div class="modal-body">
+                                                                        
+                                                                                                <h6><small>Se modificará la fecha del subitem {{h.0.nombre}}</small> </h6>
+                                                                                            
+                                                                                                <form method="POST" style="margin: 15px;">
+                                                            
+                                                                                                    {% csrf_token %}
+                                                                                
+                                                                                                    <div class="input-group mb-3">
+                                                                                                    
+                                                                                                            <input name="{{h.0.id}}-fecha_estimada_f_subitem" type="date" class="form-control form-control" value="{{h.0.fecha_estimada_f|date:"Y-m-d"}}" aria-label="Amount" style="width: 100px;">
+                                                                                                        
+                                                                                                    </div>
+                                                            
+                                                                                                    <button type="submit" class="btn btn-info">Modificar</button>
+                                                                                                
+                                                                                                </form>
+                                                                                            
+                                                                                            </div>
+                                                                                            <div class="modal-footer">
+                                                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                                                                    
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            
                                         <td>{% if h.0.fecha_inicio %}
                                         <a type="button" data-toggle="modal" data-target="#ModalFechaInicioSubItem{{h.0.id}}" style="color: rgb({% fecha_inicio_planif h.0.fecha_inicio h.0.estado %});">{{h.0.fecha_inicio|date:"d/m/Y"}}</a>
                                         {% else %}<a type="button" data-toggle="modal" data-target="#ModalFechaInicioSubItem{{h.0.id}}">--/--/----</a>{% endif %}</td>
-                                    
+
                                                 
-                                        <!-- Modal fecha final Subitem -->
+                                        <!-- Modal fecha inicio Subitem -->
                                         <div class="modal fade" id="ModalFechaInicioSubItem{{h.0.id}}" tabindex="-1" role="dialog" aria-labelledby="ModalFechaInicioSubItem{{h.0.id}}Title" aria-hidden="true">
                                                             <div class="modal-dialog modal-dialog-centered" role="document">
                                                             <div class="modal-content">
@@ -822,7 +1307,7 @@
                                                                 <div class="modal-body">
                                             
                                         
-                                                                <h6><small>Se modificara la fecha del SUB-subitem {{h.0.nombre}}</small> </h6>
+                                                                <h6><small>Se modificará la fecha del SUB-item {{h.0.nombre}}</small> </h6>
                                                                 
                                                                 <form method="POST" style="margin: 15px;">
                             
@@ -834,13 +1319,13 @@
                                                                         
                                                                     </div>
                             
-                                                                    <button type="submit" class="btn btn-light">Modificar</button>
+                                                                    <button type="submit" class="btn btn-info">Modificar</button>
                                                                 
                                                                 </form>
                                                                 
                                                                 </div>
                                                                 <div class="modal-footer">
-                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                                                         
                                                                 </div>
                                                             </div>
@@ -850,12 +1335,12 @@
                                                                    
                                                 
                                         <td>{% if h.0.fecha_final %}
-                                                            <a type="button" data-toggle="modal" data-target="#ModalSubItem{{h.0.id}}" style="color: rgb({% fecha_final_planif h.0.fecha_final h.0.estado%});">{{h.0.fecha_final|date:"d/m/Y"}}</a>
-                                        {% else %}<a type="button" data-toggle="modal" data-target="#ModalSubItem{{h.0.id}}">--/--/----</a>{% endif %}</td>
+                                                            <a type="button" data-toggle="modal" data-target="#ModalFechaFinalSubItem{{h.0.id}}" style="color: rgb({% fecha_final_planif h.0.fecha_final h.0.estado%});">{{h.0.fecha_final|date:"d/m/Y"}}</a>
+                                        {% else %}<a type="button" data-toggle="modal" data-target="#ModalFechaFinalSubItem{{h.0.id}}">--/--/----</a>{% endif %}</td>
                                 
                                         
                                             <!-- Modal fecha final Subitem -->
-                                            <div class="modal fade" id="ModalSubItem{{h.0.id}}" tabindex="-1" role="dialog" aria-labelledby="ModalSubItem{{h.id}}Title" aria-hidden="true">
+                                            <div class="modal fade" id="ModalFechaFinalSubItem{{h.0.id}}" tabindex="-1" role="dialog" aria-labelledby="ModalFechaFinalSubItem{{h.id}}Title" aria-hidden="true">
                                                                 <div class="modal-dialog modal-dialog-centered" role="document">
                                                                 <div class="modal-content">
                                                                     <div class="modal-header">
@@ -867,7 +1352,7 @@
                                                                     <div class="modal-body">
                                                 
                                             
-                                                                    <h6><small>Se modificara la fecha del SUB-subitem {{h.0.nombre}}</small> </h6>
+                                                                    <h6><small>Se modificará la fecha del SUB-subitem {{h.0.nombre}}</small> </h6>
                                                                     
                                                                     <form method="POST" style="margin: 15px;">
                             
@@ -875,17 +1360,17 @@
                                                     
                                                                         <div class="input-group mb-3">
                                                                         
-                                                                                <input name="{{h.0.id}}-fecha_final_subitem" type="date" class="form-control form-control" value="{{h.fecha_final|date:"Y-m-d"}}" aria-label="Amount" style="width: 100px;">
+                                                                                <input name="{{h.0.id}}-fecha_final_subitem" type="date" class="form-control form-control" value="{{h.0.fecha_final|date:"Y-m-d"}}" aria-label="Amount" style="width: 100px;">
                                                                             
                                                                         </div>
                             
-                                                                        <button type="submit" class="btn btn-light">Modificar</button>
+                                                                        <button type="submit" class="btn btn-info">Modificar</button>
                                                                     
                                                                     </form>
                                                                     
                                                                     </div>
                                                                     <div class="modal-footer">
-                                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                                                             
                                                                     </div>
                                                                 </div>
@@ -922,8 +1407,170 @@
                 
                                         <tr style="font-size: 10px; font-weight: bold;">  
                                     
-                                                            <td class="sticky subsubitem" style="background-color: white;">
-                                                                <a href="{% url 'Editar subsubitem' k.id %}" style="text-decoration: none; color:#636762;">---> {{k.nombre}}</a></td>
+                                            <td class="sticky subsubitem" style="background-color: white;">
+
+                                                <!-- <a href="{% url 'Editar subsubitem' k.id %}" style="text-decoration: none; color:#636762;">-> {{k.nombre}}</a></td> -->
+                                                <a type="button" data-toggle="modal" data-target="#ModalEditarSubsubItem{{h.0.id}}" style="text-decoration: none; color:#636762;">---> {{k.nombre}}</a> 
+
+                                            </td>
+
+                                                                <!-- modal editar Subsubitem -->
+                                                                <div class="modal fade" id="ModalEditarSubsubItem{{h.0.id}}" tabindex="-1" role="dialog" aria-labelledby="ModalEditarSubsubItem{{h.0.id}}Title" aria-hidden="true">
+                                                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                                                        <div class="modal-content">
+                                                                            <div class="modal-header">
+                                                                                <h5 class="modal-title" id="exampleModalLongTitle">Edición del subsubitem</h5>
+                                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                                    <span aria-hidden="true">&times;</span>
+                                                                                </button>
+                                                                            </div>
+                                                                            <div class="modal-body">
+
+                                                                                <form method="POST" style="margin: 15px;">
+                                                                                    {% csrf_token %}
+                                                                                    <div style="margin: 5px">
+                                                                            
+                                                                                        <div>
+                                                                                            <label style="width: 120px;" for="nombre"><h6>Nombre</h6></label>
+                                                                                            <input name="nombre" type="text" class="form-control form-control" value="{{k.nombre}}" style="width: 300px;">
+                                                                                        </div>
+                                                                                    </div>
+                                                                            
+                                                                                    <div style="margin: 5px">
+                                                                            
+                                                                                        <div>
+                                                                                            <label style="width: 120px;" for="responsable"><h6>Responsable</h6></label>
+                                                                                            <input name="responsable" type="text" class="form-control form-control" value="{{k.responsable.identificacion}}" style="width: 300px;">
+                                                                                        </div>
+                                                                                    </div>
+                                                                            
+                                                                                    <div  style="margin: 5px">
+                                                                            
+                                                                                        <div>
+                                                                                            <label style="width: 120px;" for="estado"><h6>Estado</h6></label>
+                                                                                
+                                                                                            <select name="estado" class="custom-select" style="width: 300px;">
+                                                                            
+                                                                                                {% if k.estado == "ESPERA" %}
+                                                                            
+                                                                                                <option value="ESPERA" selected>ESPERA</option>
+                                                                            
+                                                                                                {% else %}
+                                                                            
+                                                                                                <option value="ESPERA">ESPERA</option>
+                                                                            
+                                                                                                {% endif %}
+                                                                            
+                                                                                                {% if k.estado == "TRABAJANDO" %}
+                                                                            
+                                                                                                <option value="TRABAJANDO" selected>TRABAJANDO</option>
+                                                                            
+                                                                                                {% else %}
+                                                                            
+                                                                                                <option value="TRABAJANDO">TRABAJANDO</option>
+                                                                            
+                                                                                                {% endif %}
+                                                                            
+                                                                                                {% if k.estado == "PROBLEMAS" %}
+                                                                            
+                                                                                                <option value="PROBLEMAS" selected>PROBLEMAS</option>
+                                                                            
+                                                                                                {% else %}
+                                                                            
+                                                                                                <option value="PROBLEMAS">PROBLEMAS</option>
+                                                                            
+                                                                                                {% endif %}
+                                                                            
+                                                                                                {% if k.estado == "LISTO" %}
+                                                                            
+                                                                                                <option value="LISTO" selected>LISTO</option>
+                                                                            
+                                                                                                {% else %}
+                                                                            
+                                                                                                <option value="LISTO">LISTO</option>
+                                                                            
+                                                                                                {% endif %}
+                                                                            
+                                                                            
+                                                                                            </select>
+                                                                                
+                                                                                        </div>
+                                                                            
+                                                                            
+                                                                                    </div>
+                                                                            
+                                                                                    <div style="margin: 5px">
+                                                                            
+                                                                                        <div>
+                                                                            
+                                                                                            <label style="width: 120px;" for="fecha_estimada_i"><h6>Fecha inicial P</h6></label>
+                                                                                            <input name="fecha_estimada_i" type="date" class="form-control form-control" value="{{k.fecha_estimada_i|date:'Y-m-d'}}" style="width: 300px;">
+                                                                                
+                                                                                        </div>
+                                                                            
+                                                                                    </div>
+                                                                            
+                                                                                    <div style="margin: 5px">
+                                                                            
+                                                                                        <div>
+                                                                                            <label style="width: 120px;" for="fechai"><h6>Fecha inicial</h6></label>
+                                                                                            <input name="fechai" type="date" class="form-control form-control" value="{{k.fecha_inicio|date:'Y-m-d'}}" style="width: 300px;">
+                                                                                        </div>
+                                                                                    </div>
+                                                                            
+                                                                                    <div style="margin: 5px">
+                                                                            
+                                                                                        <div>
+                                                                                            <label style="width: 120px;" for="fecha_estimada_f"><h6>Fecha final P</h6></label>
+                                                                                            <input name="fecha_estimada_f" type="date" class="form-control form-control" value="{{k.fecha_estimada_f|date:'Y-m-d'}}" style="width: 300px;">
+                                                                                        </div>
+                                                                                    </div>
+                                                                            
+                                                                                    <div style="margin: 5px">
+                                                                            
+                                                                                        <div>
+                                                                                            <label style="width: 120px;" for="fechaf"><h6>Fecha final</h6></label>
+                                                                                            <input name="fechaf" type="date" class="form-control form-control" style="width: 300px;" value="{{k.fecha_final|date:'Y-m-d'}}">
+                                                                                        </div>
+                                                                                    </div>
+                                                                            
+                                                                                    <div style="margin: 5px">
+
+                                                                                        <div>
+                                                                                            <label style="width: 120px;" for="url"><h6>URL</h6></label>
+                                                                                            <input name="url" type="url" class="form-control form-control" style="width: 300px;" {% if datos.url %} value="{{k.url}}" {% endif %}>
+                                                                                        </div>
+                                                                                    </div>
+                                                                            
+                                                                                    <div style="margin: 5px">
+                                                                                        <div>
+                                                                                            <label style="width: 120px;" for="adjunto"><h6>Adjunto</h6></label>
+                                                                                            <h6><small>{{k.adjunto}}</small></h6>
+                                                                                            <input type="file" class="form-control-file" name="adjunto" aria-describedby="fileHelp" >
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div style="margin: 10px">
+                                                                                        <button type="submit" name="editarsubsubitem" value="{{k.id}}" class="btn btn-info">Subir</button>
+                                                                                        <button type="submit" name="borrarsubsubitem" value="{{k.id}}" class="btn btn-danger">Borrar</button>
+
+
+                                                                                    </div>
+                                                                            
+                                                                                    
+                                                                            
+                                                                                    {{ form.as_p }}
+                                                                                
+                                                                                </form>
+                                                                            
+                                                                            </div>
+                                                                            <div class="modal-footer">
+                                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                                                    
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>  
+                                                                <!-- modal Subsubitem -->
                                                             <td>
                                                                 <div style="display: inline-block;">
                                                                     <form action="" method="POST">
@@ -949,7 +1596,7 @@
                                                                 </button>
                                                                 </div>
                                                                 <div class="modal-body">
-                                                                <h6><small>Se modificara el estado del subitem {{k.nombre}}</small> </h6>                                    
+                                                                <h6><small>Se modificará el estado del subitem {{k.nombre}}</small> </h6>                                    
                                                                 <form method="POST" id="Estado Subsubitem {{k.id}}" style="margin: 15px;">
                             
                                                                     {% csrf_token %}
@@ -1002,13 +1649,13 @@
                                                                             </select>
                                                                     </div>
                         
-                                                                    <button type="submit" class="btn btn-light">Modificar</button>
+                                                                    <button type="submit" class="btn btn-info">Modificar</button>
                             
                                                                 </form>
 
                                                                 </div>
                                                                 <div class="modal-footer">
-                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                                                         
                                                                 </div>
                                                             </div>
@@ -1022,13 +1669,102 @@
                                                                     <img src="{{k.responsable.imagenlogo.url}}" style="width: 18px;"  class="img-fluid imagenlogoplanif" alt="...">
                                                                     {% else %}<img src="{% static 'img/anonimo2.png' %}" style="width: 18px;" class="img-fluid imagenlogoplanif" alt="...">{% endif %}</td>
                                                     
-                                                                {% if k.fecha_estimada_i %}
-                                                                <td class="celdafechaplanif"style="color: rgb({% fecha_inicio_planif k.fecha_estimada_i k.estado%});">{{k.fecha_estimada_i|date:"d/m/Y"}}</td>
-                                                                {% else %}<td>--/--/----</td>{% endif %} 
-                                                    
-                                                                {% if k.fecha_estimada_f %}
-                                                                <td tyle="color: rgb({% fecha_final_planif k.fecha_estimada_i k.estado%});">{{k.fecha_estimada_f|date:"d/m/Y"}}</td>
-                                                                {% else %}<td>--/--/----</td>{% endif %} 
+                                                                    <!-- --- -->
+
+                                                                <td>{% if k.fecha_estimada_i %}
+                                                                    <a type="button" data-toggle="modal" data-target="#ModalFechaInicioPlanifSubsubItem{{k.id}}"  style="color: rgb({% fecha_inicio_planif k.fecha_estimada_i k.estado%});">{{k.fecha_estimada_i|date:"d/m/Y"}}</a>
+                                                                    {% else %}<a type="button" data-toggle="modal" data-target="#ModalFechaInicioPlanifSubsubItem{{k.id}}">--/--/----</a>{% endif %}</td>
+                                                                
+                        
+                                                                                                          
+                                                                                                        <!-- Modal fecha final planificada Subitem -->
+                                                                            
+                                                                                                        <div class="modal fade" id="ModalFechaInicioPlanifSubsubItem{{k.id}}" tabindex="-1" role="dialog" aria-labelledby="ModalFechaInicioPlanifSubsubItem{{k.id}}Title" aria-hidden="true">
+                                                                                                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                                                                                                <div class="modal-content">
+                                                                                                                    <div class="modal-header">
+                                                                                                                        <h5 class="modal-title" id="exampleModalLongTitle">Fecha inicio planificación Subsubitem</h5>
+                                                                                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                                                                            <span aria-hidden="true">&times;</span>
+                                                                                                                        </button>
+                                                                                                                    </div>
+                                                                                                                    <div class="modal-body">
+                                                                                                
+                                                                                                                        <h6><small>Se modificará la fecha del Subsubitem {{k.nombre}}</small> </h6>
+                                                                                                                    
+                                                                                                                        <form method="POST" style="margin: 15px;">
+                                                                                    
+                                                                                                                            {% csrf_token %}
+                                                                                                        
+                                                                                                                            <div class="input-group mb-3">
+                                                                                                                            
+                                                                                                                                    <input name="{{k.id}}-fecha_estimada_i_subitem" type="date" class="form-control form-control" value="{{k.fecha_estimada_i|date:"Y-m-d"}}" aria-label="Amount" style="width: 100px;">
+                                                                                                                                
+                                                                                                                            </div>
+                                                                                    
+                                                                                                                            <button type="submit" class="btn btn-info">Modificar</button>
+                                                                                                                        
+                                                                                                                        </form>
+                                                                                                                    
+                                                                                                                    </div>
+                                                                                                                    <div class="modal-footer">
+                                                                                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                                                                                            
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                        </div>
+                        
+                        
+
+
+                                                    <!-- --- -->
+                                                   
+                                                                <td>{% if k.fecha_estimada_f %}
+                                                                    <a type="button" data-toggle="modal" data-target="#ModalFechaFinalPlanifSubsubItem{{k.id}}"  style="color: rgb({% fecha_final_planif k.fecha_estimada_i k.estado%});">{{k.fecha_estimada_f|date:"d/m/Y"}}</a>
+                                                                    {% else %}<a type="button" data-toggle="modal" data-target="#ModalFechaFinalPlanifSubsubItem{{k.id}}">--/--/----</a>{% endif %}</td>
+                                                                
+                        
+                                                                                                          
+                                                                                                        <!-- Modal fecha final planificada Subitem -->
+                                                                            
+                                                                                                        <div class="modal fade" id="ModalFechaFinalPlanifSubsubItem{{k.id}}" tabindex="-1" role="dialog" aria-labelledby="ModalFechaFinalPlanifSubsubItem{{k.id}}Title" aria-hidden="true">
+                                                                                                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                                                                                                <div class="modal-content">
+                                                                                                                    <div class="modal-header">
+                                                                                                                        <h5 class="modal-title" id="exampleModalLongTitle">Fecha final planificación Subsubitem</h5>
+                                                                                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                                                                            <span aria-hidden="true">&times;</span>
+                                                                                                                        </button>
+                                                                                                                    </div>
+                                                                                                                    <div class="modal-body">
+                                                                                                
+                                                                                                                        <h6><small>Se modificará la fecha del Subsubitem {{k.nombre}}</small> </h6>
+                                                                                                                    
+                                                                                                                        <form method="POST" style="margin: 15px;">
+                                                                                    
+                                                                                                                            {% csrf_token %}
+                                                                                                        
+                                                                                                                            <div class="input-group mb-3">
+                                                                                                                            
+                                                                                                                                    <input name="{{k.id}}-fecha_estimada_f_subitem" type="date" class="form-control form-control" value="{{k.fecha_estimada_f|date:"Y-m-d"}}" aria-label="Amount" style="width: 100px;">
+                                                                                                                                
+                                                                                                                            </div>
+                                                                                    
+                                                                                                                            <button type="submit" class="btn btn-info">Modificar</button>
+                                                                                                                        
+                                                                                                                        </form>
+                                                                                                                    
+                                                                                                                    </div>
+                                                                                                                    <div class="modal-footer">
+                                                                                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                                                                                            
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                        </div>
+                        
+                        
 
                                                                 
                                                                 <td style="color: rgb({% fecha_inicio_planif k.fecha_inicio k.estado %});">
@@ -1047,7 +1783,7 @@
                                                                         <div class="modal-body">
                                                     
                                                 
-                                                                        <h6><small>Se modificara la fecha del SUB-subitem {{k.nombre}}</small> </h6>
+                                                                        <h6><small>Se modificará la fecha del SUB-subitem {{k.nombre}}</small> </h6>
                                                                         
                                                                         <form method="POST" style="margin: 15px;">
                                     
@@ -1059,13 +1795,13 @@
                                                                                 
                                                                             </div>
                                     
-                                                                            <button type="submit" class="btn btn-light">Modificar</button>
+                                                                            <button type="submit" class="btn btn-info">Modificar</button>
                                                                         
                                                                         </form>
                                                                         
                                                                         </div>
                                                                         <div class="modal-footer">
-                                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                                                                 
                                                                         </div>
                                                                     </div>
@@ -1088,7 +1824,7 @@
                                                                         <div class="modal-body">
                                                     
                                                 
-                                                                        <h6><small>Se modificara la fecha del SUB-subitem {{k.nombre}}</small> </h6>
+                                                                        <h6><small>Se modificará la fecha del SUB-subitem {{k.nombre}}</small> </h6>
                                                                         
                                                                         <form method="POST" style="margin: 15px;">
                                 
@@ -1100,13 +1836,13 @@
                                                                                 
                                                                             </div>
                                 
-                                                                            <button type="submit" class="btn btn-light">Modificar</button>
+                                                                            <button type="submit" class="btn btn-info">Modificar</button>
                                                                         
                                                                         </form>
                                                                         
                                                                         </div>
                                                                         <div class="modal-footer">
-                                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                                                                 
                                                                         </div>
                                                                     </div>
@@ -1349,7 +2085,7 @@ src="{% static 'adminpro/assets/plugins/multiselect/js/jquery.multi-select.js' %
     </div>
 
     
-    <div class="contendorplanificacion" >
+    <div class="contendorplanificación" >
 
         
     </div> 

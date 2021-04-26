@@ -533,7 +533,7 @@ def documentacionamp(request, id_proyecto, id_estado, id_week):
             if request.POST['fecha_estimada_f']:
                 item.fecha_estimada_f = request.POST['fecha_estimada_f']
             if request.POST['fechai']:
-                item.fecha_iniciao = request.POST['fechai']
+                item.fecha_inicio = request.POST['fechai']
             if request.POST['fechaf']:
                 item.fecha_final = request.POST['fechaf']
             item.url =  request.POST['url']
@@ -554,7 +554,7 @@ def documentacionamp(request, id_proyecto, id_estado, id_week):
             if request.POST['fecha_estimada_f']:
                 item.fecha_estimada_f = request.POST['fecha_estimada_f']
             if request.POST['fechai']:
-                item.fecha_iniciao = request.POST['fechai']
+                item.fecha_inicio = request.POST['fechai']
             if request.POST['fechaf']:
                 item.fecha_final = request.POST['fechaf']
             item.url =  request.POST['url']
@@ -575,7 +575,7 @@ def documentacionamp(request, id_proyecto, id_estado, id_week):
             if request.POST['fecha_estimada_f']:
                 item.fecha_estimada_f = request.POST['fecha_estimada_f']
             if request.POST['fechai']:
-                item.fecha_iniciao = request.POST['fechai']
+                item.fecha_inicio = request.POST['fechai']
             if request.POST['fechaf']:
                 item.fecha_final = request.POST['fechaf']
             item.url =  request.POST['url']
@@ -586,6 +586,58 @@ def documentacionamp(request, id_proyecto, id_estado, id_week):
                 item.save()
         except:
             pass
+
+        # ------------> Crear lo que sea
+
+        try:
+            item = Etapas.objects.get(id= int(request.POST['crearitem']))
+
+            b = ItemEtapa(
+                nombre = request.POST['nombre'],
+                etapa_id = item.id,
+                estado = "ESPERA"
+
+            )
+
+            b.save()
+
+        except:
+            pass
+
+        try:
+            item = ItemEtapa.objects.get(id= int(request.POST['crearsubitem']))
+
+            b = SubItem(
+                nombre = request.POST['nombre'],
+                item_id = item.id,
+                estado = "ESPERA"
+
+            )
+
+            b.save()
+
+        except:
+            pass
+
+
+        try:
+            item = SubItem.objects.get(id= int(request.POST['crearsubsubitem']))
+
+            b = SubSubItem(
+                nombre = request.POST['nombre'],
+                subitem_id = item.id,
+                estado = "ESPERA"
+
+            )
+
+            b.save()
+
+        except:
+            pass
+
+        # ------------> Editar fecha de inicio
+
+
 
         for d in request.POST.items():
 
