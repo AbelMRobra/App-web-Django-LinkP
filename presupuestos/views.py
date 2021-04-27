@@ -788,13 +788,16 @@ def presupuestorepcompleto(request, id_proyecto):
 
             valor_analisis = sum(np.array(df[df['Modelo'] == d.id]['Cantidad Ar'].values) * np.array(df[df['Modelo'] == d.id]['Precio'].values))
 
-            cantidad = df[df['Modelo'] == d.id]['Cantidad An'].values[0]
+            
+            if len(df[df['Modelo'] == d.id]) > 0:
+                
+                cantidad = df[df['Modelo'] == d.id]['Cantidad An'].values[0]
 
-            valor_mod = sum(np.array(df[df['Modelo'] == d.id]['Monto'].values))
+                valor_mod = sum(np.array(df[df['Modelo'] == d.id]['Monto'].values))
 
-            listado_analisis.append((d, valor_analisis, cantidad, valor_mod))  
+                listado_analisis.append((d, valor_analisis, cantidad, valor_mod))  
 
-            valor_capitulo = valor_capitulo + valor_analisis*cantidad
+                valor_capitulo = valor_capitulo + valor_analisis*cantidad
         
         crudo.append((c, valor_capitulo, 0.0, listado_analisis))
 
