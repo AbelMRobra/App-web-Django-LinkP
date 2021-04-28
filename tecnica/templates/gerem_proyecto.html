@@ -15,6 +15,8 @@
             <h3 class="text-themecolor">Panel de gerenciamiento {{proyecto}}</h3>
         </div>
 
+        
+
         <div class="col-md-7 align-self-center">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
@@ -87,8 +89,52 @@
             <div class="card-body ">
 
                 <h4 class="card-title"><span class="lstick m-r-20"></span><span class="text-info ml-2"
-                    style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif"></span>Planificación según capitulos del presupuesto</h4>
+                    style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif"></span>Planificación según capitulos del presupuesto - <a href="#" data-toggle="modal" data-target="#ModalArchivo" class="fa fa-file-excel-o text-success"></a></h4>
+                    
+                    <!-- Modal archivo -->
+                
+                    <div class="modal fade" id="ModalArchivo" tabindex="-1" role="dialog" aria-labelledby="ModalFechaInicioItem{{t.0.id}}Title" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">Cargue el archivo</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            </div>
+                            <div class="modal-body">
+                                <h6>Para que funcione recuerda:</h6>
+                                <p>Usa exactamente el mismo nombre en mayusculas del cpaitulo</p>
+                                <p>Tiene que tener fecha de inicio y final</p>
 
+                                <form method="POST" style="margin: 15px;" enctype="multipart/form-data" id="upload-image-form">
+
+                                    {% csrf_token %}
+    
+    
+                                    <h6>Archivo</h6>  
+    
+                                    <div class="input-group mb-3">
+                                            
+                                        <input name="archivo" type="file" class="form-control form-control" style="width: 300px;">
+                                    </div>
+    
+                                    <button type="submit" class="btn btn-light">
+                                        <i class="fa fa-cloud-upload text-info"></i> Cargar</button>
+    
+                                    {{ form.as_p }}
+                                
+                                </form>
+                            
+                            </div>
+                            <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    
+                            </div>
+                        </div>
+                        </div>
+
+                    </div>
 
                     <div class="table-responsive">
 
