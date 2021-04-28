@@ -3266,6 +3266,14 @@ def cuentacte_resumen(request):
 
     list_p = Cuota.objects.values_list("cuenta_corriente__venta__proyecto__id", flat = True)
     list_p = list(set(list_p))
+    cuotas_anteriores_t = 0
+    pagos_anteriores_t = 0
+    deuda_t = 0
+    cuotas_posterior_t = 0
+    pagos_posterior_t = 0
+    pagos_pesos_t = 0
+    adelantos_t = 0
+
     for project in list_p:
 
         proyecto = Proyectos.objects.get(id = int(project))
@@ -3284,7 +3292,17 @@ def cuentacte_resumen(request):
         array_pesos = np.array([cuotas_anteriores, pagos_anteriores, deuda, cuotas_posterior, pagos_posterior, adelantos])
         array_h = array_pesos/Constantes.objects.get(id = 7).valor
 
+        cuotas_anteriores_t += cuotas_anteriores
+        pagos_anteriores_t += pagos_anteriores
+        deuda_t += deuda
+        cuotas_posterior_t += cuotas_posterior
+        pagos_posterior_t += pagos_posterior
+        pagos_pesos_t += pagos_pesos
+        adelantos_t += adelantos
+
         data_project.append((proyecto, array_pesos, array_h, pagos_pesos))
+
+    array_total = [cuotas_anteriores_t, pagos_pesos_t, deuda_t, cuotas_posterior_t, pagos_posterior_t, adelantos_t]
 
     for project in list_p:
 
@@ -3331,7 +3349,7 @@ def cuentacte_resumen(request):
         
         datos.append((c, pagos, adeudado, pendiente))
 
-    return render(request, 'ctacte_resumen.html', {"datos":datos, "data_project":data_project, "data_project_b":data_project_b})
+    return render(request, 'ctacte_resumen.html', {"datos":datos, "data_project":data_project, "data_project_b":data_project_b, "array_total":array_total})
 
 def calculadora (request):
 
