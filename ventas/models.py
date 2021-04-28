@@ -41,6 +41,15 @@ class PricingResumen(models.Model):
     def __str__(self):
         return '{}'.format(self.proyecto)
 
+class DosierDeVenta(models.Model):
+    fecha = models.DateField(verbose_name="Fecha que corresponde")
+    proyecto = models.ForeignKey(Proyectos, on_delete=models.CASCADE, verbose_name = "Proyecto")
+    adjunto = models.FileField(verbose_name="Adjunto")
+
+    class Meta:
+        verbose_name="Dosier de venta"
+        verbose_name_plural="Dosieres de venta"
+
 class VentasRealizadas(models.Model):
 
     class ModoVenda(models.TextChoices):

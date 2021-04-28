@@ -66,10 +66,15 @@
                         {% for i in data %}
                         {% if user.username in creador.identificacion or user.username in i.integrantes%}
                         <tr>
-                            <td>{{i.fecha|date:"Y-m-d"}}</td>
+                            <td>{{i.fecha|date:"Y/m/d"}}</td>
                             <td>
-                                <div><img src="{{i.creador.imagenlogo.url}}" class="rounded" style="width: 40px;"
-                                        alt=""><span class="ml-2">{{i.creador.identificacion}}</span></div>
+
+                                    <div>
+                                        <img src="{{i.creador.imagenlogo.url}}" class="rounded" style="width: 40px;"
+                                        alt="">
+                                    </div>
+                                    <span style="font-size: 12px; margin-left: 10px;">{{i.creador.identificacion}}</span>
+                                    
                             </td>
                             <td>{% if i.reunion %}{{i.reunion}}{% else %}-{% endif %}</td>
                             <td><a href="{% url 'Minutas Id' i.id %}">{{i.nombre|lower|capfirst}}</a>

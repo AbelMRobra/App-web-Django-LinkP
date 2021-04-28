@@ -469,6 +469,7 @@
                 {% if request.user|has_group:"VENTAS NIVEL 1" %}
 
                 <li><a href="/ventas/folleto">Folletos</a></li>
+                <li><a href="{% url 'Dosier' %}">Dosier</a></li>
 
                 {% if request.user|has_group:"VENTAS NIVEL 3" %}
                 <li class="nav-devider"></li>

@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import EstudioMercado, PricingResumen, FeaturesProjects, FeaturesUni
+from .models import EstudioMercado, PricingResumen, FeaturesProjects, FeaturesUni, DosierDeVenta
 from proyectos.models import Unidades, Proyectos
 from finanzas.models import Almacenero
 from rrhh.models import datosusuario
@@ -1223,6 +1223,46 @@ def editarasignacion(request, id_unidad):
                 return redirect ('Panel de unidades')
 
     return render(request, 'editarasig.html', {"datos":datos} )
+
+def dosier(request):
+    data_project = Proyectos.objects.all()
+
+    if request.method == 'POST':
+        try: 
+            proyecto = Proyectos.objects.get(id = int(request.POST['proyecto']))
+            new = DosierDeVenta(
+                fecha = request.POST['fecha'],
+                proyecto = proyecto,
+                adjunto = request.FILES['adjunto']
+            )
+            new.save()
+
+        except:
+            pass
+
+        try:
+            seleccionado = DosierDeVenta.objects.get(id = int(request.POST['delete']))
+            seleccionado.delete()
+        except:
+            pass
+        try:
+            proyecto = Proyectos.objects.get(id = int(request.POST['proyecto']))
+            seleccionado = DosierDeVenta.objects.get(id = int(request.POST['editar']))
+            seleccionado.fecha = request.POST['fecha']
+            seleccionado.proyecto = proyecto
+            try:
+                seleccionado.adjunto = request.FILES['adjunto']
+                seleccionado.save()
+            except:
+                seleccionado.save()
+        except:
+            pass
+
+
+    dosier = DosierDeVenta.objects.all().order_by('fecha')
+
+
+    return render(request, 'dosier.html', {'data_project': data_project, 'dosier': dosier})
 
 def pricing(request, id_proyecto):
 

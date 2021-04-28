@@ -3261,6 +3261,53 @@ def arqueos(request):
 
 def cuentacte_resumen(request):
 
+    data_project = []
+    data_project_b = []
+
+    list_p = Cuota.objects.values_list("cuenta_corriente__venta__proyecto__id", flat = True)
+    list_p = list(set(list_p))
+    for project in list_p:
+
+        proyecto = Proyectos.objects.get(id = int(project))
+
+        today = datetime.date.today()
+
+        cuotas_anteriores = sum(np.array(Cuota.objects.values_list('precio', flat=True).filter(fecha__lt = today, cuenta_corriente__venta__proyecto__id = project))*np.array(Cuota.objects.values_list('constante__valor', flat=True).filter(fecha__lt = today, cuenta_corriente__venta__proyecto__id = project)))
+        pagos_anteriores = sum(np.array(Pago.objects.values_list('pago', flat=True).filter(fecha__lt = today, cuota__cuenta_corriente__venta__proyecto__id = project))*np.array(Pago.objects.values_list('cuota__constante__valor', flat=True).filter(fecha__lt = today, cuota__cuenta_corriente__venta__proyecto__id = project)))
+        deuda = cuotas_anteriores - pagos_anteriores
+
+        cuotas_posterior = sum(np.array(Cuota.objects.values_list('precio', flat=True).filter(fecha__gte = today, cuenta_corriente__venta__proyecto__id = project))*np.array(Cuota.objects.values_list('constante__valor', flat=True).filter(fecha__gte = today, cuenta_corriente__venta__proyecto__id = project)))
+        pagos_posterior= sum(np.array(Pago.objects.values_list('pago', flat=True).filter(fecha__gte = today, cuota__cuenta_corriente__venta__proyecto__id = project))*np.array(Pago.objects.values_list('cuota__constante__valor', flat=True).filter(fecha__gte = today, cuota__cuenta_corriente__venta__proyecto__id = project)))
+        pagos_pesos= sum(np.array(Pago.objects.values_list('pago_pesos', flat=True).filter(fecha__lt = today, cuota__cuenta_corriente__venta__proyecto__id = project)))
+        adelantos = cuotas_posterior - pagos_posterior
+
+        array_pesos = np.array([cuotas_anteriores, pagos_anteriores, deuda, cuotas_posterior, pagos_posterior, adelantos])
+        array_h = array_pesos/Constantes.objects.get(id = 7).valor
+
+        data_project.append((proyecto, array_pesos, array_h, pagos_pesos))
+
+    for project in list_p:
+
+        proyecto = Proyectos.objects.get(id = int(project))
+
+        today = datetime.date.today()
+
+        cuotas_anteriores = sum(np.array(Cuota.objects.values_list('precio', flat=True).filter(fecha__lt = today, cuenta_corriente__venta__proyecto__id = project).exclude(porc_boleto = None))*np.array(Cuota.objects.values_list('constante__valor', flat=True).filter(fecha__lt = today, cuenta_corriente__venta__proyecto__id = project).exclude(porc_boleto = None))*np.array(Cuota.objects.values_list('porc_boleto', flat=True).filter(fecha__lt = today, cuenta_corriente__venta__proyecto__id = project).exclude(porc_boleto = None)))
+        pagos_anteriores = sum(np.array(Pago.objects.values_list('pago', flat=True).filter(fecha__lt = today, cuota__cuenta_corriente__venta__proyecto__id = project).exclude(cuota__porc_boleto = None))*np.array(Pago.objects.values_list('cuota__constante__valor', flat=True).filter(fecha__lt = today, cuota__cuenta_corriente__venta__proyecto__id = project).exclude(cuota__porc_boleto = None))*np.array(Pago.objects.values_list('cuota__porc_boleto', flat=True).filter(fecha__lt = today, cuota__cuenta_corriente__venta__proyecto__id = project).exclude(cuota__porc_boleto = None)))
+        deuda = cuotas_anteriores - pagos_anteriores
+
+        cuotas_posterior = sum(np.array(Cuota.objects.values_list('precio', flat=True).filter(fecha__gte = today, cuenta_corriente__venta__proyecto__id = project).exclude(porc_boleto = None))*np.array(Cuota.objects.values_list('constante__valor', flat=True).filter(fecha__gte = today, cuenta_corriente__venta__proyecto__id = project).exclude(porc_boleto = None))*np.array(Cuota.objects.values_list('porc_boleto', flat=True).filter(fecha__gte = today, cuenta_corriente__venta__proyecto__id = project).exclude(porc_boleto = None)))
+        pagos_posterior= sum(np.array(Pago.objects.values_list('pago', flat=True).filter(fecha__gte = today, cuota__cuenta_corriente__venta__proyecto__id = project).exclude(cuota__porc_boleto = None))*np.array(Pago.objects.values_list('cuota__constante__valor', flat=True).filter(fecha__gte = today, cuota__cuenta_corriente__venta__proyecto__id = project).exclude(cuota__porc_boleto = None))*np.array(Pago.objects.values_list('cuota__porc_boleto', flat=True).filter(fecha__gte = today, cuota__cuenta_corriente__venta__proyecto__id = project).exclude(cuota__porc_boleto = None)))
+        pagos_pesos= sum(np.array(Pago.objects.values_list('pago_pesos', flat=True).filter(fecha__gte = today, cuota__cuenta_corriente__venta__proyecto__id = project)))
+        adelantos = cuotas_posterior - pagos_posterior
+
+        array_pesos = np.array([cuotas_anteriores, pagos_anteriores, deuda, cuotas_posterior, pagos_posterior, adelantos])
+        array_h = array_pesos/Constantes.objects.get(id = 7).valor
+
+        data_project_b.append((proyecto, array_pesos, array_h, pagos_pesos))
+
+
+
     data = CuentaCorriente.objects.all()
 
     fecha_inicial_hoy = datetime.date.today()
@@ -3284,14 +3331,25 @@ def cuentacte_resumen(request):
         
         datos.append((c, pagos, adeudado, pendiente))
 
-    return render(request, 'ctacte_resumen.html', {"datos":datos})
+    return render(request, 'ctacte_resumen.html', {"datos":datos, "data_project":data_project, "data_project_b":data_project_b})
 
 def calculadora (request):
 
+    list_cuotas = 0
+
     if request.method == 'POST':
 
-        datos_post= request.POST.items()  
+        cuota =  Cuota.objects.get(id = int(request.POST['cuotaorigen']))
+        pago_cuota = sum(np.array(Pago.objects.filter(cuota = cuota).values_list("pago")))
+        saldo = cuota.precio - pago_cuota
 
+        cuota_destino = Cuota.objects.get(id = int(request.POST['cuotadestino']))
+        cuota_destino.precio = cuota_destino.precio + saldo*(1+float(request.POST['interes']))
+        cuota_destino.save()
+        cuota.precio = cuota.precio - saldo
+        cuota.save()
+
+        return redirect('Calculadora')
 
     hoy = datetime.date.today()
 
@@ -3314,10 +3372,14 @@ def calculadora (request):
                 saldo_cuota = 0
                 saldo_pesos = 0
 
-        datos.append((cuota, saldo_cuota))
+        if saldo_cuota != 0:
+
+            list_cuotas = Cuota.objects.filter(fecha__gt = cuota.fecha).exclude(pagada = "SI")
+
+            datos.append((cuota, saldo_cuota, list_cuotas))
   
 
-    return render(request, 'calculadora.html', {'datos':datos})
+    return render(request, 'calculadora.html', {'datos':datos, 'list_cuotas':list_cuotas})
 
 class DescargarCuentacorriente(TemplateView):
 

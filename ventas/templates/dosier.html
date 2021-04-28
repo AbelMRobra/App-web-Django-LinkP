@@ -1,0 +1,145 @@
+{% extends "users/inicio2.html" %}
+
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+
+<div class="container-fluid">
+    <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+            <h3 class="text-themecolor">Dosieres de ventas</h3>
+        </div>
+
+        <div class="col-md-7 align-self-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+                <li class="breadcrumb-item">Dosier</li>
+            </ol>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+
+                <div class="d-flex">
+                    <div>
+                        <h4 class="card-title"><span class="lstick"></span>
+                            Archivos cargados</h4>
+
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+
+                    <table class="table">
+                        <thead>
+                            <tr style="vertical-align: middle;">
+                                <td><a type="button" data-toggle="modal" data-target="#ModalDosier"><img
+                                            src="{% static 'img/add.png' %}" alt=""
+                                            style="max-width:20px; height:auto; vertical-align: middle; margin-right: 15px;"></a>
+                                    Dosier cargados</td>
+
+                            </tr>
+
+                            <!-- Modal fecha estado Subitem -->
+                            <div class="modal fade" id="ModalDosier" tabindex="-1" role="dialog"
+                                aria-labelledby="ModalDosier" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLongTitle">Cargar un archivo</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form method="POST" style="margin: 15px;" enctype="multipart/form-data"
+                                                id="upload-image-form">
+
+                                                {% csrf_token %}
+
+                                                <h6>Fecha del archivo</h6>
+
+                                                <div class="input-group mb-3">
+
+                                                    <input name="fecha" type="date" class="form-control form-control"
+                                                        style="width: 300px;">
+                                                </div>
+                                                <h6>Proyecto</h6>
+
+                                                <div class="input-group mb-3">
+
+                                                    <select name="proyecto" class="form-select" aria-label="Default select example">
+                                                        {% for n in data_project%}
+                                                        <option value="{{n.id}}">{{ n.nombre }}</option>
+                                                        {% endfor %}
+                                                      </select>
+                                                </div>
+
+                                                <h6>Archivo</h6>
+
+                                                <div class="input-group mb-3">
+
+                                                    <input name="adjunto" type="file" class="form-control form-control"
+                                                        style="width: 300px;">
+                                                </div>
+
+                                                <button type="submit" class="btn btn-light">
+                                                    <img src="{% static 'img/upload.png' %}" alt=""
+                                                        style="max-width:20px; height:auto;">
+                                                    <b>Cargar</b></button>
+
+                                                {{ form.as_p }}
+
+                                            </form>
+
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-dismiss="modal">Close</button>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <!-- Final del modal -->
+
+                        </thead>
+
+                        <tbody>
+                            {% for i in dosier %}
+
+                            <tr>
+
+                                <td> <a href="{{i.adjunto.url}}">Archivo fecha {{i.fecha|date:"d-m-Y"}}</a> - Nombre del
+                                    archivo: "{{i.adjunto}}" - Proyecto: "{{i.proyecto}}"</td>
+                                <td>
+                                    <form method="POST">
+                                        <button class="btn btn-link fa fa-trash d-flex align-content-end" type="submit"
+                                            name="delete" value="{{i.id}}" style="text-decoration: none;"></button>
+
+                                        {% csrf_token %}
+                                    </form>
+
+                                </td>
+
+                            </tr>
+
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}

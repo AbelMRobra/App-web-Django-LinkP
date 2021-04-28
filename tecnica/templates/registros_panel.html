@@ -42,149 +42,278 @@
                     </div>
 
                     <div class="row m-2">
-                        <a href="#" data-toggle="modal"
-                        data-target="#ModalAcuerdo"><i
+                        <a href="#" data-toggle="modal" data-target="#ModalRegistro"><i
                                 class="fa fa-plus-circle  text-info"><span class="text-info ml-2"
-                                    style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif"><b>Nuevo registro</b></span></i></a>
+                                    style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif"><b>Nuevo
+                                        registro</b></span></i></a>
                     </div>
 
-                    <!-- Modal Bitacoras -->
-                    <div class="modal fade" id="ModalAcuerdo" tabindex="-1" role="dialog"
-                    aria-labelledby="ModalAcuerdoCrearTitle" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLongTitle">Nuevo registro</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
+                    <!-- Modal registro -->
+                    <div class="modal fade" id="ModalRegistro" tabindex="-1" role="dialog"
+                        aria-labelledby="ModalRegistroCrearTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLongTitle">Nuevo registro</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
 
-                                <form method="POST" style="margin: 15px;">
+                                    <form method="POST" style="margin: 15px;">
 
-                                    {% csrf_token %}
+                                        {% csrf_token %}
 
-                                    <h6><small>Fecha</small> </h6>
+                                        <h6><small>Fecha</small> </h6>
 
-                                    <div class="input-group mb-3">
+                                        <div class="input-group mb-3">
 
-                                        <input name="fecha" type="date" class="form-control form-control"
-                                            style="width: 300px;">
-                                    </div>
+                                            <input name="fecha" type="date" class="form-control form-control"
+                                                style="width: 300px;">
+                                        </div>
 
-                                    <h6><small>Proyecto</small> </h6>
+                                        <h6><small>Proyecto</small> </h6>
 
-                                    <div class="input-group mb-3">
+                                        <div class="input-group mb-3">
 
-                                        <select  name="proyecto" class="form-control form-control"
-                                            style="width: 300px;">
+                                            <select name="proyecto" class="form-control form-control"
+                                                style="width: 300px;">
 
-                                            {% for p in proyectos %}
+                                                {% for p in proyectos %}
 
-                                            <option value="{{p.id}}">{{p}}</option>
+                                                <option value="{{p.id}}">{{p}}</option>
 
-                                            {% endfor %}
+                                                {% endfor %}
 
-                                        </select>
+                                            </select>
 
-                                    </div>
+                                        </div>
 
-                                    <h6><small>Nombre</small> </h6>
+                                        <h6><small>Nombre</small> </h6>
 
-                                    <div class="input-group mb-3">
+                                        <div class="input-group mb-3">
 
-                                        <input name="nombre" type="text" class="form-control form-control"
-                                            style="width: 300px;">
+                                            <input name="nombre" type="text" class="form-control form-control"
+                                                style="width: 300px;">
 
-                                    </div>
+                                        </div>
 
-                                    <h6><small>Dias</small> </h6>
+                                        <h6><small>Dias</small> </h6>
 
-                                    <div class="input-group mb-3">
+                                        <div class="input-group mb-3">
 
-                                        <input name="dias" type="number" step="1" class="form-control form-control"
-                                            style="width: 300px;">
+                                            <input name="dias" type="number" step="1" class="form-control form-control"
+                                                style="width: 300px;">
 
-                                    </div>
+                                        </div>
 
-                                    <h6><small>Descripción</small> </h6>
+                                        <h6><small>Descripción</small> </h6>
 
-                                    <div class="input-group mb-3">
+                                        <div class="input-group mb-3">
 
-                                        <textarea name="descrip" class="form-control form-control"
-                                            style="width: 300px;">
+                                            <textarea name="descrip" class="form-control form-control"
+                                                style="width: 300px;">
 
                                         </textarea>
 
-                                    </div>
+                                        </div>
 
-                                    <button type="submit"
-                                        class="btn waves-effect waves-light btn-rounded btn-secondary">Cargar</button>
+                                        <button type="submit" class="btn btn-info">Cargar</button>
 
-                                </form>
+                                    </form>
 
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary"
-                                    data-dismiss="modal">Close</button>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
 
+                                </div>
                             </div>
                         </div>
                     </div>
-
                 </div>
 
- 
+
+                <div class="row">
+                    <div class="col-12">
+                        <ul class="nav nav-tabs">
+                            <li class="active"><a data-toggle="tab" href="#general">General</a></li>
+                            <li><a data-toggle="tab" href="#interna">Interna</a></li>
+                        </ul>
+                    </div>
                 </div>
 
-                <table id="example" class="table ">
-                    <thead>
-                        <tr>
-                            <th>Fecha</th>
-                            <th>Proyecto</th>
-                            <th>Creador</th>
-                            <th>Nombre</th>
-                            <th>Dias</th>
-                        
-                        </tr>
-                    </thead>
+                <div class="tab-content">
+                    <div id="general" class="tab-pane fade  in active">
+                        <table id="example" class="table ">
+                            <thead>
+                                <tr>
+                                    <th>Editar</th>
+                                    <th>Fecha</th>
+                                    <th>Proyecto</th>
+                                    <th>Creador</th>
+                                    <th>Nombre</th>
+                                    <th>Dias</th>
 
-                    <tbody>
+                                </tr>
+                            </thead>
 
-                        {% for i in data %}
+                            <tbody>
 
-                        <tr style="font-size: 14px;">
-                            <td>{{i.fecha|date:"Y/m/d"}}</td>
-                            <td>{{i.proyecto|lower|capfirst}}</td>
-                            <td>{{i.creador.identificacion}}</td>
-                            <td><a href="{% url 'Registros ID' i.id%}">{{i.nombre|lower|capfirst}}</a></td>
-                            <td>{{i.dias}}</td>
-                         
-                        </tr>
-      
-                        {% endfor %}
+                                {% for i in data %}
+
+                                <tr>
+                                    <td><a href="#" data-toggle="modal" data-target="#ModalEditar{{i.id}}"><i
+                                                class="fa fa-pencil-square-o"></i></a></td>
+                                    <td>{{i.fecha|date:"Y-m-d"}}</td>
+                                    <td>{{i.proyecto|lower|capfirst}}</td>
+                                    <td>{{i.creador.identificacion}}</td>
+                                    <td><a href="#" data-toggle="modal" data-target="#ModalDescrip{{i.id}}">{{i.nombre|lower|capfirst}}</a></td>
+                                    <td>{{i.dias}}</td>
+
+                                </tr>
+
+                                <!-- Modal registro -->
+                                <div class="modal fade" id="ModalEditar{{i.id}}" tabindex="-1" role="dialog"
+                                    aria-labelledby="ModalEditar{{i.id}}Title" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLongTitle">Editar registro</h5>
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                    aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+
+                                                <form method="POST" style="margin: 15px;">
+
+                                                    {% csrf_token %}
+
+                                                    <h6><small>Fecha</small> </h6>
+
+                                                    <div class="input-group mb-3">
+
+                                                        <input name="fecha" type="date" value="{{i.fecha|date:"Y-m-d"}}" class="form-control form-control"
+                                                            style="width: 300px;">
+                                                    </div>
+
+                                                    <h6><small>Proyecto</small> </h6>
+
+                                                    <div class="input-group mb-3">
+
+                                                        <select name="proyecto" 
+                                                            class="form-control form-control" style="width: 300px;">
+                                                            
+                                                            <option value="{{i.proyecto}}" selected >{{i.proyecto}}</option>
+                                                            {% for p in proyectos %}
+
+                                                            <option value="{{p.id}}">{{p}}</option>
+
+                                                            {% endfor %}
+
+                                                        </select>
+
+                                                    </div>
+
+                                                    <h6><small>Nombre</small> </h6>
+
+                                                    <div class="input-group mb-3">
+
+                                                        <input name="nombre" type="text" value="{{i.nombre}}"
+                                                            class="form-control form-control" style="width: 300px;">
+
+                                                    </div>
+
+                                                    <h6><small>Dias</small> </h6>
+
+                                                    <div class="input-group mb-3">
+
+                                                        <input name="dias" type="number" value="{{i.dias}}" step="1"
+                                                            class="form-control form-control" style="width: 300px;">
+
+                                                    </div>
+
+                                                    <h6><small>Descripción</small> </h6>
+
+                                                    <div class="input-group mb-3">
+
+                                                        <textarea name="descrip" 
+                                                            class="form-control form-control" style="width: 300px;">{{i.descrip}}
+                                                          </textarea>
 
 
+                                                    </div>
 
-                    </tbody>
+                                                    <button type="submit" name="proyecto{{i.id}}" class="btn btn-info">Cargar</button>
 
-                </table>
+                                                </form>
+
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-dismiss="modal">Cerrar</button>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Modal registro -->
+                                <div class="modal fade" id="ModalDescrip{{i.id}}" tabindex="-1" role="dialog"
+                                    aria-labelledby="ModalDescrip{{i.id}}Title" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLongTitle">{{i.nombre}}</h5>
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                    aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+
+                                               <p>{{i.descrip}}</p>
+
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-dismiss="modal">Cerrar</button>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+                <!--  -->
+                <div id="interna" class="tab-pane fade ">
+                    <p>Esto es interna</p>
+
+                </div>
             </div>
+
+
         </div>
     </div>
+</div>
 </div>
 
 <aside class="right-side-panel">
     <h3 class="p-relative"><span class="lstick"></span> ¿Comó funciona?</h3>
     <div class="row">
-        
+
         <div class="col-md-12 m-t-10">
-          <div class="card">
-            <div class="card-body">
-            <img src="{% static 'img/animation_500_kmuydpt0.gif' %}" alt="Funny image" width="200px">
-            <p> No funciona</p>
-        </div>
+            <div class="card">
+                <div class="card-body">
+                    <img src="{% static 'img/animation_500_kmuydpt0.gif' %}" alt="Funny image" width="200px">
+                    <p> No funciona</p>
+                </div>
             </div>
         </div>
     </div>
@@ -203,7 +332,14 @@
 <script>
     $(document).ready(function () {
         $('#example').DataTable({
-            "order": [[ 0, "desc" ]],
+            "order": [[0, "desc"]],
+            "paging": false,
+            "info": false
+        });
+    });
+    $(document).ready(function () {
+        $('#example1').DataTable({
+            "order": [[0, "desc"]],
             "paging": false,
             "info": false
         });

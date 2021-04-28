@@ -27,9 +27,9 @@
 
 <div class="row">
     <form method="POST">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-body ">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body ">
                     {% csrf_token %}
 
                     <h3> Minuta</h3>
@@ -62,14 +62,15 @@
 
                             </div>
 
-                        
+
                             <div class="col-12">
 
                                 <label for="integrantes" style="width: 300px;">
                                     <h5>Integrantes</h5>
                                 </label>
 
-                                <input type="text" name="integrantes" class="form-control form-control" style="width: 300px;" placeholder="Ejemplo: AR - LA - CA">
+                                <input type="text" name="integrantes" class="form-control form-control"
+                                    style="width: 300px;" placeholder="Ejemplo: AR - LA - CA">
 
                             </div>
 
@@ -79,48 +80,48 @@
                                     <h5>Reunión</h5>
                                 </label>
 
-                                <input type="text" name="reunion" class="form-control form-control" style="width: 300px;" placeholder="Nombre para vincular">
+                                <input type="text" name="reunion" class="form-control form-control"
+                                    style="width: 300px;" placeholder="Nombre para vincular">
 
                             </div>
 
                         </div>
-
-                        
-
                     </div>
 
                     <div class="row m-2">
-                        <button type="submit" class="btn"><i
-                                class="fa fa-upload text-info"><span class="text-info ml-2"
-                                    style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif"><b>Crear minuta</b></span></i></button>
+                        <button type="submit" class="btn"><i class="fa fa-upload text-info"><span class="text-info ml-2"
+                                    style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif"><b>Crear
+                                        minuta</b></span></i></button>
                     </div>
                 </div>
             </div>
         </div>
-  
     </form>
-    </div>
+</div>
 
 
-    <aside class="right-side-panel">
-        <h3 class="p-relative"><span class="lstick"></span> ¿Comó funciona?</h3>
-        <div class="row">
-            
-            <div class="col-md-12 m-t-10">
-              <div class="card">
+<aside class="right-side-panel">
+    <h3 class="p-relative"><span class="lstick"></span> ¿Comó funciona?</h3>
+    <div class="row">
+
+        <div class="col-md-12 m-t-10">
+            <div class="card">
                 <div class="card-body">
-                <img src="{% static 'img/animation_500_kmxow2e2.gif' %}" alt="Funny image" width="150px">
-                <p> Completa el formulario para avanzar</p>
-                <p> <b class="text-danger">Ten presente</b> que los integrantes tienen que estar registrados en el soft y debes usar su <b class="text-danger">identificador</b>, ejemplo el identificador de Abel es AR</p>
-                <p> Por ultimo, si es una reunión recurrente pon un nombre unico asi todas las minutas se vinculan</p>
-            </div>
+                    <img src="{% static 'img/animation_500_kmxow2e2.gif' %}" alt="Funny image" width="150px">
+                    <p> Completa el formulario para avanzar</p>
+                    <p> <b class="text-danger">Ten presente</b> que los integrantes tienen que estar registrados en el
+                        soft y debes usar su <b class="text-danger">identificador</b>, ejemplo el identificador de Abel
+                        es AR</p>
+                    <p> Por ultimo, si es una reunión recurrente pon un nombre unico asi todas las minutas se vinculan
+                    </p>
                 </div>
             </div>
         </div>
-    
-    
-        </div>
-    </aside>
+    </div>
+
+
+    </div>
+</aside>
 
 
 <script>

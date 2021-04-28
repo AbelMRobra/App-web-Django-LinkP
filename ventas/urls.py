@@ -6,6 +6,7 @@ from .views import descargadeventas, DescargaPricing
 from django.contrib.auth.decorators import login_required
 
 urlpatterns = [
+    url(r'^dosier/$', login_required(views.dosier), name = 'Dosier'),
     url(r'^reclamospostventa$', login_required(views.reclamospostventa), name = 'Reclamos Postventa'),
     url(r'^reclamo/(?P<id_reclamo>\d+)/$', login_required(views.reclamo), name = 'Reclamo'),
     url(r'^reportereclamo/$', login_required(views.reportereclamos), name = 'Reporte Reclamo'),

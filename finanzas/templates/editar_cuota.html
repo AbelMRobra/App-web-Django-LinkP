@@ -108,7 +108,7 @@
 
                                                             <input name="precio1" type="number" step="0.00001"
                                                                 class="form-control form-control" aria-label="Amount"
-                                                                placeholder={{cuota.precio}}>
+                                                                value={{cuota.precio}}>
 
                                                         </div>
                                                     </div>
@@ -127,19 +127,13 @@
                                                     <div class="col col-md-8 col-lg-8">
                                                         <div>
                                                             <input name="fecha1" type="date"
-                                                                class="form-control form-control">
+                                                                class="form-control form-control"
+                                                                value='{{cuota.fecha|date:"Y-m-d"}}'>
 
 
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="my-1">
-                                                    <p class=" text-center">
-                                                        Fecha actual:
-                                                        {{cuota.fecha}}
-                                                    </p>
-                                                </div>
-
 
                                                 <div class="row d-flex justify-content-center mt-3">
                                                     <div class="col col-md-8 col-lg-8">
@@ -149,14 +143,15 @@
                                                                 style="margin-top: 1%;">
                                                                 <input type="radio" id="customRadio1" name="tipo_venta"
                                                                     class="custom-control-input" value="HORM"
-                                                                    checked="">
+                                                                    {% if cuota.constante.nombre == 'Hº VIVIENDA' %}checked=""{% endif %}>
                                                                 <label class="custom-control-label"
                                                                     for="customRadio1">HORMIGÓN</label>
                                                             </div>
 
                                                             <div class="custom-control custom-radio">
                                                                 <input type="radio" id="customRadio2" name="tipo_venta"
-                                                                    class="custom-control-input" value="USD">
+                                                                    class="custom-control-input" value="USD"
+                                                                    {% if cuota.constante.nombre != 'Hº VIVIENDA' %}checked=""{% endif %}>
                                                                 <label class="custom-control-label"
                                                                     for="customRadio2">DOLAR</label>
                                                             </div>

@@ -108,7 +108,7 @@ class Cuota(models.Model):
     concepto = models.CharField(max_length=100, verbose_name = "Concepto", blank=True, null=True)
     boleto = models.CharField(choices=Estado.choices, max_length=20, verbose_name="Boleto", default="NO BOLETO")
     pagada = models.CharField(choices=Pagada.choices, max_length=20, verbose_name="Pagada", default="NO")
-    porc_boleto = models.FloatField(verbose_name="Porcentaje a aplicar boleto", blank=True, null=True)
+    porc_boleto = models.FloatField(verbose_name="Porcentaje a aplicar boleto", blank=True, null=True, default = 0)
     
     class Meta:
         verbose_name="Cuota"
