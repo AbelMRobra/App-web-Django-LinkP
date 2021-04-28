@@ -3371,28 +3371,27 @@ def calculadora (request):
 
     hoy = datetime.date.today()
 
-    cuotas = Cuota.objects.filter(fecha__lte = hoy).exclude(pagada = "SI")
+    cuotas = Cuota.objects.filter(fecha__lt = hoy).exclude(pagada = "SI")
 
     datos = []
 
     for cuota in cuotas:
 
-        pago_cuota = sum(np.array(Pago.objects.filter(cuota = cuota).values_list("pago")))
-        pago_pesos = sum(np.array(Pago.objects.filter(cuota = cuota).values_list("pago_pesos")))
+        pago_cuota = sum(np.array(Pago.objects.filter(cuota = cuota).values_list("pago", flat = True)))
+        pago_pesos = sum(np.array(Pago.objects.filter(cuota = cuota).values_list("pago_pesos", flat = True)))
         saldo_cuota = cuota.precio - pago_cuota
         saldo_pesos = saldo_cuota*cuota.constante.valor
 
-        if cuota.precio != 0 and cuota.pagada == "NO":
-            if abs(saldo_cuota*cuota.constante.valor) < 20:
-                cuota.precio = pago_cuota
-                cuota.pagada = "SI"
-                cuota.save()
-                saldo_cuota = 0
-                saldo_pesos = 0
+        if abs(saldo_pesos) < 100:
+            cuota.precio = pago_cuota
+            cuota.pagada = "SI"
+            cuota.save()
+            saldo_cuota = 0
+            saldo_pesos = 0
 
         if saldo_cuota != 0:
 
-            list_cuotas = Cuota.objects.filter(fecha__gt = cuota.fecha).exclude(pagada = "SI")
+            list_cuotas = Cuota.objects.filter(fecha__gte = cuota.fecha).exclude(pagada = "SI")
 
             datos.append((cuota, saldo_cuota, list_cuotas))
   
