@@ -1177,6 +1177,10 @@ def comparativas(request, estado, creador):
 
 
 
+    # Reordenar la lista
+
+    list_creadores = sorted(list_creadores, key=lambda creador : creador.identificacion)
+    
     #Aqui empieza el filtro
 
     if request.method == 'POST':
