@@ -3681,7 +3681,10 @@ class DescargarCuentacorriente(TemplateView):
                 ws["C"+str(cont+1)] = p.pago
                 ws["D"+str(cont+1)] = p.cuota.constante.nombre
                 ws["E"+str(cont+1)] = p.pago_pesos
-                ws["F"+str(cont+1)] = (p.pago_pesos/p.pago)
+                if p.pago:
+                    ws["F"+str(cont+1)] = (p.pago_pesos/p.pago)
+                else:
+                    ws["F"+str(cont+1)] = "??????"
                 if p.documento_1:
                     ws["G"+str(cont+1)] = p.documento_1
                 else:
