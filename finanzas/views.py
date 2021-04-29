@@ -3404,7 +3404,7 @@ class DescargarCuentacorriente(TemplateView):
         wb = Workbook()
 
         cuenta = CuentaCorriente.objects.get(id = id_cuenta)
-        cuota = Cuota.objects.filter(cuenta_corriente = cuenta)
+        cuota = Cuota.objects.filter(cuenta_corriente = cuenta).order_by("fecha")
         pagos = Pago.objects.filter(cuota__cuenta_corriente = cuenta)
 
         
@@ -3418,8 +3418,10 @@ class DescargarCuentacorriente(TemplateView):
         ws["B4"] = cuenta.venta.unidad.asig
         ws["E3"] = "Precio venta:"
         ws["F3"] = cuenta.venta.precio_venta
+        ws["F3"].number_format = '"$ "#,##0.00_-'
         ws["E4"] = "Anticipo:"
         ws["F4"] = cuenta.venta.anticipo
+        ws["F4"].number_format = '"$ "#,##0.00_-'
         ws["A6"] = "Comentarios: {}".format(cuenta.venta.observaciones)
 
 
