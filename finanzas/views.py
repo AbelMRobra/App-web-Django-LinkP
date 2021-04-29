@@ -3416,9 +3416,14 @@ class DescargarCuentacorriente(TemplateView):
         ws["B3"] = cuenta.venta.comprador
         ws["A4"] = "Asignación:"
         ws["B4"] = cuenta.venta.unidad.asig
+        ws["E3"] = "Precio venta:"
+        ws["F3"] = cuenta.venta.precio_venta
+        ws["E4"] = "Anticipo:"
+        ws["F4"] = cuenta.venta.anticipo
+        ws["A6"] = "Comentarios: {}".format(cuenta.venta.observaciones)
 
 
-        cont = 6
+        cont = 8
         valor_t = 0
         pagado_t = 0
         saldo_t = 0
@@ -3426,7 +3431,7 @@ class DescargarCuentacorriente(TemplateView):
 
         for c in cuota:
 
-            if cont == 6:
+            if cont == 8:
                 ws = wb.active
                 ws.title = "Resumen"
                 ws["A"+str(cont)] = "FECHA"
