@@ -5,6 +5,7 @@ from datetime import date
 from datetime import datetime, timedelta 
 from rrhh.models import datosusuario
 from tecnica.models import GerenPlanificacion
+from presupuestos.models import Constantes
 
 register = template.Library()
 
@@ -303,6 +304,26 @@ def ganntgerenciador(fecha_gant, fecha_inicial, fecha_final, proyecto):
             else:
 
                 return "background: rgba({}, 0.7)".format(proyecto.color)
+
+
+@register.simple_tag
+def ctactecoti(fecha):
+
+    today = datetime.today()
+
+    date_return = datetime(fecha.year, fecha.month, 1)
+
+    if date_return < today:
+
+        try:
+            return Registrodeconstantes.objects.get(fecha = date_return, constante__id = 7).valor
+
+        except:
+            return "????"
+
+    else:
+
+        return Constantes.objects.get(id = 7).valor
 
 @register.simple_tag
 def hitosgannt(fecha_gant, proyecto):

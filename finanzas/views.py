@@ -3723,6 +3723,50 @@ class DescargarCuentacorriente(TemplateView):
         wb.save(response)
         return response
 
+class DescargarResumen(TemplateView):
+
+    def get(self, request, id_proyecto, *args, **kwargs):
+
+        # --> Iniciamos el Workbook
+        wb = Workbook()
+
+        # --> Primeros calculos
+
+        proyecto = Proyectos.objects.get(id = int(id_proyecto))
+        today = datetime.date.today()
+        total_cuentas = len(CuentaCorriente.objects.filter(venta__proyecto = proyecto))
+        total_cuotas = len(Cuota.objects.filter(cuenta_corriente__venta__proyecto = proyecto))
+        total_pagos =  len(Pago.objects.filter(cuota__cuenta_corriente__venta__proyecto = proyecto))
+
+        cuotas_anteriores = sum(np.array(Cuota.objects.values_list('precio', flat=True).filter(fecha__lt = today, cuenta_corriente__venta__proyecto__id = project))*np.array(Cuota.objects.values_list('constante__valor', flat=True).filter(fecha__lt = today, cuenta_corriente__venta__proyecto__id = project)))
+        pagos_anteriores = sum(np.array(Pago.objects.values_list('pago', flat=True).filter(cuota__fecha__lt = today, cuota__cuenta_corriente__venta__proyecto__id = project))*np.array(Pago.objects.values_list('cuota__constante__valor', flat=True).filter(cuota__fecha__lt = today, cuota__cuenta_corriente__venta__proyecto__id = project)))
+        deuda = cuotas_anteriores - pagos_anteriores
+
+        cuotas_posterior = sum(np.array(Cuota.objects.values_list('precio', flat=True).filter(fecha__gte = today, cuenta_corriente__venta__proyecto__id = project))*np.array(Cuota.objects.values_list('constante__valor', flat=True).filter(fecha__gte = today, cuenta_corriente__venta__proyecto__id = project)))
+        pagos_posterior= sum(np.array(Pago.objects.values_list('pago', flat=True).filter(cuota__fecha__gte = today, cuota__cuenta_corriente__venta__proyecto__id = project))*np.array(Pago.objects.values_list('cuota__constante__valor', flat=True).filter(cuota__fecha__gte = today, cuota__cuenta_corriente__venta__proyecto__id = project)))
+        pagos_pesos= sum(np.array(Pago.objects.values_list('pago_pesos', flat=True).filter(cuota__fecha__lt = today, cuota__cuenta_corriente__venta__proyecto__id = project)))
+        adelantos = cuotas_posterior - pagos_posterior
+
+        array_pesos = np.array([cuotas_anteriores, pagos_anteriores, deuda, cuotas_posterior, pagos_posterior, adelantos])
+        array_h = array_pesos/Constantes.objects.get(id = 7).valor
+
+        ws = wb.active
+        ws.title = "Cuotas"
+        ws["A1"] = "Resumen de cuenta corriente - Área Administración"
+        ws["A1"].font = Font(bold = True)
+        ws["A3"] = "Comprador:"
+        ws["B3"] = cuenta.venta.comprador
+        ws["A4"] = "Asignación:"
+        ws["B4"] = cuenta.venta.unidad.asig
+        ws["E3"] = "Precio venta:"
+        ws["F3"] = cuenta.venta.precio_venta
+        ws["F3"].number_format = '"$ "#,##0.00_-'
+        ws["E4"] = "Anticipo:"
+        ws["F4"] = cuenta.venta.anticipo
+        ws["F4"].number_format = '"$ "#,##0.00_-'
+        ws["A6"] = "Comentarios: {}".format(cuenta.venta.observaciones)
+
+
 class DescargarTotalCuentas(TemplateView):
 
     def get(self, request, *args, **kwargs):

@@ -2,6 +2,7 @@
 
 {% load static %}
 {% load humanize %}
+{% load apptags_extras %}
 
 {% block content %}
 
@@ -70,8 +71,8 @@
                                 <th>Pago</th>
                                 <th>Saldo</th>
                                 <th>Cotización</th>
-                                <th>  Saldo en pesos </th>
-                                <th>  Pagos </th>
+                                <th>Saldo en pesos</th>
+                                <th>Pagos</th>
 
                             </tr>
                         </thead>
@@ -119,7 +120,7 @@
                                 <td {% if i.2 == 0 %} style="color: #1FC730;" {% endif %}> {{i.2|floatformat:2}}</td>
 
                                 {% if i.5 == 0 %}
-                                <td> ${{i.0.constante.valor|floatformat:0|intcomma}}</td>
+                                <td>$ {% ctactecoti i.0.fecha %}</td>
 
                                 {% else %}
 
