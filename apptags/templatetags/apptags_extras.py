@@ -5,7 +5,7 @@ from datetime import date
 from datetime import datetime, timedelta 
 from rrhh.models import datosusuario
 from tecnica.models import GerenPlanificacion
-from presupuestos.models import Constantes
+from presupuestos.models import Constantes, Registrodeconstantes
 
 register = template.Library()
 
@@ -309,14 +309,17 @@ def ganntgerenciador(fecha_gant, fecha_inicial, fecha_final, proyecto):
 @register.simple_tag
 def ctactecoti(fecha):
 
-    today = datetime.today()
+    today = date.today()
 
-    date_return = datetime(fecha.year, fecha.month, 1)
+    date_return = date(fecha.year, fecha.month, 1)
 
     if date_return < today:
 
         try:
-            return Registrodeconstantes.objects.get(fecha = date_return, constante__id = 7).valor
+
+            aux = Registrodeconstantes.objects.get(fecha = date_return, constante__id = 7)
+
+            return aux.valor
 
         except:
             return "????"
