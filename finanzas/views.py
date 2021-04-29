@@ -3407,83 +3407,37 @@ class DescargarCuentacorriente(TemplateView):
         cuota = Cuota.objects.filter(cuenta_corriente = cuenta)
         pagos = Pago.objects.filter(cuota__cuenta_corriente = cuenta)
 
-        cont = 1
+        
+        ws = wb.active
+        ws.title = "Cuotas"
+        ws["A1"] = "Resumen de cuenta corriente - Área Administración"
+        ws["A1"].font = Font(bold = True)
+        ws["A3"] = "Comprador:"
+        ws["B3"] = cuenta.venta.comprador
+        ws["A4"] = "Asignación:"
+        ws["B4"] = cuenta.venta.unidad.asig
+
+
+        cont = 6
+        valor_t = 0
+        pagado_t = 0
+        saldo_t = 0
+        saldo_p_t = 0
 
         for c in cuota:
 
-            if cont == 1:
+            if cont == 6:
                 ws = wb.active
-                ws.title = "Cuotas"
+                ws.title = "Resumen"
                 ws["A"+str(cont)] = "FECHA"
-                ws["B"+str(cont)] = "PRECIO"
-                ws["C"+str(cont)] = "CONSTANTE"
-                ws["D"+str(cont)] = "CONCEPTO"
-                ws["E"+str(cont)] = "PRECIO PESOS"
+                ws["B"+str(cont)] = "CONSTANTE"
+                ws["C"+str(cont)] = "CONCEPTO"
+                ws["D"+str(cont)] = "VALOR"
+                ws["E"+str(cont)] = "PAGADO"
+                ws["F"+str(cont)] = "COTIZACIÓN"
+                ws["G"+str(cont)] = "SALDO"
+                ws["H"+str(cont)] = "SALDO PESOS"
 
-
-                ws["A"+str(cont)].alignment = Alignment(horizontal = "center")
-                ws["B"+str(cont)].alignment = Alignment(horizontal = "center")
-                ws["C"+str(cont)].alignment = Alignment(horizontal = "center")
-                ws["D"+str(cont)].alignment = Alignment(horizontal = "center")
-                ws["E"+str(cont)].alignment = Alignment(horizontal = "center")
-
-                ws["A"+str(cont)].font = Font(bold = True)
-                ws["B"+str(cont)].font = Font(bold = True)
-                ws["C"+str(cont)].font = Font(bold = True)
-                ws["D"+str(cont)].font = Font(bold = True)
-                ws["E"+str(cont)].font = Font(bold = True)
-
-
-                ws.column_dimensions['A'].width = 11
-                ws.column_dimensions['B'].width = 9
-                ws.column_dimensions['C'].width = 12
-                ws.column_dimensions['D'].width = 20
-                ws.column_dimensions['E'].width = 14
-
-
-                ws["A"+str(cont+1)] = c.fecha
-                ws["B"+str(cont+1)] = c.precio
-                ws["C"+str(cont+1)] = c.constante.nombre
-                ws["D"+str(cont+1)] = c.concepto
-                ws["E"+str(cont+1)] = c.precio*c.constante.valor
-
-                ws["A"+str(cont+1)].font = Font(bold = True)
-                ws["A"+str(cont+1)].alignment = Alignment(horizontal = "center")
-                ws["B"+str(cont+1)].number_format = '#,##0.00_-'
-                ws["C"+str(cont+1)].alignment = Alignment(horizontal = "center")
-                ws["D"+str(cont+1)].alignment = Alignment(horizontal = "center")
-                ws["E"+str(cont+1)].number_format = '"$"#,##0.00_-'
-
-                cont += 1
-
-            else: 
-                ws = wb.active
-                ws["A"+str(cont+1)] = c.fecha
-                ws["B"+str(cont+1)] = c.precio
-                ws["C"+str(cont+1)] = c.constante.nombre
-                ws["D"+str(cont+1)] = c.concepto
-                ws["E"+str(cont+1)] = c.precio*c.constante.valor
-
-                ws["A"+str(cont+1)].font = Font(bold = True)
-                ws["A"+str(cont+1)].alignment = Alignment(horizontal = "center")
-                ws["B"+str(cont+1)].number_format = '#,##0.00_-'
-                ws["C"+str(cont+1)].alignment = Alignment(horizontal = "center")
-                ws["D"+str(cont+1)].alignment = Alignment(horizontal = "center")
-                ws["E"+str(cont+1)].number_format = '"$"#,##0.00_-'
-
-                cont += 1
-        cont = 1
-        for p in pagos:
-
-            if cont == 1:
-                ws = wb.create_sheet('Pagos')
-                ws["A"+str(cont)] = "CUOTA FECHA"
-                ws["B"+str(cont)] = "FECHA"
-                ws["C"+str(cont)] = "PAGO (MD)"
-                ws["D"+str(cont)] = "MONEDA"
-                ws["E"+str(cont)] = "PAGO PESOS"
-                ws["F"+str(cont)] = "DOCUMENTO 1"
-                ws["G"+str(cont)] = "DOCUMENTO 2"
 
                 ws["A"+str(cont)].alignment = Alignment(horizontal = "center")
                 ws["B"+str(cont)].alignment = Alignment(horizontal = "center")
@@ -3492,30 +3446,216 @@ class DescargarCuentacorriente(TemplateView):
                 ws["E"+str(cont)].alignment = Alignment(horizontal = "center")
                 ws["F"+str(cont)].alignment = Alignment(horizontal = "center")
                 ws["G"+str(cont)].alignment = Alignment(horizontal = "center")
+                ws["H"+str(cont)].alignment = Alignment(horizontal = "center")
 
-                ws["A"+str(cont)].font = Font(bold = True)
-                ws["B"+str(cont)].font = Font(bold = True)
-                ws["C"+str(cont)].font = Font(bold = True)
-                ws["D"+str(cont)].font = Font(bold = True)
-                ws["E"+str(cont)].font = Font(bold = True)
-                ws["F"+str(cont)].font = Font(bold = True)
-                ws["G"+str(cont)].font = Font(bold = True)
+                ws["A"+str(cont)].font = Font(bold = True, color= "E8F8F8")
+                ws["A"+str(cont)].fill =  PatternFill("solid", fgColor= "2C9E9D")
+                ws["B"+str(cont)].font = Font(bold = True, color= "E8F8F8")
+                ws["B"+str(cont)].fill =  PatternFill("solid", fgColor= "2C9E9D")
+                ws["C"+str(cont)].font = Font(bold = True, color= "E8F8F8")
+                ws["C"+str(cont)].fill =  PatternFill("solid", fgColor= "2C9E9D")
+                ws["D"+str(cont)].font = Font(bold = True, color= "E8F8F8")
+                ws["D"+str(cont)].fill =  PatternFill("solid", fgColor= "2C9E9D")
+                ws["E"+str(cont)].font = Font(bold = True, color= "E8F8F8")
+                ws["E"+str(cont)].fill =  PatternFill("solid", fgColor= "2C9E9D")
+                ws["F"+str(cont)].font = Font(bold = True, color= "E8F8F8")
+                ws["F"+str(cont)].fill =  PatternFill("solid", fgColor= "2C9E9D")
+                ws["G"+str(cont)].font = Font(bold = True, color= "E8F8F8")
+                ws["G"+str(cont)].fill =  PatternFill("solid", fgColor= "2C9E9D")
+                ws["H"+str(cont)].font = Font(bold = True, color= "E8F8F8")
+                ws["H"+str(cont)].fill =  PatternFill("solid", fgColor= "2C9E9D")
 
-                ws.column_dimensions['A'].width = 12
-                ws.column_dimensions['B'].width = 11
-                ws.column_dimensions['C'].width = 11
-                ws.column_dimensions['D'].width = 12
+                ws["A"+str(cont+1)] = c.fecha
+                ws["B"+str(cont+1)] = c.constante.nombre
+                ws["C"+str(cont+1)] = c.concepto
+                ws["D"+str(cont+1)] = c.precio
+
+                if len(Pago.objects.filter(cuota = c)) > 0:
+                    pagos_pesos = sum(np.array(Pago.objects.filter(cuota = c).values_list("pago_pesos", flat = True)))
+                    cotizacion = sum(np.array(Pago.objects.filter(cuota = c).values_list("pago_pesos", flat = True))/np.array(Pago.objects.filter(cuota = c).values_list("pago", flat = True)))
+                    saldo = c.precio - sum(np.array(Pago.objects.filter(cuota = c).values_list("pago", flat = True)))
+                    saldo_pesos = saldo * c.constante.valor
+                    
+                    ws["E"+str(cont+1)] = pagos_pesos
+                    ws["F"+str(cont+1)] = cotizacion
+                    ws["G"+str(cont+1)] = saldo
+                    ws["H"+str(cont+1)] = saldo_pesos
+
+                else:
+                    ws["E"+str(cont+1)] = 0
+                    ws["F"+str(cont+1)] = 0
+                    ws["G"+str(cont+1)] = c.precio
+                    ws["H"+str(cont+1)] = c.precio*c.constante.valor
+
+                ws["A"+str(cont+1)].font = Font(bold = True)
+
+                ws["A"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["B"+str(cont+1)].alignment = Alignment(horizontal = "center")
+
+                if c.pagada == "SI":
+                    ws["C"+str(cont+1)].font = Font(color= "289E70")
+                    ws["G"+str(cont+1)].font = Font(color= "289E70")
+
+                ws["C"+str(cont+1)].alignment = Alignment(horizontal = "center")
+
+                ws["D"+str(cont+1)].number_format = '#,##0.00_-'
+                ws["E"+str(cont+1)].number_format = '"$ "#,##0.00_-'
+                ws["F"+str(cont+1)].number_format = '"$ "#,##0.00_-'
+                ws["G"+str(cont+1)].number_format = '#,##0.00_-'
+                ws["H"+str(cont+1)].number_format = '"$ "#,##0.00_-'
+
+                ws.column_dimensions['A'].width = 15
+                ws.column_dimensions['B'].width = 15
+                ws.column_dimensions['C'].width = 20
+                ws.column_dimensions['D'].width = 20
                 ws.column_dimensions['E'].width = 20
-                ws.column_dimensions['F'].width = 25
-                ws.column_dimensions['G'].width = 25
+                ws.column_dimensions['F'].width = 20
+                ws.column_dimensions['G'].width = 20
+                ws.column_dimensions['H'].width = 20
+
+                cont += 1
+
+            else: 
+
+                ws["A"+str(cont+1)] = c.fecha
+                ws["B"+str(cont+1)] = c.constante.nombre
+                ws["C"+str(cont+1)] = c.concepto
+                ws["D"+str(cont+1)] = c.precio
+
+                if len(Pago.objects.filter(cuota = c)) > 0:
+                    pagos_pesos = sum(np.array(Pago.objects.filter(cuota = c).values_list("pago_pesos", flat = True)))
+                    cotizacion = sum(np.array(Pago.objects.filter(cuota = c).values_list("pago_pesos", flat = True))/np.array(Pago.objects.filter(cuota = c).values_list("pago", flat = True)))
+                    saldo = c.precio - sum(np.array(Pago.objects.filter(cuota = c).values_list("pago", flat = True)))
+                    saldo_pesos = saldo * c.constante.valor
+                    
+                    ws["E"+str(cont+1)] = pagos_pesos
+                    ws["F"+str(cont+1)] = cotizacion
+                    ws["G"+str(cont+1)] = saldo
+                    ws["H"+str(cont+1)] = saldo_pesos
+
+                    valor_t += c.precio
+                    pagado_t += pagos_pesos
+                    saldo_t += saldo
+                    saldo_p_t += saldo_pesos
+
+
+                else:
+                    ws["E"+str(cont+1)] = 0
+                    ws["F"+str(cont+1)] = 0
+                    ws["G"+str(cont+1)] = c.precio
+                    ws["H"+str(cont+1)] = c.precio*c.constante.valor
+
+                    valor_t += c.precio
+                    saldo_t += c.precio
+                    saldo_p_t += c.precio*c.constante.valor
+
+                ws["A"+str(cont+1)].font = Font(bold = True)
+
+                if c.pagada == "SI":
+                    ws["C"+str(cont+1)].font = Font(color= "289E70")
+                    ws["G"+str(cont+1)].font = Font(color= "289E70")
+
+                ws["A"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["B"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["C"+str(cont+1)].alignment = Alignment(horizontal = "center")
+ 
+                ws["D"+str(cont+1)].number_format = '#,##0.00_-'
+                ws["E"+str(cont+1)].number_format = '"$ "#,##0.00_-'
+                ws["F"+str(cont+1)].number_format = '"$ "#,##0.00_-'
+                ws["G"+str(cont+1)].number_format = '#,##0.00_-'
+                ws["H"+str(cont+1)].number_format = '"$ "#,##0.00_-'
+
+                cont += 1
+
+        ws["D"+str(cont+1)] = valor_t
+        ws["E"+str(cont+1)] = pagado_t
+        ws["G"+str(cont+1)] = saldo_t
+        ws["H"+str(cont+1)] = saldo_p_t
+
+        ws["D"+str(cont+1)].font = Font(bold = True)
+        ws["D"+str(cont+1)].number_format = '#,##0.00_-'
+        ws["E"+str(cont+1)].font = Font(bold = True)
+        ws["E"+str(cont+1)].number_format = '"$ "#,##0.00_-'
+        ws["G"+str(cont+1)].font = Font(bold = True)
+        ws["G"+str(cont+1)].number_format = '#,##0.00_-'
+        ws["H"+str(cont+1)].font = Font(bold = True)
+        ws["H"+str(cont+1)].number_format = '"$ "#,##0.00_-'
+
+
+        ws["A"+str(cont+3)] = "  *El valor representa la cuota en su moneda dura"
+        ws["A"+str(cont+4)] = "  *Pagado es la suma historica en pesos"
+        ws["A"+str(cont+5)] = "  *Cotización es pagado sobre cancelado en moneda"
+        ws["A"+str(cont+6)] = "  *Saldo es en moneda dura"
+        ws["A"+str(cont+7)] = "  *Saldo en pesos es según el valor vigente en Link-P"
+
+
+        cont = 3
+        for p in pagos:
+
+            if cont == 3:
+                ws = wb.create_sheet('Registro Pagos')
+
+                ws["A1"] = "Resumen de pagos - Área Administración"
+                ws["A1"].font = Font(bold = True)
+
+                ws["A"+str(cont)] = "CUOTA FECHA"
+                ws["B"+str(cont)] = "FECHA"
+                ws["C"+str(cont)] = "PAGO (MD)"
+                ws["D"+str(cont)] = "MONEDA"
+                ws["E"+str(cont)] = "PAGO PESOS"
+                ws["F"+str(cont)] = "COTIZACIÓN"
+                ws["G"+str(cont)] = "DOCUMENTO 1"
+                ws["H"+str(cont)] = "DOCUMENTO 2"
+
+                ws["A"+str(cont)].alignment = Alignment(horizontal = "center")
+                ws["B"+str(cont)].alignment = Alignment(horizontal = "center")
+                ws["C"+str(cont)].alignment = Alignment(horizontal = "center")
+                ws["D"+str(cont)].alignment = Alignment(horizontal = "center")
+                ws["E"+str(cont)].alignment = Alignment(horizontal = "center")
+                ws["F"+str(cont)].alignment = Alignment(horizontal = "center")
+                ws["G"+str(cont)].alignment = Alignment(horizontal = "center")
+                ws["H"+str(cont)].alignment = Alignment(horizontal = "center")
+
+                ws["A"+str(cont)].font = Font(bold = True, color= "E8F8F8")
+                ws["A"+str(cont)].fill =  PatternFill("solid", fgColor= "2C9E9D")
+                ws["B"+str(cont)].font = Font(bold = True, color= "E8F8F8")
+                ws["B"+str(cont)].fill =  PatternFill("solid", fgColor= "2C9E9D")
+                ws["C"+str(cont)].font = Font(bold = True, color= "E8F8F8")
+                ws["C"+str(cont)].fill =  PatternFill("solid", fgColor= "2C9E9D")
+                ws["D"+str(cont)].font = Font(bold = True, color= "E8F8F8")
+                ws["D"+str(cont)].fill =  PatternFill("solid", fgColor= "2C9E9D")
+                ws["E"+str(cont)].font = Font(bold = True, color= "E8F8F8")
+                ws["E"+str(cont)].fill =  PatternFill("solid", fgColor= "2C9E9D")
+                ws["F"+str(cont)].font = Font(bold = True, color= "E8F8F8")
+                ws["F"+str(cont)].fill =  PatternFill("solid", fgColor= "2C9E9D")
+                ws["G"+str(cont)].font = Font(bold = True, color= "E8F8F8")
+                ws["G"+str(cont)].fill =  PatternFill("solid", fgColor= "2C9E9D")
+                ws["H"+str(cont)].font = Font(bold = True, color= "E8F8F8")
+                ws["H"+str(cont)].fill =  PatternFill("solid", fgColor= "2C9E9D")
+
+                ws.column_dimensions['A'].width = 15
+                ws.column_dimensions['B'].width = 15
+                ws.column_dimensions['C'].width = 20
+                ws.column_dimensions['D'].width = 20
+                ws.column_dimensions['E'].width = 20
+                ws.column_dimensions['F'].width = 20
+                ws.column_dimensions['G'].width = 20
+                ws.column_dimensions['H'].width = 20
 
                 ws["A"+str(cont+1)] = p.cuota.fecha
                 ws["B"+str(cont+1)] = p.fecha
                 ws["C"+str(cont+1)] = p.pago
                 ws["D"+str(cont+1)] = p.cuota.constante.nombre
                 ws["E"+str(cont+1)] = p.pago_pesos
-                ws["F"+str(cont+1)] = p.documento_1
-                ws["G"+str(cont+1)] = p.documento_2
+                ws["F"+str(cont+1)] = (p.pago_pesos/p.pago)
+                if p.documento_1:
+                    ws["G"+str(cont+1)] = p.documento_1
+                else:
+                    ws["G"+str(cont+1)] = "Sin documento"
+                if p.documento_2:
+                    ws["H"+str(cont+1)] = p.documento_2
+                else:
+                    ws["H"+str(cont+1)] = "Sin documento"
 
                 ws["A"+str(cont+1)].font = Font(bold = True)
                 ws["A"+str(cont+1)].alignment = Alignment(horizontal = "center")
@@ -3523,22 +3663,30 @@ class DescargarCuentacorriente(TemplateView):
                 ws["C"+str(cont+1)].number_format = '#,##0.00_-'
                 ws["D"+str(cont+1)].alignment = Alignment(horizontal = "center")
                 ws["E"+str(cont+1)].number_format = '"$"#,##0.00_-'
-                ws["F"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["F"+str(cont+1)].number_format = '"$"#,##0.00_-'
                 ws["G"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["H"+str(cont+1)].alignment = Alignment(horizontal = "center")
 
                 cont += 1
 
             else:
                 
-                ws = wb["Pagos"]
+                ws = wb["Registro Pagos"]
 
                 ws["A"+str(cont+1)] = p.cuota.fecha
                 ws["B"+str(cont+1)] = p.fecha
                 ws["C"+str(cont+1)] = p.pago
                 ws["D"+str(cont+1)] = p.cuota.constante.nombre
                 ws["E"+str(cont+1)] = p.pago_pesos
-                ws["F"+str(cont+1)] = p.documento_1
-                ws["G"+str(cont+1)] = p.documento_2
+                ws["F"+str(cont+1)] = (p.pago_pesos/p.pago)
+                if p.documento_1:
+                    ws["G"+str(cont+1)] = p.documento_1
+                else:
+                    ws["G"+str(cont+1)] = "Sin documento"
+                if p.documento_2:
+                    ws["H"+str(cont+1)] = p.documento_2
+                else:
+                    ws["H"+str(cont+1)] = "Sin documento"
 
                 ws["A"+str(cont+1)].font = Font(bold = True)
                 ws["A"+str(cont+1)].alignment = Alignment(horizontal = "center")
@@ -3546,8 +3694,9 @@ class DescargarCuentacorriente(TemplateView):
                 ws["C"+str(cont+1)].number_format = '#,##0.00_-'
                 ws["D"+str(cont+1)].alignment = Alignment(horizontal = "center")
                 ws["E"+str(cont+1)].number_format = '"$"#,##0.00_-'
-                ws["F"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["F"+str(cont+1)].number_format = '"$"#,##0.00_-'
                 ws["G"+str(cont+1)].alignment = Alignment(horizontal = "center")
+                ws["H"+str(cont+1)].alignment = Alignment(horizontal = "center")
 
                 cont += 1
 
