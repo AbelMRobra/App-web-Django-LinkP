@@ -72,7 +72,7 @@
                                         <p>{{d.0.fecha|date:"d/m/Y"}}</p>
                                     </td>
                                     <td> <select class="form-control" name="cuotadestino">
-                                        {% for cuota in list_cuotas %}
+                                        {% for cuota in d.2 %}
                                             <option value="{{cuota.id}}">{{cuota.fecha|date:"d/m/Y"}}</option>
                                         {% endfor %}
                                     </td>
