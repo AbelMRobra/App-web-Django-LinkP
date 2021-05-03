@@ -3738,33 +3738,516 @@ class DescargarResumen(TemplateView):
         total_cuotas = len(Cuota.objects.filter(cuenta_corriente__venta__proyecto = proyecto))
         total_pagos =  len(Pago.objects.filter(cuota__cuenta_corriente__venta__proyecto = proyecto))
 
-        cuotas_anteriores = sum(np.array(Cuota.objects.values_list('precio', flat=True).filter(fecha__lt = today, cuenta_corriente__venta__proyecto__id = project))*np.array(Cuota.objects.values_list('constante__valor', flat=True).filter(fecha__lt = today, cuenta_corriente__venta__proyecto__id = project)))
-        pagos_anteriores = sum(np.array(Pago.objects.values_list('pago', flat=True).filter(cuota__fecha__lt = today, cuota__cuenta_corriente__venta__proyecto__id = project))*np.array(Pago.objects.values_list('cuota__constante__valor', flat=True).filter(cuota__fecha__lt = today, cuota__cuenta_corriente__venta__proyecto__id = project)))
+        cuotas_anteriores = sum(np.array(Cuota.objects.values_list('precio', flat=True).filter(fecha__lt = today, cuenta_corriente__venta__proyecto= proyecto))*np.array(Cuota.objects.values_list('constante__valor', flat=True).filter(fecha__lt = today, cuenta_corriente__venta__proyecto = proyecto)))
+        pagos_anteriores = sum(np.array(Pago.objects.values_list('pago', flat=True).filter(cuota__fecha__lt = today, cuota__cuenta_corriente__venta__proyecto = proyecto))*np.array(Pago.objects.values_list('cuota__constante__valor', flat=True).filter(cuota__fecha__lt = today, cuota__cuenta_corriente__venta__proyecto = proyecto)))
         deuda = cuotas_anteriores - pagos_anteriores
 
-        cuotas_posterior = sum(np.array(Cuota.objects.values_list('precio', flat=True).filter(fecha__gte = today, cuenta_corriente__venta__proyecto__id = project))*np.array(Cuota.objects.values_list('constante__valor', flat=True).filter(fecha__gte = today, cuenta_corriente__venta__proyecto__id = project)))
-        pagos_posterior= sum(np.array(Pago.objects.values_list('pago', flat=True).filter(cuota__fecha__gte = today, cuota__cuenta_corriente__venta__proyecto__id = project))*np.array(Pago.objects.values_list('cuota__constante__valor', flat=True).filter(cuota__fecha__gte = today, cuota__cuenta_corriente__venta__proyecto__id = project)))
-        pagos_pesos= sum(np.array(Pago.objects.values_list('pago_pesos', flat=True).filter(cuota__fecha__lt = today, cuota__cuenta_corriente__venta__proyecto__id = project)))
+        cuotas_posterior = sum(np.array(Cuota.objects.values_list('precio', flat=True).filter(fecha__gte = today, cuenta_corriente__venta__proyecto = proyecto))*np.array(Cuota.objects.values_list('constante__valor', flat=True).filter(fecha__gte = today, cuenta_corriente__venta__proyecto = proyecto)))
+        pagos_posterior= sum(np.array(Pago.objects.values_list('pago', flat=True).filter(cuota__fecha__gte = today, cuota__cuenta_corriente__venta__proyecto = proyecto))*np.array(Pago.objects.values_list('cuota__constante__valor', flat=True).filter(cuota__fecha__gte = today, cuota__cuenta_corriente__venta__proyecto = proyecto)))
+        pagos_pesos= sum(np.array(Pago.objects.values_list('pago_pesos', flat=True).filter(cuota__fecha__lt = today, cuota__cuenta_corriente__venta__proyecto = proyecto)))
         adelantos = cuotas_posterior - pagos_posterior
 
         array_pesos = np.array([cuotas_anteriores, pagos_anteriores, deuda, cuotas_posterior, pagos_posterior, adelantos])
         array_h = array_pesos/Constantes.objects.get(id = 7).valor
 
         ws = wb.active
-        ws.title = "Cuotas"
-        ws["A1"] = "Resumen de cuenta corriente - Área Administración"
+        ws.title = "Resumen"
+        ws["A1"] = "Resumen del proyecto - Área Administración"
         ws["A1"].font = Font(bold = True)
-        ws["A3"] = "Comprador:"
-        ws["B3"] = cuenta.venta.comprador
-        ws["A4"] = "Asignación:"
-        ws["B4"] = cuenta.venta.unidad.asig
-        ws["E3"] = "Precio venta:"
-        ws["F3"] = cuenta.venta.precio_venta
-        ws["F3"].number_format = '"$ "#,##0.00_-'
-        ws["E4"] = "Anticipo:"
-        ws["F4"] = cuenta.venta.anticipo
-        ws["F4"].number_format = '"$ "#,##0.00_-'
-        ws["A6"] = "Comentarios: {}".format(cuenta.venta.observaciones)
+        ws["A3"] = "Cuentas:"
+        ws["A3"].font = Font(bold = True)
+        ws["B3"] = total_cuentas
+        ws["A4"] = "Cuotas:"
+        ws["A4"].font = Font(bold = True)
+        ws["B4"] = total_cuotas
+        ws["A5"] = "Pagos:"
+        ws["A5"].font = Font(bold = True)
+        ws["B5"] = total_pagos
+
+        
+
+
+        ws["A10"] = "Cliente"
+        ws["B10"] = "Unidad"
+        ws["C10"] = "Asignación"
+        ws["D10"] = "Pagado"
+        ws["E10"] = "Adeudado"
+        ws["F10"] = "Adelantos"
+        ws["G10"] = "Saldo"
+        ws["H10"] = "Pagado Hº"
+        ws["I10"] = "Adeudado Hº"
+        ws["J10"] = "Adelantos Hº"
+        ws["K10"] = "Saldo Hº"
+
+        ws["A10"].font = Font(bold = True, color= "E8F8F8")
+        ws["A10"].fill =  PatternFill("solid", fgColor= "2C9E9D")
+        ws["B10"].font = Font(bold = True, color= "E8F8F8")
+        ws["B10"].fill =  PatternFill("solid", fgColor= "2C9E9D")
+        ws["C10"].font = Font(bold = True, color= "E8F8F8")
+        ws["C10"].fill =  PatternFill("solid", fgColor= "2C9E9D")
+        ws["D10"].font = Font(bold = True, color= "E8F8F8")
+        ws["D10"].fill =  PatternFill("solid", fgColor= "2C9E9D")
+        ws["E10"].font = Font(bold = True, color= "E8F8F8")
+        ws["E10"].fill =  PatternFill("solid", fgColor= "2C9E9D")
+        ws["F10"].font = Font(bold = True, color= "E8F8F8")
+        ws["F10"].fill =  PatternFill("solid", fgColor= "2C9E9D")
+        ws["G10"].font = Font(bold = True, color= "E8F8F8")
+        ws["G10"].fill =  PatternFill("solid", fgColor= "2C9E9D")
+        ws["H10"].font = Font(bold = True, color= "E8F8F8")
+        ws["H10"].fill =  PatternFill("solid", fgColor= "2C9E9D")
+        ws["I10"].font = Font(bold = True, color= "E8F8F8")
+        ws["I10"].fill =  PatternFill("solid", fgColor= "2C9E9D")
+        ws["J10"].font = Font(bold = True, color= "E8F8F8")
+        ws["J10"].fill =  PatternFill("solid", fgColor= "2C9E9D")
+        ws["K10"].font = Font(bold = True, color= "E8F8F8")
+        ws["K10"].fill =  PatternFill("solid", fgColor= "2C9E9D")
+
+
+        ws.column_dimensions['A'].width = 20
+        ws.column_dimensions['B'].width = 20
+        ws.column_dimensions['C'].width = 17
+        ws.column_dimensions['D'].width = 17
+        ws.column_dimensions['E'].width = 17
+        ws.column_dimensions['F'].width = 20
+        ws.column_dimensions['G'].width = 15
+        ws.column_dimensions['H'].width = 15
+        ws.column_dimensions['I'].width = 15
+        ws.column_dimensions['J'].width = 15
+        ws.column_dimensions['K'].width = 15
+
+        cuentas = CuentaCorriente.objects.filter(venta__proyecto = proyecto)
+
+        cont = 11
+
+        pagos_t = 0
+        adeudado_t = 0
+        adelantos_t = 0
+        saldo_t = 0
+        pagos_m3_t = 0
+        adeudado_m3_t = 0
+        adelantos_m3_t = 0
+        saldo_m3_t = 0
+
+        pagos_p = 0
+        adeudado_p = 0
+        adelantos_p = 0
+        saldo_p = 0
+        pagos_m3_p = 0
+        adeudado_m3_p = 0
+        adelantos_m3_p = 0
+        saldo_m3_p = 0
+
+        pagos_l = 0
+        adeudado_l = 0
+        adelantos_l = 0
+        saldo_l = 0
+        pagos_m3_l = 0
+        adeudado_m3_l = 0
+        adelantos_m3_l = 0
+        saldo_m3_l = 0
+
+        pagos_te = 0
+        adeudado_te = 0
+        adelantos_te = 0
+        saldo_te = 0
+        pagos_m3_te = 0
+        adeudado_m3_te = 0
+        adelantos_m3_te = 0
+        saldo_m3_te = 0
+
+        for c in cuentas:
+
+
+            pagos = sum(np.array(Pago.objects.values_list('pago_pesos', flat = True).filter(cuota__fecha__lt = today, cuota__cuenta_corriente = c)))           
+            cuotas_anteriores = sum(np.array(Cuota.objects.values_list('precio', flat = True).filter(fecha__lt = today, cuenta_corriente = c))*np.array(Cuota.objects.values_list('constante__valor', flat = True).filter(fecha__lt = today, cuenta_corriente = c)))
+            pagos_anteriores = sum(np.array(Pago.objects.values_list('pago', flat = True).filter(cuota__fecha__lt = today, cuota__cuenta_corriente = c))*np.array(Pago.objects.values_list('cuota__constante__valor', flat = True).filter(cuota__fecha__lt = today, cuota__cuenta_corriente = c)))
+            adeudado = cuotas_anteriores - pagos_anteriores
+            adelantos = sum(np.array(Pago.objects.values_list('pago', flat = True).filter(cuota__fecha__gte = today, cuota__cuenta_corriente = c))*np.array(Pago.objects.values_list('cuota__constante__valor', flat = True).filter(cuota__fecha__gte = today, cuota__cuenta_corriente = c)))
+            saldo = sum(np.array(Cuota.objects.values_list('precio', flat = True).filter(fecha__gte = today, cuenta_corriente = c))*np.array(Cuota.objects.values_list('constante__valor', flat = True).filter(fecha__gte = today, cuenta_corriente = c))) - adelantos
+            
+            ws = wb.active
+
+            ws["A"+str(cont)] = c.venta.comprador
+            ws["B"+str(cont)] = (str(c.venta.unidad.piso_unidad) + "-" + str(c.venta.unidad.nombre_unidad))
+            ws["C"+str(cont)] = c.venta.unidad.asig
+            ws["D"+str(cont)] = pagos
+            ws["E"+str(cont)] = adeudado
+            ws["F"+str(cont)] = adelantos
+            ws["G"+str(cont)] = saldo
+            ws["H"+str(cont)] = pagos_anteriores/Constantes.objects.get(id = 7).valor
+            ws["I"+str(cont)] = adeudado/Constantes.objects.get(id = 7).valor
+            ws["J"+str(cont)] = adelantos/Constantes.objects.get(id = 7).valor
+            ws["K"+str(cont)] = saldo/Constantes.objects.get(id = 7).valor
+
+            pagos_t += pagos
+            adeudado_t += adeudado
+            adelantos_t += adelantos
+            saldo_t += saldo
+            pagos_m3_t += pagos_anteriores/Constantes.objects.get(id = 7).valor
+            adeudado_m3_t += adeudado/Constantes.objects.get(id = 7).valor
+            adelantos_m3_t += adelantos/Constantes.objects.get(id = 7).valor
+            saldo_m3_t += saldo/Constantes.objects.get(id = 7).valor
+
+            if c.venta.unidad.asig == "PROYECTO":
+                pagos_p += pagos
+                adeudado_p += adeudado
+                adelantos_p += adelantos
+                saldo_p += saldo
+                pagos_m3_p += pagos_anteriores/Constantes.objects.get(id = 7).valor
+                adeudado_m3_p += adeudado/Constantes.objects.get(id = 7).valor
+                adelantos_m3_p += adelantos/Constantes.objects.get(id = 7).valor
+                saldo_m3_p += saldo/Constantes.objects.get(id = 7).valor
+
+            if c.venta.unidad.asig == "HON. LINK":
+                pagos_l += pagos
+                adeudado_l += adeudado
+                adelantos_l += adelantos
+                saldo_l += saldo
+                pagos_m3_l += pagos_anteriores/Constantes.objects.get(id = 7).valor
+                adeudado_m3_l += adeudado/Constantes.objects.get(id = 7).valor
+                adelantos_m3_l += adelantos/Constantes.objects.get(id = 7).valor
+                saldo_m3_l += saldo/Constantes.objects.get(id = 7).valor
+
+            if c.venta.unidad.asig == "TERRENO":
+                pagos_te += pagos
+                adeudado_te += adeudado
+                adelantos_te += adelantos
+                saldo_te += saldo
+                pagos_m3_te += pagos_anteriores/Constantes.objects.get(id = 7).valor
+                adeudado_m3_te += adeudado/Constantes.objects.get(id = 7).valor
+                adelantos_m3_te += adelantos/Constantes.objects.get(id = 7).valor
+                saldo_m3_te += saldo/Constantes.objects.get(id = 7).valor
+
+
+            ws["D"+str(cont)].number_format = '"$"#,##0.00_-'
+            ws["E"+str(cont)].number_format = '"$"#,##0.00_-'
+            ws["F"+str(cont)].number_format = '"$"#,##0.00_-'
+            ws["G"+str(cont)].number_format = '"$"#,##0.00_-'
+            ws["H"+str(cont)].number_format = '#,##0.00_-"M3"'
+            ws["I"+str(cont)].number_format = '#,##0.00_-"M3"'
+            ws["J"+str(cont)].number_format = '#,##0.00_-"M3"'
+            ws["K"+str(cont)].number_format = '#,##0.00_-"M3"'
+
+            cont += 1
+
+        ws["A"+str(cont)] = "Total"
+        ws["D"+str(cont)] = pagos_t
+        ws["E"+str(cont)] = adeudado_t
+        ws["F"+str(cont)] = adelantos_t
+        ws["G"+str(cont)] = saldo_t
+        ws["H"+str(cont)] = pagos_m3_t
+        ws["I"+str(cont)] = adeudado_m3_t
+        ws["J"+str(cont)] = adelantos_m3_t
+        ws["K"+str(cont)] = saldo_m3_t
+
+        ws["A"+str(cont)].font = Font(bold = True)
+        ws["D"+str(cont)].font = Font(bold = True)
+        ws["E"+str(cont)].font = Font(bold = True)
+        ws["F"+str(cont)].font = Font(bold = True)
+        ws["G"+str(cont)].font = Font(bold = True)
+        ws["H"+str(cont)].font = Font(bold = True)
+        ws["I"+str(cont)].font = Font(bold = True)
+        ws["J"+str(cont)].font = Font(bold = True)
+        ws["K"+str(cont)].font = Font(bold = True)
+
+        ws["D"+str(cont)].number_format = '"$"#,##0.00_-'
+        ws["E"+str(cont)].number_format = '"$"#,##0.00_-'
+        ws["F"+str(cont)].number_format = '"$"#,##0.00_-'
+        ws["G"+str(cont)].number_format = '"$"#,##0.00_-'
+        ws["H"+str(cont)].number_format = '#,##0.00_-"M3"'
+        ws["I"+str(cont)].number_format = '#,##0.00_-"M3"'
+        ws["J"+str(cont)].number_format = '#,##0.00_-"M3"'
+        ws["K"+str(cont)].number_format = '#,##0.00_-"M3"'
+
+        ws["A"+str(cont+1)] = "Proyecto"
+        ws["D"+str(cont+1)] = pagos_p
+        ws["E"+str(cont+1)] = adeudado_p
+        ws["F"+str(cont+1)] = adelantos_p
+        ws["G"+str(cont+1)] = saldo_p
+        ws["H"+str(cont+1)] = pagos_m3_p
+        ws["I"+str(cont+1)] = adeudado_m3_p
+        ws["J"+str(cont+1)] = adelantos_m3_p
+        ws["K"+str(cont+1)] = saldo_m3_p
+
+        ws["A"+str(cont+1)].font = Font(bold = True)
+        ws["D"+str(cont+1)].font = Font(bold = True)
+        ws["E"+str(cont+1)].font = Font(bold = True)
+        ws["F"+str(cont+1)].font = Font(bold = True)
+        ws["G"+str(cont+1)].font = Font(bold = True)
+        ws["H"+str(cont+1)].font = Font(bold = True)
+        ws["I"+str(cont+1)].font = Font(bold = True)
+        ws["J"+str(cont+1)].font = Font(bold = True)
+        ws["K"+str(cont+1)].font = Font(bold = True)
+
+        ws["D"+str(cont+1)].number_format = '"$"#,##0.00_-'
+        ws["E"+str(cont+1)].number_format = '"$"#,##0.00_-'
+        ws["F"+str(cont+1)].number_format = '"$"#,##0.00_-'
+        ws["G"+str(cont+1)].number_format = '"$"#,##0.00_-'
+        ws["H"+str(cont+1)].number_format = '#,##0.00_-"M3"'
+        ws["I"+str(cont+1)].number_format = '#,##0.00_-"M3"'
+        ws["J"+str(cont+1)].number_format = '#,##0.00_-"M3"'
+        ws["K"+str(cont+1)].number_format = '#,##0.00_-"M3"'
+
+        ws["A"+str(cont+2)] = "Link"
+        ws["D"+str(cont+2)] = pagos_l
+        ws["E"+str(cont+2)] = adeudado_l
+        ws["F"+str(cont+2)] = adelantos_l
+        ws["G"+str(cont+2)] = saldo_l
+        ws["H"+str(cont+2)] = pagos_m3_l
+        ws["I"+str(cont+2)] = adeudado_m3_l
+        ws["J"+str(cont+2)] = adelantos_m3_l
+        ws["K"+str(cont+2)] = saldo_m3_l
+
+        ws["A"+str(cont+2)].font = Font(bold = True)
+        ws["D"+str(cont+2)].font = Font(bold = True)
+        ws["E"+str(cont+2)].font = Font(bold = True)
+        ws["F"+str(cont+2)].font = Font(bold = True)
+        ws["G"+str(cont+2)].font = Font(bold = True)
+        ws["H"+str(cont+2)].font = Font(bold = True)
+        ws["I"+str(cont+2)].font = Font(bold = True)
+        ws["J"+str(cont+2)].font = Font(bold = True)
+        ws["K"+str(cont+2)].font = Font(bold = True)
+
+        ws["D"+str(cont+2)].number_format = '"$"#,##0.00_-'
+        ws["E"+str(cont+2)].number_format = '"$"#,##0.00_-'
+        ws["F"+str(cont+2)].number_format = '"$"#,##0.00_-'
+        ws["G"+str(cont+2)].number_format = '"$"#,##0.00_-'
+        ws["H"+str(cont+2)].number_format = '#,##0.00_-"M3"'
+        ws["I"+str(cont+2)].number_format = '#,##0.00_-"M3"'
+        ws["J"+str(cont+2)].number_format = '#,##0.00_-"M3"'
+        ws["K"+str(cont+2)].number_format = '#,##0.00_-"M3"'
+
+        ws["A"+str(cont+3)] = "Terreno"
+        ws["D"+str(cont+3)] = pagos_te
+        ws["E"+str(cont+3)] = adeudado_te
+        ws["F"+str(cont+3)] = adelantos_te
+        ws["G"+str(cont+3)] = saldo_te
+        ws["H"+str(cont+3)] = pagos_m3_te
+        ws["I"+str(cont+3)] = adeudado_m3_te
+        ws["J"+str(cont+3)] = adelantos_m3_te
+        ws["K"+str(cont+3)] = saldo_m3_te
+
+        ws["A"+str(cont+3)].font = Font(bold = True)
+        ws["D"+str(cont+3)].font = Font(bold = True)
+        ws["E"+str(cont+3)].font = Font(bold = True)
+        ws["F"+str(cont+3)].font = Font(bold = True)
+        ws["G"+str(cont+3)].font = Font(bold = True)
+        ws["H"+str(cont+3)].font = Font(bold = True)
+        ws["I"+str(cont+3)].font = Font(bold = True)
+        ws["J"+str(cont+3)].font = Font(bold = True)
+        ws["K"+str(cont+3)].font = Font(bold = True)
+
+        ws["D"+str(cont+3)].number_format = '"$"#,##0.00_-'
+        ws["E"+str(cont+3)].number_format = '"$"#,##0.00_-'
+        ws["F"+str(cont+3)].number_format = '"$"#,##0.00_-'
+        ws["G"+str(cont+3)].number_format = '"$"#,##0.00_-'
+        ws["H"+str(cont+3)].number_format = '#,##0.00_-"M3"'
+        ws["I"+str(cont+3)].number_format = '#,##0.00_-"M3"'
+        ws["J"+str(cont+3)].number_format = '#,##0.00_-"M3"'
+        ws["K"+str(cont+3)].number_format = '#,##0.00_-"M3"'
+
+
+        # Establecemos un rango para hacer el cash de ingreso
+
+        fecha_inicial_hoy = datetime.date.today()
+
+        fecha_inicial_2 = datetime.date(fecha_inicial_hoy.year, fecha_inicial_hoy.month, 1)
+
+        fechas = []
+
+        #Aqui buscamos la ultima fecha
+
+        fecha_ultima = Cuota.objects.filter(cuenta_corriente__venta__proyecto = proyecto).order_by("-fecha")
+
+        contador = 0
+        
+        contador_year = 1
+
+        fecha_cargar = fecha_inicial_2
+
+        while fecha_cargar < fecha_ultima[0].fecha:
+
+            if (fecha_inicial_2.month + contador) == 13:
+                
+                year = fecha_inicial_2.year + contador_year
+                
+                fecha_cargar = date(year, 1, fecha_inicial_2.day)
+
+                fechas.append(fecha_cargar)
+                
+                contador_year += 1
+
+                contador = - (12 - contador)
+
+            else:
+
+                mes = fecha_inicial_2.month + contador
+
+                year = fecha_inicial_2.year + contador_year - 1
+
+                fecha_cargar = date(year, mes, fecha_inicial_2.day)
+
+                fechas.append(fecha_cargar)
+
+            contador += 1
+
+        if (fecha_inicial_2.month + contador) == 13:
+                
+            year = fecha_inicial_2.year + contador_year
+            
+            fecha_cargar = date(year, 1, fecha_inicial_2.day)
+
+            fechas.append(fecha_cargar)
+            
+            contador_year += 1
+
+            contador = - (12 - contador)
+
+        else:
+
+            mes = fecha_inicial_2.month + contador
+
+            year = fecha_inicial_2.year + contador_year - 1
+
+            fecha_cargar = date(year, mes, fecha_inicial_2.day)
+
+            fechas.append(fecha_cargar)
+
+        ws = wb.create_sheet('Flujo')
+
+        ws["A1"] = "Resumen de pagos - Área Administración"
+        ws["A1"].font = Font(bold = True)
+
+
+        ws["A9"] = "Mes"
+        ws["B9"] = "Ingreso total"
+        ws["C9"] = "Ingreso total M3"
+        ws["D9"] = "Ingreso proyecto"
+        ws["E9"] = "Ingreso proyecto M3"
+        ws["F9"] = "Ingreso Link"
+        ws["G9"] = "Ingreso Link M3"
+        ws["H9"] = "Ingreso Terreno"
+        ws["I9"] = "Ingreso Terreno M3"
+
+        ws.column_dimensions['A'].width = 14
+        ws.column_dimensions['B'].width = 20
+        ws.column_dimensions['C'].width = 20
+        ws.column_dimensions['D'].width = 20
+        ws.column_dimensions['E'].width = 20
+        ws.column_dimensions['F'].width = 20
+        ws.column_dimensions['G'].width = 20
+        ws.column_dimensions['H'].width = 20
+        ws.column_dimensions['I'].width = 20
+
+        ws["A9"].font = Font(bold = True, color= "E8F8F8")
+        ws["A9"].fill =  PatternFill("solid", fgColor= "2C9E9D")
+        ws["B9"].font = Font(bold = True, color= "E8F8F8")
+        ws["B9"].fill =  PatternFill("solid", fgColor= "2C9E9D")
+        ws["C9"].font = Font(bold = True, color= "E8F8F8")
+        ws["C9"].fill =  PatternFill("solid", fgColor= "2C9E9D")
+        ws["D9"].font = Font(bold = True, color= "E8F8F8")
+        ws["D9"].fill =  PatternFill("solid", fgColor= "2C9E9D")
+        ws["E9"].font = Font(bold = True, color= "E8F8F8")
+        ws["E9"].fill =  PatternFill("solid", fgColor= "2C9E9D")
+        ws["F9"].font = Font(bold = True, color= "E8F8F8")
+        ws["F9"].fill =  PatternFill("solid", fgColor= "2C9E9D")
+        ws["G9"].font = Font(bold = True, color= "E8F8F8")
+        ws["G9"].fill =  PatternFill("solid", fgColor= "2C9E9D")
+        ws["H9"].font = Font(bold = True, color= "E8F8F8")
+        ws["H9"].fill =  PatternFill("solid", fgColor= "2C9E9D")
+        ws["I9"].font = Font(bold = True, color= "E8F8F8")
+        ws["I9"].fill =  PatternFill("solid", fgColor= "2C9E9D")
+
+        cont = 10
+
+        cont_f = -1
+        fecha_aux = 0
+        for fecha in fechas:
+
+            if cont_f <= 0:
+                fecha_aux = fecha
+                cont_f += 1
+            else:
+
+                fecha = fecha + timedelta(days=-1)
+       
+                # Total
+                if len(Cuota.objects.values_list('pago', flat = True).filter(fecha__range = (fecha_aux, fecha), cuenta_corriente__venta__proyecto = proyecto)) > 0:
+                    cuotas_month = sum(np.array(Cuota.objects.values_list('precio', flat = True).filter(fecha__range = (fecha_aux, fecha), cuenta_corriente__venta__proyecto = proyecto))*np.array(Cuota.objects.values_list('constante__valor', flat = True).filter(fecha__range = (fecha_aux, fecha), cuenta_corriente__venta__proyecto = proyecto)))
+                    pago_month = sum(np.array(Pago.objects.values_list('pago', flat = True).filter(cuota__fecha__range = (fecha_aux, fecha), cuota__cuenta_corriente__venta__proyecto = proyecto))*np.array(Pago.objects.values_list('cuota__constante__valor', flat = True).filter(cuota__fecha__range = (fecha_aux, fecha), cuota__cuenta_corriente__venta__proyecto = proyecto)))
+                    saldo_month = cuotas_month - pago_month
+                    saldo_month_h = saldo_month/Constantes.objects.get(id = 7).valor
+                else:
+                    saldo_month = 0
+                    saldo_month_h = 0
+                # Proyecto
+
+                if len(Cuota.objects.values_list('pago', flat = True).filter(fecha__range = (fecha_aux, fecha), cuenta_corriente__venta__proyecto = proyecto, cuenta_corriente__venta__unidad__asig = "PROYECTO")) > 0:
+                    cuotas_month = sum(np.array(Cuota.objects.values_list('precio', flat = True).filter(fecha__range = (fecha_aux, fecha), cuenta_corriente__venta__proyecto = proyecto, cuenta_corriente__venta__unidad__asig = "PROYECTO"))*np.array(Cuota.objects.values_list('constante__valor', flat = True).filter(fecha__range = (fecha_aux, fecha), cuenta_corriente__venta__proyecto = proyecto, cuenta_corriente__venta__unidad__asig = "PROYECTO")))
+                    pago_month = sum(np.array(Pago.objects.values_list('pago', flat = True).filter(cuota__fecha__range = (fecha_aux, fecha), cuota__cuenta_corriente__venta__proyecto = proyecto, cuota__cuenta_corriente__venta__unidad__asig = "PROYECTO"))*np.array(Pago.objects.values_list('cuota__constante__valor', flat = True).filter(cuota__fecha__range = (fecha_aux, fecha), cuota__cuenta_corriente__venta__proyecto = proyecto, cuota__cuenta_corriente__venta__unidad__asig = "PROYECTO")))
+                    saldo_month_p = cuotas_month - pago_month
+                    saldo_month_p_h = saldo_month/Constantes.objects.get(id = 7).valor
+                else:
+                    saldo_month_p = 0
+                    saldo_month_p_h = 0
+
+                # Link
+
+                if len(Cuota.objects.values_list('pago', flat = True).filter(fecha__range = (fecha_aux, fecha), cuenta_corriente__venta__proyecto = proyecto, cuenta_corriente__venta__unidad__asig = "HON. LINK")) > 0:
+                    cuotas_month = sum(np.array(Cuota.objects.values_list('precio', flat = True).filter(fecha__range = (fecha_aux, fecha), cuenta_corriente__venta__proyecto = proyecto, cuenta_corriente__venta__unidad__asig = "HON. LINK"))*np.array(Cuota.objects.values_list('constante__valor', flat = True).filter(fecha__range = (fecha_aux, fecha), cuenta_corriente__venta__proyecto = proyecto, cuenta_corriente__venta__unidad__asig = "HON. LINK")))
+                    pago_month = sum(np.array(Pago.objects.values_list('pago', flat = True).filter(cuota__fecha__range = (fecha_aux, fecha), cuota__cuenta_corriente__venta__proyecto = proyecto, cuota__cuenta_corriente__venta__unidad__asig = "HON. LINK"))*np.array(Pago.objects.values_list('cuota__constante__valor', flat = True).filter(cuota__fecha__range = (fecha_aux, fecha), cuota__cuenta_corriente__venta__proyecto = proyecto, cuota__cuenta_corriente__venta__unidad__asig = "HON. LINK")))
+                    saldo_month_l = cuotas_month - pago_month
+                    saldo_month_l_h = saldo_month/Constantes.objects.get(id = 7).valor
+                else:
+                    saldo_month_l = 0
+                    saldo_month_l_h = 0
+
+                # Terreno
+
+                if len(Cuota.objects.values_list('pago', flat = True).filter(fecha__range = (fecha_aux, fecha), cuenta_corriente__venta__proyecto = proyecto, cuenta_corriente__venta__unidad__asig = "TERRENO")) > 0:
+                    cuotas_month = sum(np.array(Cuota.objects.values_list('precio', flat = True).filter(fecha__range = (fecha_aux, fecha), cuenta_corriente__venta__proyecto = proyecto, cuenta_corriente__venta__unidad__asig = "TERRENO"))*np.array(Cuota.objects.values_list('constante__valor', flat = True).filter(fecha__range = (fecha_aux, fecha), cuenta_corriente__venta__proyecto = proyecto, cuenta_corriente__venta__unidad__asig = "TERRENO")))
+                    pago_month = sum(np.array(Pago.objects.values_list('pago', flat = True).filter(cuota__fecha__range = (fecha_aux, fecha), cuota__cuenta_corriente__venta__proyecto = proyecto, cuota__cuenta_corriente__venta__unidad__asig = "TERRENO"))*np.array(Pago.objects.values_list('cuota__constante__valor', flat = True).filter(cuota__fecha__range = (fecha_aux, fecha), cuota__cuenta_corriente__venta__proyecto = proyecto, cuota__cuenta_corriente__venta__unidad__asig = "TERRENO")))
+                    saldo_month_te = cuotas_month - pago_month
+                    saldo_month_te_h = saldo_month/Constantes.objects.get(id = 7).valor
+                else:
+                    saldo_month_te = 0
+                    saldo_month_te_h = 0
+
+                ws["A"+str(cont)] = fecha_aux
+                ws["B"+str(cont)] = saldo_month
+                ws["C"+str(cont)] = saldo_month_h
+                ws["D"+str(cont)] = saldo_month_p
+                ws["E"+str(cont)] = saldo_month_p_h
+                ws["F"+str(cont)] = saldo_month_l
+                ws["G"+str(cont)] = saldo_month_l_h
+                ws["H"+str(cont)] = saldo_month_te
+                ws["I"+str(cont)] = saldo_month_te_h
+
+                ws["B"+str(cont)].number_format = '"$"#,##0.00_-'
+                ws["C"+str(cont)].number_format = '#,##0.00_-"M3"'
+                ws["D"+str(cont)].number_format = '"$"#,##0.00_-'
+                ws["E"+str(cont)].number_format = '#,##0.00_-"M3"'
+                ws["F"+str(cont)].number_format = '"$"#,##0.00_-'
+                ws["G"+str(cont)].number_format = '#,##0.00_-"M3"'
+                ws["H"+str(cont)].number_format = '"$"#,##0.00_-'
+                ws["I"+str(cont)].number_format = '#,##0.00_-"M3"'
+
+
+                fecha = fecha + timedelta(days=+1)
+                fecha_aux = fecha
+                cont += 1
+
+
+        #Establecer el nombre del archivo
+        nombre_archivo = "Resumen.-{}.xls".format(str(proyecto.nombre))
+        
+        #Definir tipo de respuesta que se va a dar
+        response = HttpResponse(content_type = "application/ms-excel")
+        contenido = "attachment; filename = {0}".format(nombre_archivo).replace(',', '_')
+        response["Content-Disposition"] = contenido
+        wb.save(response)
+        return response
+
 
 
 class DescargarTotalCuentas(TemplateView):

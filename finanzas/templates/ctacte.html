@@ -2,7 +2,7 @@
 
 {% load static %}
 {% load humanize %}
-{% load apptags_extras %}
+
 {% block content %}
 
 
@@ -17,7 +17,7 @@
         <div class="col-md-7 align-self-center">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
-                <li class="breadcrumb-item"><a href="{% url 'Panel cuentas corrientes' %}">Panel</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'Panel cuentas corrientes' %}">Panel Cta Cte</a></li>
                 <li class="breadcrumb-item"><a
                     href="{% url 'Cuenta corriente proyecto' ctacte.venta.unidad.proyecto.id %}">Admin</a>
             </li>
@@ -70,8 +70,8 @@
                                 <th>Pago</th>
                                 <th>Saldo</th>
                                 <th>Cotización</th>
-                                <th>Saldo en pesos</th>
-                                <th>Pagos</th>
+                                <th>  Saldo en pesos </th>
+                                <th>  Pagos </th>
 
                             </tr>
                         </thead>
@@ -81,7 +81,7 @@
                             {% for i in datos_cuenta %}
                             <tr>
                                 <td>
-                                    <div style="display: inline-block;"><a class="fa fa-trash d-flex align-content-end" style="text-decoration: none;" href="{% url 'Eliminar cuota' i.0.id %}"></a></div>
+                                    <div style="display: inline-block;"><a class="fa fa-trash d-flex align-content-end text-danger" style="text-decoration: none;" href="{% url 'Eliminar cuota' i.0.id %}"></a></div>
                                     <div style="display: inline-block;"><a class="fa fa-pencil" href="{% url 'Editar cuota' i.0.id %}" ></a></div>
                                     <div style="display: inline-block;" {% if i.0.pagada == "SI" %} class="text-success"{% endif %} > {{i.0.concepto|upper}}</div>
                                     
@@ -119,7 +119,7 @@
                                 <td {% if i.2 == 0 %} style="color: #1FC730;" {% endif %}> {{i.2|floatformat:2}}</td>
 
                                 {% if i.5 == 0 %}
-                                <td>$ {% ctactecoti i.0.fecha %}</td>
+                                <td> ${{i.0.constante.valor|floatformat:0|intcomma}}</td>
 
                                 {% else %}
 

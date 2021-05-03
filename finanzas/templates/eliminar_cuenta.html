@@ -17,9 +17,9 @@
         <div class="col-md-7 align-self-center">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
-                <li class="breadcrumb-item"><a href="{% url 'Panel cuentas corrientes' %}">Panel</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'Panel cuentas corrientes' %}">Panel Cta Cte</a></li>
                 <li class="breadcrumb-item"><a
-                    href="{% url 'Cuenta corriente proyecto' datos.venta.unidad.proyecto.id %}">Admin</a></li>
+                        href="{% url 'Cuenta corriente proyecto' datos.venta.unidad.proyecto.id %}">Admin</a></li>
                 </li>
                 <li class="breadcrumb-item">Eliminar cuenta</li>
             </ol>
@@ -32,35 +32,34 @@
 <div class="row">
     <div class="col-12">
         <div class="card">
-            <div class="card-body row">
-                <div class="col-12 justify-content-center">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-12 col-md-12 col-lg-10 d-flex flex-column align-items-center">
 
-                    <div class="row d-flex justify-content-center">
-                        <div class="col col-md-12 col-lg-12">
+                        <h3> ¿Estás seguro de eliminar la cuenta
+                            corriente de
+                            {{datos.venta.comprador}}?</h3>
 
-                            <h3> ¿Estás seguro de eliminar la cuenta
-                                corriente de
-                                {{datos.venta.comprador}}?</h3>
+                        <div class="col-12 col-md-12 col-lg-11 my-3">
+                            <h6>Link P te invita un momento a pensar en esta acción, si eliminas la cuenta corriente no
+                                podremos volver a generar esta información</h6>
+                            <h6>Algunos datos que tambien borraras son:</h6>
 
-                            <div style="margin-top: 15px;">
-                                <h6>Link P te invita un momento a pensar en esta acción, si eliminas la cuenta corriente no podremos volver a generar esta información</h6>
-                                <h6>Algunos datos que tambien borraras son:</h6>
+                            <div class="my-3">
+                                <b class="text-warning">Cuotas que tiene esta cuenta:</b>
+                                {{otros_datos.0}}
+                            </div>
 
-                                <div style="margin-top: 15px;">
-                                    <b class="text-warning">Cuotas que tiene esta cuenta:</b>
-                                        {{otros_datos.0}}
-                                </div>
-
-                                <div>
-                                    <b class="text-warning">Pagos registrados:</b>
-                                        {{otros_datos.1}}
+                            <div>
+                                <b class="text-warning">Pagos registrados:</b>
+                                {{otros_datos.1}}
                             </div>
 
                             <div>
 
                                 <form method="post">
                                     {% csrf_token %}
-                                    <div class="row d-flex justify-content-center">
+                                    <div class="row justify-content-center">
                                         <button type='submit' class="btn btn-danger">Si, seguro!</button>
                                     </div>
                                 </form>
@@ -76,22 +75,17 @@
 </div>
 
 <aside class="right-side-panel">
-    <h3 class="p-relative"><span class="lstick"></span>Hey!</h3>
-    <div class="row">
-        
-        <div class="col-md-12 m-t-10">
-          <div class="card">
-            <div class="card-body">
-            <img src="{% static 'img/animation_500_kmuydpt0.gif' %}" alt="Funny image" width="150px">
-            <p>Estas por eliminar <b class="text-danger">datos</b> de forma permanente</p>
-
-        </div>
+    <h3 class="p-relative"><span class="lstick"></span>Cuidado!</h3>
+    <div class="row d-flex">
+        <div class="col m-t-10">
+            <div class="card">
+                <div class="card-body d-flex flex-column align-items-center ">
+                    <img src="{% static 'img/animation_500_kmuydpt0.gif' %}" alt="Funny image" width="150px">
+                    <p>Estas por eliminar <b class="text-danger">datos</b> de forma permanente</p>
+                </div>
             </div>
         </div>
     </div>
-
-
-    </div>
-  </aside>
+</aside>
 
 {% endblock %}

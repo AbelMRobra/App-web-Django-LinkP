@@ -312,9 +312,9 @@
                                     <!-- Iconos y otros datos -->
                                     <h6 class="card-subtitle" style="font-size: 14px; margin-top: 2px;">
                                         <a href="{% url 'Mensajes en comparativas' i.2.id %}" class=" fa fa-comments-o fa-lg"></a>
-                                        <a href="{{ i.2.adjunto.url }}" class=" fa fa-paperclip fa-lg"></a> 
+                                        <a href="{{ i.2.adjunto.url }}" target ="_blank" class=" fa fa-paperclip fa-lg"></a> 
                                         {% if i.2.adj_oc %}
-                                        <a href="{{ i.2.adj_oc.url }}"><img src="{% static 'img/OC.png' %}" style="max-width:20px; height:auto;"></a>
+                                        <a href="{{ i.2.adj_oc.url }}" target ="_blank"><img src="{% static 'img/OC.png' %}" style="max-width:20px; height:auto;"></a>
                                         {% endif %}
                                         {{i.2.proyecto|lower|capfirst}} - {{i.2.numero|lower|capfirst}}</h6>
                                 </td>

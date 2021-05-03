@@ -319,7 +319,7 @@ def ctactecoti(fecha):
 
             aux = Registrodeconstantes.objects.get(fecha = date_return, constante__id = 7)
 
-            return aux.valor
+            return round(aux.valor, 0)
 
         except:
             return "????"

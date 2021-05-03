@@ -14,10 +14,12 @@
         <div class="col-md-7 align-self-center">
             <ol class="breadcrumb">
 
-                <li class="breadcrumb-item"><a href="{% url 'Panel cuentas corrientes' %}">Panel</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'Panel cuentas corrientes' %}">Panel Cta Cte</a></li>
                 <li class="breadcrumb-item"><a
-                    href="{% url 'Cuenta corriente proyecto' cuota.cuenta_corriente.venta.unidad.proyecto.id %}">Admin</a></li>
-                <li class="breadcrumb-item"><a href="{% url 'Cuenta corriente venta' cuota.cuenta_corriente.id %}">Cuenta</a></li>
+                        href="{% url 'Cuenta corriente proyecto' cuota.cuenta_corriente.venta.unidad.proyecto.id %}">Admin</a>
+                </li>
+                <li class="breadcrumb-item"><a
+                        href="{% url 'Cuenta corriente venta' cuota.cuenta_corriente.id %}">Cuenta</a></li>
                 <li class="breadcrumb-item">Eliminar Cuota</li>
             </ol>
         </div>
@@ -29,31 +31,18 @@
 <div class="row">
     <div class="col-12">
         <div class="card">
-            <div class="card-body row">
-                <div class="col-12 justify-content-center">
-
-                    <div class="row d-flex justify-content-center">
-                        <div class="col col-md-12 col-lg-12 ">
-
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-12 col-md-12 col-lg-10 d-flex flex-column align-items-center">
+                        <div class="my-3">
                             <h3> ¿Estás seguro de eliminar la cuota?</h3>
-                            <div style="margin-top: 15px;">
-                                <h6>Esta acción no se puede restaurar, piensalo bien</h6>
-
-                            </div>
-                            <div style="margin-top: 15px;">
-
-                                <form method="post">
-                                    {% csrf_token %}
-                                    <div class="row d-flex justify-content-center">
-
-                                    <button type='submit' class="btn btn-danger">Si, seguro!</button>
-                                    </div>
-                                </form>
-
-
-                            </div>
-
-
+                            <h6>Esta acción no se puede restaurar, piensalo bien</h6>
+                        </div>
+                        <div>
+                            <form method="post">
+                                {% csrf_token %}
+                                <button type='submit' class="btn btn-danger">Si, seguro!</button>
+                            </form>
 
                         </div>
                     </div>
@@ -64,22 +53,17 @@
 </div>
 
 <aside class="right-side-panel">
-    <h3 class="p-relative"><span class="lstick"></span>Hey!</h3>
-    <div class="row">
-        
-        <div class="col-md-12 m-t-10">
-          <div class="card">
-            <div class="card-body">
-            <img src="{% static 'img/animation_500_kmuydpt0.gif' %}" alt="Funny image" width="150px">
-            <p>Estas por eliminar <b class="text-danger">datos</b> de forma permanente</p>
-
-        </div>
+    <h3 class="p-relative"><span class="lstick"></span>Cuidado!</h3>
+    <div class="row d-flex">
+        <div class="col m-t-10">
+            <div class="card">
+                <div class="card-body d-flex flex-column align-items-center ">
+                    <img src="{% static 'img/animation_500_kmuydpt0.gif' %}" alt="Funny image" width="150px">
+                    <p>Estas por eliminar <b class="text-danger">datos</b> de forma permanente</p>
+                </div>
             </div>
         </div>
     </div>
-
-
-    </div>
-  </aside>
+</aside>
 
 {% endblock %}

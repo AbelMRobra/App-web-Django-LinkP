@@ -1,7 +1,7 @@
 from django.urls import path, re_path
 from django.conf.urls import url
 from . import views
-from .views import DescargarCuentacorriente, DescargarTotalCuentas, PdfPrueba
+from .views import DescargarCuentacorriente, DescargarTotalCuentas, PdfPrueba, DescargarResumen
 from django.contrib.auth.decorators import login_required
 
 urlpatterns = [
@@ -32,7 +32,7 @@ urlpatterns = [
     url(r'^eliminarpago/(?P<id_pago>\d+)/$', login_required(views.eliminar_pago), name = 'Eliminar pago'),
     url(r'^editarpago/(?P<id_pago>\d+)/$', login_required(views.editar_pagos), name = 'Editar pagos'),
     url(r'^des_ctacte/(?P<id_cuenta>\d+)/$', login_required(DescargarCuentacorriente.as_view()), name = 'Descargar cuenta'),
-    url(r'^des_resumenctacte/$', login_required(DescargarTotalCuentas.as_view()), name = 'Descargar resumen total de cuenta'),
+    url(r'^des_resumenproyec/(?P<id_proyecto>\d+)/$', login_required(DescargarResumen.as_view()), name = 'Descargar resumen proyecto'),
     url(r'^des_resumenctacte/$', login_required(DescargarTotalCuentas.as_view()), name = 'Descargar resumen total de cuenta'),
     url(r'^reportepdf/(?P<id_cuenta>\d+)/$', PdfPrueba.as_view(), name = "Reporte de pdf de cuentas corrientes"),
     url(r'^calculadora/$', login_required(views.calculadora), name = 'Calculadora'),

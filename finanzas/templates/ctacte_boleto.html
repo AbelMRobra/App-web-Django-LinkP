@@ -6,7 +6,7 @@
 {% block content %}
 
 
-<div class="container-fluid r-aside">
+<div class="container-fluid">
     <div class="row page-titles">
         <div class="col-md-5 align-self-center">
             <h3 class="text-themecolor">Cuenta Corriente Boleto</h3>
@@ -43,9 +43,8 @@
                     <div class="tableconteinerabel mt-4">
                         <div style="text-align: left;">
 
-                            <a type="button" class="mx-2" data-toggle="modal"
-                                data-target="#exampleModalCenter" data-original-title="Resumen"><img src="{% static 'img/reportar.png' %}" alt=""
-                                    style="max-width:20px; height:auto;"></a>
+                            <a type="button" class="mx-2 " data-toggle="modal"
+                                data-target="#exampleModalCenter" data-original-title="Resumen"><a href="#" class="fa fa-newspaper-o" style="font-size: 18px;"></a></a>
 
                             <!-- Modal -->
                             <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
@@ -103,13 +102,10 @@
                                 </div>
                             </div>
 
-                            <a href="{% url 'Agregar cuota' ctacte.id %}" class="mx-2" ><img
-                                    src="{% static 'img/add.png' %}" alt=""
-                                    style="max-width:20px; height:auto;"></a>
+                            <a href="{% url 'Agregar cuota' ctacte.id %}" class="mx-2 fa fa-lg fa-plus-circle" ></a>
 
-                            <a href="{% url 'Descargar cuenta' id_cuenta=ctacte.id %}" class="mx-2"
-                                style="text-align: end; margin-top: 5px;"> <img src="{% static 'img/sobresalir.png' %}"
-                                    alt="" style="max-width:20px; height:auto;"></a>
+                            <a href="{% url 'Descargar cuenta' id_cuenta=ctacte.id %}" class="fa fa-file-excel-o"
+                               ></a>
 
                         </div>
 
