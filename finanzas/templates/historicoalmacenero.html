@@ -1,12 +1,12 @@
 {% extends "users/inicio2.html" %}
 
-
+{% load apptags_extras %}
 {% load static %}
 {% load humanize %}
 
 {% block content %}
 
-<div class="container-fluid r-aside">
+<div class="container-fluid">
     <div class="row page-titles">
         <div class="col-md-5 align-self-center">
             <h3 class="text-themecolor">Analisis historico</h3>
@@ -126,10 +126,12 @@
                     <h4 class="text-info">Variación generales</h4>
                     <h6>Valor en {{datos.1.0}}: $ {{datos.0.0|floatformat:0|intcomma}}</h6>
                     <h6>Valor en {{datos.1.1}}: $ {{datos.0.1|floatformat:0|intcomma}}</h6>
-                    <h6>Diferencia: $ {{datos.0.3|floatformat:0|intcomma}} {% if datos.0.3 < 0 %}<i class="fa fa-arrow-down text-danger"></i>{% else %}<i class="fa fa-arrow-up text-success"></i>{% endif %}</h6>
-                    <h6>Variación del indice: {{datos.0.2|intcomma}} % {% if datos.0.3 < 0 %}<i class="fa fa-arrow-down text-danger"></i>{% else %}<i class="fa fa-arrow-up text-success"></i>{% endif %}</h6>
+                    <h6>Diferencia: $ {{datos.0.3|floatformat:0|intcomma}} <i class="{% variacionigual datos.0.3 %}"></i></h6>
+                    <h6>Variación del indice: {{datos.0.2|intcomma}} % <i class="{% variacionigual datos.0.2 %}"></i></h6>
 
                 </div>
+
+                <!--
 
                 <div style="margin-top: 25px;">
                     <h4 class="text-info">Variación medias</h4>
@@ -141,10 +143,17 @@
 
                 </div>
 
+                -->
+
                 <div style="margin-top: 25px;">
                     <h4 class="text-info">Variación especificas</h4>
-                    <h6>Honorarios: $ {{datos.2.5|intcomma}} <i {% if datos.2.5 < 0 %} class="fa fa-arrow-down text-danger" {% else %} class="fa fa-arrow-up text-success" {% endif %}>({{datos.2.6|intcomma}}) %</i></h6>
-                    <h6>Descripción de los proyectos</h6>
+                    <h6>Honorarios: $ {{datos.2.5|floatformat:0|intcomma}} <i class="{% variacionigual datos.2.5 %}"> {% porcentaje datos.2.5 datos.0.3 %} %</i></h6>
+                    <h6>Proyectos: $ {{datos_finales.3|floatformat:0|intcomma}} <i class="{% variacionigual datos_finales.3 %}"> {% porcentaje datos_finales.3 datos.0.3 %} %</i></h6>
+                    <h6>Descuentos: $ {{datos_finales.4|floatformat:0|intcomma}} <i class="{% variacionigual datos_finales.4 %}"> {% porcentaje datos_finales.4 datos.0.3 %} %</i></h6>
+                    <h6>Total: $ {{datos.0.3|floatformat:0|intcomma}}</h6>
+                    <hr></hr>
+                    
+                    <h6>Desglose por proyectos</h6>
                     <div class="table-responsive">
                         <table class="table table-bordered">
                             <thead>
@@ -163,15 +172,15 @@
                                 <tr>
 
                                     <th>{{v.0|lower|capfirst}}</th>
-                                    <th>$ {{v.1.0|floatformat:0|intcomma}} <i {% if v.1.8 > 0 %}class="fa fa-arrow-down text-danger"{% else %}class="fa fa-arrow-up text-success"{% endif %} style="font-size: 10px;">({{v.1.8|floatformat:0}} %)</i></th>
-                                    <th><a href="#" data-toggle="modal" data-target="#ModalIngresos{{v.0.id}}">$ <span class="ingresos">{{v.1.1|floatformat:0|intcomma}}</span> {% if v.1.1 < 0 %}<i class="fa fa-arrow-down text-danger"></i>{% else %}<i class="fa fa-arrow-up text-success"></i>{% endif %}</a> </th>
+                                    <th>$ {{v.1.0|floatformat:0|intcomma}} <i class="{% variacionigual v.1.0 %}"> {% porcentaje v.1.0 datos_finales.3 %} %</i></th>
+                                    <th><a href="#" data-toggle="modal" data-target="#ModalIngresos{{v.0.id}}">$ <span class="ingresos">{{v.1.1|floatformat:0|intcomma}}</span> <i class="{% variacionigual v.1.1 %}"></i></a> </th>
 
                                     <!-- Modal lista de ingresos-->
                                     <div class="modal fade" id="ModalIngresos{{v.0.id}}" tabindex="-1" role="dialog" aria-labelledby="ModalIngresos{{v.0.id}}" aria-hidden="true">
                                         <div class="modal-dialog modal-dialog-centered" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLongTitle">Gastos de {{v.0|lower|capfirst}}</h5>
+                                            <h5 class="modal-title" id="exampleModalLongTitle">Ingresos de {{v.0|lower|capfirst}}</h5>
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
@@ -199,7 +208,7 @@
                                         </div>
 
                                     </div>
-                                    <th><a href="#" data-toggle="modal" data-target="#ModalGastos{{v.0.id}}">$ <span class="gastos">{{v.1.2|floatformat:0|intcomma}}</span> {% if v.1.2 > 0 %}<i class="fa fa-arrow-down text-danger"></i>{% else %}<i class="fa fa-arrow-up text-success"></i>{% endif %}</a></th>
+                                    <th><a href="#" data-toggle="modal" data-target="#ModalGastos{{v.0.id}}">$ <span class="gastos">{{v.1.2|floatformat:0|intcomma}}</span> <i class="{% variacionopuesta v.1.2 %}"></i></a></th>
 
                                     <!-- Modal lista de gastos-->
                                     <div class="modal fade" id="ModalGastos{{v.0.id}}" tabindex="-1" role="dialog" aria-labelledby="ModalGastos{{v.0.id}}" aria-hidden="true">
@@ -246,7 +255,7 @@
                                         </div>
 
                                     </div>
-                                    <th><a href="#" data-toggle="modal" data-target="#ModalCaja{{v.0.id}}">$ <span class="caja">{{v.1.3|floatformat:0|intcomma}} </span> {% if v.1.3 < 0 %}<i class="fa fa-arrow-down text-danger"></i>{% else %}<i class="fa fa-arrow-up text-success"></i>{% endif %}</a> </th>
+                                    <th><a href="#" data-toggle="modal" data-target="#ModalCaja{{v.0.id}}">$ <span class="caja">{{v.1.3|floatformat:0|intcomma}} </span> <i class="{% variacionigual v.1.3 %}"></i></a> </th>
                                     <!-- Modal lista de caja -->
                                     <div class="modal fade" id="ModalCaja{{v.0.id}}" tabindex="-1" role="dialog" aria-labelledby="ModalCaja{{v.0.id}}" aria-hidden="true">
                                         <div class="modal-dialog modal-dialog-centered" role="document">

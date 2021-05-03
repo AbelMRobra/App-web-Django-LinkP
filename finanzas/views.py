@@ -2155,7 +2155,7 @@ def registro_almacenero(request):
             margen1_2 = ingresos_total_2 - pendiente_gastar_total_2 + honorario_2 + saldo_caja_total_2
             margen2_2 = margen1_2 - descuento_total_2
 
-            mensaje = (2, "Se encontrarons los registros!, ambas fechas tienen la misma cantidad de proyectos")
+            mensaje = (2, "Solicitud procesada correctamente!, Sin variación de proyectos")
 
             datos.append((round(margen2_1, 2), round(margen2_2, 2), round((margen2_2/margen2_1 -1 )*100, 10), round((margen2_2 - margen2_1), 10)))
             datos.append((fecha_1, fecha_2))
@@ -2263,12 +2263,12 @@ def registro_almacenero(request):
             margen1_2 = ingresos_total_2 - pendiente_gastar_total_2 + honorario_2 + saldo_caja_total_2
             margen2_2 = margen1_2 - descuento_total_2
 
-            mensaje = (2, "Se encontrarons los registros!, ambas fechas tienen la misma cantidad de proyectos")
+            mensaje = (2, "Solicitud procesada correctamente!, Sin variación de proyectos")
 
             datos.append((round(margen2_1, 2), round(margen2_2, 2), round((margen2_2/margen2_1 -1 )*100, 2), round((margen2_2 - margen2_1), 2)))
             datos.append((fecha_1, fecha_2))
             datos.append((round((ingresos_total_2/ingresos_total_1 -1 )*100, 3), round((descuento_total_2/descuento_total_1 -1 )*100, 3), round((saldo_caja_total_2/saldo_caja_total_1 -1 )*100, 3), round((pendiente_gastar_total_2/pendiente_gastar_total_1 -1 )*100, 3), round((honorario_2/honorario_1 -1 )*100, 3), round(honorario_2 - honorario_1), round((honorario_2 - honorario_1) , 2)/round((margen2_2 - margen2_1), 2)*100))
-            datos_finales = [(ingresos_total_2 - ingresos_total_1), (pendiente_gastar_total_2 - pendiente_gastar_total_1), (saldo_caja_total_2 - saldo_caja_total_1), ((margen1_2 - honorario_2) - (margen1_1 - honorario_1))]
+            datos_finales = [(ingresos_total_2 - ingresos_total_1), (pendiente_gastar_total_2 - pendiente_gastar_total_1), (saldo_caja_total_2 - saldo_caja_total_1), ((margen1_2 - honorario_2) - (margen1_1 - honorario_1)), (descuento_total_1 - descuento_total_2)]
     
             for v in var_especifica:
                 v[1].append((v[1][0]/((margen1_2 - honorario_2) - (margen1_1 - honorario_1))*100))

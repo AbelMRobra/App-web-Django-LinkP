@@ -307,6 +307,48 @@ def ganntgerenciador(fecha_gant, fecha_inicial, fecha_final, proyecto):
 
 
 @register.simple_tag
+def variacionigual(valor_1):
+
+    if valor_1 > 0:
+
+        return "fa fa-arrow-up text-success"
+        
+    elif valor_1 < 0:
+
+        return "fa fa-arrow-down text-danger"
+
+    else:
+        return "fa fa-dot-circle-o text-info"
+
+@register.simple_tag
+def porcentaje(valor_1, valor_2):
+
+    if valor_2:
+
+        return round((valor_1/valor_2*100), 2)
+        
+
+    else:
+        return 0
+
+@register.simple_tag
+def variacionopuesta(valor_1):
+
+    if valor_1 < 0:
+
+        return "fa fa-arrow-up text-success"
+        
+    elif valor_1 > 0:
+
+        return "fa fa-arrow-down text-danger"
+
+    else:
+        return "fa fa-dot-circle-o text-info"
+
+
+
+
+@register.simple_tag
 def ctactecoti(fecha):
 
     today = date.today()
