@@ -92,8 +92,8 @@
                                                             <td>
                                                                 <h6 style="color: rgb({{i.0.color}});">
                                                                     {{i.0.nombre|lower|capfirst}}</h6>
-                                                                <a href="#"><i
-                                                                        class="fa fa-file-excel-o  text-success text-center"></a>
+                                                                <a href="{% url 'Descargar resumen proyecto' i.0.id %}"><i
+                                                                        class="fa fa-file-excel-o  text-success text-center"> </i></a>
                                                             </td>
                                                             <td class="text-center"> $ {{i.1.0|floatformat:0|intcomma}}
                                                                 <h6 class="card-subtitle text-center" style="margin-top: 5px;">
