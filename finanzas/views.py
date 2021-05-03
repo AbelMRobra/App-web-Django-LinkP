@@ -3391,7 +3391,7 @@ def calculadora (request):
 
         if saldo_cuota != 0:
 
-            list_cuotas = Cuota.objects.filter(fecha__ge = cuota.fecha, cuenta_corriente = cuota.cuenta_corriente).exclude(pagada = "SI").order_by("fecha")[1:4]
+            list_cuotas = Cuota.objects.filter(fecha__gt = cuota.fecha, cuenta_corriente = cuota.cuenta_corriente).exclude(pagada = "SI").order_by("fecha")[1:4]
 
             datos.append((cuota, saldo_cuota, list_cuotas))
   
