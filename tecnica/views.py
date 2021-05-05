@@ -43,36 +43,36 @@ def gerenciamientoproyecto(request, id_proyecto):
 
     if request.method == 'POST':
 
-        #try:
-        archivo_pandas = pd.read_excel(request.FILES['archivo'])
-        list_capitulos = Capitulos.objects.all()
-        months = {"enero":1, "febrero":2, "marzo":3, "abril":4, "mayo":5, "junio":6, "julio":7, "agosto":8, "septiembre":9, "octubre":10, "noviembre":11, "diciembre":12}
-        for cap in list_capitulos:
-            row_aux = archivo_pandas[archivo_pandas['Nombre'] == cap.nombre]
-            if row_aux.shape[0] > 0:
-                fecha_i_aux = row_aux['Comienzo'].unique()[0].split()
-                fecha_f_aux = row_aux['Fin'].unique()[0].split()
-                fecha_i = datetime.date(int(fecha_i_aux[2]), int(months[fecha_i_aux[1]]), int(fecha_i_aux[0]))
-                fecha_f = datetime.date(int(fecha_f_aux[2]), int(months[fecha_f_aux[1]]), int(fecha_f_aux[0]))
-                data_aux = GerenPlanificacion.objects.filter(proyecto = proyecto, capitulo = cap)
-                if len(data_aux) == 0:
-                    b = GerenPlanificacion(
-                        proyecto = proyecto,
-                        capitulo = cap,
-                        fecha_i = fecha_i,
-                        fecha_f = fecha_f
-                    )
+        try:
+            archivo_pandas = pd.read_excel(request.FILES['archivo'])
+            list_capitulos = Capitulos.objects.all()
+            months = {"enero":1, "febrero":2, "marzo":3, "abril":4, "mayo":5, "junio":6, "julio":7, "agosto":8, "septiembre":9, "octubre":10, "noviembre":11, "diciembre":12}
+            for cap in list_capitulos:
+                row_aux = archivo_pandas[archivo_pandas['Nombre'] == cap.nombre]
+                if row_aux.shape[0] > 0:
+                    fecha_i_aux = row_aux['Comienzo'].unique()[0].split()
+                    fecha_f_aux = row_aux['Fin'].unique()[0].split()
+                    fecha_i = datetime.date(int(fecha_i_aux[2]), int(months[fecha_i_aux[1]]), int(fecha_i_aux[0]))
+                    fecha_f = datetime.date(int(fecha_f_aux[2]), int(months[fecha_f_aux[1]]), int(fecha_f_aux[0]))
+                    data_aux = GerenPlanificacion.objects.filter(proyecto = proyecto, capitulo = cap)
+                    if len(data_aux) == 0:
+                        b = GerenPlanificacion(
+                            proyecto = proyecto,
+                            capitulo = cap,
+                            fecha_i = fecha_i,
+                            fecha_f = fecha_f
+                        )
 
-                    b.save()
+                        b.save()
 
-                else:
-                    data_aux[0].fecha_i = fecha_i
-                    data_aux[0].fecha_f = fecha_f
-                    data_aux[0].save()
-        
+                    else:
+                        data_aux[0].fecha_i = fecha_i
+                        data_aux[0].fecha_f = fecha_f
+                        data_aux[0].save()
+            
 
-        #except:
-           #pass
+        except:
+            pass
         try:
             data_aux = GerenPlanificacion.objects.filter(proyecto = proyecto, capitulo__id = int(request.POST['cap']))
             if len(data_aux) == 0:

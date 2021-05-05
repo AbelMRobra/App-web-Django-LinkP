@@ -10,7 +10,7 @@ from proyectos.models import Proyectos, Unidades
 from ventas.models import VentasRealizadas
 from compras.models import Compras, Comparativas
 from registro.models import RegistroValorProyecto
-from rrhh.models import datosusuario, mensajesgenerales, NotaDePedido, Vacaciones, MonedaLink, EntregaMoneda, Anuncios, Seguimiento, Minutas, Acuerdos, PremiosMonedas, Logros, RegistroContable, CanjeMonedas
+from rrhh.models import datosusuario, mensajesgenerales, NotaDePedido, Vacaciones, MonedaLink, EntregaMoneda, Anuncios, Seguimiento, Minutas, Acuerdos, PremiosMonedas, Logros, RegistroContable, CanjeMonedas, Sugerencia
 import datetime
 from datetime import date
 import pandas as pd
@@ -43,6 +43,42 @@ def linkp(request):
         pass
 
     return render(request, 'users/linkp.html')
+
+def sugerencias(request):
+
+    if request.method == 'POST':
+
+        try:
+
+            usuario = datosusuario.objects.get(identificacion = request.user.username)
+
+            b = Sugerencia(
+                usuario = usuario,
+                nombre = request.POST['nombre'],
+                prioridad = request.POST['prioridad'],
+                descripcion = request.POST['descripcion'],
+            )
+
+            b.save()
+
+            try:
+                b.adjunto = request.FILES['adjunto']
+            except:
+                pass
+        except:
+            pass
+        try:
+
+            sugerencia = Sugerencia.objects.get(id = int(request.POST['ENTREGADO']))
+            sugerencia.estado = "LISTO"
+            sugerencia.save()
+        except:
+            pass
+
+    data = Sugerencia.objects.all()
+
+
+    return render (request, 'users/sugerencias.html', {'data':data})
 
 def monedalink(request):
 
@@ -1469,9 +1505,31 @@ def minutas(request):
                 minuta = Minutas.objects.get(id = int(request.POST['delete']))
                 minuta.delete()
 
-    data = Minutas.objects.all().order_by("-fecha")
+    minutas_activas = []
 
-    return render(request, 'minutas/minutasLista.html', {'data':data})
+    minutas_archivadas = []
+
+    nombre_reuniones = Minutas.objects.values_list("reunion", flat = True).exclude(reunion = None).order_by("-fecha")
+
+    nombre_reuniones = list(set(nombre_reuniones))    
+
+    for name in nombre_reuniones:
+        aux = Minutas.objects.filter(reunion = name).order_by("-fecha")[0:1]
+        for a in aux:
+            minutas_activas.append(a)
+        aux_2 = Minutas.objects.filter(reunion = name).order_by("-fecha")[1:]
+        for b in aux_2:
+            minutas_archivadas.append(b)
+
+    data_2 = Minutas.objects.filter(reunion = None)
+
+    for d in data_2:
+
+        minutas_activas.append(d)
+
+    minutas_activas = sorted(minutas_activas, key = lambda x : x.fecha, reverse = True)
+
+    return render(request, 'minutas/minutasLista.html', {'minutas_activas':minutas_activas, 'minutas_archivadas':minutas_archivadas})
 
 def minutascrear(request):
 

@@ -25,89 +25,173 @@
     </div>
 </div>
 
-<div class="row ">
-    <div class="col-9">
-        <div class="card overflow-auto">
+
+<div class="row">
+    <div class="col-12 col-md-12 col-lg-10">
+        <div class="card">
             <div class="card-body">
-                <div class="row d-flex justify-items-between">
-                    <div class="col">
-
+                <div class="row">
+                    <div class="col-12 col-md-12 col-lg-11">
                         <h4 class="card-title"><span class="lstick m-r-20"></span>
-                            Listado de minutas
-                        </h4>
-                        <h6 class="card-subtitle">
-                            Solo podras ver las minutas que creaste o que seas un integrante
-                        </h6>
-                    </div>
+                            Listado de minutas</h4>
+                            <h6 class="card-subtitle">
+                                Solo podras ver las minutas que creaste o que seas un integrante
+                            </h6>
+                            <div class="row m-2">
+                                <a href="{% url 'Minutas Crear' %}"><i
+                                        class="fa fa-plus-circle  text-info"><span class="text-info ml-2"
+                                            style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif"><b>Nueva minuta</b></span></i></a>
+                            </div>
 
-                    <div class="row m-2">
-                        <a href="{% url 'Minutas Crear' %}"><i
-                                class="fa fa-plus-circle  text-info"><span class="text-info ml-2"
-                                    style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif"><b>Nueva minuta</b></span></i></a>
-                    </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <ul class="nav nav-tabs">
+                                    <li class="active"><a data-toggle="tab" href="#alta">Activos</a></li>
+                                    <li><a data-toggle="tab" href="#media">Archivados</a></li>
+                                </ul>
+                            </div>
+                        </div>
 
- 
-                </div>
+                        <div class="tab-content">
+                            <div id="alta" class="tab-pane fade  in active">
 
-                <table id="example" class="table ">
-                    <thead>
-                        <tr>
-                            <th>Fecha</th>
-                            <th>Creador</th>
-                            <th>Reunión</th>
-                            <th>Tema</th>
+                                <div class="row mt-3">
+                                    <div class="col-12">
+
+                                        <div class="table-responsive m-t-4">
+                                            <table id="example" class="table ">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Fecha</th>
+                                                        <th>Creador</th>
+                                                        <th>Reunión</th>
+                                                        <th>Tema</th>
+                                                        
+                                                        <th></th>
+                                                    </tr>
+                                                </thead>
                             
-                            <th></th>
-                        </tr>
-                    </thead>
+                                                <tbody>
+                            
+                                                    {% for i in minutas_activas %}
+                                                    {% if user.username in creador.identificacion or user.username in i.integrantes%}
+                                                    <tr>
+                                                        <td>{{i.fecha|date:"Y/m/d"}}</td>
+                                                        <td>
+                            
+                                                                <div>
+                                                                    <img src="{{i.creador.imagenlogo.url}}" class="rounded" style="width: 40px;"
+                                                                    alt="">
+                                                                </div>
+                                                                <span style="font-size: 12px; margin-left: 10px;">{{i.creador.identificacion}}</span>
+                                                                
+                                                        </td>
+                                                        <td>{% if i.reunion %}{{i.reunion}}{% else %}-{% endif %}</td>
+                                                        <td><a href="{% url 'Minutas Id' i.id %}">{{i.nombre|lower|capfirst}}</a>
+                                                            <h6 class="card-subtitle" style="margin-top: 3px;">Integrantes: {{i.integrantes}}</h6></td>
+                                                        
+                                                         <td>
+                                                             {% if request.user.username == i.creador.identificacion %}
+                                                             <form method="POST">
+                                                                    <button class="btn btn-link fa fa-trash d-flex align-content-end" type="submit" name="delete" value="{{i.id}}" style="text-decoration: none;"></button>
+                            
+                                                                    {% csrf_token %}
+                                                                </form>
+                                                            {% else %}
+                            
+                                                            {% endif %}
+                            
+                                                                </td>  
+                                                     
+                                                    </tr>
+                                                    {% endif %}
+                            
+                                                    {% endfor %}
+                            
+                            
+                            
+                            
+                                                </tbody>
+                            
+                                            </table>
 
-                    <tbody>
-
-                        {% for i in data %}
-                        {% if user.username in creador.identificacion or user.username in i.integrantes%}
-                        <tr>
-                            <td>{{i.fecha|date:"Y/m/d"}}</td>
-                            <td>
-
-                                    <div>
-                                        <img src="{{i.creador.imagenlogo.url}}" class="rounded" style="width: 40px;"
-                                        alt="">
+                                        </div>
                                     </div>
-                                    <span style="font-size: 12px; margin-left: 10px;">{{i.creador.identificacion}}</span>
-                                    
-                            </td>
-                            <td>{% if i.reunion %}{{i.reunion}}{% else %}-{% endif %}</td>
-                            <td><a href="{% url 'Minutas Id' i.id %}">{{i.nombre|lower|capfirst}}</a>
-                                <h6 class="card-subtitle" style="margin-top: 3px;">Integrantes: {{i.integrantes}}</h6></td>
+                                </div>
+                            </div>
+                            <div id="media" class="tab-pane fade">
+                                <div class="row mt-3">
+                                    <div class="col-12">
+
+                                        <div class="table-responsive m-t-4">
+                                            <table id="example" class="table ">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Fecha</th>
+                                                        <th>Creador</th>
+                                                        <th>Reunión</th>
+                                                        <th>Tema</th>
+                                                        
+                                                        <th></th>
+                                                    </tr>
+                                                </thead>
                             
-                             <td>
-                                 {% if request.user.username == i.creador.identificacion %}
-                                 <form method="POST">
-                                        <button class="btn btn-link fa fa-trash d-flex align-content-end" type="submit" name="delete" value="{{i.id}}" style="text-decoration: none;"></button>
+                                                <tbody>
+                            
+                                                    {% for i in minutas_archivadas %}
+                                                    {% if user.username in creador.identificacion or user.username in i.integrantes%}
+                                                    <tr>
+                                                        <td>{{i.fecha|date:"Y/m/d"}}</td>
+                                                        <td>
+                            
+                                                                <div>
+                                                                    <img src="{{i.creador.imagenlogo.url}}" class="rounded" style="width: 40px;"
+                                                                    alt="">
+                                                                </div>
+                                                                <span style="font-size: 12px; margin-left: 10px;">{{i.creador.identificacion}}</span>
+                                                                
+                                                        </td>
+                                                        <td>{% if i.reunion %}{{i.reunion}}{% else %}-{% endif %}</td>
+                                                        <td><a href="{% url 'Minutas Id' i.id %}">{{i.nombre|lower|capfirst}}</a>
+                                                            <h6 class="card-subtitle" style="margin-top: 3px;">Integrantes: {{i.integrantes}}</h6></td>
+                                                        
+                                                         <td>
+                                                             {% if request.user.username == i.creador.identificacion %}
+                                                             <form method="POST">
+                                                                    <button class="btn btn-link fa fa-trash d-flex align-content-end" type="submit" name="delete" value="{{i.id}}" style="text-decoration: none;"></button>
+                            
+                                                                    {% csrf_token %}
+                                                                </form>
+                                                            {% else %}
+                            
+                                                            {% endif %}
+                            
+                                                                </td>  
+                                                     
+                                                    </tr>
+                                                    {% endif %}
+                            
+                                                    {% endfor %}
+                            
+                            
+                            
+                            
+                                                </tbody>
+                            
+                                            </table>
 
-                                        {% csrf_token %}
-                                    </form>
-                                {% else %}
-
-                                {% endif %}
-
-                                    </td>  
-                         
-                        </tr>
-                        {% endif %}
-
-                        {% endfor %}
-
-
-
-
-                    </tbody>
-
-                </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
+
 
 <aside class="right-side-panel">
     <h3 class="p-relative"><span class="lstick"></span> ¿Comó funciona?</h3>

@@ -3206,10 +3206,11 @@ def arqueos(request):
 
                 destino = [str(datosusuario.objects.get(identificacion = "GB").email),
                 str(datosusuario.objects.get(identificacion = "AP").email),
-                str( datosusuario.objects.get(identificacion = "ALM").email),
+                str(datosusuario.objects.get(identificacion = "ALM").email),
                 str(datosusuario.objects.get(identificacion = "PL").email),
                 str(datosusuario.objects.get(identificacion = "SP").email),
                 str(datosusuario.objects.get(identificacion = "AR").email),
+                str(datosusuario.objects.get(identificacion = "CS").email),
                 str(datosusuario.objects.get(identificacion = "CA").email)]
 
                 for d in destino:

@@ -3,6 +3,7 @@ from proyectos.models import Proyectos
 
 # Create your models here.
 
+
 class NotaDePedido(models.Model):
 
     class SioNo(models.TextChoices):
@@ -303,4 +304,31 @@ class RegistroContable(models.Model):
 
     def __str__(self):
         return self.nota
+
+class Sugerencia(models.Model):
+
+    class Prioridad(models.TextChoices):
+        ALTA = "ALTA"
+        MEDIA = "MEDIA"
+        BAJA = "BAJA"
+
+    class Estado(models.TextChoices):
+        ESPERA = "ESPERA"
+        LISTO = "LISTO"
+        DESCARTADO = "DESCARTADO"
+
+    usuario = models.ForeignKey(datosusuario, on_delete=models.CASCADE, verbose_name="Usuario")
+    nombre = models.CharField(max_length=400, verbose_name="Nombre")
+    prioridad = models.CharField(choices=Prioridad.choices, default=Prioridad.BAJA, max_length=20, verbose_name="Prioridad")
+    estado = models.CharField(choices=Estado.choices, default=Estado.ESPERA, max_length=20, verbose_name="Estado")
+    descripcion = models.TextField(verbose_name="Descripción")
+    adjunto = models.FileField(verbose_name="Adjunto", blank=True, null=True)
+    fecha_listo = models.DateField(verbose_name="Fecha", blank=True, null=True)
+
+    class Meta:
+        verbose_name="Sugerencia"
+        verbose_name_plural="Sugerencias"
+
+    def __str__(self):
+        return self.nombre
     

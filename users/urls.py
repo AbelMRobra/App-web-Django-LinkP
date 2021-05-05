@@ -29,6 +29,7 @@ urlpatterns = [
     # Templates de anuncis
 
     url(r'anuncios$', login_required(views.anuncios), name = 'Anuncios'),
+    url(r'^sugerencias$', login_required(views.sugerencias), name = 'Sugerencias'),
 
     # Templates de minutas
 
