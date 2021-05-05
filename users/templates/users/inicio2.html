@@ -325,6 +325,7 @@
             <a class="nav-link dropdown-toggle waves-effect waves-dark" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="fa fa-lg fa-lightbulb-o text-light" aria-hidden="true"></i>
                 <div class="notify"><span class="heartbit"></span> <span class="point"></span></div>
             </a>
+            {% if user.username == "AR" %}
             <div class="dropdown-menu dropdown-menu-right mailbox animated bounceInDown">
                 <ul>
                   <li>
@@ -338,6 +339,7 @@
                   </li>
                 </ul>
             </div>
+            {% endif %}
         </li>
   
       </ul>
