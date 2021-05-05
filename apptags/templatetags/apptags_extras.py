@@ -325,9 +325,10 @@ def buzonsugerencia(username):
 
     today = date.today()
 
-    data_buzon = Sugerencia.objects.filter(usuario__identificacion = username, fecha_listo = today)
+    data_buzon = len(Sugerencia.objects.filter(usuario__identificacion = username, fecha_listo = today))
 
-    return len(data_buzon)
+    return data_buzon
+
 @register.simple_tag
 def porcentaje(valor_1, valor_2):
 
