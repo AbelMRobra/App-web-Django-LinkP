@@ -67,15 +67,6 @@
                                                     class="form-control"></textarea>
                                             </div>
 
-                                            <h6>Prioridad</h6>
-                                            <select class="custom-select mb-3" aria-label="Default select example"
-                                                name="prioridad">
-                                                <option selected>BAJA</option>
-                                                <option >MEDIA</option>
-                                                <option >ALTA</option>
-                                            </select>
-
-
                                             <h6>Archivo</h6>
 
                                             <div class="input-group mb-3">
@@ -101,604 +92,155 @@
                         </div>
                         <!-- fin modal crear-->
 
-                        <div class="row">
+
+                        <div class="row mt-3">
                             <div class="col-12">
-                                <ul class="nav nav-tabs">
-                                    <li class="active"><a data-toggle="tab" href="#alta">Alta</a></li>
-                                    <li><a data-toggle="tab" href="#media">Media</a></li>
-                                    <li><a data-toggle="tab" href="#baja">Baja</a></li>
-                                    <li><a data-toggle="tab" href="#final">Finalizados</a></li>
-                                </ul>
-                            </div>
-                        </div>
 
-                        <div class="tab-content">
-                            <div id="alta" class="tab-pane fade  in active">
-
-                                <div class="row mt-3">
-                                    <div class="col-12">
-
-                                        <div class="table-responsive m-t-4">
-                                            <table class="table stylish-table">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Creador</th>
-                                                        <th>Sugerencia</th>
-                                                       <!-- <th>Respuesta</th>-->
-                                                        <th style="text-align: center;">Estado</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-
-                                                    
-
-                                                    {% for i in data %}
-                                                    {% if i.prioridad == "ALTA" and i.estado == "ESPERA" %}
-                                                    <tr>
-                                                        <td>{{i.usuario.identificacion}}</td>
-                                                        <td>
-                                                            <div><a href="#" data-toggle="modal"
-                                                                    data-target="#ModalDescripcion{{i.id}}"><span>{{i.nombre}}</span></i></a>
+                                <div class="table-responsive m-t-4">
+                                    <table class="table stylish-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Creador</th>
+                                                <th>Sugerencia</th>
+                                                <!-- <th>Respuesta</th>-->
+                                                <th>Prioridad</th>
+                                                <th style="text-align: center;">Estado</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
 
 
-                                                                {% if i.adjunto %}
+                                            {% for i in data %}
+                                            <tr>
+                                                <td>{{i.usuario.identificacion}}</td>
+                                                <td>
+                                                    <div><a href="#" data-toggle="modal"
+                                                            data-target="#ModalDescripcion{{i.id}}"><span>{{i.nombre}}</span></i></a>
 
-                                                                <a href="{{i.adjunto.url}}" target="_blank" class="ml-3"><i
-                                                                        class="fa fa-paperclip"
-                                                                        aria-hidden="true"></i></a>{% endif %}
+
+                                                        {% if i.adjunto %}
+
+                                                        <a href="{{i.adjunto.url}}" target="_blank" class="ml-3"><i
+                                                                class="fa fa-paperclip" aria-hidden="true"></i></a>{% endif %}
+                                                    </div>
+                                                </td>
+                                                <!-- Modal Descripcion -->
+                                                <div class="modal fade" id="ModalDescripcion{{i.id}}" tabindex="-1"
+                                                    role="dialog" aria-labelledby="ModalDescripcionTitle"
+                                                    aria-hidden="true">
+                                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="exampleModalLongTitle">
+                                                                    Descripcion </h5>
+                                                                <button type="button" class="close" data-dismiss="modal"
+                                                                    aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
                                                             </div>
-                                                        </td>
-                                                        <!-- Modal Descripcion -->
-                                                        <div class="modal fade" id="ModalDescripcion{{i.id}}" tabindex="-1"
-                                                            role="dialog" aria-labelledby="ModalDescripcionTitle"
-                                                            aria-hidden="true">
-                                                            <div class="modal-dialog modal-dialog-centered"
-                                                                role="document">
-                                                                <div class="modal-content">
-                                                                    <div class="modal-header">
-                                                                        <h5 class="modal-title"
-                                                                            id="exampleModalLongTitle">
-                                                                            Descripcion </h5>
-                                                                        <button type="button" class="close"
-                                                                            data-dismiss="modal" aria-label="Close">
-                                                                            <span aria-hidden="true">&times;</span>
-                                                                        </button>
-                                                                    </div>
-                                                                    <div class="modal-body">
-                                                                        <span>{{i.descripcion}}</span>
+                                                            <div class="modal-body">
+                                                                <span>{{i.descripcion}}</span>
 
-                                                                    </div>
-
-                                                                    <div class="modal-footer">
-                                                                        <button type="button" class="btn btn-secondary"
-                                                                            data-dismiss="modal">Cerrar</button>
-
-                                                                    </div>
-                                                                </div>
                                                             </div>
 
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary"
+                                                                    data-dismiss="modal">Cerrar</button>
+
+                                                            </div>
                                                         </div>
-                                                       <!--  <td>
+                                                    </div>
+
+                                                </div>
+
+                                                <!--  <td>
                                                             <a href="#" data-toggle="modal"
                                                                 data-target="#ModalRespuesta"><i
                                                                     class="fa fa-comments-o" aria-hidden="true"></i></a>
                                                         </td>-->
-                                                        <!-- Modal Respuesta -->
-                                                        <div class="modal fade" id="ModalRespuesta" tabindex="-1"
-                                                            role="dialog" aria-labelledby="ModalRespuestaTitle"
-                                                            aria-hidden="true">
-                                                            <div class="modal-dialog modal-dialog-centered"
-                                                                role="document">
-                                                                <div class="modal-content">
-                                                                    <div class="modal-header">
-                                                                        <h5 class="modal-title"
-                                                                            id="exampleModalLongTitle">
-                                                                            Respuesta </h5>
-                                                                        <button type="button" class="close"
-                                                                            data-dismiss="modal" aria-label="Close">
-                                                                            <span aria-hidden="true">&times;</span>
-                                                                        </button>
-                                                                    </div>
-                                                                    <div class="modal-body">
-                                                                        <form action="POST">
-                                                                            <div class="input-group mb-3">
+                                                <!-- Modal Respuesta -->
+                                                <div class="modal fade" id="ModalRespuesta" tabindex="-1" role="dialog"
+                                                    aria-labelledby="ModalRespuestaTitle" aria-hidden="true">
+                                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="exampleModalLongTitle">
+                                                                    Respuesta </h5>
+                                                                <button type="button" class="close" data-dismiss="modal"
+                                                                    aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <form action="POST">
+                                                                    <div class="input-group mb-3">
 
-                                                                                <input name="respuesta" type="text"
-                                                                                    class="form-control form-control"
-                                                                                    style="width: 300px;">
-                                                                            </div>
-
-                                                                            <button type="submit"
-                                                                                class="btn btn-info mb-4">
-                                                                                <b>Enviar</b></button>
-
-                                                                        </form>
-                                                                        <h6>Hola JNT agradecemos tu sugerencia gracias
-                                                                            al
-                                                                            adjunto encontramos cuales eran los botones
-                                                                            que
-                                                                            faltaban modificar</h6>
-
+                                                                        <input name="respuesta" type="text"
+                                                                            class="form-control form-control"
+                                                                            style="width: 300px;">
                                                                     </div>
 
-                                                                    <div class="modal-footer">
-                                                                        <button type="button" class="btn btn-secondary"
-                                                                            data-dismiss="modal">Cerrar</button>
+                                                                    <button type="submit" class="btn btn-info mb-4">
+                                                                        <b>Enviar</b></button>
 
-                                                                    </div>
-                                                                </div>
+                                                                </form>
+                                                                <h6>Hola JNT agradecemos tu sugerencia gracias
+                                                                    al
+                                                                    adjunto encontramos cuales eran los botones
+                                                                    que
+                                                                    faltaban modificar</h6>
+
                                                             </div>
 
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary"
+                                                                    data-dismiss="modal">Cerrar</button>
+
+                                                            </div>
                                                         </div>
+                                                    </div>
 
-                                                        <td style="text-align: center; vertical-align: top;">
+                                                </div>
+                                                <td>
+                                                    <span>{{i.prioridad}}</span>
+                                                </td>
 
-                                                            {% if i.estado == "LISTO" %}
+                                                <td style="text-align: center; vertical-align: top;">
 
-                                                            <img src="{% static 'img/cheque.png' %}" alt="" style="max-width:21px; height:auto; vertical-align: top;">
+                                                    {% if i.estado == "LISTO" %}
+
+                                                    <img src="{% static 'img/cheque.png' %}" alt=""
+                                                        style="max-width:21px; height:auto; vertical-align: top;">
 
 
-                                                            {% elif i.estado == "ESPERA"%}
+                                                    {% elif i.estado == "ESPERA"%}
 
-                                                            <form method="POST">
-                                                                {% csrf_token %}
-                                                                <button class="btn" type="submit" name="ENTREGADO"
-                                                                    style="padding: 0%;" value="{{i.id}}"><img
-                                                                        src="{% static 'img/advertir.png' %}" alt=""
-                                                                        style="max-width:21px; height:auto; vertical-align: top;"></button>
-                                                            </form>
+                                                    {% if user.username == "AR" %}
 
-                                                            {% endif %}
-                                                        </td>
+                                                    <form method="POST">
+                                                        {% csrf_token %}
+                                                        <button class="btn" type="submit" name="ENTREGADO"
+                                                            style="padding: 0%;" value="{{i.id}}"><img
+                                                                src="{% static 'img/advertir.png' %}" alt=""
+                                                                style="max-width:21px; height:auto; vertical-align: top;"></button>
+                                                    </form>
 
-                                                    </tr>
+                                                    {% else %}
+
+                                                    <img src="{% static 'img/advertir.png' %}" alt=""
+                                                                style="max-width:21px; height:auto; vertical-align: top;">
+
                                                     {% endif %}
-                                                    {% endfor %}
-                                                </tbody>
-                                            </table>
 
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div id="media" class="tab-pane fade">
-                                <div class="row mt-3">
-                                    <div class="col-12">
-
-                                        <div class="table-responsive m-t-4">
-                                            <table class="table stylish-table">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Creador</th>
-                                                        <th>Sugerencia</th>
-                                                       <!-- <th>Respuesta</th>-->
-                                                        <th style="text-align: center;">Estado</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-
-                                                    
-
-                                                    {% for i in data %}
-                                                    {% if i.prioridad == "MEDIA" and i.estado == "ESPERA" %}
-                                                    <tr>
-                                                        <td>{{i.usuario.identificacion}}</td>
-                                                        <td>
-                                                            <div><a href="#" data-toggle="modal"
-                                                                    data-target="#ModalDescripcion{{i.id}}"><span>{{i.nombre}}</span></i></a>
-
-
-                                                                {% if i.adjunto %}
-
-                                                                <a href="{{i.adjunto.url}}" target="_blank" class="ml-3"><i
-                                                                        class="fa fa-paperclip"
-                                                                        aria-hidden="true"></i></a>{% endif %}
-                                                            </div>
-                                                        </td>
-                                                        <!-- Modal Descripcion -->
-                                                        <div class="modal fade" id="ModalDescripcion{{i.id}}" tabindex="-1"
-                                                            role="dialog" aria-labelledby="ModalDescripcionTitle"
-                                                            aria-hidden="true">
-                                                            <div class="modal-dialog modal-dialog-centered"
-                                                                role="document">
-                                                                <div class="modal-content">
-                                                                    <div class="modal-header">
-                                                                        <h5 class="modal-title"
-                                                                            id="exampleModalLongTitle">
-                                                                            Descripcion </h5>
-                                                                        <button type="button" class="close"
-                                                                            data-dismiss="modal" aria-label="Close">
-                                                                            <span aria-hidden="true">&times;</span>
-                                                                        </button>
-                                                                    </div>
-                                                                    <div class="modal-body">
-                                                                        <span>{{i.descripcion}}</span>
-
-                                                                    </div>
-
-                                                                    <div class="modal-footer">
-                                                                        <button type="button" class="btn btn-secondary"
-                                                                            data-dismiss="modal">Cerrar</button>
-
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-
-                                                        </div>
-                                                       <!--  <td>
-                                                            <a href="#" data-toggle="modal"
-                                                                data-target="#ModalRespuesta"><i
-                                                                    class="fa fa-comments-o" aria-hidden="true"></i></a>
-                                                        </td>-->
-                                                        <!-- Modal Respuesta -->
-                                                        <div class="modal fade" id="ModalRespuesta" tabindex="-1"
-                                                            role="dialog" aria-labelledby="ModalRespuestaTitle"
-                                                            aria-hidden="true">
-                                                            <div class="modal-dialog modal-dialog-centered"
-                                                                role="document">
-                                                                <div class="modal-content">
-                                                                    <div class="modal-header">
-                                                                        <h5 class="modal-title"
-                                                                            id="exampleModalLongTitle">
-                                                                            Respuesta </h5>
-                                                                        <button type="button" class="close"
-                                                                            data-dismiss="modal" aria-label="Close">
-                                                                            <span aria-hidden="true">&times;</span>
-                                                                        </button>
-                                                                    </div>
-                                                                    <div class="modal-body">
-                                                                        <form action="POST">
-                                                                            <div class="input-group mb-3">
-
-                                                                                <input name="respuesta" type="text"
-                                                                                    class="form-control form-control"
-                                                                                    style="width: 300px;">
-                                                                            </div>
-
-                                                                            <button type="submit"
-                                                                                class="btn btn-info mb-4">
-                                                                                <b>Enviar</b></button>
-
-                                                                        </form>
-                                                                        <h6>Hola JNT agradecemos tu sugerencia gracias
-                                                                            al
-                                                                            adjunto encontramos cuales eran los botones
-                                                                            que
-                                                                            faltaban modificar</h6>
-
-                                                                    </div>
-
-                                                                    <div class="modal-footer">
-                                                                        <button type="button" class="btn btn-secondary"
-                                                                            data-dismiss="modal">Cerrar</button>
-
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-
-                                                        </div>
-
-                                                        <td style="text-align: center; vertical-align: top;">
-                                                            {% if i.estado == "LISTO" %}
-
-                                                            <img src="{% static 'img/cheque.png' %}" alt="" style="max-width:21px; height:auto; vertical-align: top;">
-
-
-                                                            {% elif i.estado == "ESPERA"%}
-
-                                                            <form method="POST">
-                                                                {% csrf_token %}
-                                                                <button class="btn" type="submit" name="ENTREGADO"
-                                                                    style="padding: 0%;" value="{{i.id}}"><img
-                                                                        src="{% static 'img/advertir.png' %}" alt=""
-                                                                        style="max-width:21px; height:auto; vertical-align: top;"></button>
-                                                            </form>
-
-                                                            {% endif %}
-                                                        </td>
-
-                                                    </tr>
                                                     {% endif %}
-                                                    {% endfor %}
-                                                </tbody>
-                                            </table>
+                                                </td>
 
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div id="baja" class="tab-pane fade">
-                                <div class="row mt-3">
-                                    <div class="col-12">
+                                            </tr>
 
-                                        <div class="table-responsive m-t-4">
-                                            <table class="table stylish-table">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Creador</th>
-                                                        <th>Sugerencia</th>
-                                                       <!-- <th>Respuesta</th>-->
-                                                        <th style="text-align: center;">Estado</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
 
-                                                    
-
-                                                    {% for i in data %}
-                                                    {% if i.prioridad == "BAJA" and i.estado == "ESPERA" %}
-                                                    <tr>
-                                                        <td>{{i.usuario.identificacion}}</td>
-                                                        <td>
-                                                            <div><a href="#" data-toggle="modal"
-                                                                    data-target="#ModalDescripcion{{i.id}}"><span>{{i.nombre}}</span></i></a>
-
-
-                                                                {% if i.adjunto %}
-
-                                                                <a href="{{i.adjunto.url}}" target="_blank" class="ml-3"><i
-                                                                        class="fa fa-paperclip"
-                                                                        aria-hidden="true"></i></a>{% endif %}
-                                                            </div>
-                                                        </td>
-                                                        <!-- Modal Descripcion -->
-                                                        <div class="modal fade" id="ModalDescripcion{{i.id}}" tabindex="-1"
-                                                            role="dialog" aria-labelledby="ModalDescripcionTitle"
-                                                            aria-hidden="true">
-                                                            <div class="modal-dialog modal-dialog-centered"
-                                                                role="document">
-                                                                <div class="modal-content">
-                                                                    <div class="modal-header">
-                                                                        <h5 class="modal-title"
-                                                                            id="exampleModalLongTitle">
-                                                                            Descripcion </h5>
-                                                                        <button type="button" class="close"
-                                                                            data-dismiss="modal" aria-label="Close">
-                                                                            <span aria-hidden="true">&times;</span>
-                                                                        </button>
-                                                                    </div>
-                                                                    <div class="modal-body">
-                                                                        <span>{{i.descripcion}}</span>
-
-                                                                    </div>
-
-                                                                    <div class="modal-footer">
-                                                                        <button type="button" class="btn btn-secondary"
-                                                                            data-dismiss="modal">Cerrar</button>
-
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-
-                                                        </div>
-                                                       <!--  <td>
-                                                            <a href="#" data-toggle="modal"
-                                                                data-target="#ModalRespuesta"><i
-                                                                    class="fa fa-comments-o" aria-hidden="true"></i></a>
-                                                        </td>-->
-                                                        <!-- Modal Respuesta -->
-                                                        <div class="modal fade" id="ModalRespuesta" tabindex="-1"
-                                                            role="dialog" aria-labelledby="ModalRespuestaTitle"
-                                                            aria-hidden="true">
-                                                            <div class="modal-dialog modal-dialog-centered"
-                                                                role="document">
-                                                                <div class="modal-content">
-                                                                    <div class="modal-header">
-                                                                        <h5 class="modal-title"
-                                                                            id="exampleModalLongTitle">
-                                                                            Respuesta </h5>
-                                                                        <button type="button" class="close"
-                                                                            data-dismiss="modal" aria-label="Close">
-                                                                            <span aria-hidden="true">&times;</span>
-                                                                        </button>
-                                                                    </div>
-                                                                    <div class="modal-body">
-                                                                        <form action="POST">
-                                                                            <div class="input-group mb-3">
-
-                                                                                <input name="respuesta" type="text"
-                                                                                    class="form-control form-control"
-                                                                                    style="width: 300px;">
-                                                                            </div>
-
-                                                                            <button type="submit"
-                                                                                class="btn btn-info mb-4">
-                                                                                <b>Enviar</b></button>
-
-                                                                        </form>
-                                                                        <h6>Hola JNT agradecemos tu sugerencia gracias
-                                                                            al
-                                                                            adjunto encontramos cuales eran los botones
-                                                                            que
-                                                                            faltaban modificar</h6>
-
-                                                                    </div>
-
-                                                                    <div class="modal-footer">
-                                                                        <button type="button" class="btn btn-secondary"
-                                                                            data-dismiss="modal">Cerrar</button>
-
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-
-                                                        </div>
-
-                                                        <td style="text-align: center; vertical-align: top;">
-
-                                                            {% if i.estado == "LISTO" %}
-
-                                                            <img src="{% static 'img/cheque.png' %}" alt="" style="max-width:21px; height:auto; vertical-align: top;">
-
-
-                                                            {% elif i.estado == "ESPERA"%}
-
-                                                            <form method="POST">
-                                                                {% csrf_token %}
-                                                                <button class="btn" type="submit" name="ENTREGADO"
-                                                                    style="padding: 0%;" value="{{i.id}}"><img
-                                                                        src="{% static 'img/advertir.png' %}" alt=""
-                                                                        style="max-width:21px; height:auto; vertical-align: top;"></button>
-                                                            </form>
-
-                                                            {% endif %}
-                                                        </td>
-
-                                                    </tr>
-                                                    {% endif %}
-                                                    {% endfor %}
-                                                </tbody>
-                                            </table>
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div id="final" class="tab-pane fade">
-                                <div class="row mt-3">
-                                    <div class="col-12">
-
-                                        <div class="table-responsive m-t-4">
-                                            <table class="table stylish-table">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Creador</th>
-                                                        <th>Sugerencia</th>
-                                                       <!-- <th>Respuesta</th>-->
-                                                        <th style="text-align: center;">Estado</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-
-                                                    
-
-                                                    {% for i in data %}
-                                                    {% if i.estado == "LISTO"  %}
-                                                    <tr>
-                                                        <td>{{i.usuario.identificacion}}</td>
-                                                        <td>
-                                                            <div><a href="#" data-toggle="modal"
-                                                                    data-target="#ModalDescripcion{{i.id}}"><span>{{i.nombre}}</span></i></a>
-
-
-                                                                {% if i.adjunto %}
-
-                                                                <a href="{{i.adjunto.url}}" target="_blank" class="ml-3"><i
-                                                                        class="fa fa-paperclip"
-                                                                        aria-hidden="true"></i></a>{% endif %}
-                                                            </div>
-                                                        </td>
-                                                        <!-- Modal Descripcion -->
-                                                        <div class="modal fade" id="ModalDescripcion{{i.id}}" tabindex="-1"
-                                                            role="dialog" aria-labelledby="ModalDescripcionTitle"
-                                                            aria-hidden="true">
-                                                            <div class="modal-dialog modal-dialog-centered"
-                                                                role="document">
-                                                                <div class="modal-content">
-                                                                    <div class="modal-header">
-                                                                        <h5 class="modal-title"
-                                                                            id="exampleModalLongTitle">
-                                                                            Descripcion </h5>
-                                                                        <button type="button" class="close"
-                                                                            data-dismiss="modal" aria-label="Close">
-                                                                            <span aria-hidden="true">&times;</span>
-                                                                        </button>
-                                                                    </div>
-                                                                    <div class="modal-body">
-                                                                        <span>{{i.descripcion}}</span>
-
-                                                                    </div>
-
-                                                                    <div class="modal-footer">
-                                                                        <button type="button" class="btn btn-secondary"
-                                                                            data-dismiss="modal">Cerrar</button>
-
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-
-                                                        </div>
-                                                       <!--  <td>
-                                                            <a href="#" data-toggle="modal"
-                                                                data-target="#ModalRespuesta"><i
-                                                                    class="fa fa-comments-o" aria-hidden="true"></i></a>
-                                                        </td>-->
-                                                        <!-- Modal Respuesta -->
-                                                        <div class="modal fade" id="ModalRespuesta" tabindex="-1"
-                                                            role="dialog" aria-labelledby="ModalRespuestaTitle"
-                                                            aria-hidden="true">
-                                                            <div class="modal-dialog modal-dialog-centered"
-                                                                role="document">
-                                                                <div class="modal-content">
-                                                                    <div class="modal-header">
-                                                                        <h5 class="modal-title"
-                                                                            id="exampleModalLongTitle">
-                                                                            Respuesta </h5>
-                                                                        <button type="button" class="close"
-                                                                            data-dismiss="modal" aria-label="Close">
-                                                                            <span aria-hidden="true">&times;</span>
-                                                                        </button>
-                                                                    </div>
-                                                                    <div class="modal-body">
-                                                                        <form action="POST">
-                                                                            <div class="input-group mb-3">
-
-                                                                                <input name="respuesta" type="text"
-                                                                                    class="form-control form-control"
-                                                                                    style="width: 300px;">
-                                                                            </div>
-
-                                                                            <button type="submit"
-                                                                                class="btn btn-info mb-4">
-                                                                                <b>Enviar</b></button>
-
-                                                                        </form>
-                                                                        <h6>Hola JNT agradecemos tu sugerencia gracias
-                                                                            al
-                                                                            adjunto encontramos cuales eran los botones
-                                                                            que
-                                                                            faltaban modificar</h6>
-
-                                                                    </div>
-
-                                                                    <div class="modal-footer">
-                                                                        <button type="button" class="btn btn-secondary"
-                                                                            data-dismiss="modal">Cerrar</button>
-
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-
-                                                        </div>
-
-                                                        <td style="text-align: center; vertical-align: top;">
-
-                                                            {% if i.estado == "LISTO" %}
-
-                                                            <img src="{% static 'img/cheque.png' %}" alt="" style="max-width:21px; height:auto; vertical-align: top;">
-
-
-                                                            {% elif i.estado == "ESPERA"%}
-
-                                                            <form method="POST">
-                                                                {% csrf_token %}
-                                                                <button class="btn" type="submit" name="ENTREGADO"
-                                                                    style="padding: 0%;" value="{{i.id}}"><img
-                                                                        src="{% static 'img/advertir.png' %}" alt=""
-                                                                        style="max-width:21px; height:auto; vertical-align: top;"></button>
-                                                            </form>
-
-                                                            {% endif %}
-                                                        </td>
-
-                                                    </tr>
-                                                    {% endif %}
-                                                    {% endfor %}
-                                                </tbody>
-                                            </table>
-
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -708,6 +250,7 @@
         </div>
     </div>
 </div>
+</div>
 
 <aside class="right-side-panel">
     <h3 class="p-relative"><span class="lstick"></span>¿Como funciona?</h3>
@@ -716,13 +259,17 @@
             <div class="card">
                 <div class="card-body">
                     <img src="{% static 'img/33635-worker-have-an-idea.gif' %}" alt="Funny image" width="200px">
-                    <p><b class="text-dark">Sugerencias</b> Realiza sugerencias o reporta errores que crees que podrían mejorar el sistema o facilitar tu trabajo, estos serán revisados contantemente por el equipo técnico. </p>
-                    <p><b class="text-dark">Prioridades</b> El sistema de prioridades sirve para dar una mejor respuesta a sus sugerencias, así podemos enfocarnos mejor en solucionar primero las cosas que sean más importantes para su trabajo y confort.</p>
-                    <p><b class="text-danger">Alta</b> Los errores o sugerencias que marques dentro de esta sección serán los primeros en ser vistos, ya que representan errores o sugerencias que afectan completamente o en gran parte la posibilidad de que realices tu trabajo.</p>
-                    <p><b class="text-info">Media</b> Estos errores o sugerencias serán los próximos en ser vistos, aquí debes colocar todas las sugerencias que podrían facilitar tu trabajo, pero que actualmente puedes resolver.</p>
-                    <p><b>Baja</b> Aquí debes colocar las sugerencias sobre cambios estéticos, actualizaciones de estilos o cualquier otro cambio que no signifique un cambio en tu forma de trabajar, pero si sume a que Link-P siga creciendo y mejorando. </p>
-                    <p><b class="text-dark">Respuesta</b> <i class="fa fa-comments-o" aria-hidden="true"></i> Recuerda cada tanto revisar si tu sugerencia no tiene una respuesta.</p>
-                    <p><b class="text-dark">Recomendacion</b> Antes de realizar una sugerencia o reportar un error recomendamos que revises si es que alguien más no lo hizo primero, esto evitara confusiones y facilitara llegar a tu problema antes.</p>
+                    <p><b class="text-dark">Sugerencias</b> Realiza sugerencias o reporta errores que crees que podrían
+                        mejorar el sistema o facilitar tu trabajo, estos serán revisados constantemente por el equipo
+                        técnico. </p>
+                    <p><b class="text-dark">Prioridades</b> El sistema de prioridades sirve para dar una mejor respuesta
+                        a sus sugerencias, así podemos enfocarnos mejor en solucionar primero las cosas que sean más
+                        importantes para su trabajo y confort.</p>
+                    <p><b class="text-dark">Respuesta</b> <i class="fa fa-comments-o" aria-hidden="true"></i> Recuerda
+                        cada tanto revisar si tu sugerencia no tiene una respuesta.</p>
+                    <p><b class="text-dark">Recomendacion</b> Antes de realizar una sugerencia o reportar un error
+                        recomendamos que revises si es que alguien más no lo hizo primero, esto evitara confusiones y
+                        facilitara llegar a tu problema antes.</p>
                     <h5>Gracias por tu tiempo y por ayudar a que Link-P siga creciendo.</h5>
                 </div>
             </div>

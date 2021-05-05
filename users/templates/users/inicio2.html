@@ -320,29 +320,11 @@
         </ul>
 
         <ul class="navbar-nav my-lg-0">
-
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle waves-effect waves-dark" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="fa fa-lg fa-lightbulb-o text-light" aria-hidden="true"></i>
-                <div class="notify"><span class="heartbit"></span> <span class="point"></span></div>
-            </a>
-            {% if user.username == "AR" %}
-            <div class="dropdown-menu dropdown-menu-right mailbox animated bounceInDown">
-                <ul>
-                  <li>
-                    <div class="btn btn-info btn-circle" style="margin-right: 5px;">JNT</div>
-                    <div class="mail-contnet">
-                      <h5>sugerencia sobre botones </h5> </div> 
-                  </li>
-  
-                  <li>
-                          <a class="nav-link text-center" href="{% url 'Sugerencias' %}"> <strong>Panel de sugerencias</strong> <i class="fa fa-angle-right"></i> </a>
-                  </li>
-                </ul>
-            </div>
-            {% endif %}
-        </li>
-  
-      </ul>
+          <li>
+            <a class="nav-link waves-effect waves-dark" href="{% url 'Sugerencias' %}" ><img src="{% static 'img/buzon.png' %}" alt="" width="30px"></a>
+            
+          </li>
+        </ul>
       </nav>
     </header>
 

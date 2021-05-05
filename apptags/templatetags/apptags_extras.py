@@ -3,7 +3,7 @@ from django import template
 import datetime
 from datetime import date
 from datetime import datetime, timedelta 
-from rrhh.models import datosusuario
+from rrhh.models import datosusuario, Sugerencia
 from tecnica.models import GerenPlanificacion
 from presupuestos.models import Constantes, Registrodeconstantes
 
@@ -320,6 +320,14 @@ def variacionigual(valor_1):
     else:
         return "fa fa-dot-circle-o text-info"
 
+@register.simple_tag
+def buzonsugerencia(username):
+
+    today = date.today()
+
+    data_buzon = Sugerencia.objects.filter(usuario__identificacion = username, fecha_listo = today)
+
+    return len(data_buzon)
 @register.simple_tag
 def porcentaje(valor_1, valor_2):
 
