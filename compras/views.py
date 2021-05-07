@@ -672,22 +672,24 @@ def mensajescomparativas(request, id_comparativa):
 
                 b.save()
 
-                # Prueba Telegram
+                if "@Pablo" in b.mensaje:
 
-                send = "{}, {} respondio: '{}' en la OC {}".format("#jochi", b.usuario.nombre, b.mensaje, b.comparativa.o_c)
+                    # Prueba Telegram
 
-                id = "-1001383362493"
+                    send = "{}, {} te respondio: '{}' en la OC {}".format("#Pablo", b.usuario.nombre, b.mensaje, b.comparativa.o_c)
 
-                token = "1880193427:AAH-Ej5ColiocfDZrDxUpvsJi5QHWsASRxA"
+                    id = "-1001383362493"
 
-                url = "https://api.telegram.org/bot" + token + "/sendMessage"
+                    token = "1880193427:AAH-Ej5ColiocfDZrDxUpvsJi5QHWsASRxA"
 
-                params = {
-                    'chat_id' : id,
-                    'text' : send
-                }
+                    url = "https://api.telegram.org/bot" + token + "/sendMessage"
 
-                requests.post(url, params=params)
+                    params = {
+                        'chat_id' : id,
+                        'text' : send
+                    }
+
+                    requests.post(url, params=params)
 
 
     datos = Comparativas.objects.get(id = id_comparativa)
