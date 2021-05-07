@@ -644,7 +644,7 @@ def presupuestostotal(request):
 
             variable.save()
 
-            #Que me avise el bot la actualización
+            # BOT la actualización
 
             try:
 
@@ -652,7 +652,7 @@ def presupuestostotal(request):
                 df = pd.read_excel(archivo)
                 repo_nuevo = sum(np.array(df['Monto'].values))
 
-                anterior_archivo = PresupuestosAlmacenados.objects.filter(proyecto = proyecto).exclude(nombre = "vigente")[0].archivo
+                anterior_archivo = PresupuestosAlmacenados.objects.filter(proyecto = proyecto).order_by("-id").exclude(nombre = "vigente")[0].archivo
                 df = pd.read_excel(anterior_archivo)
                 repo_anterior = sum(np.array(df['Monto'].values))
 
@@ -674,7 +674,6 @@ def presupuestostotal(request):
                 requests.post(url, params=params)
             except:
                 pass
-
 
         try:
 
