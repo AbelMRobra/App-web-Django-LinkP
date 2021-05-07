@@ -18,6 +18,7 @@ import numpy as np
 import json
 import datetime
 import csv
+import requests
 from datetime import date
 from openpyxl import Workbook
 from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
@@ -260,6 +261,29 @@ def cons_edit(request, id_cons):
                     cons_valor = i.valor
 
                     form.save()
+
+                    # Prueba Telegram
+
+                    if cons_valor != 0:
+                        var = round((float(cons_valor_nuevo)/cons_valor-1)*100,2)
+
+                        if var != 0:
+
+
+                            send = "{} ha modificado la constante {}. Variación: {}%".format(request.user.username, cons_nombre, var)
+
+                            id = "-455382561"
+
+                            token = "1880193427:AAH-Ej5ColiocfDZrDxUpvsJi5QHWsASRxA"
+
+                            url = "https://api.telegram.org/bot" + token + "/sendMessage"
+
+                            params = {
+                                'chat_id' : id,
+                                'text' : send
+                            }
+
+                            requests.post(url, params=params)
 
             datos_insumos = Articulos.objects.filter(constante__nombre = nombre)
 
@@ -619,6 +643,38 @@ def presupuestostotal(request):
             )
 
             variable.save()
+
+            #Que me avise el bot la actualización
+
+            try:
+
+                archivo = PresupuestosAlmacenados.objects.filter(proyecto = proyecto, nombre = "vigente")[0].archivo
+                df = pd.read_excel(archivo)
+                repo_nuevo = sum(np.array(df['Monto'].values))
+
+                anterior_archivo = PresupuestosAlmacenados.objects.filter(proyecto = proyecto).exclude(nombre = "vigente")[0].archivo
+                df = pd.read_excel(anterior_archivo)
+                repo_anterior = sum(np.array(df['Monto'].values))
+
+                var = round((repo_nuevo/repo_anterior-1)*100, 2)
+
+                send = "{} ha actualizaco {}. Variación: {}%".format(request.user.username, proyecto.nombre, var)
+
+                id = "-455382561"
+
+                token = "1880193427:AAH-Ej5ColiocfDZrDxUpvsJi5QHWsASRxA"
+
+                url = "https://api.telegram.org/bot" + token + "/sendMessage"
+
+                params = {
+                    'chat_id' : id,
+                    'text' : send
+                }
+
+                requests.post(url, params=params)
+            except:
+                pass
+
 
         try:
 
