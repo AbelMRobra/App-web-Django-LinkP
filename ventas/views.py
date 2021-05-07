@@ -1510,7 +1510,7 @@ def pricing(request, id_proyecto):
 
 def panelpricing(request):
 
-    proyectos = Unidades.objects.all().exclude(proyecto__nombre = "2UO")
+    proyectos = Unidades.objects.all()
 
 
     datos  = []
