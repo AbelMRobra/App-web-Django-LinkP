@@ -676,9 +676,9 @@ def mensajescomparativas(request, id_comparativa):
 
                     # Prueba Telegram
 
-                    send = "{}, {} te respondio: '{}' en la OC {}".format("#Pablo", b.usuario.nombre, b.mensaje, b.comparativa.o_c)
+                    send = "{} te respondio: '{}' en la OC {}".format(b.usuario.nombre, b.mensaje, b.comparativa.o_c)
 
-                    id = "-1001383362493"
+                    id = "1809759394"
 
                     token = "1880193427:AAH-Ej5ColiocfDZrDxUpvsJi5QHWsASRxA"
 
