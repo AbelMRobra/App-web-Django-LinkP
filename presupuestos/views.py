@@ -658,7 +658,7 @@ def presupuestostotal(request):
 
                 var = round((repo_nuevo/repo_anterior-1)*100, 2)
 
-                send = "{} ha actualizaco {}. Variación: {}%".format(request.user.username, proyecto.nombre, var)
+                send = "{} ha actualizado {}. Variación: {}%".format(request.user.username, proyecto.nombre, var)
 
                 id = "-455382561"
 
