@@ -672,7 +672,7 @@ def mensajescomparativas(request, id_comparativa):
 
                 b.save()
 
-                if "@Pablo" in b.mensaje:
+                if "@Pablo" in b.mensaje or "@pablo" in b.mensaje:
 
                     # Prueba Telegram
 
