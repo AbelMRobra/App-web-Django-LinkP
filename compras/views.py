@@ -13,6 +13,7 @@ import sqlite3
 import operator
 import datetime
 import smtplib
+import requests
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from email.mime.base import MIMEBase
@@ -670,6 +671,23 @@ def mensajescomparativas(request, id_comparativa):
                         )
 
                 b.save()
+
+                # Prueba Telegram
+
+                send = "{}, {} respondio: '{}' en la OC {}".format("#jochi", b.usuario.nombre, b.mensaje, b.comparativa.o_c)
+
+                id = "-1001383362493"
+
+                token = "1880193427:AAH-Ej5ColiocfDZrDxUpvsJi5QHWsASRxA"
+
+                url = "https://api.telegram.org/bot" + token + "/sendMessage"
+
+                params = {
+                    'chat_id' : id,
+                    'text' : send
+                }
+
+                requests.post(url, params=params)
 
 
     datos = Comparativas.objects.get(id = id_comparativa)

@@ -6,7 +6,7 @@
 {% block content %}
 
 
-<div class="container-fluid r-aside">
+<div class="container-fluid">
     <div class="row page-titles">
         <div class="col-md-5 align-self-center">
             <h3 class="text-themecolor">Resumen de honorarios</h3>
@@ -15,7 +15,7 @@
         <div class="col-md-7 align-self-center">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
-                <li class="breadcrumb-item">Resumen</li>
+                <li class="breadcrumb-item">Honorarios</li>
             </ol>
         </div>
     </div>
@@ -144,7 +144,7 @@
                 <tr>
                     <td style="vertical-align: middle;">
                         
-                        <img src="{{i.0.0.iamgen.url}}"  class="img-fluid" alt="..." style="max-width: 70px; height:auto;"> 
+                        <img src="{{i.0.iamgen.url}}"  class="img-fluid" alt="..." style="max-width: 70px; height:auto;"> 
 
                         <div>
 

@@ -3768,6 +3768,21 @@ class DescargarResumen(TemplateView):
         
 
 
+        ws.merge_cells("D9:G9")
+        ws["D9"] = "En pesos"
+
+        ws.merge_cells("H9:K9")
+        ws["H9"] = "En hormigon"
+
+        ws["D9"].font = Font(bold = True, color= "E8F8F8")
+        ws["D9"].fill =  PatternFill("solid", fgColor= "2C9E9D")
+        ws["D9"].alignment = Alignment(horizontal = "center")
+
+        ws["H9"].font = Font(bold = True, color= "E8F8F8")
+        ws["H9"].fill =  PatternFill("solid", fgColor= "2C9E9D")
+        ws["H9"].alignment = Alignment(horizontal = "center")
+
+
         ws["A10"] = "Cliente"
         ws["B10"] = "Unidad"
         ws["C10"] = "Asignación"
@@ -4118,6 +4133,35 @@ class DescargarResumen(TemplateView):
 
         ws["A1"] = "Resumen de pagos - Área Administración"
         ws["A1"].font = Font(bold = True)
+
+
+        ws.merge_cells("B8:C8")
+        ws["B8"] = "Total"
+
+        ws["B8"].font = Font(bold = True, color= "E8F8F8")
+        ws["B8"].fill =  PatternFill("solid", fgColor= "2C9E9D")
+        ws["B8"].alignment = Alignment(horizontal = "center")
+
+        ws.merge_cells("D8:E8")
+        ws["D8"] = "Proyecto"
+
+        ws["D8"].font = Font(bold = True, color= "E8F8F8")
+        ws["D8"].fill =  PatternFill("solid", fgColor= "2C9E9D")
+        ws["D8"].alignment = Alignment(horizontal = "center")
+
+        ws.merge_cells("F8:G8")
+        ws["F8"] = "Link"
+
+        ws["F8"].font = Font(bold = True, color= "E8F8F8")
+        ws["F8"].fill =  PatternFill("solid", fgColor= "2C9E9D")
+        ws["F8"].alignment = Alignment(horizontal = "center")
+
+        ws.merge_cells("H8:I8")
+        ws["H8"] = "Terreno"
+
+        ws["H8"].font = Font(bold = True, color= "E8F8F8")
+        ws["H8"].fill =  PatternFill("solid", fgColor= "2C9E9D")
+        ws["H8"].alignment = Alignment(horizontal = "center")
 
 
         ws["A9"] = "Mes"
