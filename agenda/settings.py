@@ -60,7 +60,7 @@ INSTALLED_APPS = [
     'finanzas',
     'rrhh',
     'tecnica',
-    'bot',
+
     
 ]
 
