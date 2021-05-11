@@ -1067,13 +1067,13 @@ def inicio(request):
 
         # -----------------> Aprovecho para avisar a PL sobre las OC
 
-        fecha_pago = datetime.date(2021, 4, 16)
-
-        while fecha_pago <= fecha_inicial:
-            fecha_pago = fecha_pago + datetime.timedelta(days=14)
-
         today_h = datetima.date.today()
 
+        fecha_pago = datetime.date(2021, 4, 16)
+
+        while fecha_pago <= today_h:
+            fecha_pago = fecha_pago + datetime.timedelta(days=14)
+      
         fecha_alerta = fecha_pago - datetime.timedelta(days=3)
 
         if datetima.date.today() == fecha_alerta:
