@@ -1067,7 +1067,7 @@ def inicio(request):
 
         # -----------------> Aprovecho para avisar a PL sobre las OC
 
-        today_h = datetima.date.today()
+        today_h = datetime.date.today()
 
         fecha_pago = datetime.date(2021, 4, 16)
 
