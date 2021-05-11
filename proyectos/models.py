@@ -4,6 +4,15 @@ from django.db import models
 # Create your models here.
 
 class Proyectos(models.Model):
+
+    class presupuesto(models.TextChoices):
+
+            ACTIVO = "ACTIVO"
+            EXTRAPOLADO = "EXTRAPOLADO"
+            BASE = "BASE"
+
+    presupuesto = models.CharField(choices=presupuesto.choices, default="EXTRAPOLADO", max_length=30, verbose_name="Estado presupuesto")
+    base = models.FloatField(verbose_name="Valor con respecto a base", default=1, blank=True, null=True)
     nombre = models.CharField(max_length=200, verbose_name='Nombre del proyecto')
     descrip = models.CharField(max_length=200, verbose_name='Descripción')
     iamgen = models.ImageField(verbose_name="Logo del proyecto", blank=True, null=True)
@@ -11,6 +20,8 @@ class Proyectos(models.Model):
     color = models.TextField(verbose_name="Color del proyecto", blank=True, null=True)
     fecha_f = models.DateField(verbose_name="Fecha de entrega")
     fecha_i = models.DateField(verbose_name="Fecha de inicio", blank=True, null=True)
+    fecha_f_contrato = models.DateField(verbose_name="Fecha de entrega", blank=True, null=True)
+    fecha_i_contrato = models.DateField(verbose_name="Fecha de inicio", blank=True, null=True)
     fecha_a = models.DateField(auto_now=True, verbose_name="Fecha de actualización")
     m2 =  models.FloatField(verbose_name="Tamaño de la obra")
     numero_cuenta =  models.CharField(max_length=200, verbose_name="Numero de cuenta corriente", blank=True, null=True)

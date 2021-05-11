@@ -12,6 +12,7 @@ from compras.models import Compras, Comparativas
 from registro.models import RegistroValorProyecto
 from rrhh.models import datosusuario, mensajesgenerales, NotaDePedido, Vacaciones, MonedaLink, EntregaMoneda, Anuncios, Seguimiento, Minutas, Acuerdos, PremiosMonedas, Logros, RegistroContable, CanjeMonedas, Sugerencia
 import datetime
+import requests
 from datetime import date
 import pandas as pd
 import numpy as np
@@ -47,6 +48,22 @@ def linkp(request):
 def sugerencias(request):
 
     if request.method == 'POST':
+
+        try:
+
+            sugerencia_selec = Sugerencia.objects.get(id = int(request.POST['id']))
+
+            sugerencia_selec.nombre = request.POST['nombre']
+            sugerencia_selec.descripcion = request.POST['descripcion']
+
+            try:
+                sugerencia_selec.adjunto = request.FILES['adjunto']
+                sugerencia_selec.save()
+            except:
+                sugerencia_selec.save()
+           
+        except:
+            pass
 
         try:
 
@@ -926,7 +943,7 @@ def inicio(request):
 
     usuario = request.user.username
 
-    datos_mensajeria = len(NotaDePedido.objects.filter(copia__contains = str(usuario)).exclude(visto__contains = str(usuario))) + len(NotaDePedido.objects.filter(destinatario__contains = str(usuario)).exclude(visto__contains = str(usuario)))
+    datos_mensajeria = len(NotaDePedido.objects.filter(copia__icontains = str(usuario)).exclude(visto__icontains = str(usuario))) + len(NotaDePedido.objects.filter(destinatario__icontains = str(usuario)).exclude(visto__icontains = str(usuario)))
     
     # -----> Aqui para decirte si tenes pendiente firmar OC
 
@@ -1047,6 +1064,55 @@ def inicio(request):
             )
 
             b.save()
+
+        # -----------------> Aprovecho para avisar a PL sobre las OC
+
+        fecha_pago = datetime.date(2021, 4, 16)
+
+        while fecha_pago <= fecha_inicial:
+            fecha_pago = fecha_pago + datetime.timedelta(days=14)
+
+        today_h = datetima.date.today()
+
+        fecha_alerta = fecha_pago - datetime.timedelta(days=3)
+
+        if datetima.date.today() == fecha_alerta:
+
+            cantidad_oc = len(Comparativas.objects.all().exclude(creador = "MES").exclude(estado = "AUTORIZADO").exclude(numero__icontains = "Postv").exclude(proyecto__icontains = "monteagudo").exclude(proyecto__icontains = "tafi"))
+
+            if cantidad_oc == 0:
+
+                send = "@Pablo, hasta el momento todas las OC estan firmadas para mañana"
+
+                id = "-455382561"
+
+                token = "1880193427:AAH-Ej5ColiocfDZrDxUpvsJi5QHWsASRxA"
+
+                url = "https://api.telegram.org/bot" + token + "/sendMessage"
+
+                params = {
+                    'chat_id' : id,
+                    'text' : send
+                }
+
+                requests.post(url, params=params)
+
+            else:
+
+                send = "@Pablo mañana a las 13 horas deben estar firmadas las OC. Cantidad pendientes {} ".format(cantidad_oc)
+
+                id = "-455382561"
+
+                token = "1880193427:AAH-Ej5ColiocfDZrDxUpvsJi5QHWsASRxA"
+
+                url = "https://api.telegram.org/bot" + token + "/sendMessage"
+
+                params = {
+                    'chat_id' : id,
+                    'text' : send
+                }
+
+                requests.post(url, params=params)
         # -----------------> Aprovecho para mandar el mail a Emilia recordando los casos de postventa
 
         #if hoy.weekday() == 0 or hoy.weekday() == 5:

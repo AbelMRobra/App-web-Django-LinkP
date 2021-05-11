@@ -6,10 +6,7 @@
 
 {% block content %}
 
-<div class="container-fluid r-aside">
-    <!-- ============================================================== -->
-    <!-- Cabeza de la pagina -->
-    <!-- ============================================================== -->
+<div class="container-fluid">
     <div class="row page-titles">
         <div class="col-md-5 align-self-center">
             <h3 class="text-themecolor">Reclamos de postventa</h3>
@@ -22,125 +19,130 @@
 
             </ol>
         </div>
-
     </div>
+</div>
 
-  </div>
-
-  <div class="col-lg-12 col-xlg-6 button-group">
+<div class="col-lg-12 col-xlg-6 button-group">
     <div class="card">
         <div class="card-body">
             <h4 class="card-title">Panel de solicitudes</h4>
             <h6 class="card-subtitle">Ordenes de compra o comparativas para ser aprobadas</h6>
 
             <div style="text-align: left;">
-        
-
-            <a href= "{% url 'Crear reclamo' %}" class="btn waves-effect waves-light btn-outline-info"style="text-align: end; margin-top: 5px;" > Nuevo reclamo</a>
-            <a href= "{% url 'Reporte Reclamo' %}" class="btn waves-effect waves-light btn-outline-primary"style="text-align: end; margin-top: 5px;" > Reporte</a>
-        
-        
-     
-            <div class ="dataTables_filter">
-
-                <form method="POST">
-        
-                    {% csrf_token %}
-                <label>
-                    Search:
-                    <input type="search" class placeholder aria-controls="example23" name="palabra">
-                </label>
-
-            </form>
-
-            </div>
-
-            <div class="table-responsive">
-
-                <table class="table">
-                    <thead>
-
-            <tr>
-                <td>Nº</td>
-                <td>Unidad</td>
-                <td>Propietario</td>
-                <td>Fechas</td>
-                <td>Estado</td>
-                <td>Resp.</td>
-
-            </tr>
-
-            {% for i in datos %}
-            
-            <tr>  
-                
-                <td>{{i.numero}}</td>
-                <td>{{i.proyecto}} 
-                    <h6 class="card-subtitle">{{i.unidad}}</h6>
-                </td>
-                <td><a href="{% url 'Reclamo' i.id %}">{{i.propietario}}
-                    <h6 class="card-subtitle">Contacto: {{i.usuario}}</h6></a></td>
-                <td><span class="text-muted"><i class="fa fa-exclamation-circle"></i> {{i.fecha_reclamo|date:"d M Y"}}</span>
-                    {% if i.fecha_solucion %}
-                    <h6 class="card-subtitle"><i class="fa fa-check-circle"></i> {{i.fecha_solucion|date:"d M Y"}}</h6>
-                    {% endif %}
-                    </td>
 
 
-                {% if i.estado == 'LISTO' %}
-                <td>
-                    <div class="label label-table label-success">{{i.estado}}</div>
-                    </td>
+                <a href="{% url 'Crear reclamo' %}" class="btn waves-effect waves-light btn-outline-info"
+                    style="text-align: end; margin-top: 5px;"> Nuevo reclamo</a>
+                <a href="{% url 'Reporte Reclamo' %}" class="btn waves-effect waves-light btn-outline-primary"
+                    style="text-align: end; margin-top: 5px;"> Reporte</a>
 
-                {% elif i.estado == 'TRABAJANDO' %}
+                <div class="table-responsive">
 
-                <td><div class="label label-table label-warning">{{i.estado}}</div></td></td>
+                    <table id="example" class="table" style="width:100%">
+                        <thead>
+                            <tr>
+                                <td>Nº</td>
+                                <td>Unidad</td>
+                                <td>Propietario</td>
+                                <td>Fechas</td>
+                                <td>Estado</td>
+                                <td>Resp.</td>
 
-                {% elif i.estado == 'PROBLEMAS' %}
+                            </tr>
+                        </thead>
+                        <tbody>
 
-                <td><div class="label label-table label-danger">{{i.estado}}</div></td></td>
+                            {% for i in datos %}
 
-                {% else %}
+                            <tr>
 
-                <td><div class="label label-table label-info">{{i.estado}}</div></td></td>
+                                <td>{{i.numero}}</td>
+                                <td>{{i.proyecto}}
+                                    <h6 class="card-subtitle">{{i.unidad}}</h6>
+                                </td>
+                                <td><a href="{% url 'Reclamo' i.id %}">{{i.propietario}}
+                                        <h6 class="card-subtitle">Contacto: {{i.usuario}}</h6>
+                                    </a></td>
+                                <td><span class="text-muted"><i class="fa fa-exclamation-circle"></i>
+                                        {{i.fecha_reclamo|date:"d M Y"}}</span>
+                                    {% if i.fecha_solucion %}
+                                    <h6 class="card-subtitle"><i class="fa fa-check-circle"></i>
+                                        {{i.fecha_solucion|date:"d M Y"}}</h6>
+                                    {% endif %}
+                                </td>
 
-                {% endif %}
+                                {% if i.estado == 'LISTO' %}
+                                <td>
+                                    <div class="label label-table label-success">{{i.estado}}</div>
+                                </td>
 
+                                {% elif i.estado == 'TRABAJANDO' %}
 
-                <td>
+                                <td>
+                                    <div class="label label-table label-warning">{{i.estado}}</div>
+                                </td>
+                                </td>
 
-                    {% if i.responsable %}
+                                {% elif i.estado == 'PROBLEMAS' %}
 
-                    
-                    <span class="round round-primary"><img src="{{i.responsable.imagenlogo.url}}"  alt="user" width="50"></span>
-                                
-                    
-                    {% else %}
+                                <td>
+                                    <div class="label label-table label-danger">{{i.estado}}</div>
+                                </td>
+                                </td>
 
-                    <span class="round round-primary"><img src="{% static 'img/anonimo2.png' %}"  alt="user" width="50"></span>
+                                {% else %}
 
-                    {% endif %}
+                                <td>
+                                    <div class="label label-table label-info">{{i.estado}}</div>
+                                </td>
+                                </td>
 
-                </td>
+                                {% endif %}
 
+                                <td>
 
+                                    {% if i.responsable %}
 
-            </tr>
-            
-                {% endfor %}
+                                    <span class="round round-primary"><img src="{{i.responsable.imagenlogo.url}}"
+                                            alt="user" width="50"></span>
 
-                
+                                    {% else %}
 
-                </tbody>
+                                    <span class="round round-primary"><img src="{% static 'img/anonimo2.png' %}"
+                                            alt="user" width="50"></span>
 
-    </table>
+                                    {% endif %}
 
-              
-</div>
+                                </td>
+
+                            </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+                </div>
             </div>
         </div>
     </div>
-  </div>
- 
-    
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js" defer></script>
+<script src="https://cdn.datatables.net/1.10.23/js/dataTables.bootstrap4.min.js" defer></script>
+
+<script>
+    $(document).ready(function () {
+        $('#example').DataTable({
+            "paging": false,
+            "ordering": true,
+            "info": false,
+            "searching": true
+
+        });
+    });
+</script>
+
+
 {% endblock %}

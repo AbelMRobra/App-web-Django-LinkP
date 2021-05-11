@@ -50,6 +50,10 @@ def error(update, context):
     logger.warning('Update "%s" caused error "%s"', update, context.error)
 
 def pizza(update, context):
+
+    if(update.message.text.upper().find("HOLA") > 0):
+        update.message.reply_text("Hola!, necesitas ayuda?")
+
     if(update.message.text.upper().find("AYUDA") > 0):
         update.message.reply_text("Puedo ayudar!, puedo responder sobre: Linkcoins")
 

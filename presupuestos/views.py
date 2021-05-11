@@ -672,6 +672,39 @@ def presupuestostotal(request):
                 }
 
                 requests.post(url, params=params)
+
+                if proyecto.presupuesto == "BASE":
+
+                    proyectos_extrapolados = Proyectos.objects.filter(presupuesto = "EXTRAPOLADO")
+
+                    for p in proyectos_extrapolados:
+                        try:
+                            aux_var = Presupuestos.objects.get(proyecto = p)
+                            var_viejo = aux.var.valor
+                            aux.var.valor *= (1+var)
+                            aux_var.saldo *= (1+var)
+                            aux_var.saldo_mat *= (1+var)
+                            aux_var.saldo_mo *=  (1+var)
+                            aux_var.save()
+
+                            send = "{} ha actualizado {}. Variación: {}%".format(request.user.username, p.nombre, (aux.var.valor/var_viejo-1))
+
+                            id = "-455382561"
+
+                            token = "1880193427:AAH-Ej5ColiocfDZrDxUpvsJi5QHWsASRxA"
+
+                            url = "https://api.telegram.org/bot" + token + "/sendMessage"
+
+                            params = {
+                                'chat_id' : id,
+                                'text' : send
+                            }
+
+                            requests.post(url, params=params)
+                        except:
+                            pass
+
+
             except:
                 pass
 

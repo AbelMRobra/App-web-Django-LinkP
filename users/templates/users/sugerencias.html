@@ -97,7 +97,7 @@
                             <div class="col-12">
 
                                 <div class="table-responsive m-t-4">
-                                    <table class="table stylish-table">
+                                    <table class="table" style="width: 99%;">
                                         <thead>
                                             <tr>
                                                 <th>Creador</th>
@@ -114,7 +114,20 @@
                                             <tr>
                                                 <td>{{i.usuario.identificacion}}</td>
                                                 <td>
-                                                    <div><a href="#" data-toggle="modal"
+                                                    
+                                                    <div>  
+                                                        
+                                                        
+                                                        
+                                                        {% if i.usuario.identificacion == request.user.username %}
+                                                        <a href="#" data-toggle="modal"
+                                                        data-target="#ModalEditar{{i.id}}"><i
+                                                            class="fa fa-lg fa-pencil-square-o"
+                                                            aria-hidden="true"></i></a>
+                                                        
+                                                        {% endif %}
+                                                        
+                                                            <a href="#" data-toggle="modal"
                                                             data-target="#ModalDescripcion{{i.id}}"><span>{{i.nombre}}</span></i></a>
 
 
@@ -228,13 +241,76 @@
                                                     {% else %}
 
                                                     <img src="{% static 'img/advertir.png' %}" alt=""
-                                                                style="max-width:21px; height:auto; vertical-align: top;">
+                                                        style="max-width:21px; height:auto; vertical-align: top;">
 
                                                     {% endif %}
 
                                                     {% endif %}
                                                 </td>
+                                                <td>
+                                                  
 
+                                                </td>
+                                                <div class="modal fade" id="ModalEditar{{i.id}}" tabindex="-1"
+                                                    role="dialog" aria-labelledby="ModalEditar{{i.id}}Title"
+                                                    aria-hidden="true">
+                                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="exampleModalLongTitle">
+                                                                    Editar </h5>
+                                                                <button type="button" class="close" data-dismiss="modal"
+                                                                    aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <form method="POST" style="margin: 15px;"
+                                                                    enctype="multipart/form-data"
+                                                                    id="upload-image-form">
+
+                                                                    {% csrf_token %}
+
+                                                                    <h6>Sugerencia</h6>
+
+                                                                    <div class="input-group mb-3">
+
+                                                                        <input name="nombre" type="text"
+                                                                            class="form-control form-control"
+                                                                            style="width: 300px;" value="{{i.nombre}}">
+                                                                    </div>
+                                                                    <h6>Descripcion</h6>
+
+                                                                    <div class="input-group mb-3">
+
+                                                                        <textarea name="descripcion" cols="100" rows="4"
+                                                                            class="form-control">{{i.descripcion}}</textarea>
+                                                                    </div>
+
+                                                                    <h6>Archivo</h6>
+
+                                                                    <div class="input-group mb-3">
+
+                                                                        <input name="adjunto" type="file" class=""
+                                                                            style="width: 300px;">
+                                                                    </div>
+
+                                                                    <button type="submit" name="id" value="{{i.id}}" class="btn btn-info">
+                                                                        <b>Editar</b></button>
+
+                                                                    {{ form.as_p }}
+
+                                                                </form>
+                                                            </div>
+
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary"
+                                                                    data-dismiss="modal">Cerrar</button>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </tr>
 
                                             {% endfor %}
@@ -249,7 +325,6 @@
             </div>
         </div>
     </div>
-</div>
 </div>
 
 <aside class="right-side-panel">

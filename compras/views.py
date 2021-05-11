@@ -678,7 +678,7 @@ def mensajescomparativas(request, id_comparativa):
 
                     send = "{} te respondio: '{}' en la OC {}".format(b.usuario.nombre, b.mensaje, b.comparativa.o_c)
 
-                    id = "1809759394"
+                    id = "-585663986"
 
                     token = "1880193427:AAH-Ej5ColiocfDZrDxUpvsJi5QHWsASRxA"
 
@@ -808,6 +808,23 @@ def comparativas(request, estado, creador):
                                     datosusuario.objects.get(identificacion = comparativa.creador).email,
                                     mensaje.as_string())
 
+                    if comparativa.creador == "AT" or comparativa.creador == "LG":
+
+                        send = "Han aprobado la OC {} de {}%".format(comparativa.creador, comparativa.o_c)
+
+                        id = "-455382561"
+
+                        token = "1880193427:AAH-Ej5ColiocfDZrDxUpvsJi5QHWsASRxA"
+
+                        url = "https://api.telegram.org/bot" + token + "/sendMessage"
+
+                        params = {
+                            'chat_id' : id,
+                            'text' : send
+                        }
+
+                        requests.post(url, params=params)
+
                 except:
 
                     pass
@@ -853,6 +870,23 @@ def comparativas(request, estado, creador):
                     mailServer.sendmail(settings.EMAIL_HOST_USER,
                                     datosusuario.objects.get(identificacion = comparativa.creador).email,
                                     mensaje.as_string())
+
+                    if comparativa.creador == "AT" or comparativa.creador == "LG":
+
+                        send = "Han rechazado la OC {} de {}%".format(comparativa.creador, comparativa.o_c)
+
+                        id = "-455382561"
+
+                        token = "1880193427:AAH-Ej5ColiocfDZrDxUpvsJi5QHWsASRxA"
+
+                        url = "https://api.telegram.org/bot" + token + "/sendMessage"
+
+                        params = {
+                            'chat_id' : id,
+                            'text' : send
+                        }
+
+                        requests.post(url, params=params)
 
                 except:
 
