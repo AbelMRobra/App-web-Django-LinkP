@@ -1084,7 +1084,7 @@ def inicio(request):
 
                 send = "@Pablo, hasta el momento todas las OC estan firmadas para mañana"
 
-                id = "-455382561"
+                id = "-585663986"
 
                 token = "1880193427:AAH-Ej5ColiocfDZrDxUpvsJi5QHWsASRxA"
 
@@ -1101,7 +1101,7 @@ def inicio(request):
 
                 send = "@Pablo mañana a las 13 horas deben estar firmadas las OC. Cantidad pendientes {} ".format(cantidad_oc)
 
-                id = "-455382561"
+                id = "-585663986"
 
                 token = "1880193427:AAH-Ej5ColiocfDZrDxUpvsJi5QHWsASRxA"
 
