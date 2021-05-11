@@ -1078,7 +1078,7 @@ def inicio(request):
 
         if today_h == fecha_alerta:
 
-            cantidad_oc = len(Comparativas.objects.all().exclude(creador = "MES").exclude(estado = "AUTORIZADO").exclude(numero__icontains = "Postv").exclude(proyecto__icontains = "monteagudo").exclude(proyecto__icontains = "tafi"))
+            cantidad_oc = len(Comparativas.objects.all().exclude(creador = "MES", estado = "AUTORIZADA", numero__icontains = "Postv").exclude(proyecto__icontains = "monteagudo").exclude(proyecto__icontains = "tafi"))
 
             if cantidad_oc == 0:
 
