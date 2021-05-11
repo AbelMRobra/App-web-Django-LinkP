@@ -1076,7 +1076,7 @@ def inicio(request):
       
         fecha_alerta = fecha_pago - datetime.timedelta(days=3)
 
-        if datetima.date.today() == fecha_alerta:
+        if today_h == fecha_alerta:
 
             cantidad_oc = len(Comparativas.objects.all().exclude(creador = "MES").exclude(estado = "AUTORIZADO").exclude(numero__icontains = "Postv").exclude(proyecto__icontains = "monteagudo").exclude(proyecto__icontains = "tafi"))
 
