@@ -658,26 +658,60 @@ def presupuestostotal(request):
 
                 var = round((repo_nuevo/repo_anterior-1)*100, 2)
 
-                send = "{} ha actualizado {}. Variación: {}%".format(request.user.username, proyecto.nombre, var)
+                if var != 0:
 
-                id = "-455382561"
+                    send = "{} ha actualizado {}. Variación: {}%".format(request.user.username, proyecto.nombre, var)
 
-                token = "1880193427:AAH-Ej5ColiocfDZrDxUpvsJi5QHWsASRxA"
+                    id = "-455382561"
 
-                url = "https://api.telegram.org/bot" + token + "/sendMessage"
+                    token = "1880193427:AAH-Ej5ColiocfDZrDxUpvsJi5QHWsASRxA"
 
-                params = {
-                    'chat_id' : id,
-                    'text' : send
-                }
+                    url = "https://api.telegram.org/bot" + token + "/sendMessage"
 
-                requests.post(url, params=params)
+                    params = {
+                        'chat_id' : id,
+                        'text' : send
+                    }
+
+                    requests.post(url, params=params)
+
+                else:
+
+                    send = "{} ha actualizado {} sin variación".format(request.user.username, proyecto.nombre)
+
+                    id = "-455382561"
+
+                    token = "1880193427:AAH-Ej5ColiocfDZrDxUpvsJi5QHWsASRxA"
+
+                    url = "https://api.telegram.org/bot" + token + "/sendMessage"
+
+                    params = {
+                        'chat_id' : id,
+                        'text' : send
+                    }
+
+                    requests.post(url, params=params)
 
                 if proyecto.presupuesto == "BASE":
 
                     proyectos_extrapolados = Proyectos.objects.filter(presupuesto = "EXTRAPOLADO")
 
                     for p in proyectos_extrapolados:
+
+                        send = "Estoy intentando actualizar {} con el proyecto base".format(p.nombre)
+
+                        id = "-455382561"
+
+                        token = "1880193427:AAH-Ej5ColiocfDZrDxUpvsJi5QHWsASRxA"
+
+                        url = "https://api.telegram.org/bot" + token + "/sendMessage"
+
+                        params = {
+                            'chat_id' : id,
+                            'text' : send
+                        }
+
+                        requests.post(url, params=params)
                         try:
                             aux_var = Presupuestos.objects.get(proyecto = p)
                             var_viejo = aux.var.valor
@@ -687,7 +721,7 @@ def presupuestostotal(request):
                             aux_var.saldo_mo *=  (1+var)
                             aux_var.save()
 
-                            send = "{} ha actualizado {}. Variación: {}%".format(request.user.username, p.nombre, (aux.var.valor/var_viejo-1))
+                            send = "Lo logre, variación {}%".format(var)
 
                             id = "-455382561"
 
@@ -702,7 +736,21 @@ def presupuestostotal(request):
 
                             requests.post(url, params=params)
                         except:
-                            pass
+
+                            send = "No lo logre, hay algún tipo de error"
+
+                            id = "-455382561"
+
+                            token = "1880193427:AAH-Ej5ColiocfDZrDxUpvsJi5QHWsASRxA"
+
+                            url = "https://api.telegram.org/bot" + token + "/sendMessage"
+
+                            params = {
+                                'chat_id' : id,
+                                'text' : send
+                            }
+
+                            requests.post(url, params=params)
 
 
             except:
