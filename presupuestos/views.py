@@ -694,6 +694,21 @@ def presupuestostotal(request):
 
                 if proyecto.presupuesto == "BASE":
 
+                    send = "{}, has actualizado el proyecto BASE, empieza el proceso de actualización de proyectos extrapolados".format(request.user.username)
+
+                    id = "-455382561"
+
+                    token = "1880193427:AAH-Ej5ColiocfDZrDxUpvsJi5QHWsASRxA"
+
+                    url = "https://api.telegram.org/bot" + token + "/sendMessage"
+
+                    params = {
+                        'chat_id' : id,
+                        'text' : send
+                    }
+
+                    requests.post(url, params=params)
+
                     proyectos_extrapolados = Proyectos.objects.filter(presupuesto = "EXTRAPOLADO")
 
                     for p in proyectos_extrapolados:
@@ -712,28 +727,29 @@ def presupuestostotal(request):
                         }
 
                         requests.post(url, params=params)
-                        try:
-                            aux_var = Presupuestos.objects.get(proyecto = p)
-                            aux.var.valor = aux.var.valor + (1+var)
-                            aux_var.saldo = aux_var.saldo + (1+var)
-                            aux_var.saldo_mat = aux_var.saldo_mat + (1+var)
-                            aux_var.saldo_mo =  aux_var.saldo_mo + (1+var)
-                            aux_var.save()
+                        #try:
+                        aux_var = Presupuestos.objects.get(proyecto = p)
+                        aux.var.valor = aux.var.valor + (1+var)
+                        aux_var.saldo = aux_var.saldo + (1+var)
+                        aux_var.saldo_mat = aux_var.saldo_mat + (1+var)
+                        aux_var.saldo_mo =  aux_var.saldo_mo + (1+var)
+                        aux_var.save()
 
-                            send = "Lo logre, variación {}%".format(var)
+                        send = "Lo logre, variación {}%".format(var)
 
-                            id = "-455382561"
+                        id = "-455382561"
 
-                            token = "1880193427:AAH-Ej5ColiocfDZrDxUpvsJi5QHWsASRxA"
+                        token = "1880193427:AAH-Ej5ColiocfDZrDxUpvsJi5QHWsASRxA"
 
-                            url = "https://api.telegram.org/bot" + token + "/sendMessage"
+                        url = "https://api.telegram.org/bot" + token + "/sendMessage"
 
-                            params = {
-                                'chat_id' : id,
-                                'text' : send
-                            }
+                        params = {
+                            'chat_id' : id,
+                            'text' : send
+                        }
 
-                            requests.post(url, params=params)
+                        requests.post(url, params=params)
+                        '''
                         except:
 
                             send = "No lo logre, hay algún tipo de error"
@@ -751,20 +767,22 @@ def presupuestostotal(request):
 
                             requests.post(url, params=params)
 
-                        send = "Proceso de actualización de proyectos extrapolados completo"
+                        '''
 
-                        id = "-455382561"
+                    send = "Proceso de actualización de proyectos extrapolados completo"
 
-                        token = "1880193427:AAH-Ej5ColiocfDZrDxUpvsJi5QHWsASRxA"
+                    id = "-455382561"
 
-                        url = "https://api.telegram.org/bot" + token + "/sendMessage"
+                    token = "1880193427:AAH-Ej5ColiocfDZrDxUpvsJi5QHWsASRxA"
 
-                        params = {
-                            'chat_id' : id,
-                            'text' : send
-                        }
+                    url = "https://api.telegram.org/bot" + token + "/sendMessage"
 
-                        requests.post(url, params=params)
+                    params = {
+                        'chat_id' : id,
+                        'text' : send
+                    }
+
+                    requests.post(url, params=params)
 
 
             except:
