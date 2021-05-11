@@ -660,7 +660,7 @@ def presupuestostotal(request):
 
                 if var != 0:
 
-                    send = "{} ha actualizado {}. Variación: {}%".format(request.user.username, proyecto.nombre, var)
+                    send = "{} ha actualizado {}. Variación: {}%".format(request.user.first_name, proyecto.nombre, var)
 
                     id = "-455382561"
 
@@ -677,7 +677,7 @@ def presupuestostotal(request):
 
                 else:
 
-                    send = "{} ha actualizado {} sin variación".format(request.user.username, proyecto.nombre)
+                    send = "{} guardo una copia de {}".format(request.user.first_name, proyecto.nombre)
 
                     id = "-455382561"
 
@@ -692,9 +692,9 @@ def presupuestostotal(request):
 
                     requests.post(url, params=params)
 
-                if proyecto.presupuesto == "BASE":
+                if proyecto.presupuesto == "BASE" and var != 0:
 
-                    send = "{}, has actualizado el proyecto BASE, empieza el **proceso de actualización de proyectos extrapolados**".format(request.user.username)
+                    send = "{}, has actualizado el proyecto BASE, empieza el proceso de actualización de proyectos extrapolados".format(request.user.first_name)
 
                     id = "-455382561"
 
@@ -769,7 +769,7 @@ def presupuestostotal(request):
 
                             requests.post(url, params=params)
 
-                    send = "**Proceso de actualización de proyectos extrapolados completo**. Disculpen los mensajes"
+                    send = "Proceso de actualización de proyectos extrapolados completo. Disculpen los mensajes"
 
                     id = "-455382561"
 
