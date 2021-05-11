@@ -951,8 +951,8 @@ def inicio(request):
 
     if usuario == "PL":
         
-        compras_espera = Comparativas.objects.filter(estado = "ESPERA").exclude(creador = "MES", numero__contains = "POSTVENTA")
-        compras_adjunto_ok = Comparativas.objects.filter(estado = "ADJUNTO ✓").exclude(creador = "MES", numero__contains = "POSTVENTA")
+        compras_espera = Comparativas.objects.filter(estado = "ESPERA").exclude(creador = "MES", numero__contains = "POSTV")
+        compras_adjunto_ok = Comparativas.objects.filter(estado = "ADJUNTO ✓").exclude(creador = "MES", numero__contains = "POSTV")
 
         if len(compras_espera) > 0 or len(compras_adjunto_ok) > 0:
         
@@ -961,7 +961,7 @@ def inicio(request):
     elif usuario == "SP":
 
         compras = Comparativas.objects.filter(creador = "MES").exclude(estado = "AUTORIZADA")
-        compras_2 = Comparativas.objects.filter(numero__contains = "POSTVENTA").exclude(estado = "AUTORIZADA")
+        compras_2 = Comparativas.objects.filter(numero__contains = "POSTV").exclude(estado = "AUTORIZADA")
 
         if len(compras) > 0 or len(compras_2) > 0:
         
@@ -1078,7 +1078,9 @@ def inicio(request):
 
         if today_h == fecha_alerta:
 
-            cantidad_oc = len(Comparativas.objects.all().exclude(creador = "MES", estado = "AUTORIZADA", numero__icontains = "Postv").exclude(proyecto__icontains = "monteagudo").exclude(proyecto__icontains = "tafi"))
+            compras_espera = Comparativas.objects.filter(estado = "ESPERA").exclude(creador = "MES", numero__contains = "POSTV")
+            compras_adjunto_ok = Comparativas.objects.filter(estado = "ADJUNTO ✓").exclude(creador = "MES", numero__contains = "POSTV")
+            cantidad_oc = compras_espera + compras_adjunto_ok
 
             if cantidad_oc == 0:
 
