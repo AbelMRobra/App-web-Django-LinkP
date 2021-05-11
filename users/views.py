@@ -1078,8 +1078,8 @@ def inicio(request):
 
         if today_h == fecha_alerta:
 
-            compras_espera = Comparativas.objects.filter(estado = "ESPERA").exclude(creador = "MES", numero__contains = "POSTV")
-            compras_adjunto_ok = Comparativas.objects.filter(estado = "ADJUNTO ✓").exclude(creador = "MES", numero__contains = "POSTV")
+            compras_espera = len(Comparativas.objects.filter(estado = "ESPERA").exclude(creador = "MES", numero__contains = "POSTV"))
+            compras_adjunto_ok = len(Comparativas.objects.filter(estado = "ADJUNTO ✓").exclude(creador = "MES", numero__contains = "POSTV"))
             cantidad_oc = compras_espera + compras_adjunto_ok
 
             if cantidad_oc == 0:
