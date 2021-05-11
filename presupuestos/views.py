@@ -694,7 +694,7 @@ def presupuestostotal(request):
 
                 if proyecto.presupuesto == "BASE":
 
-                    send = "{}, has actualizado el proyecto BASE, empieza el proceso de actualización de proyectos extrapolados".format(request.user.username)
+                    send = "{}, has actualizado el proyecto BASE, empieza el **proceso de actualización de proyectos extrapolados**".format(request.user.username)
 
                     id = "-455382561"
 
@@ -737,7 +737,7 @@ def presupuestostotal(request):
                             aux_var.saldo_mo =  aux_var.saldo_mo + (1+var)
                             aux_var.save()
 
-                            send = "Lo logre, variación {}%".format(var)
+                            send = "**Lo logre!** , variación {}%".format(var)
 
                             id = "-455382561"
 
@@ -754,7 +754,7 @@ def presupuestostotal(request):
 
                         except:
 
-                            send = "No lo logre, hay algún tipo de error"
+                            send = "No lo logre, hay un valor 'None' que no me permite actualizar"
 
                             id = "-455382561"
 
@@ -769,7 +769,7 @@ def presupuestostotal(request):
 
                             requests.post(url, params=params)
 
-                    send = "Proceso de actualización de proyectos extrapolados completo"
+                    send = "**Proceso de actualización de proyectos extrapolados completo**. Disculpen los mensajes"
 
                     id = "-455382561"
 
