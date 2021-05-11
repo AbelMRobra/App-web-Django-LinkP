@@ -714,11 +714,10 @@ def presupuestostotal(request):
                         requests.post(url, params=params)
                         try:
                             aux_var = Presupuestos.objects.get(proyecto = p)
-                            var_viejo = aux.var.valor
-                            aux.var.valor *= (1+var)
-                            aux_var.saldo *= (1+var)
-                            aux_var.saldo_mat *= (1+var)
-                            aux_var.saldo_mo *=  (1+var)
+                            aux.var.valor = aux.var.valor + (1+var)
+                            aux_var.saldo = aux_var.saldo + (1+var)
+                            aux_var.saldo_mat = aux_var.saldo_mat + (1+var)
+                            aux_var.saldo_mo =  aux_var.saldo_mo + (1+var)
                             aux_var.save()
 
                             send = "Lo logre, variación {}%".format(var)
@@ -751,6 +750,21 @@ def presupuestostotal(request):
                             }
 
                             requests.post(url, params=params)
+
+                        send = "Proceso de actualización de proyectos extrapolados completo"
+
+                        id = "-455382561"
+
+                        token = "1880193427:AAH-Ej5ColiocfDZrDxUpvsJi5QHWsASRxA"
+
+                        url = "https://api.telegram.org/bot" + token + "/sendMessage"
+
+                        params = {
+                            'chat_id' : id,
+                            'text' : send
+                        }
+
+                        requests.post(url, params=params)
 
 
             except:
