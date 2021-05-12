@@ -50,14 +50,8 @@ def gerenciamientoproyecto(request, id_proyecto):
             for cap in list_capitulos:
                 row_aux = archivo_pandas[archivo_pandas['Nombre'] == cap.nombre]
                 if row_aux.shape[0] > 0:
-                    if row_aux['Comienzo'].unique()[0].split():
-                        fecha_i_aux = row_aux['Comienzo'].unique()[0].split()
-                    elif row_aux['Start'].unique()[0].split():
-                        fecha_i_aux = row_aux['Start'].unique()[0].split()
-                    if row_aux['Fin'].unique()[0].split():
-                        fecha_f_aux = row_aux['Fin'].unique()[0].split()
-                    elif row_aux['Finish'].unique()[0].split():
-                        fecha_f_aux = row_aux['Finish'].unique()[0].split()
+                    fecha_i_aux = row_aux['Comienzo'].unique()[0].split()
+                    fecha_f_aux = row_aux['Fin'].unique()[0].split()
                     fecha_i = datetime.date(int(fecha_i_aux[2]), int(months[fecha_i_aux[1]]), int(fecha_i_aux[0]))
                     fecha_f = datetime.date(int(fecha_f_aux[2]), int(months[fecha_f_aux[1]]), int(fecha_f_aux[0]))
                     data_aux = GerenPlanificacion.objects.filter(proyecto = proyecto, capitulo = cap)
