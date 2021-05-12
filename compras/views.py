@@ -873,7 +873,7 @@ def comparativas(request, estado, creador):
 
                     if comparativa.creador == "AT" or comparativa.creador == "LG":
 
-                        send = "Han rechazado la OC {} de {}%".format(comparativa.creador, comparativa.o_c)
+                        send = "Han rechazado la OC {} de {}".format(comparativa.creador, comparativa.o_c)
 
                         id = "-455382561"
 

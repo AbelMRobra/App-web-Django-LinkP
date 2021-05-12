@@ -25,7 +25,7 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from email.mime.base import MIMEBase
 from email import encoders
-from rrhh.models import datosusuario
+from rrhh.models import datosusuario, RegistroContable
 
 
 # Create your views here.
@@ -4293,6 +4293,50 @@ class DescargarResumen(TemplateView):
         wb.save(response)
         return response
 
+class DescargarRegistroContable(TemplateView):
+
+    def get(self, request, *args, **kwargs):
+
+        wb = Workbook()
+        ws = wb.active
+        ws.title = "Resumen"
+        ws["A1"] = "Resgistro de cargas realizadas"
+        ws["A1"].font = Font(bold = True)
+
+        ws["A5"] = "Destino"
+        ws["B5"] = "Cargo"
+        ws["C5"] = "Caja"
+        ws["D5"] = "Tipo"
+        ws["E5"] = "Cuenta"
+        ws["F5"] = "Categoria"
+        ws["G5"] = "Monto"
+
+        ws["A5"].font = Font(bold = True, color= "E8F8F8")
+        ws["A5"].fill =  PatternFill("solid", fgColor= "2C9E9D")
+        ws["B5"].font = Font(bold = True, color= "E8F8F8")
+        ws["B5"].fill =  PatternFill("solid", fgColor= "2C9E9D")
+        ws["C5"].font = Font(bold = True, color= "E8F8F8")
+        ws["C5"].fill =  PatternFill("solid", fgColor= "2C9E9D")
+        ws["D5"].font = Font(bold = True, color= "E8F8F8")
+        ws["D5"].fill =  PatternFill("solid", fgColor= "2C9E9D")
+        ws["E5"].font = Font(bold = True, color= "E8F8F8")
+        ws["E5"].fill =  PatternFill("solid", fgColor= "2C9E9D")
+        ws["F5"].font = Font(bold = True, color= "E8F8F8")
+        ws["F5"].fill =  PatternFill("solid", fgColor= "2C9E9D")
+        ws["G5"].font = Font(bold = True, color= "E8F8F8")
+        ws["G5"].fill =  PatternFill("solid", fgColor= "2C9E9D")
+
+        ws.column_dimensions['A'].width = 20
+        ws.column_dimensions['B'].width = 20
+        ws.column_dimensions['C'].width = 17
+        ws.column_dimensions['D'].width = 17
+        ws.column_dimensions['E'].width = 17
+        ws.column_dimensions['F'].width = 20
+        ws.column_dimensions['G'].width = 15
+
+        cont = 6
+
+        datos_primeros = Regis
 
 
 class DescargarTotalCuentas(TemplateView):

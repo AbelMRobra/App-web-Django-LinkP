@@ -1065,28 +1065,66 @@ def inicio(request):
 
             b.save()
 
-        # -----------------> Aprovecho para avisar a PL sobre las OC
+        if settings.ALLOWED_HOSTS:
 
-        today_h = datetime.date.today()
+            # -----------------> Aprovecho para avisar a PL sobre las OC
 
-        fecha_pago = datetime.date(2021, 4, 16)
+            today_h = datetime.date.today()
 
-        while fecha_pago <= today_h:
-            fecha_pago = fecha_pago + datetime.timedelta(days=14)
-      
-        fecha_alerta = fecha_pago - datetime.timedelta(days=3)
+            fecha_pago = datetime.date(2021, 4, 16)
 
-        if today_h == fecha_alerta:
+            while fecha_pago <= today_h:
+                fecha_pago = fecha_pago + datetime.timedelta(days=14)
+        
+            fecha_alerta = fecha_pago - datetime.timedelta(days=3)
 
-            compras_espera = len(Comparativas.objects.filter(estado = "ESPERA").exclude(creador = "MES", numero__contains = "POSTV"))
-            compras_adjunto_ok = len(Comparativas.objects.filter(estado = "ADJUNTO ✓").exclude(creador = "MES", numero__contains = "POSTV"))
-            cantidad_oc = compras_espera + compras_adjunto_ok
+            if today_h == fecha_alerta:
 
-            if cantidad_oc == 0:
+                compras_espera = len(Comparativas.objects.filter(estado = "ESPERA").exclude(creador = "MES", numero__contains = "POSTV"))
+                compras_adjunto_ok = len(Comparativas.objects.filter(estado = "ADJUNTO ✓").exclude(creador = "MES", numero__contains = "POSTV"))
+                cantidad_oc = compras_espera + compras_adjunto_ok
 
-                send = "@Pablo, hasta el momento todas las OC estan firmadas para mañana"
+                if cantidad_oc == 0:
 
-                id = "-585663986"
+                    send = "@Pablo, hasta el momento todas las OC estan firmadas para mañana"
+
+                    id = "-585663986"
+
+                    token = "1880193427:AAH-Ej5ColiocfDZrDxUpvsJi5QHWsASRxA"
+
+                    url = "https://api.telegram.org/bot" + token + "/sendMessage"
+
+                    params = {
+                        'chat_id' : id,
+                        'text' : send
+                    }
+
+                    requests.post(url, params=params)
+
+                else:
+
+                    send = "@Pablo mañana a las 13 horas deben estar firmadas las OC. Cantidad pendientes {} ".format(cantidad_oc)
+
+                    id = "-585663986"
+
+                    token = "1880193427:AAH-Ej5ColiocfDZrDxUpvsJi5QHWsASRxA"
+
+                    url = "https://api.telegram.org/bot" + token + "/sendMessage"
+
+                    params = {
+                        'chat_id' : id,
+                        'text' : send
+                    }
+
+                    requests.post(url, params=params)
+            
+            # -----------------> Saludamos al grupo
+            
+            if today_h.weekday() == 0:
+
+                send = "Buen dia y buena semana grupo!, fui activado por {}. Listo para empezar el dia".format(request.user.first_name)
+
+                id = "-455382561"
 
                 token = "1880193427:AAH-Ej5ColiocfDZrDxUpvsJi5QHWsASRxA"
 
@@ -1099,11 +1137,11 @@ def inicio(request):
 
                 requests.post(url, params=params)
 
-            else:
+            elif today_h.weekday() == 2:
 
-                send = "@Pablo mañana a las 13 horas deben estar firmadas las OC. Cantidad pendientes {} ".format(cantidad_oc)
+                send = "Buen miercoles!, fui activado por {}. Listo para ayudar".format(request.user.first_name)
 
-                id = "-585663986"
+                id = "-455382561"
 
                 token = "1880193427:AAH-Ej5ColiocfDZrDxUpvsJi5QHWsASRxA"
 
@@ -1115,7 +1153,40 @@ def inicio(request):
                 }
 
                 requests.post(url, params=params)
-        # -----------------> Aprovecho para mandar el mail a Emilia recordando los casos de postventa
+
+            elif today_h.weekday() == 4:
+
+                send = "Buen viernes!, fui activado por {}. Ultimo tiron".format(request.user.first_name)
+
+                id = "-455382561"
+
+                token = "1880193427:AAH-Ej5ColiocfDZrDxUpvsJi5QHWsASRxA"
+
+                url = "https://api.telegram.org/bot" + token + "/sendMessage"
+
+                params = {
+                    'chat_id' : id,
+                    'text' : send
+                }
+
+                requests.post(url, params=params)
+
+            elif today_h.weekday() > 4:
+
+                send = "Buen fin de semana!, fui activado por {} por alguna razón. Lamento molestar".format(request.user.first_name)
+
+                id = "-455382561"
+
+                token = "1880193427:AAH-Ej5ColiocfDZrDxUpvsJi5QHWsASRxA"
+
+                url = "https://api.telegram.org/bot" + token + "/sendMessage"
+
+                params = {
+                    'chat_id' : id,
+                    'text' : send
+                }
+
+                requests.post(url, params=params)
 
         #if hoy.weekday() == 0 or hoy.weekday() == 5:
             
@@ -1756,8 +1827,10 @@ def registro_contable(request, date_i):
             
             b = RegistroContable(
                 usuario = user,
+                creador = request.user.username,
                 fecha = request.POST['fecha'],
                 estado = request.POST['tipo'],
+                caja = request.POST['caja'],
                 cuenta = request.POST['cuenta'],
                 categoria = request.POST['categoria'],
                 importe = float(request.POST['importe']),

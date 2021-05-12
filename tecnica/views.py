@@ -46,7 +46,7 @@ def gerenciamientoproyecto(request, id_proyecto):
         try:
             archivo_pandas = pd.read_excel(request.FILES['archivo'])
             list_capitulos = Capitulos.objects.all()
-            months = {"enero":1, "febrero":2, "marzo":3, "abril":4, "mayo":5, "junio":6, "julio":7, "agosto":8, "septiembre":9, "octubre":10, "noviembre":11, "diciembre":12}
+            months = {"enero":1, "febrero":2, "marzo":3, "abril":4, "mayo":5, "junio":6, "julio":7, "agosto":8, "septiembre":9, "octubre":10, "noviembre":11, "diciembre":12, "January":1, "February":2, "March":3, "April":4, "May":5, "June":6, "July":7, "August":8, "September":9, "October":10, "November":11, "December":12}
             for cap in list_capitulos:
                 row_aux = archivo_pandas[archivo_pandas['Nombre'] == cap.nombre]
                 if row_aux.shape[0] > 0:

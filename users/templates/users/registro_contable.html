@@ -668,13 +668,20 @@
                         </div>
                         <div id="explorar" class="tab-pane fade">
 
-                            <h3 style="margin-top: 10px;">Registros realizados</h3>
+                            <h3 style="margin-top: 10px;"><a href="#"><i class="fa fa-file-excel-o text-success"></i></a> Registros realizados</h3>
+                            <div class="row m-2">
+                                <button type="button" class="btn" data-toggle="modal" data-target="#ModalCuenta1"><i
+                                        class="fa fa-plus-circle  text-success"><span class="text-success ml-2"
+                                            style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif"><b>Añadir registro masivo</b></span></i></button>
+                            </div>
                             <div class="table-responsive">
                                 <table id="example2" class="table table-bordered "
                                     style="width:100%; font-size: 14px;">
                                     <thead>
                                         <tr>
                                             <th> Dia </th>
+                                            <th> Caja </th>
+                                            <th> Cargo </th>
                                             <th> Cuenta </th>
                                             <th> Categoria </th>
                                             <th> Importe </th>
@@ -686,9 +693,15 @@
                                         {% for i in registros_totales %}
                                         <tr>
                                             <td>{{i.fecha|date:"Y-m-d"}}</td>
+                                            <td>{{i.caja}}</td>
+                                            <td>{{i.creador}}</td>
                                             <td>{{i.cuenta}}</td>
                                             <td>{{i.categoria}}</td>
+                                            {% if i.estado == "INGRESOS" %}
                                             <td><b>$ {{i.importe|floatformat:0|intcomma}}</b></td>
+                                            {% else %}
+                                            <td><b>- $ {{i.importe|floatformat:0|intcomma}}</b></td>
+                                            {% endif %}
                                         </tr>
 
                                         {% endfor %}
@@ -712,7 +725,7 @@
 
 
 <aside class="right-side-panel">
-    <h3 class="p-relative"><span class="lstick"></span> ¿Como funciona?</h3>
+    <h3 class="p-relative"><span class="lstick"></span> ¿Cómo funciona?</h3>
     <div class="row">
         
         <div class="col-md-12 m-t-10">

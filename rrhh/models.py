@@ -290,8 +290,10 @@ class RegistroContable(models.Model):
         GASTOS = "GASTOS"
 
     usuario = models.ForeignKey(datosusuario, on_delete=models.CASCADE, verbose_name="Usuario")
+    creador = models.CharField(max_length=400, verbose_name="Creador", blank=True, null=True)
     fecha = models.DateField(verbose_name="Fecha")
     estado = models.CharField(choices=estados.choices, default=estados.INGRESOS, max_length=20, verbose_name="Ingreso o gasto")
+    caja = models.CharField(max_length=400, verbose_name="Caja", default="Personal", blank=True, null=True)
     cuenta = models.CharField(max_length=400, verbose_name="Cuenta")
     categoria = models.CharField(max_length=400, verbose_name="Categoria")
     importe = models.FloatField(verbose_name="Importe")
