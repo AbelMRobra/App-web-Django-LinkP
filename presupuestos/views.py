@@ -731,10 +731,10 @@ def presupuestostotal(request):
                         
                         
                             aux_var = Presupuestos.objects.get(proyecto = p)
-                            aux_var.valor = aux_var.valor * (1+var)
-                            aux_var.saldo = aux_var.saldo * (1+var)
-                            aux_var.saldo_mat = aux_var.saldo_mat * (1+var)
-                            aux_var.saldo_mo =  aux_var.saldo_mo * (1+var)
+                            aux_var.valor = aux_var.valor * (1+(var/100))
+                            aux_var.saldo = aux_var.saldo * (1+(var/100))
+                            aux_var.saldo_mat = aux_var.saldo_mat * (1+(var/100))
+                            aux_var.saldo_mo =  aux_var.saldo_mo * (1+(var/100))
                             aux_var.save()
 
                             send = "**Lo logre!** , variación {}%".format(var)
