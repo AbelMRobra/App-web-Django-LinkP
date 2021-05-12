@@ -2306,46 +2306,32 @@ class DescargaPricing(TemplateView):
 
             # Calculamos el precio contado y financiado de ser posible, sino establecemos que no esta definido
 
-            try:
-                param_uni = Pricing.objects.get(unidad = dato)
-                desde = dato.proyecto.desde
-                aumento = 1
-                if dato.tipo == "COCHERA":
-                    aumento = aumento*dato.proyecto.descuento_cochera
-                if param_uni.frente == "SI":
-                    aumento = aumento*dato.proyecto.recargo_frente
-                if param_uni.piso_intermedio == "SI":
-                    aumento = aumento*dato.proyecto.recargo_piso_intermedio
-                if param_uni.cocina_separada == "SI":
-                    aumento = aumento*dato.proyecto.recargo_cocina_separada
-                if param_uni.local == "SI":
-                    aumento = aumento*dato.proyecto.recargo_local
-                if param_uni.menor_45_m2 == "SI":
-                    aumento = aumento*dato.proyecto.recargo_menor_45
-                if param_uni.menor_50_m2 == "SI":
-                    aumento = aumento*dato.proyecto.recargo_menor_50
-                if param_uni.otros == "SI":
-                    aumento = aumento*dato.proyecto.recargo_otros 
-                desde = desde*round(aumento, 4)
+            
+            contado = m2*dato.proyecto.desde
+            aumento = 1
+            desde = dato.proyecto.desde
+            param_uni = FeaturesUni.objects.filter(unidad = dato)
+            features_unidad = FeaturesUni.objects.filter(unidad = dato)
 
-                #Aqui calculamos el contado/financiado
-                
-                contado = desde*m2           
-                values = [0]
-                for m in range((meses)):
-                    values.append(1)
-                anticipo = 0.4
-                valor_auxiliar = np.npv(rate=(dato.proyecto.tasa_f/100), values=values)
-                incremento = (meses/(1-anticipo)/(((anticipo/(1-anticipo))*meses)+valor_auxiliar))
-                financiado = contado*incremento
-                financiado_m2 = financiado/m2                
-                fin_ant = financiado*anticipo
-                valor_cuotas = (financiado - fin_ant)/meses
-            except:
-                param_uni = 0
-                desde = "NO DEFINIDO"
-                contado = "NO DEFINIDO"
-                aumento = "NO"
+            for f2 in features_unidad:
+
+                contado = contado*f2.feature.inc
+                aumento = 1*f2.feature.inc
+            
+
+            #Aqui calculamos el contado/financiado
+         
+            values = [0]
+            for m in range((meses)):
+                values.append(1)
+            anticipo = 0.4
+            valor_auxiliar = np.npv(rate=(dato.proyecto.tasa_f/100), values=values)
+            incremento = (meses/(1-anticipo)/(((anticipo/(1-anticipo))*meses)+valor_auxiliar))
+            financiado = contado*incremento
+            financiado_m2 = financiado/m2                
+            fin_ant = financiado*anticipo
+            valor_cuotas = (financiado - fin_ant)/meses
+
 
             # Aqui establecemos los datos de la venta
 
@@ -2646,6 +2632,8 @@ class DescargaPricing(TemplateView):
 
                 ws["N"+str(cont+1)] = d[3]
 
+                '''
+
                 if d[9] == 0:
 
                     ws["O"+str(cont+1)] = "NO"
@@ -2667,7 +2655,7 @@ class DescargaPricing(TemplateView):
                     ws["U"+str(cont+1)] = d[9].otros
 
 
-
+                '''
 
                 ws["A"+str(cont+1)].font = Font(bold = True)
                 ws["A"+str(cont+1)].alignment = Alignment(horizontal = "center")
@@ -2725,6 +2713,8 @@ class DescargaPricing(TemplateView):
                     
                 ws["N"+str(cont+1)] = d[3]
 
+                '''
+
                 if d[9] == 0:
 
                     ws["O"+str(cont+1)] = "NO"
@@ -2745,7 +2735,7 @@ class DescargaPricing(TemplateView):
                     ws["T"+str(cont+1)] = d[9].menor_50_m2
                     ws["U"+str(cont+1)] = d[9].otros
 
-
+                '''
 
                 ws["A"+str(cont+1)].font = Font(bold = True)
                 ws["A"+str(cont+1)].alignment = Alignment(horizontal = "center")
