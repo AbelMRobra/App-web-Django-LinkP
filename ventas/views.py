@@ -2365,7 +2365,11 @@ class DescargaPricing(TemplateView):
 
             datos_unidad.append((dato, m2_equivalente, m2_total, aumento,  contado, desde, financiado, financiado_m2, venta, param_uni))
 
-    
+        # Ordenamos las unidades
+
+        datos_unidad = sorted(datos_unidad, key=lambda unidad : unidad[0].orden)
+
+
         #Aqui calculo promedio contado y promedio financiado y otros datos que usaremos en el resumen
 
         cantidad = len(datos_unidad)
