@@ -316,6 +316,22 @@ def guia(request):
         list_usuarios = datosusuario.objects.all().exclude(identificacion = request.user).order_by("identificacion").exclude(estado = "NO ACTIVO")
 
         ########################################
+        # Calculo de monedasentregadas (Listado)
+        ########################################
+        
+        coins_entregada = EntregaMoneda.objects.filter(moneda__usuario_portador__identificacion = request.user.username).values_list("usuario_recibe", flat = True)
+
+        list_user_unique = list(set(coins_entregada))
+
+        info_coins_entregadas = []
+
+        for user in list_user_unique:
+
+            coins_entregadas = datosusuario.objects.get(id = user)
+            coins_cantidad = len(EntregaMoneda.objects.filter(moneda__usuario_portador__identificacion = request.user.username, usuario_recibe__id = user))
+            info_coins_entregadas.append((coins_entregadas, coins_cantidad))
+        
+        ########################################
         # Calculo de monedas disponibles para dar
         ########################################
 
@@ -439,7 +455,7 @@ def guia(request):
     except:
         logros = 0  
 
-    return render(request, "users/guia.html", {"argentino":argentino, "logros":logros, "rey":rey, "amor":amor, "datos":datos, "otros_datos":otros_datos, "recibidas":recibidas, "monedas_recibidas":monedas_recibidas, "monedas_disponibles":monedas_disponibles, "monedas_disponibles_canje":monedas_disponibles_canje, "list_usuarios":list_usuarios})
+    return render(request, "users/guia.html", {"argentino":argentino, "logros":logros, "rey":rey, "amor":amor, "datos":datos, "otros_datos":otros_datos, "recibidas":recibidas, "monedas_recibidas":monedas_recibidas, "monedas_disponibles":monedas_disponibles, "monedas_disponibles_canje":monedas_disponibles_canje, "list_usuarios":list_usuarios, "info_coins_entregadas":info_coins_entregadas})
 
 def canjemonedas(request):
 

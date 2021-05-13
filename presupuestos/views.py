@@ -735,12 +735,6 @@ def presupuestostotal(request):
                             send_2 = "{} - ".format(p)
 
 
-                    id = "-455382561"
-
-                    token = "1880193427:AAH-Ej5ColiocfDZrDxUpvsJi5QHWsASRxA"
-
-                    url = "https://api.telegram.org/bot" + token + "/sendMessage"
-
                     params = {
                         'chat_id' : id,
                         'text' : send_1
@@ -756,12 +750,6 @@ def presupuestostotal(request):
                     requests.post(url, params=params)
 
                     send = "Proceso de actualización de proyectos extrapolados completo. Disculpen los mensajes"
-
-                    id = "-455382561"
-
-                    token = "1880193427:AAH-Ej5ColiocfDZrDxUpvsJi5QHWsASRxA"
-
-                    url = "https://api.telegram.org/bot" + token + "/sendMessage"
 
                     params = {
                         'chat_id' : id,

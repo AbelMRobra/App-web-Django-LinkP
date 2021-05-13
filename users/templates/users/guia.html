@@ -6,261 +6,313 @@
 {% block content %}
 
 <div class="container-fluid r-aside">
-    <!-- ============================================================== -->
-    <!-- Bread crumb and right sidebar toggle -->
-    <!-- ============================================================== -->
     <div class="row page-titles">
         <div class="col-md-5 align-self-center">
             <h3 class="text-themecolor">Tu perfil</h3>
         </div>
-
     </div>
-
-  </div>
-
-
+</div>
 
 <div class="row">
+    <div class="col-lg-6 col-xlg-4">
+        <div class="card">
+            <div class="card-body">
+                <div class="card-body little-profile text-center">
+                    <div>
 
+                        <h4 class="card-title">{{request.user.first_name}} {{request.user.last_name}}</h4>
+                    </div>
+                    <div class="pro-img m-t-20">{% if datos %}<img src="{{datos.imagenlogo.url}}" alt="user"
+                            class="img-circle img-responsive">{% else %}<img src="{% static 'img/grupo.png' %}"
+                            alt="user" class="img-circle img-responsive">{% endif %}</div>
+                    <h3 class="m-b-0">{% if datos %} <small>{{datos.area}}</small>{% else %}<small>Invitado</small>{% endif %}</h3>
+                    <h6 class="text-muted">{% if datos %} <small>{{datos.cargo}}</small>{% else %}<small>Invitado</small>{% endif %}</h6>
+                    <h6 class="text-muted m-t-10 m-b-0">{{datos.email}}</h6>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="col-lg-6 col-xlg-4">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title"><span class="lstick m-r-20"></span>Logros desbloqueados</h4>
+            </div>
 
-        
+            <table class="table stylish-table">
 
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="card-body little-profile text-center">
-                            <div>
-            
-                                <h4 class="card-title">{{request.user.first_name}} {{request.user.last_name}}</h4></div>
-                            <div class="pro-img m-t-20">{% if datos %}<img src="{{datos.imagenlogo.url}}" alt="user" class="img-circle img-responsive">{% else %}<img src="{% static 'img/grupo.png' %}" alt="user" class="img-circle img-responsive">{% endif %}</div>
-                            <h3 class="m-b-0">{% if datos %} <small>{{datos.area}}</small>{% else %}<small>Invitado</small>{% endif %}</h3>
-                            <h6 class="text-muted">{% if datos %} <small>{{datos.cargo}}</small>{% else %}<small>Invitado</small>{% endif %}</h6>
-                            <h6 class="text-muted m-t-10 m-b-0">{{datos.email}}</h6>
-                        </div>
-                        </div>
-                    </div>
-                </div>
+                <tbody>
+                    {% if datos.estado == "ACTIVO" %}
+                    <tr>
 
-                <div class="col-lg-6 col-xlg-4">
+                        <td><img src="{% static 'img/cheque.png' %}" alt=""
+                                style="max-width:17px; height:auto; vertical-align: top; margin-top: 2px;">
+                            <b>Staff</b>: <i>Eres un miembro de la empresa!</i>
+                        </td>
 
-        
+                    </tr>
+                    {% endif %}
+                    {% if datos.email %}
+                    <tr>
 
-                    <div class="card">
-                        <div class="card-body">
-                            <h4 class="card-title"><span class="lstick m-r-20"></span>Logros desbloqueados</h4>
-                        </div>
+                        <td><img src="{% static 'img/email.png' %}" alt=""
+                                style="max-width:17px; height:auto; vertical-align: top; margin-top: 2px;">
+                            <b>Email</b>: <i>Ahora podremos comunicarnos si notamos algo</i>
+                        </td>
 
-                        <table class="table stylish-table">
+                    </tr>
+                    {% endif %}
+                    {% if amor %}
+                    <tr>
 
-                            <tbody>
-                                {% if datos.estado == "ACTIVO" %}
-                                <tr>
-                                    
-                                    <td><img src="{% static 'img/cheque.png' %}" alt="" style="max-width:17px; height:auto; vertical-align: top; margin-top: 2px;"> <b>Staff</b>: <i>Eres un miembro de la empresa!</i></td>
-                                    
-                                </tr>
-                                {% endif %}
-                                {% if datos.email %}
-                                <tr>
-                                    
-                                    <td><img src="{% static 'img/email.png' %}" alt="" style="max-width:17px; height:auto; vertical-align: top; margin-top: 2px;"> <b>Email</b>: <i>Ahora podremos comunicarnos si notamos algo</i></td>
-                                    
-                                </tr>
-                                {% endif %}
-                                {% if amor %}
-                                <tr>
-                                    
-                                    <td><img src="{% static 'img/amor.png' %}" alt="" style="max-width:17px; height:auto; vertical-align: top; margin-top: 2px;"> <b>Dar</b>: <i>Tus compañeros valoran tu reconocimiento :)</i></td>
-                                    
-                                </tr>
-                                {% endif %}
-                                {% if rey == 1 %}
-                                <tr>
-                                    
-                                    <td><img src="{% static 'img/estrella.png' %}" alt="" style="max-width:17px; height:auto; vertical-align: top; margin-top: 2px;"> <b>Top #1</b>: <i>Eres el usuario con mas Linkcoins!</i></td>
-                                    
-                                </tr>
-                                {% endif %}
-                                {% if rey == 2 %}
-                                <tr>
-                                    
-                                    <td><img src="{% static 'img/estrella2.png' %}" alt="" style="max-width:17px; height:auto; vertical-align: top; margin-top: 2px;"> <b>Top #2</b>: <i>¿Qué haras con tantas Linkcoins?</i></td>
-                                    
-                                </tr>
-                                {% endif %}
+                        <td><img src="{% static 'img/amor.png' %}" alt=""
+                                style="max-width:17px; height:auto; vertical-align: top; margin-top: 2px;"> <b>Dar</b>:
+                            <i>Tus compañeros valoran tu reconocimiento :)</i>
+                        </td>
 
-                                {% if argentino %}
-                                <tr>                                   
-                                    <td><img src="{% static 'img/argentina.png' %}" alt="" style="max-width:17px; height:auto; vertical-align: top; margin-top: 2px;"> <b>Argentino</b>: <i>Boluda/o es una palabra 100% Argentina</i></td>
-                                </tr>
-                                {% endif %}
+                    </tr>
+                    {% endif %}
+                    {% if rey == 1 %}
+                    <tr>
 
-                                {% if logros %}
-                                {% for i in logros %}
-                                <tr>
-                                    
-                                    <td><img 
-                                        
-                                        {% if i.nombre == "Curioso" %}
-                                        src="{% static 'img/easter-egg.png' %}"
-                                        {% endif %}
-                                        alt="" style="max-width:17px; height:auto; vertical-align: top; margin-top: 2px;"> <b>{{i.nombre}}</b>: <i>{{i.descrip}}</i></td>
-                                    
-                                </tr>
-                                {% endfor %}
+                        <td><img src="{% static 'img/estrella.png' %}" alt=""
+                                style="max-width:17px; height:auto; vertical-align: top; margin-top: 2px;"> <b>Top
+                                #1</b>: <i>Eres el usuario con mas Linkcoins!</i></td>
+
+                    </tr>
+                    {% endif %}
+                    {% if rey == 2 %}
+                    <tr>
+
+                        <td><img src="{% static 'img/estrella2.png' %}" alt=""
+                                style="max-width:17px; height:auto; vertical-align: top; margin-top: 2px;"> <b>Top
+                                #2</b>: <i>¿Qué haras con tantas Linkcoins?</i></td>
+
+                    </tr>
+                    {% endif %}
+
+                    {% if argentino %}
+                    <tr>
+                        <td><img src="{% static 'img/argentina.png' %}" alt=""
+                                style="max-width:17px; height:auto; vertical-align: top; margin-top: 2px;">
+                            <b>Argentino</b>: <i>Boluda/o es una palabra 100% Argentina</i>
+                        </td>
+                    </tr>
+                    {% endif %}
+
+                    {% if logros %}
+                    {% for i in logros %}
+                    <tr>
+
+                        <td><img {% if i.nombre == "Curioso" %} src="{% static 'img/easter-egg.png' %}" {% endif %} alt=""
+                                style="max-width:17px; height:auto; vertical-align: top; margin-top: 2px;">
+                            <b>{{i.nombre}}</b>: <i>{{i.descrip}}</i>
+                        </td>
+
+                    </tr>
+                    {% endfor %}
+                    {% endif %}
 
 
-                                {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 
-
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-    <div class="col-12">
+<div class="col-12">
     <div class="card">
         <div class="card-body">
 
-    <h4 class="card-title"><span class="lstick m-r-20"></span>Linkcoins</h4>
+            <h4 class="card-title"><span class="lstick m-r-20"></span>Linkcoins</h4>
 
-    {% if datos and datos.estado == "ACTIVO" %}
-    <h6 class="text-muted m-t-10 m-b-0">Recibidas de tus compañeros: <b>{{monedas_recibidas}}</b> <img src="{% static 'img/monedalink2.png' %}" alt="" style="max-width:17px; height:auto; vertical-align: top;"></h6>
-    <h6 class="text-muted m-t-10 m-b-0">Disponibles para canjear: <b>{{monedas_disponibles_canje}}</b> <img src="{% static 'img/monedalink2.png' %}" alt="" style="max-width:17px; height:auto; vertical-align: top;"></h6>
-    <h6 class="text-muted m-t-10 m-b-0">Disponibles para regalar: <b>{{monedas_disponibles}}</b> <img src="{% static 'img/monedalink2.png' %}" alt="" style="max-width:17px; height:auto; vertical-align: top;"></h6>
-    <div style="margin-top: 15px; margin-bottom: 30px;">
-        <a type="button" style="text-decoration: none;" data-toggle="modal" data-target="#ModalPremio"  name="subir_item" value="{{t.0.id}}"><img src="{% static 'img/regalo2.png' %}" alt="" style="max-width:25px; height:auto; vertical-align: bottom; margin-right: 15px;" data-toggle="tooltip" data-placement="right" title="" data-original-title="Regalar monedas"> </a>
+            {% if datos and datos.estado == "ACTIVO" %}
+            <h6 class="text-muted m-t-10 m-b-0">Recibidas de tus compañeros: <b>{{monedas_recibidas}}</b> <img
+                    src="{% static 'img/monedalink2.png' %}" alt=""
+                    style="max-width:17px; height:auto; vertical-align: top;"></h6>
+            <h6 class="text-muted m-t-10 m-b-0">Disponibles para canjear: <b>{{monedas_disponibles_canje}}</b> <img
+                    src="{% static 'img/monedalink2.png' %}" alt=""
+                    style="max-width:17px; height:auto; vertical-align: top;"></h6>
+            <h6 class="text-muted m-t-10 m-b-0">Disponibles para regalar: <b>{{monedas_disponibles}}</b> <img
+                    src="{% static 'img/monedalink2.png' %}" alt=""
+                    style="max-width:17px; height:auto; vertical-align: top;"></h6>
+            <div style="margin-top: 15px; margin-bottom: 30px;">
+                <a type="button" style="text-decoration: none;" data-toggle="modal" data-target="#ModalPremio"
+                    name="subir_item" value="{{t.0.id}}"><img src="{% static 'img/regalo2.png' %}" alt=""
+                        style="max-width:25px; height:auto; vertical-align: bottom; margin-right: 15px;"
+                        data-toggle="tooltip" data-placement="right" title="" data-original-title="Regalar monedas">
+                </a>
 
-        <a href="{% url 'Canje de monedas' %}" style="text-decoration: none;"><img src="{% static 'img/canje.png' %}" alt="" style="max-width:25px; height:auto; vertical-align: bottom;" data-toggle="tooltip" data-placement="right" title="" data-original-title="Canjear monedas"> </a>
-
-    </div>
-    
-<!-- Modal fecha estado Subitem -->
-<div class="modal fade" id="ModalPremio" tabindex="-1" role="dialog" aria-labelledby="ModalPremioTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-        <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">Entrega de monedas!</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-        </div>
-        <div class="modal-body">
-                                            
-        <form method="POST" style="margin: 15px;">
-
-            {% csrf_token %}
-
-            <h6><small>Elige al usuario</small> </h6>  
-
-            <div class="input-group mb-3">
-                        
-                    <select name="usuario" class="custom-select" style="width: 300px;">
-                        {% if list_usuarios %}
-                        {% for i in list_usuarios %}
-    
-                        <option value="{{i.id}}" selected> {{i.nombre}}</option>
-    
-                        {% endfor %}
-                        {% endif %}
-    
-                    </select>
-            </div>
-
-            <h6><small>Cantidad de Linkcoins</small> </h6>  
-
-            <div class="input-group mb-3">
-                        
-                <input name="cantidad" max="{{monedas_disponibles}}" step="0" type="number" class="form-control form-control" style="width: 300px;">
-            </div>
-
-            <h6><small>Deja un mensaje</small> </h6>  
-
-            <div class="input-group mb-3">
-
-                <textarea class="form-control" id="exampleTextarea" rows="3" name="mensaje"></textarea>
+                <a href="{% url 'Canje de monedas' %}" style="text-decoration: none;"><img
+                        src="{% static 'img/canje.png' %}" alt=""
+                        style="max-width:25px; height:auto; vertical-align: bottom;" data-toggle="tooltip"
+                        data-placement="right" title="" data-original-title="Canjear monedas"> </a>
 
             </div>
 
-            <button type="submit" class="btn waves-effect waves-light btn-rounded btn-secondary"><img src="{% static 'img/regalo2.png' %}" alt="" style="max-width:25px; height:auto; vertical-align: bottom;"> Regalar</button>
-        
-        </form>
-        
-        </div>
-        <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <!-- Modal fecha estado Subitem -->
+            <div class="modal fade" id="ModalPremio" tabindex="-1" role="dialog" aria-labelledby="ModalPremioTitle"
+                aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">Entrega de monedas!</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
 
-        </div>
-    </div>
-    </div>
+                            <form method="POST" style="margin: 15px;">
 
-</div>
+                                {% csrf_token %}
+
+                                <h6><small>Elige al usuario</small> </h6>
+
+                                <div class="input-group mb-3">
+
+                                    <select name="usuario" class="custom-select" style="width: 300px;">
+                                        {% if list_usuarios %}
+                                        {% for i in list_usuarios %}
+
+                                        <option value="{{i.id}}" selected> {{i.nombre}}</option>
+
+                                        {% endfor %}
+                                        {% endif %}
+
+                                    </select>
+                                </div>
+
+                                <h6><small>Cantidad de Linkcoins</small> </h6>
+
+                                <div class="input-group mb-3">
+
+                                    <input name="cantidad" max="{{monedas_disponibles}}" step="0" type="number"
+                                        class="form-control form-control" style="width: 300px;">
+                                </div>
+
+                                <h6><small>Deja un mensaje</small> </h6>
+
+                                <div class="input-group mb-3">
+
+                                    <textarea class="form-control" id="exampleTextarea" rows="3"
+                                        name="mensaje"></textarea>
+
+                                </div>
+
+                                <button type="submit" class="btn btn-info"><img src="{% static 'img/regalo2.png' %}"
+                                        alt="" style="max-width:25px; height:auto; vertical-align: bottom;">
+                                    Regalar</button>
+
+                            </form>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
 
 
-<h4 class="card-title">Monedas recibidas</h4>
-    
-    <div class="table-responsive m-t-40">
-        <table class="table stylish-table">
-            <thead>
-                <tr>
-                    <th style="text-align: center;">User</th>
-                    <th style="text-align: center;">Cantidad</th>
-                    <th>Mensaje</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% if recibidas %}
-                {% for i in recibidas %}
-                <tr>
-                    <td style="text-align: left;"><img src="{% usuario i.2 %}" class="rounded" style="width: 40px;"
-                        alt=""><span class="ml-2">{{i.2}}</span></td>
+            <div>
+                <h4 class="card-title">Monedas recibidas</h4>
 
-                    <td style="text-align: center;">{{i.0}} <img src="{% static 'img/monedalink2.png' %}" alt="" style="max-width:17px; height:auto; vertical-align: top; margin-top: 2px;"></td>
-                    <td style="width: 80%;"><b>Mensaje:</b> <i>"{{i.1}}"</i></td>
-                </tr>
-                {% endfor %}
-                {% endif %}
+                <div class="table-responsive m-t-2">
+                    <table class="table stylish-table">
+                        <thead>
+                            <tr>
+                                <th style="text-align: center;">User</th>
+                                <th style="text-align: center;">Cantidad</th>
+                                <th>Mensaje</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if recibidas %}
+                            {% for i in recibidas %}
+                            <tr>
+                                <td style="text-align: left;"><img src="{% usuario i.2 %}" class="rounded"
+                                        style="width: 40px;" alt=""><span class="ml-2">{{i.2}}</span></td>
 
-            </tbody>
-        </table>
-    </div>
+                                <td style="text-align: center;">{{i.0}} <img src="{% static 'img/monedalink2.png' %}"
+                                        alt=""
+                                        style="max-width:17px; height:auto; vertical-align: top; margin-top: 2px;">
+                                </td>
+                                <td style="width: 80%;"><b>Mensaje:</b> <i>"{{i.1}}"</i></td>
+                            </tr>
+                            {% endfor %}
+                            {% endif %}
 
-    {% else %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div>
+                <h4 class="card-title mt-4">Monedas entregadas</h4>
+                <div class="row">
 
-    <h6 class="text-muted m-t-10 m-b-0">No estas habilitado para esta sección</h6>
+                    {% for i in info_coins_entregadas%}
 
-    {% endif %}
+                    <div style="width: 8%;" class="mx-4 my-2">
+                        <div class="row" style="background:linear-gradient(135deg, #31467a 0%,#13bbe1 100%); border-radius: 5px;">
+                            <div class="col-12 text-center mt-2">
+                                <img src="{{i.0.imagenlogo.url}}" class="rounded"
+                                        style="width: 40px;" alt="">
+                            </div>
+                            <div class="col-12 text-light my-2">
+                                <div>
+                                    <img src="{% static 'img/monedalinkBlanco.png' %}"
+                                    alt=""
+                                    style="max-width:20px; height:auto; vertical-align: top; margin-top: 2px;">
+                                    <span style="font-size: 18px;">{{i.1}}</span>
+                                    <span style="font-weight: bold; font-size: 18px; margin-left: 5px;">{{i.0.identificacion}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-
-        </div>
-    </div>
-    </div>
-</div>
+                    {% endfor %}
+                  
+                  
+                </div>
+            </div>
 
             
 
+            {% else %}
+            <h6 class="text-muted m-t-10 m-b-0">No estas habilitado para esta sección</h6>
+            {% endif %}
 
-<div class="">
-    <button class="right-side-toggle waves-effect waves-light btn-inverse btn btn-circle btn-sm pull-right m-l-10"><i class="ti-settings text-white"></i></button>
-</div>
-  
-
-<div class="row">
-<!-- .col -->
-
-<div class="right-sidebar">
-    <div class="slimscrollright">
-        <div class="rpanel-title"> Panel de servicio <span><i class="ti-close right-side-toggle"></i></span> </div>
-        <div class="r-panel-body">
-            <ul class="m-t-20 chatonline">
-                <li><a href="{% url 'Password' %}"><span>Cambio de contraseña</span></a></li>
-                <li><a href="{% url 'Password' %}"><span>Calendario de vacaciones</span></a></li>
-            </ul>
 
         </div>
     </div>
 </div>
+
+
+
+
+<div class="">
+    <button class="right-side-toggle waves-effect waves-light btn-inverse btn btn-circle btn-sm pull-right m-l-10"><i
+            class="ti-settings text-white"></i></button>
+</div>
+
+
+<div class="row">
+    <div class="right-sidebar">
+        <div class="slimscrollright">
+            <div class="rpanel-title"> Panel de servicio <span><i class="ti-close right-side-toggle"></i></span>
+            </div>
+            <div class="r-panel-body">
+                <ul class="m-t-20 chatonline">
+                    <li><a href="{% url 'Password' %}"><span>Cambio de contraseña</span></a></li>
+                    <li><a href="{% url 'Password' %}"><span>Calendario de vacaciones</span></a></li>
+                </ul>
+
+            </div>
+        </div>
+    </div>
 </div>
 
 
