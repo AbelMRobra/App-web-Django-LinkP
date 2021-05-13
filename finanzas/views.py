@@ -3149,24 +3149,28 @@ def arqueo_diario(request, id_arqueo):
 
         consolidado_actual = consolidado_actual + consolidado - data_frame.loc[numero, 'MONEDA EXTRANJERA'] + data_frame.loc[numero, 'USD']*cambio_usd + data_frame.loc[numero, 'EUROS']*cambio_euro
 
-        # ----> Armemos lo de los cheques
+        
+        try:
+            # ----> Armemos lo de los cheques
 
-        nombre_proyecto = data_frame.loc[numero, 'PROYECTO']
+            nombre_proyecto = data_frame.loc[numero, 'PROYECTO']
 
-        cheque_numero = list(data_frame[data_frame["CHEQUE PROYECTO"] == nombre_proyecto]["CHEQUE NUMERO"])
-        cheque_cliente = list(data_frame[data_frame["CHEQUE PROYECTO"] == nombre_proyecto]["CHEQUE CLIENTE"])
-        cheque_emitido = list(data_frame[data_frame["CHEQUE PROYECTO"] == nombre_proyecto]["CHEQUE EMITIDO"])
-        cheque_vencimiento = list(data_frame[data_frame["CHEQUE PROYECTO"] == nombre_proyecto]["CHEQUE VENCIMIENTO"])
-        cheque_monto = list(data_frame[data_frame["CHEQUE PROYECTO"] == nombre_proyecto]["CHEQUE MONTO"])
-        cheque_tipo = list(data_frame[data_frame["CHEQUE PROYECTO"] == nombre_proyecto]["CHEQUE TIPO"])
+            cheque_numero = list(data_frame[data_frame["CHEQUE PROYECTO"] == nombre_proyecto]["CHEQUE NUMERO"])
+            cheque_cliente = list(data_frame[data_frame["CHEQUE PROYECTO"] == nombre_proyecto]["CHEQUE CLIENTE"])
+            cheque_emitido = list(data_frame[data_frame["CHEQUE PROYECTO"] == nombre_proyecto]["CHEQUE EMITIDO"])
+            cheque_vencimiento = list(data_frame[data_frame["CHEQUE PROYECTO"] == nombre_proyecto]["CHEQUE VENCIMIENTO"])
+            cheque_monto = list(data_frame[data_frame["CHEQUE PROYECTO"] == nombre_proyecto]["CHEQUE MONTO"])
+            cheque_tipo = list(data_frame[data_frame["CHEQUE PROYECTO"] == nombre_proyecto]["CHEQUE TIPO"])
 
-        info_cheque = []
+            info_cheque = []
 
-        cont_info = 0
+            cont_info = 0
 
-        for i in cheque_numero:
-            info_cheque.append(("Nº "+str(cheque_numero[cont_info]), cheque_cliente[cont_info], cheque_emitido[cont_info], cheque_vencimiento[cont_info], cheque_monto[cont_info], cheque_tipo[cont_info]))
-            cont_info += 1
+            for i in cheque_numero:
+                info_cheque.append(("Nº "+str(cheque_numero[cont_info]), cheque_cliente[cont_info], cheque_emitido[cont_info], cheque_vencimiento[cont_info], cheque_monto[cont_info], cheque_tipo[cont_info]))
+                cont_info += 1
+        except:
+            info_cheque = []
 
         datos.append((proyecto, data_frame.loc[numero, 'PROYECTO'], data_frame.loc[numero, 'EFECTIVO'], data_frame.loc[numero, 'USD'], data_frame.loc[numero, 'EUROS'], data_frame.loc[numero, 'CHEQUES'], data_frame.loc[numero, 'MONEDA EXTRANJERA'], banco, consolidado, list_bank_proj_info, info_cheque))
 
