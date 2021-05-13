@@ -8,6 +8,7 @@ from presupuestos.models import Constantes, Desde, Registrodeconstantes
 from datetime import date
 from django.shortcuts import redirect
 import datetime
+import string
 from datetime import date
 import operator
 import numpy as np
@@ -2427,29 +2428,6 @@ class DescargaPricing(TemplateView):
         ws["A8"].font = Font(bold = True, color= "FDFFFF")
         ws["A8"].fill =  PatternFill("solid", fgColor= "23346D")
 
-        ws["A9"] = "PARAMETROS DEL PRECING"
-        ws["A9"].font = Font(bold = True, color= "FDFFFF")
-        ws["A9"].fill =  PatternFill("solid", fgColor= "23346D")
-
-
-        ws["A10"] = "VARIACIÓN COCHERA"
-        ws["A11"] = "VARIACIÓN FRENTE"
-        ws["A12"] = "VARIACIÓN PISO INTERMEDIO"
-        ws["A13"] = "VARIACIÓN COCINA SEPARADA"
-        ws["A14"] = "VARIACIÓN LOCAL"
-        ws["A15"] = "VARIACIÓN UNIDAD MENOR A 45M2"
-        ws["A16"] = "VARIACIÓN UNIDAD MENOR A 50M2"
-        ws["A17"] = "VARIACIÓN POR OTROS"
-        ws["A10"].font = Font(bold = True)
-        ws["A11"].font = Font(bold = True)
-        ws["A12"].font = Font(bold = True)
-        ws["A13"].font = Font(bold = True)
-        ws["A14"].font = Font(bold = True)
-        ws["A15"].font = Font(bold = True)
-        ws["A16"].font = Font(bold = True)
-        ws["A17"].font = Font(bold = True)
-
-
         ws["B2"] = proyecto.nombre
         ws["B2"].font = Font(bold = True)
         ws["B2"].alignment = Alignment(horizontal = "center")
@@ -2459,28 +2437,12 @@ class DescargaPricing(TemplateView):
         ws["B6"] = promedio_contado
         ws["B7"] = promedio_financiado
         ws["B8"] = dato.proyecto.desde
-        ws["B10"] = dato.proyecto.descuento_cochera
-        ws["B11"] = dato.proyecto.recargo_frente
-        ws["B12"] = dato.proyecto.recargo_piso_intermedio
-        ws["B13"] = dato.proyecto.recargo_cocina_separada
-        ws["B14"] = dato.proyecto.recargo_local
-        ws["B15"] = dato.proyecto.recargo_menor_45
-        ws["B16"] = dato.proyecto.recargo_menor_50
-        ws["B17"] = dato.proyecto.recargo_otros 
-
-
+ 
         ws["B5"].number_format = '#,##0.00_-"M2"'
         ws["B6"].number_format = '"$ "#,##0.00_-'
         ws["B7"].number_format = '"$ "#,##0.00_-'
         ws["B8"].number_format = '"$ "#,##0.00_-'
-        ws["B10"].number_format = '#,##0.00_-'
-        ws["B11"].number_format = '#,##0.00_-'
-        ws["B12"].number_format = '#,##0.00_-'
-        ws["B13"].number_format = '#,##0.00_-'
-        ws["B14"].number_format = '#,##0.00_-'
-        ws["B15"].number_format = '#,##0.00_-'
-        ws["B16"].number_format = '#,##0.00_-'
-        ws["B17"].number_format = '#,##0.00_-'
+
 
 
         ws.column_dimensions['A'].width = 40
@@ -2507,15 +2469,6 @@ class DescargaPricing(TemplateView):
                 ws["L"+str(cont)] = "ASIGNACIÓN"
                 ws["M"+str(cont)] = "VENDIDO A"
                 ws["N"+str(cont)] = "%V"
-                ws["O"+str(cont)] = "FRENTE"
-                ws["P"+str(cont)] = "PISO INT."
-                ws["Q"+str(cont)] = "COCINA SEP."
-                ws["R"+str(cont)] = "LOCAL"
-                ws["S"+str(cont)] = "MENOR A 45"
-                ws["T"+str(cont)] = "MENOR A 50"
-                ws["U"+str(cont)] = "OTROS"
-
-
 
                 ws["A"+str(cont)].alignment = Alignment(horizontal = "center")
                 ws["B"+str(cont)].alignment = Alignment(horizontal = "center")
@@ -2531,15 +2484,7 @@ class DescargaPricing(TemplateView):
                 ws["L"+str(cont)].alignment = Alignment(horizontal = "center")
                 ws["M"+str(cont)].alignment = Alignment(horizontal = "center")
                 ws["N"+str(cont)].alignment = Alignment(horizontal = "center")
-                ws["O"+str(cont)].alignment = Alignment(horizontal = "center")
-                ws["P"+str(cont)].alignment = Alignment(horizontal = "center")
-                ws["Q"+str(cont)].alignment = Alignment(horizontal = "center")
-                ws["R"+str(cont)].alignment = Alignment(horizontal = "center")
-                ws["S"+str(cont)].alignment = Alignment(horizontal = "center")
-                ws["T"+str(cont)].alignment = Alignment(horizontal = "center")
-                ws["U"+str(cont)].alignment = Alignment(horizontal = "center")
-
-
+                
 
                 ws["A"+str(cont)].font = Font(bold = True, color= "FDFFFF")
                 ws["A"+str(cont)].fill =  PatternFill("solid", fgColor= "23346D")
@@ -2569,22 +2514,23 @@ class DescargaPricing(TemplateView):
                 ws["M"+str(cont)].fill =  PatternFill("solid", fgColor= "23346D")
                 ws["N"+str(cont)].font = Font(bold = True, color= "FDFFFF")
                 ws["N"+str(cont)].fill =  PatternFill("solid", fgColor= "23346D")
-                ws["O"+str(cont)].font = Font(bold = True, color= "FDFFFF")
-                ws["O"+str(cont)].fill =  PatternFill("solid", fgColor= "23346D")
-                ws["P"+str(cont)].font = Font(bold = True, color= "FDFFFF")
-                ws["P"+str(cont)].fill =  PatternFill("solid", fgColor= "23346D")
-                ws["Q"+str(cont)].font = Font(bold = True, color= "FDFFFF")
-                ws["Q"+str(cont)].fill =  PatternFill("solid", fgColor= "23346D")
-                ws["R"+str(cont)].font = Font(bold = True, color= "FDFFFF")
-                ws["R"+str(cont)].fill =  PatternFill("solid", fgColor= "23346D")
-                ws["S"+str(cont)].font = Font(bold = True, color= "FDFFFF")
-                ws["S"+str(cont)].fill =  PatternFill("solid", fgColor= "23346D")
-                ws["T"+str(cont)].font = Font(bold = True, color= "FDFFFF")
-                ws["T"+str(cont)].fill =  PatternFill("solid", fgColor= "23346D")
-                ws["U"+str(cont)].font = Font(bold = True, color= "FDFFFF")
-                ws["U"+str(cont)].fill =  PatternFill("solid", fgColor= "23346D")
 
+                features_project = FeaturesProjects.objects.filter(proyecto = proyecto)
 
+                alphabet_string = string.ascii_uppercase
+                alphabet_list = list(alphabet_string)
+                cont_alph = 14
+                
+                for f in features_project:
+
+                    ws[str(alphabet_list[cont_alph])+str(cont)] = f.nombre
+                    ws.column_dimensions[str(alphabet_list[cont_alph])].width = 15
+                    ws[str(alphabet_list[cont_alph])+str(cont)].alignment = Alignment(horizontal = "center")
+                    ws[str(alphabet_list[cont_alph])+str(cont)].font = Font(bold = True, color= "FDFFFF")
+                    ws[str(alphabet_list[cont_alph])+str(cont)].fill =  PatternFill("solid", fgColor= "23346D")
+                    cont_alph += 1
+                
+ 
                 ws.column_dimensions['A'].width = 12
                 ws.column_dimensions['B'].width = 8
                 ws.column_dimensions['C'].width = 18
@@ -2599,13 +2545,8 @@ class DescargaPricing(TemplateView):
                 ws.column_dimensions['L'].width = 15
                 ws.column_dimensions['M'].width = 20
                 ws.column_dimensions['N'].width = 10
-                ws.column_dimensions['O'].width = 15
-                ws.column_dimensions['P'].width = 15
-                ws.column_dimensions['Q'].width = 15
-                ws.column_dimensions['R'].width = 15
-                ws.column_dimensions['S'].width = 15
-                ws.column_dimensions['T'].width = 15
-                ws.column_dimensions['U'].width = 15
+                
+
 
 
                 # Aqui empiezan los datos
@@ -2632,30 +2573,26 @@ class DescargaPricing(TemplateView):
 
                 ws["N"+str(cont+1)] = d[3]
 
-                '''
 
-                if d[9] == 0:
-
-                    ws["O"+str(cont+1)] = "NO"
-                    ws["P"+str(cont+1)] = "NO"
-                    ws["Q"+str(cont+1)] = "NO"
-                    ws["R"+str(cont+1)] = "NO"
-                    ws["S"+str(cont+1)] = "NO"
-                    ws["T"+str(cont+1)] = "NO"
-                    ws["U"+str(cont+1)] = "NO"
+                cont_alph = 14
                 
-                else:
+                for f in features_project:
 
-                    ws["O"+str(cont+1)] = d[9].frente
-                    ws["P"+str(cont+1)] = d[9].piso_intermedio
-                    ws["Q"+str(cont+1)] = d[9].cocina_separada
-                    ws["R"+str(cont+1)] = d[9].local
-                    ws["S"+str(cont+1)] = d[9].menor_45_m2
-                    ws["T"+str(cont+1)] = d[9].menor_50_m2
-                    ws["U"+str(cont+1)] = d[9].otros
+                    aux = len(FeaturesUni.objects.filter(feature = f, unidad = d[0]))
 
+                    if aux:
 
-                '''
+                        ws[str(alphabet_list[cont_alph])+str(cont+1)] = "SI"
+                        ws[str(alphabet_list[cont_alph])+str(cont+1)].alignment = Alignment(horizontal = "center")
+
+                    else:
+                        ws[str(alphabet_list[cont_alph])+str(cont+1)] = "NO"
+                        ws[str(alphabet_list[cont_alph])+str(cont+1)].alignment = Alignment(horizontal = "center")
+
+                    cont_alph += 1
+
+                
+
 
                 ws["A"+str(cont+1)].font = Font(bold = True)
                 ws["A"+str(cont+1)].alignment = Alignment(horizontal = "center")
@@ -2676,15 +2613,7 @@ class DescargaPricing(TemplateView):
                 ws["K"+str(cont+1)].number_format = '"$ "#,##0.00_-'
                 ws["L"+str(cont+1)].alignment = Alignment(horizontal = "center")
                 ws["M"+str(cont+1)].alignment = Alignment(horizontal = "left")
-                ws["N"+str(cont+1)].alignment = Alignment(horizontal = "center")
-                ws["O"+str(cont+1)].alignment = Alignment(horizontal = "center")
-                ws["P"+str(cont+1)].alignment = Alignment(horizontal = "center")
-                ws["Q"+str(cont+1)].alignment = Alignment(horizontal = "center")
-                ws["R"+str(cont+1)].alignment = Alignment(horizontal = "center")
-                ws["S"+str(cont+1)].alignment = Alignment(horizontal = "center")
-                ws["T"+str(cont+1)].alignment = Alignment(horizontal = "center")
-                ws["U"+str(cont+1)].alignment = Alignment(horizontal = "center")
-  
+                ws["N"+str(cont+1)].alignment = Alignment(horizontal = "center")  
 
                 cont += 1
 
@@ -2713,29 +2642,22 @@ class DescargaPricing(TemplateView):
                     
                 ws["N"+str(cont+1)] = d[3]
 
-                '''
-
-                if d[9] == 0:
-
-                    ws["O"+str(cont+1)] = "NO"
-                    ws["P"+str(cont+1)] = "NO"
-                    ws["Q"+str(cont+1)] = "NO"
-                    ws["R"+str(cont+1)] = "NO"
-                    ws["S"+str(cont+1)] = "NO"
-                    ws["T"+str(cont+1)] = "NO"
-                    ws["U"+str(cont+1)] = "NO"
+                cont_alph = 14
                 
-                else:
+                for f in features_project:
 
-                    ws["O"+str(cont+1)] = d[9].frente
-                    ws["P"+str(cont+1)] = d[9].piso_intermedio
-                    ws["Q"+str(cont+1)] = d[9].cocina_separada
-                    ws["R"+str(cont+1)] = d[9].local
-                    ws["S"+str(cont+1)] = d[9].menor_45_m2
-                    ws["T"+str(cont+1)] = d[9].menor_50_m2
-                    ws["U"+str(cont+1)] = d[9].otros
+                    aux = len(FeaturesUni.objects.filter(feature = f, unidad = d[0]))
 
-                '''
+                    if aux:
+
+                        ws[str(alphabet_list[cont_alph])+str(cont+1)] = "SI"
+                        ws[str(alphabet_list[cont_alph])+str(cont+1)].alignment = Alignment(horizontal = "center")
+
+                    else:
+                        ws[str(alphabet_list[cont_alph])+str(cont+1)] = "NO"
+                        ws[str(alphabet_list[cont_alph])+str(cont+1)].alignment = Alignment(horizontal = "center")
+
+                    cont_alph += 1
 
                 ws["A"+str(cont+1)].font = Font(bold = True)
                 ws["A"+str(cont+1)].alignment = Alignment(horizontal = "center")
@@ -2757,13 +2679,6 @@ class DescargaPricing(TemplateView):
                 ws["L"+str(cont+1)].alignment = Alignment(horizontal = "center")
                 ws["M"+str(cont+1)].alignment = Alignment(horizontal = "left")
                 ws["N"+str(cont+1)].alignment = Alignment(horizontal = "center")
-                ws["O"+str(cont+1)].alignment = Alignment(horizontal = "center")
-                ws["P"+str(cont+1)].alignment = Alignment(horizontal = "center")
-                ws["Q"+str(cont+1)].alignment = Alignment(horizontal = "center")
-                ws["R"+str(cont+1)].alignment = Alignment(horizontal = "center")
-                ws["S"+str(cont+1)].alignment = Alignment(horizontal = "center")
-                ws["T"+str(cont+1)].alignment = Alignment(horizontal = "center")
-                ws["U"+str(cont+1)].alignment = Alignment(horizontal = "center")
 
                 cont += 1
 

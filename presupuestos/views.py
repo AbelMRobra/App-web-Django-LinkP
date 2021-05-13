@@ -711,22 +711,11 @@ def presupuestostotal(request):
 
                     proyectos_extrapolados = Proyectos.objects.filter(presupuesto = "EXTRAPOLADO")
 
+                    send_1 = "Proyectos actualizados: "
+                    send_2 = "Proyectos sin actualizar: "
+
                     for p in proyectos_extrapolados:
 
-                        send = "Estoy intentando actualizar {} con el proyecto base".format(p.nombre)
-
-                        id = "-455382561"
-
-                        token = "1880193427:AAH-Ej5ColiocfDZrDxUpvsJi5QHWsASRxA"
-
-                        url = "https://api.telegram.org/bot" + token + "/sendMessage"
-
-                        params = {
-                            'chat_id' : id,
-                            'text' : send
-                        }
-
-                        requests.post(url, params=params)
                         try:
                         
                         
@@ -737,37 +726,34 @@ def presupuestostotal(request):
                             aux_var.saldo_mo =  aux_var.saldo_mo * (1+(var/100))
                             aux_var.save()
 
-                            send = "**Lo logre!** , variación {}%".format(var)
+                            send_1 += "{} con {}% - ".format(p, var)
 
-                            id = "-455382561"
-
-                            token = "1880193427:AAH-Ej5ColiocfDZrDxUpvsJi5QHWsASRxA"
-
-                            url = "https://api.telegram.org/bot" + token + "/sendMessage"
-
-                            params = {
-                                'chat_id' : id,
-                                'text' : send
-                            }
-
-                            requests.post(url, params=params)
+                            
 
                         except:
 
-                            send = "No lo logre, hay un valor 'None' que no me permite actualizar"
+                            send_2 = "{} - ".format(p)
 
-                            id = "-455382561"
 
-                            token = "1880193427:AAH-Ej5ColiocfDZrDxUpvsJi5QHWsASRxA"
+                    id = "-455382561"
 
-                            url = "https://api.telegram.org/bot" + token + "/sendMessage"
+                    token = "1880193427:AAH-Ej5ColiocfDZrDxUpvsJi5QHWsASRxA"
 
-                            params = {
-                                'chat_id' : id,
-                                'text' : send
-                            }
+                    url = "https://api.telegram.org/bot" + token + "/sendMessage"
 
-                            requests.post(url, params=params)
+                    params = {
+                        'chat_id' : id,
+                        'text' : send_1
+                    }
+
+                    requests.post(url, params=params)
+
+                    params = {
+                        'chat_id' : id,
+                        'text' : send_2
+                    }
+
+                    requests.post(url, params=params)
 
                     send = "Proceso de actualización de proyectos extrapolados completo. Disculpen los mensajes"
 

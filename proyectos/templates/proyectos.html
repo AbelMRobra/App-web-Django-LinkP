@@ -4,6 +4,20 @@
 
 {% block content %}
 
+<div class="container-fluid ">
+    <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+            <h3 class="text-themecolor">Listado de proyectos</h3>
+        </div>
+        <div class="col-md-7 align-self-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+                <li class="breadcrumb-item">Listado de proyectos</li>
+            </ol>
+        </div>
+    </div>
+</div>
+
 <div class="row">
     <!-- column -->
     <div class="col-12">
@@ -15,11 +29,27 @@
                     <table class="table">
                         <thead>
                             <tr>
-                                <th>Logo</th>
-                                <th>Nombre</th>
-                                <th>Inicio</th>
-                                <th>Final</th>
-                                <th>Tamaño</th>
+                                <th style="vertical-align: top;">Logo</th>
+                                <th style="vertical-align: top;">Nombre</th>
+                                <th style="vertical-align: top;">
+                                    <div>
+                                        <p class="mb-0">
+                                            Inicio
+                                        </p>
+                                        <p class="text-secondary" style="font-size: 12px; margin-bottom: 0;">
+                                        Inicio contrato
+                                        </p>
+                                    </div></th>
+                                <th style="vertical-align: top;">
+                                    <div>
+                                        <p class="mb-0">
+                                            Entrega
+                                        </p>
+                                        <p class="text-secondary"  style="font-size: 12px; margin-bottom: 0;">
+                                            Entrega contrato
+                                        </p>
+                                    </div></th>
+                                <th style="vertical-align: top;">Tamaño</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -28,19 +58,59 @@
 
                             <tr>
 
-                                <td> <b><img src="{{i.iamgen.url}}"  class="img-fluid" alt="..." style="max-width: 50px; height:auto;"></b> </td>
+                                {% if i.iamgen %}
+                                <td> <b><img src="{{i.iamgen.url}}" class="img-fluid" alt="..."
+                                            style="max-width: 50px; height:auto;"></b> </td>
+                                {% else %}
+
+                                <td> <b><img src="#" class="img-fluid" alt="..."
+                                            style="max-width: 50px; height:auto;"></b> </td>
+                                {% endif %}
+
                                 <td>{{i.nombre}}</td>
-                                
+
                                 {% if i.fecha_i %}
-                                <td>{{i.fecha_i|date:"d/m/Y"}}</td>
+                                <td>
+                                    <div>
+                                        <div>
+                                            <span>
+                                                {{i.fecha_i|date:"d/m/Y"}}
+                                            </span>
+                                        </div>
+                                        <div>
+                                            <span style="font-size: 13px;">
+                                                {{i.fecha_i_contrato|date:"d/m/Y"}}
+                                            </span>
+                                        </div>
+
+
+                                    </div>
+                                </td>
 
                                 {% else %}
 
                                 <td>--/--/----</td>
 
                                 {% endif %}
-                                <td>{{i.fecha_f|date:"d/m/Y"}}</td>
-                                <td><span class="label label-info" style="background-color: rgb({{i.color}});">{{i.m2}} m2</span></td>
+                                <td>
+                                    <div>
+                                        <div>
+                                            <span>
+                                                {{i.fecha_f|date:"d/m/Y"}}
+                                            </span>
+                                        </div>
+                                        <div>
+                                            <span style="font-size: 13px;">
+                                                {{i.fecha_f_contrato|date:"d/m/Y"}}
+                                            </span>
+                                        </div>
+
+
+                                    </div>
+                                </td>
+
+                                <td><span class="label label-info" style="background-color: rgb({{i.color}});">{{i.m2}}
+                                        m2</span></td>
                             </tr>
 
 
@@ -56,5 +126,5 @@
     </div>
 </div>
 
-    
+
 {% endblock %}

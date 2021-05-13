@@ -3132,11 +3132,14 @@ def arqueo_diario(request, id_arqueo):
         list_bank_proj_info = []
 
         for n in nombre_columnas:
+
             if "BANCO" in n:
                 banco = banco + data_frame.loc[numero, n]
                 bancos = bancos + data_frame.loc[numero, n]
                 if data_frame.loc[numero, n] != 0:
                     list_bank_proj_info.append((n, data_frame.loc[numero, n]))
+
+
 
         consolidado = data_frame.loc[numero, 'EFECTIVO'] + data_frame.loc[numero, 'CHEQUES'] + data_frame.loc[numero, 'MONEDA EXTRANJERA'] + banco
 
@@ -3146,7 +3149,26 @@ def arqueo_diario(request, id_arqueo):
 
         consolidado_actual = consolidado_actual + consolidado - data_frame.loc[numero, 'MONEDA EXTRANJERA'] + data_frame.loc[numero, 'USD']*cambio_usd + data_frame.loc[numero, 'EUROS']*cambio_euro
 
-        datos.append((proyecto, data_frame.loc[numero, 'PROYECTO'], data_frame.loc[numero, 'EFECTIVO'], data_frame.loc[numero, 'USD'], data_frame.loc[numero, 'EUROS'], data_frame.loc[numero, 'CHEQUES'], data_frame.loc[numero, 'MONEDA EXTRANJERA'], banco, consolidado, list_bank_proj_info))
+        # ----> Armemos lo de los cheques
+
+        nombre_proyecto = data_frame.loc[numero, 'PROYECTO']
+
+        cheque_numero = list(data_frame[data_frame["CHEQUE PROYECTO"] == nombre_proyecto]["CHEQUE NUMERO"])
+        cheque_cliente = list(data_frame[data_frame["CHEQUE PROYECTO"] == nombre_proyecto]["CHEQUE CLIENTE"])
+        cheque_emitido = list(data_frame[data_frame["CHEQUE PROYECTO"] == nombre_proyecto]["CHEQUE EMITIDO"])
+        cheque_vencimiento = list(data_frame[data_frame["CHEQUE PROYECTO"] == nombre_proyecto]["CHEQUE VENCIMIENTO"])
+        cheque_monto = list(data_frame[data_frame["CHEQUE PROYECTO"] == nombre_proyecto]["CHEQUE MONTO"])
+        cheque_tipo = list(data_frame[data_frame["CHEQUE PROYECTO"] == nombre_proyecto]["CHEQUE TIPO"])
+
+        info_cheque = []
+
+        cont_info = 0
+
+        for i in cheque_numero:
+            info_cheque.append(("Nº "+str(cheque_numero[cont_info]), cheque_cliente[cont_info], cheque_emitido[cont_info], cheque_vencimiento[cont_info], cheque_monto[cont_info], cheque_tipo[cont_info]))
+            cont_info += 1
+
+        datos.append((proyecto, data_frame.loc[numero, 'PROYECTO'], data_frame.loc[numero, 'EFECTIVO'], data_frame.loc[numero, 'USD'], data_frame.loc[numero, 'EUROS'], data_frame.loc[numero, 'CHEQUES'], data_frame.loc[numero, 'MONEDA EXTRANJERA'], banco, consolidado, list_bank_proj_info, info_cheque))
 
         numero += 1
 
@@ -3226,17 +3248,17 @@ def arqueos(request):
                     
                     mensaje = MIMEText("""
                     
-                    Buenas!,
+Buenas!,
 
-                    {} acaba de cargar un arqueo
+{} acaba de cargar un arqueo
 
-                    Fecha del mismo: {}
+Fecha del mismo: {}
 
-                    Entra a Link-P para chequearlo www.linkp.online/finanzas/arqueos/
+Entra a Link-P para chequearlo www.linkp.online/finanzas/arqueos/
 
-                    Gracias!
+Gracias!
 
-                    Saludos!
+Saludos!
                     """.format(request.user.username, request.POST['fecha']))
                     mensaje['From']=settings.EMAIL_HOST_USER
                     mensaje['To']= d

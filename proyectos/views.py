@@ -47,7 +47,7 @@ def adminunidades(request):
 
 def proyectos(request):
 
-    datos = Proyectos.objects.order_by("nombre")
+    datos = Proyectos.objects.order_by("fecha_f").exclude(fecha_i = None)
 
 
     return render(request, 'proyectos.html', {'datos':datos})

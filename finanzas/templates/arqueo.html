@@ -129,7 +129,7 @@
                 <h4 class="card-title">Detalle por proyecto</h4>
                 <h6 class="card-subtitle">Resumen de datos</h6>
                 <div class="table-responsive">
-                    <table class="table table-bordered">
+                    <table class="table table-bordered" style="width: 99%;">
                         <thead>
                             <tr>
                                 <th>Proyecto</th>
@@ -144,41 +144,35 @@
                             </tr>
                         </thead>
 
-                        <tbody>
+                        <tbody style="font-size: 14px;">
 
                             {% for i in datos %}
 
                             <tr>
 
-                                <td>
+                                <td style="max-width: 100px;"
+                                    {% if i.0 %} class="text-success" {% else %} class="text-info" {% endif %}>
 
-                                    <div>
-                                        {% if i.0 %}
-
-                                        <span class="label label-success">{{ i.1 }}</span>
-
-
-                                        {% else %}
-
-                                        <span class="label label-info">{{ i.1 }}</span>
-
-
-                                        {% endif %}
-                                    </div>
+                                    {{ i.1|lower|capfirst }}
+      
                                 </td>
 
                                 <td>${{ i.2|floatformat:0|intcomma }}</td>
-                                <td><a type="button" class="text-info" data-toggle="modal" data-target="#ModalArqueo{{i.1|cut:' '|cut:'('|cut:')'}}" >${{ i.7|floatformat:0|intcomma }}</a></td>
-                                <td>${{ i.5|floatformat:0|intcomma }}</td>
+                                <td><a type="button" class="text-info" data-toggle="modal"
+                                        data-target="#ModalArqueo{{i.1|cut:' '|cut:'('|cut:')'}}">${{ i.7|floatformat:0|intcomma }}</a></td>
+                                <td><a type="button" class="text-info" data-toggle="modal"
+                                        data-target="#ModalCheques{{i.1|cut:' '|cut:'('|cut:')'}}">${{ i.5|floatformat:0|intcomma }}</a></td>
                                 <td>${{ i.6|floatformat:0|intcomma }}</td>
                                 <td>${{ i.8|floatformat:0|intcomma }}</td>
                                 <td style="color: rgb(89, 171, 70);">U$S {{ i.3|floatformat:0|intcomma }}</td>
                                 <td style="color: rgb(76, 88, 173)">€ {{ i.4|floatformat:0|intcomma }}</td>
 
 
+
                             </tr>
-                            <!-- Modal -->
-                            <div class="modal fade" id="ModalArqueo{{i.1|cut:' '|cut:'('|cut:')'}}" tabindex="-1" role="dialog" aria-labelledby="ModalArqueo" aria-hidden="true">
+                            <!-- Modal registro bancos-->
+                            <div class="modal fade" id="ModalArqueo{{i.1|cut:' '|cut:'('|cut:')'}}" tabindex="-1"
+                                role="dialog" aria-labelledby="ModalArqueo" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header">
@@ -187,16 +181,54 @@
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
                                         </div>
-                                        <div class="modal-body">  
+                                        <div class="modal-body" style="font-size: 12px;">
                                             {% for i in i.9 %}
                                             <span class="font-bold">{{i.0}}</span>
-                                            
+
                                             <p>${{i.1|floatformat:0|intcomma }}</p>
                                             {% endfor %}
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                        
+                                            <button type="button" class="btn btn-secondary"
+                                                data-dismiss="modal">Cerrar</button>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                      
+                            <!-- Modal cheques-->
+                            <div class="modal fade" id="ModalCheques{{i.1|cut:' '|cut:'('|cut:')'}}" tabindex="-1"
+                                role="dialog" aria-labelledby="ModalCheques" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLongTitle">Registro cheques</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+
+                                        {% for a in i.10 %}
+                                        <div class="row">
+                                            <div class="col-5"><h6>{{a.1}}</h6></span>
+                                            <h6 class="card-subtitle" style="font-size: 10px; margin-top: 2px;">{{a.0}}</h6></div>
+                                            <div class="col-3"><h6 style="font-size: 12px;">E: {{a.2|date:"d/m/Y"}}</h6>
+                                            <h6 style="font-size: 12px;">V: {{a.3|date:"d/m/Y"}}</h6></div>
+                                            <div class="col-4"><h6>$ {{a.4|floatformat:0|intcomma}}</h6>
+                                                <h6 class="card-subtitle" style="font-size: 10px; margin-top: 2px;">
+                                                    {{a.5}}</h6>
+                                                </div>
+                                        </div>
+                                        {% endfor %}
+                                         
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-dismiss="modal">Cerrar</button>
+
                                         </div>
                                     </div>
                                 </div>
@@ -210,6 +242,8 @@
         </div>
     </div>
 </div>
+
+
 
 
 
