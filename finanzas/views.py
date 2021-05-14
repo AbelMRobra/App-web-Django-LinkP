@@ -1687,15 +1687,6 @@ def indicelink(request, id_moneda, id_time):
         almacenero = dato
 
         presupuesto = Presupuestos.objects.get(proyecto = dato.proyecto)
-
-        # Aqui calculo el IVA sobre compras
-
-        iva_compras = (presupuesto.imprevisto + presupuesto.saldo_mat + presupuesto.saldo_mo + presupuesto.credito + presupuesto.fdr)*0.07875
-
-        almacenero.pendiente_iva_ventas = iva_compras
-
-        almacenero.save()
-
         
         # Calculamos los 2 valores de cuenta corriente (Pendiente y Cobrado)
 
@@ -2468,15 +2459,6 @@ def consolidado(request):
 
         presupuesto = Presupuestos.objects.get(proyecto = dato.proyecto)
         dato_presupuesto = presupuesto
-
-        # Aqui calculo el IVA sobre compras
-
-        iva_compras = (presupuesto.imprevisto + presupuesto.saldo_mat + presupuesto.saldo_mo + presupuesto.credito + presupuesto.fdr)*0.07875
-
-        almacenero.pendiente_iva_ventas = iva_compras
-
-
-        almacenero.save()
 
         # Calculo el resto de las cosas
 
@@ -4308,6 +4290,160 @@ class DescargarResumen(TemplateView):
                 fecha_aux = fecha
                 cont += 1
 
+        # ---> BOLETO
+
+        ws = wb.create_sheet('Flujo B')
+
+        ws["A1"] = "Resumen de pagos - Área Administración"
+        ws["A1"].font = Font(bold = True)
+
+
+        ws.merge_cells("B8:C8")
+        ws["B8"] = "Total"
+
+        ws["B8"].font = Font(bold = True, color= "E8F8F8")
+        ws["B8"].fill =  PatternFill("solid", fgColor= "2C9E9D")
+        ws["B8"].alignment = Alignment(horizontal = "center")
+
+        ws.merge_cells("D8:E8")
+        ws["D8"] = "Proyecto"
+
+        ws["D8"].font = Font(bold = True, color= "E8F8F8")
+        ws["D8"].fill =  PatternFill("solid", fgColor= "2C9E9D")
+        ws["D8"].alignment = Alignment(horizontal = "center")
+
+        ws.merge_cells("F8:G8")
+        ws["F8"] = "Link"
+
+        ws["F8"].font = Font(bold = True, color= "E8F8F8")
+        ws["F8"].fill =  PatternFill("solid", fgColor= "2C9E9D")
+        ws["F8"].alignment = Alignment(horizontal = "center")
+
+        ws.merge_cells("H8:I8")
+        ws["H8"] = "Terreno"
+
+        ws["H8"].font = Font(bold = True, color= "E8F8F8")
+        ws["H8"].fill =  PatternFill("solid", fgColor= "2C9E9D")
+        ws["H8"].alignment = Alignment(horizontal = "center")
+
+
+        ws["A9"] = "Mes"
+        ws["B9"] = "Ingreso total"
+        ws["C9"] = "Ingreso total M3"
+        ws["D9"] = "Ingreso proyecto"
+        ws["E9"] = "Ingreso proyecto M3"
+        ws["F9"] = "Ingreso Link"
+        ws["G9"] = "Ingreso Link M3"
+        ws["H9"] = "Ingreso Terreno"
+        ws["I9"] = "Ingreso Terreno M3"
+
+        ws.column_dimensions['A'].width = 14
+        ws.column_dimensions['B'].width = 20
+        ws.column_dimensions['C'].width = 20
+        ws.column_dimensions['D'].width = 20
+        ws.column_dimensions['E'].width = 20
+        ws.column_dimensions['F'].width = 20
+        ws.column_dimensions['G'].width = 20
+        ws.column_dimensions['H'].width = 20
+        ws.column_dimensions['I'].width = 20
+
+        ws["A9"].font = Font(bold = True, color= "E8F8F8")
+        ws["A9"].fill =  PatternFill("solid", fgColor= "2C9E9D")
+        ws["B9"].font = Font(bold = True, color= "E8F8F8")
+        ws["B9"].fill =  PatternFill("solid", fgColor= "2C9E9D")
+        ws["C9"].font = Font(bold = True, color= "E8F8F8")
+        ws["C9"].fill =  PatternFill("solid", fgColor= "2C9E9D")
+        ws["D9"].font = Font(bold = True, color= "E8F8F8")
+        ws["D9"].fill =  PatternFill("solid", fgColor= "2C9E9D")
+        ws["E9"].font = Font(bold = True, color= "E8F8F8")
+        ws["E9"].fill =  PatternFill("solid", fgColor= "2C9E9D")
+        ws["F9"].font = Font(bold = True, color= "E8F8F8")
+        ws["F9"].fill =  PatternFill("solid", fgColor= "2C9E9D")
+        ws["G9"].font = Font(bold = True, color= "E8F8F8")
+        ws["G9"].fill =  PatternFill("solid", fgColor= "2C9E9D")
+        ws["H9"].font = Font(bold = True, color= "E8F8F8")
+        ws["H9"].fill =  PatternFill("solid", fgColor= "2C9E9D")
+        ws["I9"].font = Font(bold = True, color= "E8F8F8")
+        ws["I9"].fill =  PatternFill("solid", fgColor= "2C9E9D")
+
+        cont = 10
+
+        cont_f = -1
+        fecha_aux = 0
+        for fecha in fechas:
+
+            if cont_f <= 0:
+                fecha_aux = fecha
+                cont_f += 1
+            else:
+
+                fecha = fecha + timedelta(days=-1)
+       
+                # Total
+                if len(Cuota.objects.values_list('pago', flat = True).filter(fecha__range = (fecha_aux, fecha), cuenta_corriente__venta__proyecto = proyecto).exclude(porc_boleto = None)) > 0:
+                    cuotas_month = sum(np.array(Cuota.objects.values_list('precio', flat = True).filter(fecha__range = (fecha_aux, fecha), cuenta_corriente__venta__proyecto = proyecto).exclude(porc_boleto = None))*np.array(Cuota.objects.values_list('constante__valor', flat = True).filter(fecha__range = (fecha_aux, fecha), cuenta_corriente__venta__proyecto = proyecto).exclude(porc_boleto = None))*np.array(Cuota.objects.values_list('porc_boleto', flat = True).filter(fecha__range = (fecha_aux, fecha), cuenta_corriente__venta__proyecto = proyecto).exclude(porc_boleto = None)))
+                    pago_month = sum(np.array(Pago.objects.values_list('pago', flat = True).filter(cuota__fecha__range = (fecha_aux, fecha), cuota__cuenta_corriente__venta__proyecto = proyecto).exclude(cuota__porc_boleto = None))*np.array(Pago.objects.values_list('cuota__constante__valor', flat = True).filter(cuota__fecha__range = (fecha_aux, fecha), cuota__cuenta_corriente__venta__proyecto = proyecto).exclude(cuota__porc_boleto = None))*np.array(Pago.objects.values_list('cuota__porc_boleto', flat = True).filter(cuota__fecha__range = (fecha_aux, fecha), cuota__cuenta_corriente__venta__proyecto = proyecto).exclude(cuota__porc_boleto = None)))
+                    saldo_month = cuotas_month - pago_month
+                    saldo_month_h = saldo_month/Constantes.objects.get(id = 7).valor
+                else:
+                    saldo_month = 0
+                    saldo_month_h = 0
+                # Proyecto
+
+                if len(Cuota.objects.values_list('pago', flat = True).filter(fecha__range = (fecha_aux, fecha), cuenta_corriente__venta__proyecto = proyecto, cuenta_corriente__venta__unidad__asig = "PROYECTO").exclude(porc_boleto = None)) > 0:
+                    cuotas_month = sum(np.array(Cuota.objects.values_list('precio', flat = True).filter(fecha__range = (fecha_aux, fecha), cuenta_corriente__venta__proyecto = proyecto, cuenta_corriente__venta__unidad__asig = "PROYECTO").exclude(porc_boleto = None))*np.array(Cuota.objects.values_list('constante__valor', flat = True).filter(fecha__range = (fecha_aux, fecha), cuenta_corriente__venta__proyecto = proyecto, cuenta_corriente__venta__unidad__asig = "PROYECTO").exclude(porc_boleto = None))*np.array(Cuota.objects.values_list('porc_boleto', flat = True).filter(fecha__range = (fecha_aux, fecha), cuenta_corriente__venta__proyecto = proyecto, cuenta_corriente__venta__unidad__asig = "PROYECTO").exclude(porc_boleto = None)))
+                    pago_month = sum(np.array(Pago.objects.values_list('pago', flat = True).filter(cuota__fecha__range = (fecha_aux, fecha), cuota__cuenta_corriente__venta__proyecto = proyecto, cuota__cuenta_corriente__venta__unidad__asig = "PROYECTO").exclude(cuota__porc_boleto = None))*np.array(Pago.objects.values_list('cuota__constante__valor', flat = True).filter(cuota__fecha__range = (fecha_aux, fecha), cuota__cuenta_corriente__venta__proyecto = proyecto, cuota__cuenta_corriente__venta__unidad__asig = "PROYECTO").exclude(cuota__porc_boleto = None))*np.array(Pago.objects.values_list('cuota__porc_boleto', flat = True).filter(cuota__fecha__range = (fecha_aux, fecha), cuota__cuenta_corriente__venta__proyecto = proyecto, cuota__cuenta_corriente__venta__unidad__asig = "PROYECTO").exclude(cuota__porc_boleto = None)))
+                    saldo_month_p = cuotas_month - pago_month
+                    saldo_month_p_h = saldo_month/Constantes.objects.get(id = 7).valor
+                else:
+                    saldo_month_p = 0
+                    saldo_month_p_h = 0
+
+                # Link
+
+                if len(Cuota.objects.values_list('pago', flat = True).filter(fecha__range = (fecha_aux, fecha), cuenta_corriente__venta__proyecto = proyecto, cuenta_corriente__venta__unidad__asig = "HON. LINK")) > 0:
+                    cuotas_month = sum(np.array(Cuota.objects.values_list('precio', flat = True).filter(fecha__range = (fecha_aux, fecha), cuenta_corriente__venta__proyecto = proyecto, cuenta_corriente__venta__unidad__asig = "HON. LINK"))*np.array(Cuota.objects.values_list('constante__valor', flat = True).filter(fecha__range = (fecha_aux, fecha), cuenta_corriente__venta__proyecto = proyecto, cuenta_corriente__venta__unidad__asig = "HON. LINK")))
+                    pago_month = sum(np.array(Pago.objects.values_list('pago', flat = True).filter(cuota__fecha__range = (fecha_aux, fecha), cuota__cuenta_corriente__venta__proyecto = proyecto, cuota__cuenta_corriente__venta__unidad__asig = "HON. LINK"))*np.array(Pago.objects.values_list('cuota__constante__valor', flat = True).filter(cuota__fecha__range = (fecha_aux, fecha), cuota__cuenta_corriente__venta__proyecto = proyecto, cuota__cuenta_corriente__venta__unidad__asig = "HON. LINK")))
+                    saldo_month_l = cuotas_month - pago_month
+                    saldo_month_l_h = saldo_month/Constantes.objects.get(id = 7).valor
+                else:
+                    saldo_month_l = 0
+                    saldo_month_l_h = 0
+
+                # Terreno
+
+                if len(Cuota.objects.values_list('pago', flat = True).filter(fecha__range = (fecha_aux, fecha), cuenta_corriente__venta__proyecto = proyecto, cuenta_corriente__venta__unidad__asig = "TERRENO")) > 0:
+                    cuotas_month = sum(np.array(Cuota.objects.values_list('precio', flat = True).filter(fecha__range = (fecha_aux, fecha), cuenta_corriente__venta__proyecto = proyecto, cuenta_corriente__venta__unidad__asig = "TERRENO"))*np.array(Cuota.objects.values_list('constante__valor', flat = True).filter(fecha__range = (fecha_aux, fecha), cuenta_corriente__venta__proyecto = proyecto, cuenta_corriente__venta__unidad__asig = "TERRENO")))
+                    pago_month = sum(np.array(Pago.objects.values_list('pago', flat = True).filter(cuota__fecha__range = (fecha_aux, fecha), cuota__cuenta_corriente__venta__proyecto = proyecto, cuota__cuenta_corriente__venta__unidad__asig = "TERRENO"))*np.array(Pago.objects.values_list('cuota__constante__valor', flat = True).filter(cuota__fecha__range = (fecha_aux, fecha), cuota__cuenta_corriente__venta__proyecto = proyecto, cuota__cuenta_corriente__venta__unidad__asig = "TERRENO")))
+                    saldo_month_te = cuotas_month - pago_month
+                    saldo_month_te_h = saldo_month/Constantes.objects.get(id = 7).valor
+                else:
+                    saldo_month_te = 0
+                    saldo_month_te_h = 0
+
+                ws["A"+str(cont)] = fecha_aux
+                ws["B"+str(cont)] = saldo_month
+                ws["C"+str(cont)] = saldo_month_h
+                ws["D"+str(cont)] = saldo_month_p
+                ws["E"+str(cont)] = saldo_month_p_h
+                ws["F"+str(cont)] = saldo_month_l
+                ws["G"+str(cont)] = saldo_month_l_h
+                ws["H"+str(cont)] = saldo_month_te
+                ws["I"+str(cont)] = saldo_month_te_h
+
+                ws["B"+str(cont)].number_format = '"$"#,##0.00_-'
+                ws["C"+str(cont)].number_format = '#,##0.00_-"M3"'
+                ws["D"+str(cont)].number_format = '"$"#,##0.00_-'
+                ws["E"+str(cont)].number_format = '#,##0.00_-"M3"'
+                ws["F"+str(cont)].number_format = '"$"#,##0.00_-'
+                ws["G"+str(cont)].number_format = '#,##0.00_-"M3"'
+                ws["H"+str(cont)].number_format = '"$"#,##0.00_-'
+                ws["I"+str(cont)].number_format = '#,##0.00_-"M3"'
+
+
+                fecha = fecha + timedelta(days=+1)
+                fecha_aux = fecha
+                cont += 1
 
         #Establecer el nombre del archivo
         nombre_archivo = "Resumen.-{}.xls".format(str(proyecto.nombre))

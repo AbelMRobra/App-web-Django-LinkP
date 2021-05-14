@@ -7,6 +7,7 @@ from django.conf import settings
 from .form import ConsForm, ArticulosForm
 from proyectos.models import Proyectos
 from computos.models import Computos
+from finanzas.models import Almacenero
 from compras.models import Compras
 from ventas.models import PricingResumen, VentasRealizadas
 from registro.models import RegistroValorProyecto, RegistroConstantes
@@ -726,6 +727,14 @@ def presupuestostotal(request):
                             aux_var.saldo_mo =  aux_var.saldo_mo * (1+(var/100))
                             aux_var.save()
 
+                            almacenero = Almacenero.objects.get(proyecto = p)
+
+                            iva_compras = (aux_var.imprevisto + aux_var.saldo_mat + aux_var.saldo_mo + aux_var.credito + aux_var.fdr)*0.07875
+
+                            almacenero.pendiente_iva_ventas = iva_compras
+
+                            almacenero.save()
+
                             send_1 += "{} con {}% - ".format(p, var)
 
                             
@@ -749,7 +758,7 @@ def presupuestostotal(request):
 
                     requests.post(url, params=params)
 
-                    send = "Proceso de actualización de proyectos extrapolados completo. Disculpen los mensajes"
+                    send = "Proceso de actualización de proyectos extrapolados completo. Tambien actualice el IVA en el almacenero. Disculpen los mensajes"
 
                     params = {
                         'chat_id' : id,
@@ -811,6 +820,14 @@ def presupuestostotal(request):
             Saldo_act.saldo_mo = valor_proyecto_mo
 
             Saldo_act.save()
+
+            almacenero = Almacenero.objects.get(proyecto = proyecto)
+
+            iva_compras = (Saldo_act.imprevisto + Saldo_act.saldo_mat + Saldo_act.saldo_mo + Saldo_act.credito + Saldo_act.fdr)*0.07875
+
+            almacenero.pendiente_iva_ventas = iva_compras
+
+            almacenero.save()
 
         except:
             pass

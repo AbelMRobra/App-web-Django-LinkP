@@ -7,7 +7,7 @@
 
 {% if perms.ventas.view_pricing %}
 
-<div class="container-fluid r-aside">
+<div class="container-fluid">
 
     <div class="row page-titles">
         <div class="col-md-5 align-self-center">
@@ -17,6 +17,7 @@
         <div class="col-md-7 align-self-center">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'Cargar Venta' %}">Panel</a></li>
                 <li class="breadcrumb-item">Registrar venta</li>
             </ol>
         </div>
@@ -95,6 +96,29 @@
                                                     </div>
 
                                                     <input name="precio_venta" type="number"
+                                                        class="form-control form-control" aria-label="Amount">
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div>
+
+                                            <label for="precio_venta">
+                                                <h6>Precio de venta H°</h6>
+                                            </label>
+
+                                        </div>
+
+                                        <div class="row d-flex justify-content-center mt-3">
+                                            <div class="col col-md-8 col-lg-8">
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+
+                                                        <span class="input-group-text">H°</span>
+
+                                                    </div>
+
+                                                    <input name="precio_venta_H" type="number"
                                                         class="form-control form-control" aria-label="Amount">
 
                                                 </div>

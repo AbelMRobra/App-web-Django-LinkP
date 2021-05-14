@@ -7,7 +7,7 @@
 
 {% if perms.ventas.view_pricing %}
 
-<div class="container-fluid r-aside">
+<div class="container-fluid">
 
     <div class="row page-titles">
         <div class="col-md-5 align-self-center">
@@ -17,7 +17,7 @@
         <div class="col-md-7 align-self-center">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
-                <li class="breadcrumb-item">Ventas Realizadas</li>
+                <li class="breadcrumb-item">Panel</li>
             </ol>
         </div>
     </div>
@@ -36,10 +36,9 @@
                 <div>
                     <div style="margin: 5px;">
 
-                        <a href="{% url 'Cargar una Venta' %}" class="mx-2" style="text-align: end; " data-toggle="tooltip" data-placement="right" title="" data-original-title="Cargar una venta">
-                            <img src="{% static 'img/add.png' %}" alt="" style="max-width:20px; height:auto;"></a>
+                        <a href="{% url 'Cargar una Venta' %}" class="mx-2 fa fa-lg fa-plus-circle" style="text-align: end; " data-toggle="tooltip" data-placement="right" title="" data-original-title="Cargar una venta">
 
-
+                        </a>
                         <a href="{% url 'Descargar ventas' %}" class="mx-2" style="text-align: end; " data-toggle="tooltip" data-placement="right" title="" data-original-title="Descagar Excel"> <img
                                 src="{% static 'img/sobresalir.png' %}" alt="" style="max-width:20px; height:auto;">
                         </a>
@@ -114,6 +113,7 @@
                                 <td> <b> {{i.m2|floatformat:2}}m2 </b> </td>
                                 <td> <b> {{i.asignacion}}</b> </td>
                                 <td>  <b>${{i.precio_venta|floatformat:0|intcomma}}</b>
+                                    <h6 class="subtitle" style="font-size: 12px;">{{i.precio_venta_hormigon|floatformat:0|intcomma}} M3</h6>
                                     </td>
                                 <td>  <b>${{i.precio_contado|floatformat:0|intcomma}}</b>
                                     </td>

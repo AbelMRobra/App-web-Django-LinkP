@@ -55,10 +55,31 @@ def pizza(update, context):
         update.message.reply_text("Hola!, necesitas ayuda?")
 
     if(update.message.text.upper().find("AYUDA") > 0):
-        update.message.reply_text("Puedo ayudar!, puedo responder sobre: Linkcoins")
+        update.message.reply_text('''
+        Puedo ayudar!, escribe "Saber sobre .." y elige un tema
+        
+        Linkcoins:
+        *LINKCOINS-EXPLICACIÓN
+        *LINKCOINS-SISTEMA
 
-    if(update.message.text.upper().find("LINKCOINS") > 0):
+        Indice Link:
+        *INDICE-LINK-IVA
+
+        Área compras:
+        *SOLICITUDES-COMPRA
+        
+        
+        ''')
+
+    if(update.message.text.upper().find("INDICE-LINK-IVA") > 0):
+        update.message.reply_text("El cálculo del IVA se realiza al actualizar un presupuesto, el mismo se cálcula de la siguiente manera: Imprevisto + Saldos MO y MAT + credito + fdr por 0.07875")
+
+    if(update.message.text.upper().find("LINKCOINS-EXPLICACIÓN") > 0):
         update.message.reply_text("Linkcoins es un sistema de premios de Link Inversiones!, funciona de la siguiente manera: Todos los meses que trabajes para Link, recibiras 10 monedas que puedes entregar a tus compañeros reconociendo su apoyo. Las monedas que recibas podras canjearlas por premios. Si quieres saber mas escribe 'Quiero saber sobre LINKCOINS-SISTEMA'")
+
+    if(update.message.text.upper().find("SOLICITUDES-COMPRA") > 0):
+        update.message.reply_text(" Las solicitudes de compra es el medio por el cual la dirección aprueba una OC previamente realizada en Tango gestión. Debes tener los permisos correspondientes")
+
 
     if(update.message.text.upper().find("LINKCOINS-SISTEMA") > 0):
         update.message.reply_text("Todos los meses siendo un empleado ACTIVO recibiras 10 monedas que puedes entregar ingresando a www.linkp.online")

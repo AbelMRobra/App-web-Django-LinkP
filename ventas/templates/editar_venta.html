@@ -5,7 +5,7 @@
 
 {% block content %}
 
-<div class="container-fluid r-aside">
+<div class="container-fluid">
 
     <div class="row page-titles">
         <div class="col-md-5 align-self-center">
@@ -15,7 +15,7 @@
         <div class="col-md-7 align-self-center">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
-                <li class="breadcrumb-item"><a href="{% url 'Cargar Venta' %}">Registros</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'Cargar Venta' %}">Panel</a></li>
                 <li class="breadcrumb-item">Editar venta</li>
             </ol>
         </div>
@@ -97,7 +97,33 @@
 
                                                     <input name="precio_venta" type="number"
                                                         class="form-control form-control" aria-label="Amount"
-                                                        placeholder="{{datos.precio_venta}}">
+                                                        value="{{datos.precio_venta}}">
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div>
+
+                                            <label for="precio_venta_H">
+                                                <h6>Precio de venta H</h6>
+                                            </label>
+
+                                        </div>
+
+                                        <div class="row d-flex justify-content-center mt-3">
+                                            <div class="col col-md-8 col-lg-8">
+                                                <div class="input-group mb-3">
+
+
+                                                    <div class="input-group-prepend">
+
+                                                        <span class="input-group-text">H°</span>
+
+                                                    </div>
+
+                                                    <input name="precio_venta_H" type="number"
+                                                        class="form-control form-control" aria-label="Amount"
+                                                        value="{{datos.precio_venta_hormigon}}">
 
                                                 </div>
                                             </div>
@@ -124,7 +150,7 @@
 
                                                     <input name="precio_contado" type="number"
                                                         class="form-control form-control" aria-label="Amount"
-                                                        placeholder="{{datos.precio_contado}}">
+                                                        value="{{datos.precio_contado}}">
 
                                                 </div>
                                             </div>
@@ -152,7 +178,7 @@
 
                                                     <input name="anticipo" type="number"
                                                         class="form-control form-control"
-                                                        placeholder="{{datos.anticipo}}">
+                                                        value="{{datos.anticipo}}">
 
                                                 </div>
                                             </div>
@@ -171,7 +197,7 @@
                                             <div class="col col-md-8 col-lg-8">
 
                                                 <input name="cuotas" type="number" class="form-control form-control"
-                                                    placeholder="{{datos.cuotas_pend}}">
+                                                    value="{{datos.cuotas_pend}}">
 
                                             </div>
                                         </div>
@@ -187,13 +213,10 @@
                                         <div class="row d-flex justify-content-center mt-3">
                                             <div class="col col-md-8 col-lg-8">
 
-                                                <input name="fecha" type="date" class="form-control form-control">
+                                                <input value='{{datos.fecha|date:"Y-m-d"}}' name="fecha" type="date" class="form-control form-control">
                                             </div>
                                         </div>
-                                        <div class="text-center">
-                                            <small>Fecha actual {{datos.fecha}} </small>
 
-                                        </div>
 
                                         <div class="row d-flex justify-content-center mt-3">
                                             <div class="col col-md-8 col-lg-8">

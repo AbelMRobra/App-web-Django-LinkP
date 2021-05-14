@@ -1057,7 +1057,7 @@ def comparativas(request, estado, creador):
 
             datos_base = Comparativas.objects.filter(creador = "MES").order_by("-fecha_c").exclude(estado = "AUTORIZADA")
 
-            datos_base_2 = Comparativas.objects.filter(numero__startswith = "POSTV").order_by("-fecha_c").exclude(estado = "AUTORIZADA")
+            datos_base_2 = Comparativas.objects.filter(numero__icontains = "POSTV").order_by("-fecha_c").exclude(estado = "AUTORIZADA")
 
 
             datos = []
@@ -1201,7 +1201,7 @@ def comparativas(request, estado, creador):
 
             datos_base = Comparativas.objects.filter(creador = "MES").order_by("-fecha_c").exclude(estado = "AUTORIZADA")
 
-            datos_base_2 = Comparativas.objects.filter(numero__startswith = "POSTV").order_by("-fecha_c").exclude(estado = "AUTORIZADA")
+            datos_base_2 = Comparativas.objects.filter(numero__icontains = "POSTV").order_by("-fecha_c").exclude(estado = "AUTORIZADA")
 
             datos = []
 

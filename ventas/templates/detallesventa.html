@@ -5,7 +5,7 @@
 
 {% block content %}
 
-<div class="container-fluid r-aside">
+<div class="container-fluid">
 
     <div class="row page-titles">
         <div class="col-md-5 align-self-center">
@@ -15,6 +15,7 @@
         <div class="col-md-7 align-self-center">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'Cargar Venta' %}">Panel</a></li>
                 <li class="breadcrumb-item">Detalle de venta</li>
             </ol>
         </div>
@@ -46,13 +47,14 @@
 
                 <div class="mt-4">
 
-                    <h6>Proyecto: <small>{{datos.unidad.proyecto}}</small> </h6>
-                    <h6>Piso: <small>{{datos.unidad.piso_unidad}}</small> </h6>
-                    <h6>Unidad: <small>{{datos.unidad.nombre_unidad}}</small> </h6>
-                    <h6>Comprador: <small>{{datos.comprador}}</small> </h6>
-                    <h6>Precio de venta:<small>${{datos.precio_venta|floatformat:0|intcomma}}</small></h6>
-                    <h6>Anticipo:<small>${{datos.anticipo|floatformat:0|intcomma}}</small></h6>
-                    <h6>Fecha: <small>{{datos.fecha}}</small></h6>
+                    <h6>Proyecto: {{datos.unidad.proyecto}} </h6>
+                    <h6>Piso: {{datos.unidad.piso_unidad}} </h6>
+                    <h6>Unidad: {{datos.unidad.nombre_unidad}} </h6>
+                    <h6>Comprador: {{datos.comprador}} </h6>
+                    <h6>Precio de venta: ${{datos.precio_venta|floatformat:0|intcomma}}</h6>
+                    <h6>Precio de venta H°: {{datos.precio_venta_hormigon|floatformat:0|intcomma}} M3</h6>
+                    <h6>Anticipo: ${{datos.anticipo|floatformat:0|intcomma}}</h6>
+                    <h6>Fecha: {{datos.fecha}}</h6>
                     <h6>Detalles:</h6>
 
                     <div class="mt-3">

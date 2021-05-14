@@ -9,6 +9,7 @@ from datetime import date
 from django.shortcuts import redirect
 import datetime
 import string
+import requests
 from datetime import date
 import operator
 import numpy as np
@@ -1607,43 +1608,16 @@ def cargar_venta(request):
 
         datos_formulario = request.POST.items()
 
-        comprador = "Nadie"
-        precio_venta = 0
-        anticipo = 0
-        cuotas_pend = 0
-        tipo_venta = "Ninguna"
-        unidad = 0
-        fecha = 0
-        proyecto = 0
-        observaciones = ""
-
-        for dato in datos_formulario:
-
-            if dato[0] == "unidad":
-                unidad = Unidades.objects.get(id = int(dato[1]))
-                proyecto = Proyectos.objects.get(id = unidad.proyecto.id)
-
-            if dato[0] == "comprador":
-                comprador = dato[1]
-
-            if dato[0] == "anticipo":
-                anticipo = dato[1]
-
-            if dato[0] == "precio_venta":
-                precio_venta = dato[1]
-
-            if dato[0] == "cuotas":
-                cuotas_pend = dato[1]
-
-            if dato[0] == "tipo_venta":
-                tipo_venta = dato[1]
-
-            if dato[0] == "fecha":
-                fecha = dato[1]
-
-            if dato[0] == "observaciones":
-                observaciones = dato[1]
-
+        comprador = request.POST['comprador']
+        precio_venta = request.POST['precio_venta']
+        precio_venta_hormigon = request.POST['precio_venta_H']
+        anticipo = request.POST['anticipo']
+        cuotas_pend = request.POST['cuotas']
+        tipo_venta = request.POST['tipo_venta']
+        unidad = Unidades.objects.get(id = int(request.POST['unidad']))
+        fecha = request.POST['fecha']
+        proyecto = Proyectos.objects.get(id = unidad.proyecto.id)
+        observaciones = request.POST['observaciones']
 
         operaciones = VentasRealizadas.objects.filter(unidad = unidad)
 
@@ -1658,94 +1632,85 @@ def cargar_venta(request):
 
             if unidad.sup_equiv > 0:
 
-                m2 = unidad.sup_equiv
+                    m2 = unidad.sup_equiv
 
             else:
 
                 m2 = unidad.sup_propia + unidad.sup_balcon + unidad.sup_comun + unidad.sup_patio
 
-            param_uni = Pricing.objects.get(unidad = unidad)
+            try:
 
-            desde = unidad.proyecto.desde
+                desde = unidad.proyecto.desde
 
-            if unidad.tipo == "COCHERA":
-                desde = unidad.proyecto.desde*unidad.proyecto.descuento_cochera
+                features_unidad = FeaturesUni.objects.filter(unidad = unidad)
 
-            if param_uni.frente == "SI":
-                desde = desde*unidad.proyecto.recargo_frente
+                for f2 in features_unidad:
 
-            if param_uni.piso_intermedio == "SI":
-                desde =desde*unidad.proyecto.recargo_piso_intermedio
+                    contado = desde*f2.feature.inc
 
-            if param_uni.cocina_separada == "SI":
-                desde = desde*unidad.proyecto.recargo_cocina_separada
+                #Aqui calculamos el contado/financiado
+                
+                contado = desde*m2           
 
-            if param_uni.local == "SI":
-                desde = desde*unidad.proyecto.recargo_local
+                precio_pricing = contado
 
-            if param_uni.menor_45_m2 == "SI":
-                desde = desde*unidad.proyecto.recargo_menor_45
-
-            if param_uni.menor_50_m2 == "SI":
-                desde = desde*unidad.proyecto.recargo_menor_50
-
-            if param_uni.otros == "SI":
-                desde = desde*unidad.proyecto.recargo_otros 
-
-            #Aqui calculamos el contado/financiado
-            
-            contado = desde*m2           
-
-            precio_pricing = contado
-
-            #Aqui calculo el precio desde --------------------->
+            except:
+                pass
 
             precio_desde = 0
+        
+            try:
 
-            desde = Desde.objects.get(presupuesto__proyecto = unidad.proyecto)
+                #Aqui calculo el precio desde --------------------->
 
-            costo = desde.presupuesto.valor
+                
+                desde = Desde.objects.get(presupuesto__proyecto = unidad.proyecto)
 
-            #Aqui calculo el precio min y sugerido
+                costo = desde.presupuesto.valor
 
-            costo = (costo/(1 + desde.parametros.tasa_des_p))*(1 + desde.parametros.soft)
-            
-            costo = costo*(1 + desde.parametros.imprevitso)
+                #Aqui calculo el precio min y sugerido
 
-            porc_terreno = desde.parametros.terreno/desde.parametros.proyecto.m2*100
+                costo = (costo/(1 + desde.parametros.tasa_des_p))*(1 + desde.parametros.soft)
+                
+                costo = costo*(1 + desde.parametros.imprevitso)
 
-            porc_link = desde.parametros.link/desde.parametros.proyecto.m2*100
+                porc_terreno = desde.parametros.terreno/desde.parametros.proyecto.m2*100
 
-            aumento_tem = desde.parametros.tem_iibb*desde.parametros.por_temiibb*(1+desde.parametros.ganancia)
+                porc_link = desde.parametros.link/desde.parametros.proyecto.m2*100
 
-            aumento_comer = desde.parametros.comer*(1+(porc_terreno + porc_link)/100)*(1+desde.parametros.ganancia)
-            
-            costo = costo/(1-aumento_tem- aumento_comer)
-            
-            m2_proyecto = (desde.parametros.proyecto.m2 - desde.parametros.terreno - desde.parametros.link)
+                aumento_tem = desde.parametros.tem_iibb*desde.parametros.por_temiibb*(1+desde.parametros.ganancia)
 
-            valor_costo = costo/m2_proyecto
+                aumento_comer = desde.parametros.comer*(1+(porc_terreno + porc_link)/100)*(1+desde.parametros.ganancia)
+                
+                costo = costo/(1-aumento_tem- aumento_comer)
+                
+                m2_proyecto = (desde.parametros.proyecto.m2 - desde.parametros.terreno - desde.parametros.link)
 
-            #Aqui coloco la tasa de descuento
+                valor_costo = costo/m2_proyecto
 
-            fecha_entrega =  datetime.datetime.strptime(str(desde.presupuesto.proyecto.fecha_f), '%Y-%m-%d')
-            ahora = datetime.datetime.utcnow()
-            fecha_inicial = ahora + datetime.timedelta(days = (365*2))
+                #Aqui coloco la tasa de descuento
 
-            if fecha_entrega > fecha_inicial:
-                y = fecha_entrega.year - fecha_inicial.year
-                n = fecha_entrega.month - fecha_inicial.month
+                fecha_entrega =  datetime.datetime.strptime(str(desde.presupuesto.proyecto.fecha_f), '%Y-%m-%d')
+                ahora = datetime.datetime.utcnow()
+                fecha_inicial = ahora + datetime.timedelta(days = (365*2))
 
-                meses = y*12 + n
+                if fecha_entrega > fecha_inicial:
+                    y = fecha_entrega.year - fecha_inicial.year
+                    n = fecha_entrega.month - fecha_inicial.month
 
-                valor_costo = -np.pv(fv=valor_costo, rate=desde.parametros.tasa_des, nper=meses, pmt=0)
+                    meses = y*12 + n
+
+                    valor_costo = -np.pv(fv=valor_costo, rate=desde.parametros.tasa_des, nper=meses, pmt=0)
 
 
-            #Calculo el valor final
-            
-            valor_final = valor_costo*(1 + desde.parametros.ganancia)
+                #Calculo el valor final
+                
+                valor_final = valor_costo*(1 + desde.parametros.ganancia)
 
-            precio_desde = valor_final*m2
+                precio_desde = valor_final*m2
+
+            except:
+                pass
 
             b = VentasRealizadas(
 
@@ -1755,9 +1720,10 @@ def cargar_venta(request):
                 unidad = unidad,
                 tipo_unidad = "n",
                 proyecto = proyecto,
-                m2 = 0,
-                asignacion = "n",
+                m2 = m2,
+                asignacion = unidad.asig,
                 precio_venta = precio_venta,
+                precio_venta_hormigon = precio_venta_hormigon,
                 precio_contado = request.POST["precio_contado"],
                 precio_pricing = precio_pricing,
                 precio_desde = precio_desde,
@@ -1772,6 +1738,23 @@ def cargar_venta(request):
             unidad.estado = "SEÑADA"
             unidad.save()
 
+            nombre_unidad = str(unidad.piso_unidad) + "-"+ str(unidad.nombre_unidad) + "-"+ str(unidad.proyecto.nombre)
+
+            send = "Han cargado una venta en la unidad {}".format(nombre_unidad)
+
+            id = "-488788454"
+
+            token = "1880193427:AAH-Ej5ColiocfDZrDxUpvsJi5QHWsASRxA"
+
+            url = "https://api.telegram.org/bot" + token + "/sendMessage"
+
+            params = {
+                'chat_id' : id,
+                'text' : send
+            }
+
+            requests.post(url, params=params)
+
             return redirect( 'Cargar Venta' )
 
     return render(request, 'cargar_venta.html', {'datos':datos, 'mensaje':mensaje})
@@ -1782,59 +1765,16 @@ def editarventa(request, id_venta):
 
     if request.method == 'POST':
 
-        datos_formulario = request.POST.items()
-
-        comprador = "Nadie"
-        precio_venta = 0
-        precio_contado = 0
-        anticipo = 0
-        cuotas_pend = 0
-        tipo_venta = "Ninguna"
-        unidad = 0
-        fecha = 0
-        proyecto = 0
-        observaciones = ""
-
-        for dato in datos_formulario:
-
-            if dato[0] == "comprador":
-                comprador = dato[1]
-                datos.comprador = comprador
-                datos.save()
-
-            if dato[0] == "anticipo" and dato[1] != "":
-                anticipo = dato[1]
-                datos.anticipo = anticipo
-                datos.save()
-
-            if dato[0] == "precio_venta" and dato[1] != "":
-                precio_venta = dato[1]
-                datos.precio_venta = precio_venta
-                datos.save()
-            if dato[0] == "precio_contado" and dato[1] != "":
-                precio_contado = dato[1]
-                datos.precio_contado = precio_contado
-                datos.save()
-
-            if dato[0] == "cuotas" and dato[1] != "":
-                cuotas_pend = dato[1]
-                datos.cuotas_pend = cuotas_pend
-                datos.save()
-
-            if dato[0] == "tipo_venta":
-                tipo_venta = dato[1]
-                datos.tipo_venta = tipo_venta
-                datos.save()
-
-            if dato[0] == "fecha" and dato[1] != "":
-                fecha = dato[1]
-                datos.fecha = fecha
-                datos.save()
-
-            if dato[0] == "observaciones":
-                observaciones = dato[1]
-                datos.observaciones = observaciones
-                datos.save()
+        datos.comprador = request.POST['comprador']
+        datos.precio_venta = request.POST['precio_venta']
+        datos.precio_venta_hormigon = request.POST['precio_venta_H']
+        datos.precio_contado = request.POST["precio_contado"]
+        datos.anticipo = request.POST['anticipo']
+        datos.cuotas_pend = request.POST['cuotas']
+        datos.tipo_venta = request.POST['tipo_venta']
+        datos.fecha = request.POST['fecha']
+        datos.observaciones = request.POST['observaciones']
+        datos.save()
 
         return redirect( 'Cargar Venta' )
 
