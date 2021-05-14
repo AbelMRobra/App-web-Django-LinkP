@@ -4240,7 +4240,7 @@ class DescargarResumen(TemplateView):
 
         cont = 10
 
-        cont_f = -1
+        cont_f = 0
         fecha_aux = 0
         for fecha in fechas:
 
@@ -4397,7 +4397,7 @@ class DescargarResumen(TemplateView):
 
         cont = 10
 
-        cont_f = -1
+        cont_f = 0
         fecha_aux = 0
         for fecha in fechas:
 
