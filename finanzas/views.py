@@ -3298,6 +3298,10 @@ def cuentacte_resumen(request):
         pagos_pesos= sum(np.array(Pago.objects.values_list('pago_pesos', flat=True).filter(cuota__fecha__lt = today, cuota__cuenta_corriente__venta__proyecto__id = project)))
         adelantos = cuotas_posterior - pagos_posterior
 
+        # Acomodo para valores considerando adelantos
+
+        cuotas_posterior = cuotas_posterior - pagos_posterior
+
         array_pesos = np.array([cuotas_anteriores, pagos_anteriores, deuda, cuotas_posterior, pagos_posterior, adelantos])
         array_h = array_pesos/Constantes.objects.get(id = 7).valor
 
@@ -3312,6 +3316,15 @@ def cuentacte_resumen(request):
         data_project.append((proyecto, array_pesos, array_h, pagos_pesos))
 
     array_total = [cuotas_anteriores_t, pagos_pesos_t, deuda_t, cuotas_posterior_t, pagos_posterior_t, adelantos_t]
+
+
+    cuotas_anteriores_b_t = 0
+    pagos_anteriores_b_t = 0
+    deuda_b_t = 0
+    cuotas_posterior_b_t = 0
+    pagos_posterior_b_t = 0
+    pagos_pesos_b_t = 0
+    adelantos_b_t = 0
 
     for project in list_p:
 
@@ -3328,12 +3341,24 @@ def cuentacte_resumen(request):
         pagos_pesos= sum(np.array(Pago.objects.values_list('pago_pesos', flat=True).filter(cuota__fecha__gte = today, cuota__cuenta_corriente__venta__proyecto__id = project)))
         adelantos = cuotas_posterior - pagos_posterior
 
+        # Acomodo para valores considerando adelantos
+
+        cuotas_posterior = cuotas_posterior - pagos_posterior
+
         array_pesos = np.array([cuotas_anteriores, pagos_anteriores, deuda, cuotas_posterior, pagos_posterior, adelantos])
         array_h = array_pesos/Constantes.objects.get(id = 7).valor
 
+        cuotas_anteriores_b_t += cuotas_anteriores
+        pagos_anteriores_b_t += pagos_anteriores
+        deuda_b_t += deuda
+        cuotas_posterior_b_t += cuotas_posterior
+        pagos_posterior_b_t += pagos_posterior
+        pagos_pesos_b_t += pagos_pesos
+        adelantos_b_t += adelantos
+
         data_project_b.append((proyecto, array_pesos, array_h, pagos_pesos))
 
-
+    array_b_total = [cuotas_anteriores_b_t, pagos_pesos_b_t, deuda_b_t, cuotas_posterior_b_t, pagos_posterior_b_t, adelantos_b_t]
 
     data = CuentaCorriente.objects.all()
 
@@ -3358,7 +3383,7 @@ def cuentacte_resumen(request):
         
         datos.append((c, pagos, adeudado, pendiente))
 
-    return render(request, 'ctacte_resumen.html', {"datos":datos, "data_project":data_project, "data_project_b":data_project_b, "array_total":array_total})
+    return render(request, 'ctacte_resumen.html', {"datos":datos, "data_project":data_project, "data_project_b":data_project_b, "array_total":array_total, "array_b_total":array_b_total})
 
 def calculadora (request):
 
@@ -4142,6 +4167,8 @@ class DescargarResumen(TemplateView):
         ws["A1"] = "Resumen de pagos - Área Administración"
         ws["A1"].font = Font(bold = True)
 
+        ws["A3"] = "Flujo del proyecto"
+        ws["A3"].font = Font(bold = True)
 
         ws.merge_cells("B8:C8")
         ws["B8"] = "Total"
@@ -4297,6 +4324,8 @@ class DescargarResumen(TemplateView):
         ws["A1"] = "Resumen de pagos - Área Administración"
         ws["A1"].font = Font(bold = True)
 
+        ws["A3"] = "Flujo del proyecto en boleto"
+        ws["A3"].font = Font(bold = True)
 
         ws.merge_cells("B8:C8")
         ws["B8"] = "Total"
@@ -4401,9 +4430,9 @@ class DescargarResumen(TemplateView):
 
                 # Link
 
-                if len(Cuota.objects.values_list('pago', flat = True).filter(fecha__range = (fecha_aux, fecha), cuenta_corriente__venta__proyecto = proyecto, cuenta_corriente__venta__unidad__asig = "HON. LINK")) > 0:
-                    cuotas_month = sum(np.array(Cuota.objects.values_list('precio', flat = True).filter(fecha__range = (fecha_aux, fecha), cuenta_corriente__venta__proyecto = proyecto, cuenta_corriente__venta__unidad__asig = "HON. LINK"))*np.array(Cuota.objects.values_list('constante__valor', flat = True).filter(fecha__range = (fecha_aux, fecha), cuenta_corriente__venta__proyecto = proyecto, cuenta_corriente__venta__unidad__asig = "HON. LINK")))
-                    pago_month = sum(np.array(Pago.objects.values_list('pago', flat = True).filter(cuota__fecha__range = (fecha_aux, fecha), cuota__cuenta_corriente__venta__proyecto = proyecto, cuota__cuenta_corriente__venta__unidad__asig = "HON. LINK"))*np.array(Pago.objects.values_list('cuota__constante__valor', flat = True).filter(cuota__fecha__range = (fecha_aux, fecha), cuota__cuenta_corriente__venta__proyecto = proyecto, cuota__cuenta_corriente__venta__unidad__asig = "HON. LINK")))
+                if len(Cuota.objects.values_list('pago', flat = True).filter(fecha__range = (fecha_aux, fecha), cuenta_corriente__venta__proyecto = proyecto, cuenta_corriente__venta__unidad__asig = "HON. LINK").exclude(porc_boleto = None)) > 0:
+                    cuotas_month = sum(np.array(Cuota.objects.values_list('precio', flat = True).filter(fecha__range = (fecha_aux, fecha), cuenta_corriente__venta__proyecto = proyecto, cuenta_corriente__venta__unidad__asig = "HON. LINK").exclude(porc_boleto = None))*np.array(Cuota.objects.values_list('constante__valor', flat = True).filter(fecha__range = (fecha_aux, fecha), cuenta_corriente__venta__proyecto = proyecto, cuenta_corriente__venta__unidad__asig = "HON. LINK").exclude(porc_boleto = None))*np.array(Cuota.objects.values_list('porc_boleto', flat = True).filter(fecha__range = (fecha_aux, fecha), cuenta_corriente__venta__proyecto = proyecto, cuenta_corriente__venta__unidad__asig = "HON. LINK").exclude(porc_boleto = None)))
+                    pago_month = sum(np.array(Pago.objects.values_list('pago', flat = True).filter(cuota__fecha__range = (fecha_aux, fecha), cuota__cuenta_corriente__venta__proyecto = proyecto, cuota__cuenta_corriente__venta__unidad__asig = "HON. LINK").exclude(cuota__porc_boleto = None))*np.array(Pago.objects.values_list('cuota__constante__valor', flat = True).filter(cuota__fecha__range = (fecha_aux, fecha), cuota__cuenta_corriente__venta__proyecto = proyecto, cuota__cuenta_corriente__venta__unidad__asig = "HON. LINK").exclude(cuota__porc_boleto = None))*np.array(Pago.objects.values_list('cuota__porc_boleto', flat = True).filter(cuota__fecha__range = (fecha_aux, fecha), cuota__cuenta_corriente__venta__proyecto = proyecto, cuota__cuenta_corriente__venta__unidad__asig = "HON. LINK").exclude(cuota__porc_boleto = None)))
                     saldo_month_l = cuotas_month - pago_month
                     saldo_month_l_h = saldo_month/Constantes.objects.get(id = 7).valor
                 else:
@@ -4412,9 +4441,9 @@ class DescargarResumen(TemplateView):
 
                 # Terreno
 
-                if len(Cuota.objects.values_list('pago', flat = True).filter(fecha__range = (fecha_aux, fecha), cuenta_corriente__venta__proyecto = proyecto, cuenta_corriente__venta__unidad__asig = "TERRENO")) > 0:
-                    cuotas_month = sum(np.array(Cuota.objects.values_list('precio', flat = True).filter(fecha__range = (fecha_aux, fecha), cuenta_corriente__venta__proyecto = proyecto, cuenta_corriente__venta__unidad__asig = "TERRENO"))*np.array(Cuota.objects.values_list('constante__valor', flat = True).filter(fecha__range = (fecha_aux, fecha), cuenta_corriente__venta__proyecto = proyecto, cuenta_corriente__venta__unidad__asig = "TERRENO")))
-                    pago_month = sum(np.array(Pago.objects.values_list('pago', flat = True).filter(cuota__fecha__range = (fecha_aux, fecha), cuota__cuenta_corriente__venta__proyecto = proyecto, cuota__cuenta_corriente__venta__unidad__asig = "TERRENO"))*np.array(Pago.objects.values_list('cuota__constante__valor', flat = True).filter(cuota__fecha__range = (fecha_aux, fecha), cuota__cuenta_corriente__venta__proyecto = proyecto, cuota__cuenta_corriente__venta__unidad__asig = "TERRENO")))
+                if len(Cuota.objects.values_list('pago', flat = True).filter(fecha__range = (fecha_aux, fecha), cuenta_corriente__venta__proyecto = proyecto, cuenta_corriente__venta__unidad__asig = "TERRENO").exclude(porc_boleto = None)) > 0:
+                    cuotas_month = sum(np.array(Cuota.objects.values_list('precio', flat = True).filter(fecha__range = (fecha_aux, fecha), cuenta_corriente__venta__proyecto = proyecto, cuenta_corriente__venta__unidad__asig = "TERRENO").exclude(porc_boleto = None))*np.array(Cuota.objects.values_list('constante__valor', flat = True).filter(fecha__range = (fecha_aux, fecha), cuenta_corriente__venta__proyecto = proyecto, cuenta_corriente__venta__unidad__asig = "TERRENO").exclude(porc_boleto = None))*np.array(Cuota.objects.values_list('porc_boleto', flat = True).filter(fecha__range = (fecha_aux, fecha), cuenta_corriente__venta__proyecto = proyecto, cuenta_corriente__venta__unidad__asig = "TERRENO").exclude(porc_boleto = None)))
+                    pago_month = sum(np.array(Pago.objects.values_list('pago', flat = True).filter(cuota__fecha__range = (fecha_aux, fecha), cuota__cuenta_corriente__venta__proyecto = proyecto, cuota__cuenta_corriente__venta__unidad__asig = "TERRENO").exclude(cuota__porc_boleto = None))*np.array(Pago.objects.values_list('cuota__constante__valor', flat = True).filter(cuota__fecha__range = (fecha_aux, fecha), cuota__cuenta_corriente__venta__proyecto = proyecto, cuota__cuenta_corriente__venta__unidad__asig = "TERRENO").exclude(cuota__porc_boleto = None))*np.array(Pago.objects.values_list('cuota__porc_boleto', flat = True).filter(cuota__fecha__range = (fecha_aux, fecha), cuota__cuenta_corriente__venta__proyecto = proyecto, cuota__cuenta_corriente__venta__unidad__asig = "TERRENO").exclude(cuota__porc_boleto = None)))
                     saldo_month_te = cuotas_month - pago_month
                     saldo_month_te_h = saldo_month/Constantes.objects.get(id = 7).valor
                 else:

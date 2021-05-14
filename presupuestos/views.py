@@ -741,7 +741,7 @@ def presupuestostotal(request):
 
                         except:
 
-                            send_2 = "{} - ".format(p)
+                            send_2 += "{} - ".format(p)
 
 
                     params = {
