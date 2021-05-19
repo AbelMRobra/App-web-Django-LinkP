@@ -641,7 +641,7 @@ def agregar_pagos(request, id_cuota):
 
     if request.method == 'POST':
 
-        precio1 = float(pagado)/float(request.POST['precio1'])
+        precio1 = float(request.POST['precio2'])/float(request.POST['precio1'])
 
         c = Pago(
 

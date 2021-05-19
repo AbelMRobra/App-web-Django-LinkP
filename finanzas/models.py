@@ -129,6 +129,7 @@ class Pago(models.Model):
     documento_1 = models.CharField(max_length=100, verbose_name = "Documento 1", blank=True, null=True)
     documento_2 = models.CharField(max_length=100, verbose_name = "Documento 2", blank=True, null=True)
     metodo = models.CharField(choices=Metodo.choices, max_length=20, verbose_name="Metodo", blank=True, null=True)
+    banco = models.CharField(max_length=100, verbose_name = "Banco", blank=True, null=True)
 
     class Meta:
         verbose_name="Pago"
