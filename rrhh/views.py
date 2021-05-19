@@ -10,6 +10,10 @@ from email.mime.base import MIMEBase
 from email import encoders
 from agenda import settings
 
+def apprrhh(request):
+
+    return render(request, 'apprrhh_principal.html')
+
 def editarcorrespondencia(request, id_nota):
 
     proyectos = Proyectos.objects.all()

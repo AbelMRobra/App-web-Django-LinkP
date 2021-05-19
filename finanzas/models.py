@@ -115,12 +115,20 @@ class Cuota(models.Model):
         verbose_name_plural="Cuotas"
 
 class Pago(models.Model):
+
+    class Metodo(models.TextChoices):
+        EFECTIVO = "EFECTIVO"
+        CHEQUE = "CHEQUE"
+        TRANSFERENCIA = "TRANSFERENCIA"
+        DEPOSITO = "DEPOSITO"
+
     cuota = models.ForeignKey(Cuota, on_delete=models.CASCADE, verbose_name = "Cuota")
     fecha = models.DateField(verbose_name = "Fecha de venta")
     pago = models.FloatField(verbose_name="Pago en moneda dura")
     pago_pesos = models.FloatField(verbose_name="Pago en pesos")
     documento_1 = models.CharField(max_length=100, verbose_name = "Documento 1", blank=True, null=True)
     documento_2 = models.CharField(max_length=100, verbose_name = "Documento 2", blank=True, null=True)
+    metodo = models.CharField(choices=Metodo.choices, max_length=20, verbose_name="Metodo", blank=True, null=True)
 
     class Meta:
         verbose_name="Pago"

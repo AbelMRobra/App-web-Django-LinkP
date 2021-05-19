@@ -11,14 +11,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="shortcut icon" href="{% static 'img/LinkIco21.ico' %}" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css">
+  <!-- Hojas estilo datatables -->
+  <!--  -->
+  <!--  -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.7.0/css/buttons.dataTables.min.css"/>
+  <!--  -->
+  <!--  -->
   <!-- Hojas de estilos AdminPro -->
-  <!--  -->
-  <!--  -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css">
-  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.23/css/dataTables.bootstrap4.min.css">
-  <!--  -->
-  <!--  -->
-
 
   <link rel="stylesheet" href="{% static 'css/styleabel.css' %}">
   <link rel="stylesheet" href="{% static 'css/registro_contable.css' %}">
@@ -386,18 +386,7 @@
             <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i
               class="zmdi zmdi-accounts"></i><span class="hide-menu">Recursos Humanos</span></a>
           <ul aria-expanded="false" class="collapse">
-            {% if request.user|has_group:"RRHH NIVEL 1" %}
-
-            <li><a href="{% url 'Datos personal' %}">Datos del personal</a></li>
-            <li><a href="{% url 'Canjes realizados' %}">Canje de linkcoins</a></li>
-
-            {% else %}
-
-                <li>No tienes permisos para ver este espacio</li>
-
-
-            {% endif %}
-
+            <li><a href="{% url 'App de rrhh' %}">App de RRHH</a></li>
           </ul>
         </li>
               <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i
@@ -473,10 +462,7 @@
                   class="zmdi zmdi-mall"></i><span class="hide-menu">Comercialización</span></a>
               <ul aria-expanded="false" class="collapse">
 
-                {% if request.user|has_group:"VENTAS NIVEL 1" %}
-
-                <li><a href="/ventas/folleto">Folletos</a></li>
-                <li><a href="{% url 'Dosier' %}">Dosier</a></li>
+                <li><a href="{% url 'App comercial' %}">App comercial</a></li>
 
                 {% if request.user|has_group:"VENTAS NIVEL 3" %}
                 <li class="nav-devider"></li>
@@ -489,14 +475,11 @@
                 {% if request.user|has_group:"VENTAS NIVEL 2" %}
 
                 <li class="nav-devider"></li>
-                <li><a href="/ventas/cajaarea">Caja del área</a></li>
                 <li><a href="/ventas/encuestapostventa">Encuesta postventa</a></li>
                 <li><a href="/ventas/evo_usd">Evolución historica USD/m2</a></li>
                 <li><a href="/ventas/fechaentrega">Fechas de entrega</a></li>
                 <li><a href="/ventas/historialventa">Historial de ventas</a></li>
-                <li><a href="/ventas/informe_redes">Informe de redes</a></li>
                 <li><a href="/ventas/informeventa">Informe de ventas</a></li>
-                <li><a href="/ventas/invmer">Investigación de mercado</a></li>
                 <li><a href="/ventas/radiografia">Radiografia del cliente</a></li>
                 <li><a href="/ventas/variacionhormigon">Variación del Hº</a></li>
 
@@ -509,11 +492,6 @@
                 {% endif %}
 
 
-                {% else %}
-
-                <li>No tienes permisos para ver este espacio</li>
-
-                {% endif %}
               </ul>
             </li>
             <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i
@@ -791,6 +769,14 @@
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js" defer></script>
     <script src="https://cdn.datatables.net/1.10.23/js/dataTables.bootstrap4.min.js" defer></script>
+
+     
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"defer></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"defer></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"defer></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"defer></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.7.0/js/dataTables.buttons.min.js"defer></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.7.0/js/buttons.html5.min.js"defer></script>
     <!--Custom JavaScript -->
 
     <script src="{% static 'adminpro/main/js/custom.min.js' %}"></script>

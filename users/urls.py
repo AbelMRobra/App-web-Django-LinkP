@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.urls import path
 from django.conf.urls import url
 from . import views
+from .views import DescargarRegistroContable
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 
@@ -41,7 +42,7 @@ urlpatterns = [
 
     # Template de registro contable
     url(r'registro_contable/(?P<date_i>\d+)/$', login_required(views.registro_contable), name = 'Registro Contable'),
-
+    url(r'^des_registro$', login_required(DescargarRegistroContable.as_view()), name = 'Descarga registro contable'),
 
 ]
 

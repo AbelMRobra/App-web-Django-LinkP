@@ -15,7 +15,8 @@
 
         <div class="col-md-7 align-self-center">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'Cuenta corriente venta' pago.cuota.cuenta_corriente.id %}">Cuenta</a>
+                    <li class="breadcrumb-item"><a href="{% url 'Pagos' pago.cuota.id %}">Pagos realizados</a>
                 <li class="breadcrumb-item">Editar Pagos</li>
             </ol>
         </div>
@@ -47,7 +48,6 @@
                     </div>
 
 
-
                     <div class="row d-flex justify-content-center">
                         <div class="col-12 col-md-12 col-lg-6">
                             <div class="row">
@@ -74,128 +74,150 @@
                                                         <div>
 
                                                             <input name="fecha" type="date"
-                                                                class="form-control form-control">
+                                                                class="form-control form-control" value="{{pago.fecha|date:'Y-m-d'}}" >
 
                                                         </div>
                                                     </div>
                                                 </div>
 
                                                 <div>
-                                                    <p class="text-center">Fecha actual:
-                                                        {{pago.fecha}} </p>
-                                                </div>
 
-                                                <div style="display: inline-block;">
+                                                        <div style="display: inline-block;">
 
-                                                    <label for="precio2">
-                                                        <h6>Valor aportado en
-                                                            pesos</h6>
-                                                    </label>
+                                                            <label for="precio2">
+                                                                <h6>Valor aportado en
+                                                                    pesos</h6>
+                                                            </label>
 
-                                                </div>
+                                                        </div>
 
-                                                <div class="row justify-content-center mt-3">
-                                                    <div class="col-12 col-md-8 col-lg-8">
-                                                        <div class="input-group mb-3">
-                                                            <div class="input-group-prepend">
+                                                        <div class="row justify-content-center mt-3">
+                                                            <div class="col-12 col-md-8 col-lg-8">
+                                                                <div class="input-group mb-3">
+                                                                    <div class="input-group-prepend">
 
-                                                                <span class="input-group-text">$</span>
+                                                                        <span class="input-group-text">$</span>
 
+                                                                    </div>
+
+                                                                    <input name="precio2" type="number" step="0.001"
+                                                                        class="form-control form-control"
+                                                                        aria-label="Amount" value="{{pago.pago_pesos}}">
+
+                                                                </div>
                                                             </div>
+                                                        </div>
 
-                                                            <input name="precio2" type="number" step="0.001"
-                                                                class="form-control form-control" aria-label="Amount"
-                                                                placeholder="{{pago.pago_pesos}}">
+
+                                                        <div style="display: inline-block;">
+
+                                                            <label for="precio1">
+                                                                <h6>Cotización de moneda
+                                                                    dura</h6>
+                                                            </label>
 
                                                         </div>
-                                                    </div>
-                                                </div>
 
+                                                        <div class="row justify-content-center mt-3">
+                                                            <div class="col-12 col-md-8 col-lg-8">
+                                                                <div class="input-group mb-3">
+                                                                    <div class="input-group-prepend">
 
-                                                <div style="display: inline-block;">
+                                                                        <span class="input-group-text">$</span>
 
-                                                    <label for="precio1">
-                                                        <h6>Cotización de moneda
-                                                            dura</h6>
-                                                    </label>
+                                                                    </div>
 
-                                                </div>
+                                                                    <input name="precio1" type="number" step="0.001"
+                                                                        class="form-control form-control"
+                                                                        aria-label="Amount" value="{{cotizacion}}">
 
-                                                <div class="row justify-content-center mt-3">
-                                                    <div class="col-12 col-md-8 col-lg-8">
-                                                        <div class="input-group mb-3">
-                                                            <div class="input-group-prepend">
-
-                                                                <span class="input-group-text">$</span>
-
+                                                                </div>
                                                             </div>
+                                                        </div>
 
-                                                            <input name="precio1" type="number" step="0.001"
-                                                                class="form-control form-control" aria-label="Amount"
-                                                                placeholder="{{cotizacion}}">
+
+
+                                                        <div style="display: inline-block;">
+
+                                                            <label for="documento1">
+                                                                <h6>Factura</h6>
+                                                            </label>
 
                                                         </div>
-                                                    </div>
-                                                </div>
 
+                                                        <div class="row justify-content-center my-3">
+                                                            <div class="col-12 col-md-8 col-lg-8">
+                                                                <div>
 
+                                                                    <input name="documento1" type="text"
+                                                                        class="form-control form-control"
+                                                                        aria-label="Amount"
+                                                                        value="{{pago.documento_1}}">
 
-                                                <div style="display: inline-block;">
+                                                                </div>
+                                                            </div>
+                                                        </div>
 
-                                                    <label for="documento1">
-                                                        <h6>Documento 1</h6>
-                                                    </label>
+                                                        <div style="display: inline-block;">
 
-                                                </div>
-
-                                                <div class="row justify-content-center my-3">
-                                                    <div class="col-12 col-md-8 col-lg-8">
-                                                        <div>
-
-                                                            <input name="documento1" type="text"
-                                                                class="form-control form-control" aria-label="Amount"
-                                                                placeholder="{{pago.documento_1}}">
+                                                            <label for="documento2">
+                                                                <h6>Recibo</h6>
+                                                            </label>
 
                                                         </div>
+
+                                                        <div class="row justify-content-center my-3">
+                                                            <div class="col-12 col-md-8 col-lg-8">
+                                                                <div>
+
+                                                                    <input name="documento2" type="text"
+                                                                        class="form-control form-control"
+                                                                        aria-label="Amount"
+                                                                        value="{{pago.documento_2}}">
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div style="display: inline-block;">
+
+                                                            <label for="metodo">
+                                                                <h6>Metodo</h6>
+                                                            </label>
+
+                                                        </div>
+
+                                                        <div class="row justify-content-center my-3">
+                                                            <div class="col-12 col-md-8 col-lg-8">
+                                                                <div>
+                                                                    <select name="metodo" class="custom-select"
+                                                                    style="width: 300px;">
+                                                                    <option {% if pago.metodo == "EFECTIVO" %} selected {% endif %} value="EFECTIVO">EFECTIVO</option>
+                                                                    <option {% if pago.metodo == "CHEQUE" %} selected {% endif %} value="CHEQUE">CHEQUE</option>
+                                                                    <option {% if pago.metodo == "EFTRANSFERENCIAECTIVO" %} selected {% endif %} value="TRANSFERENCIA ">TRANSFERENCIA
+                                                                    </option>
+                                                                    <option {% if pago.metodo == "DEPOSITO" %} selected {% endif %} value="DEPOSITO ">DEPOSITO </option>
+
+                                                                </select>
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                </div>
 
-                                                <div style="display: inline-block;">
+                                                    <div class="row justify-content-center mt-4">
+                                                        <div class="col-lg-6 text-center">
 
-                                                    <label for="documento2">
-                                                        <h6>Documento 2</h6>
-                                                    </label>
-
-                                                </div>
-
-                                                <div class="row justify-content-center my-3">
-                                                    <div class="col-12 col-md-8 col-lg-8">
-                                                        <div>
-
-                                                            <input name="documento2" type="text"
-                                                                class="form-control form-control" aria-label="Amount"
-                                                                placeholder="{{pago.documento_2}}">
+                                                            <button type="submit" class="btn btn-info">Editar</button>
 
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-
-                                        <div class="row justify-content-center mt-4">
-                                            <div class="col-lg-6 text-center">
-
-
-                                                <button type="submit" class="btn btn-info">Editar</button>
-
-                                            </div>
-                                        </div>
-
 
                                     </form>
 
                                 </div>
-
                             </div>
                         </div>
                     </div>

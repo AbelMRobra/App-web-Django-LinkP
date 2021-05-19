@@ -27,7 +27,6 @@
             <div class="card-body row">
                 <div class="col-12 justify-content-center">
 
-
                     <div style="text-align: center;">
                         <h2>Registro de pagos</h2>
                     </div>
@@ -69,15 +68,16 @@
                             <thead style="font-size: 14px;">
 
                                 <tr>
-                                    <th>Fecha pago</th>
+                                    <th>Fecha</th>
                                     <th>Proyecto</th>
                                     <th>Cliente</th>
                                     <th>Unidad</th>
-                                    <th>Moneda (MD) </th>
+                                    <th>Moneda</th>
                                     <th>Cotizacion</th>
-                                    <th>Monto pesos</th>
-                                    <th> Documento 1 </th>
-                                    <th> Documento 2 </th>
+                                    <th>Pesos</th>
+                                    <th>Fac</th>
+                                    <th>Recibo</th>
+                                    <th>Metodo</th>
 
                                 </tr>
                             </thead>
@@ -86,19 +86,16 @@
 
                                 {% for i in datos|slice:"200" %}
                                 <tr>
-                                    <td> {{i.0.fecha|date:"Y-m-d"}}</td>
+                                    <td>{{i.0.fecha|date:"Y-m-d"}}</td>
                                     <td style="color: rgb({{i.0.cuota.cuenta_corriente.venta.proyecto.color}});">{{i.0.cuota.cuenta_corriente.venta.proyecto.nombre}}</td>
-                                    <td> {{i.0.cuota.cuenta_corriente.venta.comprador|lower|capfirst}}</td>
-                                    <td>{{i.0.cuota.cuenta_corriente.venta.unidad.piso_unidad}} -
-                                                {{i.0.cuota.cuenta_corriente.venta.unidad.nombre_unidad}}
-                                    </td>
+                                    <td>{{i.0.cuota.cuenta_corriente.venta.comprador|lower|capfirst}}</td>
+                                    <td>{{i.0.cuota.cuenta_corriente.venta.unidad.piso_unidad}} - {{i.0.cuota.cuenta_corriente.venta.unidad.nombre_unidad}}</td>
                                     
                                     <td>{{i.0.pago|floatformat:2}}</td>
 
                                     <td>${{i.1|floatformat:0|intcomma}}</td>
 
-                                    <td>${{i.0.pago_pesos|floatformat:0|intcomma}}
-                                    </td>
+                                    <td>${{i.0.pago_pesos|floatformat:0|intcomma}}</td>
 
                                     {% if i.0.documento_1 %}
 
@@ -106,10 +103,9 @@
 
                                     {% else %}
 
-                                    <td>SIN REGISTRO</td>
+                                    <td>-</td>
 
                                     {% endif %}
-
 
                                     {% if i.0.documento_2 %}
 
@@ -117,7 +113,17 @@
 
                                     {% else %}
 
-                                    <td>Sin registro</td>
+                                    <td>-</td>
+
+                                    {% endif %}
+
+                                    {% if i.0.metodo %}
+
+                                    <td>{i.0.metodo}}</td>
+
+                                    {% else %}
+
+                                    <td>-</td>
 
                                     {% endif %}
 
@@ -125,9 +131,7 @@
                                 {% endfor %}
                             </tbody>
 
-
                         </table>
-
                     </div>
                 </div>
             </div>
@@ -136,14 +140,26 @@
 </div>
 
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-<script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js" defer></script>
-<script src="https://cdn.datatables.net/1.10.23/js/dataTables.bootstrap4.min.js" defer></script>
+<script src="https://momentjs.com/downloads/moment.min.js"></script>
+
 
 <script>
+  
+    var fecha = moment().format('LL'); 
+
+    console.log(fecha);
     $(document).ready(function () {
         $('#example').DataTable({
             "paging": false,
-            "info": false
+            "info": false,
+            dom: 'Bfrtip',
+            buttons: [
+            {
+                extend: 'excelHtml5',
+                title: 'Registro de pagos' + fecha
+            },
+    ]
+
         });
     });
 </script>

@@ -1,0 +1,127 @@
+{% extends "users/inicio2.html" %}
+
+{% load static %}
+{% load humanize %}
+{% load apptags_extras %}
+{% block content %}
+
+<div class="container-fluid r-aside">
+    <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+            <h3 class="text-themecolor">Panel del RRHH</h3>
+        </div>
+
+        <div class="col-md-7 align-self-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+                <li class="breadcrumb-item">Panel</li>
+            </ol>
+        </div>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-lg-3 col-xlg-3">
+        <div class="card">
+            <div class="card-body text-center">
+                <div>
+                    <h6>Datos del personal</h6>
+                </div>
+
+                <div>
+                    <img src="{% static 'img/apprrhh_user.gif' %}" alt="" style="max-width:70px; height:auto; margin: 20px;">
+                </div>
+
+                {% if request.user|has_group:"RRHH NIVEL 1" %}
+
+                <a href="{% url 'Datos personal' %}"><button class="btn btn-info">
+                        Ingresar</button></a>
+ 
+                {% else %}
+
+                <a href="#"><button class="btn btn-secondary">
+                    Sin permisos</button></a>
+                {% endif %}
+
+            </div>
+
+        </div>
+    </div>
+
+    <div class="col-lg-3 col-xlg-3">
+        <div class="card">
+            <div class="card-body text-center">
+                <div>
+                    <h6>Linkcoins</h6>
+                </div>
+
+                <div>
+                    <img src="{% static 'img/app_rrhh_gift.gif' %}" alt="" style="max-width:100px; height:auto; margin: 5px;">
+                </div>
+
+                {% if request.user|has_group:"RRHH NIVEL 1" %}
+
+
+                <a href="{% url 'Canjes realizados' %}"><button class="btn btn-success">
+                        Ingresar</button></a>
+
+                {% else %}
+
+                <a href="#"><button class="btn btn-secondary">
+                    Sin permisos</button></a>
+                {% endif %}
+
+            </div>
+
+        </div>
+    </div>
+
+
+
+    <div class="col-lg-3 col-xlg-4">
+        <div class="card">
+            <div class="card-body text-center">
+                <div>
+                    <h6>Planificación del área</h6>
+                </div>
+
+                <div>
+                    <img src="{% static 'img/app_rrhh_planificaci.gif' %}" alt="" style="max-width:100px; height:auto; margin: 5px;">
+                </div>
+
+                {% if request.user|has_group:"RRHH NIVEL 1" %}
+
+                <a href="#"><button class="btn btn-primary">
+                        Ingresar</button></a>
+
+                {% else %}
+
+                <a href="#"><button class="btn btn-secondary">
+                    Sin permisos</button></a>
+                {% endif %}
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<aside class="right-side-panel">
+    <h3 class="p-relative"><span class="lstick"></span>Sobre el espacio ..</h3>
+    <div class="row">
+        
+        <div class="col-md-12 m-t-10">
+          <div class="card">
+            <div class="card-body">
+            <img src="{% static 'img/33635-worker-have-an-idea.gif' %}" alt="Funny image" width="200px">
+            <p>Este espacio esta destino a ... Agus</p>
+        </div>
+            </div>
+        </div>
+    </div>
+  </aside>
+
+
+
+{% endblock %}

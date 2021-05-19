@@ -18,6 +18,11 @@ from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
 from django.views.generic.base import TemplateView 
 from django.http import HttpResponse 
 
+
+def appcomercial(request):
+
+    return render(request, 'appcomercial_principal.html')
+
 def reportereclamos(request):
 
     list_category = ReclamosPostventa.objects.all().values_list('clasificacion')

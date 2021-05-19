@@ -5,617 +5,589 @@
 {% load apptags_extras %}
 {% block content %}
 
-  <!-- ============================================================== -->
-  <!-- Container fluid  -->
-  <!-- ============================================================== -->
-  <div class="container-fluid">
-      <!-- ============================================================== -->
-      <!-- Bread crumb and right sidebar toggle -->
-      <!-- ============================================================== -->
-      <div class="row page-titles">
-          <div class="col-md-5 align-self-center">
-              <h3 class="text-themecolor">Panel de presupuestos</h3>
-          </div>
 
-          <div class="col-md-7 align-self-center">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
-                <li class="breadcrumb-item">Panel</li>
-            </ol>
-        </div>
-
-      </div>
-
+<div class="container-fluid">
+  <div class="row page-titles">
+    <div class="col-md-5 align-self-center">
+      <h3 class="text-themecolor">Panel de presupuestos</h3>
     </div>
 
-      {% if datos %}
-
-      <div class="row">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-body">
-
-                      <h4 class="card-title" style="color: rgb({{datos.0.0.color}})">
-                        {{datos.0.0.nombre}}</h4>
-                    </div>
-                  </div>
-
-      
-              </div>
-            </div>
-
-
-
-    {% endif %}
-
-
-    
-     {% if proyectos %}
-
-     <div class="row">
-     <div class="col-lg-3 col-xlg-6">
-      <div class="card">
-          <div class="card-body text-center">
-              <div>
-                  <h6>Base de constantes</h6>
-              </div>
-
-              <div>
-                  <img src="{% static 'img/animation_500_kmv80aa7.gif' %}" alt="" style="max-width:100px; height:auto; margin: 5px;">
-              </div>
-
-              {% if request.user|has_group:"PRESUPUESTO NIVEL 1" %}
-
-
-              <a href="{% url 'Cons_list' %}"><button class="btn btn-dark">
-                      Ingresar</button></a>
-
-              {% else %}
-
-              <a href="#"><button class="btn btn-secondary">
-                Sin permisos</button></a>
-              {% endif %}
-
-          </div>
-
-      </div>
+    <div class="col-md-7 align-self-center">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+        <li class="breadcrumb-item">Panel</li>
+      </ol>
+    </div>
   </div>
-  <div class="col-lg-3 col-xlg-6">
+</div>
+
+{% if datos %}
+
+<div class="row">
+  <div class="col-12">
     <div class="card">
-        <div class="card-body text-center">
-            <div>
-                <h6>Articulos</h6>
-            </div>
+      <div class="card-body">
 
-            <div>
-                <img src="{% static 'img/animation_500_kmv3c5aa.gif' %}" alt="" style="max-width:100px; height:auto; margin: 5px;">
-            </div>
-
-            {% if request.user|has_group:"PRESUPUESTO NIVEL 1" %}
-
-
-            <a href="{% url 'Lista de insumos' %}"><button class="btn btn-success">
-                    Ingresar</button></a>
-
-            {% else %}
-
-            <a href="#"><button class="btn btn-secondary">
-              Sin permisos</button></a>
-            {% endif %}
-
-        </div>
-
-    </div>
-</div>
-<div class="col-lg-3 col-xlg-6">
-  <div class="card">
-      <div class="card-body text-center">
-          <div>
-              <h6>Biblioteca de APU</h6>
-          </div>
-
-          <div>
-              <img src="{% static 'img/animation_500_kmv74u8k.gif' %}" alt="" style="max-width:100px; height:auto; margin: 5px;">
-          </div>
-
-          {% if request.user|has_group:"PRESUPUESTO NIVEL 1" %}
-
-
-          <a href="{% url 'Lista de analisis' %}"><button class="btn btn-warning">
-                  Ingresar</button></a>
-
-          {% else %}
-
-          <a href="#"><button class="btn btn-secondary">
-            Sin permisos</button></a>
-          {% endif %}
-
+        <h4 class="card-title" style="color: rgb({{datos.0.0.color}})">
+          {{datos.0.0.nombre}}</h4>
       </div>
+    </div>
+
 
   </div>
 </div>
+
+{% endif %}
+
+{% if proyectos %}
+
+<div class="row">
+  <div class="col-lg-3 col-xlg-3">
+    <div class="card">
+      <div class="card-body text-center">
+        <div>
+          <h6>Base de constantes</h6>
+        </div>
+
+        <div>
+          <img src="{% static 'img/animation_500_kmv80aa7.gif' %}" alt=""
+            style="max-width:100px; height:auto; margin: 5px;">
+        </div>
+
+        {% if request.user|has_group:"PRESUPUESTO NIVEL 1" %}
+
+
+        <a href="{% url 'Cons_list' %}"><button class="btn btn-dark">
+            Ingresar</button></a>
+
+        {% else %}
+
+        <a href="#"><button class="btn btn-secondary">
+            Sin permisos</button></a>
+        {% endif %}
+
+      </div>
+
+    </div>
+  </div>
+  <div class="col-lg-3 col-xlg-3">
+    <div class="card">
+      <div class="card-body text-center">
+        <div>
+          <h6>Articulos</h6>
+        </div>
+
+        <div>
+          <img src="{% static 'img/animation_500_kmv3c5aa.gif' %}" alt=""
+            style="max-width:100px; height:auto; margin: 5px;">
+        </div>
+
+        {% if request.user|has_group:"PRESUPUESTO NIVEL 1" %}
+
+
+        <a href="{% url 'Lista de insumos' %}"><button class="btn btn-success">
+            Ingresar</button></a>
+
+        {% else %}
+
+        <a href="#"><button class="btn btn-secondary">
+            Sin permisos</button></a>
+        {% endif %}
+
+      </div>
+
+    </div>
+  </div>
+  <div class="col-lg-3 col-xlg-4">
+    <div class="card">
+      <div class="card-body text-center">
+        <div>
+          <h6>Biblioteca de APU</h6>
+        </div>
+
+        <div>
+          <img src="{% static 'img/animation_500_kmv74u8k.gif' %}" alt=""
+            style="max-width:100px; height:auto; margin: 5px;">
+        </div>
+
+        {% if request.user|has_group:"PRESUPUESTO NIVEL 1" %}
+
+
+        <a href="{% url 'Lista de analisis' %}"><button class="btn btn-warning">
+            Ingresar</button></a>
+
+        {% else %}
+
+        <a href="#"><button class="btn btn-secondary">
+            Sin permisos</button></a>
+        {% endif %}
+
+      </div>
+
+    </div>
+  </div>
 </div>
 
 <div class="row">
-  <div class="col-lg-3 col-xlg-6">
+  <div class="col-lg-3 col-xlg-3">
     <div class="card">
       <div class="card-body text-center">
 
-          <div>
-              <h6>Control de presupuesto</h6>
+        <div>
+          <h6>Control de presupuesto</h6>
+        </div>
+
+        {% if request.user|has_group:"PRESUPUESTO NIVEL 2" %}
+
+        <form method="POST" style="margin-top: 30px;">
+
+          {% csrf_token %}
+
+
+          <select name="proyecto" class="form-control">
+
+            {% if request.user.username == "HC" %}
+
+            {% for i in proyectos %}
+
+            {% if "DIANCO" in i.nombre %}
+
+
+            <option value="{{i.id}}">{{i.nombre}}</option>
+
+            {% endif %}
+
+
+            {% endfor %}
+
+            {% elif request.user.username == "AR" or request.user.username == "PL" %}
+
+            {% for i in proyectos %}
+
+            <option value="{{i.id}}">{{i.nombre}}</option>
+
+
+            {% endfor %}
+
+            {% else %}
+
+
+            {% for i in proyectos %}
+
+            {% if not "SEMINARIO" in i.nombre %}
+
+            <option value="{{i.id}}">{{i.nombre}}</option>
+
+            {% endif %}
+
+
+            {% endfor %}
+
+
+            {% endif %}
+
+
+
+          </select>
+
+          <div class="my-4">
+            <button class="btn btn-danger" type="submit">
+              Buscar</button>
           </div>
 
-          {% if request.user|has_group:"PRESUPUESTO NIVEL 2" %}
+        </form>
 
-          <form method="POST" style="margin-top: 30px;">
+        {% else %}
 
-              {% csrf_token %}
+        <div>
+          <img src="{% static 'img/animation_500_kmuydpt0.gif' %}" alt=""
+            style="max-width:100px; height:auto; margin: 5px;">
+        </div>
 
-              
-              <select name="proyecto" class="form-control">
-
-                {% if request.user.username == "HC" %}
-
-              {% for i in proyectos %}
-
-              {% if "DIANCO" in i.nombre %}
-
-            
-              <option value="{{i.id}}">{{i.nombre}}</option>
-
-              {% endif %}
-
-
-              {% endfor %}
-
-              {% elif request.user.username == "AR" or request.user.username == "PL"  %}
-
-              {% for i in proyectos %}
-
-              <option value="{{i.id}}">{{i.nombre}}</option>
-
-
-              {% endfor %}
-
-              {% else %}
-
-              
-              {% for i in proyectos %}
-
-              {% if not "SEMINARIO" in i.nombre %}
-
-              <option value="{{i.id}}">{{i.nombre}}</option>
-
-              {% endif %}
-
-
-              {% endfor %}
-
-              
-              {% endif %}
-
-
-
-              </select>
-
-              <div class="my-4" >
-                  <button class="btn btn-danger" type="submit">
-                      Buscar</button>
-              </div>
-
-          </form>
-
-          {% else %}
-
-          <div>
-              <img src="{% static 'img/animation_500_kmuydpt0.gif' %}" alt="" style="max-width:100px; height:auto; margin: 5px;">
-          </div>
-
-          <a href="#"><button class="btn btn-secondary">
+        <a href="#"><button class="btn btn-secondary">
             Sin permisos</button></a>
-          {% endif %}
+        {% endif %}
 
       </div>
+    </div>
   </div>
-</div>
-<div class="col-lg-3 col-xlg-6">
- <div class="card">
-     <div class="card-body text-center">
-         <div>
-             <h6>Indicador de precios</h6>
-         </div>
-
-         <div>
-             <img src="{% static 'img/animation_500_kmv96y5d.gif' %}" alt="" style="max-width:100px; height:auto; margin: 5px;">
-         </div>
-
-         {% if request.user|has_group:"PRESUPUESTO NIVEL 3" %}
-
-
-         <a href="{% url 'Indicador de precios' %}"><button class="btn btn-info">
-                 Ingresar</button></a>
-
-         {% else %}
-
-         <a href="#"><button class="btn btn-secondary">
-             Sin permisos</button></a>
-         {% endif %}
-
-     </div>
-
- </div>
-</div>
-<div class="col-lg-3 col-xlg-6">
-<div class="card">
-   <div class="card-body text-center">
-       <div>
-           <h6>Informe de área</h6>
-       </div>
-
-       <div>
-           <img src="{% static 'img/animation_500_kmqi3zbx.gif' %}" alt="" style="max-width:100px; height:auto; margin: 5px;">
-       </div>
-
-       {% if request.user|has_group:"PRESUPUESTO NIVEL 3" %}
-
-
-       <a href="{% url 'Informe de presupuesto' %}"><button class="btn btn-primary">
-               Ingresar</button></a>
-
-       {% else %}
-
-       <a href="#"><button class="btn btn-secondary">
-        Sin permisos</button></a>
-       {% endif %}
-
-   </div>
-
-</div>
-</div>
-</div>
-
-      <aside class="right-side-panel">
-        <h3 class="p-relative"><span class="lstick"></span>¿Como funciona?</h3>
-        <div class="row">
-            
-            <div class="col-md-12 m-t-10">
-              <div class="card">
-                <div class="card-body">
-                <img src="{% static 'img/animation_500_kmv3afam.gif' %}" alt="Funny image" width="200px">
-                <p><b class="text-dark">Constantes</b> son los valores por lo cual toda la base de presupuestos se actualizará</p>
-                <p><b class="text-success">Articulos</b> administras la base de datos de insumos</p>
-                <p><b class="text-warning">Biblioteca APU</b> son los analisis usados para armar los presupuestos</p>
-                <p><b class="text-danger">Control</b> muestra presupuestos e información de avance y monitoreo</p>
-                <p><b class="text-info">Indicador de precios</b> es una referencia en función del costo</p>
-                <p><b class="text-primary">Informe de área</b> muestra información global</p>
-            </div>
-                </div>
-            </div>
+  <div class="col-lg-3 col-xlg-3">
+    <div class="card">
+      <div class="card-body text-center">
+        <div>
+          <h6>Indicador de precios</h6>
         </div>
 
-
-        </div>
-      </aside>
-    {% endif %}
-
-    {% if datos %}
-
-    <div class="row">
-
-      <div class="col-lg-6 col-xlg-4">
-
-        <div class="card">
-          <div class="card-body">
-              <div class="d-flex no-block">
-                  <div class="m-r-20 align-self-center"><span class="lstick m-r-20"></span></div>
-                  <div class="align-self-center">
-
-                      <h4 class="card-title"><a href="{% url 'Presupuesto de reposición abierto' datos.0.0.id %}">Presupuesto aperturado</a></h4></div>
-
-              </div>
-          </div>
-      </div>
-
-        <div class="card">
-            <div class="card-body">
-                <div class="d-flex no-block">
-                    <div class="m-r-20 align-self-center"><span class="lstick m-r-20"></span><a href="{% url 'Panel de presupuestos por capitulo' datos.0.0.id %}"><img src="{% static 'adminpro/assets/images/icon/expense.png' %}" alt="Income" /></a></div>
-                    <div class="align-self-center">
-                        <h6 class="text-muted m-t-10 m-b-0">Valor de reposición</h6>
-                        <h2 class="m-t-0">$ {{datos.0.1|floatformat:0|intcomma}}</h2></div>
-                </div>
-            </div>
+        <div>
+          <img src="{% static 'img/animation_500_kmv96y5d.gif' %}" alt=""
+            style="max-width:100px; height:auto; margin: 5px;">
         </div>
 
-        <div class="card">
-          <div class="card-body">
-              <div class="d-flex no-block">
-                  <div class="m-r-20 align-self-center"><span class="lstick m-r-20"></span><a href="{% url 'Saldo por capitulo' datos.0.0.id %}"><img src="{% static 'adminpro/assets/images/icon/expense.png' %}" alt="Income" /></a> </div>
-                  <div class="align-self-center">
-                      <h6 class="text-muted m-t-10 m-b-0">Saldo del proyecto</h6>
-                      <h2 class="m-t-0">$ {{datos.0.2|floatformat:0|intcomma}}</h2></div>
-              </div>
-          </div>
+        {% if request.user|has_group:"PRESUPUESTO NIVEL 3" %}
+
+
+        <a href="{% url 'Indicador de precios' %}"><button class="btn btn-info">
+            Ingresar</button></a>
+
+        {% else %}
+
+        <a href="#"><button class="btn btn-secondary">
+            Sin permisos</button></a>
+        {% endif %}
+
       </div>
 
     </div>
-
-      <div class="col-lg-6 col-xlg-4">
-        <div class="card">
-            <div class="card-body">
-              <div class="card-body little-profile text-center">
-                <div>
-
-                <h4 class="card-title">Responsable</h4></div>
-                <div class="pro-img m-t-20"><img src="{{presupuestador.imagenlogo.url}}" alt="user"></div>
-                <h3 class="m-b-0">{{presupuestador.nombre}}</h3>
-                <h6 class="text-muted">{{presupuestador.cargo}}</h6>
-                <h6 class="text-muted m-t-10 m-b-0">{{presupuestador.email}}</h6> 
-                <div class="row" style="margin-top: 15px;">
-                  <div class="col-6" style="text-align: end;">
-                    <form method="POST" >{% csrf_token %}
-                      <input type="hidden" name="proyecto" value="{{datos.0.0.id}}">
-                      <button type="submit" name="action" value="1" class="btn fa fa-refresh text-secondary"></button></form>
-                  </div>
-                  <div class="col-6" style="text-align: start;">        
-                    <form method="POST" >{% csrf_token %}
-                      <input type="hidden" name="proyecto" value="{{datos.0.0.id}}">
-                      <button type="submit" name="action" value="2" class="btn fa fa-cloud text-secondary"></button></form>
-                  </div>
-                </div>
-
-            </div>
-            </div>
-        </div>
-    </div>
-    
-
-
-
   </div>
+  <div class="col-lg-3 col-xlg-4">
+    <div class="card">
+      <div class="card-body text-center">
+        <div>
+          <h6>Informe de área</h6>
+        </div>
 
+        <div>
+          <img src="{% static 'img/animation_500_kmqi3zbx.gif' %}" alt=""
+            style="max-width:100px; height:auto; margin: 5px;">
+        </div>
+
+        {% if request.user|has_group:"PRESUPUESTO NIVEL 3" %}
+
+
+        <a href="{% url 'Informe de presupuesto' %}"><button class="btn btn-primary">
+            Ingresar</button></a>
+
+        {% else %}
+
+        <a href="#"><button class="btn btn-secondary">
+            Sin permisos</button></a>
+        {% endif %}
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<aside class="right-side-panel">
+  <h3 class="p-relative"><span class="lstick"></span>¿Como funciona?</h3>
   <div class="row">
 
-    <div class="col-lg-6 col-xlg-4">
-
+    <div class="col-md-12 m-t-10">
       <div class="card">
-
         <div class="card-body">
-
-      <div>
-
-      <h4 class="card-title"><span class="lstick"></span> Avance del proyecto</h4></div>
-
-      
-
-      <div style="display: inline-block; width: 310px; margin: 10px;">
-          
-        <canvas id="myChart2"></canvas>
-    
-      </div>
-
-    </div>
-
+          <img src="{% static 'img/animation_500_kmv3afam.gif' %}" alt="Funny image" width="200px">
+          <p><b class="text-dark">Constantes</b> son los valores por lo cual toda la base de presupuestos se actualizará
+          </p>
+          <p><b class="text-success">Articulos</b> administras la base de datos de insumos</p>
+          <p><b class="text-warning">Biblioteca APU</b> son los analisis usados para armar los presupuestos</p>
+          <p><b class="text-danger">Control</b> muestra presupuestos e información de avance y monitoreo</p>
+          <p><b class="text-info">Indicador de precios</b> es una referencia en función del costo</p>
+          <p><b class="text-primary">Informe de área</b> muestra información global</p>
+        </div>
       </div>
     </div>
+  </div>
+</aside>
+{% endif %}
 
-      <div class="col-lg-6 col-xlg-4">
+{% if datos %}
 
-        <div class="card">
+<div class="row">
 
-          <div class="card-body">
+  <div class="col-lg-6 col-xlg-4">
+
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex no-block">
+          <div class="m-r-20 align-self-center"><span class="lstick m-r-20"></span></div>
+          <div class="align-self-center">
+
+            <h4 class="card-title"><a href="{% url 'Presupuesto de reposición abierto' datos.0.0.id %}">Presupuesto
+                aperturado</a></h4>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex no-block">
+          <div class="m-r-20 align-self-center"><span class="lstick m-r-20"></span><a
+              href="{% url 'Panel de presupuestos por capitulo' datos.0.0.id %}"><img
+                src="{% static 'adminpro/assets/images/icon/expense.png' %}" alt="Income" /></a></div>
+          <div class="align-self-center">
+            <h6 class="text-muted m-t-10 m-b-0">Valor de reposición</h6>
+            <h2 class="m-t-0">$ {{datos.0.1|floatformat:0|intcomma}}</h2>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex no-block">
+          <div class="m-r-20 align-self-center"><span class="lstick m-r-20"></span><a
+              href="{% url 'Saldo por capitulo' datos.0.0.id %}"><img
+                src="{% static 'adminpro/assets/images/icon/expense.png' %}" alt="Income" /></a> </div>
+          <div class="align-self-center">
+            <h6 class="text-muted m-t-10 m-b-0">Saldo del proyecto</h6>
+            <h2 class="m-t-0">$ {{datos.0.2|floatformat:0|intcomma}}</h2>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-6 col-xlg-4">
+    <div class="card">
+      <div class="card-body">
+        <div class="card-body little-profile text-center">
+          <div>
+
+            <h4 class="card-title">Responsable</h4>
+          </div>
+          <div class="pro-img m-t-20"><img src="{{presupuestador.imagenlogo.url}}" alt="user"></div>
+          <h3 class="m-b-0">{{presupuestador.nombre}}</h3>
+          <h6 class="text-muted">{{presupuestador.cargo}}</h6>
+          <h6 class="text-muted m-t-10 m-b-0">{{presupuestador.email}}</h6>
+          <div class="row" style="margin-top: 15px;">
+            <div class="col-6" style="text-align: end;">
+              <form method="POST">{% csrf_token %}
+                <input type="hidden" name="proyecto" value="{{datos.0.0.id}}">
+                <button type="submit" name="action" value="1" class="btn fa fa-refresh text-secondary"></button>
+              </form>
+            </div>
+            <div class="col-6" style="text-align: start;">
+              <form method="POST">{% csrf_token %}
+                <input type="hidden" name="proyecto" value="{{datos.0.0.id}}">
+                <button type="submit" name="action" value="2" class="btn fa fa-cloud text-secondary"></button>
+              </form>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-lg-6 col-xlg-4">
+    <div class="card">
+      <div class="card-body">
         <div>
 
-          <h4 class="card-title"><span class="lstick"></span>Variaciones</h4></div>
+          <h4 class="card-title"><span class="lstick"></span> Avance del proyecto</h4>
+        </div>
 
-          <div style="text-align: left;">
+        <div style="display: inline-block; width: 310px; margin: 10px;">
 
-            <small>Ultimos 30 dias: 
-              
-              {% if variacion > 0 %}
-              <b style="font-family: Arial, Helvetica, sans-serif; color: #34CE15;">+ {{variacion|floatformat:2}} % </b>
+          <canvas id="myChart2"></canvas>
 
-              {% elif variacion == 0 %}
+        </div>
+      </div>
+    </div>
+  </div>
 
-              <b style="font-family: Arial, Helvetica, sans-serif; color: #1563CE;">= {{variacion|floatformat:2}} % </b>
+  <div class="col-lg-6 col-xlg-4">
+    <div class="card">
+      <div class="card-body">
+        <div>
+          <h4 class="card-title"><span class="lstick"></span>Variaciones</h4>
+        </div>
 
+        <div style="text-align: left;">
 
-              {% else %}
+          <small>Ultimos 30 dias:
 
-              <b style="font-family: Arial, Helvetica, sans-serif; color: #CE3115;">- {{variacion|floatformat:2}} % </b>
+            {% if variacion > 0 %}
+            <b style="font-family: Arial, Helvetica, sans-serif; color: #34CE15;">+ {{variacion|floatformat:2}} % </b>
 
+            {% elif variacion == 0 %}
 
-              {% endif %}
-            
-            
-            </small>
+            <b style="font-family: Arial, Helvetica, sans-serif; color: #1563CE;">= {{variacion|floatformat:2}} % </b>
 
-          </div>
+            {% else %}
 
-          {% if variacion_year != 0 %}
+            <b style="font-family: Arial, Helvetica, sans-serif; color: #CE3115;">- {{variacion|floatformat:2}} % </b>
 
-          <div style="text-align: left;">
+            {% endif %}
 
-            <small>Desde el {{variacion_year.0}}: 
-              
-              {% if variacion_year.1 > 0 %}
-              
-              <b style="font-family: Arial, Helvetica, sans-serif; color: #34CE15;">+ {{variacion_year.1|floatformat:2}} % </b>
+          </small>
+        </div>
 
+        {% if variacion_year != 0 %}
 
-              {% else %}
+        <div style="text-align: left;">
 
-              <b style="font-family: Arial, Helvetica, sans-serif; color: #CE3115;">- {{variacion_year.1|floatformat:2}} % </b>
+          <small>Desde el {{variacion_year.0}}:
 
+            {% if variacion_year.1 > 0 %}
 
-              {% endif %}
-            
-            
-            </small>
+            <b style="font-family: Arial, Helvetica, sans-serif; color: #34CE15;">+ {{variacion_year.1|floatformat:2}} %
+            </b>
 
-          </div>
+            {% else %}
 
-          {% endif %}
+            <b style="font-family: Arial, Helvetica, sans-serif; color: #CE3115;">- {{variacion_year.1|floatformat:2}} %
+            </b>
 
-          {% if variacion_year_2 != 0 %}
+            {% endif %}
 
-          <div style="text-align: left;">
+          </small>
+        </div>
 
-            <small>Desde el {{variacion_year_2.0}}: 
-              
-              {% if variacion_year_2.1 > 0 %}
-              
-              <b style="font-family: Arial, Helvetica, sans-serif; color: #34CE15;">+ {{variacion_year_2.1|floatformat:2}} % </b>
+        {% endif %}
 
+        {% if variacion_year_2 != 0 %}
 
-              {% else %}
+        <div style="text-align: left;">
 
-              <b style="font-family: Arial, Helvetica, sans-serif; color: #CE3115;">- {{variacion_year_2.1|floatformat:2}} % </b>
+          <small>Desde el {{variacion_year_2.0}}:
 
+            {% if variacion_year_2.1 > 0 %}
 
-              {% endif %}
-            
-            
-            </small>
+            <b style="font-family: Arial, Helvetica, sans-serif; color: #34CE15;">+ {{variacion_year_2.1|floatformat:2}} % </b>
 
-          </div>
+            {% else %}
 
-          {% endif %}
+            <b style="font-family: Arial, Helvetica, sans-serif; color: #CE3115;">- {{variacion_year_2.1|floatformat:2}} % </b>
+
+            {% endif %}
+
+          </small>
 
         </div>
 
-        <div class="button-group" style="margin: 15px;">
-          <a href="{% url 'Creditos de proyectos' datos.0.0.id %}" class="btn waves-effect waves-light btn-primary">Credito</a>
-          <a href="{% url 'Fondos de reparo' datos.0.0.id %}" class="btn waves-effect waves-light btn-success">F.D.R.</a>
-          <a href="{% url 'Anticipos' datos.0.0.id %}" class="btn waves-effect waves-light btn-info">Anticipos</a>
-  
-      </div>
-  
+        {% endif %}
+
       </div>
 
+      <div class="button-group" style="margin: 15px;">
+        <a href="{% url 'Creditos de proyectos' datos.0.0.id %}"
+          class="btn waves-effect waves-light btn-primary">Credito</a>
+        <a href="{% url 'Fondos de reparo' datos.0.0.id %}" class="btn waves-effect waves-light btn-success">F.D.R.</a>
+        <a href="{% url 'Anticipos' datos.0.0.id %}" class="btn waves-effect waves-light btn-info">Anticipos</a>
+
+      </div>
     </div>
-
   </div>
- 
-               
-              <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
-              <script>
+</div>
             
-                  var ctx = document.getElementById('myChart2').getContext('2d');
-                  var chart = new Chart(ctx, {
-                      // The type of chart we want to create
-                      type: 'doughnut',
-                      // The data for our dataset
-                      data: {
-                      datasets: [{        
-                          data: [{{datos.0.3|floatformat:0}}, {{datos.0.4|floatformat:0}}],
-                          backgroundColor: ['rgba({{datos.0.0.color}}, 0.5)', 'rgba(152, 165, 194, 0.5)'],    
-                      }],
-            
-                      labels: ['Avance', 'Pendiente' ]
-                    },
-                      options: {
-                        legend: {
-                            position: 'right'
-                        },
-                      },
-            
-                    });
-            
-              </script>
-          
-          
-        
-     <div class="col-md-12">
-      <div class="card">
-          <div class="card-body">
-              <div class="d-flex">
-                  <div>
-                      <h3 class="card-title m-b-5"><span class="lstick"></span>Variación del precio de reposición</h3>
-                      <h6 class="card-subtitle">Ultimos 60 dias</h6></div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+<script>
 
-                    </div>
+    var ctx = document.getElementById('myChart2').getContext('2d');
+    var chart = new Chart(ctx, {
+        // The type of chart we want to create
+        type: 'doughnut',
+        // The data for our dataset
+        data: {
+        datasets: [{        
+            data: [{{datos.0.3|floatformat:0}}, {{datos.0.4|floatformat:0}}],
+            backgroundColor: ['rgba({{datos.0.0.color}}, 0.5)', 'rgba(152, 165, 194, 0.5)'],    
+        }],
 
+        labels: ['Avance', 'Pendiente' ]
+      },
+        options: {
+          legend: {
+              position: 'right'
+          },
+        },
 
-                      <canvas id="myChart" height="100px" ></canvas>
-                    
+      });
 
-                      
+</script>
+
+<div class="col-md-12">
+  <div class="card">
+    <div class="card-body">
+      <div class="d-flex">
+        <div>
+          <h3 class="card-title m-b-5"><span class="lstick"></span>Variación del precio de reposición</h3>
+          <h6 class="card-subtitle">Ultimos 60 dias</h6>
+        </div>
+      </div>
+
+      <canvas id="myChart" height="100px"></canvas>
 
     </div>
   </div>
 </div>
 
-      
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
-    <script>
-        var ctx = document.getElementById('myChart').getContext('2d');
-        var chart = new Chart(ctx, {
-            // The type of chart we want to create
-            type: 'line',
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+<script>
+    var ctx = document.getElementById('myChart').getContext('2d');
+    var chart = new Chart(ctx, {
+        // The type of chart we want to create
+        type: 'line',
 
-            // The data for our dataset
-            data: {
-                labels: [
-                    {% for i in valor %}
-                    '{{i.0}}',                   
-                    {% endfor %}
-                    'Hoy',],
-                datasets: [
-                {
-                    label: 'Valor de reposición',
-                    backgroundColor: 'rgb({{datos.0.0.color}}, 0.3)',
-                    borderColor: 'rgb({{datos.0.0.color}})',
-                    fill: true,
-                    data: [
-                    {% for i in valor %}
-                    {{i.1|floatformat:0}},
-                    {% endfor %}                  
-                    Math.round({{datos.0.1|floatformat:0}}/1000000),
-                    
+        // The data for our dataset
+        data: {
+            labels: [
+                {% for i in valor %}
+                '{{i.0}}',                   
+                {% endfor %}
+                'Hoy',],
+            datasets: [
+            {
+                label: 'Valor de reposición',
+                backgroundColor: 'rgb({{datos.0.0.color}}, 0.3)',
+                borderColor: 'rgb({{datos.0.0.color}})',
+                fill: true,
+                data: [
+                {% for i in valor %}
+                {{i.1|floatformat:0}},
+                {% endfor %}                  
+                Math.round({{datos.0.1|floatformat:0}}/1000000),
+                
 
-                    ]
-                },
-                ],
-
+                ]
             },
+            ],
 
-            // Configuration options go here
-            options: {
+        },
 
-              scales: {
+        // Configuration options go here
+        options: {
 
-                xAxes: [
+          scales: {
+
+            xAxes: [
+                {
+
+
+                    display: false,
+
+                }
+            ],
+            yAxes: [
                     {
+                        ticks: {
+                            callback: function(label, index, labels) {
+                                return '$ '+label + ' M';
+                                
+                            }
+                        },
+                        scaleLabel: {
+                            display: true,
+                            labelString: '1 M = $1.000.000'
+                        },
 
-
-                        display: false,
-
+                        stacked: false
                     }
                 ],
-                yAxes: [
-                        {
-                            ticks: {
-                                callback: function(label, index, labels) {
-                                    return '$ '+label + ' M';
-                                    
-                                }
-                            },
-                            scaleLabel: {
-                                display: true,
-                                labelString: '1 M = $1.000.000'
-                            },
 
-                            stacked: false
-                        }
-                    ],
+          },
+        },
+    });
+</script>
 
-              },
-            },
-        });
-    </script>
 
-    {% endif %}
+{% endif %}
 
- 
+
 {% endblock %}

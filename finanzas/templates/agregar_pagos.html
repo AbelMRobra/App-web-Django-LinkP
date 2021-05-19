@@ -15,7 +15,8 @@
 
         <div class="col-md-7 align-self-center">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'Cuenta corriente venta' cuota.cuenta_corriente.id %}">Cuenta</a>
+                    <li class="breadcrumb-item"><a href="{% url 'Pagos' cuota.id %}">Pagos realizados</a>
                 <li class="breadcrumb-item">Agregar Pagos</li>
             </ol>
         </div>
@@ -46,7 +47,6 @@
                                 {{cuota.cuenta_corriente.venta.unidad.piso_unidad}} -
                                 {{cuota.cuenta_corriente.venta.unidad.nombre_unidad}}</h5>
                             <h5> Cuota del mes: {{cuota.fecha}} </h5>
-                            <h5 class="mt-4"> Agregar un Pago </h5>
                         </div>
                     </div>
 
@@ -138,7 +138,7 @@
                                                 <div style="display: inline-block;">
 
                                                     <label for="documento1">
-                                                        <h6>Documento 1</h6>
+                                                        <h6>Factura</h6>
                                                     </label>
 
                                                 </div>
@@ -159,7 +159,7 @@
                                                 <div style="display: inline-block;">
 
                                                     <label for="documento2">
-                                                        <h6>Documento 2</h6>
+                                                        <h6>Recibo</h6>
                                                     </label>
 
                                                 </div>
@@ -176,17 +176,39 @@
                                                         </div>
                                                     </div>
                                                 </div>
+                                                <div style="display: inline-block;">
 
+                                                    <label for="metodo">
+                                                        <h6>Metodo</h6>
+                                                    </label>
+
+                                                </div>
+
+                                                <div class="row justify-content-center my-3">
+                                                    <div class="col-12 col-md-8 col-lg-8">
+                                                        <div>
+                                                            <select name="metodo" class="custom-select"
+                                                                style="width: 300px;">
+                                                                <option value="EFECTIVO">EFECTIVO</option>
+                                                                <option value="CHEQUE">CHEQUE</option>
+                                                                <option value="TRANSFERENCIA ">TRANSFERENCIA </option>
+                                                                <option value="DEPOSITO ">DEPOSITO </option>
+                                                            </select>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="row justify-content-center mt-4">
+                                                    <div class="col-lg-6 text-center">
+
+                                                        <button type="submit" class="btn btn-info">Agregar</button>
+
+                                                    </div>
+                                                </div>
                                             </div>
 
-                                        </div>
-
-                                        <div class="row justify-content-center mt-4">
-                                            <div class="col-lg-6 text-center">
-
-                                                <button type="submit" class="btn btn-info">Agregar</button>
-
-                                            </div>
                                         </div>
 
 
@@ -200,6 +222,7 @@
             </div>
         </div>
     </div>
+</div>
 
 
-    {% endblock %}
+{% endblock %}

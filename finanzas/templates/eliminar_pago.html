@@ -16,10 +16,8 @@
 
         <div class="col-md-7 align-self-center">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
-                <li class="breadcrumb-item"><a
-                        href="{% url 'Cuenta corriente venta' pago.cuota.cuenta_corriente.id %}">Cta Cte Cliente</a>
-                </li>
+                <li class="breadcrumb-item"><a href="{% url 'Cuenta corriente venta' pago.cuota.cuenta_corriente.id %}">Cuenta</a>
+                    <li class="breadcrumb-item"><a href="{% url 'Pagos' pago.cuota.id %}">Pagos realizados</a>
                 <li class="breadcrumb-item">Eliminar Pago</li>
             </ol>
         </div>

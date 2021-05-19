@@ -495,7 +495,7 @@
                                             <td class="text-success"><b>$ {{i.1|floatformat:0|intcomma}}</b></td>
                                             <td class="text-danger"><b>$ {{i.2|floatformat:0|intcomma}}</b></td>
                                             <td class="text-info"><b>$ {{i.3|floatformat:0|intcomma}}</b></td>
-                                        </tr>   <tr>
+                                        </tr>
 
                                         {% endfor %}
                                     </tbody>
@@ -668,11 +668,53 @@
                         </div>
                         <div id="explorar" class="tab-pane fade">
 
-                            <h3 style="margin-top: 10px;"><a href="#"><i class="fa fa-file-excel-o text-success"></i></a> Registros realizados</h3>
+                            <h3 style="margin-top: 10px;"><a href="{% url 'Descarga registro contable' %}"><i class="fa fa-file-excel-o text-success"></i></a> Registros realizados</h3>
                             <div class="row m-2">
-                                <button type="button" class="btn" data-toggle="modal" data-target="#ModalCuenta1"><i
+                                <button type="button" class="btn" data-toggle="modal" data-target="#ModalCargaMasiva"><i
                                         class="fa fa-plus-circle  text-success"><span class="text-success ml-2"
                                             style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif"><b>Añadir registro masivo</b></span></i></button>
+                            </div>
+
+                            <!-- Modal archivo -->
+                
+                            <div class="modal fade" id="ModalCargaMasiva" tabindex="-1" role="dialog" aria-labelledby="ModalCargaMasivaTittle" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLongTitle">Cargar archivo</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    </div>
+                                    <div class="modal-body">
+
+                                        <form method="POST" style="margin: 15px;" enctype="multipart/form-data" id="upload-image-form">
+
+                                            {% csrf_token %}
+            
+            
+                                            <h6>Archivo</h6>  
+            
+                                            <div class="input-group mb-3">
+                                                    
+                                                <input name="archivo" type="file" class="form-control form-control" style="width: 300px;">
+                                            </div>
+            
+                                            <button type="submit" name="carga_archivo" value="1" class="btn btn-light">
+                                                <i class="fa fa-cloud-upload text-info"></i> Cargar</button>
+            
+                                            {{ form.as_p }}
+                                        
+                                        </form>
+                                    
+                                    </div>
+                                    <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            
+                                    </div>
+                                </div>
+                                </div>
+
                             </div>
                             <div class="table-responsive">
                                 <table id="example2" class="table table-bordered "
@@ -711,7 +753,6 @@
                                 </table>
                            
                         </div>
-                        <!-- modelo prueba -->
                     </div>
                 </div>
 

@@ -14,11 +14,11 @@
 
         <div class="col-md-7 align-self-center">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
-                <li class="breadcrumb-item"><a href="{% url 'Cuenta corriente venta' cuota.cuenta_corriente.id %}">Cta
-                        Cte Cliente</a>
+                <li class="breadcrumb-item"><a
+                    href="{% url 'Cuenta corriente proyecto' cuota.cuenta_corriente.venta.unidad.proyecto.id %}">Administración</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'Cuenta corriente venta' cuota.cuenta_corriente.id %}">Cuenta</a>
                 </li>
-                <li class="breadcrumb-item">Pagos Realizados</li>
+                <li class="breadcrumb-item">Pagos realizados</li>
             </ol>
         </div>
     </div>
@@ -67,8 +67,9 @@
                                     <th>Moneda (MD) </th>
                                     <th>Cotizacion</th>
                                     <th>Monto pesos</th>
-                                    <th>Documento 1</th>
-                                    <th>Documento 2</th>
+                                    <th>Fac</th>
+                                    <th>Recibo</th>
+                                    <th>Metodo</th>
                                     <th> </th>
 
                                 </tr>
@@ -84,6 +85,7 @@
                                     <td>${{i.0.pago_pesos|floatformat:0|intcomma}} </td>
                                     <td>{{i.0.documento_1}}</td>
                                     <td>{{i.0.documento_2}}</td>
+                                    <td>{{i.0.metodo}}</td>
                                     <td><a href="{% url 'Editar pagos' i.0.id %}" class="fa fa-pencil-square-o fa-lg"></a>
                                         <a href="{% url 'Eliminar pago' i.0.id %}" class="fa fa-trash fa-lg ml-1 text-danger"></a>
                                     </td>

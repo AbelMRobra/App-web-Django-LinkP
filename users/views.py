@@ -4,6 +4,8 @@ from django.contrib.auth import authenticate
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login as do_login
 from django.contrib.auth.forms import UserCreationForm
+from django.http import HttpResponse
+from django.views.generic.base import TemplateView  
 from finanzas.models import Almacenero, RegistroAlmacenero, Arqueo, RetirodeSocios, Honorarios
 from presupuestos.models import Presupuestos, InformeMensual, TareasProgramadas, Bitacoras
 from proyectos.models import Proyectos, Unidades
@@ -25,6 +27,8 @@ from email import encoders
 from agenda import settings
 from django.contrib.auth import models
 from statistics import mode
+from openpyxl import Workbook
+from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
 
 def linkp(request):
 
@@ -1820,6 +1824,61 @@ def registro_contable(request, date_i):
         datos_p = request.POST.items()
 
         try:
+            if request.POST['carga_archivo'] == "1":
+                archivo_pandas = pd.read_excel(request.FILES['archivo'])
+                # ---> Editar registros
+                registros_editar = archivo_pandas[archivo_pandas["Acción"] == "EDITAR"].reset_index(drop=True)
+                numero = 0
+                for row in range(registros_editar.shape[0]):
+                    importe_data_aux = str(registros_editar.loc[numero, "Importe"]).split(sep=" ")
+                    data_aux = RegistroContable.objects.get(id = int(registros_editar.loc[numero, "Id"]))
+                    data_aux.creador = registros_editar.loc[numero, "Creador"]
+                    data_aux.fecha = registros_editar.loc[numero, "Fecha"]
+                    data_aux.estado = registros_editar.loc[numero, "Tipo"]
+                    data_aux.caja = registros_editar.loc[numero, "Caja"]
+                    data_aux.cuenta = registros_editar.loc[numero, "Cuenta"]
+                    data_aux.categoria = registros_editar.loc[numero, "Categoria"]
+                    data_aux.importe = abs(float(importe_data_aux[0]))
+                    data_aux.nota = registros_editar.loc[numero, "Nota"]
+                    data_aux.save()
+                    numero += 1
+
+                registros_borrar = archivo_pandas[archivo_pandas["Acción"] == "BORRAR"].reset_index(drop=True)
+                numero = 0
+                for row in range(registros_borrar.shape[0]):
+                    data_aux = RegistroContable.objects.get(id = int(registros_borrar.loc[numero, "Id"]))
+                    data_aux.delete()
+                    numero += 1
+
+                registros_nuevo = archivo_pandas[archivo_pandas["Acción"] == "NUEVO"].reset_index(drop=True)
+                print(registros_nuevo)
+                numero = 0
+                for row in range(registros_nuevo.shape[0]):
+                    usuario = datosusuario.objects.get(identificacion = str(registros_nuevo.loc[numero, "Usuario"]))
+                    importe_data_aux = str(registros_nuevo.loc[numero, "Importe"]).split(sep=" ")
+
+                    b = RegistroContable(
+
+                        usuario = usuario,
+                        creador = registros_nuevo.loc[numero, "Creador"],
+                        fecha = registros_nuevo.loc[numero, "Fecha"],
+                        estado = registros_nuevo.loc[numero, "Tipo"],
+                        caja = registros_nuevo.loc[numero, "Caja"],
+                        cuenta = registros_nuevo.loc[numero, "Cuenta"],
+                        categoria = registros_nuevo.loc[numero, "Categoria"],
+                        importe = abs(float(importe_data_aux[0])),
+                        nota = registros_nuevo.loc[numero, "Nota"],
+
+
+                    )
+
+                    b.save()
+                    numero += 1
+
+        except:
+            pass
+
+        try:
  
             if request.POST['fecha_m'] == "1":
                 if hoy.month != 12:
@@ -1942,6 +2001,8 @@ def registro_contable(request, date_i):
     ## Esquema mensual
 
     fecha_1 = RegistroContable.objects.all().order_by("fecha")[0].fecha
+    fecha_f = RegistroContable.objects.all().order_by("-fecha")[0].fecha
+    fecha_f_auxiliar = datetime.date(fecha_f.year, fecha_f.month, 1)
     fechas = []
 
     fecha_auxiliar = datetime.date(fecha_1.year, fecha_1.month, 1)
@@ -1956,7 +2017,7 @@ def registro_contable(request, date_i):
 
     data_month = []
 
-    while len(RegistroContable.objects.filter(usuario = user, fecha__gte = fecha_auxiliar, fecha__lte = fecha_auxiliar_2)):
+    while fecha_auxiliar <= fecha_f_auxiliar:
 
         mes = fecha_auxiliar
         ingresos = sum(np.array(RegistroContable.objects.filter(usuario = user, estado = "INGRESOS", fecha__range=[fecha_auxiliar, fecha_auxiliar_2]).values_list("importe", flat=True)))
@@ -2009,3 +2070,109 @@ def registro_contable(request, date_i):
 
 
     return render(request, "users/registro_contable.html", {'registros_totales':registros_totales,'datos_week':datos_week, 'data_month':data_month, 'list_cat_ing':list_cat_ing, 'list_cat_gasto':list_cat_gasto, 'pie_gastos':pie_gastos, 'pie_ingresos':pie_ingresos, 'hoy':hoy, 'datos':datos, "ingresos":ingresos, "gastos":gastos, "balance":balance})
+
+class DescargarRegistroContable(TemplateView):
+
+    def get(self, request, *args, **kwargs):
+
+        # --> Iniciamos el Workbook
+        wb = Workbook()
+
+        # --> Primeros calculos
+
+        data = RegistroContable.objects.all()
+
+        ws = wb.active
+        ws.title = "Resumen"
+        ws["A1"] = "Registros contables"
+        ws["A1"].font = Font(bold = True)
+        ws["A2"] = "Para usar este archivo para modificar, elimina las primeras 3 filas y en acción agrega 'EDITAR' , 'NUEVO', 'BORRAR' "
+
+        ws["A4"] = "Usuario"
+        ws["B4"] = "Creador"
+        ws["C4"] = "Fecha"
+        ws["D4"] = "Tipo"
+        ws["E4"] = "Caja"
+        ws["F4"] = "Cuenta"
+        ws["G4"] = "Categoria"
+        ws["H4"] = "Importe"
+        ws["I4"] = "Nota"
+        ws["J4"] = "Acción"
+        ws["K4"] = "Id"
+
+
+        ws["A4"].font = Font(bold = True, color= "E8F8F8")
+        ws["A4"].fill =  PatternFill("solid", fgColor= "2C9E9D")
+        ws["B4"].font = Font(bold = True, color= "E8F8F8")
+        ws["B4"].fill =  PatternFill("solid", fgColor= "2C9E9D")
+        ws["C4"].font = Font(bold = True, color= "E8F8F8")
+        ws["C4"].fill =  PatternFill("solid", fgColor= "2C9E9D")
+        ws["D4"].font = Font(bold = True, color= "E8F8F8")
+        ws["D4"].fill =  PatternFill("solid", fgColor= "2C9E9D")
+        ws["E4"].font = Font(bold = True, color= "E8F8F8")
+        ws["E4"].fill =  PatternFill("solid", fgColor= "2C9E9D")
+        ws["F4"].font = Font(bold = True, color= "E8F8F8")
+        ws["F4"].fill =  PatternFill("solid", fgColor= "2C9E9D")
+        ws["G4"].font = Font(bold = True, color= "E8F8F8")
+        ws["G4"].fill =  PatternFill("solid", fgColor= "2C9E9D")
+        ws["H4"].font = Font(bold = True, color= "E8F8F8")
+        ws["H4"].fill =  PatternFill("solid", fgColor= "2C9E9D")
+        ws["I4"].font = Font(bold = True, color= "E8F8F8")
+        ws["I4"].fill =  PatternFill("solid", fgColor= "2C9E9D")
+        ws["J4"].font = Font(bold = True, color= "E8F8F8")
+        ws["J4"].fill =  PatternFill("solid", fgColor= "2C9E9D")
+        ws["K4"].font = Font(bold = True, color= "E8F8F8")
+        ws["K4"].fill =  PatternFill("solid", fgColor= "2C9E9D")
+
+
+
+        ws.column_dimensions['A'].width = 12
+        ws.column_dimensions['B'].width = 12
+        ws.column_dimensions['C'].width = 17
+        ws.column_dimensions['D'].width = 17
+        ws.column_dimensions['E'].width = 17
+        ws.column_dimensions['F'].width = 20
+        ws.column_dimensions['G'].width = 15
+        ws.column_dimensions['H'].width = 15
+        ws.column_dimensions['I'].width = 25
+        ws.column_dimensions['J'].width = 15
+        ws.column_dimensions['K'].width = 7
+
+        cont = 5
+
+        for d in data:
+
+            if request.user.username in d.usuario.identificacion or request.user.username in d.creador:
+
+                ws = wb.active
+
+                ws["A"+str(cont)] = d.usuario.identificacion
+                ws["B"+str(cont)] = d.creador
+                ws["C"+str(cont)] = d.fecha
+                ws["D"+str(cont)] = d.estado
+                ws["E"+str(cont)] = d.caja
+                ws["F"+str(cont)] = d.cuenta
+                ws["G"+str(cont)] = d.categoria
+                if d.estado == "INGRESOS":
+                    ws["H"+str(cont)] = d.importe
+                else:
+                    ws["H"+str(cont)] = - d.importe
+                ws["I"+str(cont)] = d.nota
+                ws["K"+str(cont)] = d.id
+
+                ws["H"+str(cont)].number_format = '"$"" "#,##0.00_-'
+                
+
+                cont += 1
+
+
+        #Establecer el nombre del archivo
+        nombre_archivo = "RegistroContable.-{}.xls".format(str(d.usuario.identificacion))
+        
+        #Definir tipo de respuesta que se va a dar
+        response = HttpResponse(content_type = "application/ms-excel")
+        contenido = "attachment; filename = {0}".format(nombre_archivo).replace(',', '_')
+        response["Content-Disposition"] = contenido
+        wb.save(response)
+        return response
+
