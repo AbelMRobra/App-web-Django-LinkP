@@ -1189,23 +1189,25 @@ def variacionh(request):
 
         horm = Constantes.objects.get(nombre = "Hº VIVIENDA")
 
-        try:
+    try:
 
-            if year_now.month != 1:
+        year_now = datetime.date.today()
 
-                fecha_aux = datetime.date(year_now.year, year_now.month - 1 , 1)
+        if year_now.month != 1:
 
-            else:
+            fecha_aux = datetime.date(year_now.year, year_now.month - 1 , 1)
 
-                fecha_aux = datetime.date(year_now.year -1 , 12 , 1)
+        else:
 
-                valor_aux = Registrodeconstantes.objects.get(constante__nombre = "Hº VIVIENDA", fecha = fecha_aux)
+            fecha_aux = datetime.date(year_now.year -1 , 12 , 1)
 
-                var = (horm.valor/valor_aux.valor - 1)*100
+        valor_aux = Registrodeconstantes.objects.get(constante__nombre = "Hº VIVIENDA", fecha = fecha_aux)
 
-        except:
+        var = (horm.valor/valor_aux.valor - 1)*100
 
-            var = 0
+    except:
+
+        var = 0
 
 
     return render(request, 'variacionhormigon.html', {"var":var, "datos_h":datos_h, "datos":datos, "busqueda":busqueda, "horm":horm})
