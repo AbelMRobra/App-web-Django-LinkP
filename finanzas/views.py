@@ -1711,7 +1711,7 @@ def indicelink(request, id_moneda, id_time):
             else:
                 array_ingreso = np.zeros(1, dtype = int)
 
-        retiro_socios = almacenero.retiro_socios
+        retiro_socios = sum(np.array(RetirodeSocios.objects.values_list('monto_pesos').filter(proyecto = dato.proyecto)))
         saldo_caja = almacenero.cuotas_cobradas - almacenero.gastos_fecha - almacenero.Prestamos_dados - retiro_socios + almacenero.tenencia
         saldo_caja_total = saldo_caja_total + saldo_caja
 
