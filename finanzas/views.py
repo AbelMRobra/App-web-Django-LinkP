@@ -1711,7 +1711,7 @@ def indicelink(request, id_moneda, id_time):
             else:
                 array_ingreso = np.zeros(1, dtype = int)
 
-        retiro_socios = sum(np.array(RetirodeSocios.objects.values_list('monto_pesos').filter(proyecto = dato.proyecto)))
+        retiro_socios = almacenero.retiro_socios
         saldo_caja = almacenero.cuotas_cobradas - almacenero.gastos_fecha - almacenero.Prestamos_dados - retiro_socios + almacenero.tenencia
         saldo_caja_total = saldo_caja_total + saldo_caja
 
@@ -2219,15 +2219,31 @@ def registro_almacenero(request):
             margen1_2 = ingresos_total_2 - pendiente_gastar_total_2 + honorario_2 + saldo_caja_total_2
             margen2_2 = margen1_2 - descuento_total_2
 
-            mensaje = (2, "Solicitud procesada correctamente!, Sin variación de proyectos")
+            
 
             datos.append((round(margen2_1, 2), round(margen2_2, 2), round((margen2_2/margen2_1 -1 )*100, 2), round((margen2_2 - margen2_1), 2)))
             datos.append((fecha_1, fecha_2))
-            datos.append((round((ingresos_total_2/ingresos_total_1 -1 )*100, 3), round((descuento_total_2/descuento_total_1 -1 )*100, 3), round((saldo_caja_total_2/saldo_caja_total_1 -1 )*100, 3), round((pendiente_gastar_total_2/pendiente_gastar_total_1 -1 )*100, 3), round((honorario_2/honorario_1 -1 )*100, 3), round(honorario_2 - honorario_1), round((honorario_2 - honorario_1) , 2)/round((margen2_2 - margen2_1), 2)*100))
-            datos_finales = [(ingresos_total_2 - ingresos_total_1), (pendiente_gastar_total_2 - pendiente_gastar_total_1), (saldo_caja_total_2 - saldo_caja_total_1), ((margen1_2 - honorario_2) - (margen1_1 - honorario_1)), (descuento_total_1 - descuento_total_2)]
-    
-            for v in var_especifica:
-                v[1].append((v[1][0]/((margen1_2 - honorario_2) - (margen1_1 - honorario_1))*100))
+            # --> Situación en caso que el indice no tenga variación
+
+            if (margen1_2 == margen1_1) and (honorario_2 + honorario_1):
+
+                mensaje = (2, "No se encontro variación entre las fechas seleccionadas")
+
+                datos.append((round((ingresos_total_2/ingresos_total_1 -1 )*100, 3), round((descuento_total_2/descuento_total_1 -1 )*100, 3), round((saldo_caja_total_2/saldo_caja_total_1 -1 )*100, 3), round((pendiente_gastar_total_2/pendiente_gastar_total_1 -1 )*100, 3), round((honorario_2/honorario_1 -1 )*100, 3), round(honorario_2 - honorario_1), 0))
+                datos_finales = [(ingresos_total_2 - ingresos_total_1), (pendiente_gastar_total_2 - pendiente_gastar_total_1), (saldo_caja_total_2 - saldo_caja_total_1), ((margen1_2 - honorario_2) - (margen1_1 - honorario_1)), (descuento_total_1 - descuento_total_2)]
+        
+                for v in var_especifica:
+                    v[1].append(0)
+
+            else:
+
+                mensaje = (2, "Varación del indice sin variación de proyectos")
+
+                datos.append((round((ingresos_total_2/ingresos_total_1 -1 )*100, 3), round((descuento_total_2/descuento_total_1 -1 )*100, 3), round((saldo_caja_total_2/saldo_caja_total_1 -1 )*100, 3), round((pendiente_gastar_total_2/pendiente_gastar_total_1 -1 )*100, 3), round((honorario_2/honorario_1 -1 )*100, 3), round(honorario_2 - honorario_1), round((honorario_2 - honorario_1) , 2)/round((margen2_2 - margen2_1), 2)*100))
+                datos_finales = [(ingresos_total_2 - ingresos_total_1), (pendiente_gastar_total_2 - pendiente_gastar_total_1), (saldo_caja_total_2 - saldo_caja_total_1), ((margen1_2 - honorario_2) - (margen1_1 - honorario_1)), (descuento_total_1 - descuento_total_2)]
+        
+                for v in var_especifica:
+                    v[1].append((v[1][0]/((margen1_2 - honorario_2) - (margen1_1 - honorario_1))*100))
 
     return render(request, 'historicoalmacenero.html', {"datos":datos, "mensaje":mensaje, "var_especifica":var_especifica, "datos_finales":datos_finales })
 

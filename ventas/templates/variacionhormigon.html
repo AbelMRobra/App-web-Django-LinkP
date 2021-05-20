@@ -5,17 +5,18 @@
 
 {% block content %}
 
-<div class="container-fluid r-aside">
+<div class="container-fluid">
 
   <div class="row page-titles">
     <div class="col-md-5 align-self-center">
-      <h3 class="text-themecolor">Incremento indice de hormigón</h3>
+      <h3 class="text-themecolor">Evolución del Hº</h3>
     </div>
 
     <div class="col-md-7 align-self-center">
       <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
-        <li class="breadcrumb-item">Incremento hormigón</li>
+        <li class="breadcrumb-item"><a href="{% url 'App comercial' %}">Panel</a></li>
+        <li class="breadcrumb-item">Evolución</li>
       </ol>
     </div>
   </div>
@@ -27,8 +28,8 @@
       <div class="card-body row">
         <div class="col-12 justify-content-center">
 
-          <div class="text-center my-3">
-            <h3>Incremento indice de hormigón</h3>
+          <div>
+            <h3>Datos vigentes</h3>
           </div>
 
           <!-- Modal -->
@@ -74,83 +75,42 @@
 
           <div style="text-align: left;">
 
-            <form method="POST" style="display: inline-block">
-
-              {% csrf_token %}
-
-              <div style="display: inline-block; vertical-align: middle;">
-
-                <h5>Archivos cargados: </h5>
-              </div>
-
-              <div style="display: inline-block;  vertical-align: middle;">
-
-                <select name="fecha" class="custom-select" style="width: 200px;">
-
-                  {% for i in datos %}
-
-                  <option value="{{i.id}}">{{i.fecha|date:"Y-m-j"}}</option>
-
-                  {% endfor %}
-
-                </select>
-              </div>
-
-              <div style="display: inline-block;  vertical-align: middle;">
-                <button class="btn" type="submit"><img src="{% static 'img/buscar2.png' %}" alt=""
-                    style="max-width:20px; height:auto;"></button>
-              </div>
-
-            </form>
-
-            <div style="display: inline-block;  vertical-align: middle;">
-
-              <button type="button" class="btn " data-toggle="modal" data-target="#exampleModalCenter">
-                <img src="{% static 'img/add.png' %}" alt="" style="max-width:20px; height:auto;">
-              </button>
-
-            </div>
-
-            {% if busqueda %}
-
-            <div style="display: inline-block;  vertical-align: middle;">
-              <a class="btn btn-light" href="{{ busqueda.archivo.url }}" style="margin-top: 1%;">Ver informe <img
-                  src="{% static 'img/reportar.png' %}" alt="" style="max-width:20px; height:auto;"></a>
-
-            </div>
-
-            {% endif %}
 
             <b>
               <hr class="my-4" style="width: 100%;">
             </b>
 
             <div class="row">
-              <div class="col-12 d-flex justify-content-around text-center">
 
-                <div class="col col-lg-4 card bg-dark border rounded mb-3">
-
+              <div class="col-lg-3">
+                <div class="card bg-primary">
                   <div class="card-body">
-
-                    <h5 class=" text-white">Valor actual</h5>
-
-                    <h4 style="color: rgb(52, 121, 214); font-family: Arial, Helvetica, sans-serif;">$ {{horm.valor}}/M3
-                    </h4>
-
-                  </div>
-                </div>
-
-                <div class="col col-lg-4 card bg-dark border rounded mb-3">
-
-                  <div class="card-body ">
-
-                    <h5 class=" text-white">Variación anual</h5>
-
-                    <h4 style="color: rgb(48, 153, 29)">+ {{datos_h.0.12|floatformat:2}} %</h4>
-
+                    <div class="d-flex no-block">
+                      <div class="m-r-20 align-self-center"></div>
+                      <div class="align-self-center">
+                        <h6 class="text-white m-t-10 m-b-0">Valor vigente en Link-P</h6>
+                        <h2 class="m-t-0 text-white">$ {{horm.valor}}</h2>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
+
+              <div class="col-lg-3">
+                <div class="card bg-info">
+                  <div class="card-body">
+                    <div class="d-flex no-block">
+                      <div class="m-r-20 align-self-center"></div>
+                      <div class="align-self-center">
+                        <h6 class="text-white m-t-10 m-b-0">Ultima variación mensual</h6>
+                        <h2 class="m-t-0 text-white">{{var|floatformat:2}} %</h2>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
             </div>
 
             <div>
@@ -172,143 +132,144 @@
                     <th></th>
 
                     {% for i in datos_h %}
-                    <th colspan="2" style="text-align: center;"><b>{{i.0.0|date:"Y"}}</b></th>
+                    <th tyle="text-align: center;"></th>
+                    <th tyle="text-align: center;"><b>{{i.0.0|date:"Y"}}</b></th>
 
                     {% endfor %}
                   </tr>
                 </thead>
 
-                <tbody>
+                <tbody style="font-size: 12px;">
 
                   <tr>
 
-                    <td><small><b>ENERO</b></small></td>
+                    <td><b>ENERO</b></td>
 
                     {% for i in datos_h %}
 
-                    <td><small>$ {{i.0.1|floatformat:0|intcomma}}</small></td>
-                    <td><small>{{i.0.2|floatformat:2}} %</small> </td>
+                    <td>$ {{i.0.1|floatformat:0|intcomma}}</td>
+                    <td>{{i.0.2|floatformat:2}} % </td>
 
                     {% endfor %}
 
                   </tr>
                   <tr>
 
-                    <td><small><b>FEBRERO</b></small></td>
+                    <td><b>FEBRERO</b></td>
                     {% for i in datos_h %}
 
-                    <td><small>$ {{i.1.1|floatformat:0|intcomma}}</small></td>
-                    <td><small>{{i.1.2|floatformat:2}} %</small> </td>
+                    <td>$ {{i.1.1|floatformat:0|intcomma}}</td>
+                    <td>{{i.1.2|floatformat:2}} % </td>
 
                     {% endfor %}
 
                   </tr>
                   <tr>
 
-                    <td><small><b>MARZO</b></small></td>
+                    <td><b>MARZO</b></td>
                     {% for i in datos_h %}
 
-                    <td><small>$ {{i.2.1|floatformat:0|intcomma}}</small></td>
-                    <td><small>{{i.2.2|floatformat:2}} %</small> </td>
+                    <td>$ {{i.2.1|floatformat:0|intcomma}}</td>
+                    <td>{{i.2.2|floatformat:2}} % </td>
 
                     {% endfor %}
 
                   </tr>
                   <tr>
 
-                    <td><small><b>ABRIL</b></small></td>
+                    <td><b>ABRIL</b></td>
                     {% for i in datos_h %}
 
-                    <td><small>$ {{i.3.1|floatformat:0|intcomma}}</small></td>
-                    <td><small>{{i.3.2|floatformat:2}} %</small> </td>
+                    <td>$ {{i.3.1|floatformat:0|intcomma}}</td>
+                    <td>{{i.3.2|floatformat:2}} % </td>
 
                     {% endfor %}
 
                   </tr>
                   <tr>
 
-                    <td><small><b>MAYO</b></small></td>
+                    <td><b>MAYO</b></td>
                     {% for i in datos_h %}
 
-                    <td><small>$ {{i.4.1|floatformat:0|intcomma}}</small></td>
-                    <td><small>{{i.4.2|floatformat:2}} %</small> </td>
+                    <td>$ {{i.4.1|floatformat:0|intcomma}}</td>
+                    <td>{{i.4.2|floatformat:2}} % </td>
 
                     {% endfor %}
 
                   </tr>
                   <tr>
 
-                    <td><small><b>JUNIO</b></small></td>
+                    <td><b>JUNIO</b></td>
                     {% for i in datos_h %}
 
-                    <td><small>$ {{i.5.1|floatformat:0|intcomma}}</small></td>
-                    <td><small>{{i.5.2|floatformat:2}} %</small> </td>
+                    <td>$ {{i.5.1|floatformat:0|intcomma}}</td>
+                    <td>{{i.5.2|floatformat:2}} % </td>
 
                     {% endfor %}
 
                   </tr>
                   <tr>
 
-                    <td><small><b>JULIO</b></small></td>
+                    <td><b>JULIO</b></td>
                     {% for i in datos_h %}
 
-                    <td><small>$ {{i.6.1|floatformat:0|intcomma}}</small></td>
-                    <td><small>{{i.6.2|floatformat:2}} %</small> </td>
+                    <td>$ {{i.6.1|floatformat:0|intcomma}}</td>
+                    <td>{{i.6.2|floatformat:2}} % </td>
 
                     {% endfor %}
 
                   </tr>
                   <tr>
 
-                    <td><small><b>AGOSTO</b></small></td>
+                    <td><b>AGOSTO</b></td>
                     {% for i in datos_h %}
 
-                    <td><small>$ {{i.7.1|floatformat:0|intcomma}}</small></td>
-                    <td><small>{{i.7.2|floatformat:2}} %</small> </td>
+                    <td>$ {{i.7.1|floatformat:0|intcomma}}</td>
+                    <td>{{i.7.2|floatformat:2}} % </td>
 
                     {% endfor %}
 
                   </tr>
                   <tr>
 
-                    <td><small><b>SEPTIEMBRE</b></small></td>
+                    <td><b>SEPTIEMBRE</b></td>
                     {% for i in datos_h %}
 
-                    <td><small>$ {{i.8.1|floatformat:0|intcomma}}</small></td>
-                    <td><small>{{i.8.2|floatformat:2}} %</small> </td>
+                    <td>$ {{i.8.1|floatformat:0|intcomma}}</td>
+                    <td>{{i.8.2|floatformat:2}} % </td>
 
                     {% endfor %}
 
                   </tr>
                   <tr>
 
-                    <td><small><b>OCTUBRE</b></small></td>
+                    <td><b>OCTUBRE</b></td>
                     {% for i in datos_h %}
 
-                    <td><small>$ {{i.9.1|floatformat:0|intcomma}}</small></td>
-                    <td><small>{{i.9.2|floatformat:2}} %</small> </td>
+                    <td>$ {{i.9.1|floatformat:0|intcomma}}</td>
+                    <td>{{i.9.2|floatformat:2}} % </td>
 
                     {% endfor %}
 
                   </tr>
                   <tr>
 
-                    <td><small><b>NOVIEMBRE</b></small></td>
+                    <td><b>NOVIEMBRE</b></td>
                     {% for i in datos_h %}
 
-                    <td><small>$ {{i.10.1|floatformat:0|intcomma}}</small></td>
-                    <td><small>{{i.10.2|floatformat:2}} %</small> </td>
+                    <td>$ {{i.10.1|floatformat:0|intcomma}}</td>
+                    <td>{{i.10.2|floatformat:2}} % </td>
 
                     {% endfor %}
 
                   </tr>
                   <tr>
 
-                    <td><small><b>DICIEMBRE</b></small></td>
+                    <td><b>DICIEMBRE</b></td>
                     {% for i in datos_h %}
 
-                    <td><small>$ {{i.11.1|floatformat:0|intcomma}}</small></td>
-                    <td><small>{{i.11.2|floatformat:2}} %</small> </td>
+                    <td>$ {{i.11.1|floatformat:0|intcomma}}</td>
+                    <td>{{i.11.2|floatformat:2}} % </td>
 
                     {% endfor %}
 
@@ -316,12 +277,12 @@
 
                 </tbody>
 
-                <tbody class="table-light">
+                <tbody style="font-size: 14px;">
 
                   <tr>
-                    <td><small><b>PROMEDIO ANUAL</b></small> </td>
+                    <td><b>Promedio</b> </td>
                     {% for i in datos_h %}
-                    <th scope="row" colspan="2"><b>{{i.12|floatformat:2}} %</b></th>
+                    <th scope="row" colspan="2" style="text-align: center;"><b>{{i.12|floatformat:2}} %</b></th>
 
                     {% endfor %}
 
@@ -337,8 +298,6 @@
 </div>
 
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-<script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js" defer></script>
-<script src="https://cdn.datatables.net/1.10.23/js/dataTables.bootstrap4.min.js" defer></script>
 
 
 <script>
@@ -346,7 +305,15 @@
     $('#example').DataTable({
       "paging": false,
       "searching": false,
-      "info": false
+      "ordering": false,
+      "info": false,
+      dom: 'Bfrtip',
+              buttons: [
+              {
+                  extend: 'excelHtml5',
+                  title: 'Registro Hº'
+              },
+      ]
     });
   });
 </script>

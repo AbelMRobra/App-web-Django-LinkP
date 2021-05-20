@@ -1189,7 +1189,26 @@ def variacionh(request):
 
         horm = Constantes.objects.get(nombre = "Hº VIVIENDA")
 
-    return render(request, 'variacionhormigon.html', {"datos_h":datos_h, "datos":datos, "busqueda":busqueda, "horm":horm})
+        try:
+
+            if year_now.month != 1:
+
+                fecha_aux = datetime.date(year_now.year, year_now.month - 1 , 1)
+
+            else:
+
+                fecha_aux = datetime.date(year_now.year -1 , 12 , 1)
+
+                valor_aux = Registrodeconstantes.objects.filter(constante__nombre = "Hº VIVIENDA", fecha = fecha_aux)
+
+                var = (horm.valor/valor_aux.valor - 1)*100
+
+        except:
+
+            var = 0
+
+
+    return render(request, 'variacionhormigon.html', {"var":var, "datos_h":datos_h, "datos":datos, "busqueda":busqueda, "horm":horm})
 
 def editarasignacion(request, id_unidad):
 

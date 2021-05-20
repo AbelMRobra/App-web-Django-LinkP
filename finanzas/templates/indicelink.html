@@ -23,7 +23,7 @@
     <div class="card">
         <div class="card-body">
             <h4 class="card-title">
-                <a href="{% url 'Historico almacenero' %}" class="fa fa-search"></a>Composición del indice</h4>
+                <a href="{% url 'Historico almacenero' %}" class="fa fa-search"></a> Composición del indice</h4>
             <h6 class="card-subtitle">Resumen de los datos conjuntos de proyectos y honorarios</h6>
             <div style="text-align: left; margin: 5px;">
 
@@ -77,14 +77,8 @@
                             {% if "#300" in i.0.proyecto.nombre %}
         
                             <td> 
-                                
-                                <div>
-        
-                                    <img src="{{i.0.proyecto.iamgen.url}}"  class="img-fluid" alt="..." style="height: 30px; width: auto;">
-                                
-                                </div>
-        
-                                <span class="label label-info" style="background-color: rgb({{i.0.proyecto.color}});">#300</span>
+                                       
+                                <h6 style="color: rgb({{i.0.proyecto.color}});"># 300</h6>
                                  
                             
                             </td> 
@@ -92,16 +86,8 @@
                             {% else %}
         
                             <td>
-        
-        
-                                <div>
-        
-                                    <img src="{{i.0.proyecto.iamgen.url}}"  class="img-fluid" alt="..." style="max-width: 70px; height:auto;">
-                                
-                                </div>
-        
-                                <span class="label label-info" style="background-color: rgb({{i.0.proyecto.color}});">{{ i.0.proyecto.nombre}}</span>                  
-                            
+
+                                <h6 style="color: rgb({{i.0.proyecto.color}});">{{ i.0.proyecto.nombre}}</h6>
                             </td> 
                             
         

@@ -464,34 +464,6 @@
 
                 <li><a href="{% url 'App comercial' %}">App comercial</a></li>
 
-                {% if request.user|has_group:"VENTAS NIVEL 3" %}
-                <li class="nav-devider"></li>
-                <li><a href="/ventas/cargarventa">Panel de ventas</a></li>
-                <li><a href="/ventas/panelpricing">Pricing de unidades</a></li>
-
-
-                {% endif %}
-
-                {% if request.user|has_group:"VENTAS NIVEL 2" %}
-
-                <li class="nav-devider"></li>
-                <li><a href="/ventas/encuestapostventa">Encuesta postventa</a></li>
-                <li><a href="/ventas/evo_usd">Evolución historica USD/m2</a></li>
-                <li><a href="/ventas/fechaentrega">Fechas de entrega</a></li>
-                <li><a href="/ventas/historialventa">Historial de ventas</a></li>
-                <li><a href="/ventas/informeventa">Informe de ventas</a></li>
-                <li><a href="/ventas/radiografia">Radiografia del cliente</a></li>
-                <li><a href="/ventas/variacionhormigon">Variación del Hº</a></li>
-
-                {% endif %}
-
-                {% if request.user|has_group:"VENTAS NIVEL 3" %}
-
-                <li><a href="/ventas/resumenprecio">Resumen de precio</a></li>
-
-                {% endif %}
-
-
               </ul>
             </li>
             <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i

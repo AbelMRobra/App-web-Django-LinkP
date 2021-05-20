@@ -30,12 +30,12 @@
                 </div>
 
                 <div>
-                    <img src="{% static 'img/apprrhh_user.gif' %}" alt="" style="max-width:70px; height:auto; margin: 20px;">
+                    <img src="{% static 'img/appcomercial_ventas2.gif' %}" alt="" style="max-width:70px; height:auto; margin: 20px;">
                 </div>
 
-                {% if request.user|has_group:"RRHH NIVEL 1" %}
+                {% if request.user|has_group:"VENTAS NIVEL 3" %}
 
-                <a href="{% url 'Datos personal' %}"><button class="btn btn-info">
+                <a href="/ventas/cargarventa"><button class="btn btn-primary">
                         Ingresar</button></a>
  
                 {% else %}
@@ -45,7 +45,6 @@
                 {% endif %}
 
             </div>
-
         </div>
     </div>
 
@@ -60,10 +59,10 @@
                     <img src="{% static 'img/appcomercial_pricing.gif' %}" alt="" style="max-width:100px; height:auto; margin: 5px;">
                 </div>
 
-                {% if request.user|has_group:"RRHH NIVEL 1" %}
+                {% if request.user|has_group:"VENTAS NIVEL 3" %}
 
 
-                <a href="{% url 'Canjes realizados' %}"><button class="btn btn-info">
+                <a href="{% url 'Panel de pricing' %}"><button class="btn btn-secondary">
                         Ingresar</button></a>
 
                 {% else %}
@@ -73,7 +72,6 @@
                 {% endif %}
 
             </div>
-
         </div>
     </div>
 
@@ -87,12 +85,12 @@
                 </div>
 
                 <div>
-                    <img src="{% static 'img/app_rrhh_planificaci.gif' %}" alt="" style="max-width:100px; height:auto; margin: 5px;">
+                    <img src="{% static 'img/appcomercial_precio.gif' %}" alt="" style="max-width:100px; height:auto; margin: 5px;">
                 </div>
 
-                {% if request.user|has_group:"RRHH NIVEL 1" %}
+                {% if request.user|has_group:"VENTAS NIVEL 3" %}
 
-                <a href="#"><button class="btn btn-primary">
+                <a href="{% url 'Resumen de precio' %}"><button class="btn btn-success">
                         Ingresar</button></a>
 
                 {% else %}
@@ -102,7 +100,6 @@
                 {% endif %}
 
             </div>
-
         </div>
     </div>
 </div>
@@ -116,7 +113,7 @@
                 </div>
 
                 <div>
-                    <img src="{% static 'img/apprrhh_user.gif' %}" alt="" style="max-width:100px; height:auto; margin: 5px;">
+                    <img src="{% static 'img/appcomercial_folleto.gif' %}" alt="" style="max-width:100px; height:auto; margin: 5px;">
                 </div>
 
                 {% if request.user|has_group:"VENTAS NIVEL 1" %}
@@ -131,7 +128,6 @@
                 {% endif %}
 
             </div>
-
         </div>
     </div>
 
@@ -139,7 +135,7 @@
         <div class="card">
             <div class="card-body text-center">
                 <div>
-                    <h6>Dossieres</h6>
+                    <h6>Dosieres</h6>
                 </div>
 
                 <div>
@@ -149,7 +145,7 @@
                 {% if request.user|has_group:"VENTAS NIVEL 1" %}
 
 
-                <a href="{% url 'Dosier' %}"><button class="btn btn-dark">
+                <a href="{% url 'Dosier' %}"><button class="btn btn-warning">
                         Ingresar</button></a>
 
                 {% else %}
@@ -159,7 +155,6 @@
                 {% endif %}
 
             </div>
-
         </div>
     </div>
 
@@ -176,9 +171,9 @@
                     <img src="{% static 'img/app_rrhh_planificaci.gif' %}" alt="" style="max-width:100px; height:auto; margin: 5px;">
                 </div>
 
-                {% if request.user|has_group:"RRHH NIVEL 1" %}
+                {% if request.user|has_group:"VENTAS NIVEL 2" %}
 
-                <a href="#"><button class="btn btn-warning">
+                <a href="{% url 'Fecha de entrega' %}"><button class="btn btn-info">
                         Ingresar</button></a>
 
                 {% else %}
@@ -188,7 +183,6 @@
                 {% endif %}
 
             </div>
-
         </div>
     </div>
 </div>
@@ -202,12 +196,12 @@
                 </div>
 
                 <div>
-                    <img src="{% static 'img/apprrhh_user.gif' %}" alt="" style="max-width:70px; height:auto; margin: 20px;">
+                    <img src="{% static 'img/appcomercial_ventas.gif' %}" alt="" style="max-width:100px; height:auto; margin-left: 5px; margin-right: 5px; margin-top: 15px; margin-bottom: 15px; ">
                 </div>
 
-                {% if request.user|has_group:"RRHH NIVEL 1" %}
+                {% if request.user|has_group:"VENTAS NIVEL 2" %}
 
-                <a href="{% url 'Datos personal' %}"><button class="btn btn-info">
+                <a href="{% url 'Historial de venta' %}"><button class="btn btn-dark">
                         Ingresar</button></a>
  
                 {% else %}
@@ -217,7 +211,6 @@
                 {% endif %}
 
             </div>
-
         </div>
     </div>
 
@@ -229,13 +222,13 @@
                 </div>
 
                 <div>
-                    <img src="{% static 'img/app_rrhh_gift.gif' %}" alt="" style="max-width:100px; height:auto; margin: 5px;">
+                    <img src="{% static 'img/appcomercial_dolar.gif' %}" alt="" style="max-width:100px; height:auto; margin-left: 5px; margin-right: 5px; margin-top: 15px; margin-bottom: 15px; ">
                 </div>
 
-                {% if request.user|has_group:"RRHH NIVEL 1" %}
+                {% if request.user|has_group:"VENTAS NIVEL 2" %}
 
 
-                <a href="{% url 'Canjes realizados' %}"><button class="btn btn-success">
+                <a href="{% url 'Evolucion USD/m2' %}"><button class="btn btn-primary">
                         Ingresar</button></a>
 
                 {% else %}
@@ -245,7 +238,6 @@
                 {% endif %}
 
             </div>
-
         </div>
     </div>
 
@@ -256,16 +248,16 @@
             <div class="card-body text-center">
                 <div>
                     <h6>Evolución Hº</h6>
-                    <h6>Revista vivienda</h6>
+                    <p style="font-size: 11px;">Revista vivienda</p>
                 </div>
 
                 <div>
-                    <img src="{% static 'img/app_rrhh_planificaci.gif' %}" alt="" style="max-width:100px; height:auto; margin: 5px;">
+                    <img src="{% static 'img/appcomercial_cement.gif' %}" alt="" style="max-width:85px; margin: 5px; height:auto; ">
                 </div>
 
-                {% if request.user|has_group:"RRHH NIVEL 1" %}
+                {% if request.user|has_group:"VENTAS NIVEL 2" %}
 
-                <a href="#"><button class="btn btn-primary">
+                <a href="{% url 'Variacion H'%}"><button class="btn btn-secondary">
                         Ingresar</button></a>
 
                 {% else %}
@@ -275,7 +267,6 @@
                 {% endif %}
 
             </div>
-
         </div>
     </div>
 </div>
@@ -294,7 +285,7 @@
 
                 {% if request.user|has_group:"VENTAS NIVEL 2" %}
 
-                <a href="{% url 'Investigacion de mercado' %}"><button class="btn btn-warning">
+                <a href="{% url 'Investigacion de mercado' %}"><button class="btn btn-success">
                         Ingresar</button></a>
  
                 {% else %}
@@ -304,7 +295,6 @@
                 {% endif %}
 
             </div>
-
         </div>
     </div>
 
@@ -322,7 +312,7 @@
                 {% if request.user|has_group:"VENTAS NIVEL 2" %}
 
 
-                <a href="{% url 'Informe redes' %}"><button class="btn btn-info">
+                <a href="{% url 'Informe redes' %}"><button class="btn btn-danger">
                         Ingresar</button></a>
 
                 {% else %}
@@ -332,7 +322,6 @@
                 {% endif %}
 
             </div>
-
         </div>
     </div>
 
@@ -351,7 +340,7 @@
 
                 {% if request.user|has_group:"VENTAS NIVEL 2" %}
 
-                <a href="{% url 'Caja del area' %}"><button class="btn btn-success">
+                <a href="{% url 'Caja del area' %}"><button class="btn btn-warning">
                         Ingresar</button></a>
 
                 {% else %}
@@ -361,7 +350,89 @@
                 {% endif %}
 
             </div>
+        </div>
+    </div>
+</div>
 
+<div class="row">
+    <div class="col-lg-3 col-xlg-3">
+        <div class="card">
+            <div class="card-body text-center">
+                <div>
+                    <h6>Encuesta postventa</h6>
+                </div>
+
+                <div>
+                    <img src="{% static 'img/appcomercial_mercado.gif' %}" alt="" style="max-width:100px; height:auto; margin: 5px;">
+                </div>
+
+                {% if request.user|has_group:"VENTAS NIVEL 2" %}
+
+                <a href="{% url 'Encuesta de postventa' %}"><button class="btn btn-info">
+                        Ingresar</button></a>
+ 
+                {% else %}
+
+                <a href="#"><button class="btn btn-secondary">
+                    Sin permisos</button></a>
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-3 col-xlg-3">
+        <div class="card">
+            <div class="card-body text-center">
+                <div>
+                    <h6>Informe de ventas</h6>
+                </div>
+
+                <div>
+                    <img src="{% static 'img/appcomercial_media.gif' %}" alt="" style="max-width:100px; height:auto; margin: 5px;">
+                </div>
+
+                {% if request.user|has_group:"VENTAS NIVEL 2" %}
+
+
+                <a href="{% url 'Informe de venta' %}"><button class="btn btn-dark">
+                        Ingresar</button></a>
+
+                {% else %}
+
+                <a href="#"><button class="btn btn-secondary">
+                    Sin permisos</button></a>
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="col-lg-3 col-xlg-4">
+        <div class="card">
+            <div class="card-body text-center">
+                <div>
+                    <h6>Radiografia del cliente</h6>
+                </div>
+
+                <div>
+                    <img src="{% static 'img/animation_500_kmqi3zbx.gif' %}" alt="" style="max-width:100px; height:auto; margin: 5px;">
+                </div>
+
+                {% if request.user|has_group:"VENTAS NIVEL 2" %}
+
+                <a href="{% url 'Radiografia del cliente' %}"><button class="btn btn-primary">
+                        Ingresar</button></a>
+
+                {% else %}
+
+                <a href="#"><button class="btn btn-secondary">
+                    Sin permisos</button></a>
+                {% endif %}
+
+            </div>
         </div>
     </div>
 </div>
@@ -369,17 +440,16 @@
 <aside class="right-side-panel">
     <h3 class="p-relative"><span class="lstick"></span>Sobre el espacio ..</h3>
     <div class="row">
-        
         <div class="col-md-12 m-t-10">
-          <div class="card">
-            <div class="card-body">
-            <img src="{% static 'img/33635-worker-have-an-idea.gif' %}" alt="Funny image" width="200px">
-            <p>Este espacio esta destino a ... Agus</p>
-        </div>
+            <div class="card">
+                <div class="card-body">
+                    <img src="{% static 'img/33635-worker-have-an-idea.gif' %}" alt="Funny image" width="200px">
+                    <p>Este espacio esta destino a el control y la gestión de toda la información comercial</p>
+                </div>
             </div>
         </div>
     </div>
-  </aside>
+</aside>
 
 
 
