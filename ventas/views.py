@@ -1199,7 +1199,7 @@ def variacionh(request):
 
                 fecha_aux = datetime.date(year_now.year -1 , 12 , 1)
 
-                valor_aux = Registrodeconstantes.objects.filter(constante__nombre = "Hº VIVIENDA", fecha = fecha_aux)
+                valor_aux = Registrodeconstantes.objects.get(constante__nombre = "Hº VIVIENDA", fecha = fecha_aux)
 
                 var = (horm.valor/valor_aux.valor - 1)*100
 
