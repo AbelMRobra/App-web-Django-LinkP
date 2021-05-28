@@ -6,7 +6,7 @@
 {% block content %}
 
 
-<div class="container-fluid r-aside">
+<div class="container-fluid">
     <div class="row page-titles">
         <div class="col-md-5 align-self-center">
             <h3 class="text-themecolor">Retiros de socios</h3>
@@ -29,10 +29,13 @@
 
                     <div style="text-align: left;">
 
-                        <h5>Resumen de los datos</h5>
+                        <h4>Resumen de los datos</h4>
 
-                        <h6>Monto en pesos total retirado: <small>$ {{total_pesos|floatformat:0|intcomma}}</small></h6>
-                        <h6>Monto en Hº total retirado: <small>{{total_h|floatformat:0|intcomma}} M3</small></h6>
+                        <p>Monto en pesos total retirado: $ {{total_pesos|floatformat:0|intcomma}}</p>
+                        <p>Monto en Hº total retirado: {{total_h|floatformat:0|intcomma}} M3</p>
+                        {% if mensaje %}
+                        <h6 class="text-danger">{{mensaje}}</h6>
+                        {% endif %}
 
                     </div>
 
@@ -43,13 +46,12 @@
                     <div>
 
                         <div style="margin-bottom: 2rem;">
-                            <h5>Detalle por proyecto</h5>
+                            <h4>Detalle por proyecto</h4>
                         </div>
 
                         <div style="text-align: left; margin: 5px;">
 
-                            <button type="button" class="btn" data-toggle="modal" data-target="#exampleModalCenter"><img
-                                    src="{% static 'img/add.png' %}" alt="" style="max-width:20px; height:auto;"> Nuevo
+                            <button type="button" class="btn text-info" data-toggle="modal" data-target="#exampleModalCenter"><a href="#" class="fa fa-lg fa-plus-circle"></a> Nuevo
                                 retiro</button>
 
                         </div>
@@ -59,20 +61,21 @@
                             aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered" role="document">
                                 <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLongTitle">Estas por agregar un nuevo
-                                            retiro!</h5>
+                                    <div class="modal-header" style="background: rgb(36,160,237);
+                                            background: linear-gradient(315deg, rgba(36,160,237,1) 0%, rgba(56,56,130,1) 22%, rgba(0,212,255,1) 100%);">
+                                        <h5 class="modal-title text-light" id="exampleModalLongTitle">Completa el formulario</h5>
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
                                     </div>
                                     <div class="modal-body">
 
-                                        Completa el formulario!
-
-                                        <form method="POST" style="margin: 15px;">
-
+                                        
+                                        <form method="POST" class="mt-2">
+                                            
                                             {% csrf_token %}
+
+                                            <p><b>*Proyecto que retira</b></p>
 
                                             <div class="input-group mb-3">
 
@@ -81,6 +84,18 @@
                                                     style="width: 100px;">
 
                                             </div>
+
+                                            <p><b>*Ente que retira</b></p>
+
+                                            <div class="input-group mb-3">
+
+                                                <input name="retira" type="text" class="form-control form-control"
+                                                    placeholder="Solo completar en caso de no ser un proyecto"
+                                                    style="width: 100px;">
+
+                                            </div>
+                                            
+                                            
 
                                             <div class="input-group mb-3">
 
@@ -108,14 +123,20 @@
 
                                             </div>
 
-                                            <button type="submit" class="btn btn-primary">Enviar</button>
+                                            <div class="input-group mb-3">
+
+                                            <small>* Solo completar uno de los campos</small>
+
+                                        </div>
+
+                                            <button type="submit" class="btn btn-info">Enviar</button>
 
                                         </form>
 
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary"
-                                            data-dismiss="modal">Close</button>
+                                            data-dismiss="modal">Cerrar</button>
                                     </div>
                                 </div>
                             </div>
@@ -140,26 +161,26 @@
 
                                     <tr>
                                         <th>Proyecto</th>
-                                        <th></th>
                                         <th>Fecha</th>
                                         <th>Efectivo</th>
                                         <th>M3H</th>
                                         <th>Comentario</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody style="font-size: 14px;">
 
                                     {% for i in datos %}
                                     <tr>
 
-                                        <td style="vertical-align: middle; width: 10%;"> <img
-                                                src="{{i.0.proyecto.iamgen.url}}" class="img-fluid" alt="..."
-                                                style="max-width: 70px; height:auto;"> </td>
-                                        <td> {{ i.0.proyecto.nombre }}</td>
-                                        <td>{{ i.0.fecha|date:"SHORT_DATE_FORMAT"}}</td>
+                                        {% if i.0.proyecto %}
+                                        <td> {{ i.0.proyecto.nombre|lower|capfirst}}</td>
+                                        {% else %}
+                                        <td> {{ i.0.retira }}</td>
+                                        {% endif %}
+                                        <td>{{ i.0.fecha|date:"d/m/Y"}}</td>
                                         <td>${{ i.0.monto_pesos|floatformat:0|intcomma }}</td>
                                         <td>{{ i.1|floatformat:0|intcomma }} M3</td>
-                                        <td>{{ i.0.comentario }}</td>
+                                        <td>{{ i.0.comentario|lower|capfirst}}</td>
                                     </tr>
                                     {% endfor %}
                                 </tbody>
@@ -173,10 +194,6 @@
 </div>
 
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-<script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js" defer></script>
-<script src="https://cdn.datatables.net/1.10.23/js/dataTables.bootstrap4.min.js" defer></script>
-
-
 
 <script>
     $(document).ready(function () {

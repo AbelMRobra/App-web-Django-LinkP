@@ -31,24 +31,10 @@
                             <tr>
                                 <th style="vertical-align: top;">Logo</th>
                                 <th style="vertical-align: top;">Nombre</th>
-                                <th style="vertical-align: top;">
-                                    <div>
-                                        <p class="mb-0">
-                                            Inicio
-                                        </p>
-                                        <p class="text-secondary" style="font-size: 12px; margin-bottom: 0;">
-                                        Inicio contrato
-                                        </p>
-                                    </div></th>
-                                <th style="vertical-align: top;">
-                                    <div>
-                                        <p class="mb-0">
-                                            Entrega
-                                        </p>
-                                        <p class="text-secondary"  style="font-size: 12px; margin-bottom: 0;">
-                                            Entrega contrato
-                                        </p>
-                                    </div></th>
+                                <th style="vertical-align: top;">Inicio </th>
+                                <th style="vertical-align: top;">Inicio contrato </th>
+                                <th style="vertical-align: top;">Entrega </th>
+                                <th style="vertical-align: top;">Entrega contrato</th>
                                 <th style="vertical-align: top;">Tamaño</th>
                             </tr>
                         </thead>
@@ -70,44 +56,46 @@
                                 <td>{{i.nombre}}</td>
 
                                 {% if i.fecha_i %}
-                                <td>
-                                    <div>
-                                        <div>
-                                            <span>
-                                                {{i.fecha_i|date:"d/m/Y"}}
-                                            </span>
-                                        </div>
-                                        <div>
-                                            <span style="font-size: 13px;">
-                                                {{i.fecha_i_contrato|date:"d/m/Y"}}
-                                            </span>
-                                        </div>
+                                
+                                <td>{{i.fecha_i|date:"d/m/Y"}}</td>
 
+                                {% else %}
 
-                                    </div>
-                                </td>
+                                <td>--/--/----</td>
+                                
+                                {% endif %}
+
+                                {% if i.fecha_i_contrato %}
+
+                                <td> {{i.fecha_i_contrato|date:"d/m/Y"}}</td>
 
                                 {% else %}
 
                                 <td>--/--/----</td>
 
                                 {% endif %}
-                                <td>
-                                    <div>
-                                        <div>
-                                            <span>
-                                                {{i.fecha_f|date:"d/m/Y"}}
-                                            </span>
-                                        </div>
-                                        <div>
-                                            <span style="font-size: 13px;">
-                                                {{i.fecha_f_contrato|date:"d/m/Y"}}
-                                            </span>
-                                        </div>
+
+                                {% if i.fecha_f %}
+                                
+                                <td>{{i.fecha_f|date:"d/m/Y"}}</td>
+
+                                {% else %}
+
+                                <td>--/--/----</td>
+                                
+                                {% endif %}
+
+                                {% if i.i.fecha_f_contrato %}
+
+                                <td>{{i.fecha_f_contrato|date:"d/m/Y"}}</td>
 
 
-                                    </div>
-                                </td>
+                                {% else %}
+
+                                <td>--/--/----</td>
+
+                                {% endif %}
+                                                               
 
                                 <td><span class="label label-info" style="background-color: rgb({{i.color}});">{{i.m2}}
                                         m2</span></td>
@@ -115,8 +103,6 @@
 
 
                             {% endfor %}
-
-
 
                         </tbody>
                     </table>

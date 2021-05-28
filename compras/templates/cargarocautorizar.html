@@ -5,7 +5,7 @@
 
 {% block content %}
 
-<div class="container-fluid r-aside">
+<div class="container-fluid">
 
     <div class="row page-titles">
         <div class="col-md-5 align-self-center">
@@ -14,7 +14,7 @@
 
         <div class="col-md-7 align-self-center">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'Principal compras' %}">Panel</a></li>
                 <li class="breadcrumb-item"><a href="{% url 'Comparativas' 0 0 %}">Solicitud</a></li>
                 <li class="breadcrumb-item">Formulario de solicitud</li>
             </ol>
@@ -25,31 +25,34 @@
 <div class="row">
     <div class="col-12">
         <div class="card">
-            <div class="card-body row">
+            <div class="card-body">
                 <div class="col-12 justify-content-center">
                     <div>
                         <h2>Nueva solicitud</h2>
-                        <small>Complete la informacion de la solicutad</small>
+                        <small>Complete la información y cargue la solicitud</small>
+                        {% if mensaje %}
+                        <div><small class="text-danger">{{mensaje}}</small></div> {% endif %}
                      
                     </div>
 
                     <div class="row d-flex justify-content-center mt-4">
-                        <div class="col col-md-12 col-lg-6">
+                        <div class="col col-md-12 col-lg-5">
                             <div class="row">
                                 <div class="col bg-light border rounded p-4 ">
-
-                                    <form role="form" enctype="multipart/form-data" action="" method="POST"
+                                    <form method="POST" enctype="multipart/form-data" 
                                         id="upload-image-form">
                                         {% csrf_token %}
+
 
                                         <div>
                                             <label for="proveedor">
                                                 <h6>Proveedor</h6>
+                                                <small>Tiene que estar previamente cargado en Link-P</small>
                                             </label>
                                         </div>
 
                                         <div class="row d-flex justify-content-center my-3">
-                                            <div class="col col-md-8 col-lg-8">
+                                            <div class="col col-md-12 col-lg-8">
 
                                                 <input name="proveedor" type="search" class="form-control form-control"
                                                     placeholder="Nombre del proveedor" list="provee">
@@ -65,7 +68,7 @@
                                         </div>
 
                                         <div class="row d-flex justify-content-center my-3">
-                                            <div class="col col-md-8 col-lg-8">
+                                            <div class="col col-md-12 col-lg-8">
 
 
                                                 <input name="proyecto" type="text" class="form-control form-control"
@@ -77,14 +80,15 @@
                                         <div>
                                             <label for="referencia">
                                                 <h6>Referencia</h6>
+                                                <small>Utiliza este espacio para identificar área o tipo</small>
                                             </label>
                                         </div>
 
                                         <div class="row d-flex justify-content-center my-3">
-                                            <div class="col col-md-8 col-lg-8">
+                                            <div class="col col-md-12 col-lg-8">
 
                                                 <input name="referencia" type="text" class="form-control form-control"
-                                                    placeholder="Ejemplo 'TEC' o 'PRESUP'">
+                                                    placeholder="Ejemplo 'Tec' o 'Presup'">
 
                                             </div>
                                         </div>
@@ -92,11 +96,12 @@
                                         <div>
                                             <label for="valor">
                                                 <h6>Valor final de la solicitud</h6>
+                                                <small>Considerando IVA en caso de tener</small>
                                             </label>
                                         </div>
 
                                         <div class="row d-flex justify-content-center my-3">
-                                            <div class="col col-md-8 col-lg-8">
+                                            <div class="col col-md-12 col-lg-8">
 
                                                 <input name="valor" step="0.01" type="number"
                                                     class="form-control form-control" placeholder="$">
@@ -109,23 +114,32 @@
                                                 <h6>Adjunto (PNG o JPEG)</h6>
                                             </label>
                                         </div>
-                                        <div class="row d-flex justify-content-center my-3">
-                                            <div class="col col-md-8 col-lg-8">
+                                        <div class="row d-flex justify-content-center mt-3 mb-4">
+                                            <div class="col col-md-12 col-lg-8">
+                                                <input name="imagen" class="form-control" type="file" id="formFile">
 
-                                                <input type="file" class="form-control-file" name="imagen"
-                                                    aria-describedby="fileHelp">
 
                                             </div>
                                         </div>
 
+
+                            
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col col-md-12 col-lg-5">
+                            <div class="row  d-flex justify-content-center">
+                                <div class="col bg-light border rounded p-4 ">
+
                                         <div>
                                             <label for="numerooc">
                                                 <h6>Numero de O.C</h6>
+                                                <small>Esta información puedes completar mas tarde</small>
                                             </label>
                                         </div>
 
-                                        <div class="row d-flex justify-content-center my-3">
-                                            <div class="col col-md-8 col-lg-8">
+                                        <div class="row justify-content-center my-3">
+                                            <div class="col col-md-12 col-lg-8">
 
                                                 <input name="numerooc" type="text" class="form-control form-control"
                                                     placeholder="Formato ejemplo: '99-123'" >
@@ -136,30 +150,85 @@
                                         <div>
                                             <label for="oc">
                                                 <h6>Orden de compra</h6>
+                                                <small>Esta información puedes completar mas tarde</small>
                                             </label>
                                         </div>
 
-                                        <div class="row d-flex justify-content-center my-3">
-                                            <div class="col col-md-8 col-lg-8">
-
-                                                <input type="file" class="form-control-file" name="oc"
-                                                    aria-describedby="fileHelp">
+                                        <div class="row justify-content-center my-3">
+                                            <div class="col col-md-12 col-lg-8">
+                                                <input name="oc" class="form-control" type="file" id="formFile">
 
                                             </div>
                                         </div>
 
-                                        <div class="row d-flex justify-content-center mt-4">
-                                            <div class="col-lg-6 text-center">
-                                                <button type="submit" class="btn btn-primary">Subir</button>
+                                        <div>
+                                            <label for="numerooc">
+                                                <h6>¿És una solicitud publica?</h6>
+                                                <small>Si colocas no, solo la vera el creador y quien autorice</small>
+                                            </label>
+                                        </div>
+
+                                        <div class="row justify-content-center  my-3">
+                                            <div class="col col-md-12 col-lg-8">
+                                                
+                                                <input type="radio" name="publica" value="SI"  id="publica" class="filled-in chk-col-blue" checked />
+                                                <label for="publica">Si</label>
+                                                
+                                                <input type="radio" name="publica" value="NO"  id="publica2" class="filled-in chk-col-blue" />
+                                                <label for="publica2">No</label> 
+
                                             </div>
                                         </div>
 
+                                        <div>
+                                            <label for="numerooc">
+                                                <h6>¿Quién autoriza?</h6>
+        
+                                            </label>
+                                        </div>
 
-                                        {{ form.as_p }}
-                                    </form>
+                                        <div class="row justify-content-center my-3">
+                                            <div class="col col-md-12 col-lg-8">
+                                                
+                                                <input type="radio" name="autoriza" value="PL" id="autoriza" class="filled-in chk-col-blue" checked />
+                                                <label for="autoriza">PL</label>
+                                                
+                                                <input type="radio" name="autoriza" value="SP"  id="autoriza2" class="filled-in chk-col-blue" />
+                                                <label for="autoriza2">SP</label> 
+
+                                            </div>
+                                        </div>
+
+                                        <div>
+                                            <label for="numerooc">
+                                                <h6>¿Vincular con un contrato?</h6>
+                                                <small>Esto hará que sea parte de un legajo</small>
+        
+                                            </label>
+                                        </div>
+
+                                        <div class="row justify-content-center my-3">
+                                            <div class="col col-md-12 col-lg-8">
+
+                                                <input name="contrato" type="search" class="form-control form-control"
+                                                    list="contratos">
+
+                                            </div>
+                                        </div>
+
+                                        
                                 </div>
                             </div>
                         </div>
+
+                        <div class="row d-flex justify-content-center mt-4">
+                            <div class="col-lg-6 text-center">
+                                <button type="submit" class="btn btn-primary">Subir</button>
+                            </div>
+                            
+                        </div>
+                        {{ form.as_p }}
+                                    </form>
                     </div>
 
                     <datalist id="provee">
@@ -167,6 +236,16 @@
                         {% for i in proveedores %}
 
                         <option value="{{ i.name }}">({{i.id}})</option>
+
+                        {% endfor %}
+
+                    </datalist>
+
+                    <datalist id="contratos">
+
+                        {% for i in contratos %}
+
+                        <option value="{{ i.id }}">({{i.nombre}})</option>
 
                         {% endfor %}
 

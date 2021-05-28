@@ -5,11 +5,11 @@
 
 {% block content %}
 
-<div class="container-fluid r-aside">
+<div class="container-fluid">
 
     <div class="row page-titles">
         <div class="col-md-5 align-self-center">
-            <h3 class="text-themecolor">Caracteristicas del proyecto</h3>
+            <h3 class="text-themecolor">Caracteristicas del unidades</h3>
         </div>
 
         <div class="col-md-7 align-self-center">
@@ -27,7 +27,7 @@
             <div class="card-body">
 
                 <div class="table-responsive">
-                    <table id="example" class="table table-striped table-bordered" data-show-columns="true" style="width:99%">
+                    <table class="table" style="width:99%">
                         <thead  style="font-size: 14px;" >
                             <tr>
                                 <th>Unidad</th>
@@ -36,16 +36,14 @@
                                 {% for f in features %}
                                 <th style="-webkit-transform: rotate(-45deg);-moz-transform: rotate(-45deg);">{{f.nombre|lower|capfirst}} ({{f.inc|lower|capfirst}}%)</th>
                                 {% endfor %}
-                                <th>Guardar</th>
                                 <th>Final</th>
                                 
                             </tr>
                         </thead>
 
                         <tbody style="font-size: 14px;">
-
-                            {% for u in data %}
                             <form method="POST">
+                            {% for u in data %}
                                 {% csrf_token %}
                                 <tr>
                                     <td style="width: 120px;">{{u.0.piso_unidad}} - {{u.0.nombre_unidad}}</td>
@@ -53,23 +51,23 @@
                                     <td  style="width: 120px;">$ {{u.3|floatformat:0|intcomma}}</td>
                                     {% for fu in u.1 %}
                                     <td>
-                                        <div>
-                                            <select name="{{fu.1.nombre}}&{{u.0.id}}" class="custom-select form-control bg-white" style="width:70px;">
-                                                <option value="SI" {% if fu.0 == "SI" %}selected{% endif%}>SI</option>
-                                                <option value="NO" {% if fu.0 == "NO" %}selected{% endif%}>NO</option>
-                                            </select>
-                                        </div>
-                                    </td>
+                                        <input type="hidden" name="{{fu.1.nombre}}&{{u.0.id}}"  value="off">
+                                        <input type="checkbox" name="{{fu.1.nombre}}&{{u.0.id}}" id="{{fu.1.nombre}}&{{u.0.id}}" class="filled-in chk-col-blue" {% if fu.0 == "SI" %}checked{% endif %} />
+                                        <label for="{{fu.1.nombre}}&{{u.0.id}}"></label>
+                                        </td>
 
                                     {% endfor %}
-                                    <td><button type="submit" class=" btn" ><img src="{% static 'img/cheque.png' %}" alt="" style="height: 20px; width: 20px;"></button>
-                                    </td>
                                     <td style="width: 120px;">$ {{u.4|floatformat:0|intcomma}}</td>
                                 </tr>
-                            </form>
+                            
                             {% endfor %}
                         </tbody>
-                    </table>
+                        </table>
+                        <div class="d-flex justify-content-center">
+                            <button type="submit" class="btn btn-success btn-circle fa fa-check"></button>
+                        </div>
+
+                        </form>
                 </div>
 
             </div>

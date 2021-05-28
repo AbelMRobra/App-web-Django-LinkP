@@ -5,7 +5,7 @@
 
 {% block content %}
 
-<div class="container-fluid r-aside">
+<div class="container-fluid">
   <div class="row page-titles">
       <div class="col-md-5 align-self-center">
           <h3 class="text-themecolor">Encuesta postventa</h3>
@@ -14,7 +14,8 @@
       <div class="col-md-7 align-self-center">
           <ol class="breadcrumb">
               <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
-              <li class="breadcrumb-item">Encuesta postventa</li>
+              <li class="breadcrumb-item"><a href="{% url 'App comercial' %}">Panel</a></li>
+              <li class="breadcrumb-item">Encuesta</li>
           </ol>
       </div>
   </div>
@@ -40,10 +41,8 @@
                   <table class="table">
                       <thead>
                           <tr style="vertical-align: middle;">
-                              <td><a type="button" data-toggle="modal" data-target="#Modalpostventa"><img
-                                          src="{% static 'img/add.png' %}" alt=""
-                                          style="max-width:20px; height:auto; vertical-align: middle; margin-right: 15px;"></a>
-                                  Informes cargados</td>
+                              <th class="text-info"><a type="button" class="fa fa-lg fa-plus-circle" data-toggle="modal" data-target="#Modalpostventa"></a>
+                                  Informes cargados</th>
 
                           </tr>
 

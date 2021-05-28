@@ -41,28 +41,30 @@
      {% if datos.datos %}
      
 
-    <table class="table" style="text-align: center;">
+    <table class="table" id="example" style="text-align: center;">
         <thead>
 
             <tr>
-                <th style="vertical-align: middle;" class="priority-4">  Nº </th>
-                <th style="vertical-align: middle; text-align: left;" colspan="3">  Capitulos/analisis </th>
-                <th style="vertical-align: middle;">  Estimado </th>
-                <th style="vertical-align: middle;" style="text-align: center;">  Inc. </th>               
+                <th style="vertical-align: middle;">  Nº </th>
+                <th style="vertical-align: middle; text-align: left;">Capitulos/analisis</th>
+                <th></th>
+                <th></th>
+                <th style="vertical-align: middle; text-align: left;">  Estimado </th>
+                <th style="vertical-align: middle; text-align: center;">  Inc. </th>               
             </tr>
         </thead>
 
         <tbody>
 
-            
-
             {% for i in datos.datos %}
 
             <tr class = "table-active">
                 <td style="color: rgb({{datos.proyecto.color}})">{{i.0.id}}</td>
-                <td style="text-align: left;" colspan="3">{{i.0.nombre|lower|capfirst}}</td>
-                <td>${{i.1|floatformat:0|intcomma}}</td>
-                <td>{{i.2|floatformat:0|intcomma}}%</td>                         
+                <td style="text-align: left;">{{i.0.nombre|lower|capfirst}}</td>
+                <td></td>
+                <td></td>
+                <td style="text-align: left;">$ {{i.1|floatformat:0|intcomma}}</td>
+                <td style="text-align: center;">{{i.2|floatformat:0|intcomma}}%</td>                         
             </tr>
 
             {% for i in i.3 %}
@@ -76,6 +78,7 @@
                 <td> $ {{ i.1|floatformat:0|intcomma }}</td>
                 <td> {{ i.2|floatformat:0|intcomma }} ({{ i.0.analisis.unidad }})</td>
                 <td> $ {{ i.3|floatformat:0|intcomma }}</td>
+                <td></td>
 
             </tr>
 
@@ -108,6 +111,28 @@
 
                     
 </div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script>
+    
+    $(document).ready(function () {
+        $('#example').DataTable({
+            "paging": false,
+            "info": false,
+            "ordering": false,
+            "searching": false,
+            dom: 'Bfrtip',
+            buttons: [
+            {
+                extend: 'excelHtml5',
+                title: 'Presupuesto'
+            },
+    ]
+
+        });
+    });
+</script>
  
     
 {% endblock %}

@@ -5,7 +5,7 @@
 
 {% block content %}
 
-<div class="container-fluid r-aside">
+<div class="container-fluid">
 
     <div class="row page-titles">
         <div class="col-md-5 align-self-center">
@@ -14,7 +14,7 @@
 
         <div class="col-md-7 align-self-center">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'Principal compras' %}">Panel</a></li>
                 <li class="breadcrumb-item"><a href="{% url 'Comparativas' 0 0 %}">Solicitud</a></li>
                 <li class="breadcrumb-item">Edición</li>
             </ol>
@@ -30,17 +30,17 @@
                     <div>
                         <h2>Comparativa nº {{comparativa.id}}</h2>
                         <small>Modifique los datos que necesite</small>
-                     
+
                     </div>
 
                     <div class="row d-flex justify-content-center mt-4">
                         <div class="col col-md-12 col-lg-6">
                             <div class="row">
                                 <div class="col bg-light border rounded p-4 ">
-
                                     <form role="form" enctype="multipart/form-data" action="" method="POST"
                                         id="upload-image-form">
                                         {% csrf_token %}
+
 
                                         <div>
                                             <label for="proveedor">
@@ -69,7 +69,7 @@
 
 
                                                 <input name="proyecto" type="text" class="form-control form-control"
-                                                value="{{comparativa.proyecto}}">
+                                                    value="{{comparativa.proyecto}}">
 
                                             </div>
                                         </div>
@@ -80,11 +80,11 @@
                                             </label>
                                         </div>
 
-                                        <div class="row d-flex justify-content-center my-3">
+                                        <div class="row d-flex justify-content-center my-4">
                                             <div class="col col-md-8 col-lg-8">
 
                                                 <input name="referencia" type="text" class="form-control form-control"
-                                                value="{{comparativa.numero}}">
+                                                    value="{{comparativa.numero}}">
 
                                             </div>
                                         </div>
@@ -95,17 +95,16 @@
                                             </label>
                                         </div>
 
-                                        <div class="row d-flex justify-content-center my-3">
+                                        <div class="row d-flex justify-content-center my-4">
                                             <div class="col col-md-8 col-lg-8">
 
                                                 <input name="valor" step="0.01" type="number"
-                                                    class="form-control form-control" 
-                                                    value="{{comparativa.monto}}">
+                                                    class="form-control form-control" value="{{comparativa.monto}}">
 
                                             </div>
                                         </div>
 
-                                        <div>
+                                        <div class="my-4">
                                             <label for="imagen">
                                                 <h6>Adjunto (PNG o JPEG): {{comparativa.adjunto}}</h6>
                                             </label>
@@ -119,48 +118,133 @@
                                             </div>
                                         </div>
 
-                                        <div>
-                                            <label for="numerooc">
-                                                <h6>Numero de O.C</h6>
-                                            </label>
-                                        </div>
-
-                                        <div class="row d-flex justify-content-center my-3">
-                                            <div class="col col-md-8 col-lg-8">
-
-                                                <input name="numerooc" type="text" class="form-control form-control"
-                                                value="{{comparativa.o_c}}">
-
-                                            </div>
-                                        </div>
-
-                                        <div>
-                                            <label for="oc">
-                                                <h6>Orden de compra: {{comparativa.adj_oc}}</h6>
-                                            </label>
-                                        </div>
-
-                                        <div class="row d-flex justify-content-center my-3">
-                                            <div class="col col-md-8 col-lg-8">
-
-                                                <input type="file" class="form-control-file" name="oc"
-                                                    aria-describedby="fileHelp">
-
-                                            </div>
-                                        </div>
-
-                                        <div class="row d-flex justify-content-center mt-4">
-                                            <div class="col-lg-6 text-center">
-                                                <button type="submit" class="btn btn-primary">Subir</button>
-                                            </div>
-                                        </div>
-
-
-                                        {{ form.as_p }}
-                                    </form>
                                 </div>
                             </div>
                         </div>
+                        <div class="col col-md-12 col-lg-5">
+                            <div class="row  d-flex justify-content-center">
+                                <div class="col bg-light border rounded p-4 ">
+
+                                    <div>
+                                        <label for="numerooc">
+                                            <h6>Numero de O.C</h6>
+                                        </label>
+                                    </div>
+
+                                    <div class="row d-flex justify-content-center my-3">
+                                        <div class="col col-md-8 col-lg-8">
+
+                                            <input name="numerooc" type="text" class="form-control form-control"
+                                                value="{{comparativa.o_c}}">
+
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <label for="oc">
+                                            <h6>Orden de compra: {{comparativa.adj_oc}}</h6>
+                                        </label>
+                                    </div>
+
+                                    <div class="row d-flex justify-content-center my-3">
+                                        <div class="col col-md-8 col-lg-8">
+
+                                            <input type="file" class="form-control-file" name="oc"
+                                                aria-describedby="fileHelp">
+
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <label for="numerooc">
+                                            <h6>¿És una solicitud publica?</h6>
+                                            <small>Si colocas no, solo la vera el creador y quien autorice</small>
+                                        </label>
+                                    </div>
+
+                                    <div class="row justify-content-center  my-3">
+                                        <div class="col col-md-12 col-lg-8">
+
+                                            <input type="radio" name="publica" value="SI" id="publica"
+                                                class="filled-in chk-col-blue" {% if comparativa.publica == "SI" %} checked {% endif %} />
+                                            <label for="publica">Si</label>
+
+                                            <input type="radio" name="publica" value="NO" id="publica2"
+                                                class="filled-in chk-col-blue" {% if comparativa.publica == "NO" %} checked {% endif %} />
+                                            <label for="publica2">No</label>
+
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <label for="numerooc">
+                                            <h6>¿Quién autoriza?</h6>
+
+                                        </label>
+                                    </div>
+
+                                    <div class="row justify-content-center my-3">
+                                        <div class="col col-md-12 col-lg-8">
+
+                                            <input type="radio" name="autoriza" value="PL" id="autoriza"
+                                                class="filled-in chk-col-blue" {% if comparativa.autoriza == "PL" %} checked {% endif %} />
+                                            <label for="autoriza">PL</label>
+
+                                            <input type="radio" name="autoriza" value="SP" id="autoriza2"
+                                                class="filled-in chk-col-blue" {% if comparativa.autoriza == "SP" %} checked {% endif %} />
+                                            <label for="autoriza2">SP</label>
+
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <label for="numerooc">
+                                            <h6>¿Vincular con un contrato?</h6>
+                                            <small>Esto hará que sea parte de un legajo</small>
+
+                                        </label>
+                                    </div>
+
+                                    <div class="row justify-content-center my-3">
+                                        <div class="col col-md-12 col-lg-8">
+
+                                            <input name="contrato" type="search" class="form-control form-control"
+                                                list="contratos" value="{{comparativa.contrato.id}}">
+
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row d-flex justify-content-center mt-4">
+                            <div class="col-lg-6 text-center">
+                                <button type="submit" class="btn btn-primary">Subir</button>
+                            </div>
+                        </div>
+
+
+                        {{ form.as_p }}
+                        </form>
+
+                        <form role="form" enctype="multipart/form-data" action="" method="POST"
+                                        id="upload-image-form">
+                                        {% csrf_token %}
+
+                        {% if comparativa.estado != "AUTORIZADA" %}
+                        <div class="row d-flex justify-content-center mt-4">
+                            <div class="col-lg-6 text-center">
+                                <button type="submit" name="borrar"
+                                value = "{{comparativa.id}}" class="btn"><i class="fa fa-trash-o text-danger"></i></button>
+                            </div>
+                        </div>
+                        {% endif %}
+
+                        {{ form.as_p }}
+                        </form>
+
+
                     </div>
 
                     <datalist id="provee">
@@ -168,6 +252,16 @@
                         {% for i in proveedores %}
 
                         <option value="{{ i.name }}">({{i.id}})</option>
+
+                        {% endfor %}
+
+                    </datalist>
+
+                    <datalist id="contratos">
+
+                        {% for i in contratos %}
+
+                        <option value="{{ i.id }}">({{i.nombre}})</option>
 
                         {% endfor %}
 

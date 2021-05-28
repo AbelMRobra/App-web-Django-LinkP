@@ -178,6 +178,32 @@
         </div>
     </div>
 </div>
+<div class="row">
+    <div class="col-lg-3 col-xlg-3">
+        <div class="card">
+            <div class="card-body text-center">
+                <div>
+                    <h6>Contratos</h6>
+                </div>
+
+                <div>
+                    <img src="{% static 'img/compras_contrato.gif' %}" alt="" style="max-width:100px; height:auto; margin: 5px;">
+                </div>
+
+                {% if request.user|has_group:"COMPRAS NIVEL 2" %}
+                <a href="{% url 'Contratos' %}"><button class="btn btn-primary">
+                        Ingresar</button></a>
+                {% else %}
+
+                <a href="#"><button class="btn btn-secondary">
+                    Sin permisos</button></a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    
+</div>
 
 <aside class="right-side-panel">
     <h3 class="p-relative"><span class="lstick"></span>¿Comó se usa?</h3>

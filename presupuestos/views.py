@@ -25,6 +25,29 @@ from openpyxl import Workbook
 from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
 from .serializers import ArtSerializer
 
+'''
+def historico_presupuesto(request):
+
+    if request.method == 'POST':
+
+        fecha_desde = request.POST['fecha_desde']
+        fecha_hasta = request.POST['fecha_hasta']
+        proyecto = Proyectos.objects.get(id = int(request.POST['fecha_desde']))
+
+        # ---> Almacen 1
+
+        almacen_desde = PresupuestosAlmacenados.objects.filter(proyecto = proyecto, nombre = str(fecha_desde))
+        almacen_hasta = PresupuestosAlmacenados.objects.filter(proyecto = proyecto, nombre = str(fecha_hasta))
+
+        capitulos = Capitulos.objects.all()
+
+        for cap in capitulos:
+
+
+    pass
+'''
+
+
 def insum_list(request):
 
     datos = Articulos.objects.all()

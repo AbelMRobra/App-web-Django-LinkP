@@ -2,7 +2,6 @@ from django.db import models
 from proyectos.models import Proyectos
 from computos.models import Tipologias
 from rrhh.models import datosusuario
-
 # Modelo para constantes
 
 
@@ -22,6 +21,7 @@ class Constantes(models.Model):
     valor = models.FloatField()
     descrip = models.TextField()
     fecha_a = models.DateField(auto_now=True, blank=True, null=True)
+    cuenta_corriente = models.IntegerField(blank=True, null=True)
     
     class Meta:
         verbose_name="Constante"

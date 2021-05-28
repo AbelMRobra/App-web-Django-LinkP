@@ -1982,11 +1982,11 @@ def featuresproject(request, id_proj):
             if d[0] != 'csrfmiddlewaretoken':
                 aux = d[0].split(sep='&')
 
-                if len(FeaturesUni.objects.filter(feature__nombre = aux[0], unidad = int(aux[1]))) == 1 and d[1] == "NO":
+                if len(FeaturesUni.objects.filter(feature__nombre = aux[0], unidad = int(aux[1]))) == 1 and d[1] == "off":
                     feature_un = FeaturesUni.objects.filter(feature__nombre = aux[0], unidad = int(aux[1]))
                     feature_un.delete()
 
-                if len(FeaturesUni.objects.filter(feature__nombre = aux[0], unidad = int(aux[1]))) == 0 and d[1] == "SI":
+                if len(FeaturesUni.objects.filter(feature__nombre = aux[0], unidad = int(aux[1]))) == 0 and d[1] == "on":
                 
                     unidad = Unidades.objects.get(id = int(aux[1]))
                     feature = FeaturesProjects.objects.get(proyecto = unidad.proyecto, nombre = aux[0])

@@ -111,15 +111,8 @@
                         
                             {% for i in datos|slice:"120" %}
 
-                            {% if i.0.identificacion != request.user.username %}
+                            {% if i.2.publica == "SI" or request.user.username == i.2.autoriza or  request.user.username == i.2.creador %}
 
-                            {% if "monteagudo" in i.2.proyecto|lower and request.user.username != "SP" %}
-
-                            {% elif "tafi" in i.2.proyecto|lower and request.user.username != "SP" %}
-
-                            {% elif "seminario" in i.2.proyecto|lower and request.user.username != "PL" %}
-
-                            {% else %}
                             <tr>
                             <td style="text-align: center;">
                                 <img src="{{i.0.imagenlogo.url}}" width="40" class="img-circle">
@@ -163,7 +156,7 @@
                                         </span>
                                         {% endif %}
                                 {% endif %}
-                                
+
                                 
                                 <!-- Condicional para editar -->
                                 
@@ -175,33 +168,25 @@
                                 
                                 <!-- Iconos y otros datos -->
                                 <h6 class="card-subtitle" style="font-size: 14px; margin-top: 2px;">
+                                    
+                                    {% if i.2.contrato %}
+                                    <a href="{% url 'Contratos descripcion' i.2.contrato.id %}" class=" fa fa-plus-square-o fa-lg text-danger "></a>{% endif %}
                                     <a href="{% url 'Mensajes en comparativas' i.2.id %}" class=" fa fa-comments-o fa-lg"></a>
                                     <a href="{{ i.2.adjunto.url }}" class=" fa fa-paperclip fa-lg"></a> 
                                     {% if i.2.adj_oc %}
-                                    <a href="{{ i.2.adj_oc.url }}"><img src="{% static 'img/OC.png' %}" style="max-width:20px; height:auto;"></a>
+                                    <a href="{{ i.2.adj_oc.url }}"><img src="{% static 'img/OC.png' %}" style="max-width:18px; height:auto;"></a>
                                     {% endif %}
                                     {{i.2.proyecto|lower|capfirst}} - {{i.2.numero|lower|capfirst}}</h6>
                             </td>
                             <td style="font-size: 14px;"><b>$ {{i.2.monto|floatformat:0|intcomma}}</b></td> 
-                            {% if i.2.o_c %}
-                            <td>
-                                <div>{{i.2.o_c|upper}}</div>
-                         
-                            {% else %}
-                            <td><div> -</div> 
-                            {% endif %}
-                            
-                            </td>
+                            {% if i.2.o_c %}<td><div>{{i.2.o_c|upper}}</div>{% else %}<td><div> -</div>{% endif %}</td>
                             
 
                             <td style="text-align: center;"> 
 
+                                <img {% if i.2.autoriza == "SP" %} src="{% static 'img/SP.png' %}" {% else %} src="{% static 'img/PL.png' %}" {% endif %} width="40" class="img-circle">
 
-                                {% if "post" in i.2.numero|lower or i.0.identificacion == "MES" %}
-
-                                <img src="{% static 'img/SP.png' %}" width="40" class="img-circle">
-
-                                    {% if request.user.username == "SP" %}
+                                    {% if request.user.username == i.2.autoriza %}
 
                                     <form action="" method="POST">
                                         {% csrf_token %}
@@ -220,176 +205,12 @@
 
                                     {% endif %}
 
-                                {% else %}
-                                    <img src="{% static 'img/PL.png' %}" width="40" class="img-circle"> 
-
-                                    {% if request.user.username == "PL" %}
-
-                                    <form action="" method="POST">
-                                        {% csrf_token %}
-    
-                                        <div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
-                                            {% if estado == "0" or estado == "1" or estado == "3" or estado == "5" %}
-                                            <button type="submit" class="btn" name = "ADJAPROB" value="{{i.2.id}}" ><i class="fa fa-check" style="color: orange;"></i></button>
-                                            {% endif %}
-                                            {% if estado == "0" or estado == "2" or estado == "3" or estado == "5" %}
-                                            <button type="submit" class="btn"   name = "APROBADA" value="{{i.2.id}}" ><i class="fa fa-check" style="color: green;"></i></button>
-                                            {% endif %}
-                                            <button type="submit" class="btn"  name = "NO APROBADA" value="{{i.2.id}}" ><i class="fa fa-times" style="color: darkred;"></i></button>
-                                        </div>
-            
-
-            
-                                    </form>
-
-                                    {% endif %}
-
-                                
-
-                                {% endif %}
-
 
                                 </td>
-
-                        </tr>
-                        {% endif %}
-
-                        {% else %}
-
-                            <tr>
-                                <td style="text-align: center;">
-                                    <img src="{{i.0.imagenlogo.url}}" width="40" class="img-circle">
-                                    <h6 class="card-subtitle" style="font-size: 12px; margin-top: 2px;"><span class="text-muted"> {{i.2.fecha_c|date:"d/m/Y"}}</span></h6></td>
-                                <td>
-                                    {% if i.2.estado == "ESPERA" %}
-                                    <i class="fa fa-hourglass-end" aria-hidden="true" style="color: blue;"></i>      
-                                    {% endif %}       
-                                    {% if i.2.estado == "AUTORIZADA" %}
-                                    {% if i.2.comentario %}  
-                                    <span class="hint--left hint--danger"aria-label="{{i.comentario}}">
-                                    {% endif %}
-                                    <i class="fa fa-check" aria-hidden="true" style="color: green;"></i>
-                                    {% if i.2.comentario %}
-                                    </span>
-                                    {% endif %}
-                                    {% endif %}
-                                    {% if i.2.estado == "NO AUTORIZADA" %}
-                                        {% if i.2.comentario %}
-                                        <span class="hint--left hint--danger" aria-label="{{i.2.comentario}}">
-                
-                                            {% endif %}
-                                    
-                                            <i class="fa fa-times" aria-hidden="true" style="color: darkred;"></i>
-                
-                                        {% if i.2.comentario %}
-                                    
-                                            </span>
-                
-                                            {% endif %}
-                                    {% endif %}
-                
-                                    {% if i.2.estado == "ADJUNTO ✓" %}        
-                                        {% if i.2.comentario %}
-                                        
-                                        <span class="hint--left hint--danger" aria-label="{{i.2.comentario}}">
-                
-                                            {% endif %}
-                                            <i class="fa fa-check" aria-hidden="true" style="color: orange;"></i>
-                                        {% if i.2.comentario %}
-                                            </span>
-                                            {% endif %}
-                                    {% endif %}
-                                    
-                                    
-                                    <!-- Condicional para editar -->
-                                    
-                                    {% if i.2.estado != "AUTORIZADA" and i.2.creador == user.username %}
-                                    <a href="{% url 'Editar comparativas' i.2.id %}">{{i.2.proveedor.name|lower|capfirst}} </a>
-                                    {% else %}       
-                                    {{i.2.proveedor.name|lower|capfirst}} 
-                                    {% endif %} 
-                                    
-                                    <!-- Iconos y otros datos -->
-                                    <h6 class="card-subtitle" style="font-size: 14px; margin-top: 2px;">
-                                        <a href="{% url 'Mensajes en comparativas' i.2.id %}" class=" fa fa-comments-o fa-lg"></a>
-                                        <a href="{{ i.2.adjunto.url }}" target ="_blank" class=" fa fa-paperclip fa-lg"></a> 
-                                        {% if i.2.adj_oc %}
-                                        <a href="{{ i.2.adj_oc.url }}" target ="_blank"><img src="{% static 'img/OC.png' %}" style="max-width:20px; height:auto;"></a>
-                                        {% endif %}
-                                        {{i.2.proyecto|lower|capfirst}} - {{i.2.numero|lower|capfirst}}</h6>
-                                </td>
-                                <td style="font-size: 14px;"><b>$ {{i.2.monto|floatformat:0|intcomma}}</b></td> 
-                                {% if i.2.o_c %}
-                                <td>
-                                    <div>{{i.2.o_c|upper}}</div>
-                            
-                                {% else %}
-                                <td><div> -</div> 
-                                {% endif %}
-                                
-                                </td>
-                                
-
-                                <td style="text-align: center;"> 
-
-
-                                    {% if "post" in i.2.numero|lower or i.0.identificacion == "MES" %}
-
-                                    <img src="{% static 'img/SP.png' %}" width="40" class="img-circle">
-
-                                        {% if request.user.username == "SP" %}
-
-                                        <form action="" method="POST">
-                                            {% csrf_token %}
-        
-                                            <div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
-                                                {% if estado == "0" or estado == "1" or estado == "3" or estado == "5" %}
-                                                <button type="submit" class="btn" name = "ADJAPROB" value="{{i.2.id}}" ><i class="fa fa-check" style="color: orange;"></i></button>
-                                                {% endif %}
-                                                {% if estado == "0" or estado == "2" or estado == "3" or estado == "5" %}
-                                                <button type="submit" class="btn"   name = "APROBADA" value="{{i.2.id}}" ><i class="fa fa-check" style="color: green;"></i></button>
-                                                {% endif %}
-                                                <button type="submit" class="btn"  name = "NO APROBADA" value="{{i.2.id}}" ><i class="fa fa-times" style="color: darkred;"></i></button>
-                                            </div>
-                            
-                                        </form>
-
-                                        {% endif %}
-
-                                    {% else %}
-                                        <img src="{% static 'img/PL.png' %}" width="40" class="img-circle"> 
-
-                                        {% if request.user.username == "PL" %}
-
-                                        <form action="" method="POST">
-                                            {% csrf_token %}
-        
-                                            <div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
-                                                {% if estado == "0" or estado == "1" or estado == "3" or estado == "5" %}
-                                                <button type="submit" class="btn" name = "ADJAPROB" value="{{i.2.id}}" ><i class="fa fa-check" style="color: orange;"></i></button>
-                                                {% endif %}
-                                                {% if estado == "0" or estado == "2" or estado == "3" or estado == "5" %}
-                                                <button type="submit" class="btn"   name = "APROBADA" value="{{i.2.id}}" ><i class="fa fa-check" style="color: green;"></i></button>
-                                                {% endif %}
-                                                <button type="submit" class="btn"  name = "NO APROBADA" value="{{i.2.id}}" ><i class="fa fa-times" style="color: darkred;"></i></button>
-                                            </div>
-                
-
-                
-                                        </form>
-
-                                        {% endif %}
-
-                                    
-
-                                    {% endif %}
-
-
-                                    </td>
 
                             </tr>
+                            {% endif %}
 
-                        {% endif %}
 
                             {% endfor %}
                   
@@ -405,7 +226,7 @@
 </div>
 
 <aside class="right-side-panel">
-    <h3 class="p-relative"><span class="lstick"></span>¿Como funciona?</h3>
+    <h3 class="p-relative"><span class="lstick"></span>¿Cómo funciona?</h3>
     <div class="row">
         
         <div class="col-md-12 m-t-10">

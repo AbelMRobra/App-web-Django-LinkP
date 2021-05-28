@@ -26,5 +26,6 @@ urlpatterns = [
     url(r'^descargarestado/(?P<fechai>\d+)/(?P<fechaf>\d+)/$', login_required(CompOCestado.as_view()), name = 'Descargar estado'),
     url(r'^informecompras/$', login_required(views.informecompras), name = 'Informe compras'),
     url(r'^detalleinforme/(?P<fecha_i>\d+)/(?P<fecha_f>\d+)/(?P<proyecto>\d+)/$', login_required(views.detalleinforme), name = 'Detalle de informe'),
-
+    url(r'^contratos/$', login_required(views.contratos), name = 'Contratos'),
+    url(r'^contratosdescripcion/(?P<id_contrato>\d+)/$', login_required(views.contratosdescripcion), name = 'Contratos descripcion'),
 ]

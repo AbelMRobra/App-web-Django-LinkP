@@ -1082,6 +1082,42 @@ def resumenctacte(request, id_cliente):
 
 def ctactecliente(request, id_cliente):
 
+    try:
+
+        frozen = Constantes.objects.get(cuenta_corriente = id_cliente)
+
+    except:
+        frozen = 0
+
+    if request.method == 'POST':
+        data = request.POST.items()
+        for d in data:
+            print(d)
+
+        try:
+            if request.POST['frozen']:
+                if len(Constantes.objects.filter(cuenta_corriente = id_cliente)):
+                    frozen.valor = request.POST['valor']
+                    frozen.save()
+                else:
+                    frozen = Constantes(
+                        nombre = "FROZEN-{}".format(id_cliente),
+                        valor =request.POST['valor'],
+                        descrip = "Constante para cuenta corrientes",
+                        cuenta_corriente = id_cliente
+                    )
+
+                    frozen.save()
+
+
+        except:
+            data = request.POST.items()
+            for d in data:
+                if "cuota" in d[0]:
+                    cuota = Cuota.objects.get(id = d[1])
+                    cuota.constante = frozen
+                    cuota.save()
+
     ctacte = CuentaCorriente.objects.get(id = id_cliente)
 
     cuotas = Cuota.objects.filter(cuenta_corriente = ctacte)
@@ -1116,7 +1152,7 @@ def ctactecliente(request, id_cliente):
 
     datos_cuenta = sorted(datos_cuenta, key=lambda datos: datos[0].fecha)
 
-    return render(request, 'ctacte.html', {"ctacte":ctacte, "datos_cuenta":datos_cuenta})
+    return render(request, 'ctacte.html', {"frozen":frozen, "ctacte":ctacte, "datos_cuenta":datos_cuenta})
 
 def estructura_boleto(request, id_cliente):
 
@@ -1510,54 +1546,39 @@ def ingresounidades(request, estado, proyecto):
 
     if request.method == 'POST':
 
-        proyecto_elegido = request.POST.items()
-
-        for i in proyecto_elegido:
-
-            if i[0] == 'estado':
-
-                unidad = Unidades.objects.get(id = int(request.POST['nombre']))
-
-                unidad.estado = i[1]
-
+        try:
+            archivo_pandas = pd.read_excel(request.FILES['archivo'])
+            id_unidades = archivo_pandas['ID'].unique()
+            
+            for id_unidad in id_unidades:
+                unidad = Unidades.objects.get(id = int(id_unidad))
+                unidad.estado = archivo_pandas[archivo_pandas['ID'] == id_unidad]['ESTADO'].unique()[0]
+                unidad.asig = archivo_pandas[archivo_pandas['ID'] == id_unidad]['ASIGNACIÓN'].unique()[0]
+                unidad.estado_comision = archivo_pandas[archivo_pandas['ID'] == id_unidad]['COMISIÓN'].unique()[0]
+                unidad.estado_iibb = archivo_pandas[archivo_pandas['ID'] == id_unidad]['IIBB'].unique()[0]
                 unidad.save()
 
-            if i[0] == 'asig':
+        except:
+            for d in request.POST.items():
+                if "nombre" in d[0]:
+                    unidad = Unidades.objects.get(id = int(request.POST['nombre{}'.format(d[1])]))
+                    unidad.estado = request.POST['estado{}'.format(d[1])]
+                    unidad.asig = request.POST['asig{}'.format(d[1])]
+                    try:
+                        if request.POST['comision{}'.format(d[1])] == "on":
+                            unidad.estado_comision = "SI"
+                    except:
+                        unidad.estado_comision = "NO"
 
-                unidad = Unidades.objects.get(id = int(request.POST['nombre']))
-
-                unidad.asig = i[1]
-
-                unidad.save()
-
-            if i[0] == 'comisionsi':
-
-                unidad = Unidades.objects.get(id = int(request.POST['nombre']))
-                unidad.estado_comision = "SI"
-                unidad.save()
-
-            if i[0] == 'comisionno':
-
-                unidad = Unidades.objects.get(id = int(request.POST['nombre']))
-                unidad.estado_comision = "NO"
-                unidad.save()
-
-            if i[0] == 'iibbsi':
-
-                unidad = Unidades.objects.get(id = int(request.POST['nombre']))
-                unidad.estado_iibb = "SI"
-                unidad.save()
-
-            if i[0] == 'iibbno':
-
-                unidad = Unidades.objects.get(id = int(request.POST['nombre']))
-                unidad.estado_iibb = "NO"
-                unidad.save()
-
+                    try:
+                        if request.POST['iibb{}'.format(d[1])] == "on":
+                            unidad.estado_iibb = "SI"
+                    except:
+                        unidad.estado_iibb = "NO"
+                    unidad.save()
 
 
     estado_marcado = estado
-
 
     listado = []
 
@@ -2993,16 +3014,32 @@ def borrarmovimiento(request, id_mov):
 
 def retirodesocios(request):
 
+    mensaje = 0
+
     if request.method == 'POST':
 
-        b = RetirodeSocios(
-            proyecto = Proyectos.objects.get(nombre = request.POST['proyecto']),
-            fecha = request.POST['fecha'],
-            monto_pesos = request.POST['pesos'],
-            comentario = request.POST['comentario']
-        )
+        try:
 
-        b.save()
+            b = RetirodeSocios(
+                proyecto = Proyectos.objects.get(nombre = request.POST['proyecto']),
+                fecha = request.POST['fecha'],
+                monto_pesos = request.POST['pesos'],
+                comentario = request.POST['comentario']
+            )
+
+            b.save()
+
+        except:
+
+            b = RetirodeSocios(
+                retira = request.POST['retira'],
+                fecha = request.POST['fecha'],
+                monto_pesos = request.POST['pesos'],
+                comentario = request.POST['comentario']
+            )
+
+            b.save()
+
 
     datos_retiro = RetirodeSocios.objects.order_by("-fecha")
 
@@ -3015,16 +3052,24 @@ def retirodesocios(request):
 
     for d in datos_retiro:
 
-        fecha = datetime.date(d.fecha.year, d.fecha.month, 1)
-        registro = Registrodeconstantes.objects.get(fecha = fecha, constante__nombre='Hº VIVIENDA')
-        monto_h = d.monto_pesos/registro.valor
+        try:
 
-        total_pesos = total_pesos + d.monto_pesos
-        total_h = total_h + monto_h
+            fecha = datetime.date(d.fecha.year, d.fecha.month, 1)
+            registro = Registrodeconstantes.objects.get(fecha = fecha, constante__nombre='Hº VIVIENDA')
+            monto_h = d.monto_pesos/registro.valor
+
+            total_pesos = total_pesos + d.monto_pesos
+            total_h = total_h + monto_h
+
+        except:
+
+            monto_h = "??"
+
+            mensaje = "Uno de los retiros no tiene un registro del valor del Hº en ese mes"
 
         datos.append((d, monto_h))
 
-    return render(request, 'retirodesocios.html', {'datos':datos, 'total_pesos':total_pesos, 'total_h':total_h, 'proyectos':proyectos})
+    return render(request, 'retirodesocios.html', {'mensaje':mensaje, 'datos':datos, 'total_pesos':total_pesos, 'total_h':total_h, 'proyectos':proyectos})
 
 def arqueo_diario(request, id_arqueo):
 
@@ -3470,18 +3515,16 @@ def cuentacte_resumen(request):
 
     for c in data:
 
-        pagos = sum(np.array(Pago.objects.values_list('pago_pesos').filter(fecha__lt = fecha_inicial_hoy, cuota__cuenta_corriente = c)))
+        pagos = sum(np.array(Pago.objects.values_list('pago_pesos').filter(cuota__cuenta_corriente = c)))
         
-        cuotas_anteriores_h = sum(np.array(Cuota.objects.values_list('precio').filter(fecha__lt = fecha_inicial_hoy, constante__id = 7, cuenta_corriente = c)))*Constantes.objects.get(id = 7).valor
-        cuotas_anteriores_usd = sum(np.array(Cuota.objects.values_list('precio').filter(fecha__lt = fecha_inicial_hoy, constante__id = 1, cuenta_corriente = c)))*Constantes.objects.get(id = 1).valor
-        pagos_anteriores_h = sum(np.array(Pago.objects.values_list('pago').filter(fecha__lt = fecha_inicial_hoy, cuota__constante__id = 7, cuota__cuenta_corriente = c)))*Constantes.objects.get(id = 7).valor
-        pagos_anteriores_usd = sum(np.array(Pago.objects.values_list('pago').filter(fecha__lt = fecha_inicial_hoy, cuota__constante__id = 1, cuota__cuenta_corriente = c)))*Constantes.objects.get(id = 1).valor
-        cuotas_posteriores_h = sum(np.array(Cuota.objects.values_list('precio').filter(fecha__gt = fecha_inicial_hoy, constante__id = 7, cuenta_corriente = c)))*Constantes.objects.get(id = 7).valor
-        cuotas_posteriores_usd = sum(np.array(Cuota.objects.values_list('precio').filter(fecha__gt = fecha_inicial_hoy, constante__id = 1, cuenta_corriente = c)))*Constantes.objects.get(id = 1).valor
+        cuotas_anteriores = sum(np.array(Cuota.objects.values_list('precio', flat=True).filter(fecha__lte = fecha_inicial_hoy, cuenta_corriente = c))*np.array(Cuota.objects.values_list('constante__valor', flat=True).filter(fecha__lte = fecha_inicial_hoy, cuenta_corriente = c)))
+        pagos_anteriores = sum(np.array(Pago.objects.values_list('pago', flat=True).filter(cuota__fecha__lte = fecha_inicial_hoy, cuota__cuenta_corriente = c))*np.array(Pago.objects.values_list('cuota__constante__valor', flat=True).filter(cuota__fecha__lte = fecha_inicial_hoy, cuota__cuenta_corriente = c)))
+        cuotas_posteriores = sum(np.array(Cuota.objects.values_list('precio', flat=True).filter(fecha__gt = fecha_inicial_hoy, cuenta_corriente = c))*np.array(Cuota.objects.values_list('constante__valor', flat=True).filter(fecha__gt = fecha_inicial_hoy, cuenta_corriente = c)))
+        adelantos = sum(np.array(Pago.objects.values_list('pago', flat=True).filter(cuota__fecha__gt = fecha_inicial_hoy, cuota__cuenta_corriente = c))*np.array(Pago.objects.values_list('cuota__constante__valor', flat=True).filter(cuota__fecha__gt = fecha_inicial_hoy, cuota__cuenta_corriente = c)))
         
         
-        adeudado = cuotas_anteriores_h + cuotas_anteriores_usd - pagos_anteriores_h - pagos_anteriores_usd
-        pendiente = cuotas_posteriores_h + cuotas_posteriores_usd
+        adeudado = cuotas_anteriores - pagos_anteriores
+        pendiente = cuotas_posteriores - adelantos
         
         datos.append((c, pagos, adeudado, pendiente))
 
@@ -3567,148 +3610,106 @@ class DescargarCuentacorriente(TemplateView):
         saldo_t = 0
         saldo_p_t = 0
 
+        ws = wb.active
+        ws.title = "Resumen"
+        ws["A"+str(cont)] = "FECHA"
+        ws["B"+str(cont)] = "CONSTANTE"
+        ws["C"+str(cont)] = "CONCEPTO"
+        ws["D"+str(cont)] = "VALOR CUOTA"
+        ws["E"+str(cont)] = "PAGADO PESOS"
+        ws["F"+str(cont)] = "COTIZACIÓN"
+        ws["G"+str(cont)] = "SALDO"
+        ws["H"+str(cont)] = "SALDO PESOS"
+
+        ws.column_dimensions['A'].width = 20
+        ws.column_dimensions['B'].width = 25
+        ws.column_dimensions['C'].width = 25
+        ws.column_dimensions['D'].width = 25
+        ws.column_dimensions['E'].width = 25
+        ws.column_dimensions['F'].width = 25
+        ws.column_dimensions['G'].width = 25
+        ws.column_dimensions['H'].width = 35
+
+
+        ws["A"+str(cont)].alignment = Alignment(horizontal = "center")
+        ws["B"+str(cont)].alignment = Alignment(horizontal = "center")
+        ws["C"+str(cont)].alignment = Alignment(horizontal = "center")
+        ws["D"+str(cont)].alignment = Alignment(horizontal = "center")
+        ws["E"+str(cont)].alignment = Alignment(horizontal = "center")
+        ws["F"+str(cont)].alignment = Alignment(horizontal = "center")
+        ws["G"+str(cont)].alignment = Alignment(horizontal = "center")
+        ws["H"+str(cont)].alignment = Alignment(horizontal = "center")
+
+        ws["A"+str(cont)].font = Font(bold = True, color= "E8F8F8")
+        ws["A"+str(cont)].fill =  PatternFill("solid", fgColor= "2C9E9D")
+        ws["B"+str(cont)].font = Font(bold = True, color= "E8F8F8")
+        ws["B"+str(cont)].fill =  PatternFill("solid", fgColor= "2C9E9D")
+        ws["C"+str(cont)].font = Font(bold = True, color= "E8F8F8")
+        ws["C"+str(cont)].fill =  PatternFill("solid", fgColor= "2C9E9D")
+        ws["D"+str(cont)].font = Font(bold = True, color= "E8F8F8")
+        ws["D"+str(cont)].fill =  PatternFill("solid", fgColor= "2C9E9D")
+        ws["E"+str(cont)].font = Font(bold = True, color= "E8F8F8")
+        ws["E"+str(cont)].fill =  PatternFill("solid", fgColor= "2C9E9D")
+        ws["F"+str(cont)].font = Font(bold = True, color= "E8F8F8")
+        ws["F"+str(cont)].fill =  PatternFill("solid", fgColor= "2C9E9D")
+        ws["G"+str(cont)].font = Font(bold = True, color= "E8F8F8")
+        ws["G"+str(cont)].fill =  PatternFill("solid", fgColor= "2C9E9D")
+        ws["H"+str(cont)].font = Font(bold = True, color= "E8F8F8")
+        ws["H"+str(cont)].fill =  PatternFill("solid", fgColor= "2C9E9D")
+
         for c in cuota:
 
-            if cont == 8:
-                ws = wb.active
-                ws.title = "Resumen"
-                ws["A"+str(cont)] = "FECHA"
-                ws["B"+str(cont)] = "CONSTANTE"
-                ws["C"+str(cont)] = "CONCEPTO"
-                ws["D"+str(cont)] = "VALOR"
-                ws["E"+str(cont)] = "PAGADO"
-                ws["F"+str(cont)] = "COTIZACIÓN"
-                ws["G"+str(cont)] = "SALDO"
-                ws["H"+str(cont)] = "SALDO PESOS"
+            ws["A"+str(cont+1)] = c.fecha
+            ws["B"+str(cont+1)] = c.constante.nombre
+            ws["C"+str(cont+1)] = c.concepto
+            ws["D"+str(cont+1)] = c.precio
 
+            if c.pagada == "SI":
+                pagos_pesos = sum(np.array(Pago.objects.filter(cuota = c).values_list("pago_pesos", flat = True)))
+                cotizacion = sum(np.array(Pago.objects.filter(cuota = c).values_list("pago_pesos", flat = True))/np.array(Pago.objects.filter(cuota = c).values_list("pago", flat = True)))
+                saldo = c.precio - sum(np.array(Pago.objects.filter(cuota = c).values_list("pago", flat = True)))
+                saldo_pesos = saldo * c.constante.valor
+                
+                ws["E"+str(cont+1)] = pagos_pesos
+                ws["F"+str(cont+1)] = cotizacion
+                ws["G"+str(cont+1)] = saldo
+                ws["H"+str(cont+1)] = saldo_pesos
 
-                ws["A"+str(cont)].alignment = Alignment(horizontal = "center")
-                ws["B"+str(cont)].alignment = Alignment(horizontal = "center")
-                ws["C"+str(cont)].alignment = Alignment(horizontal = "center")
-                ws["D"+str(cont)].alignment = Alignment(horizontal = "center")
-                ws["E"+str(cont)].alignment = Alignment(horizontal = "center")
-                ws["F"+str(cont)].alignment = Alignment(horizontal = "center")
-                ws["G"+str(cont)].alignment = Alignment(horizontal = "center")
-                ws["H"+str(cont)].alignment = Alignment(horizontal = "center")
+                valor_t += c.precio
+                pagado_t += pagos_pesos
+                saldo_t += saldo
+                saldo_p_t += saldo_pesos
 
-                ws["A"+str(cont)].font = Font(bold = True, color= "E8F8F8")
-                ws["A"+str(cont)].fill =  PatternFill("solid", fgColor= "2C9E9D")
-                ws["B"+str(cont)].font = Font(bold = True, color= "E8F8F8")
-                ws["B"+str(cont)].fill =  PatternFill("solid", fgColor= "2C9E9D")
-                ws["C"+str(cont)].font = Font(bold = True, color= "E8F8F8")
-                ws["C"+str(cont)].fill =  PatternFill("solid", fgColor= "2C9E9D")
-                ws["D"+str(cont)].font = Font(bold = True, color= "E8F8F8")
-                ws["D"+str(cont)].fill =  PatternFill("solid", fgColor= "2C9E9D")
-                ws["E"+str(cont)].font = Font(bold = True, color= "E8F8F8")
-                ws["E"+str(cont)].fill =  PatternFill("solid", fgColor= "2C9E9D")
-                ws["F"+str(cont)].font = Font(bold = True, color= "E8F8F8")
-                ws["F"+str(cont)].fill =  PatternFill("solid", fgColor= "2C9E9D")
-                ws["G"+str(cont)].font = Font(bold = True, color= "E8F8F8")
-                ws["G"+str(cont)].fill =  PatternFill("solid", fgColor= "2C9E9D")
-                ws["H"+str(cont)].font = Font(bold = True, color= "E8F8F8")
-                ws["H"+str(cont)].fill =  PatternFill("solid", fgColor= "2C9E9D")
+            else:
 
-                ws["A"+str(cont+1)] = c.fecha
-                ws["B"+str(cont+1)] = c.constante.nombre
-                ws["C"+str(cont+1)] = c.concepto
-                ws["D"+str(cont+1)] = c.precio
+                saldo = c.precio - sum(np.array(Pago.objects.filter(cuota = c).values_list("pago", flat = True)))
+                saldo_pesos = (c.precio - sum(np.array(Pago.objects.filter(cuota = c).values_list("pago", flat = True))))*c.constante.valor
+                ws["E"+str(cont+1)] = sum(np.array(Pago.objects.filter(cuota = c).values_list("pago_pesos", flat = True)))
+                ws["F"+str(cont+1)] = c.constante.valor
+                ws["G"+str(cont+1)] = saldo
+                ws["H"+str(cont+1)] =saldo_pesos
 
-                if len(Pago.objects.filter(cuota = c)) > 0:
-                    pagos_pesos = sum(np.array(Pago.objects.filter(cuota = c).values_list("pago_pesos", flat = True)))
-                    cotizacion = sum(np.array(Pago.objects.filter(cuota = c).values_list("pago_pesos", flat = True))/np.array(Pago.objects.filter(cuota = c).values_list("pago", flat = True)))
-                    saldo = c.precio - sum(np.array(Pago.objects.filter(cuota = c).values_list("pago", flat = True)))
-                    saldo_pesos = saldo * c.constante.valor
-                    
-                    ws["E"+str(cont+1)] = pagos_pesos
-                    ws["F"+str(cont+1)] = cotizacion
-                    ws["G"+str(cont+1)] = saldo
-                    ws["H"+str(cont+1)] = saldo_pesos
+                valor_t += c.precio
+                saldo_t += saldo
+                saldo_p_t += saldo_pesos
 
-                else:
-                    ws["E"+str(cont+1)] = 0
-                    ws["F"+str(cont+1)] = 0
-                    ws["G"+str(cont+1)] = c.precio
-                    ws["H"+str(cont+1)] = c.precio*c.constante.valor
+            ws["A"+str(cont+1)].font = Font(bold = True)
 
-                ws["A"+str(cont+1)].font = Font(bold = True)
+            if c.pagada == "SI":
+                ws["C"+str(cont+1)].font = Font(color= "289E70")
+                ws["G"+str(cont+1)].font = Font(color= "289E70")
 
-                ws["A"+str(cont+1)].alignment = Alignment(horizontal = "center")
-                ws["B"+str(cont+1)].alignment = Alignment(horizontal = "center")
+            ws["A"+str(cont+1)].alignment = Alignment(horizontal = "center")
+            ws["B"+str(cont+1)].alignment = Alignment(horizontal = "center")
+            ws["C"+str(cont+1)].alignment = Alignment(horizontal = "center")
 
-                if c.pagada == "SI":
-                    ws["C"+str(cont+1)].font = Font(color= "289E70")
-                    ws["G"+str(cont+1)].font = Font(color= "289E70")
+            ws["D"+str(cont+1)].number_format = '#,##0.00_-'
+            ws["E"+str(cont+1)].number_format = '"$ "#,##0.00_-'
+            ws["F"+str(cont+1)].number_format = '"$ "#,##0.00_-'
+            ws["G"+str(cont+1)].number_format = '#,##0.00_-'
+            ws["H"+str(cont+1)].number_format = '"$ "#,##0.00_-'
 
-                ws["C"+str(cont+1)].alignment = Alignment(horizontal = "center")
-
-                ws["D"+str(cont+1)].number_format = '#,##0.00_-'
-                ws["E"+str(cont+1)].number_format = '"$ "#,##0.00_-'
-                ws["F"+str(cont+1)].number_format = '"$ "#,##0.00_-'
-                ws["G"+str(cont+1)].number_format = '#,##0.00_-'
-                ws["H"+str(cont+1)].number_format = '"$ "#,##0.00_-'
-
-                ws.column_dimensions['A'].width = 15
-                ws.column_dimensions['B'].width = 15
-                ws.column_dimensions['C'].width = 20
-                ws.column_dimensions['D'].width = 20
-                ws.column_dimensions['E'].width = 20
-                ws.column_dimensions['F'].width = 20
-                ws.column_dimensions['G'].width = 20
-                ws.column_dimensions['H'].width = 20
-
-                cont += 1
-
-            else: 
-
-                ws["A"+str(cont+1)] = c.fecha
-                ws["B"+str(cont+1)] = c.constante.nombre
-                ws["C"+str(cont+1)] = c.concepto
-                ws["D"+str(cont+1)] = c.precio
-
-                if len(Pago.objects.filter(cuota = c)) > 0:
-                    pagos_pesos = sum(np.array(Pago.objects.filter(cuota = c).values_list("pago_pesos", flat = True)))
-                    cotizacion = sum(np.array(Pago.objects.filter(cuota = c).values_list("pago_pesos", flat = True))/np.array(Pago.objects.filter(cuota = c).values_list("pago", flat = True)))
-                    saldo = c.precio - sum(np.array(Pago.objects.filter(cuota = c).values_list("pago", flat = True)))
-                    saldo_pesos = saldo * c.constante.valor
-                    
-                    ws["E"+str(cont+1)] = pagos_pesos
-                    ws["F"+str(cont+1)] = cotizacion
-                    ws["G"+str(cont+1)] = saldo
-                    ws["H"+str(cont+1)] = saldo_pesos
-
-                    valor_t += c.precio
-                    pagado_t += pagos_pesos
-                    saldo_t += saldo
-                    saldo_p_t += saldo_pesos
-
-
-                else:
-                    ws["E"+str(cont+1)] = 0
-                    ws["F"+str(cont+1)] = 0
-                    ws["G"+str(cont+1)] = c.precio
-                    ws["H"+str(cont+1)] = c.precio*c.constante.valor
-
-                    valor_t += c.precio
-                    saldo_t += c.precio
-                    saldo_p_t += c.precio*c.constante.valor
-
-                ws["A"+str(cont+1)].font = Font(bold = True)
-
-                if c.pagada == "SI":
-                    ws["C"+str(cont+1)].font = Font(color= "289E70")
-                    ws["G"+str(cont+1)].font = Font(color= "289E70")
-
-                ws["A"+str(cont+1)].alignment = Alignment(horizontal = "center")
-                ws["B"+str(cont+1)].alignment = Alignment(horizontal = "center")
-                ws["C"+str(cont+1)].alignment = Alignment(horizontal = "center")
- 
-                ws["D"+str(cont+1)].number_format = '#,##0.00_-'
-                ws["E"+str(cont+1)].number_format = '"$ "#,##0.00_-'
-                ws["F"+str(cont+1)].number_format = '"$ "#,##0.00_-'
-                ws["G"+str(cont+1)].number_format = '#,##0.00_-'
-                ws["H"+str(cont+1)].number_format = '"$ "#,##0.00_-'
-
-                cont += 1
+            cont += 1
 
         ws["D"+str(cont+1)] = valor_t
         ws["E"+str(cont+1)] = pagado_t
@@ -4631,6 +4632,101 @@ class DescargarRegistroContable(TemplateView):
 
         datos_primeros = Regis
 
+class DescargarControlUnidades(TemplateView):
+
+    def get(self, request, *args, **kwargs):
+
+        unidades = Unidades.objects.all().order_by("orden")
+
+        wb = Workbook()
+
+        ws = wb.active
+        ws.title = "Ingreso"
+        ws["A"+str(1)] = "Datos de las unidades"
+        ws["A"+str(1)].font = Font(bold = True)
+        ws["A"+str(1)].alignment = Alignment(horizontal = "center")
+
+        ws["A"+str(2)] = "Asignaciones posibles: PROYECTO, TERRENO, HON. LINK, SOCIOS"
+        ws["A"+str(2)].font = Font(bold = True)
+
+        ws["A"+str(3)] = "Estados posibles: VENDIDA, DISPONIBLE, SEÑADA"
+        ws["A"+str(3)].font = Font(bold = True)
+
+
+        cont = 5
+
+        ws = wb.active
+        ws["A"+str(cont)] = "ID"
+        ws["B"+str(cont)] = "PROYECTO"
+        ws["C"+str(cont)] = "UNIDAD"
+        ws["D"+str(cont)] = "ASIGNACIÓN"
+        ws["E"+str(cont)] = "ESTADO"
+        ws["F"+str(cont)] = "IIBB"
+        ws["G"+str(cont)] = "COMISIÓN"
+
+
+        ws["A"+str(cont)].alignment = Alignment(horizontal = "center")
+        ws["B"+str(cont)].alignment = Alignment(horizontal = "center")
+        ws["C"+str(cont)].alignment = Alignment(horizontal = "center")
+        ws["D"+str(cont)].alignment = Alignment(horizontal = "center")
+        ws["E"+str(cont)].alignment = Alignment(horizontal = "center")
+        ws["F"+str(cont)].alignment = Alignment(horizontal = "center")
+        ws["G"+str(cont)].alignment = Alignment(horizontal = "center")
+
+        ws["A"+str(cont)].font = Font(bold = True, color= "FDFFFF")
+        ws["B"+str(cont)].font = Font(bold = True, color= "FDFFFF")
+        ws["C"+str(cont)].font = Font(bold = True, color= "FDFFFF")
+        ws["D"+str(cont)].font = Font(bold = True, color= "FDFFFF")
+        ws["E"+str(cont)].font = Font(bold = True, color= "FDFFFF")
+        ws["F"+str(cont)].font = Font(bold = True, color= "FDFFFF")
+        ws["G"+str(cont)].font = Font(bold = True, color= "FDFFFF")
+
+        ws["A"+str(cont)].fill =  PatternFill("solid", fgColor= "33353B")
+        ws["B"+str(cont)].fill =  PatternFill("solid", fgColor= "33353B")
+        ws["C"+str(cont)].fill =  PatternFill("solid", fgColor= "33353B")
+        ws["D"+str(cont)].fill =  PatternFill("solid", fgColor= "33353B")
+        ws["E"+str(cont)].fill =  PatternFill("solid", fgColor= "33353B")
+        ws["F"+str(cont)].fill =  PatternFill("solid", fgColor= "33353B")
+        ws["G"+str(cont)].fill =  PatternFill("solid", fgColor= "33353B")
+
+
+        ws.column_dimensions['A'].width = 8
+        ws.column_dimensions['B'].width = 17
+        ws.column_dimensions['C'].width = 20
+        ws.column_dimensions['D'].width = 15
+        ws.column_dimensions['E'].width = 15
+        ws.column_dimensions['F'].width = 8
+        ws.column_dimensions['G'].width = 12
+        for dato in unidades:
+
+            ws["A"+str(cont+1)] = dato.id
+            ws["B"+str(cont+1)] = dato.proyecto.nombre
+            ws["C"+str(cont+1)] = "{} - {}".format(dato.piso_unidad, dato.nombre_unidad)
+            ws["D"+str(cont+1)] = dato.asig
+            ws["E"+str(cont+1)] = dato.estado
+            ws["F"+str(cont+1)] = dato.estado_iibb
+            ws["G"+str(cont+1)] = dato.estado_comision
+
+            ws["A"+str(cont+1)].font = Font(bold = True)
+            ws["A"+str(cont+1)].alignment = Alignment(horizontal = "center")
+            ws["B"+str(cont+1)].alignment = Alignment(horizontal = "center")
+            ws["C"+str(cont+1)].alignment = Alignment(horizontal = "center")
+            ws["D"+str(cont+1)].alignment = Alignment(horizontal = "center")
+            ws["E"+str(cont+1)].alignment = Alignment(horizontal = "center")
+            ws["F"+str(cont+1)].alignment = Alignment(horizontal = "center")
+            ws["G"+str(cont+1)].alignment = Alignment(horizontal = "center")
+            cont += 1
+
+
+        #Establecer el nombre del archivo
+        nombre_archivo = "Controldeunidades.xls"
+        
+        #Definir tipo de respuesta que se va a dar
+        response = HttpResponse(content_type = "application/ms-excel")
+        contenido = "attachment; filename = {0}".format(nombre_archivo).replace(',', '_')
+        response["Content-Disposition"] = contenido
+        wb.save(response)
+        return response
 
 class DescargarTotalCuentas(TemplateView):
 

@@ -4,7 +4,7 @@ from random import sample
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .models import Proveedores, Certificados
-from .models import StockComprasAnticipadas, Compras, Proyectos, Proveedores, Retiros, Comparativas, ComparativasMensaje
+from .models import StockComprasAnticipadas, Compras, Proyectos, Proveedores, Retiros, Comparativas, ComparativasMensaje, Contratos, AdjuntosContratos
 from rrhh.models import datosusuario
 from .form import StockAntForm
 from .filters import CertificadoFilter
@@ -31,65 +31,111 @@ def principalcompras(request):
 
     return render(request, "principalcompras.html")
 
+def contratos(request):
+
+    data = Contratos.objects.all()
+
+    return render(request, 'contratos.html', {"data":data})
+
+def contratosdescripcion(request, id_contrato):
+
+    data = Contratos.objects.get(id = id_contrato)
+
+    adjuntos = AdjuntosContratos.objects.filter(contrato = data)
+
+    pagos = Comparativas.objects.filter(contrato = data)
+
+    return render(request, 'contratosdescripcion.html', {"data":data, "adjntos":adjuntos, "pagos":pagos})
+
 def cargarocautorizar(request):
 
     proveedores = Proveedores.objects.all()
+    contratos = Contratos.objects.all()
 
+    mensaje = 0
 
     if request.method == "POST":
 
-        datos = request.POST.items()
+        try:
 
-        b = Comparativas(
+            proveedor = Proveedores.objects.get(name=request.POST['proveedor'])
 
-            proveedor = Proveedores.objects.get(name=request.POST['proveedor']),
-            proyecto = request.POST['proyecto'],
-            numero  = request.POST['referencia'],
-            monto = float(request.POST['valor']),
-            adjunto = request.FILES['imagen'],
-            adj_oc = request.FILES['oc'],
-            o_c = request.POST['numerooc'],
-            creador = str(request.user.username),
-        )
+        except:
 
-        b.save()
+            mensaje = "El proveedor solicitado no esta cargado, solicite su carga con el área de presupuestos"
+            proveedor = 0
 
-        return redirect('Comparativas', estado = 0, creador = 0)
+        if proveedor:
+
+            b = Comparativas(
+
+                proveedor = proveedor,
+                proyecto = request.POST['proyecto'],
+                numero  = request.POST['referencia'],
+                monto = float(request.POST['valor']),
+                adjunto = request.FILES['imagen'],
+                adj_oc = request.FILES['oc'],
+                o_c = request.POST['numerooc'],
+                autoriza = request.POST['autoriza'],
+                publica = request.POST['publica'],
+                creador = str(request.user.username),
+            )
+
+            b.save()
+
+            try:
+                b.contrato = Contratos.objects.get(id=int(request.POST['contrato']))
+                b.save()
+                return redirect('Comparativas', estado = 0, creador = 0)
+            except:
+
+                return redirect('Comparativas', estado = 0, creador = 0)
 
         
-    return render(request, 'cargarocautorizar.html', {'proveedores':proveedores})
+    return render(request, 'cargarocautorizar.html', {'mensaje':mensaje, 'proveedores':proveedores, 'contratos':contratos})
 
 def editarcomparativas(request, id_comp):
 
     proveedores = Proveedores.objects.all()
+    contratos = Contratos.objects.all()
 
     comparativa = Comparativas.objects.get(id = id_comp)
 
     if request.method == "POST":
 
-        datos = request.POST.items()
+        try:
+            comparativa = Comparativas.objects.get(id = request.POST['borrar'])
+            comparativa.delete()
 
-        comparativa.proveedor = Proveedores.objects.get(name=request.POST['proveedor'])
-        comparativa.proyecto = request.POST['proyecto']
-        comparativa.numero  = request.POST['referencia']
-        comparativa.monto = float(request.POST['valor'])
-        comparativa.o_c = request.POST['numerooc']
-        try:
-            comparativa.adjunto = request.FILES['imagen']
-            comparativa.save()
         except:
-            comparativa.save()
-        
-        try:
-            comparativa.adj_oc = request.FILES['oc']
-            comparativa.save()
-        except:
-            pass
+
+            comparativa.proveedor = Proveedores.objects.get(name=request.POST['proveedor'])
+            comparativa.proyecto = request.POST['proyecto']
+            comparativa.numero  = request.POST['referencia']
+            comparativa.monto = float(request.POST['valor'])
+            comparativa.o_c = request.POST['numerooc']
+            comparativa.autoriza = request.POST['autoriza']
+            comparativa.publica = request.POST['publica']
+            try:
+                comparativa.contrato = Contratos.objects.get(id=request.POST['contrato'])
+            except:
+                comparativa.contrato = None
+            try:
+                comparativa.adjunto = request.FILES['imagen']
+                comparativa.save()
+            except:
+                comparativa.save()
+            
+            try:
+                comparativa.adj_oc = request.FILES['oc']
+                comparativa.save()
+            except:
+                pass
         
         return redirect('Comparativas', estado = 0, creador = 0)
 
         
-    return render(request, 'comparativas_editar.html', {'proveedores':proveedores, 'comparativa':comparativa})
+    return render(request, 'comparativas_editar.html', {'contratos':contratos, 'proveedores':proveedores, 'comparativa':comparativa})
 
 def funcionstock():
 
@@ -764,6 +810,10 @@ def comparativas(request, estado, creador):
 
                     comparativa.visto = "VISTO"
 
+                if comparativa.publica == "NO":
+
+                    comparativa.visto = "VISTO"
+
                 # El servidor no esta ubicado en el mismo lugar que los trabajadores, por lo cual debo ajustarlo
 
                 date = datetime.datetime.now() - datetime.timedelta(hours=3)
@@ -785,17 +835,17 @@ def comparativas(request, estado, creador):
                     
                     mensaje = MIMEText("""
                     
-                    Buenas!,
+Buenas!,
 
-                    Tu orden de compra fue autorizada!
+Tu orden de compra fue autorizada!
 
-                    El numero de la misma es: {}
+El numero de la misma es: {}
 
-                    No olvides dejar una copia fisica en la oficina, de no hacerlo no se efectuara el pago!
+No olvides dejar una copia fisica en la oficina, de no hacerlo no se efectuara el pago!
 
-                    Gracias!
+Gracias!
 
-                    Saludos!
+Saludos!
                     """.format(comparativa.o_c))
                     mensaje['From']=settings.EMAIL_HOST_USER
                     mensaje['To']=datosusuario.objects.get(identificacion = comparativa.creador).email

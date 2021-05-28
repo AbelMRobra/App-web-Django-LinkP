@@ -19,7 +19,41 @@ class Proveedores(models.Model):
     def __str__(self):
         return self.name
 
+class Contratos(models.Model):
+    np = models.CharField(max_length=200, verbose_name="Codigo")
+    proveedor = models.ForeignKey(Proveedores, on_delete=models.CASCADE, verbose_name="Proveedor")
+    nombre = models.CharField(max_length=200, verbose_name="Nombre del contrato")
+    descripcion = models.CharField(max_length=400, verbose_name="Descripción corta", blank=True, null=True)
+    monto = models.IntegerField(verbose_name="Monto final", blank=True, null=True)
+    actualiza = models.CharField(max_length=200, verbose_name="Como actualiza", blank=True, null=True)
+    
+
+    class Meta:
+        verbose_name = "Contrato"
+        verbose_name_plural = "Contratos"
+    
+    def __str__(self):
+        return self.np
+
+class AdjuntosContratos(models.Model):
+    contrato = models.ForeignKey(Contratos, on_delete=models.CASCADE, verbose_name="Vincala a un contrato", blank=True, null=True)
+    nombre = models.CharField(max_length=200, verbose_name="Nombre")
+    adjunto = models.FileField(verbose_name="Archivo")
+    fecha_c = models.DateField(verbose_name="Fecha")
+
+    class Meta:
+        verbose_name = "Adjunto de contratos"
+        verbose_name_plural = "Adjuntos de contratos"
+
 class Comparativas(models.Model):
+
+    class autoriza(models.TextChoices):
+            PL = "PL"
+            SP = "SP"
+
+    class publica(models.TextChoices):
+            SI = "SI"
+            NO = "NO"
 
     class estados(models.TextChoices):
 
@@ -34,8 +68,8 @@ class Comparativas(models.Model):
             NO_VISTO = "NO_VISTO"
             NO_CONFORME = "VISTO NO CONFORME"
 
-
     proveedor = models.ForeignKey(Proveedores, on_delete=models.CASCADE, verbose_name="Nombre del contratista")
+    contrato = models.ForeignKey(Contratos, on_delete=models.CASCADE, verbose_name="Vincala a un contrato", blank=True, null=True)
     proyecto = models.CharField(verbose_name="Proyecto", blank=True, null=True, max_length=200)
     numero = models.CharField(verbose_name="Codigo", blank=True, null=True, max_length=200)
     o_c = models.CharField(verbose_name="Nº orden de compra", blank=True, null=True, max_length=200)
@@ -47,6 +81,8 @@ class Comparativas(models.Model):
     fecha_autorizacion = models.DateTimeField(blank=True, null=True, verbose_name="Fecha de aturorizacion")
     comentario = models.TextField(blank=True, null=True, verbose_name="Comentario", editable=False)
     visto = models.CharField(choices=visto.choices, default=visto.NO_VISTO, editable=False, max_length=20, verbose_name="Revisado por SP", blank=True, null=True)
+    autoriza = models.CharField(choices=autoriza.choices, max_length=20, verbose_name="Autoriza", blank=True, null=True)
+    publica = models.CharField(choices=publica.choices, default=publica.SI, max_length=20, verbose_name="Es publica?", blank=True, null=True)
     creador = models.CharField(verbose_name="Crador", blank=True, null=True, max_length=200) 
 
     class Meta:
@@ -68,18 +104,6 @@ class ComparativasMensaje(models.Model):
 
     def __str__(self):
         return self.mensaje
-
-class Contratos(models.Model):
-    np = models.CharField(max_length=200, verbose_name="Nota de pedido")
-    nombre = models.CharField(max_length=200, verbose_name="Nombre del contrato")
-    proveedor = models.ForeignKey(Proveedores, on_delete=models.CASCADE, verbose_name="Nombre del contratista")
-
-    class Meta:
-        verbose_name = "Contrato"
-        verbose_name_plural = "Contratos"
-    
-    def __str__(self):
-        return self.nombre
 
 class Compras(models.Model):
 
