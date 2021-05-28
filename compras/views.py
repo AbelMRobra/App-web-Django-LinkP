@@ -39,13 +39,27 @@ def contratos(request):
 
 def contratosdescripcion(request, id_contrato):
 
+    if request.method == "POST":
+
+        #try:
+        b = AdjuntosContratos(
+            contrato = Contratos.objects.get(id = id_contrato),
+            nombre = request.POST['nombre'],
+            adjunto = request.FILES['adjunto'],
+            fecha_c = request.POST['fecha'],
+        )
+        b.save()
+
+        #except:
+            #pass
+
     data = Contratos.objects.get(id = id_contrato)
 
     adjuntos = AdjuntosContratos.objects.filter(contrato = data)
 
     pagos = Comparativas.objects.filter(contrato = data)
 
-    return render(request, 'contratosdescripcion.html', {"data":data, "adjntos":adjuntos, "pagos":pagos})
+    return render(request, 'contratosdescripcion.html', {"data":data, "adjuntos":adjuntos, "pagos":pagos})
 
 def cargarocautorizar(request):
 
