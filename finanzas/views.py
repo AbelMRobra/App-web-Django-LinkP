@@ -1089,6 +1089,8 @@ def ctactecliente(request, id_cliente):
     except:
         frozen = 0
 
+    if request.method == 'POST':
+
         try:
             if request.POST['frozen']:
                 if len(Constantes.objects.filter(cuenta_corriente = id_cliente)):
