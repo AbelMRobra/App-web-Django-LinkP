@@ -41,17 +41,17 @@ def contratosdescripcion(request, id_contrato):
 
     if request.method == "POST":
 
-        #try:
-        b = AdjuntosContratos(
-            contrato = Contratos.objects.get(id = id_contrato),
-            nombre = request.POST['nombre'],
-            adjunto = request.FILES['adjunto'],
-            fecha_c = request.POST['fecha'],
-        )
-        b.save()
+        try:
+            b = AdjuntosContratos(
+                contrato = Contratos.objects.get(id = id_contrato),
+                nombre = request.POST['nombre'],
+                adjunto = request.FILES['adjunto'],
+                fecha_c = request.POST['fecha'],
+            )
+            b.save()
 
-        #except:
-            #pass
+        except:
+            pass
 
     data = Contratos.objects.get(id = id_contrato)
 
