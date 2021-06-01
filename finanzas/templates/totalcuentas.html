@@ -35,21 +35,29 @@
                     <h4 class="card-title"><span class="lstick m-r-20"></span>Flujo de ingresos {% if proy %} {{proy.nombre}} {% endif %} </h4>
                     <h6 class="card-subtitle">Ingreso por cuotas de las cuentas corrientes activas</h6>
 
-                
-                    
-                    <div class="row d-flex justify-content-between mt-4">
+                    <div class="row d-flex justify-content-between my-4 text-center">
 
-
-                        <h6>Cantidad de cuentas cargadas: {{cantidad_cuentas|intcomma}}</h6>
-
-                        <h6>Monto en Hº cobrado: {{otros_datos.0|floatformat:0|intcomma}} M3</h6>
-
-                        <h6>Monto en Hº adeudado: {{otros_datos.1|floatformat:0|intcomma}} M3</h6>
-
-                        <h6>Monto en Hº pendiente: {{otros_datos.2|floatformat:0|intcomma}} M3</h6>
-
-                        <h6>Monto en Hº total: {{otros_datos.3|floatformat:0|intcomma}} M3</h6>
-
+                        <div class="col-2 bg-light shadow p-4 rounded-3">
+                            <h6><b>Cuentas</b></h6>
+                            <h6>{{cantidad_cuentas|intcomma}}</h6>
+                        </div>
+                        <div class="col-2 bg-light shadow p-4 rounded-3">
+                            <h6><b>Hº cobrado</b></h6>
+                            <h6>{{otros_datos.0|floatformat:2}} M3</h6>
+                        </div>
+                        <div class="col-2 bg-light shadow p-4 rounded-3">
+                            <h6><b>Hº adeudado</b></h6>
+                            <h6>{{otros_datos.1|floatformat:2}} M3</h6>
+                        </div>
+                        <div class="col-2 bg-light shadow p-4 rounded-3">
+                            <h6><b>Hº pendiente</b></h6>
+                            <h6>{{otros_datos.2|floatformat:2}} M3</h6>
+                        </div>
+                        <div class="col-2 bg-light shadow p-4 rounded-3">
+                            <h6><b>Hº total</b></h6>
+                            <h6>{{otros_datos.3|floatformat:2}} M3</h6>
+                        </div>
+                     
                     </div>
 
 
@@ -64,17 +72,23 @@
                                 Proyectos
                             </button>
                             <div class="dropdown-menu">
-                                <a class="dropdown-item" href="{% url 'Total cuenta' 0 cliente %}">Conjunto</a>
+                                <a class="dropdown-item" href="{% url 'Total cuenta' 0 cliente 0 %}">Conjunto</a>
                                 {% for i in listado %}
-                                <a class="dropdown-item" href="{% url 'Total cuenta' i.id cliente %}">{{i.nombre|lower|capfirst}}</a>
+                                <a class="dropdown-item" href="{% url 'Total cuenta' i.id cliente 0 %}">{{i.nombre|lower|capfirst}}</a>
                                 {% endfor %}
                             </div>
                         </div>
 
                         {% if cliente == "1" %}                      
-                        <a href="{% url 'Total cuenta' id_proyecto 0 %}" class="btn btn-secondary">General</a>
+                        <a href="{% url 'Total cuenta' id_proyecto 0 0 %}" class="btn btn-secondary">General</a>
+                        {% if moneda == "0" %}
+                        <a href="{% url 'Total cuenta' id_proyecto 1 1 %}" class="btn btn-secondary">M3</a>
                         {% else %}
-                        <a href="{% url 'Total cuenta' id_proyecto 1 %}" class="btn btn-secondary">Cliente</a>
+                        <a href="{% url 'Total cuenta' id_proyecto 1 0 %}" class="btn btn-secondary">$</a>
+                        {% endif %}
+                        {% else %}
+                        <a href="{% url 'Total cuenta' id_proyecto 1 0 %}" class="btn btn-secondary">Cliente</a>
+                        
                         {% endif %}
                     </div>
 
@@ -98,7 +112,11 @@
                                 <tr style="font-size: 14px;">
                                     <td>{{key|lower|capfirst}}</td>
                                     {% for v in value %}
+                                    {% if moneda == "0" %}
                                     <td>${{v|floatformat:0|intcomma}}</td>
+                                    {% else %}
+                                    <td>{{v|floatformat:2}}</td>
+                                    {% endif %}
                                     {% endfor %}
 
                                 </tr>

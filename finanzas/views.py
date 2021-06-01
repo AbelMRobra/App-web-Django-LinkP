@@ -782,10 +782,11 @@ def EliminarCuentaCorriente(request, id_cuenta):
 
     return render(request, 'eliminar_cuenta.html', {"datos":datos, "otros_datos":otros_datos})
 
-def totalcuentacte(request, id_proyecto, cliente):
+def totalcuentacte(request, id_proyecto, cliente, moneda):
 
     cliente = cliente
     id_proyecto = id_proyecto
+    moneda = moneda
 
     proyectos = Proyectos.objects.all()
 
@@ -908,10 +909,10 @@ def totalcuentacte(request, id_proyecto, cliente):
     total_pendiente = total_original - total_cobrado
     total_acobrar = cuotas_posteriores - pagos_posteriores
     
-    h = Constantes.objects.get(nombre = "Hº VIVIENDA")
-    total = total_cobrado[0]/h.valor + total_pendiente[0]/h.valor + total_acobrar[0]/h.valor
+    horm = Constantes.objects.get(nombre = "Hº VIVIENDA")
+    total = total_cobrado[0]/horm.valor + total_pendiente[0]/horm.valor + total_acobrar[0]/horm.valor
 
-    otros_datos = [total_cobrado[0]/h.valor, total_pendiente[0]/h.valor, total_acobrar[0]/h.valor, total] 
+    otros_datos = [total_cobrado[0]/horm.valor, total_pendiente[0]/horm.valor, total_acobrar[0]/horm.valor, total] 
     
 
     #Aqui buscamos agrupar proyecto - sumatorias de cuotas y pagos - mes
@@ -968,7 +969,10 @@ def totalcuentacte(request, id_proyecto, cliente):
                         cuotas_cliente = sum(np.array(Cuota.objects.values_list('precio', flat =True).filter(fecha__range = (fecha_inicial, f), cuenta_corriente__venta__proyecto__id = id_proyecto, cuenta_corriente__venta__comprador = c))*np.array(Cuota.objects.values_list('constante__valor', flat =True).filter(fecha__range = (fecha_inicial, f), cuenta_corriente__venta__proyecto__id = id_proyecto, cuenta_corriente__venta__comprador = c)))
                         pagos_cliente = sum(np.array(Pago.objects.values_list('pago', flat =True).filter(cuota__fecha__range = (fecha_inicial, f), cuota__cuenta_corriente__venta__proyecto__id = id_proyecto, cuota__cuenta_corriente__venta__comprador = c))*np.array(Pago.objects.values_list('cuota__constante__valor', flat =True).filter(cuota__fecha__range = (fecha_inicial, f), cuota__cuenta_corriente__venta__proyecto__id = id_proyecto, cuota__cuenta_corriente__venta__comprador = c)))
                         saldo_mes = cuotas_cliente - pagos_cliente
-                        matriz_clientes[c].append(saldo_mes)
+                        if moneda == "1":
+                            matriz_clientes[c].append(saldo_mes/horm.valor)
+                        else:
+                            matriz_clientes[c].append(saldo_mes)
 
             else:
 
@@ -998,8 +1002,6 @@ def totalcuentacte(request, id_proyecto, cliente):
             f = f + datetime.timedelta(days=1)
 
             fecha_inicial = f
-
-            horm = Constantes.objects.get(nombre = "Hº VIVIENDA")
             
             total_horm = total/horm.valor
 
@@ -1011,7 +1013,7 @@ def totalcuentacte(request, id_proyecto, cliente):
 
     fechas.pop()
 
-    return render(request, 'totalcuentas.html', {"id_proyecto":id_proyecto, "cliente":cliente,"fechas":fechas, "matriz_clientes":matriz_clientes, "datos":datos_segundos, "datos_primero":datos_primeros, "total_fechas":total_fecha, "listado":listado, "proy":proy, "cantidad_cuentas":cantidad_cuentas, "otros_datos":otros_datos})
+    return render(request, 'totalcuentas.html', {"moneda":moneda, "id_proyecto":id_proyecto, "cliente":cliente,"fechas":fechas, "matriz_clientes":matriz_clientes, "datos":datos_segundos, "datos_primero":datos_primeros, "total_fechas":total_fecha, "listado":listado, "proy":proy, "cantidad_cuentas":cantidad_cuentas, "otros_datos":otros_datos})
 
 def resumenctacte(request, id_cliente):
 
