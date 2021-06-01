@@ -299,6 +299,7 @@ class RegistroContable(models.Model):
     importe = models.FloatField(verbose_name="Importe")
     nota = models.CharField(max_length=400, verbose_name="Nota")
     adjunto = models.FileField(verbose_name="Adjunto", blank=True, null=True)
+    codigo = models.CharField(max_length=400, verbose_name="Codigo", blank=True, null=True)
 
     class Meta:
         verbose_name="Registro"
@@ -306,6 +307,10 @@ class RegistroContable(models.Model):
 
     def __str__(self):
         return self.nota
+
+class DicRegistroContable(models.Model):
+    entrada = models.CharField(max_length=400, verbose_name="Entrada")
+    salida = models.CharField(max_length=400, verbose_name="Salida")
 
 class Sugerencia(models.Model):
 

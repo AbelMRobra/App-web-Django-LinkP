@@ -2,7 +2,7 @@
 
 {% load static %}
 {% load humanize %}
-
+{% load apptags_extras %}
 {% block content %}
 
 
@@ -16,40 +16,38 @@
         <div class="col-md-7 align-self-center">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
-                <li class="breadcrumb-item"><a href="{% url 'Panel cuentas corrientes' %}">Panel Cta Cte</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'Panel cuentas corrientes' %}">Panel</a></li>
                 <li class="breadcrumb-item">Flujo</li>
             </ol>
         </div>
     </div>
 </div>
 
+{% if request.user|has_group:"ADMIN NIVEL 1" %}
 
-<div class="row ">
+<div class="row">
     <div class="col-12">
-        <div class="card overflow-auto">
+        <div class="card">
             <div class="card-body">
 
-                <div style="text-align: center;">
+                <div>
 
+                    <h4 class="card-title"><span class="lstick m-r-20"></span>Flujo de ingresos {% if proy %} {{proy.nombre}} {% endif %} </h4>
+                    <h6 class="card-subtitle">Ingreso por cuotas de las cuentas corrientes activas</h6>
 
-                    <h2 style="color: rgb({{ctacte.venta.unidad.proyecto.color}})">Flujo de ingresos 24 meses</h2>
+                
+                    
+                    <div class="row d-flex justify-content-between mt-4">
 
-                    {% if proy %}
-                    <div>
-
-                        <img src="{{proy.iamgen.url}}" class="img-fluid mb-4" alt="..."
-                            style="max-width:200px;width:auto;height:auto; margin-top: 1rem;">
-
-                    </div>
-
-                    {% endif %}
-
-                    <div style="text-align: left;">
 
                         <h6>Cantidad de cuentas cargadas: {{cantidad_cuentas|intcomma}}</h6>
+
                         <h6>Monto en Hº cobrado: {{otros_datos.0|floatformat:0|intcomma}} M3</h6>
+
                         <h6>Monto en Hº adeudado: {{otros_datos.1|floatformat:0|intcomma}} M3</h6>
+
                         <h6>Monto en Hº pendiente: {{otros_datos.2|floatformat:0|intcomma}} M3</h6>
+
                         <h6>Monto en Hº total: {{otros_datos.3|floatformat:0|intcomma}} M3</h6>
 
                     </div>
@@ -57,28 +55,68 @@
 
                     <div style="text-align: left; margin-top: 0.5%; margin-top: 20px;">
 
-                        <a href= " {% url 'Descargar resumen total de cuenta' %}" class="btn" ><i
-                            class="fa fa-file-excel-o  text-success"><span class="text-success ml-2"
-                                style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif"><b>Excel</b></span></i></a>
+                        <a href=" {% url 'Descargar resumen total de cuenta' %}" class="btn btn-success"><i
+                                class="fa fa-file-excel-o"><span class="ml-2"
+                                    style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif"><b>Excel</b></span></i></a>
 
-                        <a style="margin: 3px;" class="btn" href="{% url 'Total cuenta' 0 %}"><b>Conjunto</b></a>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Proyectos
+                            </button>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="{% url 'Total cuenta' 0 cliente %}">Conjunto</a>
+                                {% for i in listado %}
+                                <a class="dropdown-item" href="{% url 'Total cuenta' i.id cliente %}">{{i.nombre|lower|capfirst}}</a>
+                                {% endfor %}
+                            </div>
+                        </div>
 
-
-                        {% for i in listado %}
-
-                        <a class="btn " style="color: rgb({{i.color}}); margin: 3px;"
-                            href="{% url 'Total cuenta' i.id %}"><b>{{i.nombre|lower|capfirst}}</b> </a>
-
-                        {% endfor %}
-
-
+                        {% if cliente == "1" %}                      
+                        <a href="{% url 'Total cuenta' id_proyecto 0 %}" class="btn btn-secondary">General</a>
+                        {% else %}
+                        <a href="{% url 'Total cuenta' id_proyecto 1 %}" class="btn btn-secondary">Cliente</a>
+                        {% endif %}
                     </div>
 
+                    <div class="table-responsive">
 
-                    <div class="tableconteinerabel">
+                        {% if cliente == "1" %}
+
+                        <table id="cliente" class="table table-striped table-bordered mt-1">
+                            <thead style="font-size: 14px;">
+                                <th>Cliente</th>
+                                {% for f in fechas %}
+                                <th>{{f|date:"m/Y"}}</th>
+                                {% endfor %}
+
+                            </thead>
+
+                            <tbody>
+
+                                {% for key, value in matriz_clientes.items %}
+
+                                <tr style="font-size: 14px;">
+                                    <td>{{key|lower|capfirst}}</td>
+                                    {% for v in value %}
+                                    <td>${{v|floatformat:0|intcomma}}</td>
+                                    {% endfor %}
+
+                                </tr>
+
+                                
+
+                                {% endfor %}
+
+                            </tbody>
+                            
 
 
-                        <table id="example" class="table table-striped table-bordered mt-1" style="width:100%">
+                        </table>
+
+                        {% else %}
+
+
+                        <table id="example" class="table table-striped table-bordered mt-1">
                             <thead>
 
                                 <tr>
@@ -98,18 +136,18 @@
                                     </tr>
                             </thead>
 
-                            <tbody>
+                            <tbody style="text-align: center; font-size: 14px;">
 
                                 {% for i in datos %}
 
                                 <tr>
-                                    <td> <small>{{i.0.0.0|date:"d-m-Y" }} </small> </td>
-                                    <td class="text-info"> <small>${{i.1|floatformat:0|intcomma}} </small> </td>
-                                    <td class="text-info"> <small>{{i.2|floatformat:3}} M3 </small> </td>
-                                    <td class="text-success"> <small>${{i.3|floatformat:0|intcomma}} </small> </td>
-                                    <td class="text-success"> <small>{{i.4|floatformat:3}} M3 </small> </td>
-                                    <td class="text-warning"> <small>${{i.5|floatformat:0|intcomma}} </small> </td>
-                                    <td class="text-warning"> <small>{{i.6|floatformat:3}} M3 </small> </td>
+                                    <td> {{i.0.0.0|date:"m/Y" }}</td>
+                                    <td class="text-info"> ${{i.1|floatformat:0|intcomma}}</td>
+                                    <td class="text-info"> {{i.2|floatformat:3}} M3</td>
+                                    <td class="text-success"> ${{i.3|floatformat:0|intcomma}}</td>
+                                    <td class="text-success"> {{i.4|floatformat:3}} M3</td>
+                                    <td class="text-warning"> ${{i.5|floatformat:0|intcomma}}</td>
+                                    <td class="text-warning"> {{i.6|floatformat:3}} M3</td>
                                 </tr>
 
                                 {% endfor %}
@@ -118,6 +156,30 @@
 
                         </table>
 
+                        {% endif %}
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% else %}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body row">
+                <div class="col-12 justify-content-center">
+
+                    <div class="row justify-content-center text-center">
+                        <div class="col-6">
+                            <img src="{% static 'img/Linkp.png' %}" alt="" style="width: 120px;">
+                            <span>
+                                Lo sentimos, no tienes permisos para ver esta página.
+                            </span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -126,23 +188,52 @@
 </div>
 
 
+{% endif %}
+
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js" defer></script>
 <script src="https://cdn.datatables.net/1.10.23/js/dataTables.bootstrap4.min.js" defer></script>
 
 
-
 <script>
+
     $(document).ready(function () {
         $('#example').DataTable({
             "paging": false,
-            "searching": false,
             "info": false,
             "ordering": false,
+            "searching": false,
+            dom: 'Bfrtip',
+            buttons: [
+                {
+                    extend: 'excelHtml5',
+                    title: 'Flujo de ingresos'
+                },
+            ]
+
         });
     });
 </script>
 
+<script>
+
+    $(document).ready(function () {
+        $('#cliente').DataTable({
+            "paging": false,
+            "info": false,
+            "ordering": false,
+            "searching": false,
+            dom: 'Bfrtip',
+            buttons: [
+                {
+                    extend: 'excelHtml5',
+                    title: 'Flujo de ingresos en pesos por cliente'
+                },
+            ]
+
+        });
+    });
+</script>
 
 
 {% endblock %}

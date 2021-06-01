@@ -107,7 +107,7 @@
                 </div>
                 {% if request.user|has_group:"ADMIN NIVEL 1" %}
 
-                <a href="{% url 'Total cuenta' 0 %}"><button class="btn btn-info">
+                <a href="{% url 'Total cuenta' 0 0 %}"><button class="btn btn-info">
                         Ingresar</button></a>
                 {% else %}
 

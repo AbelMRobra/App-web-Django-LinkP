@@ -782,7 +782,10 @@ def EliminarCuentaCorriente(request, id_cuenta):
 
     return render(request, 'eliminar_cuenta.html', {"datos":datos, "otros_datos":otros_datos})
 
-def totalcuentacte(request, id_proyecto):
+def totalcuentacte(request, id_proyecto, cliente):
+
+    cliente = cliente
+    id_proyecto = id_proyecto
 
     proyectos = Proyectos.objects.all()
 
@@ -822,9 +825,19 @@ def totalcuentacte(request, id_proyecto):
     contador = 0
     contador_year = 1
 
-    # El cash en template es un rango de 26 dias
+    # Defino el periodo de las fechas
 
-    for f in range(26):
+    if id_proyecto != "0":
+
+        fecha_ultima = Cuota.objects.filter(cuenta_corriente__venta__proyecto__id = id_proyecto).order_by("-fecha")[0].fecha
+
+    else:
+
+        fecha_ultima = Cuota.objects.order_by("-fecha")[0].fecha
+
+    fecha_cargar = fecha_inicial_2
+
+    while fecha_cargar < fecha_ultima:
 
         if (fecha_inicial_2.month + contador) == 13:
             
@@ -850,34 +863,50 @@ def totalcuentacte(request, id_proyecto):
 
         contador += 1
 
+    if (fecha_inicial_2.month + contador) == 13:
+            
+        year = fecha_inicial_2.year + contador_year
+        
+        fecha_cargar = date(year, 1, 1)
+
+        fechas.append(fecha_cargar)
+        
+        contador_year += 1
+
+        contador = - (12 - contador)
+
+    else:
+
+        mes = fecha_inicial_2.month + contador
+
+        year = fecha_inicial_2.year + contador_year - 1
+
+        fecha_cargar = date(year, mes, 1)
+
+        fechas.append(fecha_cargar)
+
     #Aqui hacemos los totalizadores generales
 
     if id_proyecto != "0":
 
-        cuotas_anteriores_h = sum(np.array(Cuota.objects.values_list('precio').filter(fecha__lt = fecha_inicial_hoy, constante__id = 7, cuenta_corriente__venta__proyecto__id = id_proyecto)))*Constantes.objects.get(id = 7).valor
-        cuotas_anteriores_usd = sum(np.array(Cuota.objects.values_list('precio').filter(fecha__lt = fecha_inicial_hoy, constante__id = 1, cuenta_corriente__venta__proyecto__id = id_proyecto)))*Constantes.objects.get(id = 1).valor
-        pagos_anteriores_h = sum(np.array(Pago.objects.values_list('pago').filter(fecha__lt = fecha_inicial_hoy, cuota__constante__id = 7, cuota__cuenta_corriente__venta__proyecto__id = id_proyecto)))*Constantes.objects.get(id = 7).valor
-        pagos_anteriores_usd = sum(np.array(Pago.objects.values_list('pago').filter(fecha__lt = fecha_inicial_hoy, cuota__constante__id = 1, cuota__cuenta_corriente__venta__proyecto__id = id_proyecto)))*Constantes.objects.get(id = 1).valor
-        cuotas_posteriores_h = sum(np.array(Cuota.objects.values_list('precio').filter(fecha__gt = fecha_inicial_hoy, constante__id = 7, cuenta_corriente__venta__proyecto__id = id_proyecto)))*Constantes.objects.get(id = 7).valor
-        cuotas_posteriores_usd = sum(np.array(Cuota.objects.values_list('precio').filter(fecha__gt = fecha_inicial_hoy, constante__id = 1, cuenta_corriente__venta__proyecto__id = id_proyecto)))*Constantes.objects.get(id = 1).valor
-
+        cuotas_anteriores = sum(np.array(Cuota.objects.values_list('precio').filter(fecha__lt = fecha_inicial_hoy, cuenta_corriente__venta__proyecto__id = id_proyecto))*np.array(Cuota.objects.values_list('constante__valor').filter(fecha__lt = fecha_inicial_hoy, cuenta_corriente__venta__proyecto__id = id_proyecto)))
+        pagos_anteriores = sum(np.array(Pago.objects.values_list('pago').filter(cuota__fecha__lt = fecha_inicial_hoy, cuota__cuenta_corriente__venta__proyecto__id = id_proyecto))*np.array(Pago.objects.values_list('cuota__constante__valor').filter(cuota__fecha__lt = fecha_inicial_hoy, cuota__cuenta_corriente__venta__proyecto__id = id_proyecto)))
+        cuotas_posteriores = sum(np.array(Cuota.objects.values_list('precio').filter(fecha__gte = fecha_inicial_hoy, cuenta_corriente__venta__proyecto__id = id_proyecto))*np.array(Cuota.objects.values_list('constante__valor').filter(fecha__gte = fecha_inicial_hoy, cuenta_corriente__venta__proyecto__id = id_proyecto)))
+        pagos_posteriores = sum(np.array(Pago.objects.values_list('pago').filter(cuota__fecha__gte = fecha_inicial_hoy, cuota__cuenta_corriente__venta__proyecto__id = id_proyecto))*np.array(Pago.objects.values_list('cuota__constante__valor').filter(cuota__fecha__gte = fecha_inicial_hoy, cuota__cuenta_corriente__venta__proyecto__id = id_proyecto)))
 
     else:
 
-        
         # Traemos las cuotas y pagos anteriores en hormigon y en dolares (por si constante para hacerlo en pesos), luego dividimos en el valor del Hº para tener todo en 1 moneda
 
-        cuotas_anteriores_h = sum(np.array(Cuota.objects.values_list('precio').filter(fecha__lt = fecha_inicial_hoy, constante__id = 7)))*Constantes.objects.get(id = 7).valor
-        cuotas_anteriores_usd = sum(np.array(Cuota.objects.values_list('precio').filter(fecha__lt = fecha_inicial_hoy, constante__id = 1)))*Constantes.objects.get(id = 1).valor
-        pagos_anteriores_h = sum(np.array(Pago.objects.values_list('pago').filter(fecha__lt = fecha_inicial_hoy, cuota__constante__id = 7)))*Constantes.objects.get(id = 7).valor
-        pagos_anteriores_usd = sum(np.array(Pago.objects.values_list('pago').filter(fecha__lt = fecha_inicial_hoy, cuota__constante__id = 1)))*Constantes.objects.get(id = 1).valor
-        cuotas_posteriores_h = sum(np.array(Cuota.objects.values_list('precio').filter(fecha__gt = fecha_inicial_hoy, constante__id = 7)))*Constantes.objects.get(id = 7).valor
-        cuotas_posteriores_usd = sum(np.array(Cuota.objects.values_list('precio').filter(fecha__gt = fecha_inicial_hoy, constante__id = 1)))*Constantes.objects.get(id = 1).valor
+        cuotas_anteriores = sum(np.array(Cuota.objects.values_list('precio').filter(fecha__lt = fecha_inicial_hoy))*np.array(Cuota.objects.values_list('constante__valor').filter(fecha__lt = fecha_inicial_hoy)))
+        pagos_anteriores = sum(np.array(Pago.objects.values_list('pago').filter(cuota__fecha__lt = fecha_inicial_hoy))*np.array(Pago.objects.values_list('cuota__constante__valor').filter(cuota__fecha__lt = fecha_inicial_hoy)))
+        cuotas_posteriores = sum(np.array(Cuota.objects.values_list('precio').filter(fecha__gte = fecha_inicial_hoy))*np.array(Cuota.objects.values_list('constante__valor').filter(fecha__gte = fecha_inicial_hoy)))
+        pagos_posteriores = sum(np.array(Pago.objects.values_list('pago').filter(cuota__fecha__gte = fecha_inicial_hoy))*np.array(Pago.objects.values_list('cuota__constante__valor').filter(cuota__fecha__gte = fecha_inicial_hoy)))
 
-    total_original = (cuotas_anteriores_h + cuotas_anteriores_usd)
-    total_cobrado = (pagos_anteriores_h, pagos_anteriores_usd)
+    total_original = cuotas_anteriores
+    total_cobrado = pagos_anteriores
     total_pendiente = total_original - total_cobrado
-    total_acobrar= (cuotas_posteriores_h + cuotas_posteriores_usd)
+    total_acobrar = cuotas_posteriores - pagos_posteriores
     
     h = Constantes.objects.get(nombre = "Hº VIVIENDA")
     total = total_cobrado[0]/h.valor + total_pendiente[0]/h.valor + total_acobrar[0]/h.valor
@@ -893,10 +922,21 @@ def totalcuentacte(request, id_proyecto):
 
     fecha_inicial = 0
 
+    matriz_clientes = 0
+
+    if id_proyecto != "0" and cliente == "1":
+
+        clientes = CuentaCorriente.objects.values_list('venta__comprador', flat =True).filter(venta__proyecto__id = id_proyecto)
+        clientes = list(set(clientes))
+        matriz_clientes = {}
+        for c in clientes:
+            matriz_clientes[c] = []
+        
     for f in fechas:
 
         total = 0
         total_link = 0
+        total_proyecto = 0
 
         datos_terceros = []
 
@@ -906,46 +946,56 @@ def totalcuentacte(request, id_proyecto):
 
         else:
 
+
+            f = f - datetime.timedelta(days=1)
+
             #Aqui calculamos el saldo de cuotas totales - Uso el id_proyecto para filtrar
 
             if id_proyecto != "0":
 
-                cuotas_h = sum(np.array(Cuota.objects.values_list('precio').filter(fecha__range = (fecha_inicial, f), constante__id = 7, cuenta_corriente__venta__proyecto__id = id_proyecto)))*Constantes.objects.get(id = 7).valor
-                cuotas_usd = sum(np.array(Cuota.objects.values_list('precio').filter(fecha__range = (fecha_inicial, f), constante__id = 1, cuenta_corriente__venta__proyecto__id = id_proyecto)))*Constantes.objects.get(id = 1).valor
-                cuotas_h_link = sum(np.array(Cuota.objects.values_list('precio').filter(fecha__range = (fecha_inicial, f), constante__id = 7, cuenta_corriente__venta__proyecto__id = id_proyecto, cuenta_corriente__venta__unidad__asig = "HON. LINK")))*Constantes.objects.get(id = 7).valor
-                cuotas_usd_link = sum(np.array(Cuota.objects.values_list('precio').filter(fecha__range = (fecha_inicial, f), constante__id = 1, cuenta_corriente__venta__proyecto__id = id_proyecto, cuenta_corriente__venta__unidad__asig = "HON. LINK")))*Constantes.objects.get(id = 1).valor
+                cuotas = sum(np.array(Cuota.objects.values_list('precio', flat =True).filter(fecha__range = (fecha_inicial, f), cuenta_corriente__venta__proyecto__id = id_proyecto))*np.array(Cuota.objects.values_list('constante__valor', flat =True).filter(fecha__range = (fecha_inicial, f), cuenta_corriente__venta__proyecto__id = id_proyecto)))
+                cuotas_link = sum(np.array(Cuota.objects.values_list('precio', flat =True).filter(fecha__range = (fecha_inicial, f), cuenta_corriente__venta__proyecto__id = id_proyecto, cuenta_corriente__venta__unidad__asig = "HON. LINK"))*np.array(Cuota.objects.values_list('constante__valor', flat =True).filter(fecha__range = (fecha_inicial, f), cuenta_corriente__venta__proyecto__id = id_proyecto, cuenta_corriente__venta__unidad__asig = "HON. LINK")))              
+                pagos = sum(np.array(Pago.objects.values_list('pago', flat =True).filter(cuota__fecha__range = (fecha_inicial, f), cuota__cuenta_corriente__venta__proyecto__id = id_proyecto))*np.array(Pago.objects.values_list('cuota__constante__valor', flat =True).filter(cuota__fecha__range = (fecha_inicial, f), cuota__cuenta_corriente__venta__proyecto__id = id_proyecto)))
+                pagos_link = sum(np.array(Pago.objects.values_list('pago', flat =True).filter(cuota__fecha__range = (fecha_inicial, f), cuota__cuenta_corriente__venta__proyecto__id = id_proyecto, cuota__cuenta_corriente__venta__unidad__asig = "HON. LINK"))*np.array(Pago.objects.values_list('cuota__constante__valor', flat =True).filter(cuota__fecha__range = (fecha_inicial, f), cuota__cuenta_corriente__venta__proyecto__id = id_proyecto, cuota__cuenta_corriente__venta__unidad__asig = "HON. LINK")))
+                cuotas_proyecto = sum(np.array(Cuota.objects.values_list('precio', flat =True).filter(fecha__range = (fecha_inicial, f), cuenta_corriente__venta__proyecto__id = id_proyecto, cuenta_corriente__venta__unidad__asig = "PROYECTO"))*np.array(Cuota.objects.values_list('constante__valor', flat =True).filter(fecha__range = (fecha_inicial, f), cuenta_corriente__venta__proyecto__id = id_proyecto, cuenta_corriente__venta__unidad__asig = "PROYECTO")))   
+                pagos_proyecto = sum(np.array(Pago.objects.values_list('pago', flat =True).filter(cuota__fecha__range = (fecha_inicial, f), cuota__cuenta_corriente__venta__proyecto__id = id_proyecto, cuota__cuenta_corriente__venta__unidad__asig = "PROYECTO"))*np.array(Pago.objects.values_list('cuota__constante__valor', flat =True).filter(cuota__fecha__range = (fecha_inicial, f), cuota__cuenta_corriente__venta__proyecto__id = id_proyecto, cuota__cuenta_corriente__venta__unidad__asig = "PROYECTO")))
+
                 
-                pagos_h = sum(np.array(Pago.objects.values_list('pago').filter(fecha__range = (fecha_inicial, f), cuota__constante__id = 7, cuota__cuenta_corriente__venta__proyecto__id = id_proyecto)))*Constantes.objects.get(id = 7).valor
-                pagos_usd = sum(np.array(Pago.objects.values_list('pago').filter(fecha__range = (fecha_inicial, f), cuota__constante__id = 1, cuota__cuenta_corriente__venta__proyecto__id = id_proyecto)))*Constantes.objects.get(id = 1).valor
-                pagos_h_link = sum(np.array(Pago.objects.values_list('pago').filter(fecha__range = (fecha_inicial, f), cuota__constante__id = 7, cuota__cuenta_corriente__venta__proyecto__id = id_proyecto, cuota__cuenta_corriente__venta__unidad__asig = "HON. LINK")))*Constantes.objects.get(id = 7).valor
-                pagos_usd_link = sum(np.array(Pago.objects.values_list('pago').filter(fecha__range = (fecha_inicial, f), cuota__constante__id = 1, cuota__cuenta_corriente__venta__proyecto__id = id_proyecto , cuota__cuenta_corriente__venta__unidad__asig = "HON. LINK")))*Constantes.objects.get(id = 1).valor
+                # Aqui armamos por clientes 
 
-
+                if cliente == "1":
+                    for c in clientes:
+                        cuotas_cliente = sum(np.array(Cuota.objects.values_list('precio', flat =True).filter(fecha__range = (fecha_inicial, f), cuenta_corriente__venta__proyecto__id = id_proyecto, cuenta_corriente__venta__comprador = c))*np.array(Cuota.objects.values_list('constante__valor', flat =True).filter(fecha__range = (fecha_inicial, f), cuenta_corriente__venta__proyecto__id = id_proyecto, cuenta_corriente__venta__comprador = c)))
+                        pagos_cliente = sum(np.array(Pago.objects.values_list('pago', flat =True).filter(cuota__fecha__range = (fecha_inicial, f), cuota__cuenta_corriente__venta__proyecto__id = id_proyecto, cuota__cuenta_corriente__venta__comprador = c))*np.array(Pago.objects.values_list('cuota__constante__valor', flat =True).filter(cuota__fecha__range = (fecha_inicial, f), cuota__cuenta_corriente__venta__proyecto__id = id_proyecto, cuota__cuenta_corriente__venta__comprador = c)))
+                        saldo_mes = cuotas_cliente - pagos_cliente
+                        matriz_clientes[c].append(saldo_mes)
 
             else:
 
-                cuotas_h = sum(np.array(Cuota.objects.values_list('precio').filter(fecha__range = (fecha_inicial, f), constante__id = 7)))*Constantes.objects.get(id = 7).valor
-                cuotas_usd = sum(np.array(Cuota.objects.values_list('precio').filter(fecha__range = (fecha_inicial, f), constante__id = 1)))*Constantes.objects.get(id = 1).valor
-                cuotas_h_link = sum(np.array(Cuota.objects.values_list('precio').filter(fecha__range = (fecha_inicial, f), constante__id = 7, cuenta_corriente__venta__unidad__asig = "HON. LINK")))*Constantes.objects.get(id = 7).valor
-                cuotas_usd_link = sum(np.array(Cuota.objects.values_list('precio').filter(fecha__range = (fecha_inicial, f), constante__id = 1, cuenta_corriente__venta__unidad__asig = "HON. LINK")))*Constantes.objects.get(id = 1).valor
-                
-                pagos_h = sum(np.array(Pago.objects.values_list('pago').filter(fecha__range = (fecha_inicial, f), cuota__constante__id = 7)))*Constantes.objects.get(id = 7).valor
-                pagos_usd = sum(np.array(Pago.objects.values_list('pago').filter(fecha__range = (fecha_inicial, f), cuota__constante__id = 1)))*Constantes.objects.get(id = 1).valor
-                pagos_h_link = sum(np.array(Pago.objects.values_list('pago').filter(fecha__range = (fecha_inicial, f), cuota__constante__id = 7, cuota__cuenta_corriente__venta__unidad__asig = "HON. LINK")))*Constantes.objects.get(id = 7).valor
-                pagos_usd_link = sum(np.array(Pago.objects.values_list('pago').filter(fecha__range = (fecha_inicial, f), cuota__constante__id = 1, cuota__cuenta_corriente__venta__unidad__asig = "HON. LINK")))*Constantes.objects.get(id = 1).valor
+                cuotas = sum(np.array(Cuota.objects.values_list('precio', flat =True).filter(fecha__range = (fecha_inicial, f)))*np.array(Cuota.objects.values_list('constante__valor', flat =True).filter(fecha__range = (fecha_inicial, f))))
+                cuotas_link = sum(np.array(Cuota.objects.values_list('precio', flat =True).filter(fecha__range = (fecha_inicial, f), cuenta_corriente__venta__unidad__asig = "HON. LINK"))*np.array(Cuota.objects.values_list('constante__valor', flat =True).filter(fecha__range = (fecha_inicial, f), cuenta_corriente__venta__unidad__asig = "HON. LINK")))              
+                pagos = sum(np.array(Pago.objects.values_list('pago', flat =True).filter(fecha__range = (fecha_inicial, f)))*np.array(Pago.objects.values_list('cuota__constante__valor', flat =True).filter(fecha__range = (fecha_inicial, f))))
+                pagos_link = sum(np.array(Pago.objects.values_list('pago', flat =True).filter(fecha__range = (fecha_inicial, f), cuota__cuenta_corriente__venta__unidad__asig = "HON. LINK"))*np.array(Pago.objects.values_list('cuota__constante__valor', flat =True).filter(fecha__range = (fecha_inicial, f), cuota__cuenta_corriente__venta__unidad__asig = "HON. LINK")))
+                cuotas_proyecto = sum(np.array(Cuota.objects.values_list('precio', flat =True).filter(fecha__range = (fecha_inicial, f), cuenta_corriente__venta__unidad__asig = "PROYECTO"))*np.array(Cuota.objects.values_list('constante__valor', flat =True).filter(fecha__range = (fecha_inicial, f), cuenta_corriente__venta__unidad__asig = "PROYECTO")))
+                pagos_proyecto = sum(np.array(Pago.objects.values_list('pago', flat =True).filter(fecha__range = (fecha_inicial, f), cuota__cuenta_corriente__venta__unidad__asig = "PROYECTO"))*np.array(Pago.objects.values_list('cuota__constante__valor', flat =True).filter(fecha__range = (fecha_inicial, f), cuota__cuenta_corriente__venta__unidad__asig = "PROYECTO")))
 
-            total_cuotas = cuotas_h + cuotas_usd
-            total_pagado = pagos_h  + pagos_usd                 
-            saldo = total_cuotas-total_pagado
-            total = total + saldo
-            
-
-            total_cuotas_link = cuotas_h_link + cuotas_usd_link
-            total_pagado_link = pagos_h_link + pagos_usd_link
-            saldo_link = total_cuotas_link-total_pagado_link
-            total_link = total_link + saldo_link
+            ## --> Aumenta los totalizadores y calculamos la suma del mes
            
-            datos_terceros.append((fecha_inicial, saldo, saldo_link))
+            # Total
+            saldo = cuotas - pagos
+            total += saldo
+            
+            # Link
+            saldo_link = cuotas_link - pagos_link
+            total_link += saldo_link
+
+            # Proyectos
+            saldo_proyecto = cuotas_proyecto - pagos_proyecto
+            total_proyecto += saldo_proyecto
+           
+            datos_terceros.append((fecha_inicial, saldo, saldo_link, saldo_proyecto))
+
+            f = f + datetime.timedelta(days=1)
 
             fecha_inicial = f
 
@@ -953,15 +1003,15 @@ def totalcuentacte(request, id_proyecto):
             
             total_horm = total/horm.valor
 
-            total_proy = total - total_link
-
             total_horm_link = total_link/horm.valor
 
-            total_horm_proy = total_proy/horm.valor
+            total_horm_proy = total_proyecto/horm.valor
 
-            datos_segundos.append((datos_terceros, total, total_horm, total_link, total_horm_link, total_proy, total_horm_proy))
-            
-    return render(request, 'totalcuentas.html', {"fechas":fechas, "datos":datos_segundos, "datos_primero":datos_primeros, "total_fechas":total_fecha, "listado":listado, "proy":proy, "cantidad_cuentas":cantidad_cuentas, "otros_datos":otros_datos})
+            datos_segundos.append((datos_terceros, total, total_horm, total_link, total_horm_link, total_proyecto, total_horm_proy))
+
+    fechas.pop()
+
+    return render(request, 'totalcuentas.html', {"id_proyecto":id_proyecto, "cliente":cliente,"fechas":fechas, "matriz_clientes":matriz_clientes, "datos":datos_segundos, "datos_primero":datos_primeros, "total_fechas":total_fecha, "listado":listado, "proy":proy, "cantidad_cuentas":cantidad_cuentas, "otros_datos":otros_datos})
 
 def resumenctacte(request, id_cliente):
 
