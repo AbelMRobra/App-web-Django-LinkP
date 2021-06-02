@@ -10,80 +10,79 @@
         <div class="col-md-5 align-self-center">
             <h3 class="text-themecolor">Analisis de proyectos</h3>
         </div>
-  
+
         <div class="col-md-7 align-self-center">
-          <ol class="breadcrumb">
-              <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
-              <li class="breadcrumb-item">Analisis</li>
-          </ol>
-      </div>
-  
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+                <li class="breadcrumb-item">Analisis</li>
+            </ol>
+        </div>
+
     </div>
-  
-  </div>
 
-  {% if datos.proyectos %}
+</div>
+
+{% if datos.proyectos %}
 
 
-  <div class="row">
+<div class="row">
 
-    <div class="col-lg-4 col-xlg-6">
+    <div class="col-lg-3 col-xlg-4">
         <div class="card">
-            <div class="card-body text-center">
+            <div class="card-body text-center" style="padding-bottom: 0px;">
                 <div style="margin-bottom: 38px;">
                     <h6>Estudios individuales</h6>
                 </div>
-    
-                    <form method="POST">
-    
-                        {% csrf_token %}
-                
-                        <div class="form-group">
-                
-                            <select class="form-control" name="proyecto" >
-                
+
+                <form method="POST">
+
+                    {% csrf_token %}
+
+                    <div class="form-group">
+
+                        <select class="form-control" name="proyecto">
+
                             {% if request.user.username != "HC" %}
-                
+
                             {% for i in datos.proyectos %}
-                
+
                             {% if not "DIANCO" in i.nombre %}
-                
+
                             <option value="{{i.0}}">{{i.1}}</option>
-                
-                
+
+
                             {% endif %}
-                
+
                             {% endfor %}
-                
+
                             {% else %}
-                
+
                             {% for i in datos.proyectos %}
-                
+
                             {% if "DIANCO" in i.nombre %}
                             <option value="{{i.id}}">{{i.nombre}}</option>
-                
+
                             {% endif %}
-                
+
                             {% endfor %}
-                
-                            
+
+
                             {% endif %}
-                
-                
-                            </select>
-                            
-                            <div style="text-align: right;">
-                            <button class="btn btn-primary" type="submit" style="margin-top: 10px;"> Buscar</button>          
+
+
+                        </select>
+
+                        <div style="margin-top:37px; margin-bottom: 0px;">
+                            <button class="btn btn-primary" type="submit" style="width: 93px;"> Buscar</button>
                         </div>
                     </div>
-                    </form>
+                </form>
 
             </div>
-
         </div>
     </div>
 
-    <div class="col-lg-4 col-xlg-6">
+    <div class="col-lg-3 col-xlg-3">
         <div class="card">
             <div class="card-body text-center">
                 <div>
@@ -91,10 +90,30 @@
                 </div>
 
                 <div>
-                    <img src="{% static 'img/animation_500_kmqi3zbx.gif' %}" alt="" style="max-width:100px; height:auto; margin: 5px;">
+                    <img src="{% static 'img/animation_500_kmqi3zbx.gif' %}" alt=""
+                        style="max-width:100px; height:auto; margin: 5px;">
                 </div>
 
                 <a href="{% url 'Consolidado' %}"><button class="btn btn-info">
+                        Ingresar</button></a>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-3 col-xlg-4">
+        <div class="card">
+            <div class="card-body text-center">
+                <div>
+                    <h6>Precio referencia</h6>
+                </div>
+
+                <div>
+                    <img src="{% static 'img/appcomercial_pricing.gif' %}" alt=""
+                        style="max-width:100px; height:auto; margin: 5px;">
+                </div>
+
+                <a href="{% url 'Precio referencia' %}" class="image-popup-vertical-fit"><button class="btn btn-success">
                         Ingresar</button></a>
 
             </div>
@@ -106,45 +125,47 @@
 <aside class="right-side-panel">
     <h3 class="p-relative"><span class="lstick"></span>¿Como funciona?</h3>
     <div class="row">
-        
+
         <div class="col-md-12 m-t-10">
             <div class="card">
-            <div class="card-body">
-            <img src="{% static 'img/animation_500_kmqq9uxg.gif' %}" alt="Funny image" width="150px">
-            <p>Los estudios individuales muestran el clasico "almacenero", con información del área financiera y del área de presupuesto, solo seleccione un proyecto y haga click en <b style="color: purple;">buscar</b></p>
-            <p>El analisis en conjunto mostrara el comportamiento de todos los proyectos cargados en LinkP</p>
-            
-        </div>
+                <div class="card-body">
+                    <img src="{% static 'img/animation_500_kmqq9uxg.gif' %}" alt="Funny image" width="150px">
+                    <p>Los estudios individuales muestran el clasico "almacenero", con información del área financiera y
+                        del área de presupuesto, solo seleccione un proyecto y haga click en <b
+                            style="color: purple;">buscar</b></p>
+                    <p>El analisis en conjunto mostrara el comportamiento de todos los proyectos cargados en LinkP</p>
+
+                </div>
             </div>
         </div>
     </div>
 
-    </aside>
-                    
-   
+</aside>
+
+
 
 {% endif %}
 
-   {% if datos.mensaje == 1 %}
+{% if datos.mensaje == 1 %}
 
-   <div  style="margin-top: -15%;">
+<div style="margin-top: -15%;">
     <h6> Este proyecto no tiene todos los requerimientos cargados </h6>
     <small> Contactar con AR/VI</small>
 </div>
 
 <div style="text-align: center; margin-top: 2%; margin-bottom: 10%;">
-    
+
     <img src="{% static 'img/comunicaciones.png' %}" style="max-width:10%;width:auto;height:auto; margin-top: 1rem;">
 
 </div>
 
-   {% endif %}
+{% endif %}
 
 
 
-   {% if datos.proyectos == 0 %}
+{% if datos.proyectos == 0 %}
 
-   <div class="row">
+<div class="row">
     <!-- column -->
     <div class="col-12">
         <div class="card">
@@ -155,59 +176,64 @@
             </div>
         </div>
     </div>
-   </div>
-   <div class="row">
-    <div class="col-lg-6 col-md-12">
-    <div class="card">
-        <div class="card-body">
+</div>
 
+<div class="row">
+    <div class="col-lg-6 col-md-12">
+        <div class="card">
+            <div class="card-body">
+
+                <div class="d-flex">
+                    <div>
+                        <h4 class="card-title"><span class="lstick"></span>Resumen de datos</h4>
+                    </div>
+
+                </div>
+
+                <div class="m-t-10">
+                    <h5 class="m-b-0 font-medium">Saldo de caja a la fecha: $ {{datos.datos.3.5|floatformat:0|intcomma}}
+                    </h5>
+                    <h6 class="text-muted">Diferencia entre gastos e ingresos pasados menos retiro mas tenencia</h6>
+                </div>
+                <div class="m-t-10">
+                    <h5 class="m-b-0 font-medium">Costos del proyecto: $ {{datos.datos.3.2|floatformat:0|intcomma}}</h5>
+                    <h6 class="text-muted">Costo de obra, soft, impuestos, prestamos, comisiones y otros</h6>
+                </div>
+                <div class="m-t-10">
+                    <h5 class="m-b-0 font-medium">Ingresos del proyecto: $ {{datos.datos.3.3|floatformat:0|intcomma}}
+                    </h5>
+                    <h6 class="text-muted">Venta de unidades y cobro de prestamos</h6>
+                </div>
+                <div class="m-t-10">
+                    <h5 class="m-b-0 font-medium">Saldo del proyecto: $ {{datos.datos.3.6|floatformat:0|intcomma}}</h5>
+                    <h6 class="text-muted">Resultado de saldo de caja mas ingresos menos costos</h6>
+                </div>
+                <div class="m-t-10">
+                    <h5 class="m-b-0 font-medium">Rentabilidad: {{datos.datos.3.4|floatformat:0|intcomma}}%</h5>
+                    <h6 class="text-muted">Valor del USD BLUE: $ {{datos.usd.valor}}</h6>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-3 col-md-6">
+        <!-- Card -->
+        <div class="card">
             <div class="d-flex">
                 <div>
-                    <h4 class="card-title"><span class="lstick"></span>Resumen de datos</h4></div>
+                    <h4 class="card-title"><span class="lstick"></span>El proyecto</h4>
+                </div>
 
             </div>
-            
-            <div class="m-t-10">
-                <h5 class="m-b-0 font-medium">Saldo de caja a la fecha: $ {{datos.datos.3.5|floatformat:0|intcomma}}</h5>
-                <h6 class="text-muted">Diferencia entre gastos e ingresos pasados menos retiro mas tenencia</h6>
+            <img class="card-img-top img-responsive" src="{{datos.datos.0.imagen.url}}" alt="Card image cap">
+            <div class="card-body">
+                <h4 class="card-title">{{datos.datos.0.nombre}}</h4>
+                <p class="card-text">{{datos.datos.0.descrip}}</p>
             </div>
-            <div class="m-t-10">
-                <h5 class="m-b-0 font-medium">Costos del proyecto: $ {{datos.datos.3.2|floatformat:0|intcomma}}</h5>
-                <h6 class="text-muted">Costo de obra, soft, impuestos, prestamos, comisiones y otros</h6>
-            </div>
-            <div class="m-t-10">
-                <h5 class="m-b-0 font-medium">Ingresos del proyecto: $ {{datos.datos.3.3|floatformat:0|intcomma}}</h5>
-                <h6 class="text-muted">Venta de unidades y cobro de prestamos</h6>
-            </div>
-            <div class="m-t-10">
-                <h5 class="m-b-0 font-medium">Saldo del proyecto: $ {{datos.datos.3.6|floatformat:0|intcomma}}</h5>
-                <h6 class="text-muted">Resultado de saldo de caja mas ingresos menos costos</h6>
-            </div>
-            <div class="m-t-10">
-                <h5 class="m-b-0 font-medium">Rentabilidad: {{datos.datos.3.4|floatformat:0|intcomma}}%</h5>
-                <h6 class="text-muted">Valor del USD BLUE: $ {{datos.usd.valor}}</h6>
-            </div>
-
         </div>
+
     </div>
-</div>
-
-<div class="col-lg-3 col-md-6">
-    <!-- Card -->
-    <div class="card">
-        <div class="d-flex">
-            <div>
-                <h4 class="card-title"><span class="lstick"></span>El proyecto</h4></div>
-
-        </div>
-        <img class="card-img-top img-responsive" src="{{datos.datos.0.imagen.url}}" alt="Card image cap">
-        <div class="card-body">
-            <h4 class="card-title">{{datos.datos.0.nombre}}</h4>
-            <p class="card-text">{{datos.datos.0.descrip}}</p>
-        </div>
-    </div>
-
-</div>
 </div>
 
 <div class="row">
@@ -230,58 +256,90 @@
                         <tbody>
                             <tr>
 
-                                <td><h6>Resultado tenencia</h6></td>
-                                <td><h6>${{datos.datos.2.tenencia|floatformat:0|intcomma}}</h6></td>
+                                <td>
+                                    <h6>Resultado tenencia</h6>
+                                </td>
+                                <td>
+                                    <h6>${{datos.datos.2.tenencia|floatformat:0|intcomma}}</h6>
+                                </td>
                             </tr>
                             <tr>
 
-                                <td><h6>Prestamos a cobrar</h6>
+                                <td>
+                                    <h6>Prestamos a cobrar</h6>
                                     <small class="text-muted">Prestamos a proyectos</small>
                                     <div>
                                         <small class="text-muted">Prestamos a otros</small>
                                     </div>
-                                     </td>
-                                <td><h6>${{datos.datos.3.1|floatformat:0|intcomma}}</h6>
-                                    <small class="text-muted">${{datos.datos.2.prestamos_proyecto|floatformat:0|intcomma}}</small>
+                                </td>
+                                <td>
+                                    <h6>${{datos.datos.3.1|floatformat:0|intcomma}}</h6>
+                                    <small
+                                        class="text-muted">${{datos.datos.2.prestamos_proyecto|floatformat:0|intcomma}}</small>
                                     <div>
-                                        <small class="text-muted">${{datos.datos.2.prestamos_otros|floatformat:0|intcomma}}</small>
+                                        <small
+                                            class="text-muted">${{datos.datos.2.prestamos_otros|floatformat:0|intcomma}}</small>
                                     </div>
-                                     </td>
+                                </td>
                             </tr>
                             <tr>
 
-                                <td><h6>Cuotas cobradas</h6> </td>
-                                <td><h6>${{datos.datos.2.cuotas_cobradas|floatformat:0|intcomma}}  </h6></td>
+                                <td>
+                                    <h6>Cuotas cobradas</h6>
+                                </td>
+                                <td>
+                                    <h6>${{datos.datos.2.cuotas_cobradas|floatformat:0|intcomma}} </h6>
+                                </td>
                             </tr>
                             <tr>
 
-                                <td><h6>Cuotas a cobrar</h6></td>
-                                <td><h6>${{datos.datos.2.cuotas_a_cobrar|floatformat:0|intcomma}}  </h6></td>
+                                <td>
+                                    <h6>Cuotas a cobrar</h6>
+                                </td>
+                                <td>
+                                    <h6>${{datos.datos.2.cuotas_a_cobrar|floatformat:0|intcomma}} </h6>
+                                </td>
                             </tr>
                             <tr>
 
-                                <td><h6>Financiación</h6> </td>
-                                <td><h6>${{datos.datos.2.financiacion|floatformat:0|intcomma}}</h6></td>
+                                <td>
+                                    <h6>Financiación</h6>
+                                </td>
+                                <td>
+                                    <h6>${{datos.datos.2.financiacion|floatformat:0|intcomma}}</h6>
+                                </td>
                             </tr>
                             <tr>
 
-                                <td><h6>Ingreso por ventas</h6> 
-                                    <small class="text-muted">Unidades de Socios</small></td>
-                                <td><h6>${{datos.datos.2.ingreso_ventas|floatformat:0|intcomma}}</h6> 
-                                    <small class="text-muted">$ {{datos.datos.2.unidades_socios|floatformat:0|intcomma}}</small>
+                                <td>
+                                    <h6>Ingreso por ventas</h6>
+                                    <small class="text-muted">Unidades de Socios</small>
+                                </td>
+                                <td>
+                                    <h6>${{datos.datos.2.ingreso_ventas|floatformat:0|intcomma}}</h6>
+                                    <small class="text-muted">$
+                                        {{datos.datos.2.unidades_socios|floatformat:0|intcomma}}</small>
                                 </td>
                             </tr>
 
                             <tr>
 
-                                <td><h6>Otros inmuebles</h6> </td>
-                                <td><h6>${{datos.datos.2.inmuebles|floatformat:0|intcomma}}</h6></td>
+                                <td>
+                                    <h6>Otros inmuebles</h6>
+                                </td>
+                                <td>
+                                    <h6>${{datos.datos.2.inmuebles|floatformat:0|intcomma}}</h6>
+                                </td>
                             </tr>
 
                             <tr>
 
-                                <td><h6 style="color: #3FB360;">Total de ingresos</h6> </td>
-                                <td><h6 style="color: #3FB360;">${{datos.datos.3.3|floatformat:0|intcomma}}</h6></td>
+                                <td>
+                                    <h6 style="color: #3FB360;">Total de ingresos</h6>
+                                </td>
+                                <td>
+                                    <h6 style="color: #3FB360;">${{datos.datos.3.3|floatformat:0|intcomma}}</h6>
+                                </td>
                             </tr>
 
                         </tbody>
@@ -310,17 +368,26 @@
                         <tbody>
                             <tr>
 
-                                <td><h6>Gastado a la fecha</h6> </td>
-                                <td><h6>${{datos.datos.2.gastos_fecha|floatformat:0|intcomma}}</h6></td>
+                                <td>
+                                    <h6>Gastado a la fecha</h6>
+                                </td>
+                                <td>
+                                    <h6>${{datos.datos.2.gastos_fecha|floatformat:0|intcomma}}</h6>
+                                </td>
                             </tr>
                             <tr>
 
-                                <td><h6>Cheques emitidos</h6> </td>
-                                <td><h6>${{datos.datos.2.cheques_emitidos|floatformat:0|intcomma}}</h6></td>
+                                <td>
+                                    <h6>Cheques emitidos</h6>
+                                </td>
+                                <td>
+                                    <h6>${{datos.datos.2.cheques_emitidos|floatformat:0|intcomma}}</h6>
+                                </td>
                             </tr>
                             <tr>
-                                
-                                <td><h6>Pendiente de gastar</h6>
+
+                                <td>
+                                    <h6>Pendiente de gastar</h6>
                                     <div>
                                         <small class="text-muted">Administración</small>
                                     </div>
@@ -351,48 +418,67 @@
                                     <div>
                                         <small class="text-muted">IIBB y TEM</small>
                                     </div>
-                                 </td>
-                                <td><h6>${{datos.datos.3.0|floatformat:0|intcomma}}</h6>
+                                </td>
+                                <td>
+                                    <h6>${{datos.datos.3.0|floatformat:0|intcomma}}</h6>
                                     <div>
-                                        <small class="text-muted">${{datos.datos.2.pendiente_admin|floatformat:0|intcomma}}</small>
+                                        <small
+                                            class="text-muted">${{datos.datos.2.pendiente_admin|floatformat:0|intcomma}}</small>
                                     </div>
                                     <div>
-                                        <small class="text-muted">${{datos.datos.2.pendiente_comision|floatformat:0|intcomma}}</small>
+                                        <small
+                                            class="text-muted">${{datos.datos.2.pendiente_comision|floatformat:0|intcomma}}</small>
                                     </div>
                                     <div>
-                                        <small class="text-muted">${{datos.datos.1.saldo_mat|floatformat:0|intcomma}}</small>
+                                        <small
+                                            class="text-muted">${{datos.datos.1.saldo_mat|floatformat:0|intcomma}}</small>
                                     </div>
                                     <div>
-                                        <small class="text-muted">${{datos.datos.1.saldo_mo|floatformat:0|intcomma}}</small>
+                                        <small
+                                            class="text-muted">${{datos.datos.1.saldo_mo|floatformat:0|intcomma}}</small>
                                     </div>
                                     <div>
-                                        <small class="text-muted">${{datos.datos.1.imprevisto|floatformat:0|intcomma}}</small>
+                                        <small
+                                            class="text-muted">${{datos.datos.1.imprevisto|floatformat:0|intcomma}}</small>
                                     </div>
                                     <div>
-                                        <small class="text-muted"> ${{datos.datos.1.credito|floatformat:0|intcomma}}</small>
+                                        <small class="text-muted">
+                                            ${{datos.datos.1.credito|floatformat:0|intcomma}}</small>
                                     </div>
                                     <div>
                                         <small class="text-muted">${{datos.datos.1.fdr|floatformat:0|intcomma}}</small>
                                     </div>
                                     <div>
-                                        <small class="text-muted">- ${{datos.datos.2.pendiente_adelantos|floatformat:0|intcomma}}</small>
+                                        <small class="text-muted">-
+                                            ${{datos.datos.2.pendiente_adelantos|floatformat:0|intcomma}}</small>
                                     </div>
                                     <div>
-                                        <small class="text-muted">${{datos.datos.2.pendiente_iva_ventas|floatformat:0|intcomma}}</small>
+                                        <small
+                                            class="text-muted">${{datos.datos.2.pendiente_iva_ventas|floatformat:0|intcomma}}</small>
                                     </div>
                                     <div>
-                                        <small class="text-muted">${{datos.datos.2.pendiente_iibb_tem|floatformat:0|intcomma}}</small>
-                                    </div></td>
+                                        <small
+                                            class="text-muted">${{datos.datos.2.pendiente_iibb_tem|floatformat:0|intcomma}}</small>
+                                    </div>
+                                </td>
                             </tr>
                             <tr>
 
-                                <td><h6>Prestamos</h6> </td>
-                                <td><h6>${{datos.datos.2.Prestamos_dados|floatformat:0|intcomma}}</h6></td>
+                                <td>
+                                    <h6>Prestamos</h6>
+                                </td>
+                                <td>
+                                    <h6>${{datos.datos.2.Prestamos_dados|floatformat:0|intcomma}}</h6>
+                                </td>
                             </tr>
                             <tr>
 
-                                <td><h6 style="color: #B3513F;">Total de costos</h6> </td>
-                                <td><h6 style="color: #B3513F;">${{datos.datos.3.2|floatformat:0|intcomma}}</h6></td>
+                                <td>
+                                    <h6 style="color: #B3513F;">Total de costos</h6>
+                                </td>
+                                <td>
+                                    <h6 style="color: #B3513F;">${{datos.datos.3.2|floatformat:0|intcomma}}</h6>
+                                </td>
                             </tr>
 
 
@@ -401,7 +487,7 @@
                     </table>
                 </div>
 
- 
+
 
             </div>
         </div>
@@ -410,67 +496,71 @@
 
 <div class="row">
     <div class="col-lg-6 col-md-12">
-    <div class="card">
-        <div class="card-body">
+        <div class="card">
+            <div class="card-body">
 
                 <div>
-                    <h4 class="card-title"><span class="lstick"></span>Resumen de datos final</h4></div>
+                    <h4 class="card-title"><span class="lstick"></span>Resumen de datos final</h4>
+                </div>
 
-                    <div class="m-t-10">
-                        <h5 class="m-b-0 font-medium">Margen: ${{datos.datos.3.6|floatformat:0|intcomma}}</h5>
-                        <h6 class="text-muted">Diferencia entre gastos e ingresos</h6>
-                    </div>
+                <div class="m-t-10">
+                    <h5 class="m-b-0 font-medium">Margen: ${{datos.datos.3.6|floatformat:0|intcomma}}</h5>
+                    <h6 class="text-muted">Diferencia entre gastos e ingresos</h6>
+                </div>
 
-                    <div class="m-t-10">
-                        <h5 class="m-b-0 font-medium">Rendimiento: {{datos.datos.3.4|floatformat:0|intcomma}}%</h5>
-                        <h6 class="text-muted">Margen sobre total de costos</h6>
-                    </div>
- 
+                <div class="m-t-10">
+                    <h5 class="m-b-0 font-medium">Rendimiento: {{datos.datos.3.4|floatformat:0|intcomma}}%</h5>
+                    <h6 class="text-muted">Margen sobre total de costos</h6>
+                </div>
+
+            </div>
+
         </div>
-     
+    </div>
+
+    <div class="col-lg-6 col-md-12">
+        <div class="card">
+            <div class="card-body">
+
+                <div>
+                    <h4 class="card-title"><span class="lstick"></span>Escenario pesimista</h4>
+                </div>
+
+                <div class="m-t-10">
+                    <h5 class="m-b-0 font-medium">Descuentos: - ${{datos.datos.3.7|floatformat:0|intcomma}}</h5>
+                    <h6 class="text-muted">Aplicados sobre unidades pendientes incluyendo socios con un valor de 6%</h6>
+                </div>
+
+                <div class="m-t-10">
+                    <h5 class="m-b-0 font-medium">Retiros en efectivo: - ${{datos.datos.3.10|floatformat:0|intcomma}}
+                    </h5>
+                    <h6 class="text-muted">Realizados durante el proyecto</h6>
+                </div>
+
+                <div class="m-t-10">
+                    <h5 class="m-b-0 font-medium">Unidades de socios: -
+                        ${{datos.datos.2.unidades_socios|floatformat:0|intcomma}}</h5>
+                    <h6 class="text-muted">Asignadas</h6>
+                </div>
+
+                <div class="m-t-10">
+                    <h5 class="m-b-0 font-medium">Margen: ${{datos.datos.3.8|floatformat:0|intcomma}}</h5>
+                    <h6 class="text-muted">Diferencia entre gastos e ingresos con descuentos</h6>
+                </div>
+                <div class="m-t-10">
+                    <h5 class="m-b-0 font-medium">Rendimiento: {{datos.datos.3.9|floatformat:0|intcomma}}%</h5>
+                    <h6 class="text-muted">Margen sobre total de costos</h6>
+                </div>
+
+            </div>
+        </div>
     </div>
 </div>
 
-<div class="col-lg-6 col-md-12">
-    <div class="card">
-        <div class="card-body">
-
-                <div>
-                    <h4 class="card-title"><span class="lstick"></span>Escenario pesimista</h4></div>
-
-                    <div class="m-t-10">
-                        <h5 class="m-b-0 font-medium">Descuentos: - ${{datos.datos.3.7|floatformat:0|intcomma}}</h5>
-                        <h6 class="text-muted">Aplicados sobre unidades pendientes incluyendo socios con un valor de 6%</h6>
-                    </div>
-
-                    <div class="m-t-10">
-                        <h5 class="m-b-0 font-medium">Retiros en efectivo: - ${{datos.datos.3.10|floatformat:0|intcomma}}</h5>
-                        <h6 class="text-muted">Realizados durante el proyecto</h6>
-                    </div>
-
-                    <div class="m-t-10">
-                        <h5 class="m-b-0 font-medium">Unidades de socios: - ${{datos.datos.2.unidades_socios|floatformat:0|intcomma}}</h5>
-                        <h6 class="text-muted">Asignadas</h6>
-                    </div>
-
-                    <div class="m-t-10">
-                        <h5 class="m-b-0 font-medium">Margen: ${{datos.datos.3.8|floatformat:0|intcomma}}</h5>
-                        <h6 class="text-muted">Diferencia entre gastos e ingresos con descuentos</h6>
-                    </div>
-                    <div class="m-t-10">
-                        <h5 class="m-b-0 font-medium">Rendimiento: {{datos.datos.3.9|floatformat:0|intcomma}}%</h5>
-                        <h6 class="text-muted">Margen sobre total de costos</h6>
-                    </div>
-    
-        </div>
-    </div>
-</div>
-</div>
-
- 
 
 
-    <!--
+
+<!--
     <div style="text-align: left;">
 
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter" style="background-color: rgba({{datos.datos.0.color}}, 0.8); border-color: rgba({{datos.datos.0.color}}, 1)">
@@ -483,52 +573,54 @@
     -->
 
 
-    <!-- Modal -->
-    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLongTitle">Ingrese una fecha del listado</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
+<!-- Modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="background: rgb(36,160,237);
+                                            background: linear-gradient(315deg, rgba(36,160,237,1) 0%, rgba(56,56,130,1) 22%, rgba(0,212,255,1) 100%);">
+                <h5 class="modal-title" id="exampleModalLongTitle">Ingrese una fecha del listado</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
             <div class="modal-body">
 
                 <form action="" method="GET">
 
                     {% csrf_token %}
-        
+
                     <select name="{{datos.datos.0.id}}" class="custom-select" style="width: 200px; margin-top: 10px;">
 
                         {% for i in datos.lista %}
-                    
-                    
+
+
                         <option value="{{i.fecha|date:'Ymd'}}">{{i.fecha}}</option>
 
                         {% endfor %}
-                    
-                    
+
+
                     </select>
 
                     <div>
                         <button class="btn btn-dark" type="submit" style="margin-top: 10px;">Buscar datos</button>
-        
+
                     </div>
 
-                    
-                </form>
-              </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-       
-            </div>
-          </div>
-        </div>
-      </div>
 
-    
-    {% endif %}
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endif %}
 
 
 {% endblock %}

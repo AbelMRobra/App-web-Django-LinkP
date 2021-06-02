@@ -5,13 +5,13 @@
 
 {% block content %}
 
-<div class="container-fluid r-aside">
+<div class="container-fluid">
     <!-- ============================================================== -->
     <!-- Cabeza de la pagina -->
     <!-- ============================================================== -->
     <div class="row page-titles">
         <div class="col-md-5 align-self-center">
-            <h3 class="text-themecolor">Tablero R.E.G.A</h3>
+            <h3 class="text-themecolor">Tablero de seguimiento</h3>
         </div>
 
         <div class="col-md-7 align-self-center">
@@ -32,11 +32,11 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body">
-                <h4 class="card-title">Herramientas del tablero</h4>
-                <h6 class="card-subtitle">Agrega o filtra los datos</h6>
-                <a href="{% url 'Tablero Rega Add' %}" class="btn btn-info">Add</a>
+                <h4 class="card-title">Desglose de tareas</h4>
+                <h6 class="card-subtitle">Seguimiento a nivel gerencial</h6>
+                <a href="{% url 'Tablero Rega Add' %}" class="btn"><i class="fa fa-plus-circle text-info"> Nuevo</i></a>
                 <div class="dropdown">
-                    <button class="dropbtn btn btn-primary" style="background-color: rgb({{proyecto.color}}); border-color: rgb({{proyecto.color}})">{% if proyecto %} {{proyecto.nombre}} {% else %}Proyecto{% endif %}</button>
+                    <button class="dropbtn btn btn-secondary" style="background-color: rgb({{proyecto.color}}); border-color: rgb({{proyecto.color}})">{% if proyecto %} {{proyecto.nombre}} {% else %}Proyecto{% endif %}</button>
                     <div class="dropdown-content">
                         <a href="{% url 'Tablero Rega' 0 id_area id_estado %}">Todos</a>
                         {% for p in list_project %}
@@ -46,33 +46,18 @@
 
                     </div>
                 </div>
-                <div class="dropdown">
-                    <button class="dropbtn btn btn-primary" style="background-color: rgb({{area.1}}); border-color: rgb({{area.1}})">{{area.0}}</button>
-                    <div class="dropdown-content">
-                    <a href="{% url 'Tablero Rega' id_proyecto 0 id_estado %}">Todas</a>
-                    <a href="{% url 'Tablero Rega' id_proyecto 1 id_estado %}">Administración</a>
-                    <a href="{% url 'Tablero Rega' id_proyecto 2 id_estado %}">Compras</a>
-                    <a href="{% url 'Tablero Rega' id_proyecto 3 id_estado %}">Comercialización</a>
-                    <a href="{% url 'Tablero Rega' id_proyecto 4 id_estado %}">Dirección</a>
-                    <a href="{% url 'Tablero Rega' id_proyecto 5 id_estado %}">Presupuestos</a>
-                    <a href="{% url 'Tablero Rega' id_proyecto 6 id_estado %}">Obra</a>
-                    <a href="{% url 'Tablero Rega' id_proyecto 7 id_estado %}">Tecnica</a>
-                    <a href="{% url 'Tablero Rega' id_proyecto 8 id_estado %}">Recursos Humanos</a>
 
+                <div class="btn-group">
+                    <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Proyectos
+                    </button>
+                    <div class="dropdown-menu">
+                    <a href="{% url 'Tablero Rega' id_proyecto 1 id_estado %}">Administración</a>
+                    <a href="{% url 'Tablero Rega' id_proyecto 2 id_estado %}">Producción</a>
+                    <a href="{% url 'Tablero Rega' id_proyecto 3 id_estado %}">Comercialización</a>
                     </div>
                 </div>
-                <div class="dropdown">
-                    <button class="dropbtn btn btn-primary">{{estado}}</button>
-                    <div class="dropdown-content">
-                    <a href="{% url 'Tablero Rega' id_proyecto id_area 0 %}">Todos</a>
-                    <a href="{% url 'Tablero Rega' id_proyecto id_area 1 %}">Activos</a>                    
-                    <a href="{% url 'Tablero Rega' id_proyecto id_area 2 %}">Trabajando</a>
-                    <a href="{% url 'Tablero Rega' id_proyecto id_area 3 %}">Problemas</a>
-                    <a href="{% url 'Tablero Rega' id_proyecto id_area 4 %}">Listo</a>
-                    <a href="{% url 'Tablero Rega' id_proyecto id_area 5 %}">Espera</a>
-                    
-                </div>
-                </div>
+
             </div>
         </div>
     </div>
@@ -101,11 +86,11 @@
                                 <th>Adj.</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody style="font-size: 14px;">
                             {% for i in d.1 %}
                             <tr>
                                 {% if proyecto == 0 %}
-                                <td style="color: rgb({{i.proyecto.color}}); width: 150px">{{i.proyecto.nombre}}</td>
+                                <td style="color: rgb({{i.proyecto.color}}); width: 150px">{{i.proyecto.nombre|lower|capfirst}}</td>
                                 {% endif %}
                                 <td style="min-width: 400px;"><div><a href="#" data-toggle="modal" data-target="#ModalTarea{{i.id}}" name="subir_item">{{i.nombre|lower|capfirst}}</a></div>
                                     {% if i.estado == "LISTO" %} 
@@ -231,8 +216,8 @@
                         </div>
     
                     </div>
-                                <td style="width: 150px;">{% if i.fecha_inicio %}<span class="text-muted"><i class="fa fa-clock-o"></i> {{i.fecha_inicio|date:"d-m-Y"}}</span>{% else %} Sin asignar {% endif%} </td>
-                                <td style="width: 150px;">{% if i.fecha_final %}<span class="text-muted"><i class="fa fa-clock-o"></i> {{i.fecha_final|date:"d-m-Y"}}</span>{% else %} Sin asignar {% endif%} </td>
+                                <td style="width: 150px;">{% if i.fecha_inicio %}<span class="text-muted"><i class="fa fa-clock-o"></i> {{i.fecha_inicio|date:"d/m/Y"}}</span>{% else %} Sin asignar {% endif%} </td>
+                                <td style="width: 150px;">{% if i.fecha_final %}<span class="text-muted"><i class="fa fa-clock-o"></i> {{i.fecha_final|date:"d/m/Y"}}</span>{% else %} Sin asignar {% endif%} </td>
                                 <td {% if i.responsable %} style="text-align: center; width: 50px;"{% endif %} style="width: 50px;">{% if i.responsable %}<span class="image-list m-t-10">
                                     <a href="#"><img src="{{i.responsable.imagenlogo.url}}" class="img-circle" alt="user" width="40" /></a>
             
@@ -256,23 +241,6 @@
     {% endfor %}
     </div>
 
-    <div class="row">
-
-        <div class="col-12">
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="card-title">Usuarios del tablero</h4>
-                    <h6 class="card-subtitle">Solo los usuarios presentados tienen acceso a este lugar</h6>
-                    {% for u in list_users %}
-                    <span class="image-list m-t-10">
-                        <a href="#"><img src="{{u.imagenlogo.url}}" class="img-circle" alt="user" width="40" /></a>
-
-                    </span>
-                    {% endfor %}
-                </div>
-            </div>
-        </div>
-    </div>
 
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 

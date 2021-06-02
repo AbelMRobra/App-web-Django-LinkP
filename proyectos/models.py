@@ -36,6 +36,9 @@ class Proyectos(models.Model):
     recargo_menor_50 = models.FloatField(null=True, blank=True, verbose_name="Recargo unid. menor 50m2")
     recargo_otros = models.FloatField(null=True, blank=True, verbose_name="Otros recargos")
     folleto = models.FileField(verbose_name="Folleto", blank=True, null=True)
+    precio_linkp = models.FloatField(null=True, blank=True, verbose_name="Precio Link-P")
+    precio_pricing = models.FloatField(null=True, blank=True, verbose_name="Precio Pricing")
+    precio_posta = models.FloatField(null=True, blank=True, verbose_name="Precio posta")
 
     class Meta:
         verbose_name="Proyecto"

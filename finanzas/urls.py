@@ -9,6 +9,7 @@ urlpatterns = [
 
     url(r'^almacenero/$', login_required(views.almacenero), name = 'Almacenero'),
     url(r'^principalfinanzas/$', login_required(views.principalfinanzas), name = 'Principal Finanzas'),
+    url(r'^precioreferencia/$', login_required(views.precioreferencia), name = 'Precio referencia'),
 
 
     #----------------URL CUENTAS CORRIENTES -----------------------------------------

@@ -1504,6 +1504,9 @@ def pricing(request, id_proyecto):
     promedio_contado = sumatoria_contado/m2_totales_disp
     promedio_financiado = sumatoria_financiado/m2_totales_disp
 
+    proyecto.precio_pricing = promedio_contado
+    proyecto.save()
+
     if request.method == 'GET':
 
         nuevo_precio = request.GET.items()

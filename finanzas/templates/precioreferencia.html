@@ -1,0 +1,207 @@
+{% extends "users/inicio2.html" %}
+
+{% load humanize %}
+
+{% load static %}
+{% load apptags_extras %}
+{% block content %}
+
+
+
+<div class="container-fluid">
+    <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+            <h3 class="text-themecolor">Precio Referencia</h3>
+        </div>
+
+        <div class="col-md-7 align-self-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'Almacenero' %}">Panel Analisis</a></li>
+                <li class="breadcrumb-item">Precio Referencia</li>
+            </ol>
+        </div>
+    </div>
+</div>
+
+{% if request.user|has_group:"FINANZAS NIVEL 2" %}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body row">
+                <div class="col-12 justify-content-center">
+
+                    <div class="table-responsive">
+
+                        <table id="example" class="table table-bordered" style="width:100%">
+                            <thead>
+
+                                <tr>
+                                    <th>Proyecto</th>
+                                    <th>Pricing</th>
+                                    <th>Simplificado</th>
+                                    <th>Precio <i class="fa fa-star-o"></i></th>
+                                    <th>Costo LinkP</th>
+                                    <th>Almac</th>
+                                    <th>Ingresos</th>
+                                    <th>%</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                {% for i in data %}
+
+                                <tr>
+                                    <td style="color: rgb({{i.proyecto.color}});">{{i.proyecto.nombre|lower|capfirst}}</td>
+                                    <td><a href="#" data-toggle="modal" data-target="#ModalPricing{{i.proyecto.id}}" class="text-info">${{i.proyecto.precio_pricing|floatformat:0|intcomma}}</a></td>
+                                    <td></td>
+                                    <td><a href="#" data-toggle="modal" data-target="#ModalPosta{{i.proyecto.id}}" class="text-info">${{i.proyecto.precio_posta|floatformat:0|intcomma}}</a></td>
+                                    <td><a href="#" data-toggle="modal" data-target="#ModalLinkp{{i.proyecto.id}}" class="text-info">${{i.proyecto.precio_linkp|floatformat:0|intcomma}}</a></td>
+                                    <td></td>
+                                    <td>${{i.ingreso_ventas|floatformat:0|intcomma}}</td>
+                                    <td></td>
+                                </tr>
+
+                                <div class="modal fade" id="ModalPosta{{i.proyecto.id}}" tabindex="-1" role="dialog" aria-labelledby="ModalPosta{{i.proyecto.id}}" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLongTitle">Modificar precio Posta</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form method="POST" class="mb-3">
+                                                    {% csrf_token %}
+                        
+                                                            <div >
+                                                                <label for="pricing" class="form-label">Precio</label>
+                                                                <input type="number" name="posta" class="form-control">
+                                                            </div>
+                                                        
+                                                        <button class="btn btn-info mt-4" name="proyecto" value="{{i.proyecto.id}}" type="submit">Modificar</button>
+                                                </form>
+                                            </div>
+                                            <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                    
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="modal fade" id="ModalPricing{{i.proyecto.id}}" tabindex="-1" role="dialog" aria-labelledby="ModalPricing{{i.proyecto.id}}" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLongTitle">Modificar precio Pricing</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form method="POST" class="mb-3">
+                                                    {% csrf_token %}
+                        
+                                                            <div >
+                                                                <label for="pricing" class="form-label">Precio</label>
+                                                                <input type="number" name="pricing" class="form-control">
+                                                            </div>
+                                                        
+                                                        <button class="btn btn-info mt-4" name="proyecto" value="{{i.proyecto.id}}" type="submit">Modificar</button>
+                                                </form>
+                                            </div>
+                                            <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                    
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="modal fade" id="ModalLinkP{{i.proyecto.id}}" tabindex="-1" role="dialog" aria-labelledby="ModalLinkP{{i.proyecto.id}}" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLongTitle">Modificar precio LinkP</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form method="POST" class="mb-3">
+                                                    {% csrf_token %}
+                        
+                                                            <div >
+                                                                <label for="pricing" class="form-label">Precio</label>
+                                                                <input type="number" name="linkp" class="form-control">
+                                                            </div>
+                                                        
+                                                        <button class="btn btn-info mt-4" name="proyecto" value="{{i.proyecto.id}}" type="submit">Modificar</button>
+                                                </form>
+                                            </div>
+                                            <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                    
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% else %}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body row">
+                <div class="col-12 justify-content-center">
+
+                    <div class="row justify-content-center text-center">
+                        <div class="col-6">
+                            <img src="{% static 'img/Linkp.png' %}" alt="" style="width: 120px;">
+                            <span>
+                                Lo sentimos, no tienes permisos para ver esta página.
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endif %}
+
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $('#example').DataTable({
+            "paging": false,
+            "ordering": false,
+            "info": false,
+
+        });
+    });
+</script>
+
+
+
+
+
+{% endblock %}

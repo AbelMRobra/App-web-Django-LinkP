@@ -6,7 +6,6 @@
 {% block content %}
 
 <div class="container-fluid">
-
     <div class="row page-titles">
         <div class="col-md-5 align-self-center">
             <h3 class="text-themecolor">Analisis conjunto de proyectos</h3>
@@ -15,12 +14,11 @@
         <div class="col-md-7 align-self-center">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'Almacenero' %}">Panel Analisis</a></li>
                 <li class="breadcrumb-item">Analisis conjunto</li>
             </ol>
         </div>
-
     </div>
-
 </div>
 
 
@@ -31,16 +29,15 @@
             <div class="d-flex">
 
                 <h4 class="card-title"><span class="lstick m-r-20"></span>
-                    <span class="text-info ml-2"
-                                style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif"></span>Cuadro resumen
+                    Cuadro resumen
                 </h4>
             
                 </div>
 
-            <div>
+            <div class="table-responsive">
 
-                <table class="table" >
-                    <thead style="font-size: 14px;">
+                <table class="table">
+                    <thead style="font-size: 12px;">
 
                         <tr>
                             <th style="vertical-align: middle;">Proyecto</th>
@@ -52,6 +49,7 @@
                             <th style="vertical-align: middle;">Beneficio</th>
                             <th style="vertical-align: middle;">Tenencia</th>
                             <th style="vertical-align: middle;">Finan.</th>
+                            <th style="vertical-align: middle;">Referencia</th>
 
 
                         </tr>
@@ -59,28 +57,25 @@
                     <tbody>
                         {% for i in datos_completos %}
 
-                        <tr class="table-light" style="font-size: 12px;">
+                        <tr style="font-size: 12px;">
 
                             {% if "#300" in i.0.proyecto.nombre %}
 
-                            <td style="width: 150px; color: rgb({{i.0.proyecto.color}}); vertical-align: top;">
-
-
-                                <b>#300</b>  
+                            <td style="width: 150px; vertical-align: top;">
+                                <p style="color: rgb({{i.0.proyecto.color}})"><b>#300</b> </p> 
                                 <h6 class="card-subtitle" style="font-size: 12px; margin-top: 2px;"><span class="text-muted">$ {{ i.9|floatformat:0|intcomma }}</span></h6>
                             </td>
 
                             {% else %}
 
                             <td style="width: 150px; color: rgb({{i.0.proyecto.color}}); vertical-align: top;">
-
-                            <b>{{ i.0.proyecto.nombre}}</b> 
+                            <span><b>{{ i.0.proyecto.nombre}}</b></span>
                             <h6 class="card-subtitle" style="font-size: 12px; margin-top: 2px;"><span class="text-muted">$ {{ i.9|floatformat:0|intcomma }}</span></h6>
                             </td>
 
                             {% endif %}
 
-                            <td style=" vertical-align: top;"><a href="#" data-toggle="modal" data-target="#ModalIngresos{{i.0.id}}">$ {{ i.2|floatformat:0|intcomma }}</a></td>
+                            <td style=" vertical-align: top;"><a href="#" data-toggle="modal" data-target="#ModalIngresos{{i.0.id}}"><span>$ {{ i.2|floatformat:0|intcomma }}</a></td>
 
                             <!-- Modal lista de ingresos-->
                             <div class="modal fade" id="ModalIngresos{{i.0.id}}" tabindex="-1" role="dialog" aria-labelledby="ModalIngresos{{i.0.id}}" aria-hidden="true">
@@ -94,7 +89,7 @@
                                     </div>
                                     <div class="modal-body">
                                     <h6 class="text-info">Elementos del almacenero</h6> 
-                                    <hr></hr>
+                                    <hr>
                                     <h6> Cuotas cobradas: $ {{i.0.cuotas_cobradas|floatformat:0|intcomma}}</h6>
                                     <h6> Cuotas a cobrar: $ {{i.0.cuotas_a_cobrar|floatformat:0|intcomma}}</h6>
                                     <h6> Ingreso por ventas: $ {{i.0.ingreso_ventas|floatformat:0|intcomma}}</h6> 
@@ -103,19 +98,19 @@
 
                                     
                                     </div>
-                                    <hr></hr>
+                                    <hr>
                                     <div class="modal-body">
                                         <h6>Total: $ {{i.2|floatformat:0|intcomma}} </h6>
                                     </div>
                                     <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                             
                                     </div>
                                 </div>
                                 </div>
 
                             </div>
-                            <td style=" vertical-align: top;"><a href="#" data-toggle="modal" data-target="#ModalGastos{{i.0.id}}">$ {{ i.1|floatformat:0|intcomma }}</a></td>
+                            <td style=" vertical-align: top;"><a href="#" data-toggle="modal" data-target="#ModalGastos{{i.0.id}}"><span>$ {{ i.1|floatformat:0|intcomma }}</span></a></td>
 
                             <!-- Modal lista de ingresos-->
                             <div class="modal fade" id="ModalGastos{{i.0.id}}" tabindex="-1" role="dialog" aria-labelledby="ModalGastos{{i.0.id}}" aria-hidden="true">
@@ -129,7 +124,7 @@
                                     </div>
                                     <div class="modal-body">
                                     <h6 class="text-info">Elementos del almacenero</h6> 
-                                    <hr></hr>
+                                    <hr>
                                     
                                     <h6> Gastos a la fecha: $ {{i.0.gastos_fecha|floatformat:0|intcomma}}</h6>
                                     <h6> Cheques emitidos: $ {{i.0.cheques_emitidos|floatformat:0|intcomma}}</h6>
@@ -147,86 +142,110 @@
 
                                     
                                     </div>
-                                    <hr></hr>
+                                    <hr>
                                     <div class="modal-body">
-                                        <h6>Total: $ {{i.1|floatformat:0|intcomma}} </h6>
+                                        <h6>Total: ${{i.1|floatformat:0|intcomma}} </h6>
                                     </div>
                                     <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                             
                                     </div>
                                 </div>
                                 </div>
 
                             </div>
-                            <td style=" vertical-align: top;">- $ {{ i.11|floatformat:0|intcomma }}</td>
-                            <td style=" vertical-align: top;">$ {{ i.3|floatformat:0|intcomma }}
+                            <td style=" vertical-align: top;"><span>-${{ i.11|floatformat:0|intcomma }}</span></td>
+                            <td style=" vertical-align: top;"><span>${{ i.3|floatformat:0|intcomma }}</span>
                                 <h6 class="card-subtitle" style="font-size: 12px; margin-top: 2px;"><span class="text-muted"> {{ i.4|floatformat:0|intcomma }}%</span></h6></td>                            
-                            <td style=" vertical-align: top;">- $ {{ i.10|floatformat:0|intcomma }}</td>
-                            <td style=" vertical-align: top;">$ {{ i.7|floatformat:0|intcomma }}
+                            <td style=" vertical-align: top;"><span>-${{ i.10|floatformat:0|intcomma }}</span></td>
+                            <td style=" vertical-align: top;"><span>${{ i.7|floatformat:0|intcomma }}</span>
                                 <h6 class="card-subtitle" style="font-size: 12px; margin-top: 2px;"><span class="text-muted">{{ i.8|floatformat:0|intcomma }}%</span></h6></td>
-                            <td style=" vertical-align: top;">$ {{ i.0.tenencia|floatformat:0|intcomma }}</td>
-                            <td style=" vertical-align: top;">$ {{ i.0.financiacion|floatformat:0|intcomma }}</td>
-                            
-                            <!-- 
-                            <td style=" vertical-align: middle; color: #323BA9;">
-
-                                <div>
-
-                                    {% if i.6 > 0 %}
-
-                                    <small style="color:#2FD627;"><b>PRG</b></small>
-
-                                    {% else %}
-
-                                    <small style="color: #D64127;"><b>PRG</b></small>
-
-                                    {% endif %}
-
-                                    {% if i.5 > 180 %}
-
-                                    <small style="color: #2FD627;"><b> PRP</b></small>
-
-                                    {% elif i.5 > 100 %}
-
-                                    <small style="color: #D6C127;"><b> PRP</b></small>
-
-                                    {% else %}
-
-                                    <small style="color: #D64127;"><b>PRP</b></small>
-
-                                    {% endif %}
-
+                            <td style=" vertical-align: top;"><span>${{ i.0.tenencia|floatformat:0|intcomma }}</span></td>
+                            <td style=" vertical-align: top;"><span>${{ i.0.financiacion|floatformat:0|intcomma }}</span></td>
+                       
+                            <td>
+                                <h6 class="card-subtitle" style="font-size: 12px;"><a href="#" data-toggle="modal" data-target="#ModalPLinkp{{i.0.proyecto.id}}" class="text-primary"><span style=" vertical-align: top;" data-toggle="tooltip" data-placement="left" title="" data-original-title="Precio Link-p">${{ i.0.proyecto.precio_linkp|floatformat:0|intcomma }}</span></a></h6>
+                                <!-- Modal lista de ingresos-->
+                                <div class="modal fade" id="ModalPLinkp{{i.0.proyecto.id}}" tabindex="-1" role="dialog" aria-labelledby="ModalPLinkp{{i.0.proyecto.id}}" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLongTitle">Modificar precio Link-P</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form method="POST" class="mb-3">
+                                                    {% csrf_token %}
+                        
+                                                            <div >
+                                                                <label for="linkp" class="form-label">Precio</label>
+                                                                <input type="number" name="linkp" class="form-control">
+                                                            </div>
+                                                        
+                                                        <button class="btn btn-info mt-4" name="proyecto" value="{{i.0.proyecto.id}}" type="submit">Modificar</button>
+                                                </form>
+                                            </div>
+                                            <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                    
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-
+                                <h6 class="card-subtitle" style="font-size: 12px;"><a href="#" data-toggle="modal" data-target="#ModalPPricing{{i.0.proyecto.id}}" class="text-info"><span style=" vertical-align: top;" data-toggle="tooltip" data-placement="left" title="" data-original-title="Precio Pricing">${{ i.0.proyecto.precio_pricing|floatformat:0|intcomma }}</span></a></h6>
+                                <div class="modal fade" id="ModalPPricing{{i.0.proyecto.id}}" tabindex="-1" role="dialog" aria-labelledby="ModalPPricing{{i.0.proyecto.id}}" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLongTitle">Modificar precio Pricing</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form method="POST" class="mb-3">
+                                                    {% csrf_token %}
+                        
+                                                            <div >
+                                                                <label for="pricing" class="form-label">Precio</label>
+                                                                <input type="number" name="pricing" class="form-control">
+                                                            </div>
+                                                        
+                                                        <button class="btn btn-info mt-4" name="proyecto" value="{{i.0.proyecto.id}}" type="submit">Modificar</button>
+                                                </form>
+                                            </div>
+                                            <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                    
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
                             </td>
-                            -->
 
                         </tr>
                         {% endfor %}
-                    </tbody>
-
-                    <tfoot>
-
                         <tr style="font-size: 12px; font-weight: bold; text-align: left;">
                             <td style=" vertical-align: top;">Resultado</td>
-                            <td style=" vertical-align: top;">$ {{datos_finales.0.0|floatformat:0|intcomma }}</td>
-                            <td style=" vertical-align: top;">$ {{datos_finales.0.1|floatformat:0|intcomma }}</td>
-                            <td style=" vertical-align: top;">- $ {{ datos_finales.0.4|floatformat:0|intcomma}}</td>
+                            <td style=" vertical-align: top;">${{datos_finales.0.0|floatformat:0|intcomma }}</td>
+                            <td style=" vertical-align: top;">${{datos_finales.0.1|floatformat:0|intcomma }}</td>
+                            <td style=" vertical-align: top;">-${{ datos_finales.0.4|floatformat:0|intcomma}}</td>
                             
-                            <td style=" vertical-align: top; ">$ {{datos_finales.0.2|floatformat:0|intcomma}}
+                            <td style=" vertical-align: top; ">${{datos_finales.0.2|floatformat:0|intcomma}}
                                 <h6 class="card-subtitle" style="font-size: 12px; margin-top: 2px;"><span class="text-muted">{{datos_finales.0.3|floatformat:0|intcomma }}%</span></h6>
                             </td>
-                            <td style=" vertical-align: top;">- $ {{ datos_finales.0.7|floatformat:0|intcomma }}</td>
-                            <td style=" vertical-align: top;">$ {{datos_finales.0.6|floatformat:0|intcomma }}
+                            <td style=" vertical-align: top;">-${{ datos_finales.0.7|floatformat:0|intcomma }}</td>
+                            <td style=" vertical-align: top;">${{datos_finales.0.6|floatformat:0|intcomma }}
                                 <h6 class="card-subtitle" style="font-size: 12px; margin-top: 2px;"><span class="text-muted">{{datos_finales.0.5|floatformat:0|intcomma }}%</span></h6>
                             </td>
-                            <td style=" vertical-align: top;">$ {{datos_finales.0.9|floatformat:0|intcomma }}</td>
-                            <td style=" vertical-align: top;">$ {{datos_finales.0.10|floatformat:0|intcomma }}</td>
-  
+                            <td style=" vertical-align: top;">${{datos_finales.0.9|floatformat:0|intcomma }}</td>
+                            <td style=" vertical-align: top;">${{datos_finales.0.10|floatformat:0|intcomma }}</td>
+    
                         </tr>
-
-                    </tfoot>
+                    </tbody>
 
                 </table>
 

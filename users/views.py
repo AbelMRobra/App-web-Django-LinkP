@@ -1,3 +1,4 @@
+import os
 from django.shortcuts import render, redirect
 from django.contrib.auth import logout as do_logout
 from django.contrib.auth import authenticate
@@ -5,7 +6,9 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login as do_login
 from django.contrib.auth.forms import UserCreationForm
 from django.http import HttpResponse
-from django.views.generic.base import TemplateView  
+from django.views.generic.base import TemplateView 
+from django.views.generic import View
+from django.template.loader import get_template 
 from finanzas.models import Almacenero, RegistroAlmacenero, Arqueo, RetirodeSocios, Honorarios
 from presupuestos.models import Presupuestos, InformeMensual, TareasProgramadas, Bitacoras
 from proyectos.models import Proyectos, Unidades
@@ -27,8 +30,66 @@ from email import encoders
 from agenda import settings
 from django.contrib.auth import models
 from statistics import mode
+from xhtml2pdf import pisa
 from openpyxl import Workbook
 from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
+
+
+class PdfMinutas(View):
+
+    def link_callback(self, uri, rel):
+            """
+            Convert HTML URIs to absolute system paths so xhtml2pdf can access those
+            resources
+            """
+            sUrl = settings.STATIC_URL        # Typically /static/
+            sRoot = settings.STATIC_ROOT      # Typically /home/userX/project_static/
+            mUrl = settings.MEDIA_URL         # Typically /media/
+            mRoot = settings.MEDIA_ROOT       # Typically /home/userX/project_static/media/
+
+            if uri.startswith(mUrl):
+                path = os.path.join(mRoot, uri.replace(mUrl, ""))
+            elif uri.startswith(sUrl):
+                path = os.path.join(sRoot, uri.replace(sUrl, ""))
+            else:
+                return uri
+
+            # make sure that file exists
+            if not os.path.isfile(path):
+                raise Exception(
+                        'media URI must start with %s or %s' % (sUrl, mUrl)
+                )
+            return path
+
+    def get(self, request, id_minuta, *args, **kwargs):
+
+        #Creamos la información
+
+        minuta = Minutas.objects.get(id = id_minuta)
+
+        acuerdos = Acuerdos.objects.filter(minuta = minuta)
+
+        # Aqui llamamos y armamos el PDF
+      
+        template = get_template('minutas/pdfminuta.html')
+        contexto = {'minuta':minuta, 
+        'acuerdos':acuerdos, 
+        'fecha':datetime.date.today(),
+        'logo':'{}{}'.format(settings.STATIC_URL, 'img/Linkp.png'),
+        'cabecera':'{}{}'.format(settings.STATIC_URL, 'img/fondo.png'),
+        'fondo':'{}{}'.format(settings.STATIC_URL, 'img/fondo.jpg')}
+        html = template.render(contexto)
+        response = HttpResponse(content_type = "application/pdf")
+        
+        #response['Content-Disposition'] = 'attachment; filename="reporte.pdf"'
+        
+        pisaStatus = pisa.CreatePDF(html, dest=response, link_callback=self.link_callback)
+        
+        if pisaStatus.err:
+            
+            return HttpResponse("Hay un error")
+
+        return response
 
 def linkp(request):
 
@@ -1477,22 +1538,12 @@ def tablerorega(request, id_proyecto, id_area, id_estado):
 
     estado = "Estado"
 
-    areas = ["ADMINISTRACIÓN Y FINANZAS", "COMPRAS Y CONTRATACIONES",
-    "COMERCIALIZACIÓN Y MARKETING",
-    "DIRECCIÓN",
-    "PRESUPUESTOS",
-    "OBRA",
-    "EQUIPO TECNICO",
-    "RECURSOS HUMANOS"]
+    areas = ["ADMINISTRACIÓN",
+    "COMERCIALIZACIÓN",
+    "PRODUCCIÓN"]
 
-    diccionario = {'1': ("ADMINISTRACIÓN Y FINANZAS", "55, 172, 99 "),
-    '2': ("COMPRAS Y CONTRATACIONES", "161, 200, 58"),
-    '3': ("COMERCIALIZACIÓN Y MARKETING", "248, 46, 126 "),
-    '4': ("DIRECCIÓN", "204, 194, 69 "),
-    '5': ("PRESUPUESTOS", "69, 204, 202 "),
-    '6': ("OBRA", "239, 144, 49 "),
-    '7': ("EQUIPO TECNICO", "198, 77, 77 "),
-    '8': ("RECURSOS HUMANOS", "34, 96, 231 ")}
+    diccionario = {'1': ("ADMINISTRACIÓN", "55, 172, 99 "),
+    '2': ("PRODUCCIÓN", "161, 200, 58")}
 
     if id_area == "0":
         area = ["Área",""]

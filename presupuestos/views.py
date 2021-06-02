@@ -495,11 +495,6 @@ def registroconstante(request):
             except:
 
                 cac.append(valor_cac)
-            
-            
-            
-
-        
 
     return render(request, 'constantes/historico.html', {'datos':datos, 'fecha':fecha, 'hormigon':hormigon_list, 'usd':usd, 'usd_blue':usd_blue, 'uva':uva, 'cac':cac})
 
@@ -540,7 +535,6 @@ def presupuestostotal(request):
 
         #Trae el proyecto elegido
 
-        proyecto_elegido = request.POST.items()
         proyecto = Proyectos.objects.get(id = int(request.POST["proyecto"]))
 
         try:
@@ -564,7 +558,6 @@ def presupuestostotal(request):
             pass
 
 
-
         # Comprobamos si existe el fichero csv en el almacen
 
         if len(PresupuestosAlmacenados.objects.filter(proyecto = proyecto, nombre = "vigente")) == 0:
@@ -584,7 +577,6 @@ def presupuestostotal(request):
 
             contador = 2
 
-            datos_presupuesto = PresupuestoPorCapitulo(proyecto.id)
             capitulo = Capitulos.objects.all()
             compo = CompoAnalisis.objects.all()
             computo = Computos.objects.all()
@@ -869,7 +861,7 @@ def presupuestostotal(request):
 
         datos.append((proyecto, valor_reposicion, valor_saldo, avance, pendiente))
 
-        # Crea ek historico
+        # Crea el historico
 
         valor_proyecto = RegistroValorProyecto.objects.filter(proyecto = proyecto)
 
@@ -882,10 +874,24 @@ def presupuestostotal(request):
         try:
 
             Presup_act = Presupuestos.objects.get(proyecto = proyecto)
-
             Presup_act.valor = valor_reposicion
-
             Presup_act.save()
+
+            # Trato de establecer el precio de Link-P
+
+            valor_linkp = valor_reposicion
+            parametros = Prametros.objects.get(proyecto = proyecto)
+            valor_linkp = (valor_linkp/(1 + parametros.tasa_des_p))*(1 + parametros.soft)       
+            valor_linkp = valor_linkp*(1 + parametros.imprevitso)
+            porc_terreno = parametros.terreno/parametros.proyecto.m2*100
+            porc_link = parametros.link/parametros.proyecto.m2*100
+            aumento_tem = parametros.tem_iibb*parametros.por_temiibb*(1+parametros.ganancia)
+            aumento_comer = parametros.comer*(1+(porc_terreno + porc_link)/100)*(1+parametros.ganancia)           
+            valor_linkp = valor_linkp/(1-aumento_tem- aumento_comer)           
+            m2 = (parametros.proyecto.m2 - parametros.terreno - parametros.link)
+            valor_costo = valor_linkp/m2
+            proyecto.precio_linkp = valor_costo
+            proyecto.save()
 
         except:
             pass

@@ -217,6 +217,9 @@ class Seguimiento(models.Model):
         RR_HH = "RECURSOS HUMANOS"
         DIRECCION = "DIRECCIÓN"
         OBRA = "OBRA"
+        PRODUCCION = "PRODUCCIÓN"
+        ADMINISTRACION = "ADMINISTRACIÓN"
+        COMERCIALIZACION = "COMERCIALIZACIÓN"
 
     orden = models.IntegerField(verbose_name="Orden de la tarea")
     area = models.CharField(choices=areas.choices, max_length=100, verbose_name="Area")

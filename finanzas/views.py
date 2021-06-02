@@ -2485,7 +2485,40 @@ def indicelinkajustado(request):
 
     return render(request, 'indicelink.html', {"datos_completos":datos_completos, 'datos_finales':datos_finales, "datos_registro":datos_registro, "fechas":fechas, "datos_finales_2":datos_finales_2})
 
+def precioreferencia(request):
+
+    if request.method == 'POST':
+        proyecto = Proyectos.objects.get(id = request.POST['proyecto'])
+        try:
+            proyecto.precio_posta = request.POST['posta']
+            proyecto.save()
+        except:
+            pass
+        try:
+            proyecto.precio_linkp = request.POST['linkp']
+            proyecto.save()
+        except:
+            pass
+        try:
+            proyecto.precio_linkp = request.POST['pricing']
+            proyecto.save()
+        except:
+            pass
+
+    data = Almacenero.objects.all()
+
+    return render(request, 'precioreferencia.html', {"data":data})
+
 def consolidado(request):
+
+    if request.method == 'POST':
+        proyecto = Proyectos.objects.get(id = request.POST['proyecto'])
+        try:
+            proyecto.precio_linkp = request.POST['linkp']
+            proyecto.save()
+        except:
+            proyecto.precio_pricing = request.POST['pricing']
+            proyecto.save()
 
     datos = Almacenero.objects.all()
 

@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.urls import path
 from django.conf.urls import url
 from . import views
-from .views import DescargarRegistroContable
+from .views import DescargarRegistroContable, PdfMinutas
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 
@@ -38,6 +38,7 @@ urlpatterns = [
     url(r'minutascrear$', login_required(views.minutascrear), name = 'Minutas Crear'),
     url(r'minutasmodificar/(?P<id_minuta>\d+)/$', login_required(views.minutasmodificar), name = 'Minutas Modificar'),
     url(r'minutasid/(?P<id_minuta>\d+)/$', login_required(views.minutasid), name = 'Minutas Id'),
+    url(r'^pdfminutas/(?P<id_minuta>\d+)/$', PdfMinutas.as_view(), name = "PDF Minutas"),
 
 
     # Template de registro contable
