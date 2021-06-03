@@ -6,9 +6,6 @@
 {% block content %}
 
 <div class="container-fluid">
-    <!-- ============================================================== -->
-    <!-- Cabeza de la pagina -->
-    <!-- ============================================================== -->
     <div class="row page-titles">
         <div class="col-md-5 align-self-center">
             <h3 class="text-themecolor">Tablero de seguimiento</h3>
@@ -21,225 +18,233 @@
 
             </ol>
         </div>
-
     </div>
-
   </div>
 
-
   <div class="row">
-
     <div class="col-12">
         <div class="card">
             <div class="card-body">
                 <h4 class="card-title">Desglose de tareas</h4>
                 <h6 class="card-subtitle">Seguimiento a nivel gerencial</h6>
-                <a href="{% url 'Tablero Rega Add' %}" class="btn"><i class="fa fa-plus-circle text-info"> Nuevo</i></a>
-                <div class="dropdown">
-                    <button class="dropbtn btn btn-secondary" style="background-color: rgb({{proyecto.color}}); border-color: rgb({{proyecto.color}})">{% if proyecto %} {{proyecto.nombre}} {% else %}Proyecto{% endif %}</button>
-                    <div class="dropdown-content">
-                        <a href="{% url 'Tablero Rega' 0 id_area id_estado %}">Todos</a>
+                <a href="{% url 'Tablero Rega Add' %}" class="btn fa fa-plus-circle text-info"><span class="text-info ml-2"
+                    style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif"><b>Nuevo</b></span></a>
+                
+                <div class="btn-group">
+                    <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        {% if proyecto %} {{proyecto.nombre}} {% else %}Proyecto{% endif %}
+                    </button>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="{% url 'Tablero Rega' 0 id_area id_estado %}">Todos</a>
                         {% for p in list_project %}
-                        <a href="{% url 'Tablero Rega' p.id id_area id_estado %}">{{p.nombre}}</a>
+                        <a class="dropdown-item" href="{% url 'Tablero Rega' p.id id_area id_estado %}">{{p.nombre}}</a>
                         {% endfor %}
-
-
                     </div>
                 </div>
+
 
                 <div class="btn-group">
                     <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Proyectos
+                        Gerencia
                     </button>
                     <div class="dropdown-menu">
-                    <a href="{% url 'Tablero Rega' id_proyecto 1 id_estado %}">Administración</a>
-                    <a href="{% url 'Tablero Rega' id_proyecto 2 id_estado %}">Producción</a>
-                    <a href="{% url 'Tablero Rega' id_proyecto 3 id_estado %}">Comercialización</a>
+                    <a class="dropdown-item" href="{% url 'Tablero Rega' id_proyecto 1 id_estado %}">Administración</a>
+                    <a class="dropdown-item" href="{% url 'Tablero Rega' id_proyecto 2 id_estado %}">Producción</a>
+                    <a class="dropdown-item" href="{% url 'Tablero Rega' id_proyecto 3 id_estado %}">Comercialización</a>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
 </div>
 
-  <div class="row">
+<div class="row">
 
-    {% for d in data %}
+{% for d in data %}
 
-    <div class="col-12">
-        <div class="card">
-            <div class="card-body">
-                <h4 class="card-title"><span class="lstick"></span>ÁREA {{d.0.0}}</h4>
-                {% if d.1 %}               
-                <div class="table-responsive">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                {% if proyecto == 0 %}
-                                <th>Proyecto</th>
-                                {% endif %}
-                                <th>Tarea</th>
-                                <th>Inicio</th>
-                                <th>Final</th>
-                                <th>Resp.</th>
-                                <th>Adj.</th>
-                            </tr>
-                        </thead>
-                        <tbody style="font-size: 14px;">
-                            {% for i in d.1 %}
-                            <tr>
-                                {% if proyecto == 0 %}
-                                <td style="color: rgb({{i.proyecto.color}}); width: 150px">{{i.proyecto.nombre|lower|capfirst}}</td>
-                                {% endif %}
-                                <td style="min-width: 400px;"><div><a href="#" data-toggle="modal" data-target="#ModalTarea{{i.id}}" name="subir_item">{{i.nombre|lower|capfirst}}</a></div>
-                                    {% if i.estado == "LISTO" %} 
-                                    <div class="label label-table label-success">Listo</div>
-                                    {% elif i.estado == "TRABAJANDO" %} 
-                                    <div class="label label-table label-warning">Trabajando</div>
-                                    {% elif i.estado == "PROBLEMAS" %}
-                                    <div class="label label-table label-danger">Problemas</div>
-                                    {% else %}
-                                    <div class="label label-table label-info">Espera</div>
-                                    {% endif %} 
-                                </td>
-                                <!-- Modal editar-->
-                    <div class="modal fade" id="ModalTarea{{i.id}}" tabindex="-1" role="dialog" aria-labelledby="ModalTarea{{i.id}}Title" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLongTitle">Editar tarea</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                            </div>
-                            <div class="modal-body">
-                                                            
-                            <form method="POST" style="margin: 15px;">
-    
-                                {% csrf_token %}
-
-                                <h6><small>Proyecto</small> </h6>  
-    
-                                <div class="input-group mb-3">
-    
-                                    <select name="proyecto" class="custom-select" style="width: 300px;">
-
-                                        {% for p in list_project_all %}
-                    
-                                        <option  {% if p.nombre == i.proyecto.nombre %} selected {% endif %}>{{p.nombre}}</option>
-                    
-                                        {% endfor %}
-                    
-                                    </select>
-                                </div>
-
-                                <h6><small>Área</small> </h6>  
-    
-                                <div class="input-group mb-3">
-    
-                                    <select name="area" class="custom-select" style="width: 300px;">
-
-                                        {% for a in areas %}
-                    
-                                        <option  {% if a == i.area %} selected {% endif %}>{{a}}</option>
-                    
-                                        {% endfor %}
-                    
-                                    </select>
-                                </div>
-    
-                                <h6><small>Nombre</small> </h6>  
-    
-                                <div class="input-group mb-3">
-    
-                                    <input name="nombre" type="text" class="form-control form-control" style="width: 300px;" value="{{i.nombre}}">
-    
-                                </div>
-              
-
-                                <h6><small>Estado</small> </h6>  
-    
-                                <div class="input-group mb-3">
-    
-                                    <select name="estado" class="custom-select" style="width: 300px;">
-                    
-                                        <option {% if i.estado == "ESPERA" %}selected{% endif%}>ESPERA</option>
-                                        <option {% if i.estado == "TRABAJANDO" %}selected{% endif%}>TRABAJANDO</option>
-                                        <option {% if i.estado == "PROBLEMAS" %}selected{% endif%}>PROBLEMAS</option>
-                                        <option {% if i.estado == "LISTO" %}selected{% endif%}>LISTO</option>
-                    
-                                    </select>
-                                </div>
-
-                                <h6><small>Fecha Inicial</small> </h6>  
-    
-                                <div class="input-group mb-3">
-    
-                                    <input name="fechai" type="date" class="form-control form-control" style="width: 300px;">
-    
-                                </div>
-
-                                <h6><small>Fecha Final</small> </h6>  
-    
-                                <div class="input-group mb-3">
-    
-                                    <input name="fechaf" type="date" class="form-control form-control" style="width: 300px;">
-    
-                                </div>
-
-                                <h6><small>Responsable</small> </h6>
-    
-                                <div class="input-group mb-3">
-    
-                                    <select name="responsable" class="custom-select" style="width: 300px;">
-
-                                        {% for u in list_users %}
-                    
-                                        <option value="{{u.id}}" {% if i.responsable.identificacion == u.identificacion %}selected{% endif %}>{{u.identificacion}}</option>
-                    
-                                        {% endfor %}
-                    
-                                    </select>
-                                </div>
-    
-                                <button type="submit" class="btn waves-effect waves-light btn-rounded btn-secondary" name="id" value="{{i.id}}">ingresar</button>
-                            
-                            </form>
-                            
-                            </div>
-                            <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    
-                            </div>
-                        </div>
-                        </div>
-    
-                    </div>
-                                <td style="width: 150px;">{% if i.fecha_inicio %}<span class="text-muted"><i class="fa fa-clock-o"></i> {{i.fecha_inicio|date:"d/m/Y"}}</span>{% else %} Sin asignar {% endif%} </td>
-                                <td style="width: 150px;">{% if i.fecha_final %}<span class="text-muted"><i class="fa fa-clock-o"></i> {{i.fecha_final|date:"d/m/Y"}}</span>{% else %} Sin asignar {% endif%} </td>
-                                <td {% if i.responsable %} style="text-align: center; width: 50px;"{% endif %} style="width: 50px;">{% if i.responsable %}<span class="image-list m-t-10">
-                                    <a href="#"><img src="{{i.responsable.imagenlogo.url}}" class="img-circle" alt="user" width="40" /></a>
+<div class="col-12">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title"><span class="lstick"></span>ÁREA {{d.0.0}}</h4>
+            {% if d.1 %}               
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Gerencia</th>
+                            {% if proyecto == 0 %}
+                            <th>Proyecto</th>
+                            {% endif %}
+                            <th>Tarea</th>
+                            <th>Estado</th>
+                            <th>Inicio</th>
+                            <th>Final</th>
+                            <th>Resp.</th>
+                            <th>Adj.</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody style="font-size: 14px;">
+                        {% for i in d.1 %}
+                        <tr>
+                            <td style="width: 50px;">{{i.area|lower|capfirst}}</td>
+                            {% if proyecto == 0 %}
+                            <td style="color: rgb({{i.proyecto.color}}); width: 150px">{{i.proyecto.nombre|lower|capfirst}}</td>
+                            {% endif %}
+                            <td style="min-width: 280px;"><div><a href="#" data-toggle="modal" data-target="#ModalTarea{{i.id}}" name="subir_item">{{i.nombre|lower|capfirst}}</a></div>
+                            </td>
+                            <td>
+                                {% if i.estado == "LISTO" %} 
+                                <div class="label label-table label-success">Listo</div>
+                                {% elif i.estado == "TRABAJANDO" %} 
+                                <div class="label label-table label-warning">Trabajando</div>
+                                {% elif i.estado == "PROBLEMAS" %}
+                                <div class="label label-table label-danger">Problemas</div>
+                                {% else %}
+                                <div class="label label-table label-info">Espera</div>
+                                {% endif %} 
+                            </td>
+                            <!-- Modal editar-->
+                            <div class="modal fade" id="ModalTarea{{i.id}}" tabindex="-1" role="dialog" aria-labelledby="ModalTarea{{i.id}}Title" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLongTitle">Editar tarea</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    </div>
+                                    <div class="modal-body">
+                                                                    
+                                    <form method="POST" style="margin: 15px;">
             
-                                </span>{% else %} S/A {% endif %}</td>
-                                <td style="width: 50px;">Adj.</td>
-                            </tr>
+                                        {% csrf_token %}
 
-                            {% endfor %}
+                                        <h6><small>Proyecto</small> </h6>  
+            
+                                        <div class="input-group mb-3">
+            
+                                            <select name="proyecto" class="custom-select" style="width: 300px;">
+
+                                                {% for p in list_project_all %}
                             
-                        </tbody>
-                    </table>
-                </div>
-                {% else %}
-                <h6 class="card-subtitle">No tiene tareas que cumplan con estas condiciones</h6>
-                {% endif %}
+                                                <option  {% if p.nombre == i.proyecto.nombre %} selected {% endif %}>{{p.nombre}}</option>
+                            
+                                                {% endfor %}
+                            
+                                            </select>
+                                        </div>
+
+                                        <h6><small>Área</small> </h6>  
+            
+                                        <div class="input-group mb-3">
+            
+                                            <select name="area" class="custom-select" style="width: 300px;">
+
+                                                {% for a in areas %}
+                            
+                                                <option  {% if a == i.area %} selected {% endif %}>{{a}}</option>
+                            
+                                                {% endfor %}
+                            
+                                            </select>
+                                        </div>
+            
+                                        <h6><small>Nombre</small> </h6>  
+            
+                                        <div class="input-group mb-3">
+            
+                                            <input name="nombre" type="text" class="form-control form-control" style="width: 300px;" value="{{i.nombre}}">
+            
+                                        </div>
+                    
+
+                                        <h6><small>Estado</small> </h6>  
+            
+                                        <div class="input-group mb-3">
+            
+                                            <select name="estado" class="custom-select" style="width: 300px;">
+                            
+                                                <option {% if i.estado == "ESPERA" %}selected{% endif%}>ESPERA</option>
+                                                <option {% if i.estado == "TRABAJANDO" %}selected{% endif%}>TRABAJANDO</option>
+                                                <option {% if i.estado == "PROBLEMAS" %}selected{% endif%}>PROBLEMAS</option>
+                                                <option {% if i.estado == "LISTO" %}selected{% endif%}>LISTO</option>
+                            
+                                            </select>
+                                        </div>
+
+                                        <h6><small>Fecha Inicial</small> </h6>  
+            
+                                        <div class="input-group mb-3">
+            
+                                            <input name="fechai" type="date" class="form-control form-control" style="width: 300px;">
+            
+                                        </div>
+
+                                        <h6><small>Fecha Final</small> </h6>  
+            
+                                        <div class="input-group mb-3">
+            
+                                            <input name="fechaf" type="date" class="form-control form-control" style="width: 300px;">
+            
+                                        </div>
+
+                                        <h6><small>Responsable</small> </h6>
+            
+                                        <div class="input-group mb-3">
+            
+                                            <select name="responsable" class="custom-select" style="width: 300px;">
+
+                                                {% for u in list_users %}
+                            
+                                                <option value="{{u.id}}" {% if i.responsable.identificacion == u.identificacion %}selected{% endif %}>{{u.identificacion}}</option>
+                            
+                                                {% endfor %}
+                            
+                                            </select>
+                                        </div>
+            
+                                        <button type="submit" class="btn waves-effect waves-light btn-rounded btn-secondary" name="id" value="{{i.id}}">ingresar</button>
+                                    
+                                    </form>
+                                    
+                                    </div>
+                                    <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            
+                                    </div>
+                                </div>
+                                </div>
+            
+                            </div>
+                            <td style="width: 150px;">{% if i.fecha_inicio %}<span class="text-muted"><i class="fa fa-clock-o"></i>{{i.fecha_inicio|date:"d/m/Y"}}</span>{% else %} Sin asignar {% endif%} </td>
+                            <td style="width: 150px;">{% if i.fecha_final %}<span class="text-muted"><i class="fa fa-clock-o"></i>{{i.fecha_final|date:"d/m/Y"}}</span>{% else %} Sin asignar {% endif%} </td>
+                            <td {% if i.responsable %} style="text-align: center; width: 50px;"{% endif %} style="width: 50px;">{% if i.responsable %}<span class="image-list m-t-10">
+                                <a href="#"><img src="{{i.responsable.imagenlogo.url}}" class="img-circle" alt="user" width="40" /></a>
+        
+                            </span>{% else %} S/A {% endif %}</td>
+                            <td style="width: 50px;">Adj.</td>
+                            <td style="width: 50px;"><form method="POST" class="mb-3">
+                                {% csrf_token %}
+                                <a href="#" name="delete" value="{{i.id}}" class="fa fa-trash-o text-danger"></a>
+                            </form></td>
+                        </tr>
+
+                        {% endfor %}
+                        
+                    </tbody>
+                </table>
             </div>
+            {% else %}
+            <h6 class="card-subtitle">No tiene tareas que cumplan con estas condiciones</h6>
+            {% endif %}
         </div>
     </div>
+</div>
 
-    
-    {% endfor %}
-    </div>
+
+{% endfor %}
+</div>
 
 
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>

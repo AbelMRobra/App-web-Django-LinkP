@@ -121,6 +121,7 @@ class Pago(models.Model):
         CHEQUE = "CHEQUE"
         TRANSFERENCIA = "TRANSFERENCIA"
         DEPOSITO = "DEPOSITO"
+        DOLARES = "DOLARES"
 
     cuota = models.ForeignKey(Cuota, on_delete=models.CASCADE, verbose_name = "Cuota")
     fecha = models.DateField(verbose_name = "Fecha de venta")

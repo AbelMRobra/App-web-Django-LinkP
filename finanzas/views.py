@@ -3370,8 +3370,6 @@ Saludos!
                 arqueo = Arqueo.objects.get(id = int(request.POST['delete']))
                 arqueo.delete()
 
-        
-
     data = Arqueo.objects.all().order_by('-fecha')
 
     return render(request, 'arqueos.html', {'data':data})
@@ -3658,6 +3656,20 @@ def calculadora (request):
   
 
     return render(request, 'calculadora.html', {'datos':datos})
+
+def prueba(request):
+
+    data_proyecto = []
+
+    proyectos = Proyectos.objects.all()
+    nombre_proyectos = Proyectos.objects.all().values_list("nombre", flat=True)
+
+    for p in proyectos:
+        if p.nombre[0] == "T" and p.m2 >= 1000:
+            data_proyecto.append(p)
+
+
+    return render(request, 'prueba.html', {"data_proyecto":data_proyecto})
 
 class DescargarCuentacorriente(TemplateView):
 

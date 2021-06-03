@@ -1,0 +1,201 @@
+{% extends "users/inicio2.html" %}
+
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+
+<div class="container-fluid">
+    <!-- ============================================================== -->
+    <!-- Cabeza de la pagina -->
+    <!-- ============================================================== -->
+    <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+            <h3 class="text-themecolor">Pantalla para test</h3>
+        </div>
+
+        <div class="col-md-7 align-self-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+                <li class="breadcrumb-item">Test</li>
+
+            </ol>
+        </div>
+
+    </div>
+
+  </div>
+
+
+  <div class="row">
+
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Vista del resultado</h4>
+                <h6 class="card-subtitle">Actualizar cuando se modifique el archivo view.py</h6>
+
+                {% if data_proyecto %}
+
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Proyecto</th>
+                                <th>Tamaño</th>
+                            </tr>
+                        </thead>
+                        <tbody style="font-size: 14px;">
+                            {% for p in data_proyecto %}
+                            <tr>
+                                <td>{{p.nombre}}</td>
+                                <td>{{p.m2}} M2</td>
+ 
+                                <!-- Modal editar-->
+                                <div class="modal fade" id="ModalTarea{{i.id}}" tabindex="-1" role="dialog" aria-labelledby="ModalTarea{{i.id}}Title" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLongTitle">Editar tarea</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                        </div>
+                                        <div class="modal-body">
+                                                                        
+                                        <form method="POST" style="margin: 15px;">
+                
+                                            {% csrf_token %}
+
+                                            <h6><small>Proyecto</small> </h6>  
+                
+                                            <div class="input-group mb-3">
+                
+                                                <select name="proyecto" class="custom-select" style="width: 300px;">
+
+                                                    {% for p in list_project_all %}
+                                
+                                                    <option  {% if p.nombre == i.proyecto.nombre %} selected {% endif %}>{{p.nombre}}</option>
+                                
+                                                    {% endfor %}
+                                
+                                                </select>
+                                            </div>
+
+                                            <h6><small>Área</small> </h6>  
+                
+                                            <div class="input-group mb-3">
+                
+                                                <select name="area" class="custom-select" style="width: 300px;">
+
+                                                    {% for a in areas %}
+                                
+                                                    <option  {% if a == i.area %} selected {% endif %}>{{a}}</option>
+                                
+                                                    {% endfor %}
+                                
+                                                </select>
+                                            </div>
+                
+                                            <h6><small>Nombre</small> </h6>  
+                
+                                            <div class="input-group mb-3">
+                
+                                                <input name="nombre" type="text" class="form-control form-control" style="width: 300px;" value="{{i.nombre}}">
+                
+                                            </div>
+                        
+
+                                            <h6><small>Estado</small> </h6>  
+                
+                                            <div class="input-group mb-3">
+                
+                                                <select name="estado" class="custom-select" style="width: 300px;">
+                                
+                                                    <option {% if i.estado == "ESPERA" %}selected{% endif%}>ESPERA</option>
+                                                    <option {% if i.estado == "TRABAJANDO" %}selected{% endif%}>TRABAJANDO</option>
+                                                    <option {% if i.estado == "PROBLEMAS" %}selected{% endif%}>PROBLEMAS</option>
+                                                    <option {% if i.estado == "LISTO" %}selected{% endif%}>LISTO</option>
+                                
+                                                </select>
+                                            </div>
+
+                                            <h6><small>Fecha Inicial</small> </h6>  
+                
+                                            <div class="input-group mb-3">
+                
+                                                <input name="fechai" type="date" class="form-control form-control" style="width: 300px;">
+                
+                                            </div>
+
+                                            <h6><small>Fecha Final</small> </h6>  
+                
+                                            <div class="input-group mb-3">
+                
+                                                <input name="fechaf" type="date" class="form-control form-control" style="width: 300px;">
+                
+                                            </div>
+
+                                            <h6><small>Responsable</small> </h6>
+                
+                                            <div class="input-group mb-3">
+                
+                                                <select name="responsable" class="custom-select" style="width: 300px;">
+
+                                                    {% for u in list_users %}
+                                
+                                                    <option value="{{u.id}}" {% if i.responsable.identificacion == u.identificacion %}selected{% endif %}>{{u.identificacion}}</option>
+                                
+                                                    {% endfor %}
+                                
+                                                </select>
+                                            </div>
+                
+                                            <button type="submit" class="btn waves-effect waves-light btn-rounded btn-secondary" name="id" value="{{i.id}}">ingresar</button>
+                                        
+                                        </form>
+                                        
+                                        </div>
+                                        <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                
+                                        </div>
+                                    </div>
+                                    </div>
+                
+                                </div>
+
+                            </tr>
+
+                            {% endfor %}
+                            
+                        </tbody>
+                    </table>
+                </div>
+
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+
+
+<script>
+     
+$(window).scroll(function () {
+            sessionStorage.scrollTop = $(this).scrollTop();
+        });
+        $(document).ready(function () {
+            if (sessionStorage.scrollTop != "undefined") {
+                $(window).scrollTop(sessionStorage.scrollTop);
+            }
+        });
+</script>
+
+
+  {% endblock %}

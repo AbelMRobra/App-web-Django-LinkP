@@ -10,6 +10,7 @@ urlpatterns = [
     url(r'^almacenero/$', login_required(views.almacenero), name = 'Almacenero'),
     url(r'^principalfinanzas/$', login_required(views.principalfinanzas), name = 'Principal Finanzas'),
     url(r'^precioreferencia/$', login_required(views.precioreferencia), name = 'Precio referencia'),
+    url(r'^prueba/$', login_required(views.prueba), name = 'Prueba'),
 
 
     #----------------URL CUENTAS CORRIENTES -----------------------------------------
