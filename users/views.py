@@ -1632,13 +1632,9 @@ def tableroregaadd(request):
         except:
             pass
 
-    areas = ["ADMINISTRACIÓN Y FINANZAS", "COMPRAS Y CONTRATACIONES",
-    "COMERCIALIZACIÓN Y MARKETING",
-    "DIRECCIÓN",
-    "PRESUPUESTOS",
-    "OBRA",
-    "EQUIPO TECNICO",
-    "RECURSOS HUMANOS"]
+    areas = ["ADMINISTRACIÓN",
+    "COMERCIALIZACIÓN",
+    "PRODUCCIÓN"]
 
     proyecto = Proyectos.objects.all().order_by("nombre")
 
