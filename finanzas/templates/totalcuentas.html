@@ -90,7 +90,13 @@
                         <a href="{% url 'Total cuenta' id_proyecto 1 0 %}" class="btn btn-secondary">Cliente</a>
                         
                         {% endif %}
+                        {% if cliente == "1" %} 
+                        <a id="rotar" class="btn btn-secondary" href="#">Rotar</a>
+                        {% endif %}
+                        
                     </div>
+
+
 
                     <div class="table-responsive">
 
@@ -113,7 +119,7 @@
                                     <td>{{key|lower|capfirst}}</td>
                                     {% for v in value %}
                                     {% if moneda == "0" %}
-                                    <td>${{v|floatformat:0|intcomma}}</td>
+                                    <td>${{v|floatformat:2|intcomma}}</td>
                                     {% else %}
                                     <td>{{v|floatformat:2}}</td>
                                     {% endif %}
@@ -212,6 +218,32 @@
 <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js" defer></script>
 <script src="https://cdn.datatables.net/1.10.23/js/dataTables.bootstrap4.min.js" defer></script>
 
+<script>
+    $('#rotar').click(function(){
+        $("table").each(function() {
+            var $this = $(this);
+            var newrows = [];
+            $this.find("tr").each(function(){
+                var i = 0;
+                $(this).find("td, th").each(function(){
+                    i++;
+                    if(newrows[i] === undefined) { newrows[i] = $("<tr></tr>"); }
+                    if(i == 1)
+                        newrows[i].append("<th>" + this.innerHTML  + "</th>");
+                    else
+                        newrows[i].append("<td>" + this.innerHTML  + "</td>");
+                });
+            });
+            $this.find("tr").remove();
+            $.each(newrows, function(){
+                $this.append(this);
+            });
+        });
+        
+        return false;
+    });
+    
+    </script>
 
 <script>
 

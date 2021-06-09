@@ -30,7 +30,7 @@
                 </div>
 
                 <div>
-                    <img src="{% static 'img/animation_500_kmv4rmjh.gif' %}" alt="" style="max-width:100px; height:auto; margin: 5px;">
+                    <img src="{% static 'img/proveedores.png' %}" alt="" style="max-width:100px; height:auto; margin: 5px;">
                 </div>
 
                 {% if request.user|has_group:"COMPRAS NIVEL 1" %}
@@ -57,7 +57,7 @@
                 </div>
 
                 <div>
-                    <img src="{% static 'img/animation_500_kmqk33n8.gif' %}" alt="" style="max-width:100px; height:auto; margin: 5px;">
+                    <img src="{% static 'img/solicitudcompra.png' %}" alt="" style="max-width:100px; height:auto; margin: 5px;">
                 </div>
 
                 {% if request.user|has_group:"COMPRAS NIVEL 2" %}
@@ -87,7 +87,7 @@
                 </div>
 
                 <div>
-                    <img src="{% static 'img/animation_500_kmv3cy3w.gif' %}" alt="" style="max-width:100px; height:auto; margin: 5px;">
+                    <img src="{% static 'img/registrocompras.png' %}" alt="" style="max-width:100px; height:auto; margin: 5px;">
                 </div>
 
                 {% if request.user|has_group:"COMPRAS NIVEL 3" %}
@@ -116,7 +116,7 @@
                 </div>
 
                 <div>
-                    <img src="{% static 'img/animation_500_kmv1rhi1.gif' %}" alt="" style="max-width:100px; height:auto; margin: 5px;">
+                    <img src="{% static 'img/checkOC.png' %}" alt="" style="max-width:100px; height:auto; margin: 5px;">
                 </div>
 
                 {% if request.user|has_group:"COMPRAS NIVEL 4" %}
@@ -140,10 +140,10 @@
                 </div>
 
                 <div>
-                    <img src="{% static 'img/animation_500_kmv0kdl0.gif' %}" alt="" style="max-width:100px; height:auto; margin: 5px;">
+                    <img src="{% static 'img/analisisperiodos.png' %}" alt="" style="max-width:100px; height:auto; margin: 5px;">
                 </div>
                 {% if request.user|has_group:"COMPRAS NIVEL 5" %}
-                <a href="{% url 'Informe compras' %}"><button class="btn btn-warning">
+                <a href="{% url 'Informe compras' %}"><button class="btn btn-info">
                         Ingresar</button></a>
                 {% else %}
 
@@ -163,10 +163,10 @@
                 </div>
 
                 <div>
-                    <img src="{% static 'img/animation_500_kmux2bxi.gif' %}" alt="" style="max-width:100px; height:auto; margin: 5px;">
+                    <img src="{% static 'img/seguimientogeneral.png' %}" alt="" style="max-width:100px; height:auto; margin: 5px;">
                 </div>
                 {% if request.user|has_group:"COMPRAS NIVEL 5" %}
-                <a href="{% url 'Analisis Compras' %}"><button class="btn btn-danger">
+                <a href="{% url 'Analisis Compras' %}"><button class="btn btn-success">
                         Ingresar</button></a>
                 {% else %}
 
@@ -187,7 +187,7 @@
                 </div>
 
                 <div>
-                    <img src="{% static 'img/compras_contrato.gif' %}" alt="" style="max-width:100px; height:auto; margin: 5px;">
+                    <img src="{% static 'img/contratos.png' %}" alt="" style="max-width:100px; height:auto; margin: 5px;">
                 </div>
 
                 {% if request.user|has_group:"COMPRAS NIVEL 2" %}
@@ -206,7 +206,7 @@
 </div>
 
 <aside class="right-side-panel">
-    <h3 class="p-relative"><span class="lstick"></span>¿Comó se usa?</h3>
+    <h3 class="p-relative"><span class="lstick"></span>¿Cómo se usa?</h3>
     <div class="row">
         
         <div class="col-md-12 m-t-10">

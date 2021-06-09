@@ -32,9 +32,17 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body">
-                <h4 class="card-title">Vista del resultado</h4>
+                <h4 class="card-title">Aqui veras el resulado</h4>
                 <h6 class="card-subtitle">Actualizar cuando se modifique el archivo view.py</h6>
+             
+             <ul>
+                {% for a in proyectos %}
+               <li>
+                {{a.nombre}}
+               </li>
 
+               {% endfor %}
+             </ul>  
                 {% if data_proyecto %}
 
                 <div class="table-responsive">
@@ -42,7 +50,9 @@
                         <thead>
                             <tr>
                                 <th>Proyecto</th>
+                            
                                 <th>Tamaño</th>
+                                <th style="text-align: center">Respuesta</th>
                             </tr>
                         </thead>
                         <tbody style="font-size: 14px;">
@@ -50,6 +60,12 @@
                             <tr>
                                 <td>{{p.nombre}}</td>
                                 <td>{{p.m2}} M2</td>
+                                <td style="text-align: center">{% if p.nombre == "TORRE BLUE" %}
+                                    <img src="{% static 'img/cheque.png' %}" alt="" style="max-width:30px; height:auto; margin: 5px;">
+                                    {% else %}
+                                    <img src="{% static 'img/advertir.png' %}" alt="" style="max-width:30px; height:auto; margin: 5px;">
+                                    
+                                    {% endif %}</td>
  
                                 <!-- Modal editar-->
                                 <div class="modal fade" id="ModalTarea{{i.id}}" tabindex="-1" role="dialog" aria-labelledby="ModalTarea{{i.id}}Title" aria-hidden="true">

@@ -819,7 +819,16 @@ def totalcuentacte(request, id_proyecto, cliente, moneda):
     
     fecha_inicial_hoy = datetime.date.today()
 
-    fecha_inicial_2 = datetime.date(fecha_inicial_hoy.year, fecha_inicial_hoy.month, 1)
+    # Supongamos que existen pagos
+
+    try:
+        fecha_pago_inicial = Pago.objects.filter(cuota__cuenta_corriente__venta__proyecto__id = id_proyecto).order_by("fecha").values_list("fecha", flat = True)[0]
+        fecha_pago_inicial = datetime.date(fecha_pago_inicial.year, fecha_pago_inicial.month, 1)
+        fecha_inicial_2 = fecha_pago_inicial
+
+    except:
+
+        fecha_inicial_2 = datetime.date(fecha_inicial_hoy.year, fecha_inicial_hoy.month, 1)
 
     fechas = []
 
@@ -943,8 +952,7 @@ def totalcuentacte(request, id_proyecto, cliente, moneda):
 
         if fecha_inicial == 0:
 
-                fecha_inicial = datetime.date(fecha_inicial_hoy.year, fecha_inicial_hoy.month, 1)
-
+                fecha_inicial = fecha_inicial_2 - datetime.timedelta(days=1)
         else:
 
 
@@ -968,11 +976,22 @@ def totalcuentacte(request, id_proyecto, cliente, moneda):
                     for c in clientes:
                         cuotas_cliente = sum(np.array(Cuota.objects.values_list('precio', flat =True).filter(fecha__range = (fecha_inicial, f), cuenta_corriente__venta__proyecto__id = id_proyecto, cuenta_corriente__venta__comprador = c))*np.array(Cuota.objects.values_list('constante__valor', flat =True).filter(fecha__range = (fecha_inicial, f), cuenta_corriente__venta__proyecto__id = id_proyecto, cuenta_corriente__venta__comprador = c)))
                         pagos_cliente = sum(np.array(Pago.objects.values_list('pago', flat =True).filter(cuota__fecha__range = (fecha_inicial, f), cuota__cuenta_corriente__venta__proyecto__id = id_proyecto, cuota__cuenta_corriente__venta__comprador = c))*np.array(Pago.objects.values_list('cuota__constante__valor', flat =True).filter(cuota__fecha__range = (fecha_inicial, f), cuota__cuenta_corriente__venta__proyecto__id = id_proyecto, cuota__cuenta_corriente__venta__comprador = c)))
-                        saldo_mes = cuotas_cliente - pagos_cliente
                         if moneda == "1":
-                            matriz_clientes[c].append(saldo_mes/horm.valor)
+                            if (fecha_pago_inicial - f).days < 0:
+                                pago_pasado = sum(np.array(Pago.objects.values_list('pago', flat =True).filter(cuota__fecha__range = (fecha_inicial, f), cuota__cuenta_corriente__venta__proyecto__id = id_proyecto, cuota__cuenta_corriente__venta__comprador = c)))
+                                print(pago_pasado)
+                                matriz_clientes[c].append(pago_pasado)
+                            else:
+                                saldo_mes = cuotas_cliente - pagos_cliente
+                                matriz_clientes[c].append(saldo_mes/horm.valor)
                         else:
-                            matriz_clientes[c].append(saldo_mes)
+                            if (fecha_pago_inicial - f).days < 0:
+                                pago_pasado = sum(np.array(Pago.objects.values_list('pago_pesos', flat =True).filter(cuota__fecha__range = (fecha_inicial, f), cuota__cuenta_corriente__venta__proyecto__id = id_proyecto, cuota__cuenta_corriente__venta__comprador = c)))
+                                print(pago_pasado)
+                                matriz_clientes[c].append(pago_pasado)
+                            else:
+                                saldo_mes = cuotas_cliente - pagos_cliente
+                                matriz_clientes[c].append(saldo_mes)
 
             else:
 
@@ -1158,14 +1177,24 @@ def ctactecliente(request, id_cliente):
 
                     frozen.save()
 
-
         except:
             data = request.POST.items()
+            list_cuotas_id = Cuota.objects.filter(cuenta_corriente__id = id_cliente, constante = frozen).values_list("id", flat = True)
+            list_cuotas_id = list(set(list_cuotas_id))
             for d in data:
                 if "cuota" in d[0]:
                     cuota = Cuota.objects.get(id = d[1])
                     cuota.constante = frozen
                     cuota.save()
+                    try:
+                        list_cuotas_id.remove(int(d[1]))
+                    except:
+                        pass
+            for nf in list_cuotas_id:
+                cuota = Cuota.objects.get(id = nf)
+                cuota.constante = Constantes.objects.get(id = 7)
+                cuota.save()
+
 
     ctacte = CuentaCorriente.objects.get(id = id_cliente)
 
@@ -2507,7 +2536,44 @@ def precioreferencia(request):
 
     data = Almacenero.objects.all()
 
-    return render(request, 'precioreferencia.html', {"data":data})
+    data_final = []
+
+    for d in data:
+        m2_total = 0
+        m2_disponible = 0
+        try:
+            unidades = Unidades.objects.filter(proyecto = d.proyecto)
+
+            for u in unidades:
+
+                if u.sup_equiv > 0:
+
+                    m2 = round(u.sup_equiv, 2)
+
+                else:
+
+                    m2 = round((u.sup_propia + u.sup_balcon + u.sup_comun + u.sup_patio), 2)
+                m2_total += m2
+
+            unidades_dis = Unidades.objects.filter(proyecto = d.proyecto, estado = "DISPONIBLE")
+
+            for u in unidades_dis:
+
+                if u.sup_equiv > 0:
+
+                    m2 = round(u.sup_equiv, 2)
+
+                else:
+
+                    m2 = round((u.sup_propia + u.sup_balcon + u.sup_comun + u.sup_patio), 2)
+                m2_disponible += m2
+            porc_dispo = (m2_disponible/m2_total)*100
+        except:
+            porc_dispo = 0
+     
+        data_final.append((d, porc_dispo))
+
+    return render(request, 'precioreferencia.html', {"data":data_final})
 
 def consolidado(request):
 
@@ -3540,10 +3606,17 @@ def cuentacte_resumen(request):
         data_project_terreno.append((proyecto, array_pesos, array_h, pagos_pesos))
 
     array_total = [cuotas_anteriores_t, pagos_pesos_t, deuda_t, cuotas_posterior_t, pagos_posterior_t, adelantos_t]
+    array_total_h = np.array(array_total)/Constantes.objects.get(id = 7).valor
     array_total_proyecto = [cuotas_anteriores_t_proyecto, pagos_pesos_t_proyecto, deuda_t_proyecto, cuotas_posterior_t_proyecto, pagos_posterior_t_proyecto, adelantos_t_proyecto]
+    array_total_proyecto_h = np.array(array_total)/Constantes.objects.get(id = 7).valor
     array_total_link = [cuotas_anteriores_t_link, pagos_pesos_t_link, deuda_t_link, cuotas_posterior_t_link, pagos_posterior_t_link, adelantos_t_link]
     array_total_terreno = [cuotas_anteriores_t_terreno, pagos_pesos_t_terreno, deuda_t_terreno, cuotas_posterior_t_terreno, pagos_posterior_t_terreno, adelantos_t_terreno]
 
+    array_total_h = list(array_total_h)
+    array_total_h.append(pagos_anteriores_t/Constantes.objects.get(id = 7).valor)
+
+    array_total_proyecto_h = list(array_total_proyecto_h)
+    array_total_proyecto_h.append(pagos_anteriores_t/Constantes.objects.get(id = 7).valor)
 
     cuotas_anteriores_b_t = 0
     pagos_anteriores_b_t = 0
@@ -3608,7 +3681,7 @@ def cuentacte_resumen(request):
         
         datos.append((c, pagos, adeudado, pendiente))
 
-    return render(request, 'ctacte_resumen.html', {"datos":datos, "data_project_link":data_project_link,"data_project_terreno":data_project_terreno,"data_project_proyecto":data_project_proyecto,"data_project":data_project, "data_project_b":data_project_b, "array_total_link":array_total_link,"array_total_terreno":array_total_terreno,"array_total_proyecto":array_total_proyecto,"array_total":array_total, "array_b_total":array_b_total})
+    return render(request, 'ctacte_resumen.html', {"datos":datos, "data_project_link":data_project_link,"data_project_terreno":data_project_terreno,"data_project_proyecto":data_project_proyecto,"data_project":data_project, "data_project_b":data_project_b, "array_total_link":array_total_link,"array_total_terreno":array_total_terreno,"array_total_proyecto":array_total_proyecto,"array_total":array_total, "array_total_h":array_total_h, "array_total_proyecto_h":array_total_proyecto_h, "array_b_total":array_b_total})
 
 def calculadora (request):
 
@@ -3660,16 +3733,15 @@ def calculadora (request):
 def prueba(request):
 
     data_proyecto = []
-
+    
     proyectos = Proyectos.objects.all()
-    nombre_proyectos = Proyectos.objects.all().values_list("nombre", flat=True)
 
-    for p in proyectos:
-        if p.nombre[0] == "T" and p.m2 >= 1000:
-            data_proyecto.append(p)
+    for i in proyectos:
+        if i.nombre[0]=="T" and  i.m2>3000 :
+           data_proyecto.append(i)
+        
 
-
-    return render(request, 'prueba.html', {"data_proyecto":data_proyecto})
+    return render(request, 'prueba.html',{ "data_proyecto" : data_proyecto})
 
 class DescargarCuentacorriente(TemplateView):
 

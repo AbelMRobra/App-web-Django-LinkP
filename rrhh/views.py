@@ -41,7 +41,6 @@ def editarcorrespondencia(request, id_nota):
 
         return redirect('Nota de pedido', id_nota = datos.id)
                 
-
     return render(request, 'editarcorres.html', {"datos":datos, "proyectos":proyectos})
 
 def datospersonal(request):
@@ -110,8 +109,6 @@ def crearcorrespondencia(request):
             b.save()
 
         return redirect('Notas de pedido', id_proyecto = 0, tipo = 0)
-
-
 
     return render(request, 'nuevacorres.html', {'proyectos':proyectos})
 

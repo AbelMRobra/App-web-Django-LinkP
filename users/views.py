@@ -15,7 +15,7 @@ from proyectos.models import Proyectos, Unidades
 from ventas.models import VentasRealizadas
 from compras.models import Compras, Comparativas
 from registro.models import RegistroValorProyecto
-from rrhh.models import datosusuario, mensajesgenerales, NotaDePedido, Vacaciones, MonedaLink, EntregaMoneda, Anuncios, Seguimiento, Minutas, Acuerdos, PremiosMonedas, Logros, RegistroContable, CanjeMonedas, Sugerencia
+from rrhh.models import datosusuario, mensajesgenerales, NotaDePedido, Vacaciones, MonedaLink, EntregaMoneda, Anuncios, Seguimiento, Minutas, Acuerdos, PremiosMonedas, Logros, RegistroContable, CanjeMonedas, Sugerencia, DicRegistroContable
 import datetime
 import requests
 from datetime import date
@@ -308,8 +308,7 @@ def guia(request):
     monedas_disponibles_canje = 0
 
     try:
-
-        usuario = datosusuario.objects.get(identificacion = request.user)
+        usuario = datosusuario.objects.get(identificacion = request.user.username)
 
     except:
 
@@ -378,15 +377,13 @@ def guia(request):
 
     try:
 
-        list_usuarios = datosusuario.objects.all().exclude(identificacion = request.user).order_by("identificacion").exclude(estado = "NO ACTIVO")
+        list_usuarios = datosusuario.objects.all().exclude(identificacion = request.user.username).order_by("identificacion").exclude(estado = "NO ACTIVO")
 
         ########################################
         # Calculo de monedasentregadas (Listado)
         ########################################
         
-        coins_entregada = EntregaMoneda.objects.filter(moneda__usuario_portador__identificacion = request.user.username).values_list("usuario_recibe", flat = True)
-
-        list_user_unique = list(set(coins_entregada))
+        list_user_unique = EntregaMoneda.objects.filter(moneda__usuario_portador__identificacion = request.user.username).values_list("usuario_recibe__id", flat = True).distinct()
 
         info_coins_entregadas = []
 
@@ -1869,11 +1866,11 @@ def registro_contable(request, date_i):
     registros_totales = RegistroContable.objects.filter(usuario = user)
 
     if request.method == 'POST':
-        datos_p = request.POST.items()
 
         try:
             if request.POST['carga_archivo'] == "1":
                 archivo_pandas = pd.read_excel(request.FILES['archivo'])
+                '''
                 # ---> Editar registros
                 registros_editar = archivo_pandas[archivo_pandas["Acción"] == "EDITAR"].reset_index(drop=True)
                 numero = 0
@@ -1899,23 +1896,52 @@ def registro_contable(request, date_i):
                     numero += 1
 
                 registros_nuevo = archivo_pandas[archivo_pandas["Acción"] == "NUEVO"].reset_index(drop=True)
-                print(registros_nuevo)
+                '''
+                registros_nuevo = archivo_pandas
                 numero = 0
+
+                # Bucle para cargar registros
+
                 for row in range(registros_nuevo.shape[0]):
                     usuario = datosusuario.objects.get(identificacion = str(registros_nuevo.loc[numero, "Usuario"]))
-                    importe_data_aux = str(registros_nuevo.loc[numero, "Importe"]).split(sep=" ")
+                    if registros_nuevo.loc[numero, "Saldo (CTE)"] >= 0:
+                        estado = "INGRESOS"
+                        importe = abs(registros_nuevo.loc[numero, "Saldo (CTE)"])
+                    else:
+                        estado = "GASTOS"
+                        importe = abs(registros_nuevo.loc[numero, "Saldo (CTE)"])
+
+                    if len(DicRegistroContable.objects.filter(entrada = registros_nuevo.loc[numero, "Auxiliar"])) > 0:
+                        caja = DicRegistroContable.objects.filter(entrada = registros_nuevo.loc[numero, "Auxiliar"])[0].salida
+                    else:
+                        caja = registros_nuevo.loc[numero, "Auxiliar"]
+
+                    if len(DicRegistroContable.objects.filter(entrada = registros_nuevo.loc[numero, "Desc. cuenta"])) > 0:
+                        cuenta = DicRegistroContable.objects.filter(entrada = registros_nuevo.loc[numero, "Desc. cuenta"])[0].salida
+                    else:
+                        cuenta = registros_nuevo.loc[numero, "Desc. cuenta"]
+
+                    if len(DicRegistroContable.objects.filter(entrada = registros_nuevo.loc[numero, "Desc. auxiliar"])) > 0:
+                        categoria = DicRegistroContable.objects.filter(entrada = registros_nuevo.loc[numero, "Desc. auxiliar"])[0].salida
+                    else:
+                        categoria = registros_nuevo.loc[numero, "Desc. auxiliar"]
+                    
+                    if len(DicRegistroContable.objects.filter(entrada = registros_nuevo.loc[numero, "Subauxiliar"])) > 0:
+                        nota = DicRegistroContable.objects.filter(entrada = registros_nuevo.loc[numero, "Subauxiliar"])[0].salida
+                    else:
+                        nota = registros_nuevo.loc[numero, "Subauxiliar"]
 
                     b = RegistroContable(
 
                         usuario = usuario,
                         creador = registros_nuevo.loc[numero, "Creador"],
-                        fecha = registros_nuevo.loc[numero, "Fecha"],
-                        estado = registros_nuevo.loc[numero, "Tipo"],
-                        caja = registros_nuevo.loc[numero, "Caja"],
-                        cuenta = registros_nuevo.loc[numero, "Cuenta"],
-                        categoria = registros_nuevo.loc[numero, "Categoria"],
-                        importe = abs(float(importe_data_aux[0])),
-                        nota = registros_nuevo.loc[numero, "Nota"],
+                        fecha = registros_nuevo.loc[numero, "Fecha de emisión"],
+                        estado = estado,
+                        caja = caja,
+                        cuenta = cuenta,
+                        categoria = categoria,
+                        importe = importe,
+                        nota = nota,
 
 
                     )
@@ -2023,23 +2049,51 @@ def registro_contable(request, date_i):
 
     ### Cuadros generales
 
+    ##### Idea de la caja
+
+    total_cajas = []
+
+    cajas_cargadas =  RegistroContable.objects.filter(usuario = user).values_list("caja", flat=True).distinct()
+    for c in cajas_cargadas:
+        ingresos = sum(RegistroContable.objects.filter(usuario = user, caja = c, estado = "INGRESOS").values_list("importe", flat=True))
+        gastos = sum(RegistroContable.objects.filter(usuario = user, caja = c, estado = "GASTOS").values_list("importe", flat=True))
+        balance = ingresos - gastos
+        total_cajas.append((c, ingresos, gastos, balance))
+
     cat_ingresos = RegistroContable.objects.filter(usuario = user, estado = "INGRESOS", fecha__range=[fecha_inicial, fecha_final]).values_list("categoria", flat=True).distinct()
 
     pie_ingresos = []
 
     for ci in cat_ingresos:
         aux = sum(np.array(RegistroContable.objects.filter(usuario = user, estado = "INGRESOS", fecha__range=[fecha_inicial, fecha_final], categoria = ci).values_list("importe", flat=True)))
-        color = (np.random.randint(0, 20)+(np.random.choice([20, 90])), np.random.randint(0, 20)+(np.random.choice([20, 90])), np.random.randint(0, 20)+(np.random.choice([20, 90])))
-        pie_ingresos.append([ci, aux, color])
+        pie_ingresos.append([ci, aux])
+
+    pie_ingresos = sorted(pie_ingresos, key=lambda X : -X[1])
+
+    aux_color = 0
+    for pie in pie_ingresos: 
+        color = ((200- aux_color), (200- aux_color), 253)
+        pie.append(color)
+        aux_color += (200 - 20)/len(pie_ingresos)
+
 
     cat_gastos = RegistroContable.objects.filter(usuario = user, estado = "GASTOS", fecha__range=[fecha_inicial, fecha_final]).values_list("categoria", flat=True).distinct()
 
     pie_gastos = []
 
+    aux_color = 0
+
     for cg in cat_gastos:
-        aux = sum(np.array(RegistroContable.objects.filter(usuario = user, estado = "GASTOS", fecha__range=[fecha_inicial, fecha_final], categoria = cg).values_list("importe", flat=True)))
-        color = (np.random.randint(0, 20)+(np.random.choice([20, 90])), np.random.randint(0, 20)+(np.random.choice([20, 90])), np.random.randint(0, 20)+(np.random.choice([20, 90])))
-        pie_gastos.append([cg, aux, color])
+        aux = sum(np.array(RegistroContable.objects.filter(usuario = user, estado = "GASTOS", fecha__range=[fecha_inicial, fecha_final], categoria = cg).values_list("importe", flat=True)))        
+        pie_gastos.append([cg, aux])
+
+    pie_gastos = sorted(pie_gastos, key=lambda X : -X[1])
+
+    aux_color = 0
+    for pie in pie_gastos: 
+        color = (253, (200- aux_color), (200- aux_color))
+        pie.append(color)
+        aux_color += (200 - 20)/len(pie_gastos)
 
 
     list_cat_gasto = RegistroContable.objects.filter(usuario = user, estado = "GASTOS").values_list("categoria", flat=True).distinct()
@@ -2048,46 +2102,51 @@ def registro_contable(request, date_i):
 
     ## Esquema mensual
 
-    fecha_1 = RegistroContable.objects.all().order_by("fecha")[0].fecha
-    fecha_f = RegistroContable.objects.all().order_by("-fecha")[0].fecha
-    fecha_f_auxiliar = datetime.date(fecha_f.year, fecha_f.month, 1)
-    fechas = []
-
-    fecha_auxiliar = datetime.date(fecha_1.year, fecha_1.month, 1)
-
-    if fecha_1.month == 12:
-
-        fecha_auxiliar_2 = datetime.date(fecha_1.year + 1, 1, 1)
-
-    else:
-
-        fecha_auxiliar_2 = datetime.date(fecha_1.year, fecha_1.month + 1, 1)
-
     data_month = []
 
-    while fecha_auxiliar <= fecha_f_auxiliar:
+    try:
 
-        mes = fecha_auxiliar
-        ingresos = sum(np.array(RegistroContable.objects.filter(usuario = user, estado = "INGRESOS", fecha__range=[fecha_auxiliar, fecha_auxiliar_2]).values_list("importe", flat=True)))
-        gastos = sum(np.array(RegistroContable.objects.filter(usuario = user, estado = "GASTOS", fecha__range=[fecha_auxiliar, fecha_auxiliar_2]).values_list("importe", flat=True)))
-        balance = ingresos - gastos
-        data_month.append((mes, ingresos, gastos, balance))
+        fecha_1 = RegistroContable.objects.all().order_by("fecha")[0].fecha
+        fecha_f = RegistroContable.objects.all().order_by("-fecha")[0].fecha
+        fecha_f_auxiliar = datetime.date(fecha_f.year, fecha_f.month, 1)
+        fechas = []
 
-        if fecha_auxiliar.month == 12:
+        fecha_auxiliar = datetime.date(fecha_1.year, fecha_1.month, 1)
 
-            fecha_auxiliar = datetime.date(fecha_auxiliar.year + 1, 1, 1)
+        if fecha_1.month == 12:
 
-        else:
-
-            fecha_auxiliar = datetime.date(fecha_auxiliar.year, fecha_auxiliar.month + 1, 1)
-
-        if fecha_auxiliar_2.month == 12:
-
-            fecha_auxiliar_2 = datetime.date(fecha_auxiliar_2.year + 1, 1, 1)
+            fecha_auxiliar_2 = datetime.date(fecha_1.year + 1, 1, 1)
 
         else:
 
-            fecha_auxiliar_2 = datetime.date(fecha_auxiliar_2.year, fecha_auxiliar_2.month + 1, 1)
+            fecha_auxiliar_2 = datetime.date(fecha_1.year, fecha_1.month + 1, 1)
+
+        while fecha_auxiliar <= fecha_f_auxiliar:
+
+            mes = fecha_auxiliar
+            ingresos = sum(np.array(RegistroContable.objects.filter(usuario = user, estado = "INGRESOS", fecha__range=[fecha_auxiliar, fecha_auxiliar_2]).values_list("importe", flat=True)))
+            gastos = sum(np.array(RegistroContable.objects.filter(usuario = user, estado = "GASTOS", fecha__range=[fecha_auxiliar, fecha_auxiliar_2]).values_list("importe", flat=True)))
+            balance = ingresos - gastos
+            data_month.append((mes, ingresos, gastos, balance))
+
+            if fecha_auxiliar.month == 12:
+
+                fecha_auxiliar = datetime.date(fecha_auxiliar.year + 1, 1, 1)
+
+            else:
+
+                fecha_auxiliar = datetime.date(fecha_auxiliar.year, fecha_auxiliar.month + 1, 1)
+
+            if fecha_auxiliar_2.month == 12:
+
+                fecha_auxiliar_2 = datetime.date(fecha_auxiliar_2.year + 1, 1, 1)
+
+            else:
+
+                fecha_auxiliar_2 = datetime.date(fecha_auxiliar_2.year, fecha_auxiliar_2.month + 1, 1)
+
+    except:
+        pass
 
 
     ##### Generales
@@ -2117,7 +2176,7 @@ def registro_contable(request, date_i):
         semana_1 = semana_1 + datetime.timedelta(days=7)    
 
 
-    return render(request, "users/registro_contable.html", {'registros_totales':registros_totales,'datos_week':datos_week, 'data_month':data_month, 'list_cat_ing':list_cat_ing, 'list_cat_gasto':list_cat_gasto, 'pie_gastos':pie_gastos, 'pie_ingresos':pie_ingresos, 'hoy':hoy, 'datos':datos, "ingresos":ingresos, "gastos":gastos, "balance":balance})
+    return render(request, "users/registro_contable.html", {'total_cajas':total_cajas, 'registros_totales':registros_totales,'datos_week':datos_week, 'data_month':data_month, 'list_cat_ing':list_cat_ing, 'list_cat_gasto':list_cat_gasto, 'pie_gastos':pie_gastos, 'pie_ingresos':pie_ingresos, 'hoy':hoy, 'datos':datos, "ingresos":ingresos, "gastos":gastos, "balance":balance})
 
 class DescargarRegistroContable(TemplateView):
 

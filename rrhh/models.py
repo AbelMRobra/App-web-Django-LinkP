@@ -315,6 +315,13 @@ class DicRegistroContable(models.Model):
     entrada = models.CharField(max_length=400, verbose_name="Entrada")
     salida = models.CharField(max_length=400, verbose_name="Salida")
 
+    class Meta:
+        verbose_name="Diccionario registro"
+        verbose_name_plural="Diccionario registros"
+
+    def __str__(self):
+        return self.entrada
+
 class Sugerencia(models.Model):
 
     class Prioridad(models.TextChoices):
