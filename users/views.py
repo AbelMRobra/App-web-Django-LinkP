@@ -514,7 +514,12 @@ def guia(request):
     except:
         logros = 0  
 
-    return render(request, "users/guia.html", {"argentino":argentino, "logros":logros, "rey":rey, "amor":amor, "datos":datos, "otros_datos":otros_datos, "recibidas":recibidas, "monedas_recibidas":monedas_recibidas, "monedas_disponibles":monedas_disponibles, "monedas_disponibles_canje":monedas_disponibles_canje, "list_usuarios":list_usuarios, "info_coins_entregadas":info_coins_entregadas})
+
+    conten = {"argentino":argentino, "logros":logros, "rey":rey, "amor":amor, "datos":datos, "otros_datos":otros_datos, "recibidas":recibidas, "monedas_recibidas":monedas_recibidas, "monedas_disponibles":monedas_disponibles, "monedas_disponibles_canje":monedas_disponibles_canje, "list_usuarios":list_usuarios, "info_coins_entregadas":info_coins_entregadas}
+
+    print(conten)
+
+    return render(request, "users/guia.html", conten)
 
 def canjemonedas(request):
 
