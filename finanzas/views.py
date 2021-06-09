@@ -979,7 +979,6 @@ def totalcuentacte(request, id_proyecto, cliente, moneda):
                         if moneda == "1":
                             if (fecha_pago_inicial - f).days < 0:
                                 pago_pasado = sum(np.array(Pago.objects.values_list('pago', flat =True).filter(cuota__fecha__range = (fecha_inicial, f), cuota__cuenta_corriente__venta__proyecto__id = id_proyecto, cuota__cuenta_corriente__venta__comprador = c)))
-                                print(pago_pasado)
                                 matriz_clientes[c].append(pago_pasado)
                             else:
                                 saldo_mes = cuotas_cliente - pagos_cliente
@@ -987,7 +986,6 @@ def totalcuentacte(request, id_proyecto, cliente, moneda):
                         else:
                             if (fecha_pago_inicial - f).days < 0:
                                 pago_pasado = sum(np.array(Pago.objects.values_list('pago_pesos', flat =True).filter(cuota__fecha__range = (fecha_inicial, f), cuota__cuenta_corriente__venta__proyecto__id = id_proyecto, cuota__cuenta_corriente__venta__comprador = c)))
-                                print(pago_pasado)
                                 matriz_clientes[c].append(pago_pasado)
                             else:
                                 saldo_mes = cuotas_cliente - pagos_cliente

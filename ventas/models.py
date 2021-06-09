@@ -4,6 +4,19 @@ from rrhh.models import datosusuario
 
 # Create your models here.
 
+class Clientescontacto(models.Model):
+    nombre = models.CharField(max_length=100, verbose_name = "Nombre")
+    apellido = models.CharField(max_length=100, verbose_name = "Apellido")
+    email = models.CharField(max_length=100, verbose_name = "Email")
+    telefono = models.CharField(max_length=100, verbose_name = "Telefono", blank=True, null=True)
+
+    class Meta:
+        verbose_name="Cliente"
+        verbose_name_plural="Clientes"
+
+    def _str_(self):
+        return '{}'.format(self.nombre)
+
 class Pricing(models.Model):
 
     class SioNo(models.TextChoices):
@@ -199,3 +212,4 @@ class FeaturesUni(models.Model):
 
     def _str_(self):
         return '{}'.format(self.feature.nombre)
+

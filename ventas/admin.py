@@ -1,7 +1,16 @@
 from django.contrib import admin
-from .models import PricingResumen, VentasRealizadas, EstudioMercado, Pricing, ArchivosAreaVentas, ArchivoFechaEntrega, ArchivoVariacionHormigon, ReclamosPostventa, FeaturesProjects
+from .models import PricingResumen, VentasRealizadas, EstudioMercado, Pricing, ArchivosAreaVentas, ArchivoFechaEntrega, ArchivoVariacionHormigon, ReclamosPostventa, FeaturesProjects, Clientescontacto
 from import_export import resources
 from import_export.admin import ImportExportModelAdmin
+
+class ClientescontactoResource(resources.ModelResource):
+    class Meta:
+        model = Clientescontacto
+        
+class ClientescontactoAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    list_display = ('nombre', 'apellido',  'email')
+    search_fields = ('nombre', 'apellido',  'email')
+    resources_class = ClientescontactoResource
 
 class PricingResource(resources.ModelResource):
     class Meta:
@@ -79,6 +88,7 @@ class FeaturesProjectsAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = ('proyecto', 'nombre')
     resources_class = FeaturesProjectsResource
 
+admin.site.register(Clientescontacto, ClientescontactoAdmin)
 admin.site.register(FeaturesProjects, FeaturesProjectsAdmin)
 admin.site.register(PricingResumen, PricingResumenAdmin)
 admin.site.register(Pricing, PricingAdmin)

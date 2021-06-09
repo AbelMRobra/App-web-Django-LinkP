@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import EstudioMercado, PricingResumen, FeaturesProjects, FeaturesUni, DosierDeVenta
+from .models import EstudioMercado, PricingResumen, FeaturesProjects, FeaturesUni, DosierDeVenta, Clientescontacto
 from proyectos.models import Unidades, Proyectos
 from finanzas.models import Almacenero
 from rrhh.models import datosusuario
@@ -1838,11 +1838,15 @@ def cotizador(request, id_unidad):
 
     datos = Unidades.objects.get(id = id_unidad)
 
+    today = datetime.date.today()
+
+    tiempo_restante = (datos.proyecto.fecha_f.year - today.year)*12 + (datos.proyecto.fecha_f.month - today.month)
+
     hormigon = Constantes.objects.get(id = 7)
 
-    m2 = 0
+    cliente = 0
 
-    desde = 0
+    m2 = 0
 
     if datos.sup_equiv > 0:
 
@@ -1852,64 +1856,43 @@ def cotizador(request, id_unidad):
 
         m2 = datos.sup_propia + datos.sup_balcon + datos.sup_comun + datos.sup_patio
 
+    precio_contado = m2*datos.proyecto.desde
 
-    try:
-        param_uni = Pricing.objects.get(unidad = datos)
-        desde = datos.proyecto.desde
+    features_unidad = FeaturesUni.objects.filter(unidad = datos)
 
-        if datos.tipo == "COCHERA":
-            desde = datos.proyecto.desde*datos.proyecto.descuento_cochera
+    for f2 in features_unidad:
 
-        if param_uni.frente == "SI":
-            desde = desde*datos.proyecto.recargo_frente
+        precio_contado = precio_contado*f2.feature.inc
 
-        if param_uni.piso_intermedio == "SI":
-            desde =desde*datos.proyecto.recargo_piso_intermedio
-
-        if param_uni.cocina_separada == "SI":
-            desde = desde*datos.proyecto.recargo_cocina_separada
-
-        if param_uni.local == "SI":
-            desde = desde*datos.proyecto.recargo_local
-
-        if param_uni.menor_45_m2 == "SI":
-            desde = desde*datos.proyecto.recargo_menor_45
-
-        if param_uni.menor_50_m2 == "SI":
-            desde = desde*datos.proyecto.recargo_menor_50
-
-        if param_uni.otros == "SI":
-            desde = desde*datos.proyecto.recargo_otros 
-
-    except:
-
-        pass
-
-    precio_contado = desde*m2
+    desde = round((precio_contado/m2), 4)
 
     resultados = []
 
     if request.method == 'POST':
 
-        datos_formulario = request.POST.items()
+        if len(Clientescontacto.objects.filter( email = request.POST['email'])) > 0:
+            cliente = Clientescontacto.objects.get(email =request.POST['email'])
+        else:
+            cliente = Clientescontacto(
 
-        for dato in datos_formulario:
-            
-            if dato[0] == "anticipo":
-                
-                anticipo = dato[1]
+                nombre = request.POST['nombre'],
+                apellido = request.POST['apellido'],
+                email = request.POST['email']
+            )
 
-                anticipo_h = float(anticipo)/hormigon.valor
+            cliente.save()
+            if request.POST['telefono']:
+                cliente.telefono = request.POST['telefono']
+                cliente.save()
 
-                resultados.append(anticipo)
-                resultados.append(anticipo_h)
+        anticipo = request.POST["anticipo"]
+        anticipo_h = float(request.POST["anticipo"])/hormigon.valor
+        cuota_esp = request.POST["cuotas_esp"]
+        aporte = request.POST["aporte"]
+        cuotas_p = request.POST["cuotas_p"]
 
-            if dato[0] == "cuotas_esp":
-                cuota_esp = dato[1]
-            if dato[0] == "aporte":
-                aporte = dato[1]
-            if dato[0] == "cuotas_p":
-                cuotas_p = dato[1]
+        resultados.append(anticipo)
+        resultados.append(anticipo_h)
 
         total_cuotas = float(cuota_esp) + float(cuotas_p)*1.65 + float(aporte)
 
@@ -1939,7 +1922,6 @@ def cotizador(request, id_unidad):
         valor_auxiliar_pose = np.npv(rate=(datos.proyecto.tasa_f/100), values=cuotas_pose)
 
         valor_auxiliar_aporte = np.npv(rate=(datos.proyecto.tasa_f/100), values=aporte_va)
-
 
         factor = valor_auxiliar_aporte + valor_auxiliar_espera + valor_auxiliar_pose
 
@@ -1974,7 +1956,7 @@ def cotizador(request, id_unidad):
         resultados.append(importe_cuota_esp_h)
         resultados.append(importe_aporte_h)
 
-    return render(request, 'cotizador.html', {'datos':datos, 'resultados':resultados, 'precio_contado':precio_contado, 'm2':m2})
+    return render(request, 'cotizador.html', {'tiempo_restante':tiempo_restante, 'datos':datos, 'resultados':resultados, 'precio_contado':precio_contado, 'm2':m2, 'cliente':cliente})
 
 def featuresproject(request, id_proj):
 
