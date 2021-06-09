@@ -524,10 +524,12 @@ def guia(request):
     print("Complete bien la parte de monedas recibidas y el argentino")
 
     try:
-        logros = Logros.objects.filter(usuario = datosusuario.objects.get(identificacion = request.user))
+        logros = Logros.objects.filter(usuario = datosusuario.objects.get(identificacion = request.user.username))
     
     except:
         logros = 0  
+
+    print("Complete bien la parte del ultimo logro")
 
     return render(request, "users/guia.html", {"argentino":argentino, "logros":logros, "rey":rey, "amor":amor, "datos":datos, "otros_datos":otros_datos, "recibidas":recibidas, "monedas_recibidas":monedas_recibidas, "monedas_disponibles":monedas_disponibles, "monedas_disponibles_canje":monedas_disponibles_canje, "list_usuarios":list_usuarios, "info_coins_entregadas":info_coins_entregadas})
 
