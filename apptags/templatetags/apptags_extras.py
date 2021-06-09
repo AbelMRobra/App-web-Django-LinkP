@@ -156,9 +156,15 @@ def is_past_evaluacion3(prueba):
 @register.simple_tag
 def usuario(identificacion):
 
-    data = datosusuario.objects.get(identificacion = identificacion)
+    try:
 
-    return data.imagenlogo.url
+        data = datosusuario.objects.get(identificacion = identificacion)
+
+        return data.imagenlogo.url
+
+    except:
+
+        return "A"
 
 @register.simple_tag
 def fecha_final_planif(fecha, estado):
