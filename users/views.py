@@ -314,6 +314,8 @@ def guia(request):
 
         usuario = 0
 
+    print("Complete bien la busqueda del usuario")
+
     if request.method == 'POST':
 
         monedas = MonedaLink.objects.filter(usuario_portador = usuario)
@@ -407,6 +409,8 @@ def guia(request):
 
                 monedas_disponibles += 1
 
+        print("Complete bien la parte de calcular monedas")
+
 
         ########################################
         # Precio por DAR
@@ -434,6 +438,8 @@ def guia(request):
                 rey = 2
         except:
             rey = 0
+
+        print("Complete bien la parte de premios")
 
         ########################################
         # Calculo de monedas recibidas 
