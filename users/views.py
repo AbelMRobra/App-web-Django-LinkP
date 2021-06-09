@@ -314,8 +314,6 @@ def guia(request):
 
         usuario = 0
 
-    print("Complete bien la busqueda del usuario")
-
     if request.method == 'POST':
 
         monedas = MonedaLink.objects.filter(usuario_portador = usuario)
@@ -409,9 +407,6 @@ def guia(request):
 
                 monedas_disponibles += 1
 
-        print("Complete bien la parte de calcular monedas")
-
-
         ########################################
         # Precio por DAR
         ########################################
@@ -438,8 +433,6 @@ def guia(request):
                 rey = 2
         except:
             rey = 0
-
-        print("Complete bien la parte de premios")
 
         ########################################
         # Calculo de monedas recibidas 
@@ -470,8 +463,6 @@ def guia(request):
 
         otros_datos = 0
 
-        print("Complete bien la parte del calculo de monedas")
- 
     except:
         recibidas = 0
         monedas_recibidas = 0
@@ -493,8 +484,6 @@ def guia(request):
 
                 otros_datos.append((a, miembros))
 
-        print("Complete bien la parte de miembros del area aparentemente")
-
     except:
 
         datos = 0
@@ -502,8 +491,6 @@ def guia(request):
     try:
 
         usuario = datosusuario.objects.get(identificacion = request.user.username)
-
-        print("Complete bien la parte de volver a llamar")
 
     except:
         usuario = 0
@@ -521,15 +508,11 @@ def guia(request):
     # Logros
     ########################################
 
-    print("Complete bien la parte de monedas recibidas y el argentino")
-
     try:
         logros = Logros.objects.filter(usuario = datosusuario.objects.get(identificacion = request.user.username))
     
     except:
         logros = 0  
-
-    print("Complete bien la parte del ultimo logro")
 
     return render(request, "users/guia.html", {"argentino":argentino, "logros":logros, "rey":rey, "amor":amor, "datos":datos, "otros_datos":otros_datos, "recibidas":recibidas, "monedas_recibidas":monedas_recibidas, "monedas_disponibles":monedas_disponibles, "monedas_disponibles_canje":monedas_disponibles_canje, "list_usuarios":list_usuarios, "info_coins_entregadas":info_coins_entregadas})
 
@@ -1043,8 +1026,8 @@ def inicio(request):
 
     if usuario == "PL":
         
-        compras_espera = Comparativas.objects.filter(estado = "ESPERA").exclude(creador = "MES", numero__contains = "POSTV")
-        compras_adjunto_ok = Comparativas.objects.filter(estado = "ADJUNTO ✓").exclude(creador = "MES", numero__contains = "POSTV")
+        compras_espera = Comparativas.objects.filter(estado = "ESPERA", autoriza = "PL")
+        compras_adjunto_ok = Comparativas.objects.filter(estado = "ADJUNTO ✓", autoriza = "PL")
 
         if len(compras_espera) > 0 or len(compras_adjunto_ok) > 0:
         
@@ -1052,10 +1035,10 @@ def inicio(request):
         
     elif usuario == "SP":
 
-        compras = Comparativas.objects.filter(creador = "MES").exclude(estado = "AUTORIZADA")
-        compras_2 = Comparativas.objects.filter(numero__contains = "POSTV").exclude(estado = "AUTORIZADA")
+        compras = Comparativas.objects.filter(estado = "ESPERA", autoriza = "SP")
+        compras_2 = Comparativas.objects.filter(estado = "ADJUNTO ✓", autoriza = "SP")
 
-        if len(compras) > 0 or len(compras_2) > 0:
+        if len(compras) > 0:
         
             mensaje_oc = [compras, compras_2, (len(compras) + len(compras_2))]
 
