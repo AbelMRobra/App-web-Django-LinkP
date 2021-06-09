@@ -469,6 +469,8 @@ def guia(request):
         datos = 0
 
         otros_datos = 0
+
+        print("Complete bien la parte del calculo de monedas")
  
     except:
         recibidas = 0
@@ -481,9 +483,7 @@ def guia(request):
 
         if datos:
 
-            areas = datosusuario.objects.values_list("area").exclude(estado = "NO ACTIVO")
-
-            areas = list(set(areas))
+            areas = datosusuario.objects.values_list("area").exclude(estado = "NO ACTIVO").distinct()
 
             otros_datos = []
 
@@ -493,13 +493,17 @@ def guia(request):
 
                 otros_datos.append((a, miembros))
 
+        print("Complete bien la parte de miembros del area aparentemente")
+
     except:
 
         datos = 0
 
     try:
 
-        usuario = datosusuario.objects.get(identificacion = request.user)
+        usuario = datosusuario.objects.get(identificacion = request.user.username)
+
+        print("Complete bien la parte de volver a llamar")
 
     except:
         usuario = 0
@@ -516,6 +520,8 @@ def guia(request):
     ########################################
     # Logros
     ########################################
+
+    print("Complete bien la parte de monedas recibidas y el argentino")
 
     try:
         logros = Logros.objects.filter(usuario = datosusuario.objects.get(identificacion = request.user))
