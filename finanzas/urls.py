@@ -14,7 +14,7 @@ urlpatterns = [
 
 
     #----------------URL CUENTAS CORRIENTES -----------------------------------------
-
+    url(r'^appfinanzas/$', login_required(views.appfinanzas), name = 'App Finanzas'),
     url(r'^panelctacte/$', login_required(views.panelctacote), name = 'Panel cuentas corrientes'),
     url(r'^crearcuenta/(?P<id_proyecto>\d+)/$', login_required(views.crearcuenta), name = 'Crear cuenta corriente'),
     url(r'^mandarmail/(?P<id_cuenta>\d+)/$', login_required(views.mandarmail), name = 'Mandar email'),

@@ -225,6 +225,9 @@ class PdfPrueba(View):
 
         return response
 
+def appfinanzas(request):
+    return render(request, 'app_finanzas.html')
+
 def mandarmail(request, id_cuenta):
 
     datos = CuentaCorriente.objects.get(id = id_cuenta)
@@ -1224,7 +1227,7 @@ def ctactecliente(request, id_cliente):
                 saldo_cuota = 0
                 saldo_pesos = 0
 
-        datos_cuenta.append((cuota, pago_cuota, saldo_cuota, saldo_pesos, pagos_realizados, cotizacion))
+        datos_cuenta.append((cuota, pago_cuota, saldo_cuota, saldo_pesos, pagos_realizados, cotizacion, pago_pesos))
 
     datos_cuenta = sorted(datos_cuenta, key=lambda datos: datos[0].fecha)
 

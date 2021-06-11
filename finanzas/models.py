@@ -124,7 +124,7 @@ class Pago(models.Model):
         DOLARES = "DOLARES"
 
     cuota = models.ForeignKey(Cuota, on_delete=models.CASCADE, verbose_name = "Cuota")
-    fecha = models.DateField(verbose_name = "Fecha de venta")
+    fecha = models.DateField(verbose_name = "Fecha del pago")
     pago = models.FloatField(verbose_name="Pago en moneda dura")
     pago_pesos = models.FloatField(verbose_name="Pago en pesos")
     documento_1 = models.CharField(max_length=100, verbose_name = "Documento 1", blank=True, null=True)

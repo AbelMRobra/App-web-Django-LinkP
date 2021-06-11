@@ -51,7 +51,8 @@
 
                     <div style="text-align: left;">
 
-                        <a href="{% url 'Agregar pagos' cuota.id %}" class="mx-2 fa fa-lg fa-plus-circle"></a>
+                        <a href="{% url 'Agregar pagos' cuota.id %}" class="fa fa-plus-circle  text-info"><span class="text-info ml-2"
+                            style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif"><b>Añadir pago</b></span></i></a>
                     </div>
 
 
@@ -79,7 +80,7 @@
 
                                 {% for i in datos|slice:"200" %}
                                 <tr>
-                                    <td>{{i.0.fecha}} </td>
+                                    <td>{{i.0.fecha|date:"Y/m/d"}} </td>
                                     <td>{{i.0.pago|floatformat:2}} </td>
                                     <td>${{i.1|floatformat:0|intcomma}} </td>
                                     <td>${{i.0.pago_pesos|floatformat:0|intcomma}} </td>

@@ -84,9 +84,9 @@
 
                             <tbody style="font-size: 12px;">
 
-                                {% for i in datos|slice:"200" %}
+                                {% for i in datos %}
                                 <tr>
-                                    <td>{{i.0.fecha|date:"Y-m-d"}}</td>
+                                    <td>{{i.0.fecha|date:"Y/m/d"}}</td>
                                     <td style="color: rgb({{i.0.cuota.cuenta_corriente.venta.proyecto.color}});">{{i.0.cuota.cuenta_corriente.venta.proyecto.nombre}}</td>
                                     <td>{{i.0.cuota.cuenta_corriente.venta.comprador|lower|capfirst}}</td>
                                     <td>{{i.0.cuota.cuenta_corriente.venta.unidad.piso_unidad}} - {{i.0.cuota.cuenta_corriente.venta.unidad.nombre_unidad}}</td>
