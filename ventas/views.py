@@ -1,4 +1,7 @@
 from django.shortcuts import render
+from django.views.generic import View
+from django.conf import settings
+from numpy.lib import twodim_base
 from .models import EstudioMercado, PricingResumen, FeaturesProjects, FeaturesUni, DosierDeVenta, Clientescontacto
 from proyectos.models import Unidades, Proyectos
 from finanzas.models import Almacenero
@@ -7,6 +10,7 @@ from ventas.models import Pricing, ArchivosAreaVentas, VentasRealizadas, Archivo
 from presupuestos.models import Constantes, Desde, Registrodeconstantes
 from datetime import date
 from django.shortcuts import redirect
+from django.template.loader import get_template
 import datetime
 import string
 import requests
@@ -17,6 +21,14 @@ from openpyxl import Workbook
 from openpyxl.styles import Alignment, Border, Font, PatternFill, Side 
 from django.views.generic.base import TemplateView 
 from django.http import HttpResponse 
+import numpy_financial as npf
+from xhtml2pdf import pisa
+import os
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+from email.mime.base import MIMEBase
+from email import encoders
+import smtplib
 
 
 def appcomercial(request):
@@ -1396,7 +1408,7 @@ def pricing(request, id_proyecto):
 
         anticipo = 0.4
 
-        valor_auxiliar = np.npv(rate=(dato.proyecto.tasa_f/100), values=values)
+        valor_auxiliar = npf.npv(rate=(dato.proyecto.tasa_f/100), values=values)
 
         incremento = (meses/(1-anticipo)/(((anticipo/(1-anticipo))*meses)+valor_auxiliar))
 
@@ -1836,6 +1848,8 @@ def detalleventa(request, id_venta):
 
 def cotizador(request, id_unidad):
 
+    info_coti_email = 0
+
     datos = Unidades.objects.get(id = id_unidad)
 
     today = datetime.date.today()
@@ -1890,10 +1904,6 @@ def cotizador(request, id_unidad):
         cuota_esp = request.POST["cuotas_esp"]
         aporte = request.POST["aporte"]
         cuotas_p = request.POST["cuotas_p"]
-
-        resultados.append(anticipo)
-        resultados.append(anticipo_h)
-
         total_cuotas = float(cuota_esp) + float(cuotas_p)*1.65 + float(aporte)
 
         cuotas_espera = []
@@ -1944,19 +1954,211 @@ def cotizador(request, id_unidad):
         importe_aporte_h = importe_aporte/hormigon.valor
         importe_cuota_esp_h = importe_cuota_esp/hormigon.valor
 
+        if cuota_esp != 0:
+            valor_cuota_espera = importe_cuota_esp/float(cuota_esp)
+        else:
+            valor_cuota_espera = 0
+        if aporte != 0:
+            valor_cuota_entrega = importe_aporte/float(aporte)
+        else:
+            valor_cuota_entrega = 0
+        if cuotas_p != 0:
+            valor_cuota_pose = importe_cuota_p/float(cuotas_p)
+        else:
+            valor_cuota_pose = 0
 
-        resultados.append(precio_finan)
-        resultados.append(cuota_esp)
-        resultados.append(importe_aporte)
-        resultados.append(cuotas_p)
-        resultados.append(importe_cuota_esp)
-        resultados.append(aporte)
-        resultados.append(importe_cuota_p)
-        resultados.append(importe_cuota_p_h)
-        resultados.append(importe_cuota_esp_h)
-        resultados.append(importe_aporte_h)
+        resultados = [anticipo, anticipo_h, precio_finan, cuota_esp, importe_aporte, cuotas_p, importe_cuota_esp,
+            aporte, importe_cuota_p, importe_cuota_p_h, importe_cuota_esp_h, importe_aporte_h, valor_cuota_espera,
+            valor_cuota_entrega, valor_cuota_pose]
 
-    return render(request, 'cotizador.html', {'tiempo_restante':tiempo_restante, 'datos':datos, 'resultados':resultados, 'precio_contado':precio_contado, 'm2':m2, 'cliente':cliente})
+        info_coti_email = str(cuota_esp)+"00"+str(aporte)+"00"+str(cuotas_p)+"00"+str(anticipo)
+
+    return render(request, 'cotizador.html', {'info_coti_email':info_coti_email, 'tiempo_restante':tiempo_restante, 'datos':datos, 'resultados':resultados, 'precio_contado':precio_contado, 'm2':m2, 'cliente':cliente})
+
+class PdfCotiza(View):
+
+    def link_callback(self, uri, rel):
+            """
+            Convert HTML URIs to absolute system paths so xhtml2pdf can access those
+            resources
+            """
+            sUrl = settings.STATIC_URL        # Typically /static/
+            sRoot = settings.STATIC_ROOT      # Typically /home/userX/project_static/
+            mUrl = settings.MEDIA_URL         # Typically /media/
+            mRoot = settings.MEDIA_ROOT       # Typically /home/userX/project_static/media/
+
+            if uri.startswith(mUrl):
+                path = os.path.join(mRoot, uri.replace(mUrl, ""))
+            elif uri.startswith(sUrl):
+                path = os.path.join(sRoot, uri.replace(sUrl, ""))
+            else:
+                return uri
+
+            # make sure that file exists
+            if not os.path.isfile(path):
+                raise Exception(
+                        'media URI must start with %s or %s' % (sUrl, mUrl)
+                )
+            return path
+
+    def get(self, request, id_unidad, id_cliente, info_coti, *args, **kwargs):
+
+        #Creamos la información
+
+        cliente = Clientescontacto.objects.get(id = id_cliente)
+
+        unidad = Unidades.objects.get(id = id_unidad)
+
+        today = datetime.date.today()
+
+        m2 = 0
+
+        if unidad.sup_equiv > 0:
+
+            m2 = unidad.sup_equiv
+
+        else:
+
+            m2 = unidad.sup_propia + unidad.sup_balcon + unidad.sup_comun + unidad.sup_patio
+
+        precio_contado = m2*unidad.proyecto.desde
+
+        features_unidad = FeaturesUni.objects.filter(unidad = unidad)
+
+        for f2 in features_unidad:
+
+            precio_contado = precio_contado*f2.feature.inc
+
+        datos_coti = info_coti.split("00", 3)
+        valor_hormigon = Constantes.objects.get(id = 7)
+        anticipo = float(info_coti[0])
+        anticipo_h = anticipo/valor_hormigon.valor
+        cuota_esp = info_coti[1]
+        aporte = info_coti[2]
+        cuotas_p = info_coti[3]
+
+        total_cuotas = float(cuota_esp) + float(cuotas_p)*1.65 + float(aporte)
+
+        cuotas_espera = []
+        cuotas_pose = []
+        aporte_va = []
+
+        for i in range(1):
+            cuotas_espera.append(0)
+            cuotas_pose.append(0)
+            aporte_va.append(0)
+
+        for i in range(int(cuota_esp)):
+            cuotas_espera.append(1)
+            cuotas_pose.append(0)
+            aporte_va.append(0)
+
+        if int(aporte) > 0:
+            aporte_va.pop()
+            aporte_va.append(int(aporte))
+
+        for d in range(int(cuotas_p)):
+            cuotas_pose.append(1.65)
+
+        valor_auxiliar_espera = np.npv(rate=(unidad.proyecto.tasa_f/100), values=cuotas_espera)
+        valor_auxiliar_pose = np.npv(rate=(unidad.proyecto.tasa_f/100), values=cuotas_pose)
+        valor_auxiliar_aporte = np.npv(rate=(unidad.proyecto.tasa_f/100), values=aporte_va)
+        factor = valor_auxiliar_aporte + valor_auxiliar_espera + valor_auxiliar_pose
+        incremento = (total_cuotas/factor) - 1
+        precio_finan = ((precio_contado - float(anticipo))*(1 + incremento)) + float(anticipo)
+
+        importe_cuota_esp = (precio_finan-float(anticipo))/total_cuotas
+        importe_aporte = importe_cuota_esp*float(aporte)
+
+        if int(cuotas_p) > 0:
+
+            importe_cuota_p = importe_cuota_esp*1.65
+
+        else:
+
+            importe_cuota_p = 0
+
+        importe_cuota_p_h = importe_cuota_p/valor_hormigon.valor
+        importe_aporte_h = importe_aporte/valor_hormigon.valor
+        importe_cuota_esp_h = importe_cuota_esp/valor_hormigon.valor
+
+        if cuota_esp != 0:
+            valor_cuota_espera = importe_cuota_esp/float(cuota_esp)
+        else:
+            valor_cuota_espera = 0
+        if aporte != 0:
+            valor_cuota_entrega = importe_aporte/float(aporte)
+        else:
+            valor_cuota_entrega = 0
+        if cuotas_p != 0:
+            valor_cuota_pose = importe_cuota_p/float(cuotas_p)
+        else:
+            valor_cuota_pose = 0
+
+        datos_coti = [anticipo, anticipo_h, precio_finan, cuota_esp, importe_aporte, cuotas_p, importe_cuota_esp,
+        aporte, importe_cuota_p, importe_cuota_p_h, importe_cuota_esp_h, importe_aporte_h, valor_cuota_espera,
+        valor_cuota_entrega, valor_cuota_pose]
+
+
+        # Aqui llamamos y armamos el PDF
+      
+        template = get_template('cotizadorpdf.html')
+        contexto = {'cliente':cliente, 
+        'unidad':unidad, 
+        'datos_coti':datos_coti,
+        'today':today, 
+        'logo':'{}{}'.format(settings.STATIC_URL, 'img/link.png'),
+        'cabecera':'{}{}'.format(settings.STATIC_URL, 'img/fondo.png'),
+        'fondo':'{}{}'.format(settings.STATIC_URL, 'img/fondo.jpg')}
+        html = template.render(contexto)
+        response = HttpResponse(content_type = "application/pdf")
+        
+        #response['Content-Disposition'] = 'attachment; filename="reporte.pdf"'
+        
+        pisaStatus = pisa.CreatePDF(html, dest=response, link_callback=self.link_callback)
+        
+        if pisaStatus.err:
+            
+            return HttpResponse("Hay un error")
+
+        # Establecemos conexion con el servidor smtp de gmail
+        mailServer = smtplib.SMTP(settings.EMAIL_HOST, settings.EMAIL_PORT)
+        mailServer.ehlo()
+        mailServer.starttls()
+        mailServer.ehlo()
+        mailServer.login(settings.EMAIL_HOST_USER, settings.EMAIL_HOST_PASSWORD)
+
+        # Construimos el mensaje simple
+        
+        mensaje = MIMEMultipart()
+        mensaje.attach(MIMEText("""
+        
+Prueba
+
+        
+        """, 'plain'))
+        mensaje['From']=settings.EMAIL_HOST_USER
+        mensaje['To']=cliente.email
+        mensaje['Subject']="Prueba"
+
+        # Esta es la parte para adjuntar (prueba)
+
+        adjunto_MIME = MIMEBase('application', "octet-stream")
+        adjunto_MIME.set_payload(response.content)
+        encoders.encode_base64(adjunto_MIME)
+        adjunto_MIME.add_header('Content-Disposition', 'attachment; filename="Tu_cotizacion.pdf"')
+        mensaje.attach(adjunto_MIME)
+        adjunto_MIME = MIMEBase('application', "octet-stream")
+        adjunto_MIME.set_payload(unidad.plano_venta.url)
+        adjunto_MIME.add_header('Content-Disposition', 'attachment; filename="El_plano.pdf"')
+        mensaje.attach(adjunto_MIME)
+
+        # Envio del mensaje
+
+        mailServer.sendmail(settings.EMAIL_HOST_USER,
+                        cliente.email,
+                        mensaje.as_string())
+
 
 def featuresproject(request, id_proj):
 

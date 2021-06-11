@@ -50,14 +50,14 @@
         </div>
 
         <div>
-          <img src="{% static 'img/animation_500_kmv80aa7.gif' %}" alt=""
+          <img src="{% static 'img/BaseConstantes.png' %}" alt=""
             style="max-width:100px; height:auto; margin: 5px;">
         </div>
 
         {% if request.user|has_group:"PRESUPUESTO NIVEL 1" %}
 
 
-        <a href="{% url 'Cons_list' %}"><button class="btn btn-dark">
+        <a href="{% url 'Cons_list' %}"><button class="btn btn-info">
             Ingresar</button></a>
 
         {% else %}
@@ -78,7 +78,7 @@
         </div>
 
         <div>
-          <img src="{% static 'img/animation_500_kmv3c5aa.gif' %}" alt=""
+          <img src="{% static 'img/Articulos.png' %}" alt=""
             style="max-width:100px; height:auto; margin: 5px;">
         </div>
 
@@ -106,14 +106,14 @@
         </div>
 
         <div>
-          <img src="{% static 'img/animation_500_kmv74u8k.gif' %}" alt=""
+          <img src="{% static 'img/BibliotecaAPU.png' %}" alt=""
             style="max-width:100px; height:auto; margin: 5px;">
         </div>
 
         {% if request.user|has_group:"PRESUPUESTO NIVEL 1" %}
 
 
-        <a href="{% url 'Lista de analisis' %}"><button class="btn btn-warning">
+        <a href="{% url 'Lista de analisis' %}"><button class="btn btn-primary">
             Ingresar</button></a>
 
         {% else %}
@@ -191,7 +191,7 @@
           </select>
 
           <div class="my-4">
-            <button class="btn btn-danger" type="submit">
+            <button class="btn btn-dark" type="submit">
               Buscar</button>
           </div>
 
@@ -219,7 +219,7 @@
         </div>
 
         <div>
-          <img src="{% static 'img/animation_500_kmv96y5d.gif' %}" alt=""
+          <img src="{% static 'img/IndicadorPrecios.png' %}" alt=""
             style="max-width:100px; height:auto; margin: 5px;">
         </div>
 
@@ -247,14 +247,14 @@
         </div>
 
         <div>
-          <img src="{% static 'img/animation_500_kmqi3zbx.gif' %}" alt=""
+          <img src="{% static 'img/InformeArea.png' %}" alt=""
             style="max-width:100px; height:auto; margin: 5px;">
         </div>
 
         {% if request.user|has_group:"PRESUPUESTO NIVEL 3" %}
 
 
-        <a href="{% url 'Informe de presupuesto' %}"><button class="btn btn-primary">
+        <a href="{% url 'Informe de presupuesto' %}"><button class="btn btn-success">
             Ingresar</button></a>
 
         {% else %}

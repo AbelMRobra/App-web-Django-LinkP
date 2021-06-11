@@ -47,7 +47,7 @@
                     </select>
 
                     <div class="my-4" >
-                        <button class="btn btn-primary" type="submit">
+                        <button class="btn btn-info" type="submit">
                             Buscar</button>
                     </div>
 
@@ -59,7 +59,7 @@
                     <img src="{% static 'img/animation_500_kmuydpt0.gif' %}" alt="" style="max-width:100px; height:auto; margin: 5px;">
                 </div>
 
-                <a href="#"><button class="btn btn-secondary">
+                <a href="#"><button class="btn btn-info">
                     Sin permisos</button></a>
                 {% endif %}
 
@@ -75,7 +75,7 @@
                 </div>
 
                 <div>
-                    <img src="{% static 'img/animation_500_kmqi3zbx.gif' %}" alt="" style="max-width:100px; height:auto; margin: 5px;">
+                    <img src="{% static 'img/InformeArea.png' %}" alt="" style="max-width:100px; height:auto; margin: 5px;">
                 </div>
 
                 {% if request.user|has_group:"ADMIN NIVEL 1" %}
@@ -103,11 +103,11 @@
                 </div>
 
                 <div>
-                    <img src="{% static 'img/animation_500_kmux2bxi.gif' %}" alt="" style="max-width:100px; height:auto; margin: 5px;">
+                    <img src="{% static 'img/FlujoIngresos.png' %}" alt="" style="max-width:100px; height:auto; margin: 5px;">
                 </div>
                 {% if request.user|has_group:"ADMIN NIVEL 1" %}
 
-                <a href="{% url 'Total cuenta' 0 0 0 %}"><button class="btn btn-info">
+                <a href="{% url 'Total cuenta' 0 0 0 %}"><button class="btn btn-primary">
                         Ingresar</button></a>
                 {% else %}
 
@@ -130,7 +130,7 @@
                 </div>
 
                 <div>
-                    <img src="{% static 'img/animation_500_kmv0qjoi.gif' %}" alt="" style="max-width:100px; height:auto; margin: 5px;">
+                    <img src="{% static 'img/RegistroPagos.png' %}" alt="" style="max-width:100px; height:auto; margin: 5px;">
                 </div>
                 {% if request.user|has_group:"ADMIN NIVEL 1" %}
 
@@ -154,11 +154,11 @@
                 </div>
 
                 <div>
-                    <img src="{% static 'img/animation_500_knj7tvnu.gif' %}" alt="" style="max-width:100px; height:auto; margin: 5px;">
+                    <img src="{% static 'img/Calculadora.png' %}" alt="" style="max-width:100px; height:auto; margin: 5px;">
                 </div>
                 {% if request.user|has_group:"ADMIN NIVEL 1" %}
 
-                <a href="{% url 'Calculadora' %}"><button class="btn btn-warning">
+                <a href="{% url 'Calculadora' %}"><button class="btn btn-info">
                         Ingresar</button></a>
                         {% else %}
 

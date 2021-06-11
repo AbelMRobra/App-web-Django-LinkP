@@ -111,7 +111,7 @@ class Unidades(models.Model):
     tipologia = models.CharField(max_length=50, verbose_name="Tipologia", blank=True, null=True)
     orden = models.IntegerField(verbose_name="Orden", default = 0, blank=True, null=True)
     contado = models.FloatField(verbose_name="Precio de contado", default = 0, blank=True, null=True)
-    plano_venta = models.FileField(verbose_name="Adjunto", blank=True, null=True)
+    plano_venta = models.FileField(verbose_name="Plano de venta", blank=True, null=True)
 
     class Meta:
         verbose_name="Unidad"

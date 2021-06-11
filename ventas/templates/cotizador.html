@@ -8,7 +8,7 @@
 <div class="container-fluid">
     <div class="row page-titles">
         <div class="col-md-5 align-self-center">
-            <h3 class="text-themecolor">Cotizador</h3>
+            <h3 class="text-themecolor">Cotizador de unidades</h3>
         </div>
 
         <div class="col-md-7 align-self-center">
@@ -26,47 +26,51 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body">
-                <div class="d-flex">
-                    <div>
-                        <h4 class="card-title"><span class="lstick"></span>Cotizador de unidades</h4>
-                        <h6 class="text-muted">Completar los datos del cotizador</h6>
+                <div class="row d-flex justify-content-between">
+                    <div class="col col-lg-5 bg-light py-3">
+                        <h4 class="card-title"><span class="lstick"></span>Datos de la unidad</h4>
+                        <div>
+
+                            <h6 class="font-medium">Proyecto: {{datos.proyecto.nombre}}</h6>
+                            <h6 class="font-medium">Unidad: {{datos.piso_unidad}} - {{datos.nombre_unidad}}</h6>
+                            <h6 class="font-medium">Entrega: {{tiempo_restante}} Meses</h6>
+                            <h6 class="font-medium">Superficie: {{m2|floatformat:2}}m2</h6>
+                            <h6 class="font-medium">Precio de contado: ${{precio_contado|floatformat:0|intcomma}}</h6>
+                            <a href="{{datos.plano_venta.url}}" target="_blank"><i class="fa fa-file-pdf-o text-danger"></i></a>
+                            {% if resultados %}
+                            <a href="{% url 'Email del coti' datos.id cliente.id info_coti_email %}" target="_blank"><i class="fa fa-envelope-o text-warning"></i></a>
+                            {% endif %}
+                        </div>
+
                     </div>
-                </div>
-                <div class="row">
-                    <div style="display: inline-block; margin-top: 5%;">
-
-                        <h2>Datos de la unidad</h2>
-
-                    </div>
-
-                    <div>
-
-                        <h6>Proyecto: {{datos.proyecto.nombre}}</h6>
-                        <h6>Unidad: {{datos.piso_unidad}} - {{datos.nombre_unidad}}</h6>
-                        <h6>Entrega: {{tiempo_restante}}</h6>
-                        <h6>Superficie: {{m2|floatformat:2}}m2</h6>
-                        <h6>Precio de contado: ${{precio_contado|floatformat:0|intcomma}}</h6>
-
+                    <div class="col col-lg-5 bg-light py-3">
+                        <h4 class="card-title"><span class="lstick"></span>El proyecto</h4>
+                        <img class="card-img-top img-responsive" style="width: 200px;" src="{{datos.proyecto.imagen.url}}"
+                            alt="Imagen del edificio">
+                        <div class="card-body">
+                            <h4 class="card-title">{{datos.proyecto.nombre|lower|capfirst}}</h4>
+                            <p class="card-text">{{datos.proyecto.descrip}}</p>
+                        </div>
                     </div>
 
                     {% if resultados %}
 
-                    <h2 class="my-3">{{cliente.nombre}}!</h2>
-                    <h6>Un paso mas cerca de tus sueños</h6>
+
+                    <h5 class="my-3"><b style="font-size: 20px; color: rgb({{datos.proyecto.color}});">{{cliente.nombre}},</b> tu simulación personal!</h5>
 
 
 
                     <div style="margin-left: 1%; margin-right: 1%;">
-                        <h6>Tu cotización personalizada</h6>
 
                         <table class="table table-striped table-bordered" style="width:100%; font-size: 12px;">
                             <thead>
 
                                 <tr>
                                     <th>Concepto</th>
-                                    <th>Cantidad</th>
-                                    <th>Monto $</th>
-                                    <th>Monto Hº</th>
+                                    <th style="text-align: center;">Cantidad</th>
+                                    <th style="text-align: center;">Monto</th>
+                                    <th style="text-align: center;">Cuota</th>
+                                    <th style="text-align: center;">Monto Hº</th>
 
                                 </tr>
                             </thead>
@@ -75,52 +79,160 @@
 
                                 <tr>
                                     <td>Anticipo</td>
-                                    <td>1</td>
-                                    <td>${{resultados.0|floatformat:0|intcomma}}</td>
-                                    <td>{{resultados.1|floatformat:2}}m3</td>
+                                    <td style="text-align: center;">1</td>
+                                    <td style="text-align: center;">${{resultados.0|floatformat:0|intcomma}}</td>
+                                    <td style="text-align: center;">${{resultados.0|floatformat:0|intcomma}}</td>
+                                    <td style="text-align: center;">{{resultados.1|floatformat:2}}m3</td>
 
                                 </tr>
 
                                 <tr>
                                     <td>Cuotas espera</td>
-                                    <td>{{resultados.3|floatformat:0}}</td>
-                                    <td>${{resultados.6|floatformat:0|intcomma}}</td>
-                                    <td>{{resultados.10|floatformat:2}}m3</td>
+                                    <td style="text-align: center;">{{resultados.3|floatformat:0}}</td>
+                                    <td style="text-align: center;">${{resultados.6|floatformat:0|intcomma}}</td>
+                                    <td style="text-align: center;">${{resultados.12|floatformat:0|intcomma}}</td>
+                                    <td style="text-align: center;">{{resultados.10|floatformat:2}}m3</td>
                                 </tr>
 
                                 <tr>
-                                    <td>Aporte CE </td>
-                                    <td>{{resultados.7|floatformat:0}}</td>
-                                    <td>${{resultados.4|floatformat:0|intcomma}}</td>
-                                    <td>{{resultados.11|floatformat:2}}m3</td>
+                                    <td>Aporte contra entrega </td>
+                                    <td style="text-align: center;">{{resultados.7|floatformat:0}}</td>
+                                    <td style="text-align: center;">${{resultados.4|floatformat:0|intcomma}}</td>
+                                    <td style="text-align: center;">${{resultados.13|floatformat:0|intcomma}}</td>
+                                    <td style="text-align: center;">{{resultados.11|floatformat:2}}m3</td>
                                 </tr>
 
 
                                 <tr>
                                     <td>Cuotas posesión</td>
-                                    <td>{{resultados.5|floatformat:0}}</td>
-                                    <td>${{resultados.8|floatformat:0|intcomma}}</td>
-                                    <td>{{resultados.9|floatformat:2}}m3</td>
+                                    <td style="text-align: center;">{{resultados.5|floatformat:0}}</td>
+                                    <td style="text-align: center;">${{resultados.8|floatformat:0|intcomma}}</td>
+                                    <td style="text-align: center;">${{resultados.14|floatformat:0|intcomma}}</td>
+                                    <td style="text-align: center;">{{resultados.9|floatformat:2}}m3</td>
                                 </tr>
 
                             </tbody>
                         </table>
 
-                        *Precio financiado total estimado ${{resultados.2|floatformat:0|intcomma}}
-
-
+                        <small><b>*Precio financiado es ${{resultados.2|floatformat:0|intcomma}}</b></small>
                     </div>
-
-                    {% endif %}
                 </div>
+
                 <div class="row d-flex justify-content-center mt-4">
                     <form method="POST">
                         {% csrf_token %}
                         <div class="row d-flex justify-content-center mt-4 ">
                             <div class="row d-flex justify-content-center">
-                                <div class="col col-md-12 col-lg-7">
+                                <div class="col">
                                     <div class="row bg-light p-4 rounded">
-                                        <div class="col col-md-12 col-lg-6">
+                                        
+                                        <h5>¿Quéres volver a calcular?</h5>
+                                        
+                                        <b>
+                                            <hr class="my-4" style="width: 100%;">
+                                        </b>
+                                        
+                                        <div class="col-6">
+                                            <div style="display: inline-block;">
+
+                                                <label for="anticipo">
+                                                    <h6>Anticipo a entregar</h6>
+                                                </label>
+
+                                            </div>
+                                            <div class="row d-flex justify-content-center my-3">
+                                                <div class="col col-md-12 col-lg-8">
+                                                    <div class="input-group mb-3">
+                                                        <div class="input-group-prepend">
+
+                                                            <span class="input-group-text">$</span>
+
+                                                        </div>
+
+                                                        <input name="anticipo" type="number"
+                                                            class="form-control form-control" aria-label="Amount"
+                                                            value="{{resultados.0}}">
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div style="display: inline-block;">
+
+                                                <label for="cuotas_esp">
+                                                    <h6>Cuotas esperas {{tiempo_restante}} </h6>
+                                                </label>
+
+                                            </div>
+
+                                            <div class="row d-flex justify-content-center my-3">
+                                                <div class="col col-md-12 col-lg-8">
+
+                                                    <input name="cuotas_esp" type="number"
+                                                        class="form-control form-control" value="{{resultados.3}}">
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+
+                                            <div style="display: inline-block;">
+
+                                                <label for="aporte">
+                                                    <h6>Aporte Contra entrega</h6>
+                                                </label>
+
+                                            </div>
+
+                                            <div class="row d-flex justify-content-center my-3">
+                                                <div class="col col-md-12 col-lg-8">
+                                                    <input name="aporte" type="number" class="form-control form-control"
+                                                        value="{{resultados.7}}">
+
+                                                </div>
+                                            </div>
+
+                                            <div style="display: inline-block;">
+
+                                                <label for="cuotas_p">
+                                                    <h6>Cuotas Posesión</h6>
+                                                </label>
+
+                                            </div>
+
+                                            <div class="row d-flex justify-content-center my-3">
+                                                <div class="col col-md-12 col-lg-8">
+
+                                                    <input name="cuotas_p" type="number"
+                                                        class="form-control form-control" value="{{resultados.5}}">
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="row d-flex justify-content-center my-3">
+                                            <div class="col col-md-12 col-lg-8 text-center">
+
+                                                <button type="submit" name="email" value="{{cliente.email}}" class="btn btn-info">Recalcular!</button>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                {% else %}
+                <div class="row d-flex justify-content-center mt-4">
+                    <form method="POST">
+                        {% csrf_token %}
+                        <div class="row d-flex justify-content-center mt-4 ">
+                            <div class="row d-flex justify-content-center">
+                                <div class="col col-md-12 col-lg-9">
+                                    <div class="row bg-light p-4 rounded">
+                                        <div class="col col-md-12 col-lg-6 ">
 
                                             <div style="display: inline-block">
                                                 <h5>Agregar cliente</h5>
@@ -290,6 +402,7 @@
                             </div>
                         </div>
                 </div>
+                {% endif %}
             </div>
             </form>
         </div>
