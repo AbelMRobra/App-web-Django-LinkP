@@ -696,13 +696,13 @@
                                                 {% for i in pie_ingresos %}
                                                 <tr>
                                                     
-                                                    <td><b><a href="#" style="color: rgb{{i.2}};" data-toggle="modal" data-target="#ModalGastosExtendido{{i.0}}">{{i.0}}</a></b></td>
+                                                    <td><b><a href="#" style="color: rgb{{i.2}};" data-toggle="modal" data-target="#ModalIngresosExtendido{{i.0}}">{{i.0}}</a></b></td>
                                                     <td>$ {{i.1|floatformat:0|intcomma}}</td>
                                                     
                                                 </tr>
                                                 <!-- Modal -->
-                                                <div class="modal fade" id="ModalGastosExtendido{{i.0}}" tabindex="-1" role="dialog"
-                                                aria-labelledby="ModalGastosExtendido{{i.0}}Title" aria-hidden="true">
+                                                <div class="modal fade" id="ModalIngresosExtendido{{i.0}}" tabindex="-1" role="dialog"
+                                                aria-labelledby="ModalIngresosExtendido{{i.0}}Title" aria-hidden="true">
                                                     <div class="modal-dialog modal-dialog-centered" role="document">
                                                         <div class="modal-content">
                                                             <div class="modal-header"
