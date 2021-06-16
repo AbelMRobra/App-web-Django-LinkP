@@ -5,7 +5,7 @@
 
 {% block content %}
 
-<div class="container-fluid r-aside">
+<div class="container-fluid">
     <div class="row page-titles">
         <div class="col-md-5 align-self-center">
             <h3 class="text-themecolor">Movimiento de administración</h3>
@@ -30,9 +30,9 @@
 
                     <div style="text-align: left; ">
 
-                        <a href="{% url 'Subir movimiento' %}" class="btn " style="text-align: end; margin-top: 5px;">
-                            <img src="{% static 'img/add.png' %}" alt="" style="max-width:25px; height: auto; margin-right: 10px;"> Nuevo
-                            archivo</a>
+                        <a href="{% url 'Subir movimiento' %}" class="btn fa fa-plus-circle fa-lg text-info"></a><span class="text-info">
+                            Nuevo archivo
+                        </span>
                     </div>
 
                     <div class="table-responsive">
@@ -62,7 +62,7 @@
                                 <tr>
 
                                     <td style="width: 50px">
-                                        <a href="{% url 'Borrar movimiento' i.id %}" class="fa fa-trash fa-lg"></a>
+                                        <a href="{% url 'Borrar movimiento' i.id %}" class="fa fa-trash fa-lg text-danger"></a>
                                     </td>
                                     <td style="width: 150px;">{{i.fecha}}</td>
 
@@ -81,9 +81,7 @@
 
                                     {% endif %}
                                     <td> <small> {{i.comentario}}</small></td>
-                                    <td style="width: 80px; text-align: center;"> <small><a href="{{i.archivo.url}}"><img
-                                                    src="{% static 'img/sobresalir.png' %}" alt=""
-                                                    style="max-width:25px; height: auto; "></a></small></td>
+                                    <td style="width: 80px; text-align: center;"> <small><a href="{{i.archivo.url}}"><i class="fa fa-file-excel-o fa-lg text-success"></i></a></small></td>
 
 
                                     {% if user.username == "SP" or user.username == "AR" %}

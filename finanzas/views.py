@@ -3744,6 +3744,10 @@ def prueba(request):
 
     return render(request, 'prueba.html',{ "data_proyecto" : data_proyecto})
 
+def superarvalorcta(request):
+
+    return render(request, 'superarvalorcta.html')
+
 class DescargarCuentacorriente(TemplateView):
 
     def get(self, request, id_cuenta, *args, **kwargs):

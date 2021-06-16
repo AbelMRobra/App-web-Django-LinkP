@@ -30,7 +30,7 @@
                 </div>
 
                 <div>
-                    <img src="{% static 'img/animation_500_kn5034p5.gif' %}" alt="" style="max-width:100px; height:auto; margin: 5px;">
+                    <img src="{% static 'img/Correspondencia.png' %}" alt="" style="max-width:100px; height:auto; margin: 5px;">
                 </div>
 
                 {% if request.user|has_group:"TECNICA NIVEL 1" %}
@@ -57,13 +57,13 @@
                 </div>
 
                 <div>
-                    <img src="{% static 'img/animation_500_kn4to9wv.gif' %}" alt="" style="max-width:100px; height:auto; margin: 5px;">
+                    <img src="{% static 'img/RegistroDesvios.png' %}" alt="" style="max-width:100px; height:auto; margin: 5px;">
                 </div>
 
                 {% if request.user|has_group:"TECNICA NIVEL 1" %}
 
 
-                <a href="{% url 'Registros de desvios' %}"><button class="btn btn-primary">
+                <a href="{% url 'Registros de desvios' %}"><button class="btn btn-success">
                         Ingresar</button></a>
 
                 {% else %}
@@ -87,12 +87,12 @@
                 </div>
 
                 <div>
-                    <img src="{% static 'img/animation_500_kmv3cy3w.gif' %}" alt="" style="max-width:100px; height:auto; margin: 5px;">
+                    <img src="{% static 'img/registrocompras.png' %}" alt="" style="max-width:100px; height:auto; margin: 5px;">
                 </div>
 
                 {% if request.user|has_group:"TECNICA NIVEL 2" %}
 
-                <a href="/tecnica/documentacion"><button class="btn btn-danger">
+                <a href="/tecnica/documentacion"><button class="btn btn-primary">
                         Ingresar</button></a>
 
                 {% else %}

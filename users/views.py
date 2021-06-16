@@ -2178,6 +2178,10 @@ def registro_contable(request, date_i):
 
     return render(request, "users/registro_contable.html", {'total_cajas':total_cajas, 'registros_totales':registros_totales,'datos_week':datos_week, 'data_month':data_month, 'list_cat_ing':list_cat_ing, 'list_cat_gasto':list_cat_gasto, 'pie_gastos':pie_gastos, 'pie_ingresos':pie_ingresos, 'hoy':hoy, 'datos':datos, "ingresos":ingresos, "gastos":gastos, "balance":balance})
 
+def editar_registro_contable(request):
+
+    return render(request, "users/registro_contable_editar.html")
+
 class DescargarRegistroContable(TemplateView):
 
     def get(self, request, *args, **kwargs):

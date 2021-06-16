@@ -1,0 +1,84 @@
+{% extends "users/inicio2.html" %}
+
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+
+<div class="container-fluid">
+    <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+            <h3 class="text-themecolor">Movimiento de administración</h3>
+        </div>
+
+        <div class="col-md-7 align-self-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+                <li class="breadcrumb-item">Movimiento de administración</li>
+            </ol>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body row">
+                <div class="col-12 justify-content-center">
+
+                    <h3>Acaba de superar el valor de las cuotas</h3>
+
+                    <div class="row d-flex justify-content-center">
+                        <div class="col-12 col-md-12 col-lg-6">
+                            <div class="row">
+                                <div class="col bg-light border rounded p-4 ">
+
+
+                                    <form method="POST">
+                                        {% csrf_token %}
+                                        <p>Ajustar valor a la cuota que pagaste</p>
+                                        <div class="row justify-content-center mt-4">
+                                            <div class="col-lg-6 text-center">
+
+                                                <button type="submit" name="ajustar" class="btn btn-info">Agregar</button>
+
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row d-flex justify-content-center">
+                        <div class="col-12 col-md-12 col-lg-6">
+                            <div class="row">
+                                <div class="col bg-light border rounded p-4 ">
+
+
+                                    <form method="POST">
+
+                                        {% csrf_token %}
+                                        <div class="col-lg-6 text-center">
+                                            <p>Redistribuir valor en las siguientes cuotas</p>
+                                            <ul type="none">
+                                                <li><span>cuota1:</span><span>valor..</span></li>
+                                                <li><span>cuota2:</span><span>valor..</span></li>
+                                                <li><span>cuota3:</span><span>valor..</span></li>
+                                            </ul>
+
+                                            <button type="submit" name="redistribuir" class="btn btn-info">Agregar</button>
+
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

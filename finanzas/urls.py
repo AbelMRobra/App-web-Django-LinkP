@@ -39,6 +39,9 @@ urlpatterns = [
     url(r'^des_ingresounidades/$', login_required(DescargarControlUnidades.as_view()), name = 'Descargar ingreso unidades'),
     url(r'^reportepdf/(?P<id_cuenta>\d+)/$', PdfPrueba.as_view(), name = "Reporte de pdf de cuentas corrientes"),
     url(r'^calculadora/$', login_required(views.calculadora), name = 'Calculadora'),
+
+    url(r'^superavalorcta/$', login_required(views.superarvalorcta), name = 'Cta cliente valor superado'),
+    
     #----------------URL ADMINISTRACION -----------------------------------------
 
     url(r'^movimientoadmin/$', login_required(views.movimientoadmin), name = 'Movimiento administración'),
