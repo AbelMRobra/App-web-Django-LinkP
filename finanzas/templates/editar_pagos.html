@@ -146,16 +146,28 @@
                                                         </div>
 
                                                         <div class="row justify-content-center my-3">
-                                                            <div class="col-12 col-md-8 col-lg-8">
-                                                                <div>
-
-                                                                    <input name="documento1" type="text"
-                                                                        class="form-control form-control"
-                                                                        aria-label="Amount"
-                                                                        value="{{pago.documento_1}}">
-
+                                                            <div class="row justify-content-center">
+                                                                <div class="col-3 col-md-3 col-lg-3">
+                                                                    <div>
+            
+                                                                        <input name="sucursal" type="number"
+                                                                            class="form-control form-control" aria-label="Amount"
+                                                                            value="{{pago.sucursal}}"  max="99999" required>
+            
+                                                                    </div>
+                                                                </div>
+                                                              
+                                                                <div class="col-10 col-md-5 col-lg-5">
+                                                                    <div>
+            
+                                                                        <input name="factura" type="number"
+                                                                            class="form-control form-control" aria-label="Amount"
+                                                                            value="{{pago.factura}}" max="99999999" required>
+            
+                                                                    </div>
                                                                 </div>
                                                             </div>
+                                                       
                                                         </div>
 
                                                         <div style="display: inline-block;">
@@ -196,6 +208,7 @@
                                                                     <option {% if pago.metodo == "EFTRANSFERENCIAECTIVO" %} selected {% endif %} value="TRANSFERENCIA ">TRANSFERENCIA
                                                                     </option>
                                                                     <option {% if pago.metodo == "DEPOSITO" %} selected {% endif %} value="DEPOSITO ">DEPOSITO </option>
+                                                                    <option {% if pago.metodo == "DOLAR" %} selected {% endif %} value="DOLAR ">DOLAR </option>
 
                                                                 </select>
 

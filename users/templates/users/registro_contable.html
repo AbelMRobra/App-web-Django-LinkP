@@ -602,10 +602,36 @@
                                                 {% for i in pie_gastos %}
                                                 <tr>
                                                     
-                                                    <td style="color: rgb{{i.2}};"><b>{{i.0}}</b></td>
+                                                    <td><b><a href="#" style="color: rgb{{i.2}};" data-toggle="modal" data-target="#ModalGastosExtendido{{i.0}}">{{i.0}}</a></b></td>
                                                     <td>$ {{i.1|floatformat:0|intcomma}}</td>
                                                     
                                                 </tr>
+                                                <!-- Modal -->
+                                                <div class="modal fade" id="ModalGastosExtendido{{i.0}}" tabindex="-1" role="dialog"
+                                                aria-labelledby="ModalGastosExtendido{{i.0}}Title" aria-hidden="true">
+                                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header"
+                                                                style="background: rgb(36,160,237);
+                                                                                        background: linear-gradient(315deg, rgba(36,160,237,1) 0%, rgba(56,56,130,1) 22%, rgba(0,212,255,1) 100%);">
+                                                                <h5 class="modal-title text-light" id="exampleModalLongTitle">Detalle {{i.0}}</h5>
+                                                                <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <ul type="none">
+                                                                    <li><span>Gasto1: </span><span>detalle</span></li>
+                                                                </ul>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-info" data-dismiss="modal">Cerrar</button>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
                                                 {% endfor %}
                                             </tbody>
         
@@ -670,10 +696,35 @@
                                                 {% for i in pie_ingresos %}
                                                 <tr>
                                                     
-                                                    <td style="color: rgb{{i.2}};"><b>{{i.0}}</b></td>
+                                                    <td><b><a href="#" style="color: rgb{{i.2}};" data-toggle="modal" data-target="#ModalGastosExtendido{{i.0}}">{{i.0}}</a></b></td>
                                                     <td>$ {{i.1|floatformat:0|intcomma}}</td>
                                                     
                                                 </tr>
+                                                <!-- Modal -->
+                                                <div class="modal fade" id="ModalGastosExtendido{{i.0}}" tabindex="-1" role="dialog"
+                                                aria-labelledby="ModalGastosExtendido{{i.0}}Title" aria-hidden="true">
+                                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header"
+                                                                style="background: rgb(36,160,237);
+                                                                                        background: linear-gradient(315deg, rgba(36,160,237,1) 0%, rgba(56,56,130,1) 22%, rgba(0,212,255,1) 100%);">
+                                                                <h5 class="modal-title text-light" id="exampleModalLongTitle">Detalle {{i.0}}</h5>
+                                                                <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <ul type="none">
+                                                                    <li><span>Gasto1: </span><span>detalle</span></li>
+                                                                </ul>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-info" data-dismiss="modal">Cerrar</button>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                                 {% endfor %}
                                             </tbody>
         

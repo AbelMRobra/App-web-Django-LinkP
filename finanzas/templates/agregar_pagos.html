@@ -133,6 +133,28 @@
                                                     </div>
                                                 </div>
 
+                                                <div style="display: inline-block;">
+
+                                                    <label for="metodo">
+                                                        <h6>Tipo</h6>
+                                                    </label>
+
+                                                </div>
+
+                                                <div class="row justify-content-center my-3">
+                                                    <div class="col-12 col-md-8 col-lg-8">
+                                                        <div>
+                                                            <select name="tipo" class="custom-select"
+                                                                style="width: 300px;">
+                                                                <option value="A">A</option>
+                                                                <option value="B">B</option>
+                                                               
+                                                            </select>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+
 
 
                                                 <div style="display: inline-block;">
@@ -144,13 +166,22 @@
                                                 </div>
 
                                                 <div class="row justify-content-center my-3">
-                                                    <div class="col-12 col-md-8 col-lg-8">
+                                                    <div class="col-3 col-md-3 col-lg-3">
                                                         <div>
 
-
-                                                            <input name="documento1" type="text"
+                                                            <input name="sucursal" type="number"
                                                                 class="form-control form-control" aria-label="Amount"
-                                                                placeholder="Documento de referencia">
+                                                                placeholder="00000"  max="99999" required>
+
+                                                        </div>
+                                                    </div>
+                                                  
+                                                    <div class="col-10 col-md-5 col-lg-5">
+                                                        <div>
+
+                                                            <input name="factura" type="number"
+                                                                class="form-control form-control" aria-label="Amount"
+                                                                placeholder="00000000" max="99999999" required>
 
                                                         </div>
                                                     </div>
@@ -191,8 +222,9 @@
                                                                 style="width: 300px;">
                                                                 <option value="EFECTIVO">EFECTIVO</option>
                                                                 <option value="CHEQUE">CHEQUE</option>
-                                                                <option value="TRANSFERENCIA ">TRANSFERENCIA </option>
-                                                                <option value="DEPOSITO ">DEPOSITO </option>
+                                                                <option value="TRANSFERENCIA">TRANSFERENCIA </option>
+                                                                <option value="DEPOSITO">DEPOSITO </option>
+                                                                <option value="DOLAR">DOLAR </option>
                                                             </select>
 
                                                         </div>
