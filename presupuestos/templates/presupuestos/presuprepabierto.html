@@ -63,7 +63,7 @@
                 <td style="text-align: left;">{{i.0.nombre|lower|capfirst}}</td>
                 <td></td>
                 <td></td>
-                <td style="text-align: left;">${{i.1|floatformat:0|intcomma}}</td>
+                <td style="text-align: left;">${{i.1|floatformat:2|intcomma}}</td>
                 <td style="text-align: center;">{{i.2|floatformat:0|intcomma}}%</td>                         
             </tr>
 
@@ -75,9 +75,9 @@
 
                 <td style="text-align: left;"> {{ i.0.analisis.nombre|lower|capfirst }}
                     <h6 class="card-subtitle" style="font-size: 12px; margin-top: 2px;"><span class="text-muted">{% if i.0.comentario %}{{ i.0.comentario }}{% endif %}</span></h6>  </td>
-                <td> ${{ i.1|floatformat:0|intcomma }}</td>
+                <td> ${{ i.1|floatformat:2|intcomma }}</td>
                 <td> {{ i.2|floatformat:0|intcomma }} ({{ i.0.analisis.unidad }})</td>
-                <td> ${{ i.3|floatformat:0|intcomma }}</td>
+                <td> ${{ i.3|floatformat:2|intcomma }}</td>
                 <td></td>
 
             </tr>
