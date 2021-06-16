@@ -45,7 +45,7 @@ urlpatterns = [
     url(r'registro_contable/(?P<date_i>\d+)/$', login_required(views.registro_contable), name = 'Registro Contable'),
     url(r'registro_contable_editar/$', login_required(views.editar_registro_contable), name = 'Registro Contable Edicion'),
     url(r'^des_registro$', login_required(DescargarRegistroContable.as_view()), name = 'Descarga registro contable'),
-
+    url(r'registro_contable_editar/$', login_required(views.editar_registro_contable), name = 'Registro Contable Edicion'),
 ]
 
 
