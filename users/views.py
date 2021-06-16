@@ -2076,7 +2076,6 @@ def registro_contable(request, date_i):
         pie.append(color)
         aux_color += (200 - 20)/len(pie_ingresos)
 
-
     cat_gastos = RegistroContable.objects.filter(usuario = user, estado = "GASTOS", fecha__range=[fecha_inicial, fecha_final]).values_list("categoria", flat=True).distinct()
 
     pie_gastos = []
@@ -2177,6 +2176,28 @@ def registro_contable(request, date_i):
 
 
     return render(request, "users/registro_contable.html", {'total_cajas':total_cajas, 'registros_totales':registros_totales,'datos_week':datos_week, 'data_month':data_month, 'list_cat_ing':list_cat_ing, 'list_cat_gasto':list_cat_gasto, 'pie_gastos':pie_gastos, 'pie_ingresos':pie_ingresos, 'hoy':hoy, 'datos':datos, "ingresos":ingresos, "gastos":gastos, "balance":balance})
+
+def editar_registro_contable(request):
+
+    if request.method == 'POST':
+        try:
+            if request.POST["borrar"]:
+                sub_aux = RegistroContable.objects.get(id = request.POST["borrar"])
+                sub_aux.delete()
+        except:
+            pass
+
+    users_registro = RegistroContable.objects.filter(creador = request.user.username).values_list("usuario__identificacion", flat=True).distinct()
+
+    data = []
+
+    for i in users_registro:
+        user = datosusuario.objects.get(identificacion = i)
+        data_user = RegistroContable.objects.filter(creador = request.user.username, usuario = user)
+        data.append((user, data_user))
+
+    return render(request, "users/registro_contable_editar.html", {"data":data})
+
 
 class DescargarRegistroContable(TemplateView):
 

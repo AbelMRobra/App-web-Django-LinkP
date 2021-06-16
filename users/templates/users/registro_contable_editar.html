@@ -1,0 +1,246 @@
+{% extends "users/inicio2.html" %}
+{% load apptags_extras %}
+
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+
+<div class="container-fluid">
+    <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+            <h3 class="text-themecolor">Editar Registro Contable </h3>
+        </div>
+
+        <div class="col-md-7 align-self-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+                <li class="breadcrumb-item">Editar Registro</li>
+            </ol>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body row">
+                <div class="col-12 col-md-12 col-lg-12 justify-content-center">
+                    <div class="row">
+                        <div class="col-12">
+                            <ul class="nav nav-tabs">
+                                {% for i in data %}
+                                <li {% if i.0 == request.user %} class="active" {% endif %}><a data-toggle="tab" href="#{{i.0}}">{{i.0}}</a></li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="tab-content">
+
+                        {% for d in data %}
+                        <div id="{{d.0}}" class="tab-pane fade in active">
+
+                            <div class="row my-2">
+                                <div class="col-6">
+                                    <h3>Registros realizados de {{d.0}} 
+                                    </h3>
+                                </div>
+                            </div>
+
+                            <div class="table-responsive">
+                                <table id="example{{d.0}}" class="table table-bordered " style="width:100%; font-size: 14px;">
+                                    <thead style="font-size: 14px;">
+                                        <tr>
+                                            <th> Dia </th>
+                                            <th> Caja </th>
+                                            <th> Cargo </th>
+                                            <th> Cuenta </th>
+                                            <th> Categoria </th>
+                                            <th> Nota </th>
+                                            <th> Importe </th>
+
+                                        </tr>
+                                    </thead>
+
+                                    <tbody style="font-size: 12px;">
+                                        {% for i in d.1 %}
+                                        <tr>
+                                            <td>{{i.fecha|date:"Y/m/d"}}</td>
+                                            <td><a href="#" data-toggle="modal"
+                                                data-target="#Modal{{i.id}}">{{i.caja}}</a></td>
+                                            <td>{{i.creador}}</td>
+
+                                            <!-- Modal  -->
+                                            <div id="Modal{{i.id}}" class="modal fade" tabindex="-1" role="dialog"
+                                                aria-labelledby="Modal{{i.id}}" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header"
+                                                            style="background: rgb(36,160,237);
+                                background: linear-gradient(315deg, rgba(36,160,237,1) 0%, rgba(56,56,130,1) 22%, rgba(0,212,255,1) 100%);">
+                                                            <h5 class="modal-title  text-light"
+                                                                id="exampleModalLongTitle">Editar</h5>
+                                                            <button type="button" class="close text-light"
+                                                                data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+
+                                                            <form method="POST" style="margin: 15px;"
+                                                                enctype="multipart/form-data" id="upload-image-form">
+
+                                                                {% csrf_token %}
+                                                                <h6>Fecha</h6>
+
+                                                                <div class="input-group mb-3">
+
+                                                                    <input name="dia" type="date"
+                                                                        class="form-control form-control"
+                                                                        style="width: 300px;" value="{{i.fecha|date:'Y-m-d'}}">
+                                                                </div>
+
+                                                                <h6>Caja</h6>
+
+                                                                <div class="input-group mb-3">
+
+                                                                    <input name="caja" type="text"
+                                                                        class="form-control form-control"
+                                                                        value="{{i.caja}}">
+
+                                                                </div>
+                                                                <h6>Cargo</h6>
+
+                                                                <div class="input-group mb-3">
+
+                                                                    <input name="cargo" type="search"
+                                                                        class="form-control form-control"
+                                                                        value="{{i.creador}}">
+
+                                                                </div>
+                                                                <h6>Cuenta</h6>
+
+                                                                <div class="input-group mb-3">
+
+                                                                    <input name="cuenta" type="search"
+                                                                        class="form-control form-control"
+                                                                        value="{{i.cuenta}}">
+
+                                                                </div>
+
+                                                                <h6>Categoria</h6>
+
+                                                                <div class="input-group mb-3">
+
+                                                                    <input name="categoria" type="search"
+                                                                        class="form-control form-control"
+                                                                        value="{{i.categoria}}">
+
+                                                                </div>
+
+                                                                <h6>Nota</h6>
+
+                                                                <div class="input-group mb-3">
+
+                                                                    <input name="nota" type="text"
+                                                                        class="form-control form-control"
+                                                                        style="width: 300px;"
+                                                                        value="{{i.nota}}">
+                                                                </div>
+                                                                <h6>Importe</h6>
+
+                                                                <div class="input-group mb-3">
+
+                                                                    <input name="importe" type="number"
+                                                                        class="form-control form-control border border-success"
+                                                                        style="width: 300px;"
+                                                                        value="{{i.importe}}">
+                                                                </div>
+
+
+                                                                <button type="submit" name="editar" value="{{i.id}}"
+                                                                    class="btn"><i
+                                                                        class="fa fa-arrow-up  text-info"><span
+                                                                            class="text-info ml-2"
+                                                                            style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif"><b>Editar</b></span></i></button>
+
+                                                                <button type="submit" name="borrar" value="{{i.id}}" class="btn"><i class="fa fa-trash text-danger"><span class="text-danger ml-2" style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif"><b>borrar</b></span></i></button>
+
+
+                                                            </form>
+
+
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-info"
+                                                                data-dismiss="modal">Cerrar</button>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <td>{{i.cuenta}}</td>
+                                            <td>{{i.categoria}}</td>
+                                            <td>{{i.nota}}</td>
+                                            {% if i.estado == "INGRESOS" %}
+                                            <td><b>${{i.importe|floatformat:0|intcomma}}</b></td>
+                                            {% else %}
+                                            <td><b>-${{i.importe|floatformat:0|intcomma}}</b></td>
+                                            {% endif %}
+                                        </tr>
+
+                                        {% endfor %}
+
+                                    </tbody>
+
+                                </table>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<datalist id="list_cat_gasto">
+
+    {% for i in list_cat_gasto %}
+
+    <option value="{{ i }}"></option>
+
+    {% endfor %}
+
+</datalist>
+
+<datalist id="list_cat_ing">
+
+    {% for i in list_cat_ing %}
+
+    <option value="{{ i }}"></option>
+
+    {% endfor %}
+
+</datalist>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+{% for d in data %}
+
+<script>
+
+    $(document).ready(function () {
+        $('#example{{d.0}}').DataTable({
+            "order": [[0, "desc"]],
+        });
+    });
+</script>
+
+{% endfor %}
+
+
+{% endblock %}
