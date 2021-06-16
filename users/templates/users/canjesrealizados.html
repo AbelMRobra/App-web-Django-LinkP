@@ -32,7 +32,7 @@
                             <li class="active"><a data-toggle="tab" href="#sinentregar">Sin entregar</a></li>
                             <li><a data-toggle="tab" href="#entregado">Entregado</a></li>
                             <li><a data-toggle="tab" href="#total">Total</a></li>
-                            <li><a data-toggle="tab" href="#resumen">Resumen</a></li>
+                            <li><a data-toggle="tab" href="#generador">Generador</a></li>
                         </ul>
                     </div>
                 </div>
@@ -200,8 +200,99 @@
                             </div>
                         </div>
                     </div>
-                    <div id="resumen" class="tab-pane fade">
-                        <p>resumen</p>
+                    <div id="generador" class="tab-pane fade">
+                        <div class="row my-2">
+                            <div class="col-6">
+                                <h3>Generador de monedas
+                                </h3>
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+
+                            <div class="col-lg-6 col-xlg-3 col-md-5">
+
+                                <div class="card">
+                                    <h4>Generador</h4>
+                                </div>
+
+                                <div class="card-body">
+
+                                    {% if request.user|has_group:"RRHH NIVEL 10" %}
+                                    <form class="form-horizontal form-material" method="POST">
+                                        {% csrf_token %}
+                                        <div class="form-group">
+                                            <label class="col-md-12">Usuario que recibe</label>
+                                            <div class="col-md-12">
+
+                                                <select name="usuario" class="form-control form-control-line">
+                                                    {% if list_usuarios %}
+                                                    {% for i in list_usuarios %}
+            
+                                                    <option value="{{i.id}}" selected> {{i.nombre}}</option>
+            
+                                                    {% endfor %}
+                                                    {% endif %}
+            
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-md-12">Cantidad</label>
+                                            <div class="col-md-12">
+                                                <input type="number" name="cantidad" class="form-control form-control-line">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-12">Mensaje</label>
+                                            <div class="col-md-12">
+                                                <textarea rows="5" name="mensaje" class="form-control form-control-line"></textarea>
+                                            </div>
+                                        </div>
+     
+                                        <div class="form-group">
+                                            <div class="col-sm-12">
+                                                <button class="btn btn-success">Entregar</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    {% endif %}
+                                </div>
+
+
+                            </div>
+
+                            <div class="col-lg-6 col-xlg-9 col-md-7">
+
+                                <div class="card">
+                                    <h4>Registro</h4>
+                                </div>
+
+                                {% for i in data_generador %}
+
+                                <div class="sl-item">
+                                    <div class="sl-left"> <img src="{{i.0.imagenlogo.url}}" width="25px" class="img-circle" /> </div>
+                                    <div class="sl-right">
+                                        <div><a href="#" class="link">Se entregaron {{i.1}} linkcoins</a> <span class="sl-date">a {{i.0.nombre}}</span>
+                                            <p class="m-t-10">El mensaje fue: "{{i.2}}"</p>
+                                        </div>
+                    
+                                    </div>
+                                </div>
+                                <hr>
+
+                                {% endfor %}
+
+
+
+                            </div>
+
+                        </div>
+
+                            
+                        
                     </div>
                 </div>
             </div>

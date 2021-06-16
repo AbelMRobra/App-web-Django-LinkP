@@ -232,15 +232,15 @@
                         <tbody>
                             {% if recibidas %}
                             {% for i in recibidas %}
-                            <tr>
+                            <tr style="font-size: 14px;">
                                 <td style="text-align: left;"><img src="{% usuario i.2 %}" class="rounded"
-                                        style="width: 40px;" alt=""><span class="ml-2">{{i.2}}</span></td>
+                                        style="width: 30px;" alt=""><span class="ml-2">{{i.2}}</span></td>
 
                                 <td style="text-align: center;">{{i.0}} <img src="{% static 'img/monedalink2.png' %}"
                                         alt=""
                                         style="max-width:17px; height:auto; vertical-align: top; margin-top: 2px;">
                                 </td>
-                                <td style="width: 80%;"><b>Mensaje:</b> <i>"{{i.1}}"</i></td>
+                                <td style="width: 80%;"><i>"{{i.1}}"</i></td>
                             </tr>
                             {% endfor %}
                             {% endif %}
@@ -259,15 +259,15 @@
                         <div class="row" style="background:linear-gradient(135deg, #31467a 0%,#13bbe1 100%); border-radius: 5px;">
                             <div class="col-12 text-center mt-2">
                                 <img src="{{i.0.imagenlogo.url}}" class="rounded"
-                                        style="width: 40px;" alt="">
+                                        style="width: 30px;" alt="">
                             </div>
                             <div class="col-12 text-light my-2">
                                 <div>
                                     <img src="{% static 'img/monedalinkBlanco.png' %}"
                                     alt=""
-                                    style="max-width:20px; height:auto; vertical-align: top; margin-top: 2px;">
-                                    <span style="font-size: 18px;">{{i.1}}</span>
-                                    <span style="font-weight: bold; font-size: 18px; margin-left: 5px;">{{i.0.identificacion}}</span>
+                                    style="max-width:15px; height:auto; vertical-align: middle;">
+                                    <span style="font-size: 12px;">{{i.1}}</span>
+                                    <span style="font-weight: bold; font-size: 12px; margin-left: 5px;">{{i.0.identificacion}}</span>
                                 </div>
                             </div>
                         </div>

@@ -513,17 +513,18 @@
 
                                 <div class="col-4 text-center">
                                     <p><b>Ingresos</b></p>
-                                    <span class="text-success"><b>$ {{ingresos|floatformat:0|intcomma}}</b></span>
-                                    
+                                    <span class="text-success"><b>M: ${{ingresos|floatformat:0|intcomma}}</b></span>
+                                    <p class="text-success">T: ${{ingresos_t|floatformat:0|intcomma}}</p>
                                 </div>
                                 <div class="col-4 text-center">
                                     <p><b>Gastos</b></p>
-                                    <span class="text-danger"><b>$ {{gastos|floatformat:0|intcomma}}</b></span>
-                                    
+                                    <span class="text-danger"><b>M: ${{gastos|floatformat:0|intcomma}}</b></span>
+                                    <p class="text-danger">T: ${{gastos_t|floatformat:0|intcomma}}</p>
                                 </div>
                                 <div class="col-4 text-center">
                                     <p><b>Balance</b></p>
-                                    <span class="text-info"><b>$ {{balance|floatformat:0|intcomma}}</b></span>
+                                    <span class="text-info"><b>M: ${{balance|floatformat:0|intcomma}}</b></span>
+                                    <p class="text-info">T: ${{balance_t|floatformat:0|intcomma}}</p>
                                     
                                 </div>
                             </div>
@@ -531,6 +532,8 @@
                             <hr style="width: 100%;"></hr>
 
                             <div class="row d-flex justify-content-between my-4 text-center">
+
+                                <h3 class="text-left">Cajas consolidadas</h3>
 
                                 {% for i in total_cajas %}
 
@@ -572,7 +575,7 @@
                                               data: {
                                               datasets: [{        
                                                   data: [{% for i in pie_gastos %} {{i.1}}, {% endfor %}],
-                                                  backgroundColor: [{% for i in pie_gastos %} 'rgb{{i.2}}', {% endfor %}],    
+                                                  backgroundColor: [{% for i in pie_gastos %} 'rgb{{i.3}}', {% endfor %}],    
                                               }],
                                     
                                               labels: [{% for i in pie_gastos %} '{{i.0}}', {% endfor %}]
@@ -602,28 +605,32 @@
                                                 {% for i in pie_gastos %}
                                                 <tr>
                                                     
-                                                    <td><b><a href="#" style="color: rgb{{i.2}};" data-toggle="modal" data-target="#ModalGastosExtendido{{i.0}}">{{i.0}}</a></b></td>
-                                                    <td>$ {{i.1|floatformat:0|intcomma}}</td>
+                                                    <td><b><a href="#" style="color: rgb{{i.3}};" data-toggle="modal" data-target="#ModalGastosExtendido{{i.0.0}}{{i.0.1}}{{i.1|floatformat:0}}">{{i.0}}</a></b></td>
+                                                    <td>${{i.1|floatformat:0|intcomma}}</td>
                                                     
                                                 </tr>
                                                 <!-- Modal -->
-                                                <div class="modal fade" id="ModalGastosExtendido{{i.0}}" tabindex="-1" role="dialog"
-                                                aria-labelledby="ModalGastosExtendido{{i.0}}Title" aria-hidden="true">
+                                                <div class="modal fade" id="ModalGastosExtendido{{i.0.0}}{{i.0.1}}{{i.1|floatformat:0}}" tabindex="-1" role="dialog"
+                                                aria-labelledby="ModalGastosExtendido{{i.0.0}}{{i.0.1}}{{i.1|floatformat:0}}Title" aria-hidden="true">
                                                     <div class="modal-dialog modal-dialog-centered" role="document">
                                                         <div class="modal-content">
                                                             <div class="modal-header"
                                                                 style="background: rgb(36,160,237);
                                                                                         background: linear-gradient(315deg, rgba(36,160,237,1) 0%, rgba(56,56,130,1) 22%, rgba(0,212,255,1) 100%);">
-                                                                <h5 class="modal-title text-light" id="exampleModalLongTitle">Detalle {{i.0}}</h5>
+                                                                <h5 class="modal-title text-light" id="exampleModalLongTitle">{{i.0}}</h5>
                                                                 <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
                                                                     <span aria-hidden="true">&times;</span>
                                                                 </button>
                                                             </div>
+                                                            
                                                             <div class="modal-body">
                                                                 <ul type="none">
-                                                                    <li><span>Gasto1: </span><span>detalle</span></li>
+                                                                    {% for d in i.2 %}
+                                                                    <li><span>{{d.nota|lower|capfirst}}: </span><span>${{d.importe|floatformat:0|intcomma}}</span></li>
+                                                                    {% endfor %}
                                                                 </ul>
                                                             </div>
+                                                            
                                                             <div class="modal-footer">
                                                                 <button type="button" class="btn btn-info" data-dismiss="modal">Cerrar</button>
 
@@ -667,7 +674,7 @@
                                               data: {
                                               datasets: [{        
                                                   data: [{% for i in pie_ingresos %} {{i.1}}, {% endfor %}],
-                                                  backgroundColor: [{% for i in pie_ingresos %} 'rgb{{i.2}}', {% endfor %}],    
+                                                  backgroundColor: [{% for i in pie_ingresos %} 'rgb{{i.3}}', {% endfor %}],    
                                               }],
                                     
                                               labels: [{% for i in pie_ingresos %} '{{i.0}}', {% endfor %}]
@@ -696,28 +703,32 @@
                                                 {% for i in pie_ingresos %}
                                                 <tr>
                                                     
-                                                    <td><b><a href="#" style="color: rgb{{i.2}};" data-toggle="modal" data-target="#ModalIngresosExtendido{{i.0}}">{{i.0}}</a></b></td>
-                                                    <td>$ {{i.1|floatformat:0|intcomma}}</td>
+                                                    <td><b><a href="#" style="color: rgb{{i.3}};" data-toggle="modal" data-target="#ModalIngresosExtendido{{i.0.0}}{{i.0.1}}{{i.1|floatformat:0}}">{{i.0}}</a></b></td>
+                                                    <td>${{i.1|floatformat:0|intcomma}}</td>
                                                     
                                                 </tr>
                                                 <!-- Modal -->
-                                                <div class="modal fade" id="ModalIngresosExtendido{{i.0}}" tabindex="-1" role="dialog"
-                                                aria-labelledby="ModalIngresosExtendido{{i.0}}Title" aria-hidden="true">
+                                                <div class="modal fade" id="ModalIngresosExtendido{{i.0.0}}{{i.0.1}}{{i.1|floatformat:0}}" tabindex="-1" role="dialog"
+                                                aria-labelledby="ModalIngresosExtendido{{i.0.0}}{{i.0.1}}{{i.1|floatformat:0}}Title" aria-hidden="true">
                                                     <div class="modal-dialog modal-dialog-centered" role="document">
                                                         <div class="modal-content">
                                                             <div class="modal-header"
                                                                 style="background: rgb(36,160,237);
                                                                                         background: linear-gradient(315deg, rgba(36,160,237,1) 0%, rgba(56,56,130,1) 22%, rgba(0,212,255,1) 100%);">
-                                                                <h5 class="modal-title text-light" id="exampleModalLongTitle">Detalle {{i.0}}</h5>
+                                                                <h5 class="modal-title text-light" id="exampleModalLongTitle">{{i.0}}</h5>
                                                                 <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
                                                                     <span aria-hidden="true">&times;</span>
                                                                 </button>
                                                             </div>
+                                                            
                                                             <div class="modal-body">
                                                                 <ul type="none">
-                                                                    <li><span>Gasto1: </span><span>detalle</span></li>
+                                                                    {% for d in i.2 %}
+                                                                    <li><span>{{d.nota|lower|capfirst}}: </span><span>${{d.importe|floatformat:0|intcomma}}</span></li>
+                                                                    {% endfor %}
                                                                 </ul>
                                                             </div>
+
                                                             <div class="modal-footer">
                                                                 <button type="button" class="btn btn-info" data-dismiss="modal">Cerrar</button>
 

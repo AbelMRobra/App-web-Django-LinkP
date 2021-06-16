@@ -692,16 +692,59 @@ Saludos,
 
 def canjerealizados(request):
 
+    list_usuarios = datosusuario.objects.all().order_by("identificacion").exclude(estado = "NO ACTIVO")
+
     if request.method == 'POST':
 
-        canje = CanjeMonedas.objects.get(id = int(request.POST['ENTREGADO']))
-        canje.entregado = "SI"
-        canje.save()
+        try:
+
+            canje = CanjeMonedas.objects.get(id = int(request.POST['ENTREGADO']))
+            canje.entregado = "SI"
+            canje.save()
+
+        except:
+
+            number = 1
+
+            vueltas = int(request.POST['cantidad'])
+
+            for i in range(vueltas):
+
+                nuevas_monedas = MonedaLink(
+                    nombre = str(date.today()) + "LINK" + str(datosusuario.objects.get(id = request.POST['usuario']).identificacion) + str(number),
+                    usuario_portador = datosusuario.objects.get(identificacion = request.user.username),
+                    fecha = date.today(),
+                    tipo = "REGALO DE LINK"
+                )
+
+                nuevas_monedas.save()
+
+                number += 1
+
+                entrega = EntregaMoneda(
+                    moneda = nuevas_monedas,
+                    fecha = date.today(),
+                    usuario_recibe = datosusuario.objects.get(id = request.POST['usuario']),
+                    mensaje = request.POST['mensaje']
+
+                )
+
+                entrega.save()
 
     data = CanjeMonedas.objects.all()
 
-    
-    return render(request, "users/canjesrealizados.html", {'data':data})
+    data_generador = []
+
+    usuarios_recibieron_generador = EntregaMoneda.objects.filter(moneda__nombre__icontains = "LINK").values_list("usuario_recibe__identificacion", flat = True).distinct()
+
+    for user in usuarios_recibieron_generador:
+        mommentos = EntregaMoneda.objects.filter(moneda__nombre__icontains = "LINK", usuario_recibe__identificacion = user).values_list("mensaje", flat = True).distinct()
+        for m in mommentos:
+            cantidad = len(EntregaMoneda.objects.filter(moneda__nombre__icontains = "LINK", usuario_recibe__identificacion = user, mensaje = m))
+            data_generador.append((datosusuario.objects.get(identificacion = user), cantidad, m))
+
+
+    return render(request, "users/canjesrealizados.html", {'data':data, 'list_usuarios':list_usuarios, 'data_generador':data_generador})
 
 def dashboard(request):
 
@@ -1870,33 +1913,6 @@ def registro_contable(request, date_i):
         try:
             if request.POST['carga_archivo'] == "1":
                 archivo_pandas = pd.read_excel(request.FILES['archivo'])
-                '''
-                # ---> Editar registros
-                registros_editar = archivo_pandas[archivo_pandas["Acción"] == "EDITAR"].reset_index(drop=True)
-                numero = 0
-                for row in range(registros_editar.shape[0]):
-                    importe_data_aux = str(registros_editar.loc[numero, "Importe"]).split(sep=" ")
-                    data_aux = RegistroContable.objects.get(id = int(registros_editar.loc[numero, "Id"]))
-                    data_aux.creador = registros_editar.loc[numero, "Creador"]
-                    data_aux.fecha = registros_editar.loc[numero, "Fecha"]
-                    data_aux.estado = registros_editar.loc[numero, "Tipo"]
-                    data_aux.caja = registros_editar.loc[numero, "Caja"]
-                    data_aux.cuenta = registros_editar.loc[numero, "Cuenta"]
-                    data_aux.categoria = registros_editar.loc[numero, "Categoria"]
-                    data_aux.importe = abs(float(importe_data_aux[0]))
-                    data_aux.nota = registros_editar.loc[numero, "Nota"]
-                    data_aux.save()
-                    numero += 1
-
-                registros_borrar = archivo_pandas[archivo_pandas["Acción"] == "BORRAR"].reset_index(drop=True)
-                numero = 0
-                for row in range(registros_borrar.shape[0]):
-                    data_aux = RegistroContable.objects.get(id = int(registros_borrar.loc[numero, "Id"]))
-                    data_aux.delete()
-                    numero += 1
-
-                registros_nuevo = archivo_pandas[archivo_pandas["Acción"] == "NUEVO"].reset_index(drop=True)
-                '''
                 registros_nuevo = archivo_pandas
                 numero = 0
 
@@ -1943,12 +1959,10 @@ def registro_contable(request, date_i):
                         importe = importe,
                         nota = nota,
 
-
                     )
 
                     b.save()
                     numero += 1
-
         except:
             pass
 
@@ -1979,12 +1993,12 @@ def registro_contable(request, date_i):
                 creador = request.user.username,
                 fecha = request.POST['fecha'],
                 estado = request.POST['tipo'],
-                caja = request.POST['caja'],
+                caja = "Personal",
                 cuenta = request.POST['cuenta'],
                 categoria = request.POST['categoria'],
                 importe = float(request.POST['importe']),
                 nota = request.POST['nota'],
-            )
+                )
 
             try:
                 b.adjunto = request.FILES['adjunto']
@@ -2066,15 +2080,21 @@ def registro_contable(request, date_i):
 
     for ci in cat_ingresos:
         aux = sum(np.array(RegistroContable.objects.filter(usuario = user, estado = "INGRESOS", fecha__range=[fecha_inicial, fecha_final], categoria = ci).values_list("importe", flat=True)))
-        pie_ingresos.append([ci, aux])
+        list = RegistroContable.objects.filter(usuario = user, estado = "INGRESOS", fecha__range=[fecha_inicial, fecha_final], categoria = ci)
+        pie_ingresos.append([ci, aux, list])
 
     pie_ingresos = sorted(pie_ingresos, key=lambda X : -X[1])
 
-    aux_color = 0
+    aux_color = 63
+    aux_color_2 = 0
     for pie in pie_ingresos: 
-        color = ((200- aux_color), (200- aux_color), 253)
+        if aux_color_2 > (120/2):
+            color = (aux_color, 63, 186-aux_color_2)
+        else:
+            color = (aux_color, 63, 186)
         pie.append(color)
-        aux_color += (200 - 20)/len(pie_ingresos)
+        aux_color += (186 - 63)/len(pie_ingresos)
+        aux_color_2 += 120/len(pie_ingresos)
 
     cat_gastos = RegistroContable.objects.filter(usuario = user, estado = "GASTOS", fecha__range=[fecha_inicial, fecha_final]).values_list("categoria", flat=True).distinct()
 
@@ -2084,15 +2104,21 @@ def registro_contable(request, date_i):
 
     for cg in cat_gastos:
         aux = sum(np.array(RegistroContable.objects.filter(usuario = user, estado = "GASTOS", fecha__range=[fecha_inicial, fecha_final], categoria = cg).values_list("importe", flat=True)))        
-        pie_gastos.append([cg, aux])
+        list = RegistroContable.objects.filter(usuario = user, estado = "GASTOS", fecha__range=[fecha_inicial, fecha_final], categoria = cg)
+        pie_gastos.append([cg, aux, list])
 
     pie_gastos = sorted(pie_gastos, key=lambda X : -X[1])
 
-    aux_color = 0
+    aux_color = 33
+    aux_color_2 = 0 
     for pie in pie_gastos: 
-        color = (253, (200- aux_color), (200- aux_color))
+        if aux_color_2 > (170/2):
+            color = ((214-aux_color_2), aux_color, 42)
+        else:
+            color = (214, aux_color, 42)
         pie.append(color)
-        aux_color += (200 - 20)/len(pie_gastos)
+        aux_color += (214 - 33)/len(pie_gastos)
+        aux_color_2 += 170/len(pie_gastos)
 
 
     list_cat_gasto = RegistroContable.objects.filter(usuario = user, estado = "GASTOS").values_list("categoria", flat=True).distinct()
@@ -2156,6 +2182,12 @@ def registro_contable(request, date_i):
   
     balance = ingresos - gastos
 
+    ingresos_t = sum(np.array(RegistroContable.objects.filter(usuario = user, estado = "INGRESOS").values_list("importe", flat=True)))
+
+    gastos_t = sum(np.array(RegistroContable.objects.filter(usuario = user, estado = "GASTOS").values_list("importe", flat=True)))
+  
+    balance_t = ingresos_t - gastos_t
+
     ##### Semana
 
     semana = hoy.weekday()
@@ -2175,7 +2207,7 @@ def registro_contable(request, date_i):
         semana_1 = semana_1 + datetime.timedelta(days=7)    
 
 
-    return render(request, "users/registro_contable.html", {'total_cajas':total_cajas, 'registros_totales':registros_totales,'datos_week':datos_week, 'data_month':data_month, 'list_cat_ing':list_cat_ing, 'list_cat_gasto':list_cat_gasto, 'pie_gastos':pie_gastos, 'pie_ingresos':pie_ingresos, 'hoy':hoy, 'datos':datos, "ingresos":ingresos, "gastos":gastos, "balance":balance})
+    return render(request, "users/registro_contable.html", {'total_cajas':total_cajas, 'registros_totales':registros_totales,'datos_week':datos_week, 'data_month':data_month, 'list_cat_ing':list_cat_ing, 'list_cat_gasto':list_cat_gasto, 'pie_gastos':pie_gastos, 'pie_ingresos':pie_ingresos, 'hoy':hoy, 'datos':datos, "ingresos":ingresos, "gastos":gastos, "balance":balance, "ingresos_t":ingresos_t, "gastos_t":gastos_t, "balance_t":balance_t})
 
 def editar_registro_contable(request):
 
@@ -2197,7 +2229,6 @@ def editar_registro_contable(request):
         data.append((user, data_user))
 
     return render(request, "users/registro_contable_editar.html", {"data":data})
-
 
 class DescargarRegistroContable(TemplateView):
 
