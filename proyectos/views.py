@@ -49,8 +49,9 @@ def proyectos(request):
 
     datos = Proyectos.objects.order_by("fecha_f").exclude(fecha_i = None)
 
+    total_m2 = sum(Proyectos.objects.exclude(fecha_i = None).values_list("m2", flat=True))
 
-    return render(request, 'proyectos.html', {'datos':datos})
+    return render(request, 'proyectos.html', {'datos':datos, 'total_m2':total_m2})
 
 def unidades(request):
 

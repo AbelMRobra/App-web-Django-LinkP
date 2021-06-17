@@ -88,7 +88,6 @@ def cargarocautorizar(request):
                 numero  = request.POST['referencia'],
                 monto = float(request.POST['valor']),
                 adjunto = request.FILES['imagen'],
-                adj_oc = request.FILES['oc'],
                 o_c = request.POST['numerooc'],
                 autoriza = request.POST['autoriza'],
                 publica = request.POST['publica'],
@@ -96,6 +95,12 @@ def cargarocautorizar(request):
             )
 
             b.save()
+
+            try:
+                b.o_c = request.POST['numerooc']
+                b.save()
+            except:
+                pass
 
             try:
                 b.contrato = Contratos.objects.get(id=int(request.POST['contrato']))

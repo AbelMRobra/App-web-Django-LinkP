@@ -1,7 +1,7 @@
 {% extends "users/inicio2.html" %}
 
 {% load static %}
-
+{% load humanize %}
 {% block content %}
 
 <div class="container-fluid ">
@@ -29,20 +29,30 @@
                     <table class="table">
                         <thead>
                             <tr>
-                                <th style="vertical-align: top;">Logo</th>
-                                <th style="vertical-align: top;">Nombre</th>
-                                <th style="vertical-align: top;">Inicio </th>
-                                <th style="vertical-align: top;">Inicio contrato </th>
-                                <th style="vertical-align: top;">Entrega </th>
-                                <th style="vertical-align: top;">Entrega contrato</th>
-                                <th style="vertical-align: top;">Tamaño</th>
+                                <th style="vertical-align: middle;" rowspan="2">Logo</th>
+                                <th style="vertical-align: middle;" rowspan="2">Nombre</th>
+                                <th style="vertical-align: middle; text-align: center;" colspan="2">Inicio de obra</th>
+                                <th style="vertical-align: middle; text-align: center;" colspan="2">Entrega del proyecto</th>
+                                <th style="vertical-align: middle;" rowspan="2">Tamaño</th>
                             </tr>
+
+                            <tr style="font-size: 12px;">
+                                <th style="vertical-align: middle; text-align: center;">Planificado </th>
+                                <th style="vertical-align: middle; text-align: center;">Contractual </th>
+                                <th style="vertical-align: middle; text-align: center;">Planificado </th>
+                                <th style="vertical-align: middle; text-align: center;">Contractual </th>
+
+
+                            </tr>
+
+                        </tr>
+
                         </thead>
                         <tbody>
 
                             {% for i in datos %}
 
-                            <tr>
+                            <tr style="font-size: 12px;">
 
                                 {% if i.iamgen %}
                                 <td> <b><img src="{{i.iamgen.url}}" class="img-fluid" alt="..."
@@ -57,52 +67,61 @@
 
                                 {% if i.fecha_i %}
                                 
-                                <td>{{i.fecha_i|date:"d/m/Y"}}</td>
+                                <td style="text-align: center;">{{i.fecha_i|date:"d/m/Y"}}</td>
 
                                 {% else %}
 
-                                <td>--/--/----</td>
+                                <td style="text-align: center;">--/--/----</td>
                                 
                                 {% endif %}
 
                                 {% if i.fecha_i_contrato %}
 
-                                <td> {{i.fecha_i_contrato|date:"d/m/Y"}}</td>
+                                <td style="text-align: center;"> {{i.fecha_i_contrato|date:"d/m/Y"}}</td>
 
                                 {% else %}
 
-                                <td>--/--/----</td>
+                                <td style="text-align: center;">--/--/----</td>
 
                                 {% endif %}
 
                                 {% if i.fecha_f %}
                                 
-                                <td>{{i.fecha_f|date:"d/m/Y"}}</td>
+                                <td style="text-align: center;">{{i.fecha_f|date:"d/m/Y"}}</td>
 
                                 {% else %}
 
-                                <td>--/--/----</td>
+                                <td style="text-align: center;">--/--/----</td>
                                 
                                 {% endif %}
 
                                 {% if i.i.fecha_f_contrato %}
 
-                                <td>{{i.fecha_f_contrato|date:"d/m/Y"}}</td>
+                                <td style="text-align: center;">{{i.fecha_f_contrato|date:"d/m/Y"}}</td>
 
 
                                 {% else %}
 
-                                <td>--/--/----</td>
+                                <td style="text-align: center;">--/--/----</td>
 
                                 {% endif %}
                                                                
 
-                                <td><span class="label label-info" style="background-color: rgb({{i.color}});">{{i.m2}}
-                                        m2</span></td>
+                                <td style="color: rgb({{i.color}});"><b>{{i.m2|floatformat:0|intcomma}} m2</b> </td>
                             </tr>
 
 
                             {% endfor %}
+
+                            <tr>
+                                <td colspan="2"><b>TOTAL</b></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td><b>{{total_m2|floatformat:0|intcomma}} m2</b></td>
+
+                            </tr>
 
                         </tbody>
                     </table>

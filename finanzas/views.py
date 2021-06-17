@@ -593,14 +593,19 @@ def editar_pagos(request, id_pago):
 
     cotizacion = pago.pago_pesos/pago.pago
 
+    factura_elementos = pago.documento_1.split(" ").split("-")
+    print(factura_elementos)
+
     if request.method == 'POST':
+
+        nombre_factura = "FAC " + str(request.POST['tipo'])+ " : " + str(request.POST['sucursal']) + "-" + str(request.POST['factura'])
 
         pagado = request.POST['precio2']
         cotizacion = request.POST['precio1']
         precio1 = float(pagado)/float(cotizacion)
 
         pago.fecha = request.POST['fecha']
-        pago.documento_1 = request.POST['documento1']
+        pago.documento_1 = nombre_factura
         pago.documento_2 = request.POST['documento2']
         pago.pago = precio1
         pago.pago_pesos = request.POST['precio2']
@@ -608,7 +613,7 @@ def editar_pagos(request, id_pago):
 
         return redirect('Pagos', id_cuota = pago.cuota.id)
 
-    return render(request, 'editar_pagos.html', {'pago':pago, 'cotizacion':cotizacion})
+    return render(request, 'editar_pagos.html', {'pago':pago, 'cotizacion':cotizacion, 'factura_elementos':factura_elementos})
 
 def pagos(request, id_cuota):
 
@@ -646,13 +651,15 @@ def agregar_pagos(request, id_cuota):
 
         precio1 = float(request.POST['precio2'])/float(request.POST['precio1'])
 
+        nombre_factura = "FAC " + str(request.POST['tipo'])+ ": " + str(request.POST['sucursal']) + "-" + str(request.POST['factura'])
+
         c = Pago(
 
             cuota = cuota,
             fecha = request.POST['fecha'],
             pago = precio1,
             pago_pesos = float(request.POST['precio2']),                       
-            documento_1 = request.POST['documento1'],
+            documento_1 = nombre_factura,
             documento_2 = request.POST['documento2'],
             metodo = request.POST['metodo'],
             )

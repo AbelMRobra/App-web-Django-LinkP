@@ -2059,8 +2059,6 @@ def registro_contable(request, date_i):
 
         datos.append([f, data, ingresos_f, gastos_f])
 
-    
-
     ### Cuadros generales
 
     ##### Idea de la caja
