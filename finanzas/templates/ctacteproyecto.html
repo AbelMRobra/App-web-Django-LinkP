@@ -95,7 +95,7 @@
                                 <a href="{% url 'Mandar email' i.id %}"  class="fa fa-envelope-o"></a>
                                 <a href="{% url 'Detalle venta' i.venta.id %}"  class="fa fa-comment"></a>
                                 <a href="{% url 'Eliminar cuenta corriente' i.id %}"> <span
-                                        class="hint--left hint--danger" aria-label="Elimina la cuenta corriente!"><div class="fa fa-trash fa-lg"></div></span> </a>
+                                        class="hint--left hint--danger" aria-label="Elimina la cuenta corriente!"><div class="fa fa-trash fa-lg text-danger"></div></span> </a>
                             </td>
 
                         </tr>
@@ -116,6 +116,14 @@
 <script>
     $(document).ready(function () {
         $('#example').DataTable({
+            "language": {
+            "lengthMenu": "Mostar _MENU_ documentos",
+            "zeroRecords": "No se encontro nada - perdon ",
+            "info": "Pagina _PAGE_ de _PAGES_",
+            "infoEmpty": "Sin registros disponibles",
+            "infoFiltered": "(filtrado de _MAX_ registros totales)",
+            "search": "Buscar"
+        },
             "paging": false,
             "ordering": false,
             "info": false

@@ -5,7 +5,7 @@
 {% block content %}
 
 
-<div class="container-fluid r-aside">
+<div class="container-fluid">
 
     <div class="row page-titles">
         <div class="col-md-5 align-self-center">
@@ -45,8 +45,7 @@
                                         </div>
                                         <div class="row d-flex justify-content-center mt-1">
                                             <div class="col col-md-10 col-lg-10">
-                                                <div>
-                                                    <select name="proyecto" class="custom-select bg-white">
+                                                    <select name="proyecto" class="custom-select bg-white" style="width: 100%;">
 
                                                         {% for i in datos.proyectos %}
                                                         <option value="{{ i.id }}">{{ i.nombre }}</option>
@@ -54,7 +53,6 @@
                                                         {% endfor %}
 
                                                     </select>
-                                                </div>
                                             </div>
                                         </div>
 
@@ -67,13 +65,11 @@
                                         </div>
                                         <div class="row d-flex justify-content-center mt-1">
                                             <div class="col col-md-10 col-lg-10">
-                                                <div>
 
                                                     <input name="proveedores" type="search"
                                                         class="form-control form-control"
                                                         placeholder="Nombre del proveedor" list="provee">
 
-                                                </div>
                                             </div>
                                         </div>
 
@@ -87,7 +83,7 @@
                                         <div class="row d-flex justify-content-center mt-1">
                                             <div class="col col-md-10 col-lg-10">
                                                 <div>
-                                                    <select name="tipo" class="custom-select bg-white">
+                                                    <select name="tipo" class="custom-select bg-white" style="width: 100%;">
 
                                                         <option value=1>Anticipada</option>
 

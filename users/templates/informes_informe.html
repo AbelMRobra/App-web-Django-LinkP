@@ -7,10 +7,7 @@
 
 {% block content %}
 
-<div class="container-fluid r-aside">
-    <!-- ============================================================== -->
-    <!-- Cabeza de la pagina -->
-    <!-- ============================================================== -->
+<div class="container-fluid">
     <div class="row page-titles">
         <div class="col-md-5 align-self-center">
             <h3 class="text-themecolor">Informe fecha {{informes_data.fecha}}</h3>
@@ -24,9 +21,7 @@
 
             </ol>
         </div>
-
     </div>
-
 </div>
 
 <div class="row">
@@ -52,11 +47,8 @@
                     <p style="white-space: pre-wrap;">{{informes_data.informe}}</p>
 
                 </div>
-
             </div>
         </div>
-
-
     </div>
 
     <!-- Modal fecha estado Subitem -->
@@ -64,9 +56,10 @@
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Escribe el informe</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <div class="modal-header" style="background: rgb(36,160,237);
+                                            background: linear-gradient(315deg, rgba(36,160,237,1) 0%, rgba(56,56,130,1) 22%, rgba(0,212,255,1) 100%);">
+                    <h5 class="modal-title text-light" id="exampleModalLongTitle">Escribe el informe</h5>
+                    <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -97,7 +90,6 @@
                 </div>
             </div>
         </div>
-
     </div>
 
     <div class="col-lg-6 col-md-12">
@@ -123,13 +115,8 @@
 
                 {% endif %}
 
-
             </div>
-
-
-
         </div>
-
     </div>
 </div>
 
@@ -157,9 +144,10 @@
                             aria-labelledby="ModalTareaTitle" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered" role="document">
                                 <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLongTitle">Ingrese una tarea</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <div class="modal-header" style="background: rgb(36,160,237);
+                                            background: linear-gradient(315deg, rgba(36,160,237,1) 0%, rgba(56,56,130,1) 22%, rgba(0,212,255,1) 100%);">
+                                        <h5 class="modal-title text-light" id="exampleModalLongTitle">Ingrese una tarea</h5>
+                                        <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
                                     </div>
@@ -179,19 +167,18 @@
                                             </div>
 
                                             <button type="submit"
-                                                class="btn waves-effect waves-light btn-rounded btn-secondary">ingresar</button>
+                                                class="btn btn-secondary">ingresar</button>
 
                                         </form>
 
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary"
-                                            data-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-info"
+                                            data-dismiss="modal">Cerrar</button>
 
                                     </div>
                                 </div>
                             </div>
-
                         </div>
                         <h6 class="text-muted">Tareas asignadas a principios de mes como objetivo mensual</h6>
                     </div>
@@ -235,13 +222,8 @@
 
                         </tbody>
                     </table>
-
-
                 </div>
-
             </div>
-
-
         </div>
     </div>
 </div>
@@ -268,9 +250,10 @@
                             aria-labelledby="ModalTareaTitle" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered" role="document">
                                 <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLongTitle">Bitacoras de proyectos</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <div class="modal-header" style="background: rgb(36,160,237);
+                                            background: linear-gradient(315deg, rgba(36,160,237,1) 0%, rgba(56,56,130,1) 22%, rgba(0,212,255,1) 100%);">
+                                        <h5 class="modal-title text-light" id="exampleModalLongTitle">Bitacoras de proyectos</h5>
+                                        <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
                                     </div>
@@ -320,13 +303,12 @@
 
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary"
-                                            data-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-info"
+                                            data-dismiss="modal">Cerrar</button>
 
                                     </div>
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </div>
@@ -350,8 +332,9 @@
                                     aria-labelledby="ModalTareaTitle" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered" role="document">
                                         <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLongTitle">Bitacora</h5>
+                                            <div class="modal-header" style="background: rgb(36,160,237);
+                                            background: linear-gradient(315deg, rgba(36,160,237,1) 0%, rgba(56,56,130,1) 22%, rgba(0,212,255,1) 100%);">
+                                                <h5 class="modal-title text-light" id="exampleModalLongTitle">Bitacora</h5>
                                                 <button type="button" class="close" data-dismiss="modal"
                                                     aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
@@ -372,15 +355,14 @@
 
                                                 </form>
                                                 <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary"
-                                                        data-dismiss="modal">Close</button>
+                                                    <button type="button" class="btn btn-info"
+                                                        data-dismiss="modal">Cerrar</button>
 
                                                 </div>
                                             </div>
                                         </div>
-
                                     </div>
-
+                                </div>
 
                             </tr>
                             {% endfor %}

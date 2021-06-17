@@ -5,7 +5,7 @@
 
 {% block content %}
 
-<div class="container-fluid r-aside">
+<div class="container-fluid">
     <div class="row page-titles">
         <div class="col-md-5 align-self-center">
             <h3 class="text-themecolor">Orden de servicio</h3>
@@ -85,9 +85,9 @@
                                     <div class="modal-content">
                                         <div class="modal-header" style="background: rgb(36,160,237);
                                         background: linear-gradient(315deg, rgba(36,160,237,1) 0%, rgba(56,56,130,1) 22%, rgba(0,212,255,1) 100%);">
-                                            <h5 class="modal-title" id="exampleModalLongTitle">Escribe un
+                                            <h5 class="modal-title text-light" id="exampleModalLongTitle">Escribe un
                                                 comentario!</h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
                                         </div>
@@ -103,7 +103,7 @@
                                             </form>
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary"
+                                            <button type="button" class="btn btn-info"
                                                 data-dismiss="modal">Close</button>
 
                                         </div>
@@ -218,9 +218,9 @@
                             <hr class="my-4" style="width: 100%; border-color: rgba({{datos.proyecto.color}}, 0.5;">
                         </b>
 
-                        <div style="text-align: justify;">
+                        <div style="text-align: justify;"> 
 
-                                                      <h6>Descripción:</h6>
+                            <h6>Descripción:</h6>
 
                             <p style="white-space: pre-wrap;"> {{datos.descripcion}} </p>
 
