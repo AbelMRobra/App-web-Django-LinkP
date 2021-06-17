@@ -118,6 +118,14 @@
     
     $(document).ready(function () {
         $('#example').DataTable({
+            "language": {
+            "lengthMenu": "Mostar _MENU_ documentos",
+            "zeroRecords": "No se encontro nada - perdon ",
+            "info": "Pagina _PAGE_ de _PAGES_",
+            "infoEmpty": "Sin registros disponibles",
+            "infoFiltered": "(filtrado de _MAX_ registros totales)",
+            "search": "Buscar"
+        },
             "paging": false,
             "info": false,
             "ordering": false,

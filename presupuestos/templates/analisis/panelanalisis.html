@@ -7,12 +7,9 @@
 
 
 <div class="container-fluid ">
-    <!-- ============================================================== -->
-    <!-- Bread crumb and right sidebar toggle -->
-    <!-- ============================================================== -->
     <div class="row page-titles">
         <div class="col-md-5 align-self-center">
-            <h3 class="text-themecolor">Panel de Analisis de Precio Unitario</h3>
+            <h3 class="text-themecolor">Panel de Análisis de Precio Unitario</h3>
         </div>
 
         <div class="col-md-7 align-self-center">
@@ -38,15 +35,14 @@
                         style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif"><b>Añadir A.P.U</b></span></i></a>
 
 
-
                 {% if datos %}
 
                 <table id="example" class="table table-striped table-bordered" style="width:100%">
 
                     <thead>
                         <tr>
-                            <th>Nombre Del Analisis</th>
-                            <th>Codigo</th>
+                            <th>Nombre Del Análisis</th>
+                            <th>Código</th>
                             <th>Un.</th>
                             <th>Valor</th>
                         </tr>
@@ -60,7 +56,7 @@
                             <td>
                                 <a href="{% url 'Modificar analisis' i.0.codigo %}" class="fa fa-pencil-square-o " style="padding: 1px;">
                                 </a>
-                                <a href="#" class="fa fa-trash" style="padding: 1px;">
+                                <a href="#" class="fa fa-trash text-danger" style="padding: 1px;">
                                 </a><a href="{% url 'Composición Analisis' i.0.codigo %}"> {{i.0.nombre|lower|capfirst}}</a> </td>
                             <td>{{i.0.unidad|lower|capfirst}}</td>
                             <td> <b>{{i.0.codigo}}</b> </td>                            
@@ -71,17 +67,12 @@
                         {% endfor %}
                     </tbody>
 
-
-
-
                     {% else %}
                     <div>
                         <h3>No existe registros actualmente</h3>
                     </div>
 
-
                     {% endif %}
-
 
                 </table>
             </div>

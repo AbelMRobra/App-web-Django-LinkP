@@ -66,9 +66,10 @@
                                 <div class="modal fade" id="ModalPosta{{i.0.proyecto.id}}" tabindex="-1" role="dialog" aria-labelledby="ModalPosta{{i.0.proyecto.id}}" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered" role="document">
                                         <div class="modal-content">
-                                            <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLongTitle">Modificar precio Posta</h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <div class="modal-header" style="background: rgb(33, 74, 99);
+                            background: linear-gradient(315deg, rgba(36,160,237,1) 0%, rgba(56,56,130,1) 22%, rgba(0,212,255,1) 100%);">>
+                                            <h5 class="modal-title text-light" id="exampleModalLongTitle">Modificar precio Posta</h5>
+                                            <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
                                             </div>
@@ -85,7 +86,7 @@
                                                 </form>
                                             </div>
                                             <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                            <button type="button" class="btn btn-info" data-dismiss="modal">Cerrar</button>
                                     
                                             </div>
                                         </div>
@@ -95,9 +96,10 @@
                                 <div class="modal fade" id="ModalPricing{{i.0.proyecto.id}}" tabindex="-1" role="dialog" aria-labelledby="ModalPricing{{i.0.proyecto.id}}" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered" role="document">
                                         <div class="modal-content">
-                                            <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLongTitle">Modificar precio Pricing</h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <div class="modal-header" style="background: rgb(33, 74, 99);
+                            background: linear-gradient(315deg, rgba(36,160,237,1) 0%, rgba(56,56,130,1) 22%, rgba(0,212,255,1) 100%);">>
+                                            <h5 class="modal-title text-light" id="exampleModalLongTitle">Modificar precio Pricing</h5>
+                                            <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
                                             </div>
@@ -114,7 +116,7 @@
                                                 </form>
                                             </div>
                                             <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                            <button type="button" class="btn btn-info" data-dismiss="modal">Cerrar</button>
                                     
                                             </div>
                                         </div>
@@ -124,9 +126,10 @@
                                 <div class="modal fade" id="ModalLinkP{{i.0.proyecto.id}}" tabindex="-1" role="dialog" aria-labelledby="ModalLinkP{{i.0.proyecto.id}}" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered" role="document">
                                         <div class="modal-content">
-                                            <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLongTitle">Modificar precio LinkP</h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <div class="modal-header" style="background: rgb(33, 74, 99);
+                            background: linear-gradient(315deg, rgba(36,160,237,1) 0%, rgba(56,56,130,1) 22%, rgba(0,212,255,1) 100%);">>
+                                            <h5 class="modal-title text-light" id="exampleModalLongTitle">Modificar precio LinkP</h5>
+                                            <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
                                             </div>
@@ -143,7 +146,7 @@
                                                 </form>
                                             </div>
                                             <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                            <button type="button" class="btn btn-info" data-dismiss="modal">Cerrar</button>
                                     
                                             </div>
                                         </div>
@@ -192,6 +195,14 @@
 <script>
     $(document).ready(function () {
         $('#example').DataTable({
+            "language": {
+            "lengthMenu": "Mostar _MENU_ documentos",
+            "zeroRecords": "No se encontro nada - perdon ",
+            "info": "Pagina _PAGE_ de _PAGES_",
+            "infoEmpty": "Sin registros disponibles",
+            "infoFiltered": "(filtrado de _MAX_ registros totales)",
+            "search": "Buscar"
+        },
             "paging": false,
             "ordering": false,
             "info": false,

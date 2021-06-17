@@ -7,9 +7,6 @@
 
 
 <div class="container-fluid r-aside">
-    <!-- ============================================================== -->
-    <!-- Bread crumb and right sidebar toggle -->
-    <!-- ============================================================== -->
     <div class="row page-titles">
         <div class="col-md-5 align-self-center">
             <h3 class="text-themecolor">Registros de desvios</h3>
@@ -18,7 +15,7 @@
         <div class="col-md-7 align-self-center">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
-                <li class="breadcrumb-item"><a href="{% url 'Registros de desvios' %}">Panel</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'Principal Tecnica' %}">Panel</a></li>
                 <li class="breadcrumb-item">Registros</li>
             </ol>
         </div>
@@ -53,9 +50,11 @@
                         aria-labelledby="ModalRegistroCrearTitle" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered" role="document">
                             <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLongTitle">Nuevo registro</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <div class="modal-header"
+                                style="background: rgb(36,160,237);
+                                                        background: linear-gradient(315deg, rgba(36,160,237,1) 0%, rgba(56,56,130,1) 22%, rgba(0,212,255,1) 100%);">
+                                    <h5 class="modal-title text-light" id="exampleModalLongTitle">Nuevo registro</h5>
+                                    <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
@@ -125,7 +124,7 @@
 
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                    <button type="button" class="btn btn-info" data-dismiss="modal">Cerrar</button>
 
                                 </div>
                             </div>
@@ -178,9 +177,11 @@
                                     aria-labelledby="ModalEditar{{i.id}}Title" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered" role="document">
                                         <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLongTitle">Editar registro</h5>
-                                                <button type="button" class="close" data-dismiss="modal"
+                                            <div class="modal-header"
+                                            style="background: rgb(36,160,237);
+                                                                    background: linear-gradient(315deg, rgba(36,160,237,1) 0%, rgba(56,56,130,1) 22%, rgba(0,212,255,1) 100%);">
+                                                <h5 class="modal-title text-light" id="exampleModalLongTitle">Editar registro</h5>
+                                                <button type="button" class="close text-light" data-dismiss="modal"
                                                     aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
@@ -252,7 +253,7 @@
 
                                             </div>
                                             <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary"
+                                                <button type="button" class="btn btn-info"
                                                     data-dismiss="modal">Cerrar</button>
 
                                             </div>
@@ -264,9 +265,11 @@
                                     aria-labelledby="ModalDescrip{{i.id}}Title" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered" role="document">
                                         <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLongTitle">{{i.nombre}}</h5>
-                                                <button type="button" class="close" data-dismiss="modal"
+                                            <div class="modal-header"
+                                            style="background: rgb(36,160,237);
+                                                                    background: linear-gradient(315deg, rgba(36,160,237,1) 0%, rgba(56,56,130,1) 22%, rgba(0,212,255,1) 100%);">
+                                                <h5 class="modal-title text-light" id="exampleModalLongTitle">{{i.nombre}}</h5>
+                                                <button type="button" class="close text-light" data-dismiss="modal"
                                                     aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
@@ -277,7 +280,7 @@
 
                                             </div>
                                             <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary"
+                                                <button type="button" class="btn btn-info"
                                                     data-dismiss="modal">Cerrar</button>
 
                                             </div>
@@ -305,14 +308,15 @@
 </div>
 
 <aside class="right-side-panel">
-    <h3 class="p-relative"><span class="lstick"></span> ¿Comó funciona?</h3>
+    <h3 class="p-relative"><span class="lstick"></span> ¿Cómo funciona?</h3>
     <div class="row">
 
         <div class="col-md-12 m-t-10">
             <div class="card">
                 <div class="card-body">
                     <img src="{% static 'img/animation_500_kmuydpt0.gif' %}" alt="Funny image" width="200px">
-                    <p> No funciona</p>
+                    <p>Este panel registra todos los imprevistos que puedan demorar las entregas en los distintos proyectos.</p>
+                    <p>Asi se podra dar una respuesta más clara y tener un mejor seguimiento de los imprevistos a lo largo del proyecto</p>
                 </div>
             </div>
         </div>
@@ -332,6 +336,14 @@
 <script>
     $(document).ready(function () {
         $('#example').DataTable({
+            "language": {
+            "lengthMenu": "Mostar _MENU_ documentos",
+            "zeroRecords": "No se encontro nada - perdon ",
+            "info": "Pagina _PAGE_ de _PAGES_",
+            "infoEmpty": "Sin registros disponibles",
+            "infoFiltered": "(filtrado de _MAX_ registros totales)",
+            "search": "Buscar"
+        },
             "order": [[0, "desc"]],
             "paging": false,
             "info": false
@@ -339,6 +351,14 @@
     });
     $(document).ready(function () {
         $('#example1').DataTable({
+            "language": {
+            "lengthMenu": "Mostar _MENU_ documentos",
+            "zeroRecords": "No se encontro nada - perdon ",
+            "info": "Pagina _PAGE_ de _PAGES_",
+            "infoEmpty": "Sin registros disponibles",
+            "infoFiltered": "(filtrado de _MAX_ registros totales)",
+            "search": "Buscar"
+        },
             "order": [[0, "desc"]],
             "paging": false,
             "info": false

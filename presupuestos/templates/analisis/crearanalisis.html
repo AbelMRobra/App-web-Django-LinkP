@@ -4,19 +4,16 @@
 
 {% block content %}
 
-<div class="container-fluid r-aside">
-    <!-- ============================================================== -->
-    <!-- Bread crumb and right sidebar toggle -->
-    <!-- ============================================================== -->
+<div class="container-fluid">
     <div class="row page-titles">
         <div class="col-md-5 align-self-center">
-            <h3 class="text-themecolor">Crear Analisis de Precio Unitario</h3>
+            <h3 class="text-themecolor">Crear Análisis de Precio Unitario</h3>
         </div>
 
         <div class="col-md-7 align-self-center">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
-                <li class="breadcrumb-item">Crear Analisis de Precio Unitario</li>
+                <li class="breadcrumb-item">Crear Análisis</li>
             </ol>
         </div>
 
@@ -35,7 +32,7 @@
                     <h3> Datos generales</h3>
 
                     <div>
-                        <small></small> En caso que el analisis sea solo mano de obra escribir en el nombre
+                        <small></small> En caso de que el análisis sea solo mano de obra escribir en el nombre
                         </small><small>
                             <strong>(SOLO MANO DE OBRA)</strong> </small>
                     </div>
@@ -45,7 +42,7 @@
 
                             <div class="col-lg-4 col-md-4 row-sm">
                                 <label for="codigo">
-                                    <h5>Codigo del analisis:</h5>
+                                    <h5>Codigo del análisis:</h5>
                                 </label>
 
                                 <input type="number" name="codigo" class="form-control form-control"
@@ -56,7 +53,7 @@
                             <div class="col-lg-4 col-md-4 row-sm">
 
                                 <label for="nombre">
-                                    <h5>Nombre del analisis:</h5>
+                                    <h5>Nombre del análisis:</h5>
                                 </label>
 
                                 <input type="text" class="form-control form-control" name="nombre" placeholder="Nombre">
@@ -77,7 +74,7 @@
                         </div>
                     </div>
 
-                    <h3 class="mt-3"> Articulos</h3>
+                    <h3 class="mt-3"> Artículos</h3>
 
                     <div class="d-flex justify-content-between">
 
@@ -90,9 +87,6 @@
                             campos</button>
 
                     </div>
-
-                  
-
 
                     <p class="text-danger">{{datos.mensaje}}</p>
 
@@ -109,7 +103,7 @@
                                         <div class="col-lg-6 col-md-6 row-sm">
 
                                             <label for="articulo">
-                                                <h6>Articulo</h6>
+                                                <h6>Artículo</h6>
                                             </label>
 
                                             <input name="articulo" type="search" class="form-control form-control"
@@ -128,19 +122,14 @@
                                                 class="form-control form-control" placeholder="Cantidad">
 
                                         </div>
-
                                     </div>
                                 </div>
-
                             </div>
-
-
                         </div>
-
                     </div>
 
                     <div class="d-flex justify-content-center my-3">
-                        <button type="submit" class="btn btn-success">Cargar analisis</button>
+                        <button type="submit" class="btn btn-info">Cargar análisis</button>
 
                     </div>
 
@@ -156,7 +145,6 @@
 
                 </form>
              
-
             </div>
         </div>
     </div>

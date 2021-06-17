@@ -8,10 +8,7 @@
 {% block content %}
 
 
-<div class="container-fluid r-aside">
-    <!-- ============================================================== -->
-    <!-- Cabeza de la pagina -->
-    <!-- ============================================================== -->
+<div class="container-fluid">
     <div class="row page-titles">
         <div class="col-md-5 align-self-center">
             <h3 class="text-themecolor">Anuncios informativos</h3>
@@ -24,9 +21,7 @@
 
             </ol>
         </div>
-
     </div>
-
 </div>
 
 <div class="row">
@@ -48,10 +43,8 @@
                     <table class="table">
                         <thead>
                             <tr>
-                                <td><a type="button" data-toggle="modal" data-target="#ModalArqueo"><img
-                                            src="{% static 'img/add.png' %}" alt=""
-                                            style="max-width:25px; height:auto; vertical-align: bottom;"></a>
-                                    Detalle </td>
+                                <th class="text-info"><a class="fa fa-plus-circle" type="button" data-toggle="modal" data-target="#ModalArqueo"></a>
+                                    Detalle </th>
 
                             </tr>
 
@@ -60,9 +53,10 @@
                                 aria-labelledby="ModalArqueo" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered" role="document">
                                     <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLongTitle">Cargar un anuncio</h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <div class="modal-header" style="background: rgb(36,160,237);
+                                        background: linear-gradient(315deg, rgba(36,160,237,1) 0%, rgba(56,56,130,1) 22%, rgba(0,212,255,1) 100%);">
+                                            <h5 class="modal-title text-light" id="exampleModalLongTitle">Cargar un anuncio</h5>
+                                            <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
                                         </div>
@@ -121,8 +115,8 @@
 
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary"
-                                                data-dismiss="modal">Close</button>
+                                            <button type="button" class="btn btn-info"
+                                                data-dismiss="modal">Cerrar</button>
 
                                         </div>
                                     </div>
@@ -160,10 +154,11 @@
                                     aria-labelledby="ModalAnuncio{{i.id}}" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered" role="document">
                                         <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLongTitle">Modificar un anuncio
+                                            <div class="modal-header" style="background: rgb(36,160,237);
+                                            background: linear-gradient(315deg, rgba(36,160,237,1) 0%, rgba(56,56,130,1) 22%, rgba(0,212,255,1) 100%);">
+                                                <h5 class="modal-title text-light" id="exampleModalLongTitle">Modificar un anuncio
                                                 </h5>
-                                                <button type="button" class="close" data-dismiss="modal"
+                                                <button type="button" class="close text-light" data-dismiss="modal"
                                                     aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
@@ -231,8 +226,8 @@
 
                                             </div>
                                             <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary"
-                                                    data-dismiss="modal">Close</button>
+                                                <button type="button" class="btn btn-info"
+                                                    data-dismiss="modal">Cerrar</button>
 
                                             </div>
                                         </div>
@@ -243,7 +238,7 @@
                                 <!-- Final del modal -->
                                 <td>
                                     <form method="POST">
-                                        <button class="btn btn-link fa fa-trash d-flex align-content-end" type="submit"
+                                        <button class="btn btn-link fa fa-trash d-flex align-content-end text-danger" type="submit"
                                             name="delete" value="{{i.id}}" style="text-decoration: none;"></button>
 
                                         {% csrf_token %}

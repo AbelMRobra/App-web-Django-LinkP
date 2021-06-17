@@ -120,7 +120,7 @@
 
                                 {% if user.username == "AR" or user.username == "ar" %}
 
-                                <td> <a class="fa fa-trash fa-lg" href="{% url 'Eliminar venta' i.id %}" data-toggle="tooltip" data-placement="left" title="" data-original-title="Eliminar venta"></a>
+                                <td> <a class="fa fa-trash fa-lg text-danger" href="{% url 'Eliminar venta' i.id %}" data-toggle="tooltip" data-placement="left" title="" data-original-title="Eliminar venta"></a>
                                     </b> </td>
 
                                 {% endif %}
@@ -149,6 +149,14 @@
 <script>
     $(document).ready(function () {
         $('#example').DataTable({
+            "language": {
+            "lengthMenu": "Mostar _MENU_ documentos",
+            "zeroRecords": "No se encontro nada - perdon ",
+            "info": "Pagina _PAGE_ de _PAGES_",
+            "infoEmpty": "Sin registros disponibles",
+            "infoFiltered": "(filtrado de _MAX_ registros totales)",
+            "search": "Buscar"
+        },
             "paging": false,
             "ordering": false,
             "info": false

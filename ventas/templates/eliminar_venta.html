@@ -22,32 +22,29 @@
         </div>
     </div>
 </div>
-
 <div class="row">
     <div class="col-12">
         <div class="card">
-            <div class="card-body row">
-                <div class="col-12 justify-content-center">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-12 col-md-12 col-lg-10 d-flex flex-column align-items-center">
 
-                    <div class="row d-flex justify-content-center">
-                        <div class="col col-md-12 col-lg-12 text-center">
 
-                            <h2>Eliminar el registro {{ datos.unidad.proyecto}} - {{datos.unidad.piso_unidad}} -
-                                {{datos.unidad.nombre_unidad }} a {{ datos.comprador }} </h2>
-                            <small>Esta operación elimina toda la información del registro</small>
+                        <h2>Eliminar el registro {{ datos.unidad.proyecto}} - {{datos.unidad.piso_unidad}} -
+                            {{datos.unidad.nombre_unidad }} a {{ datos.comprador }} </h2>
+                        <small>Esta operación elimina toda la información del registro</small>
 
-                            <div class="mt-3">
+                        <div class="mt-3">
 
-                                <form method="POST">
+                            <form method="POST">
 
-                                    {% csrf_token %}
+                                {% csrf_token %}
 
-                                    <div class="row d-flex justify-content-center">
-                                        <button class="btn btn-danger" type="submit">Eliminar registro</button>
+                                <div class="row d-flex justify-content-center">
+                                    <button class="btn btn-danger" type="submit">Eliminar registro</button>
 
-                                    </div>
-                                </form>
-                            </div>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -55,6 +52,21 @@
         </div>
     </div>
 </div>
+
+
+<aside class="right-side-panel">
+    <h3 class="p-relative"><span class="lstick"></span>Cuidado!</h3>
+    <div class="row d-flex">
+        <div class="col m-t-10">
+            <div class="card">
+                <div class="card-body d-flex flex-column align-items-center ">
+                    <img src="{% static 'img/animation_500_kmuydpt0.gif' %}" alt="Funny image" width="150px">
+                    <p>Estas por eliminar <b class="text-danger">datos</b> de forma permanente</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</aside>
 
 
 {% endblock %}

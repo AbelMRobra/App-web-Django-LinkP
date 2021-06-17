@@ -155,9 +155,10 @@
                 aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLongTitle">Entrega de monedas!</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <div class="modal-header" style="background: rgb(36,160,237);
+                                            background: linear-gradient(315deg, rgba(36,160,237,1) 0%, rgba(56,56,130,1) 22%, rgba(0,212,255,1) 100%);">
+                            <h5 class="modal-title text-light" id="exampleModalLongTitle">Entrega de monedas!</h5>
+                            <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
@@ -171,7 +172,7 @@
 
                                 <div class="input-group mb-3">
 
-                                    <select name="usuario" class="custom-select" style="width: 300px;">
+                                    <select name="usuario" class="custom-select" style="width: 100%">
                                         {% if list_usuarios %}
                                         {% for i in list_usuarios %}
 
@@ -188,7 +189,7 @@
                                 <div class="input-group mb-3">
 
                                     <input name="cantidad" max="{{monedas_disponibles}}" step="0" type="number"
-                                        class="form-control form-control" style="width: 300px;">
+                                        class="form-control form-control" style="width: 100%">
                                 </div>
 
                                 <h6><small>Deja un mensaje</small> </h6>
@@ -208,7 +209,7 @@
 
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                            <button type="button" class="btn btn-info" data-dismiss="modal">Cerrar</button>
 
                         </div>
                     </div>
@@ -275,11 +276,8 @@
 
                     {% endfor %}
                   
-                  
                 </div>
             </div>
-
-            
 
             {% else %}
             <h6 class="text-muted m-t-10 m-b-0">No estas habilitado para esta sección</h6>

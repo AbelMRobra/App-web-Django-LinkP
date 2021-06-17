@@ -6,7 +6,7 @@
 
 {% block content %}
 
-<div class="container-fluid r-aside">
+<div class="container-fluid">
     <div class="row page-titles">
         <div class="col-md-5 align-self-center">
             <h3 class="text-themecolor">Analisis de periodos</h3>
@@ -209,6 +209,14 @@
 <script>
     $(document).ready(function () {
         $('#example').DataTable({
+            "language": {
+            "lengthMenu": "Mostar _MENU_ documentos",
+            "zeroRecords": "No se encontro nada - perdon ",
+            "info": "Pagina _PAGE_ de _PAGES_",
+            "infoEmpty": "Sin registros disponibles",
+            "infoFiltered": "(filtrado de _MAX_ registros totales)",
+            "search": "Buscar"
+        },
             "paging": false,
             "ordering": false,
             "info": false
@@ -218,6 +226,14 @@
 <script>
     $(document).ready(function () {
         $('#example1').DataTable({
+            "language": {
+            "lengthMenu": "Mostar _MENU_ documentos",
+            "zeroRecords": "No se encontro nada - perdon ",
+            "info": "Pagina _PAGE_ de _PAGES_",
+            "infoEmpty": "Sin registros disponibles",
+            "infoFiltered": "(filtrado de _MAX_ registros totales)",
+            "search": "Buscar"
+        },
             "paging": false,
             "ordering": false,
             "info": false

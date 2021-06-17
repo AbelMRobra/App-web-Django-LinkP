@@ -43,7 +43,7 @@
                         <div class="col-12 col-md-12 col-lg-11 my-3">
                             <h6>Link P te invita un momento a pensar en esta acción, si eliminas la cuenta corriente no
                                 podremos volver a generar esta información</h6>
-                            <h6>Algunos datos que tambien borraras son:</h6>
+                            <h6>Algunos datos que también borraras son:</h6>
 
                             <div class="my-3">
                                 <b class="text-warning">Cuotas que tiene esta cuenta:</b>
@@ -60,7 +60,10 @@
                                 <form method="post">
                                     {% csrf_token %}
                                     <div class="row justify-content-center">
-                                        <button type='submit' class="btn btn-danger">Si, seguro!</button>
+                                        <div class="col-3">
+
+                                            <button type='submit' class="btn btn-danger">Si, seguro!</button>
+                                        </div>
                                     </div>
                                 </form>
 

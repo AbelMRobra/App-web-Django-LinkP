@@ -4,60 +4,66 @@
 {% load apptags_extras %}
 {% block content %}
 
-<div id="listart" class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;">
+<div class="container-fluid ">
+    <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+            <h3 class="text-themecolor">Listado de Artículos</h3>
+        </div>
 
-    <h1 class="titulopagina">Listado de Articulos</h1>
-    <p class="modulo"><b>Modulo: </b>Presupuestos</p>
+        <div class="col-md-7 align-self-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'Panel de presupuestos' %}">Panel</a></li>
+                <li class="breadcrumb-item">Artículos</li>
+            </ol>
+        </div>
+    </div>
+</div>
+<div id="listart" style="background-color: white; margin-bottom: 0px; text-align: center; width: 100%; padding: 2rem 0 2rem;">
 
-     <b><hr class = "my-4" style="width: 75%; "></b>
-
-     <div style="text-align: left; margin: 5px;">
+    <div style="text-align: left; margin: 5px;">
 
         {% if request.user|has_group:"PRESUPUESTO NIVEL 3" %}
 
         <div style="display: inline-block;">
             <a href="/presupuestos/insum_panel" class="btn">
-                <img src="{% static 'img/iniciar-sesion.png' %}" alt="" style="max-width:20px; height:auto; vertical-align: middle;">
-                <b>Master</b></a>  
+                <img src="{% static 'img/iniciar-sesion.png' %}" alt=""
+                    style="max-width:20px; height:auto; vertical-align: middle;">
+                <b>Master</b></a>
         </div>
-        
+
         {% endif %}
 
-
         <div style="display: inline-block;">
-
-            <label for="palabra"><h6>Buscar</h6></label>
-
+            <label for="palabra">
+                <h6>Buscar</h6>
+            </label>
         </div>
-        
+
         <div style="display: inline-block; margin-left: 1rem; ">
-
-            <input name="palabra" type="text" class="form-control form-control" placeholder="Comienza a escribir .." v-model="kword" style="width: 300px;">
-
+            <input name="palabra" type="text" class="form-control form-control" placeholder="Comienza a escribir .."
+                v-model="kword" style="width: 300px;">
         </div>
+    </div>
 
-
-     </div>
-
-
-    <table class = "table table-hover">
+    <table class="table table-hover">
         <thead>
 
-            <tr class = "table-dark">
-                <th scope = "row">CODIGO </th>
+            <tr class="table-dark">
+                <th scope="row">CODIGO </th>
                 <th style="text-align: left;">NOMBRE DEL ARTICULO </th>
-                <th scope = "row">UN </th>
-                <th scope = "row">VALOR </th>
-                <th scope = "row">CREACIÓN</th>
-                <th scope = "row">ACTUALIZACIÓN</th>
+                <th scope="row">UN </th>
+                <th scope="row">VALOR </th>
+                <th scope="row">CREACIÓN</th>
+                <th scope="row">ACTUALIZACIÓN</th>
                 <th style="text-align: left;">DESCRIPCIÓN</th>
-                
+
             </tr>
         </thead>
 
         <tbody>
 
-            <tr class = "table-light" style="font-size: 12px;" v-for="art in list_art" :key="art.id">
+            <tr class="table-light" style="font-size: 12px;" v-for="art in list_art" :key="art.id">
                 <td><b>{$ art.codigo $}</b> </td>
                 <td style="text-align: left;">{$ art.nombre $}</td>
                 <td>{$ art.unidad $}</td>
@@ -65,30 +71,18 @@
                 <td>{$ art.fecha_c $}</td>
                 <td>{$ art.fecha_a $}</td>
                 <td style="min-width: 200px; text-align: left;">{$ art.descrip $}</td>
-                
-                
+
+
             </tr>
 
         </tbody>
+    </table>
 
-            
-
-        </table>
-
-        
-    <b><hr class = "my-4" style="width: 100%;"></b>
-
-    <div style="margin-top: 2rem;">
-        <p> <small>-- Link<strong>P</strong> --</small> </p>
-
-     </div>
-
-                    
 </div>
 
 <script type="text/javascript" src="{% static 'vue/axios.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'vue/vue.js' %}"></script>
 <script type="text/javascript" src="{% static 'vue/apps/presupuesto.js' %}"></script>
- 
-    
+
+
 {% endblock %}

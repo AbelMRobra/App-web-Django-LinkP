@@ -6,10 +6,7 @@
 
 {% block content %}
 
-<div class="container-fluid r-aside">
-    <!-- ============================================================== -->
-    <!-- Cabeza de la pagina -->
-    <!-- ============================================================== -->
+<div class="container-fluid">
     <div class="row page-titles">
         <div class="col-md-5 align-self-center">
             <h3 class="text-themecolor">Informes mensuales</h3>
@@ -22,77 +19,71 @@
 
             </ol>
         </div>
-
     </div>
+</div>
 
-  </div>
+<div class="row">
+    <div class="col-lg-6 col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title"><span class="lstick"></span>Informes asignados</h4>
+                <h6 class="card-subtitle">Detalles de los informes mensuales</h6>
+                <div style="text-align: left;">
 
-  <div class="row">
-  <div class="col-lg-6 col-md-12">
-    <div class="card">
-        <div class="card-body">
-            <h4 class="card-title"><span class="lstick"></span>Informes asignados</h4>
-            <h6 class="card-subtitle">Detalles de los informes mensuales</h6>
-            <div style="text-align: left;">
-        
-            {% if request.user|has_group:"MANDO MEDIO" %}
-            <a href= "{% url 'Informes crear' %}" class="btn waves-effect waves-light btn-outline-info"style="text-align: end; margin-top: 5px;" >Nuevo informe</a>
-            {% endif %}
+                    {% if request.user|has_group:"MANDO MEDIO" %}
+                    <a href="{% url 'Informes crear' %}" class="btn waves-effect waves-light btn-outline-info"
+                        style="text-align: end; margin-top: 5px;">Nuevo informe</a>
+                    {% endif %}
 
-        </div>
+                </div>
 
-            <div class="table-responsive">
+                <div class="table-responsive">
 
-                <table class="table">
-                    <thead>
+                    <table class="table">
+                        <thead>
 
-            <tr >
-                <td>User</td>
-                <td>Fecha</td>
-                <td style="text-align: center;">Revisado</td>
+                            <tr>
+                                <th>User</th>
+                                <th>Fecha</th>
+                                <th style="text-align: center;">Revisado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for i in informes_data %}
+                            <tr>
+                                <td><img src="{{i.user.imagenlogo.url}}" alt="user" width="40" class="img-circle"></td>
+                                <td><a href="{% url 'Ver informes' i.id %}">{{i.fecha}}</a></td>
+                                {% if i.devolucion %}
+                                <td style="text-align: center;">SI</td>
+                                {% else %}
+                                <td style="text-align: center;">NO</td>
+                                {% endif %}
+                            </tr>
 
+                            {% endfor %}
+                        </tbody>
 
-            </tr>
-                    </thead>
-                    <tbody>
-                        {% for i in informes_data %}
-                        <tr>
-                            <td><img src="{{i.user.imagenlogo.url}}" alt="user" width="40" class="img-circle"></td>
-                            <td><a href="{% url 'Ver informes' i.id %}">{{i.fecha}}</a></td>
-                            {% if i.devolucion %}
-                            <td style="text-align: center;">SI</td>
-                            {% else %}
-                            <td style="text-align: center;">NO</td>
-                            {% endif %}
-                        </tr>
-
-                        {% endfor %}
-                    </tbody>
-
-
-        </table>
-
-              
-    </div>
+                    </table>
                 </div>
             </div>
         </div>
+    </div>
 
-        <div class="col-lg-6 col-md-12">
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="card-title"><span class="lstick"></span>Tareas pendientes</h4>
-                    <h6 class="card-subtitle">Todas las tareas no listas de los distintos informes</h6>
-    
-        
-                    <div class="table-responsive">
-        
+    <div class="col-lg-6 col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title"><span class="lstick"></span>Tareas pendientes</h4>
+                <h6 class="card-subtitle">Todas las tareas no listas de los distintos informes</h6>
+
+                <div class="table-responsive">
+
                     <table class="table">
 
                         <tbody>
                             {% for t in tareas_data %}
                             <tr>
-                                <td style="min-width: 300px;"><div>{{t.tarea}}</div> 
+                                <td style="min-width: 300px;">
+                                    <div>{{t.tarea}}</div>
                                     {% if t.estado == "LISTO" %}
                                     <div class="label label-table label-success">Listo</div>
                                     {% elif t.estado == "TRABAJANDO" %}
@@ -101,24 +92,28 @@
                                     <div class="label label-table label-danger">Problemas</div>
                                     {% else %}
                                     <div class="label label-table label-info">Espera</div>
-                                    {% endif %}</td>
-                                <td style="min-width: 200px;"><form  method="POST"> 
-                                    {% csrf_token %}
-                                    <button type="submit" value="{{t.id}}" name="LISTO" class="btn btn-success btn-circle"><i class="fa fa-check"></i> </button>
-                                    <button type="submit" value="{{t.id}}" name="TRABAJANDO" class="btn btn-warning btn-circle"><i class="fa fa-clock-o"></i> </button>
-                                    <button type="submit" value="{{t.id}}" name="PROBLEMAS" class="btn btn-danger btn-circle"><i class="fa fa-exclamation"></i> </button>
-                                </form></td>
+                                    {% endif %}
+                                </td>
+                                <td style="min-width: 200px;">
+                                    <form method="POST">
+                                        {% csrf_token %}
+                                        <button type="submit" value="{{t.id}}" name="LISTO"
+                                            class="btn btn-success btn-circle"><i class="fa fa-check"></i> </button>
+                                        <button type="submit" value="{{t.id}}" name="TRABAJANDO"
+                                            class="btn btn-warning btn-circle"><i class="fa fa-clock-o"></i> </button>
+                                        <button type="submit" value="{{t.id}}" name="PROBLEMAS"
+                                            class="btn btn-danger btn-circle"><i class="fa fa-exclamation"></i>
+                                        </button>
+                                    </form>
+                                </td>
                             </tr>
                             {% endfor %}
-                        </tbody>        
-                </table>
-        
-                      
-            </div>
-                        </div>
-                    </div>
+                        </tbody>
+                    </table>
                 </div>
-      </div>
+            </div>
+        </div>
     </div>
+</div>
 
-  {% endblock %}
+{% endblock %}

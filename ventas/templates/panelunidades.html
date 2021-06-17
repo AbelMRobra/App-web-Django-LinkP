@@ -5,7 +5,7 @@
 
 {% block content %}
 
-<div class="container-fluid r-aside">
+<div class="container-fluid">
   <div class="row page-titles">
     <div class="col-md-5 align-self-center">
       <h3 class="text-themecolor">Panel de control de unidades</h3>
@@ -66,26 +66,26 @@
                         <div>
                           <input type="checkbox" name="Asignacion1" value="PROYECTO"
                             class="filled-in chk-col-light-blue" id="customCheckProyecto" checked="">
-                          <label for="customCheckProyecto">PROYECTO</label>
+                          <label for="customCheckProyecto">Proyecto</label>
 
                         </div>
                         <div>
                           <input type="checkbox" name="Asignacion2" value="HON. LINK"
                             class="filled-in chk-col-light-blue" id="customCheckLink" checked="">
-                          <label for="customCheckLink">HONOR. LINK</label>
+                          <label for="customCheckLink">Honor. LINK</label>
 
                         </div>
                         <div>
                           <input type="checkbox" name="Asignacion3" value="TERRENO" class="filled-in chk-col-light-blue"
                             id="customCheckTerreno" checked="">
-                          <label for="customCheckTerreno">TERRENO</label>
+                          <label for="customCheckTerreno">Terreno</label>
 
                         </div>
 
                         <div>
                           <input type="checkbox" name="Asignacion4" value="SOCIOS" class="filled-in chk-col-light-blue"
                             id="customCheckSocios" checked="">
-                          <label for="customCheckSocios">SOCIOS</label>
+                          <label for="customCheckSocios">Socio</label>
 
                         </div>
                       </div>
@@ -97,19 +97,19 @@
                         <div>
                           <input type="checkbox" name="Disponibilidad" class="filled-in chk-col-light-blue"
                             id="customCheckDisp" value="DISPONIBLE" checked="">
-                          <label for="customCheckDisp">DISPONIBLE</label>
+                          <label for="customCheckDisp">Disponible</label>
 
                         </div>
                         <div>
                           <input type="checkbox" name="Disponibilidad2" class="filled-in chk-col-light-blue"
                             id="customCheckVend" value="VENDIDA" checked="">
-                          <label for="customCheckVend">VENDIDA</label>
+                          <label for="customCheckVend">Vendida</label>
                         </div>
 
                         <div>
                           <input type="checkbox" name="Disponibilidad3" class="filled-in chk-col-light-blue"
                             id="customCheckSeñ" value="SEÑADA" checked="">
-                          <label for="customCheckSeñ">SEÑADA</label>
+                          <label for="customCheckSeñ">Señada</label>
                         </div>
                       </div>
 
@@ -162,7 +162,7 @@
 
           <h6>Listado de unidades</h6>
 
-          <table id="example" class="table table-striped table-bordered" style="width:100%">
+          <table id="example" class="table table-striped table-bordered" style="width:100%; font-size: 14px; ">
             <thead>
               <tr>
                 <th>Proyecto </th>
@@ -191,7 +191,7 @@
 
                 {% else %}
 
-                <td> {{i.0.estado}} </td>
+                <td> {{i.0.estado}}</td>
 
                 {% endif %}
                 {% if i.2 >= 0 %}
@@ -241,6 +241,14 @@
 <script>
   $(document).ready(function () {
     $('#example').DataTable({
+            "language": {
+            "lengthMenu": "Mostar _MENU_ documentos",
+            "zeroRecords": "No se encontro nada - perdon ",
+            "info": "Pagina _PAGE_ de _PAGES_",
+            "infoEmpty": "Sin registros disponibles",
+            "infoFiltered": "(filtrado de _MAX_ registros totales)",
+            "search": "Buscar"
+        },
       "paging": false,
       "ordering": false,
       "info": false,

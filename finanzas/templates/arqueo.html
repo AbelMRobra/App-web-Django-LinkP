@@ -18,9 +18,7 @@
                 <li class="breadcrumb-item">{{ data_cruda.fecha|date:"d-m-Y" }}</li>
             </ol>
         </div>
-
     </div>
-
 </div>
 
 <div class="row">
@@ -73,9 +71,6 @@
                     <!-- Este es el total de la caja {{otros_datos.5|floatformat:0|intcomma}}-->
                 </div>
 
-
-
-
             </div>
         </div>
     </div>
@@ -114,14 +109,9 @@
                         <td class="text-right font-medium"><script>document.write(Math.round(Math.round({{grafico.0.4|floatformat:0}})/Math.round({{otros_datos.6|floatformat:0}})*100))</script>%</td>
                     </tr>
                 </table>
-
-
-
-
             </div>
         </div>
     </div>
-
 
     <div class="col-12">
         <div class="card">
@@ -175,9 +165,10 @@
                                 role="dialog" aria-labelledby="ModalArqueo" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered" role="document">
                                     <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLongTitle">Registro por bancos</h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <div class="modal-header" style="background: rgb(33, 74, 99);
+                                        background: linear-gradient(315deg, rgba(36,160,237,1) 0%, rgba(56,56,130,1) 22%, rgba(0,212,255,1) 100%);">
+                                            <h5 class="modal-title text-light" id="exampleModalLongTitle">Registro por bancos</h5>
+                                            <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
                                         </div>
@@ -189,7 +180,7 @@
                                             {% endfor %}
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary"
+                                            <button type="button" class="btn btn-info"
                                                 data-dismiss="modal">Cerrar</button>
 
                                         </div>
@@ -203,9 +194,10 @@
                                 role="dialog" aria-labelledby="ModalCheques" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered" role="document">
                                     <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLongTitle">Registro cheques</h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <div class="modal-header" style="background: rgb(33, 74, 99);
+                                        background: linear-gradient(315deg, rgba(36,160,237,1) 0%, rgba(56,56,130,1) 22%, rgba(0,212,255,1) 100%);">
+                                            <h5 class="modal-title text-light" id="exampleModalLongTitle">Registro cheques</h5>
+                                            <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
                                         </div>
@@ -226,7 +218,7 @@
                                          
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary"
+                                            <button type="button" class="btn btn-info"
                                                 data-dismiss="modal">Cerrar</button>
 
                                         </div>
@@ -242,9 +234,6 @@
         </div>
     </div>
 </div>
-
-
-
 
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
