@@ -15,7 +15,8 @@
         <div class="col-md-7 align-self-center">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
-                <li class="breadcrumb-item">Editar Registro</li>
+                <li class="breadcrumb-item"><a href="{% url 'Registro Contable' fecha|fecha %}">Chanchito</a></li>
+                <li class="breadcrumb-item">Editar</li>
             </ol>
         </div>
     </div>
@@ -45,12 +46,13 @@
                                 <div class="col-6">
                                     <h3>Registros realizados de {{d.0}} 
                                     </h3>
+                                    <h6>Estos son los registros tuyos o los que tu cargaste a otros usuarios</h6>
                                 </div>
                             </div>
 
                             <div class="table-responsive">
                                 <table id="example{{d.0}}" class="table table-bordered " style="width:100%; font-size: 14px;">
-                                    <thead style="font-size: 14px;">
+                                    <thead style="font-size: 12px;">
                                         <tr>
                                             <th> Dia </th>
                                             <th> Caja </th>
@@ -96,7 +98,7 @@
 
                                                                 <div class="input-group mb-3">
 
-                                                                    <input name="dia" type="date"
+                                                                    <input name="fecha" type="date"
                                                                         class="form-control form-control"
                                                                         style="width: 300px;" value="{{i.fecha|date:'Y-m-d'}}">
                                                                 </div>
@@ -156,6 +158,20 @@
                                                                         class="form-control form-control border border-success"
                                                                         style="width: 300px;"
                                                                         value="{{i.importe}}">
+                                                                </div>
+
+                                                                <div>
+                                                                    <label for="adjunto">
+                                                                        <h6>Adjunto</h6>
+                                                                    </label>
+                                                                </div>
+                                                                <div class="row d-flex justify-content-center my-3">
+                                                                    <div class="col col-md-8 col-lg-8">
+                        
+                                                                        <input type="file" class="form-control-file" name="adjunto"
+                                                                            aria-describedby="fileHelp">
+                        
+                                                                    </div>
                                                                 </div>
 
 

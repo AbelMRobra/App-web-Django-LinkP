@@ -2217,6 +2217,25 @@ def editar_registro_contable(request):
         except:
             pass
 
+        try:
+
+            if request.POST['editar']:
+                registro = RegistroContable.objects.get(id = request.POST['editar'])
+                registro.fecha = request.POST['fecha']
+                registro.caja = request.POST['caja']
+                registro.cuenta = request.POST['cuenta']
+                registro.categortia = request.POST['categoria']
+                registro.importe = request.POST['importe']
+                registro.nota = request.POST['nota']
+                try:
+                    registro.adjunto = request.FILES['adjunto']
+                    registro.save()
+
+                except:
+                    registro.save()
+        except:
+            pass
+
     users_registro = RegistroContable.objects.filter(creador = request.user.username).values_list("usuario__identificacion", flat=True).distinct()
 
     data = []
