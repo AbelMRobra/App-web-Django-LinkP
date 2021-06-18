@@ -23,8 +23,8 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body">
-                <h4 class="card-title">Listado de proyectos</h4>
-                <h6 class="card-subtitle">Proyectos cargados</h6>
+                <h4 class="card-title"><span class="lstick m-r-20"></span>Listado de proyectos</h4>
+                <h6 class="card-subtitle">Los proyectos proximos a realizar</h6>
                 <div class="table-responsive">
                     <table class="table">
                         <thead>
@@ -114,12 +114,10 @@
                             {% endfor %}
 
                             <tr>
-                                <td colspan="2"><b>TOTAL</b></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td><b>{{total_m2|floatformat:0|intcomma}} m2</b></td>
+                                <th colspan="4">Total a realizar</th>
+                                <th></th>
+                                <th></th>
+                                <th>{{total_m2|floatformat:0|intcomma}} m2</th>
 
                             </tr>
 
