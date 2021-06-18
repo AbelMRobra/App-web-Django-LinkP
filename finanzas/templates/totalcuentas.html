@@ -116,7 +116,8 @@
                                 {% for key, value in matriz_clientes.items %}
 
                                 <tr style="font-size: 14px;">
-                                    <td>{{key|lower|capfirst}}</td>
+                                    <td><h6>{{key|lower|capfirst}}</h6>
+                                        <h6 style="font-size: 12px;" class="sub-title">{{key.venta.unidad}}</h6></td>
                                     {% for v in value %}
                                     {% if moneda == "0" %}
                                     <td>${{v|floatformat:2|intcomma}}</td>
