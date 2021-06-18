@@ -5,7 +5,7 @@
 
 {% block content %}
 
-<div class="container-fluid r-aside">
+<div class="container-fluid">
     <div class="row page-titles">
         <div class="col-md-5 align-self-center">
             <h3 class="text-themecolor">Informe de redes</h3>
@@ -39,10 +39,9 @@
                     <table class="table">
                         <thead>
                             <tr style="vertical-align: middle;">
-                                <td><a type="button" data-toggle="modal" data-target="#ModalRedes"><img
-                                            src="{% static 'img/add.png' %}" alt=""
-                                            style="max-width:20px; height:auto; vertical-align: middle; margin-right: 15px;"></a>
-                                    Informes cargados</td>
+                                <th class="text-info"><a type="button" class="fa fa-plus-circle"
+                                    data-toggle="modal" data-target="#ModalRedes"><span style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif; margin-left: 14px;">Informes cargados</span></a>
+                                </th>
 
                             </tr>
 
@@ -51,9 +50,10 @@
                                 aria-labelledby="ModalRedes" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered" role="document">
                                     <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLongTitle">Cargar un archivo</h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <div class="modal-header" style="background: rgb(36,160,237);
+                                        background: linear-gradient(315deg, rgba(36,160,237,1) 0%, rgba(56,56,130,1) 22%, rgba(0,212,255,1) 100%);">
+                                            <h5 class="modal-title text-light" id="exampleModalLongTitle">Cargar un archivo</h5>
+                                            <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
                                         </div>
@@ -90,8 +90,8 @@
 
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary"
-                                                data-dismiss="modal">Close</button>
+                                            <button type="button" class="btn btn-info"
+                                                data-dismiss="modal">Cerrar</button>
 
                                         </div>
                                     </div>
@@ -113,7 +113,7 @@
                                     archivo: "{{i.informe_redes.name}}"</td>
                                 <td>
                                     <form method="POST">
-                                        <button class="btn btn-link fa fa-trash d-flex align-content-end" type="submit"
+                                        <button class="btn btn-link fa fa-trash text-danger d-flex align-content-end" type="submit"
                                             name="delete" value="{{i.id}}" style="text-decoration: none;"></button>
 
                                         {% csrf_token %}

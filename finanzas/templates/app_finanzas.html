@@ -218,6 +218,33 @@
             </div>
         </div>
     </div>
+    <div class="col-lg-3 col-xlg-3">
+        <div class="card">
+            <div class="card-body text-center">
+                <div>
+                    <h6>Credito e Inversiones</h6>
+                </div>
+
+                <div>
+                    <img src="{% static 'img/FlujoIngresos.png' %}" alt=""
+                        style="max-width:100px; height:auto; margin: 5px;">
+                </div>
+
+                {% if request.user|has_group:"FINANZAS NIVEL 2" %}
+
+
+                <a href="{% url 'Resumen de creditos e inversiones' %}"><button class="btn btn-dark">
+                        Ingresar</button></a>
+
+                {% else %}
+
+                <a href="#"><button class="btn btn-secondary">
+                        Sin permisos</button></a>
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
 
    
 </div>
