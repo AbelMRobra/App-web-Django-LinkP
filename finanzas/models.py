@@ -11,7 +11,6 @@ class Almacenero(models.Model):
         SI = "SI"
         NO = "NO"
 
-
     proyecto = models.ForeignKey(Proyectos, on_delete=models.CASCADE, verbose_name = "Proyecto")
     cheques_emitidos = models.FloatField(null=True, blank=True, verbose_name="Cheques emitidos")
     gastos_fecha = models.FloatField(null=True, blank=True, verbose_name="Gastos a la fecha")

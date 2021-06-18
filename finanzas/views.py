@@ -311,38 +311,23 @@ def mandarmail(request, id_cuenta):
      
 def resumencredinv(request):
 
-    busqueda = 1
-    datos_almacenados = ArchivosAdmFin.objects.filter(resumen_credito_inv__isnull = False)
-    datos = 0
-    fecha = 0
-
-    fechas = []
-
-    for dato in datos_almacenados:
-        if dato.resumen_credito_inv: 
-            fechas.append((dato.fecha, str(dato.fecha)))
-
-    fechas = list(set(fechas))
-
-    fechas.sort( reverse=True)
-
+    datos = ArchivosAdmFin.objects.order_by("-fecha")
+  
     if request.method == 'POST':
 
-        #Trae los datos elegidos
-        datos_elegidos = request.POST.items()
+        try:
 
-        for dato in datos_elegidos:
+            new_register = ArchivosAdmFin(
+                fecha = request.POST["fecha"],
+                resumen_credito_inv = request.POST["adjunto"],
+            )
 
-            if dato[0] == "fecha":
-                datos = ArchivosAdmFin.objects.get(fecha = dato[1])
-                busqueda = 0
-                fecha = dato[1]
+            new_register.save()
 
+        except:
 
-    datos = {"fechas":fechas,
-        "busqueda":busqueda,
-        "datos":datos,
-        "fecha":fecha}
+            register_delete = ArchivosAdmFin.objects.get(id = request.POST["delete"])
+            register_delete.delete()
 
     return render(request, 'resumencredinv.html', {"datos":datos})
 
