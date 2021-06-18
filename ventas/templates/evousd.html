@@ -6,126 +6,129 @@
 {% block content %}
 
 <div class="container-fluid">
-  <div class="row page-titles">
-    <div class="col-md-5 align-self-center">
-      <h3 class="text-themecolor">Evolucion en USD</h3>
-    </div>
+    <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+            <h3 class="text-themecolor">Evolucion en USD</h3>
+        </div>
 
-    <div class="col-md-7 align-self-center">
-      <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
-        <li class="breadcrumb-item"><a href="{% url 'App comercial' %}">Panel</a></li>
-        <li class="breadcrumb-item">Evolución</li>
-      </ol>
+        <div class="col-md-7 align-self-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'App comercial' %}">Panel</a></li>
+                <li class="breadcrumb-item">Evolución</li>
+            </ol>
+        </div>
     </div>
-  </div>
 </div>
 
 <div class="row">
-  <div class="col-12">
-  <div class="card">
-      <div class="card-body">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
 
-          <div class="d-flex">
-              <div>
-                  <h4 class="card-title"><span class="lstick"></span>
-                  Evolución historica del M2 en USD</h4>
-                  <h6 class="card-subtitle">Los informes estudian el precio de las unidades con respecto a la divisa extranjera</h6>
+                <div class="d-flex">
+                    <div>
+                        <h4 class="card-title"><span class="lstick"></span>
+                            Evolución historica del M2 en USD</h4>
+                        <h6 class="card-subtitle">Los informes estudian el precio de las unidades con respecto a la
+                            divisa extranjera</h6>
 
-                  </div>
-                  </div>
+                    </div>
+                </div>
 
-                  <div class="table-responsive">
-      
-                      <table class="table">
-                          <thead>
-                              <tr style="vertical-align: middle;">
-                                   <th class="text-info"><a type="button" class="fa fa-lg fa-plus-circle" data-toggle="modal" data-target="#ModalArqueo"></a>
-                                    Informes cargados</th>
-                            
-                              </tr>
+                <div class="table-responsive">
 
-                              <!-- Modal fecha estado Subitem -->
-              <div class="modal fade" id="ModalArqueo" tabindex="-1" role="dialog" aria-labelledby="ModalArqueo" aria-hidden="true">
-                  <div class="modal-dialog modal-dialog-centered" role="document">
-                  <div class="modal-content">
-                      <div class="modal-header">
-                      <h5 class="modal-title" id="exampleModalLongTitle">Cargar un archivo</h5>
-                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                          <span aria-hidden="true">&times;</span>
-                      </button>
-                      </div>
-                      <div class="modal-body">                                    
-                      <form method="POST" style="margin: 15px;" enctype="multipart/form-data" id="upload-image-form">
+                    <table class="table">
+                        <thead>
+                            <tr style="vertical-align: middle;">
+                                <th class="text-info"><a type="button" class="fa fa-plus-circle"
+                                        data-toggle="modal" data-target="#ModalArqueo"><span style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif; margin-left: 14px;">Informes cargados</span></a>
+                                    </th>
 
-                          {% csrf_token %}
+                            </tr>
 
-                          <h6>Fecha del archivo</h6>  
+                            <!-- Modal fecha estado Subitem -->
+                            <div class="modal fade" id="ModalArqueo" tabindex="-1" role="dialog"
+                                aria-labelledby="ModalArqueo" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLongTitle">Cargar un archivo</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form method="POST" style="margin: 15px;" enctype="multipart/form-data"
+                                                id="upload-image-form">
 
-                          <div class="input-group mb-3">
-                                  
-                              <input name="fecha" type="date" class="form-control form-control" style="width: 300px;">
-                          </div>
+                                                {% csrf_token %}
 
-                          <h6>Archivo</h6>  
+                                                <h6>Fecha del archivo</h6>
 
-                          <div class="input-group mb-3">
-                                  
-                              <input name="adjunto" type="file" class="form-control form-control" style="width: 300px;">
-                          </div>
+                                                <div class="input-group mb-3">
 
-                          <button type="submit" class="btn btn-light">
-                          <img src="{% static 'img/upload.png' %}" alt="" style="max-width:20px; height:auto;">
-                          <b>Cargar</b></button>
+                                                    <input name="fecha" type="date" class="form-control form-control"
+                                                        style="width: 300px;">
+                                                </div>
 
-                          {{ form.as_p }}
-                      
-                      </form>
-                      
-                      </div>
-                      <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-              
-                      </div>
-                  </div>
-                  </div>
+                                                <h6>Archivo</h6>
 
-              </div>
+                                                <div class="input-group mb-3">
 
-              <!-- Final del modal -->
+                                                    <input name="adjunto" type="file" class="form-control form-control"
+                                                        style="width: 300px;">
+                                                </div>
 
-                          </thead>
-      
-                          <tbody>
-                              {% for i in datos.data %}
+                                                <button type="submit" class="btn btn-light">
+                                                    <img src="{% static 'img/upload.png' %}" alt=""
+                                                        style="max-width:20px; height:auto;">
+                                                    <b>Cargar</b></button>
 
-                              {% if  i.evo_usd %}
-                              <tr>  
-                                  
-                                  <td> <a href="{{i.evo_usd.url}}">Archivo fecha {{i.fecha|date:"d-m-Y"}}</a> - Nombre del archivo: "{{i.evo_usd.name}}"</td>    
-                                  <td><form method="POST">
-                                      <button class="btn btn-link fa fa-trash d-flex align-content-end" type="submit" name="delete" value="{{i.id}}" style="text-decoration: none;"></button>
+                                                {{ form.as_p }}
 
-                                      {% csrf_token %}
-                                  </form>
+                                            </form>
 
-                                  </td>                                  
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-dismiss="modal">Close</button>
 
-                              </tr>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
-                              {% endif %}
-                              {% endfor %}
-                          </tbody>        
-                  </table>
-          
-                        
-              </div>  
+                        </thead>
 
-          </div>
-          
-          
-  </div>
-</div>
+                        <tbody>
+                            {% for i in datos.data %}
+
+                            {% if i.evo_usd %}
+                            <tr>
+
+                                <td> <a href="{{i.evo_usd.url}}">Archivo fecha {{i.fecha|date:"d-m-Y"}}</a> - Nombre del
+                                    archivo: "{{i.evo_usd.name}}"</td>
+                                <td>
+                                    <form method="POST">
+                                        <button class="btn btn-link fa fa-trash text-danger d-flex align-content-end" type="submit"
+                                            name="delete" value="{{i.id}}" style="text-decoration: none;"></button>
+
+                                        {% csrf_token %}
+                                    </form>
+
+                                </td>
+                            </tr>
+
+                            {% endif %}
+                            {% endfor %}
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 

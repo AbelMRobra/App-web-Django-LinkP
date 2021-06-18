@@ -592,13 +592,11 @@ def editar_pagos(request, id_pago):
     pago = Pago.objects.get(id = id_pago)
 
     cotizacion = pago.pago_pesos/pago.pago
-
-    factura_elementos = pago.documento_1.split(" ").split("-")
-    print(factura_elementos)
+    factura_elementos = pago.documento_1.split("-")
 
     if request.method == 'POST':
 
-        nombre_factura = "FAC " + str(request.POST['tipo'])+ " : " + str(request.POST['sucursal']) + "-" + str(request.POST['factura'])
+        nombre_factura = "FAC-" + str(request.POST['tipo'])+ "-" + str(request.POST['sucursal']) + "-" + str(request.POST['factura'])
 
         pagado = request.POST['precio2']
         cotizacion = request.POST['precio1']
@@ -609,6 +607,7 @@ def editar_pagos(request, id_pago):
         pago.documento_2 = request.POST['documento2']
         pago.pago = precio1
         pago.pago_pesos = request.POST['precio2']
+        pago.metodo = request.POST['metodo']
         pago.save()
 
         return redirect('Pagos', id_cuota = pago.cuota.id)
@@ -651,7 +650,7 @@ def agregar_pagos(request, id_cuota):
 
         precio1 = float(request.POST['precio2'])/float(request.POST['precio1'])
 
-        nombre_factura = "FAC " + str(request.POST['tipo'])+ ": " + str(request.POST['sucursal']) + "-" + str(request.POST['factura'])
+        nombre_factura = "FAC-" + str(request.POST['tipo'])+ "-" +  str(request.POST['sucursal']) + "-" + str(request.POST['factura'])
 
         c = Pago(
 
@@ -666,8 +665,12 @@ def agregar_pagos(request, id_cuota):
 
         c.save()
 
+        if sum(Pago.objects.filter(cuota = cuota).values_list("pago", flat =  True)) > cuota.precio:
+            return redirect('Cta cliente valor superado', id_cuota = cuota.id)
 
-        return redirect('Pagos', id_cuota = cuota.id)
+        else:
+            return redirect('Pagos', id_cuota = cuota.id)
+
 
     return render(request, 'agregar_pagos.html', {'cuota':cuota})
 
@@ -3751,9 +3754,33 @@ def prueba(request):
 
     return render(request, 'prueba.html',{ "data_proyecto" : data_proyecto})
 
-def superarvalorcta(request):
+def superarvalorcta(request, id_cuota):
 
-    return render(request, 'superarvalorcta.html')
+    cuota = Cuota.objects.get(id = id_cuota)
+
+    pagado = sum(Pago.objects.filter(cuota = cuota).values_list("pago", flat =  True))
+
+    superado = abs(cuota.precio - pagado)
+
+    cuotas_no_pagadas = Cuota.objects.filter(cuenta_corriente = cuota.cuenta_corriente, pagada = "NO").order_by("fecha")
+
+    data_cuota = []
+
+    aux = superado
+
+    for c in cuotas_no_pagadas:
+        pagado_cuota = sum(Pago.objects.filter(cuota = c).values_list("pago", flat =  True))
+        saldo_cuota = c.precio - pagado_cuota
+        if aux > 0 and aux >= saldo_cuota:
+            data_cuota.append((c, saldo_cuota, saldo_cuota))
+            aux -= saldo_cuota
+        elif aux > 0:
+            data_cuota.append((c, aux, saldo_cuota))
+            aux = 0
+        else:
+            break
+
+    return render(request, 'superarvalorcta.html', {'cuota':cuota, 'superado':superado, 'data_cuota':data_cuota})
 
 class DescargarCuentacorriente(TemplateView):
 

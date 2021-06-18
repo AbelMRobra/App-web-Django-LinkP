@@ -40,7 +40,7 @@ urlpatterns = [
     url(r'^reportepdf/(?P<id_cuenta>\d+)/$', PdfPrueba.as_view(), name = "Reporte de pdf de cuentas corrientes"),
     url(r'^calculadora/$', login_required(views.calculadora), name = 'Calculadora'),
 
-    url(r'^superavalorcta/$', login_required(views.superarvalorcta), name = 'Cta cliente valor superado'),
+    url(r'^superavalorcta/(?P<id_cuota>\d+)/$', login_required(views.superarvalorcta), name = 'Cta cliente valor superado'),
     
     #----------------URL ADMINISTRACION -----------------------------------------
 

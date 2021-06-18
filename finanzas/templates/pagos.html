@@ -79,11 +79,11 @@
                             <tbody>
 
                                 {% for i in datos|slice:"200" %}
-                                <tr>
+                                <tr style="font-size: 12px;">
                                     <td>{{i.0.fecha|date:"Y/m/d"}} </td>
                                     <td>{{i.0.pago|floatformat:2}} </td>
-                                    <td>${{i.1|floatformat:0|intcomma}} </td>
-                                    <td>${{i.0.pago_pesos|floatformat:0|intcomma}} </td>
+                                    <td>${{i.1|floatformat:2|intcomma}} </td>
+                                    <td>${{i.0.pago_pesos|floatformat:2|intcomma}} </td>
                                     <td>{{i.0.documento_1}}</td>
                                     <td>{{i.0.documento_2}}</td>
                                     <td>{{i.0.metodo}}</td>

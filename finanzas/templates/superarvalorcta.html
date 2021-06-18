@@ -8,13 +8,13 @@
 <div class="container-fluid">
     <div class="row page-titles">
         <div class="col-md-5 align-self-center">
-            <h3 class="text-themecolor">Movimiento de administración</h3>
+            <h3 class="text-themecolor">Ajustes</h3>
         </div>
 
         <div class="col-md-7 align-self-center">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
-                <li class="breadcrumb-item">Movimiento de administración</li>
+                <li class="breadcrumb-item">Ajustes</li>
             </ol>
         </div>
     </div>
@@ -26,7 +26,15 @@
             <div class="card-body row">
                 <div class="col-12 justify-content-center">
 
-                    <h3>Acaba de superar el valor de las cuotas</h3>
+                    <h3><b class="text-primary">{{request.user.first_name}}!</b>, has superado el valor de la cuota con el pago cargado!</h3>
+
+                    <hr>
+
+                    <h6>El monto es de {{superado|floatformat:2}} en la siguiente moneda: {{cuota.constante.nombre}}</h6>
+                    
+                    <h6>Te ofrecemos 2 alternativas en esta situación</h6>
+
+                    <hr>
 
                     <div class="row d-flex justify-content-center">
                         <div class="col-12 col-md-12 col-lg-6">
@@ -36,11 +44,12 @@
 
                                     <form method="POST">
                                         {% csrf_token %}
-                                        <p>Ajustar valor a la cuota que pagaste</p>
+                                        <h6 class="text-primary">Alternativa 1: Acomodar en la cuota actual</h6>
+                                        <p>Esta función hará que el valor de la cuota que es de {{cuota.precio}} se acomode para que sea igual a todo lo pagado</p>
                                         <div class="row justify-content-center mt-4">
                                             <div class="col-lg-6 text-center">
 
-                                                <button type="submit" name="ajustar" class="btn btn-info">Agregar</button>
+                                                <button type="submit" name="ajustar" class="btn btn-info">Aplicar 1</button>
 
                                             </div>
                                         </div>
@@ -58,17 +67,19 @@
                                     <form method="POST">
 
                                         {% csrf_token %}
-                                        <div class="col-lg-6 text-center">
-                                            <p>Redistribuir valor en las siguientes cuotas</p>
+                                            <h6 class="text-primary">Alternativa 2: Acomodar en las siguientes cuotas</h6>
+                                            <p>Acomoda el sobrante, pagando las siguientes cuotas</p>
                                             <ul type="none">
-                                                <li><span>cuota1:</span><span>valor..</span></li>
-                                                <li><span>cuota2:</span><span>valor..</span></li>
-                                                <li><span>cuota3:</span><span>valor..</span></li>
+                                                {% for i in data_cuota %}
+                                                <li><span>cuota del {{i.0.fecha|date:"d/m/Y"}}:</span><span>cancelando {{i.1|floatformat:2}} de {{i.2|floatformat:2}}</span></li>
+                                                {% endfor %}
                                             </ul>
 
-                                            <button type="submit" name="redistribuir" class="btn btn-info">Agregar</button>
+                                            <div class="row justify-content-center mt-4">
+                                                <div class="col-lg-6 text-center">
 
-                                        </div>
+                                            <button type="submit" name="redistribuir" class="btn btn-info">Aplicar 2</button>
+                                                </div>
                                     </form>
                                 </div>
                             </div>
