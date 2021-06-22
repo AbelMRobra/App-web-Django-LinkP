@@ -17,68 +17,64 @@
                 <li class="breadcrumb-item">Panel maestro</li>
             </ol>
         </div>
-
     </div>
-
 </div>
 
 <div class="row">
     <div class="col-12">
-        <div class="card  overflow-auto">
-            <div class="card-body ">
+        <div class="card overflow-auto">
+            <div class="card-body">
 
-    <div style="margin: 2px; text-align: left;">
+                <div style="margin: 2px; text-align: left;">
 
-        <a href="/presupuestos/insumcreate" class="fa fa-plus-circle">
-           <span style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif"><b>Añadir</b></span> </a>
+                    <a href="/presupuestos/insumcreate" class="fa fa-plus-circle">
+                        <span
+                            style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif"><b>Añadir</b></span>
+                    </a>
 
+                </div>
+
+                <table id="example" class="table table-striped table-bordered" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Código</th>
+                            <th>Un.</th>
+                            <th>Valor</th>
+                            <th>Creación</th>
+                            <th>Constante</th>
+
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        {% for i in articulos %}
+                        <tr style="font-size: 12px;">
+
+                            <td style="text-align: left;">
+                                <a href="{% url 'Editar_insumo' i.codigo %}" class="fa fa-pencil-square-o fa-lg"
+                                    style="padding: 1px;">
+                                </a>
+                                <a href="{% url 'Eliminar_insumo' i.codigo %}" class="fa fa-trash fa-lg text-danger"
+                                    style="padding: 1px;">
+                                </a>
+                                {{i.nombre|lower|capfirst}}
+                            </td>
+                            <td> <b>{{i.codigo}}</b> </td>
+                            <td>{{i.unidad}}</td>
+                            <td>${{i.valor|floatformat:0|intcomma}}</td>
+                            <td>{{i.fecha_c}}</td>
+                            <td>{{i.constante}}</td>
+
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
     </div>
-
-
-    <table id="example" class="table table-striped table-bordered" style="width:100%">
-        <thead>
-            <tr>
-                <th>Nombre</th>
-                <th> Código </th>
-                <th> Un. </th>
-                <th> Valor </th>
-                <th> Creación </th>
-                <th> Constante </th>
-
-
-            </tr>
-        </thead>
-
-        <tbody>
-
-            {% for i in articulos %}
-            <tr style="font-size: 12px;">
-
-                <td style="text-align: left;">
-                    <a href="{% url 'Editar_insumo' i.codigo %}" class="fa fa-pencil-square-o fa-lg" style="padding: 1px;">
-                    </a>
-                    <a href="{% url 'Eliminar_insumo' i.codigo %}" class="fa fa-trash fa-lg" style="padding: 1px;">
-                    </a>
-                    {{i.nombre|lower|capfirst}}
-                </td>
-                <td> <b>{{i.codigo}}</b> </td>
-                <td>{{i.unidad}}</td>
-                <td>${{i.valor|floatformat:0|intcomma}}}</td>
-                <td>{{i.fecha_c}}</td>
-                <td>{{i.constante}}</td>
-
-            </tr>
-            {% endfor %}
-        </tbody>
-
-
-    </table>
-
-
-
-</div>
-</div>
-</div>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
@@ -89,7 +85,16 @@
 
 <script>
     $(document).ready(function () {
-        $('#example').DataTable();
+        $('#example').DataTable({
+            "language": {
+                "lengthMenu": "Mostar _MENU_ documentos",
+                "zeroRecords": "No se encontro nada - perdon ",
+                "info": "Pagina _PAGE_ de _PAGES_",
+                "infoEmpty": "Sin registros disponibles",
+                "infoFiltered": "(filtrado de _MAX_ registros totales)",
+                "search": "Buscar"
+            },
+        });
 
     });
 </script>
