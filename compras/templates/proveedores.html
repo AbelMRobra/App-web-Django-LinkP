@@ -16,6 +16,7 @@
                 <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
                 <li class="breadcrumb-item"><a href="{% url 'Principal compras' %}">Panel</a></li>
                 <li class="breadcrumb-item">Proveedores</li>
+            
             </ol>
         </div>
     </div>
@@ -58,7 +59,7 @@
                                       
                                       <span>Descripción</span>
                                       <div class="mb-3">
-                                          <textarea name="nombre" id="" cols="30" rows="6"class="form-control form-control"></textarea>
+                                          <textarea name="descripcion" id="" cols="30" rows="6"class="form-control form-control"></textarea>
                                          </div>
                                       
                                       <div>
@@ -67,7 +68,7 @@
 
                                       </div>
 
-                                      {{ form.as_p }}
+                                 
 
                                   </form>
 
@@ -124,6 +125,7 @@
 
                                                         {% csrf_token %}
                                                         <span>Nombre</span>
+                                                        
                                                         <div class="mb-3">
                                                             <input name="nombre" type="text"
                                                                 class="form-control form-control" value="{{i.name|lower|capfirst}}">
@@ -136,11 +138,11 @@
                                                         
                                                         <span>Descripción</span>
                                                         <div class="mb-3">
-                                                            <textarea name="nombre" id="" cols="30" rows="6"class="form-control form-control">{{i.descrip}}</textarea>
+                                                            <textarea name="descripcion"  cols="30" rows="6"class="form-control form-control">{{i.descrip}}</textarea>
                                                            </div>
                                                         
                                                         <div>
-                                                            <button class="btn btn-info" type="submit"
+                                                            <button class="btn btn-info" type="submit" name="modificar" value="{{i.id}}"
                                                                 style="margin-top: 10px;">Modificar</button>
 
                                                         </div>

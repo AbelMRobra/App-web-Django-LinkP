@@ -8,6 +8,10 @@ urlpatterns = [
     url(r'^principalcompras$', login_required(views.principalcompras), name = 'Principal compras'), 
     url(r'^cargarocautorizar$', login_required(views.cargarocautorizar), name = 'Cargar O.C para autorizar'), 
     url(r'^proveedores$', login_required(views.proveedores), name = 'Proveedores'),
+
+    #path("crearproveedor", views.crear_proveedor, name = 'crearproveedor'),
+    #path("modificarproveedor/<int:id>", views.crear_proveedores, name = 'crearproveedor'),
+
     url(r'^cargacompras$', login_required(views.cargacompras), name = 'Carga compras'),
     url(r'^compras/(?P<id_proyecto>\d+)/$', login_required(views.compras), name = 'Compras'),
     url(r'^comparativas/(?P<estado>\d+)/(?P<creador>\d+)$', login_required(views.comparativas), name = 'Comparativas'),

@@ -1411,44 +1411,68 @@ def certificados(request):
 
 
 # ----------------------------------------------------- VISTAS PARA PROVEEDORES ---------------------------------------------- 
+def crear_proveedor(request ,kwargs):
+    if request.method=='POST':
+        print('metodo get')
+
+    return render(request,'proveedores.html' ,{})
 
 def proveedores(request):
 
-    mensaje='hola mundo otra vez'
-    mensaje2='hola mundo otra vez'
+    
     datos = Proveedores.objects.all()
 
     #Aqui empieza el filtro
-
+    datos_prov={}
+    
     if request.method == 'POST':
-
-        palabra_buscar = request.POST.items()
-
-        datos_viejos = datos
-
-        datos = []   
-
-        for i in palabra_buscar:
-
-            if i[0] == "palabra":
+        datos_proveedor = request.POST
+        for item in datos_proveedor:
+            if item!='csrfmiddlewaretoken':
+                datos_prov[item]=datos_proveedor[item]
         
-                palabra_buscar = i[1]
+        print(datos_prov)
 
-        if str(palabra_buscar) == "":
+        if 'modificar' in datos_prov:
+              
+                id_prov=datos_prov['modificar']
+                prov=Proveedores.objects.get(pk=id_prov)
 
-            datos = datos_viejos
+                prov.name=datos_prov['nombre']
+                
+                prov.phone=int(datos_prov['telefono'])
+             
+                
+                prov.descrip=datos_prov['descripcion']
+
+                prov.save()
+                print('registro modificado con exito')
+
+        elif 'delete' in datos_prov:
+            id_prov=datos_prov['delete']
+            prov=Proveedores.objects.get(pk=id_prov)
+            prov.delete()
+            print('se elimino el registro',id_prov)
+
+            return redirect('Inicio')
+
 
         else:
+            prov=Proveedores(
+                    name=datos_prov['nombre'],
+                    phone=datos_prov['telefono'],
+                    descrip=datos_prov['descripcion'],
+            )
+
+            if prov:
+                prov.save()
+                print('ocurrio un error')
+
         
-            for i in datos_viejos:
+        
+        
 
-                palabra =(str(palabra_buscar))
-
-                buscar = (str(i.name)+str(i.descrip)+str(i.phone)+str(i.update))
-
-                if palabra.lower() in buscar.lower():
-
-                    datos.append(i)
+        
 
     return render(request, 'proveedores.html', {'datos':datos})
 
