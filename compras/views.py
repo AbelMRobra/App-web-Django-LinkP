@@ -1431,37 +1431,33 @@ def proveedores(request):
             if item!='csrfmiddlewaretoken':
                 datos_prov[item]=datos_proveedor[item]
         
-        print(datos_prov)
+        #print(datos_prov)
 
         if 'modificar' in datos_prov:
               
-                id_prov=datos_prov['modificar']
-                prov=Proveedores.objects.get(pk=id_prov)
-
-                prov.name=datos_prov['nombre']
-                
-                prov.phone=int(datos_prov['telefono'])
-             
-                
-                prov.descrip=datos_prov['descripcion']
-
-                prov.save()
-                print('registro modificado con exito')
-
+            id_prov=datos_prov['modificar']
+            prov=Proveedores.objects.get(pk=id_prov)
+            prov.name=datos_prov['nombre']
+            prov.phone=int(datos_prov['telefono'])
+            prov.descrip=datos_prov['descripcion']
+            prov.save()
+                #print('registro modificado con exito')
+            return redirect('Proveedores')
+            
         elif 'delete' in datos_prov:
             id_prov=datos_prov['delete']
             prov=Proveedores.objects.get(pk=id_prov)
             prov.delete()
-            print('se elimino el registro',id_prov)
+            #print('se elimino el registro',id_prov)
 
-            return redirect('Inicio')
+            return redirect('Proveedores')
 
 
         else:
             prov=Proveedores(
-                    name=datos_prov['nombre'],
-                    phone=datos_prov['telefono'],
-                    descrip=datos_prov['descripcion'],
+                name=datos_prov['nombre'],
+                phone=datos_prov['telefono'],
+                 descrip=datos_prov['descripcion'],
             )
 
             if prov:
