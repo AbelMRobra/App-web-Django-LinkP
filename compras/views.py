@@ -1419,10 +1419,8 @@ def crear_proveedor(request ,kwargs):
 
 def proveedores(request):
 
-    
     datos = Proveedores.objects.all()
 
-    #Aqui empieza el filtro
     datos_prov={}
     
     if request.method == 'POST':
@@ -1435,18 +1433,18 @@ def proveedores(request):
 
         if 'modificar' in datos_prov:
               
-                id_prov=datos_prov['modificar']
-                prov=Proveedores.objects.get(pk=id_prov)
+            id_prov=datos_prov['modificar']
+            prov=Proveedores.objects.get(pk=id_prov)
 
-                prov.name=datos_prov['nombre']
-                
-                prov.phone=int(datos_prov['telefono'])
-             
-                
-                prov.descrip=datos_prov['descripcion']
+            prov.name=datos_prov['nombre']
+            
+            prov.phone=int(datos_prov['telefono'])
+            
+            
+            prov.descrip=datos_prov['descripcion']
 
-                prov.save()
-                print('registro modificado con exito')
+            prov.save()
+            print('registro modificado con exito')
 
         elif 'delete' in datos_prov:
             id_prov=datos_prov['delete']
@@ -1454,7 +1452,7 @@ def proveedores(request):
             prov.delete()
             print('se elimino el registro',id_prov)
 
-            return redirect('Inicio')
+            return redirect('Proveedores')
 
 
         else:
@@ -1468,11 +1466,6 @@ def proveedores(request):
                 prov.save()
                 print('ocurrio un error')
 
-        
-        
-        
-
-        
 
     return render(request, 'proveedores.html', {'datos':datos})
 
