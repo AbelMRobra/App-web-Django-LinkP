@@ -1415,6 +1415,7 @@ def certificados(request):
 def proveedores(request):
 
     mensaje='hola mundo otra vez'
+    mensaje2='hola mundo otra vez'
     datos = Proveedores.objects.all()
 
     #Aqui empieza el filtro
