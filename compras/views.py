@@ -1424,14 +1424,17 @@ def proveedores(request):
 
     #Aqui empieza el filtro
     datos_prov={}
-    
+    mensaje=''
     if request.method == 'POST':
         datos_proveedor = request.POST
         for item in datos_proveedor:
             if item!='csrfmiddlewaretoken':
                 datos_prov[item]=datos_proveedor[item]
+
         
-        #print(datos_prov)
+        
+        
+        
 
         if 'modificar' in datos_prov:
               
@@ -1441,15 +1444,15 @@ def proveedores(request):
             prov.phone=int(datos_prov['telefono'])
             prov.descrip=datos_prov['descripcion']
             prov.save()
-                #print('registro modificado con exito')
+            mensaje='Registro modificado con exito'
             return redirect('Proveedores')
-            
+
         elif 'delete' in datos_prov:
             id_prov=datos_prov['delete']
             prov=Proveedores.objects.get(pk=id_prov)
             prov.delete()
-            #print('se elimino el registro',id_prov)
-
+            
+            mensaje='Registro eliminado con exito'
             return redirect('Proveedores')
 
 
@@ -1459,18 +1462,14 @@ def proveedores(request):
                 phone=datos_prov['telefono'],
                  descrip=datos_prov['descripcion'],
             )
+            mensaje='Registro creado con exito'
 
             if prov:
                 prov.save()
                 print('ocurrio un error')
 
-        
-        
-        
 
-        
-
-    return render(request, 'proveedores.html', {'datos':datos})
+    return render(request, 'proveedores.html', {'datos':datos ,'mensaje':mensaje})
 
 # ----------------------------------------------------- VISTAS STOCK ----------------------------------------------
  
