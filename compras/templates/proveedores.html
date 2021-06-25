@@ -5,6 +5,7 @@
 
 {% block content %}
 
+
 <div class="container-fluid">
     <div class="row page-titles">
         <div class="col-md-5 align-self-center">
@@ -16,6 +17,7 @@
                 <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
                 <li class="breadcrumb-item"><a href="{% url 'Principal compras' %}">Panel</a></li>
                 <li class="breadcrumb-item">Proveedores</li>
+            
             </ol>
         </div>
     </div>
@@ -25,8 +27,10 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body row">
+                <h4 class="card-title">Listado de proveedores</h4>
+                <h6 class="card-subtitle">Proveedores y las actividades en las que se desempeñan</h6>
                 <div class="col-12 justify-content-center">
-                    {% if request.user|has_group:"COMPRAS NIVEL 6" %}
+                    {% if request.user|has_group:"COMPRAS NIVEL 1" %}
                     <a type="button" class="fa fa-plus-circle text-info" data-toggle="modal" data-target="#ModalProveedorCrear"><span style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif; margin-left: 10px;">Nuevo proveedor</span></a>
                     {% endif %}
                       <!-- Modal fecha estado Subitem -->
@@ -48,17 +52,17 @@
                                       <span>Nombre</span>
                                       <div class="mb-3">
                                           <input name="nombre" type="text"
-                                              class="form-control form-control">
+                                              class="form-control form-control" required>
                                       </div>
                                       <span>Telefono</span>
                                       <div class="mb-3">
                                           <input name="telefono" type="number"
-                                          class="form-control form-control">
+                                          class="form-control form-control" required>
                                       </div>
                                       
                                       <span>Descripción</span>
                                       <div class="mb-3">
-                                          <textarea name="nombre" id="" cols="30" rows="6"class="form-control form-control"></textarea>
+                                          <textarea name="descripcion" id="" cols="30" rows="6"class="form-control form-control" required></textarea>
                                          </div>
                                       
                                       <div>
@@ -67,7 +71,7 @@
 
                                       </div>
 
-                                      {{ form.as_p }}
+                                 
 
                                   </form>
 
@@ -88,19 +92,19 @@
                         <table id="example" class="table table-striped table-bordered mt-4">
                             <thead>
                                 <tr>
-                                    <th>Id</th>
                                     <th>Nombre</th>
                                     <th>Telefono</th>
                                     <th>Descripcion</th>
+                                    {% if request.user|has_group:"COMPRAS NIVEL 1" %}
                                     <th></th>
+                                    {% endif %}
                                 </tr>
                             </thead>
 
                             <tbody>
                                 {% for i in datos %}
                                 <tr>
-                                    <td>{{i.id}}</td>
-                                    {% if request.user|has_group:"COMPRAS NIVEL 6" %}
+                                    {% if request.user|has_group:"COMPRAS NIVEL 1" %}
                                     <td><a href="#" data-toggle="modal"
                                             data-target="#Modalproveedores{{i.id}}">{{i.name|lower|capfirst}}</a></td>
                                     <!-- modal -->
@@ -124,6 +128,7 @@
 
                                                         {% csrf_token %}
                                                         <span>Nombre</span>
+                                                        
                                                         <div class="mb-3">
                                                             <input name="nombre" type="text"
                                                                 class="form-control form-control" value="{{i.name|lower|capfirst}}">
@@ -136,11 +141,11 @@
                                                         
                                                         <span>Descripción</span>
                                                         <div class="mb-3">
-                                                            <textarea name="nombre" id="" cols="30" rows="6"class="form-control form-control">{{i.descrip}}</textarea>
+                                                            <textarea name="descripcion"  cols="30" rows="6"class="form-control form-control">{{i.descrip}}</textarea>
                                                            </div>
                                                         
                                                         <div>
-                                                            <button class="btn btn-info" type="submit"
+                                                            <button class="btn btn-info" type="submit" name="modificar" value="{{i.id}}"
                                                                 style="margin-top: 10px;">Modificar</button>
 
                                                         </div>
@@ -161,7 +166,7 @@
 
                                     <td>{{i.phone}}</td>
                                     <td>{{i.descrip}}</td>
-                                    {% if request.user|has_group:"COMPRAS NIVEL 6" %}
+                                    {% if request.user|has_group:"COMPRAS NIVEL 1" %}
                                     <td>      
                                         <form method="POST">
                                         <button class="btn btn-link fa fa-trash text-danger d-flex align-content-end" type="submit"
