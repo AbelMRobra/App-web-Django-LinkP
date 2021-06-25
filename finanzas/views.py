@@ -311,38 +311,23 @@ def mandarmail(request, id_cuenta):
      
 def resumencredinv(request):
 
-    busqueda = 1
-    datos_almacenados = ArchivosAdmFin.objects.filter(resumen_credito_inv__isnull = False)
-    datos = 0
-    fecha = 0
-
-    fechas = []
-
-    for dato in datos_almacenados:
-        if dato.resumen_credito_inv: 
-            fechas.append((dato.fecha, str(dato.fecha)))
-
-    fechas = list(set(fechas))
-
-    fechas.sort( reverse=True)
-
+    datos = ArchivosAdmFin.objects.order_by("-fecha")
+  
     if request.method == 'POST':
 
-        #Trae los datos elegidos
-        datos_elegidos = request.POST.items()
+        try:
 
-        for dato in datos_elegidos:
+            new_register = ArchivosAdmFin(
+                fecha = request.POST["fecha"],
+                resumen_credito_inv = request.POST["adjunto"],
+            )
 
-            if dato[0] == "fecha":
-                datos = ArchivosAdmFin.objects.get(fecha = dato[1])
-                busqueda = 0
-                fecha = dato[1]
+            new_register.save()
 
+        except:
 
-    datos = {"fechas":fechas,
-        "busqueda":busqueda,
-        "datos":datos,
-        "fecha":fecha}
+            register_delete = ArchivosAdmFin.objects.get(id = request.POST["delete"])
+            register_delete.delete()
 
     return render(request, 'resumencredinv.html', {"datos":datos})
 
@@ -592,23 +577,27 @@ def editar_pagos(request, id_pago):
     pago = Pago.objects.get(id = id_pago)
 
     cotizacion = pago.pago_pesos/pago.pago
+    factura_elementos = pago.documento_1.split("-")
 
     if request.method == 'POST':
+
+        nombre_factura = "FAC-" + str(request.POST['tipo'])+ "-" + str(request.POST['sucursal']) + "-" + str(request.POST['factura'])
 
         pagado = request.POST['precio2']
         cotizacion = request.POST['precio1']
         precio1 = float(pagado)/float(cotizacion)
 
         pago.fecha = request.POST['fecha']
-        pago.documento_1 = request.POST['documento1']
+        pago.documento_1 = nombre_factura
         pago.documento_2 = request.POST['documento2']
         pago.pago = precio1
         pago.pago_pesos = request.POST['precio2']
+        pago.metodo = request.POST['metodo']
         pago.save()
 
         return redirect('Pagos', id_cuota = pago.cuota.id)
 
-    return render(request, 'editar_pagos.html', {'pago':pago, 'cotizacion':cotizacion})
+    return render(request, 'editar_pagos.html', {'pago':pago, 'cotizacion':cotizacion, 'factura_elementos':factura_elementos})
 
 def pagos(request, id_cuota):
 
@@ -646,21 +635,27 @@ def agregar_pagos(request, id_cuota):
 
         precio1 = float(request.POST['precio2'])/float(request.POST['precio1'])
 
+        nombre_factura = "FAC-" + str(request.POST['tipo'])+ "-" +  str(request.POST['sucursal']) + "-" + str(request.POST['factura'])
+
         c = Pago(
 
             cuota = cuota,
             fecha = request.POST['fecha'],
             pago = precio1,
             pago_pesos = float(request.POST['precio2']),                       
-            documento_1 = request.POST['documento1'],
+            documento_1 = nombre_factura,
             documento_2 = request.POST['documento2'],
             metodo = request.POST['metodo'],
             )
 
         c.save()
 
+        if sum(Pago.objects.filter(cuota = cuota).values_list("pago", flat =  True)) > cuota.precio:
+            return redirect('Cta cliente valor superado', id_cuota = cuota.id)
 
-        return redirect('Pagos', id_cuota = cuota.id)
+        else:
+            return redirect('Pagos', id_cuota = cuota.id)
+
 
     return render(request, 'agregar_pagos.html', {'cuota':cuota})
 
@@ -939,8 +934,7 @@ def totalcuentacte(request, id_proyecto, cliente, moneda):
 
     if id_proyecto != "0" and cliente == "1":
 
-        clientes = CuentaCorriente.objects.values_list('venta__comprador', flat =True).filter(venta__proyecto__id = id_proyecto)
-        clientes = list(set(clientes))
+        clientes = CuentaCorriente.objects.filter(venta__proyecto__id = id_proyecto)
         matriz_clientes = {}
         for c in clientes:
             matriz_clientes[c] = []
@@ -975,24 +969,24 @@ def totalcuentacte(request, id_proyecto, cliente, moneda):
                 
                 # Aqui armamos por clientes 
 
+                # Tengo que ver como mejorar esto
+
                 if cliente == "1":
                     for c in clientes:
-                        cuotas_cliente = sum(np.array(Cuota.objects.values_list('precio', flat =True).filter(fecha__range = (fecha_inicial, f), cuenta_corriente__venta__proyecto__id = id_proyecto, cuenta_corriente__venta__comprador = c))*np.array(Cuota.objects.values_list('constante__valor', flat =True).filter(fecha__range = (fecha_inicial, f), cuenta_corriente__venta__proyecto__id = id_proyecto, cuenta_corriente__venta__comprador = c)))
-                        pagos_cliente = sum(np.array(Pago.objects.values_list('pago', flat =True).filter(cuota__fecha__range = (fecha_inicial, f), cuota__cuenta_corriente__venta__proyecto__id = id_proyecto, cuota__cuenta_corriente__venta__comprador = c))*np.array(Pago.objects.values_list('cuota__constante__valor', flat =True).filter(cuota__fecha__range = (fecha_inicial, f), cuota__cuenta_corriente__venta__proyecto__id = id_proyecto, cuota__cuenta_corriente__venta__comprador = c)))
+                        
                         if moneda == "1":
-                            if (fecha_pago_inicial - f).days < 0:
-                                pago_pasado = sum(np.array(Pago.objects.values_list('pago', flat =True).filter(cuota__fecha__range = (fecha_inicial, f), cuota__cuenta_corriente__venta__proyecto__id = id_proyecto, cuota__cuenta_corriente__venta__comprador = c)))
-                                matriz_clientes[c].append(pago_pasado)
-                            else:
-                                saldo_mes = cuotas_cliente - pagos_cliente
-                                matriz_clientes[c].append(saldo_mes/horm.valor)
+                            cuotas_cliente = sum(np.array(Cuota.objects.values_list('precio', flat =True).filter(fecha__range = (fecha_inicial, f), cuenta_corriente__venta__proyecto__id = id_proyecto, cuenta_corriente = c))*np.array(Cuota.objects.values_list('constante__valor', flat =True).filter(fecha__range = (fecha_inicial, f), cuenta_corriente__venta__proyecto__id = id_proyecto, cuenta_corriente = c)))
+                            pagos_cliente = sum(np.array(Pago.objects.values_list('pago', flat =True).filter(cuota__fecha__range = (fecha_inicial, f), cuota__cuenta_corriente__venta__proyecto__id = id_proyecto, cuota__cuenta_corriente = c))*np.array(Pago.objects.values_list('cuota__constante__valor', flat =True).filter(cuota__fecha__range = (fecha_inicial, f), cuota__cuenta_corriente__venta__proyecto__id = id_proyecto, cuota__cuenta_corriente = c)))
+                            pago_pasado = sum(np.array(Pago.objects.values_list('pago', flat =True).filter(cuota__fecha__range = (fecha_inicial, f), cuota__cuenta_corriente__venta__proyecto__id = id_proyecto, cuota__cuenta_corriente = c)))
+                            pago_pasado = pago_pasado + (cuotas_cliente - pagos_cliente)/horm.valor
+                            matriz_clientes[c].append(pago_pasado)
+  
                         else:
-                            if (fecha_pago_inicial - f).days < 0:
-                                pago_pasado = sum(np.array(Pago.objects.values_list('pago_pesos', flat =True).filter(cuota__fecha__range = (fecha_inicial, f), cuota__cuenta_corriente__venta__proyecto__id = id_proyecto, cuota__cuenta_corriente__venta__comprador = c)))
-                                matriz_clientes[c].append(pago_pasado)
-                            else:
-                                saldo_mes = cuotas_cliente - pagos_cliente
-                                matriz_clientes[c].append(saldo_mes)
+                            cuotas_cliente = sum(np.array(Cuota.objects.values_list('precio', flat =True).filter(fecha__range = (fecha_inicial, f), cuenta_corriente__venta__proyecto__id = id_proyecto, cuenta_corriente = c))*np.array(Cuota.objects.values_list('constante__valor', flat =True).filter(fecha__range = (fecha_inicial, f), cuenta_corriente__venta__proyecto__id = id_proyecto, cuenta_corriente = c)))
+                            pagos_cliente = sum(np.array(Pago.objects.values_list('pago', flat =True).filter(cuota__fecha__range = (fecha_inicial, f), cuota__cuenta_corriente__venta__proyecto__id = id_proyecto, cuota__cuenta_corriente = c))*np.array(Pago.objects.values_list('cuota__constante__valor', flat =True).filter(cuota__fecha__range = (fecha_inicial, f), cuota__cuenta_corriente__venta__proyecto__id = id_proyecto, cuota__cuenta_corriente = c)))
+                            pago_pasado = sum(np.array(Pago.objects.values_list('pago_pesos', flat =True).filter(cuota__fecha__range = (fecha_inicial, f), cuota__cuenta_corriente__venta__proyecto__id = id_proyecto, cuota__cuenta_corriente = c)))
+                            pago_pasado = pago_pasado + (cuotas_cliente - pagos_cliente)
+                            matriz_clientes[c].append(pago_pasado)
 
             else:
 
@@ -2530,7 +2524,7 @@ def precioreferencia(request):
         except:
             pass
         try:
-            proyecto.precio_linkp = request.POST['pricing']
+            proyecto.precio_pricing = request.POST['pricing']
             proyecto.save()
         except:
             pass
@@ -3744,9 +3738,62 @@ def prueba(request):
 
     return render(request, 'prueba.html',{ "data_proyecto" : data_proyecto})
 
-def superarvalorcta(request):
+def superarvalorcta(request, id_cuota):
 
-    return render(request, 'superarvalorcta.html')
+    cuota = Cuota.objects.get(id = id_cuota)
+
+    pagado = sum(Pago.objects.filter(cuota = cuota).values_list("pago", flat =  True))
+
+    superado = abs(cuota.precio - pagado)
+
+    cuotas_no_pagadas = Cuota.objects.filter(cuenta_corriente = cuota.cuenta_corriente, pagada = "NO").exclude(id = cuota.id).order_by("fecha")
+
+    data_cuota = []
+
+    aux = superado
+
+    for c in cuotas_no_pagadas:
+        pagado_cuota = sum(Pago.objects.filter(cuota = c).values_list("pago", flat =  True))
+        saldo_cuota = c.precio - pagado_cuota
+        if aux > 0 and aux >= saldo_cuota:
+            data_cuota.append((c, saldo_cuota, saldo_cuota))
+            aux -= saldo_cuota
+        elif aux > 0:
+            data_cuota.append((c, aux, saldo_cuota))
+            aux = 0
+        else:
+            break
+
+    if request.method == 'POST':
+
+        if request.POST['aplicar'] == "2":
+            cuota.precio += superado
+            cuota.pagada = "SI"
+            cuota.save()
+
+            for d in data_cuota:
+
+                if d[1] == d[2]:
+                    d[0].precio = 0
+                    d[0].pagada = "SI"
+                    d[0].save()
+
+                else:
+                    d[0].precio -= d[1]
+                    d[0].save()
+
+            return redirect('Pagos', id_cuota = cuota.id)
+
+        if request.POST['aplicar'] == "1":
+
+            cuota.precio += superado
+            cuota.pagada = "SI"
+            cuota.save()
+
+            return redirect('Pagos', id_cuota = cuota.id)
+
+
+    return render(request, 'superarvalorcta.html', {'cuota':cuota, 'superado':superado, 'data_cuota':data_cuota})
 
 class DescargarCuentacorriente(TemplateView):
 
