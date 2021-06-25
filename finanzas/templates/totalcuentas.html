@@ -39,23 +39,23 @@
 
                         <div class="col-2 bg-light shadow p-4 rounded-3">
                             <h6><b>Cuentas</b></h6>
-                            <h6>{{cantidad_cuentas|intcomma}}</h6>
+                            <h6>{{informacion_general.cuentas|intcomma}}</h6>
                         </div>
                         <div class="col-2 bg-light shadow p-4 rounded-3">
                             <h6><b>Hº cobrado</b></h6>
-                            <h6>{{otros_datos.0|floatformat:2}} M3</h6>
+                            <h6>{{informacion_general.horm_cobrado|floatformat:2|intcomma}} M3</h6>
                         </div>
                         <div class="col-2 bg-light shadow p-4 rounded-3">
                             <h6><b>Hº adeudado</b></h6>
-                            <h6>{{otros_datos.1|floatformat:2}} M3</h6>
+                            <h6>{{informacion_general.horm_adeudado|floatformat:2|intcomma}} M3</h6>
                         </div>
                         <div class="col-2 bg-light shadow p-4 rounded-3">
                             <h6><b>Hº pendiente</b></h6>
-                            <h6>{{otros_datos.2|floatformat:2}} M3</h6>
+                            <h6>{{informacion_general.horm_pendiente|floatformat:2|intcomma}} M3</h6>
                         </div>
                         <div class="col-2 bg-light shadow p-4 rounded-3">
                             <h6><b>Hº total</b></h6>
-                            <h6>{{otros_datos.3|floatformat:2}} M3</h6>
+                            <h6>{{informacion_general.horm_total|floatformat:2|intcomma}} M3</h6>
                         </div>
                      
                     </div>
@@ -63,16 +63,20 @@
 
                     <div style="text-align: left; margin-top: 0.5%; margin-top: 20px;">
 
+                        <!--
+
+                        
                         <a href=" {% url 'Descargar resumen total de cuenta' %}" class="btn btn-success"><i
                                 class="fa fa-file-excel-o"><span class="ml-2"
                                     style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif"><b>Excel</b></span></i></a>
 
+                        -->
+                        <form method="post" style="margin: 2px; display: inline-block;">{% csrf_token %}<button type="submit" class="btn btn-secondary" href="#" name="refresh" value="1"><i class="fa fa-refresh"></i></button></form>
                         <div class="btn-group">
                             <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Proyectos
                             </button>
                             <div class="dropdown-menu">
-                                <a class="dropdown-item" href="{% url 'Total cuenta' 0 cliente 0 %}">Conjunto</a>
                                 {% for i in listado %}
                                 <a class="dropdown-item" href="{% url 'Total cuenta' i.id cliente 0 %}">{{i.nombre|lower|capfirst}}</a>
                                 {% endfor %}
@@ -92,9 +96,26 @@
                         {% endif %}
                         {% if cliente == "1" %} 
                         <a id="rotar" class="btn btn-secondary" href="#">Rotar</a>
+                        
                         {% endif %}
                         
                     </div>
+
+                    <style type="text/css">
+
+                        thead tr th{
+                            position: sticky;
+                            top: 0;
+                            z-index: 10;
+                            background-color: white;
+                        }
+                        .table-responsive {
+                            height: 63vh;
+                            overflow: scroll;
+                        
+                        }
+                                    
+                    </style>  
 
 
 
@@ -102,35 +123,38 @@
 
                         {% if cliente == "1" %}
 
-                        <table id="cliente" class="table table-striped table-bordered mt-1">
-                            <thead style="font-size: 14px;">
-                                <th>Cliente</th>
+                        <table id="cliente" class="table table-bordered mt-1">
+                            <thead style="font-size: 12px;">
+                                <th class="sticky">Cliente</th>
+                                <th>Unidad</th>
+                                <th>Asignación</th>
                                 {% for f in fechas %}
-                                <th>{{f|date:"m/Y"}}</th>
+                                <th>{{f|slice:"8:10"}}/{{f|slice:"5:7"}}/{{f|slice:"2:4"}}</th>
                                 {% endfor %}
 
                             </thead>
 
                             <tbody>
 
-                                {% for key, value in matriz_clientes.items %}
+                                {% for cuenta in cuentas_informacion %}
 
-                                <tr style="font-size: 14px;">
-                                    <td><h6>{{key|lower|capfirst}}</h6>
-                                        <h6 style="font-size: 12px;" class="sub-title">{{key.venta.unidad}}</h6></td>
-                                    {% for v in value %}
+                                <tr style="font-size: 12px;">
+                                    <td class="sticky">{{cuenta.0|lower|capfirst}}</td>
+                                    <td style="min-width: 100px;">{{cuenta.0.venta.unidad}}</td>
+                                    <td>{{cuenta.0.venta.unidad.asig|lower|capfirst}}</td>
+                                    {% for ingreso in cuenta.1 %}
                                     {% if moneda == "0" %}
-                                    <td>${{v|floatformat:2|intcomma}}</td>
+                                    <td>${{ingreso|floatformat:2|intcomma}}</td>
                                     {% else %}
-                                    <td>{{v|floatformat:2}}</td>
+                                    <td>{{ingreso|floatformat:2|intcomma}}</td>
                                     {% endif %}
                                     {% endfor %}
-
+                                    
                                 </tr>
 
-                                
-
                                 {% endfor %}
+
+
 
                             </tbody>
                             
@@ -142,40 +166,63 @@
 
 
                         <table id="example" class="table table-striped table-bordered mt-1">
-                            <thead>
-
+                            <thead style="font-size: 12px;">
                                 <tr>
-                                    <th rowspan="2" style="vertical-align: middle; text-align: center;" >Fecha</th>
-                                    <th colspan="2" class="text-info" style="vertical-align: middle; text-align: center;" >Todas las unidades</th>
-                                    <th colspan="2" class="text-success" style="vertical-align: middle; text-align: center;" >Unidades Link</th>
-                                    <th colspan="2" class="text-warning" style="vertical-align: middle; text-align: center;" > Unidades Proyecto</th>
-                                    </tr>
-
-                                <tr>
-                                    <th style="text-align: center;">Pesos</th>
-                                    <th style="text-align: center;">Hormigon</th>
-                                    <th style="text-align: center;">Pesos</th>
-                                    <th style="text-align: center;">Hormigon</th>
-                                    <th style="text-align: center;">Pesos</th>
-                                    <th style="text-align: center;" >Hormigon</th>
-                                    </tr>
-                            </thead>
-
-                            <tbody style="text-align: center; font-size: 14px;">
-
-                                {% for i in datos %}
-
-                                <tr>
-                                    <td> {{i.0.0.0|date:"m/Y" }}</td>
-                                    <td class="text-info"> ${{i.1|floatformat:0|intcomma}}</td>
-                                    <td class="text-info"> {{i.2|floatformat:3}} M3</td>
-                                    <td class="text-success"> ${{i.3|floatformat:0|intcomma}}</td>
-                                    <td class="text-success"> {{i.4|floatformat:3}} M3</td>
-                                    <td class="text-warning"> ${{i.5|floatformat:0|intcomma}}</td>
-                                    <td class="text-warning"> {{i.6|floatformat:3}} M3</td>
+                                    <th class="sticky">Asignación</th>
+                                    <th class="sticky">Moneda</th>
+                                    {% for f in fechas %}
+                                    <th style="text-align: center;">{{f|slice:"8:10"}}/{{f|slice:"5:7"}}/{{f|slice:"2:4"}}</th>
+                                    {% endfor %}
                                 </tr>
 
-                                {% endfor %}
+                            </thead>
+
+                            <tbody style="text-align: center; font-size: 12px;">
+
+                                <tr>
+                                    <td class="sticky">General</td>
+                                    <td class="sticky">Pesos</td>
+                                    {% for ingreso in flujo_informacion.flujo_general %}
+                                    <td class="text-info">${{ingreso|floatformat:2|intcomma}}</td>
+                                    {% endfor %}
+                                </tr>
+                                <tr>
+                                    <td class="sticky"></td>
+                                    <td class="sticky">Hº</td>
+                                    {% for ingreso in flujo_informacion.flujo_general_m3 %}
+                                    <td class="text-info">{{ingreso|floatformat:2|intcomma}}</td>
+                                    {% endfor %}
+                                </tr>
+
+                                <tr>
+                                    <td class="sticky">Proyecto</td>
+                                    <td class="sticky">Pesos</td>
+                                    {% for ingreso in flujo_informacion.flujo_proyecto %}
+                                    <td class="text-danger">${{ingreso|floatformat:2|intcomma}}</td>
+                                    {% endfor %}
+                                </tr>
+                                <tr>
+                                    <td class="sticky"></td>
+                                    <td class="sticky">Hº</td>
+                                    {% for ingreso in flujo_informacion.flujo_proyecto_m3 %}
+                                    <td class="text-danger">{{ingreso|floatformat:2|intcomma}}</td>
+                                    {% endfor %}
+                                </tr>
+
+                                <tr>
+                                    <td class="sticky">Link</td>
+                                    <td class="sticky">Pesos</td>
+                                    {% for ingreso in flujo_informacion.flujo_link %}
+                                    <td class="text-warning"> ${{ingreso|floatformat:2|intcomma}}</td>
+                                    {% endfor %}
+                                </tr>
+                                <tr>
+                                    <td class="sticky"></td>
+                                    <td class="sticky">Hº</td>
+                                    {% for ingreso in flujo_informacion.flujo_link_m3 %}
+                                    <td class="text-warning">{{ingreso|floatformat:2|intcomma}}</td>
+                                    {% endfor %}
+                                </tr>
 
                             </tbody>
 

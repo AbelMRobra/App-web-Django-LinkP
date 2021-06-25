@@ -97,7 +97,7 @@ def cargarocautorizar(request):
             b.save()
 
             try:
-                b.o_c = request.POST['numerooc']
+                b.adj_oc = request.FILES['oc']
                 b.save()
             except:
                 pass
@@ -1453,7 +1453,6 @@ def proveedores(request):
             print('se elimino el registro',id_prov)
 
             return redirect('Proveedores')
-
 
         else:
             prov=Proveedores(
