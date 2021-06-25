@@ -64,58 +64,104 @@
 
                     </div>
 
-                    <table id="example" class="table " style="width:100%">
-                        <thead>
-                            <tr class="table-active">
-                                <th> Fecha </th>
-                                {% if proyecto == 0%}
-                                <th>Proyecto</th>
-                                {% endif %}
-                                <th>Compra</th>
-                                <th>Articulo</th>
-                                <th> Cant.</th>
-                                <th> Precio </th>
-                                <th> Total </th>
-                                
-                                <th> Rend.</th>
-                            </tr>
-                        </thead>
+                    <div class="table-responsive">
 
-                        <tbody style="font-size: 13px;">
+                        <table id="example" class="table " style="width:100%;">
+                            <thead>
+                                <tr class="table-active">
+                                    <th style="width: 130px;">Fecha </th>
+                                    {% if proyecto == 0%}
+                                    <th>Proyecto</th>
+                                    {% endif %}
+                                    <th>Compra</th>
+                                    <th>Articulo</th>
+                                    <th> Cant.</th>
+                                    <th style="width: 120px;"> Precio </th>
+                                    <th> Total </th>
+                                    
+                                    <th> Rend.</th>
+                                </tr>
+                            </thead>
+    
+                            <tbody style="font-size: 13px;">
+    
+                                {% for i in compras %}
+    
+                                <tr>
+                                    <td> {{i.1.fecha_c|date:"Y-m-d"}} </td>
+                                    {% if proyecto == 0%}
+                                    <td><b>{{i.1.proyecto|lower|capfirst}}</b> </td>
+                                    {% endif %}
+                                    <td>
+                                        <div>{{i.1.proveedor|lower|capfirst}}</div>
+                                        <h6 class="card-subtitle" style="font-size: 12px; margin-top: 1px;">
+                                            {{i.1.documento}}</h6>
+                                    </td>
+                                    <td><b>{{i.1.articulo|lower|capfirst}} ({{i.1.articulo.unidad|lower|capfirst}})</b>
+                                    </td>
+                                    <td> {{i.1.cantidad|floatformat:0|intcomma}}</td>
+                               <!-- <td><a type="button" class="text-info" data-toggle="modal" data-target="#Modalprecio{{i.1.id}}">${{i.1.precio|floatformat:0|intcomma}}</a></td>-->    
+                                    <td>${{i.1.precio|floatformat:0|intcomma}}</td>
+                                     <!-- Modal fecha estado Subitem -->
+                                    <div class="modal fade" id="Modalprecio{{i.1.id}}" tabindex="-1" role="dialog"
+                                    aria-labelledby="Modalprecio{{i.1.id}}" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header" style="background: rgb(36,160,237);
+                                                background: linear-gradient(315deg, rgba(36,160,237,1) 0%, rgba(56,56,130,1) 22%, rgba(0,212,255,1) 100%);">
+                                                    <h5 class="modal-title text-light" id="exampleModalLongTitle">Modificar precio</h5>
+                                                    <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form action="#" method="POST">
+    
+                                                        {% csrf_token %}
+                                                        <span>Precio</span>
+                                                        <div class="mb-3">
+                                                            <input name="precio" type="number"
+                                                                class="form-control form-control" value="{{i.1.precio|floatformat:0|intcomma}}">
+                                                        </div>
+                                                       
+                                                        <div>
+                                                            <button class="btn btn-info" type="submit" name="modificar" value="{{i.1.id}}"
+                                                                style="margin-top: 10px;">Modificar</button>
+    
+                                                        </div>
+                                                    </form>
+    
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-info"
+                                                        data-dismiss="modal">Cerrar</button>
+    
+                                                </div>
+                                            </div>
+                                        </div>
+    
+                                    </div>
+                                    <td> ${{i.2|floatformat:0|intcomma}}</td>
+                                    
+                                    <td>
+                                        <div style="color: rgb({% is_past_evaluacion1 i.3 %});">{{i.3|floatformat:2}}%</div>
+                                        <div style="color: rgb({% is_past_evaluacion2 i.1.partida %});">
+                                            ${{i.1.partida|floatformat:0|intcomma}}</div>
+                                        <div style="color: rgb({% is_past_evaluacion3 i.1.imprevisto %});">
+                                            {{i.1.imprevisto|lower|capfirst}}</div>
+                                    </td>
+    
+                                </tr>
+    
+                                {% endfor %}
+    
+                            </tbody>
+    
+                        </table>
 
-                            {% for i in compras %}
+                    </div>
 
-                            <tr>
-                                <td> {{i.1.fecha_c|date:"Y-m-d"}} </td>
-                                {% if proyecto == 0%}
-                                <td><b>{{i.1.proyecto|lower|capfirst}}</b> </td>
-                                {% endif %}
-                                <td>
-                                    <div>{{i.1.proveedor|lower|capfirst}}</div>
-                                    <h6 class="card-subtitle" style="font-size: 12px; margin-top: 1px;">
-                                        {{i.1.documento}}</h6>
-                                </td>
-                                <td><b>{{i.1.articulo|lower|capfirst}} ({{i.1.articulo.unidad|lower|capfirst}})</b>
-                                </td>
-                                <td> {{i.1.cantidad|floatformat:0|intcomma}}</td>
-                                <td> ${{i.1.precio|floatformat:0|intcomma}}</td>
-                                <td> ${{i.2|floatformat:0|intcomma}}</td>
-                                
-                                <td>
-                                    <div style="color: rgb({% is_past_evaluacion1 i.3 %});">{{i.3|floatformat:2}}%</div>
-                                    <div style="color: rgb({% is_past_evaluacion2 i.1.partida %});">
-                                        ${{i.1.partida|floatformat:0|intcomma}}</div>
-                                    <div style="color: rgb({% is_past_evaluacion3 i.1.imprevisto %});">
-                                        {{i.1.imprevisto|lower|capfirst}}</div>
-                                </td>
-
-                            </tr>
-
-                            {% endfor %}
-
-                        </tbody>
-
-                    </table>
+                   
                 </div>
             </div>
         </div>
@@ -128,6 +174,8 @@
 <script src="https://cdn.datatables.net/1.10.23/js/dataTables.bootstrap4.min.js" defer></script>
  
 <script>
+
+console.log({{id_proyecto}})
 
     $(document).ready(function () {
         $('#example').DataTable({

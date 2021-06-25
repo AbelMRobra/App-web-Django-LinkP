@@ -803,15 +803,15 @@ def totalcuentacte(request, id_proyecto, cliente, moneda):
     moneda = moneda
 
     if request.method == 'POST':
-        #try:
+        try:
             fechas_cc(id_proyecto)
             flujo_ingreso_proyecto(id_proyecto)
             cuentas = CuentaCorriente.objects.filter(venta__unidad__proyecto__id = id_proyecto)
             for cuenta in cuentas:
                 flujo_ingreso_cliente(cuenta.id)
 
-        #except:
-            #pass
+        except:
+            pass
 
     # * Tratamos el periodo de fechas
 

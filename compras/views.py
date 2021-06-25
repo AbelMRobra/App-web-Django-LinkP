@@ -26,7 +26,8 @@ import matplotlib.pyplot as plt
 from openpyxl import Workbook
 from openpyxl.styles import Alignment, Border, Font, PatternFill, Side 
 from django.views.generic.base import TemplateView  
-
+from rest_framework.generics import ListAPIView
+from .serializers import articulos_Serializer
 def principalcompras(request):
 
     return render(request, "principalcompras.html")
@@ -71,11 +72,8 @@ def cargarocautorizar(request):
     if request.method == "POST":
 
         try:
-
             proveedor = Proveedores.objects.get(name=request.POST['proveedor'])
-
         except:
-
             mensaje = "El proveedor solicitado no esta cargado, solicite su carga con el área de presupuestos"
             proveedor = 0
 
@@ -404,6 +402,21 @@ def comprasdisponibles(request):
 
     return render(request, 'retiros.html', {"datos":datos})
 
+class ArticulosAPIView(ListAPIView):
+    serializer_class=articulos_Serializer
+
+    def get_queryset(self):
+        kword=self.request.query_params.get('kword','')
+
+        if len(Articulos.objects.filter(nombre__icontains=kword))>0 and len(kword) > 1:
+
+            return Articulos.objects.filter(nombre__icontains=kword)
+
+        else:
+
+            return Articulos.objects.all()[0:5]
+
+
 def cargacompras(request):
 
     proyectos = Proyectos.objects.all()
@@ -416,97 +429,49 @@ def cargacompras(request):
     datos = {'proyectos': proyectos, 'proveedores':proveedores, 'compras':compras, 'articulos':articulos, 'mensaje':mensaje}
 
     if request.method == 'POST':
-
         datos_p = request.POST.items()
-
+        print('----------------',request.POST)
         resto = []
-
         for i in datos_p:
-
             if i[0] == "proyecto":
-                
                 proyecto = i[1]
-
             elif i[0] == "proveedores":
-                
                 proveedor = i[1]
-
             elif i[0] == "tipo":
-
                 if i[1] == "1":
-
                     tipo = "ANT"
-                
                 else:
-
                     tipo = "NORMAL"
-
             elif i[0] == "nombre":
-                
                 nombre = i[1]
-
             elif i[0] == "doc":
-                
                 doc = i[1]
-
-            
             elif i[0] == "fecha":
-                
                 fecha = i[1]
-            
-            
             else:
-
                 resto.append(i)
 
         valor = 1
-
-
         #try:
-
-
         for i in resto:
-
             if i[0] == "csrfmiddlewaretoken":
-
                 basura = 1
-
-
             elif valor == 1:
-
                 valor = 2
-
                 articulo = Articulos.objects.get(nombre=i[1])
-
             elif valor == 2:
-
                 valor = 3
-
                 cantidad = i[1]
-                
-            
             elif valor == 3:
-
                 valor = 4
-
                 precio = i[1]
-
-
             elif valor == 4:
-
                 valor = 1
-
                 partida= i[1]
-
                 partida_original = i[1]
-
-
                 if float(partida_original) > 0:
-
                     partida = float(partida) - float(cantidad)*articulo.valor
-
                     if partida > 0:
-
                         imprevisto = "PREVISTO"
 
                     else:
@@ -1353,7 +1318,39 @@ Saludos!
     'list_creadores':list_creadores, 'datos':datos, "estado":estado, 
     "creador":creador, "mensaje":mensaje, "espera":num_espera, "autorizada":num_autorizada, 
     "rechazada":num_rechazada, "adjunto":num_adj, "fecha_pago":fecha_pago})
+'''
+def modificar_precio_articulo_compra(request,id_proyecto):
+    datos_compra={}
+    mensaje=''
+    if request.method=='POST':
+        response=request.POST
+        
+        #itero los datos que llegan del formulario y los guardo en un diccionario
+        for dato in response:
+            datos_compra[dato]=response[dato]
 
+        #guardo el id de la compra que se quiere modificar
+        id_compra=datos_compra['modificar']
+
+        #obtengo el objeto de la compra que quiero modificar
+        compra=Compras.objects.get(pk=id_compra)
+
+        #si existe el objeto ....
+        if compra:
+            compra.precio=datos_compra['precio']
+            compra.save()
+            mensaje='Modificacion realizada con exito'
+            return redirect('Compras' , id_proyecto)
+
+        #si no existe ...
+        else:
+            mensaje='No se pudo encontrar la compra'
+            return redirect('Compras' , id_proyecto)
+    context={
+        'mensaje':mensaje
+    }
+    return render(request, 'compras.html',context)
+'''
 def compras(request, id_proyecto):
 
     if id_proyecto == "0":
@@ -1379,7 +1376,8 @@ def compras(request, id_proyecto):
         datos = Compras.objects.filter(proyecto = id_proyecto).order_by("-fecha_c")
 
     compras = []
-
+    
+    #proyectos filtrados por id
     for dato in datos:
         if dato.precio_presup > dato.precio:
             total = dato.cantidad*dato.precio
@@ -1395,7 +1393,7 @@ def compras(request, id_proyecto):
             v = -((dato.precio/dato.precio_presup) - 1)*100
             compras.append((2,dato, total, v))
 
-    return render(request, 'compras.html', {'compras':compras, 'proyectos':proyectos, 'proyecto':proyecto})
+    return render(request, 'compras.html', {'compras':compras, 'proyectos':proyectos, 'proyecto':proyecto,'id_proyecto':id_proyecto})
 
 def certificados(request):
 
@@ -1411,62 +1409,52 @@ def certificados(request):
 
 
 # ----------------------------------------------------- VISTAS PARA PROVEEDORES ---------------------------------------------- 
-def crear_proveedor(request ,kwargs):
-    if request.method=='POST':
-        print('metodo get')
 
-    return render(request,'proveedores.html' ,{})
 
 def proveedores(request):
 
     datos = Proveedores.objects.all()
 
     datos_prov={}
-    
+    mensaje=0
     if request.method == 'POST':
         datos_proveedor = request.POST
         for item in datos_proveedor:
             if item!='csrfmiddlewaretoken':
                 datos_prov[item]=datos_proveedor[item]
-        
-        print(datos_prov)
 
         if 'modificar' in datos_prov:
               
             id_prov=datos_prov['modificar']
             prov=Proveedores.objects.get(pk=id_prov)
-
             prov.name=datos_prov['nombre']
-            
             prov.phone=int(datos_prov['telefono'])
-            
-            
             prov.descrip=datos_prov['descripcion']
-
             prov.save()
-            print('registro modificado con exito')
+            mensaje='Registro modificado con exito'
+            return redirect('Proveedores')
 
         elif 'delete' in datos_prov:
             id_prov=datos_prov['delete']
             prov=Proveedores.objects.get(pk=id_prov)
             prov.delete()
-            print('se elimino el registro',id_prov)
-
+            
+            mensaje='Registro eliminado con exito'
             return redirect('Proveedores')
+
 
         else:
             prov=Proveedores(
-                    name=datos_prov['nombre'],
-                    phone=datos_prov['telefono'],
-                    descrip=datos_prov['descripcion'],
+                name=datos_prov['nombre'],
+                phone=datos_prov['telefono'],
+                 descrip=datos_prov['descripcion'],
             )
+            mensaje='Registro creado con exito'
 
             if prov:
                 prov.save()
-                print('ocurrio un error')
-
-
-    return render(request, 'proveedores.html', {'datos':datos})
+                
+    return render(request, 'proveedores.html', {'datos':datos ,'mensaje':mensaje})
 
 # ----------------------------------------------------- VISTAS STOCK ----------------------------------------------
  
