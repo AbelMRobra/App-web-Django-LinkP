@@ -5,7 +5,7 @@
 {% block content %}
 
 
-<div class="container-fluid">
+<div class="container-fluid r-aside">
 
     <div class="row page-titles">
         <div class="col-md-5 align-self-center">
@@ -28,7 +28,7 @@
                 <div class="col-12 justify-content-center">
 
                     <div class="row d-flex justify-content-center">
-                        <div class="col col-md-12 col-lg-6">
+                        <div class="col col-md-12 col-lg-10">
                             <div class="row">
                                 <div class="col bg-light border rounded p-3">
                                     <form method="POST">
@@ -36,96 +36,117 @@
                                         {% csrf_token %}
 
                                         <h3> Datos generales</h3>
+                                        <div class="row">
 
-                                        <div class="mt-1">
+                              
+                                            <div class="col-4">
 
-                                            <label for="obra">
-                                                <h5>Obra:</h5>
-                                            </label>
-                                        </div>
-                                        <div class="row d-flex justify-content-center mt-1">
-                                            <div class="col col-md-10 col-lg-10">
-                                                    <select name="proyecto" class="custom-select bg-white" style="width: 100%;">
+                                                <div class="mt-1">
 
-                                                        {% for i in datos.proyectos %}
-                                                        <option value="{{ i.id }}">{{ i.nombre }}</option>
+                                                    <label for="obra">
+                                                        <h5>Obra:</h5>
+                                                    </label>
+                                                </div>
+                                                <div class="row d-flex justify-content-center mt-1">
+                                                    <div class="col">
+                                                        <div>
+                                                            <select name="proyecto" class="custom-select bg-white">
 
-                                                        {% endfor %}
+                                                                {% for i in datos.proyectos %}
+                                                                <option value="{{ i.id }}">{{ i.nombre }}</option>
 
-                                                    </select>
-                                            </div>
-                                        </div>
+                                                                {% endfor %}
 
-
-                                        <div class="mt-3">
-
-                                            <label for="proveedores">
-                                                <h5>Proveedor:</h5>
-                                            </label>
-                                        </div>
-                                        <div class="row d-flex justify-content-center mt-1">
-                                            <div class="col col-md-10 col-lg-10">
-
-                                                    <input name="proveedores" type="search"
-                                                        class="form-control form-control"
-                                                        placeholder="Nombre del proveedor" list="provee">
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
 
                                             </div>
+
+                                            <div class="col-4">
+                                                
+                                                <div class="mt-1">
+                                                    
+                                                    <label for="proveedores">
+                                                        <h5>Proveedor:</h5>
+                                                    </label>
+                                                </div>
+                                                <div class="row d-flex justify-content-center mt-1">
+                                                    <div class="col">
+                                                        <div>
+                                                            
+                                                            <input name="proveedor" type="search"
+                                                            class="form-control form-control"
+                                                            placeholder="Nombre del proveedor" list="provee" required>
+                                                            
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-4">
+                                                
+                                                <div class="mt-1">
+                                                    <label for="tipo">
+                                                        <h5>Tipo de compra:</h5>
+                                                    </label>
+                                                </div>
+                                                <div class="row d-flex justify-content-center mt-1">
+                                                    <div class="col">
+                                                        <div>
+                                                            <select name="tipo" class="custom-select bg-white">
+                                                                
+                                                                <option value=1>Anticipada</option>
+                                                                
+                                                                <option value=2>Normal</option>
+                                                                
+                                                                
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
                                         </div>
+                                        <div class="row">
+                                            <div class="col-6">
 
-
-
-                                        <div class="mt-3">
-                                            <label for="tipo">
-                                                <h5>Tipo de compra:</h5>
-                                            </label>
-                                        </div>
-                                        <div class="row d-flex justify-content-center mt-1">
-                                            <div class="col col-md-10 col-lg-10">
-                                                <div>
-                                                    <select name="tipo" class="custom-select bg-white" style="width: 100%;">
-
-                                                        <option value=1>Anticipada</option>
-
-                                                        <option value=2>Normal</option>
-
-
-                                                    </select>
+                                            
+                                                <div class="mt-1">
+        
+                                                    <label for="doc">
+                                                        <h5>Documento asociado:</h5>
+                                                    </label>
+                                                </div>
+                                                <div class="row d-flex justify-content-center mt-1">
+                                                    <div class="col">
+                                                        <div>
+                                                            <input type="text" class="form-control form-control" name="doc"
+                                                                placeholder="Preferentemente OC">
+        
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="mt-1">
+        
+                                                    <label for="fecha">
+                                                        <h5>Fecha de la OC:</h5>
+                                                    </label>
+                                                </div>
+                                                <div class="row d-flex justify-content-center mt-1">
+                                                    <div class="col">
+                                                        <div>
+        
+                                                            <input type="date" class="form-control form-control" name="fecha">
+        
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-
-                                        <div class="mt-3">
-
-                                            <label for="doc">
-                                                <h5>Documento asociado:</h5>
-                                            </label>
-                                        </div>
-                                        <div class="row d-flex justify-content-center mt-1">
-                                            <div class="col col-md-10 col-lg-10">
-                                                <div>
-                                                    <input type="text" class="form-control form-control" name="doc"
-                                                        placeholder="Preferentemente OC">
-
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="mt-3">
-
-                                            <label for="fecha">
-                                                <h5>Fecha de la OC:</h5>
-                                            </label>
-                                        </div>
-                                        <div class="row d-flex justify-content-center mt-1">
-                                            <div class="col col-md-10 col-lg-10">
-                                                <div>
-
-                                                    <input type="date" class="form-control form-control" name="fecha">
-
-                                                </div>
-                                            </div>
-                                        </div>
+                                        
 
                                         <b>
                                             <hr class="my-4" style="width: 100%; ">
@@ -145,75 +166,55 @@
                                             <div class="campoarticulos">
 
                                                 <div class="campo">
-                                                    <div class="mt-3">
-
-                                                        <label for="articulo">
-                                                            <h6>Articulo</h6>
-                                                        </label>
-
-                                                    </div>
-                                                    <div class="row d-flex justify-content-center mt-1">
-                                                        <div class="col col-md-10 col-lg-10">
-                                                            <div>
-                                                                <div id="demo">
-                                                                    <input 
-                                                                    name="articulo"
-                                                                    type="text" 
-                                                                    class="form-control" 
-                                                                    placeholder="busca.."
-                                                                    v-model="kword"
-                                                                    value="kword"
-                                                                    >
-                                                                    
-                                                                 
-
-                                                                    <ul style="overflow: auto; height: 100px; list-style: none;">
-                                                                        <li   v-for="art in lista_articulos"
-                                                                        :key="art.nombre"
-                                                                        @click="AddArticulo(art)"
-                                                                        >
-                                                                      {$ art.nombre $}</li>
-                                                                    </ul>  
-
-                                                                    <input type="text" v-model="precio">
-                                                                    <label for="">{$ precio $}</label>
-
-                                                                  
-                                                                </div>
-                                                                </div>
-                                                                <label for="ajustar">hollalaaa</label>
-                                                                <input type="radio" id="ajustar" value="hola">                                 
-                                                                   
-                                                                   
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                                    <b>
+                                                        <hr class="my-4" style="width: 100%; ">
+                                                    </b>
 
                                                     <div class="row">
-                                                        <div class="col-6">
+                                                        <div class="col-3">
+                                                                                                           
                                                             <div class="mt-3">
 
-
-                                                                <label for="cantidad">
-                                                                    <h6>Cantidad</h6>
+                                                                <label for="articulo">
+                                                                    <h6>Articulo</h6>
                                                                 </label>
 
                                                             </div>
-
-                                                            <div class="row d-flex justify-content-center mt-1 ml-lg-3">
-                                                                <div class="col col-md-11 col-lg-11">
+                                                            <div class="row d-flex justify-content-center mt-1">
+                                                                <div class="col">
                                                                     <div>
 
-                                                                        <input name="cantidad" type="number" step="0.01"
+                                                                        <input name="articulo" type="search"
                                                                             class="form-control form-control"
-                                                                            placeholder="Cantidad">
+                                                                            placeholder="Nombre del articulo" list="art">
 
                                                                     </div>
                                                                 </div>
                                                             </div>
-
                                                         </div>
-                                                        <div class="col-6">
+
+                                                   
+                                                        <div class="col-2">
+
+                                                            <div class="mt-3">
+                                                                <label for="cantidad">
+                                                                    <h6>Cantidad</h6>
+                                                                </label>
+                                                            </div>
+
+                                                            <div class="row d-flex justify-content-center mt-1">
+                                                                <div class="col">
+                                                                    <div>
+
+                                                                        <input name="cantidad" type="number" step="0.01"
+                                                                            class="form-control form-control"
+                                                                            placeholder="Cantidad" min="1" required>
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-4">
                                                             <div class="mt-3">
                                                                 <label for="precio">
                                                                     <h6>Precio</h6>
@@ -221,38 +222,60 @@
 
                                                             </div>
 
-                                                            <div class="row d-flex justify-content-center mt-1 mr-lg-3">
-                                                                <div class="col  col-md-11 col-lg-11">
+                                                            <div class="row d-flex justify-content-center mt-1">
+                                                                <div class="col">
                                                                     <div>
                                                                         <input name="precio" step="0.01" type="number"
-                                                                            class="form-control form-control" 
-                                                                            placeholder="$">
+                                                                            class="form-control form-control"
+                                                                            placeholder="$" min="1" required>
 
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="d-flex mt-2">
+
+                                                                <div class="form-chec">
+                                                                    <input class="form-check-input" type="radio"
+                                                                    name="ajustar" id="flexRadioDefault1"
+                                                                    value="no-ajustar" checked>
+                                                                    <label class="form-check-label" for="flexRadioDefault1"
+                                                                    style="font-size: 10px;">
+                                                                    No ajustar
+                                                                </label>
+                                                                </div>
+                                                                <div class="form-check">
+                                                                    <input class="form-check-input" type="radio"
+                                                                    name="ajustar" id="flexRadioDefault2"
+                                                                    value="ajustar">
+                                                                    <label class="form-check-label" for="flexRadioDefault2"
+                                                                    style="font-size: 10px;">
+                                                                    Ajustar al 5%
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-3">
+                                                            <div class="mt-3">
+                                                                
+                                                                <label for="partida">
+                                                                    <h6>Partida</h6>
+                                                                </label>
+                                                                
+                                                            </div>
+                                                            <div class="row d-flex justify-content-center mt-1">
+                                                                <div class="col">
+                                                                    <div>
+                                                                        <input name="partida" step="0.01" type="number"
+                                                                            class="form-control form-control" placeholder="$">
+        
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
-
-                                                    <div class="mt-3">
-
-                                                        <label for="partida">
-                                                            <h6>Partida</h6>
-                                                        </label>
-
-                                                    </div>
-
-                                                    <div class="row d-flex justify-content-center mt-1">
-                                                        <div class="col col-md-10 col-lg-10">
-                                                            <div>
-                                                                <input name="partida" step="0.01" type="number"
-                                                                    class="form-control form-control" placeholder="$">
-
-                                                            </div>
-                                                        </div>
-                                                    </div>
                                                 </div>
                                             </div>
+                                            
                                         </div>
 
                                         <div class="row d-flex justify-content-center mt-3">
@@ -263,10 +286,13 @@
 
                                             </div>
                                         </div>
+
                                         <datalist id="art">
+
                                             {% for i in datos.articulos %}
-                                            <option value="{{ i.nombre }}">({{i.unidad}})-1 <input type="text" value="{{i.valor}}"> </option>
-                                          
+
+                                            <option value="{{ i.nombre }}">({{i.unidad}})</option>
+
                                             {% endfor %}
 
                                         </datalist>
@@ -300,51 +326,7 @@
         </div>
     </div>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script>
-<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-<script>
 
-var vm = new Vue({
-  el: '#demo',
-  delimiters: ['{$' ,'$}'],
-  data: {
-        kword:'',
-        precio:'',
-        nombre_art:'',
-        show:'',
-    
-        lista_articulos: []
-    
-  },
-  watch: {
-   kword: function(val){
-       this.BuscarArticulo(val);
-
-   },
-
-  },
-  methods: {
-      BuscarArticulo: function(kword){
-          var self=this;
-          axios.get('/compras/apiarticulos?kword='+kword)
-          .then(function (response){
-              self.lista_articulos=response.data;
-          })
-          .catch(function (error){
-              console.log(error);
-          })
-      },
-      AddArticulo: function(articulo){
-          this.kword=articulo.nombre
-          this.precio=articulo.valor
-          let li=document.getElementById("seleccionado")
-          
-      }
-  }
-})
-
-
-</script>
 
 <script>
 
@@ -358,28 +340,8 @@ var vm = new Vue({
 
             $(this).attr("name", $(this).attr("name") + i);
         });
+      
     }
-    
-    function cambiovalor(){
-       
-        var art=document.getElementById('articulo').value
-        console.log('---',art)
-        if (art!=null) {
-            console.log('articulo',art)
-            let get_articulo_precio=art.split('|',2)
-            art=get_articulo_precio[0]
-            console.log(art)
-            input_precio=document.getElementById('precio_articulo')
-            input_precio.value=get_articulo_precio[1]
-
-
-            
-        }
-
-    }
-    
-    
-   
 
 </script>
 
