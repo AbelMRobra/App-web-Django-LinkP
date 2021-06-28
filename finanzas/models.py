@@ -81,6 +81,8 @@ class RegistroAlmacenero(models.Model):
 
 class CuentaCorriente(models.Model):
     venta = models.ForeignKey(VentasRealizadas, on_delete=models.CASCADE, verbose_name = "Venta Realizada")
+    flujo = models.TextField(verbose_name="Flujo", blank=True, null=True)
+    flujo_m3 = models.TextField(verbose_name="Flujo en M3", blank=True, null=True)
 
     class Meta:
         verbose_name="Cuenta corriente"

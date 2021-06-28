@@ -95,7 +95,7 @@ def cargarocautorizar(request):
             b.save()
 
             try:
-                b.o_c = request.POST['numerooc']
+                b.adj_oc = request.FILES['oc']
                 b.save()
             except:
                 pass
@@ -408,8 +408,13 @@ class ArticulosAPIView(ListAPIView):
     def get_queryset(self):
         kword=self.request.query_params.get('kword','')
 
-        return Articulos.objects.filter(nombre__icontains=kword)
+        if len(Articulos.objects.filter(nombre__icontains=kword))>0 and len(kword) > 1:
 
+            return Articulos.objects.filter(nombre__icontains=kword)
+
+        else:
+
+            return Articulos.objects.all()[0:5]
 
 
 def cargacompras(request):
@@ -1410,7 +1415,6 @@ def proveedores(request):
 
     datos = Proveedores.objects.all()
 
-    #Aqui empieza el filtro
     datos_prov={}
     mensaje=0
     if request.method == 'POST':

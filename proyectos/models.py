@@ -40,6 +40,18 @@ class Proyectos(models.Model):
     precio_pricing = models.FloatField(null=True, blank=True, verbose_name="Precio Pricing")
     precio_posta = models.FloatField(null=True, blank=True, verbose_name="Precio posta")
 
+
+    # Datos almacenados de finanzas
+    fechas_ctas_ctes = models.TextField(verbose_name="Fechas", blank=True, null=True)
+    flujo_ingreso = models.TextField(verbose_name="Fluejo de ingreso", blank=True, null=True)
+    flujo_ingreso_link = models.TextField(verbose_name="Fluejo de ingreso de Link", blank=True, null=True)
+    flujo_ingreso_proyecto = models.TextField(verbose_name="Fluejo de ingreso de Proyecto", blank=True, null=True)
+    flujo_ingreso_m3 = models.TextField(verbose_name="Fluejo de ingreso M3", blank=True, null=True)
+    flujo_ingreso_link_m3 = models.TextField(verbose_name="Fluejo de ingreso de Link M3", blank=True, null=True)
+    flujo_ingreso_proyecto_m3 = models.TextField(verbose_name="Fluejo de ingreso de Proyecto M3", blank=True, null=True)
+
+
+
     class Meta:
         verbose_name="Proyecto"
         verbose_name_plural="Proyectos"

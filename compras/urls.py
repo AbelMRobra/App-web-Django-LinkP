@@ -11,10 +11,6 @@ urlpatterns = [
 
 
     url(r'^apiarticulos$', login_required(views.ArticulosAPIView.as_view()), name = 'apiarticulos'),
-
- 
-   
-
     url(r'^cargacompras$', login_required(views.cargacompras), name = 'Carga compras'),
     url(r'^compras/(?P<id_proyecto>\d+)/$', login_required(views.compras), name = 'Compras'),
     #url(r'^modificarpreciocompra/(?P<id_proyecto>\d+)/$', login_required(views.modificar_precio_articulo_compra), name = 'modificar_precio_compra'),

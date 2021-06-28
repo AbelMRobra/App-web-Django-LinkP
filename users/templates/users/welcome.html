@@ -15,37 +15,29 @@
 </head>
 
 <body>
-<body background="{% static 'img/fondopan4.png' %}" style="height: auto; overflow: hidden;">
-
-    <div class="row d-flex align-content-center" style="text-align: center; height: 80vh;">
-        <div>
-            <div class="jumbotron">
-                <!-- <div class="jumbotron" style="background-color: rgba(11, 32, 68, 0.8);"> -->
-                <h1 class="mb-3" style="color: #F3EAE5;">
-                    ¡Bienvenido a LinkP!</h1>
-                <h4 class="mb-3" style="color: #F3EAE5;"> Que bueno es verte de nuevo
-                    {{request.user.first_name}} {{request.user.last_name}} !</h4>
-
+<body style="height: 100vh; overflow:hidden ; background-size: cover; background-image: url({% static 'img/welcome.png' %}); ">
+    <nav style="background-color: #18232E; height: 60px;" >
+        <img src="{% static 'img/Linkpblanco.png'%}" alt="logo link" width="110" style="padding: 10px ">
+    </nav>
+    <div class="row d-flex justify-content-end">
+        <div class="col-12 col-md-4 col-lg-4 mt-4 text-center">
+            <div>
+                <h1 class="mb-3" style="color: #F3EAE5;"><b> ¡Bienvenido a LinkP!</b></h1>
+                <h4 class="mb-3" style="color: #F3EAE5;"> Que bueno es verte de nuevo</h4>
+                <h4 class="mb-3" style="color: #F3EAE5;"> {{request.user.first_name}} {{request.user.last_name}} !</h4>
 
             </div>
 
             <div class="mt-4">
-                <a href="/logout" class="btn btn-danger"><img src="{% static 'img/logout.png' %}" alt=""
-                        style="width:20px; height:auto; vertical-align: bottom;"> Log out </a>
-
-                <a href="/inicio" class="btn btn-light">Ingresar <img src="{% static 'img/flecha-derecha.png' %}" alt=""
-                        style="width:20px; height:auto; vertical-align: bottom;"></a>
-
+                <a href="/inicio" class="btn mx-2" style="background-color: #248CEC; color: white" >Ingresar </a>
+                <a href="/logout" class="btn mx-2" style="background-color: #DFDDDD44; color: white; border: 1px solid ghostwhite;" >Log out </a>
+            </div>
+            
+            <div class="mt-4"style="color: #F3EAE5; font-size: 12px">
+                <p> APP-WEB LINK-<b >P</b></p>
             </div>
         </div>
     </div>
-    <footer class="text-center">
-        <h6 style="color: #F3EAE5 ;">
-            APP-WEB LINK-<b style="color: #19C6C6 ;">P</b>
-        </h6>
-        <small style="color: #F3EAE5 ; font-family: Arial, Helvetica,">versión <b>3.00</b>
-        </small>
-    </footer>
 </body>
 
 
