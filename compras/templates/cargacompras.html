@@ -5,7 +5,7 @@
 {% block content %}
 
 
-<div class="container-fluid">
+<div class="container-fluid r-aside">
 
     <div class="row page-titles">
         <div class="col-md-5 align-self-center">
@@ -45,7 +45,8 @@
                                         </div>
                                         <div class="row d-flex justify-content-center mt-1">
                                             <div class="col col-md-10 col-lg-10">
-                                                    <select name="proyecto" class="custom-select bg-white" style="width: 100%;">
+                                                <div>
+                                                    <select name="proyecto" class="custom-select bg-white">
 
                                                         {% for i in datos.proyectos %}
                                                         <option value="{{ i.id }}">{{ i.nombre }}</option>
@@ -53,6 +54,7 @@
                                                         {% endfor %}
 
                                                     </select>
+                                                </div>
                                             </div>
                                         </div>
 
@@ -65,11 +67,13 @@
                                         </div>
                                         <div class="row d-flex justify-content-center mt-1">
                                             <div class="col col-md-10 col-lg-10">
+                                                <div>
 
                                                     <input name="proveedores" type="search"
                                                         class="form-control form-control"
                                                         placeholder="Nombre del proveedor" list="provee">
 
+                                                </div>
                                             </div>
                                         </div>
 
@@ -83,7 +87,7 @@
                                         <div class="row d-flex justify-content-center mt-1">
                                             <div class="col col-md-10 col-lg-10">
                                                 <div>
-                                                    <select name="tipo" class="custom-select bg-white" style="width: 100%;">
+                                                    <select name="tipo" class="custom-select bg-white">
 
                                                         <option value=1>Anticipada</option>
 
@@ -155,33 +159,11 @@
                                                     <div class="row d-flex justify-content-center mt-1">
                                                         <div class="col col-md-10 col-lg-10">
                                                             <div>
-                                                                <div id="demo">
-                                                                    <input 
-                                                                    name="articulo"
-                                                                    type="text" 
-                                                                    class="form-control" 
-                                                                    placeholder="busca.."
-                                                                    v-model="kword"
-                                                                    value="kword"
-                                                                    >
-                                                                    
-                                                                 
 
-                                                                    <ul style="overflow: auto; height: 100px; list-style: none;">
-                                                                        <li   v-for="art in lista_articulos"
-                                                                        :key="art.nombre"
-                                                                        @click="AddArticulo(art)"
-                                                                        >
-                                                                      {$ art.nombre $}</li>
-                                                                    </ul>  
+                                                                <input name="articulo" type="search"
+                                                                    class="form-control form-control"
+                                                                    placeholder="Nombre del articulo" list="art">
 
-                                                                    <input type="text" v-model="precio">
-                                                                </div>
-                                                                </div>
-                                             
-                                                                                                     
-                                                                   
-                                                                   
                                                             </div>
                                                         </div>
                                                     </div>
@@ -222,7 +204,7 @@
                                                                 <div class="col  col-md-11 col-lg-11">
                                                                     <div>
                                                                         <input name="precio" step="0.01" type="number"
-                                                                            class="form-control form-control" 
+                                                                            class="form-control form-control"
                                                                             placeholder="$">
 
                                                                     </div>
@@ -260,10 +242,13 @@
 
                                             </div>
                                         </div>
+
                                         <datalist id="art">
+
                                             {% for i in datos.articulos %}
-                                            <option value="{{ i.nombre }}">({{i.unidad}})-1 <input type="text" value="{{i.valor}}"> </option>
-                                          
+
+                                            <option value="{{ i.nombre }}">({{i.unidad}})</option>
+
                                             {% endfor %}
 
                                         </datalist>
@@ -297,51 +282,7 @@
         </div>
     </div>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script>
-<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-<script>
 
-var vm = new Vue({
-  el: '#demo',
-  delimiters: ['{$' ,'$}'],
-  data: {
-        kword:'',
-        precio:'',
-        nombre_art:'',
-        show:'',
-    
-        lista_articulos: []
-    
-  },
-  watch: {
-   kword: function(val){
-       this.BuscarArticulo(val);
-
-   },
-
-  },
-  methods: {
-      BuscarArticulo: function(kword){
-          var self=this;
-          axios.get('/compras/apiarticulos?kword='+kword)
-          .then(function (response){
-              self.lista_articulos=response.data;
-          })
-          .catch(function (error){
-              console.log(error);
-          })
-      },
-      AddArticulo: function(articulo){
-          this.kword=articulo.nombre
-          this.precio=articulo.valor
-          let li=document.getElementById("seleccionado")
-          
-      }
-  }
-})
-
-
-</script>
 
 <script>
 
@@ -356,27 +297,6 @@ var vm = new Vue({
             $(this).attr("name", $(this).attr("name") + i);
         });
     }
-    
-    function cambiovalor(){
-       
-        var art=document.getElementById('articulo').value
-        console.log('---',art)
-        if (art!=null) {
-            console.log('articulo',art)
-            let get_articulo_precio=art.split('|',2)
-            art=get_articulo_precio[0]
-            console.log(art)
-            input_precio=document.getElementById('precio_articulo')
-            input_precio.value=get_articulo_precio[1]
-
-
-            
-        }
-
-    }
-    
-    
-   
 
 </script>
 
