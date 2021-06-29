@@ -1,0 +1,83 @@
+{% extends "users/inicio2.html" %}
+{% load humanize %}
+
+{% load static %}
+
+{% block content %}
+
+<div class="container-fluid">
+    <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+            <h3 class="text-themecolor">Analisis historico</h3>
+        </div>
+
+        <div class="col-md-7 align-self-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+                <li class="breadcrumb-item"><a href="#">Presupuesto</a></li>
+                <li class="breadcrumb-item">Historico</li>
+            </ol>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title"><span class="lstick m-r-20"></span>Resultado del analisis</h4>
+                <h6 class="card-subtitle">Variación Q (Cantidad)</h6>
+                <h4>Resultados generales</h4>
+                <h5><i class="fa fa-lightbulb-o"></i> Variación de Q: ${{data_resultante.0.1|floatformat:2|intcomma}}</h5>
+                <h5><i class="fa fa-exclamation-triangle"></i> Errores encontrados: {{data_resultante.0.2}}</h5>
+                <hr>
+
+                {% for cap in data_resultante.0.0%}
+
+                <h5>{{cap.0}}: <i class="fa fa-lightbulb-o"></i> ${{cap.3|floatformat:2|intcomma}} - <i class="fa fa-exclamation-triangle"></i> {{cap.4}}</h5>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Analisis</th>
+                            <th>Capitulo</th>
+                            <th>Cant.</th>
+                            <th>Precio</th>
+                        </tr>
+                        
+                    </thead>
+
+                    <tbody>
+                        {% for salidas in cap.1 %}
+                        <tr style="font-size: 12px;">
+                            <td>{{salidas.0}}</td>
+                            <td>{{salidas.1}}</td>
+                            <td>{{salidas.2}}</td>
+                            <td style="color: green;">${{salidas.3|floatformat:2|intcomma}}</td>
+                        </tr>
+                        {% endfor %}
+
+                        {% for ingresos in cap.2 %}
+                        <tr style="font-size: 12px;">
+                            <td>{{ingresos.0}}</td>
+                            <td>{{ingresos.1}}</td>
+                            <td>{{ingresos.2}}</td>
+                            <td style="color: red;">${{ingresos.3|floatformat:2|intcomma}}</td>
+                        </tr>
+                        {% endfor %}
+
+                    </tbody>
+                    
+                </table>
+
+                <hr>
+
+                {% endfor %}
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}
