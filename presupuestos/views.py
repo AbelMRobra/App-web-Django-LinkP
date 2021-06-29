@@ -24,6 +24,7 @@ from datetime import date
 from openpyxl import Workbook
 from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
 from .serializers import ArtSerializer
+from .functions import auditor_presupuesto
 
 '''
 def historico_presupuesto(request):
@@ -2743,6 +2744,16 @@ def Creditocapitulo(id_proyecto):
             datos.append((compra.articulo, 0, compra.cantidad, -compra.cantidad, -saldo))
 
     return datos
+
+def presupuesto_auditor(request):
+
+    proyecto = Proyectos.objects.get(id = 1)
+    listado_dias = PresupuestosAlmacenados.objects.filter(proyecto = proyecto).exclude(nombre = "vigente").values_list("nombre", flat = True).distinct()
+    fecha_desde = '2021-05-18'
+    fecha_hasta = '2021-05-19'
+    data_resultante = auditor_presupuesto(fecha_desde, fecha_hasta)
+
+    return render(request, "presupuestos/presupuesto_auditor.html", {"data_resultante":data_resultante})
 
 class ReporteExplosion(TemplateView):
 

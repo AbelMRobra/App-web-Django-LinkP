@@ -16,7 +16,7 @@ from django.conf import settings
 from presupuestos.models import Proyectos, Presupuestos, Constantes, Modelopresupuesto, Registrodeconstantes
 from .models import Almacenero, CuentaCorriente, Cuota, Pago, RegistroAlmacenero, ArchivosAdmFin, Arqueo, RetirodeSocios, MovimientoAdmin, Honorarios
 from proyectos.models import Unidades, Proyectos
-from ventas.models import Pricing, VentasRealizadas
+from ventas.models import Pricing, VentasRealizadas, FeaturesUni
 from datetime import date, timedelta
 from openpyxl import Workbook
 from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
@@ -2416,39 +2416,67 @@ def precioreferencia(request):
     data_final = []
 
     for d in data:
+        
         m2_total = 0
         m2_disponible = 0
-        try:
-            unidades = Unidades.objects.filter(proyecto = d.proyecto)
+        precio_m2_disponible = 0
+        #try:
+        unidades = Unidades.objects.filter(proyecto = d.proyecto)
 
-            for u in unidades:
+        for u in unidades:
 
-                if u.sup_equiv > 0:
+            if u.sup_equiv > 0:
 
-                    m2 = round(u.sup_equiv, 2)
+                m2 = round(u.sup_equiv, 2)
 
-                else:
+            else:
 
-                    m2 = round((u.sup_propia + u.sup_balcon + u.sup_comun + u.sup_patio), 2)
-                m2_total += m2
+                m2 = round((u.sup_propia + u.sup_balcon + u.sup_comun + u.sup_patio), 2)
+            m2_total += m2
 
-            unidades_dis = Unidades.objects.filter(proyecto = d.proyecto, estado = "DISPONIBLE")
+        unidades_dis = Unidades.objects.filter(proyecto = d.proyecto, estado = "DISPONIBLE")
 
-            for u in unidades_dis:
+        for u in unidades_dis:
 
-                if u.sup_equiv > 0:
+            if u.sup_equiv > 0:
 
-                    m2 = round(u.sup_equiv, 2)
+                m2 = round(u.sup_equiv, 2)
 
-                else:
+            else:
 
-                    m2 = round((u.sup_propia + u.sup_balcon + u.sup_comun + u.sup_patio), 2)
-                m2_disponible += m2
+                m2 = round((u.sup_propia + u.sup_balcon + u.sup_comun + u.sup_patio), 2)
+            m2_disponible += m2
+
+            #try:
+
+            contado = m2*d.proyecto.desde
+
+            features_unidad = FeaturesUni.objects.filter(unidad = u)
+
+            for f2 in features_unidad:
+
+                contado = contado*f2.feature.inc
+
+            precio_m2_disponible += contado
+            #except:
+                #precio_m2_disponible += 0
+
+        if m2_total != 0:
+
             porc_dispo = (m2_disponible/m2_total)*100
-        except:
+
+        else:
             porc_dispo = 0
+
+        if m2_disponible != 0:
+            precio_m2_disponible = precio_m2_disponible/m2_disponible
+        else:
+            precio_m2_disponible = 0
+        #except:
+            #porc_dispo = 0
+            #precio_m2_disponible = 0
      
-        data_final.append((d, porc_dispo))
+        data_final.append((d, porc_dispo, precio_m2_disponible))
 
     return render(request, 'precioreferencia.html', {"data":data_final})
 
