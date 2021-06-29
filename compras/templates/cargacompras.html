@@ -5,7 +5,7 @@
 {% block content %}
 
 
-<div class="container-fluid r-aside">
+<div class="container-fluid">
 
     <div class="row page-titles">
         <div class="col-md-5 align-self-center">
@@ -96,9 +96,9 @@
                                                         <div>
                                                             <select name="tipo" class="custom-select bg-white">
                                                                 
+                                                                <option value=2>Normal</option>
                                                                 <option value=1>Anticipada</option>
                                                                 
-                                                                <option value=2>Normal</option>
                                                                 
                                                                 
                                                             </select>
@@ -165,11 +165,13 @@
 
                                             <div class="campoarticulos">
 
-                                                <div class="campo">
+                                                <button type="button" class="btn" onclick="borrarItem()"><i class="fa fa-trash-o text-danger mr-1"></i>Borrar ultimo articulo</button>
+                                                <div class="campo" id="campo">
                                                     <b>
                                                         <hr class="my-4" style="width: 100%; ">
                                                     </b>
-
+                                                    
+                                                   
                                                     <div class="row">
                                                         <div class="col-3">
                                                                                                            
@@ -232,22 +234,22 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <div class="d-flex mt-2">
+                                                            <div class="d-flex mt-2" required>
 
                                                                 <div class="form-chec">
                                                                     <input class="form-check-input" type="radio"
-                                                                    name="ajustar" id="flexRadioDefault1"
+                                                                    name="ajustar" id="noajustar"
                                                                     value="no-ajustar" checked>
-                                                                    <label class="form-check-label" for="flexRadioDefault1"
+                                                                    <label class="form-check-label" for="noajustar"
                                                                     style="font-size: 10px;">
                                                                     No ajustar
                                                                 </label>
                                                                 </div>
                                                                 <div class="form-check">
                                                                     <input class="form-check-input" type="radio"
-                                                                    name="ajustar" id="flexRadioDefault2"
+                                                                    name="ajustar" id="ajustar"
                                                                     value="ajustar">
-                                                                    <label class="form-check-label" for="flexRadioDefault2"
+                                                                    <label class="form-check-label" for="ajustar"
                                                                     style="font-size: 10px;">
                                                                     Ajustar al 5%
                                                                     </label>
@@ -307,7 +309,7 @@
                                             {% endfor %}
 
                                         </datalist>
-
+                                        <input type="number" name="contador" id="contador" value="1" hidden>
                                     </form>
 
                                     <div class="row d-flex justify-content-center mt-3">
@@ -329,34 +331,71 @@
 
 
 <script>
+    let contador=document.getElementById('contador');
+   
 
-    var i = 1;
-
+    var i = 0;
+    
     function myFunction() {
 
-        i++
-        $(".campo").clone().appendTo(".campoarticulos").attr("class", "campo-" + i);
-        $(".campoarticulos").last().find('.campo').find('input').each(function (index) {
+        let check1=document.getElementById('ajustar').checked;
+        let check2=document.getElementById('noajustar').checked;
 
+        aux=parseInt(contador.value)
+        contador.value=aux+1;
+        
+        
+        
+        i++
+        $(".campo").clone().appendTo(".campoarticulos").attr("class", "campo-" + i).attr("id", "campo-" + i);
+       
+     
+        $(".campoarticulos").last().find('.campo-' + i).find('label, input').each(function (index) {
+
+            $(this).val("");
             $(this).attr("name", $(this).attr("name") + i);
+            $(this).attr("for", $(this).attr("for") + i);
+            $(this).attr("id", $(this).attr("id") + i);
+
         });
+
+        $("#ajustar"+i).val("ajustar").prop('checked', false);
+        $("#noajustar"+i).val("no-ajustar").prop('checked', true);
+
+
+      
+        $("#ajustar").prop('checked', check1);
+        $("#noajustar").prop('checked', check2);
+  
+        
       
     }
 
-</script>
+    function deleteItem(elem) {
+        var clase = elem.parentNode.id
+        var claseString = "#" + clase.toString();
 
-<script>
 
-    $(function () {
+        $(claseString).remove();
+    };
+    function borrarItem() {
+        var claseString = document.getElementsByClassName("campo-"+i)
 
-        function deleteRow() {
-            $(this).parents('tr').remove();
+        if (i>=1) {
+            $(claseString).remove();
+            i--
+            contador.value--;
+        
         }
-
-    });
-
+       
+        
+        
+    };
+ 
 
 </script>
+
+
 
 
 
