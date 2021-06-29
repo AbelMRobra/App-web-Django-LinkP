@@ -2461,7 +2461,12 @@ def precioreferencia(request):
             #except:
                 #precio_m2_disponible += 0
 
-        porc_dispo = (m2_disponible/m2_total)*100
+        if m2_total != 0:
+
+            porc_dispo = (m2_disponible/m2_total)*100
+
+        else:
+            porc_dispo = 0
         precio_m2_disponible = precio_m2_disponible/m2_disponible
         #except:
             #porc_dispo = 0
