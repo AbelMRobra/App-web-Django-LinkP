@@ -90,39 +90,9 @@
                             {% for u in usuarios %}
                             <tr>
                                 <td>
-                                    <a type="button" style="text-decoration: none;" data-toggle="modal" data-target="#ModalTarjeta{{u.0.id}}">
+                                    <a href="{% url 'Perfil personal' u.0.id %}">
                                     <img src="{{u.0.imagenlogo.url}}" alt="user" class="img-circle" style="width: 35px;" /> - {{u.0.nombre}}</a>
                                 </td>
-
-                                <!-- Modal anuncio -->
-                                <div class="modal fade" id="ModalTarjeta{{u.0.id}}" tabindex="-1" role="dialog" aria-labelledby="ModalPremioTitle" aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header" style="background: rgb(36,160,237);
-                                            background: linear-gradient(315deg, rgba(36,160,237,1) 0%, rgba(56,56,130,1) 22%, rgba(0,212,255,1) 100%);">
-                                        <h5 class="modal-title text-light" id="exampleModalLongTitle">{{u.0.nombre}}</h5>
-                                        <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                        </div>
-                                        <div class="modal-body">
-                                                                        
-                                        <p style="white-space: pre-wrap;">Trabaja con Link desde {% if u.0.fecha_ingreso %} {{u.0.fecha_ingreso|date:"d-m-Y"}} {% else %} .. algún momento {% endif %}, pertenece al área de {{u.0.area|lower}} como {{u.0.cargo|lower}}. 
-
-<b>Datos:</b>
-Telefono: {% if u.0.Telefono %} {{u.0.Telefono}} {% else %} No lo tengo agendado {% endif %}
-Email de la empresa: {% if u.0.email %} {{u.0.email}} {% else %} No lo anotaron {% endif %}
-Cumpleaños: {% if u.0.fecha_nacimiento %} El {{u.0.fecha_nacimiento|date:"d"}} de {{u.0.fecha_nacimiento|date:"M"}} {% else %} No lo anotaron {% endif %}
-Año de nacimiento: {% if u.0.fecha_nacimiento %} {{u.0.fecha_nacimiento|date:"Y"}} {% else %} No lo anotaron {% endif %}
-
-<b>Comentarios de la oficina de RRHH:</b> 
-
-{% if u.0.Comentarios %} {{u.0.Comentarios}} {% else %} Aun no se ha registrado nada {% endif %}</p>
-                                    </div>
-                                    </div>
-
-                                </div>
-                            </div>
                                 <td>{{u.0.identificacion}}</td>
                                 <td>{{u.0.email}}</td>
                                 <td>{{u.0.area|lower|capfirst}}</td>
