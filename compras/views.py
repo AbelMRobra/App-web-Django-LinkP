@@ -419,12 +419,6 @@ class ArticulosAPIView(ListAPIView):
 
             return Articulos.objects.all()[0:5]
 
-#def ajustar_precio():
-
-        
-        '''
-        
-        '''
 def cargacompras(request):
 
     proyectos = Proyectos.objects.all()
@@ -438,7 +432,6 @@ def cargacompras(request):
         
         response=request.POST
         
-        print(response)
         datos_compra={}
     
         
@@ -447,8 +440,7 @@ def cargacompras(request):
                 datos_compra[dato]=response[dato]
             elif dato=='contador':
                 cant_forms=int(response['contador'])
-        #cant_forms=2
-        print(datos_compra)
+
         proyecto_id=datos_compra['proyecto']
         proyecto=Proyectos.objects.get(pk=proyecto_id)
         proveedor=Proveedores.objects.get(name=datos_compra['proveedor'])
@@ -460,7 +452,6 @@ def cargacompras(request):
         else:
             tipo = "NORMAL"
 
-       
         for n in range(cant_forms):
             if n==0:
                 cantidad=float(datos_compra['cantidad'])
@@ -760,6 +751,19 @@ def descargacomparativas(request):
     return render(request, 'descargacom.html')
 
 def comparativas(request, estado, creador):
+
+    n = 5
+
+    i = 1
+
+    resultado = 1
+
+    while i <= n:
+        resultado *= i
+        print(resultado)
+        i +=1
+
+    print(resultado)
 
     # Codigo para fecha de pagos
 
