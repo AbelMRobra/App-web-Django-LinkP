@@ -2505,7 +2505,7 @@ def precioreferencia(request):
         data_final.append([d, porc_dispo, precio_m2_disponible])
 
     for x in data_final:
-        x[1] = d.ingreso_ventas/total_de_ingresos*100
+        x[1] = x[0].ingreso_ventas/total_de_ingresos*100
 
     return render(request, 'precioreferencia.html', {"data":data_final, "total_de_ingresos": total_de_ingresos})
 
