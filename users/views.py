@@ -33,6 +33,7 @@ from statistics import mode
 from xhtml2pdf import pisa
 from openpyxl import Workbook
 from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
+from statistics import mode
 
 
 class PdfMinutas(View):
@@ -692,6 +693,23 @@ Saludos,
 
 def canjerealizados(request):
 
+    # Listado de los datos de los premios
+
+    data_linkcoins = {}
+
+    list_entregas = list(EntregaMoneda.objects.all().values_list("usuario_recibe__identificacion", flat=True))
+    list_entregas_areas = list(EntregaMoneda.objects.all().values_list("usuario_recibe__area", flat=True))
+    list_mensaje = list(EntregaMoneda.objects.all().values_list("mensaje", flat=True))
+    list_mensaje.sort(key = len)
+    mensaje_corto = (list_mensaje[0], len(list_mensaje[0]), EntregaMoneda.objects.filter(mensaje = list_mensaje[0])[0])
+    list_mensaje.sort(key = len, reverse=True)
+    mensaje_largo = (list_mensaje[0], len(list_mensaje[0]), EntregaMoneda.objects.filter(mensaje = list_mensaje[0])[0])
+    usuario_mas_recibio = (datosusuario.objects.get(identificacion = mode(list_entregas)), list_entregas.count(mode(list_entregas)))
+    area_querida = (mode(list_entregas_areas), list_entregas_areas.count(mode(list_entregas_areas)))
+    data_linkcoins["usuario_mas_recibio"] = usuario_mas_recibio
+    data_linkcoins["area_querida"] = area_querida
+    data_linkcoins["mensaje_corto"] = mensaje_corto
+    data_linkcoins["mensaje_largo"] = mensaje_largo
     list_usuarios = datosusuario.objects.all().order_by("identificacion").exclude(estado = "NO ACTIVO")
 
     if request.method == 'POST':
@@ -744,7 +762,7 @@ def canjerealizados(request):
             data_generador.append((datosusuario.objects.get(identificacion = user), cantidad, m))
 
 
-    return render(request, "users/canjesrealizados.html", {'data':data, 'list_usuarios':list_usuarios, 'data_generador':data_generador})
+    return render(request, "users/canjesrealizados.html", {'data':data, 'list_usuarios':list_usuarios, 'data_generador':data_generador, 'data_linkcoins':data_linkcoins})
 
 def dashboard(request):
 

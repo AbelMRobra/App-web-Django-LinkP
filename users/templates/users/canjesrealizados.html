@@ -33,6 +33,7 @@
                             <li><a data-toggle="tab" href="#entregado">Entregado</a></li>
                             <li><a data-toggle="tab" href="#total">Total</a></li>
                             <li><a data-toggle="tab" href="#generador">Generador</a></li>
+                            <li><a data-toggle="tab" href="#stats">Stats</a></li>
                         </ul>
                     </div>
                 </div>
@@ -293,6 +294,31 @@
 
                             
                         
+                    </div>
+                    <div id="stats" class="tab-pane fade">
+
+                        <div class="row">
+
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 class="card-title">Estadisticas de Linkcoins</h4>
+                                    <h6 class="card-subtitle">Las mismas son en tiempo real</h6>
+                                    <div class="sl-right">
+                                        <div><p>Usuario que más recibio: {{data_linkcoins.usuario_mas_recibio.0.nombre}} con {{data_linkcoins.usuario_mas_recibio.1}}</p> </div>
+                                        <div><p>Área que más recibio: {{data_linkcoins.area_querida.0.nombre}} con {{data_linkcoins.area_querida.1}}</p> </div>
+                                        <div><p>Mensaje más corto: De {{data_linkcoins.mensaje_corto.2.usuario_recibe.nombre}} con {{data_linkcoins.mensaje_corto.1}} caracteres: {{data_linkcoins.mensaje_corto.0}}</p> </div>
+                                        <div><p>Mensaje más largo: De {{data_linkcoins.mensaje_largo.2.usuario_recibe.nombre}} con {{data_linkcoins.mensaje_largo.1}} caracteres: {{data_linkcoins.mensaje_largo.0}}</p> </div>
+                    
+                                    </div>
+                                </div>
+                                
+                            </div>
+    
+
+                        </div>
+
+                        
+
                     </div>
                 </div>
             </div>
