@@ -752,19 +752,6 @@ def descargacomparativas(request):
 
 def comparativas(request, estado, creador):
 
-    n = 5
-
-    i = 1
-
-    resultado = 1
-
-    while i <= n:
-        resultado *= i
-        print(resultado)
-        i +=1
-
-    print(resultado)
-
     # Codigo para fecha de pagos
 
     fecha_inicial = datetime.date.today()
