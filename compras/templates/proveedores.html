@@ -5,6 +5,7 @@
 
 {% block content %}
 
+
 <div class="container-fluid">
     <div class="row page-titles">
         <div class="col-md-5 align-self-center">
@@ -29,7 +30,7 @@
                 <h4 class="card-title">Listado de proveedores</h4>
                 <h6 class="card-subtitle">Proveedores y las actividades en las que se desempeñan</h6>
                 <div class="col-12 justify-content-center">
-                    {% if request.user|has_group:"COMPRAS NIVEL 6" %}
+                    {% if request.user|has_group:"COMPRAS NIVEL 1" %}
                     <a type="button" class="fa fa-plus-circle text-info" data-toggle="modal" data-target="#ModalProveedorCrear"><span style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif; margin-left: 10px;">Nuevo proveedor</span></a>
                     {% endif %}
                       <!-- Modal fecha estado Subitem -->
@@ -51,17 +52,17 @@
                                       <span>Nombre</span>
                                       <div class="mb-3">
                                           <input name="nombre" type="text"
-                                              class="form-control form-control">
+                                              class="form-control form-control" required>
                                       </div>
                                       <span>Telefono</span>
                                       <div class="mb-3">
                                           <input name="telefono" type="number"
-                                          class="form-control form-control">
+                                          class="form-control form-control" required>
                                       </div>
                                       
                                       <span>Descripción</span>
                                       <div class="mb-3">
-                                          <textarea name="descripcion" id="" cols="30" rows="6"class="form-control form-control"></textarea>
+                                          <textarea name="descripcion" id="" cols="30" rows="6"class="form-control form-control" required></textarea>
                                          </div>
                                       
                                       <div>
@@ -165,7 +166,7 @@
 
                                     <td>{{i.phone}}</td>
                                     <td>{{i.descrip}}</td>
-                                    {% if request.user|has_group:"COMPRAS NIVEL 6" %}
+                                    {% if request.user|has_group:"COMPRAS NIVEL 1" %}
                                     <td>      
                                         <form method="POST">
                                         <button class="btn btn-link fa fa-trash text-danger d-flex align-content-end" type="submit"

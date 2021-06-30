@@ -842,9 +842,24 @@ def totalcuentacte(request, id_proyecto, cliente, moneda):
     informacion_general['horm_pendiente'] = sum(np.array(Cuota.objects.values_list('precio').filter(fecha__gte = hoy, cuenta_corriente__venta__proyecto = proyecto))) - sum(np.array(Pago.objects.values_list('pago').filter(cuota__fecha__gte = hoy, cuota__cuenta_corriente__venta__proyecto = proyecto)))
     informacion_general['horm_total'] = informacion_general['horm_cobrado'] + informacion_general['horm_adeudado'] + informacion_general['horm_pendiente']
     
-    # * Tratamos la información de las cuentas
+    datos_segundos = []
 
-    cuentas_informacion = []
+    total_fecha = []
+
+    fecha_inicial = 0
+
+    matriz_clientes = 0
+
+    if id_proyecto != "0" and cliente == "1":
+
+        clientes = CuentaCorriente.objects.filter(venta__proyecto__id = id_proyecto)
+        matriz_clientes = {}
+        for c in clientes:
+            matriz_clientes[c] = []
+        
+    for f in fechas:
+
+        cuentas_informacion = []
 
     if fechas and cliente == "1":
 
@@ -862,15 +877,27 @@ def totalcuentacte(request, id_proyecto, cliente, moneda):
 
         if moneda == "1":
 
-            cuentas = CuentaCorriente.objects.filter(venta__proyecto__id = id_proyecto)
-            for c in cuentas:
-                if c.flujo_m3:
-                    flujo_ingreso = c.flujo_m3.split("&")
-                    flujo_ingreso.pop()
-                    flujo_ingreso = np.array(flujo_ingreso)
-                    cuentas_informacion.append((c, flujo_ingreso))
-                else:
-                    cuentas_informacion.append((c, []))
+                
+                # Aqui armamos por clientes 
+
+                # Tengo que ver como mejorar esto
+
+                if cliente == "1":
+                    for c in clientes:
+                        
+                        if moneda == "1":
+                            cuotas_cliente = sum(np.array(Cuota.objects.values_list('precio', flat =True).filter(fecha__range = (fecha_inicial, f), cuenta_corriente__venta__proyecto__id = id_proyecto, cuenta_corriente = c))*np.array(Cuota.objects.values_list('constante__valor', flat =True).filter(fecha__range = (fecha_inicial, f), cuenta_corriente__venta__proyecto__id = id_proyecto, cuenta_corriente = c)))
+                            pagos_cliente = sum(np.array(Pago.objects.values_list('pago', flat =True).filter(cuota__fecha__range = (fecha_inicial, f), cuota__cuenta_corriente__venta__proyecto__id = id_proyecto, cuota__cuenta_corriente = c))*np.array(Pago.objects.values_list('cuota__constante__valor', flat =True).filter(cuota__fecha__range = (fecha_inicial, f), cuota__cuenta_corriente__venta__proyecto__id = id_proyecto, cuota__cuenta_corriente = c)))
+                            pago_pasado = sum(np.array(Pago.objects.values_list('pago', flat =True).filter(cuota__fecha__range = (fecha_inicial, f), cuota__cuenta_corriente__venta__proyecto__id = id_proyecto, cuota__cuenta_corriente = c)))
+                            pago_pasado = pago_pasado + (cuotas_cliente - pagos_cliente)/horm.valor
+                            matriz_clientes[c].append(pago_pasado)
+  
+                        else:
+                            cuotas_cliente = sum(np.array(Cuota.objects.values_list('precio', flat =True).filter(fecha__range = (fecha_inicial, f), cuenta_corriente__venta__proyecto__id = id_proyecto, cuenta_corriente = c))*np.array(Cuota.objects.values_list('constante__valor', flat =True).filter(fecha__range = (fecha_inicial, f), cuenta_corriente__venta__proyecto__id = id_proyecto, cuenta_corriente = c)))
+                            pagos_cliente = sum(np.array(Pago.objects.values_list('pago', flat =True).filter(cuota__fecha__range = (fecha_inicial, f), cuota__cuenta_corriente__venta__proyecto__id = id_proyecto, cuota__cuenta_corriente = c))*np.array(Pago.objects.values_list('cuota__constante__valor', flat =True).filter(cuota__fecha__range = (fecha_inicial, f), cuota__cuenta_corriente__venta__proyecto__id = id_proyecto, cuota__cuenta_corriente = c)))
+                            pago_pasado = sum(np.array(Pago.objects.values_list('pago_pesos', flat =True).filter(cuota__fecha__range = (fecha_inicial, f), cuota__cuenta_corriente__venta__proyecto__id = id_proyecto, cuota__cuenta_corriente = c)))
+                            pago_pasado = pago_pasado + (cuotas_cliente - pagos_cliente)
+                            matriz_clientes[c].append(pago_pasado)
 
     flujo_informacion = []
 
@@ -2406,7 +2433,7 @@ def precioreferencia(request):
         except:
             pass
         try:
-            proyecto.precio_linkp = request.POST['pricing']
+            proyecto.precio_pricing = request.POST['pricing']
             proyecto.save()
         except:
             pass
@@ -2414,6 +2441,8 @@ def precioreferencia(request):
     data = Almacenero.objects.all()
 
     data_final = []
+
+    total_de_ingresos = 0    
 
     for d in data:
         
@@ -2461,12 +2490,8 @@ def precioreferencia(request):
             #except:
                 #precio_m2_disponible += 0
 
-        if m2_total != 0:
-
-            porc_dispo = (m2_disponible/m2_total)*100
-
-        else:
-            porc_dispo = 0
+       
+        porc_dispo = 0
 
         if m2_disponible != 0:
             precio_m2_disponible = precio_m2_disponible/m2_disponible
@@ -2475,10 +2500,14 @@ def precioreferencia(request):
         #except:
             #porc_dispo = 0
             #precio_m2_disponible = 0
-     
-        data_final.append((d, porc_dispo, precio_m2_disponible))
+        total_de_ingresos += d.ingreso_ventas
 
-    return render(request, 'precioreferencia.html', {"data":data_final})
+        data_final.append([d, porc_dispo, precio_m2_disponible])
+
+    for x in data_final:
+        x[1] = d.ingreso_ventas/total_de_ingresos*100
+
+    return render(request, 'precioreferencia.html', {"data":data_final, "total_de_ingresos": total_de_ingresos})
 
 def consolidado(request):
 
