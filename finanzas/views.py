@@ -859,7 +859,7 @@ def totalcuentacte(request, id_proyecto, cliente, moneda):
         
     for f in fechas:
 
-    cuentas_informacion = []
+        cuentas_informacion = []
 
     if fechas and cliente == "1":
 
@@ -2442,6 +2442,8 @@ def precioreferencia(request):
 
     data_final = []
 
+    total_de_ingresos = 0    
+
     for d in data:
         
         m2_total = 0
@@ -2488,12 +2490,8 @@ def precioreferencia(request):
             #except:
                 #precio_m2_disponible += 0
 
-        if m2_total != 0:
-
-            porc_dispo = (m2_disponible/m2_total)*100
-
-        else:
-            porc_dispo = 0
+       
+        porc_dispo = 0
 
         if m2_disponible != 0:
             precio_m2_disponible = precio_m2_disponible/m2_disponible
@@ -2502,10 +2500,14 @@ def precioreferencia(request):
         #except:
             #porc_dispo = 0
             #precio_m2_disponible = 0
-     
-        data_final.append((d, porc_dispo, precio_m2_disponible))
+        total_de_ingresos += d.ingreso_ventas
 
-    return render(request, 'precioreferencia.html', {"data":data_final})
+        data_final.append([d, porc_dispo, precio_m2_disponible])
+
+    for x in data_final:
+        x[1] = d.ingreso_ventas/total_de_ingresos*100
+
+    return render(request, 'precioreferencia.html', {"data":data_final, "total_de_ingresos": total_de_ingresos})
 
 def consolidado(request):
 
