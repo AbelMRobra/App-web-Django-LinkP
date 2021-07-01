@@ -141,13 +141,13 @@ def auditor_presupuesto(proyecto,fecha_desde, fecha_hasta):
     return data_procesada,mensaje
 
 
-def auditor_presupuesto_p(proyecto,fecha_desde, fecha_hasta):
+def auditor_presupuesto_p(proyecto, fecha_desde, fecha_hasta):
 
     cont=0
-    data_almacenada_desde_objects = PresupuestosAlmacenados.objects.filter(nombre = '2021-05-18',proyecto=proyecto)
+    data_almacenada_desde_objects = PresupuestosAlmacenados.objects.filter(nombre = fecha_desde,proyecto=proyecto)
     
     #esta linea da error porque el queryset se encuentra vacio
-    data_almacenada_hasta_objects = PresupuestosAlmacenados.objects.filter(nombre = '2021-05-19',proyecto=proyecto)
+    data_almacenada_hasta_objects = PresupuestosAlmacenados.objects.filter(nombre = fecha_hasta,proyecto=proyecto)
     
     if data_almacenada_desde_objects.exists() and data_almacenada_hasta_objects.exists():
         
@@ -180,7 +180,6 @@ def auditor_presupuesto_p(proyecto,fecha_desde, fecha_hasta):
                 df_desde_m2['Precio'][i]=articulos_M2[df_desde_m2['Articulo'][i]]
 
                 
-
                 df_desde_m2['Monto'][i]=articulos_M2[df_desde_m2['Articulo'][i]]*df_desde_m2['Cantidad Art Totales'][i]
             
                 cont_dif_art += 1
