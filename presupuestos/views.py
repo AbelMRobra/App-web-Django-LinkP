@@ -2749,6 +2749,7 @@ def presupuesto_auditor(request):
 
     proyectos=PresupuestosAlmacenados.objects.values('proyecto__nombre','proyecto__id').distinct()
     data_resultante=0
+    data_resultante_p=0
     mensaje='Aun no se han filtrado datos'
 
     if request.method=='POST':
