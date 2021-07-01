@@ -107,7 +107,6 @@
                     </div>
                 </div>
 
-
                 {% if data_resultante %}
 
                 <div class="row my-4">
@@ -240,7 +239,7 @@
     
     let data = {
         datasets: [{
-            label: "Legend",
+            label: "Variación absoluta porcentual",
             labels: [{% for key, value in data_resultante_p.3.items %} {{key}}, {% endfor %}],
             data: [
             {% for key, value in data_resultante_p.3.items %}
