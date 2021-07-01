@@ -25,53 +25,150 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body">
-                <h4 class="card-title"><span class="lstick m-r-20"></span>Resultado del analisis</h4>
-                <h6 class="card-subtitle">Variación Q (Cantidad)</h6>
-                <h4>Resultados generales</h4>
-                <h5><i class="fa fa-lightbulb-o"></i> Variación de Q: ${{data_resultante.0.1|floatformat:2|intcomma}}</h5>
-                <h5><i class="fa fa-exclamation-triangle"></i> Errores encontrados: {{data_resultante.0.2}}</h5>
-                <hr>
+                <h4 class="card-title"><span class="lstick m-r-20"></span>Analisis historico</h4>
+                <h6 class="card-subtitle">Variaciones historicas de un proyecto en relaciona dos fechas en el tiempo</h6>
+                <div class="row d-flex justify-content-center mt-3">
+                    <div class="col col-md-12 col-lg-6">
+                        <div class="row">
+                            <div class="col bg-light border rounded">
 
-                {% for cap in data_resultante.0.0%}
+                                <form method="POST">
 
-                <h5>{{cap.0}}: <i class="fa fa-lightbulb-o"></i> ${{cap.3|floatformat:2|intcomma}} - <i class="fa fa-exclamation-triangle"></i> {{cap.4}}</h5>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Analisis</th>
-                            <th>Capitulo</th>
-                            <th>Cant.</th>
-                            <th>Precio</th>
-                        </tr>
-                        
-                    </thead>
+                                    {% csrf_token %}
+                                    <div class="row">
+                                        <div class="my-2">
 
-                    <tbody>
-                        {% for salidas in cap.1 %}
-                        <tr style="font-size: 12px;">
-                            <td>{{salidas.0}}</td>
-                            <td>{{salidas.1}}</td>
-                            <td>{{salidas.2}}</td>
-                            <td style="color: green;">${{salidas.3|floatformat:2|intcomma}}</td>
-                        </tr>
-                        {% endfor %}
+                                            <label for="proyectos">
+                                                <h6>Proyectos</h6>
+                                            </label>
+                                            <select name="proyecto" class="form-select" aria-label="Default select example">
+                                                {% for i in proyectos %}
+                                                <option value="{{i.proyecto__id}}">{{i.proyecto__nombre}}</option>
+                                               {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
 
-                        {% for ingresos in cap.2 %}
-                        <tr style="font-size: 12px;">
-                            <td>{{ingresos.0}}</td>
-                            <td>{{ingresos.1}}</td>
-                            <td>{{ingresos.2}}</td>
-                            <td style="color: red;">${{ingresos.3|floatformat:2|intcomma}}</td>
-                        </tr>
-                        {% endfor %}
+                                    <div class="row">
 
-                    </tbody>
+
+
+                                        <div class="col col-lg-6 my-2">
+
+                                            <div style="display: inline-block;">
+
+                                                <label for="fechainicial">
+                                                    <h6>Fecha Inicial</h6>
+                                                </label>
+
+                                            </div>
+
+                                            <div style="margin-bottom: 2%; width: 100%; ">
+
+                                                <input name="fecha_desde" type="date" required
+                                                    class="form-control form-control" >
+
+                                            </div>
+
+                                        </div>
+
+                                        <div class="col col-lg-6 my-2">
+
+                                            <div style="display: inline-block;">
+
+                                                <label for="fechafinal">
+                                                    <h6>Fecha Final</h6>
+                                                </label>
+
+                                            </div>
+
+                                            <div style="margin-bottom: 2%; width: 100%; ">
+
+                                                <input name="fecha_hasta" type="date" required
+                                                    class="form-control form-control">
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="row d-flex justify-content-center my-3">
+                                        <div class="col-lg-6 text-center">
+                                            <button class="btn btn-info" type="submit"
+                                                style="margin-top: 1%; margin-bottom: 2%;">Buscar
+                                                datos</button>
+                                        </div>
+                                    </div>
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+      
+                  {% if data_resultante %}
                     
-                </table>
+               
+                      
+                
+                    <h4 class="card-title"><span class="lstick m-r-20"></span>Resultado del analisis</h4>
+                    
+                    <h6 class="card-subtitle">Variación Q (Cantidad)</h6>
+                    <h4>Resultados generales</h4>
+                    <h5><i class="fa fa-lightbulb-o"></i> Variación de Q: ${{data_resultante.0.1|floatformat:2|intcomma}}</h5>
+                    <h5><i class="fa fa-exclamation-triangle"></i> Errores encontrados: {{data_resultante.0.2}}</h5>
+                    <hr>
 
-                <hr>
+                    {% for cap in data_resultante.0.0%}
 
-                {% endfor %}
+                    <h5>{{cap.0}}: <i class="fa fa-lightbulb-o"></i> ${{cap.3|floatformat:2|intcomma}} - <i class="fa fa-exclamation-triangle"></i> {{cap.4}}</h5>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Analisis</th>
+                                <th>Capitulo</th>
+                                <th>Cant.</th>
+                                <th>Precio</th>
+                            </tr>
+                            
+                        </thead>
+
+                        <tbody>
+                            {% for salidas in cap.1 %}
+                            <tr style="font-size: 12px;">
+                                <td>{{salidas.0}}</td>
+                                <td>{{salidas.1}}</td>
+                                <td>{{salidas.2}}</td>
+                                <td style="color: green;">${{salidas.3|floatformat:2|intcomma}}</td>
+                            </tr>
+                            {% endfor %}
+
+                            {% for ingresos in cap.2 %}
+                            <tr style="font-size: 12px;">
+                                <td>{{ingresos.0}}</td>
+                                <td>{{ingresos.1}}</td>
+                                <td>{{ingresos.2}}</td>
+                                <td style="color: red;">${{ingresos.3|floatformat:2|intcomma}}</td>
+                            </tr>
+                            {% endfor %}
+
+                        </tbody>
+                        
+                    </table>
+
+                    <hr>
+
+                    {% endfor %}
+
+
+                    {% else %}
+                    <h2>{{mensaje}}</h2>
+                    {% endif %}
+               
 
             </div>
         </div>

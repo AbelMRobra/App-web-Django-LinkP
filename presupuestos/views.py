@@ -24,7 +24,7 @@ from datetime import date
 from openpyxl import Workbook
 from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
 from .serializers import ArtSerializer
-from .functions import auditor_presupuesto
+from .functions import auditor_presupuesto,auditor_presupuesto_p
 
 '''
 def historico_presupuesto(request):
@@ -2746,14 +2746,34 @@ def Creditocapitulo(id_proyecto):
     return datos
 
 def presupuesto_auditor(request):
+    proyectos=PresupuestosAlmacenados.objects.values('proyecto__nombre','proyecto__id').distinct()
+    
 
-    proyecto = Proyectos.objects.get(id = 1)
-    listado_dias = PresupuestosAlmacenados.objects.filter(proyecto = proyecto).exclude(nombre = "vigente").values_list("nombre", flat = True).distinct()
-    fecha_desde = '2021-05-18'
-    fecha_hasta = '2021-05-19'
-    data_resultante = auditor_presupuesto(fecha_desde, fecha_hasta)
+    data_resultante=0
+    mensaje='Aun no se han filtrado datos'
 
-    return render(request, "presupuestos/presupuesto_auditor.html", {"data_resultante":data_resultante})
+    if request.method=='POST':
+        response=request.POST
+
+        print(response)
+        datos_filtro={}
+        
+        for dato in response:
+            datos_filtro[dato]=response[dato]
+
+                
+        proyecto = Proyectos.objects.get(id =datos_filtro['proyecto'])
+        fecha_desde=datos_filtro['fecha_desde']
+        fecha_hasta=datos_filtro['fecha_hasta']
+
+        listado_dias = PresupuestosAlmacenados.objects.filter(proyecto = proyecto).exclude(nombre = "vigente").values_list("nombre", flat = True).distinct()
+    
+        data_resultante,mensaje= auditor_presupuesto(proyecto,fecha_desde, fecha_hasta)
+      
+        #auditor_presupuesto_p(proyecto,fecha_desde, fecha_hasta)
+   
+            
+    return render(request, "presupuestos/presupuesto_auditor.html",{'data_resultante':data_resultante,'proyectos':proyectos,'mensaje':mensaje})
 
 class ReporteExplosion(TemplateView):
 

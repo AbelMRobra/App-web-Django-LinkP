@@ -230,6 +230,8 @@ class Bitacoras(models.Model):
         verbose_name="Bitacora"
         verbose_name_plural="Bitacoras"
 
+
+#figura en el admin como Almacenes
 class PresupuestosAlmacenados(models.Model):
     proyecto = models.ForeignKey(Proyectos, on_delete=models.CASCADE, verbose_name = "Proyecto")
     nombre = models.CharField(max_length=200, verbose_name="Nombre")
