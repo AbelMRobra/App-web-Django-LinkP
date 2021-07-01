@@ -26,7 +26,7 @@ urlpatterns = [
     url(r'^ver_analisis/(?P<id_analisis>\d+)/$', login_required(views.ver_analisis), name = 'Composición Analisis'),
     #----------------URL PARA PRESPUESTOS -----------------------------------------  
 
-    url(r'^presupuestos/auditor$', login_required(views.presupuesto_auditor), name = 'Auditor de P'),
+    url(r'^presupuestos/auditor/$', login_required(views.presupuesto_auditor), name = 'Auditor de P'),
     url(r'^presupuestos/$', login_required(views.presupuestostotal), name = 'Panel de presupuestos'),
     url(r'^saldocap/(?P<id_proyecto>\d+)/$', login_required(views.saldocapitulo), name = 'Saldo por capitulo'),
     url(r'^debugsa/(?P<id_proyecto>\d+)/$', login_required(views.debugsa), name = 'Debug Saldo'),
