@@ -114,21 +114,30 @@
 
                     <div class="col-6 my-4">
                         <h4 class="card-title"><span class="lstick m-r-20"></span>Resultado del analisis</h4>
-                        <h6 class="card-subtitle">Variación Q (Cantidad)</h6>
+                        <p>Valor desde: ${{data_resultante.0.3|floatformat:2|intcomma}}</p>
+                        <p>Valor hasta: ${{data_resultante.0.4|floatformat:2|intcomma}}</p>
+                        <p>Diferencia:  ${{data_resultante.0.5|floatformat:2|intcomma}}</p>
                     </div>
                     <div class="col-6 my-4">
                         <h4 class="card-title"><span class="lstick m-r-20"></span>Resultados generales</h4>
                         <p><i class="fa fa-lightbulb-o text-warning ml-1"></i> Variación de Q:
                             ${{data_resultante.0.1|floatformat:2|intcomma}}</p>
-                        <p><i class="fa fa-exclamation-triangle text-danger"></i> Errores encontrados:
+                        <p><i class="fa fa-lightbulb-o text-warning ml-1"></i> Variación de P:
+                            ${{data_resultante_p.1|floatformat:2|intcomma}}</p>
+                        <p><i class="fa fa-exclamation-triangle text-danger"></i> Errores encontrados Q:
                             {{data_resultante.0.2}}</p>
+                        <small>*No pudo encontrar el articulo en el desde</small>
+                            <p><i class="fa fa-exclamation-triangle text-danger"></i> Errores encontrados P:
+                                {{data_resultante_p.2}}</p>
+                        <small>*No pudo actualizar alguna linea al hasta</small>
                     </div>
                     <hr>
                 </div>
 
+                <h4 class="card-title"><span class="lstick m-r-20"></span>Desglose por capitulo</h4>
                 {% for cap in data_resultante.0.0%}
                
-                            <a href="#" data-toggle="modal" data-target="#ModalCapitulos{{cap.0.0}}">
+                            <a href="#" data-toggle="modal" data-target="#ModalCapitulos{{cap.5}}">
                                 <div style="display: flex; margin: 10px 0px;">
                                     <h5 style="width: 600px;">{{cap.0}}:</h5>
                                     
@@ -144,8 +153,8 @@
                             height: 0;
                             border-bottom: 1px solid rgba(255, 255, 255, 0.3);">
                      
-                <div class="modal fade" id="ModalCapitulos{{cap.0.0}}" tabindex="-1" role="dialog"
-                    aria-labelledby="ModalCapitulos{{cap.0.0}}" aria-hidden="true">
+                <div class="modal fade" id="ModalCapitulos{{cap.5}}" tabindex="-1" role="dialog"
+                    aria-labelledby="ModalCapitulos{{cap.5}}" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered justify-content-center" role="document">
                         <div class="modal-content" style="width: 80vw;">
                             <div class="modal-header"
@@ -162,7 +171,7 @@
                                     <thead>
                                         <tr>
                                             <th>Analisis</th>
-                                            <th>Capitulo</th>
+                                            <th>Articulo</th>
                                             <th>Cant.</th>
                                             <th>Precio</th>
                                         </tr>
@@ -171,20 +180,20 @@
 
                                     <tbody>
                                         {% for salidas in cap.1 %}
-                                        <tr style="font-size: 14px;">
-                                            <td style="width:350px">{{salidas.0}}</td>
-                                            <td>{{salidas.1}}</td>
-                                            <td style="width:150px">{{salidas.2}}</td>
+                                        <tr style="font-size: 12px;">
+                                            <td style="width:350px">{{salidas.0|lower|capfirst}}</td>
+                                            <td>{{salidas.1|lower|capfirst}}</td>
+                                            <td style="width:150px">{{salidas.2|floatformat:2|intcomma}}</td>
                                             <td style="color: green; width: 120px;">
                                                 ${{salidas.3|floatformat:2|intcomma}}</td>
                                         </tr>
                                         {% endfor %}
 
                                         {% for ingresos in cap.2 %}
-                                        <tr style="font-size: 14px;">
-                                            <td style="width:350px">{{ingresos.0}}</td>
-                                            <td>{{ingresos.1}}</td>
-                                            <td style="width:150px">{{ingresos.2}}</td>
+                                        <tr style="font-size: 12px;">
+                                            <td style="width:350px">{{ingresos.0|lower|capfirst}}</td>
+                                            <td>{{ingresos.1|lower|capfirst}}</td>
+                                            <td style="width:150px">{{ingresos.2|floatformat:2|intcomma}}</td>
                                             <td style="color: red; width: 120px;">${{ingresos.3|floatformat:2|intcomma}}
                                             </td>
                                         </tr>
@@ -204,6 +213,7 @@
                 </div>
 
                 {% endfor %}
+                <hr>
 
                 <div>
                     <canvas id="myChart"></canvas>
@@ -224,45 +234,47 @@
     </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <script>
+    ctx = document.getElementById("myChart").getContext("2d");
     
-    const data = {
-      datasets: [{
-        label: 'Scatter Dataset',
-        data: [{
-          x: -10,
-          y: 0
-        }, {
-          x: 0,
-          y: 10
-        }, {
-          x: 10,
-          y: 5
-        }, {
-          x: 0.5,
-          y: 5.5
-        }],
-        backgroundColor: 'rgb(255, 99, 132)'
-      }],
-    };
-    const config = {
-  type: 'scatter',
-  data: data,
-  options: {
-    scales: {
-      x: {
-        type: 'linear',
-        position: 'bottom'
-      }
+    let data = {
+        datasets: [{
+            label: "Legend",
+            labels: [{% for key, value in data_resultante_p.3.items %} {{key}}, {% endfor %}],
+            data: [
+            {% for key, value in data_resultante_p.3.items %}
+                {
+            x: {{value.1}},
+            y: {{value.0|floatformat:0}}
+            },
+        
+            {% endfor %}],
+                backgroundColor: "rgb(255, 99, 132)"
+            }]
     }
-  }
-};
+    
+    let options = {
+        plugins: {
+            tooltip: {
+                callbacks: {
+                    label: function(ctx) {
+                        // console.log(ctx);
+                        let label = ctx.dataset.labels[ctx.dataIndex];
+                        label += " (" + ctx.parsed.x + ", " + ctx.parsed.y + ")";
+                        return label;
+                    }
+                }
+            }
+        }
+    }
+    
+    scatterChart = new Chart(ctx, {
+        type: "scatter",
+        data: data,
+        options: options
+    });
+    </script>
 
-
-var myChart = new Chart(
-    document.getElementById('myChart'),
-    config
-  );
-</script>
 
 {% endblock %}
