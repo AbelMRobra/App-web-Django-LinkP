@@ -59,6 +59,7 @@ class datosusuario(models.Model):
     fecha_nacimiento = models.DateField(verbose_name = "Fecha de nacimiento", blank=True, null=True)
     Telefono = models.CharField(max_length=200, verbose_name="Telefono", blank=True, null=True)
     Comentarios = models.TextField(verbose_name="Comentarios", blank=True, null=True)
+    proyecto = models.ForeignKey(Proyectos, on_delete=models.CASCADE, verbose_name = "Proyecto que sigue", blank=True, null=True)
 
 
     class Meta:
@@ -345,6 +346,18 @@ class Sugerencia(models.Model):
     class Meta:
         verbose_name="Sugerencia"
         verbose_name_plural="Sugerencias"
+
+    def __str__(self):
+        return self.nombre
+
+class Atajos(models.Model):
+    nombre = models.CharField(max_length=400, verbose_name="Nombre")
+    url = models.CharField(max_length=400, verbose_name="URL")
+    icon = models.CharField(max_length=400, verbose_name="ICONO", blank=True, null=True)
+
+    class Meta:
+        verbose_name="Atajo"
+        verbose_name_plural="Atajos"
 
     def __str__(self):
         return self.nombre

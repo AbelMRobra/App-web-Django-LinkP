@@ -36,7 +36,9 @@
                             <h6 class="font-medium">Entrega: {{tiempo_restante}} Meses</h6>
                             <h6 class="font-medium">Superficie: {{m2|floatformat:2}}m2</h6>
                             <h6 class="font-medium">Precio de contado: ${{precio_contado|floatformat:0|intcomma}}</h6>
+                            {% if datos.plano_venta %}
                             <a href="{{datos.plano_venta.url}}" target="_blank"><i class="fa fa-file-pdf-o text-danger"></i></a>
+                            {% endif %}
                             {% if resultados %}
                             <a href="{% url 'Email del coti' datos.id cliente.id info_coti_email %}" target="_blank"><i class="fa fa-envelope-o text-warning"></i></a>
                             {% endif %}
@@ -160,7 +162,7 @@
                                             <div style="display: inline-block;">
 
                                                 <label for="cuotas_esp">
-                                                    <h6>Cuotas esperas {{tiempo_restante}} </h6>
+                                                    <h6>Cuotas esperas maximas {{tiempo_restante}} </h6>
                                                 </label>
 
                                             </div>

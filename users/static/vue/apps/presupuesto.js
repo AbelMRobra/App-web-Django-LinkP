@@ -7,6 +7,7 @@ new Vue({
     },
 
     watch: {
+    
         kword: function(val) {
             this.SearchArt(val);
 

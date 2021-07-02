@@ -14,6 +14,45 @@ def apprrhh(request):
 
     return render(request, 'apprrhh_principal.html')
 
+def personal_principal(request):
+
+    usuarios_datos = datosusuario.objects.all()
+
+    usuarios = []
+
+    for u in usuarios_datos:
+        lc_recibidas = len(EntregaMoneda.objects.filter(usuario_recibe = u))
+        usuarios.append([u, lc_recibidas])
+
+    usuarios_totales = len(datosusuario.objects.all())
+    usuarios_activos = len(datosusuario.objects.filter(estado = "ACTIVO"))
+    datos = [usuarios_totales, usuarios_activos]
+
+    return render(request, 'personal_principal.html', {'usuarios':usuarios, 'datos':datos})
+
+def personal_perfil(request, id_persona):
+
+    data = datosusuario.objects.get(id = id_persona)
+
+    if request.method == 'POST':
+
+        data.nombre = request.POST['nombre']
+        data.area = request.POST['area']
+        data.cargo = request.POST['cargo']
+        data.email = request.POST['email']
+        data.Telefono = request.POST['telefono']
+        data.Comentarios = request.POST['comentarios']
+        data.estado = request.POST['estado']
+        try:
+            data.fecha_nacimiento = request.POST['fecha_nacimiento']
+            data.save()
+        except:
+            data.save()
+
+        return redirect('Perfil personal', id_persona = data.id)
+
+    return render(request, 'personal_perfil.html', {'data':data})
+
 def editarcorrespondencia(request, id_nota):
 
     proyectos = Proyectos.objects.all()
@@ -43,21 +82,7 @@ def editarcorrespondencia(request, id_nota):
                 
     return render(request, 'editarcorres.html', {"datos":datos, "proyectos":proyectos})
 
-def datospersonal(request):
 
-    usuarios_datos = datosusuario.objects.all()
-
-    usuarios = []
-
-    for u in usuarios_datos:
-        lc_recibidas = len(EntregaMoneda.objects.filter(usuario_recibe = u))
-        usuarios.append([u, lc_recibidas])
-
-    usuarios_totales = len(datosusuario.objects.all())
-    usuarios_activos = len(datosusuario.objects.filter(estado = "ACTIVO"))
-    datos = [usuarios_totales, usuarios_activos]
-
-    return render(request, 'datospersonal.html', {'usuarios':usuarios, 'datos':datos})
 
 def crearcorrespondencia(request):
 

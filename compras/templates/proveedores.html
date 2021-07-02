@@ -1,8 +1,10 @@
 {% extends "users/inicio2.html" %}
 
 {% load static %}
+{% load apptags_extras %}
 
 {% block content %}
+
 
 <div class="container-fluid">
     <div class="row page-titles">
@@ -15,6 +17,7 @@
                 <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
                 <li class="breadcrumb-item"><a href="{% url 'Principal compras' %}">Panel</a></li>
                 <li class="breadcrumb-item">Proveedores</li>
+            
             </ol>
         </div>
     </div>
@@ -23,10 +26,65 @@
 <div class="row">
     <div class="col-12">
         <div class="card">
-            <div class="card-body row">
+            <div class="card-body">
+                <h4 class="card-title"><span class="lstick m-r-20"></span>Listado de proveedores</h4>
+                <h6 class="card-subtitle">Base de datos</h6>
                 <div class="col-12 justify-content-center">
+                    {% if request.user|has_group:"COMPRAS NIVEL 6" %}
+                    <a type="button" class="fa fa-plus-circle text-info" data-toggle="modal" data-target="#ModalProveedorCrear"><span style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif; margin-left: 10px;">Nuevo proveedor</span></a>
+                    {% endif %}
+                      <!-- Modal fecha estado Subitem -->
+                      <div class="modal fade" id="ModalProveedorCrear" tabindex="-1" role="dialog"
+                      aria-labelledby="ModalProveedorCrear" aria-hidden="true">
+                      <div class="modal-dialog modal-dialog-centered" role="document">
+                          <div class="modal-content">
+                              <div class="modal-header" style="background: rgb(36,160,237);
+                              background: linear-gradient(315deg, rgba(36,160,237,1) 0%, rgba(56,56,130,1) 22%, rgba(0,212,255,1) 100%);">
+                                  <h5 class="modal-title text-light" id="exampleModalLongTitle">Agregar proveedor</h5>
+                                  <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+                                      <span aria-hidden="true">&times;</span>
+                                  </button>
+                              </div>
+                              <div class="modal-body">
+                                  <form method="POST">
 
-                    <h3>Listado de proveedores</h3>
+                                      {% csrf_token %}
+                                      <span>Nombre</span>
+                                      <div class="mb-3">
+                                          <input name="nombre" type="text"
+                                              class="form-control form-control" required>
+                                      </div>
+                                      <span>Telefono</span>
+                                      <div class="mb-3">
+                                          <input name="telefono" type="number"
+                                          class="form-control form-control" required>
+                                      </div>
+                                      
+                                      <span>Descripción</span>
+                                      <div class="mb-3">
+                                          <textarea name="descripcion" id="" cols="30" rows="6"class="form-control form-control" required></textarea>
+                                         </div>
+                                      
+                                      <div>
+                                          <button class="btn btn-info" type="submit"
+                                              style="margin-top: 10px;">Crear</button>
+
+                                      </div>
+
+                                 
+
+                                  </form>
+
+                              </div>
+                              <div class="modal-footer">
+                                  <button type="button" class="btn btn-info"
+                                      data-dismiss="modal">Cerrar</button>
+
+                              </div>
+                          </div>
+                      </div>
+
+                  </div>
 
                     {% if datos %}
                     <div class="table-responsive">
@@ -34,11 +92,10 @@
                         <table id="example" class="table table-striped table-bordered mt-4">
                             <thead>
                                 <tr>
-                                    <th>Id</th>
-                                    <th>Nombre de proveedor</th>
+                                    <th>ID</th>
+                                    <th>Nombre</th>
                                     <th>Telefono</th>
-                                    <th>Ultima actualizacion</th>
-                                    <th>Descripcion auxiliar</th>
+                                    <th>Descripcion</th>
                                 </tr>
                             </thead>
 
@@ -46,21 +103,74 @@
                                 {% for i in datos %}
                                 <tr>
                                     <td>{{i.id}}</td>
+                                    {% if request.user|has_group:"COMPRAS NIVEL 6" %}
+                                    <td><a href="#" data-toggle="modal"
+                                            data-target="#Modalproveedores{{i.id}}">{{i.name|lower|capfirst}}</a></td>
+                                    <!-- modal -->
+                                    <div class="modal fade" id="Modalproveedores{{i.id}}" tabindex="-1" role="dialog"
+                                        aria-labelledby="Modalproveedores{{i.id}}Title" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header"
+                                                    style="background: rgb(36,160,237);
+                                                                        background: linear-gradient(315deg, rgba(36,160,237,1) 0%, rgba(56,56,130,1) 22%, rgba(0,212,255,1) 100%);">
+                                                    <h5 class="modal-title text-light" id="exampleModalLongTitle">
+                                                        Modificar proveedor</h5>
+                                                    <button type="button" class="close text-light" data-dismiss="modal"
+                                                        aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+
+                                                    <form method="POST" >
+
+                                                        {% csrf_token %}
+                                                        <span>Nombre</span>
+                                                        
+                                                        <div class="mb-3">
+                                                            <input name="nombre" type="text"
+                                                                class="form-control form-control" value="{{i.name|lower|capfirst}}">
+                                                        </div>
+                                                        <span>Telefono</span>
+                                                        <div class="mb-3">
+                                                            <input name="telefono" type="number" required
+                                                            class="form-control form-control" value="{{i.phone}}">
+                                                        </div>
+                                                        
+                                                        <span>Descripción</span>
+                                                        <div class="mb-3">
+                                                            <textarea name="descripcion"  cols="30" rows="6"class="form-control form-control">{{i.descrip}}</textarea>
+                                                           </div>
+                                                        
+                                                        <div>
+                                                            <button class="btn btn-info" type="submit" name="modificar" value="{{i.id}}"
+                                                                style="margin-top: 10px;">Modificar</button>
+
+                                                        </div>
+
+                                                    </form>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-info"
+                                                        data-dismiss="modal">Cerrar</button>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% else %}
                                     <td>{{i.name|lower|capfirst}}</td>
+                                    {% endif %}
+
                                     <td>{{i.phone}}</td>
-                                    <td>{{i.update}}</td>
                                     <td>{{i.descrip}}</td>
+
                                 </tr>
                                 {% endfor %}
                             </tbody>
-
-
                         </table>
 
-                        {% else %}
-                        <div>
-                            <h3>No existe registros actualmente</h3>
-                        </div>
                     </div>
 
 
@@ -81,13 +191,13 @@
     $(document).ready(function () {
         $('#example').DataTable({
             "language": {
-            "lengthMenu": "Mostar _MENU_ documentos",
-            "zeroRecords": "No se encontro nada - perdon ",
-            "info": "Pagina _PAGE_ de _PAGES_",
-            "infoEmpty": "Sin registros disponibles",
-            "infoFiltered": "(filtrado de _MAX_ registros totales)",
-            "search": "Buscar"
-        },
+                "lengthMenu": "Mostar _MENU_ documentos",
+                "zeroRecords": "No se encontro nada - perdon ",
+                "info": "Pagina _PAGE_ de _PAGES_",
+                "infoEmpty": "Sin registros disponibles",
+                "infoFiltered": "(filtrado de _MAX_ registros totales)",
+                "search": "Buscar"
+            },
             "paging": false,
             "ordering": false,
             "info": false

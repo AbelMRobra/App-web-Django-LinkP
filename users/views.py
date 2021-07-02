@@ -15,7 +15,7 @@ from proyectos.models import Proyectos, Unidades
 from ventas.models import VentasRealizadas
 from compras.models import Compras, Comparativas
 from registro.models import RegistroValorProyecto
-from rrhh.models import datosusuario, mensajesgenerales, NotaDePedido, Vacaciones, MonedaLink, EntregaMoneda, Anuncios, Seguimiento, Minutas, Acuerdos, PremiosMonedas, Logros, RegistroContable, CanjeMonedas, Sugerencia, DicRegistroContable
+from rrhh.models import datosusuario, mensajesgenerales, NotaDePedido, Vacaciones, MonedaLink, EntregaMoneda, Anuncios, Seguimiento, Minutas, Acuerdos, PremiosMonedas, Logros, RegistroContable, CanjeMonedas, Sugerencia, DicRegistroContable, Atajos
 import datetime
 import requests
 from datetime import date
@@ -33,6 +33,7 @@ from statistics import mode
 from xhtml2pdf import pisa
 from openpyxl import Workbook
 from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
+from statistics import mode
 
 
 class PdfMinutas(View):
@@ -692,6 +693,23 @@ Saludos,
 
 def canjerealizados(request):
 
+    # Listado de los datos de los premios
+
+    data_linkcoins = {}
+
+    list_entregas = list(EntregaMoneda.objects.all().values_list("usuario_recibe__identificacion", flat=True))
+    list_entregas_areas = list(EntregaMoneda.objects.all().values_list("usuario_recibe__area", flat=True))
+    list_mensaje = list(EntregaMoneda.objects.all().values_list("mensaje", flat=True))
+    list_mensaje.sort(key = len)
+    mensaje_corto = (list_mensaje[0], len(list_mensaje[0]), EntregaMoneda.objects.filter(mensaje = list_mensaje[0])[0])
+    list_mensaje.sort(key = len, reverse=True)
+    mensaje_largo = (list_mensaje[0], len(list_mensaje[0]), EntregaMoneda.objects.filter(mensaje = list_mensaje[0])[0])
+    usuario_mas_recibio = (datosusuario.objects.get(identificacion = mode(list_entregas)), list_entregas.count(mode(list_entregas)))
+    area_querida = (mode(list_entregas_areas), list_entregas_areas.count(mode(list_entregas_areas)))
+    data_linkcoins["usuario_mas_recibio"] = usuario_mas_recibio
+    data_linkcoins["area_querida"] = area_querida
+    data_linkcoins["mensaje_corto"] = mensaje_corto
+    data_linkcoins["mensaje_largo"] = mensaje_largo
     list_usuarios = datosusuario.objects.all().order_by("identificacion").exclude(estado = "NO ACTIVO")
 
     if request.method == 'POST':
@@ -744,7 +762,7 @@ def canjerealizados(request):
             data_generador.append((datosusuario.objects.get(identificacion = user), cantidad, m))
 
 
-    return render(request, "users/canjesrealizados.html", {'data':data, 'list_usuarios':list_usuarios, 'data_generador':data_generador})
+    return render(request, "users/canjesrealizados.html", {'data':data, 'list_usuarios':list_usuarios, 'data_generador':data_generador, 'data_linkcoins':data_linkcoins})
 
 def dashboard(request):
 
@@ -1018,6 +1036,47 @@ def dashboard(request):
 
 def inicio(request):
 
+    try:
+        usuario = datosusuario.objects.get(identificacion = request.user.username)
+    except:
+        usuario = 0
+
+    # Saludo de bienvenida
+    hora_actual = datetime.datetime.now()
+    if hora_actual.hour >= 20:
+        mensaje_bievenida = "¡Buenas noches!"
+    elif hora_actual.hour >= 13:
+        mensaje_bievenida = "¡Buenas tardes!"
+    else:
+        mensaje_bievenida = "¡Buen dia!"
+
+    # ---> Grupo de vista del usuario
+
+    datos_vista_usuario = {}
+    
+    # Atajos
+    atajos = Atajos.objects.all()
+    datos_vista_usuario["atajos"] = atajos
+    # Seguimiento de proyectos
+
+    data_proyecto_siguiendo = []
+    if usuario:
+        if usuario.proyecto:
+            proyecto_siguiendo = usuario.proyecto
+            if len(Presupuestos.objects.filter(proyecto = usuario.proyecto)) == 1:
+                datos_presupuesto = Presupuestos.objects.filter(proyecto = usuario.proyecto)[0]
+                try:
+                    avance_proyecto = ((datos_presupuesto.valor - datos_presupuesto.saldo)/datos_presupuesto.valor)*100
+                    pendiente_proyecto = 100 - avance_proyecto
+                except:
+                    avance_proyecto = 0
+                    pendiente_proyecto = 100
+                data_proyecto_siguiendo.append((usuario.proyecto, avance_proyecto, pendiente_proyecto))
+
+    else:
+        data_proyecto_siguiendo = 0
+    
+    datos_vista_usuario["data_proyecto_siguiendo"] = data_proyecto_siguiendo
     # La creación de monedas
 
     usuarios = datosusuario.objects.all().exclude(estado = "NO ACTIVO")
@@ -1358,7 +1417,7 @@ def inicio(request):
     sp_oc.append(aux_sp)
     sp_oc.append(aux_sp_2)
 
-    return render(request, "users/inicio2.html", {"minutas_cantidad_data":minutas_cantidad_data, "sp_oc":sp_oc, "minutas_cantidad":minutas_cantidad, "anuncios":anuncios, "monedas":monedas, "dias_funcionando":dias_funcionando, "cantidad_p":cantidad_p, "cantidad_m":cantidad_m, "datos_barras":barras, "datos_logo":datos_logo, "mensaje_oc":mensaje_oc, "mensajesdeldia":mensajesdeldia, "datos_mensajeria":datos_mensajeria, "lista_grupos":lista_grupos, "miembros":miembros})
+    return render(request, "users/inicio2.html", {"datos_vista_usuario":datos_vista_usuario, "mensaje_bievenida":mensaje_bievenida, "minutas_cantidad_data":minutas_cantidad_data, "sp_oc":sp_oc, "minutas_cantidad":minutas_cantidad, "anuncios":anuncios, "monedas":monedas, "dias_funcionando":dias_funcionando, "cantidad_p":cantidad_p, "cantidad_m":cantidad_m, "datos_barras":barras, "datos_logo":datos_logo, "mensaje_oc":mensaje_oc, "mensajesdeldia":mensajesdeldia, "datos_mensajeria":datos_mensajeria, "lista_grupos":lista_grupos, "miembros":miembros})
 
 def welcome(request):
     # Si estamos identificados devolvemos la portada

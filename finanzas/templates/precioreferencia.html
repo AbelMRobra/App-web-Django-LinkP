@@ -57,47 +57,16 @@
                                     <td><a href="#" data-toggle="modal" data-target="#ModalPricing{{i.0.proyecto.id}}" class="text-info">${{i.0.proyecto.precio_pricing|floatformat:0|intcomma}}</a></td>
                                     <td></td>
                                     <td><a href="#" data-toggle="modal" data-target="#ModalPosta{{i.0.proyecto.id}}" class="text-info">${{i.0.proyecto.precio_posta|floatformat:0|intcomma}}</a></td>
-                                    <td><a href="#" data-toggle="modal" data-target="#ModalLinkp{{i.0.proyecto.id}}" class="text-info">${{i.0.proyecto.precio_linkp|floatformat:0|intcomma}}</a></td>
+                                    <td><a href="#" data-toggle="modal" data-target="#ModalLinkP{{i.0.proyecto.id}}" class="text-info">${{i.0.proyecto.precio_linkp|floatformat:0|intcomma}}</a></td>
                                     <td></td>
                                     <td>${{i.0.ingreso_ventas|floatformat:0|intcomma}}</td>
                                     <td>{{i.1|floatformat:2}}%</td>
                                 </tr>
-
-                                <div class="modal fade" id="ModalPosta{{i.0.proyecto.id}}" tabindex="-1" role="dialog" aria-labelledby="ModalPosta{{i.0.proyecto.id}}" aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header" style="background: rgb(33, 74, 99);
-                            background: linear-gradient(315deg, rgba(36,160,237,1) 0%, rgba(56,56,130,1) 22%, rgba(0,212,255,1) 100%);">>
-                                            <h5 class="modal-title text-light" id="exampleModalLongTitle">Modificar precio Posta</h5>
-                                            <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <form method="POST" class="mb-3">
-                                                    {% csrf_token %}
-                        
-                                                            <div >
-                                                                <label for="pricing" class="form-label">Precio</label>
-                                                                <input type="number" name="posta" class="form-control">
-                                                            </div>
-                                                        
-                                                        <button class="btn btn-info mt-4" name="proyecto" value="{{i.0.proyecto.id}}" type="submit">Modificar</button>
-                                                </form>
-                                            </div>
-                                            <div class="modal-footer">
-                                            <button type="button" class="btn btn-info" data-dismiss="modal">Cerrar</button>
-                                    
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
                                 <div class="modal fade" id="ModalPricing{{i.0.proyecto.id}}" tabindex="-1" role="dialog" aria-labelledby="ModalPricing{{i.0.proyecto.id}}" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header" style="background: rgb(33, 74, 99);
-                            background: linear-gradient(315deg, rgba(36,160,237,1) 0%, rgba(56,56,130,1) 22%, rgba(0,212,255,1) 100%);">>
+                            background: linear-gradient(315deg, rgba(36,160,237,1) 0%, rgba(56,56,130,1) 22%, rgba(0,212,255,1) 100%);">
                                             <h5 class="modal-title text-light" id="exampleModalLongTitle">Modificar precio Pricing</h5>
                                             <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
@@ -109,7 +78,36 @@
                         
                                                             <div >
                                                                 <label for="pricing" class="form-label">Precio</label>
-                                                                <input type="number" name="pricing" class="form-control">
+                                                                <input type="number" name="pricing" class="form-control" value="{{i.0.proyecto.precio_pricing}}">
+                                                            </div>
+                                                        
+                                                        <button class="btn btn-info mt-4" name="proyecto" value="{{i.0.proyecto.id}}" type="submit">Modificar</button>
+                                                </form>
+                                            </div>
+                                            <div class="modal-footer">
+                                            <button type="button" class="btn btn-info" data-dismiss="modal">Cerrar</button>
+                                    
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal fade" id="ModalPosta{{i.0.proyecto.id}}" tabindex="-1" role="dialog" aria-labelledby="ModalPosta{{i.0.proyecto.id}}" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header" style="background: rgb(33, 74, 99);
+                            background: linear-gradient(315deg, rgba(36,160,237,1) 0%, rgba(56,56,130,1) 22%, rgba(0,212,255,1) 100%);">
+                                            <h5 class="modal-title text-light" id="exampleModalLongTitle">Modificar precio Posta</h5>
+                                            <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form method="POST" class="mb-3">
+                                                    {% csrf_token %}
+                        
+                                                            <div >
+                                                                <label for="pricing" class="form-label">Precio</label>
+                                                                <input type="number" name="posta" class="form-control" value="{{i.0.proyecto.precio_posta}}">
                                                             </div>
                                                         
                                                         <button class="btn btn-info mt-4" name="proyecto" value="{{i.0.proyecto.id}}" type="submit">Modificar</button>
@@ -123,11 +121,13 @@
                                     </div>
                                 </div>
 
+                             
+
                                 <div class="modal fade" id="ModalLinkP{{i.0.proyecto.id}}" tabindex="-1" role="dialog" aria-labelledby="ModalLinkP{{i.0.proyecto.id}}" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header" style="background: rgb(33, 74, 99);
-                            background: linear-gradient(315deg, rgba(36,160,237,1) 0%, rgba(56,56,130,1) 22%, rgba(0,212,255,1) 100%);">>
+                            background: linear-gradient(315deg, rgba(36,160,237,1) 0%, rgba(56,56,130,1) 22%, rgba(0,212,255,1) 100%);">
                                             <h5 class="modal-title text-light" id="exampleModalLongTitle">Modificar precio LinkP</h5>
                                             <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
@@ -139,7 +139,7 @@
                         
                                                             <div >
                                                                 <label for="pricing" class="form-label">Precio</label>
-                                                                <input type="number" name="linkp" class="form-control">
+                                                                <input type="number" name="linkp" class="form-control" value="{{i.0.proyecto.precio_linkp}}">
                                                             </div>
                                                         
                                                         <button class="btn btn-info mt-4" name="proyecto" value="{{i.0.proyecto.id}}" type="submit">Modificar</button>
@@ -152,8 +152,18 @@
                                         </div>
                                     </div>
                                 </div>
-
                                 {% endfor %}
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>${{total_de_ingresos|floatformat:0|intcomma}}</td>
+                                    <td></td>
+                                </tr>
+
                             </tbody>
                         </table>
                     </div>

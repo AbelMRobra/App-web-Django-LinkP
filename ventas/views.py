@@ -1662,7 +1662,7 @@ def cargar_venta(request):
 
         operaciones = VentasRealizadas.objects.filter(unidad = unidad)
 
-        if len(operaciones) > 0:
+        if len(operaciones) > 1:
             mensaje = "Esta unidad se encuentra asignada"
 
         else:

@@ -26,6 +26,10 @@ import matplotlib.pyplot as plt
 from openpyxl import Workbook
 from openpyxl.styles import Alignment, Border, Font, PatternFill, Side 
 from django.views.generic.base import TemplateView  
+from rest_framework.generics import ListAPIView
+from .serializers import articulos_Serializer
+
+
 
 def principalcompras(request):
 
@@ -71,11 +75,8 @@ def cargarocautorizar(request):
     if request.method == "POST":
 
         try:
-
             proveedor = Proveedores.objects.get(name=request.POST['proveedor'])
-
         except:
-
             mensaje = "El proveedor solicitado no esta cargado, solicite su carga con el área de presupuestos"
             proveedor = 0
 
@@ -97,7 +98,7 @@ def cargarocautorizar(request):
             b.save()
 
             try:
-                b.o_c = request.POST['numerooc']
+                b.adj_oc = request.FILES['oc']
                 b.save()
             except:
                 pass
@@ -205,6 +206,7 @@ def detalleinforme(request, fecha_i, fecha_f, proyecto):
 
     return render(request, 'detalle_informe.html', {"datos":datos})
 
+#AQUI QUEDE
 def informecompras(request):
 
     datos = 0
@@ -404,6 +406,20 @@ def comprasdisponibles(request):
 
     return render(request, 'retiros.html', {"datos":datos})
 
+class ArticulosAPIView(ListAPIView):
+    serializer_class=articulos_Serializer
+
+    def get_queryset(self):
+        kword=self.request.query_params.get('kword','')
+
+        if len(Articulos.objects.filter(nombre__icontains=kword))>0 and len(kword) > 1:
+
+            return Articulos.objects.filter(nombre__icontains=kword)
+
+        else:
+
+            return Articulos.objects.all()[0:5]
+
 def cargacompras(request):
 
     proyectos = Proyectos.objects.all()
@@ -413,153 +429,114 @@ def cargacompras(request):
 
     mensaje = ""
 
-    datos = {'proyectos': proyectos, 'proveedores':proveedores, 'compras':compras, 'articulos':articulos, 'mensaje':mensaje}
-
     if request.method == 'POST':
-
-        datos_p = request.POST.items()
-
-        resto = []
-
-        for i in datos_p:
-
-            if i[0] == "proyecto":
-                
-                proyecto = i[1]
-
-            elif i[0] == "proveedores":
-                
-                proveedor = i[1]
-
-            elif i[0] == "tipo":
-
-                if i[1] == "1":
-
-                    tipo = "ANT"
-                
-                else:
-
-                    tipo = "NORMAL"
-
-            elif i[0] == "nombre":
-                
-                nombre = i[1]
-
-            elif i[0] == "doc":
-                
-                doc = i[1]
-
-            
-            elif i[0] == "fecha":
-                
-                fecha = i[1]
-            
-            
-            else:
-
-                resto.append(i)
-
-        valor = 1
-
-
-        #try:
-
-
-        for i in resto:
-
-            if i[0] == "csrfmiddlewaretoken":
-
-                basura = 1
-
-
-            elif valor == 1:
-
-                valor = 2
-
-                articulo = Articulos.objects.get(nombre=i[1])
-
-            elif valor == 2:
-
-                valor = 3
-
-                cantidad = i[1]
-                
-            
-            elif valor == 3:
-
-                valor = 4
-
-                precio = i[1]
-
-
-            elif valor == 4:
-
-                valor = 1
-
-                partida= i[1]
-
-                partida_original = i[1]
-
-
-                if float(partida_original) > 0:
-
-                    partida = float(partida) - float(cantidad)*articulo.valor
-
-                    if partida > 0:
-
-                        imprevisto = "PREVISTO"
-
-                    else:
-
-                        imprevisto = "IMPREVISTO"
-
-                        presupuesto_imprevisto = Presupuestos.objects.get(proyecto__id = proyecto)
-
-                        partida = presupuesto_imprevisto.imprevisto + partida
-
-                        presupuesto_imprevisto.imprevisto = partida
-
-                        presupuesto_imprevisto.save()
-
-                else:
-
-                    imprevisto = "IMPREVISTO"
-
-                    presupuesto_imprevisto = Presupuestos.objects.get(proyecto__id = proyecto)
-
-                    partida = presupuesto_imprevisto.imprevisto - float(cantidad)*float(precio)
-
-                    presupuesto_imprevisto.imprevisto = partida
-
-                    presupuesto_imprevisto.save()
-
-
-                b = Compras(
-                    proyecto = Proyectos.objects.get(id=proyecto),
-                    proveedor = Proveedores.objects.get(name=proveedor),
-                    nombre = doc,
-                    tipo = tipo,
-                    documento = doc,
-                    articulo = articulo,
-                    cantidad = float(cantidad),
-                    precio = float(precio),
-                    precio_presup = articulo.valor,
-                    fecha_c = fecha,
-                    fecha_a = fecha,
-                    partida = partida,
-                    imprevisto = imprevisto,
-                    )
-
-                b.save()
-
-        return redirect('Compras', id_proyecto = 0)
-           
-        #except:
-
-            #mensaje = "**Los datos ingresados no son correctos"
-
-            #datos = {'proyectos': proyectos, 'proveedores':proveedores, 'compras':compras, 'articulos':articulos, 'mensaje':mensaje}
+        
+        response=request.POST
+        
+        datos_compra={}
     
+        
+        for dato in response:
+            if dato!='csrfmiddlewaretoken' and dato!='contador':
+                datos_compra[dato]=response[dato]
+            elif dato=='contador':
+                cant_forms=int(response['contador'])
+
+        proyecto_id=datos_compra['proyecto']
+        proyecto=Proyectos.objects.get(pk=proyecto_id)
+        proveedor=Proveedores.objects.get(name=datos_compra['proveedor'])
+        doc=datos_compra['doc']
+        fecha=datos_compra['fecha']
+
+        if datos_compra['tipo']==1:
+             tipo = "ANT"
+        else:
+            tipo = "NORMAL"
+
+        for n in range(cant_forms):
+            if n==0:
+                cantidad=float(datos_compra['cantidad'])
+                articulo=Articulos.objects.get(nombre=datos_compra['articulo'])
+                precio=float(datos_compra['precio'])
+                ajustar=datos_compra['ajustar']
+                partida=datos_compra['partida']
+            else:
+                ajustar_k='ajustar{}'.format(n)
+                precio_k='precio{}'.format(n)
+                cantidad_k='cantidad{}'.format(n)
+                partida_k='partida{}'.format(n)
+                articulo_k='articulo{}'.format(n)
+                cantidad=float(datos_compra[cantidad_k])
+                articulo=Articulos.objects.get(nombre=datos_compra[articulo_k])
+                precio=float(datos_compra[precio_k])
+                ajustar=datos_compra[ajustar_k]
+                partida=datos_compra[partida_k]
+
+            if partida!='':
+                partida_original=float(partida)
+                
+            else:
+                partida_original=0
+
+            partida=partida_original
+            if ajustar=='ajustar':
+            
+                porcentaje=0.05
+        
+                if precio>0 and porcentaje>0:
+                    monto_ajustado=precio*porcentaje
+                    precio_ajustado=precio+monto_ajustado
+
+                    articulo.valor=precio_ajustado
+                    articulo.save()
+                else:
+                    mensaje='Ingrese un precio valido'
+
+            try:
+                presupuesto_imprevisto = Presupuestos.objects.get(proyecto__id = proyecto_id)
+                
+
+                if partida_original > 0 and cantidad>0:
+                    partida = partida - cantidad*articulo.valor
+                    if partida > 0:
+                        imprevisto = "PREVISTO"
+                    else:
+                        imprevisto = "IMPREVISTO"
+                        partida = presupuesto_imprevisto.imprevisto + partida
+                        presupuesto_imprevisto.imprevisto = partida
+                        presupuesto_imprevisto.save()
+                else:
+                        imprevisto = "IMPREVISTO"
+                        partida = presupuesto_imprevisto.imprevisto - cantidad*precio
+                        presupuesto_imprevisto.imprevisto = partida
+                        presupuesto_imprevisto.save()
+            except:
+                #si el proyecto no tiene presupuestos asociados..
+                imprevisto='PREVISTO'
+
+        
+            b = Compras(
+                proyecto = proyecto,
+                proveedor =proveedor,
+                nombre = doc,
+                tipo = tipo,
+                documento = doc,
+                articulo = articulo,
+                cantidad = cantidad,
+                precio = precio,
+                precio_presup = articulo.valor,
+                fecha_c = fecha,
+                fecha_a = fecha,
+                partida = partida,
+                imprevisto = imprevisto,
+                )
+            if b:
+                b.save()
+            else:
+                mensaje='No se pudo cargar la compra, revise los campos ingresados'
+            
+        return redirect('Compras', id_proyecto = 0)
+            
     else:
 
         datos = {'proyectos': proyectos, 'proveedores':proveedores, 'compras':compras, 'articulos':articulos, 'mensaje':mensaje}
@@ -1353,7 +1330,39 @@ Saludos!
     'list_creadores':list_creadores, 'datos':datos, "estado":estado, 
     "creador":creador, "mensaje":mensaje, "espera":num_espera, "autorizada":num_autorizada, 
     "rechazada":num_rechazada, "adjunto":num_adj, "fecha_pago":fecha_pago})
+'''
+def modificar_precio_articulo_compra(request,id_proyecto):
+    datos_compra={}
+    mensaje=''
+    if request.method=='POST':
+        response=request.POST
+        
+        #itero los datos que llegan del formulario y los guardo en un diccionario
+        for dato in response:
+            datos_compra[dato]=response[dato]
 
+        #guardo el id de la compra que se quiere modificar
+        id_compra=datos_compra['modificar']
+
+        #obtengo el objeto de la compra que quiero modificar
+        compra=Compras.objects.get(pk=id_compra)
+
+        #si existe el objeto ....
+        if compra:
+            compra.precio=datos_compra['precio']
+            compra.save()
+            mensaje='Modificacion realizada con exito'
+            return redirect('Compras' , id_proyecto)
+
+        #si no existe ...
+        else:
+            mensaje='No se pudo encontrar la compra'
+            return redirect('Compras' , id_proyecto)
+    context={
+        'mensaje':mensaje
+    }
+    return render(request, 'compras.html',context)
+'''
 def compras(request, id_proyecto):
 
     if id_proyecto == "0":
@@ -1379,7 +1388,8 @@ def compras(request, id_proyecto):
         datos = Compras.objects.filter(proyecto = id_proyecto).order_by("-fecha_c")
 
     compras = []
-
+    
+    #proyectos filtrados por id
     for dato in datos:
         if dato.precio_presup > dato.precio:
             total = dato.cantidad*dato.precio
@@ -1395,7 +1405,7 @@ def compras(request, id_proyecto):
             v = -((dato.precio/dato.precio_presup) - 1)*100
             compras.append((2,dato, total, v))
 
-    return render(request, 'compras.html', {'compras':compras, 'proyectos':proyectos, 'proyecto':proyecto})
+    return render(request, 'compras.html', {'compras':compras, 'proyectos':proyectos, 'proyecto':proyecto,'id_proyecto':id_proyecto})
 
 def certificados(request):
 
@@ -1412,43 +1422,51 @@ def certificados(request):
 
 # ----------------------------------------------------- VISTAS PARA PROVEEDORES ---------------------------------------------- 
 
+
 def proveedores(request):
 
     datos = Proveedores.objects.all()
 
-    #Aqui empieza el filtro
-
+    datos_prov={}
+    mensaje=0
     if request.method == 'POST':
+        datos_proveedor = request.POST
+        for item in datos_proveedor:
+            if item!='csrfmiddlewaretoken':
+                datos_prov[item]=datos_proveedor[item]
 
-        palabra_buscar = request.POST.items()
+        if 'modificar' in datos_prov:
+              
+            id_prov=datos_prov['modificar']
+            prov=Proveedores.objects.get(pk=id_prov)
+            prov.name=datos_prov['nombre']
+            prov.phone=int(datos_prov['telefono'])
+            prov.descrip=datos_prov['descripcion']
+            prov.save()
+            mensaje='Registro modificado con exito'
+            return redirect('Proveedores')
 
-        datos_viejos = datos
+        elif 'delete' in datos_prov:
+            id_prov=datos_prov['delete']
+            prov=Proveedores.objects.get(pk=id_prov)
+            prov.delete()
+            
+            mensaje='Registro eliminado con exito'
+            return redirect('Proveedores')
 
-        datos = []   
-
-        for i in palabra_buscar:
-
-            if i[0] == "palabra":
-        
-                palabra_buscar = i[1]
-
-        if str(palabra_buscar) == "":
-
-            datos = datos_viejos
 
         else:
-        
-            for i in datos_viejos:
+            prov=Proveedores(
+                name=datos_prov['nombre'],
+                phone=datos_prov['telefono'],
+                 descrip=datos_prov['descripcion'],
+            )
+            mensaje='Registro creado con exito'
 
-                palabra =(str(palabra_buscar))
-
-                buscar = (str(i.name)+str(i.descrip)+str(i.phone)+str(i.update))
-
-                if palabra.lower() in buscar.lower():
-
-                    datos.append(i)
-
-    return render(request, 'proveedores.html', {'datos':datos})
+            if prov:
+                prov.save()
+                
+    return render(request, 'proveedores.html', {'datos':datos ,'mensaje':mensaje})
 
 # ----------------------------------------------------- VISTAS STOCK ----------------------------------------------
  

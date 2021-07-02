@@ -24,6 +24,7 @@ from datetime import date
 from openpyxl import Workbook
 from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
 from .serializers import ArtSerializer
+from .functions import auditor_presupuesto,auditor_presupuesto_p
 
 '''
 def historico_presupuesto(request):
@@ -2743,6 +2744,35 @@ def Creditocapitulo(id_proyecto):
             datos.append((compra.articulo, 0, compra.cantidad, -compra.cantidad, -saldo))
 
     return datos
+
+def presupuesto_auditor(request):
+
+    proyectos=PresupuestosAlmacenados.objects.values('proyecto__nombre','proyecto__id').distinct()
+    data_resultante=0
+    data_resultante_p=0
+    mensaje='Aun no se han filtrado datos'
+
+    if request.method=='POST':
+        response=request.POST
+
+        datos_filtro={}
+        
+        for dato in response:
+            datos_filtro[dato]=response[dato]
+
+                
+        proyecto = Proyectos.objects.get(id =datos_filtro['proyecto'])
+        fecha_desde=datos_filtro['fecha_desde']
+        fecha_hasta=datos_filtro['fecha_hasta']
+
+        listado_dias = PresupuestosAlmacenados.objects.filter(proyecto = proyecto).exclude(nombre = "vigente").values_list("nombre", flat = True).distinct()
+    
+        data_resultante,mensaje= auditor_presupuesto(proyecto,fecha_desde, fecha_hasta)
+      
+        data_resultante_p = auditor_presupuesto_p(proyecto,fecha_desde, fecha_hasta)
+   
+            
+    return render(request, "presupuestos/presupuesto_auditor.html",{'data_resultante_p':data_resultante_p, 'data_resultante':data_resultante,'proyectos':proyectos,'mensaje':mensaje})
 
 class ReporteExplosion(TemplateView):
 

@@ -1,9 +1,18 @@
 from django.contrib import admin
-from .models import datosusuario, mensajesgenerales, NotaDePedido, Vacaciones, MonedaLink, EntregaMoneda, Anuncios, Seguimiento, PremiosMonedas, RegistroContable, CanjeMonedas, Minutas, Sugerencia, DicRegistroContable
+from .models import datosusuario, mensajesgenerales, NotaDePedido, Vacaciones, MonedaLink, EntregaMoneda, Anuncios, Seguimiento, PremiosMonedas, RegistroContable, CanjeMonedas, Minutas, Sugerencia, DicRegistroContable, Atajos
 from import_export import resources
 from import_export.admin import ImportExportModelAdmin
 
 # Register your models here.
+
+class AtajosResource(resources.ModelResource):
+    class Meta:
+        model = Atajos
+
+class AtajosAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    list_display = ('nombre', 'url')
+    search_fields = ('nombre', 'url')
+    resources_class = AtajosResource
 
 class DicRegistroContableResource(resources.ModelResource):
     class Meta:
@@ -131,6 +140,7 @@ class SugerenciaAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = ('usuario', 'nombre')
     resources_class = SugerenciaResource
 
+admin.site.register(Atajos, AtajosAdmin)
 admin.site.register(DicRegistroContable, DicRegistroContableAdmin)
 admin.site.register(Sugerencia, SugerenciaAdmin)
 admin.site.register(Minutas, MinutasAdmin)
