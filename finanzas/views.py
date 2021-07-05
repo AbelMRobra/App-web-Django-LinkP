@@ -5449,49 +5449,155 @@ class DescargarTotalCuentas(TemplateView):
         wb.save(response)
         return response
 
+def GenerarFecha(fecha_inicio):
+    pass
 
+def CompromisosRentasAnticipadas(request):
+    template_name='agregar_compromisos_rentas.html'
+    cta=CuentaCorriente.objects.get(pk=30)
+    monto_actual_cta=cta.monto_renta_anticipada
+    #id_cta_corriente=kwargs['id']
 
-        
-    
-def ListaPagosRentaAnticipada(request,**kwargs):
-    
-    id_cta_corriente=kwargs['id']
-    
-    pagos_renta=PagoRentaAnticipada.objects.filter(cuenta_corriente=id_cta_corriente)
-
-    mensaje=''
-
-    if request.method=='POST':
+    if  request.method=='POST':
         response=request.POST
 
+        print('///////',response)
         datos={}
         for dato in response:
             datos[dato]=response[dato]
+
         
+        if 'agregar' in datos:
+            
+            cantidad=int(datos['cantidad'])
+            
+            fecha_inicio=datos['fecha_inicio']
+            print(type(fecha_inicio))
+            #cta=CuentaCorriente.objects.get(pk=id_cta_corriente)
+            #generar rango de fechas:
+            fecha_date=datetime.datetime.strptime(fecha_inicio,"%Y-%m-%d")
+            año_inicio=int(fecha_date.year)
+            mes_inicio=int(fecha_date.month)
+            dia_inicio=int(fecha_date.day)
+           
+            #fechas=[]
+            for i in range(cantidad):
+                if mes_inicio>12:
+                    mes_inicio=1
+                    año_inicio=año_inicio+1
+                elif mes_inicio<=12:
+                    nueva_fecha=datetime.date(año_inicio,mes_inicio,dia_inicio)
+                    
+                    mes_inicio=mes_inicio+1
+
+                nuevo=PagoRentaAnticipada(
+                    cuenta_corriente=cta,
+                    fecha=nueva_fecha,
+                    
+                )
+                if nuevo:
+                    nuevo.save()
+
+            return redirect('Inicio')
+     
+        if 'modificar_pagado' in datos:
+            id_pago=datos['modificar_pagado']
+            pago=PagoRentaAnticipada.objects.get(pk=id_pago)
+            pagado_mod=datos['pagado']
+
+            pago.pagado=pagado_mod
+            pago.monto_pagado=monto_actual_cta
+            pago.save()
+
+        if 'modificar_monto' in datos:
+            pago=PagoRentaAnticipada.objects.filter(pagado=False)
+            pass
+
+    context={}
+    return render(request,template_name,context)       
+
+def GenerarFechas(fecha_inicio,cantidad):
+    fecha_date=datetime.datetime.strptime(fecha_inicio,"%Y-%m-%d")
+    año_inicio=int(fecha_date.year)
+    mes_inicio=int(fecha_date.month)
+    dia_inicio=int(fecha_date.day)
     
+    fechas=[]
+    for i in range(0,cantidad):    
+        if mes_inicio==12:
+            nueva_fecha=datetime.date(año_inicio,mes_inicio,dia_inicio)
+            mes_inicio=1
+            año_inicio=año_inicio+1
+           
+        elif mes_inicio<12:
+            nueva_fecha=datetime.date(año_inicio,mes_inicio,dia_inicio)
+            print(nueva_fecha)
+            mes_inicio=mes_inicio+1        #entramos en mes7 ,8,9,10,11,12,13
+        fechas.append(nueva_fecha)
+    
+    return fechas
+
+
+def PagosRentaAnticipada(request,**kwargs):
+    id_cta_corriente=kwargs['id']
+    cta=CuentaCorriente.objects.get(pk=id_cta_corriente)
+    monto_actual=cta.monto_renta_anticipada
+    pagos_renta=PagoRentaAnticipada.objects.filter(cuenta_corriente=id_cta_corriente)
+    mensaje=''
+    if request.method=='POST':
+        response=request.POST
+        print(response)
+        datos={}
+        for dato in response:
+            datos[dato]=response[dato]
+        if 'agregar' in datos:
+            cantidad=int(datos['cantidad'])
+            fecha_inicio=datos['fecha_inicio']
+            fechas=GenerarFechas(fecha_inicio,cantidad)
+            if len(fechas)==cantidad:
+                print(len(fechas),cantidad)
+                for i in range(cantidad):
+
+                    nuevo=PagoRentaAnticipada(
+                        cuenta_corriente=cta,
+                        fecha=fechas[i],
+                    )
+                    if nuevo:
+                        nuevo.save()
+
+                return redirect('pagosrentaanticipada', id_cta_corriente)
+        
         if 'eliminar' in datos:
             pago=datos['eliminar']
             pago=PagoRentaAnticipada.objects.get(pk=pago)
             pago.delete()
-        if 'agregar' in datos:
-            cta=CuentaCorriente.objects.get(pk=id_cta_corriente)
-            nuevo_pago= PagoRentaAnticipada(
-            cuenta_corriente=cta,
-            fecha=datos['fecha'],
-            metodo=datos['metodo'],
-            )
-            if nuevo_pago:
-                nuevo_pago.save()
+        
+            return redirect('pagosrentaanticipada', id_cta_corriente)
+        if 'modificar_pagado' in datos:
+            id_pago=datos['modificar_pagado']
+            pago=PagoRentaAnticipada.objects.get(pk=id_pago)
+            if 'pagado' in datos:
+                pagado_mod=datos['pagado']
+                pago.pagado=True
+                pago.monto_pagado=cta.monto_renta_anticipada
+                pago.save()
             else:
-                mensaje='No se pudo realizar el pago'
+                pago.pagado=False
+                pago.monto_pagado=0
+                pago.save()
                 
-            return redirect('pagosrentaanticipada', id_cta_corriente) 
+            return redirect('pagosrentaanticipada', id_cta_corriente)
+
+        if 'modificar_monto' in datos:
             
+            nuevo_monto=datos['nuevo_monto']
+            cta.monto_renta_anticipada=nuevo_monto
+            cta.save()
         
         return redirect('pagosrentaanticipada',id_cta_corriente)
 
     
-    context={'pagos_renta':pagos_renta,'mensaje':mensaje}
+    context={'pagos_renta':pagos_renta,'monto_actual':monto_actual,'mensaje':mensaje}
     return render(request ,'pagos_renta_anticipada.html',context)
 
     
