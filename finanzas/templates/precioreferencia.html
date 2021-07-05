@@ -52,13 +52,13 @@
 
                                 {% for i in data %}
 
-                                <tr>
+                                <tr style="font-size: 14px;">
                                     <td style="color: rgb({{i.0.proyecto.color}});">{{i.0.proyecto.nombre|lower|capfirst}}</td>
                                     <td><a href="#" data-toggle="modal" data-target="#ModalPricing{{i.0.proyecto.id}}" class="text-info">${{i.0.proyecto.precio_pricing|floatformat:0|intcomma}}</a></td>
                                     <td></td>
                                     <td><a href="#" data-toggle="modal" data-target="#ModalPosta{{i.0.proyecto.id}}" class="text-info">${{i.0.proyecto.precio_posta|floatformat:0|intcomma}}</a></td>
                                     <td><a href="#" data-toggle="modal" data-target="#ModalLinkP{{i.0.proyecto.id}}" class="text-info">${{i.0.proyecto.precio_linkp|floatformat:0|intcomma}}</a></td>
-                                    <td></td>
+                                    <td>${{i.2|floatformat:0|intcomma}}</td>
                                     <td>${{i.0.ingreso_ventas|floatformat:0|intcomma}}</td>
                                     <td>{{i.1|floatformat:2}}%</td>
                                 </tr>

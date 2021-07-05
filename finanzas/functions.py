@@ -4,6 +4,7 @@ import pandas as pd
 import numpy as np
 from .models import Almacenero, CuentaCorriente, Cuota, Pago, RegistroAlmacenero, ArchivosAdmFin, Arqueo, RetirodeSocios, MovimientoAdmin, Honorarios
 from proyectos.models import Unidades, Proyectos
+from ventas.models import FeaturesUni
 
 
 def fechas_cc(id):
@@ -179,3 +180,41 @@ def flujo_ingreso_cliente(id):
     cuenta_venta.flujo = fluejo_ingreso
     cuenta_venta.flujo_m3 = fluejo_ingreso_m3
     cuenta_venta.save()
+
+
+def promedio_almacenero(almacenero):
+    proyecto = Proyectos.objects.get(id = almacenero.proyecto.id)
+    m2_total = 0
+    m2_disponible = 0
+    precio_m2_disponible = 0
+    try:
+        unidades = Unidades.objects.filter(proyecto = proyecto)
+
+        for u in unidades:
+            if u.sup_equiv > 0:
+                m2 = round(u.sup_equiv, 2)
+            else:
+                m2 = round((u.sup_propia + u.sup_balcon + u.sup_comun + u.sup_patio), 2)
+            m2_total += m2
+            if u.estado == "DISPONIBLE":
+                m2_disponible += m2
+                try:
+                    contado = m2*proyecto.desde
+                    features_unidad = FeaturesUni.objects.filter(unidad = u)
+                    for f2 in features_unidad:
+                        contado = contado*f2.feature.inc
+                        precio_m2_disponible += contado
+                except:
+                    precio_m2_disponible += 0
+        porc_dispo = 0
+
+        if m2_disponible != 0:
+            precio_m2_disponible = precio_m2_disponible/m2_disponible
+        else:
+            precio_m2_disponible = 0
+    except:
+        porc_dispo = 0
+        precio_m2_disponible = 0
+
+    data_proyecto = [almacenero, porc_dispo, precio_m2_disponible]
+    return data_proyecto
