@@ -35,13 +35,10 @@
                 </div>
 
                 <div style="margin: 5px;">
-                    <a href="#" class="btn" data-toggle="modal" data-target="#ModalRenta"><i
-                            class="fa fa-plus-circle  text-info"><span class="text-info ml-2"
-                                style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif"><b>Añadir
-                                    renta</b></span></i></a>
+                    <a href="#" data-toggle="modal" data-target="#ModalRenta">Añadir</a>
 
                 </div>
-                <!-- Modal fecha estado Subitem -->
+                <!-- Modal  -->
                 <div class="modal fade" id="ModalRenta" tabindex="-1" role="dialog" aria-labelledby="ModalRenta"
                     aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -59,24 +56,19 @@
 
                                     {% csrf_token %}
 
-                                    <p class="my-2">Metodo</p>
-                                    <select name="metodo" class="custom-select" style="width: 100%;" required>
-                                        <option value="EFECTIVO">EFECTIVO</option>
-                                        <option value="CHEQUE">CHEQUE</option>
-                                        <option value="TRANSFERENCIA">TRANSFERENCIA </option>
-                                        <option value="DEPOSITO">DEPOSITO </option>
-                                        <option value="DOLAR">DOLAR </option>
-                                    </select>
+                                    <p class="my-2">Cantidad</p>
+                                    <div class="mb-3">
+                                        <input type="number" class="form-control form-control" name="cantidad">
+                                    </div>
                                     <p class="my-2">Fecha</p>
                                     <div class="mb-3">
-                                        <input name="fecha" type="date" class="form-control form-control"
-                                            max="2008-12-31" required>
-
+                                        <input type="date" class="form-control form-control" name="fecha_inicio"
+                                            min="2008-01-01">
                                     </div>
 
                                     <div>
                                         <button class="btn btn-info" type="submit" name="agregar" value="agregar"
-                                            style="margin-top: 10px;">Añadir</button>
+                                            style="margin-top: 10px;">Modificar</button>
 
                                     </div>
                                 </form>
@@ -98,9 +90,11 @@
                             <th>Id</th>
                             <th>Cta cte</th>
                             <th>Fecha</th>
-                            <th>Monto</th>
-                            <th>Metodo</th>
+                            <th>Monto pagado</th>
+                            <th>Monto actual</th>
+                            <th>Estado</th>
                             <th></th>
+
 
                         </tr>
                     </thead>
@@ -113,19 +107,35 @@
                             <td>{{pagos.id}}</td>
                             <td>{{pagos.cuenta_corriente}}</td>
                             <td>{{pagos.fecha}}</td>
-                            <td>{{pagos.cuenta_corriente.monto_renta_anticipada}}</td>
-                            <td>{{pagos.metodo}}</td>
-                            <td><a href="#" class="btn" data-toggle="modal" data-target="#ModalBorrar{{pagos.id}}"><i
-                                        class="fa fa-trash-o text-danger"></i></a></td>
-                            <!-- Modal fecha estado Subitem -->
-                            <div class="modal fade" id="ModalBorrar{{pagos.id}}" tabindex="-1" role="dialog"
-                                aria-labelledby="ModalBorrar{{pagos.id}}" aria-hidden="true">
+                            <td>{{pagos.monto_pagado}}</td>
+                            <td><a href="#" class="btn" data-toggle="modal"
+                                    data-target="#ModalModificarMonto{{pagos.id}}">{{monto_actual}}</a></td>
+
+                            {% if pagos.pagado is True %}
+                            <td><a href="#" class="btn" data-toggle="modal"
+                                    data-target="#ModalModificarEstado{{pagos.id}}">Pagado</a></td>
+                            {% else %}
+
+                            <td><a href="#" class="btn" data-toggle="modal"
+                                    data-target="#ModalModificarEstado{{pagos.id}}">No pagado</a></td>
+                            {% endif %}
+                            <td><a href="#" class="btn" data-toggle="modal"
+                                data-target="#ModalBorrar{{pagos.id}}"><i class="fa fa-trash-o text-danger"></i></a></td>
+
+
+
+
+
+                            <!-- Modal modificar monto -->
+                            <div class="modal fade" id="ModalModificarMonto{{pagos.id}}" tabindex="-1" role="dialog"
+                                aria-labelledby="ModalModificarMonto{{pagos.id}}" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header"
                                             style="background: rgb(36,160,237);
-                         background: linear-gradient(315deg, rgba(36,160,237,1) 0%, rgba(56,56,130,1) 22%, rgba(0,212,255,1) 100%);">
-                                            <h5 class="modal-title text-light" id="exampleModalLongTitle">Borrar renta
+                                background: linear-gradient(315deg, rgba(36,160,237,1) 0%, rgba(56,56,130,1) 22%, rgba(0,212,255,1) 100%);">
+                                            <h5 class="modal-title text-light" id="exampleModalLongTitle">Modificar
+                                                monto
                                             </h5>
                                             <button type="button" class="close text-light" data-dismiss="modal"
                                                 aria-label="Close">
@@ -136,12 +146,14 @@
                                             <form method="POST">
 
                                                 {% csrf_token %}
-                                                <P>¿Está seguro que desea borrar?</P>
-                                                <P>Esta acción es irreversible</P>
+                                                <span>Monto</span>
+                                                <input type="number" class="form-control form-control"
+                                                    name="nuevo_monto" value="{{monto_actual}}">
 
                                                 <div>
-                                                    <button class="btn btn-danger" type="submit" name="eliminar"
-                                                        value="{{pagos.id}}" style="margin-top: 10px;">Borrar</button>
+                                                    <button class="btn btn-danger" type="submit" name="modificar_monto"
+                                                        value="{{pagos.id}}"
+                                                        style="margin-top: 10px;">Modificar</button>
 
                                                 </div>
                                             </form>
@@ -154,7 +166,89 @@
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+                            <!-- Modal modificar estado -->
+                            <div class="modal fade" id="ModalModificarEstado{{pagos.id}}" tabindex="-1" role="dialog"
+                                aria-labelledby="ModalModificarEstado{{pagos.id}}" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header"
+                                            style="background: rgb(36,160,237);
+                                background: linear-gradient(315deg, rgba(36,160,237,1) 0%, rgba(56,56,130,1) 22%, rgba(0,212,255,1) 100%);">
+                                            <h5 class="modal-title text-light" id="exampleModalLongTitle">Modificar
+                                                estado
+                                            </h5>
+                                            <button type="button" class="close text-light" data-dismiss="modal"
+                                                aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form method="POST">
 
+                                                {% csrf_token %}
+
+                                            
+                                                <input type="checkbox" id="check{{pagos.id}}" name="pagado"
+                                                   class="form-control form-control"{% if pagos.pagado == True %}  checked {% else %} value="no-pagado" {% endif %}>
+                                                <label for="check{{pagos.id}}">Pagado</label>
+
+                                                <div>
+                                                    <button class="btn btn-danger" type="submit" name="modificar_pagado"
+                                                        value="{{pagos.id}}"
+                                                        style="margin-top: 10px;">Modificar</button>
+
+                                                </div>
+                                            </form>
+
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-info"
+                                                data-dismiss="modal">Cerrar</button>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <!-- Modal  borrar-->
+                            <div class="modal fade" id="ModalBorrar{{pagos.id}}" tabindex="-1" role="dialog"
+                                aria-labelledby="ModalBorrar{{pagos.id}}" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header"
+                                            style="background: rgb(36,160,237);
+                                background: linear-gradient(315deg, rgba(36,160,237,1) 0%, rgba(56,56,130,1) 22%, rgba(0,212,255,1) 100%);">
+                                            <h5 class="modal-title text-light" id="exampleModalLongTitle">Borrar renta
+                                            </h5>
+                                            <button type="button" class="close text-light" data-dismiss="modal"
+                                                aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form method="POST">
+
+                                                {% csrf_token %}
+
+                                                <p>¿Estas seguro que deseas borra una renta?</p>
+                                                <p>Esta accion es irreversible</p>
+                                                <div>
+                                                    <button class="btn btn-danger" type="submit" name="eliminar"
+                                                        value="{{pagos.id}}" style="margin-top: 10px;">Eliminar</button>
+
+                                                </div>
+                                            </form>
+
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-info"
+                                                data-dismiss="modal">Cerrar</button>
+
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </tr>
                         {% endfor %}
