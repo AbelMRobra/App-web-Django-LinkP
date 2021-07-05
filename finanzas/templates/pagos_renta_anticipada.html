@@ -1,11 +1,192 @@
+{% extends "users/inicio2.html" %}
+
 {% load static %}
-<a href="{% url 'agregar_pago_renta_anticipada'%}">Agregar Pago</a>
-{{pagos.cuenta_corriente.id}} 
-{% for pagos  in pagos_renta %}
+{% load humanize %}
+
+{% block content %}
 
 
-   <ul>
-    <form action="" method="POST">  {% csrf_token %} <li>{{pagos.id}} {{pagos.cuenta_corriente}} {{pagos.fecha}} , {{pagos.cuenta_corriente.monto_renta_anticipada}} <button name='eliminar' value="{{pagos.id}}" type="submit">BORRAR</button></form> </li>
-   </ul>
-{% endfor %}
-    
+<div class="container-fluid ">
+
+    <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+            <h3 class="text-themecolor">Panel de renta anticipada</h3>
+        </div>
+
+        <div class="col-md-7 align-self-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'Panel cuentas corrientes' %}">Panel</a></li>
+                <li class="breadcrumb-item">Renta ant.</li>
+            </ol>
+        </div>
+    </div>
+</div>
+
+
+<div class="row ">
+    <div class="col-12">
+        <div class="card overflow-auto">
+            <div class="card-body">
+
+                <div style="text-align: center; margin-bottom: 50px;">
+                    <img src="{{proyecto.iamgen.url}}" class="img-fluid" alt="..."
+                        style="max-width:200px;width:auto;height:auto; margin-top: 5px; margin-bottom: 5px;">
+                </div>
+
+                <div style="margin: 5px;">
+                    <a href="#" class="btn" data-toggle="modal" data-target="#ModalRenta"><i
+                            class="fa fa-plus-circle  text-info"><span class="text-info ml-2"
+                                style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif"><b>Añadir
+                                    renta</b></span></i></a>
+
+                </div>
+                <!-- Modal fecha estado Subitem -->
+                <div class="modal fade" id="ModalRenta" tabindex="-1" role="dialog" aria-labelledby="ModalRenta"
+                    aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header"
+                                style="background: rgb(36,160,237);
+                             background: linear-gradient(315deg, rgba(36,160,237,1) 0%, rgba(56,56,130,1) 22%, rgba(0,212,255,1) 100%);">
+                                <h5 class="modal-title text-light" id="exampleModalLongTitle">Añadir renta</h5>
+                                <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form method="POST">
+
+                                    {% csrf_token %}
+
+                                    <p class="my-2">Metodo</p>
+                                    <select name="metodo" class="custom-select" style="width: 100%;" required>
+                                        <option value="EFECTIVO">EFECTIVO</option>
+                                        <option value="CHEQUE">CHEQUE</option>
+                                        <option value="TRANSFERENCIA">TRANSFERENCIA </option>
+                                        <option value="DEPOSITO">DEPOSITO </option>
+                                        <option value="DOLAR">DOLAR </option>
+                                    </select>
+                                    <p class="my-2">Fecha</p>
+                                    <div class="mb-3">
+                                        <input name="fecha" type="date" class="form-control form-control"
+                                            max="2008-12-31" required>
+
+                                    </div>
+
+                                    <div>
+                                        <button class="btn btn-info" type="submit" name="agregar" value="agregar"
+                                            style="margin-top: 10px;">Añadir</button>
+
+                                    </div>
+                                </form>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-info" data-dismiss="modal">Cerrar</button>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <table id="example" class="table table-striped table-bordered mt-4">
+                    <thead>
+
+                        <tr>
+                            <th>Id</th>
+                            <th>Cta cte</th>
+                            <th>Fecha</th>
+                            <th>Monto</th>
+                            <th>Metodo</th>
+                            <th></th>
+
+                        </tr>
+                    </thead>
+
+                    <tbody style="font-size: 12px;">
+
+                        {% for pagos in pagos_renta %}
+                        <tr>
+
+                            <td>{{pagos.id}}</td>
+                            <td>{{pagos.cuenta_corriente}}</td>
+                            <td>{{pagos.fecha}}</td>
+                            <td>{{pagos.cuenta_corriente.monto_renta_anticipada}}</td>
+                            <td>{{pagos.metodo}}</td>
+                            <td><a href="#" class="btn" data-toggle="modal" data-target="#ModalBorrar{{pagos.id}}"><i
+                                        class="fa fa-trash-o text-danger"></i></a></td>
+                            <!-- Modal fecha estado Subitem -->
+                            <div class="modal fade" id="ModalBorrar{{pagos.id}}" tabindex="-1" role="dialog"
+                                aria-labelledby="ModalBorrar{{pagos.id}}" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header"
+                                            style="background: rgb(36,160,237);
+                         background: linear-gradient(315deg, rgba(36,160,237,1) 0%, rgba(56,56,130,1) 22%, rgba(0,212,255,1) 100%);">
+                                            <h5 class="modal-title text-light" id="exampleModalLongTitle">Borrar renta
+                                            </h5>
+                                            <button type="button" class="close text-light" data-dismiss="modal"
+                                                aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form method="POST">
+
+                                                {% csrf_token %}
+                                                <P>¿Está seguro que desea borrar?</P>
+                                                <P>Esta acción es irreversible</P>
+
+                                                <div>
+                                                    <button class="btn btn-danger" type="submit" name="eliminar"
+                                                        value="{{pagos.id}}" style="margin-top: 10px;">Borrar</button>
+
+                                                </div>
+                                            </form>
+
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-info"
+                                                data-dismiss="modal">Cerrar</button>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js" defer></script>
+<script src="https://cdn.datatables.net/1.10.23/js/dataTables.bootstrap4.min.js" defer></script>
+
+<script>
+    $(document).ready(function () {
+        $('#example').DataTable({
+            "language": {
+                "lengthMenu": "Mostar _MENU_ documentos",
+                "zeroRecords": "No se encontro nada - perdon ",
+                "info": "Pagina _PAGE_ de _PAGES_",
+                "infoEmpty": "Sin registros disponibles",
+                "infoFiltered": "(filtrado de _MAX_ registros totales)",
+                "search": "Buscar"
+            },
+            "paging": false,
+            "ordering": false,
+            "info": false
+        });
+    });
+</script>
+
+{% endblock %}
