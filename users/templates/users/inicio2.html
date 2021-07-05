@@ -330,12 +330,7 @@
 
         </div>
       
-    <!-- ============================================================== -->
-    <!-- End Topbar header -->
-    <!-- ============================================================== -->
-    <!-- ============================================================== -->
-    <!-- Left Sidebar - style you can find in sidebar.scss  -->
-    <!-- ============================================================== -->
+
     <aside class="left-sidebar">
       <!-- Sidebar scroll-->
       <div class="scroll-sidebar">
@@ -360,8 +355,6 @@
               </ul>
             </li>
             <li class="nav-devider"></li>
-
-            <li class="nav-small-cap">DATOS GENERALES</li>
 
             <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i
                   class="mdi mdi-chart-bubble"></i><span class="hide-menu">Proyectos</span></a>
@@ -491,159 +484,109 @@
     <div class="page-wrapper">
 
       {% block content %}
-      <!-- ============================================================== -->
-      <!-- Bread crumb and right sidebar toggle -->
-      <!-- ============================================================== -->
 
       <div class="container-fluid">
         <div class="row page-titles">
           <div class="col-md-5 align-self-center">
-            <h3 class="text-themecolor">Un resumen de LINK-P</h3>
+            <h3 class="text-themecolor">{{mensaje_bievenida}}</h3>
           </div>
 
-
-        </div>
-        <!-- ============================================================== -->
-        <!-- End Bread crumb and right sidebar toggle -->
-        <!-- ============================================================== -->
-
-        <!-- ============================================================== -->
-        <!-- Stats box -->
-        <!-- ============================================================== -->
+      <div class="container-fluid r-side">
         <div class="row">
-          <div class="col-lg-3">
-            <div class="card bg-primary">
-              <div class="card-body">
-                <div class="d-flex no-block">
-                  <div class="m-r-20 align-self-center"><img
-                      src="{% static 'adminpro/assets/images/icon/staff-w.png' %}" alt="Income" /></div>
-                  <div class="align-self-center">
-                    <h6 class="text-white m-t-10 m-b-0">Usuarios registrados</h6>
-                    <h2 class="m-t-0 text-white">{{cantidad_m}}</h2>
-                  </div>
+          <div class="card">
+            <div class="card-body">
+
+              <div class="row">
+
+                <div class="col-3">
+
+                  <img src="{% static 'img/car2.jpg' %}" class="bounce animated"
+                    style="width: 100%; height:auto; vertical-align: middle; margin-right: 10px;">
+  
                 </div>
+  
+                <div class="col-6">
+                  <h4 class="card-title">
+                    Conoce sobre Link-P y sus ultimas novedades</h4>
+                  <p>Proximamente se habilitara una pagina guia donde puedes consultar y conocer las funciones y la organización del sitio</p>
+                  <!-- <p>Ingresa <a href="#">aqui</a> para una explicación y guia del sitio</p> -->  
+                </div>
+
               </div>
             </div>
           </div>
+        </div>
+        {% if monedas %}
+        <div class="row">
+          <div class="card">
+            <div class="card-body">
+              <div>
+                <h4 class="card-title">
+                  <img src="{% static 'img/app_rrhh_gift.gif' %}" alt=""
+                    style="max-width:70px; height:auto; vertical-align: middle; margin-right: 10px;"> <b>Felicidades {{request.user.first_name}}!</b> recibiste una Linkcoin!
+                </h4>
+              </div>
+  
+            </div>
+          </div>
+  
+        </div>
+        {% endif %}
+        {% if datos_mensajeria %}
+        <div class="row">
+          <div class="card">
+            <div class="card-body">
+              <div>
+                <h4 class="card-title">
+                  <img src="{% static 'img/animation_500_kn5034p5.gif' %}" alt=""
+                    style="max-width:70px; height:auto; vertical-align: middle; margin-right: 10px;">Tienes correspondencia que ver!
+                </h4>
+              </div>
 
-          <div class="col-lg-3">
-            <div class="card bg-success">
-              <div class="card-body">
-                <div class="d-flex no-block">
-                  <div class="m-r-20 align-self-center"><img
-                      src="{% static 'adminpro/assets/images/icon/expense-w.png' %}" alt="Income" /></div>
-                  <div class="align-self-center">
-                    <h6 class="text-white m-t-10 m-b-0">Proyectos cargados</h6>
-                    <h2 class="m-t-0 text-white">{{cantidad_p}}</h2>
-                  </div>
-                </div>
+              <div style="margin-left: 75px;">Presiona 
+                <a href="/rrhh/notasdepedido/0/0">aqui</a> para ir a la app y formar
               </div>
             </div>
           </div>
-          <div class="col-lg-3">
-            <div class="card bg-info">
-              <div class="card-body">
-                <div class="d-flex no-block">
-                  <div class="m-r-20 align-self-center"><img
-                      src="{% static 'adminpro/assets/images/icon/assets-w.png' %}" alt="Income" /></div>
-                  <div class="align-self-center">
-                    <h6 class="text-white m-t-10 m-b-0">Tiempo funcionando</h6>
-                    <h2 class="m-t-0 text-white">{{dias_funcionando}} dias</h2>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
         </div>
-
-      </div>
-
-      <!-- ============================================================== -->
-      <!-- Bread crumb and right sidebar toggle -->
-      <!-- ============================================================== -->
-
-    
-      {% if datos_mensajeria %}
-
-      <div class="container-fluid r-aside">
-
-        <div>
-          <h4 class="card-title"><span class="lstick"></span>
-            <img src="{% static 'img/advertir.png' %}" alt=""
-              style="max-width:20px; height:auto; margin: 2px; vertical-align: top; margin-right: 10px;"> Tienes correspondencia!
-          </h4>
-        </div>
-
-        <div style="margin: 5px;">
-          <a href="/rrhh/notasdepedido/0/0">
-            Toca aqui para ver la correspondencia
-          </a>
-
-        </div>
-
-      </div>
-
+        
       {% endif %}
 
+      <div class="row">
+        <div class="card">
+          <div class="card-body">
+  
+          <div>
+            <h4 class="card-title">Nuestro equipo</h4>
+          </div>
+  
+          <div class="table-responsive">
+            <table class="table">
+              <tbody>
+  
+                {% for m in miembros %}
+                <tr>
+                  {% if m.imagenlogo %}
+                  <td><span class="round"><img src="{{m.imagenlogo.url}}" alt="user" width="50"></span></td>
+                  {% else %}
+                  <td><span class="round"><img src="{% static 'img/anonimo2.png' %}" alt="user" width="50"></span></td>
+                  {% endif %}
+                  <td>
+                    <h6><b>{{m.identificacion}}</b> - {{m.nombre}} </h6><small class="text-muted">{{m.area|lower|capfirst}}: {{m.cargo|lower}} - {{m.email}}</small>
+                  </td>
+                </tr>
+  
+                {% endfor %}
+  
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      </div>
+      </div>
       
-      {% if monedas %}
-
-      <div class="container-fluid r-aside">
-
-        <div>
-          <h4 class="card-title"><span class="lstick"></span>
-            <img src="{% static 'img/regalosi.png' %}" alt=""
-              style="max-width:20px; height:auto; margin: 2px; vertical-align: top; margin-right: 10px;"> Recibiste una Linkcoin!
-          </h4>
-        </div>
-
-
-        <div style="margin: 5px;">
-
-          Hoy recibiste monedas!, entra a tu perfil para ver el mensaje =)
-
-        </div>
-
-      </div>
-
-      {% endif %}
-
-
-
-      <div class="container-fluid r-aside">
-
-
-        <div>
-          <h4 class="card-title"><span class="lstick"></span>Nuestra empresa!</h4>
-        </div>
-
-        <div class="table-responsive m-t-20 no-wrap">
-          <table class="table vm no-th-brd pro-of-month">
-            <thead>
-              <tr>
-                <th colspan="2">Usuario</th>
-                <th>Cargo</th>
-              </tr>
-            </thead>
-            <tbody>
-
-              {% for m in miembros %}
-              <tr>
-                <td><span class="round"><img src="{{m.imagenlogo.url}}" alt="user" width="50"></span></td>
-                <td>
-                  <h6><b>{{m.identificacion}}</b> - {{m.nombre}} </h6><small class="text-muted">{{m.email}}</small>
-                </td>
-                <td><h6>{{m.area}}</h6><small class="text-muted">{{m.cargo}}</small></td>
-
-              </tr>
-
-              {% endfor %}
-
-            </tbody>
-          </table>
-        </div>
-
         <aside class="right-side-panel">
 
           <h3 class="p-relative"><span class="lstick"></span> Novedades</h3>
@@ -653,7 +596,7 @@
             <div class="col-md-12 m-t-10">
               <div class="card">
                 <a type="button" style="text-decoration: none;" data-toggle="modal" data-target="#ModalAnuncio{{i.id}}">
-                  <img class="card-img-top img-responsive" src="{{i.imagen.url}}" alt="Card image cap">
+                  <img class="card-img-top img-responsive" src="{{i.imagen.url}}" alt="Novedad">
                 </a>
                 
                 <div class="card-body">

@@ -1044,11 +1044,11 @@ def inicio(request):
     # Saludo de bienvenida
     hora_actual = datetime.datetime.now()
     if hora_actual.hour >= 20:
-        mensaje_bievenida = "¡Buenas noches!"
+        mensaje_bievenida = "¡Buenas noches {}!".format(request.user.first_name)
     elif hora_actual.hour >= 13:
-        mensaje_bievenida = "¡Buenas tardes!"
+        mensaje_bievenida = "¡Buenas tardes {}!".format(request.user.first_name)
     else:
-        mensaje_bievenida = "¡Buen dia!"
+        mensaje_bievenida = "¡Buen dia {}!".format(request.user.first_name)
 
     # ---> Grupo de vista del usuario
 
