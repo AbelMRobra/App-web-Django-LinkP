@@ -46,7 +46,7 @@ urlpatterns = [
     url(r'^superavalorcta/(?P<id_cuota>\d+)/$', login_required(views.superarvalorcta), name = 'Cta cliente valor superado'),
 
 
-    path("agregarpago/" ,login_required(views.AgregarPagoRentaAnticipada), name='agregar_pago_renta_anticipada'),
+    
     path("pagosrentaanticipada/<int:id>" ,login_required(views.ListaPagosRentaAnticipada) ,name='pagosrentaanticipada'),
     
     #----------------URL ADMINISTRACION -----------------------------------------

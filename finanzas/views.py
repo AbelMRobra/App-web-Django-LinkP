@@ -5397,51 +5397,47 @@ class DescargarTotalCuentas(TemplateView):
 
 
 
-#no esta lista aun
-def AgregarPagoRentaAnticipada(request):
-    template_name = "agregar_pago_renta_anticipada.html"
-    if request.method=="POST":
-        response=request.POST
-        #print(response)
-        '''
-        nuevo_pago= PagoRentaAnticipada(
-            cuenta_corriente=cta_corriente,
-            fecha=fecha,
-            metodo=metodo,
-        )
-        if nuevo_pago:
-            nuevo_pago.save()
-        return redirect('pagosrentaanticipada' id_cta_corriente) 
-            
-        '''
-    context={}
-    return render(request,template_name,context)
-
         
     
 def ListaPagosRentaAnticipada(request,**kwargs):
     
     id_cta_corriente=kwargs['id']
-    print(id_cta_corriente)
+    
     pagos_renta=PagoRentaAnticipada.objects.filter(cuenta_corriente=id_cta_corriente)
 
-    context={'pagos_renta':pagos_renta}
+    mensaje=''
 
     if request.method=='POST':
         response=request.POST
 
+        datos={}
         for dato in response:
-            if dato=='eliminar':
-                pago=response[dato]
+            datos[dato]=response[dato]
         
-        pago=PagoRentaAnticipada.objects.get(pk=pago)
-        pago.delete()
-
-
+    
+        if 'eliminar' in datos:
+            pago=datos['eliminar']
+            pago=PagoRentaAnticipada.objects.get(pk=pago)
+            pago.delete()
+        if 'agregar' in datos:
+            cta=CuentaCorriente.objects.get(pk=id_cta_corriente)
+            nuevo_pago= PagoRentaAnticipada(
+            cuenta_corriente=cta,
+            fecha=datos['fecha'],
+            metodo=datos['metodo'],
+            )
+            if nuevo_pago:
+                nuevo_pago.save()
+            else:
+                mensaje='No se pudo realizar el pago'
+                
+            return redirect('pagosrentaanticipada', id_cta_corriente) 
+            
+        
         return redirect('pagosrentaanticipada',id_cta_corriente)
 
     
-
+    context={'pagos_renta':pagos_renta,'mensaje':mensaje}
     return render(request ,'pagos_renta_anticipada.html',context)
 
     
