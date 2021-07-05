@@ -83,6 +83,7 @@ class CuentaCorriente(models.Model):
     venta = models.ForeignKey(VentasRealizadas, on_delete=models.CASCADE, verbose_name = "Venta Realizada")
     flujo = models.TextField(verbose_name="Flujo", blank=True, null=True)
     flujo_m3 = models.TextField(verbose_name="Flujo en M3", blank=True, null=True)
+    monto_renta_anticipada=models.FloatField(verbose_name="Monto fijo de renta anticipada", blank=True, null=True)
 
     class Meta:
         verbose_name="Cuenta corriente"
@@ -139,6 +140,30 @@ class Pago(models.Model):
 
     def __str__(self):
         return self.documento_1
+
+
+
+class PagoRentaAnticipada(models.Model):
+    class Metodo(models.TextChoices):
+        EFECTIVO = "EFECTIVO"
+        CHEQUE = "CHEQUE"
+        TRANSFERENCIA = "TRANSFERENCIA"
+        DEPOSITO = "DEPOSITO"
+        DOLARES = "DOLARES"
+
+    cuenta_corriente = models.ForeignKey(CuentaCorriente, on_delete=models.CASCADE, verbose_name = "Cuenta corriente")
+    fecha = models.DateField(verbose_name = "Fecha del pago")
+    metodo = models.CharField(choices=Metodo.choices, max_length=20, verbose_name="Metodo", blank=True, null=True)
+    
+
+    class Meta:
+            verbose_name="Pago de renta anticipada"
+            verbose_name_plural="Pagos de renta anticipada"
+
+    def __str__(self):
+        return str(self.cuenta_corriente) + 'Monto por mes ' + str(self.cuenta_corriente.monto_renta_anticipada)
+
+
 
 class ArchivosAdmFin(models.Model):
     fecha = models.DateField(verbose_name = "Fecha de los archivos")

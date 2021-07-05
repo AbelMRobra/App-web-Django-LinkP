@@ -4,17 +4,18 @@ import pandas as pd
 import numpy as np
 from io import  BytesIO
 from xhtml2pdf import pisa
-from django.shortcuts import render
-from django.shortcuts import redirect
+from django.shortcuts import render,redirect
+
 from django.http import HttpResponse
 from django.template import Context
-from django.views.generic import View
+from django.urls import reverse_lazy
 from django.template.loader import get_template
 from django.contrib.staticfiles import finders
-from django.views.generic.base import TemplateView  
+from django.views.generic import CreateView ,DeleteView
+from django.views.generic.base import TemplateView  ,View 
 from django.conf import settings
 from presupuestos.models import Proyectos, Presupuestos, Constantes, Modelopresupuesto, Registrodeconstantes
-from .models import Almacenero, CuentaCorriente, Cuota, Pago, RegistroAlmacenero, ArchivosAdmFin, Arqueo, RetirodeSocios, MovimientoAdmin, Honorarios
+from .models import Almacenero, CuentaCorriente, Cuota, Pago, RegistroAlmacenero, ArchivosAdmFin, Arqueo, RetirodeSocios, MovimientoAdmin, Honorarios,PagoRentaAnticipada
 from proyectos.models import Unidades, Proyectos
 from ventas.models import Pricing, VentasRealizadas, FeaturesUni
 from datetime import date, timedelta
@@ -760,6 +761,9 @@ def ctacteproyecto(request, id_proyecto):
 
     return render(request, 'ctacteproyecto.html', {"proyecto":proyecto, "datos":datos})
 
+
+
+
 def principalfinanzas(request):
 
     return render(request, 'principalfinanzas.html')
@@ -1215,6 +1219,7 @@ def boleto(request, id_cuenta, id_cuota):
 
     return render(request, 'boleto.html', {"ctacte":ctacte, "nombre_cuotas":nombre_cuotas})
 
+#PANEL DE CUENTA CORRIENTE
 def panelctacote(request):
 
     datos_ventas = VentasRealizadas.objects.all()
@@ -5392,6 +5397,54 @@ class DescargarTotalCuentas(TemplateView):
 
 
 
+#no esta lista aun
+def AgregarPagoRentaAnticipada(request):
+    template_name = "agregar_pago_renta_anticipada.html"
+    if request.method=="POST":
+        response=request.POST
+        #print(response)
+        '''
+        nuevo_pago= PagoRentaAnticipada(
+            cuenta_corriente=cta_corriente,
+            fecha=fecha,
+            metodo=metodo,
+        )
+        if nuevo_pago:
+            nuevo_pago.save()
+        return redirect('pagosrentaanticipada' id_cta_corriente) 
+            
+        '''
+    context={}
+    return render(request,template_name,context)
+
+        
+    
+def ListaPagosRentaAnticipada(request,**kwargs):
+    
+    id_cta_corriente=kwargs['id']
+    print(id_cta_corriente)
+    pagos_renta=PagoRentaAnticipada.objects.filter(cuenta_corriente=id_cta_corriente)
+
+    context={'pagos_renta':pagos_renta}
+
+    if request.method=='POST':
+        response=request.POST
+
+        for dato in response:
+            if dato=='eliminar':
+                pago=response[dato]
+        
+        pago=PagoRentaAnticipada.objects.get(pk=pago)
+        pago.delete()
+
+
+        return redirect('pagosrentaanticipada',id_cta_corriente)
+
+    
+
+    return render(request ,'pagos_renta_anticipada.html',context)
+
+    
 
 ### Funciones para trabajar
 

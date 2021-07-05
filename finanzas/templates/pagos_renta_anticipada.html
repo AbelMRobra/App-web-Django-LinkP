@@ -1,0 +1,11 @@
+{% load static %}
+<a href="{% url 'agregar_pago_renta_anticipada'%}">Agregar Pago</a>
+{{pagos.cuenta_corriente.id}} 
+{% for pagos  in pagos_renta %}
+
+
+   <ul>
+    <form action="" method="POST">  {% csrf_token %} <li>{{pagos.id}} {{pagos.cuenta_corriente}} {{pagos.fecha}} , {{pagos.cuenta_corriente.monto_renta_anticipada}} <button name='eliminar' value="{{pagos.id}}" type="submit">BORRAR</button></form> </li>
+   </ul>
+{% endfor %}
+    
