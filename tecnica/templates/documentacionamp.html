@@ -919,7 +919,7 @@
                                                     </div>
                                                     <div class="modal-body">
 
-                                                        <form method="POST" style="margin: 15px;">
+                                                        <form method="POST" enctype="multipart/form-data" style="margin: 15px;">
 
                                                             {% csrf_token %}
 
@@ -954,7 +954,7 @@
                                                     </div>
                                                     <div class="modal-body">
 
-                                                        <form method="POST" style="margin: 15px;">
+                                                        <form method="POST" enctype="multipart/form-data" style="margin: 15px;">
                                                             {% csrf_token %}
                                                             <div style="margin: 5px">
                                                     
@@ -1380,22 +1380,10 @@
                                         </td>
                                                                 
                                         {% if h.0.archivo_vigente %}
-                                        <td class="celdaadjplanif"><small>
-                                            
-                                                            <a href="{{ h.0.archivo_vigente.url }}">
-                                            
-                                                                <img src="{% static 'img/archivo-adjunto.png' %}" alt="" style="max-width:20px; height:auto; margin: 2px;"  >
-                                                        
-                                                            </a>
-                                            
-                                            
-                                        </small></td>
+                                        <td class="celdaadjplanif"><a href="{{ h.0.archivo_vigente.url }}"><i class="fa fa-file-code-o text-info"></i></a>
+                                          </td>
                                 
-                                        {% else %}
-                                
-                                        <td class="celdaadjplanif"><small>S/D</small></td>
-                                
-                                        {% endif %}
+                                        {% else %}<td class="celdaadjplanif"><small>S/D</small></td>{% endif %}
                                 
                                         {% for f in fechas_semana %}
                     

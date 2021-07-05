@@ -40,7 +40,27 @@
                     <div class="tab-content">
 
                         {% for d in data %}
-                        <div id="{{d.0}}" class="tab-pane fade in active">
+                        <div id="{{d.0}}" class="tab-pane fade in">
+
+                            <div class="row d-flex justify-content-between my-4 text-center">
+
+                                <h3 class="text-left">Cajas consolidadas {{d.0}}</h3>
+
+                                {% for i in d.2 %}
+
+                                <div class="col-2 bg-light shadow p-4 rounded-3">
+                                    <h6 style="height: 30px;">{{i.0|lower|capfirst}}</h6>
+                                    <p><small class="text-success">${{i.1|floatformat:0|intcomma}}</small></p>
+                                    <p><small class="text-danger">${{i.2|floatformat:0|intcomma}}</small></p>
+                                    <p><small class="text-info">${{i.3|floatformat:0|intcomma}}</small></p>
+                                </div>
+
+                                {% endfor %}
+  
+                             
+                            </div>
+
+                            <hr>
 
                             <div class="row my-2">
                                 <div class="col-6">
@@ -50,7 +70,21 @@
                                 </div>
                             </div>
 
+                            <form method="POST">
+                                {% csrf_token %}
+
+                            <div style="text-align: left; display: inline-block;">
+                            
+                                <button type="submit" name="borrar" value="1" class="btn btn-danger fa fa-trash"></button>
+                            
+                            </div>
+
+
+
                             <div class="table-responsive">
+
+                                
+
                                 <table id="example{{d.0}}" class="table table-bordered " style="width:100%; font-size: 14px;">
                                     <thead style="font-size: 12px;">
                                         <tr>
@@ -61,6 +95,7 @@
                                             <th> Categoria </th>
                                             <th> Nota </th>
                                             <th> Importe </th>
+                                            <th><i class="fa fa-trash"></i></th>
 
                                         </tr>
                                     </thead>
@@ -69,9 +104,9 @@
                                         {% for i in d.1 %}
                                         <tr>
                                             <td>{{i.fecha|date:"Y/m/d"}}</td>
-                                            <td><a href="#" data-toggle="modal"
+                                            <td style="min-width: 150px;"><a href="#" data-toggle="modal"
                                                 data-target="#Modal{{i.id}}">{{i.caja}}</a></td>
-                                            <td>{{i.creador}}</td>
+                                            <td style="min-width: 100px;">{{i.creador}}</td>
 
                                             <!-- Modal  -->
                                             <div id="Modal{{i.id}}" class="modal fade" tabindex="-1" role="dialog"
@@ -196,14 +231,19 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <td>{{i.cuenta}}</td>
-                                            <td>{{i.categoria}}</td>
-                                            <td>{{i.nota}}</td>
+                                            <td style="min-width: 100px;">{{i.cuenta}}</td>
+                                            <td style="min-width: 100px;">{{i.categoria}}</td>
+                                            <td style="min-width: 250px;">{{i.nota}}</td>
                                             {% if i.estado == "INGRESOS" %}
-                                            <td><b>${{i.importe|floatformat:0|intcomma}}</b></td>
+                                            <td style="min-width: 100px;"><b>${{i.importe|floatformat:0|intcomma}}</b></td>
                                             {% else %}
-                                            <td><b>-${{i.importe|floatformat:0|intcomma}}</b></td>
+                                            <td style="min-width: 100px;"><b>-${{i.importe|floatformat:0|intcomma}}</b></td>
                                             {% endif %}
+                                            <td>
+                                                <input type="checkbox" name="registro{{i.id}}" value="{{i.id}}" id="{{i.id}}" class="filled-in chk-col-blue" />
+                                                <label for="{{i.id}}"></label>
+                                            </td>
+                                            
                                         </tr>
 
                                         {% endfor %}
@@ -211,6 +251,8 @@
                                     </tbody>
 
                                 </table>
+
+                            </form>
                             </div>
                         </div>
                         {% endfor %}

@@ -2269,6 +2269,10 @@ def registro_contable(request, date_i):
 def editar_registro_contable(request):
 
     if request.method == 'POST':
+        for i in request.POST.items():
+            if "registro" in i[0]:
+                reg_eliminar = RegistroContable.objects.get(id = i[1])
+                reg_eliminar.delete()
         try:
             if request.POST["borrar"]:
                 sub_aux = RegistroContable.objects.get(id = request.POST["borrar"])
@@ -2302,7 +2306,14 @@ def editar_registro_contable(request):
     for i in users_registro:
         user = datosusuario.objects.get(identificacion = i)
         data_user = RegistroContable.objects.filter(creador = request.user.username, usuario = user)
-        data.append((user, data_user))
+        total_cajas = []
+        cajas_cargadas =  RegistroContable.objects.filter(creador = request.user.username, usuario = user).values_list("caja", flat=True).distinct()
+        for c in cajas_cargadas:
+            ingresos = sum(RegistroContable.objects.filter(creador = request.user.username, usuario = user, caja = c, estado = "INGRESOS").values_list("importe", flat=True))
+            gastos = sum(RegistroContable.objects.filter(creador = request.user.username, usuario = user, caja = c, estado = "GASTOS").values_list("importe", flat=True))
+            balance = ingresos - gastos
+            total_cajas.append((c, ingresos, gastos, balance))
+        data.append((user, data_user, total_cajas))
 
     return render(request, "users/registro_contable_editar.html", {"data":data})
 

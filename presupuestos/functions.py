@@ -95,7 +95,7 @@ def auditor_presupuesto(proyecto,fecha_desde, fecha_hasta):
                         errores += 1
                         errores_cap += 1
 
-                    articulos_eliminados.append((analisis, articulo, cantidad, modif))
+                    articulos_eliminados.append((analisis, articulo, cantidad, -modif))
 
                 df_dif_Q_hasta_aux = df_dif_Q_hasta[df_dif_Q_hasta['Capitulo'] == capitulo]
 
