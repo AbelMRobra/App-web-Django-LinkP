@@ -48,7 +48,7 @@ urlpatterns = [
 
    
     path("pagosrentaanticipada/<int:id>" ,login_required(views.PagosRentaAnticipada) ,name='pagosrentaanticipada'),
-    #path("crearcompromisosrenta/" ,login_required(views.CompromisosRentasAnticipadas) ,name='crearcompromisosrenta'),
+    
     
     #----------------URL ADMINISTRACION -----------------------------------------
 
