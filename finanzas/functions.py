@@ -204,6 +204,10 @@ def promedio_almacenero(almacenero):
                 for f2 in features_unidad:
                     contado = contado*f2.feature.inc
                     precio_m2_disponible += contado
+
+                print(m2_disponible)
+                print(precio_m2_disponible)
+                print(precio_m2_disponible/m2_disponible)
                 #except:
                     #precio_m2_disponible += 0
         porc_dispo = 0
