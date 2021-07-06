@@ -51,9 +51,6 @@ urlpatterns = [
    
     path("pagosrentaanticipada/<int:id>" ,login_required(views.PagosRentaAnticipada) ,name='pagosrentaanticipada'),
     
-    
-    url(r'^rentaanticipada/(?P<id_proyecto>\d+)/$', login_required(views.rentaanticipada), name = 'Renta anticipada'),
-    
     #----------------URL ADMINISTRACION -----------------------------------------
 
     url(r'^movimientoadmin/$', login_required(views.movimientoadmin), name = 'Movimiento administración'),
