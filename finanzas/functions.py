@@ -191,6 +191,7 @@ def promedio_almacenero(almacenero):
         unidades = Unidades.objects.filter(proyecto = proyecto)
 
         for u in unidades:
+            m2 = 0
             if u.sup_equiv > 0:
                 m2 = round(u.sup_equiv, 2)
             else:
@@ -205,9 +206,9 @@ def promedio_almacenero(almacenero):
                     contado = contado*f2.feature.inc
                     precio_m2_disponible += contado
 
-                print(m2_disponible)
-                print(precio_m2_disponible)
-                print(precio_m2_disponible/m2_disponible)
+                print(m2)
+                print(contado)
+                print(contado/m2)
                 #except:
                     #precio_m2_disponible += 0
         porc_dispo = 0
