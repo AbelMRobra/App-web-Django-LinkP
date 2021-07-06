@@ -68,6 +68,12 @@ class Comparativas(models.Model):
             NO_VISTO = "NO_VISTO"
             NO_CONFORME = "VISTO NO CONFORME"
 
+    class tipo_compra(models.TextChoices):
+
+            MATERIALES = "MATERIALES"
+            SERVICIOS = "SERVICIOS"
+            CONTRATOS = "CONTRATOS"
+
     proveedor = models.ForeignKey(Proveedores, on_delete=models.CASCADE, verbose_name="Nombre del contratista")
     contrato = models.ForeignKey(Contratos, on_delete=models.CASCADE, verbose_name="Vincala a un contrato", blank=True, null=True)
     proyecto = models.CharField(verbose_name="Proyecto", blank=True, null=True, max_length=200)
@@ -84,6 +90,7 @@ class Comparativas(models.Model):
     autoriza = models.CharField(choices=autoriza.choices, max_length=20, verbose_name="Autoriza", blank=True, null=True)
     publica = models.CharField(choices=publica.choices, default=publica.SI, max_length=20, verbose_name="Es publica?", blank=True, null=True)
     creador = models.CharField(verbose_name="Crador", blank=True, null=True, max_length=200) 
+    tipo_oc = models.CharField(choices=tipo_compra.choices, max_length=40, verbose_name="Tipo de OC", blank=True, null=True)
 
     class Meta:
         verbose_name = "Comparativa"

@@ -18,7 +18,13 @@ urlpatterns = [
     url(r'^comparativas/(?P<estado>\d+)/(?P<creador>\d+)$', login_required(views.comparativas), name = 'Comparativas'),
     url(r'^comparativas/(?P<id_comp>\d+)$', login_required(views.editarcomparativas), name = 'Editar comparativas'),
     url(r'^mensajecomparativas/(?P<id_comparativa>\d+)/$', login_required(views.mensajescomparativas), name = 'Mensajes en comparativas'),
+    
+
+    ## -----------------> Templates para el panel de autorización de OC/OP - Exclusivo del socio gerente 1
+    url(r'^ocautorizadas/$', login_required(views.principalautorizacion), name = 'Principal OC-OP'),
+    url(r'^ocautorizarg1/(?P<estado>\d+)/(?P<creador>\d+)$', login_required(views.ocautorizargerente1), name = 'Comparativas G1'),
     url(r'^ocautorizadas/(?P<estado>\d+)/$', login_required(views.panelvisto), name = 'OC autorizadas'),
+    ## -----------------> Templates para otra cosa
     url(r'^listaretiros$', login_required(views.listaretiros), name = 'Lista de retiros'),
     url(r'^listacomprasretiros$', login_required(views.comprasdisponibles), name = 'Compras para retirar'),
     url(r'^cargaretiro/(?P<nombre>\d+)/$', login_required(views.cargaretiro), name = 'Carga de retiros'),
