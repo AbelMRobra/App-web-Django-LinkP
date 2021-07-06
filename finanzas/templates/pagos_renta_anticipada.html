@@ -1,0 +1,290 @@
+{% extends "users/inicio2.html" %}
+
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+
+
+<div class="container-fluid ">
+
+    <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+            <h3 class="text-themecolor">Panel de renta anticipada</h3>
+        </div>
+
+        <div class="col-md-7 align-self-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'Panel cuentas corrientes' %}">Panel</a></li>
+                <li class="breadcrumb-item">Renta ant.</li>
+            </ol>
+        </div>
+    </div>
+</div>
+
+
+<div class="row ">
+    <div class="col-12">
+        <div class="card overflow-auto">
+            <div class="card-body">
+
+                <div style="text-align: center; margin-bottom: 50px;">
+                    <img src="{{proyecto.iamgen.url}}" class="img-fluid" alt="..."
+                        style="max-width:200px;width:auto;height:auto; margin-top: 5px; margin-bottom: 5px;">
+                </div>
+
+                <div style="margin: 5px;">
+                    <a href="#" data-toggle="modal" data-target="#ModalRenta"><i class="fa fa-plus-circle mr-2"></i><b>Añadir</b></a>
+
+                </div>
+                <!-- Modal  -->
+                <div class="modal fade" id="ModalRenta" tabindex="-1" role="dialog" aria-labelledby="ModalRenta"
+                    aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header"
+                                style="background: rgb(36,160,237);
+                             background: linear-gradient(315deg, rgba(36,160,237,1) 0%, rgba(56,56,130,1) 22%, rgba(0,212,255,1) 100%);">
+                                <h5 class="modal-title text-light" id="exampleModalLongTitle">Añadir renta</h5>
+                                <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form method="POST">
+
+                                    {% csrf_token %}
+
+                                    <p class="my-2">Monto</p>
+                                    <div class="mb-3">
+                                        <input type="number" class="form-control form-control" name="monto" placeholder="ej: $ 15000">
+                                    </div>
+                                    <p class="my-2">Cantidad</p>
+                                    <div class="mb-3">
+                                        <input type="number" class="form-control form-control" name="cantidad" placeholder="ej: 5">
+                                    </div>
+                                    <p class="my-2">Fecha</p>
+                                    <div class="mb-3">
+                                        <input type="date" class="form-control form-control" name="fecha_inicio"
+                                        min="2008-01-01">
+                                    </div>
+                                    <p class="my-2">Recordar no agregar pagos en los dias posteriores a 27 de cada mes para evitar errores en el sistema.</p>
+
+
+                                    <div>
+                                        <button class="btn btn-info" type="submit" name="agregar" value="agregar"
+                                            style="margin-top: 10px;">Añadir</button>
+
+                                    </div>
+                                </form>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-info" data-dismiss="modal">Cerrar</button>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <table id="example" class="table table-striped table-bordered mt-4">
+                    <thead>
+
+                        <tr>
+                            <th>Cta cte</th>
+                            <th>Fecha</th>
+                            <th>Monto pagado</th>
+                            <th>Monto actual</th>
+                            <th>Estado</th>
+                            <th></th>
+
+
+                        </tr>
+                    </thead>
+
+                    <tbody style="font-size: 12px;">
+
+                        {% for pagos in pagos_renta %}
+                        <tr>
+
+                            <td>{{pagos.cuenta_corriente}}</td>
+                            <td>{{pagos.fecha|date:"Y-m-j"}}</td>
+                            <td>{{pagos.monto_pagado|floatformat:0|intcomma}}</td>
+                            <td><a href="#" class="btn text-info" data-toggle="modal"
+                                    data-target="#ModalModificarMonto{{pagos.id}}">{{monto_actual|floatformat:0|intcomma}}</a></td>
+
+                            {% if pagos.pagado is True %}
+                            <td><a href="#" class="btn text-info" data-toggle="modal"
+                                    data-target="#ModalModificarEstado{{pagos.id}}">Pagado</a></td>
+                            {% else %}
+
+                            <td><a href="#" class="btn text-info" data-toggle="modal"
+                                    data-target="#ModalModificarEstado{{pagos.id}}">No pagado</a></td>
+                            {% endif %}
+                            <td><a href="#" class="btn" data-toggle="modal"
+                                data-target="#ModalBorrar{{pagos.id}}"><i class="fa fa-trash-o text-danger"></i></a></td>
+
+
+
+
+
+                            <!-- Modal modificar monto -->
+                            <div class="modal fade" id="ModalModificarMonto{{pagos.id}}" tabindex="-1" role="dialog"
+                                aria-labelledby="ModalModificarMonto{{pagos.id}}" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header"
+                                            style="background: rgb(36,160,237);
+                                background: linear-gradient(315deg, rgba(36,160,237,1) 0%, rgba(56,56,130,1) 22%, rgba(0,212,255,1) 100%);">
+                                            <h5 class="modal-title text-light" id="exampleModalLongTitle">Modificar
+                                                monto
+                                            </h5>
+                                            <button type="button" class="close text-light" data-dismiss="modal"
+                                                aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form method="POST">
+
+                                                {% csrf_token %}
+                                                <span>Monto</span>
+                                                <input type="number" class="form-control form-control"
+                                                    name="nuevo_monto" value="{{monto_actual}}">
+
+                                                <div>
+                                                    <button class="btn btn-danger" type="submit" name="modificar_monto"
+                                                        value="{{pagos.id}}"
+                                                        style="margin-top: 10px;">Modificar</button>
+
+                                                </div>
+                                            </form>
+
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-info"
+                                                data-dismiss="modal">Cerrar</button>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Modal modificar estado -->
+                            <div class="modal fade" id="ModalModificarEstado{{pagos.id}}" tabindex="-1" role="dialog"
+                                aria-labelledby="ModalModificarEstado{{pagos.id}}" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header"
+                                            style="background: rgb(36,160,237);
+                                background: linear-gradient(315deg, rgba(36,160,237,1) 0%, rgba(56,56,130,1) 22%, rgba(0,212,255,1) 100%);">
+                                            <h5 class="modal-title text-light" id="exampleModalLongTitle">Modificar
+                                                estado
+                                            </h5>
+                                            <button type="button" class="close text-light" data-dismiss="modal"
+                                                aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form method="POST">
+
+                                                {% csrf_token %}
+
+                                            
+                                                <input type="checkbox" id="check{{pagos.id}}" name="pagado"
+                                                   class="form-control form-control"{% if pagos.pagado == True %}  checked {% else %} value="no-pagado" {% endif %}>
+                                                <label for="check{{pagos.id}}">Pagado</label>
+
+                                                <div>
+                                                    <button class="btn btn-danger" type="submit" name="modificar_pagado"
+                                                        value="{{pagos.id}}"
+                                                        style="margin-top: 10px;">Modificar</button>
+
+                                                </div>
+                                            </form>
+
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-info"
+                                                data-dismiss="modal">Cerrar</button>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <!-- Modal  borrar-->
+                            <div class="modal fade" id="ModalBorrar{{pagos.id}}" tabindex="-1" role="dialog"
+                                aria-labelledby="ModalBorrar{{pagos.id}}" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header"
+                                            style="background: rgb(36,160,237);
+                                background: linear-gradient(315deg, rgba(36,160,237,1) 0%, rgba(56,56,130,1) 22%, rgba(0,212,255,1) 100%);">
+                                            <h5 class="modal-title text-light" id="exampleModalLongTitle">Borrar renta
+                                            </h5>
+                                            <button type="button" class="close text-light" data-dismiss="modal"
+                                                aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form method="POST">
+
+                                                {% csrf_token %}
+
+                                                <p>¿Estas seguro que deseas borra una renta?</p>
+                                                <p>Esta accion es irreversible</p>
+                                                <div>
+                                                    <button class="btn btn-danger" type="submit" name="eliminar"
+                                                        value="{{pagos.id}}" style="margin-top: 10px;">Eliminar</button>
+
+                                                </div>
+                                            </form>
+
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-info"
+                                                data-dismiss="modal">Cerrar</button>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js" defer></script>
+<script src="https://cdn.datatables.net/1.10.23/js/dataTables.bootstrap4.min.js" defer></script>
+
+<script>
+    $(document).ready(function () {
+        $('#example').DataTable({
+            "language": {
+                "lengthMenu": "Mostar _MENU_ documentos",
+                "zeroRecords": "No se encontro nada - perdon ",
+                "info": "Pagina _PAGE_ de _PAGES_",
+                "infoEmpty": "Sin registros disponibles",
+                "infoFiltered": "(filtrado de _MAX_ registros totales)",
+                "search": "Buscar"
+            },
+            "paging": true,
+            "ordering": false,
+            "info": false
+        });
+    });
+</script>
+
+{% endblock %}

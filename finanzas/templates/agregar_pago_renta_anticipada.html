@@ -1,0 +1,20 @@
+{% load static %}
+<form action="" method="post"> {% csrf_token %}
+
+  <input type="date" name="fecha" id="fecha">
+
+
+    
+<select name="metodo" class="custom-select"
+    style="width: 300px;">
+    <option value="EFECTIVO">EFECTIVO</option>
+    <option value="CHEQUE">CHEQUE</option>
+    <option value="TRANSFERENCIA">TRANSFERENCIA </option>
+    <option value="DEPOSITO">DEPOSITO </option>
+    <option value="DOLAR">DOLAR </option>
+</select>
+        
+
+    <button type="submit">agregar</button>
+</form>
+

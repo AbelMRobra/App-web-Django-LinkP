@@ -4,6 +4,9 @@ from . import views
 from .views import DescargarCuentacorriente, DescargarTotalCuentas, PdfPrueba, DescargarResumen, DescargarControlUnidades
 from django.contrib.auth.decorators import login_required
 
+
+
+
 urlpatterns = [
     #----------------URL PARA FIANANZAS -----------------------------------------
 
@@ -11,6 +14,8 @@ urlpatterns = [
     url(r'^principalfinanzas/$', login_required(views.principalfinanzas), name = 'Principal Finanzas'),
     url(r'^precioreferencia/$', login_required(views.precioreferencia), name = 'Precio referencia'),
     url(r'^prueba/$', login_required(views.prueba), name = 'Prueba'),
+
+    path("pagorentaanticipada/<int:id>", login_required(views.ListaPagosRentaAnticipada), name = 'Pago renta anticipada'),
 
 
     #----------------URL CUENTAS CORRIENTES -----------------------------------------
@@ -41,6 +46,10 @@ urlpatterns = [
     url(r'^calculadora/$', login_required(views.calculadora), name = 'Calculadora'),
 
     url(r'^superavalorcta/(?P<id_cuota>\d+)/$', login_required(views.superarvalorcta), name = 'Cta cliente valor superado'),
+
+
+   
+    path("pagosrentaanticipada/<int:id>" ,login_required(views.PagosRentaAnticipada) ,name='pagosrentaanticipada'),
     
     #----------------URL ADMINISTRACION -----------------------------------------
 

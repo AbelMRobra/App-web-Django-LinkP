@@ -1931,6 +1931,18 @@ def informe(request):
 
     return render(request, 'stockant.html', {'datos': datos})
 
+def instructivosp(request):
+    
+    return render(request, 'SP/instructivosp.html')
+
+def firmaroc(request):
+    
+    return render(request, 'SP/firmaroc.html')
+
+def confirmarop(request):
+    
+    return render(request, 'SP/confirmarop.html')
+
 
 # ----------------------------------------------------- VISTAS PARA CARGA DE RETIROS----------------------------------------------
 
