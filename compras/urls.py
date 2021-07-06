@@ -5,10 +5,13 @@ from .views import Reegistrodecompras, CompOCestado
 from django.contrib.auth.decorators import login_required
 
 urlpatterns = [ 
+
+    # templates de compras
+
     url(r'^principalcompras$', login_required(views.principalcompras), name = 'Principal compras'), 
     url(r'^cargarocautorizar$', login_required(views.cargarocautorizar), name = 'Cargar O.C para autorizar'), 
     url(r'^proveedores$', login_required(views.proveedores), name = 'Proveedores'),
-
+    
 
     url(r'^apiarticulos$', login_required(views.ArticulosAPIView.as_view()), name = 'apiarticulos'),
     url(r'^cargacompras$', login_required(views.cargacompras), name = 'Carga compras'),

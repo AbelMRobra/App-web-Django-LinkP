@@ -208,7 +208,6 @@ def detalleinforme(request, fecha_i, fecha_f, proyecto):
 
     return render(request, 'detalle_informe.html', {"datos":datos})
 
-#AQUI QUEDE
 def informecompras(request):
 
     datos = 0
@@ -1930,7 +1929,6 @@ def informe(request):
     }
 
     return render(request, 'stockant.html', {'datos': datos})
-
 
 # ----------------------------------------------------- VISTAS PARA CARGA DE RETIROS----------------------------------------------
 
