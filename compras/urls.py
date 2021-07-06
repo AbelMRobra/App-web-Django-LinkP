@@ -5,11 +5,6 @@ from .views import Reegistrodecompras, CompOCestado
 from django.contrib.auth.decorators import login_required
 
 urlpatterns = [ 
-    # templates para SP
-    url(r'^instructivosp$', login_required(views.instructivosp), name = 'Instructivo SP'),
-    url(r'^firmaroc$', login_required(views.firmaroc), name = 'Firmar OC SP'),
-    url(r'^confirmarop$', login_required(views.confirmarop), name = 'Confirmar OP SP'),
-
 
     # templates de compras
 
