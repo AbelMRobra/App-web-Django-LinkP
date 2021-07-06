@@ -153,7 +153,8 @@ class PagoRentaAnticipada(models.Model):
 
     cuenta_corriente = models.ForeignKey(CuentaCorriente, on_delete=models.CASCADE, verbose_name = "Cuenta corriente")
     fecha = models.DateField(verbose_name = "Fecha del pago")
-    metodo = models.CharField(choices=Metodo.choices, max_length=20, verbose_name="Metodo", blank=True, null=True)
+    pagado = models.BooleanField(default=False)
+    monto_pagado=models.FloatField(verbose_name="Monto pagado de renta anticipada" ,default=0.0)
     
 
     class Meta:
