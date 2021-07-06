@@ -199,18 +199,14 @@ def promedio_almacenero(almacenero):
             m2_total += m2
             if u.estado == "DISPONIBLE":
                 m2_disponible += m2
-                #try:
-                contado = m2*proyecto.desde
-                features_unidad = FeaturesUni.objects.filter(unidad = u)
-                for f2 in features_unidad:
-                    contado = contado*f2.feature.inc
+                try:
+                    contado = m2*proyecto.desde
+                    features_unidad = FeaturesUni.objects.filter(unidad = u)
+                    for f2 in features_unidad:
+                        contado = contado*f2.feature.inc
                     precio_m2_disponible += contado
-
-                print(m2)
-                print(contado)
-                print(contado/m2)
-                #except:
-                    #precio_m2_disponible += 0
+                except:
+                    precio_m2_disponible += 0
         porc_dispo = 0
 
         if m2_disponible != 0:
