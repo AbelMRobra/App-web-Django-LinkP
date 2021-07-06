@@ -26,28 +26,6 @@ from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
 from .serializers import ArtSerializer
 from .functions import auditor_presupuesto,auditor_presupuesto_p
 
-'''
-def historico_presupuesto(request):
-
-    if request.method == 'POST':
-
-        fecha_desde = request.POST['fecha_desde']
-        fecha_hasta = request.POST['fecha_hasta']
-        proyecto = Proyectos.objects.get(id = int(request.POST['fecha_desde']))
-
-        # ---> Almacen 1
-
-        almacen_desde = PresupuestosAlmacenados.objects.filter(proyecto = proyecto, nombre = str(fecha_desde))
-        almacen_hasta = PresupuestosAlmacenados.objects.filter(proyecto = proyecto, nombre = str(fecha_hasta))
-
-        capitulos = Capitulos.objects.all()
-
-        for cap in capitulos:
-
-
-    pass
-'''
-
 
 def insum_list(request):
 
@@ -2280,14 +2258,9 @@ def proyectos(request):
 def InformeArea(request):
 
     proyectos = Proyectos.objects.all()
-
-
     capitulos = Capitulos.objects.all()
-
     proy_presup = []
-
     contador = 0
-
     proyecto_300 = 0
     m2_300 = 0
 
@@ -2312,11 +2285,8 @@ def InformeArea(request):
         if "300" in proyecto.nombre:
 
             try:
-
                 proyecto_300 = proyecto
-
                 datos_presup = Presupuestos.objects.get(proyecto = proyecto)
-
                 valor_proyecto_300 = valor_proyecto_300 + datos_presup.valor
                 vr_M2_300 = vr_M2_300 + valor_proyecto_300/m2_300
                 valor_proyecto_materiales_300 = valor_proyecto_materiales_300 + datos_presup.saldo_mat
@@ -2325,11 +2295,9 @@ def InformeArea(request):
                 total_fdr_300 = total_fdr_300 + datos_presup.fdr
                 total_ant_300  =  total_ant_300 + datos_presup.anticipos
                 imprevisto_300 = imprevisto_300 + datos_presup.imprevisto
-
                 saldo_total_300 = saldo_total_300 + valor_proyecto_materiales_300 + valor_proyecto_mo_300 + total_creditos_300 + total_fdr_300 + total_ant_300 + imprevisto_300
 
             except:
-                
                  basura = 1
 
         else:
@@ -2337,7 +2305,6 @@ def InformeArea(request):
             try:
 
                 datos_presup = Presupuestos.objects.get(proyecto = proyecto)
-
                 valor_proyecto = datos_presup.valor
                 vr_M2 = valor_proyecto/proyecto.m2
                 valor_proyecto_materiales = datos_presup.saldo_mat
@@ -2353,6 +2320,25 @@ def InformeArea(request):
             except:
 
                 basura = 1
+
+            try:
+                # Trato de establecer el precio de Link-P
+
+                valor_linkp = Presupuestos.objects.get(proyecto = proyecto).valor
+                parametros = Prametros.objects.get(proyecto = proyecto)
+                valor_linkp = (valor_linkp/(1 + parametros.tasa_des_p))*(1 + parametros.soft)       
+                valor_linkp = valor_linkp*(1 + parametros.imprevitso)
+                porc_terreno = parametros.terreno/parametros.proyecto.m2*100
+                porc_link = parametros.link/parametros.proyecto.m2*100
+                aumento_tem = parametros.tem_iibb*parametros.por_temiibb*(1+parametros.ganancia)
+                aumento_comer = parametros.comer*(1+(porc_terreno + porc_link)/100)*(1+parametros.ganancia)           
+                valor_linkp = valor_linkp/(1-aumento_tem- aumento_comer)           
+                m2 = (parametros.proyecto.m2 - parametros.terreno - parametros.link)
+                valor_costo = valor_linkp/m2
+                proyecto.precio_linkp = valor_costo
+                proyecto.save()
+            except:
+                pass
     
     proy_presup.append((proyecto_300, valor_proyecto_300, vr_M2_300, valor_proyecto_materiales_300, valor_proyecto_mo_300, total_creditos_300, saldo_total_300, total_fdr_300, total_ant_300, imprevisto_300))
 
