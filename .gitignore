@@ -3,5 +3,5 @@ __pycache__/
 *.sqlite3
 static/
 staticfiles/
-*agenda.settings.+y
+agenda/*.settings.+y
 
