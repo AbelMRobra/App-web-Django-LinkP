@@ -201,7 +201,26 @@
             </div>
         </div>
     </div>
+    {% if user.username == "AR" %}
+    <div class="col-lg-3 col-xlg-3">
+        <div class="card">
+            <div class="card-body text-center">
+                <div>
+                    <h6>Panel SP</h6>
+                </div>
 
+                <div>
+                    <img src="{% static 'img/EncuestaPostventa.png' %}" alt="" style="max-width:100px; height:auto; margin: 5px;">
+                </div>
+
+                <a href="{% url 'Instructivo SP' %}"><button class="btn btn-dark">
+                        Ingresar</button></a>
+                
+            </div>
+        </div>
+    </div>
+    {% endif %}
+        
     
 </div>
 

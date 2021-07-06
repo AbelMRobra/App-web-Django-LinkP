@@ -3685,6 +3685,18 @@ def superarvalorcta(request, id_cuota):
 
     return render(request, 'superarvalorcta.html', {'cuota':cuota, 'superado':superado, 'data_cuota':data_cuota})
 
+def rentaanticipada(request, id_proyecto):
+
+    proyecto = Proyectos.objects.get(id = id_proyecto)
+
+    datos = CuentaCorriente.objects.filter(venta__proyecto = proyecto)
+
+    return render(request, 'rentaanticipada.html', {"proyecto":proyecto, "datos":datos})
+
+def ListaPagosRentaAnticipada(request, id ):
+
+    return render(request, 'pagos_renta_anticipada.html')
+
 class DescargarCuentacorriente(TemplateView):
 
     def get(self, request, id_cuenta, *args, **kwargs):

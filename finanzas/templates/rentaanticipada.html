@@ -47,15 +47,14 @@
                         <tr>
 
                             <th>Comprador</th>
-                            <th style="width: 105px;">Fecha</th>
-                            <th style="width: 85px;">Piso</th>
-                            <th>No.</th>
+                            <th>Fecha</th>
+                            <th>Piso</th>
+                            <th>Nom.</th>
                             <th>Tipo</th>
                             <th>Sup.</th>
-                            <th>Asign.</th>
-                            <th>Precio venta</th>
+                            <th>Asignacion</th>
+                            <th>Precio de venta</th>
                             <th style="text-align: center;"> Panel</th>
-                            <th style="text-align: center;"> Renta Ant.</th>
                             <th style="min-width: 100px; text-align: center;">Acciones</th>
                         </tr>
                     </thead>
@@ -86,10 +85,6 @@
                             <td style="text-align: center;"><a href="{% url 'Cuenta corriente venta' i.id %}" class="btn btn-sm btn-success"><span
                                         class="hint--left hint--danger"
                                         aria-label="Accede a la cuenta corriente!">Ingresar</span></a>
-                            </td>
-                            <td style="text-align: center;"><a href="{% url 'Pago renta anticipada' i.id %}" class="btn btn-sm btn-info"><span
-                                        class="hint--left hint--danger"
-                                        aria-label="Accede a la renta anticipada!">R.A</span></a>
                             </td>
                             <td style="text-align: center;">
                                 <a href="{% url 'Reporte de pdf de cuentas corrientes' i.id %}" class="fa fa-file-pdf-o"></a>

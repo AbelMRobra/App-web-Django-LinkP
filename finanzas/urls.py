@@ -15,6 +15,8 @@ urlpatterns = [
     url(r'^precioreferencia/$', login_required(views.precioreferencia), name = 'Precio referencia'),
     url(r'^prueba/$', login_required(views.prueba), name = 'Prueba'),
 
+    path("pagorentaanticipada/<int:id>", login_required(views.ListaPagosRentaAnticipada), name = 'Pago renta anticipada'),
+
 
     #----------------URL CUENTAS CORRIENTES -----------------------------------------
     url(r'^appfinanzas/$', login_required(views.appfinanzas), name = 'App Finanzas'),
@@ -49,6 +51,8 @@ urlpatterns = [
    
     path("pagosrentaanticipada/<int:id>" ,login_required(views.PagosRentaAnticipada) ,name='pagosrentaanticipada'),
     
+    
+    url(r'^rentaanticipada/(?P<id_proyecto>\d+)/$', login_required(views.rentaanticipada), name = 'Renta anticipada'),
     
     #----------------URL ADMINISTRACION -----------------------------------------
 
