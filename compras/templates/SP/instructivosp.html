@@ -5,6 +5,7 @@
 
 {% block content %}
 
+
 <div class="container-fluid">
     <div class="row page-titles">
         <div class="col-md-5 align-self-center">
@@ -31,30 +32,59 @@
                 nesciunt inventore blanditiis! Ducimus, eaque commodi.</h6>
         </div>
     </div>
-    <div class="row">
-        <div class="col-6">
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="card-title">Firmar OC</h4>
-                    <h6 class="card-subtitle">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quia, aperiam?
-                        Mollitia hic facere aperiam, deleniti tenetur, unde fugiat deserunt provident dolorum eaque
-                        dolorem explicabo error eligendi itaque modi. Laboriosam, alias.</h6>
-                    <a href="{% url 'Firmar OC SP'%}"><button class="btn btn-success">Firmar OC</button></a>
+
+    <div class="row d-flex justify-content-center ">
+    
+        <div class="col-12 col-md-4 col-lg-3 col-xlg-3">
+            <div class="card" id="img-tarjeta">
+                <div class="card-body text-center">
+                    <div>
+                        <h6>OC</h6>
+                    </div>
+                    <small>
+                        Firma aqui tus OC
+                    </small>
+
+                    <div>
+                        <img src="{% static 'img/checkOC.png' %}" alt=""
+                            style="max-width:100px; height:auto; margin: 5px;">
+                    </div>
+
+                    <a href="#"><button class="btn btn-info">
+                            Ingresar</button></a>
+
                 </div>
             </div>
         </div>
-        <div class="col-6">
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="card-title">Confirmar OP</h4>
-                    <h6 class="card-subtitle">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quia, aperiam?
-                        Mollitia hic facere aperiam, deleniti tenetur, unde fugiat deserunt provident dolorum eaque
-                        dolorem explicabo error eligendi itaque modi. Laboriosam, alias.</h6>
-                    <a href="{% url 'Confirmar OP SP'%}"><button class="btn btn-primary">Confirmar OP</button></a>
+        <div class="col-12 col-md-4 col-lg-3 col-xlg-3">
+            <div class="card" id="img-tarjeta">
+                <div class="card-body text-center">
+                    <div>
+                        <h6>OP</h6>
+                    </div>
+                    <small>
+                        Confirma aqui tus OP
+                    </small>
+
+                    <div>
+                        <img src="{% static 'img/contratos.png' %}" alt=""
+                            style="max-width:100px; height:auto; margin: 5px;">
+                    </div>
+
+                    <a href="#"><button class="btn btn-primary">
+                            Ingresar</button></a>
+
                 </div>
             </div>
         </div>
     </div>
 </div>
+<style>
+    #img-tarjeta:hover{
+        transform: scale(1.07);
+        box-shadow: 2px 4px 4px 1px rgba(0, 0, 0, 0.1)
+    }
+
+</style>
 
 {% endblock %}

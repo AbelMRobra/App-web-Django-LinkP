@@ -35,7 +35,7 @@
                 </div>
 
                 <div style="margin: 5px;">
-                    <a href="#" data-toggle="modal" data-target="#ModalRenta">Añadir</a>
+                    <a href="#" data-toggle="modal" data-target="#ModalRenta"><i class="fa fa-plus-circle mr-2"></i><b>Añadir</b></a>
 
                 </div>
                 <!-- Modal  -->
@@ -56,19 +56,25 @@
 
                                     {% csrf_token %}
 
+                                    <p class="my-2">Monto</p>
+                                    <div class="mb-3">
+                                        <input type="number" class="form-control form-control" name="monto" placeholder="ej: $ 15000">
+                                    </div>
                                     <p class="my-2">Cantidad</p>
                                     <div class="mb-3">
-                                        <input type="number" class="form-control form-control" name="cantidad">
+                                        <input type="number" class="form-control form-control" name="cantidad" placeholder="ej: 5">
                                     </div>
                                     <p class="my-2">Fecha</p>
                                     <div class="mb-3">
                                         <input type="date" class="form-control form-control" name="fecha_inicio"
-                                            min="2008-01-01">
+                                        min="2008-01-01">
                                     </div>
+                                    <p class="my-2">Recordar no agregar pagos en los dias posteriores a 27 de cada mes para evitar errores en el sistema.</p>
+
 
                                     <div>
                                         <button class="btn btn-info" type="submit" name="agregar" value="agregar"
-                                            style="margin-top: 10px;">Modificar</button>
+                                            style="margin-top: 10px;">Añadir</button>
 
                                     </div>
                                 </form>
@@ -87,7 +93,6 @@
                     <thead>
 
                         <tr>
-                            <th>Id</th>
                             <th>Cta cte</th>
                             <th>Fecha</th>
                             <th>Monto pagado</th>
@@ -104,19 +109,18 @@
                         {% for pagos in pagos_renta %}
                         <tr>
 
-                            <td>{{pagos.id}}</td>
                             <td>{{pagos.cuenta_corriente}}</td>
-                            <td>{{pagos.fecha}}</td>
-                            <td>{{pagos.monto_pagado}}</td>
-                            <td><a href="#" class="btn" data-toggle="modal"
-                                    data-target="#ModalModificarMonto{{pagos.id}}">{{monto_actual}}</a></td>
+                            <td>{{pagos.fecha|date:"Y-m-j"}}</td>
+                            <td>{{pagos.monto_pagado|floatformat:0|intcomma}}</td>
+                            <td><a href="#" class="btn text-info" data-toggle="modal"
+                                    data-target="#ModalModificarMonto{{pagos.id}}">{{monto_actual|floatformat:0|intcomma}}</a></td>
 
                             {% if pagos.pagado is True %}
-                            <td><a href="#" class="btn" data-toggle="modal"
+                            <td><a href="#" class="btn text-info" data-toggle="modal"
                                     data-target="#ModalModificarEstado{{pagos.id}}">Pagado</a></td>
                             {% else %}
 
-                            <td><a href="#" class="btn" data-toggle="modal"
+                            <td><a href="#" class="btn text-info" data-toggle="modal"
                                     data-target="#ModalModificarEstado{{pagos.id}}">No pagado</a></td>
                             {% endif %}
                             <td><a href="#" class="btn" data-toggle="modal"

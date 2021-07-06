@@ -5436,6 +5436,7 @@ def PagosRentaAnticipada(request,**kwargs):
     pagos_renta=PagoRentaAnticipada.objects.filter(cuenta_corriente=id_cta_corriente)
     mensaje=''
     if request.method=='POST':
+        response = request.POST
         
         datos={}
         for dato in response:
