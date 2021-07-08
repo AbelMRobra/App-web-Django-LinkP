@@ -1,3 +1,10 @@
 env/
 __pycache__/
 *.sqlite3
+static/
+staticfiles/
+/settings.+y
+/blue.png
+/logolinkp2.png
+/oficina.png
+/:q
