@@ -1,0 +1,135 @@
+{% extends "users/inicio2.html" %}
+
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+
+
+<div class="container-fluid ">
+    <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+            <h3 class="text-themecolor">Totalizador de renta anticipadas</h3>
+        </div>
+
+        <div class="col-md-7 align-self-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'Panel cuentas corrientes' %}">Panel</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'Cuenta corriente proyecto' proyecto %}">Administración</a> </li>
+                <li class="breadcrumb-item">Totalizador renta</li>
+            </ol>
+        </div>
+    </div>
+</div>
+
+
+<div class="row ">
+    <div class="col-12">
+        <div class="card overflow-auto">
+            <div class="card-body">
+                <h4 class="card-title"><span class="lstick"></span>
+                    Totalizador renta anticipada</h4>
+                    <h6 class="card-subtitle">Tabla de valores totalizadores de clientes en base en base a cada mes.</h6>
+
+
+                <style type="text/css">
+                    thead th {
+                        position: sticky;
+                        top: 0;
+                        z-index: 1;
+                        background-color: white;
+                    }
+
+                    .table-responsive {
+                        height: 63vh;
+                        overflow: scroll;
+
+                    }
+                </style>
+                <div class="table-responsive">
+                    <table id="example" class="table table-striped table-bordered mt-4" style="font-size: 14px;">
+                        <thead>
+
+                            <tr>
+                                <th class="sticky bg-body" style="min-width: 90px;max-width: 90px;">Fechas</th>
+                                {% for cliente in clientes %}
+                                <!--fechas en sentido horizontal-->
+
+                                <th class="sticky bg-body" style="font-size: 12px; width: 125px;">
+                                    {{cliente|lower|capfirst|truncatechars:20}}</th>
+
+                                {% endfor %}
+                                <th class="sticky bg-body">Total</th>
+                            </tr>
+                        </thead>
+
+                        <tbody style="font-size: 14px;">
+
+                            {% for mes in pagos_desglose %}
+                            <!--clientes y monto por cada mes-->
+                            <tr>
+
+                                {% for i in mes %}
+
+
+                                {% if forloop.counter == 1 %}
+                                <td class="sticky bg-body" style="min-width: 90px;max-width: 90px;">{{i}}</td>
+                                {% else %}
+                                {% if i|length is 2 %}
+
+                                {% if i.1 is False %}
+                                <td>-{{i.0}}</td>
+                                {% else %}
+                                <td style="color: rgb(49, 175, 10);">-{{i.0}}</td>
+                                {% endif %}
+
+                                {% else %}
+                                <td>-{{i}} </td>
+                                {% endif %}
+
+                                {% endif %}
+
+                                {% endfor %}
+                            </tr>
+                            {% endfor %}
+
+
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $('#example').DataTable({
+            "language": {
+                "lengthMenu": "Mostar _MENU_ documentos",
+                "zeroRecords": "No se encontro nada - perdon ",
+                "info": "Pagina _PAGE_ de _PAGES_",
+                "infoEmpty": "Sin registros disponibles",
+                "infoFiltered": "(filtrado de _MAX_ registros totales)",
+                "search": "Buscar"
+            },
+            "paging": false,
+            "ordering": false,
+            "info": false,
+            "searching": false,
+            dom: 'Bfrtip',
+            buttons: [
+                {
+                    extend: 'excelHtml5',
+                    title: 'Totalizador de renta anticipada - clientes'
+                },
+            ]
+        });
+    });
+</script>
+
+{% endblock %}

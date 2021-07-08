@@ -15,8 +15,9 @@ urlpatterns = [
     url(r'^precioreferencia/$', login_required(views.precioreferencia), name = 'Precio referencia'),
     url(r'^prueba/$', login_required(views.prueba), name = 'Prueba'),
 
-    path("pagorentaanticipada/<int:id>", login_required(views.ListaPagosRentaAnticipada), name = 'Pago renta anticipada'),
+    path("pagosrentaanticipada/<int:id>/<int:id_proy>" ,login_required(views.pagosRentaAnticipada) ,name='pagosrentaanticipada'),
 
+    path("totalizadortentaanticipada/<int:id>" ,login_required(views.totalizadorRentaAnticipada) ,name='Totalizador Renta Anticipada'),
 
     #----------------URL CUENTAS CORRIENTES -----------------------------------------
     url(r'^appfinanzas/$', login_required(views.appfinanzas), name = 'App Finanzas'),
@@ -47,10 +48,6 @@ urlpatterns = [
 
     url(r'^superavalorcta/(?P<id_cuota>\d+)/$', login_required(views.superarvalorcta), name = 'Cta cliente valor superado'),
 
-
-   
-    path("pagosrentaanticipada/<int:id>" ,login_required(views.PagosRentaAnticipada) ,name='pagosrentaanticipada'),
-    
     #----------------URL ADMINISTRACION -----------------------------------------
 
     url(r'^movimientoadmin/$', login_required(views.movimientoadmin), name = 'Movimiento administración'),

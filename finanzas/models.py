@@ -83,7 +83,6 @@ class CuentaCorriente(models.Model):
     venta = models.ForeignKey(VentasRealizadas, on_delete=models.CASCADE, verbose_name = "Venta Realizada")
     flujo = models.TextField(verbose_name="Flujo", blank=True, null=True)
     flujo_m3 = models.TextField(verbose_name="Flujo en M3", blank=True, null=True)
-    monto_renta_anticipada=models.FloatField(verbose_name="Monto fijo de renta anticipada", blank=True, null=True)
 
     class Meta:
         verbose_name="Cuenta corriente"
@@ -155,6 +154,7 @@ class PagoRentaAnticipada(models.Model):
     fecha = models.DateField(verbose_name = "Fecha del pago")
     pagado = models.BooleanField(default=False)
     monto_pagado=models.FloatField(verbose_name="Monto pagado de renta anticipada" ,default=0.0)
+    monto=models.FloatField(verbose_name="Monto fijo de renta anticipada", blank=True, null=True)
     
 
     class Meta:
@@ -162,7 +162,7 @@ class PagoRentaAnticipada(models.Model):
             verbose_name_plural="Pagos de renta anticipada"
 
     def __str__(self):
-        return str(self.cuenta_corriente) + 'Monto por mes ' + str(self.cuenta_corriente.monto_renta_anticipada)
+        return str(self.cuenta_corriente) 
 
 
 

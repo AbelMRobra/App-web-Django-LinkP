@@ -154,12 +154,8 @@
 
                                 {% endfor %}
 
-
-
                             </tbody>
                             
-
-
                         </table>
 
                         {% else %}
@@ -171,7 +167,7 @@
                                     <th class="sticky bg-body">Asignación</th>
                                     <th class="sticky bg-body">Moneda</th>
                                     {% for f in fechas %}
-                                    <th style="text-align: center;">{{f|slice:"8:10"}}/{{f|slice:"5:7"}}/{{f|slice:"2:4"}}</th>
+                                    <th class="sticky bg-body" style="text-align: center;">{{f|slice:"8:10"}}/{{f|slice:"5:7"}}/{{f|slice:"2:4"}}</th>
                                     {% endfor %}
                                 </tr>
 

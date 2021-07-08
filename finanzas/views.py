@@ -2,6 +2,7 @@ import os
 import datetime
 import pandas as pd
 import numpy as np
+from django.db.models import Sum
 from io import  BytesIO
 from xhtml2pdf import pisa
 from django.shortcuts import render,redirect
@@ -3685,17 +3686,7 @@ def superarvalorcta(request, id_cuota):
 
     return render(request, 'superarvalorcta.html', {'cuota':cuota, 'superado':superado, 'data_cuota':data_cuota})
 
-def rentaanticipada(request, id_proyecto):
 
-    proyecto = Proyectos.objects.get(id = id_proyecto)
-
-    datos = CuentaCorriente.objects.filter(venta__proyecto = proyecto)
-
-    return render(request, 'rentaanticipada.html', {"proyecto":proyecto, "datos":datos})
-
-def ListaPagosRentaAnticipada(request, id ):
-
-    return render(request, 'pagos_renta_anticipada.html')
 
 class DescargarCuentacorriente(TemplateView):
 
@@ -5407,91 +5398,196 @@ class DescargarTotalCuentas(TemplateView):
         wb.save(response)
         return response
 
+
 def GenerarFechas(fecha_inicio,cantidad):
     fecha_date=datetime.datetime.strptime(fecha_inicio,"%Y-%m-%d")
     año_inicio=int(fecha_date.year)
     mes_inicio=int(fecha_date.month)
     dia_inicio=int(fecha_date.day)
-    
-    fechas=[]
-    for i in range(0,cantidad):    
-        if mes_inicio==12:
-            nueva_fecha=datetime.date(año_inicio,mes_inicio,dia_inicio)
-            mes_inicio=1
-            año_inicio=año_inicio+1
-           
-        elif mes_inicio<12:
-            nueva_fecha=datetime.date(año_inicio,mes_inicio,dia_inicio)
-           
-            mes_inicio=mes_inicio+1        
-        fechas.append(nueva_fecha)
+
+    if dia_inicio<29:
+        fechas=[]
+        for i in range(0,cantidad):    
+            if mes_inicio==12:
+                nueva_fecha=datetime.date(año_inicio,mes_inicio,dia_inicio)
+                mes_inicio=1
+                año_inicio=año_inicio+1
+            
+            elif mes_inicio<12:
+                nueva_fecha=datetime.date(año_inicio,mes_inicio,dia_inicio)
+            
+                mes_inicio=mes_inicio+1        
+            fechas.append(nueva_fecha)
     
     return fechas
 
 
-def PagosRentaAnticipada(request,**kwargs):
+def VerificarFechas(cta,fecha_inicio):
+    
+    fecha_date=datetime.datetime.strptime(fecha_inicio,"%Y-%m-%d")
+    año_inicio=int(fecha_date.year)
+    mes_inicio=int(fecha_date.month)
+
+    
+    pagos_renta=PagoRentaAnticipada.objects.filter(cuenta_corriente=cta,fecha__month=mes_inicio,fecha__year=año_inicio)
+
+    if pagos_renta.exists():
+        crear=False
+    else:
+        crear=True
+
+    return crear
+
+# ---------> Funciones para renta anticipada - cuentas corrientes 
+
+def pagosRentaAnticipada(request,**kwargs):
     id_cta_corriente=kwargs['id']
+    id_proyecto=kwargs['id_proy']
+    proyecto = Proyectos.objects.get(id = id_proyecto)
     cta=CuentaCorriente.objects.get(pk=id_cta_corriente)
-    monto_actual=cta.monto_renta_anticipada
-    pagos_renta=PagoRentaAnticipada.objects.filter(cuenta_corriente=id_cta_corriente)
+    pagos_renta=PagoRentaAnticipada.objects.filter(cuenta_corriente=id_cta_corriente).order_by('fecha')
     mensaje=''
+    
     if request.method=='POST':
-        response = request.POST
-        
+        response=request.POST
         datos={}
         for dato in response:
             datos[dato]=response[dato]
         if 'agregar' in datos:
-            cantidad=int(datos['cantidad'])
-            fecha_inicio=datos['fecha_inicio']
-            fechas=GenerarFechas(fecha_inicio,cantidad)
-            if len(fechas)==cantidad:
+
+            try:
+                cantidad=int(datos['cantidad'])
+                fecha_inicio=datos['fecha_inicio']
+                monto=datos['monto']
+
+                #funcion verificar
+                crear=VerificarFechas(cta,fecha_inicio)
+
+                if crear:
+
+                    fechas=GenerarFechas(fecha_inicio,cantidad)
+                    if len(fechas)==cantidad:
+                        
+                        for i in range(cantidad):
+
+                            nuevo=PagoRentaAnticipada(
+                                cuenta_corriente=cta,
+                                fecha=fechas[i],
+                                monto=monto,
+                            )
+                            if nuevo:
+                                nuevo.save()
+
+                        return redirect('pagosrentaanticipada', id_cta_corriente)
+                else:
+                    mensaje='Ya existen cuotas para las fechas ingresadas'
+                    
+            except:
                 
-                for i in range(cantidad):
-
-                    nuevo=PagoRentaAnticipada(
-                        cuenta_corriente=cta,
-                        fecha=fechas[i],
-                    )
-                    if nuevo:
-                        nuevo.save()
-
-                return redirect('pagosrentaanticipada', id_cta_corriente)
-        
+                mensaje='Lo siento. Ocurrio un error'
+                
         if 'eliminar' in datos:
             pago=datos['eliminar']
             pago=PagoRentaAnticipada.objects.get(pk=pago)
             pago.delete()
         
             return redirect('pagosrentaanticipada', id_cta_corriente)
+
+
         if 'modificar_pagado' in datos:
             id_pago=datos['modificar_pagado']
             pago=PagoRentaAnticipada.objects.get(pk=id_pago)
+
+            
+            
+
             if 'pagado' in datos:
-                pagado_mod=datos['pagado']
+               
                 pago.pagado=True
-                pago.monto_pagado=cta.monto_renta_anticipada
+                
                 pago.save()
+            
             else:
+                
                 pago.pagado=False
-                pago.monto_pagado=0
                 pago.save()
                 
             return redirect('pagosrentaanticipada', id_cta_corriente)
 
-        if 'modificar_monto' in datos:
-            
-            nuevo_monto=datos['nuevo_monto']
-            cta.monto_renta_anticipada=nuevo_monto
-            cta.save()
-        
+        if 'modificar_fecha_monto' in datos:
+            fecha_mod=datos['fecha_mod']
+            monto_mod=datos['monto_mod']
+            id_pago=datos['modificar_fecha_monto']
+            pago=PagoRentaAnticipada.objects.get(pk=id_pago)
+            pago.fecha=fecha_mod
+            pago.monto=monto_mod
+            pago.save()
+
+            return redirect('pagosrentaanticipada', id_cta_corriente)
+
         return redirect('pagosrentaanticipada',id_cta_corriente)
 
-    
-    context={'pagos_renta':pagos_renta,'monto_actual':monto_actual,'mensaje':mensaje}
-    return render(request ,'pagos_renta_anticipada.html',context)
+    context={'pagos_renta':pagos_renta,'mensaje':mensaje,'id_proyecto':id_proyecto, "proyecto":proyecto}
+    return render(request ,'pagos_renta_anticipada.html' ,context)
 
+def totalizadorRentaAnticipada(request, **kwargs):
+    id_proyecto = kwargs['id']
+    template_name='renta_anticipada_totalizador.html'
+    mensaje=''
+    #obtener pagos no en estado no pagados
+    pagos=PagoRentaAnticipada.objects.filter(cuenta_corriente__venta__proyecto__id = id_proyecto).order_by('fecha')
+
+    clientes=PagoRentaAnticipada.objects.values('cuenta_corriente','cuenta_corriente__venta__comprador').distinct()
+
+    #cantidad de columnas por cada tabla
+    cantidad_clientes=len(clientes)
+    clientes_ctas=[]
+    clientes_tabla=[]
     
+    for i in clientes:
+        clientes_ctas.append(i['cuenta_corriente'])
+        clientes_tabla.append(i['cuenta_corriente__venta__comprador'])
+
+    #meses que tienen cuotas por pagar
+    meses_cuota=pagos.values('fecha__month','fecha__year').distinct()
+
+
+    #se itera por cada mes con cuotas
+    pagos_desglose=[]
+
+    for i in meses_cuota:
+        mes_desglose=[]
+        montos=[]
+        mes=i['fecha__month'] 
+        año=i['fecha__year']
+
+        #clientes que deben en este mes
+        fecha_actual="{} / {}".format(mes,año)
+        mes_desglose.append(fecha_actual)
+        for cliente in clientes_ctas:
+            estado_cliente=[]
+            try:
+                cliente_mes=pagos.values('monto','pagado').filter(fecha__month=mes,fecha__year=año,cuenta_corriente=cliente)
+                
+                estado_cliente.append(cliente_mes[0]['monto'])
+                estado_cliente.append(cliente_mes[0]['pagado'])
+            except:
+                estado_cliente.append(0)
+                estado_cliente.append(None)
+
+            mes_desglose.append(estado_cliente)
+        monto_total=pagos.filter(fecha__month=mes,fecha__year=año).aggregate(Sum('monto'))
+        monto_total_mes=monto_total['monto__sum']
+       
+        
+        mes_desglose.append(monto_total_mes)
+        #mes_desglose.append([fecha_actual,monto_total_mes,monto_total_mes])
+        
+        pagos_desglose.append(mes_desglose)
+
+    return render(request,template_name, {'pagos_desglose':pagos_desglose,'clientes':clientes_tabla, 'proyecto': id_proyecto} )
+   
+   
 
 ### Funciones para trabajar
 

@@ -169,50 +169,7 @@
 
         </div>
     </div>
-    <div class="col-lg-3 col-xlg-4">
-        <div class="card">
-            <div class="card-body text-center">
-
-                <div>
-                    <h6>Panel de administración</h6>
-                </div>
-
-                {% if request.user|has_group:"ADMIN NIVEL 1" %}
-
-                <form method="POST" style="margin-top: 30px;">
-
-                    {% csrf_token %}
-
-                    
-                    <select name="proyecto" class="custom-select">
-
-                        {% for i in datos %}
-
-                        <option value="{{i.0}}">{{i.1}}</option>
-
-                        {% endfor %}
-                    </select>
-
-                    <div class="my-4" >
-                        <button class="btn btn-info" type="submit">
-                            Buscar</button>
-                    </div>
-
-                </form>
-
-                {% else %}
-
-                <div>
-                    <img src="{% static 'img/animation_500_kmuydpt0.gif' %}" alt="" style="max-width:100px; height:auto; margin: 5px;">
-                </div>
-
-                <a href="#"><button class="btn btn-info">
-                    Sin permisos</button></a>
-                {% endif %}
-
-            </div>
-        </div>
-    </div>
+    
 </div>
 
 <aside class="right-side-panel">
