@@ -38,29 +38,29 @@
                     <a href="{% url 'Crear cuenta corriente' proyecto.id %}" class="btn" ><i
                         class="fa fa-plus-circle  text-info"><span class="text-info ml-2"
                             style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif"><b>Añadir cuenta</b></span></i></a>
+                    <a href="{% url 'Totalizador Renta Anticipada' proyecto.id %}" class="btn btn-info">Totalizador renta</a>
 
                 </div>
 
-                <table id="example" class="table table-striped table-bordered mt-4">
+                <table id="example" class="table table-striped table-bordered mt-4" style="font-size: 13px;">
                     <thead>
 
                         <tr>
 
                             <th>Comprador</th>
-                            <th style="width: 105px;">Fecha</th>
-                            <th style="width: 85px;">Piso</th>
+                            <th style="min-width: 95px;">Fecha</th>
+                            <th style="min-width: 90px;">Piso</th>
                             <th>No.</th>
                             <th>Tipo</th>
                             <th>Sup.</th>
                             <th>Asign.</th>
-                            <th>Precio venta</th>
-                            <th style="text-align: center;"> Panel</th>
-                            <th style="text-align: center;"> Renta Ant.</th>
+                            <th>P. venta</th>
+                            <th style="text-align: center;">Panel</th>
                             <th style="min-width: 100px; text-align: center;">Acciones</th>
                         </tr>
                     </thead>
 
-                    <tbody style="font-size: 12px;">
+                    <tbody>
 
                         {% for i in datos %}
                         <tr>
@@ -83,15 +83,10 @@
                             <td>{{i.venta.asignacion|lower|capfirst}}</td>
                             <td>${{i.venta.precio_venta|floatformat:0|intcomma}}</td>
 
-                            <td style="text-align: center;"><a href="{% url 'Cuenta corriente venta' i.id %}" class="btn btn-sm btn-success"><span
-                                        class="hint--left hint--danger"
-                                        aria-label="Accede a la cuenta corriente!">Ingresar</span></a>
+                            <td style="text-align: center;"><a href="{% url 'Cuenta corriente venta' i.id %}" class="btn btn-sm btn-success fa fa-sign-in"></a>
                             </td>
-                            <td style="text-align: center;"><a href="{% url 'pagosrentaanticipada' i.id %}" class="btn btn-sm btn-info"><span
-                                        class="hint--left hint--danger"
-                                        aria-label="Accede a la renta anticipada!">R.A</span></a>
-                            </td>
-                            <td style="text-align: center;">
+                            <td style="min-width: 100px; text-align: center; gap: 40px ">
+                                <a href="{% url 'pagosrentaanticipada' i.id proyecto.id %}" class="fa fa-money"></a>
                                 <a href="{% url 'Reporte de pdf de cuentas corrientes' i.id %}" class="fa fa-file-pdf-o"></a>
                                 <a href="{% url 'Mandar email' i.id %}"  class="fa fa-envelope-o"></a>
                                 <a href="{% url 'Detalle venta' i.venta.id %}"  class="fa fa-comment"></a>
