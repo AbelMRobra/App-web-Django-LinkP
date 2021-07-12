@@ -17,4 +17,7 @@ urlpatterns = [
     url(r'^perfilpersonal/(?P<id_persona>\d+)/$', login_required(views.personal_perfil), name = 'Perfil personal'),
 
 
+    #----------------URL ARCHIVOS -----------------------------------------
+    url(r'^archivosrrh/$', login_required(views.archivosrrhh), name = 'Archivos RRHH'),
+
 ]

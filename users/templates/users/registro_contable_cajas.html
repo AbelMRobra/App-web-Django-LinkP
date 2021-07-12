@@ -1,0 +1,114 @@
+{% extends "users/inicio2.html" %}
+{% load static %}
+{% load humanize %}
+{% load apptags_extras %}
+{% block content %}
+
+<div class="container-fluid">
+    <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+            <h3 class="text-themecolor">Administración de cajas</h3>
+        </div>
+
+        <div class="col-md-7 align-self-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'Registro Contable Home' %}">Chanchito</a></li>
+                <li class="breadcrumb-item">Cajas</li>
+            </ol>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title"><span class="lstick m-r-20"></span>Cajas disponibles</h4>
+                    <h6 class="card-subtitle">Aqui veras las cajas que tienes para administrar</h6>
+                    <div class="row d-flex justify-content-center ">
+
+                        {% for i in total_cajas %}
+    
+                        <div class="col-12 col-md-4 col-lg-3 col-xlg-3">
+                            <div class="card" id="img-tarjeta">
+                                <div class="card-body bg-light text-center">
+                                    <div>
+                                        <h6>{{i.0}}</h6>
+                                    </div>
+                                    
+                                    <div>
+                                        <img src="{{user.imagenlogo.url}}" alt=""
+                                            style="max-width:50px; height:auto; margin: 5px;">
+                                    </div>
+                
+                                    <a href="{% url 'RG Caja Explorar' user.id i.0 1 %}"><button class="btn btn-dark">
+                                            Ingresar</button></a>
+
+                                        <div class="text-left" style="margin-top: 2px;">
+                                            <div><small>
+                                                Ingresos: ${{i.1|floatformat:2|intcomma}}
+                                            </small></div>
+                                            <div><small class="text-danger">
+                                                Gastos: ${{i.2|floatformat:2|intcomma}}
+                                            </small></div>
+                                            <div><small class="text-info">
+                                                Balances: ${{i.3|floatformat:2|intcomma}}
+                                            </small></div>
+                                        </div>
+                                    </div>
+                            </div>
+                        </div>
+
+                        {% endfor %}
+
+                        {% for i in cajas_administras %}
+    
+                        <div class="col-12 col-md-4 col-lg-3 col-xlg-3">
+                            <div class="card" id="img-tarjeta">
+                                <div class="card-body bg-light text-center">
+                                    <div>
+                                        <h6>{{i.0}}</h6>
+                                    </div>
+                                    
+                                    <div>
+                                        <img src="{{i.4.imagenlogo.url}}" alt=""
+                                            style="max-width:50px; height:auto; margin: 5px;">
+                                    </div>
+                
+                                    <a href="{% url 'Registro Contable Cajas' %}"><button class="btn btn-dark">
+                                            Ingresar</button></a>
+
+                                        <div class="text-left" style="margin-top: 2px;">
+                                            <div><small>
+                                                Ingresos: ${{i.1|floatformat:2|intcomma}}
+                                            </small></div>
+                                            <div><small class="text-danger">
+                                                Gastos: ${{i.2|floatformat:2|intcomma}}
+                                            </small></div>
+                                            <div><small class="text-info">
+                                                Balances: ${{i.3|floatformat:2|intcomma}}
+                                            </small></div>
+                                        </div>
+                                    </div>
+                            </div>
+                        </div>
+
+                        {% endfor %}
+
+                    </div>
+            </div>
+        </div>
+    </div>
+    
+</div>
+
+<style>
+    #img-tarjeta:hover{
+        transform: scale(1.07);
+        box-shadow: 2px 4px 4px 1px rgba(0, 0, 0, 0.1)
+    }
+
+</style>
+
+{% endblock %}

@@ -1,0 +1,104 @@
+{% extends "users/inicio2.html" %}
+{% load static %}
+{% load humanize %}
+{% load apptags_extras %}
+{% block content %}
+
+<div class="container-fluid  r-aside">
+    <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+            <h3 class="text-themecolor">{{mensaje_bievenida}}</h3>
+        </div>
+
+        <div class="col-md-7 align-self-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+                <li class="breadcrumb-item">Chanchito</li>
+            </ol>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-9">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title"><span class="lstick m-r-20"></span>Panel principal</h4>
+                    <h6 class="card-subtitle">Para avanzar elige una de las siguientes opciones, siempre puedes volver</h6>
+                    <div class="row d-flex justify-content-center ">
+    
+                        <div class="col-9 col-md-4 col-lg-4 col-xlg-3">
+                            <div class="card" id="img-tarjeta">
+                                <div class="card-body bg-light text-center">
+                                    <div>
+                                        <h6>Admin. Cajas</h6>
+                                    </div>
+                                    <small>
+                                        Informes totalizadores
+                                    </small>
+                
+                                    <div>
+                                        <img src="{% static 'img/contratos.png' %}" alt=""
+                                            style="max-width:100px; height:auto; margin: 5px;">
+                                    </div>
+                
+                                    <a href="{% url 'Registro Contable Cajas' %}"><button class="btn btn-info">
+                                            Ingresar</button></a>
+                
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-9 col-md-4 col-lg-4 col-xlg-3">
+                            <div class="card" id="img-tarjeta">
+                                <div class="card-body bg-light text-center">
+                                    <div>
+                                        <h6>Seguimiento Mensual</h6>
+                                    </div>
+                                    <small>Informes de comportamiento</small>
+                
+                                    <div>
+                                        <img src="{% static 'img/checkOC.png' %}" alt=""
+                                            style="max-width:100px; height:auto; margin: 5px;">
+                                    </div>
+                
+                                    <a href="{% url 'OC autorizadas' 0 %}"><button class="btn btn-primary">
+                                            Ingresar</button></a>
+                
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+    
+</div>
+
+<aside class="right-side-panel">
+    <h3 class="p-relative"><span class="lstick"></span> ¿Cómo funciona?</h3>
+    <div class="row">
+        
+        <div class="col-md-12 m-t-10">
+          <div class="card">
+            <div class="card-body">
+            <img src="{% static 'img/animation_500_kmw63xso.gif' %}" alt="Funny image" width="150px">
+            <p>Chanchito es un espacio destinado a la administración de finanzas personales</p>
+            <p>Este espacio esta en desarrollo, pero puedes usarlo libremente, nadie podra ver lo que aqui guardes</p>
+        </div>
+            </div>
+        </div>
+    </div>
+
+
+    </div>
+</aside>
+
+<style>
+    #img-tarjeta:hover{
+        transform: scale(1.07);
+        box-shadow: 2px 4px 4px 1px rgba(0, 0, 0, 0.1)
+    }
+
+</style>
+
+{% endblock %}

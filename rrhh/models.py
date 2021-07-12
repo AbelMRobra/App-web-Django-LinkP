@@ -361,4 +361,16 @@ class Atajos(models.Model):
 
     def __str__(self):
         return self.nombre
+
+class ArchivosGenerales(models.Model):
+    nombre = models.CharField(max_length=400, verbose_name="Nombre")
+    descrip = models.CharField(max_length=600, verbose_name="Descripción")
+    adjunto = models.FileField(verbose_name="Adjunto")
+
+    class Meta:
+        verbose_name="Archivos"
+        verbose_name_plural="Archivos generales"
+
+    def __str__(self):
+        return self.nombre
     

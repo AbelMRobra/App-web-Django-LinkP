@@ -29,7 +29,14 @@
                     <div class="col-lg-4 col-xlg-3 col-md-5">
                         <div class="card">
                             <div class="card-body">
-                                <center class="m-t-30"> <img src="{{data.imagenlogo.url}}" class="img-circle" width="150" />
+                                
+                                <center class="m-t-30">
+                                    {% if data.imagenlogo %}
+                                    <img src="{{data.imagenlogo.url}}" class="img-circle" width="150" />
+                                    {% else %}
+                                    <img src="{% static 'img/anonimo2.png' %}" class="img-circle" width="150" />
+                                    {% endif %}
+                                    <h4 class="card-title m-t-10 {% if data.estado == 'ACTIVO' %}text-success{% else %}text-danger{% endif %}">{{data.estado|lower|capfirst}}</h4>
                                     <h4 class="card-title m-t-10">{{data.nombre}}</h4>
                                     <h6 class="card-subtitle">{{data.area}} - {{data.cargo}}</h6>
 
@@ -43,7 +50,7 @@
                                  <small class="text-muted p-t-30 db">Telefono</small>
                                 <h6>{{data.Telefono}}</h6>
                                  <small class="text-muted p-t-30 db">Fecha nacimiento</small>
-                                <h6>{{data.fecha_nacimiento}}</h6>
+                                <h6>{{data.fecha_nacimiento|date:'d-m-Y'}}</h6>
                                 
                             </div>
                         </div>
@@ -53,12 +60,22 @@
                             <!-- Nav tabs -->
                             <ul class="nav nav-tabs profile-tab" role="tablist">
                                 <li class="nav-item"> <a class="nav-link active" data-toggle="tab" href="#datos" role="tab">Datos</a> </li>
-                                <li class="nav-item"> <a class="nav-link active" data-toggle="tab" href="#settings" role="tab">Editar</a> </li>
+                                <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#settings" role="tab">Editar</a> </li>
                             </ul>
                             <!-- Tab panes -->
                             <div class="tab-content">
+
+                                <div class="tab-pane active" id="datos" role="tabpanel">
+                                    <div class="card-body">
+                                        <h4>Datos generales</h4>
+                                        <p>Ingreso a LINK: {{data.fecha_ingreso|date:'d-m-Y'}}</p>
+                                        <h6>Comentarios</h6>
+                                        <p style="white-space: pre-wrap;">{{data.Comentarios}}</p>
+
+                                    </div>
+                                </div>
                                 
-                                <div class="tab-pane active" id="settings" role="tabpanel">
+                                <div class="tab-pane" id="settings" role="tabpanel">
                                     <div class="card-body">
                                         <form method="POST">
                                             {% csrf_token %}

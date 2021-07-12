@@ -1,0 +1,150 @@
+{% extends "users/inicio2.html" %}
+
+{% load humanize %}
+{% load apptags_extras %}
+
+{% load static %}
+
+{% block content %}
+
+<div class="container-fluid">
+    <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+            <h3 class="text-themecolor">Archivos generales</h3>
+        </div>
+
+        <div class="col-md-7 align-self-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'App de rrhh' %}">App RRHH</a></li>
+                <li class="breadcrumb-item">Archivos</li>
+
+            </ol>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+
+                <div class="d-flex">
+                    <div>
+                        <h4 class="card-title"><span class="lstick"></span>Archivos generales</h4>
+                        <h6 class="card-subtitle">Este espacio almacena archivos para su facil administración</h6>
+
+                    </div>
+                </div>
+
+                <div class="m-2">
+                    <button type="button" class="btn" data-toggle="modal" data-target="#ModalArqueo"><i
+                            class="fa fa-plus-circle  text-info"><span class="text-info ml-2"
+                                style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif"><b>Añadir</b></span></i></button>
+                </div>
+
+                <!-- Modal fecha estado Subitem -->
+                <div class="modal fade" id="ModalArqueo" tabindex="-1" role="dialog" aria-labelledby="ModalArqueo"
+                    aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header" style="background: rgb(33, 74, 99);
+                            background: linear-gradient(315deg, rgba(36,160,237,1) 0%, rgba(56,56,130,1) 22%, rgba(0,212,255,1) 100%);">
+                                <h5 class="modal-title text-light" id="exampleModalLongTitle">Cargar un archivo</h5>
+                                <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form method="POST" style="margin: 15px;" enctype="multipart/form-data"
+                                    id="upload-image-form">
+
+                                    {% csrf_token %}
+
+                                    <h6>Nombre</h6>
+
+                                    <div class="input-group mb-3">
+
+                                        <input name="nombre" type="text" class="form-control form-control"
+                                            style="width: 300px;">
+                                    </div>
+
+                                    <h6>Descripción</h6>
+
+                                    <div class="input-group mb-3">
+
+                                        <input name="descrip" type="text" class="form-control form-control"
+                                            style="width: 300px;">
+                                    </div>
+
+                                    <h6>Archivo</h6>
+
+                                    <div class="input-group mb-3">
+
+                                        <input name="adjunto" type="file" class="form-control form-control"
+                                            style="width: 300px;">
+                                    </div>
+
+                                    <button type="submit" class="btn btn-light">
+                                        <img src="{% static 'img/upload.png' %}" alt=""
+                                            style="max-width:20px; height:auto;">
+                                        <b>Cargar</b></button>
+
+                                    {{ form.as_p }}
+
+                                </form>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-info" data-dismiss="modal">Cerrar</button>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="table-responsive">
+
+                    <table id="exemple" class="table">
+
+                        <tbody>
+                            {% for i in data %}
+                            <tr>
+                                <td style="width: 10px; vertical-align: top;">
+                                    <form method="POST">
+                                        <button class="btn btn-link fa fa-trash text-danger d-flex align-content-end" type="submit"
+                                            name="delete" value="{{i.id}}" style="text-decoration: none;"></button>
+
+                                        {% csrf_token %}
+                                    </form>
+
+                                </td>
+
+                                <td>
+                                    <h6 style="font-size: 14px;"><a href="#">Nombre:
+                                            {{i.nombre}}</a> - <a href="{{i.adjunto.url}}"
+                                            class="fa fa-file-o text-warning"></a></h6>
+                                    <h6 class="card-subtitle" style="font-size: 12px;">Descripción:
+                                        "{{i.descrip}}"</h6>
+                                </td>
+
+
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+
+
+                </div>
+
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}

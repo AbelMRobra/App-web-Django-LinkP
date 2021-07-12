@@ -91,7 +91,11 @@
                             <tr>
                                 <td>
                                     <a href="{% url 'Perfil personal' u.0.id %}">
-                                    <img src="{{u.0.imagenlogo.url}}" alt="user" class="img-circle" style="width: 35px;" /> - {{u.0.nombre}}</a>
+                                    {% if data.imagenlogo %}
+                                    <img src="{{u.0.imagenlogo.url}}" class="img-circle" style="width: 35px;" /> 
+                                    {% else %}
+                                    <img src="{% static 'img/anonimo2.png' %}" class="img-circle" style="width: 35px;" />
+                                    {% endif %} - {{u.0.nombre}}</a>
                                 </td>
                                 <td>{{u.0.identificacion}}</td>
                                 <td>{{u.0.email}}</td>

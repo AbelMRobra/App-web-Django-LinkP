@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.shortcuts import redirect
-from .models import NotaDePedido, datosusuario, ComentariosCorrespondencia, EntregaMoneda
+from .models import NotaDePedido, datosusuario, ComentariosCorrespondencia, EntregaMoneda, ArchivosGenerales
 from proyectos.models import Proyectos
 import datetime
 import smtplib
@@ -13,6 +13,20 @@ from agenda import settings
 def apprrhh(request):
 
     return render(request, 'apprrhh_principal.html')
+
+def archivosrrhh(request):
+
+    data = ArchivosGenerales.objects.all()
+
+    if request.method == 'POST':
+        new_r = ArchivosGenerales(
+            nombre = request.POST['nombre'],
+            descrip = request.POST['descrip'],
+            adjunto = request.FILES['adjunto'],
+        )
+        new_r.save()
+
+    return render(request, 'archivos_rrh/archivos_principal.html', {'data':data})
 
 def personal_principal(request):
 
@@ -45,9 +59,14 @@ def personal_perfil(request, id_persona):
         data.estado = request.POST['estado']
         try:
             data.fecha_nacimiento = request.POST['fecha_nacimiento']
-            data.save()
+
         except:
-            data.save()
+            pass
+        try:
+            data.fecha_ingreso = request.POST['fecha_ingreso']
+        except:
+            pass
+        data.save()
 
         return redirect('Perfil personal', id_persona = data.id)
 
