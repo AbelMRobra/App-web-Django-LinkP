@@ -2761,14 +2761,14 @@ def presupuesto_auditor(request):
         fecha_desde=datos_filtro['fecha_desde']
         fecha_hasta=datos_filtro['fecha_hasta']
 
-        try:
-            response_servidor = {"messages": "Perri"}
-            bot_wp = WABot(response_servidor)
-            presupuestador = Presupuestos.objects.get(proyecto = proyectos).presupuestador
-            send = "{}: El usuario {} esta utilizando Auditor para analizar {}, desde {} hasta {}.".format(presupuestador.nombre, request.user.first_name, proyecto, fecha_desde, fecha_hasta)
-            bot_wp.send_message_user(presupuestador.Telefono, send)
-        except:
-            pass
+        #try:
+        response_servidor = {"messages": "Perri"}
+        bot_wp = WABot(response_servidor)
+        presupuestador = Presupuestos.objects.get(proyecto = proyectos).presupuestador
+        send = "{}: El usuario {} esta utilizando Auditor para analizar {}, desde {} hasta {}.".format(presupuestador.nombre, request.user.first_name, proyecto, fecha_desde, fecha_hasta)
+        bot_wp.send_message_user(presupuestador.Telefono, send)
+        #except:
+            #pass
 
         listado_dias = PresupuestosAlmacenados.objects.filter(proyecto = proyecto).exclude(nombre = "vigente").values_list("nombre", flat = True).distinct()
     
