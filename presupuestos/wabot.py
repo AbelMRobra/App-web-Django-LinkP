@@ -9,16 +9,14 @@ class WABot():
         self.APIUrl = 'https://api.chat-api.com/instance304624/'
         self.token = 'cat0hd37m7imu8cz'
 
-    def send_message(self, phone, text):
-        print("Envie el mensaje")
-        data = {"phone" : phone,
+    def send_message(self, chatId, text):
+        data = {"chatId" : chatId,
                 "body" : text}
         answer = self.send_requests('sendMessage', data)
         return answer
         
 
     def send_requests(self, method, data):
-        print("Envie la soli")
         url = f"{self.APIUrl}{method}?token={self.token}"
         headers = {'Content-type': 'application/json'}
         answer = requests.post(url, data=json.dumps(data), headers=headers)

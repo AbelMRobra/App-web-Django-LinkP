@@ -481,6 +481,7 @@ def registroconstante(request):
 def presupuestostotal(request):
 
     response_servidor = {"messages": "Perri"}
+    numero_prueba = "5493813540261-1599137567@g.us"
     # No tengo idea para que sirve
 
     presupuestador = 0
@@ -669,7 +670,7 @@ def presupuestostotal(request):
                     }
                     requests.post(url, params=params)
                     bot_wp = WABot(response_servidor)
-                    bot_wp.send_message("543813023087", send)
+                    bot_wp.send_message(numero_prueba, send)
 
                 else:
                     send = "{} guardo una copia de {}".format(request.user.first_name, proyecto.nombre)
@@ -682,7 +683,7 @@ def presupuestostotal(request):
                     }
                     requests.post(url, params=params)
                     bot_wp = WABot(response_servidor)
-                    bot_wp.send_message("543813023087", send)
+                    bot_wp.send_message(numero_prueba, send)
 
                 if proyecto.presupuesto == "BASE" and var != 0:
 
@@ -701,7 +702,7 @@ def presupuestostotal(request):
 
                     requests.post(url, params=params)
                     bot_wp = WABot(response_servidor)
-                    bot_wp.send_message("543813023087", send)
+                    bot_wp.send_message(numero_prueba, send)
 
                     proyectos_extrapolados = Proyectos.objects.filter(presupuesto = "EXTRAPOLADO")
 
@@ -744,7 +745,7 @@ def presupuestostotal(request):
 
                     requests.post(url, params=params)
                     bot_wp = WABot(response_servidor)
-                    bot_wp.send_message("543813023087", send_1)
+                    bot_wp.send_message(numero_prueba, send_1)
 
                     params = {
                         'chat_id' : id,
@@ -753,7 +754,7 @@ def presupuestostotal(request):
 
                     requests.post(url, params=params)
                     bot_wp = WABot(response_servidor)
-                    bot_wp.send_message("543813023087", send_2)
+                    bot_wp.send_message(numero_prueba, send_2)
 
                     send = "Proceso de actualización de proyectos extrapolados completo. Tambien actualice el IVA en el almacenero. Disculpen los mensajes"
 
@@ -764,7 +765,7 @@ def presupuestostotal(request):
 
                     requests.post(url, params=params)
                     bot_wp = WABot(response_servidor)
-                    bot_wp.send_message("543813023087", send)
+                    bot_wp.send_message(numero_prueba, send)
 
 
             except:
