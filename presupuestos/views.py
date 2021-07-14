@@ -25,6 +25,7 @@ from openpyxl import Workbook
 from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
 from .serializers import ArtSerializer
 from .functions import auditor_presupuesto,auditor_presupuesto_p
+from .wabot import WABot
 
 
 def insum_list(request):
@@ -656,36 +657,32 @@ def presupuestostotal(request):
                 if var != 0:
 
                     send = "{} ha actualizado {}. Variación: {}%".format(request.user.first_name, proyecto.nombre, var)
-
                     id = "-455382561"
-
                     token = "1880193427:AAH-Ej5ColiocfDZrDxUpvsJi5QHWsASRxA"
-
                     url = "https://api.telegram.org/bot" + token + "/sendMessage"
-
                     params = {
                         'chat_id' : id,
                         'text' : send
                     }
-
                     requests.post(url, params=params)
 
                 else:
-
                     send = "{} guardo una copia de {}".format(request.user.first_name, proyecto.nombre)
-
                     id = "-455382561"
-
                     token = "1880193427:AAH-Ej5ColiocfDZrDxUpvsJi5QHWsASRxA"
-
                     url = "https://api.telegram.org/bot" + token + "/sendMessage"
-
                     params = {
                         'chat_id' : id,
                         'text' : send
                     }
-
                     requests.post(url, params=params)
+
+                    response_servidor = {
+                        "messages": "Perri",
+                        }
+
+                    bot_wp = WABot()
+                    bot_wp.send_message("543813023087", send)
 
                 if proyecto.presupuesto == "BASE" and var != 0:
 
@@ -745,12 +742,18 @@ def presupuestostotal(request):
 
                     requests.post(url, params=params)
 
+                    bot_wp = WABot()
+                    bot_wp.send_message("543813023087", send_1)
+
                     params = {
                         'chat_id' : id,
                         'text' : send_2
                     }
 
                     requests.post(url, params=params)
+
+                    bot_wp = WABot()
+                    bot_wp.send_message("543813023087", send_2)
 
                     send = "Proceso de actualización de proyectos extrapolados completo. Tambien actualice el IVA en el almacenero. Disculpen los mensajes"
 
@@ -760,6 +763,9 @@ def presupuestostotal(request):
                     }
 
                     requests.post(url, params=params)
+
+                    bot_wp = WABot()
+                    bot_wp.send_message("543813023087", send)
 
 
             except:
