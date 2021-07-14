@@ -14,6 +14,12 @@ class WABot():
                 "body" : text}
         answer = self.send_requests('sendMessage', data)
         return answer
+
+    def send_message_user(self, phone, text):
+        data = {"phone" : phone,
+                "body" : text}
+        answer = self.send_requests('sendMessage', data)
+        return answer
         
 
     def send_requests(self, method, data):

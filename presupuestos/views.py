@@ -2739,14 +2739,18 @@ def Creditocapitulo(id_proyecto):
 
 def presupuesto_auditor(request):
 
+    proyecto = 0
+    fecha_desde = 0
+    fecha_hasta = 0
     proyectos=PresupuestosAlmacenados.objects.values('proyecto__nombre','proyecto__id').distinct()
     data_resultante=0
     data_resultante_p=0
     mensaje='Aun no se han filtrado datos'
 
     if request.method=='POST':
-        response=request.POST
 
+        
+        response=request.POST
         datos_filtro={}
         
         for dato in response:
@@ -2757,6 +2761,15 @@ def presupuesto_auditor(request):
         fecha_desde=datos_filtro['fecha_desde']
         fecha_hasta=datos_filtro['fecha_hasta']
 
+        try:
+            response_servidor = {"messages": "Perri"}
+            bot_wp = WABot(response_servidor)
+            presupuestador = Presupuestos.objects.get(proyecto = proyectos).presupuestador
+            send = "{}: El usuario {} esta utilizando Auditor para analizar {}, desde {} hasta {}.".format(presupuestador.nombre, request.user.first_name, proyecto, fecha_desde, fecha_hasta)
+            bot_wp.send_message_user(presupuestador.Telefono, send)
+        except:
+            pass
+
         listado_dias = PresupuestosAlmacenados.objects.filter(proyecto = proyecto).exclude(nombre = "vigente").values_list("nombre", flat = True).distinct()
     
         data_resultante,mensaje= auditor_presupuesto(proyecto,fecha_desde, fecha_hasta)
@@ -2764,7 +2777,7 @@ def presupuesto_auditor(request):
         data_resultante_p = auditor_presupuesto_p(proyecto,fecha_desde, fecha_hasta)
    
             
-    return render(request, "presupuestos/presupuesto_auditor.html",{'data_resultante_p':data_resultante_p, 'data_resultante':data_resultante,'proyectos':proyectos,'mensaje':mensaje})
+    return render(request, "presupuestos/presupuesto_auditor.html",{'fecha_hasta':fecha_hasta, 'fecha_desde':fecha_desde, 'proyecto':proyecto, 'data_resultante_p':data_resultante_p, 'data_resultante':data_resultante,'proyectos':proyectos,'mensaje':mensaje})
 
 class ReporteExplosion(TemplateView):
 

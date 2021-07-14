@@ -113,8 +113,9 @@
 
                     <div class="col-6 my-4">
                         <h4 class="card-title"><span class="lstick m-r-20"></span>Resultado del analisis</h4>
-                        <p>Valor desde: ${{data_resultante.0.3|floatformat:2|intcomma}}</p>
-                        <p>Valor hasta: ${{data_resultante.0.4|floatformat:2|intcomma}}</p>
+                        <p>{{proyecto}}</p>                        
+                        <p>Valor desde en {{fecha_desde}}: ${{data_resultante.0.3|floatformat:2|intcomma}}</p>
+                        <p>Valor hasta en {{fecha_hasta}}: ${{data_resultante.0.4|floatformat:2|intcomma}}</p>
                         <p>Diferencia:  ${{data_resultante.0.5|floatformat:2|intcomma}}</p>
                     </div>
                     <div class="col-6 my-4">
