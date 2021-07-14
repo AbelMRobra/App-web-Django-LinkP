@@ -2764,7 +2764,7 @@ def presupuesto_auditor(request):
         #try:
         response_servidor = {"messages": "Perri"}
         bot_wp = WABot(response_servidor)
-        presupuestador = Presupuestos.objects.get(proyecto = proyectos).presupuestador
+        presupuestador = Presupuestos.objects.get(proyecto = proyecto).presupuestador
         send = "{}: El usuario {} esta utilizando Auditor para analizar {}, desde {} hasta {}.".format(presupuestador.nombre, request.user.first_name, proyecto, fecha_desde, fecha_hasta)
         bot_wp.send_message_user(presupuestador.Telefono, send)
         #except:
