@@ -480,6 +480,9 @@ def registroconstante(request):
 
 def presupuestostotal(request):
 
+    response_servidor = {"messages": "Perri"}
+    # No tengo idea para que sirve
+
     presupuestador = 0
 
     variacion = 0
@@ -665,6 +668,8 @@ def presupuestostotal(request):
                         'text' : send
                     }
                     requests.post(url, params=params)
+                    bot_wp = WABot(response_servidor)
+                    bot_wp.send_message("543813023087", send)
 
                 else:
                     send = "{} guardo una copia de {}".format(request.user.first_name, proyecto.nombre)
@@ -676,12 +681,7 @@ def presupuestostotal(request):
                         'text' : send
                     }
                     requests.post(url, params=params)
-
-                    response_servidor = {
-                        "messages": "Perri",
-                        }
-
-                    bot_wp = WABot()
+                    bot_wp = WABot(response_servidor)
                     bot_wp.send_message("543813023087", send)
 
                 if proyecto.presupuesto == "BASE" and var != 0:
@@ -700,6 +700,8 @@ def presupuestostotal(request):
                     }
 
                     requests.post(url, params=params)
+                    bot_wp = WABot(response_servidor)
+                    bot_wp.send_message("543813023087", send)
 
                     proyectos_extrapolados = Proyectos.objects.filter(presupuesto = "EXTRAPOLADO")
 
@@ -741,8 +743,7 @@ def presupuestostotal(request):
                     }
 
                     requests.post(url, params=params)
-
-                    bot_wp = WABot()
+                    bot_wp = WABot(response_servidor)
                     bot_wp.send_message("543813023087", send_1)
 
                     params = {
@@ -751,8 +752,7 @@ def presupuestostotal(request):
                     }
 
                     requests.post(url, params=params)
-
-                    bot_wp = WABot()
+                    bot_wp = WABot(response_servidor)
                     bot_wp.send_message("543813023087", send_2)
 
                     send = "Proceso de actualización de proyectos extrapolados completo. Tambien actualice el IVA en el almacenero. Disculpen los mensajes"
@@ -763,8 +763,7 @@ def presupuestostotal(request):
                     }
 
                     requests.post(url, params=params)
-
-                    bot_wp = WABot()
+                    bot_wp = WABot(response_servidor)
                     bot_wp.send_message("543813023087", send)
 
 
