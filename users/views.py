@@ -2056,11 +2056,12 @@ def registro_contable_cajas(request):
         user_adm = datosusuario.objects.get(id = usuario)
 
         for caja in cajas_administradas:
-            nombre = caja
-            ingresos = sum(np.array(RegistroContable.objects.filter(usuario = user_adm, creador = user, estado = "INGRESOS", caja = caja).exclude(usuario = user).values_list("importe", flat=True)))
-            gastos = sum(np.array(RegistroContable.objects.filter(usuario = user_adm, creador = user, estado = "GASTOS", caja = caja).exclude(usuario = user).values_list("importe", flat=True)))
-            balance = ingresos - gastos
-            cajas_administras.append((nombre,ingresos, gastos, balance, user_adm))
+            if len(RegistroContable.objects.filter(usuario = user_adm, creador = user, caja = caja).exclude(usuario = user)):
+                nombre = caja
+                ingresos = sum(np.array(RegistroContable.objects.filter(usuario = user_adm, creador = user, estado = "INGRESOS", caja = caja).exclude(usuario = user).values_list("importe", flat=True)))
+                gastos = sum(np.array(RegistroContable.objects.filter(usuario = user_adm, creador = user, estado = "GASTOS", caja = caja).exclude(usuario = user).values_list("importe", flat=True)))
+                balance = ingresos - gastos
+                cajas_administras.append((nombre,ingresos, gastos, balance, user_adm))
 
     return render(request, 'users/registro_contable_cajas.html', {'total_cajas':total_cajas, 'cajas_administras':cajas_administras, "user":user})
 
