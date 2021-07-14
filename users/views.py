@@ -1959,16 +1959,24 @@ def minutasid(request, id_minuta):
 
     return render(request, 'minutas/minutasId.html', {'data':data, 'acuerdos':acuerdos, 'acuerdos_viejos':acuerdos_viejos, 'list_users':list_users})
 
-def registro_contable(request, date_i):
+def registro_contable_home(request):
 
-    hoy = datetime.date(int(date_i[0:4]), int(date_i[4:]), 1)
+    # Saludo de bienvenida
+    hora_actual = datetime.datetime.now()
+    if hora_actual.hour >= 20:
+        mensaje_bievenida = "¡Buenas noches {}!".format(request.user.first_name)
+    elif hora_actual.hour >= 13:
+        mensaje_bievenida = "¡Buenas tardes {}!".format(request.user.first_name)
+    else:
+        mensaje_bievenida = "¡Buen dia {}!".format(request.user.first_name)
 
-    user = datosusuario.objects.get(identificacion = request.user.username)
+    fecha = datetime.date.today()
 
-    registros_totales = RegistroContable.objects.filter(usuario = user)
+    return render(request, 'users/registro_contable_home.html', {"mensaje_bievenida":mensaje_bievenida, "fecha":fecha})
+
+def registro_contable_cajas(request):
 
     if request.method == 'POST':
-
         try:
             if request.POST['carga_archivo'] == "1":
                 archivo_pandas = pd.read_excel(request.FILES['archivo'])
@@ -2022,8 +2030,110 @@ def registro_contable(request, date_i):
 
                     b.save()
                     numero += 1
+
+                return redirect('Registro Contable Cajas')
         except:
             pass
+
+    user = datosusuario.objects.get(identificacion = request.user.username)
+
+    cajas_usuario = list(set(RegistroContable.objects.filter(usuario = user).values_list("caja", flat=True).order_by("-fecha").distinct()))
+
+    total_cajas = []
+
+    for caja in cajas_usuario:
+        nombre = caja
+        ingresos = sum(np.array(RegistroContable.objects.filter(usuario = user, estado = "INGRESOS", caja = caja).values_list("importe", flat=True)))
+        gastos = sum(np.array(RegistroContable.objects.filter(usuario = user, estado = "GASTOS", caja = caja).values_list("importe", flat=True)))
+        balance = ingresos - gastos
+        total_cajas.append((nombre,ingresos, gastos, balance))
+
+    cajas_administradas = list(set(RegistroContable.objects.filter(creador = user).exclude(usuario = user).values_list("caja", flat=True).order_by("-fecha").distinct()))
+    usuarios_cajas = list(set(RegistroContable.objects.filter(creador = user).exclude(usuario = user).values_list("usuario", flat=True).order_by("-fecha").distinct()))
+    cajas_administras = []
+
+    for usuario in usuarios_cajas:
+        user_adm = datosusuario.objects.get(id = usuario)
+
+        for caja in cajas_administradas:
+            nombre = caja
+            ingresos = sum(np.array(RegistroContable.objects.filter(usuario = user_adm, creador = user, estado = "INGRESOS", caja = caja).exclude(usuario = user).values_list("importe", flat=True)))
+            gastos = sum(np.array(RegistroContable.objects.filter(usuario = user_adm, creador = user, estado = "GASTOS", caja = caja).exclude(usuario = user).values_list("importe", flat=True)))
+            balance = ingresos - gastos
+            cajas_administras.append((nombre,ingresos, gastos, balance, user_adm))
+
+    return render(request, 'users/registro_contable_cajas.html', {'total_cajas':total_cajas, 'cajas_administras':cajas_administras, "user":user})
+
+def registro_contable_caja(request, caja, estado, mes, year):
+    user = datosusuario.objects.get(identificacion = request.user.username)
+    if request.method == 'POST':
+        try:
+            
+            b = RegistroContable(
+                usuario = user,
+                creador = request.user.username,
+                fecha = request.POST['fecha'],
+                estado = request.POST['tipo'],
+                caja = caja,
+                cuenta = request.POST['cuenta'],
+                categoria = request.POST['categoria'],
+                importe = float(request.POST['importe']),
+                nota = request.POST['nota'],
+                )
+
+            try:
+                b.adjunto = request.FILES['adjunto']
+                b.save()
+
+            except:
+                b.save()
+
+        except:
+            pass
+        try:
+            if request.POST["borrar"]:
+                sub_aux = RegistroContable.objects.get(id = request.POST["borrar"])
+                sub_aux.delete()
+        except:
+            pass
+
+        try:
+
+            if request.POST['editar']:
+                registro = RegistroContable.objects.get(id = request.POST['editar'])
+                registro.fecha = request.POST['fecha']
+                registro.caja = request.POST['caja']
+                registro.cuenta = request.POST['cuenta']
+                registro.categoria = request.POST['categoria']
+                registro.importe = request.POST['importe']
+                registro.nota = request.POST['nota']
+                try:
+                    registro.adjunto = request.FILES['adjunto']
+                    registro.save()
+
+                except:
+                    registro.save()
+        except:
+            pass
+    
+    if estado == 0:
+        data = RegistroContable.objects.filter(usuario = user, caja = caja).order_by("-fecha")
+    elif estado == 1:
+        data = RegistroContable.objects.filter(usuario = user, estado = "INGRESOS", caja = caja).order_by("-fecha")
+    else:
+        data = RegistroContable.objects.filter(usuario = user, estado = "GASTOS", caja = caja).order_by("-fecha")
+    return render(request, 'users/registro_contable_caja.html', {"data":data, "caja":caja, "estado":estado})
+
+
+def registro_contable(request, date_i):
+
+    hoy = datetime.date(int(date_i[0:4]), int(date_i[4:]), 1)
+
+    user = datosusuario.objects.get(identificacion = request.user.username)
+
+    registros_totales = RegistroContable.objects.filter(usuario = user)
+
+    if request.method == 'POST':
 
         try:
  
@@ -2268,36 +2378,7 @@ def registro_contable(request, date_i):
 
 def editar_registro_contable(request):
 
-    if request.method == 'POST':
-        for i in request.POST.items():
-            if "registro" in i[0]:
-                reg_eliminar = RegistroContable.objects.get(id = i[1])
-                reg_eliminar.delete()
-        try:
-            if request.POST["borrar"]:
-                sub_aux = RegistroContable.objects.get(id = request.POST["borrar"])
-                sub_aux.delete()
-        except:
-            pass
-
-        try:
-
-            if request.POST['editar']:
-                registro = RegistroContable.objects.get(id = request.POST['editar'])
-                registro.fecha = request.POST['fecha']
-                registro.caja = request.POST['caja']
-                registro.cuenta = request.POST['cuenta']
-                registro.categortia = request.POST['categoria']
-                registro.importe = request.POST['importe']
-                registro.nota = request.POST['nota']
-                try:
-                    registro.adjunto = request.FILES['adjunto']
-                    registro.save()
-
-                except:
-                    registro.save()
-        except:
-            pass
+    
 
     users_registro = RegistroContable.objects.filter(creador = request.user.username).values_list("usuario__identificacion", flat=True).distinct()
 

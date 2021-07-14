@@ -26,6 +26,56 @@
             <div class="card-body">
                 <h4 class="card-title"><span class="lstick m-r-20"></span>Cajas disponibles</h4>
                     <h6 class="card-subtitle">Aqui veras las cajas que tienes para administrar</h6>
+
+                    <div class="col-12 col-md-12 col-lg-12 justify-content-center">
+
+                        <button type="button" class="btn" data-toggle="modal" data-target="#ModalCargaMasiva"><i class="fa fa-plus-circle  text-success"><span class="text-success ml-2" style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif"><b>Registros Tango</b></span></i></button>
+                        <hr>
+                    
+                    </div>
+
+                    <!-- Modal archivo -->
+                
+                    <div class="modal fade" id="ModalCargaMasiva" tabindex="-1" role="dialog" aria-labelledby="ModalCargaMasivaTittle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header" style="background: rgb(36,160,237);
+                            background: linear-gradient(315deg, rgba(36,160,237,1) 0%, rgba(56,56,130,1) 22%, rgba(0,212,255,1) 100%);">
+                            <h5 class="modal-title text-light" id="exampleModalLongTitle">Cargar archivo</h5>
+                            <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            </div>
+                            <div class="modal-body">
+
+                                <form method="POST" style="margin: 15px;" enctype="multipart/form-data" id="upload-image-form">
+
+                                    {% csrf_token %}
+    
+    
+                                    <h6>Archivo</h6>  
+    
+                                    <div class="input-group mb-3">
+                                            
+                                        <input name="archivo" type="file" class="form-control form-control" style="width: 300px;">
+                                    </div>
+    
+                                    <button type="submit" name="carga_archivo" value="1" class="btn">
+                                        <i class="fa fa-cloud-upload text-info"></i><span class="text-info ml-2">Cargar</span></button>
+    
+                                    {{ form.as_p }}
+                                
+                                </form>
+                            
+                            </div>
+                            <div class="modal-footer">
+                            <button type="button" class="btn btn-info" data-dismiss="modal">Cerrar</button>
+                    
+                            </div>
+                        </div>
+                        </div>
+
+                    </div>
                     <div class="row d-flex justify-content-center ">
 
                         {% for i in total_cajas %}
@@ -33,29 +83,27 @@
                         <div class="col-12 col-md-4 col-lg-3 col-xlg-3">
                             <div class="card" id="img-tarjeta">
                                 <div class="card-body bg-light text-center">
-                                    <div>
-                                        <h6>{{i.0}}</h6>
+
+                                    <div class="text-left" style="margin-top: 2px;">
+                                        <div>
+                                            <h6><img src="{{user.imagenlogo.url}}" alt=""
+                                                style="max-width:30px; height:auto; margin: 5px;"> {{i.0}}</h6>
+                                        </div>
+                                        <div><small>
+                                            Ingresos: ${{i.1|floatformat:2|intcomma}}
+                                        </small></div>
+                                        <div><small class="text-danger">
+                                            Gastos: ${{i.2|floatformat:2|intcomma}}
+                                        </small></div>
+                                        <div><small class="text-info">
+                                            Balances: ${{i.3|floatformat:2|intcomma}}
+                                        </small></div>
+                                    </div>
+                                    <div class="text-right" style="margin-top: 2px;">
+                                        <a href="{% url 'Registro Contable Caja' i.0 0 0 0 %}"><button class="btn btn-secondary">
+                                            Ingresar</button></a>
                                     </div>
                                     
-                                    <div>
-                                        <img src="{{user.imagenlogo.url}}" alt=""
-                                            style="max-width:50px; height:auto; margin: 5px;">
-                                    </div>
-                
-                                    <a href="{% url 'RG Caja Explorar' user.id i.0 1 %}"><button class="btn btn-dark">
-                                            Ingresar</button></a>
-
-                                        <div class="text-left" style="margin-top: 2px;">
-                                            <div><small>
-                                                Ingresos: ${{i.1|floatformat:2|intcomma}}
-                                            </small></div>
-                                            <div><small class="text-danger">
-                                                Gastos: ${{i.2|floatformat:2|intcomma}}
-                                            </small></div>
-                                            <div><small class="text-info">
-                                                Balances: ${{i.3|floatformat:2|intcomma}}
-                                            </small></div>
-                                        </div>
                                     </div>
                             </div>
                         </div>
@@ -67,29 +115,27 @@
                         <div class="col-12 col-md-4 col-lg-3 col-xlg-3">
                             <div class="card" id="img-tarjeta">
                                 <div class="card-body bg-light text-center">
-                                    <div>
-                                        <h6>{{i.0}}</h6>
+
+                                    <div class="text-left" style="margin-top: 2px;">
+                                        <div>
+                                            <h6><img src="{{i.4.imagenlogo.url}}" alt=""
+                                                style="max-width:30px; height:auto; margin: 5px;"> {{i.0}}</h6>
+                                        </div>
+                                        <div><small>
+                                            Ingresos: ${{i.1|floatformat:2|intcomma}}
+                                        </small></div>
+                                        <div><small class="text-danger">
+                                            Gastos: ${{i.2|floatformat:2|intcomma}}
+                                        </small></div>
+                                        <div><small class="text-info">
+                                            Balances: ${{i.3|floatformat:2|intcomma}}
+                                        </small></div>
+                                    </div>
+                                    <div class="text-right" style="margin-top: 2px;">
+                                        <a href="{% url 'Registro Contable Caja' i.0 0 0 0 %}"><button class="btn btn-secondary">
+                                            Ingresar</button></a>
                                     </div>
                                     
-                                    <div>
-                                        <img src="{{i.4.imagenlogo.url}}" alt=""
-                                            style="max-width:50px; height:auto; margin: 5px;">
-                                    </div>
-                
-                                    <a href="{% url 'Registro Contable Cajas' %}"><button class="btn btn-dark">
-                                            Ingresar</button></a>
-
-                                        <div class="text-left" style="margin-top: 2px;">
-                                            <div><small>
-                                                Ingresos: ${{i.1|floatformat:2|intcomma}}
-                                            </small></div>
-                                            <div><small class="text-danger">
-                                                Gastos: ${{i.2|floatformat:2|intcomma}}
-                                            </small></div>
-                                            <div><small class="text-info">
-                                                Balances: ${{i.3|floatformat:2|intcomma}}
-                                            </small></div>
-                                        </div>
                                     </div>
                             </div>
                         </div>
