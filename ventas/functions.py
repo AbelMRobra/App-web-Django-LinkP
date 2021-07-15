@@ -18,10 +18,7 @@ def calculo_cotizacion(unidad, features_unidad, info_coti, valor_hormigon):
     for f2 in features_unidad:
 
         precio_contado = precio_contado*f2.feature.inc
-
-    print(info_coti)
     datos_coti = info_coti.split("&")
-    print(datos_coti)
     anticipo = float(datos_coti[3])
     anticipo_h = anticipo/valor_hormigon.valor
     cuota_esp = datos_coti[0]

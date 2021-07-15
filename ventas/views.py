@@ -2031,7 +2031,6 @@ class PdfCotiza(View):
             mensaje_email = "¡Buen dia {}!".format(cliente.nombre)
 
         data = calculo_cotizacion(unidad, features_unidad, info_coti, valor_hormigon)
-        print(data)
         # Aqui llamamos y armamos el PDF
       
         template = get_template('cotizadorpdf.html')
@@ -2103,7 +2102,6 @@ Por favor no responder este email
         # Aviso por wp
         #try:
         jefe_ventas = datosusuario.objects.get(cargo = "JEFE DE VENTAS")
-        print(jefe_ventas)
         send= "Hola!, {} ha enviado una cotización a {} de la siguiente unidad: {}{} - {}".format(request.user.username, cliente.nombre, unidad.piso_unidad, unidad.nombre_unidad, unidad.proyecto)
         bot_wp = WABot(response_servidor)
         bot_wp.send_message_user(str(jefe_ventas.Telefono), send)
