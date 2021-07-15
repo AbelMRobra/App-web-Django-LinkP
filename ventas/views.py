@@ -2100,14 +2100,20 @@ Por favor no responder este email
                         mensaje.as_string())
 
         # Aviso por wp
-        #try:
-        jefe_ventas = datosusuario.objects.get(cargo = "JEFE DE VENTAS")
-        send= "Hola!, {} ha enviado una cotización a {} de la siguiente unidad: {}{} - {}".format(request.user.username, cliente.nombre, unidad.piso_unidad, unidad.nombre_unidad, unidad.proyecto)
-        bot_wp = WABot(response_servidor)
-        bot_wp.send_message_user(str(jefe_ventas.Telefono), send)
+        try:
+            jefe_ventas = datosusuario.objects.get(cargo = "JEFE DE VENTAS")
+            send= "Hola!, {} ha enviado una cotización a {} de la siguiente unidad: {}{} - {}".format(request.user.username, cliente.nombre, unidad.piso_unidad, unidad.nombre_unidad, unidad.proyecto)
+            bot_wp = WABot(response_servidor)
+            bot_wp.send_message_user(str(jefe_ventas.Telefono), send)
             
-        #except:
-            #pass
+        except:
+            pass
+        try:
+            send= "Hola {}!, enviamos tu cotización al siguiente email {}, cualquier error o consulta no dudes en consultar! - Equipo Link".format(cliente.nombre, cliente.email)
+            bot_wp = WABot(response_servidor)
+            bot_wp.send_message_user(str(cliente.telefono), send)
+        except:
+            pass
 
         # Creo la consulta
 
