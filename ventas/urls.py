@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 
 urlpatterns = [
     url(r'^appcomercial/$', login_required(views.appcomercial), name = 'App comercial'),
+    url(r'^apparchivoscomercial/$', login_required(views.apparchivoscomercial), name = 'App archivos comercial'),
     url(r'^dosier/$', login_required(views.dosier), name = 'Dosier'),
     url(r'^reclamospostventa$', login_required(views.reclamospostventa), name = 'Reclamos Postventa'),
     url(r'^reclamo/(?P<id_reclamo>\d+)/$', login_required(views.reclamo), name = 'Reclamo'),
@@ -18,7 +19,7 @@ urlpatterns = [
     url(r'^pricing/(?P<id_proyecto>\d+)/$', login_required(views.pricing), name = 'Pricing'),
     url(r'^editarasig/(?P<id_unidad>\d+)/$', login_required(views.editarasignacion), name = 'Editar asignacion'),
     url(r'^cotizador/(?P<id_unidad>\d+)/$', login_required(views.cotizador), name = 'Cotizador'),
-    url(r'^emailpdfcoti/(?P<id_unidad>\d+)/(?P<id_cliente>\d+)/(?P<info_coti>\d+)/$', PdfCotiza.as_view(), name = "Email del coti"),
+    path('emailpdfcoti/<int:id_unidad>/<int:id_cliente>/<str:info_coti>/$', PdfCotiza.as_view(), name = "Email del coti"),
     url(r'^editarventa/(?P<id_venta>\d+)/$', login_required(views.editarventa), name = 'Editar venta'),
     url(r'^detalleventa/(?P<id_venta>\d+)/$', login_required(views.detalleventa), name = 'Detalle venta'),
     url(r'^eliminarventa/(?P<id_venta>\d+)/$', login_required(views.eliminarventa), name = 'Eliminar venta'),

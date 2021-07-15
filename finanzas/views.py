@@ -786,7 +786,7 @@ def EliminarCuentaCorriente(request, id_cuenta):
 
     return render(request, 'eliminar_cuenta.html', {"datos":datos, "otros_datos":otros_datos})
 
-def totalcuentacte(request, id_proyecto, cliente, moneda):
+def totalcuentacte(request, id_proyecto, cliente, moneda, boleto):
 
 
     # Listado de los proyectos que tienen cuenta corrientes
@@ -867,42 +867,42 @@ def totalcuentacte(request, id_proyecto, cliente, moneda):
         cuentas_informacion = []
 
     if fechas and cliente == "1":
-
-        if moneda == "0":
-
-            cuentas = CuentaCorriente.objects.filter(venta__proyecto__id = id_proyecto)
-            for c in cuentas:
-                if c.flujo:
-                    flujo_ingreso = c.flujo.split("&")
-                    flujo_ingreso.pop()
-                    flujo_ingreso = np.array(flujo_ingreso)
-                    cuentas_informacion.append((c, flujo_ingreso))
+        cuentas = CuentaCorriente.objects.filter(venta__proyecto__id = id_proyecto)
+        for c in cuentas:
+            if boleto == "0":
+                if moneda == "0":
+                    if c.flujo:
+                        flujo_ingreso = c.flujo.split("&")
+                        flujo_ingreso.pop()
+                        flujo_ingreso = np.array(flujo_ingreso)
+                        cuentas_informacion.append((c, flujo_ingreso))
+                    else:
+                        cuentas_informacion.append((c, []))
                 else:
-                    cuentas_informacion.append((c, []))
-
-        if moneda == "1":
-
-                
-                # Aqui armamos por clientes 
-
-                # Tengo que ver como mejorar esto
-
-                if cliente == "1":
-                    for c in clientes:
-                        
-                        if moneda == "1":
-                            cuotas_cliente = sum(np.array(Cuota.objects.values_list('precio', flat =True).filter(fecha__range = (fecha_inicial, f), cuenta_corriente__venta__proyecto__id = id_proyecto, cuenta_corriente = c))*np.array(Cuota.objects.values_list('constante__valor', flat =True).filter(fecha__range = (fecha_inicial, f), cuenta_corriente__venta__proyecto__id = id_proyecto, cuenta_corriente = c)))
-                            pagos_cliente = sum(np.array(Pago.objects.values_list('pago', flat =True).filter(cuota__fecha__range = (fecha_inicial, f), cuota__cuenta_corriente__venta__proyecto__id = id_proyecto, cuota__cuenta_corriente = c))*np.array(Pago.objects.values_list('cuota__constante__valor', flat =True).filter(cuota__fecha__range = (fecha_inicial, f), cuota__cuenta_corriente__venta__proyecto__id = id_proyecto, cuota__cuenta_corriente = c)))
-                            pago_pasado = sum(np.array(Pago.objects.values_list('pago', flat =True).filter(cuota__fecha__range = (fecha_inicial, f), cuota__cuenta_corriente__venta__proyecto__id = id_proyecto, cuota__cuenta_corriente = c)))
-                            pago_pasado = pago_pasado + (cuotas_cliente - pagos_cliente)/horm.valor
-                            matriz_clientes[c].append(pago_pasado)
-  
-                        else:
-                            cuotas_cliente = sum(np.array(Cuota.objects.values_list('precio', flat =True).filter(fecha__range = (fecha_inicial, f), cuenta_corriente__venta__proyecto__id = id_proyecto, cuenta_corriente = c))*np.array(Cuota.objects.values_list('constante__valor', flat =True).filter(fecha__range = (fecha_inicial, f), cuenta_corriente__venta__proyecto__id = id_proyecto, cuenta_corriente = c)))
-                            pagos_cliente = sum(np.array(Pago.objects.values_list('pago', flat =True).filter(cuota__fecha__range = (fecha_inicial, f), cuota__cuenta_corriente__venta__proyecto__id = id_proyecto, cuota__cuenta_corriente = c))*np.array(Pago.objects.values_list('cuota__constante__valor', flat =True).filter(cuota__fecha__range = (fecha_inicial, f), cuota__cuenta_corriente__venta__proyecto__id = id_proyecto, cuota__cuenta_corriente = c)))
-                            pago_pasado = sum(np.array(Pago.objects.values_list('pago_pesos', flat =True).filter(cuota__fecha__range = (fecha_inicial, f), cuota__cuenta_corriente__venta__proyecto__id = id_proyecto, cuota__cuenta_corriente = c)))
-                            pago_pasado = pago_pasado + (cuotas_cliente - pagos_cliente)
-                            matriz_clientes[c].append(pago_pasado)
+                    if c.flujo_m3:
+                        flujo_ingreso = c.flujo_m3.split("&")
+                        flujo_ingreso.pop()
+                        flujo_ingreso = np.array(flujo_ingreso)
+                        cuentas_informacion.append((c, flujo_ingreso))
+                    else:
+                        cuentas_informacion.append((c, []))
+            else:
+                if moneda == "0":
+                    if c.flujo_boleto:
+                        flujo_ingreso = c.flujo_boleto.split("&")
+                        flujo_ingreso.pop()
+                        flujo_ingreso = np.array(flujo_ingreso)
+                        cuentas_informacion.append((c, flujo_ingreso))
+                    else:
+                        cuentas_informacion.append((c, []))
+                else:
+                    if c.flujo_boleto_m3:
+                        flujo_ingreso = c.flujo_boleto_m3.split("&")
+                        flujo_ingreso.pop()
+                        flujo_ingreso = np.array(flujo_ingreso)
+                        cuentas_informacion.append((c, flujo_ingreso))
+                    else:
+                        cuentas_informacion.append((c, []))
 
     flujo_informacion = []
 
@@ -941,7 +941,7 @@ def totalcuentacte(request, id_proyecto, cliente, moneda):
         flujo_informacion['flujo_proyecto_m3'] = np.array(flujo_informacion['flujo_proyecto_m3'])
 
 
-    return render(request, 'totalcuentas.html', {"informacion_general": informacion_general, "cuentas_informacion":cuentas_informacion, "moneda":moneda, "id_proyecto":id_proyecto, "cliente":cliente,"fechas":fechas, "flujo_informacion":flujo_informacion, "listado":listado, "proyecto":proyecto, })
+    return render(request, 'totalcuentas.html', {"informacion_general": informacion_general, "cuentas_informacion":cuentas_informacion, "moneda":moneda, "id_proyecto":id_proyecto, "cliente":cliente,"fechas":fechas, "flujo_informacion":flujo_informacion, "listado":listado, "proyecto":proyecto, "boleto":boleto})
 
 def resumenctacte(request, id_cliente):
 

@@ -148,6 +148,8 @@ def flujo_ingreso_cliente(id):
     proyecto = Proyectos.objects.get(id = cuenta_venta.venta.unidad.proyecto.id)
     fluejo_ingreso = ""
     fluejo_ingreso_m3 = ""
+    flujo_ingreso_boleto =""
+    fluejo_ingreso_boleto_m3 = ""
     fecha_inicial = 0
     fechas = proyecto.fechas_ctas_ctes.split("&")
     fechas.pop()
@@ -161,24 +163,49 @@ def flujo_ingreso_cliente(id):
 
         else:
 
-            f = f - datetime.timedelta(days=1)             
+            f = f - datetime.timedelta(days=1)
+
+            # Parte pesos -> Abel             
             sum_cuotas_mes = sum(np.array(Cuota.objects.values_list('precio', flat =True).filter(fecha__range = (fecha_inicial, f), cuenta_corriente = cuenta_venta))*np.array(Cuota.objects.values_list('constante__valor', flat =True).filter(fecha__range = (fecha_inicial, f), cuenta_corriente = cuenta_venta)))
             sum_pagos_mes = sum(np.array(Pago.objects.values_list('pago', flat =True).filter(cuota__fecha__range = (fecha_inicial, f), cuota__cuenta_corriente = cuenta_venta))*np.array(Pago.objects.values_list('cuota__constante__valor', flat =True).filter(cuota__fecha__range = (fecha_inicial, f), cuota__cuenta_corriente = cuenta_venta)))
             sum_pagos_nominales = sum(np.array(Pago.objects.values_list('pago_pesos', flat =True).filter(cuota__fecha__range = (fecha_inicial, f), cuota__cuenta_corriente = cuenta_venta)))
             pagado_o_adeudado = sum_pagos_nominales + (sum_cuotas_mes - sum_pagos_mes)
             fluejo_ingreso = fluejo_ingreso + str(pagado_o_adeudado)+"&"
 
-
+            # Parte M3 -> Abel
             sum_cuotas_mes = sum(np.array(Cuota.objects.values_list('precio', flat =True).filter(fecha__range = (fecha_inicial, f), cuenta_corriente = cuenta_venta)))
             sum_pagos_mes = sum(np.array(Pago.objects.values_list('pago', flat =True).filter(cuota__fecha__range = (fecha_inicial, f), cuota__cuenta_corriente = cuenta_venta)))
             sum_pagos_nominales = sum(np.array(Pago.objects.values_list('pago', flat =True).filter(cuota__fecha__range = (fecha_inicial, f), cuota__cuenta_corriente = cuenta_venta)))
             pagado_o_adeudado = sum_pagos_nominales + (sum_cuotas_mes - sum_pagos_mes)
             fluejo_ingreso_m3 = fluejo_ingreso_m3 + str(pagado_o_adeudado)+"&"
 
+            # Parte de boleto pesos -> Flor
+
+            vector_cuotas_mes=np.array(Cuota.objects.values_list('precio', flat =True).filter(boleto="BOLETO",fecha__range = (fecha_inicial, f), cuenta_corriente = cuenta_venta))
+            vector_constantes_mes=np.array(Cuota.objects.values_list('constante__valor', flat =True).filter(boleto="BOLETO",fecha__range = (fecha_inicial, f), cuenta_corriente = cuenta_venta))
+            vector_boletos_mes=np.array(Cuota.objects.values_list('porc_boleto', flat =True).filter(boleto="BOLETO",fecha__range = (fecha_inicial, f), cuenta_corriente = cuenta_venta))
+            total_cuotas_boletos_mes=sum(vector_cuotas_mes*vector_constantes_mes*vector_boletos_mes)
+            vector_pagos_boleto=np.array(Pago.objects.values_list('pago', flat =True).filter(cuota__boleto="BOLETO", cuota__fecha__range = (fecha_inicial, f), cuota__cuenta_corriente = cuenta_venta))
+            vector_constante_pagos=np.array(Pago.objects.values_list('cuota__constante__valor', flat =True).filter(cuota__boleto="BOLETO", cuota__fecha__range = (fecha_inicial, f), cuota__cuenta_corriente = cuenta_venta))
+            vector_constante_pagos_porc=np.array(Pago.objects.values_list('cuota__porc_boleto', flat =True).filter(cuota__boleto="BOLETO", cuota__fecha__range = (fecha_inicial, f), cuota__cuenta_corriente = cuenta_venta))
+            sum_pagos_boleto_mes=sum(vector_pagos_boleto*vector_constante_pagos*vector_constante_pagos_porc)
+            sum_pagos_nominales_boletos = sum(np.array(Pago.objects.values_list('pago_pesos', flat =True).filter(cuota__boleto="BOLETO",cuota__fecha__range = (fecha_inicial, f), cuota__cuenta_corriente = cuenta_venta))*np.array(Pago.objects.values_list('cuota__porc_boleto', flat =True).filter(cuota__boleto="BOLETO",cuota__fecha__range = (fecha_inicial, f), cuota__cuenta_corriente = cuenta_venta)))
+            pagado_o_adeudado = sum_pagos_nominales_boletos + (total_cuotas_boletos_mes - sum_pagos_boleto_mes)
+            flujo_ingreso_boleto = flujo_ingreso_boleto + str(pagado_o_adeudado)+"&"
+            
+            # Parte de boleto M3 -> Abel
+            sum_cuotas_mes = sum(np.array(Cuota.objects.values_list('precio', flat =True).filter(fecha__range = (fecha_inicial, f), cuenta_corriente = cuenta_venta))*np.array(Cuota.objects.values_list('porc_boleto', flat =True).filter(fecha__range = (fecha_inicial, f), cuenta_corriente = cuenta_venta)))
+            sum_pagos_mes = sum(np.array(Pago.objects.values_list('pago', flat =True).filter(cuota__fecha__range = (fecha_inicial, f), cuota__cuenta_corriente = cuenta_venta))*np.array(Pago.objects.values_list('cuota__porc_boleto', flat =True).filter(cuota__fecha__range = (fecha_inicial, f), cuota__cuenta_corriente = cuenta_venta)))
+            sum_pagos_nominales = sum(np.array(Pago.objects.values_list('pago', flat =True).filter(cuota__fecha__range = (fecha_inicial, f), cuota__cuenta_corriente = cuenta_venta))*np.array(Pago.objects.values_list('cuota__porc_boleto', flat =True).filter(cuota__fecha__range = (fecha_inicial, f), cuota__cuenta_corriente = cuenta_venta)))
+            pagado_o_adeudado = sum_pagos_nominales + (sum_cuotas_mes - sum_pagos_mes)
+            fluejo_ingreso_boleto_m3 = fluejo_ingreso_boleto_m3 + str(pagado_o_adeudado)+"&"
+
             fecha_inicial = f
 
     cuenta_venta.flujo = fluejo_ingreso
     cuenta_venta.flujo_m3 = fluejo_ingreso_m3
+    cuenta_venta.flujo_boleto = flujo_ingreso_boleto
+    cuenta_venta.flujo_boleto_m3 = fluejo_ingreso_boleto_m3
     cuenta_venta.save()
 
 

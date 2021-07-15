@@ -9,6 +9,9 @@ class Clientescontacto(models.Model):
     apellido = models.CharField(max_length=100, verbose_name = "Apellido")
     email = models.CharField(max_length=100, verbose_name = "Email")
     telefono = models.CharField(max_length=100, verbose_name = "Telefono", blank=True, null=True)
+    fecha_nacimiento = models.DateField(verbose_name = "Fecha de nacimiento", blank=True, null=True)
+    imagenlogo = models.ImageField(verbose_name="Imagen", blank=True, null=True)
+    activo=models.BooleanField(default=True)
 
     class Meta:
         verbose_name="Cliente"

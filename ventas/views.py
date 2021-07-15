@@ -1,13 +1,20 @@
-from django.shortcuts import render
-from django.views.generic import View
-from django.conf import settings
-from numpy.lib import twodim_base
+# Modelos de la BBDD usados
 from .models import EstudioMercado, PricingResumen, FeaturesProjects, FeaturesUni, DosierDeVenta, Clientescontacto
 from proyectos.models import Unidades, Proyectos
 from finanzas.models import Almacenero
 from rrhh.models import datosusuario
 from ventas.models import Pricing, ArchivosAreaVentas, VentasRealizadas, ArchivoFechaEntrega, ArchivoVariacionHormigon, ReclamosPostventa
 from presupuestos.models import Constantes, Desde, Registrodeconstantes
+from crm.models import Consulta
+
+# Librerias matematicas
+import numpy as np
+import numpy_financial as npf
+
+from django.shortcuts import render
+from django.views.generic import View
+from django.conf import settings
+from numpy.lib import twodim_base
 from datetime import date
 from django.shortcuts import redirect
 from django.template.loader import get_template
@@ -16,24 +23,26 @@ import string
 import requests
 from datetime import date
 import operator
-import numpy as np
 from openpyxl import Workbook
 from openpyxl.styles import Alignment, Border, Font, PatternFill, Side 
 from django.views.generic.base import TemplateView 
 from django.http import HttpResponse 
-import numpy_financial as npf
 from xhtml2pdf import pisa
 import os
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from email.mime.base import MIMEBase
 from email import encoders
+from .functions import calculo_cotizacion
+from .wabot import WABot
 import smtplib
 
 
 def appcomercial(request):
-
     return render(request, 'appcomercial_principal.html')
+
+def apparchivoscomercial(request):
+    return render(request, 'apparchivoscomercial.html')
 
 def reportereclamos(request):
 
@@ -1927,11 +1936,11 @@ def cotizador(request, id_unidad):
         for d in range(int(cuotas_p)):
             cuotas_pose.append(1.65)
 
-        valor_auxiliar_espera = np.npv(rate=(datos.proyecto.tasa_f/100), values=cuotas_espera)
+        valor_auxiliar_espera = npf.npv(rate=(datos.proyecto.tasa_f/100), values=cuotas_espera)
 
-        valor_auxiliar_pose = np.npv(rate=(datos.proyecto.tasa_f/100), values=cuotas_pose)
+        valor_auxiliar_pose = npf.npv(rate=(datos.proyecto.tasa_f/100), values=cuotas_pose)
 
-        valor_auxiliar_aporte = np.npv(rate=(datos.proyecto.tasa_f/100), values=aporte_va)
+        valor_auxiliar_aporte = npf.npv(rate=(datos.proyecto.tasa_f/100), values=aporte_va)
 
         factor = valor_auxiliar_aporte + valor_auxiliar_espera + valor_auxiliar_pose
 
@@ -1971,7 +1980,7 @@ def cotizador(request, id_unidad):
             aporte, importe_cuota_p, importe_cuota_p_h, importe_cuota_esp_h, importe_aporte_h, valor_cuota_espera,
             valor_cuota_entrega, valor_cuota_pose]
 
-        info_coti_email = str(cuota_esp)+"00"+str(aporte)+"00"+str(cuotas_p)+"00"+str(anticipo)
+        info_coti_email = str(cuota_esp)+"&"+str(aporte)+"&"+str(cuotas_p)+"&"+str(anticipo)
 
     return render(request, 'cotizador.html', {'info_coti_email':info_coti_email, 'tiempo_restante':tiempo_restante, 'datos':datos, 'resultados':resultados, 'precio_contado':precio_contado, 'm2':m2, 'cliente':cliente})
 
@@ -2004,108 +2013,31 @@ class PdfCotiza(View):
     def get(self, request, id_unidad, id_cliente, info_coti, *args, **kwargs):
 
         #Creamos la información
-
+        response_servidor = {"messages": "Perri"}
         cliente = Clientescontacto.objects.get(id = id_cliente)
-
         unidad = Unidades.objects.get(id = id_unidad)
+        features_unidad = FeaturesUni.objects.filter(unidad = unidad)
+        valor_hormigon = Constantes.objects.get(id = 7)
 
         today = datetime.date.today()
 
-        m2 = 0
-
-        if unidad.sup_equiv > 0:
-
-            m2 = unidad.sup_equiv
-
+        # Saludo de bienvenida
+        hora_actual = datetime.datetime.now()
+        if hora_actual.hour >= 20:
+            mensaje_email = "¡Buenas noches {}!".format(cliente.nombre)
+        elif hora_actual.hour >= 13:
+            mensaje_email = "¡Buenas tardes {}!".format(cliente.nombre)
         else:
+            mensaje_email = "¡Buen dia {}!".format(cliente.nombre)
 
-            m2 = unidad.sup_propia + unidad.sup_balcon + unidad.sup_comun + unidad.sup_patio
-
-        precio_contado = m2*unidad.proyecto.desde
-
-        features_unidad = FeaturesUni.objects.filter(unidad = unidad)
-
-        for f2 in features_unidad:
-
-            precio_contado = precio_contado*f2.feature.inc
-
-        datos_coti = info_coti.split("00", 3)
-        valor_hormigon = Constantes.objects.get(id = 7)
-        anticipo = float(info_coti[0])
-        anticipo_h = anticipo/valor_hormigon.valor
-        cuota_esp = info_coti[1]
-        aporte = info_coti[2]
-        cuotas_p = info_coti[3]
-
-        total_cuotas = float(cuota_esp) + float(cuotas_p)*1.65 + float(aporte)
-
-        cuotas_espera = []
-        cuotas_pose = []
-        aporte_va = []
-
-        for i in range(1):
-            cuotas_espera.append(0)
-            cuotas_pose.append(0)
-            aporte_va.append(0)
-
-        for i in range(int(cuota_esp)):
-            cuotas_espera.append(1)
-            cuotas_pose.append(0)
-            aporte_va.append(0)
-
-        if int(aporte) > 0:
-            aporte_va.pop()
-            aporte_va.append(int(aporte))
-
-        for d in range(int(cuotas_p)):
-            cuotas_pose.append(1.65)
-
-        valor_auxiliar_espera = np.npv(rate=(unidad.proyecto.tasa_f/100), values=cuotas_espera)
-        valor_auxiliar_pose = np.npv(rate=(unidad.proyecto.tasa_f/100), values=cuotas_pose)
-        valor_auxiliar_aporte = np.npv(rate=(unidad.proyecto.tasa_f/100), values=aporte_va)
-        factor = valor_auxiliar_aporte + valor_auxiliar_espera + valor_auxiliar_pose
-        incremento = (total_cuotas/factor) - 1
-        precio_finan = ((precio_contado - float(anticipo))*(1 + incremento)) + float(anticipo)
-
-        importe_cuota_esp = (precio_finan-float(anticipo))/total_cuotas
-        importe_aporte = importe_cuota_esp*float(aporte)
-
-        if int(cuotas_p) > 0:
-
-            importe_cuota_p = importe_cuota_esp*1.65
-
-        else:
-
-            importe_cuota_p = 0
-
-        importe_cuota_p_h = importe_cuota_p/valor_hormigon.valor
-        importe_aporte_h = importe_aporte/valor_hormigon.valor
-        importe_cuota_esp_h = importe_cuota_esp/valor_hormigon.valor
-
-        if cuota_esp != 0:
-            valor_cuota_espera = importe_cuota_esp/float(cuota_esp)
-        else:
-            valor_cuota_espera = 0
-        if aporte != 0:
-            valor_cuota_entrega = importe_aporte/float(aporte)
-        else:
-            valor_cuota_entrega = 0
-        if cuotas_p != 0:
-            valor_cuota_pose = importe_cuota_p/float(cuotas_p)
-        else:
-            valor_cuota_pose = 0
-
-        datos_coti = [anticipo, anticipo_h, precio_finan, cuota_esp, importe_aporte, cuotas_p, importe_cuota_esp,
-        aporte, importe_cuota_p, importe_cuota_p_h, importe_cuota_esp_h, importe_aporte_h, valor_cuota_espera,
-        valor_cuota_entrega, valor_cuota_pose]
-
-
+        data = calculo_cotizacion(unidad, features_unidad, info_coti, valor_hormigon)
+        print(data)
         # Aqui llamamos y armamos el PDF
       
         template = get_template('cotizadorpdf.html')
         contexto = {'cliente':cliente, 
         'unidad':unidad, 
-        'datos_coti':datos_coti,
+        'data':data,
         'today':today, 
         'logo':'{}{}'.format(settings.STATIC_URL, 'img/link.png'),
         'cabecera':'{}{}'.format(settings.STATIC_URL, 'img/fondo.png'),
@@ -2133,32 +2065,55 @@ class PdfCotiza(View):
         mensaje = MIMEMultipart()
         mensaje.attach(MIMEText("""
         
-Prueba
+{}
+
+Enviamos la cotización de hoy!, cualquier consulta no dudes en comunicarte con nosotros
+
+Ingresa a www.linkinversiones.com.ar para mas información
+
+LINK Desarrollos inmobilairios
+Vos confias porque nosotros cumplimos
+
+Por favor no responder este email
 
         
-        """, 'plain'))
+        """.format(mensaje_email), 'plain'))
         mensaje['From']=settings.EMAIL_HOST_USER
         mensaje['To']=cliente.email
-        mensaje['Subject']="Prueba"
+        mensaje['Subject']="LINK - Tu cotización {}".format(cliente.nombre)
 
         # Esta es la parte para adjuntar (prueba)
-
+        plano_adjunto = open(settings.MEDIA_ROOT + "/{}".format(unidad.plano_venta.name), 'rb')
+        adjunto_MIME = MIMEBase('application', "octet-stream")
+        adjunto_MIME.set_payload(plano_adjunto.read())
+        encoders.encode_base64(adjunto_MIME)
+        adjunto_MIME.add_header('Content-Disposition', 'attachment; filename="Plano de la unidad.pdf"')
+        mensaje.attach(adjunto_MIME)
         adjunto_MIME = MIMEBase('application', "octet-stream")
         adjunto_MIME.set_payload(response.content)
         encoders.encode_base64(adjunto_MIME)
         adjunto_MIME.add_header('Content-Disposition', 'attachment; filename="Tu_cotizacion.pdf"')
         mensaje.attach(adjunto_MIME)
-        adjunto_MIME = MIMEBase('application', "octet-stream")
-        adjunto_MIME.set_payload(unidad.plano_venta.url)
-        adjunto_MIME.add_header('Content-Disposition', 'attachment; filename="El_plano.pdf"')
-        mensaje.attach(adjunto_MIME)
-
+        
         # Envio del mensaje
-
         mailServer.sendmail(settings.EMAIL_HOST_USER,
                         cliente.email,
                         mensaje.as_string())
 
+        # Aviso por wp
+        #try:
+        jefe_ventas = datosusuario.objects.get(cargo = "JEFE DE VENTAS")
+        print(jefe_ventas)
+        send= "Hola!, {} ha enviado una cotización a {} de la siguiente unidad: {}{} - {}".format(request.user.username, cliente.nombre, unidad.piso_unidad, unidad.nombre_unidad, unidad.proyecto)
+        bot_wp = WABot(response_servidor)
+        bot_wp.send_message_user(str(jefe_ventas.Telefono), send)
+            
+        #except:
+            #pass
+
+        # Creo la consulta
+
+        return redirect('modificarcliente', id = cliente.id)
 
 def featuresproject(request, id_proj):
 

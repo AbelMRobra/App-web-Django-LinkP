@@ -1,0 +1,115 @@
+{% extends "users/inicio2.html" %}
+{% load apptags_extras %}
+
+{% load static %}
+
+{% block content %}
+
+<div class="container-fluid">
+    <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+            <h3 class="text-themecolor">Editar cliente</h3>
+        </div>
+        <div class="col-md-7 align-self-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'App comercial' %}">App comercial</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'clientes' %}">CRM - Principal</a></li>
+                <li class="breadcrumb-item">Cliente</li>
+            </ol>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body bg-light">
+                <div class="row">
+                   
+                    <div class="col-lg-4 col-xlg-3 col-md-5">
+                        <div class="card" style="box-shadow: 2px 2px 3px 0px rgba(0, 0, 0, 0.2) ; border-radius: 5px;">
+                            <div class="card-body">
+                                <center class="m-t-30"> 
+                                    {% if cliente.imagenlogo %}
+                                    <img src="{{cliente.imagenlogo.url}}" class="img-circle" width="150" />
+                                    {% else %}
+                                    <img src="{% static 'img/DatosPersonal.png' %}" class="img-circle" width="80" />
+                                    {% endif %}
+
+                                    <h4 class="card-title m-t-10">{{cliente.nombre}} {{cliente.apellido}}</h4>
+                                    <h6 class="card-subtitle">{{cliente.email}}</h6>
+      
+
+                                </center>
+                            </div>
+                            
+                            <div class="card-body">
+                                <h6 class="p-t-30">Telefono</h6>
+                                <small class="text-muted db">{{cliente.telefono}}</small>
+                                <h6 class="p-t-30">Fecha de nacimiento</h6>
+                                <small class="text-muted db">{{cliente.fecha_nacimiento}}</small>
+                           
+                                
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-8 col-xlg-9 col-md-7">
+                        <div class="card" style="box-shadow: 2px 2px 3px 0px rgba(0, 0, 0, 0.2) ; border-radius: 5px;">
+                            <!-- Nav tabs -->
+                            <ul class="nav nav-tabs profile-tab" role="tablist">
+                                <!-- <li class="nav-item"> <a class="nav-link active" data-toggle="tab" href="#datos" role="tab">Datos</a> </li> -->
+                                <li class="nav-item"> <a class="nav-link active" data-toggle="tab" href="#settings" role="tab">Editar</a> </li>
+                            </ul>
+                            <!-- Tab panes -->
+                            <div class="tab-content">
+                                
+                                <div class="tab-pane active" id="settings" role="tabpanel">
+                                    <div class="card-body">
+                                        
+                                        <form method="POST">
+                                            {% csrf_token %}
+                                            <div class="form-group">
+                                                <label class="col-md-12">Nombre</label>
+                                                <div class="col-md-12">
+                                                    <input type="text" value="{{cliente.nombre}}"  class="form-control form-control-line" name="nombre">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-md-12">Apellido</label>
+                                                <div class="col-md-12">
+                                                    <input type="text" value="{{cliente.apellido}}"  class="form-control form-control-line" name="apellido">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="example-email" class="col-md-12">Email</label>
+                                                <div class="col-md-12">
+                                                    <input type="email" value="{{cliente.email}}" class="form-control form-control-line" name="email">
+                                                </div>
+                                            </div>
+                                          
+                                            <div class="form-group">
+                                                <label class="col-md-12">Telefono</label>
+                                                <div class="col-md-12">
+                                                    <input type="tel" value="{{cliente.telefono}}" class="form-control form-control-line" name="telefono">
+                                                </div>
+                                            </div>
+                                           
+
+                                            <div class="form-group">
+                                                <div class="col-sm-12">
+                                                    <button class="btn btn-success">Actualizar</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -78,20 +78,25 @@
                             </button>
                             <div class="dropdown-menu">
                                 {% for i in listado %}
-                                <a class="dropdown-item" href="{% url 'Total cuenta' i.id cliente 0 %}">{{i.nombre|lower|capfirst}}</a>
+                                <a class="dropdown-item" href="{% url 'Total cuenta' i.id cliente 0 0 %}">{{i.nombre|lower|capfirst}}</a>
                                 {% endfor %}
                             </div>
                         </div>
 
                         {% if cliente == "1" %}                      
-                        <a href="{% url 'Total cuenta' id_proyecto 0 0 %}" class="btn btn-secondary">General</a>
+                        <a href="{% url 'Total cuenta' id_proyecto 0 0 0 %}" class="btn btn-secondary">General</a>
                         {% if moneda == "0" %}
-                        <a href="{% url 'Total cuenta' id_proyecto 1 1 %}" class="btn btn-secondary">M3</a>
+                        <a href="{% url 'Total cuenta' id_proyecto 1 1 boleto %}" class="btn btn-secondary">M3</a>
                         {% else %}
-                        <a href="{% url 'Total cuenta' id_proyecto 1 0 %}" class="btn btn-secondary">$</a>
+                        <a href="{% url 'Total cuenta' id_proyecto 1 0 boleto %}" class="btn btn-secondary">$</a>
+                        {% endif %}
+                        {% if boleto == "0" %}
+                        <a href="{% url 'Total cuenta' id_proyecto 1 moneda 1 %}" class="btn btn-secondary">B</a>
+                        {% else %}
+                        <a href="{% url 'Total cuenta' id_proyecto 1 moneda 0 %}" class="btn btn-secondary">N</a>
                         {% endif %}
                         {% else %}
-                        <a href="{% url 'Total cuenta' id_proyecto 1 0 %}" class="btn btn-secondary">Cliente</a>
+                        <a href="{% url 'Total cuenta' id_proyecto 1 0 boleto %}" class="btn btn-secondary">Cliente</a>
                         
                         {% endif %}
                         <!-- {% if cliente == "1" %} 

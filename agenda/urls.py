@@ -32,6 +32,7 @@ urlpatterns = [
     path('sigma/', include('sigma.urls')),
     path('rrhh/', include('rrhh.urls')),
     path('tecnica/', include('tecnica.urls')),
+    path('crm/', include('crm.urls')),
     path('admin/', admin.site.urls),
 
 ]

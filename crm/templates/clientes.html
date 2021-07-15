@@ -1,0 +1,222 @@
+{% extends "users/inicio2.html" %}
+
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+
+
+<div class="container-fluid ">
+
+    <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+            <h3 class="text-themecolor">CRM - Panel principal</h3>
+        </div>
+
+        <div class="col-md-7 align-self-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'App comercial' %}">Panel</a></li>
+                <li class="breadcrumb-item">CRM</li>
+            </ol>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-9">
+        <div class="card overflow-auto">
+            <div class="card-body">
+                <div style="margin: 5px;">
+                    <a href="#" data-toggle="modal" data-target="#ModalAgregar"><i
+                            class="fa fa-plus-circle mr-2"></i><b>Añadir cliente</b></a>
+
+                </div>
+                <!-- Modal  -->
+                <div class="modal fade" id="ModalAgregar" tabindex="-1" role="dialog" aria-labelledby="ModalAgregar"
+                    aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header"
+                                style="background: rgb(36,160,237);
+                             background: linear-gradient(315deg, rgba(36,160,237,1) 0%, rgba(56,56,130,1) 22%, rgba(0,212,255,1) 100%);">
+                                <h5 class="modal-title text-light" id="exampleModalLongTitle">Añadir cliente</h5>
+                                <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form method="POST">
+
+                                    {% csrf_token %}
+
+                                    <p class="my-2">Nombre</p>
+                                    <div class="mb-3">
+                                        <input type="text" class="form-control form-control" name="nombre"
+                                            placeholder="Juan" required>
+                                    </div>
+
+                                    <p class="my-2">Apellido</p>
+                                    <div class="mb-3">
+                                        <input type="text" class="form-control form-control" name="apellido"
+                                            placeholder="Perez" required>
+                                    </div>
+
+                                    <p class="my-2">Email</p>
+                                    <div class="mb-3">
+                                        <input type="email" class="form-control form-control"
+                                            placeholder="Ej: miemail@linkp.com" name="email" required>
+                                    </div>
+
+                                    <p class="my-2">Telefono</p>
+                                    <div class="mb-3">
+                                        <input type="tel" class="form-control form-control" name="telefono"
+                                            placeholder="03814999999" required>
+                                    </div>
+
+                                    <div>
+                                        <button class="btn btn-info" type="submit" name="agregar" value="agregar"
+                                            style="margin-top: 10px;">Crear</button>
+
+                                    </div>
+                                </form>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-info" data-dismiss="modal">Cerrar</button>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <table id="example" class="mt-4 table" style="font-size: 14px;">
+                    <thead>
+
+                        <tr>
+                            <th></th>
+                            <th>Usuario</th>
+                            <th>Email</th>
+                            <th>Telefono</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                       
+                        {% for d in clientes %}
+                        <tr>
+                            {% if d.imagenlogo %}
+                            <td><img src="{{d.imagenlogo.url}}" style="width: 30px;" alt="usuario"></td>
+                            {% else %}
+                            <td><img src="{% static 'img/DatosPersonal.png' %}" style="width: 30px;" alt="usuario"></td>{% endif %}
+                            <td>{{d.nombre}} {{d.apellido}}</td>
+                            <td>
+                                <p>{{d.email}}</p>
+                            </td>
+                            <td>
+                                <p>{{d.telefono}}</p>
+                            </td>
+                            <td>
+                                <div class="btn-group ml-auto">
+                                    <a href="JavaScript:void(0)" class="icon-options-vertical link"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" href="{% url 'modificarcliente' d.id %}"><i
+                                                class="fa fa-pencil mr-2"></i>Editar</a>
+                                        <a class="dropdown-item text-danger" href="#" data-toggle="modal"
+                                            data-target="#ModalBorrar{{d.id}}"><i
+                                                class="fa fa-trash-o mr-2"></i>Borrar</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                       
+                        <!-- Modal  -->
+                        <div class="modal fade" id="ModalBorrar{{d.id}}" tabindex="-1" role="dialog"
+                            aria-labelledby="ModalBorrar{{d.id}}" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header"
+                                        style="background: rgb(36,160,237);
+                                        background: linear-gradient(315deg, rgba(36,160,237,1) 0%, rgba(56,56,130,1) 22%, rgba(0,212,255,1) 100%);">
+                                        <h5 class="modal-title text-light" id="exampleModalLongTitle">Borrar cliente
+                                        </h5>
+                                        <button type="button" class="close text-light" data-dismiss="modal"
+                                            aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form method="POST">
+
+                                            {% csrf_token %}
+
+                                            <p class="my-2">¿Está seguro que desea borrar? Esta acción podria dañar
+                                                muchas cosas.</p>
+
+                                            <div>
+                                                <button class="btn btn-danger" type="submit" name="eliminar"
+                                                    value="{{d.id}}" style="margin-top: 10px;">Borrar</button>
+
+                                            </div>
+                                        </form>
+
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-info" data-dismiss="modal">Cerrar</button>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        {% endfor%}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-3">
+            <div class="card text-center p-4" style="box-shadow: 2px 2px 3px 0px rgba(0, 0, 0, 0.2) ; border-radius: 5px;">
+                <p class="m-0" >Estadisticas</p>
+                <div>
+                    <img src="{% static 'img/FlujoIngresos.png' %}" alt="imagen estadisticas"
+                        style="max-width:80px; height:auto">
+                </div>
+                <a href="#"><button class="btn btn-info">
+                        Ingresar</button></a>
+            </div>
+            <div class="card text-center p-4" style="box-shadow: 2px 2px 3px 0px rgba(0, 0, 0, 0.2) ; border-radius: 5px;">
+                <p class="m-0" >Admin. Consultas</p>
+                <div>
+                    <img src="{% static 'img/analisisperiodos.png' %}" alt="imagen consultas"
+                        style="max-width:80px; height:auto">
+                </div>
+                <a href="{% url 'crearconsulta'%}"><button class="btn btn-success">
+                        Ingresar</button></a>
+            </div>
+    
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $('#example').DataTable({
+            "language": {
+                "lengthMenu": "Mostar _MENU_ documentos",
+                "zeroRecords": "No se encontro nada - perdon ",
+                "info": "Pagina _PAGE_ de _PAGES_",
+                "infoEmpty": "Sin registros disponibles",
+                "infoFiltered": "(filtrado de _MAX_ registros totales)",
+                "search": "Buscar"
+            },
+            "paging": false,
+            "ordering": false,
+            "info": false
+        });
+    });
+</script>
+
+{% endblock %}

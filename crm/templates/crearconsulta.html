@@ -1,0 +1,278 @@
+{% extends "users/inicio2.html" %}
+{% load apptags_extras %}
+
+{% load static %}
+
+{% block content %}
+
+<div class="container-fluid">
+    <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+            <h3 class="text-themecolor">Panel de consultas</h3>
+        </div>
+        <div class="col-md-7 align-self-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'App comercial' %}">App comercial</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'clientes' %}">CRM - Principal</a></li>
+                <li class="breadcrumb-item">Consulta</li>
+            </ol>
+        </div>
+    </div>
+</div>
+
+<div class="row ">
+    <div class="col-12">
+        <div class="card overflow-auto">
+            <div class="card-body">
+
+                <h4 class="card-title"><span class="lstick"></span>
+                    Panel de consultas</h4>
+                <h6 class="card-subtitle">Panel para gestionar las consultas de cada cliente.</h6>
+
+                <div style="margin: 5px;">
+                    <a href="#" data-toggle="modal" data-target="#ModalConsulta"><i
+                            class="fa fa-plus-circle mr-2"></i><b>Añadir</b></a>
+
+                </div>
+
+
+                <!-- Modal  -->
+                <div id="ModalConsulta" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="ModalConsulta"
+                    aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header"
+                                style="background: rgb(36,160,237);
+                     background: linear-gradient(315deg, rgba(36,160,237,1) 0%, rgba(56,56,130,1) 22%, rgba(0,212,255,1) 100%);">
+                                <h5 class="modal-title  text-light" id="exampleModalLongTitle">Añadir</h5>
+                                <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+
+                                <form method="POST" style="margin: 15px;" enctype="multipart/form-data"
+                                    id="upload-image-form">
+
+                                    {% csrf_token %}
+                                    <div class="my-3">
+
+                                        <h6>Fecha</h6>
+                                        <input type="date" name="fecha" class="form-control">
+                                    </div>
+
+                                    <div class="my-3">
+
+                                        <h6>Proyecto</h6>
+                                        <select name="proyecto" id="proyecto" class="form-control">
+
+                                            {% for proy in proyectos %}
+                                            <option value="{{proy.id}}">{{proy.nombre}}</option>
+                                            {% endfor %}
+
+                                        </select>
+                                    </div>
+
+                                    <div class="my-3">
+
+                                        <h6>Cliente</h6>
+                                        <select name="cliente" id="cliente" class="form-control">
+
+                                            {% for cliente in clientes %}
+
+                                            <option value="{{cliente.id}}">{{cliente.nombre}}</option>
+                                            {% endfor %}
+
+                                        </select>
+                                    </div>
+
+                                    <div class="my-3">
+                                        <h6>Tipología</h6>
+                                        <div class="row">
+
+                                            <div class="ml-2 ">
+                                                <input type="checkbox" name="tipologia2" value="6"
+                                                    id="id_tipologia2_5">
+                                                <label class="ml-2" for="id_tipologia2_5">
+                                                    MICROMONO</label>
+
+                                                <input type="checkbox" name="tipologia2" value="7"
+                                                    id="id_tipologia2_6">
+                                                <label class="ml-2" for="id_tipologia2_6">
+                                                    MONO</label>
+
+                                                <input type="checkbox" name="tipologia2" value="1"
+                                                    id="id_tipologia2_0">
+                                                <label class="ml-2" for="id_tipologia2_0">
+                                                    1D</label>
+
+                                                <input type="checkbox" name="tipologia2" value="2"
+                                                    id="id_tipologia2_1">
+                                                <label class="ml-2" for="id_tipologia2_1">
+                                                    2D</label>
+
+                                                <input type="checkbox" name="tipologia2" value="3"
+                                                    id="id_tipologia2_2">
+                                                <label class="ml-2" for="id_tipologia2_2">
+                                                    3D</label>
+
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="ml-2 ">
+                                                <input type="checkbox" name="tipologia2" value="4"
+                                                    id="id_tipologia2_3">
+                                                <label class="ml-2" for="id_tipologia2_3">
+                                                    COCHERA</label>
+
+                                                <input type="checkbox" name="tipologia2" value="5"
+                                                    id="id_tipologia2_4">
+                                                <label class="ml-2" for="id_tipologia2_4">
+                                                    LOFT</label>
+
+                                                <input type="checkbox" name="tipologia2" value="8"
+                                                    id="id_tipologia2_7">
+                                                <label class="ml-2" for="id_tipologia2_7">
+                                                    OFICINA</label>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="my-3">
+                                        <h6>Medio de contacto</h6>
+                                        <select name="medio_contacto" id="medio_contacto" class="form-control">
+
+                                            {% for medio in medios %}
+                                            <option value="{{medio.1}}">{{medio.0}}</option>
+                                            {% endfor %}
+
+                                        </select>
+                                    </div>
+
+                                    <button type="submit" class="btn"><i class="fa fa-arrow-up text-info"><span
+                                                class="text-info ml-2"
+                                                style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif"><b>Añadir</b></span></i></button>
+                                </form>
+
+
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-info" data-dismiss="modal">Cerrar</button>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <table class="table" id="example" style="font-size: 14px;">
+                        <thead>
+                            <tr>
+                                <th>Cliente</th>
+                                <th>Proyecto</th>
+                                <th>Fecha</th>
+                                <th>Seguimiento</th>
+                                <th>Medio contacto</th>
+                                <th>Tipología</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for consulta in consultas %}
+                            <tr>
+                                <td>{{consulta.cliente.nombre|lower|capfirst}}</td>
+                                <td>{{consulta.proyecto|lower|capfirst}}</td>
+                                <td>{{consulta.fecha|date:"j/m/Y"}}</td>
+                                <td>{{consulta.usuario}}</td>
+                                <td>{{consulta.medio_contacto|lower|capfirst}}</td>
+
+                                <td>{% for tipo in consulta.tipologia2.all %}
+                                    {{tipo}} .
+                                    {% endfor %}
+                                </td>
+                                <td>
+                                    <div class="btn-group ml-auto">
+                                        <a href="JavaScript:void(0)" class="icon-options-vertical link"
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
+                                        <div class="dropdown-menu dropdown-menu-right">
+                                            <!-- <a class="dropdown-item" href="#"><i
+                                                    class="fa fa-pencil mr-2"></i>Editar</a> -->
+                                            <a class="dropdown-item text-danger" href="#" data-toggle="modal"
+                                                data-target="#ModalBorrar{{consulta.id}}"><i
+                                                    class="fa fa-trash-o mr-2"></i>Borrar</a>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <!-- Modal  -->
+                            <div class="modal fade" id="ModalBorrar{{consulta.id}}" tabindex="-1" role="dialog"
+                                aria-labelledby="ModalBorrar{{consulta.id}}" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header"
+                                            style="background: rgb(36,160,237);
+                     background: linear-gradient(315deg, rgba(36,160,237,1) 0%, rgba(56,56,130,1) 22%, rgba(0,212,255,1) 100%);">
+                                            <h5 class="modal-title text-light" id="exampleModalLongTitle">Borrar
+                                                consulta
+                                            </h5>
+                                            <button type="button" class="close text-light" data-dismiss="modal"
+                                                aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form method="POST" action="{% url 'eliminarconsulta' %}">
+
+                                                {% csrf_token %}
+
+                                                <p class="my-2">¿Está seguro que desea borrar? Esta acción podria dañar
+                                                    muchas cosas.</p>
+
+                                                <div>
+                                                    <button class="btn btn-danger" type="submit" name="eliminar"
+                                                        value="{{consulta.id}}"
+                                                        style="margin-top: 10px;">Borrar</button>
+
+                                                </div>
+                                            </form>
+
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-info"
+                                                data-dismiss="modal">Cerrar</button>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $('#example').DataTable({
+            "language": {
+                "lengthMenu": "Mostar _MENU_ documentos",
+                "zeroRecords": "No se encontro nada - perdon ",
+                "info": "Pagina _PAGE_ de _PAGES_",
+                "infoEmpty": "Sin registros disponibles",
+                "infoFiltered": "(filtrado de _MAX_ registros totales)",
+                "search": "Buscar"
+            },
+            "paging": false,
+            "info": false
+        });
+    });
+</script>
+
+
+{% endblock %}
