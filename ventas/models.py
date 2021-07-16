@@ -17,8 +17,8 @@ class Clientescontacto(models.Model):
         verbose_name="Cliente"
         verbose_name_plural="Clientes"
 
-    def _str_(self):
-        return '{}'.format(self.nombre)
+    def __str__(self):
+        return '{}, {}'.format(self.nombre, self.apellido)
 
 class Pricing(models.Model):
 
@@ -82,6 +82,7 @@ class VentasRealizadas(models.Model):
 
 
     comprador = models.CharField(max_length=100, verbose_name = "Nombre del comprador")
+    cliente = models.ForeignKey(Clientescontacto, on_delete=models.CASCADE, verbose_name = "Cliente", blank=True, null=True)
     fecha = models.DateField(verbose_name = "Fecha de venta")
     tipo_venta = models.CharField(choices=ModoVenda.choices, max_length=20, verbose_name="Tipo de venta", blank=True, null=True)
     unidad = models.ForeignKey(Unidades, on_delete=models.CASCADE, verbose_name = "Unidades", blank=True, null=True)

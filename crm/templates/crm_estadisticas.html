@@ -1,0 +1,23 @@
+{% extends "users/inicio2.html" %}
+{% load static %}
+{% load humanize %}
+{% block content %}
+
+<div class="container-fluid ">
+
+    <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+            <h3 class="text-themecolor">CRM - Estadisticas</h3>
+        </div>
+
+        <div class="col-md-7 align-self-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'App comercial' %}">Panel</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'clientes' %}">CRM</a></li>
+                <li class="breadcrumb-item">Estadisticas</li>
+            </ol>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

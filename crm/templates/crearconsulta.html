@@ -171,7 +171,7 @@
                                 <th>Cliente</th>
                                 <th>Proyecto</th>
                                 <th>Fecha</th>
-                                <th>Seguimiento</th>
+                                <th>S.</th>
                                 <th>Medio contacto</th>
                                 <th>Tipología</th>
                                 <th></th>
@@ -180,8 +180,8 @@
                         <tbody>
                             {% for consulta in consultas %}
                             <tr>
-                                <td>{{consulta.cliente.nombre|lower|capfirst}}</td>
-                                <td>{{consulta.proyecto|lower|capfirst}}</td>
+                                <td>{{consulta.cliente.nombre|lower|capfirst}}, {{consulta.cliente.apellido|lower|capfirst}}</td>
+                                <td>{% if consulta.proyecto %}{{consulta.proyecto|lower|capfirst}}{% endif %} {% if consulta.proyecto_no_est %}{{consulta.proyecto_no_est|lower|capfirst}}{% endif %}</td>
                                 <td>{{consulta.fecha|date:"j/m/Y"}}</td>
                                 <td>{{consulta.usuario}}</td>
                                 <td>{{consulta.medio_contacto|lower|capfirst}}</td>
@@ -268,7 +268,6 @@
                 "infoFiltered": "(filtrado de _MAX_ registros totales)",
                 "search": "Buscar"
             },
-            "paging": false,
             "info": false
         });
     });

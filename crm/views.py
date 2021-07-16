@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 
 from .models import Consulta ,get_medios
-from ventas.models import Clientescontacto  
+from ventas.models import Clientescontacto, VentasRealizadas
 from .models import Proyectos
 from rrhh.models import datosusuario
 from django.db import IntegrityError
@@ -49,6 +49,9 @@ def clientes(request):
     return render(request,"clientes.html",{'mensaje':mensaje,'clientes':clientes})
 
     
+def estadisticas(request):
+    return render(request, "crm_estadisticas.html")
+
 def modificarcliente(request,**kwargs):
 
     
@@ -57,6 +60,7 @@ def modificarcliente(request,**kwargs):
 
     cliente=Clientescontacto.objects.get(pk=id_cliente)
     consultas = Consulta.objects.filter(cliente = cliente).order_by("-fecha")
+    ventas = VentasRealizadas.objects.filter(cliente = cliente)
     if request.method=='POST':
         datos={}
         try:

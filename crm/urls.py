@@ -7,5 +7,6 @@ urlpatterns = [
    path('clientes/' ,views.clientes,name='clientes'),
    path('modificarcliente/<int:id>' ,views.modificarcliente,name='modificarcliente'),
    path('crearconsulta/',views.crearconsulta.as_view(),name='crearconsulta'),
+   path('estadisticascrm/',views.estadisticas,name='Estadisticas CRM'),
    path('eliminarconsulta/',views.eliminarconsulta,name='eliminarconsulta'),
 ]
