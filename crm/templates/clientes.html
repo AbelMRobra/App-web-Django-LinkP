@@ -122,7 +122,7 @@
                                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
                                     <div class="dropdown-menu dropdown-menu-right">
                                         <a class="dropdown-item" href="{% url 'modificarcliente' d.id %}"><i
-                                                class="fa fa-pencil mr-2"></i>Editar</a>
+                                                class="fa fa-user mr-2"></i>Perfil</a>
                                         <a class="dropdown-item text-danger" href="#" data-toggle="modal"
                                             data-target="#ModalBorrar{{d.id}}"><i
                                                 class="fa fa-trash-o mr-2"></i>Borrar</a>
@@ -212,7 +212,6 @@
                 "infoFiltered": "(filtrado de _MAX_ registros totales)",
                 "search": "Buscar"
             },
-            "paging": false,
             "ordering": false,
             "info": false
         });
