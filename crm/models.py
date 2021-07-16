@@ -44,6 +44,6 @@ class Consulta(models.Model):
         verbose_name_plural = 'Consultas de clientes'
 
     def __str__(self):
-        return str(self.cliente)
+        return str(self.cliente.nombre)
 
   
