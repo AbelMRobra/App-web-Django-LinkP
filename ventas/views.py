@@ -5,7 +5,7 @@ from finanzas.models import Almacenero
 from rrhh.models import datosusuario
 from ventas.models import Pricing, ArchivosAreaVentas, VentasRealizadas, ArchivoFechaEntrega, ArchivoVariacionHormigon, ReclamosPostventa
 from presupuestos.models import Constantes, Desde, Registrodeconstantes
-from crm.models import Consulta
+from crm.models import Consulta, Tipologia
 
 # Librerias matematicas
 import numpy as np
@@ -2082,7 +2082,8 @@ Por favor no responder este email
         mensaje['Subject']="LINK - Tu cotización {}".format(cliente.nombre)
 
         # Esta es la parte para adjuntar (prueba)
-        plano_adjunto = open(settings.MEDIA_ROOT + "/{}".format(unidad.plano_venta.name), 'rb')
+        mRoot = settings.MEDIA_ROOT
+        plano_adjunto = open(mRoot + "/{}".format(unidad.plano_venta.name), 'rb')
         adjunto_MIME = MIMEBase('application', "octet-stream")
         adjunto_MIME.set_payload(plano_adjunto.read())
         encoders.encode_base64(adjunto_MIME)
@@ -2094,6 +2095,11 @@ Por favor no responder este email
         adjunto_MIME.add_header('Content-Disposition', 'attachment; filename="Tu_cotizacion.pdf"')
         mensaje.attach(adjunto_MIME)
         
+        with open(mRoot + "/cotizacion{}{}.pdf".format(cliente.nombre, today), 'wb') as f:
+            f.write(response.content)
+        
+        name_coti_adjunta = "cotizacion{}{}.pdf".format(str(cliente.nombre).replace(" ", ""), today)
+
         # Envio del mensaje
         mailServer.sendmail(settings.EMAIL_HOST_USER,
                         cliente.email,
@@ -2117,6 +2123,33 @@ Por favor no responder este email
 
         # Creo la consulta
 
+        usuario = datosusuario.objects.get(identificacion = request.user.username)
+
+        try:
+            tipologia = Tipologia.objects.get(nombre = unidad.tipologia)
+        except:
+            tipologia = Tipologia(
+                nombre = unidad.tipologia
+            )
+            tipologia.save()
+
+        #try:
+        new_consulta = Consulta(
+            fecha = today,
+            proyecto = unidad.proyecto,
+            cliente = cliente,
+            medio_contacto = 'RECOMENDACION',
+            usuario = usuario,
+            adjunto_propuesta = (name_coti_adjunta),
+        )
+
+        new_consulta.save()
+        new_consulta.tipologia2.add(tipologia)
+        new_consulta.save()
+
+        #except:
+            #pass
+        
         return redirect('modificarcliente', id = cliente.id)
 
 def featuresproject(request, id_proj):

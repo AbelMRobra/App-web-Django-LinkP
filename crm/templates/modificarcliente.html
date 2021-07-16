@@ -57,12 +57,33 @@
                         <div class="card" style="box-shadow: 2px 2px 3px 0px rgba(0, 0, 0, 0.2) ; border-radius: 5px;">
                             <!-- Nav tabs -->
                             <ul class="nav nav-tabs profile-tab" role="tablist">
-                                <!-- <li class="nav-item"> <a class="nav-link active" data-toggle="tab" href="#datos" role="tab">Datos</a> </li> -->
-                                <li class="nav-item"> <a class="nav-link active" data-toggle="tab" href="#settings" role="tab">Editar</a> </li>
+                                <li class="nav-item"> <a class="nav-link active" data-toggle="tab" href="#actividades" role="tab">Actividad</a> </li>
+                                <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#settings" role="tab">Editar</a> </li>
+                                
                             </ul>
                             <!-- Tab panes -->
                             <div class="tab-content">
-                                
+                                <div class="tab-pane active" id="actividades" role="tabpanel">
+                                    <div class="card-body">
+                                        <div class="profiletimeline">
+                                            {% for i in consultas %}
+                                            <div class="sl-item">
+                                                <div class="sl-left"> <img src="{{i.usuario.imagenlogo.url}}" alt="usuario" class="img-circle" /> </div>
+                                                <div class="sl-right">
+                                                    <div><a href="#" class="link">{{cliente.usuario}}</a> <span class="sl-date">{{i.fecha|date:"j/m/Y"}}</span>
+                                                        <p>{% if i.adjunto_propuesta %}
+                                                            <a href="{{i.adjunto_propuesta.url}}" target="_blank"><i class="fa fa-file-pdf-o text-danger"></i></a>
+                                                            {% endif %}Consulto sobre: <b style="color: rgb({{i.proyecto.color}});">{{i.proyecto|lower|capfirst}}</b> - {% for tipo in i.tipologia2.all %}{{tipo}} {% endfor %}</p>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <hr>
+                                            {% endfor %}
+                                           
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="tab-pane active" id="settings" role="tabpanel">
                                     <div class="card-body">
                                         
@@ -103,6 +124,7 @@
                                         </form>
                                     </div>
                                 </div>
+                                
                             </div>
                         </div>
                     </div>

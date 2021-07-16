@@ -29,12 +29,14 @@ class Tipologia(models.Model):
 class Consulta(models.Model):
     
     fecha = models.DateField(verbose_name='Fecha de la consulta')
-    proyecto = models.ForeignKey(Proyectos, on_delete=models.CASCADE)
+    proyecto = models.ForeignKey(Proyectos, on_delete=models.CASCADE,blank=True,null=True)
+    proyecto_no_est = models.CharField(max_length=50,blank=True,null=True)
     cliente=models.ForeignKey(Clientescontacto, on_delete=models.CASCADE)
-    medio_contacto=models.CharField(verbose_name='Medio de contacto',max_length=50)
-    usuario=models.ForeignKey(datosusuario, on_delete=models.CASCADE)
+    medio_contacto=models.CharField(verbose_name='Medio de contacto',max_length=50,blank=True,null=True)
+    usuario=models.ForeignKey(datosusuario, on_delete=models.CASCADE,blank=True,null=True)
     tipologia=models.CharField(max_length=50,blank=True,null=True)
     tipologia2= models.ManyToManyField(Tipologia,blank=True,null=True)
+    adjunto_propuesta = models.FileField(verbose_name="Propuesta", blank=True, null=True)
 
     class Meta:
 
