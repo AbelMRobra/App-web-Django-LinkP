@@ -73,7 +73,7 @@
                                                     <div><a href="#" class="link">{{cliente.usuario}}</a> <span class="sl-date">{{i.fecha|date:"j/m/Y"}}</span>
                                                         <p>{% if i.adjunto_propuesta %}
                                                             <a href="{{i.adjunto_propuesta.url}}" target="_blank"><i class="fa fa-file-pdf-o text-danger"></i></a>
-                                                            {% endif %}Consulto sobre: <b style="color: rgb({{i.proyecto.color}});">{{i.proyecto|lower|capfirst}}</b> - {% for tipo in i.tipologia2.all %}{{tipo}} {% endfor %}</p>
+                                                            {% endif %}Consulto sobre: <b style="color: rgb({{i.proyecto.color}});">{% if i.proyecto %}{{i.proyecto|lower|capfirst}}{% endif %}{% if i.proyecto_no_est %}{{i.proyecto_no_est|lower|capfirst}}{% endif %}</b> - {% for tipo in i.tipologia2.all %}{{tipo}} {% endfor %}</p>
 
                                                     </div>
                                                 </div>
@@ -84,7 +84,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="tab-pane active" id="settings" role="tabpanel">
+                                <div class="tab-pane" id="settings" role="tabpanel">
                                     <div class="card-body">
                                         
                                         <form method="POST">
