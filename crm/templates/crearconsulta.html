@@ -182,7 +182,7 @@
                             <tr>
                                 <td>{{consulta.cliente.nombre|lower|capfirst}}, {{consulta.cliente.apellido|lower|capfirst}}</td>
                                 <td>{% if consulta.proyecto %}{{consulta.proyecto|lower|capfirst}}{% endif %} {% if consulta.proyecto_no_est %}{{consulta.proyecto_no_est|lower|capfirst}}{% endif %}</td>
-                                <td>{{consulta.fecha|date:"j/m/Y"}}</td>
+                                <td>{{consulta.fecha|date:"Y/m/j"}}</td>
                                 <td>{{consulta.usuario}}</td>
                                 <td>{{consulta.medio_contacto|lower|capfirst}}</td>
 
