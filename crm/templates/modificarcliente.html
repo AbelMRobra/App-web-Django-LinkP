@@ -69,10 +69,10 @@
                                             {% if ventas %}
                                             {% for v in ventas %}
                                             <div class="sl-item">
-                                                <div class="sl-left"> <img src="{{v.proyecto.iamgen.url}}" alt="usuario" style="height: 25px; width: auto;" /> </div>
+                                                <div class="sl-left"> <img src="{% static 'img/estrella.png' %}" alt="usuario" class="img-circle" /> </div>
                                                 <div class="sl-right">
                                                     <div><a href="#" class="link"></a> <span class="sl-date">{{v.fecha|date:"j/m/Y"}}</span>
-                                                        <p>Compro: {{v.unidad.piso_unidad}} - {{v.unidad.nombre_unidad}}</p>
+                                                        <p>Compro en <b style="color: rgb({{v.color}});">{{v|lower|capfirst}}</b>: {{v.unidad.piso_unidad}} - {{v.unidad.nombre_unidad}}</p>
 
                                                     </div>
                                                 </div>
