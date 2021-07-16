@@ -20,4 +20,199 @@
     </div>
 </div>
 
+<div class="row">
+    <div class="col-lg-8 col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex">
+                    <div>
+                        <h3 class="card-title m-b-5"><span class="lstick"></span>Información general</h3>
+                    </div>
+
+                </div>
+            </div>
+            <div class="row" style="margin-top: 15px;">
+
+                <div class="col-4 text-center">
+                    <p><b>Clientes</b></p>
+                    <span class="fa fa-users"> <b>{{clientes|floatformat:0|intcomma}}</b></span>
+                    
+                </div>
+                <div class="col-4 text-center">
+                    <p><b>Consultas</b></p>
+                    <span class="fa fa-question-circle"> <b>{{consultas|floatformat:0|intcomma}}</b></span>
+                    
+                </div>
+                <div class="col-4 text-center">
+                    <p><b>Ventas</b></p>
+                    <span class="fa fa-sellsy"> <b>{{ventas|floatformat:0|intcomma}}</b></span>
+                    
+                </div>
+            </div>
+
+            <hr style="width: 100%;"></hr>
+            <div class="card-body">
+                <div class="d-flex">
+                    <div>
+                        <h3 class="card-title m-b-5"><span class="lstick"></span>Consultas mensuales</h3>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="card-body">
+                <canvas id="myChart3"></canvas>
+                <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+                <script>
+
+
+                    var ctx = document.getElementById('myChart3').getContext('2d');
+                    var myChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: [{% for key, value in meses.items %}
+                                "{{key}}",{% endfor %}],
+                        datasets: [{
+                            label: 'Cantidad',
+                            data: [{% for key, value in meses.items %}
+                            "{{value}}",{% endfor %}],
+                            backgroundColor: 'rgba(39, 195, 193, 0.4)',
+                            borderColor: 'rgba(39, 195, 193)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true,
+                                    callback: function(label, index, labels) {
+
+                                        return label;
+                                    }
+                                }
+                            }]
+                        }
+                    }
+                });
+              
+                </script>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4 col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title"><span class="lstick"></span>Distribución de medios</h4>
+                <h5><form method="POST"> {% csrf_token %} <button type="submit" name="fecha_m" value="0" class="btn"><i class="fa fa-angle-left"></i></button> {{hoy|date:"M Y"}} <button type="submit" name="fecha_m" value="1" class="btn"><i class="fa fa-angle-right"></i></button></form></h5>
+                  <hr>
+                  {% if pie_gastos %}
+                  <div style="margin-top: 2px; margin-bottom: 2px;">
+                    <canvas id="PieGastos" width="50%"></canvas>
+                  </div>
+                  {% else %}
+                  <p>No se registraron gastos</p>
+                  {% endif %}
+                  
+                        
+                  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+                    <script>
+                
+                        var ctx = document.getElementById('PieGastos').getContext('2d');
+                        var chart = new Chart(ctx, {
+                            // The type of chart we want to create
+                            type: 'doughnut',
+                            // The data for our dataset
+                            data: {
+                            datasets: [{        
+                                data: [{% for i in pie_gastos %} {{i.1}}, {% endfor %}],
+                                backgroundColor: [{% for i in pie_gastos %} 'rgb{{i.3}}', {% endfor %}],    
+                            }],
+                
+                            labels: [{% for i in pie_gastos %} '{{i.0}}', {% endfor %}]
+                        },
+                            options: {
+                            legend: {
+                                display: false
+
+                            },
+                            },
+                
+                        });
+                
+                    </script>
+                    <table id="example" class="table table-bordered "
+                    style="width:100%; font-size: 12px;">
+
+                    <tbody>
+                        {% for i in pie_gastos %}
+                        <tr>
+                            
+                            <td><b><a href="#" style="color: rgb{{i.3}};" data-toggle="modal" data-target="#ModalGastosExtendido{{i.0.0}}{{i.0.1}}{{i.1|floatformat:0}}">{{i.0}}</a></b></td>
+                            <td>${{i.1|floatformat:0|intcomma}}</td>
+                            
+                        </tr>
+                        <!-- Modal -->
+                        <div class="modal fade" id="ModalGastosExtendido{{i.0.0}}{{i.0.1}}{{i.1|floatformat:0}}" tabindex="-1" role="dialog"
+                        aria-labelledby="ModalGastosExtendido{{i.0.0}}{{i.0.1}}{{i.1|floatformat:0}}Title" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header"
+                                        style="background: rgb(36,160,237);
+                                                                background: linear-gradient(315deg, rgba(36,160,237,1) 0%, rgba(56,56,130,1) 22%, rgba(0,212,255,1) 100%);">
+                                        <h5 class="modal-title text-light" id="exampleModalLongTitle">{{i.0}}</h5>
+                                        <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    
+                                    <div class="modal-body">
+                                        <ul type="none">
+                                            {% for d in i.2 %}
+                                            <li><span>{{d.nota|lower|capfirst}}: </span><span>${{d.importe|floatformat:0|intcomma}}</span></li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                    
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-info" data-dismiss="modal">Cerrar</button>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {% endfor %}
+                    </tbody>
+
+
+                </table>
+      
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+<script>
+
+    $(document).ready(function () {
+        $('#example2').DataTable({
+            "language": {
+            "lengthMenu": "Mostar _MENU_ documentos",
+            "zeroRecords": "No se encontro nada - perdon ",
+            "info": "Pagina _PAGE_ de _PAGES_",
+            "infoEmpty": "Sin registros disponibles",
+            "infoFiltered": "(filtrado de _MAX_ registros totales)",
+            "search": "Buscar"
+        },
+            "order": [[ 0, "desc" ]],
+        });
+    });
+</script>
+
 {% endblock %}

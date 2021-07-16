@@ -50,7 +50,35 @@ def clientes(request):
 
     
 def estadisticas(request):
-    return render(request, "crm_estadisticas.html")
+
+    meses = {
+        'Enero':0,
+        'Febrero':0,
+        'Marzo':0,
+        'Abril':0,
+        'Mayo':0,
+        'Junio':0,
+        'Julio':0,
+        'Agosto':0,
+        'Septiembre':0,
+        'Octubre':0,
+        'Noviembre':0,
+        'Diciembre':0
+
+    }
+
+
+    n = 0
+    for i in meses.keys():
+        consultas_mes = len(Consulta.objects.filter(fecha__month = n))
+        meses[i] = consultas_mes
+        n+=1
+
+    clientes = len(Clientescontacto.objects.all())
+    consultas = len(Consulta.objects.all())
+    ventas = len(VentasRealizadas.objects.all().exclude(cliente = None))
+
+    return render(request, "crm_estadisticas.html", {'meses':meses, 'ventas':ventas, 'clientes':clientes, 'consultas':consultas})
 
 def modificarcliente(request,**kwargs):
 
