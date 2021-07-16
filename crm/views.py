@@ -60,7 +60,7 @@ def modificarcliente(request,**kwargs):
 
     cliente=Clientescontacto.objects.get(pk=id_cliente)
     consultas = Consulta.objects.filter(cliente = cliente).order_by("-fecha")
-    ventas = VentasRealizadas.objects.filter(cliente = cliente)
+    ventas = VentasRealizadas.objects.filter(cliente = cliente).order_by("-fecha")
     if request.method=='POST':
         datos={}
         try:
@@ -78,7 +78,7 @@ def modificarcliente(request,**kwargs):
         except:
             mensaje='No se pudo actualizar el cliente, recuerde que dos clientes no pueden tener el mismo email'
 
-    return render(request,"modificarcliente.html",{'mensaje':mensaje, 'cliente': cliente, 'consultas':consultas})
+    return render(request,"modificarcliente.html",{'mensaje':mensaje, 'cliente': cliente, 'consultas':consultas, 'ventas':ventas})
 
 class crearconsulta(CreateView):
     
