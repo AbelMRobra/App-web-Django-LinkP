@@ -16,7 +16,7 @@ from django.views.generic import CreateView ,DeleteView
 from django.views.generic.base import TemplateView  ,View 
 from django.conf import settings
 from presupuestos.models import Proyectos, Presupuestos, Constantes, Modelopresupuesto, Registrodeconstantes
-from .models import Almacenero, CuentaCorriente, Cuota, Pago, RegistroAlmacenero, ArchivosAdmFin, Arqueo, RetirodeSocios, MovimientoAdmin, Honorarios,PagoRentaAnticipada
+from .models import Almacenero, CuentaCorriente, Cuota, Pago, RegistroAlmacenero, ArchivosAdmFin, Arqueo, RetirodeSocios, MovimientoAdmin, Honorarios,PagoRentaAnticipada, RegistroEmail
 from proyectos.models import Unidades, Proyectos
 from ventas.models import Pricing, VentasRealizadas, FeaturesUni
 from datetime import date, timedelta
@@ -28,7 +28,7 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.base import MIMEBase
 from email import encoders
 from rrhh.models import datosusuario, RegistroContable
-from .functions import fechas_cc, flujo_ingreso_cliente, flujo_ingreso_proyecto, promedio_almacenero
+from .functions import fechas_cc, flujo_ingreso_cliente, flujo_ingreso_proyecto, promedio_almacenero, registroemail
 
 
 # Create your views here.
@@ -235,22 +235,21 @@ def mandarmail(request, id_cuenta):
 
     datos = CuentaCorriente.objects.get(id = id_cuenta)
 
+    registro_emails=RegistroEmail.objects.filter(destino__id=id_cuenta)
+
     mensaje = 0
 
 
     if request.method == 'POST':
 
-        venta = VentasRealizadas.objects.get(id = datos.venta.id)
-
-        venta.email = request.POST["email"]
-
-        venta.save()
-
-        hoy = datetime.date.today()
-
-        h = Constantes.objects.get(nombre = "Hº VIVIENDA")
-
         try:
+            venta = VentasRealizadas.objects.get(id = datos.venta.id)
+            venta.email = request.POST["email"]
+            venta.save()
+
+            hoy = datetime.date.today()
+            h = Constantes.objects.get(nombre = "Hº VIVIENDA")
+
 
             # Establecemos conexion con el servidor smtp de gmail
             mailServer = smtplib.SMTP(settings.EMAIL_HOST, settings.EMAIL_PORT)
@@ -260,26 +259,25 @@ def mandarmail(request, id_cuenta):
             mailServer.login(settings.EMAIL_HOST_USER, settings.EMAIL_HOST_PASSWORD)
 
             # Construimos el mensaje simple
-            
             mensaje = MIMEMultipart()
             mensaje.attach(MIMEText("""
             
-            Estimado cliente {},
+Estimado cliente {},
 
-            Adjunto estado de cuenta con el valor de la cuota de {}-{}.
+Adjunto estado de cuenta con el valor de la cuota de {}-{}.
 
-            El valor del hormigón de este mes es de ${}.
+El valor del hormigón de este mes es de ${}.
 
-            Le recordamos que los horarios de tesoreria para realizar pagos son:
+Le recordamos que los horarios de tesoreria para realizar pagos son:
 
-            Lunes a Viernes de 08:30 a 12:30
+Lunes a Viernes de 08:30 a 12:30
 
-            En caso de realizar pagos por Depósito o Transferencias bancarias, solicitamos enviar el comprobante al siguiente mail: 
-            
-            mjp@linkinversiones.com.ar
-            
-            
-            Saludos cordiales
+En caso de realizar pagos por Depósito o Transferencias bancarias, solicitamos enviar el comprobante al siguiente mail: 
+
+mjp@linkinversiones.com.ar
+
+
+Saludos cordiales
 
             
             """.format(venta.comprador, str(hoy.month), str(hoy.year), str(h.valor)), 'plain'))
@@ -299,18 +297,19 @@ def mandarmail(request, id_cuenta):
 
             # Envio del mensaje
 
-            mailServer.sendmail(settings.EMAIL_HOST_USER,
+            response=mailServer.sendmail(settings.EMAIL_HOST_USER,
                             venta.email,
                             mensaje.as_string())
-
-
+            
             datos = CuentaCorriente.objects.get(id = id_cuenta)
-
             mensaje = "ok"
-        except:
-            mensaje = "error"
+            usuario = request.user
+            registroemail(id_cuenta, hoy, usuario, pdf_adjunto)
 
-    return render(request, 'mandarmail.html', {"datos":datos, "mensaje":mensaje})
+        except:
+            mensaje = 'error'
+            
+    return render(request, 'mandarmail.html', {"datos":datos, "mensaje":mensaje,'registro_emails':registro_emails})
      
 def resumencredinv(request):
 
@@ -762,9 +761,6 @@ def ctacteproyecto(request, id_proyecto):
 
     return render(request, 'ctacteproyecto.html', {"proyecto":proyecto, "datos":datos})
 
-
-
-
 def principalfinanzas(request):
 
     return render(request, 'principalfinanzas.html')
@@ -787,7 +783,6 @@ def EliminarCuentaCorriente(request, id_cuenta):
     return render(request, 'eliminar_cuenta.html', {"datos":datos, "otros_datos":otros_datos})
 
 def totalcuentacte(request, id_proyecto, cliente, moneda, boleto):
-
 
     # Listado de los proyectos que tienen cuenta corrientes
 
@@ -5587,7 +5582,53 @@ def totalizadorRentaAnticipada(request, **kwargs):
 
     return render(request,template_name, {'pagos_desglose':pagos_desglose,'clientes':clientes_tabla, 'proyecto': id_proyecto} )
    
-   
+def totalizador_renta_anticipada_total(request):
+    nombres_proyectos={}
+    #cuenta corriente -> venta -> proyecto
+    proyectos=Proyectos.objects.values('id')
+
+    pagos=PagoRentaAnticipada.objects.all()
+    
+    fechas=pagos.values('fecha__month','fecha__year').distinct()
+
+    proyectos=pagos.values('cuenta_corriente__venta__proyecto__id','cuenta_corriente__venta__proyecto__nombre').distinct()
+    #pagos=PagoRentaAnticipada.objects.filter(cuenta_corriente__venta__proyecto__id=1).values('cuenta_corriente','cuenta_corriente__venta__proyecto__id','fecha__month','fecha__año','monto')
+    
+    
+    total_meses=[]
+  
+  
+    for f in fechas.order_by('fecha__year'):
+        total_fecha=0
+        total_mes=[]
+        
+        mes=f['fecha__month']
+        año=f['fecha__year']
+        total_mes.append('{} del {}'.format(mes,año))
+        
+        nombres_proyectos=[]
+        for p in proyectos:
+            proyecto=[]
+            pro=p['cuenta_corriente__venta__proyecto__id']
+            nombres_proyectos.append(p['cuenta_corriente__venta__proyecto__nombre'])
+            nombre=p['cuenta_corriente__venta__proyecto__nombre']
+            query=pagos.filter(fecha__month=mes,fecha__year=año,cuenta_corriente__venta__proyecto__id=pro).values('fecha','monto','cuenta_corriente')
+            monto=query.aggregate(Sum('monto'))
+            
+            if len(query)>0:
+                monto_fecha=monto['monto__sum']
+                total_mes.append(monto_fecha)
+                
+                
+            else:
+                monto_fecha=0
+                total_mes.append(0)
+              
+            total_fecha+=monto_fecha
+        total_mes.append(total_fecha)
+        total_meses.append(total_mes)
+        
+    return render(request,'renta_anticipada_totalizador_proyecto.html',{'fechas':total_meses,'proyectos':nombres_proyectos})
 
 ### Funciones para trabajar
 

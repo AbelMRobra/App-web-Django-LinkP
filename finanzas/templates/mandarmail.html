@@ -59,8 +59,8 @@
 
                             <div style="display: inline-block; margin: 10px; ">
 
-                                <input name="email" type="text" class="form-control form-control"
-                                    value="{{datos.venta.email}}" list="provee" style="width: 300px;">
+                                <input name="email" type="email" class="form-control form-control"
+                                    value="{{datos.venta.email}}" list="provee" style="width: 300px;" required>
 
                             </div>
                         </div>
@@ -71,50 +71,79 @@
                         {{ form.as_p }}
                     </form>
 
-                    {% if mensaje %}
 
-                    {% if mensaje == "ok" %}
+                    <table class="table">
+                        <thead>
+                            <th>Fecha</th>
+                            <th>Cuenta corriente</th>
+                            <th>Usuario</th>
+                            <th>Archivo</th>
+                        </thead>
 
-                    <div class="row">
-                        <div class="col-12 d-flex justify-content-center">
-                            <img src="{% static 'img/aceptado.png' %}" class="img-fluid" alt="..."
-                                style="max-width:30px;width:auto;">
-
-                        </div>
-
-                        <div class="col d-flex justify-content-center text-success">
-                            <small"><b>Email
-                                    enviado exitosamente!</b> </small>
-
-                        </div>
-                    </div>
-
-                    {% else %}
-                    <div class="row">
-                        <div class="col-12 d-flex justify-content-center">
-
-                            <img src="{% static 'img/rechazado.png' %}" class="img-fluid" alt="..."
-                                style="max-width:30px;width:auto;height:auto; margin-bottom: 5px;">
-
-                        </div>
-
-                        <div class="col d-flex justify-content-center text-danger">
-                            <small><b>Ocurrio
-
-                                    un error durante el envio!</b> </small>
-
-                        </div>
-                    </div>
-
-                    {% endif %}
-
-                    {% endif %}
+                        <tbody>
+                            {% for email in registro_emails %}
+                            <tr>
+                                <td>{{email.fecha|date:'d/m/Y'}}</td>
+                                <td>{{email.destino|lower}}</td>
+                                <td>{{email.usuario}}</td>
+                                <td><a href="{{email.estado_cuenta.url}}" target="_blank"><i
+                                            class="fa fa-file-pdf-o text-danger"></i></a></td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
 
                 </div>
             </div>
         </div>
     </div>
 </div>
+{% if mensaje %}
 
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+{% if mensaje == "ok" %}
 
+<script>
+
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 5000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+    })
+
+    Toast.fire({
+        icon: 'success',
+        title: 'Email enviado correctamente'
+    })
+
+</script>
+{% else %}
+<script>
+
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 5000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+    })
+
+    Toast.fire({
+        icon: 'error',
+        title: 'Upss! Un error ocurrio al enviar el email'
+    })
+
+</script>
+{% endif %}
+{% endif %}
 {% endblock %}

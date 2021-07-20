@@ -169,6 +169,31 @@
 
         </div>
     </div>
+
+    <div class="col-lg-3 col-xlg-4">
+        <div class="card">
+            <div class="card-body text-center">
+                <div>
+                    <h6>Totalizador total Renta</h6>
+                </div>
+
+                <div>
+                    <img src="{% static 'img/analisisperiodos.png' %}" alt="" style="max-width:100px; height:auto; margin: 5px;">
+                </div>
+                {% if request.user|has_group:"ADMIN NIVEL 1" %}
+
+                <a href="{% url 'totalizadorrentaanticipadatotal' %} "><button class="btn btn-success">
+                        Ingresar</button></a>
+                {% else %}
+
+                <a href="#"><button class="btn btn-secondary">
+                    Sin permisos</button></a>
+                {% endif %}
+
+            </div>
+
+        </div>
+    </div>
     
 </div>
 

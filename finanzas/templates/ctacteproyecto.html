@@ -56,7 +56,7 @@
                             <th>Asign.</th>
                             <th>P. venta</th>
                             <th style="text-align: center;">Panel</th>
-                            <th style="min-width: 100px; text-align: center;">Acciones</th>
+                            <th style="max-width: 30px;"></th>
                         </tr>
                     </thead>
 
@@ -85,13 +85,24 @@
 
                             <td style="text-align: center;"><a href="{% url 'Cuenta corriente venta' i.id %}" class="btn btn-sm btn-success fa fa-sign-in"></a>
                             </td>
-                            <td style="min-width: 100px; text-align: center; gap: 40px ">
-                                <a href="{% url 'pagosrentaanticipada' i.id proyecto.id %}" class="fa fa-money"></a>
-                                <a href="{% url 'Reporte de pdf de cuentas corrientes' i.id %}" class="fa fa-file-pdf-o"></a>
-                                <a href="{% url 'Mandar email' i.id %}"  class="fa fa-envelope-o"></a>
-                                <a href="{% url 'Detalle venta' i.venta.id %}"  class="fa fa-comment"></a>
-                                <a href="{% url 'Eliminar cuenta corriente' i.id %}"> <span
-                                        class="hint--left hint--danger" aria-label="Elimina la cuenta corriente!"><div class="fa fa-trash fa-lg text-danger"></div></span> </a>
+                            <td style="text-align: center; max-width: 45px;">
+                                <div class="btn-group ml-auto">
+                                    <a href="JavaScript:void(0)" class="icon-options-vertical link"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" href="{% url 'pagosrentaanticipada' i.id proyecto.id %}"><i
+                                                class="fa fa-money mr-2"></i>Renta Ant.</a>
+                                        <a class="dropdown-item" href="{% url 'Reporte de pdf de cuentas corrientes' i.id %}"><i
+                                                class="fa fa-file-pdf-o mr-2"></i>Reporte</a>
+                                        <a class="dropdown-item" href="{% url 'Mandar email' i.id %}"><i
+                                                class="fa fa-envelope-o mr-2"></i>Correo</a>
+                                        <a class="dropdown-item" href="{% url 'Detalle venta' i.venta.id %}"><i
+                                                class="fa fa-comment mr-2"></i>Comentarios</a>
+                                        <a class="dropdown-item" href="{% url 'Eliminar cuenta corriente' i.id %}"><i
+                                                class="fa fa-trash fa-lg text-danger mr-2"></i>Borrar</a>
+                                      
+                                    </div>
+                                </div>
                             </td>
 
                         </tr>

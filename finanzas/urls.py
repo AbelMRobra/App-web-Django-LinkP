@@ -16,7 +16,7 @@ urlpatterns = [
     url(r'^prueba/$', login_required(views.prueba), name = 'Prueba'),
 
     path("pagosrentaanticipada/<int:id>/<int:id_proy>" ,login_required(views.pagosRentaAnticipada) ,name='pagosrentaanticipada'),
-
+    path("totalizadorrentaanticipadatotal",login_required(views.totalizador_renta_anticipada_total),name='totalizadorrentaanticipadatotal'),
     path("totalizadortentaanticipada/<int:id>" ,login_required(views.totalizadorRentaAnticipada) ,name='Totalizador Renta Anticipada'),
 
     #----------------URL CUENTAS CORRIENTES -----------------------------------------

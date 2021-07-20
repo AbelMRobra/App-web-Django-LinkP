@@ -2,6 +2,7 @@ from django.db import models
 from proyectos.models import Proyectos
 from ventas.models import VentasRealizadas
 from presupuestos.models import Constantes
+from rrhh.models import datosusuario
 
 # Create your models here.
 
@@ -142,8 +143,6 @@ class Pago(models.Model):
     def __str__(self):
         return self.documento_1
 
-
-
 class PagoRentaAnticipada(models.Model):
     class Metodo(models.TextChoices):
         EFECTIVO = "EFECTIVO"
@@ -165,8 +164,6 @@ class PagoRentaAnticipada(models.Model):
 
     def __str__(self):
         return str(self.cuenta_corriente) 
-
-
 
 class ArchivosAdmFin(models.Model):
     fecha = models.DateField(verbose_name = "Fecha de los archivos")
@@ -194,7 +191,6 @@ class RetirodeSocios(models.Model):
     class Meta:
         verbose_name="Retiro"
         verbose_name_plural="Retiros"
-
 
 class MovimientoAdmin(models.Model):
 
@@ -232,3 +228,14 @@ class Honorarios(models.Model):
 
     def __str__(self):
         return "Honorarios"
+
+class RegistroEmail(models.Model):
+
+    usuario = models.ForeignKey(datosusuario, on_delete=models.CASCADE)
+    fecha= models.DateField()
+    destino = models.ForeignKey(CuentaCorriente, on_delete=models.CASCADE)
+    estado_cuenta = models.FileField(upload_to='media')
+
+    def __str__(self):
+
+        return '{} {}'.format(self.fecha,self.destino)

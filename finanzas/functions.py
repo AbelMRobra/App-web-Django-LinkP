@@ -1,10 +1,12 @@
 import datetime
-from datetime import date
 import pandas as pd
 import numpy as np
-from .models import Almacenero, CuentaCorriente, Cuota, Pago, RegistroAlmacenero, ArchivosAdmFin, Arqueo, RetirodeSocios, MovimientoAdmin, Honorarios
+from django.core.files.base import ContentFile
+from datetime import date
+from .models import Almacenero, CuentaCorriente, Cuota, Pago, RegistroAlmacenero, ArchivosAdmFin, Arqueo, RetirodeSocios, MovimientoAdmin, Honorarios, RegistroEmail
 from proyectos.models import Unidades, Proyectos
 from ventas.models import FeaturesUni
+from rrhh.models import datosusuario
 
 
 def fechas_cc(id):
@@ -208,7 +210,6 @@ def flujo_ingreso_cliente(id):
     cuenta_venta.flujo_boleto_m3 = fluejo_ingreso_boleto_m3
     cuenta_venta.save()
 
-
 def promedio_almacenero(almacenero):
     proyecto = Proyectos.objects.get(id = almacenero.proyecto.id)
     m2_total = 0
@@ -246,3 +247,18 @@ def promedio_almacenero(almacenero):
 
     data_proyecto = [almacenero, porc_dispo, precio_m2_disponible]
     return data_proyecto
+
+def registroemail(id_cuenta, fecha, usuario, archivo):
+    try:
+        registro=RegistroEmail(
+            usuario=datosusuario.objects.get(identificacion=usuario.username),
+            destino=CuentaCorriente.objects.get(pk=id_cuenta),
+            fecha=fecha,
+
+        )
+        registro.estado_cuenta.save('archivo.pdf', ContentFile(archivo))
+        registro.save()
+        mensaje='Ok'
+        
+    except:
+        mensaje='error'
