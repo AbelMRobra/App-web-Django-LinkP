@@ -1,5 +1,5 @@
 {% extends "users/inicio2.html" %}
-
+{% load apptags_extras %}
 {% load static %}
 {% load humanize %}
 {% block content %}
@@ -55,7 +55,7 @@
                             <tr style="font-size: 12px;">
 
                                 {% if i.iamgen %}
-                                <td> <b><img src="{{i.iamgen.url}}" class="img-fluid" alt="..."
+                                <td> <b><img src="{{i.iamgen.url}}" class="img-fluid" alt="Logo"
                                             style="max-width: 50px; height:auto;"></b> </td>
                                 {% else %}
 
@@ -63,7 +63,54 @@
                                             style="max-width: 50px; height:auto;"></b> </td>
                                 {% endif %}
 
-                                <td>{{i.nombre}}</td>
+                                <td>
+                                    {% if request.user|has_group:"PROYECTO NIVEL 1" %}
+                                    <a href="#" data-toggle="modal" data-target="#modalmodif{{i.id}}">{{i.nombre}}</a>
+                                    {% else %}
+                                    {{i.nombre}}
+                                    {% endif %}
+                                </td>
+                                <div class="modal fade" id="modalmodif{{i.id}}" tabindex="-1" role="dialog" aria-labelledby="modalmodif{{i.id}}Title" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header" style="background: rgb(36,160,237);
+                                            background: linear-gradient(315deg, rgba(36,160,237,1) 0%, rgba(56,56,130,1) 22%, rgba(0,212,255,1) 100%);">
+                                            <h5 class="modal-title text-light" id="exampleModalLongTitle">Modificar proyecto</h5>
+                                            <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                            </div>
+                                            <div class="modal-body">
+            
+                                            <form method="POST" style="margin: 15px;">
+                                                {% csrf_token %}
+                                                <h5><b>Inicio de obra</b></h5>
+                                                
+                                                <p>Planificado</p>
+                                                <input name="fecha_i" type="date" value="{{i.fecha_i|date:'Y-m-d'}}" class="form-control form-control mb-3" style="width: 100%;">
+                                                <p></p>
+                                                <p>Contractual</p>
+                                                <input name="fecha_i_contrato" type="date" value="{{i.fecha_i_contrato|date:'Y-m-d'}}" class="form-control form-control mb-3" style="width: 100%;">
+                                                
+                                                <h5><b>Entrega del proyecto</b></h5>
+                                                <p>Planificado</p>
+                                                <input name="fecha_f" type="date" value="{{i.fecha_f|date:'Y-m-d'}}" class="form-control form-control mb-3" style="width: 100%;">
+                                                <p>Contractual</p>
+                                                <input name="fecha_f_contrato" type="date" value="{{i.fecha_f_contrato|date:'Y-m-d'}}" class="form-control form-control mb-3" style="width: 100%;">
+                                                <div class="mt-4">
+                                                    <button type="submit" name="id_proyecto" value="{{i.id}}" class="btn btn-info">Cargar</button>
+                                                </div>
+                                            </form>
+                                            
+                                            </div>
+                                            <div class="modal-footer">
+                                            <button type="button" class="btn btn-info" data-dismiss="modal">Cerrar</button>
+                                    
+                                            </div>
+                                        </div>
+                                    </div>
+        
+                                </div>
 
                                 {% if i.fecha_i %}
                                 

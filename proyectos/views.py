@@ -47,6 +47,32 @@ def adminunidades(request):
 
 def proyectos(request):
 
+    if request.method=='POST':
+
+        try:
+
+            id_proyecto = request.POST['id_proyecto']
+            fecha_i=request.POST['fecha_i']
+            fecha_i_contrato=request.POST['fecha_i_contrato']
+            fecha_f=request.POST['fecha_f']
+            fecha_f_contrato=request.POST['fecha_f_contrato']
+
+            proyecto=Proyectos.objects.get(pk=id_proyecto)
+                
+            if fecha_i!='':
+                proyecto.fecha_i= fecha_i
+            if fecha_i_contrato!='':
+                proyecto.fecha_i_contrato=  fecha_i_contrato
+            if fecha_f!='':
+                proyecto.fecha_f= fecha_f
+            if fecha_f_contrato!='':
+                proyecto.fecha_f_contrato= fecha_f_contrato
+
+            proyecto.save()
+
+        except:
+            mensaje='Ocurrio un error'
+
     datos = Proyectos.objects.order_by("fecha_f").exclude(fecha_i = None)
 
     total_m2 = sum(Proyectos.objects.exclude(fecha_i = None).values_list("m2", flat=True))
