@@ -106,7 +106,7 @@
                         {% for d in clientes %}
                         <tr>
                             {% if d.imagenlogo %}
-                            <td><img src="{{.imagenlogo.url}}" style="width: 30px;" alt="usuario"></td>
+                            <td><img src="{{d.imagenlogo.url}}" style="width: 30px;" alt="usuario"></td>
                             {% else %}
                             <td><img src="{% static 'img/DatosPersonal.png' %}" style="width: 30px;" alt="usuario"></td>{% endif %}
                             <td>{{d.nombre}} {{d.apellido}}</td>
