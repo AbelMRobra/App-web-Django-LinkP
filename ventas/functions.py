@@ -4,29 +4,23 @@ import numpy_financial as npf
 def calculo_cotizacion(unidad, features_unidad, info_coti, valor_hormigon):
 
     m2 = 0
-
     if unidad.sup_equiv > 0:
-
         m2 = unidad.sup_equiv
-
     else:
-
         m2 = unidad.sup_propia + unidad.sup_balcon + unidad.sup_comun + unidad.sup_patio
-
     precio_contado = m2*unidad.proyecto.desde
-
     for f2 in features_unidad:
-
         precio_contado = precio_contado*f2.feature.inc
+    
     datos_coti = info_coti.split("&")
+    precio_contado = precio_contado * (1-float(datos_coti[4]))
+    observacion = datos_coti[5]
     anticipo = float(datos_coti[3])
     anticipo_h = anticipo/valor_hormigon.valor
     cuota_esp = datos_coti[0]
     aporte = datos_coti[1]
     cuotas_p = datos_coti[2]
-
     total_cuotas = float(cuota_esp) + float(cuotas_p)*1.65 + float(aporte)
-
     cuotas_espera = []
     cuotas_pose = []
     aporte_va = []
@@ -83,5 +77,5 @@ def calculo_cotizacion(unidad, features_unidad, info_coti, valor_hormigon):
     else:
         valor_cuota_pose = 0
 
-    datos_coti = [anticipo, anticipo_h, precio_finan, cuota_esp, importe_aporte, cuotas_p, importe_cuota_esp, aporte, importe_cuota_p, importe_cuota_p_h, importe_cuota_esp_h, importe_aporte_h, valor_cuota_espera, valor_cuota_entrega, valor_cuota_pose]
+    datos_coti = [anticipo, anticipo_h, precio_finan, cuota_esp, importe_aporte, cuotas_p, importe_cuota_esp, aporte, importe_cuota_p, importe_cuota_p_h, importe_cuota_esp_h, importe_aporte_h, valor_cuota_espera, valor_cuota_entrega, valor_cuota_pose, observacion]
     return datos_coti

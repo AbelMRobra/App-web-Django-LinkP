@@ -142,43 +142,39 @@
                     <tr style="height: 25px; ">
                         <td style="width: 20px;"><small><b></b></small></td>
                         <td><small>Anticipo</small></td>
-                        <td><small>1</small></td>
+                        <td><small>1.00</small></td>
                         <td><small>${{data.0|floatformat:2|intcomma}}</small></td>
                         <td><small>${{data.0|floatformat:2|intcomma}}</small></td>
-                        <td><small>${{data.1|floatformat:2|intcomma}}</small></td>
+                        <td><small>{{data.1|floatformat:2|intcomma}} M3</small></td>
               
                     </tr>
                     <tr style="height: 25px; ">
                         <td style="width: 20px;"><small><b></b></small></td>
                         <td><small>Cuota espera</small></td>
                         <td><small>{{data.3|floatformat:2|intcomma}}</small></td>
-                        <td><small>${{data.0|floatformat:2}}</small></td>
-                        <td><small>${{data.0|floatformat:2}}</small></td>
-                        <td><small>${{data.1|floatformat:2}}</small></td>
+                        <td><small>${{data.6|floatformat:2|intcomma}}</small></td>
+                        <td><small>${{data.12|floatformat:2|intcomma}}</small></td>
+                        <td><small>{{data.10|floatformat:2}} M3</small></td>
               
                     </tr>
                     <tr style="height: 25px; ">
                         <td style="width: 20px;"><small><b></b></small></td>
                         <td><small>Entrega</small></td>
-                        <td><small>1</small></td>
-                        <td><small>${{data.4|floatformat:2}}</small></td>
-                        <td><small>${{data.4|floatformat:2}}</small></td>
-                        <td><small>${{data.1|floatformat:2}}</small></td>
+                        <td><small>1.00</small></td>
+                        <td><small>${{data.4|floatformat:2|intcomma}}</small></td>
+                        <td><small>${{data.4|floatformat:2|intcomma}}</small></td>
+                        <td><small>{{data.1|floatformat:2}} M3</small></td>
               
                     </tr>
                     <tr style="height: 25px; ">
                         <td style="width: 20px;"><small><b></b></small></td>
                         <td><small>Cuota posesión</small></td>
-                        <td><small>{{data.5}}</small></td>
-                        <td><small>${{data.14|floatformat:2}}</small></td>
-                        <td><small>${{data.6|floatformat:2}}</small></td>
-                        <td><small>${{data.7|floatformat:2}}</small></td>
+                        <td><small>{{data.5|floatformat:2|intcomma}}</small></td>
+                        <td><small>${{data.8|floatformat:2|intcomma}}</small></td>
+                        <td><small>${{data.14|floatformat:2|intcomma}}</small></td>
+                        <td><small>{{data.9|floatformat:2}} M3</small></td>
               
                     </tr>
-
-
-                   
-
 
                     <tr style="height: 25px; background-color: rgb(81, 75, 74);">
                         <td style="text-align: center; color: rgb(247, 251, 245);" colspan="5"><b>Precio de la unidad financiada</b></td>
@@ -190,10 +186,6 @@
         
             </table>
             
-            </tbody>
-    
-        </table>
-    
           </div>
      
             <b><hr class = "my-4" style="width: 100%; "></b>
@@ -211,6 +203,10 @@
             </div>
             <div>
                 <small><b>Cotización vigente por 5 dias habiles</b> </small>
+            </div>
+
+            <div>
+                <small><b>Observaciones: {{data.15}}</b> </small>
             </div>
     
     

@@ -105,17 +105,13 @@
         <div class="card">
             <div class="card-body">
                 <h4 class="card-title"><span class="lstick"></span>Distribución de medios</h4>
-                <h5><form method="POST"> {% csrf_token %} <button type="submit" name="fecha_m" value="0" class="btn"><i class="fa fa-angle-left"></i></button> {{hoy|date:"M Y"}} <button type="submit" name="fecha_m" value="1" class="btn"><i class="fa fa-angle-right"></i></button></form></h5>
-                  <hr>
-                  {% if pie_gastos %}
+                <hr>
+
                   <div style="margin-top: 2px; margin-bottom: 2px;">
                     <canvas id="PieGastos" width="50%"></canvas>
                   </div>
-                  {% else %}
-                  <p>No se registraron gastos</p>
-                  {% endif %}
-                  
-                        
+ 
+                                       
                   <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
                     <script>
                 
@@ -126,11 +122,11 @@
                             // The data for our dataset
                             data: {
                             datasets: [{        
-                                data: [{% for i in pie_gastos %} {{i.1}}, {% endfor %}],
-                                backgroundColor: [{% for i in pie_gastos %} 'rgb{{i.3}}', {% endfor %}],    
+                                data: [{% for m in medios %} {{m.1}}, {% endfor %}],
+       
                             }],
                 
-                            labels: [{% for i in pie_gastos %} '{{i.0}}', {% endfor %}]
+                            labels: [{% for m in medios %} '{{m.0}}', {% endfor %}]
                         },
                             options: {
                             legend: {
@@ -146,11 +142,11 @@
                     style="width:100%; font-size: 12px;">
 
                     <tbody>
-                        {% for i in pie_gastos %}
+                        {% for i in medios %}
                         <tr>
                             
                             <td><b><a href="#" style="color: rgb{{i.3}};" data-toggle="modal" data-target="#ModalGastosExtendido{{i.0.0}}{{i.0.1}}{{i.1|floatformat:0}}">{{i.0}}</a></b></td>
-                            <td>${{i.1|floatformat:0|intcomma}}</td>
+                            <td>{{i.1|floatformat:0|intcomma}}</td>
                             
                         </tr>
                         <!-- Modal -->

@@ -1560,6 +1560,24 @@ def pricing(request, id_proyecto):
 
     return render(request, 'pricing.html', {"datos":datos})
 
+def cargarplano(request,**kwargs):
+    if request.method=='POST':
+        
+        id_proyecto=kwargs['id']
+        unidad_id=request.POST.get('unidad')
+        plano=request.FILES.get('plano')
+        
+        unidad=Unidades.objects.get(pk=int(unidad_id))
+        if unidad:
+
+            unidad.plano_venta=plano
+
+            unidad.save()
+            return redirect('Pricing',id_proyecto)
+        else:
+            mensaje='No se pudo guardar el pdf'
+            return redirect('Pricing',id_proyecto)
+
 def panelpricing(request):
 
     proyectos = Unidades.objects.all()
@@ -1858,17 +1876,11 @@ def detalleventa(request, id_venta):
 def cotizador(request, id_unidad):
 
     info_coti_email = 0
-
     datos = Unidades.objects.get(id = id_unidad)
-
     today = datetime.date.today()
-
     tiempo_restante = (datos.proyecto.fecha_f.year - today.year)*12 + (datos.proyecto.fecha_f.month - today.month)
-
     hormigon = Constantes.objects.get(id = 7)
-
     cliente = 0
-
     m2 = 0
 
     if datos.sup_equiv > 0:
@@ -1913,6 +1925,8 @@ def cotizador(request, id_unidad):
         cuota_esp = request.POST["cuotas_esp"]
         aporte = request.POST["aporte"]
         cuotas_p = request.POST["cuotas_p"]
+        observacion=request.POST['observacion']
+        descuento= float(request.POST['descuento'])
         total_cuotas = float(cuota_esp) + float(cuotas_p)*1.65 + float(aporte)
 
         cuotas_espera = []
@@ -1936,16 +1950,12 @@ def cotizador(request, id_unidad):
         for d in range(int(cuotas_p)):
             cuotas_pose.append(1.65)
 
+        precio_contado = precio_contado*(1 - descuento)
         valor_auxiliar_espera = npf.npv(rate=(datos.proyecto.tasa_f/100), values=cuotas_espera)
-
         valor_auxiliar_pose = npf.npv(rate=(datos.proyecto.tasa_f/100), values=cuotas_pose)
-
         valor_auxiliar_aporte = npf.npv(rate=(datos.proyecto.tasa_f/100), values=aporte_va)
-
         factor = valor_auxiliar_aporte + valor_auxiliar_espera + valor_auxiliar_pose
-
         incremento = (total_cuotas/factor) - 1
-
         precio_finan = ((precio_contado - float(anticipo))*(1 + incremento)) + float(anticipo)
 
         importe_cuota_esp = (precio_finan-float(anticipo))/total_cuotas
@@ -1978,9 +1988,9 @@ def cotizador(request, id_unidad):
 
         resultados = [anticipo, anticipo_h, precio_finan, cuota_esp, importe_aporte, cuotas_p, importe_cuota_esp,
             aporte, importe_cuota_p, importe_cuota_p_h, importe_cuota_esp_h, importe_aporte_h, valor_cuota_espera,
-            valor_cuota_entrega, valor_cuota_pose]
+            valor_cuota_entrega, valor_cuota_pose, observacion, descuento]
 
-        info_coti_email = str(cuota_esp)+"&"+str(aporte)+"&"+str(cuotas_p)+"&"+str(anticipo)
+        info_coti_email = str(cuota_esp)+"&"+str(aporte)+"&"+str(cuotas_p)+"&"+str(anticipo)+"&"+str(descuento)+"&"+str(observacion)
 
     return render(request, 'cotizador.html', {'info_coti_email':info_coti_email, 'tiempo_restante':tiempo_restante, 'datos':datos, 'resultados':resultados, 'precio_contado':precio_contado, 'm2':m2, 'cliente':cliente})
 
@@ -2095,7 +2105,7 @@ Por favor no responder este email
         adjunto_MIME.add_header('Content-Disposition', 'attachment; filename="Tu_cotizacion.pdf"')
         mensaje.attach(adjunto_MIME)
         
-        with open(mRoot + "/cotizacion{}{}.pdf".format(cliente.nombre, today), 'wb') as f:
+        with open(mRoot + "/cotizacion{}{}.pdf".format(cliente.nombre, today).replace(" ", ""), 'wb') as f:
             f.write(response.content)
         
         name_coti_adjunta = "cotizacion{}{}.pdf".format(str(cliente.nombre).replace(" ", ""), today)

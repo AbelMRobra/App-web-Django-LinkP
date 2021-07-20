@@ -11,8 +11,8 @@
 
         <div class="col-md-7 align-self-center">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
-                <li class="breadcrumb-item"><a href="{% url 'Pricing' 0 %}">Panel</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'Panel de pricing' %}">Panel</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'Pricing' datos.proyecto.id %}">Pricing</a></li>
                 <li class="breadcrumb-item">Cotizador</li>
             </ol>
         </div>
@@ -35,18 +35,20 @@
                             <h6 class="font-medium">Superficie: {{m2|floatformat:2}}m2</h6>
                             <h6 class="font-medium">Precio de contado: ${{precio_contado|floatformat:0|intcomma}}</h6>
                             {% if datos.plano_venta %}
-                            <a href="{{datos.plano_venta.url}}" target="_blank"><i class="fa fa-file-pdf-o text-danger"></i></a>
+                            <a href="{{datos.plano_venta.url}}" target="_blank"><i
+                                    class="fa fa-file-pdf-o text-danger"></i></a>
                             {% endif %}
                             {% if resultados %}
-                            <a href="{% url 'Email del coti' datos.id cliente.id info_coti_email %}" target="_blank"><i class="fa fa-envelope-o text-warning"></i></a>
+                            <a href="{% url 'Email del coti' datos.id cliente.id info_coti_email %}" target="_blank"><i
+                                    class="fa fa-envelope-o text-warning"></i></a>
                             {% endif %}
                         </div>
 
                     </div>
                     <div class="col col-lg-5 bg-light py-3">
                         <h4 class="card-title"><span class="lstick"></span>El proyecto</h4>
-                        <img class="card-img-top img-responsive" style="width: 200px;" src="{{datos.proyecto.imagen.url}}"
-                            alt="Imagen del edificio">
+                        <img class="card-img-top img-responsive" style="width: 200px;"
+                            src="{{datos.proyecto.imagen.url}}" alt="Imagen del edificio">
                         <div class="card-body">
                             <h4 class="card-title">{{datos.proyecto.nombre|lower|capfirst}}</h4>
                             <p class="card-text">{{datos.proyecto.descrip}}</p>
@@ -56,7 +58,9 @@
                     {% if resultados %}
 
 
-                    <h5 class="my-3"><b style="font-size: 20px; color: rgb({{datos.proyecto.color}});">{{cliente.nombre}},</b> tu simulación personal!</h5>
+                    <h5 class="my-3"><b
+                            style="font-size: 20px; color: rgb({{datos.proyecto.color}});">{{cliente.nombre}},</b> tu
+                        simulación personal!</h5>
 
 
 
@@ -115,6 +119,13 @@
                         </table>
 
                         <small><b>*Precio financiado es ${{resultados.2|floatformat:0|intcomma}}</b></small>
+
+                        {% if resultados.15 %}
+                        <div>
+                            <small>Observación: {{resultados.15}}</small>
+                        </div>
+                        {% endif %}
+                        
                     </div>
                 </div>
 
@@ -125,13 +136,13 @@
                             <div class="row d-flex justify-content-center">
                                 <div class="col">
                                     <div class="row bg-light p-4 rounded">
-                                        
+
                                         <h5>¿Quéres volver a calcular?</h5>
-                                        
+
                                         <b>
                                             <hr class="my-4" style="width: 100%;">
                                         </b>
-                                        
+
                                         <div class="col-6">
                                             <div style="display: inline-block;">
 
@@ -140,9 +151,9 @@
                                                 </label>
 
                                             </div>
-                                            <div class="row d-flex justify-content-center my-3">
+                                            <div class="row d-flex justify-content-center my-1">
                                                 <div class="col col-md-12 col-lg-8">
-                                                    <div class="input-group mb-3">
+                                                    <div class="input-group">
                                                         <div class="input-group-prepend">
 
                                                             <span class="input-group-text">$</span>
@@ -165,7 +176,7 @@
 
                                             </div>
 
-                                            <div class="row d-flex justify-content-center my-3">
+                                            <div class="row d-flex justify-content-center my-1">
                                                 <div class="col col-md-12 col-lg-8">
 
                                                     <input name="cuotas_esp" type="number"
@@ -173,24 +184,23 @@
 
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="col-6">
-
                                             <div style="display: inline-block;">
 
                                                 <label for="aporte">
-                                                    <h6>Aporte Contra entrega</h6>
+                                                    <h6>Cuentas entrega</h6>
                                                 </label>
 
                                             </div>
 
-                                            <div class="row d-flex justify-content-center my-3">
+                                            <div class="row d-flex justify-content-center my-1">
                                                 <div class="col col-md-12 col-lg-8">
                                                     <input name="aporte" type="number" class="form-control form-control"
                                                         value="{{resultados.7}}">
 
                                                 </div>
                                             </div>
+                                        </div>
+                                        <div class="col-6">
 
                                             <div style="display: inline-block;">
 
@@ -200,7 +210,7 @@
 
                                             </div>
 
-                                            <div class="row d-flex justify-content-center my-3">
+                                            <div class="row d-flex justify-content-center my-1">
                                                 <div class="col col-md-12 col-lg-8">
 
                                                     <input name="cuotas_p" type="number"
@@ -209,11 +219,46 @@
                                                 </div>
                                             </div>
 
+                                            <div style="display: inline-block;">
+
+                                                <label for="descuento">
+                                                    <h6>Especiales</h6>
+                                                </label>
+
+                                            </div>
+
+                                            <div class="row d-flex justify-content-center my-1">
+                                                <div class="col col-md-12 col-lg-8">
+
+                                                    <input name="descuento" type="number" step="any"
+                                                        class="form-control form-control" value="{{resultados.16}}">
+
+                                                </div>
+                                            </div>
+
+                                            <div style="display: inline-block;">
+
+                                                <label for="observacion">
+                                                    <h6>Observaciones</h6>
+                                                </label>
+
+                                            </div>
+
+                                            <div class="row d-flex justify-content-center my-1">
+                                                <div class="col col-md-12 col-lg-8">
+
+                                                    <input name="observacion" type="text"
+                                                        class="form-control form-control" value="{{resultados.15}}">
+
+                                                </div>
+                                            </div>
+
                                         </div>
-                                        <div class="row d-flex justify-content-center my-3">
+                                        <div class="row d-flex justify-content-center my-1">
                                             <div class="col col-md-12 col-lg-8 text-center">
 
-                                                <button type="submit" name="email" value="{{cliente.email}}" class="btn btn-info">Recalcular!</button>
+                                                <button type="submit" name="email" value="{{cliente.email}}"
+                                                    class="btn btn-info">Recalcular!</button>
 
                                             </div>
                                         </div>
@@ -230,26 +275,24 @@
                         {% csrf_token %}
                         <div class="row d-flex justify-content-center mt-4 ">
                             <div class="row d-flex justify-content-center">
-                                <div class="col col-md-12 col-lg-9">
+                                <div class="col">
                                     <div class="row bg-light p-4 rounded">
-                                        <div class="col col-md-12 col-lg-6 ">
 
-                                            <div style="display: inline-block">
-                                                <h5>Agregar cliente</h5>
-                                            </div>
+                                        <div style="display: inline-block">
+                                            <h5>Agregar cliente</h5>
+                                        </div>
 
-                                            <b>
-                                                <hr class="my-3" style="width: 100%;">
-                                            </b>
-
+                                        <b>
+                                            <hr class="my-3" style="width: 100%;">
+                                        </b>
+                                        <div class="col-6">
                                             <div>
                                                 <label for="nombre">
-                                                    <h6>Nombre</h6>
-                                                    <small>Nombre del cliente a agregar</small>
+                                                    <h6>Nombre del cliente</h6>
                                                 </label>
                                             </div>
 
-                                            <div class="row d-flex justify-content-center my-3">
+                                            <div class="row d-flex justify-content-center my-1">
                                                 <div class="col col-md-12 col-lg-8">
 
                                                     <input name="nombre" type="text" class="form-control form-control"
@@ -265,7 +308,7 @@
 
                                             </div>
 
-                                            <div class="row d-flex justify-content-center my-3">
+                                            <div class="row d-flex justify-content-center my-1">
                                                 <div class="col col-md-12 col-lg-8">
 
 
@@ -274,6 +317,8 @@
 
                                                 </div>
                                             </div>
+                                        </div>
+                                        <div class="col-6">
 
                                             <div>
                                                 <label for="telefono">
@@ -281,11 +326,11 @@
                                                 </label>
                                             </div>
 
-                                            <div class="row d-flex justify-content-center my-3">
+                                            <div class="row d-flex justify-content-center my-1">
                                                 <div class="col col-md-12 col-lg-8">
 
                                                     <input name="telefono" type="text" class="form-control form-control"
-                                                        placeholder="ej: 154999999">
+                                                        placeholder="Formato: 543814999999" maxlength="13">
 
                                                 </div>
                                             </div>
@@ -296,7 +341,7 @@
                                                 </label>
                                             </div>
 
-                                            <div class="row d-flex justify-content-center my-3">
+                                            <div class="row d-flex justify-content-center my-1">
                                                 <div class="col col-md-12 col-lg-8">
 
                                                     <input name="email" type="email" class="form-control form-control"
@@ -305,15 +350,20 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col col-md-12 col-lg-6">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row d-flex justify-content-center">
+                                <div class="col">
+                                    <div class="row bg-light p-4 rounded">
 
 
-                                            <h5>Datos para simular</h5>
+                                        <h5>Datos para simular</h5>
 
-                                            <b>
-                                                <hr class="my-4" style="width: 100%;">
-                                            </b>
-
+                                        <b>
+                                            <hr class="my-4" style="width: 100%;">
+                                        </b>
+                                        <div class="col-6">
                                             <div style="display: inline-block;">
 
                                                 <label for="anticipo">
@@ -321,9 +371,9 @@
                                                 </label>
 
                                             </div>
-                                            <div class="row d-flex justify-content-center my-3">
+                                            <div class="row d-flex justify-content-center my-1">
                                                 <div class="col col-md-12 col-lg-8">
-                                                    <div class="input-group mb-3">
+                                                    <div class="input-group">
                                                         <div class="input-group-prepend">
 
                                                             <span class="input-group-text">$</span>
@@ -332,7 +382,7 @@
 
                                                         <input name="anticipo" type="number"
                                                             class="form-control form-control" aria-label="Amount"
-                                                            value="0">
+                                                            placeholder="0">
 
                                                     </div>
                                                 </div>
@@ -346,11 +396,11 @@
 
                                             </div>
 
-                                            <div class="row d-flex justify-content-center my-3">
+                                            <div class="row d-flex justify-content-center my-1">
                                                 <div class="col col-md-12 col-lg-8">
 
                                                     <input name="cuotas_esp" type="number"
-                                                        class="form-control form-control" list="art" value="0">
+                                                        class="form-control form-control" list="art"  placeholder="0">
 
                                                 </div>
                                             </div>
@@ -358,20 +408,21 @@
                                             <div style="display: inline-block;">
 
                                                 <label for="aporte">
-                                                    <h6>Aporte Contra entrega</h6>
+                                                    <h6>Cuotas entrega</h6>
                                                 </label>
 
                                             </div>
 
-                                            <div class="row d-flex justify-content-center my-3">
+                                            <div class="row d-flex justify-content-center my-1">
                                                 <div class="col col-md-12 col-lg-8">
                                                     <input name="aporte" type="number" class="form-control form-control"
-                                                        list="art" value="0">
+                                                        list="art"  placeholder="0">
 
                                                 </div>
                                             </div>
+                                        </div>
 
-
+                                        <div class="col-6">
                                             <div style="display: inline-block;">
 
                                                 <label for="cuotas_p">
@@ -380,34 +431,67 @@
 
                                             </div>
 
-                                            <div class="row d-flex justify-content-center my-3">
+                                            <div class="row d-flex justify-content-center my-1">
                                                 <div class="col col-md-12 col-lg-8">
 
                                                     <input name="cuotas_p" type="number"
-                                                        class="form-control form-control" list="art" value="0">
+                                                        class="form-control form-control" list="art"  placeholder="0">
 
                                                 </div>
                                             </div>
+                                            <div style="display: inline-block;">
 
-                                        </div>
-                                        <div class="row d-flex justify-content-center my-3">
-                                            <div class="col col-md-12 col-lg-8 text-center">
-
-                                                <button type="submit" class="btn btn-info">Simular</button>
+                                                <label for="descuento">
+                                                    <h6>Especiales</h6>
+                                                </label>
 
                                             </div>
+
+                                            <div class="row d-flex justify-content-center my-1">
+                                                <div class="col col-md-12 col-lg-8">
+
+                                                    <input name="descuento" type="number"
+                                                        class="form-control form-control" placeholder="0">
+
+                                                </div>
+                                            </div>
+                                            <div style="display: inline-block;">
+
+                                                <label for="observacion">
+                                                    <h6>Observaciones</h6>
+                                                </label>
+
+                                            </div>
+
+                                            <div class="row d-flex justify-content-center my-1">
+                                                <div class="col col-md-12 col-lg-8">
+
+                                                    <input name="observacion" type="text"
+                                                        class="form-control form-control" placeholder="Ej:Ajuste especial a cliente habitual">
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="row d-flex justify-content-center my-1">
+                                        <div class="col col-md-12 col-lg-8 text-center">
+
+                                            <button type="submit" class="btn btn-info">Simular</button>
+
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                    </form>
                 </div>
                 {% endif %}
             </div>
-            </form>
         </div>
     </div>
 </div>
+
 
 
 

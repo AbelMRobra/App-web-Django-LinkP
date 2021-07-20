@@ -74,11 +74,17 @@ def estadisticas(request):
         meses[i] = consultas_mes
         n+=1
 
+    list_medio_contacto = Consulta.objects.values_list("medio_contacto", flat = True).distinct()
+    medios = []
+    for m in list_medio_contacto:
+        cant = len(Consulta.objects.filter(medio_contacto = m))
+        medios.append((m, cant))
+
     clientes = len(Clientescontacto.objects.all())
     consultas = len(Consulta.objects.all())
     ventas = len(VentasRealizadas.objects.all().exclude(cliente = None))
 
-    return render(request, "crm_estadisticas.html", {'meses':meses, 'ventas':ventas, 'clientes':clientes, 'consultas':consultas})
+    return render(request, "crm_estadisticas.html", {'medios':medios, 'meses':meses, 'ventas':ventas, 'clientes':clientes, 'consultas':consultas})
 
 def modificarcliente(request,**kwargs):
 
