@@ -25,11 +25,11 @@
         <div class="card">
             <div class="card-body bg-light">
                 <div class="row">
-                   
+
                     <div class="col-lg-4 col-xlg-3 col-md-5">
                         <div class="card" style="box-shadow: 2px 2px 3px 0px rgba(0, 0, 0, 0.2) ; border-radius: 5px;">
                             <div class="card-body">
-                                <center class="m-t-30"> 
+                                <center class="m-t-30">
                                     {% if cliente.imagenlogo %}
                                     <img src="{{cliente.imagenlogo.url}}" class="img-circle" width="150" />
                                     {% else %}
@@ -38,97 +38,212 @@
 
                                     <h4 class="card-title m-t-10">{{cliente.nombre}} {{cliente.apellido}}</h4>
                                     <h6 class="card-subtitle">{{cliente.email}}</h6>
-      
+
 
                                 </center>
                             </div>
-                            
+
                             <div class="card-body">
                                 <h6 class="p-t-30">Telefono</h6>
                                 <small class="text-muted db">{{cliente.telefono}}</small>
                                 <h6 class="p-t-30">Fecha de nacimiento</h6>
                                 <small class="text-muted db">{{cliente.fecha_nacimiento}}</small>
-                           
-                                
+
+
                             </div>
                         </div>
                     </div>
                     <div class="col-lg-8 col-xlg-9 col-md-7">
                         <div class="card" style="box-shadow: 2px 2px 3px 0px rgba(0, 0, 0, 0.2) ; border-radius: 5px;">
                             <!-- Nav tabs -->
-                            <ul class="nav nav-tabs profile-tab" role="tablist">
-                                <li class="nav-item"> <a class="nav-link active" data-toggle="tab" href="#actividades" role="tab">Actividad</a> </li>
-                                <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#settings" role="tab">Editar</a> </li>
-                                
-                            </ul>
+                            <div class="div" style="position: relative;">
+
+                                <ul class="nav nav-tabs profile-tab" role="tablist">
+                                    <li class="nav-item"> <a class="nav-link active" data-toggle="tab"
+                                            href="#actividades" role="tab">Actividad</a> </li>
+                                    <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#settings"
+                                            role="tab">Editar</a> </li>
+
+                                </ul>
+                                <div class="btn-group mt-1" style="position: absolute; top:15px; right: 15px;">
+                                    <a href="JavaScript:void(0)" class="icon-options-vertical link"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" href="#" data-toggle="modal"
+                                        data-target="#ModalConsulta"><i class="fa fa-plus-circle mr-2"></i>Añadir consulta</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="ModalConsulta" class="modal fade" tabindex="-1" role="dialog"
+                                aria-labelledby="ModalConsulta" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header"
+                                            style="background: rgb(36,160,237);
+                                            background: linear-gradient(315deg, rgba(36,160,237,1) 0%, rgba(56,56,130,1) 22%, rgba(0,212,255,1) 100%);">
+                                            <h5 class="modal-title  text-light" id="exampleModalLongTitle">Añadir</h5>
+                                            <button type="button" class="close text-light" data-dismiss="modal"
+                                                aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+
+                                            <form method="POST" style="margin: 15px;" action="{% url 'crearconsulta' %}" enctype="multipart/form-data"
+                                                id="upload-image-form">
+                                                <input type="text" hidden name="perfilcliente" value="perfilcliente">
+                                                {% csrf_token %}
+                                                <div class="my-3">
+
+                                                    <h6>Fecha</h6>
+                                                    <input type="date" name="fecha" class="form-control" required>
+                                                </div>
+
+                                                <div class="my-3">
+
+                                                    <h6>Proyecto</h6>
+                                                    <select name="proyecto" id="proyecto" class="form-control">
+
+                                                        {% for proy in proyectos %}
+                                                        <option value="{{proy.id}}">{{proy.nombre}}</option>
+                                                        {% endfor %}
+
+                                                    </select>
+                                                </div>
+                                                <div class="my-3">
+
+                                                    <h6>Proyecto no estructurados</h6>
+                                                    <input type="text" name="proyecto_no_est" class="form-control"
+                                                        placeholder="Ej: GENERAL">
+                                                </div>
+
+                                                <div class="my-3">
+                                                    <h6>Tipología</h6>
+                                                    <div class="row">
+                                                    {% for i in tipologias %}
+                                                        <div class="col ml-2 ">
+                                                            <input type="checkbox" name="tipologia2" value="{{i.id}}"
+                                                                id="id_tipologia2_{{i.id}}">
+                                                            <label class="ml-2" for="id_tipologia2_{{i.id}}">
+                                                                {{i.nombre}}</label>
+            
+                                                        </div>
+                                                    {% endfor %}
+                                                    </div>
+                                                
+                                                </div>
+
+                                                <div class="my-3">
+                                                    <h6>Medio de contacto</h6>
+                                                    <select name="medio_contacto" id="medio_contacto"
+                                                        class="form-control" required>
+
+                                                        {% for medio in medios %}
+                                                        <option value="{{medio.0}}">{{medio.1}}</option>
+                                                        {% endfor %}
+
+                                                    </select>
+                                                </div>
+                                                <div class="my-3">
+                                                    <h6>Adjunto</h6>
+                                                    <input type="file" name="adjunto_propuesta" class="form-control">
+                                                </div>
+
+                                                <button type="submit" class="btn" name="cliente" value="{{cliente.id}}-estatico" ><i
+                                                        class="fa fa-arrow-up text-info"><span class="text-info ml-2"
+                                                            style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif"><b>Añadir</b></span></i></button>
+                                            </form>
+
+
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-info"
+                                                    data-dismiss="modal">Cerrar</button>
+
+                                             </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <!-- Tab panes -->
                             <div class="tab-content">
                                 <div class="tab-pane active" id="actividades" role="tabpanel">
                                     <div class="card-body">
                                         <div class="profiletimeline">
                                             {% if ventas %}
-                                            {% for v in ventas %}
-                                            <div class="sl-item">
-                                                <div class="sl-left"> <img src="{% static 'img/estrella.png' %}" alt="usuario" class="img-circle" /> </div>
-                                                <div class="sl-right">
-                                                    <div><a href="#" class="link"></a> <span class="sl-date">{{v.fecha|date:"j/m/Y"}}</span>
-                                                        <p>Compro en <b style="color: rgb({{v.color}});">{{v|lower|capfirst}}</b>: {{v.unidad.piso_unidad}} - {{v.unidad.nombre_unidad}}</p>
+                                                {% for v in ventas %}
+                                                <div class="sl-item">
+                                                    <div class="sl-left"> <img src="{% static 'img/estrella.png' %}"
+                                                            alt="usuario" class="img-circle" /> </div>
+                                                    <div class="sl-right">
+                                                        <div><a href="#" class="link"></a> <span
+                                                                class="sl-date">{{v.fecha|date:"j/m/Y"}}</span>
+                                                            <p>Compro en <b
+                                                                    style="color: rgb({{v.color}});">{{v|lower|capfirst}}</b>: {{v.unidad.piso_unidad}} - {{v.unidad.nombre_unidad}}</p>
 
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            {% endfor %}
+                                                {% endfor %}
                                             <hr>
                                             {% endif %}
                                             {% for i in consultas %}
                                             <div class="sl-item">
-                                                <div class="sl-left"> <img src="{{i.usuario.imagenlogo.url}}" alt="usuario" class="img-circle" /> </div>
+                                                <div class="sl-left"> <img src="{{i.usuario.imagenlogo.url}}"
+                                                        alt="usuario" class="img-circle" /> </div>
                                                 <div class="sl-right">
-                                                    <div><a href="#" class="link">{{cliente.usuario}}</a> <span class="sl-date">{{i.fecha|date:"j/m/Y"}}</span>
+                                                    <div><a href="#" class="link">{{cliente.usuario}}</a> <span
+                                                            class="sl-date">{{i.fecha|date:"j/m/Y"}}</span>
                                                         <p>{% if i.adjunto_propuesta %}
-                                                            <a href="{{i.adjunto_propuesta.url}}" target="_blank"><i class="fa fa-file-pdf-o text-danger"></i></a>
-                                                            {% endif %}Consulto sobre: <b style="color: rgb({{i.proyecto.color}});">{% if i.proyecto %}{{i.proyecto|lower|capfirst}}{% endif %}{% if i.proyecto_no_est %}{{i.proyecto_no_est|lower|capfirst}}{% endif %}</b> - {% for tipo in i.tipologia2.all %}{{tipo}} {% endfor %}</p>
+                                                            <a href="{{i.adjunto_propuesta.url}}" target="_blank"><i
+                                                                    class="fa fa-file-pdf-o text-danger"></i></a>
+                                                            {% endif %} Consulto sobre: <b
+                                                                style="color: rgb({{i.proyecto.color}});">{% if i.proyecto %}{{i.proyecto|lower|capfirst}} {% else %}{{i.proyecto_no_est|lower|capfirst}} {% endif %}</b> - {% for tipo in i.tipologia2.all %}{{tipo}} {% endfor %}
+                                                        </p>
 
                                                     </div>
                                                 </div>
                                             </div>
                                             <hr>
                                             {% endfor %}
-                                           
+
                                         </div>
                                     </div>
                                 </div>
                                 <div class="tab-pane" id="settings" role="tabpanel">
                                     <div class="card-body">
-                                        
+
                                         <form method="POST">
                                             {% csrf_token %}
                                             <div class="form-group">
                                                 <label class="col-md-12">Nombre</label>
                                                 <div class="col-md-12">
-                                                    <input type="text" value="{{cliente.nombre}}"  class="form-control form-control-line" name="nombre">
+                                                    <input type="text" value="{{cliente.nombre}}"
+                                                        class="form-control form-control-line" name="nombre">
                                                 </div>
                                             </div>
                                             <div class="form-group">
                                                 <label class="col-md-12">Apellido</label>
                                                 <div class="col-md-12">
-                                                    <input type="text" value="{{cliente.apellido}}"  class="form-control form-control-line" name="apellido">
+                                                    <input type="text" value="{{cliente.apellido}}"
+                                                        class="form-control form-control-line" name="apellido">
                                                 </div>
                                             </div>
                                             <div class="form-group">
                                                 <label for="example-email" class="col-md-12">Email</label>
                                                 <div class="col-md-12">
-                                                    <input type="email" value="{{cliente.email}}" class="form-control form-control-line" name="email">
+                                                    <input type="email" value="{{cliente.email}}"
+                                                        class="form-control form-control-line" name="email">
                                                 </div>
                                             </div>
-                                          
+
                                             <div class="form-group">
                                                 <label class="col-md-12">Telefono</label>
                                                 <div class="col-md-12">
-                                                    <input type="tel" value="{{cliente.telefono}}" class="form-control form-control-line" name="telefono">
+                                                    <input type="tel" value="{{cliente.telefono}}"
+                                                        class="form-control form-control-line" name="telefono">
                                                 </div>
                                             </div>
-                                           
+
 
                                             <div class="form-group">
                                                 <div class="col-sm-12">
@@ -138,7 +253,7 @@
                                         </form>
                                     </div>
                                 </div>
-                                
+
                             </div>
                         </div>
                     </div>

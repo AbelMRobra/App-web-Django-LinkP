@@ -5439,8 +5439,8 @@ def pagosRentaAnticipada(request,**kwargs):
     id_cta_corriente=kwargs['id']
     id_proyecto=kwargs['id_proy']
     proyecto = Proyectos.objects.get(id = id_proyecto)
-    cta=CuentaCorriente.objects.get(pk=id_cta_corriente)
-    pagos_renta=PagoRentaAnticipada.objects.filter(cuenta_corriente=id_cta_corriente).order_by('fecha')
+    cta=CuentaCorriente.objects.get(id = id_cta_corriente)
+    pagos_renta=PagoRentaAnticipada.objects.filter(cuenta_corriente = id_cta_corriente).order_by('fecha')
     mensaje=''
     
     if request.method=='POST':
@@ -5473,7 +5473,6 @@ def pagosRentaAnticipada(request,**kwargs):
                             if nuevo:
                                 nuevo.save()
 
-                        return redirect('pagosrentaanticipada', id_cta_corriente)
                 else:
                     mensaje='Ya existen cuotas para las fechas ingresadas'
                     
@@ -5486,28 +5485,20 @@ def pagosRentaAnticipada(request,**kwargs):
             pago=PagoRentaAnticipada.objects.get(pk=pago)
             pago.delete()
         
-            return redirect('pagosrentaanticipada', id_cta_corriente)
-
 
         if 'modificar_pagado' in datos:
             id_pago=datos['modificar_pagado']
             pago=PagoRentaAnticipada.objects.get(pk=id_pago)
 
-            
-            
-
             if 'pagado' in datos:
                
                 pago.pagado=True
-                
                 pago.save()
             
             else:
                 
                 pago.pagado=False
                 pago.save()
-                
-            return redirect('pagosrentaanticipada', id_cta_corriente)
 
         if 'modificar_fecha_monto' in datos:
             fecha_mod=datos['fecha_mod']
@@ -5518,9 +5509,7 @@ def pagosRentaAnticipada(request,**kwargs):
             pago.monto=monto_mod
             pago.save()
 
-            return redirect('pagosrentaanticipada', id_cta_corriente)
-
-        return redirect('pagosrentaanticipada',id_cta_corriente)
+        return redirect('pagosrentaanticipada',id_cta_corriente, id_proyecto)
 
     context={'pagos_renta':pagos_renta,'mensaje':mensaje,'id_proyecto':id_proyecto, "proyecto":proyecto}
     return render(request ,'pagos_renta_anticipada.html' ,context)
@@ -5584,49 +5573,65 @@ def totalizadorRentaAnticipada(request, **kwargs):
    
 def totalizador_renta_anticipada_total(request):
     nombres_proyectos={}
-    #cuenta corriente -> venta -> proyecto
     proyectos=Proyectos.objects.values('id')
 
     pagos=PagoRentaAnticipada.objects.all()
     
-    fechas=pagos.values('fecha__month','fecha__year').distinct()
+    fechas = pagos.values('fecha__month','fecha__year').order_by('fecha').distinct()
 
-    proyectos=pagos.values('cuenta_corriente__venta__proyecto__id','cuenta_corriente__venta__proyecto__nombre').distinct()
-    #pagos=PagoRentaAnticipada.objects.filter(cuenta_corriente__venta__proyecto__id=1).values('cuenta_corriente','cuenta_corriente__venta__proyecto__id','fecha__month','fecha__año','monto')
-    
-    
+    print(fechas)
+
+    proyectos = pagos.values('cuenta_corriente__venta__proyecto__id','cuenta_corriente__venta__proyecto__nombre').distinct()
+
     total_meses=[]
+
+    fechas_utilizadas = []
   
-  
-    for f in fechas.order_by('fecha__year'):
-        total_fecha=0
-        total_mes=[]
-        
-        mes=f['fecha__month']
-        año=f['fecha__year']
-        total_mes.append('{} del {}'.format(mes,año))
-        
-        nombres_proyectos=[]
-        for p in proyectos:
-            proyecto=[]
-            pro=p['cuenta_corriente__venta__proyecto__id']
-            nombres_proyectos.append(p['cuenta_corriente__venta__proyecto__nombre'])
-            nombre=p['cuenta_corriente__venta__proyecto__nombre']
-            query=pagos.filter(fecha__month=mes,fecha__year=año,cuenta_corriente__venta__proyecto__id=pro).values('fecha','monto','cuenta_corriente')
-            monto=query.aggregate(Sum('monto'))
+    for f in fechas:
+
+        if f not in fechas_utilizadas:
+
+            total_fecha = 0
             
-            if len(query)>0:
-                monto_fecha=monto['monto__sum']
-                total_mes.append(monto_fecha)
+            total_mes = []
+            
+            mes=f['fecha__month']
+            año=f['fecha__year']
+
+            total_mes.append('{}/{}'.format(mes,año))
+            
+            nombres_proyectos=[]
+
+            for p in proyectos:
+
+                pro = p['cuenta_corriente__venta__proyecto__id']
+
+                nombres_proyectos.append(p['cuenta_corriente__venta__proyecto__nombre'])
+
+                query = pagos.filter(fecha__month=mes ,fecha__year=año ,cuenta_corriente__venta__proyecto__id = pro).values('fecha','monto','cuenta_corriente')
                 
+                monto = query.aggregate(Sum('monto'))
                 
-            else:
-                monto_fecha=0
-                total_mes.append(0)
-              
-            total_fecha+=monto_fecha
-        total_mes.append(total_fecha)
-        total_meses.append(total_mes)
+                if len(query) > 0:
+
+                    monto_fecha = monto['monto__sum']
+
+                    total_mes.append(monto_fecha)
+                    
+                else:
+
+                    monto_fecha = 0
+
+                    total_mes.append(0)
+                
+                total_fecha += monto_fecha
+
+            total_mes.append(total_fecha)
+            
+            total_meses.append(total_mes)
+
+            fechas_utilizadas.append(f)
+
         
     return render(request,'renta_anticipada_totalizador_proyecto.html',{'fechas':total_meses,'proyectos':nombres_proyectos})
 

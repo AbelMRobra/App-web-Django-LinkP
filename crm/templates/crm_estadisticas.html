@@ -121,8 +121,13 @@
                             type: 'doughnut',
                             // The data for our dataset
                             data: {
-                            datasets: [{        
+                                datasets: [{        
                                 data: [{% for m in medios %} {{m.1}}, {% endfor %}],
+
+                                
+                                backgroundColor :[
+                                {% for c in colores %} '{{c}}', {% endfor %}
+                                ]
        
                             }],
                 

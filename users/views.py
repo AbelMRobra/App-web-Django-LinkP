@@ -2034,6 +2034,14 @@ def registro_contable_cajas(request):
                 return redirect('Registro Contable Cajas')
         except:
             pass
+        try:
+            data_caja = request.POST['borrar'].split("&")
+            cajas_eliminar = RegistroContable.objects.filter(creador = request.user.username, caja = data_caja[0], usuario__identificacion = data_caja[1])
+            for caja in cajas_eliminar:
+                caja.delete()
+
+        except:
+            pass
 
     user = datosusuario.objects.get(identificacion = request.user.username)
 
@@ -2042,11 +2050,20 @@ def registro_contable_cajas(request):
     total_cajas = []
 
     for caja in cajas_usuario:
+        usuarios_participan = []
         nombre = caja
         ingresos = sum(np.array(RegistroContable.objects.filter(usuario = user, estado = "INGRESOS", caja = caja).values_list("importe", flat=True)))
         gastos = sum(np.array(RegistroContable.objects.filter(usuario = user, estado = "GASTOS", caja = caja).values_list("importe", flat=True)))
         balance = ingresos - gastos
-        total_cajas.append((nombre,ingresos, gastos, balance))
+
+        usuarios = RegistroContable.objects.filter(usuario = user, caja = caja).values_list('creador', flat = True).distinct()
+
+        aux = 0
+        for u in usuarios:
+            user_aux = datosusuario.objects.get(identificacion = u)
+            usuarios_participan.append((user_aux, aux))
+            aux += 15
+        total_cajas.append((nombre,ingresos, gastos, balance, usuarios_participan))
 
     cajas_administradas = list(set(RegistroContable.objects.filter(creador = user).exclude(usuario = user).values_list("caja", flat=True).order_by("-fecha").distinct()))
     usuarios_cajas = list(set(RegistroContable.objects.filter(creador = user).exclude(usuario = user).values_list("usuario", flat=True).order_by("-fecha").distinct()))
@@ -2054,14 +2071,23 @@ def registro_contable_cajas(request):
 
     for usuario in usuarios_cajas:
         user_adm = datosusuario.objects.get(id = usuario)
-
+        
         for caja in cajas_administradas:
             if len(RegistroContable.objects.filter(usuario = user_adm, creador = user, caja = caja).exclude(usuario = user)):
+                usuarios_participan = []
                 nombre = caja
                 ingresos = sum(np.array(RegistroContable.objects.filter(usuario = user_adm, creador = user, estado = "INGRESOS", caja = caja).exclude(usuario = user).values_list("importe", flat=True)))
                 gastos = sum(np.array(RegistroContable.objects.filter(usuario = user_adm, creador = user, estado = "GASTOS", caja = caja).exclude(usuario = user).values_list("importe", flat=True)))
                 balance = ingresos - gastos
-                cajas_administras.append((nombre,ingresos, gastos, balance, user_adm))
+                usuarios_v = RegistroContable.objects.filter(usuario = user_adm, caja = caja).values_list('creador', flat = True).distinct()
+                
+                aux = 0
+                for u in usuarios_v:
+                    user_aux = datosusuario.objects.get(identificacion = u)
+                    usuarios_participan.append((user_aux, aux))
+                    aux += 15
+
+                cajas_administras.append((nombre,ingresos, gastos, balance, user_adm, usuarios_participan))
 
     return render(request, 'users/registro_contable_cajas.html', {'total_cajas':total_cajas, 'cajas_administras':cajas_administras, "user":user})
 

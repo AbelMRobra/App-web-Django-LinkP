@@ -52,36 +52,44 @@
                             <div class="modal-body">
 
                                 <form method="POST" style="margin: 15px;" enctype="multipart/form-data"
-                                    id="upload-image-form">
-
+                                  >
+                           
                                     {% csrf_token %}
                                     <div class="my-3">
 
                                         <h6>Fecha</h6>
-                                        <input type="date" name="fecha" class="form-control">
+                                        <input type="date" name="fecha" id="fecha" class="form-control" required>
                                     </div>
 
                                     <div class="my-3">
 
                                         <h6>Proyecto</h6>
                                         <select name="proyecto" id="proyecto" class="form-control">
-
+                                            <option value="">PROYECTOS</option>
                                             {% for proy in proyectos %}
                                             <option value="{{proy.id}}">{{proy.nombre}}</option>
+                                          
                                             {% endfor %}
+                                         
 
                                         </select>
+                                    </div>
+                                    <div class="my-3">
+
+                                        <h6>Proyecto no estructurados</h6>
+                                        <input type="text" name="proyecto_no_est" id="proyecto_no_est" class="form-control" placeholder="Ej: GENERAL">
                                     </div>
 
                                     <div class="my-3">
 
                                         <h6>Cliente</h6>
-                                        <select name="cliente" id="cliente" class="form-control">
-
+                                        <input type="search" name="cliente" class="form-control" list="cliente" placeholder="Ej: Juan Perez" required>
+                                        <datalist id="cliente">
                                             {% for cliente in clientes %}
-
-                                            <option value="{{cliente.id}}">{{cliente.nombre}}</option>
+                                            <option value="{{cliente.id}}-{{cliente.nombre}}, {{cliente.apellido}}"></option>
                                             {% endfor %}
+                                          </datalist>
+
 
                                         </select>
                                     </div>
@@ -89,65 +97,32 @@
                                     <div class="my-3">
                                         <h6>Tipología</h6>
                                         <div class="row">
-
-                                            <div class="ml-2 ">
-                                                <input type="checkbox" name="tipologia2" value="6"
-                                                    id="id_tipologia2_5">
-                                                <label class="ml-2" for="id_tipologia2_5">
-                                                    MICROMONO</label>
-
-                                                <input type="checkbox" name="tipologia2" value="7"
-                                                    id="id_tipologia2_6">
-                                                <label class="ml-2" for="id_tipologia2_6">
-                                                    MONO</label>
-
-                                                <input type="checkbox" name="tipologia2" value="1"
-                                                    id="id_tipologia2_0">
-                                                <label class="ml-2" for="id_tipologia2_0">
-                                                    1D</label>
-
-                                                <input type="checkbox" name="tipologia2" value="2"
-                                                    id="id_tipologia2_1">
-                                                <label class="ml-2" for="id_tipologia2_1">
-                                                    2D</label>
-
-                                                <input type="checkbox" name="tipologia2" value="3"
-                                                    id="id_tipologia2_2">
-                                                <label class="ml-2" for="id_tipologia2_2">
-                                                    3D</label>
+                                        {% for i in tipologias %}
+                                            <div class="col ml-2 ">
+                                                <input type="checkbox" name="tipologia2" value="{{i.id}}"
+                                                    id="id_tipologia2_{{i.id}}">
+                                                <label class="ml-2" for="id_tipologia2_{{i.id}}">
+                                                    {{i.nombre}}</label>
 
                                             </div>
+                                        {% endfor %}
                                         </div>
-                                        <div class="row">
-                                            <div class="ml-2 ">
-                                                <input type="checkbox" name="tipologia2" value="4"
-                                                    id="id_tipologia2_3">
-                                                <label class="ml-2" for="id_tipologia2_3">
-                                                    COCHERA</label>
-
-                                                <input type="checkbox" name="tipologia2" value="5"
-                                                    id="id_tipologia2_4">
-                                                <label class="ml-2" for="id_tipologia2_4">
-                                                    LOFT</label>
-
-                                                <input type="checkbox" name="tipologia2" value="8"
-                                                    id="id_tipologia2_7">
-                                                <label class="ml-2" for="id_tipologia2_7">
-                                                    OFICINA</label>
-
-                                            </div>
-                                        </div>
+                                    
                                     </div>
 
                                     <div class="my-3">
                                         <h6>Medio de contacto</h6>
-                                        <select name="medio_contacto" id="medio_contacto" class="form-control">
+                                        <select name="medio_contacto" id="medio_contacto" class="form-control" required>
 
                                             {% for medio in medios %}
-                                            <option value="{{medio.1}}">{{medio.0}}</option>
+                                            <option value="{{medio.0}}">{{medio.1}}</option>
                                             {% endfor %}
 
                                         </select>
+                                    </div>
+                                    <div class="my-3">
+                                        <h6>Archivo adjunto</h6>
+                                        <input type="file" id="adjunto_propuesta" name="adjunto_propuesta" class="form-control">
                                     </div>
 
                                     <button type="submit" class="btn"><i class="fa fa-arrow-up text-info"><span
@@ -181,7 +156,7 @@
                             {% for consulta in consultas %}
                             <tr>
                                 <td>{{consulta.cliente.nombre|lower|capfirst}}, {{consulta.cliente.apellido|lower|capfirst}}</td>
-                                <td>{% if consulta.proyecto %}{{consulta.proyecto|lower|capfirst}}{% endif %} {% if consulta.proyecto_no_est %}{{consulta.proyecto_no_est|lower|capfirst}}{% endif %}</td>
+                                <td>{% if consulta.proyecto %}{{consulta.proyecto|lower|capfirst}} {% else %} {{consulta.proyecto_no_est|lower|capfirst}} {% endif %} </td>
                                 <td>{{consulta.fecha|date:"Y/m/j"}}</td>
                                 <td>{{consulta.usuario}}</td>
                                 <td>{{consulta.medio_contacto|lower|capfirst}}</td>
@@ -211,7 +186,7 @@
                                     <div class="modal-content">
                                         <div class="modal-header"
                                             style="background: rgb(36,160,237);
-                     background: linear-gradient(315deg, rgba(36,160,237,1) 0%, rgba(56,56,130,1) 22%, rgba(0,212,255,1) 100%);">
+                                                background: linear-gradient(315deg, rgba(36,160,237,1) 0%, rgba(56,56,130,1) 22%, rgba(0,212,255,1) 100%);">
                                             <h5 class="modal-title text-light" id="exampleModalLongTitle">Borrar
                                                 consulta
                                             </h5>
