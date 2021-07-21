@@ -99,7 +99,7 @@ class PrametrosResource(resources.ModelResource):
         model = Prametros
 
 class PrametrosAdmin(ImportExportModelAdmin, admin.ModelAdmin):
-    list_display = ('proyecto')
+    list_display = ('proyecto', 'imprevitso')
     resources_class = PrametrosResource
 
 admin.site.register(PresupuestosAlmacenados, PresupuestosAlmacenadosAdmin)
