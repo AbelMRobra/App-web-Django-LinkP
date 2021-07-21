@@ -5579,8 +5579,6 @@ def totalizador_renta_anticipada_total(request):
     
     fechas = pagos.values('fecha__month','fecha__year').order_by('fecha').distinct()
 
-    print(fechas)
-
     proyectos = pagos.values('cuenta_corriente__venta__proyecto__id','cuenta_corriente__venta__proyecto__nombre').distinct()
 
     total_meses=[]

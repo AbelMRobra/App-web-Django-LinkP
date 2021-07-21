@@ -94,6 +94,14 @@ class PresupuestosAlmacenadosAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = ('proyecto', 'nombre')
     resources_class = PresupuestosAlmacenadosResource
 
+class PrametrosResource(resources.ModelResource):
+    class Meta:
+        model = Prametros
+
+class PrametrosAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    list_display = ('proyecto')
+    resources_class = PrametrosResource
+
 admin.site.register(PresupuestosAlmacenados, PresupuestosAlmacenadosAdmin)
 admin.site.register(Constantes, ConstantesAdmin)
 admin.site.register(Registrodeconstantes, RegistrodeConstanteAdmin)
@@ -101,7 +109,7 @@ admin.site.register(Capitulos, CapituloAdmin)
 admin.site.register(Articulos, ArticulosAdmin)
 admin.site.register(DatosProyectos)
 admin.site.register(Presupuestos)
-admin.site.register(Prametros)
+admin.site.register(Prametros, PrametrosAdmin)
 admin.site.register(Desde)
 admin.site.register(Analisis, AnalisisAdmin)
 admin.site.register(CompoAnalisis, CompoAnalisisAdmin)
