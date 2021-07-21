@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.template import context
-
+from operator import itemgetter, attrgetter
 from .models import Consulta ,get_medios, Tipologia
 from ventas.models import Clientescontacto, VentasRealizadas
 from .models import Proyectos
@@ -87,9 +87,8 @@ def estadisticas(request):
 
     #OBTENCION DE COLORES
     colores_template=generarcolores(len(medios))
-    
-   
-    
+
+    medios = sorted(medios, key=itemgetter(1))
     return render(request, "crm_estadisticas.html", {'medios':medios, 'meses':meses, 'ventas':ventas, 'clientes':clientes, 'consultas':consultas,'colores':colores_template})
 def modificarcliente(request,**kwargs):
 
