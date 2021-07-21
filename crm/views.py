@@ -15,7 +15,7 @@ from .functions import generarcolores
 
 
 def clientes(request):
-    clientes=Clientescontacto.objects.filter(activo=True)
+    clientes=Clientescontacto.objects.filter(activo=True).order_by("nombre")
     mensaje=''
 
     if request.method=='POST':
