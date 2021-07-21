@@ -88,7 +88,7 @@ def estadisticas(request):
     #OBTENCION DE COLORES
     colores_template=generarcolores(len(medios))
 
-    medios = sorted(medios, key=itemgetter(1))
+    medios = sorted(medios, key=itemgetter(1), reverse=True)
     return render(request, "crm_estadisticas.html", {'medios':medios, 'meses':meses, 'ventas':ventas, 'clientes':clientes, 'consultas':consultas,'colores':colores_template})
 def modificarcliente(request,**kwargs):
 
