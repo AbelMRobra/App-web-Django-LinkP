@@ -3,8 +3,7 @@ from matplotlib.backends.backend_agg import FigureCanvasAgg
 from random import sample
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from .models import Proveedores, Certificados
-from .models import StockComprasAnticipadas, Compras, Proyectos, Proveedores, Retiros, Comparativas, ComparativasMensaje, Contratos, AdjuntosContratos
+from .models import StockComprasAnticipadas, Compras, Proyectos, Proveedores, Retiros, Comparativas, ComparativasMensaje, Contratos, AdjuntosContratos, Certificados
 from rrhh.models import datosusuario
 from .form import StockAntForm
 from .filters import CertificadoFilter
@@ -15,9 +14,9 @@ import datetime
 import smtplib
 import requests
 from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
-from email.mime.base import MIMEBase
-from email import encoders
+# from email.mime.multipart import MIMEMultipart
+# from email.mime.base import MIMEBase
+# from email import encoders
 import dateutil.parser
 from agenda import settings
 from datetime import date
@@ -28,8 +27,7 @@ from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
 from django.views.generic.base import TemplateView  
 from rest_framework.generics import ListAPIView
 from .serializers import articulos_Serializer
-
-
+from .functions import sendemail,bot
 
 def principalcompras(request):
 
@@ -575,7 +573,7 @@ def principalautorizacion(request):
     return render(request, "oc_principal_autorizacion.html", {"mensaje_bievenida":mensaje_bievenida, "mensaje":mensaje})
 
 def ocautorizargerente1(request, estado, creador):
-
+    
     if request.method == 'POST':
 
         datos_post = request.POST.items()
@@ -603,14 +601,6 @@ def ocautorizargerente1(request, estado, creador):
 
                 try:
 
-                    # Establecemos conexion con el servidor smtp de gmail
-                    mailServer = smtplib.SMTP(settings.EMAIL_HOST, settings.EMAIL_PORT)
-                    mailServer.ehlo()
-                    mailServer.starttls()
-                    mailServer.ehlo()
-                    mailServer.login(settings.EMAIL_HOST_USER, settings.EMAIL_HOST_PASSWORD)
-
-                    # Construimos el mensaje simple
                     
                     mensaje = MIMEText("""
                     
@@ -628,17 +618,14 @@ Si este mensaje es un error, por favor comunicate con el equipo de IT
 
 Muchas gracias, saludos!
                     """.format(comparativa.o_c))
-                    mensaje['From']=settings.EMAIL_HOST_USER
-                    mensaje['To']=datosusuario.objects.get(identificacion = comparativa.creador).email
-                    mensaje['Subject']="Tu O.C para {} esta autorizada!".format(comparativa.proveedor.name)
 
+                    asunto="Tu O.C para {} esta autorizada!".format(comparativa.proveedor.name)
+                    #usuario=datosusuario.objects.get(identificacion = comparativa.creador).email
+                    usuario='florm2496@gmail.com'
+                
 
                     # Envio del mensaje
-
-                    mailServer.sendmail(settings.EMAIL_HOST_USER,
-                                    datosusuario.objects.get(identificacion = comparativa.creador).email,
-                                    mensaje.as_string())
-
+                    sendemail(mensaje,asunto,usuario)
                 except:
 
                     pass
@@ -652,14 +639,6 @@ Muchas gracias, saludos!
                 
                 try:
 
-                    # Establecemos conexion con el servidor smtp de gmail
-                    mailServer = smtplib.SMTP(settings.EMAIL_HOST, settings.EMAIL_PORT)
-                    mailServer.ehlo()
-                    mailServer.starttls()
-                    mailServer.ehlo()
-                    mailServer.login(settings.EMAIL_HOST_USER, settings.EMAIL_HOST_PASSWORD)
-
-                    # Construimos el mensaje simple
                     mensaje = MIMEText("""
                     
 Buenas!,
@@ -674,17 +653,12 @@ Si este mensaje es un error, por favor comunicate con el equipo de IT
 
 Muchas gracias, saludos!
                     """.format(request.POST['MENSAJE']))
-                    mensaje['From']=settings.EMAIL_HOST_USER
-                    mensaje['To']=datosusuario.objects.get(identificacion = comparativa.creador).email
-                    mensaje['Subject']="Atención! La OC para {} fue rechazada!".format(comparativa.proveedor.name)
+                 
+                    usuario=datosusuario.objects.get(identificacion = comparativa.creador).email
+                    asunto="Atención! La OC para {} fue rechazada!".format(comparativa.proveedor.name)
 
-                    # Envio del mensaje
-
-                    mailServer.sendmail(settings.EMAIL_HOST_USER,
-                                    datosusuario.objects.get(identificacion = comparativa.creador).email,
-                                    mensaje.as_string())
-
-
+             
+                    sendemail(mensaje,asunto,usuario)
                 except:
 
                     pass
@@ -828,18 +802,7 @@ def mensajescomparativas(request, id_comparativa):
 
                     send = "{} te respondio: '{}' en la OC {}".format(b.usuario.nombre, b.mensaje, b.comparativa.o_c)
 
-                    id = "-585663986"
-
-                    token = "1880193427:AAH-Ej5ColiocfDZrDxUpvsJi5QHWsASRxA"
-
-                    url = "https://api.telegram.org/bot" + token + "/sendMessage"
-
-                    params = {
-                        'chat_id' : id,
-                        'text' : send
-                    }
-
-                    requests.post(url, params=params)
+                    bot(send)
 
 
     datos = Comparativas.objects.get(id = id_comparativa)
@@ -895,7 +858,7 @@ def comparativas(request, estado, creador):
             None
 
     if request.method == 'POST':
-
+       
         datos_post = request.POST.items()
 
         id_selec = 0
@@ -926,18 +889,12 @@ def comparativas(request, estado, creador):
 
                 comparativa.save()
 
-                try:
+                
 
-                    # Establecemos conexion con el servidor smtp de gmail
-                    mailServer = smtplib.SMTP(settings.EMAIL_HOST, settings.EMAIL_PORT)
-                    mailServer.ehlo()
-                    mailServer.starttls()
-                    mailServer.ehlo()
-                    mailServer.login(settings.EMAIL_HOST_USER, settings.EMAIL_HOST_PASSWORD)
 
                     # Construimos el mensaje simple
                     
-                    mensaje = MIMEText("""
+                mensaje = MIMEText("""
                     
 Buenas!,
 
@@ -951,37 +908,20 @@ Gracias!
 
 Saludos!
                     """.format(comparativa.o_c))
-                    mensaje['From']=settings.EMAIL_HOST_USER
-                    mensaje['To']=datosusuario.objects.get(identificacion = comparativa.creador).email
-                    mensaje['Subject']="Todo listo! La O.C para {} esta autorizada!".format(comparativa.proveedor.name)
+ 
+                usuario=comparativa.creador.email
+                asunto="Todo listo! La O.C para {} esta autorizada!".format(comparativa.proveedor.name)
 
 
-                    # Envio del mensaje
+                # Envio del mensaj
+                
+                sendemail(mensaje,asunto,usuario)
+                if comparativa.creador == "AT" or comparativa.creador == "LG":
 
-                    mailServer.sendmail(settings.EMAIL_HOST_USER,
-                                    datosusuario.objects.get(identificacion = comparativa.creador).email,
-                                    mensaje.as_string())
+                    send = "Han aprobado la OC {} de {}".format(comparativa.creador, comparativa.o_c)
 
-                    if comparativa.creador == "AT" or comparativa.creador == "LG":
+                    bot(send)
 
-                        send = "Han aprobado la OC {} de {}".format(comparativa.creador, comparativa.o_c)
-
-                        id = "-455382561"
-
-                        token = "1880193427:AAH-Ej5ColiocfDZrDxUpvsJi5QHWsASRxA"
-
-                        url = "https://api.telegram.org/bot" + token + "/sendMessage"
-
-                        params = {
-                            'chat_id' : id,
-                            'text' : send
-                        }
-
-                        requests.post(url, params=params)
-
-                except:
-
-                    pass
 
             if d[0] == 'NO APROBADA':
                 id_selec = d[1]
@@ -994,12 +934,6 @@ Saludos!
                 
                 try:
 
-                    # Establecemos conexion con el servidor smtp de gmail
-                    mailServer = smtplib.SMTP(settings.EMAIL_HOST, settings.EMAIL_PORT)
-                    mailServer.ehlo()
-                    mailServer.starttls()
-                    mailServer.ehlo()
-                    mailServer.login(settings.EMAIL_HOST_USER, settings.EMAIL_HOST_PASSWORD)
 
                     # Construimos el mensaje simple
                     mensaje = MIMEText("""
@@ -1015,33 +949,17 @@ Saludos!
                     Gracias!
                     Saludos!
                     """.format(request.POST['MENSAJE']))
-                    mensaje['From']=settings.EMAIL_HOST_USER
-                    mensaje['To']=datosusuario.objects.get(identificacion = comparativa.creador).email
-                    mensaje['Subject']="Atención! La OC para {} fue rechazada!".format(comparativa.proveedor.name)
+                  
+                    usuario=datosusuario.objects.get(identificacion = comparativa.creador).email
+                    asunto="Atención! La OC para {} fue rechazada!".format(comparativa.proveedor.name)
 
-                    # Envio del mensaje
-
-                    mailServer.sendmail(settings.EMAIL_HOST_USER,
-                                    datosusuario.objects.get(identificacion = comparativa.creador).email,
-                                    mensaje.as_string())
 
                     if comparativa.creador == "AT" or comparativa.creador == "LG":
 
                         send = "Han rechazado la OC {} de {}".format(comparativa.creador, comparativa.o_c)
 
-                        id = "-455382561"
 
-                        token = "1880193427:AAH-Ej5ColiocfDZrDxUpvsJi5QHWsASRxA"
-
-                        url = "https://api.telegram.org/bot" + token + "/sendMessage"
-
-                        params = {
-                            'chat_id' : id,
-                            'text' : send
-                        }
-
-                        requests.post(url, params=params)
-
+                        bot(send)
                 except:
 
                     pass
@@ -1438,39 +1356,7 @@ Saludos!
     'list_creadores':list_creadores, 'datos':datos, "estado":estado, 
     "creador":creador, "mensaje":mensaje, "espera":num_espera, "autorizada":num_autorizada, 
     "rechazada":num_rechazada, "adjunto":num_adj, "fecha_pago":fecha_pago})
-'''
-def modificar_precio_articulo_compra(request,id_proyecto):
-    datos_compra={}
-    mensaje=''
-    if request.method=='POST':
-        response=request.POST
-        
-        #itero los datos que llegan del formulario y los guardo en un diccionario
-        for dato in response:
-            datos_compra[dato]=response[dato]
 
-        #guardo el id de la compra que se quiere modificar
-        id_compra=datos_compra['modificar']
-
-        #obtengo el objeto de la compra que quiero modificar
-        compra=Compras.objects.get(pk=id_compra)
-
-        #si existe el objeto ....
-        if compra:
-            compra.precio=datos_compra['precio']
-            compra.save()
-            mensaje='Modificacion realizada con exito'
-            return redirect('Compras' , id_proyecto)
-
-        #si no existe ...
-        else:
-            mensaje='No se pudo encontrar la compra'
-            return redirect('Compras' , id_proyecto)
-    context={
-        'mensaje':mensaje
-    }
-    return render(request, 'compras.html',context)
-'''
 def compras(request, id_proyecto):
 
     if id_proyecto == "0":
