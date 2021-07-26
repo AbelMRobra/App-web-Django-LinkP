@@ -2092,7 +2092,10 @@ def registro_contable_cajas(request):
     return render(request, 'users/registro_contable_cajas.html', {'total_cajas':total_cajas, 'cajas_administras':cajas_administras, "user":user})
 
 def registro_contable_caja(request, caja, estado, mes, year):
+    mes = mes
+    year = year
     user = datosusuario.objects.get(identificacion = request.user.username)
+    list_year = list(set(RegistroContable.objects.filter(usuario = user, caja = caja).values_list("fecha__year", flat=True)))
     if request.method == 'POST':
         try:
             
@@ -2149,7 +2152,23 @@ def registro_contable_caja(request, caja, estado, mes, year):
         data = RegistroContable.objects.filter(usuario = user, estado = "INGRESOS", caja = caja).order_by("-fecha")
     else:
         data = RegistroContable.objects.filter(usuario = user, estado = "GASTOS", caja = caja).order_by("-fecha")
-    return render(request, 'users/registro_contable_caja.html', {"data":data, "caja":caja, "estado":estado})
+    
+
+    if int(mes) != 0:
+        data = data.filter(fecha__month = mes)
+
+    if int(year) != 0:
+        data = data.filter(fecha__year = year)
+
+    context = {}
+    context["data"] = data
+    context["caja"] = caja
+    context["estado"] = estado
+    context["mes"] = mes
+    context["year"] = year
+    context["list_year"] = list_year
+    
+    return render(request, 'users/registro_contable_caja.html', context)
 
 
 def registro_contable(request, date_i):

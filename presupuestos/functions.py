@@ -1,6 +1,17 @@
 import pandas as pd
 import numpy as np
+import requests
 from .models import Capitulos, PresupuestosAlmacenados, Analisis, Articulos
+
+def bot_telegram(send, id, token):
+    url = "https://api.telegram.org/bot" + token + "/sendMessage"
+
+    params = {
+        'chat_id' : id,
+        'text' : send
+    }
+
+    requests.post(url, params=params)
 
 def auditor_presupuesto(proyecto,fecha_desde, fecha_hasta):
     #esta linea trae 29 objetos
@@ -139,7 +150,6 @@ def auditor_presupuesto(proyecto,fecha_desde, fecha_hasta):
         mensaje='No se encontraron registros en esa fecha para ese proyecto, prueba con: {}'.format(list(PresupuestosAlmacenados.objects.filter(proyecto = proyecto).exclude(nombre="vigente").values_list("nombre", flat=True).distinct()))      
 
     return data_procesada,mensaje
-
 
 def auditor_presupuesto_p(proyecto, fecha_desde, fecha_hasta):
 

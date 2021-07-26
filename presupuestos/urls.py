@@ -1,23 +1,23 @@
 from django.urls import path, re_path
 from django.conf.urls import url
-from . import views
+from . import views, views_articulos, views_constantes
 from .views import ReporteExplosion, ReporteExplosionCap, ArticulosListApiView
 from django.contrib.auth.decorators import login_required
 
 urlpatterns = [
     #----------------URL PARA CONSTANTES -----------------------------------------
-    url(r'^cons_list/$', login_required(views.cons_list), name = 'Cons_list'),
-    url(r'^cons_panel/$', login_required(views.cons_panel), name = 'Cons_panel'),
-    url(r'^cons_create/$', login_required(views.cons_create), name = 'Cons_create'),
-    url(r'^cons_editar/(?P<id_cons>\d+)/$', login_required(views.cons_edit), name = 'Editar_cons'),
-    url(r'^cons_eliminar/(?P<id_cons>\d+)/$', login_required(views.cons_delete), name = 'Eliminar_cons'),
+    url(r'^cons_list/$', login_required(views_constantes.constantes_panel_maestro), name = 'Cons_list'),
+    url(r'^cons_panel/$', login_required(views_constantes.constantes_panel), name = 'Cons_panel'),
+    url(r'^cons_create/$', login_required(views_constantes.constantes_crear), name = 'Cons_create'),
+    url(r'^cons_editar/(?P<id_cons>\d+)/$', login_required(views_constantes.constantes_editar), name = 'Editar_cons'),
+    url(r'^cons_eliminar/(?P<id_cons>\d+)/$', login_required(views_constantes.constantes_eliminar), name = 'Eliminar_cons'),
     url(r'^registro/$', login_required(views.registroconstante), name = 'Registro'),
     #----------------URL PARA ARTICULOS -----------------------------------------    
-    url(r'^insum_list/$', login_required(views.insum_list), name = 'Lista de insumos'),   
-    url(r'^insum_panel/$', login_required(views.insum_panel), name = 'Panel de cambios'),
-    url(r'^insumcreate/$', login_required(views.insum_create), name = 'Crear insumo'),
-    url(r'^insum_editar/(?P<id_articulos>\d+)/$', login_required(views.insum_edit), name = 'Editar_insumo'),
-    url(r'^insum_eliminar/(?P<id_articulos>\d+)/$', login_required(views.insum_delete), name = 'Eliminar_insumo'),
+    url(r'^insum_list/$', login_required(views_articulos.articulos_listado_maestro), name = 'Lista de insumos'),   
+    url(r'^insum_panel/$', login_required(views_articulos.articulos_listado_general), name = 'Panel de cambios'),
+    url(r'^insumcreate/$', login_required(views_articulos.articulos_crear), name = 'Crear insumo'),
+    url(r'^insum_editar/(?P<id_articulos>\d+)/$', login_required(views_articulos.articulos_editar), name = 'Editar_insumo'),
+    url(r'^insum_eliminar/(?P<id_articulos>\d+)/$', login_required(views_articulos.articulos_eliminar), name = 'Eliminar_insumo'),
     #----------------URL PARA ANALISIS -----------------------------------------  
     url(r'^analisis_list/$', login_required(views.analisis_list), name = 'Lista de analisis'),
     url(r'^panelanalisis/$', login_required(views.panelanalisis), name = 'Panel de analisis'),

@@ -33,6 +33,13 @@ class Constantes(models.Model):
 # Modelo para articulos
 
 class Articulos(models.Model):
+
+    class Tipo(models.TextChoices):
+
+        MATERIAL = "MATERIAL"
+        SUBCONTRATO = "SUBCONTRATO"
+        MO = "MO"
+
     id = models.IntegerField(null=True, blank=True)
     codigo = models.IntegerField(primary_key=True)
     nombre = models.CharField(max_length=200)
@@ -43,6 +50,7 @@ class Articulos(models.Model):
     unidad = models.CharField(max_length=10, blank=True,)
     fecha_c = models.DateField(auto_now_add=True)
     fecha_a = models.DateField(auto_now=True)
+    tipo_articulo = models.CharField(choices=Tipo.choices, max_length=20, verbose_name="Estado de las tareas", blank=True, null=True)
 
     class Meta:
         verbose_name="Articulo"
@@ -230,7 +238,6 @@ class Bitacoras(models.Model):
         verbose_name="Bitacora"
         verbose_name_plural="Bitacoras"
 
-
 #figura en el admin como Almacenes
 class PresupuestosAlmacenados(models.Model):
     proyecto = models.ForeignKey(Proyectos, on_delete=models.CASCADE, verbose_name = "Proyecto")
@@ -240,6 +247,8 @@ class PresupuestosAlmacenados(models.Model):
     class Meta:
         verbose_name="Almacen"
         verbose_name_plural="Almacenes"
+
+
 
 
 

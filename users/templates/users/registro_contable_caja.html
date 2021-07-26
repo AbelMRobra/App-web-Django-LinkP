@@ -28,6 +28,7 @@
                     <h6 class="card-subtitle">Los gastos registrados</h6>
                     <div class="col-12 col-md-12 col-lg-12 justify-content-center">
                         <div>
+                            
                             <a href="#" data-toggle="modal" data-target="#ModalCuenta1" class="btn btn-info">Agregar</a>
 
                             <div id="ModalCuenta1" class="modal fade" tabindex="-1" role="dialog"
@@ -157,9 +158,9 @@
                                     Tipo
                                 </button>
                                 <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja 0 0 0 %}">General</a>
-                                    <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja 2 0 0 %}">Gastos</a>
-                                    <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja 1 0 0 %}">Ingresos</a>
+                                    <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja 0 mes year %}">General</a>
+                                    <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja 2 mes year %}">Gastos</a>
+                                    <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja 1 mes year %}">Ingresos</a>
 
             
                                 </div>
@@ -170,36 +171,37 @@
                                     Mes
                                 </button>
                                 <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="#">Todos</a>
-                                    <a class="dropdown-item" href="#">Enero</a>
-                                    <a class="dropdown-item" href="#">Febrero</a>
-                                    <a class="dropdown-item" href="#">Marzo</a>
-                                    <a class="dropdown-item" href="#">Abril</a>
-                                    <a class="dropdown-item" href="#">Mayo</a>
-                                    <a class="dropdown-item" href="#">Junio</a>
-                                    <a class="dropdown-item" href="#">Julio</a>
-                                    <a class="dropdown-item" href="#">Agosto</a>
-                                    <a class="dropdown-item" href="#">Septiembre</a>
-                                    <a class="dropdown-item" href="#">Octubre</a>
-                                    <a class="dropdown-item" href="#">Noviembre</a>
-                                    <a class="dropdown-item" href="#">Diciembre</a>
-           
+                                    <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja estado 0 year %}">Todos</a>
+                                   <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja estado 1 year %}">Enero</a>
+                                   <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja estado 2 year %}">Febrero</a>
+                                   <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja estado 3 year %}">Marzo</a>
+                                   <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja estado 4 year %}">Abril</a>
+                                   <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja estado 5 year %}">Mayo</a>
+                                   <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja estado 6 year %}">Junio</a>
+                                   <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja estado 7 year %}">Julio</a>
+                                   <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja estado 8 year %}">Agosto</a>
+                                   <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja estado 9 year %}">Septiembre</a>
+                                   <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja estado 10 year %}">Octubre</a>
+                                   <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja estado 11 year %}">Noviembre</a>
+                                    <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja estado 12 year %}">Diciembre</a>
+       
                                 </div>
-            
-                                </div>
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-dark dropdown-toggle ml-2"
-                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onclick="myFunction()">
-                                        Año
-                                    </button>
-                                    <div class="dropdown-menu">
-                                        <a class="dropdown-item" href="#">Todos</a>
-                                        <a class="dropdown-item" href="#">Enero</a>
-                                        <a class="dropdown-item" href="#">Gastos</a>
-                                        <a class="dropdown-item" href="#">Ingresos</a>            
+         
+                            </div>
+                            <div class="btn-group">                                
+                                <button type="button" class="btn btn-dark dropdown-toggle ml-2"
+                                      data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onclick="myFunction()">
+                                       Año
+                                   </button>
+                                   <div class="dropdown-menu">
+                                     {% for i in list_year %}
+                                       <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja estado mes i %}">{{i}}</a>
+                                        {% endfor %}           
                                     </div>
                 
                                     </div>
+
+                                    <a href="#" class="btn btn-warning fa fa-object-group"></a>
                             </div>
                         </div>
 
