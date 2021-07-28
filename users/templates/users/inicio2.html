@@ -13,37 +13,22 @@
   <link rel="shortcut icon" href="{% static 'img/LinkIco21.ico' %}" />
   <link rel="text/html" href="extensions/sticky-header/bootstrap-table-sticky-header.css"> 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css">
-
   <link rel="stylesheet" href="{% static 'css/bootstrap5.min.css' %}">
-
+  <link rel="stylesheet" href="../../static/css/registro_contable.css">
   <link href="{% static 'adminpro/assets/plugins/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
-
-
 
   {% include '../includes/css/chartlist.html' %}
   {% include '../includes/css/form.html' %}
   {% include '../includes/css/datatable.html' %}
   {% include '../includes/css/otros.html' %}
- 
-     
-
- <!--  -->
- 
 
  
-<!--  -->
-  
-
   <title>Link-P</title>
 
 </head>
 
 <body class="fix-header fix-sidebar card-no-border">
   
-        
-  <!-- ============================================================== -->
-  <!-- Preloader - style you can find in spinners.css -->
-  <!-- ============================================================== -->
   <div class="preloader">
     <div class="loader">
       <div class="loader__figure"></div>
@@ -57,10 +42,10 @@
       <button class="btn text-danger" onclick="finalizar('sidebar-guia','alerta-guia-1')"><i class="fa fa-times-circle"></i></button>
     </div>
     <h4>Panel principal de accesos</h4>
-    <p>En este panel podras encontrar los accesos directos a las App de cada area.</p>
-    <p><b>Necesitas permisos especiales para acceder a ellas</b>, si crees que hubo un error y deberias poder acceder a una de ellas, no dudes en comunicate con alguien del area de IT para poder otorgarte los permisos necesarios.</p>
+    <p>En este panel podrás encontrar los accesos directos a las Apps de cada área.</p>
+    <p><b>Necesitas permisos especiales para acceder a ellas</b>, si crees que hubo un error y deberías poder acceder a una de ellas, no dudes en comunicarte con alguien del área de IT para poder otorgarte los permisos necesarios.</p>
     <div class="guia-indice">
-      <span>Pasos 1 / ..</span>
+      <span>Pasos 1 / 5</span>
       <button class="btn btn-info" onclick="guia1('alerta-guia-1', 'alerta-guia-2','sidebar-guia','perfilusuario-guia')">Seguir</button>
     </div>
   </div>
@@ -72,13 +57,13 @@
       <button class="btn text-danger" onclick="finalizar('perfilusuario-guia','alerta-guia-2')"><i class="fa fa-times-circle"></i></button>
     </div>
     <h4>Panel perfil de usuario</h4>
-    <p>En esta seccion encontraras tu infomacion personal y una seccion donde utilizar link coins.</p>
+    <p>En esta sección encontrarás tu información personal y una sección donde utilizar link coins.</p>
     <p><b> Link coins</b> son monedas otorgadas por la empresa para que sus empleados puedan reconocer el trabajo y buen desempeño de un compañero.
-    Estas monedas tienen un valor economico y pueden ser canjeadas por increibles premios!</p>
+      ¡Estas monedas tienen un valor económico y pueden ser canjeadas por increíbles premios!</p>
     <img src="{% static 'img/monedalink2.png' %}" alt="linkcoins" >
-    <span>!No olvides reconocer a tus compañeros!</span>
+    <span>! No olvides reconocer a tus compañeros !</span>
     <div class="guia-indice">
-      <span>Pasos 2 / ..</span>
+      <span>Pasos 2 / 5</span>
       <button  class="btn btn-info" onclick="guia1('alerta-guia-2', 'alerta-guia-3','perfilusuario-guia','panelnovedades-guia' )">Seguir</button>
     </div>
   </div>
@@ -89,10 +74,10 @@
       <button class="btn text-danger" onclick="finalizar('panelnovedades-guia','alerta-guia-3')"><i class="fa fa-times-circle"></i></button>
     </div>
     <h4>Panel de novedades</h4>
-    <p>En esta seccion encontraras las ultimas novedades de la empresa, asi como tambien los cumpleaños de tus compañeros.</p>
+    <p>En esta sección encontrarás las últimas novedades de la empresa, así como también los cumpleaños de tus compañeros.</p>
     
     <div class="guia-indice">
-      <span>Pasos 3 / ..</span>
+      <span>Pasos 3 / 5</span>
       <button  class="btn btn-info" onclick="guia1('alerta-guia-3', 'alerta-guia-4','panelnovedades-guia', 'sugerencias-guia')">Seguir</button>
     </div>
   </div>
@@ -102,10 +87,10 @@
       <button class="btn text-danger" onclick="finalizar('sugerencias-guia','alerta-guia-4')"><i class="fa fa-times-circle"></i></button>
     </div>
     <h4>Panel de sugerencias</h4>
-    <p>Dentro de esta seccion podras encontrar un buzon de sugerencias o recomendaciones para que juntos podamos seguir mejorando linkp.</p>
+    <p>Dentro de esta sección podrás encontrar un buzón de sugerencias o recomendaciones para que juntos podamos seguir mejorando linkp.</p>
     
     <div class="guia-indice">
-      <span>Pasos 4 / ..</span>
+      <span>Pasos 4 / 5</span>
       <button  class="btn btn-info" onclick="guia1('alerta-guia-4', 'alerta-guia-5','sugerencias-guia', 'chanchito-guia')">Seguir</button>
     </div>
   </div>
@@ -116,10 +101,10 @@
       <button class="btn text-danger" onclick="finalizar('chanchito-guia','alerta-guia-5')"><i class="fa fa-times-circle"></i></button>
     </div>
     <h4>Chanchito!</h4>
-    <p>Esta herramienta esta pensada para que puedas manejar tus finanzas y llevar un registro sobre ellas. Los datos que registres aqui son completamente privados y unicamente podran verlos <b>tu</b> y la personas que <b>tu autorices.</b></p>
+    <p>Esta herramienta está pensada para que puedas manejar tus finanzas y llevar un registro sobre ellas. Los datos que registres aquí son completamente privados y únicamente podrán verlos <b>tú</b> y la persona que <b>tú autorices.</b></p>
     
     <div class="guia-indice">
-      <span>Pasos 5 / ..</span>
+      <span>Pasos 5 / 5</span>
       <button class="btn btn-success" onclick="finalizar('chanchito-guia','alerta-guia-5')" data-toggle="modal" data-target="#ModalGuiaFinal">Finalizar</button>
     </div>
   </div>
@@ -136,8 +121,8 @@
         </div>
         <div class="modal-body">
             <div class="tab-content">
-                <h4>Llegamos al final de la guia</h4>
-                <p>Desde LinkP te deseamos la mejor de las suertes y esperamos que nuestra herramienta te ayude a facilitar tu trabajo!</p>
+                <h4>Llegamos al final de la guía</h4>
+                <p>¡Desde LinkP te deseamos la mejor de las suertes y esperamos que nuestra herramienta te ayude a facilitar tu trabajo!</p>
             </div>
         </div>
 
@@ -150,7 +135,6 @@
       </div>
   </div>
   
-
 
   <!-- ============================================================== -->
   <!-- Main wrapper - style you can find in pages.scss -->
@@ -572,8 +556,8 @@
                 </div>
   
                 <div class="col-6">
-                  <h4 class="card-title">¿Sos nuevo en la empresa o queres conocer mejor linkp?</h4>
-                  <p>Generamos un recorrido para que puedas conocer las funciones basicas y la organización del sitio.</p>
+                  <h4 class="card-title">¿Sos nuevo en la empresa o querés conocer mejor linkp?</h4>
+                  <p>Generamos un recorrido para que puedas conocer las funciones básicas y la organización del sitio.</p>
                   <p>Inicia <a href="#" data-toggle="modal" data-target="#ModalGuia">aquí</a> tu explicación y guia del sitio.</p>  
                 </div>
               </div>
@@ -738,22 +722,21 @@
       </div>
  
     </div>
-<script src="{% static 'js/jquery-3.5.1.js' %}"></script>    
 
+
+<script src="{% static 'js/jquery-3.5.1.js' %}"></script>    
 <script src="{% static 'adminpro/assets/plugins/bootstrap/js/popper.min.js' %}"></script>
 <script src="{% static 'adminpro/assets/plugins/bootstrap/js/bootstrap.min.js' %}"></script>
-
 <script src="{% static 'adminpro/main/js/sidebarmenu.js' %}"></script>
 <script src="{% static 'adminpro/main/js/dashboard1.js' %}"></script>
-
-
 <script src="{% static 'adminpro/main/js/custom.min.js' %}"></script>
+
+{% include '../includes/js/datatable.html' %}
 {% include '../includes/js/chartlist.html' %}
 {% include '../includes/js/form.html' %}
-{% include '../includes/js/datatable.html' %}
 {% include '../includes/js/otros.html' %}
 
-   
+
       <style>
         .alerta-guia{
           display: none;
