@@ -766,6 +766,38 @@ def panelvisto(request, estado):
 
                 comparativa.save()
 
+                # Establecemos conexion con el servidor smtp de gmail
+                mailServer = smtplib.SMTP(settings.EMAIL_HOST, settings.EMAIL_PORT)
+                mailServer.ehlo()
+                mailServer.starttls()
+                mailServer.ehlo()
+                mailServer.login(settings.EMAIL_HOST_USER, settings.EMAIL_HOST_PASSWORD)
+
+                # Construimos el mensaje simple
+                
+                mensaje = MIMEText("""
+                    
+Buenas!,
+
+SP tiene dudas sobre esta OC: {}
+
+Por favor comunicate con el para responder su duda
+
+Gracias!
+
+Saludos!
+                """.format(comparativa.o_c))
+                mensaje['From']=settings.EMAIL_HOST_USER
+                mensaje['To']=datosusuario.objects.get(identificacion = comparativa.creador).email
+                mensaje['Subject']="Tu OC de {} esta observada por SP".format(comparativa.proveedor.name)
+
+
+                # Envio del mensaje
+
+                mailServer.sendmail(settings.EMAIL_HOST_USER,
+                                datosusuario.objects.get(identificacion = comparativa.creador).email,
+                                mensaje.as_string())
+
     dic_estados = {
         '0':'Todas',
         '1':'Visto',
@@ -779,11 +811,11 @@ def panelvisto(request, estado):
 
     if estado == "0":
 
-        datos_base = Comparativas.objects.filter(fecha_c__gte = "2021-02-01").order_by("-fecha_c")
+        datos_base = Comparativas.objects.filter(fecha_c__gte = "2021-02-01", estado = "AUTORIZADA").order_by("-fecha_c")
 
     else:
     
-        datos_base = Comparativas.objects.filter(visto = estado_selec.upper(), fecha_c__gte = "2021-02-01").order_by("-fecha_c")
+        datos_base = Comparativas.objects.filter(visto = estado_selec.upper(), estado = "AUTORIZADA", fecha_c__gte = "2021-02-01").order_by("-fecha_c")
 
     datos = []
 
