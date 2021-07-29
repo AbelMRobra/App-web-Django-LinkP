@@ -789,7 +789,7 @@ def panelvisto(request, estado):
 
     for d in datos_base:
 
-        if not d.autoriza == "PL" and not d.publica == "NO":
+        if not (d.autoriza == "PL" and d.publica == "NO"):
 
             mensajes = ComparativasMensaje.objects.filter(comparativa = d)
 
