@@ -76,6 +76,7 @@
                         <a class="dropdown-item" href="{% url 'Comparativas' 2 creador %}">Adjunto listo ({{adjunto}})</a> 
                         <a class="dropdown-item" href="{% url 'Comparativas' 4 creador %}">Autorizadas ({{autorizada}})</a>
                         <a class="dropdown-item" href="{% url 'Comparativas' 3 creador %}">Rechazadas ({{rechazada}})</a>
+                        <a class="dropdown-item" href="{% url 'Comparativas' 6 creador %}">Comparativas con OC ({{comparativa_oc}})</a>
 
                     </div>
                 </div>
@@ -192,10 +193,10 @@
                                         {% csrf_token %}
     
                                         <div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
-                                            {% if estado == "0" or estado == "1" or estado == "3" or estado == "5" %}
+                                            {% if estado == "0" or estado == "1" or estado == "3" or estado == "5" or estado == "6" %}
                                             <button type="submit" class="btn" name = "ADJAPROB" value="{{i.2.id}}" ><i class="fa fa-check" style="color: orange;"></i></button>
                                             {% endif %}
-                                            {% if estado == "0" or estado == "2" or estado == "3" or estado == "5" %}
+                                            {% if estado == "0" or estado == "2" or estado == "3" or estado == "5" or estado == "6" %}
                                             <button type="submit" class="btn"   name = "APROBADA" value="{{i.2.id}}" ><i class="fa fa-check" style="color: green;"></i></button>
                                             {% endif %}
                                             <button type="submit" class="btn"  name = "NO APROBADA" value="{{i.2.id}}" ><i class="fa fa-times" style="color: darkred;"></i></button>

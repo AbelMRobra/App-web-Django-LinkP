@@ -759,7 +759,6 @@ def panelvisto(request, estado):
             if d[0] == 'ADJAPROB':
 
                 id_selec = d[1]
-
                 comparativa = Comparativas.objects.get(id = id_selec)
 
                 comparativa.visto = "VISTO NO CONFORME"
@@ -1127,6 +1126,7 @@ Saludos!
     num_adj = len(Comparativas.objects.filter(estado = "ADJUNTO ✓"))
     num_rechazada = len(Comparativas.objects.filter(estado = "NO AUTORIZADA"))
     num_autorizada = len(Comparativas.objects.filter(estado = "AUTORIZADA"))
+    num_comparativa_oc = len(Comparativas.objects.all().exclude(estado = "AUTORIZADA").exclude(adj_oc = ''))
 
     if creador == "0":
 
@@ -1150,7 +1150,6 @@ Saludos!
 
                 datos.append((usuario, mensajes, d))
                 
-
         if estado == "1":
 
             mensaje = "Espera (" + str(len(Comparativas.objects.filter(estado = "ESPERA"))) + ")"
@@ -1236,7 +1235,6 @@ Saludos!
 
                 datos.append((usuario, mensajes, d))
 
-
         if estado == "5":
 
             mensaje = "Estado SP"
@@ -1272,6 +1270,26 @@ Saludos!
 
                 datos.append((usuario, mensajes, d))
 
+        if estado == "6":
+
+            mensaje = "Comp con OC (" + str(len(Comparativas.objects.all().exclude(estado = "AUTORIZADA").exclude(adj_oc = ''))) + ")"
+
+            datos_base = Comparativas.objects.all().exclude(estado = "AUTORIZADA").exclude(adj_oc = '').order_by("-fecha_c")
+
+
+            datos = []
+
+            for d in datos_base:
+
+                mensajes = ComparativasMensaje.objects.filter(comparativa = d)
+
+                if d.creador:
+                    usuario = datosusuario.objects.get(identificacion = d.creador)
+
+                else:
+                    usuario = 0
+
+                datos.append((usuario, mensajes, d))
     else:
 
         if estado == "0":
@@ -1294,7 +1312,6 @@ Saludos!
 
                 datos.append((usuario, mensajes, d))
                 
-
         if estado == "1":
 
             mensaje = "Espera (" + str(len(Comparativas.objects.filter(estado = "ESPERA"))) + ")"
@@ -1365,7 +1382,6 @@ Saludos!
 
             datos_base = Comparativas.objects.filter(estado = "AUTORIZADA", creador = mensaje_creador).order_by("-fecha_c")
 
-
             datos = []
 
             for d in datos_base:
@@ -1379,7 +1395,6 @@ Saludos!
                     usuario = 0
 
                 datos.append((usuario, mensajes, d))
-
 
         if estado == "5":
 
@@ -1415,7 +1430,26 @@ Saludos!
 
                 datos.append((usuario, mensajes, d))
 
+        if estado == "6":
 
+            mensaje = "Comp con OC (" + str(len(Comparativas.objects.all().exclude(estado = "AUTORIZADA").exclude(adj_oc = ''))) + ")"
+
+            datos_base = Comparativas.objects.all().exclude(estado = "AUTORIZADA", creador = mensaje_creador).exclude(adj_oc = '').order_by("-fecha_c")
+
+
+            datos = []
+
+            for d in datos_base:
+
+                mensajes = ComparativasMensaje.objects.filter(comparativa = d)
+
+                if d.creador:
+                    usuario = datosusuario.objects.get(identificacion = d.creador)
+
+                else:
+                    usuario = 0
+
+                datos.append((usuario, mensajes, d))
 
     # Reordenar la lista
 
@@ -1469,7 +1503,7 @@ Saludos!
     return render(request, 'comparativas.html', {'mensaje_creador':mensaje_creador, 
     'list_creadores':list_creadores, 'datos':datos, "estado":estado, 
     "creador":creador, "mensaje":mensaje, "espera":num_espera, "autorizada":num_autorizada, 
-    "rechazada":num_rechazada, "adjunto":num_adj, "fecha_pago":fecha_pago})
+    "rechazada":num_rechazada, "comparativa_oc":num_comparativa_oc, "adjunto":num_adj, "fecha_pago":fecha_pago})
 '''
 def modificar_precio_articulo_compra(request,id_proyecto):
     datos_compra={}
