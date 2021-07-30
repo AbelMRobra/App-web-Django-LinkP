@@ -36,7 +36,7 @@ def Avisos(usuario,aviso):
         aviso.save()
 
     no_autorizadas=Comparativas.objects.filter(estado="NO AUTORIZADA",creador=usuario)
-    no_conformes=Comparativas.objects.filter(estado="VISTO NO CONFORME",creador=usuario)
+    no_conformes=Comparativas.objects.filter(visto="VISTO NO CONFORME",creador=usuario)
 
     if no_autorizadas.exists():
         nt=[no_autorizadas,len(no_autorizadas)]

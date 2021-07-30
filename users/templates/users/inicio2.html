@@ -663,7 +663,7 @@
                             <!-- for de ordenes -->
                              
                             {% for comparativa  in  avisos_comparativas.no_conformes.0 %}
-                            <p> {{comparativa.id}}</p>
+                            <p>OC: {{comparativa.o_c}} - {{comparativa.proveedor}}}</p>
                            {% endfor %}
                              
                         </div>
@@ -692,7 +692,7 @@
                             <!-- for de ordenes -->
                           
                           {% for comparativa  in   avisos_comparativas.no_autorizadas.0 %}
-                           <p>OC {{comparativa.o_c}} - {{comparativa.proveedor}}</p>
+                           <p>OC: {{comparativa.o_c}} - {{comparativa.proveedor}}</p>
                           {% endfor %}
                             
 
