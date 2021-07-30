@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.urls import path
 from django.conf.urls import url
 from . import views
+from . import views_sugerencias
 from .views import DescargarRegistroContable, PdfMinutas
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
@@ -30,7 +31,7 @@ urlpatterns = [
     # Templates de anuncis
 
     url(r'anuncios$', login_required(views.anuncios), name = 'Anuncios'),
-    url(r'^sugerencias$', login_required(views.sugerencias), name = 'Sugerencias'),
+    url(r'^sugerencias$', login_required(views_sugerencias.sugerencias), name = 'Sugerencias'),
 
     # Templates de minutas
 

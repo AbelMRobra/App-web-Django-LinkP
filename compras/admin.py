@@ -1,5 +1,6 @@
 from django.contrib import admin
 from .models import Proveedores, Contratos, Certificados, StockComprasAnticipadas, Compras, Retiros, Comparativas, ComparativasMensaje
+from .models import AvisoOrdenesCompras
 from import_export import resources
 from import_export.admin import ImportExportModelAdmin
 
@@ -51,6 +52,7 @@ class ComparativasAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     readonly_fields = ('fecha_c', 'fecha_autorizacion', 'visto')
     resources_class = Comparativas
 
+admin.site.register(AvisoOrdenesCompras)
 admin.site.register(Proveedores, ProveedoresAdmin)
 admin.site.register(Retiros, RetirosAdmin)
 admin.site.register(Comparativas, ComparativasAdmin)

@@ -6,7 +6,6 @@
 
 <head>
   <meta charset="UTF-8">
-
  
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
@@ -21,7 +20,6 @@
   {% include '../includes/css/form.html' %}
   {% include '../includes/css/datatable.html' %}
   {% include '../includes/css/otros.html' %}
-
  
   <title>Link-P</title>
 
@@ -134,7 +132,6 @@
           </div>
       </div>
   </div>
-  
 
   <!-- ============================================================== -->
   <!-- Main wrapper - style you can find in pages.scss -->
@@ -233,7 +230,6 @@
                 </ul>
             </div>
         </li>
-
       </ul>
 
       {% else %}
@@ -381,7 +377,6 @@
               </ul>
           </div>
       </li>
-
     </ul>
 
       {% endif %}
@@ -400,8 +395,7 @@
         </ul>
       </nav>
     </header>
-
-        </div>
+    </div>
       
 
     <aside class="left-sidebar">
@@ -545,9 +539,7 @@
         <div class="row" id="guiamedia">
           <div class="card">
             <div class="card-body">
-
               <div class="row">
-
                 <div class="col-3">
 
                   <img src="{% static 'img/car2.jpg' %}" class="bounce animated"
@@ -592,6 +584,136 @@
             </div>
           </div>
         </div>
+        <!-- empieza aviso OC -->
+    
+    {% if avisos_comparativas.autorizado %}
+      
+   
+      
+        <div class="row">
+          <div class="card">
+            <div class="card-body">
+              <div class="row">
+        
+                <div class="col-12 col-md-10 col-lg-9">
+                   
+                   {% if avisos_comparativas.semana_compras == 0 %}
+                   <h4 class="card-title">Todavia no es semana de cierre de OC  </h4>
+                   {% elif avisos_comparativas.semana_compras == 1 %}
+                   <h4 class="card-title text-warning">En esta semana puedes cargar tus OC </h4>
+                   {% elif avisos_comparativas.semana_compras == 2  %}
+                   <h4 class="card-title text-danger">Hasta hoy puedes cargar tus OC !</h4>
+                   {% endif %}
+        
+                </div>
+                <div class="col col-md-12 col-lg-9 mt-4">
+                  
+                  {% if avisos_comparativas.no_conformes or avisos_comparativas.no_autorizadas %}
+                    
+                
+                    
+
+                        <div class="row d-flex justify-content-around">
+                        {% if avisos_comparativas.no_conformes %}
+                        <div class="col col-md-6 col-lg-6 d-flex ">
+                        <img src="{% static 'img/SP.png' %}" alt="cara Sebastian" width="50">
+                        
+                      
+                        <p class="ml-2 mt-2"> Tienes <a href="#" data-toggle="modal" data-target="#ModalSPcompras">{{avisos_comparativas.no_conformes.1}}</a> OC observadas. </p>
+                      
+                        </div>
+                        {% endif %}
+
+                        {% if avisos_comparativas.no_autorizadas %}
+                        <div class="col col-md-6 col-lg-6 d-flex">
+                        <img src="{% static 'img/PL.png' %}" alt="cara Pablo" width="50">
+
+                        <p class="ml-2 mt-2"> Tienes <a href="#" data-toggle="modal" data-target="#ModalPLcompras">{{avisos_comparativas.no_autorizadas.1}}</a> OC rechazadas. </p>
+                      
+                      </div>
+                      {% endif %}
+                      </div>
+
+                  {% else %}
+                 
+                  <div class="row d-flex">
+                    <div class="col col-md-10 col-lg-9 d-flex">
+                      <i class="fa fa-lg fa-check-circle text-success mt-1"></i>
+                      <p class="ml-2">¡Felicitaciones! Tienes todas tus OC autorizadas</p>
+                    </div>
+                  </div>
+                  {% endif %}
+                </div>
+
+                </div>
+                
+              <!-- modal OC SP -->
+              <div id="ModalSPcompras" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="ModalSPcompras" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header" style="background: rgb(36,160,237); background: linear-gradient(315deg, rgba(36,160,237,1) 0%, rgba(56,56,130,1) 22%, rgba(0,212,255,1) 100%);">
+                      <h5 class="modal-title  text-light" id="exampleModalLongTitle">Ordenes de compras a revisar</h5>
+                      <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="tab-content">
+                            <h4>Estas son las órdenes de compras que debes revisar de SP.</h4>
+                            <!-- for de ordenes -->
+                             
+                            {% for comparativa  in  avisos_comparativas.no_conformes.0 %}
+                            <p> {{comparativa.id}}</p>
+                           {% endfor %}
+                             
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-info" data-dismiss="modal">Cerrar</button>
+
+                    </div>
+                      </div>
+                  </div>
+              </div>
+              <!-- modal OC PL -->
+              <div id="ModalPLcompras" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="ModalPLcompras" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header" style="background: rgb(36,160,237); background: linear-gradient(315deg, rgba(36,160,237,1) 0%, rgba(56,56,130,1) 22%, rgba(0,212,255,1) 100%);">
+                      <h5 class="modal-title  text-light" id="exampleModalLongTitle">Ordenes de compras a revisar</h5>
+                      <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="tab-content">
+                            <h5>Estas son las órdenes de compras que debes revisar de PL.</h5>
+                            <!-- for de ordenes -->
+                          
+                          {% for comparativa  in   avisos_comparativas.no_autorizadas.0 %}
+                           <p>OC {{comparativa.o_c}} - {{comparativa.proveedor}}</p>
+                          {% endfor %}
+                            
+
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-info" data-dismiss="modal">Cerrar</button>
+
+                    </div>
+                      </div>
+                  </div>
+              </div>
+
+              </div>
+            </div>
+          </div>
+      
+        </div>
+        {% endif %}
+        <!-- Termina aviso OC -->
         {% if monedas %}
         <div class="row">
           <div class="card">
@@ -602,10 +724,8 @@
                     style="max-width:70px; height:auto; vertical-align: middle; margin-right: 10px;"> <b>Felicidades {{request.user.first_name}}!</b> recibiste una Linkcoin!
                 </h4>
               </div>
-  
             </div>
           </div>
-  
         </div>
         {% endif %}
         {% if datos_mensajeria %}
@@ -620,7 +740,7 @@
               </div>
 
               <div style="margin-left: 75px;">Presiona 
-                <a href="/rrhh/notasdepedido/0/0">aqui</a> para ir a la app y formar
+                <a href="/rrhh/notasdepedido/0/0">aqui</a> para ir a la app y formar 
               </div>
             </div>
           </div>
@@ -659,7 +779,6 @@
           </div>
         </div>
       </div>
-
       </div>
       </div>
       
@@ -706,21 +825,17 @@
 
             </div>
             </div>
-
         </div>
       </div>
           {% endfor %}
 
         </aside>
 
-
-
         {% endblock %}
    
          <a href="{% url 'Link P' %}" style="text-decoration: none;"><footer class="footer">© Link-P</footer></a>
  
       </div>
- 
     </div>
 
 
@@ -737,79 +852,79 @@
 {% include '../includes/js/otros.html' %}
 
 
-      <style>
-        .alerta-guia{
-          display: none;
-          width: 300px;
-          background-color: #f8f9fa;
-          padding: 20px;
-          border: 2px rgb(207, 207, 207) solid;
-          border-radius: 5px;
-          position: absolute;
-          box-shadow: 4px 4px 4px 0px rgb(207, 207, 207 );
-          z-index: 20;
-        }
-        .alerta-guia img{
-          width: 30px;
-        }
-        .alerta-guia span{
-          font-size: 12px;
-        }
-        .alerta-guia div{display: flex;
-          justify-content: flex-end;
-        }
-        .alerta-guia div.guia-indice{display: flex;
-          justify-content: space-between;
-        }
-        
+<style>
+  .alerta-guia{
+    display: none;
+    width: 300px;
+    background-color: #f8f9fa;
+    padding: 20px;
+    border: 2px rgb(207, 207, 207) solid;
+    border-radius: 5px;
+    position: absolute;
+    box-shadow: 4px 4px 4px 0px rgb(207, 207, 207 );
+    z-index: 20;
+  }
+  .alerta-guia img{
+    width: 30px;
+  }
+  .alerta-guia span{
+    font-size: 12px;
+  }
+  .alerta-guia div{display: flex;
+    justify-content: flex-end;
+  }
+  .alerta-guia div.guia-indice{display: flex;
+    justify-content: space-between;
+  }
+  
 
-        #alerta-guia-1{
-          top: 120px; 
-          left: 245px;
-        }
-        #alerta-guia-2{
-          top: 90px; 
-          left: 245px;
-        }
-        #alerta-guia-3{
-          top: 90px; 
-          right: 280px;
-        }
-        #alerta-guia-4{
-          top: 80px; 
-          right: 30px;
-        }
-        #alerta-guia-5{
-          top: 80px; 
-          right: 80px;
-        }
+  #alerta-guia-1{
+    top: 120px; 
+    left: 245px;
+  }
+  #alerta-guia-2{
+    top: 90px; 
+    left: 245px;
+  }
+  #alerta-guia-3{
+    top: 90px; 
+    right: 280px;
+  }
+  #alerta-guia-4{
+    top: 80px; 
+    right: 30px;
+  }
+  #alerta-guia-5{
+    top: 80px; 
+    right: 80px;
+  }
 
-        .alerta-guia-borde{
-          border: 4px #0dcaf0 solid;
-          animation:alerta-guia-borde 2s ease-in-out infinite ;
-        }
-        @keyframes alerta-guia-borde{
-          0%{border: 4px  #c9e5eb solid;}
-          50%{border: 4px #0dcaf0 solid;}
-          100%{border: 4px  #c9e5eb solid;}
-        }
+  .alerta-guia-borde{
+    border: 4px #0dcaf0 solid;
+    animation:alerta-guia-borde 2s ease-in-out infinite ;
+  }
+  @keyframes alerta-guia-borde{
+    0%{border: 4px  #c9e5eb solid;}
+    50%{border: 4px #0dcaf0 solid;}
+    100%{border: 4px  #c9e5eb solid;}
+  }
 
-        @media (max-width: 1170px ){
-          #alerta-guia-1{
-          top: 120px; 
-          left: 85px;
-        }
-        #alerta-guia-2{
-          top: 90px; 
-          left: 85px;
-        }
-        }
-        @media (max-width: 780px ){
-          #guiamedia{
-            display: none;
-          }
-        }
-      </style>
+  @media (max-width: 1170px ){
+    #alerta-guia-1{
+    top: 120px; 
+    left: 85px;
+  }
+  #alerta-guia-2{
+    top: 90px; 
+    left: 85px;
+  }
+  }
+  @media (max-width: 780px ){
+    #guiamedia{
+      display: none;
+    }
+  }
+</style>
 </body>
 
 

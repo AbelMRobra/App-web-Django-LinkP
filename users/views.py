@@ -13,9 +13,9 @@ from finanzas.models import Almacenero, RegistroAlmacenero, Arqueo, RetirodeSoci
 from presupuestos.models import Presupuestos, InformeMensual, TareasProgramadas, Bitacoras
 from proyectos.models import Proyectos, Unidades
 from ventas.models import VentasRealizadas
-from compras.models import Compras, Comparativas
+from compras.models import Compras, Comparativas, AvisoOrdenesCompras
 from registro.models import RegistroValorProyecto
-from rrhh.models import datosusuario, mensajesgenerales, NotaDePedido, Vacaciones, MonedaLink, EntregaMoneda, Anuncios, Seguimiento, Minutas, Acuerdos, PremiosMonedas, Logros, RegistroContable, CanjeMonedas, Sugerencia, DicRegistroContable, Atajos
+from rrhh.models import datosusuario, mensajesgenerales, NotaDePedido, Vacaciones, MonedaLink, EntregaMoneda, Anuncios, Seguimiento, Minutas, Acuerdos, PremiosMonedas, Logros, RegistroContable, CanjeMonedas, DicRegistroContable, Atajos, ArqueoChanchito
 import datetime
 import requests
 from datetime import date
@@ -34,7 +34,7 @@ from xhtml2pdf import pisa
 from openpyxl import Workbook
 from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
 from statistics import mode
-
+from .functions import Avisos
 
 class PdfMinutas(View):
 
@@ -111,57 +111,6 @@ def linkp(request):
 
     return render(request, 'users/linkp.html')
 
-def sugerencias(request):
-
-    if request.method == 'POST':
-
-        try:
-
-            sugerencia_selec = Sugerencia.objects.get(id = int(request.POST['id']))
-
-            sugerencia_selec.nombre = request.POST['nombre']
-            sugerencia_selec.descripcion = request.POST['descripcion']
-
-            try:
-                sugerencia_selec.adjunto = request.FILES['adjunto']
-                sugerencia_selec.save()
-            except:
-                sugerencia_selec.save()
-           
-        except:
-            pass
-
-        try:
-
-            usuario = datosusuario.objects.get(identificacion = request.user.username)
-
-            b = Sugerencia(
-                usuario = usuario,
-                nombre = request.POST['nombre'],
-                descripcion = request.POST['descripcion'],
-            )
-
-            b.save()
-
-            try:
-                b.adjunto = request.FILES['adjunto']
-            except:
-                pass
-        except:
-            pass
-        try:
-            today  = date.today()
-            sugerencia = Sugerencia.objects.get(id = int(request.POST['ENTREGADO']))
-            sugerencia.estado = "LISTO"
-            sugerencia.fecha_listo = today
-            sugerencia.save()
-        except:
-            pass
-
-    data = Sugerencia.objects.all().order_by("-id")
-
-
-    return render (request, 'users/sugerencias.html', {'data':data})
 
 def monedalink(request):
 
@@ -1417,8 +1366,26 @@ def inicio(request):
     sp_oc.append(aux_sp)
     sp_oc.append(aux_sp_2)
 
-    return render(request, "users/inicio2.html", {"datos_vista_usuario":datos_vista_usuario, "mensaje_bievenida":mensaje_bievenida, "minutas_cantidad_data":minutas_cantidad_data, "sp_oc":sp_oc, "minutas_cantidad":minutas_cantidad, "anuncios":anuncios, "monedas":monedas, "dias_funcionando":dias_funcionando, "cantidad_p":cantidad_p, "cantidad_m":cantidad_m, "datos_barras":barras, "datos_logo":datos_logo, "mensaje_oc":mensaje_oc, "mensajesdeldia":mensajesdeldia, "datos_mensajeria":datos_mensajeria, "lista_grupos":lista_grupos, "miembros":miembros})
+    aviso = AvisoOrdenesCompras.objects.get(id=1)
 
+    identificadores=aviso.usuarios.all().values_list('identificacion',flat=True)
+    
+
+    if usuario in identificadores:
+
+        avisos_comparativas = Avisos(usuario,aviso)
+        avisos_comparativas['autorizado']=True
+    else:
+        avisos_comparativas={}
+
+
+    return render(request, "users/inicio2.html", {"datos_vista_usuario":datos_vista_usuario,'avisos_comparativas':avisos_comparativas,
+                                                 "mensaje_bievenida":mensaje_bievenida, "minutas_cantidad_data":minutas_cantidad_data, 
+                                                 "sp_oc":sp_oc, "minutas_cantidad":minutas_cantidad, "anuncios":anuncios, "monedas":monedas, 
+                                                 "dias_funcionando":dias_funcionando, "cantidad_p":cantidad_p, "cantidad_m":cantidad_m,
+                                                  "datos_barras":barras, "datos_logo":datos_logo, "mensaje_oc":mensaje_oc,
+                                                   "mensajesdeldia":mensajesdeldia, "datos_mensajeria":datos_mensajeria,
+                                                    "lista_grupos":lista_grupos, "miembros":miembros})
 def welcome(request):
     # Si estamos identificados devolvemos la portada
     if request.user.is_authenticated:
@@ -2178,6 +2145,30 @@ def registro_contable(request, date_i):
     user = datosusuario.objects.get(identificacion = request.user.username)
 
     registros_totales = RegistroContable.objects.filter(usuario = user)
+
+    ##### Parte del control con arqueo
+
+    cajas_disponibles = RegistroContable.objects.filter(usuario = user).values_list("caja", flat = True).distinct()
+    fechas_cargadas = RegistroContable.objects.filter(usuario = user).values_list("fecha", flat = True).order_by("-fecha").distinct()
+    cajas_arqueo = ArqueoChanchito.objects.filter(usuario = user).values_list("caja", flat = True)
+
+    rango_maximo = 4
+
+    for fecha in fechas_cargadas:
+        rango_maximo -= 1
+        if rango_maximo > 0:
+            for caja in cajas_disponibles:
+                if caja in cajas_arqueo:
+                    try:
+                        arqueo = Arqueo.objects.filter(fecha = fecha)[0]
+                        data_frame = pd.read_excel(arqueo.arqueo)
+                        print("Estoy con el dataframe")
+                        data_caja = data_frame[data_frame['PROYECTO'] == ArqueoChanchito.objects.filter(usuario = user, caja = caja)[0].arqueo]['EFECTIVO']
+                        print(np.array(data_caja))
+                    except:
+                        pass
+        else:
+            break
 
     if request.method == 'POST':
 

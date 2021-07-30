@@ -202,6 +202,8 @@ def flujo_ingreso_cliente(id):
             pagado_o_adeudado = sum_pagos_nominales + (sum_cuotas_mes - sum_pagos_mes)
             fluejo_ingreso_boleto_m3 = fluejo_ingreso_boleto_m3 + str(pagado_o_adeudado)+"&"
 
+            f = f + datetime.timedelta(days=1)
+
             fecha_inicial = f
 
     cuenta_venta.flujo = fluejo_ingreso

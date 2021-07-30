@@ -196,6 +196,21 @@ class Certificados(models.Model):
     def __str__(self):
         return self.descrip
 
+class AvisoOrdenesCompras(models.Model):
+    fecha_carga=models.DateField()
+    usuarios = models.ManyToManyField(datosusuario)
+
+    class Meta:
+        
+
+        verbose_name = 'Aviso de ordenes de compra'
+        verbose_name_plural = 'Avisos de ordenes de compra'
+
+    def __str__(self):
+        
+        return str(self.fecha_carga)
+
+
 
 
 
