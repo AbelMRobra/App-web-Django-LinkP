@@ -323,6 +323,18 @@ class DicRegistroContable(models.Model):
     def __str__(self):
         return self.entrada
 
+class ArqueoChanchito(models.Model):
+    usuario = models.ForeignKey(datosusuario, on_delete=models.CASCADE, verbose_name="Usuario")
+    caja = models.CharField(max_length=400, verbose_name="Caja")
+    arqueo = models.CharField(max_length=400, verbose_name="Arqueo")
+
+    class Meta:
+        verbose_name="Arqueo de chanchito"
+        verbose_name_plural="Arqueos de chanchito"
+
+    def __str__(self):
+        return self.caja
+
 class Sugerencia(models.Model):
 
     class Prioridad(models.TextChoices):
