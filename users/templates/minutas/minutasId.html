@@ -298,10 +298,10 @@
                            
                                 <td style="width: 70%;">{{a.tema}}
                                 </td>
-                                <td style="width: 14%;">{% if a.fecha_limite %} <b class="a.fecha_limite|fecha_limite">{{a.fecha_limite|date:"Y-m-j"}}</b> {% else %} Sin fecha {% endif %}</td>
+                                <td style="width: 14%;">{% if a.fecha_limite %} <b class="{{a.fecha_limite|fecha_limite}}">{{a.fecha_limite|date:"Y-m-j"}}</b> {% else %} Sin fecha {% endif %}</td>
                                 <td style="width: 8%;">{% if a.responsable %}{{a.responsable}}{% else %} S/A {% endif %}
                                 </td>
-                                <td style="width: 8%;">{% if a.estado == "CHECK" %}
+                                <td style="width: 8%; text-align: center;">{% if a.estado == "CHECK" %}
                                     <form method="POST" id="icon">
                                         {% csrf_token %}
                                         <button class="btn fa fa-lg fa-check-circle text-success" type="submit"
