@@ -135,7 +135,7 @@
                            
                                 <td style="width: 70%;">{{a.tema}}
                                 </td>
-                                <td style="width: 14%;">{% if a.fecha_limite %}<b class="{{a.fecha_limite|fecha_limite}}" >{{a.fecha_limite|date:"Y-m-j"}}</b>{% else %} Sin fecha {% endif %}</td>
+                                <td style="width: 14%;">{% if a.fecha_limite %}<b class="{{a.fecha_limite|fecha_limite}}" >{{a.fecha_limite|date:"d/m/Y"}}</b>{% else %} Sin fecha {% endif %}</td>
                                 <td style="width: 8%;">{% if a.responsable %}{{a.responsable}}{% else %} S/A {% endif %}
                                 </td>
                                 <td style="width: 8%; text-align: center;">{% if a.estado == "CHECK" %}
@@ -298,7 +298,7 @@
                            
                                 <td style="width: 70%;">{{a.tema}}
                                 </td>
-                                <td style="width: 14%;">{% if a.fecha_limite %} <b class="{{a.fecha_limite|fecha_limite}}">{{a.fecha_limite|date:"Y-m-j"}}</b> {% else %} Sin fecha {% endif %}</td>
+                                <td style="width: 14%;">{% if a.fecha_limite %} <b class="{{a.fecha_limite|fecha_limite}}">{{a.fecha_limite|date:"d/m/Y"}}</b> {% else %} Sin fecha {% endif %}</td>
                                 <td style="width: 8%;">{% if a.responsable %}{{a.responsable}}{% else %} S/A {% endif %}
                                 </td>
                                 <td style="width: 8%; text-align: center;">{% if a.estado == "CHECK" %}
