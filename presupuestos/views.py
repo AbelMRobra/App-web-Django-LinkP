@@ -1737,10 +1737,10 @@ def desde(request):
             costo_soft = costo_iva+(costo * parametros.soft)
             # Calculo del terreno
             costo_terreno = 0
-            porc_terreno =  parametros.terreno/parametros.proyecto.m2*100
+            porc_terreno =  parametros.terreno/parametros.proyecto.m2
             # Calculo del honorario
             costo_honorario = 0
-            porc_hon =  parametros.link/parametros.proyecto.m2*100
+            porc_hon =  parametros.link/parametros.proyecto.m2
             # Calculo del TEM
             costo_tem = 0
             aumento_tem =  parametros.tem_iibb*parametros.por_temiibb
@@ -1748,8 +1748,8 @@ def desde(request):
             costo_comer = 0
             aumento_comer =  parametros.comer
             # Aumento por honorarios + TEM + COMER
-            costo_completo = costo_soft/(1-((aumento_tem + aumento_comer)*(100 - porc_terreno - porc_hon))*(1 + parametros.ganancia)/(100 - porc_terreno - porc_hon))
-            costo_completo = costo_completo/(100 - porc_terreno - porc_hon)
+            costo_completo = costo_soft/(1-((aumento_tem + aumento_comer)*(1 - porc_terreno - porc_hon))*(1 + parametros.ganancia)/(100 - porc_terreno - porc_hon))
+            costo_completo = costo_completo/(1 - porc_terreno - porc_hon)
             # Valor con ganancia
             valor_ganancia = costo_completo*(1 + parametros.ganancia)
             # Recalculamos
@@ -1759,6 +1759,8 @@ def desde(request):
             costo_tem = valor_ganancia * aumento_tem * (100 - porc_terreno - porc_hon)/100 + costo_comer
             costo_depto = costo_completo*parametros.depto/parametros.proyecto.m2
             
+            porc_terreno = porc_terreno*100
+            porc_hon = porc_hon*100
 
             datos_costo_m2 = [0, costo_m2, costo_imp, costo_iva, costo_soft, costo_terreno, costo_honorario, costo_comer, costo_tem, valor_ganancia]
             datos_costo_m2 = np.array(datos_costo_m2)/parametros.proyecto.m2
