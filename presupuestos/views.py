@@ -1748,7 +1748,7 @@ def desde(request):
             costo_comer = 0
             aumento_comer =  parametros.comer
             # Aumento por honorarios + TEM + COMER
-            costo_completo = costo_soft/(1-((aumento_tem + aumento_comer)*(1 - porc_terreno - porc_hon))*(1 + parametros.ganancia)/(100 - porc_terreno - porc_hon))
+            costo_completo = costo_soft/(1-((aumento_tem + aumento_comer)*(1 - porc_terreno - porc_hon))*(1 + parametros.ganancia)/(1 - porc_terreno - porc_hon))
             costo_completo = costo_completo/(1 - porc_terreno - porc_hon)
             # Valor con ganancia
             valor_ganancia = costo_completo*(1 + parametros.ganancia)
