@@ -1,5 +1,5 @@
 {% extends "users/inicio2.html" %}
-
+{% load apptags_extras %}
 {% load static %}
 {% block content %}
 
@@ -135,16 +135,16 @@
                            
                                 <td style="width: 70%;">{{a.tema}}
                                 </td>
-                                <td style="width: 14%;">{% if a.fecha_limite %}{{a.fecha_limite|date:"Y-m-j"}}{% else %} Sin fecha {% endif %}</td>
+                                <td style="width: 14%;">{% if a.fecha_limite %}<b class="{{a.fecha_limite|fecha_limite}}" >{{a.fecha_limite|date:"Y-m-j"}}</b>{% else %} Sin fecha {% endif %}</td>
                                 <td style="width: 8%;">{% if a.responsable %}{{a.responsable}}{% else %} S/A {% endif %}
                                 </td>
-                                <td style="width: 8%;">{% if a.estado == "CHECK" %}
-                                    <form method="POST">
+                                <td style="width: 8%; text-align: center;">{% if a.estado == "CHECK" %}
+                                    <form method="POST" id="icon">
                                         {% csrf_token %}
                                         <button class="btn fa fa-lg fa-check-circle text-success" type="submit"
                                             style="text-decoration: none;" name="no_check" value="{{a.id}}"></button>
 
-                                    </form>{% else %}<form method="POST">
+                                    </form>{% else %}<form method="POST" id="icon">
                                         {% csrf_token %}
                                         <button class="btn fa fa-lg fa-exclamation-circle text-warning" type="submit"
                                             style="text-decoration: none;" name="check" value="{{a.id}}"></button>{% endif %}
@@ -295,47 +295,49 @@
                             {% if acuerdos_viejos %}
                             {% for a in acuerdos_viejos %}
                             <tr style="vertical-align: middle;">
-                                <td>
-                                    <form method="POST">
-
-                                        {% csrf_token %}
-                                        <button class="btn btn-link fa fa-trash d-flex align-content-end" type="submit"
-                                            name="delete" value="{{a.id}}"></button>
-                                    </form>
+                           
+                                <td style="width: 70%;">{{a.tema}}
                                 </td>
-                                <td style="width: 70%;"> <a href="#" style="color: blue;" data-toggle="modal"
-                                        data-target="#ModalTema{{a.id}}">{{a.tema}}</a>
-                                </td>
-                                <td style="width: 14%;">{% if a.fecha_limite %}{{a.fecha_limite|date:"Y-m-j"}}{% else %} Sin fecha {% endif %}</td>
+                                <td style="width: 14%;">{% if a.fecha_limite %} <b class="a.fecha_limite|fecha_limite">{{a.fecha_limite|date:"Y-m-j"}}</b> {% else %} Sin fecha {% endif %}</td>
                                 <td style="width: 8%;">{% if a.responsable %}{{a.responsable}}{% else %} S/A {% endif %}
                                 </td>
                                 <td style="width: 8%;">{% if a.estado == "CHECK" %}
-                                    <form method="POST">
+                                    <form method="POST" id="icon">
                                         {% csrf_token %}
-                                        <button class="btn btn-link fa d-flex align-content-end" type="submit"
-                                            style="text-decoration: none;" name="no_check" value="{{a.id}}"><img
-                                                src="{% static 'img/cheque.png' %}" alt=""
-                                                style="max-width:20px; height:auto; vertical-align: top"></button>
+                                        <button class="btn fa fa-lg fa-check-circle text-success" type="submit"
+                                            style="text-decoration: none;" name="no_check" value="{{a.id}}"></button>
 
-                                    </form>{% else %}<form method="POST">
+                                    </form>{% else %}<form method="POST" id="icon">
                                         {% csrf_token %}
-                                        <button class="btn btn-link fa d-flex align-content-end" type="submit"
-                                            style="text-decoration: none;" name="check" value="{{a.id}}"><img
-                                                src="{% static 'img/advertir.png' %}" alt=""
-                                                style="max-width:20px; height:auto; vertical-align: top"></button>{% endif %}
+                                        <button class="btn fa fa-lg fa-exclamation-circle text-warning" type="submit"
+                                            style="text-decoration: none;" name="check" value="{{a.id}}"></button>{% endif %}
 
                                     </form>
                                 </td>
-
-                                <!-- Modal de las responsable -->
-                                <div class="modal fade" id="ModalTema{{a.id}}" tabindex="-1" role="dialog"
-                                    aria-labelledby="ModalResponsableTitle" aria-hidden="true">
+                                <td>
+                                    <div class="btn-group ml-auto">
+                                        <a href="JavaScript:void(0)" class="icon-options-vertical link" data-toggle="dropdown"
+                                        aria-haspopup="true" aria-expanded="false"></a>
+                                        <div class="dropdown-menu dropdown-menu-right">
+                                            <a class="dropdown-item" href="#"data-toggle="modal"
+                                            data-target="#ModalTema{{a.id}}"><i
+                                                class="fa fa-pencil-square-o mr-2"></i>Modificar acuerdo</a>
+                                            
+                                            <a class="dropdown-item" href="#" data-toggle="modal"
+                                            data-target="#ModalBorrarAcuerdo{{a.id}}"><i
+                                                class="fa fa-trash text-danger mr-2"></i>Borrar acuerdo</a>
+                                                
+                                        </div>
+                                    </div>
+                                </td>
+                                <div class="modal fade" id="ModalBorrarAcuerdo{{a.id}}" tabindex="-1" role="dialog"
+                                    aria-labelledby="ModalBorrarAcuerdo{{a.id}}" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered" role="document">
                                         <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLongTitle">Editar tarea/acuerdo
+                                            <div class="modal-header" style="background: rgb(36,160,237); background: linear-gradient(315deg, rgba(36,160,237,1) 0%, rgba(56,56,130,1) 22%, rgba(0,212,255,1) 100%);">
+                                                <h5 class="modal-title text-light" id="exampleModalLongTitle">Editar tarea/acuerdo
                                                 </h5>
-                                                <button type="button" class="close" data-dismiss="modal"
+                                                <button type="button" class="close text-light" data-dismiss="modal"
                                                     aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
@@ -346,42 +348,66 @@
 
                                                     {% csrf_token %}
 
+                                                    <h6>¿Estás seguro de que deseas borrar este acuerdo?</h6>
+                                                    <button class="btn btn-danger " type="submit"
+                                                    name="delete" value="{{a.id}}">Borrar</button>
+                                                    
+                                                </form>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                        data-dismiss="modal">Cerrar</button>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Modal de las responsable -->
+                                <div class="modal fade" id="ModalTema{{a.id}}" tabindex="-1" role="dialog"
+                                    aria-labelledby="ModalResponsableTitle" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header" style="background: rgb(36,160,237); background: linear-gradient(315deg, rgba(36,160,237,1) 0%, rgba(56,56,130,1) 22%, rgba(0,212,255,1) 100%);">
+                                                <h5 class="modal-title text-light" id="exampleModalLongTitle">Editar tarea/acuerdo
+                                                </h5>
+                                                <button type="button" class="close text-light" data-dismiss="modal"
+                                                    aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+
+                                                <form method="POST" style="margin: 15px;">
+                                                    {% csrf_token %}
+
                                                     <h6><small>Tema/Acuerdo</small> </h6>
-
                                                     <div class="input-group mb-3">
-
                                                         <input name="tema" type="text" class="form-control form-control"
                                                             style="width: 300px;" value="{{a.tema}}">
-
                                                     </div>
 
                                                     <h6><small>Responsable</small> </h6>
-
                                                     <div class="input-group mb-3">
+                                                        <div class="input-group mb-3">
+                                                            <input name="responsable" type="text"
+                                                                class="form-control form-control" style="width: 300px;"
+                                                                value="{{a.responsable}}">
+                                                        </div>
 
-                                                        <input name="responsable" type="text"
-                                                            class="form-control form-control" style="width: 300px;"
-                                                            value="{{a.responsable}}">
+                                                        <h6><small>Fecha a cumplir</small> </h6>
+                                                        <div class="input-group mb-3">
+                                                            <input name="fecha_limite" type="date"
+                                                                class="form-control form-control" style="width: 300px;"
+                                                                value="{{a.fecha_limite|date:'Y-m-d'}}">
+                                                        </div>
+
+                                                        <div class="row m-2">
+                                                            <button type="submit" class="btn btn-info" name="id"
+                                                                value="{{a.id}}">Modificar</button>
+                                                        </div>
 
                                                     </div>
-
-                                                    <h6><small>Fecha a cumplir</small> </h6>
-
-                                                    <div class="input-group mb-3">
-
-                                                        <input name="fecha_limite" type="date"
-                                                            class="form-control form-control" style="width: 300px;"
-                                                            value="{{a.fecha_limite|date:'Y-m-j'}}">
-
-                                                    </div>
-
-                                                    <div class="row m-2">
-                                                        <button type="submit" class="btn" name="id" value="{{a.id}}"><i
-                                                                class="fa fa-pencil-square-o text-info"><span
-                                                                    class="text-info ml-2"
-                                                                    style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif"><b>Modificar</b></span></i></button>
-                                                    </div>
-
                                                 </form>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary"
@@ -437,6 +463,14 @@
 
     }
 </script>
+
+<style>
+    #icon:hover{
+        transform: scale(1.05);
+        box-shadow: 2px 4px 4px 1px rgba(0, 0, 0, 0.1)
+    }
+
+</style>
 
 
 {% endblock %}

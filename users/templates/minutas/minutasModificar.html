@@ -49,7 +49,7 @@
                                 <select name="creador" class="form-control form-control" style="width: 300px;">
                        
                                     {% for l in list_users %}
-                                    <option {% if data.creador == l %} selected {% endif %}>{{l.identificacion}}</option>
+                                    <option {% if data.creador.identificacion == l.identificacion %} selected {% endif %}>{{l.identificacion}}</option>
                                     {% endfor %}
                                     
                                     </select>
