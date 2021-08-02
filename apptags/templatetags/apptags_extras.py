@@ -32,6 +32,21 @@ def fecha(fecha):
 
     return hoy
 
+@register.filter('fecha_limite')
+def fecha_limite(fecha):
+
+    hoy = date.today()
+
+    if fecha > hoy:
+        return None
+    elif fecha == hoy:
+        return "text-warning"
+
+    else:
+        return "text-danger"
+
+
+
 
 
 @register.filter('logo')
