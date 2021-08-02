@@ -1810,7 +1810,11 @@ def minutas(request):
 
     minutas_activas = sorted(minutas_activas, key = lambda x : x.fecha, reverse = True)
 
-    return render(request, 'minutas/minutasLista.html', {'minutas_activas':minutas_activas, 'minutas_archivadas':minutas_archivadas})
+    user=request.user
+    
+    acuerdos=Acuerdos.objects.filter(responsable__identificacion=user,estado="NO CHECK")
+    
+    return render(request, 'minutas/minutasLista.html', {'minutas_activas':minutas_activas,'minutas_archivadas':minutas_archivadas,'acuerdos_pendientes':acuerdos})
 
 def minutascrear(request):
 

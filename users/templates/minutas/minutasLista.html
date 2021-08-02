@@ -7,9 +7,6 @@
 
 
 <div class="container-fluid r-aside">
-    <!-- ============================================================== -->
-    <!-- Bread crumb and right sidebar toggle -->
-    <!-- ============================================================== -->
     <div class="row page-titles">
         <div class="col-md-5 align-self-center">
             <h3 class="text-themecolor">Minutas de reuniones</h3>
@@ -21,32 +18,24 @@
                 <li class="breadcrumb-item">Minutas</li>
             </ol>
         </div>
-
     </div>
 </div>
 
 
 <div class="row">
-    <div class="col-12 col-md-12 col-lg-10">
+    <div class="col">
         <div class="card">
             <div class="card-body">
                 <div class="row">
-                    <div class="col-12 col-md-12 col-lg-11">
-                        <h4 class="card-title"><span class="lstick m-r-20"></span>
-                            Listado de minutas</h4>
-                            <h6 class="card-subtitle">
-                                Solo podras ver las minutas que creaste o que seas un integrante
-                            </h6>
-                            <div class="row m-2">
-                                <a href="{% url 'Minutas Crear' %}"><i
-                                        class="fa fa-plus-circle  text-info"><span class="text-info ml-2"
-                                            style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif"><b>Nueva minuta</b></span></i></a>
-                            </div>
+                    <div class="col">
+                        
+                        
 
                         <div class="row">
                             <div class="col-12">
                                 <ul class="nav nav-tabs">
                                     <li class="active"><a data-toggle="tab" href="#alta">Activos</a></li>
+                                    <li><a data-toggle="tab" href="#personal">Personales</a></li>
                                     <li><a data-toggle="tab" href="#media">Archivados</a></li>
                                 </ul>
                             </div>
@@ -57,64 +46,183 @@
 
                                 <div class="row mt-3">
                                     <div class="col-12">
+                                        <div class="div d-flex">
+                                            <div class="ml-2">
+                                                <h4 class="card-title"><span class="lstick m-r-20"></span>Minutas activas</h4>
+                                                <h6 class="card-subtitle">Listado de las minutas en las que participe y se encuentran aun activas.</h6>
+                                            </div>
+                                            <div class="btn-group ml-auto">
+                                                <a href="JavaScript:void(0)" class="icon-options-vertical link" data-toggle="dropdown"
+                                                aria-haspopup="true" aria-expanded="false"></a>
+                                                <div class="dropdown-menu dropdown-menu-right">
+                                                    <a class="dropdown-item" href="{% url 'Minutas Crear' %}"><i class="fa fa-plus-circle mr-2"></i>Nueva minuta</a>
+                                                    
+                                                </div>
+                                            </div>
+                                        </div>
 
                                         <div class="table-responsive m-t-4">
-                                            <table id="example" class="table ">
+                                            <table id="example" class="table">
                                                 <thead>
                                                     <tr>
-                                                        <th>Fecha</th>
-                                                        <th>Creador</th>
-                                                        <th>Reunión</th>
+                                                        <th style="text-align: center;">Creador</th>
                                                         <th>Tema</th>
-                                                        
+                                                        <th>Integrantes</th>
+                                                        <th>Fecha</th>
                                                         <th></th>
                                                     </tr>
                                                 </thead>
-                            
-                                                <tbody>
-                            
+
+                                                <tbody style="font-size: 14px;">
+
                                                     {% for i in minutas_activas %}
                                                     {% if user.username in creador.identificacion or user.username in i.integrantes%}
                                                     <tr>
-                                                        <td>{{i.fecha|date:"Y/m/d"}}</td>
-                                                        <td>
-                            
-                                                                <div>
-                                                                    <img src="{{i.creador.imagenlogo.url}}" class="rounded" style="width: 40px;"
-                                                                    alt="">
-                                                                </div>
-                                                                <span style="font-size: 12px; margin-left: 10px;">{{i.creador.identificacion}}</span>
-                                                                
+                                                
+                                                        <td style="width: 100px; text-align: center;">
+                                                            <div class="d-flex flex-column align-items-center">
+                                                                <img src="{{i.creador.imagenlogo.url}}" class="rounded" style="width: 40px;" alt="">
+                                                            </div>
                                                         </td>
-                                                        <td>{% if i.reunion %}{{i.reunion}}{% else %}-{% endif %}</td>
-                                                        <td><a href="{% url 'Minutas Id' i.id %}">{{i.nombre|lower|capfirst}}</a>
-                                                            <h6 class="card-subtitle" style="margin-top: 3px;">Integrantes: {{i.integrantes}}</h6></td>
-                                                        
-                                                         <td>
-                                                             {% if request.user.username == i.creador.identificacion %}
-                                                             <form method="POST">
-                                                                    <button class="btn btn-link fa fa-trash d-flex align-content-end" type="submit" name="delete" value="{{i.id}}" style="text-decoration: none;"></button>
-                            
-                                                                    {% csrf_token %}
-                                                                </form>
-                                                            {% else %}
-                            
-                                                            {% endif %}
-                            
-                                                                </td>  
-                                                     
+                                                       
+                                                        <td>
+
+                                                            <h6 class="card-title"><a href="{% url 'Minutas Id' i.id %}">{{i.nombre|lower|capfirst}}</a></h6> 
+                                                            {% if i.reunion %} <p class="card-subtitle">Clave: {{i.reunion}}</p> {% else %} <p>-</p> {% endif %}
+                                                        </td>
+                                                        <td>
+                                                            <h6 class="card-subtitle">{{i.integrantes}}</h6>
+                                                            
+                                                        </td>
+                                                        <td>
+                                                            <p>{{i.fecha|date:"d-m-Y"}}</p>
+                                                        </td>
+
+                                                        <td>
+                                                            <div class="btn-group ml-auto">
+                                                                <a href="JavaScript:void(0)"
+                                                                    class="icon-options-vertical link"
+                                                                    data-toggle="dropdown" aria-haspopup="true"
+                                                                    aria-expanded="false"></a>
+                                                                <div class="dropdown-menu dropdown-menu-right">
+                                                                    <a class="dropdown-item"
+                                                                        href="{% url 'Minutas Id' i.id %}"><i
+                                                                            class="fa fa-pencil-square-o mr-2"></i>Ingresar</a>
+                                                                            {% if request.user.username == i.creador.identificacion %}
+                                                                    <a class="dropdown-item" href="#"
+                                                                        data-toggle="modal"
+                                                                        data-target="#ModalMinutaBorrar{{i.id}}"
+                                                                        name="subir_item"><i class="fa fa-trash text-danger mr-2"></i>Borrar
+                                                                        minuta</a>
+                                                                        {% else %}
+
+                                                                        {% endif %}
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="modal fade" id="ModalMinutaBorrar{{i.id}}"
+                                                                tabindex="-1" role="dialog"
+                                                                aria-labelledby="ModalMinutaBorrar{{i.id}}"
+                                                                aria-hidden="true">
+                                                                <div class="modal-dialog modal-dialog-centered"
+                                                                    role="document">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header"
+                                                                            style="background: rgb(36,160,237); background: linear-gradient(315deg, rgba(36,160,237,1) 0%, rgba(56,56,130,1) 22%, rgba(0,212,255,1) 100%);">
+                                                                            <h5 class="modal-title text-light"
+                                                                                id="exampleModalLongTitle">Editar
+                                                                                tarea/acuerdo
+                                                                            </h5>
+                                                                            <button type="button"
+                                                                                class="close text-light"
+                                                                                data-dismiss="modal" aria-label="Close">
+                                                                                <span aria-hidden="true">&times;</span>
+                                                                            </button>
+                                                                        </div>
+                                                                        <div class="modal-body">
+
+                                                                            <form method="POST" style="margin: 15px;">
+
+                                                                                {% csrf_token %}
+
+                                                                                <h6>¿Estás seguro de que deseas borrar
+                                                                                    esta minuta?</h6>
+                                                                                    <button
+                                                                                    class="btn btn-danger "
+                                                                                    type="submit" name="delete" value="{{i.id}}"
+                                                                                    style="text-decoration: none;"> Borrar</button>
+
+                                                                            </form>
+                                                                            <div class="modal-footer">
+                                                                                <button type="button"
+                                                                                    class="btn btn-secondary"
+                                                                                    data-dismiss="modal">Cerrar</button>
+
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+
                                                     </tr>
                                                     {% endif %}
-                            
-                                                    {% endfor %}
-                            
-                            
-                            
-                            
-                                                </tbody>
-                            
-                                            </table>
 
+                                                    {% endfor %}
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="personal" class="tab-pane fade">
+                                <div class="row mt-3">
+                                    <div class="col-12">
+                                        <div class="ml-2">
+                                            <h4 class="card-title"><span class="lstick m-r-20"></span>
+                                                Acuerdos pendientes</h4>
+                                            <h6 class="card-subtitle">
+                                                Todos los acuerdos de las distintas minutas
+                                            </h6>
+                                        </div>
+
+
+                                        <div class="table-responsive m-t-4">
+                                            <table id="example" class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Minuta</th>
+                                                        <th>Tema</th>
+                                                        <th>Fecha limite</th>
+                                                        <th>Estado</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for acuerdo in acuerdos_pendientes  %}
+                                                    <tr>
+                                                        
+                                                       
+                                                                     
+                                                        <td><a href="{% url 'Minutas Id' acuerdo.minuta.id %}">{{acuerdo.minuta}} </a></td>
+                                                        <td>{{acuerdo.tema}}</td>
+                                                        <td>{{acuerdo.fecha_limite|date:'d/m/Y' }}</td>
+                        
+                                                            <td style="width: 8%;">
+                                                         <form method="POST">
+                                                                    {% csrf_token %}
+                                                                    <button class="btn fa fa-lg fa-exclamation-circle text-warning" type="submit"
+                                                                        style="text-decoration: none;" name="check" value="{{acuerdo.id}}"></button>
+                            
+                                                                </form>
+                                                            </td>
+                                                        
+                                                   
+                                                   
+                                                    </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
                                 </div>
@@ -122,68 +230,124 @@
                             <div id="media" class="tab-pane fade">
                                 <div class="row mt-3">
                                     <div class="col-12">
-
+                                        <div class="ml-2">
+                                            <h4 class="card-title"><span class="lstick m-r-20"></span>
+                                                Minutas archivadas</h4>
+                                            <h6 class="card-subtitle">
+                                                Estas minutas tienen una versión mas actualizada
+                                            </h6>
+                                        </div>
                                         <div class="table-responsive m-t-4">
-                                            <table id="example" class="table ">
+                                            <table id="example" class="table">
                                                 <thead>
                                                     <tr>
-                                                        <th>Fecha</th>
                                                         <th>Creador</th>
-                                                        <th>Reunión</th>
                                                         <th>Tema</th>
-                                                        
+                                                        <th>Integrantes</th>
+                                                        <th>Fecha</th>
                                                         <th></th>
                                                     </tr>
                                                 </thead>
-                            
-                                                <tbody>
-                            
+
+                                                <tbody style="font-size: 14px;">
+
                                                     {% for i in minutas_archivadas %}
                                                     {% if user.username in creador.identificacion or user.username in i.integrantes%}
                                                     <tr>
-                                                        <td>{{i.fecha|date:"Y/m/d"}}</td>
-                                                        <td>
-                            
-                                                                <div>
-                                                                    <img src="{{i.creador.imagenlogo.url}}" class="rounded" style="width: 40px;"
-                                                                    alt="">
-                                                                </div>
-                                                                <span style="font-size: 12px; margin-left: 10px;">{{i.creador.identificacion}}</span>
-                                                                
+                                                        <td style="width: 100px;">
+                                                            <div class="d-flex flex-column align-items-center">
+                                                                <img src="{{i.creador.imagenlogo.url}}" class="rounded" style="width: 40px;" alt="">
+                                                            </div>
                                                         </td>
-                                                        <td>{% if i.reunion %}{{i.reunion}}{% else %}-{% endif %}</td>
-                                                        <td><a href="{% url 'Minutas Id' i.id %}">{{i.nombre|lower|capfirst}}</a>
-                                                            <h6 class="card-subtitle" style="margin-top: 3px;">Integrantes: {{i.integrantes}}</h6></td>
+                                                        <td>
+                                                            <h6 class="card-title"><a href="{% url 'Minutas Id' i.id %}">{{i.nombre|lower|capfirst}}</a></h6> 
+                                                            {% if i.reunion %}<p class="card-subtitle">Clave: {{i.reunion}}</p> {% else %} <p>-</p> {% endif %}
+                                                        </td>
+                                                        <td>
+                                                            <h6 class="card-subtitle">{{i.integrantes}}</h6>
+                                                        </td>
                                                         
-                                                         <td>
-                                                             {% if request.user.username == i.creador.identificacion %}
-                                                             <form method="POST">
-                                                                    <button class="btn btn-link fa fa-trash d-flex align-content-end" type="submit" name="delete" value="{{i.id}}" style="text-decoration: none;"></button>
-                            
-                                                                    {% csrf_token %}
-                                                                </form>
-                                                            {% else %}
-                            
-                                                            {% endif %}
-                            
-                                                                </td>  
-                                                     
+                                                        <td>
+                                                            <p>{{i.fecha|date:"d-m-Y"}}</p>
+                                                        </td>
+                                                        <td>
+                                                            <div class="btn-group ml-auto">
+                                                                <a href="JavaScript:void(0)"
+                                                                    class="icon-options-vertical link"
+                                                                    data-toggle="dropdown" aria-haspopup="true"
+                                                                    aria-expanded="false"></a>
+                                                                <div class="dropdown-menu dropdown-menu-right">
+                                                                    <a class="dropdown-item"
+                                                                        href="{% url 'Minutas Id' i.id %}"><i
+                                                                            class="fa fa-pencil-square-o mr-2"></i>Ingresar</a>
+                                                                            {% if request.user.username == i.creador.identificacion %}
+                                                                    <a class="dropdown-item" href="#"
+                                                                        data-toggle="modal"
+                                                                        data-target="#ModalMinutaBorrar{{i.id}}"
+                                                                        name="subir_item"><i class="fa fa-trash text-danger mr-2"></i>Borrar
+                                                                        minuta</a>
+                                                                        {% else %}
+
+                                                                        {% endif %}
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="modal fade" id="ModalMinutaBorrar{{i.id}}"
+                                                                tabindex="-1" role="dialog"
+                                                                aria-labelledby="ModalMinutaBorrar{{i.id}}"
+                                                                aria-hidden="true">
+                                                                <div class="modal-dialog modal-dialog-centered"
+                                                                    role="document">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header"
+                                                                            style="background: rgb(36,160,237); background: linear-gradient(315deg, rgba(36,160,237,1) 0%, rgba(56,56,130,1) 22%, rgba(0,212,255,1) 100%);">
+                                                                            <h5 class="modal-title text-light"
+                                                                                id="exampleModalLongTitle">Editar
+                                                                                tarea/acuerdo
+                                                                            </h5>
+                                                                            <button type="button"
+                                                                                class="close text-light"
+                                                                                data-dismiss="modal" aria-label="Close">
+                                                                                <span aria-hidden="true">&times;</span>
+                                                                            </button>
+                                                                        </div>
+                                                                        <div class="modal-body">
+
+                                                                            <form method="POST" style="margin: 15px;">
+
+                                                                                {% csrf_token %}
+
+                                                                                <h6>¿Estás seguro de que deseas borrar
+                                                                                    esta minuta?</h6>
+                                                                                    <button
+                                                                                    class="btn btn-danger "
+                                                                                    type="submit" name="delete" value="{{i.id}}"
+                                                                                    style="text-decoration: none;"> Borrar</button>
+
+                                                                            </form>
+                                                                            <div class="modal-footer">
+                                                                                <button type="button"
+                                                                                    class="btn btn-secondary"
+                                                                                    data-dismiss="modal">Cerrar</button>
+
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </td>
                                                     </tr>
                                                     {% endif %}
-                            
-                                                    {% endfor %}
-                            
-                            
-                            
-                            
-                                                </tbody>
-                            
-                                            </table>
 
+                                                    {% endfor %}
+
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                           
                         </div>
                     </div>
                 </div>
@@ -192,45 +356,21 @@
     </div>
 </div>
 
-
-<aside class="right-side-panel">
-    <h3 class="p-relative"><span class="lstick"></span> ¿Comó funciona?</h3>
-    <div class="row">
-        
-        <div class="col-md-12 m-t-10">
-          <div class="card">
-            <div class="card-body">
-            <img src="{% static 'img/animation_500_kmxqe3a4.gif' %}" alt="Funny image" width="200px">
-            <p> Crea una nueva minuta haciendo click en <i class="fa fa-plus-circle  text-info"></i></p>
-            <p> Cuando la estes creando <b class="text-warning">no olvides</b>  de leer las indicaciones escritas a la derecha</p>
-        </div>
-            </div>
-        </div>
-    </div>
-
-
-    </div>
-</aside>
-
-
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-<script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js" defer></script>
-<script src="https://cdn.datatables.net/1.10.23/js/dataTables.bootstrap4.min.js" defer></script>
-
-
 
 <script>
     $(document).ready(function () {
         $('#example').DataTable({
             "language": {
-            "lengthMenu": "Mostar _MENU_ documentos",
-            "zeroRecords": "No se encontro nada - perdon ",
-            "info": "Pagina _PAGE_ de _PAGES_",
-            "infoEmpty": "Sin registros disponibles",
-            "infoFiltered": "(filtrado de _MAX_ registros totales)",
-            "search": "Buscar"
-        },
-            "order": [[ 0, "desc" ]],
+                "lengthMenu": "Mostar _MENU_ documentos",
+                "zeroRecords": "No se encontro nada - perdon ",
+                "info": "Pagina _PAGE_ de _PAGES_",
+                "infoEmpty": "Sin registros disponibles",
+                "infoFiltered": "(filtrado de _MAX_ registros totales)",
+                "search": "Buscar"
+            },
+            
+            "ordering": false,
             "paging": false,
             "info": false
         });

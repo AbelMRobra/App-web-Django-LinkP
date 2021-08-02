@@ -128,18 +128,21 @@ class Presupuestos(models.Model):
         return '{}'.format(self.proyecto)
 
 class Prametros(models.Model):
-    proyecto = models.ForeignKey(Proyectos, on_delete=models.CASCADE, verbose_name = "Proyectos")
-    tasa_des_p = models.FloatField(verbose_name="Tasa de descuento del costo")
-    soft = models.FloatField(verbose_name="Soft + IVA")
-    imprevitso = models.FloatField(verbose_name="Imprevisto")
-    terreno = models.FloatField(verbose_name="Honorarios Terreno")
-    link = models.FloatField(verbose_name="Honorarios Desarrolladora")
-    comer = models.FloatField(verbose_name="Honorarios Comercialización")
-    por_comer = models.FloatField(verbose_name="Porcentaje aplicación comercialización")
-    tem_iibb = models.FloatField(verbose_name="TEM e IIBB")
-    por_temiibb = models.FloatField(verbose_name="Porcentaje de aplicación TEM e IIBB")
-    ganancia = models.FloatField(verbose_name="Ganancia")
-    tasa_des = models.FloatField(verbose_name="Tasa descuento")
+    proyecto = models.ForeignKey(Proyectos, on_delete=models.CASCADE, verbose_name = "Proyectos", blank=True, null=True)
+    proyecto_no_est = models.CharField(verbose_name="Proyecto no estructurado", null=True, blank=True ,max_length=100)
+    tasa_des_p = models.FloatField(verbose_name="Tasa de descuento del costo", default=0)
+    soft = models.FloatField(verbose_name="Soft", default=0)
+    iva = models.FloatField(verbose_name="IVA", blank=True, null=True, default=0)
+    imprevitso = models.FloatField(verbose_name="Imprevisto", default=0)
+    terreno = models.FloatField(verbose_name="Honorarios Terreno", default=0)
+    link = models.FloatField(verbose_name="Honorarios Desarrolladora", default=0)
+    comer = models.FloatField(verbose_name="Honorarios Comercialización", default=0)
+    por_comer = models.FloatField(verbose_name="Porcentaje aplicación comercialización", default=0)
+    tem_iibb = models.FloatField(verbose_name="TEM e IIBB", default=0)
+    por_temiibb = models.FloatField(verbose_name="Porcentaje de aplicación TEM e IIBB", default=0)
+    ganancia = models.FloatField(verbose_name="Ganancia", default=0)
+    tasa_des = models.FloatField(verbose_name="Tasa descuento", default=0)
+    depto = models.FloatField(verbose_name="Proporción depto", blank=True, null=True, default=0)
     
 
     class Meta:

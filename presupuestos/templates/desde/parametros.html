@@ -36,68 +36,7 @@
 
     {% if datos %} 
 
-    <table class="table table-bordered" style="text-align: center;">
-        <thead style="font-size: 14px;">
-
-            <tr>
-                <th scope = "row" style="vertical-align: middle;"> <span  class="hint--top hint--danger" aria-label= "Valor de reposición del proyecto neto">Proyecto</span> </th>
-                <th scope = "row" style="vertical-align: middle;"> Costo </th>
-                <th scope = "row" style="vertical-align: middle;"> Soft + IVA </th>
-                <th scope = "row" style="vertical-align: middle;"> <span  class="hint--top hint--danger" aria-label= "Se aplica sobre el valor son softcost e iva">Imprevisto</span>  </th>
-                <th scope = "row" style="vertical-align: middle;"> Terreno </th>
-                <th scope = "row" style="vertical-align: middle;"> Hon. Link</th>
-                <th scope = "row" style="vertical-align: middle;"> Comer.</th>
-                <th scope = "row" style="vertical-align: middle;"> TEM e IIBB </th>
-                <th scope = "row" style="vertical-align: middle;"> Tasa Desc.</th>
-                <th scope = "row" style="vertical-align: middle;"> Ganancia </th>
-
-
-            </tr>
-        </thead>
-
-        <tbody>
-
-            {% for i in datos %}
-            <tr  style="font-size: 14px;">
-                <td rowspan="2" style="vertical-align: middle; width: 10%" >
-                    
-                    <img src="{{i.0.proyecto.iamgen.url}}"  class="img-fluid" alt="..." style="max-width: 80px; height:auto;">
-
-                    <div>
-                        <small style="color: rgb({{i.0.proyecto.color}});"><b>{{i.0.proyecto}}</b></small>
-                    </div>
-                
-                
-                </td>
-                <td>{{i.3|floatformat:0}}%</td>
-                <td>{{i.4|floatformat:0}}%</td>
-                <td>{{i.5|floatformat:0}}%</td>
-                <td>{{i.0.terreno }} m2
-                    <h6 class="card-subtitle" style="font-size: 12px; margin-top: 2px;"><span class="text-muted">{{i.1|floatformat:0}}%</span></h6></td>
-                <td>{{i.0.link}} m2
-                    <h6 class="card-subtitle" style="font-size: 12px; margin-top: 2px;"><span class="text-muted">{{i.2|floatformat:0}}%</span></h6></td>
-                <td>{{i.6|floatformat:2}}%</td>
-                <td>{{i.7|floatformat:2}}%</td>
-                <td>{{i.17|floatformat:2}}% ({{i.19|floatformat:0|intcomma}})</td>
-                <td> <strong>{{i.8|floatformat:0}}%</strong> </td>
-            
-            </tr>
-            <tr  style="font-size: 14px;">
-                <td>$ {{i.9|floatformat:0|intcomma}}</td>
-                <td>$ {{i.10|floatformat:0|intcomma}}</td>
-                <td>$ {{i.11|floatformat:0|intcomma}}</td>
-                <td>$ {{i.12|floatformat:0|intcomma}}</td>
-                <td>$ {{i.13|floatformat:0|intcomma}}</td>
-                <td>$ {{i.14|floatformat:0|intcomma}}</td>
-                <td>$ {{i.15|floatformat:0|intcomma}}</td>
-                <td>$ {{i.18|floatformat:0|intcomma}}</td>
-                <td>$ {{i.16|floatformat:0|intcomma}}</td>
-            </tr>
-        
-
-            {% endfor %}
-        </tbody>
-        </table>
+    
         <b><hr class = "my-4" style="width: 100%;"></b>
 
 

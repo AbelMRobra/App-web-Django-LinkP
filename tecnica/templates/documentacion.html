@@ -6,85 +6,85 @@
 {% block content %}
 
 <div class="container-fluid">
-  <!-- ============================================================== -->
-  <!-- Bread crumb and right sidebar toggle -->
-  <!-- ============================================================== -->
   <div class="row page-titles">
-      <div class="col-md-5 align-self-center">
-          <h3 class="text-themecolor">Panel principal de documentación</h3>
-      </div>
+    <div class="col-md-5 align-self-center">
+      <h3 class="text-themecolor">Panel principal de documentación</h3>
+    </div>
 
-      <div class="col-md-7 align-self-center">
-          <ol class="breadcrumb">
-              <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
-              <li class="breadcrumb-item">Panel</li>
-          </ol>
-      </div>
+    <div class="col-md-7 align-self-center">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+        <li class="breadcrumb-item">Panel</li>
+      </ol>
+    </div>
   </div>
-
 </div>
 
 <div class="row">
 
-    {% for i in datos %}
-    <div class="col-lg-4 col-xlg-4">
-    <div class="card">
-      <div class="card-body little-profile text-center">
-          <div class="pro-img m-t-20">
-            {% if i.5 %}<img src="{{i.5.responsable.imagenlogo.url}}"  class="img-fluid" alt="..." style="max-width: 145px; height:auto; vertical-align: middle;">
-            {% else %}<img src="{% static 'img/anonimo2.png' %}" alt="..." style="max-width: 145px; height:auto; vertical-align: middle;">{% endif %}</div>
-          <h3 class="m-b-0" style="color: rgb({{i.0.color}});">{{i.0.nombre|lower|capfirst}}</h3>
+  {% for i in datos %}
+  <div class="col col-md-6 col-lg-3 col-xlg-3">
+    <div class="card shadow">
+      <div class="card-body">
+        <div>
+          <div class="text-center">
+            {% if i.5 %}<img src="{{i.5.responsable.imagenlogo.url}}" class="img-fluid" alt="usuario"
+              style="max-width: 80px; height:auto; vertical-align: middle;">
+            {% else %}<img src="{% static 'img/anonimo2.png' %}" alt="usuario"
+              style="max-width: 80px; height:auto; vertical-align: middle;">{% endif %}</div>
+        </div>
+        <div class="text-center my-3">
+          <h3 style="color: rgb({{i.0.color}});">{{i.0.nombre|lower|capfirst}}</h3>
           <h6 class="text-muted">Lider de proyecto</h6>
           <h6 class="text-muted">{% if i.5 %}{{i.5.responsable.nombre}}{% else %} Sin asignar {% endif %}</h6>
-          <ul class="list-inline soc-pro m-t-30">
+        </div>
+        <ul type="none">
 
-            {% for c in i.1 %}
+          {% for c in i.1 %}
+          <li><i class="fa fa-dot-circle-o"></i><span style="font-size: 14px;"> {{c.0.nombre|lower|capfirst}}:
+              {{c.3|floatformat:0}}%</span></li>
+          {% endfor %}
 
-            <li><i class="fa fa-dot-circle-o"> {{c.0.nombre|lower|capfirst}}: {{c.3|floatformat:0}}%</i></li>
-                                
-            {% endfor %}
-
-          </ul>
+        </ul>
       </div>
       <div class="text-center bg-light">
-          <div class="row">
-              <div class="col-6  p-20 b-r">
-                  <h4 class="m-b-0 font-medium">{% if i.4 == "NO DEFINIDO"%}
+        <div class="row">
+          <div class="col-6 p-3">
+            <h4 class="m-b-0 font-medium">{% if i.4 == "NO DEFINIDO"%}
 
-                    --/--/----
-                    
-                    {% else %}
-                    
-                        {% if i.4 > 0 %}
-                        {{i.4}} dias
-                        {% elif i.4 == 0 %}
-                        Hoy
-                        {% else %}
-                        Iniciado
-                        {% endif %}
+              --/--/----
 
-                    {% endif %}</h4><small>Inicio</small></div>
-              <div class="col-6  p-20">
-                  <h4 class="m-b-0 font-medium">
-                    {% if i.2 > 0 %}
-                    {{i.2}} dias
-                    {% elif i.2 == 0 %}
-                    Hoy
-                    {% else %}
-                    Entregado
-                    {% endif %}
-                  </h4><small>Entrega</small></div>
+              {% else %}
+
+              {% if i.4 > 0 %}
+              {{i.4}} dias
+              {% elif i.4 == 0 %}
+              Hoy
+              {% else %}
+              Iniciado
+              {% endif %}
+
+              {% endif %}</h4><small>Inicio</small>
           </div>
+          <div class="col-6 p-3">
+            <h4 class="m-b-0 font-medium">
+              {% if i.2 > 0 %}
+              {{i.2}} dias
+              {% elif i.2 == 0 %}
+              Hoy
+              {% else %}
+              Entregado
+              {% endif %}
+            </h4><small>Entrega</small>
+          </div>
+        </div>
       </div>
-      <div class="card-body text-center">
-          <a href="{% url 'Documentacion Amp' i.0.id 0 1 %}" class="m-t-10 m-b-20 waves-effect waves-dark btn btn-success btn-md btn-rounded">Gannt</a>
+      <div class="p-3 text-center">
+        <a href="{% url 'Documentacion Amp' i.0.id 0 1 %}" class="btn btn-success">Gannt</a>
       </div>
     </div>
   </div>
-
-
-    {% endfor %}
-
+  {% endfor %}
 </div>
-    
+
 {% endblock %}

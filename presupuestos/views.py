@@ -1698,262 +1698,130 @@ def parametros(request):
 
 def desde(request):
 
-    datos = Desde.objects.all()
+    if request.method=='POST':
 
-    constantes = Constantes.objects.all()
+        proyecto_elegido = Prametros.objects.get(id = request.POST['id'])
+        proyecto_elegido.soft = request.POST['soft']
+        proyecto_elegido.iva = request.POST['iva']
+        proyecto_elegido.imprevitso = request.POST['imprevisto']
+        proyecto_elegido.terreno = request.POST['terreno']
+        proyecto_elegido.link = request.POST['link']
+        proyecto_elegido.comer = request.POST['comer']
+        proyecto_elegido.por_comer = request.POST['porc_comer']
+        proyecto_elegido.tem_iibb = request.POST['temiibb']
+        proyecto_elegido.por_temiibb = request.POST['porc_temiibb']
+        proyecto_elegido.ganancia = request.POST['ganancia']
+        proyecto_elegido.depto = request.POST['depto']
+        proyecto_elegido.save()
 
-    usd_blue = Constantes.objects.get(nombre = "USD_BLUE")
 
 
-    for i in datos:
+    parametros_all = Prametros.objects.all()
 
-        costo = i.presupuesto.valor
+    datos = []
 
-        #Aqui calculo el precio min y sugerido
+    for parametros in parametros_all:
 
-        costo = (costo/(1 + i.parametros.tasa_des_p))*(1 + i.parametros.soft)
-        
-        costo = costo*(1 + i.parametros.imprevitso)
-
-        porc_terreno = i.parametros.terreno/i.parametros.proyecto.m2*100
-        porc_link = i.parametros.link/i.parametros.proyecto.m2*100
-
-        aumento_tem = i.parametros.tem_iibb*i.parametros.por_temiibb*(1+i.parametros.ganancia)
-
-        aumento_comer = i.parametros.comer*(1+(porc_terreno + porc_link)/100)*(1+i.parametros.ganancia)
-        
-
-        costo = costo/(1-aumento_tem- aumento_comer)
-        
-        m2 = (i.parametros.proyecto.m2 - i.parametros.terreno - i.parametros.link)
-
-        valor_costo = costo/m2
-
-        #Aqui coloco la tasa de descuento
-
-
-        fecha_entrega =  datetime.datetime.strptime(str(i.presupuesto.proyecto.fecha_f), '%Y-%m-%d')
-        ahora = datetime.datetime.utcnow()
-        fecha_inicial = ahora + datetime.timedelta(days = (365*2))
-
-        if fecha_entrega > fecha_inicial:
-            y = fecha_entrega.year - fecha_inicial.year
-            n = fecha_entrega.month - fecha_inicial.month
-
-            meses = y*12 + n
-
-            valor_costo = -np.pv(fv=valor_costo, rate=i.parametros.tasa_des, nper=meses, pmt=0)
-
-
-        #Calculo el valor final
-        
-        valor_final = valor_costo*(1 + i.parametros.ganancia)
-
-
-        # Valorizo en dolares el precio de costo y sugerido
-
-        valor_costo_usd = 0
-
-        valor_final_usd = 0
-
-        for c in constantes:
-
-            if str(c.nombre) == 'USD_BLUE':
-
-                valor_costo_usd = valor_costo/c.valor
-
-                valor_final_usd = valor_final/c.valor
-
-        i.valor_costo = valor_costo
-        i.valor_costo_usd = valor_costo_usd
-        i.valor_final = valor_final
-        i.valor_final_usd = valor_final_usd
-
-        i.save()
-
-    # Programa para graficos
-
-    proyectos = Proyectos.objects.all()
-
-    graficos = 0
-
-    datos_pricing = 0
-    datos_costo = 0
-    datos_sugerido = 0
-    proyecto = 0
-    ventas_realizadas = 0
-    porc_m2 = 0
-    porc_no_vendido = 0
-    perfomance = 0
-    no_perfomance = 0
-
-    if request.method == 'POST':
-
-        #Trae el proyecto elegido
-        proyecto_elegido = request.POST.items()
-
-        #Crea los datos del pricing
-
-        for i in proyecto_elegido:
-
-            if i[0] == "proyecto":
-                proyecto = Proyectos.objects.get(id = i[1])
-
-        fechas = []
-                
-        datos_pricing = PricingResumen.objects.filter(proyecto = proyecto)
-
-        for i in datos_pricing:
-            fechas.append(i.fecha)
-
-        #Crea los datos de costo y de sugerido
-
-        datos_costo = []
-        datos_sugerido = []
-
-        for fecha in fechas:
-
-            try:
-                valor_proyecto = RegistroValorProyecto.objects.get(proyecto = proyecto, fecha = fecha)
-                parametros_proyecto = Prametros.objects.get(proyecto = proyecto)
-
-                costo = valor_proyecto.precio_proyecto
-
-                costo = (costo/(1 + parametros_proyecto.tasa_des_p))*(1 + parametros_proyecto.soft)
-        
-                costo = costo*(1 + parametros_proyecto.imprevitso)
-
-                aumento_tem = parametros_proyecto.tem_iibb*parametros_proyecto.por_temiibb*(1+parametros_proyecto.ganancia)
-
-                aumento_comer = parametros_proyecto.comer*(1+parametros_proyecto.comer)
-
-                costo = costo/(1-aumento_tem- aumento_comer)
-                
-                m2 = (parametros_proyecto.proyecto.m2 - parametros_proyecto.terreno - parametros_proyecto.link)
-
-                valor_costo = costo/m2 
-
-                datos_costo.append(valor_costo)
-
-                valor_final = valor_costo*(1 + parametros_proyecto.ganancia)
-
-                datos_sugerido.append(valor_final)
-
-            except:
-                datos_costo.append("")
-                datos_sugerido.append("")
-
-        #Promedio de venta y cantidad
-
-        ventas_realizadas = []
-
-        for fecha in fechas:
-            compras_mes = []
-            ventas = VentasRealizadas.objects.filter(proyecto = proyecto)
-            for venta in ventas:
-                if fecha.month == venta.fecha.month and fecha.year == venta.fecha.year and venta.asignacion != "LINK":
-                    
-                    if venta.anticipo != venta.precio_venta and venta.cuotas_pend != 0:
-
-                        valor_p_ant = -np.pv(fv=0, rate=(0.82/100), nper=venta.cuotas_pend, pmt=((venta.precio_venta - venta.anticipo)/venta.cuotas_pend))                 
-
-                        valor_m2 = valor_p_ant + venta.anticipo
-                        compras_mes.append((valor_m2, venta.m2))
-                    else:
-                        valor_m2 = venta.precio_venta
-                        compras_mes.append((valor_m2, venta.m2))
-
-            cantidad = len(compras_mes)
-
-            total_venta = 0
-            total_m2 = 0
-
-            for op in compras_mes:
-
-                total_venta = total_venta + op[0]
-                total_m2 = total_m2 + op[1]
-
-            if total_m2 != 0:
-                precio_prom = total_venta/total_m2
-            else:
-                precio_prom = ""
-
-            ventas_realizadas.append((cantidad, precio_prom))
-                   
-        #Habilito los graficos
-        graficos = 1
-
-        # Calcula los m2 vendidos y el perfomance
-      
         try:
-            ventas = VentasRealizadas.objects.filter(proyecto = proyecto)
 
-            m2_vendidos = 0
-            total_operado = 0
-            total_minimo = 0
+            presupuesto = Presupuestos.objects.get(proyecto = parametros.proyecto)
+                       
+            # Primero calculamos el costo por m2
+            costo = (presupuesto.valor)
+            costo_m2 = costo
+            # Calculo del costo con imprevisto
+            costo_imp = costo*(1 + parametros.imprevitso)
+            # Calculo del costo IVA
+            costo_iva = costo_imp*(1 + parametros.iva)
+            # Calculo del costo SOFT
+            costo_soft = costo_iva+(costo * parametros.soft)
+            # Calculo del terreno
+            costo_terreno = 0
+            porc_terreno =  parametros.terreno/parametros.proyecto.m2*100
+            # Calculo del honorario
+            costo_honorario = 0
+            porc_hon =  parametros.link/parametros.proyecto.m2*100
+            # Calculo del TEM
+            costo_tem = 0
+            aumento_tem =  parametros.tem_iibb*parametros.por_temiibb
+            # Calculo del COMER
+            costo_comer = 0
+            aumento_comer =  parametros.comer
+            # Aumento por honorarios + TEM + COMER
+            costo_completo = costo_soft/(1-((aumento_tem + aumento_comer)*(100 - porc_terreno - porc_hon))*(1 + parametros.ganancia)/(100 - porc_terreno - porc_hon))
+            # Valor con ganancia
+            valor_ganancia = costo_completo*(1 + parametros.ganancia)
+            # Recalculamos
+            costo_terreno = (valor_ganancia * porc_terreno/100 - costo_completo*porc_terreno/100) + costo_soft
+            costo_honorario = (valor_ganancia * porc_hon/100 - costo_completo*porc_hon/100)  + costo_terreno
+            costo_comer = valor_ganancia * aumento_comer * (100 - porc_terreno - porc_hon)/100 + costo_honorario
+            costo_tem = valor_ganancia * aumento_tem * (100 - porc_terreno - porc_hon)/100 + costo_comer
+            costo_depto = costo_completo*parametros.depto/parametros.proyecto.m2
+            
 
-            for venta in ventas:
+            datos_costo_m2 = [0, costo_m2, costo_imp, costo_iva, costo_soft, costo_terreno, costo_honorario, costo_comer, costo_tem, valor_ganancia]
+            datos_costo_m2 = np.array(datos_costo_m2)/parametros.proyecto.m2
+            datos_porcentaje = [porc_terreno, porc_hon]
+            datos_parametros = [parametros.imprevitso*100, parametros.iva*100, parametros.soft*100, aumento_comer*100, aumento_tem*100, parametros.ganancia*100, parametros.terreno, parametros.link]
 
-                if venta.asignacion != "LINK":
+            datos.append((datos_costo_m2, datos_porcentaje, datos_parametros, parametros.proyecto, costo_depto, parametros))
+        
+        except: 
 
-                    m2_vendidos = m2_vendidos + venta.m2
+            valor_proyecto = 0
+            m2_proyecto = 0
 
-                    if venta.anticipo != venta.precio_venta:
-                        valor_p_ant = -np.pv(fv=0, rate=(0.82/100), nper=venta.cuotas_pend, pmt=((venta.precio_venta - venta.anticipo)/venta.cuotas_pend))  + venta.anticipo               
+            proyectos_all = Proyectos.objects.filter(nombre__icontains = parametros.proyecto_no_est)
 
-                    else:
-                        valor_p_ant = venta.precio_venta
-
-                    total_operado = total_operado + valor_p_ant
-                    date_object = datetime.datetime.strptime(str(venta.fecha), '%Y-%m-%d')
-                    reg_valor_pro = RegistroValorProyecto.objects.filter(proyecto = proyecto, fecha = datetime.date(date_object.year, date_object.month, 1))
-                    
-
-                    for r in reg_valor_pro:
-
-                        parametros_proyecto = Prametros.objects.get(proyecto = proyecto)
-
-                        costo = r.precio_proyecto
-
-                        costo = (costo/(1 + parametros_proyecto.tasa_des_p))*(1 + parametros_proyecto.soft)
+            for proyecto in proyectos_all:
+                if "INFRA" not in proyecto.nombre:
+                    m2_proyecto += proyecto.m2
+                if len(Presupuestos.objects.filter(proyecto = proyecto)) > 0:
+                    valor_proyecto += Presupuestos.objects.filter(proyecto = proyecto)[0].valor
+                proyecto.nombre = parametros.proyecto_no_est
                 
-                        costo = costo*(1 + parametros_proyecto.imprevitso)
+            
+            # Primero calculamos el costo por m2
+            costo = valor_proyecto
+            costo_m2 = costo
+            # Calculo del costo con imprevisto
+            costo_imp = costo*(1 + parametros.imprevitso)
+            # Calculo del costo IVA
+            costo_iva = costo_imp*(1 + parametros.iva)
+            # Calculo del costo SOFT
+            costo_soft = costo_iva+(costo * parametros.soft)
+            # Calculo del terreno
+            costo_terreno = 0
+            porc_terreno =  parametros.terreno/m2_proyecto*100
+            # Calculo del honorario
+            costo_honorario = 0
+            porc_hon =  parametros.link/m2_proyecto*100
+            # Calculo del TEM
+            costo_tem = 0
+            aumento_tem =  parametros.tem_iibb*parametros.por_temiibb
+            # Calculo del COMER
+            costo_comer = 0
+            aumento_comer =  parametros.comer
+            # Aumento por honorarios + TEM + COMER
+            costo_completo = costo_soft/(1-((aumento_tem + aumento_comer)*(100 - porc_terreno - porc_hon))*(1 + parametros.ganancia)/(100 - porc_terreno - porc_hon))
+            # Valor con ganancia
+            valor_ganancia = costo_completo*(1 + parametros.ganancia)
+            # Recalculamos
+            costo_terreno = (valor_ganancia * porc_terreno/100 - costo_completo*porc_terreno/100) + costo_soft
+            costo_honorario = (valor_ganancia * porc_hon/100 - costo_completo*porc_hon/100)  + costo_terreno
+            costo_comer = valor_ganancia * aumento_comer * (100 - porc_terreno - porc_hon)/100 + costo_honorario
+            costo_tem = valor_ganancia * aumento_tem * (100 - porc_terreno - porc_hon)/100 + costo_comer
+            
+            
 
-                        aumento_tem = parametros_proyecto.tem_iibb*parametros_proyecto.por_temiibb*(1+parametros_proyecto.ganancia)
+            datos_costo_m2 = [0, costo_m2, costo_imp, costo_iva, costo_soft, costo_terreno, costo_honorario, costo_comer, costo_tem, valor_ganancia]
+            datos_costo_m2 = np.array(datos_costo_m2)/m2_proyecto
+            datos_porcentaje = [porc_terreno, porc_hon]
+            datos_parametros = [parametros.imprevitso*100, parametros.iva*100, parametros.soft*100, aumento_comer*100, aumento_tem*100, parametros.ganancia*100, parametros.terreno, parametros.link]
+            costo_depto = costo_completo*parametros.depto/m2_proyecto
+ 
 
-                        aumento_comer = parametros_proyecto.comer*(1+parametros_proyecto.comer)
-
-                        costo = costo/(1-aumento_tem- aumento_comer)
-                        
-                        m2 = (parametros_proyecto.proyecto.m2 - parametros_proyecto.terreno - parametros_proyecto.link)
-
-                        valor_costo = costo/m2
-
-                        total_minimo = total_minimo + valor_costo*venta.m2
-
-
-            porc_m2 = m2_vendidos/(proyecto.m2 - parametros_proyecto.terreno - parametros_proyecto.link)*100
-            porc_no_vendido = 100 - porc_m2
-            perfomance = ((total_operado/total_minimo)-1)*100
-            no_perfomance = 100 - perfomance
-        
-        except:
-
-            porc_m2 = 0
-            porc_no_vendido = 100
-            perfomance = 0
-            no_perdomance = 100
-
-        
-    datos = {'datos':datos, 'usd_blue':usd_blue, 
-    "proyectos":proyectos, "proyecto":proyecto, 
-    "graficos":graficos, "pricing":datos_pricing, 
-    "costo":datos_costo, "sugerido":datos_sugerido,
-    "ventas":ventas_realizadas,
-    "porc_m2":porc_m2,
-    "porc_no_vendido":porc_no_vendido,
-    "perfomance":perfomance,
-    "no_perfomance":no_perfomance}
+            datos.append((datos_costo_m2, datos_porcentaje, datos_parametros, proyecto, costo_depto, parametros))
 
     return render(request, 'desde/desde.html', {'datos':datos})
 
