@@ -1806,14 +1806,15 @@ def desde(request):
             costo_comer = 0
             aumento_comer =  parametros.comer
             # Aumento por honorarios + TEM + COMER
-            costo_completo = costo_soft/(1-((aumento_tem + aumento_comer)*(100 - porc_terreno - porc_hon))*(1 + parametros.ganancia)/(100 - porc_terreno - porc_hon))
+            costo_completo = costo_soft/(1-((aumento_tem + aumento_comer)*(1 - porc_terreno - porc_hon))*(1 + parametros.ganancia)/(1 - porc_terreno - porc_hon))
+            costo_completo = costo_completo/(1 - porc_terreno - porc_hon)
             # Valor con ganancia
             valor_ganancia = costo_completo*(1 + parametros.ganancia)
             # Recalculamos
-            costo_terreno = (valor_ganancia * porc_terreno/100 - costo_completo*porc_terreno/100) + costo_soft
-            costo_honorario = (valor_ganancia * porc_hon/100 - costo_completo*porc_hon/100)  + costo_terreno
-            costo_comer = valor_ganancia * aumento_comer * (100 - porc_terreno - porc_hon)/100 + costo_honorario
-            costo_tem = valor_ganancia * aumento_tem * (100 - porc_terreno - porc_hon)/100 + costo_comer
+            costo_terreno = (valor_ganancia * porc_terreno - costo_completo*porc_terreno) + costo_soft
+            costo_honorario = (valor_ganancia * porc_hon - costo_completo*porc_hon)  + costo_terreno
+            costo_comer = costo_completo - valor_ganancia * aumento_comer * (1 - porc_terreno - porc_hon)
+            costo_tem = costo_completo
             
             
 
@@ -1823,6 +1824,8 @@ def desde(request):
             datos_parametros = [parametros.imprevitso*100, parametros.iva*100, parametros.soft*100, aumento_comer*100, aumento_tem*100, parametros.ganancia*100, parametros.terreno, parametros.link]
             costo_depto = costo_completo*parametros.depto/m2_proyecto
  
+            porc_terreno = porc_terreno*100
+            porc_hon = porc_hon*100
 
             datos.append((datos_costo_m2, datos_porcentaje, datos_parametros, proyecto, costo_depto, parametros))
 
