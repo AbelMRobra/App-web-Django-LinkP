@@ -1816,7 +1816,8 @@ def desde(request):
             costo_comer = costo_completo - valor_ganancia * aumento_comer * (1 - porc_terreno - porc_hon)
             costo_tem = costo_completo
             
-            
+            porc_terreno = porc_terreno*100
+            porc_hon = porc_hon*100
 
             datos_costo_m2 = [0, costo_m2, costo_imp, costo_iva, costo_soft, costo_terreno, costo_honorario, costo_comer, costo_tem, valor_ganancia]
             datos_costo_m2 = np.array(datos_costo_m2)/m2_proyecto
@@ -1824,8 +1825,7 @@ def desde(request):
             datos_parametros = [parametros.imprevitso*100, parametros.iva*100, parametros.soft*100, aumento_comer*100, aumento_tem*100, parametros.ganancia*100, parametros.terreno, parametros.link]
             costo_depto = costo_completo*parametros.depto/m2_proyecto
  
-            porc_terreno = porc_terreno*100
-            porc_hon = porc_hon*100
+            
 
             datos.append((datos_costo_m2, datos_porcentaje, datos_parametros, proyecto, costo_depto, parametros))
 
