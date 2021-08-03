@@ -1795,10 +1795,10 @@ def desde(request):
             costo_soft = costo_iva+(costo * parametros.soft)
             # Calculo del terreno
             costo_terreno = 0
-            porc_terreno =  parametros.terreno/m2_proyecto*100
+            porc_terreno =  parametros.terreno/m2_proyecto
             # Calculo del honorario
             costo_honorario = 0
-            porc_hon =  parametros.link/m2_proyecto*100
+            porc_hon =  parametros.link/m2_proyecto
             # Calculo del TEM
             costo_tem = 0
             aumento_tem =  parametros.tem_iibb*parametros.por_temiibb
