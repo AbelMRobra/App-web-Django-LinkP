@@ -1753,9 +1753,9 @@ def desde(request):
             # Valor con ganancia
             valor_ganancia = costo_completo*(1 + parametros.ganancia)
             # Recalculamos
-            costo_terreno = (valor_ganancia * porc_terreno - costo_completo*porc_terreno) + costo_soft
-            costo_honorario = (valor_ganancia * porc_hon - costo_completo*porc_hon)  + costo_terreno
-            costo_comer = costo_completo - valor_ganancia * aumento_comer * (1 - porc_terreno - porc_hon)
+            costo_terreno = costo_completo*porc_terreno + costo_soft
+            costo_honorario = costo_completo*porc_hon + costo_terreno
+            costo_comer = valor_ganancia * aumento_comer * (1 - porc_terreno - porc_hon) + costo_honorario
             costo_tem = costo_completo
             costo_depto = costo_completo*parametros.depto/parametros.proyecto.m2
             
