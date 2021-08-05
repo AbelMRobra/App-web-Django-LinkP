@@ -109,31 +109,39 @@
 
                 <div class="table-responsive">
 
-                    <table id="exemple" class="table">
-
+                    <table id="exemple" class="table" width="99%">
                         <tbody>
                             {% for i in data %}
                             <tr>
-                                <td style="width: 10px; vertical-align: top;">
-                                    {% if request.user|has_group:"RRHH NIVEL 1" %}
-                                    <form method="POST">
-                                        <button class="btn btn-link fa fa-trash text-danger d-flex align-content-end" type="submit"
-                                            name="delete" value="{{i.id}}" style="text-decoration: none;"></button>
-
-                                        {% csrf_token %}
-                                    </form>
-                                    {% endif %}
-
+                                <td style="width: 70px;">
+                                    <img src="{% static 'img/rrhh_files.png' %}" width="40" class="img-circle">
                                 </td>
 
                                 <td>
-                                    <h6 style="font-size: 14px;"><a href="#">Nombre:
-                                            {{i.nombre}}</a> - <a href="{{i.adjunto.url}}"
-                                            class="fa fa-file-o text-warning"></a></h6>
-                                    <h6 class="card-subtitle" style="font-size: 12px;">Descripción:
+                                    <h6><a href="{{i.adjunto.url}}" target="_blank">Nombre:
+                                            {{i.nombre}}</a></h6>
+                                    <h6 class="card-subtitle" style="margin-top: 5px;">Descripción:
                                         "{{i.descrip}}"</h6>
                                 </td>
+                                <td style="width: 5px; vertical-align: top;">
+                                    {% if request.user|has_group:"RRHH NIVEL 1" %}
+                                    <div class="btn-group ml-auto">
+                                        <a href="JavaScript:void(0)" class="icon-options-vertical link"
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
+                                        <div class="dropdown-menu dropdown-menu-right">
+                                            <a class="dropdown-item" ><i
+                                                    class="fa fa-pencil-square-o mr-2"></i>Editar archivo</a>
+                                            <form method="POST">
+                                                {% csrf_token %}
+                                                <button class="dropdown-item" type="submit" name="delete" value="{{i.id}}">
+                                                    <i class="fa fa fa-trash text-danger mr-2"></i>
+                                                    Borrar archivo</button>
+                                            </form>
 
+                                        </div>
+                                    </div>
+                                    {% endif %}
+                                </td>
 
                             </tr>
                             {% endfor %}

@@ -19,12 +19,18 @@ def archivosrrhh(request):
     data = ArchivosGenerales.objects.all()
 
     if request.method == 'POST':
-        new_r = ArchivosGenerales(
-            nombre = request.POST['nombre'],
-            descrip = request.POST['descrip'],
-            adjunto = request.FILES['adjunto'],
-        )
-        new_r.save()
+
+        try:
+            new_r = ArchivosGenerales(
+                nombre = request.POST['nombre'],
+                descrip = request.POST['descrip'],
+                adjunto = request.FILES['adjunto'],
+            )
+            new_r.save()
+
+        except:
+            delete_archivo = ArchivosGenerales.objects.get(id = request.POST["delete"])
+            delete_archivo.delete()
 
     return render(request, 'archivos_rrh/archivos_principal.html', {'data':data})
 
