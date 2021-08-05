@@ -158,9 +158,9 @@
                                     Tipo
                                 </button>
                                 <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja 0 mes year %}">General</a>
-                                    <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja 2 mes year %}">Gastos</a>
-                                    <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja 1 mes year %}">Ingresos</a>
+                                    <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja user_caja 0 mes year %}">General</a>
+                                    <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja user_caja 2 mes year %}">Gastos</a>
+                                    <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja user_caja 1 mes year %}">Ingresos</a>
 
             
                                 </div>
@@ -171,19 +171,19 @@
                                     Mes
                                 </button>
                                 <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja estado 0 year %}">Todos</a>
-                                   <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja estado 1 year %}">Enero</a>
-                                   <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja estado 2 year %}">Febrero</a>
-                                   <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja estado 3 year %}">Marzo</a>
-                                   <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja estado 4 year %}">Abril</a>
-                                   <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja estado 5 year %}">Mayo</a>
-                                   <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja estado 6 year %}">Junio</a>
-                                   <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja estado 7 year %}">Julio</a>
-                                   <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja estado 8 year %}">Agosto</a>
-                                   <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja estado 9 year %}">Septiembre</a>
-                                   <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja estado 10 year %}">Octubre</a>
-                                   <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja estado 11 year %}">Noviembre</a>
-                                    <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja estado 12 year %}">Diciembre</a>
+                                    <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja user_caja estado 0 year %}">Todos</a>
+                                   <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja user_caja estado 1 year %}">Enero</a>
+                                   <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja user_caja estado 2 year %}">Febrero</a>
+                                   <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja user_caja estado 3 year %}">Marzo</a>
+                                   <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja user_caja estado 4 year %}">Abril</a>
+                                   <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja user_caja estado 5 year %}">Mayo</a>
+                                   <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja user_caja estado 6 year %}">Junio</a>
+                                   <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja user_caja estado 7 year %}">Julio</a>
+                                   <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja user_caja estado 8 year %}">Agosto</a>
+                                   <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja user_caja estado 9 year %}">Septiembre</a>
+                                   <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja user_caja estado 10 year %}">Octubre</a>
+                                   <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja user_caja estado 11 year %}">Noviembre</a>
+                                    <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja user_caja estado 12 year %}">Diciembre</a>
        
                                 </div>
          
@@ -195,7 +195,7 @@
                                    </button>
                                    <div class="dropdown-menu">
                                      {% for i in list_year %}
-                                       <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja estado mes i %}">{{i}}</a>
+                                       <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja user_caja estado mes i %}">{{i}}</a>
                                         {% endfor %}           
                                     </div>
                 

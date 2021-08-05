@@ -15,7 +15,8 @@ from proyectos.models import Proyectos, Unidades
 from ventas.models import VentasRealizadas
 from compras.models import Compras, Comparativas, AvisoOrdenesCompras
 from registro.models import RegistroValorProyecto
-from rrhh.models import datosusuario, mensajesgenerales, NotaDePedido, Vacaciones, MonedaLink, EntregaMoneda, Anuncios, Seguimiento, Minutas, Acuerdos, PremiosMonedas, Logros, RegistroContable, CanjeMonedas, DicRegistroContable, Atajos, ArqueoChanchito
+from rrhh.models import datosusuario, mensajesgenerales, NotaDePedido, Vacaciones, MonedaLink, EntregaMoneda, Anuncios, Seguimiento, Minutas, Acuerdos, PremiosMonedas, Logros, RegistroContable, CanjeMonedas, DicRegistroContable, ArqueoChanchito
+from .models import Atajos
 import datetime
 import requests
 from datetime import date
@@ -985,12 +986,44 @@ def dashboard(request):
 
 def inicio(request):
 
+    context = {}
+    context["todos_atajos"] = Atajos.objects.all()
+    datos_vista_usuario = {}
+
+    if request.method == 'POST':
+        try:
+            try:
+                atajo_a_salir = Atajos.objects.get(id = int(request.POST["atajo_delete"]))
+                atajo_a_salir.usuario.remove(datosusuario.objects.get(identificacion = request.user.username))
+            except:
+                atajo_a_entrar = Atajos.objects.get(id = int(request.POST["atajo_entrar"]))
+                atajo_a_entrar.usuario.add(datosusuario.objects.get(identificacion = request.user.username))
+        except:
+            if request.POST['tutorial']:
+                usuario = datosusuario.objects.get(identificacion = request.user.username)
+                usuario.tutorial = "SI"
+                usuario.save()
+
+
+    #  Atajos
     try:
+
         usuario = datosusuario.objects.get(identificacion = request.user.username)
+        atajos = Atajos.objects.filter(usuario = usuario)
+        datos_vista_usuario["usuario"] = usuario
+        datos_vista_usuario["atajos"] = atajos
+        datos_vista_usuario["cantidad_atajos"] = len(Atajos.objects.filter(usuario = usuario))
     except:
+
         usuario = 0
+        datos_vista_usuario["usuario"] = 0
+        datos_vista_usuario["atajos"] = 0
+        datos_vista_usuario["cantidad_atajos"] = 0
+
+    context["datos_vista_usuario"] = datos_vista_usuario
 
     # Saludo de bienvenida
+
     hora_actual = datetime.datetime.now()
     if hora_actual.hour >= 20:
         mensaje_bievenida = "¡Buenas noches {}!".format(request.user.first_name)
@@ -999,13 +1032,8 @@ def inicio(request):
     else:
         mensaje_bievenida = "¡Buen dia {}!".format(request.user.first_name)
 
-    # ---> Grupo de vista del usuario
+    context["mensaje_bievenida"] = mensaje_bievenida
 
-    datos_vista_usuario = {}
-    
-    # Atajos
-    atajos = Atajos.objects.all()
-    datos_vista_usuario["atajos"] = atajos
     # Seguimiento de proyectos
 
     data_proyecto_siguiendo = []
@@ -1026,6 +1054,7 @@ def inicio(request):
         data_proyecto_siguiendo = 0
     
     datos_vista_usuario["data_proyecto_siguiendo"] = data_proyecto_siguiendo
+    
     # La creación de monedas
 
     usuarios = datosusuario.objects.all().exclude(estado = "NO ACTIVO")
@@ -1338,22 +1367,27 @@ def inicio(request):
 
     miembros = datosusuario.objects.all().order_by("identificacion").exclude(estado = "NO ACTIVO")
 
-    cantidad_m = len(datosusuario.objects.all())
-    cantidad_p = len(Proyectos.objects.all())
-
     hoy = datetime.date.today()
-    inicio = datetime.date(2020, 5, 1)
-    dias_funcionando = (hoy - inicio).days
-    monedas = len(EntregaMoneda.objects.filter(fecha__gte = datetime.date.today(), usuario_recibe__identificacion = request.user))
-    anuncios = Anuncios.objects.all().exclude(activo = "NO").order_by("-id")
 
-    #######################################
-    # Parte de minutas
-    #######################################
+    ## -> Parte de si recibiste monedas hoy
+
+    if len(EntregaMoneda.objects.filter(fecha__gte = datetime.date.today(), usuario_recibe__identificacion = request.user)) > 0:
+        moneda_mensaje = EntregaMoneda.objects.filter(fecha__gte = datetime.date.today(), usuario_recibe__identificacion = request.user)[0]
+        context["monedas"] = (1, moneda_mensaje)
+    
+    else:
+        context["monedas"] = 0
+
+    ## -> Anuncios
+    anuncios = Anuncios.objects.all().exclude(activo = "NO").order_by("-id")
+    context["anuncios"] = anuncios
+
+    ## -> Minutas
 
     minutas_cantidad = len(Acuerdos.objects.filter(responsable__identificacion = request.user.username, estado="NO CHECK"))
 
     minutas_cantidad_data = Acuerdos.objects.filter(responsable__identificacion = request.user.username, estado="NO CHECK")
+    
     ########################################
     # OC observadas por SP
     ########################################
@@ -1378,14 +1412,22 @@ def inicio(request):
     else:
         avisos_comparativas={}
 
+    context["avisos_comparativas"] = avisos_comparativas
+    context["lista_grupos"] = lista_grupos
+    context["miembros"] = miembros
+    context["minutas_cantidad_data"] = minutas_cantidad_data
+    context["mensaje_oc"] = mensaje_oc
+    context["sp_oc"] = sp_oc
+    context["minutas_cantidad"] = minutas_cantidad
+    context["mensajesdeldia"] = mensajesdeldia
+    context["datos_barras"] = barras
+    context["datos_logo"] = datos_logo
+    context["datos_mensajeria"] = datos_mensajeria
+    context["mensajesdeldia"] = mensajesdeldia
 
-    return render(request, "users/inicio2.html", {"datos_vista_usuario":datos_vista_usuario,'avisos_comparativas':avisos_comparativas,
-                                                 "mensaje_bievenida":mensaje_bievenida, "minutas_cantidad_data":minutas_cantidad_data, 
-                                                 "sp_oc":sp_oc, "minutas_cantidad":minutas_cantidad, "anuncios":anuncios, "monedas":monedas, 
-                                                 "dias_funcionando":dias_funcionando, "cantidad_p":cantidad_p, "cantidad_m":cantidad_m,
-                                                  "datos_barras":barras, "datos_logo":datos_logo, "mensaje_oc":mensaje_oc,
-                                                   "mensajesdeldia":mensajesdeldia, "datos_mensajeria":datos_mensajeria,
-                                                    "lista_grupos":lista_grupos, "miembros":miembros})
+
+    return render(request, "users/inicio2.html", context)
+    
 def welcome(request):
     # Si estamos identificados devolvemos la portada
     if request.user.is_authenticated:
@@ -2062,9 +2104,10 @@ def registro_contable_cajas(request):
 
     return render(request, 'users/registro_contable_cajas.html', {'total_cajas':total_cajas, 'cajas_administras':cajas_administras, "user":user})
 
-def registro_contable_caja(request, caja, estado, mes, year):
+def registro_contable_caja(request, caja, user_caja, estado, mes, year):
     mes = mes
     year = year
+
     user = datosusuario.objects.get(identificacion = request.user.username)
     list_year = list(set(RegistroContable.objects.filter(usuario = user, caja = caja).values_list("fecha__year", flat=True)))
     if request.method == 'POST':
@@ -2117,14 +2160,18 @@ def registro_contable_caja(request, caja, estado, mes, year):
         except:
             pass
     
-    if estado == 0:
+    if request.user.username == user_caja:
         data = RegistroContable.objects.filter(usuario = user, caja = caja).order_by("-fecha")
-    elif estado == 1:
-        data = RegistroContable.objects.filter(usuario = user, estado = "INGRESOS", caja = caja).order_by("-fecha")
     else:
-        data = RegistroContable.objects.filter(usuario = user, estado = "GASTOS", caja = caja).order_by("-fecha")
+        data = RegistroContable.objects.filter(creador = user, caja = caja).order_by("-fecha")
     
-
+    if estado == 0:
+        data = data
+    elif estado == 1:
+        data = data.filter(estado = "INGRESOS")
+    else:
+        data = data.filter(estado = "GASTOS")
+    
     if int(mes) != 0:
         data = data.filter(fecha__month = mes)
 
@@ -2134,6 +2181,7 @@ def registro_contable_caja(request, caja, estado, mes, year):
     context = {}
     context["data"] = data
     context["caja"] = caja
+    context["user_caja"] = user_caja
     context["estado"] = estado
     context["mes"] = mes
     context["year"] = year

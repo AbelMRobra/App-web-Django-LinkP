@@ -37,11 +37,15 @@
                     </div>
                 </div>
 
+                {% if request.user|has_group:"RRHH NIVEL 1" %}
+
                 <div class="m-2">
                     <button type="button" class="btn" data-toggle="modal" data-target="#ModalArqueo"><i
                             class="fa fa-plus-circle  text-info"><span class="text-info ml-2"
                                 style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif"><b>Añadir</b></span></i></button>
                 </div>
+
+                {% endif %}
 
                 <!-- Modal fecha estado Subitem -->
                 <div class="modal fade" id="ModalArqueo" tabindex="-1" role="dialog" aria-labelledby="ModalArqueo"
@@ -112,12 +116,14 @@
                             {% for i in data %}
                             <tr>
                                 <td style="width: 10px; vertical-align: top;">
+                                    {% if request.user|has_group:"RRHH NIVEL 1" %}
                                     <form method="POST">
                                         <button class="btn btn-link fa fa-trash text-danger d-flex align-content-end" type="submit"
                                             name="delete" value="{{i.id}}" style="text-decoration: none;"></button>
 
                                         {% csrf_token %}
                                     </form>
+                                    {% endif %}
 
                                 </td>
 

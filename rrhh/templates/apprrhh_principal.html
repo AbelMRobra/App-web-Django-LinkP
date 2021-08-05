@@ -115,19 +115,12 @@
     
                     <div>
                         <img src="{% static 'img/rrhh_files.png' %}" alt="" style="max-width:100px; height:auto; margin: 5px;">
-                    </div>
-    
-                    {% if request.user|has_group:"RRHH NIVEL 1" %}
+                    </div>                   
     
                     <a href="{% url 'Archivos RRHH' %}"><button class="btn btn-dark">
                             Ingresar</button></a>
     
-                    {% else %}
-    
-                    <a href="#"><button class="btn btn-secondary">
-                        Sin permisos</button></a>
-                    {% endif %}
-    
+
                 </div>
     
             </div>

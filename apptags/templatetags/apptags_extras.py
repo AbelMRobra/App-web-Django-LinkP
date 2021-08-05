@@ -9,6 +9,18 @@ from presupuestos.models import Constantes, Registrodeconstantes
 
 register = template.Library()
 
+@register.filter('logo')
+def logo(identificacion):
+
+    try:
+        usuario = datosusuario.objects.get(identificacion = identificacion)
+        return usuario.imagenlogo.url
+
+
+    except:
+        return "{% static 'img/avatar.png' %}"
+        
+
 @register.filter('date_informe')
 def date_informe(fecha_informe):
 
@@ -44,24 +56,6 @@ def fecha_limite(fecha):
 
     else:
         return "text-danger"
-
-
-
-
-
-@register.filter('logo')
-def logo(identificacion):
-
-    try:
-
-        usuario = datosusuario.objects.get(identificacion = identificacion)
-
-        return usuario.imagenlogo.url
-
-
-    except:
-
-        return "{% static 'img/avatar.png' %}"
 
 @register.filter('has_group')
 def has_group(user, group_name):

@@ -1128,6 +1128,7 @@ Saludos!
     num_autorizada = len(Comparativas.objects.filter(estado = "AUTORIZADA"))
     num_comparativa_oc = len(Comparativas.objects.all().exclude(estado = "AUTORIZADA").exclude(adj_oc = ''))
 
+
     if creador == "0":
 
         if estado == "0":
@@ -1598,6 +1599,13 @@ def certificados(request):
 
 
 def proveedores(request):
+
+    def a():
+        return 10
+
+    b = {1:2, 2:3, 4:6}
+
+    print(b.get(6))
 
     datos = Proveedores.objects.all()
 

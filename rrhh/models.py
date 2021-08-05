@@ -1,3 +1,4 @@
+from statistics import mode
 from django.db import models
 from proyectos.models import Proyectos
 
@@ -44,7 +45,12 @@ class datosusuario(models.Model):
     class estados(models.TextChoices):
 
         ACTIVO = "ACTIVO"
-        NO_ACTIVO = "NO ACTIVO"
+        NO = "NO ACTIVO"
+
+    class check_tuto(models.TextChoices):
+
+        SI = "SI"
+        NO = "NO"
 
 
     identificacion = models.CharField(max_length=200, verbose_name="Identificacion")
@@ -60,7 +66,7 @@ class datosusuario(models.Model):
     Telefono = models.CharField(max_length=200, verbose_name="Telefono", blank=True, null=True)
     Comentarios = models.TextField(verbose_name="Comentarios", blank=True, null=True)
     proyecto = models.ForeignKey(Proyectos, on_delete=models.CASCADE, verbose_name = "Proyecto que sigue", blank=True, null=True)
-
+    tutorial = models.CharField(choices=check_tuto.choices, default=check_tuto.NO, max_length=20, verbose_name="Tutorial", blank=True, null=True)
 
     class Meta:
         verbose_name="Dato de usuario"

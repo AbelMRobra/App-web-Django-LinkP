@@ -259,7 +259,7 @@
                     <div style="width: 8%;" class="mx-4 my-2">
                         <div class="row" style="background:linear-gradient(135deg, #31467a 0%,#13bbe1 100%); border-radius: 5px;">
                             <div class="col-12 text-center mt-2">
-                                <img src="{{i.0.imagenlogo.url}}" class="rounded"
+                                <img src="{% if i.0.imagenlogo %}{{i.0.imagenlogo.url}}{% else %}{% static 'img/anonimo2.png' %}{% endif %}" class="rounded"
                                         style="width: 30px;" alt="">
                             </div>
                             <div class="col-12 text-light my-2">

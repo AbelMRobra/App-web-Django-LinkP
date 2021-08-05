@@ -5712,13 +5712,11 @@ File: scss
     padding: 12px 20px; }
   .hdr-nav-bar .call-to-act .custom-select {
     margin-bottom: 10px; }
-  .d-flex {
-    display: block !important; }
-    .d-flex.no-block {
-      display: -webkit-box !important;
-      display: -webkit-flex !important;
-      display: -ms-flexbox !important;
-      display: flex !important; } }
+  .d-flex.no-block {
+    display: -webkit-box !important;
+    display: -webkit-flex !important;
+    display: -ms-flexbox !important;
+    display: flex !important; } }
 
 /*-- ============================================================== 
  Ipad & above all(768px) 
