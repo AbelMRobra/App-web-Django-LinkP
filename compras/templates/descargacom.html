@@ -5,10 +5,7 @@
 
 {% block content %}
 
-<div class="container-fluid r-aside">
-    <!-- ============================================================== -->
-    <!-- Bread crumb and right sidebar toggle -->
-    <!-- ============================================================== -->
+<div class="container-fluid">
     <div class="row page-titles">
         <div class="col-md-5 align-self-center">
             <h3 class="text-themecolor">Descarga de solicitudes</h3>
@@ -21,77 +18,65 @@
                 <li class="breadcrumb-item">Descargas</li>
             </ol>
         </div>
-  
     </div>
-  
-  </div>
-
-  <div class="row">
-    <div class="col-12">
-        <div class="card">
-
-            <div class="card-body">
-    <form  role="form"  enctype="multipart/form-data" action="" method="POST" id="upload-image-form" style="margin: 30px;"> 
-        {% csrf_token %}
-
-
-        <div style="margin: 5px">
-
-            <div style="display: inline-block; margin: 10px; width: 200px;">
-
-                <label for="fechai"><h6>Fecha inicial</h6></label>
-    
-            </div>
-            
-            <div style="display: inline-block; margin: 10px; ">
-    
-                <input name="fechai" type="date" class="form-control form-control" style="width: 300px;">
-    
-            </div>
-
-
-        </div>
-
-        <div style="margin: 5px">
-
-            <div style="display: inline-block; margin: 10px; width: 200px;">
-
-                <label for="fechaf"><h6>Fecha final</h6></label>
-    
-            </div>
-            
-            <div style="display: inline-block; margin: 10px; ">
-    
-                <input name="fechaf" type="date" class="form-control form-control" style="width: 300px;">
-    
-            </div>
-
-
-        </div>
-
-            <button type="submit" class="btn waves-effect waves-light btn-sm btn-success"> <img src="{% static 'img/sobresalir.png' %}" alt="" style="max-width:20px; height:auto; margin: 2px;"> Descargar</button>
-
-
-        {{ form.as_p }}
-    </form>
-
-    <datalist id="provee"> 
-
-        {% for i in proveedores %}
-        
-        <option value="{{ i.name }}">({{i.id}})</option>
-
-        {% endfor %}
-
-    </datalist>
-
-
-        </div>
-    </div>
-
- </div>
-                
 </div>
 
+<div class="row">
+    <div class="col">
+        <div class="card">
+            <div class="card-body">
+                <div class="mb-4">
+                    <h4 class="card-title"><span class="lstick"></span>Panel de solicitudes</h4>
+                    <h6 class="card-subtitle">Ordenes de compra o comparativas para ser aprobadas</h6>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-lg-6">
+
+                        <form role="form" enctype="multipart/form-data" action="" method="POST" id="upload-image-form">
+                            {% csrf_token %}
+                            <div class="row mb-4 ">
+                                <div class="col-6">
+                                    <div>
+                                        <label for="fechai">
+                                            <h6>Fecha inicial</h6>
+                                        </label>
+                                    </div>
+        
+                                    <div>
+                                        <input name="fechai" type="date" class="form-control form-control"
+                                            style="width: 220px;">
+                                    </div>
+                                </div>
+        
+                                <div class="col-12 col-lg-6">
+                                    <div>
+                                        <label for="fechaf">
+                                            <h6>Fecha final</h6>
+                                        </label>
+                                    </div>
+        
+                                    <div>
+                                        <input name="fechaf" type="date" class="form-control form-control"
+                                            style="width: 220px;">
+                                    </div>
+                                </div>
+                            </div>
+        
+                            <button type="submit" class="btn btn-success">Descargar</button>
+                            {{ form.as_p }}
+                        </form>
+        
+                        <datalist id="provee">
+                            {% for i in proveedores %}
+                            <option value="{{ i.name }}">({{i.id}})</option>
+                            {% endfor %}
+                        </datalist>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
 
 {% endblock %}

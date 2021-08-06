@@ -24,14 +24,21 @@
     <div class="col-12">
         <div class="card overflow-auto">
             <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div>
 
-                <div style="margin: 2px; text-align: left;">
+                        <h4 class="card-title"><span class="lstick m-r-20"></span>Panel de sugerencias</h4>
+                        <h4 class="card-subtitle"></span>Panel de sugerencias para mejorar link-p</h4>
+                    </div>
+                    <div class="btn-group ml-auto">
+                        <a href="JavaScript:void(0)" class="icon-options-vertical link" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false"></a>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a class="dropdown-item" href="/presupuestos/insumcreate"><i
+                                    class="fa fa-plus-circle mr-2"></i>Añadir</a>
 
-                    <a href="/presupuestos/insumcreate" class="fa fa-plus-circle">
-                        <span
-                            style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif"><b>Añadir</b></span>
-                    </a>
-
+                        </div>
+                    </div>
                 </div>
 
                 <table id="example" class="table table-striped table-bordered" style="width:100%">
@@ -43,6 +50,7 @@
                             <th>Valor</th>
                             <th>Creación</th>
                             <th>Constante</th>
+                            <th></th>
 
                         </tr>
                     </thead>
@@ -52,20 +60,25 @@
                         {% for i in articulos %}
                         <tr style="font-size: 12px;">
 
-                            <td style="text-align: left;">
-                                <a href="{% url 'Editar_insumo' i.codigo %}" class="fa fa-pencil-square-o fa-lg"
-                                    style="padding: 1px;">
-                                </a>
-                                <a href="{% url 'Eliminar_insumo' i.codigo %}" class="fa fa-trash fa-lg text-danger"
-                                    style="padding: 1px;">
-                                </a>
-                                {{i.nombre|lower|capfirst}}
-                            </td>
-                            <td> <b>{{i.codigo}}</b> </td>
+                            <td> {{i.nombre|lower|capfirst}} </td>
+                            <td>{{i.codigo}}</td>
                             <td>{{i.unidad}}</td>
                             <td>${{i.valor|floatformat:0|intcomma}}</td>
-                            <td>{{i.fecha_c}}</td>
+                            <td>{{i.fecha_c|date:"d-m-Y"}}</td>
                             <td>{{i.constante}}</td>
+                            <td>
+                                <div class="btn-group ml-auto">
+                                    <a href="JavaScript:void(0)" class="icon-options-vertical link" data-toggle="dropdown"
+                                        aria-haspopup="true" aria-expanded="false"></a>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" href="{% url 'Editar_insumo' i.codigo %}" ><i
+                                                class="fa fa-pencil-square-o mr-2"></i>Editar</a>
+                                        <a class="dropdown-item" href="{% url 'Eliminar_insumo' i.codigo %}" ><i
+                                                class="fa fa-trash text-danger mr-2"></i>Borrar</a>
+        
+                                    </div>
+                                </div>
+                            </td>
 
                         </tr>
                         {% endfor %}

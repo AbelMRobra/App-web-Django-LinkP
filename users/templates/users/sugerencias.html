@@ -8,7 +8,7 @@
 <div class="container-fluid ">
     <div class="row page-titles">
         <div class="col-md-5 align-self-center">
-            <h3 class="text-themecolor">Sugerencias</h3>
+            <h3 class="text-themecolor">Buzon de sugerencias</h3>
         </div>
         <div class="col-md-7 align-self-center">
             <ol class="breadcrumb">
@@ -20,18 +20,29 @@
 </div>
 
 <div class="row">
-    <div class="col-12 col-md-12 col-lg-10">
+    <div class="col-12">
         <div class="card">
             <div class="card-body">
                 <div class="row">
-                    <div class="col-12 col-md-12 col-lg-11">
-                        <h4 class="card-title"><span class="lstick m-r-20"></span>Panel de sugerencias</h4>
+                    <div class="col-12">
+                        <div class="d-flex align-items-center">
+                            <div>
 
-                        <div>
-                            <a type="button" data-toggle="modal" data-target="#ModalCrearSugerencia"
-                                class="fa fa-lg fa-plus-circle text-info mb-4"></a>
-                            <span>Añadir</span>
+                                <h4 class="card-title"><span class="lstick m-r-20"></span>Panel de sugerencias</h4>
+                                <h4 class="card-subtitle"></span>Panel de sugerencias para mejorar link-p</h4>
+                            </div>
+                            <div class="btn-group ml-auto">
+                                <a href="JavaScript:void(0)" class="icon-options-vertical link" data-toggle="dropdown"
+                                    aria-haspopup="true" aria-expanded="false"></a>
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    <a class="dropdown-item" href="#" data-toggle="modal"
+                                        data-target="#ModalCrearSugerencia"><i
+                                            class="fa fa-plus-circle mr-2"></i>Añadir</a>
+
+                                </div>
+                            </div>
                         </div>
+
 
 
                         <!-- Modal Respuesta -->
@@ -39,53 +50,45 @@
                             aria-labelledby="ModalCrearSugerenciaTitle" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered" role="document">
                                 <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLongTitle">
+                                    <div class="modal-header" style="background-color: #2a3e52;">
+                                        <h5 class="modal-title text-light" id="exampleModalLongTitle">
                                             Agergar sugerencia </h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <button type="button" class="close text-light" data-dismiss="modal"
+                                            aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
                                     </div>
                                     <div class="modal-body">
                                         <form method="POST" style="margin: 15px;" enctype="multipart/form-data"
                                             id="upload-image-form">
-
                                             {% csrf_token %}
 
                                             <h6>Sugerencia</h6>
-
                                             <div class="input-group mb-3">
-
                                                 <input name="nombre" type="text" class="form-control form-control"
                                                     style="width: 300px;">
                                             </div>
+
                                             <h6>Descripcion</h6>
-
                                             <div class="input-group mb-3">
-
                                                 <textarea name="descripcion" cols="100" rows="4"
                                                     class="form-control"></textarea>
                                             </div>
 
                                             <h6>Archivo</h6>
-
                                             <div class="input-group mb-3">
-
                                                 <input name="adjunto" type="file" class="" style="width: 300px;">
                                             </div>
-
                                             <button type="submit" class="btn btn-info">
                                                 <b>Cargar</b></button>
 
                                             {{ form.as_p }}
 
                                         </form>
-
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary"
                                             data-dismiss="modal">Cerrar</button>
-
                                     </div>
                                 </div>
                             </div>
@@ -95,41 +98,29 @@
 
                         <div class="row mt-3">
                             <div class="col-12">
-
                                 <div class="table-responsive m-t-4">
                                     <table class="table" style="width: 99%;">
                                         <thead>
                                             <tr>
                                                 <th>Creador</th>
                                                 <th>Sugerencia</th>
-                                                <!-- <th>Respuesta</th>-->
                                                 <th>Prioridad</th>
                                                 <th style="text-align: center;">Estado</th>
+                                                <th></th>
                                             </tr>
                                         </thead>
                                         <tbody>
 
-
                                             {% for i in data %}
                                             <tr>
-                                                <td>{{i.usuario.identificacion}}</td>
                                                 <td>
-                                                    
-                                                    <div>  
-                                                        
-                                                        
-                                                        
-                                                        {% if i.usuario.identificacion == request.user.username %}
+                                                    <img src="{{i.usuario.imagenlogo.url}}" alt="usuario" width="30">
+                                                    {{i.usuario.nombre}}
+                                                </td>
+                                                <td>
+                                                    <div>
                                                         <a href="#" data-toggle="modal"
-                                                        data-target="#ModalEditar{{i.id}}"><i
-                                                            class="fa fa-lg fa-pencil-square-o"
-                                                            aria-hidden="true"></i></a>
-                                                        
-                                                        {% endif %}
-                                                        
-                                                            <a href="#" data-toggle="modal"
-                                                            data-target="#ModalDescripcion{{i.id}}"><span>{{i.nombre}}</span></i></a>
-
+                                                            data-target="#ModalDescripcion{{i.id}}"><span>{{i.nombre|lower|capfirst}}</span></i></a>
 
                                                         {% if i.adjunto %}
 
@@ -143,11 +134,13 @@
                                                     aria-hidden="true">
                                                     <div class="modal-dialog modal-dialog-centered" role="document">
                                                         <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title" id="exampleModalLongTitle">
+                                                            <div class="modal-header"
+                                                                style="background-color: #2a3e52;">
+                                                                <h5 class="modal-title text-light"
+                                                                    id="exampleModalLongTitle">
                                                                     Descripcion </h5>
-                                                                <button type="button" class="close" data-dismiss="modal"
-                                                                    aria-label="Close">
+                                                                <button type="button" class="close text-light"
+                                                                    data-dismiss="modal" aria-label="Close">
                                                                     <span aria-hidden="true">&times;</span>
                                                                 </button>
                                                             </div>
@@ -166,21 +159,19 @@
 
                                                 </div>
 
-                                                <!--  <td>
-                                                            <a href="#" data-toggle="modal"
-                                                                data-target="#ModalRespuesta"><i
-                                                                    class="fa fa-comments-o" aria-hidden="true"></i></a>
-                                                        </td>-->
                                                 <!-- Modal Respuesta -->
-                                                <div class="modal fade" id="ModalRespuesta" tabindex="-1" role="dialog"
-                                                    aria-labelledby="ModalRespuestaTitle" aria-hidden="true">
+                                                <div class="modal fade" id="ModalRespuesta{{i.id}}" tabindex="-1"
+                                                    role="dialog" aria-labelledby="ModalRespuesta{{i.id}}"
+                                                    aria-hidden="true">
                                                     <div class="modal-dialog modal-dialog-centered" role="document">
                                                         <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title" id="exampleModalLongTitle">
-                                                                    Respuesta </h5>
-                                                                <button type="button" class="close" data-dismiss="modal"
-                                                                    aria-label="Close">
+                                                            <div class="modal-header"
+                                                                style="background-color: #2a3e52;">
+                                                                <h5 class="modal-title text-light"
+                                                                    id="exampleModalLongTitle">
+                                                                    Hola {{i.usuario}} gracias por tu mensaje! </h5>
+                                                                <button type="button" class="close text-light"
+                                                                    data-dismiss="modal" aria-label="Close">
                                                                     <span aria-hidden="true">&times;</span>
                                                                 </button>
                                                             </div>
@@ -197,11 +188,9 @@
                                                                         <b>Enviar</b></button>
 
                                                                 </form>
-                                                                <h6>Hola JNT agradecemos tu sugerencia gracias
-                                                                    al
-                                                                    adjunto encontramos cuales eran los botones
-                                                                    que
-                                                                    faltaban modificar</h6>
+                                                                {% if i.respuesta %}
+                                                                <h6>{{i.respuesta}}</h6>
+                                                                {% endif %}
 
                                                             </div>
 
@@ -212,55 +201,105 @@
                                                             </div>
                                                         </div>
                                                     </div>
-
                                                 </div>
                                                 <td>
-                                                    <span>{{i.prioridad}}</span>
+                                                    <span>{{i.prioridad|lower|capfirst}}</span>
                                                 </td>
 
                                                 <td style="text-align: center; vertical-align: top;">
-
                                                     {% if i.estado == "LISTO" %}
-
-                                                    <img src="{% static 'img/cheque.png' %}" alt=""
-                                                        style="max-width:21px; height:auto; vertical-align: top;">
-
-
+                                                    <div><i class="fa fa-lg fa-check-circle-o text-success"
+                                                            aria-hidden="true"></i></div>
                                                     {% elif i.estado == "ESPERA"%}
-
                                                     {% if user.username == "AR" %}
-
                                                     <form method="POST">
                                                         {% csrf_token %}
                                                         <button class="btn" type="submit" name="ENTREGADO"
-                                                            style="padding: 0%;" value="{{i.id}}"><img
-                                                                src="{% static 'img/advertir.png' %}" alt=""
-                                                                style="max-width:21px; height:auto; vertical-align: top;"></button>
+                                                            style="padding: 0%;" value="{{i.id}}"><i
+                                                                class="fa fa-lg fa-clock-o text-info"
+                                                                aria-hidden="true"></i></button>
                                                     </form>
-
                                                     {% else %}
-
-                                                    <img src="{% static 'img/advertir.png' %}" alt=""
-                                                        style="max-width:21px; height:auto; vertical-align: top;">
-
+                                                    <i class="fa fa-lg fa-clock-o text-info" aria-hidden="true"></i>
                                                     {% endif %}
-
                                                     {% endif %}
                                                 </td>
+
+                                                {% if i.usuario.identificacion == request.user.username %}
+
                                                 <td>
-                                                  
-
+                                                    <div class="btn-group ml-auto">
+                                                        <a href="JavaScript:void(0)" class="icon-options-vertical link"
+                                                            data-toggle="dropdown" aria-haspopup="true"
+                                                            aria-expanded="false"></a>
+                                                        <div class="dropdown-menu dropdown-menu-right">
+                                                            <a class="dropdown-item" href="#" data-toggle="modal"
+                                                                data-target="#ModalEditar{{i.id}}"><i
+                                                                    class="fa fa-pencil mr-2"></i>Editar</a>
+                                                            <a class="dropdown-item" href="#" data-toggle="modal"
+                                                                data-target="#ModalRespuesta{{i.id}}"><i
+                                                                    class="fa fa-comments-o mr-2"></i>Mensaje</a>
+                                                            <a class="dropdown-item text-danger" href="#"
+                                                                data-toggle="modal"
+                                                                data-target="#ModalBorrar{{i.id}}"><i
+                                                                    class="fa fa-trash-o mr-2"></i>Borrar</a>
+                                                        </div>
+                                                    </div>
                                                 </td>
+                                                {% endif %}
+                                                <div class="modal fade" id="ModalBorrar{{i.id}}" tabindex="-1"
+                                                    role="dialog" aria-labelledby="ModalBorrar{{i.id}}"
+                                                    aria-hidden="true">
+                                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header"
+                                                                style="background: rgb(36,160,237); background: linear-gradient(315deg, rgba(36,160,237,1) 0%, rgba(56,56,130,1) 22%, rgba(0,212,255,1) 100%);">
+                                                                <h5 class="modal-title text-light"
+                                                                    id="exampleModalLongTitle">Borrar
+                                                                    sugerencia
+                                                                </h5>
+                                                                <button type="button" class="close text-light"
+                                                                    data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <form method="POST">
+
+                                                                    {% csrf_token %}
+
+                                                                    <p class="my-2">¿{{i.usuario}} Está seguro que desea
+                                                                        borrar tu sugerencia?</p>
+
+                                                                    <div>
+                                                                        <button class="btn btn-danger" type="submit"
+                                                                            name="eliminar" value="{{i.id}}"
+                                                                            style="margin-top: 10px;">Borrar</button>
+
+                                                                    </div>
+                                                                </form>
+
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-info"
+                                                                    data-dismiss="modal">Cerrar</button>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                                 <div class="modal fade" id="ModalEditar{{i.id}}" tabindex="-1"
                                                     role="dialog" aria-labelledby="ModalEditar{{i.id}}Title"
                                                     aria-hidden="true">
                                                     <div class="modal-dialog modal-dialog-centered" role="document">
                                                         <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title" id="exampleModalLongTitle">
+                                                            <div class="modal-header"
+                                                                style="background-color: #2a3e52;">
+                                                                <h5 class="modal-title text-light"
+                                                                    id="exampleModalLongTitle">
                                                                     Editar </h5>
-                                                                <button type="button" class="close" data-dismiss="modal"
-                                                                    aria-label="Close">
+                                                                <button type="button" class="close text-light"
+                                                                    data-dismiss="modal" aria-label="Close">
                                                                     <span aria-hidden="true">&times;</span>
                                                                 </button>
                                                             </div>
@@ -268,41 +307,34 @@
                                                                 <form method="POST" style="margin: 15px;"
                                                                     enctype="multipart/form-data"
                                                                     id="upload-image-form">
-
                                                                     {% csrf_token %}
 
                                                                     <h6>Sugerencia</h6>
-
                                                                     <div class="input-group mb-3">
-
                                                                         <input name="nombre" type="text"
                                                                             class="form-control form-control"
                                                                             style="width: 300px;" value="{{i.nombre}}">
                                                                     </div>
+
                                                                     <h6>Descripcion</h6>
-
                                                                     <div class="input-group mb-3">
-
                                                                         <textarea name="descripcion" cols="100" rows="4"
                                                                             class="form-control">{{i.descripcion}}</textarea>
                                                                     </div>
 
                                                                     <h6>Archivo</h6>
-
                                                                     <div class="input-group mb-3">
-
                                                                         <input name="adjunto" type="file" class=""
                                                                             style="width: 300px;">
                                                                     </div>
 
-                                                                    <button type="submit" name="id" value="{{i.id}}" class="btn btn-info">
+                                                                    <button type="submit" name="id" value="{{i.id}}"
+                                                                        class="btn btn-info">
                                                                         <b>Editar</b></button>
-
                                                                     {{ form.as_p }}
 
                                                                 </form>
                                                             </div>
-
                                                             <div class="modal-footer">
                                                                 <button type="button" class="btn btn-secondary"
                                                                     data-dismiss="modal">Cerrar</button>
@@ -312,11 +344,9 @@
                                                     </div>
                                                 </div>
                                             </tr>
-
                                             {% endfor %}
                                         </tbody>
                                     </table>
-
                                 </div>
                             </div>
                         </div>
@@ -327,29 +357,5 @@
     </div>
 </div>
 
-<aside class="right-side-panel">
-    <h3 class="p-relative"><span class="lstick"></span>¿Como funciona?</h3>
-    <div class="row">
-        <div class="col-md-12 m-t-10">
-            <div class="card">
-                <div class="card-body">
-                    <img src="{% static 'img/33635-worker-have-an-idea.gif' %}" alt="Funny image" width="200px">
-                    <p><b class="text-dark">Sugerencias</b> Realiza sugerencias o reporta errores que crees que podrían
-                        mejorar el sistema o facilitar tu trabajo, estos serán revisados constantemente por el equipo
-                        técnico. </p>
-                    <p><b class="text-dark">Prioridades</b> El sistema de prioridades sirve para dar una mejor respuesta
-                        a sus sugerencias, así podemos enfocarnos mejor en solucionar primero las cosas que sean más
-                        importantes para su trabajo y confort.</p>
-                    <p><b class="text-dark">Respuesta</b> <i class="fa fa-comments-o" aria-hidden="true"></i> Recuerda
-                        cada tanto revisar si tu sugerencia no tiene una respuesta.</p>
-                    <p><b class="text-dark">Recomendacion</b> Antes de realizar una sugerencia o reportar un error
-                        recomendamos que revises si es que alguien más no lo hizo primero, esto evitara confusiones y
-                        facilitara llegar a tu problema antes.</p>
-                    <h5>Gracias por tu tiempo y por ayudar a que Link-P siga creciendo.</h5>
-                </div>
-            </div>
-        </div>
-    </div>
-</aside>
 
 {% endblock %}
