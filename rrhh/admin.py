@@ -46,7 +46,7 @@ class RegistroContableResource(resources.ModelResource):
         model = RegistroContable
 
 class RegistroContableAdmin(ImportExportModelAdmin, admin.ModelAdmin):
-    list_display = ('usuario', 'nota',  'categoria')
+    list_display = ('usuario', 'fecha', 'nota',  'categoria')
     search_fields = ('usuario__identificacion', 'nota',  'categoria')
     resources_class = RegistroContableResource
 
