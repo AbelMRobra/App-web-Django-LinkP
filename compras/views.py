@@ -1605,8 +1605,6 @@ def proveedores(request):
 
     b = {1:2, 2:3, 4:6}
 
-    print(b.get(6))
-
     datos = Proveedores.objects.all()
 
     datos_prov={}
