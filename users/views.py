@@ -2089,8 +2089,8 @@ def registro_contable_cajas(request):
             if len(RegistroContable.objects.filter(usuario = user_adm, creador = user, caja = caja).exclude(usuario = user)):
                 usuarios_participan = []
                 nombre = caja
-                ingresos = sum(np.array(RegistroContable.objects.filter(usuario = user_adm, creador = user, estado = "INGRESOS", caja = caja).exclude(usuario = user).values_list("importe", flat=True)))
-                gastos = sum(np.array(RegistroContable.objects.filter(usuario = user_adm, creador = user, estado = "GASTOS", caja = caja).exclude(usuario = user).values_list("importe", flat=True)))
+                ingresos = sum(np.array(RegistroContable.objects.filter(usuario = user_adm, estado = "INGRESOS", caja = caja).exclude(usuario = user).values_list("importe", flat=True)))
+                gastos = sum(np.array(RegistroContable.objects.filter(usuario = user_adm, estado = "GASTOS", caja = caja).exclude(usuario = user).values_list("importe", flat=True)))
                 balance = ingresos - gastos
                 usuarios_v = RegistroContable.objects.filter(usuario = user_adm, caja = caja).values_list('creador', flat = True).distinct()
                 
@@ -2163,7 +2163,7 @@ def registro_contable_caja(request, caja, user_caja, estado, mes, year):
     if request.user.username == user_caja:
         data = RegistroContable.objects.filter(usuario = user, caja = caja).order_by("-fecha")
     else:
-        data = RegistroContable.objects.filter(creador = user, caja = caja).order_by("-fecha")
+        data = RegistroContable.objects.filter(usuario = user_caja, caja = caja).order_by("-fecha")
     
     if estado == 0:
         data = data
