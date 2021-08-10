@@ -2163,7 +2163,7 @@ def registro_contable_caja(request, caja, user_caja, estado, mes, year):
     if request.user.username == user_caja:
         data = RegistroContable.objects.filter(usuario = user, caja = caja).order_by("-fecha")
     else:
-        data = RegistroContable.objects.filter(usuario = user_caja, caja = caja).order_by("-fecha")
+        data = RegistroContable.objects.filter(usuario__identificacion = user_caja, caja = caja).order_by("-fecha")
     
     if estado == 0:
         data = data
