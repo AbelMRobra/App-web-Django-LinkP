@@ -2,22 +2,19 @@
 
 {% load static %}
 {% load humanize %}
-
+{% load apptags_extras %}
 {% block content %}
 
-<!-- page css -->
+
 <link href="{% static 'adminpro/main/css/pages/footable-page.css' %}" rel="stylesheet">
 
 <div class="container-fluid r-aside">
-    <!-- ============================================================== -->
-    <!-- Bread crumb and right sidebar toggle -->
-    <!-- ============================================================== -->
     <div class="row page-titles">
         <div class="col-md-5 align-self-center">
             <h3 class="text-themecolor">Solicitudes de compra</h3>
         </div>
 
-        <div class="col-md-7 align-self-center">
+        <div class="col-md-7 col-lg-4 align-self-center">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
                 <li class="breadcrumb-item"><a href="{% url 'Principal compras' %}">Panel</a></li>
@@ -25,243 +22,279 @@
 
             </ol>
         </div>
-
     </div>
-
-  </div>
-
+</div>
 
 <div class="row">
-<div class="col-lg-9 col-xlg-9 button-group">
-    <div class="card">
-        <div class="card-body">
-            <h4 class="card-title">Panel de solicitudes</h4>
-            <h6 class="card-subtitle">Ordenes de compra o comparativas para ser aprobadas</h6>
+    <div class="col-lg-9 col-xlg-9 button-group">
+        <div class="card">
+            <div class="card-body">
 
-            <div style="text-align: left;">
-
-
-                <a href= "{% url 'Cargar O.C para autorizar' %}" class="btn" ><i
-                        class="fa fa-plus-circle  text-info"><span class="text-info ml-2"
-                            style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif"><b>Añadir</b></span></i></a>
-                <a href= " {% url 'Descarga Comparativas' %}" class="btn" ><i
-                    class="fa fa-file-excel-o  text-success"><span class="text-success ml-2"
-                        style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif"><b>Excel</b></span></i></a>
-
-                <!-- Boton para creador-->
-                <div class="btn-group">
-                    <button type="button" class="btn dropdown-toggle text-primary ml-2"
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onclick="myFunction()">
-                        {{mensaje_creador}}
-                    </button>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" href="{% url 'Comparativas' estado 0 %}">Todos</a>
-                      {% for i in list_creadores %}
-        
-                      <a class="dropdown-item" href="{% url 'Comparativas' estado i.id %}">{{i.identificacion}}</a>
-        
-                      {% endfor %}
-
+                <div class="d-flex align-self-center">
+                    <div>
+                        <h4 class="card-title"><span class="lstick"></span>Panel de solicitudes</h4>
+                        <h6 class="card-subtitle">Ordenes de compra o comparativas para ser aprobadas</h6>
                     </div>
-                </div>
 
-                <div class="btn-group">
-                    <button type="button" class="btn dropdown-toggle text-primary ml-2"
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onclick="myFunction()">
-                        {{mensaje}}
-                    </button>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" href="{% url 'Comparativas' 0 creador %}">Todos</a>
-                        <a class="dropdown-item" href="{% url 'Comparativas' 1 creador %}">En espera ({{espera}})</a>
-                        <a class="dropdown-item" href="{% url 'Comparativas' 2 creador %}">Adjunto listo ({{adjunto}})</a> 
-                        <a class="dropdown-item" href="{% url 'Comparativas' 4 creador %}">Autorizadas ({{autorizada}})</a>
-                        <a class="dropdown-item" href="{% url 'Comparativas' 3 creador %}">Rechazadas ({{rechazada}})</a>
-                        <a class="dropdown-item" href="{% url 'Comparativas' 6 creador %}">Comparativas con OC ({{comparativa_oc}})</a>
-
-                    </div>
-                </div>
-        
-                  
-            <div class ="dataTables_filter">
-
-                <form method="POST">
-        
-                    {% csrf_token %}
-                <label>
-                    Buscar:
-                    <input type="search" class placeholder aria-controls="example23" name="palabra">
-                </label>
-
-            </form>
-
-            </div>
-            <div class="table-responsive">
-
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th style="text-align: center; width: 30px;">User</th>
-                            <th>Proveedor</th>
-                            <th>Valor</th>
-                            <th>O.C</th>
-                            <th style="text-align: center;">Autoriza</th>
-
-                        </tr>
-                    </thead>
-                    <tbody style="font-size: 14px;">
-                        
-                            {% for i in datos|slice:"120" %}
-
-                            {% if i.2.publica == "SI" or request.user.username == i.2.autoriza or  request.user.username == i.2.creador %}
-
-                            <tr>
-                            <td style="text-align: center;">
-                                <img src="{{i.0.imagenlogo.url}}" width="40" class="img-circle">
-                                <h6 class="card-subtitle" style="font-size: 12px; margin-top: 2px;"><span class="text-muted"> {{i.2.fecha_c|date:"d/m/Y"}}</span></h6></td>
-                            <td>
-                                {% if i.2.estado == "ESPERA" %}
-                                <i class="fa fa-hourglass-end" aria-hidden="true" style="color: blue;"></i>      
-                                {% endif %}       
-                                {% if i.2.estado == "AUTORIZADA" %}
-                                {% if i.2.comentario %}  
-                                <span class="hint--left hint--danger"aria-label="{{i.comentario}}">
-                                {% endif %}
-                                <i class="fa fa-check" aria-hidden="true" style="color: green;"></i>
-                                {% if i.2.comentario %}
-                                </span>
-                                {% endif %}
-                                {% endif %}
-                                {% if i.2.estado == "NO AUTORIZADA" %}
-                                    {% if i.2.comentario %}
-                                    <span class="hint--left hint--danger" aria-label="{{i.2.comentario}}">
-            
-                                        {% endif %}
-                                
-                                        <i class="fa fa-times" aria-hidden="true" style="color: darkred;"></i>
-            
-                                    {% if i.2.comentario %}
-                                
-                                        </span>
-            
-                                        {% endif %}
-                                {% endif %}
-            
-                                {% if i.2.estado == "ADJUNTO ✓" %}        
-                                    {% if i.2.comentario %}
-                                    
-                                    <span class="hint--left hint--danger" aria-label="{{i.2.comentario}}">
-            
-                                        {% endif %}
-                                        <i class="fa fa-check" aria-hidden="true" style="color: orange;"></i>
-                                    {% if i.2.comentario %}
-                                        </span>
-                                        {% endif %}
-                                {% endif %}
-
-                                
-                                <!-- Condicional para editar -->
-                                
-                                {% if i.2.estado != "AUTORIZADA" and i.2.creador == user.username %}
-                                <a href="{% url 'Editar comparativas' i.2.id %}">{{i.2.proveedor.name|lower|capfirst}} </a>
-                                {% else %}       
-                                {{i.2.proveedor.name|lower|capfirst}} 
-                                {% endif %} 
-                                
-                                <!-- Iconos y otros datos -->
-                                <h6 class="card-subtitle" style="font-size: 14px; margin-top: 2px;">
-                                    
-                                    {% if i.2.contrato %}
-                                    <a href="{% url 'Contratos descripcion' i.2.contrato.id %}" class=" fa fa-plus-square-o fa-lg text-danger "></a>{% endif %}
-                                    <a href="{% url 'Mensajes en comparativas' i.2.id %}" class=" fa fa-comments-o fa-lg"></a>
-                                    <a href="{{ i.2.adjunto.url }}" class=" fa fa-paperclip fa-lg"></a> 
-                                    {% if i.2.adj_oc %}
-                                    <a href="{{ i.2.adj_oc.url }}"><img src="{% static 'img/OC.png' %}" style="max-width:18px; height:auto;"></a>
-                                    {% endif %}
-                                    {{i.2.proyecto|lower|capfirst}} - {{i.2.numero|lower|capfirst}}</h6>
-                            </td>
-                            <td style="font-size: 14px;"><b>$ {{i.2.monto|floatformat:0|intcomma}}</b></td> 
-                            {% if i.2.o_c %}<td><div>{{i.2.o_c|upper}}</div>{% else %}<td><div> -</div>{% endif %}</td>
-                            
-
-                            <td style="text-align: center;"> 
-
-                                <img {% if i.2.autoriza == "SP" %} src="{% static 'img/SP.png' %}" {% else %} src="{% static 'img/PL.png' %}" {% endif %} width="40" class="img-circle">
-
-                                    {% if request.user.username == i.2.autoriza %}
-
-                                    <form action="" method="POST">
-                                        {% csrf_token %}
-    
-                                        <div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
-                                            {% if estado == "0" or estado == "1" or estado == "3" or estado == "5" or estado == "6" %}
-                                            <button type="submit" class="btn" name = "ADJAPROB" value="{{i.2.id}}" ><i class="fa fa-check" style="color: orange;"></i></button>
-                                            {% endif %}
-                                            {% if estado == "0" or estado == "2" or estado == "3" or estado == "5" or estado == "6" %}
-                                            <button type="submit" class="btn"   name = "APROBADA" value="{{i.2.id}}" ><i class="fa fa-check" style="color: green;"></i></button>
-                                            {% endif %}
-                                            <button type="submit" class="btn"  name = "NO APROBADA" value="{{i.2.id}}" ><i class="fa fa-times" style="color: darkred;"></i></button>
-                                        </div>
-                        
-                                    </form>
-
-                                    {% endif %}
-
-
-                                </td>
-
-                            </tr>
+                    <div class="btn-group ml-auto">
+                        <a href="JavaScript:void(0)" class="icon-options-vertical link" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false"></a>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            {% if request.user|has_group:"COMPRAS NIVEL 2" %}
+                            <a class="dropdown-item" href="{% url 'Cargar O.C para autorizar' %}"><i
+                                    class="fa fa-plus-circle mr-2"></i>Añadir</a>
+                            {% endif %}
+                            {% if request.user|has_group:"COMPRAS NIVEL 2" %}
+                            <a class="dropdown-item" href="{% url 'Descarga Comparativas' %}"><i
+                                    class="fa fa-file-excel-o mr-2"></i>Excel</a>
                             {% endif %}
 
+                        </div>
+                    </div>
+                </div>
+
+                <div style="text-align: left;">
+
+                   
+                    <!-- Boton para creador-->
+                    <div class="btn-group">
+                        <button type="button" class="btn dropdown-toggle text-primary ml-2" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false" onclick="myFunction()">
+                            {{mensaje_creador}}
+                        </button>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="{% url 'Comparativas' estado 0 %}">Todos</a>
+                            {% for i in list_creadores %}
+
+                            <a class="dropdown-item"
+                                href="{% url 'Comparativas' estado i.id %}">{{i.identificacion}}</a>
 
                             {% endfor %}
-                  
-        
-                    </tbody>
-                </table>
-            </div>
-        
+
+                        </div>
+                    </div>
+
+                    <div class="btn-group">
+                        <button type="button" class="btn dropdown-toggle text-primary ml-2" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false" onclick="myFunction()">
+                            {{mensaje}}
+                        </button>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="{% url 'Comparativas' 0 creador %}">Todos</a>
+                            <a class="dropdown-item" href="{% url 'Comparativas' 1 creador %}">En espera
+                                ({{espera}})</a>
+                            <a class="dropdown-item" href="{% url 'Comparativas' 2 creador %}">Adjunto listo
+                                ({{adjunto}})</a>
+                            <a class="dropdown-item" href="{% url 'Comparativas' 4 creador %}">Autorizadas
+                                ({{autorizada}})</a>
+                            <a class="dropdown-item" href="{% url 'Comparativas' 3 creador %}">Rechazadas
+                                ({{rechazada}})</a>
+                            <a class="dropdown-item" href="{% url 'Comparativas' 6 creador %}">Comparativas con OC
+                                ({{comparativa_oc}})</a>
+
+                        </div>
+                    </div>
+
+
+                    <div class="dataTables_filter">
+
+                        <form method="POST">
+
+                            {% csrf_token %}
+                            <label>
+                                Buscar:
+                                <input type="search" class placeholder aria-controls="example23" name="palabra">
+                            </label>
+
+                        </form>
+
+                    </div>
+                    <div class="table-responsive">
+
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th style="text-align: center; width: 30px;">User</th>
+                                    <th>Proveedor</th>
+                                    <th>Valor</th>
+                                    <th>O.C</th>
+                                    <th style="text-align: center;">Autoriza</th>
+
+                                </tr>
+                            </thead>
+                            <tbody style="font-size: 14px;">
+
+                                {% for i in datos|slice:"120" %}
+
+                                {% if i.2.publica == "SI" or request.user.username == i.2.autoriza or request.user.username == i.2.creador %}
+
+                                <tr>
+                                    <td style="text-align: center;">
+                                        <img src="{{i.0.imagenlogo.url}}" width="40" class="img-circle">
+                                        <h6 class="card-subtitle" style="font-size: 12px; margin-top: 2px;"><span
+                                                class="text-muted"> {{i.2.fecha_c|date:"d/m/Y"}}</span></h6>
+                                    </td>
+                                    <td>
+                                        {% if i.2.estado == "ESPERA" %}
+                                        <i class="fa fa-hourglass-end" aria-hidden="true" style="color: blue;"></i>
+                                        {% endif %}
+                                        {% if i.2.estado == "AUTORIZADA" %}
+                                        {% if i.2.comentario %}
+                                        <span class="hint--left hint--danger" aria-label="{{i.comentario}}">
+                                            {% endif %}
+                                            <i class="fa fa-check" aria-hidden="true" style="color: green;"></i>
+                                            {% if i.2.comentario %}
+                                        </span>
+                                        {% endif %}
+                                        {% endif %}
+                                        {% if i.2.estado == "NO AUTORIZADA" %}
+                                        {% if i.2.comentario %}
+                                        <span class="hint--left hint--danger" aria-label="{{i.2.comentario}}">
+
+                                            {% endif %}
+
+                                            <i class="fa fa-times" aria-hidden="true" style="color: darkred;"></i>
+
+                                            {% if i.2.comentario %}
+
+                                        </span>
+
+                                        {% endif %}
+                                        {% endif %}
+
+                                        {% if i.2.estado == "ADJUNTO ✓" %}
+                                        {% if i.2.comentario %}
+
+                                        <span class="hint--left hint--danger" aria-label="{{i.2.comentario}}">
+
+                                            {% endif %}
+                                            <i class="fa fa-check" aria-hidden="true" style="color: orange;"></i>
+                                            {% if i.2.comentario %}
+                                        </span>
+                                        {% endif %}
+                                        {% endif %}
+
+
+                                        <!-- Condicional para editar -->
+
+                                        {% if i.2.estado != "AUTORIZADA" and i.2.creador == user.username %}
+                                        <a href="{% url 'Editar comparativas' i.2.id %}">{{i.2.proveedor.name|lower|capfirst}}
+                                        </a>
+                                        {% else %}
+                                        {{i.2.proveedor.name|lower|capfirst}}
+                                        {% endif %}
+
+                                        <!-- Iconos y otros datos -->
+                                        <h6 class="card-subtitle" style="font-size: 14px; margin-top: 2px;">
+
+                                            {% if i.2.contrato %}
+                                            <a href="{% url 'Contratos descripcion' i.2.contrato.id %}"
+                                                class=" fa fa-plus-square-o fa-lg text-danger "></a>{% endif %}
+                                            <a href="{% url 'Mensajes en comparativas' i.2.id %}"
+                                                class=" fa fa-comments-o fa-lg"></a>
+                                            <a href="{{ i.2.adjunto.url }}" class=" fa fa-paperclip fa-lg"></a>
+                                            {% if i.2.adj_oc %}
+                                            <a href="{{ i.2.adj_oc.url }}"><img src="{% static 'img/OC.png' %}"
+                                                    style="max-width:18px; height:auto;"></a>
+                                            {% endif %}
+                                            {{i.2.proyecto|lower|capfirst}} - {{i.2.numero|lower|capfirst}}
+                                        </h6>
+                                    </td>
+                                    <td style="font-size: 14px;"><b>$ {{i.2.monto|floatformat:0|intcomma}}</b></td>
+                                    {% if i.2.o_c %}<td>
+                                        <div>{{i.2.o_c|upper}}</div>{% else %}
+                                    <td>
+                                        <div> -</div>{% endif %}
+                                    </td>
+
+
+                                    <td style="text-align: center;">
+
+                                        <img {% if i.2.autoriza == "SP" %} src="{% static 'img/SP.png' %}" {% else %}
+                                            src="{% static 'img/PL.png' %}" {% endif %} width="40" class="img-circle">
+
+                                        {% if request.user.username == i.2.autoriza %}
+
+                                        <form action="" method="POST">
+                                            {% csrf_token %}
+
+                                            <div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
+                                                {% if estado == "0" or estado == "1" or estado == "3" or estado == "5" or estado == "6" %}
+                                                <button type="submit" class="btn" name="ADJAPROB" value="{{i.2.id}}"><i
+                                                        class="fa fa-check" style="color: orange;"></i></button>
+                                                {% endif %}
+                                                {% if estado == "0" or estado == "2" or estado == "3" or estado == "5" or estado == "6" %}
+                                                <button type="submit" class="btn" name="APROBADA" value="{{i.2.id}}"><i
+                                                        class="fa fa-check" style="color: green;"></i></button>
+                                                {% endif %}
+                                                <button type="submit" class="btn" name="NO APROBADA"
+                                                    value="{{i.2.id}}"><i class="fa fa-times"
+                                                        style="color: darkred;"></i></button>
+                                            </div>
+
+                                        </form>
+
+                                        {% endif %}
+
+                                    </td>
+                                </tr>
+                                {% endif %}
+
+                                {% endfor %}
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-</div>
 </div>
 
 <aside class="right-side-panel">
     <h3 class="p-relative"><span class="lstick"></span>¿Cómo funciona?</h3>
     <div class="row">
-        
+
         <div class="col-md-12 m-t-10">
-          <div class="card">
-            <div class="card-body">
-            <img src="{% static 'img/animation_500_kmv3afam.gif' %}" alt="Funny image" width="200px">
-            <p>Para ingresar una nueva solicitud has click en <b style="color: blue;">Añadir</b> y completa el formulario</p>
-            <p> Cuando este cargado apareceras en el listado con iconos que muestran adjuntos o una sala de chat</p>
-            <p> <i class="fa fa-comments-o fa-lg" style="color: #1d5acb;"></i> - <i class=" fa fa-paperclip fa-lg" style="color: #1d5acb;"></i> - <img src="{% static 'img/OC.png' %}" style="max-width:20px; height:auto; vertical-align: middle;"></p>
-            <p> Durante la semana sera aprobada por quien corresponda, <b style="color: blue;">revisa</b>  el estado</p>
-            <p><i class="fa fa-hourglass-end" aria-hidden="true" style="color: blue;"></i> - <i class="fa fa-times" aria-hidden="true" style="color: darkred;"></i> - <i class="fa fa-check" aria-hidden="true" style="color: orange;"></i> - <i class="fa fa-check" aria-hidden="true" style="color: green;"></i></p>
-            <p>Proxima fecha de pago: {{fecha_pago|date:"d-m-Y"}}</p>
-        </div>
+            <div class="card">
+                <div class="card-body">
+                    <img src="{% static 'img/animation_500_kmv3afam.gif' %}" alt="Funny image" width="200px">
+                    <p>Para ingresar una nueva solicitud has click en <b style="color: blue;">Añadir</b> y completa el
+                        formulario</p>
+                    <p> Cuando este cargado apareceras en el listado con iconos que muestran adjuntos o una sala de chat
+                    </p>
+                    <p> <i class="fa fa-comments-o fa-lg" style="color: #1d5acb;"></i> - <i
+                            class=" fa fa-paperclip fa-lg" style="color: #1d5acb;"></i> - <img
+                            src="{% static 'img/OC.png' %}"
+                            style="max-width:20px; height:auto; vertical-align: middle;"></p>
+                    <p> Durante la semana sera aprobada por quien corresponda, <b style="color: blue;">revisa</b> el
+                        estado</p>
+                    <p><i class="fa fa-hourglass-end" aria-hidden="true" style="color: blue;"></i> - <i
+                            class="fa fa-times" aria-hidden="true" style="color: darkred;"></i> - <i class="fa fa-check"
+                            aria-hidden="true" style="color: orange;"></i> - <i class="fa fa-check" aria-hidden="true"
+                            style="color: green;"></i></p>
+                    <p>Proxima fecha de pago: {{fecha_pago|date:"d-m-Y"}}</p>
+                </div>
             </div>
         </div>
     </div>
-  </aside>
+</aside>
 
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 
 
 <script>
-     
-$(window).scroll(function () {
-            sessionStorage.scrollTop = $(this).scrollTop();
-        });
-        $(document).ready(function () {
-            if (sessionStorage.scrollTop != "undefined") {
-                $(window).scrollTop(sessionStorage.scrollTop);
-            }
-        });
+
+    $(window).scroll(function () {
+        sessionStorage.scrollTop = $(this).scrollTop();
+    });
+    $(document).ready(function () {
+        if (sessionStorage.scrollTop != "undefined") {
+            $(window).scrollTop(sessionStorage.scrollTop);
+        }
+    });
 </script>
 
 
 
 {% endblock %}
-

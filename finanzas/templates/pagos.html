@@ -87,8 +87,19 @@
                                     <td>{{i.0.documento_1}}</td>
                                     <td>{{i.0.documento_2}}</td>
                                     <td>{{i.0.metodo}}</td>
-                                    <td><a href="{% url 'Editar pagos' i.0.id %}" class="fa fa-pencil-square-o fa-lg"></a>
-                                        <a href="{% url 'Eliminar pago' i.0.id %}" class="fa fa-trash fa-lg ml-1 text-danger"></a>
+                                    <td>
+                                        <div class="btn-group ml-auto">
+                                            <a href="JavaScript:void(0)" class="icon-options-vertical link" data-toggle="dropdown"
+                                                aria-haspopup="true" aria-expanded="false"></a>
+                                            <div class="dropdown-menu dropdown-menu-right">
+                                                <a class="dropdown-item" href="{% url 'Editar pagos' i.0.id %}"><i
+                                                        class="fa fa-pencil mr-2"></i>Editar pago</a>
+                                                <a class="dropdown-item" href="{% url 'Eliminar pago' i.0.id %}"><i
+                                                        class="fa fa-trash text-danger mr-2"></i>Borrar</a>
+                                             
+                    
+                                            </div>
+                                        </div>
                                     </td>
 
                                 </tr>

@@ -16,6 +16,7 @@
   <link rel="stylesheet" href="{% static 'css/bootstrap5.min.css' %}">
   <link rel="stylesheet" href="../../static/css/registro_contable.css">
   <link href="{% static 'adminpro/assets/plugins/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/inicio.css' %}">
 
   {% include '../includes/css/chartlist.html' %}
   {% include '../includes/css/form.html' %}
@@ -169,23 +170,15 @@
   <div id="main-wrapper">
     <header class="topbar">
       <nav class="navbar top-navbar navbar-expand-md navbar-light">
-        <div class="navbar-header">
+        <div class="navbar-header" id="navbar">
           <a class="navbar-brand" href="/inicio">
             <b>
-              <img src="{% static 'img/IconoP.png' %}"
-                style="max-width: 55px; vertical-align: bottom; margin-bottom: 12px;" alt="homepage"
-                class="dark-logo" />
-              <img src="{% static 'img/IconoP.png' %}"
-                style="max-width: 55px; vertical-align: bottom; margin-bottom: 12px;" alt="homepage"
-                class="light-logo" />
+              <img src="{% static 'img/IconoP.png' %}" style="max-width: 55px; vertical-align: bottom; margin-bottom: 12px;" alt="homepage" class="dark-logo" id="dark-logo"/>
+              <img src="{% static 'img/linkpblancoC.png' %}" style="max-width: 55px; vertical-align: bottom; margin-top: 12px; margin-bottom: 0px; alt="homepage" class="light-logo" id="light-logo" />
             </b>
             <span>
-              <img src="{% static 'img/Linkp.png' %}"
-                style="max-width: 80px; vertical-align: bottom; margin-bottom: 12px;" alt="homepage"
-                class="dark-logo" />
-              <img src="{% static 'img/Linkp.png' %}"
-                style="max-width: 80px; vertical-align: bottom; margin-bottom: 12px;" class="light-logo"
-                alt="homepage" />
+              <img src="{% static 'img/Linkp.png' %}" style="max-width: 80px; vertical-align: bottom; margin-bottom: 12px;" alt="homepage" class="dark-logo" />
+              <img src="{% static 'img/Linkp.png' %}" style="max-width: 80px; vertical-align: bottom; margin-bottom: 12px;" alt="homepage" class="light-logo" />
             </span>
           </a>
         </div>
@@ -205,10 +198,10 @@
           {% endblock %}
 
           {% if datos_mensajeria %}
-          <ul class="navbar-nav my-lg-0">
+          <ul class="navbar-nav my-lg-0" style="margin-left: 5px;">
             <li>
               <a class="nav-link waves-effect waves-dark" href="/rrhh/notasdepedido/0/0">
-                <i class="fa fa-lg fa-envelope-o text-light">
+                <i class="fa fa-lg fa-envelope-o text-light" id="notaspedido">
                 </i>
               </a>
               <div class="notify"><span class="heartbit"></span> <span class="point"></span></div>
@@ -219,12 +212,12 @@
 
           {% if dias_funcionando %}
 
-          <ul class="navbar-nav my-lg-0">
+          <ul class="navbar-nav my-lg-0" style="margin-left: 5px;">
 
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle waves-effect waves-dark" href="" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false"> <img src="{% static 'img/acuerdos2.png' %}" alt=""
-                  width="30px">
+                  width="30px" id="acuerdos">
                 <div class="notify">{% if minutas_cantidad %}<span class="heartbit"></span> <span
                     class="point"></span>{% endif %}</div>
               </a>
@@ -268,10 +261,10 @@
 
           {% else %}
 
-          <ul class="navbar-nav my-lg-0">
+          <ul class="navbar-nav my-lg-0" style="margin-left: 5px;">
             <li>
               <a class="nav-link waves-effect waves-dark" href="{% url 'Minutas Listas' %}"><img
-                  src="{% static 'img/acuerdos2.png' %}" alt="" width="30px"></a>
+                  src="{% static 'img/acuerdos2.png' %}" alt="" width="30px" id="minutas"></a>
 
             </li>
           </ul>
@@ -280,12 +273,12 @@
 
           {% if mensaje_oc %}
 
-          <ul class="navbar-nav my-lg-0">
+          <ul class="navbar-nav my-lg-0" style="margin-left: 5px;">
 
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle waves-effect waves-dark" href="" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false"> <img src="{% static 'img/OCblanco2.png' %}" alt=""
-                  width="30px">
+                  width="30px" id="OC">
                 <div class="notify"><span class="heartbit"></span> <span class="point"></span></div>
               </a>
               <div class="dropdown-menu dropdown-menu-right mailbox animated bounceInDown">
@@ -426,7 +419,7 @@
         </ul>
 
         {% endif %}
-        <ul class="navbar-nav my-lg-0" id="chanchito-guia">
+        <ul class="navbar-nav my-lg-0" style="margin-left: 5px;" id="chanchito-guia">
           <li>
             <a class="nav-link waves-effect waves-dark" href="{% url 'Registro Contable Home' %}"><img
                 src="{% static 'img/pig.png' %}" alt="" width="30px"></a>
@@ -434,7 +427,7 @@
           </li>
         </ul>
 
-        <ul class="navbar-nav my-lg-0" id="sugerencias-guia">
+        <ul class="navbar-nav my-lg-0" style="margin-left: 5px;" id="sugerencias-guia">
           <li>
             <a class="nav-link waves-effect waves-dark" href="{% url 'Sugerencias' %}"><img
                 src="{% static 'img/buzon.png' %}" alt="" width="30px"></a>
@@ -567,7 +560,7 @@
         <div class="col-md-12 col-lg-9 col-xl-9 d-flex align-self-center justify-content-between">
           <h3 class="text-themecolor">{{mensaje_bievenida}}</h3>
           {% if datos_vista_usuario.usuario.tutorial == 'SI' %}
-          <a href="#" data-toggle="modal" data-target="#ModalGuia"><i class="fa fa-lg fa-info-circle mt-2"></i></a>
+          <a href="#" data-toggle="modal" data-target="#ModalGuia" id="guia-icono"><i class="fa fa-lg fa-info-circle mt-2"></i></a>
           {% endif%}
         </div>
 
@@ -980,100 +973,6 @@
   {% include '../includes/js/otros.html' %}
 
 
-  <style>
-    .alerta-guia {
-      display: none;
-      width: 300px;
-      background-color: #f8f9fa;
-      padding: 20px;
-      border: 2px rgb(207, 207, 207) solid;
-      border-radius: 5px;
-      position: absolute;
-      box-shadow: 4px 4px 4px 0px rgb(207, 207, 207);
-      z-index: 20;
-    }
-
-    .alerta-guia img {
-      width: 30px;
-    }
-
-    .alerta-guia span {
-      font-size: 12px;
-    }
-
-    .alerta-guia div {
-      display: flex;
-      justify-content: flex-end;
-    }
-
-    .alerta-guia div.guia-indice {
-      display: flex;
-      justify-content: space-between;
-    }
-
-
-    #alerta-guia-1 {
-      top: 120px;
-      left: 245px;
-    }
-
-    #alerta-guia-2 {
-      top: 90px;
-      left: 245px;
-    }
-
-    #alerta-guia-3 {
-      top: 90px;
-      right: 280px;
-    }
-
-    #alerta-guia-4 {
-      top: 80px;
-      right: 30px;
-    }
-
-    #alerta-guia-5 {
-      top: 80px;
-      right: 80px;
-    }
-
-    .alerta-guia-borde {
-      border: 4px #0dcaf0 solid;
-      animation: alerta-guia-borde 2s ease-in-out infinite;
-    }
-
-    @keyframes alerta-guia-borde {
-      0% {
-        border: 4px #c9e5eb solid;
-      }
-
-      50% {
-        border: 4px #0dcaf0 solid;
-      }
-
-      100% {
-        border: 4px #c9e5eb solid;
-      }
-    }
-
-    @media (max-width: 1170px) {
-      #alerta-guia-1 {
-        top: 120px;
-        left: 85px;
-      }
-
-      #alerta-guia-2 {
-        top: 90px;
-        left: 85px;
-      }
-    }
-
-    @media (max-width: 780px) {
-      #guiamedia {
-        display: none;
-      }
-    }
-  </style>
 </body>
 
 </html>

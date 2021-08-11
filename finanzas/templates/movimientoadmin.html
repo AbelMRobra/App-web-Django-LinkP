@@ -25,12 +25,21 @@
         <div class="card">
             <div class="card-body row">
                 <div class="col-12 justify-content-center">
+                    <div class="d-flex align-items-center">
+                        <div>
 
-                    <h3>Movimiento de administración</h3>
+                            <h4 class="card-title"><span class="lstick m-r-20"></span>Movimiento de administración</h4>
+                            <h4 class="card-subtitle"></span>Registro de movimientos de administración.</h4>
+                        </div>
+                        <div class="btn-group ml-auto">
+                            <a href="JavaScript:void(0)" class="icon-options-vertical link" data-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false"></a>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a class="dropdown-item" href="{% url 'Subir movimiento' %}" ><i
+                                        class="fa fa-plus-circle mr-2"></i>Añadir</a>
 
-                    <div style="text-align: left; ">
-
-                        <a href="{% url 'Subir movimiento' %}" class="btn fa fa-plus-circle text-info"><span style="margin-left: 2px; font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif">Nuevo archivo</span></a>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="table-responsive">
@@ -38,31 +47,22 @@
                         <table id="example" class="table table-striped table-bordered" style="width: 99%;">
                             <thead>
                                 <tr>
-
-                                    <th></th>
                                     <th>Fecha</th>
                                     <th>Estado</th>
                                     <th>Comentario</th>
-                                    <th>Adjunto</th>
-
                                     {% if user.username == "SP" or user.username == "AR" %}
-
                                     <th>Aprobar</th>
                                     {% endif %}
-
+                                    <th></th>
                                 </tr>
                             </thead>
 
                             <tbody>
 
                                 {% for i in datos %}
-
                                 <tr>
-
-                                    <td style="width: 50px">
-                                        <a href="{% url 'Borrar movimiento' i.id %}" class="fa fa-trash fa-lg text-danger"></a>
-                                    </td>
-                                    <td style="width: 150px;">{{i.fecha}}</td>
+                                  
+                                    <td style="width: 150px;">{{i.fecha|date:"d-m-Y"}}</td>
 
                                     {% if i.estado == 'APROBADA' %}
                                     <td style="color: rgb(37, 159, 76 );">{{i.estado}}
@@ -79,39 +79,40 @@
 
                                     {% endif %}
                                     <td> <small> {{i.comentario}}</small></td>
-                                    <td style="width: 80px; text-align: center;"> <small><a href="{{i.archivo.url}}"><i class="fa fa-file-excel-o fa-lg text-success"></i></a></small></td>
-
 
                                     {% if user.username == "SP" or user.username == "AR" %}
-
                                     <td style="width: 50px;">
                                         <form action="" method="POST">
                                             {% csrf_token %}
-
                                             <div style="display: inline-block;">
-
                                                 <button class="btn btn-sm btn-success" type="submit" name="APROBADA"
-                                                    value="{{i.id}}"><span class="hint--left hint--success"
-                                                        aria-label="Esta todo listo para el pago!">✓</span></button>
-
+                                                    value="{{i.id}}">✓</button>
                                             </div>
 
                                             <div style="display: inline-block">
-
                                                 <button class="btn btn-sm btn-danger" type="submit" name="RECHAZADA"
-                                                    value="{{i.id}}"><span class="hint--left hint--danger"
-                                                        aria-label="Deja un comentario para que revisen!">X</span></button>
-
+                                                    value="{{i.id}}">X</button>
                                             </div>
-
                                         </form>
-
                                     </td>
-
                                     {% endif %}
 
-                                </tr>
 
+                                    <td style="width: 10px; text-align: center;"> 
+                                        
+                                        <div class="btn-group ml-auto">
+                                            <a href="JavaScript:void(0)" class="icon-options-vertical link" data-toggle="dropdown"
+                                                aria-haspopup="true" aria-expanded="false"></a>
+                                            <div class="dropdown-menu dropdown-menu-right">
+                                                <a class="dropdown-item" href="{{i.archivo.url}}" ><i
+                                                        class="fa fa-file-excel-o mr-2"></i>Excel</a>
+                                                <a class="dropdown-item" href="{% url 'Borrar movimiento' i.id %}" ><i
+                                                        class="fa fa-trash text-danger mr-2"></i>Borrar</a>
+                
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
                                 {% endfor %}
                         </table>
                     </div>

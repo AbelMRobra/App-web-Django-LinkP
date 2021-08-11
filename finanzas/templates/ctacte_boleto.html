@@ -126,7 +126,7 @@
 
                                 {% for i in datos_cuenta %}
                                 <tr>
-                                    <td>{{i.0.fecha}}</td>
+                                    <td>{{i.0.fecha|date:"d-m-Y"}}</td>
                                     <td>{{i.0.concepto|upper}}</td>
                                     <td>{{i.0.constante.nombre}}</td>
                                     <td>$ {{i.1|floatformat:0|intcomma}}</td>
