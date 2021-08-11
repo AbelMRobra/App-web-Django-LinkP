@@ -26,172 +26,131 @@
 <div class="row">
     <div class="col-12">
         <div class="card">
-            <div class="card-body row">
-                <div class="col-12 justify-content-center">
-
+            <div class="card-body">
+                <div class="d-flex align-items-center">
                     <div>
-                        <h2>Analisis de compras según lo proyectado</h2>
-                        <small>Precio registrado vs precio en base de datos</small>
+                        <h4 class="card-title"><span class="lstick m-r-20"></span>Analisis de compras según lo proyectado</h4>
+                        <h6 class="card-subtitle">Precio registrado vs precio en base de datos</h6>
                     </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 justify-content-center">
+                        {% if datos %}
+                        <b>
+                            <hr class="my-4" style="width: 100%;">
+                        </b>
 
-                    {% if datos %}
+                        <div style="text-align: left;">
+                            <h6>Periodo del informe: <small>{{datos.fechainicial}} a {{datos.fechafinal}}</small></h6>
+                            <h6>Cantidad de articulos cargados: <small>{{datos.cantidad_compras}}</small></h6>
+                            <h6>Cantidad de compras/certificados cargados: <small>{{datos.cantidad_doc}}</small></h6>
+                            <h6>Monto total: <small>${{datos.monto_total|floatformat:0|intcomma}}</small></h6>
+                            <h6>Monto estimado: <small>${{datos.monto_estimado|floatformat:0|intcomma}}</small></h6>
+                            <h6>Diferencia: <small>${{datos.diferencia_plata|floatformat:0|intcomma}}
+                                    ({{datos.diferencia|floatformat:2}}%)</small></h6>
+                        </div>
 
+                        <b>
+                            <hr class="my-4" style="width: 100%;">
+                        </b>
 
-                    <b>
-                        <hr class="my-4" style="width: 100%;">
-                    </b>
+                        <div style="margin-top: 2%; ">
+                            <h4 class="card-title"><span class="lstick m-r-20"></span>Resumen de compras por proyecto</h4>
+                            <table id="example1" class="table table-striped table-bordered mt-4">
+                                <thead>
+                                    <tr>
+                                        <th>Proyecto</th>
+                                        <th>Comprado</th>
+                                        <th>Ahorro total</th>
+                                        <th>Ahorro mat</th>
+                                        <th>Ahorro MO</th>
+                                    </tr>
+                                </thead>
 
-                    <div style="text-align: left;">
-                        <h6>Periodo del informe: <small>{{datos.fechainicial}} a {{datos.fechafinal}}</small></h6>
-                        <h6>Cantidad de articulos cargados: <small>{{datos.cantidad_compras}}</small></h6>
-                        <h6>Cantidad de compras/certificados cargados: <small>{{datos.cantidad_doc}}</small></h6>
-                        <h6>Monto total: <small>${{datos.monto_total|floatformat:0|intcomma}}</small></h6>
-                        <h6>Monto estimado: <small>${{datos.monto_estimado|floatformat:0|intcomma}}</small></h6>
-                        <h6>Diferencia: <small>${{datos.diferencia_plata|floatformat:0|intcomma}}
-                                ({{datos.diferencia|floatformat:2}}%)</small></h6>
-                    </div>
+                                <tbody>
+                                    {% for i in datos.datos_proyecto %}
+                                    <tr>
+                                        <td><a href="{% url 'Detalle de informe' datos.fecha_i datos.fecha_f i.0.id %}"
+                                                style="color: rgb({{i.0.color}});">{{i.0}}</a></td>
+                                        <td>${{i.1|floatformat:0|intcomma}}</td>
+                                        <td>${{i.7|floatformat:0|intcomma}}</td>
+                                        <td>${{i.8|floatformat:0|intcomma}}</td>
+                                        <td>${{i.9|floatformat:0|intcomma}}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <b>
+                            <hr class="my-4" style="width: 100%;">
+                        </b>
+                        <div class="tableconteinerabel" style="margin-top: 2%; text-align: left;">
+                            <h5>Resumen de compras por rubro</h5>
+                            <table id="example" class="table table-striped table-bordered mt-4">
+                                <thead>
+                                    <tr>
+                                        <th>Rubro</th>
+                                        <th>Gastado</th>
+                                        <th>Estimado</th>
+                                        <th>Desviacion</th>
+                                    </tr>
+                                </thead>
 
-                    <b>
-                        <hr class="my-4" style="width: 100%;">
-                    </b>
+                                <tbody>
+                                    {% for i in datos.materiales_rubros %}
+                                    <tr>
+                                        <td>{{i.0}}</td>
+                                        <td>${{i.1|floatformat:0|intcomma}}</td>
+                                        <td>${{i.2|floatformat:0|intcomma}}</td>
+                                        <td>{{i.3|floatformat:2}}%</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
 
-                    <div class="tableconteinerabel" style="margin-top: 2%; text-align: left;">
+                        {% endif %}
 
-                        <h5>Resumen de compras por proyecto</h5>
-
-                        <table id="example1" class="table table-striped table-bordered mt-4">
-                            <thead>
-                                <tr>
-                                    <th>Proyecto</th>
-                                    <th>Comprado</th>
-                                    <th>Ahorro total</th>
-                                    <th>Ahorro mat</th>
-                                    <th>Ahorro MO</th>
-                                </tr>
-
-                            </thead>
-
-                            <tbody>
-
-                                {% for i in datos.datos_proyecto %}
-
-                                <tr>
-                                    <td><a href="{% url 'Detalle de informe' datos.fecha_i datos.fecha_f i.0.id %}"
-                                            style="color: rgb({{i.0.color}});">{{i.0}}</a></td>
-                                    <td>${{i.1|floatformat:0|intcomma}}</td>
-                                    <td>${{i.7|floatformat:0|intcomma}}</td>
-                                    <td>${{i.8|floatformat:0|intcomma}}</td>
-                                    <td>${{i.9|floatformat:0|intcomma}}</td>
-
-                                </tr>
-
-                                {% endfor %}
-
-                            </tbody>
-                        </table>
-
-                    </div>
-
-                    <b>
-                        <hr class="my-4" style="width: 100%;">
-                    </b>
-
-                    <div class="tableconteinerabel" style="margin-top: 2%; text-align: left;">
-
-                        <h5>Resumen de compras por rubro</h5>
-
-                        <table id="example" class="table table-striped table-bordered mt-4">
-                            <thead>
-
-                                <tr>
-                                    <th>Rubro</th>
-                                    <th>Gastado</th>
-                                    <th>Estimado</th>
-                                    <th>Desviacion</th>
-                                </tr>
-                            </thead>
-
-                            <tbody>
-                                {% for i in datos.materiales_rubros %}
-                                <tr>
-                                    <td>{{i.0}}</td>
-                                    <td>${{i.1|floatformat:0|intcomma}}</td>
-                                    <td>${{i.2|floatformat:0|intcomma}}</td>
-                                    <td>{{i.3|floatformat:2}}%</td>
-
-                                </tr>
-
-                                {% endfor %}
-
-                            </tbody>
-
-                        </table>
-
-                    </div>
-
-                    {% endif %}
-
-                    <div class="row d-flex justify-content-center mt-3">
-                        <div class="col col-md-12 col-lg-6">
-                            <div class="row">
-                                <div class="col bg-light border rounded">
-
-                                    <form method="POST">
-
-                                        {% csrf_token %}
-                                        <div class="row">
-
-
-
-                                            <div class="col col-lg-6 my-2">
-
-                                                <div style="display: inline-block;">
-
-                                                    <label for="fechainicial">
-                                                        <h6>Fecha Inicial</h6>
-                                                    </label>
-
+                        <div class="row d-flex justify-content-center mt-3">
+                            <div class="col col-md-12 col-lg-6">
+                                <div class="row">
+                                    <div class="col bg-light border rounded">
+                                        <form method="POST">
+                                            {% csrf_token %}
+                                            <div class="row">
+                                                <div class="col col-lg-6 my-2">
+                                                    <div style="display: inline-block;">
+                                                        <label for="fechainicial">
+                                                            <h6>Fecha Inicial</h6>
+                                                        </label>
+                                                    </div>
+                                                    <div style="margin-bottom: 2%; width: 100%; ">
+                                                        <input name="fechainicial" type="date"
+                                                            class="form-control form-control">
+                                                    </div>
                                                 </div>
 
-                                                <div style="margin-bottom: 2%; width: 100%; ">
-
-                                                    <input name="fechainicial" type="date"
-                                                        class="form-control form-control">
-
+                                                <div class="col col-lg-6 my-2">
+                                                    <div style="display: inline-block;">
+                                                        <label for="fechafinal">
+                                                            <h6>Fecha Final</h6>
+                                                        </label>
+                                                    </div>
+                                                    <div style="margin-bottom: 2%; width: 100%; ">
+                                                        <input name="fechafinal" type="date"
+                                                            class="form-control form-control">
+                                                    </div>
                                                 </div>
-
                                             </div>
-
-                                            <div class="col col-lg-6 my-2">
-
-                                                <div style="display: inline-block;">
-
-                                                    <label for="fechafinal">
-                                                        <h6>Fecha Final</h6>
-                                                    </label>
-
+                                            <div class="row d-flex justify-content-center my-3">
+                                                <div class="col-lg-6 text-center">
+                                                    <button class="btn btn-info" type="submit"
+                                                        style="margin-top: 1%; margin-bottom: 2%;">Buscar
+                                                        datos</button>
                                                 </div>
-
-                                                <div style="margin-bottom: 2%; width: 100%; ">
-
-                                                    <input name="fechafinal" type="date"
-                                                        class="form-control form-control">
-
-                                                </div>
-
                                             </div>
-
-                                        </div>
-
-                                        <div class="row d-flex justify-content-center my-3">
-                                            <div class="col-lg-6 text-center">
-                                                <button class="btn btn-info" type="submit"
-                                                    style="margin-top: 1%; margin-bottom: 2%;">Buscar
-                                                    datos</button>
-                                            </div>
-                                        </div>
-                                    </form>
-
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -203,9 +162,6 @@
 </div>
 
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-<script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js" defer></script>
-<script src="https://cdn.datatables.net/1.10.23/js/dataTables.bootstrap4.min.js" defer></script>
-
 <script>
     $(document).ready(function () {
         $('#example').DataTable({

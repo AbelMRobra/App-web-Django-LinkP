@@ -14,6 +14,7 @@
     <div class="col-md-7 align-self-center">
       <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'App Finanzas' %}">Panel</a></li>
         <li class="breadcrumb-item">Panel de control</li>
       </ol>
     </div>
@@ -21,19 +22,18 @@
 </div>
 
 <div class="row">
-  <div class="col-12">
+  <div class="col">
     <div class="card">
       <div class="card-body row">
         <div class="col-12 justify-content-center">
 
           {% if datos.mensaje == 0 or datos.mensaje == 1 %}
-
-          <div style="margin-bottom: 2rem;">
-
-            <h3>Analisis de unidades {% if datos.graficos %} {{ datos.proyecto.nombre }} {% endif %}</h3>
-            <small> Seleccione las preferencias para buscar un listado de unidades que cumplan ese requerimiento</small>
-
-          </div>
+          <div class="d-flex align-items-center">
+            <div>
+                <h4 class="card-title"><span class="lstick m-r-20"></span>Analisis de unidades {% if datos.graficos %} {{ datos.proyecto.nombre }} {% endif %}</h4>
+                <h5 class="card-subtitle"></span>Seleccione las preferencias para buscar un listado de unidades que cumplan ese requerimiento</h5>
+            </div>
+        </div>
 
           <div class="row d-flex justify-content-center">
             <div class="col col-md-12 col-lg-8">
@@ -140,22 +140,16 @@
     <div class="card">
       <div class="card-body row">
         <div class="col-12 justify-content-center">
-
-          <h3>Resumen de datos</h3>
-
-          <div>
-
-            <h6>Cantidad de unidades: <small>{{datos.otros_datos.0.1}}</small> </h6>
-            <h6>Departamentos: <small>{{datos.otros_datos.0.2}}</small> </h6>
-            <h6>Cocheras: <small>{{datos.otros_datos.0.3}} </small></h6>
-            <h6>Superficie total de las unidades: <small>{{datos.otros_datos.0.0|floatformat:2}}m2</small> </h6>
-            <h6>Monto total de las unidades: <small>$ {{datos.otros_datos.0.4|floatformat:0|intcomma}}</small> </h6>
-
-
-          </div>
-
-
-
+          <div class="d-flex align-items-center">
+            <div>
+                <h4 class="card-title"><span class="lstick m-r-20"></span>Resumen de datos</h4>
+                <h5 class="card-subtitle"></span>Cantidad de unidades: <small>{{datos.otros_datos.0.1}}</small></h5>
+                <h5 class="card-subtitle"></span>Departamentos: <small>{{datos.otros_datos.0.2}}</small></h5>
+                <h5 class="card-subtitle"></span>Cocheras: <small>{{datos.otros_datos.0.3}} </small></h5>
+                <h5 class="card-subtitle"></span>Superficie total de las unidades: <small>{{datos.otros_datos.0.0|floatformat:2}}m2</small> </h5>
+                <h5 class="card-subtitle"></span>Monto total de las unidades: <small>$ {{datos.otros_datos.0.4|floatformat:0|intcomma}}</small> </h5>
+            </div>
+        </div>
           <b>
             <hr class="my-4" style="width: 100%; border-color: black ;">
           </b>

@@ -13,7 +13,8 @@
 
         <div class="col-md-7 align-self-center">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'Principal Tecnica' %}">Panel</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'Notas de pedido' 0 0 %}">Correspondencia</a></li>
                 <li class="breadcrumb-item">Orden de servicio</li>
             </ol>
         </div>
@@ -83,8 +84,7 @@
                                 aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered" role="document">
                                     <div class="modal-content">
-                                        <div class="modal-header" style="background: rgb(36,160,237);
-                                        background: linear-gradient(315deg, rgba(36,160,237,1) 0%, rgba(56,56,130,1) 22%, rgba(0,212,255,1) 100%);">
+                                        <div class="modal-header" style="background-color: #2a3e52;">
                                             <h5 class="modal-title text-light" id="exampleModalLongTitle">Escribe un
                                                 comentario!</h5>
                                             <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
@@ -96,15 +96,14 @@
                                             <form action="" method="POST">
 
                                                 {% csrf_token %}
-
-                                                <input class="col-form-label col-form-label-lg" type="text"
-                                                    placeholder="Escriba aqui ..." id="inputLarge" name="COMENTARIO"
-                                                    style="margin: 5px; width: 90%;">
+                                                <h6>Comentario</h6>
+                                                <input class="form-control form-control" type="text"
+                                                    placeholder="Escriba aqui ..." id="inputLarge" name="COMENTARIO" >
                                             </form>
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-info"
-                                                data-dismiss="modal">Close</button>
+                                            <button type="button" class="btn btn-secondary"
+                                                data-dismiss="modal">Cerrar</button>
 
                                         </div>
                                     </div>

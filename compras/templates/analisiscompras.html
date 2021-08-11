@@ -15,87 +15,77 @@
         <div class="col-md-7 align-self-center">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'Principal compras' %}">Panel</a></li>
                 <li class="breadcrumb-item">Analisis de compras</li>
             </ol>
         </div>
     </div>
 </div>
-
-<div class="col-12">
-    <div class="card">
-        <div class="card-body">
-            <div style="margin-bottom: 2rem;">
-
-                <h3>Analisis historico de compras
-
-                    {% if datos.proyecto == 0 %}
-
-                    - GENERAL </h3>
-
-                {% else %}
-
-                - {{ datos.proyecto.nombre }} </h3>
-
-                {% endif %}
-
-                <h6>El monto de compras analizado es de: ${{ datos.montocompras|floatformat:0|intcomma}} Millones</h6>
-                <h6>Relación compras/presupuesto: {{ datos.inc|floatformat:0}}</h6>
-                <p><small> En el analisis de precio el punto negro muestra la desviación porcentual con respecto al
-                        precio del presupuesto</small></p>
-
-            </div>
-
-
-            <div style="margin-top: 0.5rem; display: inline-block; width: 100%;">
-
-                <div style="text-align: center;">
-                    <small><strong>-- Analisis de precios --</strong></small>
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div>
+                        <h4 class="card-title"><span class="lstick m-r-20"></span>Analisis historico de compras {% if datos.proyecto == 0 %} - GENERAL {% else %} - {{ datos.proyecto.nombre }} {% endif %}</h4>
+                        <h6 class="card-subtitle">El monto de compras analizado es de: ${{ datos.montocompras|floatformat:0|intcomma}} Millones</h6>
+                        <h6 class="card-subtitle">Relación compras/presupuesto: {{ datos.inc|floatformat:0}}</h6>
+                        <p><small> En el analisis de precio el punto negro muestra la desviación porcentual con respecto al
+                            precio del presupuesto</small></p>
+                    </div>
                 </div>
 
-                <canvas id="myChart" style="width: 100%; max-height: 300px;"></canvas>
+                <div style="margin-top: 0.5rem; display: inline-block; width: 100%;">
+
+                    <div style="text-align: center;">
+                        <small><strong>-- Analisis de precios --</strong></small>
+                    </div>
+
+                    <canvas id="myChart" style="width: 100%; max-height: 300px;"></canvas>
 
 
-            </div>
-
-            <p class="mt-3"><small> En el analisis de cantidad se puede ver el volumen operado</small></p>
-
-            <div style="margin-top: 0.5rem; display: inline-block; width: 100%;">
-                <div style="text-align: center;">
-
-                    <small><strong>-- Analisis de cantidad --</strong></small>
-                    <p><small>Precio expresado en miles</small></p>
                 </div>
 
-                <canvas id="myChart2"  style="width: 100%; max-height: 300px;"></canvas>
-            </div>
+                <p class="mt-3"><small> En el analisis de cantidad se puede ver el volumen operado</small></p>
 
-            <b>
-                <hr class="my-4" style="width: 100%; border-color: black ;">
-            </b>
+                <div style="margin-top: 0.5rem; display: inline-block; width: 100%;">
+                    <div style="text-align: center;">
 
-            <div style="text-align: center;">
-                <form method="POST">
-
-                    {% csrf_token %}
-
-                    <select name="proyecto" class="custom-select" style="width: 200px">
-
-                        {% for i in datos.proyectos %}
-                        <option value="{{i.id}}">{{i.nombre}}</option>
-
-                        {% endfor %}
-
-
-                    </select>
-                    <div>
-                        <small> Seleccione el proyecto</small>
-                    </div>
-                    <div>
-                        <button class="btn btn-dark mt-3" type="submit">Filtrar</button>
+                        <small><strong>-- Analisis de cantidad --</strong></small>
+                        <p><small>Precio expresado en miles</small></p>
                     </div>
 
-                </form>
+                    <canvas id="myChart2"  style="width: 100%; max-height: 300px;"></canvas>
+                </div>
 
+                <b>
+                    <hr class="my-4" style="width: 100%; border-color: black ;">
+                </b>
+
+                <div style="text-align: center;">
+                    <form method="POST">
+
+                        {% csrf_token %}
+
+                        <select name="proyecto" class="custom-select" style="width: 200px">
+
+                            {% for i in datos.proyectos %}
+                            <option value="{{i.id}}">{{i.nombre}}</option>
+
+                            {% endfor %}
+
+
+                        </select>
+                        <div>
+                            <small> Seleccione el proyecto</small>
+                        </div>
+                        <div>
+                            <button class="btn btn-dark mt-3" type="submit">Filtrar</button>
+                        </div>
+
+                    </form>
+
+                </div>
             </div>
         </div>
     </div>

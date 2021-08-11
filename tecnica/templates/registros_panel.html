@@ -8,11 +8,11 @@
 
 <div class="container-fluid r-aside">
     <div class="row page-titles">
-        <div class="col-md-5 align-self-center">
+        <div class="col-md-5 col-lg-5 align-self-center">
             <h3 class="text-themecolor">Registros de desvios</h3>
         </div>
 
-        <div class="col-md-7 align-self-center">
+        <div class="col-md-7  col-lg-4 align-self-center">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
                 <li class="breadcrumb-item"><a href="{% url 'Principal Tecnica' %}">Panel</a></li>
@@ -28,21 +28,17 @@
         <div class="card overflow-auto">
             <div class="card-body">
                 <div class="row d-flex justify-items-between">
-                    <div class="col">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div>
+                            <h4 class="card-title"><span class="lstick m-r-20"></span>Listado de acontecimientos</h4>
+                            <h5 class="card-subtitle">Registros de demoras por de los proyectos</h5>
+                        </div>
 
-                        <h4 class="card-title"><span class="lstick m-r-20"></span>
-                            Listado de acontecimientos
-                        </h4>
-                        <h6 class="card-subtitle">
-                            Registros de demoras por de los proyectos
-                        </h6>
-                    </div>
-
-                    <div class="row m-2">
-                        <a href="#" data-toggle="modal" data-target="#ModalRegistro"><i
-                                class="fa fa-plus-circle  text-info"><span class="text-info ml-2"
-                                    style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif"><b>Nuevo
-                                        registro</b></span></i></a>
+                        <div>
+                            <a class="btn text-info" href="#" data-toggle="modal" data-target="#ModalRegistro"><i
+                                    class="fa fa-plus-circle  mr-2"></i>Nuevo
+                                registro</a>
+                        </div>
                     </div>
 
                     <!-- Modal registro -->
@@ -50,11 +46,10 @@
                         aria-labelledby="ModalRegistroCrearTitle" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered" role="document">
                             <div class="modal-content">
-                                <div class="modal-header"
-                                style="background: rgb(36,160,237);
-                                                        background: linear-gradient(315deg, rgba(36,160,237,1) 0%, rgba(56,56,130,1) 22%, rgba(0,212,255,1) 100%);">
+                                <div class="modal-header" style="background-color: #2a3e52;">
                                     <h5 class="modal-title text-light" id="exampleModalLongTitle">Nuevo registro</h5>
-                                    <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+                                    <button type="button" class="close text-light" data-dismiss="modal"
+                                        aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
@@ -64,74 +59,51 @@
 
                                         {% csrf_token %}
 
-                                        <h6><small>Fecha</small> </h6>
-
+                                        <h6>Fecha</h6>
                                         <div class="input-group mb-3">
-
                                             <input name="fecha" type="date" class="form-control form-control"
                                                 style="width: 300px;">
                                         </div>
 
-                                        <h6><small>Proyecto</small> </h6>
-
+                                        <h6>Proyecto</h6>
                                         <div class="input-group mb-3">
-
                                             <select name="proyecto" class="form-control form-control"
                                                 style="width: 300px;">
-
                                                 {% for p in proyectos %}
-
                                                 <option value="{{p.id}}">{{p}}</option>
-
                                                 {% endfor %}
-
                                             </select>
-
                                         </div>
 
-                                        <h6><small>Nombre</small> </h6>
-
+                                        <h6>Nombre</h6>
                                         <div class="input-group mb-3">
-
                                             <input name="nombre" type="text" class="form-control form-control"
                                                 style="width: 300px;">
-
                                         </div>
 
-                                        <h6><small>Dias</small> </h6>
-
+                                        <h6>Dias</h6>
                                         <div class="input-group mb-3">
-
                                             <input name="dias" type="number" step="1" class="form-control form-control"
                                                 style="width: 300px;">
-
                                         </div>
 
-                                        <h6><small>Descripción</small> </h6>
-
+                                        <h6>Descripción</h6>
                                         <div class="input-group mb-3">
-
                                             <textarea name="descrip" class="form-control form-control"
                                                 style="width: 300px;">
-
-                                        </textarea>
-
+                                            </textarea>
                                         </div>
 
                                         <button type="submit" class="btn btn-info">Cargar</button>
-
                                     </form>
-
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-info" data-dismiss="modal">Cerrar</button>
-
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-
 
                 <div class="row">
                     <div class="col-12">
@@ -143,7 +115,7 @@
                 </div>
 
                 <div class="tab-content">
-                    <div id="general" class="tab-pane fade  in active">
+                    <div id="general" class="tab-pane fade in active">
                         <table id="example" class="table ">
                             <thead>
                                 <tr>
@@ -167,9 +139,9 @@
                                     <td>{{i.fecha|date:"Y-m-d"}}</td>
                                     <td>{{i.proyecto|lower|capfirst}}</td>
                                     <td>{{i.creador.identificacion}}</td>
-                                    <td><a href="#" data-toggle="modal" data-target="#ModalDescrip{{i.id}}">{{i.nombre|lower|capfirst}}</a></td>
+                                    <td><a href="#" data-toggle="modal"
+                                            data-target="#ModalDescrip{{i.id}}">{{i.nombre|lower|capfirst}}</a></td>
                                     <td>{{i.dias}}</td>
-
                                 </tr>
 
                                 <!-- Modal registro -->
@@ -177,85 +149,63 @@
                                     aria-labelledby="ModalEditar{{i.id}}Title" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered" role="document">
                                         <div class="modal-content">
-                                            <div class="modal-header"
-                                            style="background: rgb(36,160,237);
-                                                                    background: linear-gradient(315deg, rgba(36,160,237,1) 0%, rgba(56,56,130,1) 22%, rgba(0,212,255,1) 100%);">
-                                                <h5 class="modal-title text-light" id="exampleModalLongTitle">Editar registro</h5>
+                                            <div class="modal-header" style="background-color: #2a3e52;">
+                                                <h5 class="modal-title text-light" id="exampleModalLongTitle">Editar
+                                                    registro</h5>
                                                 <button type="button" class="close text-light" data-dismiss="modal"
                                                     aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                             </div>
                                             <div class="modal-body">
-
                                                 <form method="POST" style="margin: 15px;">
-
                                                     {% csrf_token %}
 
-                                                    <h6><small>Fecha</small> </h6>
-
+                                                    <h6>Fecha</h6>
                                                     <div class="input-group mb-3">
-
-                                                        <input name="fecha" type="date" value="{{i.fecha|date:"Y-m-d"}}" class="form-control form-control"
+                                                        <input name="fecha" type="date" value="{{i.fecha|date:"
+                                                            Y-m-d"}}" class="form-control form-control"
                                                             style="width: 300px;">
                                                     </div>
 
-                                                    <h6><small>Proyecto</small> </h6>
-
+                                                    <h6>Proyecto</h6>
                                                     <div class="input-group mb-3">
-
-                                                        <select name="proyecto" 
-                                                            class="form-control form-control" style="width: 300px;">
-                                                            
-                                                            <option value="{{i.proyecto}}" selected >{{i.proyecto}}</option>
+                                                        <select name="proyecto" class="form-control form-control"
+                                                            style="width: 300px;">
+                                                            <option value="{{i.proyecto}}" selected>{{i.proyecto}}
+                                                            </option>
                                                             {% for p in proyectos %}
-
                                                             <option value="{{p.id}}">{{p}}</option>
-
                                                             {% endfor %}
-
                                                         </select>
-
                                                     </div>
 
-                                                    <h6><small>Nombre</small> </h6>
-
+                                                    <h6>Nombre</h6>
                                                     <div class="input-group mb-3">
-
                                                         <input name="nombre" type="text" value="{{i.nombre}}"
                                                             class="form-control form-control" style="width: 300px;">
-
                                                     </div>
 
-                                                    <h6><small>Dias</small> </h6>
-
+                                                    <h6>Dias</h6>
                                                     <div class="input-group mb-3">
-
                                                         <input name="dias" type="number" value="{{i.dias}}" step="1"
                                                             class="form-control form-control" style="width: 300px;">
-
                                                     </div>
 
-                                                    <h6><small>Descripción</small> </h6>
-
+                                                    <h6>Descripción</h6>
                                                     <div class="input-group mb-3">
-
-                                                        <textarea name="descrip" 
-                                                            class="form-control form-control" style="width: 300px;">{{i.descrip}}
+                                                        <textarea name="descrip" class="form-control form-control"
+                                                            style="width: 300px;">{{i.descrip}}
                                                           </textarea>
-
-
                                                     </div>
 
-                                                    <button type="submit" name="proyecto{{i.id}}" class="btn btn-info">Cargar</button>
-
+                                                    <button type="submit" name="proyecto{{i.id}}"
+                                                        class="btn btn-info">Cargar</button>
                                                 </form>
-
                                             </div>
                                             <div class="modal-footer">
-                                                <button type="button" class="btn btn-info"
+                                                <button type="button" class="btn btn-secondary"
                                                     data-dismiss="modal">Cerrar</button>
-
                                             </div>
                                         </div>
                                     </div>
@@ -265,10 +215,9 @@
                                     aria-labelledby="ModalDescrip{{i.id}}Title" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered" role="document">
                                         <div class="modal-content">
-                                            <div class="modal-header"
-                                            style="background: rgb(36,160,237);
-                                                                    background: linear-gradient(315deg, rgba(36,160,237,1) 0%, rgba(56,56,130,1) 22%, rgba(0,212,255,1) 100%);">
-                                                <h5 class="modal-title text-light" id="exampleModalLongTitle">{{i.nombre}}</h5>
+                                            <div class="modal-header" style="background-color: #2a3e52;">
+                                                <h5 class="modal-title text-light" id="exampleModalLongTitle">
+                                                    {{i.nombre}}</h5>
                                                 <button type="button" class="close text-light" data-dismiss="modal"
                                                     aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
@@ -276,11 +225,11 @@
                                             </div>
                                             <div class="modal-body">
 
-                                               <p>{{i.descrip}}</p>
+                                                <p>{{i.descrip}}</p>
 
                                             </div>
                                             <div class="modal-footer">
-                                                <button type="button" class="btn btn-info"
+                                                <button type="button" class="btn btn-secondary"
                                                     data-dismiss="modal">Cerrar</button>
 
                                             </div>
@@ -288,11 +237,9 @@
                                     </div>
                                 </div>
                                 {% endfor %}
-
                             </tbody>
                         </table>
                     </div>
-
                 </div>
                 <!--  -->
                 <div id="interna" class="tab-pane fade ">
@@ -300,11 +247,8 @@
 
                 </div>
             </div>
-
-
         </div>
     </div>
-</div>
 </div>
 
 <aside class="right-side-panel">
@@ -315,14 +259,14 @@
             <div class="card">
                 <div class="card-body">
                     <img src="{% static 'img/animation_500_kmuydpt0.gif' %}" alt="Funny image" width="200px">
-                    <p>Este panel registra todos los imprevistos que puedan demorar las entregas en los distintos proyectos.</p>
-                    <p>Asi se podra dar una respuesta más clara y tener un mejor seguimiento de los imprevistos a lo largo del proyecto</p>
+                    <p>Este panel registra todos los imprevistos que puedan demorar las entregas en los distintos proyectos.
+                    </p>
+                    <p>Asi se
+                        podra dar una respuesta más clara y tener un mejor seguimiento de los imprevistos a lo largo del proyecto
+                    </p>
                 </div>
             </div>
         </div>
-    </div>
-
-
     </div>
 </aside>
 
@@ -337,13 +281,13 @@
     $(document).ready(function () {
         $('#example').DataTable({
             "language": {
-            "lengthMenu": "Mostar _MENU_ documentos",
-            "zeroRecords": "No se encontro nada - perdon ",
-            "info": "Pagina _PAGE_ de _PAGES_",
-            "infoEmpty": "Sin registros disponibles",
-            "infoFiltered": "(filtrado de _MAX_ registros totales)",
-            "search": "Buscar"
-        },
+                "lengthMenu": "Mostar _MENU_ documentos",
+                "zeroRecords": "No se encontro nada - perdon ",
+                "info": "Pagina _PAGE_ de _PAGES_",
+                "infoEmpty": "Sin registros disponibles",
+                "infoFiltered": "(filtrado de _MAX_ registros totales)",
+                "search": "Buscar"
+            },
             "order": [[0, "desc"]],
             "paging": false,
             "info": false
@@ -352,13 +296,13 @@
     $(document).ready(function () {
         $('#example1').DataTable({
             "language": {
-            "lengthMenu": "Mostar _MENU_ documentos",
-            "zeroRecords": "No se encontro nada - perdon ",
-            "info": "Pagina _PAGE_ de _PAGES_",
-            "infoEmpty": "Sin registros disponibles",
-            "infoFiltered": "(filtrado de _MAX_ registros totales)",
-            "search": "Buscar"
-        },
+                "lengthMenu": "Mostar _MENU_ documentos",
+                "zeroRecords": "No se encontro nada - perdon ",
+                "info": "Pagina _PAGE_ de _PAGES_",
+                "infoEmpty": "Sin registros disponibles",
+                "infoFiltered": "(filtrado de _MAX_ registros totales)",
+                "search": "Buscar"
+            },
             "order": [[0, "desc"]],
             "paging": false,
             "info": false

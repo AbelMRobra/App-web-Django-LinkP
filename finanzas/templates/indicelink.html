@@ -6,166 +6,171 @@
 {% block content %}
 
 <div class="container-fluid">
-    <!-- ============================================================== -->
-    <!-- Bread crumb and right sidebar toggle -->
-    <!-- ============================================================== -->
     <div class="row page-titles">
         <div class="col-md-5 align-self-center">
             <h3 class="text-themecolor">Indice Link</h3>
         </div>
 
-    </div>
-
-  </div>
-
-
-  <div class="col-12">
-    <div class="card">
-        <div class="card-body">
-            <h4 class="card-title">
-                <a href="{% url 'Historico almacenero' %}" class="fa fa-search"></a> Composición del indice</h4>
-            <h6 class="card-subtitle">Resumen de los datos conjuntos de proyectos y honorarios</h6>
-            <div style="text-align: left; margin: 5px;">
-
-
-                {% if id_time == "0" %}
-
-                <a href="{% url 'Indice Link' id_moneda 1 %}" style="text-decoration: none;"data-toggle="tooltip" data-placement="right" title="" data-original-title="Ajustar por tiempo"><img
-                    src="{% static 'img/valortiepo.png' %}" alt=""
-                    style="max-width:30px; height:auto;"></a>
-
-                {% else %}
-
-                <a href="{% url 'Indice Link' id_moneda 0 %}" style="text-decoration: none;"data-toggle="tooltip" data-placement="right" title="" data-original-title="Indice sin ajuste"><img
-                    src="{% static 'img/valores2.png' %}" alt=""
-                    style="max-width:30px; height:auto;"></a>
-
-                {% endif %}
-
-                <a href="{% url 'Indice Link' 0 id_time %}" style="text-decoration: none; margin-left: 15px;"data-toggle="tooltip" data-placement="right" title="" data-original-title="Ver en pesos"><img
-                    src="{% static 'img/ARS.png' %}" alt=""
-                    style="max-width:30px; height:auto;"></a>
-
-                <a href="{% url 'Indice Link' 1 id_time %}" style="text-decoration: none; margin-left: 15px;"data-toggle="tooltip" data-placement="right" title="" data-original-title="Ver en Hº"><img
-                    src="{% static 'img/H.png' %}" alt=""
-                    style="max-width:30px; height:auto;"></a>
-
-                <a href="{% url 'Indice Link' 2 id_time %}" style="text-decoration: none; margin-left: 15px;"data-toggle="tooltip" data-placement="right" title="" data-original-title="Ver en dolar blue"><img
-                    src="{% static 'img/valores.png' %}" alt=""
-                    style="max-width:30px; height:auto;"></a>
-            
-                </div>
-            <div class="table-responsive">
-                <table class="table table-bordered">
-                    <thead>
-                        <tr>
-                            <th>Proyecto</th>
-                            <th>Saldo de caja</th>
-                            <th>Pend. Gasto</th>
-                            <th>Pend. Ingreso</th>
-                            <th>Margen</th>
-                            <th>Descuentos</th>
-                            <th>Margen final</th>
-  
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for i in datos_completos %}  
-    
-                        <tr class = "table-light">
-        
-                            {% if "#300" in i.0.proyecto.nombre %}
-        
-                            <td> 
-                                       
-                                <h6 style="color: rgb({{i.0.proyecto.color}});"># 300</h6>
-                                 
-                            
-                            </td> 
-                            
-                            {% else %}
-        
-                            <td>
-
-                                <h6 style="color: rgb({{i.0.proyecto.color}});">{{ i.0.proyecto.nombre}}</h6>
-                            </td> 
-                            
-        
-                            {% endif %}
-                            
-                            
-                            <td style="width: 10%; vertical-align: middle;"><small>
-                                {% if id_moneda == "2" %}U$D{% elif id_moneda == "0" %}${% endif %} {{ i.1|floatformat:0|intcomma }} {% if id_moneda == "1" %}M3 Hº{% endif %}</small> </td> 
-                            <td style="width: 10%; vertical-align: middle;"><small>
-                                {% if id_moneda == "2" %}U$D{% elif id_moneda == "0" %}${% endif %} {{ i.2|floatformat:0|intcomma }} {% if id_moneda == "1" %}M3 Hº{% endif %}</small> </td> 
-                            <td style="width: 10%; vertical-align: middle; vertical-align: middle;"><small>
-                                {% if id_moneda == "2" %}U$D{% elif id_moneda == "0" %}${% endif %} {{ i.3|floatformat:0|intcomma }} {% if id_moneda == "1" %}M3 Hº{% endif %}</small></td> 
-                            <td style="width: 8%; vertical-align: middle;"><small><b>
-                                {% if id_moneda == "2" %}U$D{% elif id_moneda == "0" %}${% endif %} {{i.4|floatformat:0|intcomma }} {% if id_moneda == "1" %}M3 Hº{% endif %}</b></small></td>
-                            <td style="width: 10%; vertical-align: middle;"><small>
-                                - {% if id_moneda == "2" %}U$D{% elif id_moneda == "0" %}${% endif %} {{ i.5|floatformat:0|intcomma }} {% if id_moneda == "1" %}M3 Hº{% endif %}</small> </td> 
-                            <td style="width: 10%; vertical-align: middle;"><small><b>
-                                {% if id_moneda == "2" %}U$D{% elif id_moneda == "0" %}${% endif %} {{ i.6|floatformat:0|intcomma }} {% if id_moneda == "1" %}M3 Hº{% endif %}</b> </small> </td>     
-                        </tr>
-                    </tbody>
-        
-                    {% endfor %}
-        
-                    <tbody>
-            
-                        <tr class = "table-dark">
-                            <td style="width: 10%; vertical-align: middle;"><small><b>RESULTADO</b></small> </td>
-                            <td  class="priority-5" style="width: 5%; vertical-align: middle;"><small><b>
-                                {% if id_moneda == "2" %}U$D{% elif id_moneda == "0" %}${% endif %} {{datos_finales.0.0|floatformat:0|intcomma }} {% if id_moneda == "1" %}M3 Hº{% endif %}</b> </small> </td> 
-                            <td  class="priority-5" style="width: 10%; vertical-align: middle;"><small><b>
-                                {% if id_moneda == "2" %}U$D{% elif id_moneda == "0" %}${% endif %} {{datos_finales.0.1|floatformat:0|intcomma }} {% if id_moneda == "1" %}M3 Hº{% endif %}</b></small> </td> 
-                            <td style="width: 10%; vertical-align: middle; vertical-align: middle;"><small><b>
-                                {% if id_moneda == "2" %}U$D{% elif id_moneda == "0" %}${% endif %} {{datos_finales.0.2|floatformat:0|intcomma}} {% if id_moneda == "1" %}M3 Hº{% endif %}</b></small> </td> 
-                            <td style="width: 10%; vertical-align: middle;"><small><b>
-                                {% if id_moneda == "2" %}U$D{% elif id_moneda == "0" %}${% endif %} {{datos_finales.0.4|floatformat:0|intcomma }} {% if id_moneda == "1" %}M3 Hº{% endif %}</b></small> </td>
-                            <td style="width: 10%; vertical-align: middle;"><small><b>- 
-                                {% if id_moneda == "2" %}U$D{% elif id_moneda == "0" %}${% endif %} {{ datos_finales.0.3|floatformat:0|intcomma}} {% if id_moneda == "1" %}M3 Hº{% endif %}</b></small> </td> 
-                            <td style="width: 10%; vertical-align: middle;"><small><b>
-                                {% if id_moneda == "2" %}U$D{% elif id_moneda == "0" %}${% endif %} {{ datos_finales.0.5|floatformat:0|intcomma }} {% if id_moneda == "1" %}M3 Hº{% endif %}</b></small> </td>
-                    </tr>
-                        <tr class = "table-light">
-                            <td style="width: 10%; vertical-align: middle;"><small><b>HONORARIOS</b></small></td>
-                            <td  class="priority-5" style="width: 5%; vertical-align: middle;"><small>
-                                {% if id_moneda == "2" %}U$D{% elif id_moneda == "0" %}${% endif %} {{datos_finales_2.11|floatformat:0|intcomma }} {% if id_moneda == "1" %}M3 Hº{% endif %}</small></td> 
-                            <td  class="priority-5" style="width: 10%; vertical-align: middle;"><small>
-                                {% if id_moneda == "2" %}U$D{% elif id_moneda == "0" %}${% endif %} {{datos_finales_2.2|floatformat:0|intcomma }} {% if id_moneda == "1" %}M3 Hº{% endif %}</small></td> 
-                            <td style="width: 10%; vertical-align: middle; vertical-align: middle;"><small><b>
-                                {% if id_moneda == "2" %}U$D{% elif id_moneda == "0" %}${% endif %} {{datos_finales_2.1|floatformat:0|intcomma }} {% if id_moneda == "1" %}M3 Hº{% endif %}</b></small></td> 
-                            <td style="width: 10%; vertical-align: middle;"><small><b>
-                                {% if id_moneda == "2" %}U$D{% elif id_moneda == "0" %}${% endif %} {{datos_finales_2.0|floatformat:0|intcomma }} {% if id_moneda == "1" %}M3 Hº{% endif %}</b></small></td>
-                            <td style="width: 10%; vertical-align: middle; vertical-align: middle;"></td> 
-                            <td style="width: 10%; vertical-align: middle; vertical-align: middle;"><small><b>
-                                {% if id_moneda == "2" %}U$D{% elif id_moneda == "0" %}${% endif %} {{datos_finales_2.3|floatformat:0|intcomma }} {% if id_moneda == "1" %}M3 Hº{% endif %}</b></small></td>
-        
-                        </tr>
-                        <tr class = "table-dark">
-                            <td style="width: 10%; vertical-align: middle;"> <small><b>RESULTADO</b></small> </td>
-                            <td  class="priority-5" style="width: 5%; vertical-align: middle;"><small><b>
-                                {% if id_moneda == "2" %}U$D{% elif id_moneda == "0" %}${% endif %} {{datos_finales_2.12|floatformat:0|intcomma }} {% if id_moneda == "1" %}M3 Hº{% endif %}</b></small></td> 
-                            <td  class="priority-5" style="width: 10%; vertical-align: middle;"><small><b>
-                                {% if id_moneda == "2" %}U$D{% elif id_moneda == "0" %}${% endif %} {{datos_finales_2.5|floatformat:0|intcomma }} {% if id_moneda == "1" %}M3 Hº{% endif %}</b></small></td> 
-                            <td style="width: 10%; vertical-align: middle; vertical-align: middle;"><small><b>
-                                {% if id_moneda == "2" %}U$D{% elif id_moneda == "0" %}${% endif %} {{datos_finales_2.4|floatformat:0|intcomma }} {% if id_moneda == "1" %}M3 Hº{% endif %}</b></small></td> 
-                            <td style="width: 10%; vertical-align: middle;"><small><b>
-                                {% if id_moneda == "2" %}U$D{% elif id_moneda == "0" %}${% endif %} {{datos_finales_2.6|floatformat:0|intcomma }} {% if id_moneda == "1" %}M3 Hº{% endif %}</b></small></td>
-                            <td style="width: 10%; vertical-align: middle; vertical-align: middle;"><small><b>- 
-                                {% if id_moneda == "2" %}U$D{% elif id_moneda == "0" %}${% endif %} {{ datos_finales.0.3|floatformat:0|intcomma}} {% if id_moneda == "1" %}M3 Hº{% endif %}</b></small> </td> 
-                            <td style="width: 10%; vertical-align: middle; vertical-align: middle;"><small><b>
-                                {% if id_moneda == "2" %}U$D{% elif id_moneda == "0" %}${% endif %} {{datos_finales_2.7|floatformat:0|intcomma }} {% if id_moneda == "1" %}M3 Hº{% endif %}</b></small> </td>
-                        </tr>
-                    </tbody>
-
-                </table>
-            </div>
+        <div class="col-md-7 align-self-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'App Finanzas' %}">Panel</a></li>
+                <li class="breadcrumb-item">Indice</li>
+            </ol>
         </div>
     </div>
 </div>
 
+<div class="row">
+    <div class="col">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">
+                    <span class="lstick"></span><a href="{% url 'Historico almacenero' %}" class="fa fa-search"></a> Composición del indice
+                </h4>
+                <h6 class="card-subtitle">Resumen de los datos conjuntos de proyectos y honorarios</h6>
+                <div style="text-align: left; margin: 5px;">
+                    {% if id_time == "0" %}
+
+                    <a href="{% url 'Indice Link' id_moneda 1 %}" style="text-decoration: none;" data-toggle="tooltip"
+                        data-placement="right" title="" data-original-title="Ajustar por tiempo"><img
+                            src="{% static 'img/valortiepo.png' %}" alt="" style="max-width:30px; height:auto;"></a>
+                    {% else %}
+
+                    <a href="{% url 'Indice Link' id_moneda 0 %}" style="text-decoration: none;" data-toggle="tooltip"
+                        data-placement="right" title="" data-original-title="Indice sin ajuste"><img
+                            src="{% static 'img/valores2.png' %}" alt="" style="max-width:30px; height:auto;"></a>
+                    {% endif %}
+
+                    <a href="{% url 'Indice Link' 0 id_time %}" style="text-decoration: none; margin-left: 15px;"
+                        data-toggle="tooltip" data-placement="right" title="" data-original-title="Ver en pesos"><img
+                            src="{% static 'img/ARS.png' %}" alt="" style="max-width:30px; height:auto;"></a>
+
+                    <a href="{% url 'Indice Link' 1 id_time %}" style="text-decoration: none; margin-left: 15px;"
+                        data-toggle="tooltip" data-placement="right" title="" data-original-title="Ver en Hº"><img
+                            src="{% static 'img/H.png' %}" alt="" style="max-width:30px; height:auto;"></a>
+
+                    <a href="{% url 'Indice Link' 2 id_time %}" style="text-decoration: none; margin-left: 15px;"
+                        data-toggle="tooltip" data-placement="right" title="" data-original-title="Ver en dolar blue"><img
+                            src="{% static 'img/valores.png' %}" alt="" style="max-width:30px; height:auto;"></a>
+
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Proyecto</th>
+                                <th>Saldo de caja</th>
+                                <th>Pend. Gasto</th>
+                                <th>Pend. Ingreso</th>
+                                <th>Margen</th>
+                                <th>Descuentos</th>
+                                <th>Margen final</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for i in datos_completos %}
+
+                            <tr class="table-light">
+
+                                {% if "#300" in i.0.proyecto.nombre %}
+                                <td>
+                                    <h6 style="color: rgb({{i.0.proyecto.color}});"># 300</h6>
+                                </td>
+                                {% else %}
+                                <td>
+                                    <h6 style="color: rgb({{i.0.proyecto.color}});">{{ i.0.proyecto.nombre}}</h6>
+                                </td>
+                                {% endif %}
+
+                                <td style="width: 10%; vertical-align: middle;"><small>
+                                        {% if id_moneda == "2" %}U$D{% elif id_moneda == "0" %}${% endif %} {{ i.1|floatformat:0|intcomma }} {% if id_moneda == "1" %}M3 Hº{% endif %}</small>
+                                </td>
+                                <td style="width: 10%; vertical-align: middle;"><small>
+                                        {% if id_moneda == "2" %}U$D{% elif id_moneda == "0" %}${% endif %} {{ i.2|floatformat:0|intcomma }} {% if id_moneda == "1" %}M3 Hº{% endif %}</small>
+                                </td>
+                                <td style="width: 10%; vertical-align: middle; vertical-align: middle;"><small>
+                                        {% if id_moneda == "2" %}U$D{% elif id_moneda == "0" %}${% endif %} {{ i.3|floatformat:0|intcomma }} {% if id_moneda == "1" %}M3 Hº{% endif %}</small></td>
+                                <td style="width: 8%; vertical-align: middle;"><small><b>
+                                            {% if id_moneda == "2" %}U$D{% elif id_moneda == "0" %}${% endif %}
+                                            {{i.4|floatformat:0|intcomma }} {% if id_moneda == "1" %}M3 Hº{% endif %}</b></small></td>
+                                <td style="width: 10%; vertical-align: middle;"><small>
+                                        - {% if id_moneda == "2" %}U$D{% elif id_moneda == "0" %}${% endif %} {{ i.5|floatformat:0|intcomma }} {% if id_moneda == "1" %}M3 Hº{% endif %}</small>
+                                </td>
+                                <td style="width: 10%; vertical-align: middle;"><small><b>
+                                            {% if id_moneda == "2" %}U$D{% elif id_moneda == "0" %}${% endif %} {{ i.6|floatformat:0|intcomma }} {% if id_moneda == "1" %}M3 Hº{% endif %}</b>
+                                    </small> </td>
+                            </tr>
+                        </tbody>
+
+                        {% endfor %}
+
+                        <tbody>
+
+                            <tr class="table-dark">
+                                <td style="width: 10%; vertical-align: middle;"><small><b>RESULTADO</b></small> </td>
+                                <td class="priority-5" style="width: 5%; vertical-align: middle;"><small><b>
+                                            {% if id_moneda == "2" %}U$D{% elif id_moneda == "0" %}${% endif %}
+                                            {{datos_finales.0.0|floatformat:0|intcomma }} {% if id_moneda == "1" %}M3 Hº{% endif %}</b> </small> </td>
+                                <td class="priority-5" style="width: 10%; vertical-align: middle;"><small><b>
+                                            {% if id_moneda == "2" %}U$D{% elif id_moneda == "0" %}${% endif %}
+                                            {{datos_finales.0.1|floatformat:0|intcomma }} {% if id_moneda == "1" %}M3 Hº{% endif %}</b></small> </td>
+                                <td style="width: 10%; vertical-align: middle; vertical-align: middle;"><small><b>
+                                            {% if id_moneda == "2" %}U$D{% elif id_moneda == "0" %}${% endif %}
+                                            {{datos_finales.0.2|floatformat:0|intcomma}} {% if id_moneda == "1" %}M3 Hº{% endif %}</b></small> </td>
+                                <td style="width: 10%; vertical-align: middle;"><small><b>
+                                            {% if id_moneda == "2" %}U$D{% elif id_moneda == "0" %}${% endif %}
+                                            {{datos_finales.0.4|floatformat:0|intcomma }} {% if id_moneda == "1" %}M3 Hº{% endif %}</b></small> </td>
+                                <td style="width: 10%; vertical-align: middle;"><small><b>-
+                                            {% if id_moneda == "2" %}U$D{% elif id_moneda == "0" %}${% endif %} {{ datos_finales.0.3|floatformat:0|intcomma}} {% if id_moneda == "1" %}M3 Hº{% endif %}</b></small> </td>
+                                <td style="width: 10%; vertical-align: middle;"><small><b>
+                                            {% if id_moneda == "2" %}U$D{% elif id_moneda == "0" %}${% endif %} {{ datos_finales.0.5|floatformat:0|intcomma }} {% if id_moneda == "1" %}M3 Hº{% endif %}</b></small> </td>
+                            </tr>
+                            <tr class="table-light">
+                                <td style="width: 10%; vertical-align: middle;"><small><b>HONORARIOS</b></small></td>
+                                <td class="priority-5" style="width: 5%; vertical-align: middle;"><small>
+                                        {% if id_moneda == "2" %}U$D{% elif id_moneda == "0" %}${% endif %}
+                                        {{datos_finales_2.11|floatformat:0|intcomma }} {% if id_moneda == "1" %}M3 Hº{% endif %}</small></td>
+                                <td class="priority-5" style="width: 10%; vertical-align: middle;"><small>
+                                        {% if id_moneda == "2" %}U$D{% elif id_moneda == "0" %}${% endif %}
+                                        {{datos_finales_2.2|floatformat:0|intcomma }} {% if id_moneda == "1" %}M3 Hº{% endif %}</small></td>
+                                <td style="width: 10%; vertical-align: middle; vertical-align: middle;"><small><b>
+                                            {% if id_moneda == "2" %}U$D{% elif id_moneda == "0" %}${% endif %}
+                                            {{datos_finales_2.1|floatformat:0|intcomma }} {% if id_moneda == "1" %}M3 Hº{% endif %}</b></small></td>
+                                <td style="width: 10%; vertical-align: middle;"><small><b>
+                                            {% if id_moneda == "2" %}U$D{% elif id_moneda == "0" %}${% endif %}
+                                            {{datos_finales_2.0|floatformat:0|intcomma }} {% if id_moneda == "1" %}M3 Hº{% endif %}</b></small></td>
+                                <td style="width: 10%; vertical-align: middle; vertical-align: middle;"></td>
+                                <td style="width: 10%; vertical-align: middle; vertical-align: middle;"><small><b>
+                                            {% if id_moneda == "2" %}U$D{% elif id_moneda == "0" %}${% endif %}
+                                            {{datos_finales_2.3|floatformat:0|intcomma }} {% if id_moneda == "1" %}M3 Hº{% endif %}</b></small></td>
+                            </tr>
+                            <tr class="table-dark">
+                                <td style="width: 10%; vertical-align: middle;"> <small><b>RESULTADO</b></small> </td>
+                                <td class="priority-5" style="width: 5%; vertical-align: middle;"><small><b>
+                                            {% if id_moneda == "2" %}U$D{% elif id_moneda == "0" %}${% endif %}
+                                            {{datos_finales_2.12|floatformat:0|intcomma }} {% if id_moneda == "1" %}M3 Hº{% endif %}</b></small></td>
+                                <td class="priority-5" style="width: 10%; vertical-align: middle;"><small><b>
+                                            {% if id_moneda == "2" %}U$D{% elif id_moneda == "0" %}${% endif %}
+                                            {{datos_finales_2.5|floatformat:0|intcomma }} {% if id_moneda == "1" %}M3 Hº{% endif %}</b></small></td>
+                                <td style="width: 10%; vertical-align: middle; vertical-align: middle;"><small><b>
+                                            {% if id_moneda == "2" %}U$D{% elif id_moneda == "0" %}${% endif %}
+                                            {{datos_finales_2.4|floatformat:0|intcomma }} {% if id_moneda == "1" %}M3 Hº{% endif %}</b></small></td>
+                                <td style="width: 10%; vertical-align: middle;"><small><b>
+                                            {% if id_moneda == "2" %}U$D{% elif id_moneda == "0" %}${% endif %}
+                                            {{datos_finales_2.6|floatformat:0|intcomma }} {% if id_moneda == "1" %}M3 Hº{% endif %}</b></small></td>
+                                <td style="width: 10%; vertical-align: middle; vertical-align: middle;"><small><b>-
+                                            {% if id_moneda == "2" %}U$D{% elif id_moneda == "0" %}${% endif %} {{ datos_finales.0.3|floatformat:0|intcomma}} {% if id_moneda == "1" %}M3 Hº{% endif %}</b></small> </td>
+                                <td style="width: 10%; vertical-align: middle; vertical-align: middle;"><small><b>
+                                            {% if id_moneda == "2" %}U$D{% elif id_moneda == "0" %}${% endif %}
+                                            {{datos_finales_2.7|floatformat:0|intcomma }} {% if id_moneda == "1" %}M3 Hº{% endif %}</b></small> </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="col-md-12">
         <div class="card">
@@ -173,209 +178,205 @@
                 <div class="d-flex">
                     <div>
                         <h3 class="card-title m-b-5"><span class="lstick"></span>Variación del indice</h3>
-                        <h6 class="card-subtitle">Registros de los datos</h6></div>
-
+                        <h6 class="card-subtitle">Registros de los datos</h6>
                     </div>
 
+                </div>
+                <canvas id="myChart" height="100px"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
 
-                        <canvas id="myChart" height="100px" ></canvas>
-                    
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+<script>
+    var ctx = document.getElementById('myChart').getContext('2d');
+    var chart = new Chart(ctx, {
+        // The type of chart we want to create
+        type: 'line',
+
+        // The data for our dataset
+        data: {
+
+            labels: [
+                {% for i in fechas %}
+                '{{i}}',                   
+                {% endfor %}
+                'Hoy'
+                ],
+            datasets: [
+
+            {
+                label: 'Valor final',
+
+                {% if id_moneda == "1" %}
+                backgroundColor: 'rgb(80, 86, 74, 0.5)',
+                borderColor: 'rgb(80, 86, 74, 65)',
+
+                {% elif id_moneda == "0" %}
+
+                backgroundColor: 'rgb(26, 197, 179 , 0.3)',
+                borderColor: 'rgb(26, 197, 179 )',
+
+                {% else %}
+
+                backgroundColor: 'rgb(23, 185, 92 , 0.5)',
+                borderColor: 'rgb(23, 185, 92, 65)',
+
+                {% endif %}
                 
+                fill: true,
+                borderWidth: 1,
+                lineTension: 0,
+                data: [
 
-    </div>
-    </div>
-    </div>
+                {% if id_moneda == "1" %}
+                {% for i in datos_registro  %}
+                Math.round({{i.1|floatformat:0}}/1000),  
+                                 
+                {% endfor %}
+                Math.round({{datos_finales_2.7|floatformat:0}}/1000),
+                ]
 
+                {% elif id_moneda == "0" %}
 
+                {% for i in datos_registro  %}
+                Math.round({{i.1|floatformat:0}}/1000000),  
+                                 
+                {% endfor %}
+                Math.round({{datos_finales_2.7|floatformat:0 }}/1000000),
+                ]
 
-
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
-    <script>
-        var ctx = document.getElementById('myChart').getContext('2d');
-        var chart = new Chart(ctx, {
-            // The type of chart we want to create
-            type: 'line',
-
-            // The data for our dataset
-            data: {
-
-                labels: [
-                    {% for i in fechas %}
-                    '{{i}}',                   
-                    {% endfor %}
-                    'Hoy'
-                    ],
-                datasets: [
-
-                {
-                    label: 'Valor final',
-
-                    {% if id_moneda == "1" %}
-                    backgroundColor: 'rgb(80, 86, 74, 0.5)',
-                    borderColor: 'rgb(80, 86, 74, 65)',
-
-                    {% elif id_moneda == "0" %}
-
-                    backgroundColor: 'rgb(26, 197, 179 , 0.3)',
-                    borderColor: 'rgb(26, 197, 179 )',
-
-                    {% else %}
-
-                    backgroundColor: 'rgb(23, 185, 92 , 0.5)',
-                    borderColor: 'rgb(23, 185, 92, 65)',
-
-                    {% endif %}
-                    
-                    fill: true,
-                    borderWidth: 1,
-                    lineTension: 0,
-                    data: [
-
-                    {% if id_moneda == "1" %}
-                    {% for i in datos_registro  %}
-                    Math.round({{i.1|floatformat:0}}/1000),  
-                                     
-                    {% endfor %}
-                    Math.round({{datos_finales_2.7|floatformat:0}}/1000),
-                    ]
-
-                    {% elif id_moneda == "0" %}
-
-                    {% for i in datos_registro  %}
-                    Math.round({{i.1|floatformat:0}}/1000000),  
-                                     
-                    {% endfor %}
-                    Math.round({{datos_finales_2.7|floatformat:0 }}/1000000),
-                    ]
-
-                    {% else %}
+                {% else %}
 
 
-                    {% for i in datos_registro  %}
-                    Math.round({{i.1|floatformat:0}}/1000000),  
-                                     
-                    {% endfor %}
-                    Math.round({{datos_finales_2.7|floatformat:0}}/1000000),
-                    ]
+                {% for i in datos_registro  %}
+                Math.round({{i.1|floatformat:0}}/1000000),  
+                                 
+                {% endfor %}
+                Math.round({{datos_finales_2.7|floatformat:0}}/1000000),
+                ]
 
-                    {% endif %}
-                    
-                },
-
-                {
-                    label: 'Valor antes de descuento',
-
-                    {% if id_moneda == "1" %}
-                    backgroundColor: 'rgb(9, 10, 10 , 0.5)',
-                    borderColor: 'rgb(9, 10, 10 )',
-
-                    {% elif id_moneda == "0" %}
-
-                    backgroundColor: 'rgb(26, 83, 197 , 0.3)',
-                    borderColor: 'rgb(26, 83, 197 )',
-
-                    {% else %}
-
-                    backgroundColor: 'rgb(23, 185, 149 , 0.5)',
-                    borderColor: 'rgb(23, 185, 149 )',
-
-                    {% endif %}
-                    
-                    fill: '-1',
-                    borderWidth: 1,
-                    lineTension: 0,
-                    data: [
-
-
-                    {% if id_moneda == "1" %}
-
-
-                    {% for i in datos_registro %}
-                    Math.round({{i.0|floatformat:0}}/1000),                   
-                    {% endfor %}
-                    Math.round({{datos_finales_2.6|floatformat:0}}/1000),
-
-                    {% elif id_moneda == "0" %}
-
-                    {% for i in datos_registro %}
-                    Math.round({{i.0|floatformat:0}}/1000000),                   
-                    {% endfor %}
-                    Math.round({{datos_finales_2.6|floatformat:0 }}/1000000),
-                    
-                    {% else %}
-
-                    {% for i in datos_registro %}
-                    Math.round({{i.0|floatformat:0}}/1000000),                   
-                    {% endfor %}
-                    Math.round({{datos_finales_2.6|floatformat:0}}/1000000),
-
-                    {% endif %}
-                    ]
-
-                   
-                }],
-
+                {% endif %}
+                
             },
 
-            // Configuration options go here
-            options: {
+            {
+                label: 'Valor antes de descuento',
 
-                scales: {
+                {% if id_moneda == "1" %}
+                backgroundColor: 'rgb(9, 10, 10 , 0.5)',
+                borderColor: 'rgb(9, 10, 10 )',
 
-                    xAxes: [
-                        {
+                {% elif id_moneda == "0" %}
 
-                            stacked: true,
-                            display: false,
+                backgroundColor: 'rgb(26, 83, 197 , 0.3)',
+                borderColor: 'rgb(26, 83, 197 )',
 
-                        }
-                    ],
-                    yAxes: [
-                        {
-                            ticks: {
-                                min: 0,
+                {% else %}
+
+                backgroundColor: 'rgb(23, 185, 149 , 0.5)',
+                borderColor: 'rgb(23, 185, 149 )',
+
+                {% endif %}
+                
+                fill: '-1',
+                borderWidth: 1,
+                lineTension: 0,
+                data: [
+
+
+                {% if id_moneda == "1" %}
+
+
+                {% for i in datos_registro %}
+                Math.round({{i.0|floatformat:0}}/1000),                   
+                {% endfor %}
+                Math.round({{datos_finales_2.6|floatformat:0}}/1000),
+
+                {% elif id_moneda == "0" %}
+
+                {% for i in datos_registro %}
+                Math.round({{i.0|floatformat:0}}/1000000),                   
+                {% endfor %}
+                Math.round({{datos_finales_2.6|floatformat:0 }}/1000000),
+                
+                {% else %}
+
+                {% for i in datos_registro %}
+                Math.round({{i.0|floatformat:0}}/1000000),                   
+                {% endfor %}
+                Math.round({{datos_finales_2.6|floatformat:0}}/1000000),
+
+                {% endif %}
+                ]
+
+               
+            }],
+
+        },
+
+        // Configuration options go here
+        options: {
+
+            scales: {
+
+                xAxes: [
+                    {
+
+                        stacked: true,
+                        display: false,
+
+                    }
+                ],
+                yAxes: [
+                    {
+                        ticks: {
+                            min: 0,
+
+                            {% if id_moneda == "1" %}
+                            stepSize: 10,
+                            {% elif id_moneda == "0" %}
+                            stepSize: 100,
+                            {% else %}
+                            stepSize: 1,
+                            {% endif %}
+                            callback: function(label, index, labels) {
 
                                 {% if id_moneda == "1" %}
-                                stepSize: 10,
+                                return label+ 'mil M3';
+
                                 {% elif id_moneda == "0" %}
-                                stepSize: 100,
+
+                                return '$ '+label+ ' M';
+                                
                                 {% else %}
-                                stepSize: 1,
+
+                                return 'U$D '+label+ ' Millones';
+
                                 {% endif %}
-                                callback: function(label, index, labels) {
+                                
+                                
+                            }
+                        },
+                        scaleLabel: {
+                            display: true,
+                            labelString: '1M = $1.000.000'
+                        },
 
-                                    {% if id_moneda == "1" %}
-                                    return label+ 'mil M3';
+                        stacked: false
+                    }
+                ],
+            },
+        }
 
-                                    {% elif id_moneda == "0" %}
+    });
 
-                                    return '$ '+label+ ' M';
-                                    
-                                    {% else %}
-
-                                    return 'U$D '+label+ ' Millones';
-
-                                    {% endif %}
-                                    
-                                    
-                                }
-                            },
-                            scaleLabel: {
-                                display: true,
-                                labelString: '1M = $1.000.000'
-                            },
-
-                            stacked: false
-                        }
-                    ],
-                },
-            }
-
-        });
-
-        
-    </script>
+    
+</script>
 
 
- 
+
+
+
 {% endblock %}

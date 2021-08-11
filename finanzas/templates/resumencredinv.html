@@ -2,130 +2,111 @@
 
 {% load static %}
 {% load humanize %}
-
 {% block content %}
 
-
 <div class="container-fluid">
-  <div class="row page-titles">
-      <div class="col-md-5 align-self-center">
-          <h3 class="text-themecolor">Resumen de creditos e inversiones</h3>
-      </div>
+    <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+            <h3 class="text-themecolor">Resumen de creditos e inversiones</h3>
+        </div>
 
-      <div class="col-md-7 align-self-center">
-          <ol class="breadcrumb">
-              <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
-              <li class="breadcrumb-item">Creditos e inversiones</li>
-          </ol>
-      </div>
-  </div>
+        <div class="col-md-7 align-self-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'App Finanzas' %}">Panel</a></li>
+                <li class="breadcrumb-item">Creditos e inversiones</li>
+            </ol>
+        </div>
+    </div>
 </div>
 
 <div class="row">
-  <div class="col-12">
-      <div class="card">
-          <div class="card-body">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h4 class="card-title"><span class="lstick"></span> Archivos cargados</h4>
+                        <h5 class="card-subtitle">Archivos de creditos e inversiones cargados hasta la fecha</h5>
+                    </div>
+                    <a class="btn text-info" href="#" data-toggle="modal" data-target="#ModalCreditoInv"><i
+                        class="fa fa-plus-circle mr-2"></i>Cargar resumen</a>
+                </div>
 
-              <div class="d-flex">
-                  <div>
-                      <h4 class="card-title"><span class="lstick"></span>
-                          Archivos cargados</h4>
+                 <!-- Modal fecha estado Subitem -->
+                <div class="modal fade" id="ModalCreditoInv" tabindex="-1" role="dialog"
+                 aria-labelledby="ModalCreditoInv" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header" style="background-color: #2a3e52;">
+                                <h5 class="modal-title text-light" id="exampleModalLongTitle">Cargar un
+                                    archivo</h5>
+                                <button type="button" class="close text-light" data-dismiss="modal"
+                                    aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form method="POST" style="margin: 15px;" enctype="multipart/form-data"
+                                    id="upload-image-form">
+                                    {% csrf_token %}
 
-                  </div>
-              </div>
+                                    <h6>Fecha del archivo</h6>
+                                    <div class="input-group mb-3">
+                                        <input name="fecha" type="date" class="form-control form-control"
+                                            style="width: 300px;">
+                                    </div>
 
-              <div class="table-responsive">
+                                    <h6>Archivo</h6>
+                                    <div class="input-group mb-3">
+                                        <input name="adjunto" type="file" class="form-control form-control"
+                                            style="width: 300px;">
+                                    </div>
 
-                  <table class="table">
-                      <thead>
-                          <tr style="vertical-align: middle;">
-                              <th class="text-info"><a type="button" class="fa fa-plus-circle" data-toggle="modal" data-target="#ModalCreditoInv"><span style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif"> Cargar Resumen</span></a></th>
-                          </tr>
+                                    <button type="submit" class="btn btn-info">
+                                    Cargar</button>
 
-                          <!-- Modal fecha estado Subitem -->
-                          <div class="modal fade" id="ModalCreditoInv" tabindex="-1" role="dialog"
-                              aria-labelledby="ModalCreditoInv" aria-hidden="true">
-                              <div class="modal-dialog modal-dialog-centered" role="document">
-                                  <div class="modal-content">
-                                      <div class="modal-header" style="background: rgb(36,160,237);
-                                      background: linear-gradient(315deg, rgba(36,160,237,1) 0%, rgba(56,56,130,1) 22%, rgba(0,212,255,1) 100%);">
-                                          <h5 class="modal-title text-light" id="exampleModalLongTitle">Cargar un archivo</h5>
-                                          <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
-                                              <span aria-hidden="true">&times;</span>
-                                          </button>
-                                      </div>
-                                      <div class="modal-body">
-                                          <form method="POST" style="margin: 15px;" enctype="multipart/form-data"
-                                              id="upload-image-form">
+                                    {{ form.as_p }}
 
-                                              {% csrf_token %}
+                                </form>
 
-                                              <h6>Fecha del archivo</h6>
+                            </div>
+                            <div class="modal-footer">
+                             <button type="button" class="btn btn-secondary"
+                                 data-dismiss="modal">Cerrar</button>
 
-                                              <div class="input-group mb-3">
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-                                                  <input name="fecha" type="date" class="form-control form-control"
-                                                      style="width: 300px;">
-                                              </div>
+                <div class="table-responsive">
+                    <table class="table">
 
-                                              <h6>Archivo</h6>
+                        <tbody>
+                            {% for i in datos %}
+                            <tr>
+                                <td> <a href="{{i.resumen_credito_inv.url}}">Archivo fecha {{i.fecha|date:"d-m-Y"}}</a>
+                                    - Nombre del
+                                    archivo: "{{i.resumen_credito_inv}}"</td>
+                                <td>
+                                    <form method="POST">
+                                        <button class="btn btn-link fa fa-trash text-danger d-flex align-content-end"
+                                            type="submit" name="delete" value="{{i.id}}"
+                                            style="text-decoration: none;"></button>
 
-                                              <div class="input-group mb-3">
+                                        {% csrf_token %}
+                                    </form>
+                                </td>
+                            </tr>
 
-                                                  <input name="adjunto" type="file" class="form-control form-control"
-                                                      style="width: 300px;">
-                                              </div>
-
-                                              <button type="submit" class="btn btn-light">
-                                                  <img src="{% static 'img/upload.png' %}" alt=""
-                                                      style="max-width:20px; height:auto;">
-                                                  <b>Cargar</b></button>
-
-                                              {{ form.as_p }}
-
-                                          </form>
-
-                                      </div>
-                                      <div class="modal-footer">
-                                          <button type="button" class="btn btn-info"
-                                              data-dismiss="modal">Cerrar</button>
-
-                                      </div>
-                                  </div>
-                              </div>
-
-                          </div>
-
-                          <!-- Final del modal -->
-
-                      </thead>
-
-                      <tbody>
-                          {% for i in datos %}
-
-                          <tr>
-
-                              <td> <a href="{{i.resumen_credito_inv.url}}">Archivo fecha {{i.fecha|date:"d-m-Y"}}</a> - Nombre del
-                                  archivo: "{{i.resumen_credito_inv}}"</td>
-                              <td>
-                                  <form method="POST">
-                                      <button class="btn btn-link fa fa-trash text-danger d-flex align-content-end" type="submit"
-                                          name="delete" value="{{i.id}}" style="text-decoration: none;"></button>
-
-                                      {% csrf_token %}
-                                  </form>
-
-                              </td>
-
-                          </tr>
-
-                          {% endfor %}
-                      </tbody>
-                  </table>
-              </div>
-          </div>
-      </div>
-  </div>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 

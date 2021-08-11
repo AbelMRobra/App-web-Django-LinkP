@@ -17,6 +17,7 @@
         <div class="col-md-7 align-self-center">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'Panel de presupuestos' %}">Panel</a></li>
                 <li class="breadcrumb-item">Panel de control</li>
             </ol>
         </div>
@@ -28,21 +29,17 @@
         <div class="card">
             <div class="card-body row">
                 <div class="col-12 justify-content-center">
-
-                    <div class="col-12 col-md-12 col-lg-11">
-                        <h4 class="card-title"><span class="lstick m-r-20"></span>Información general</h4>
-
-                        <h5 class="card-subtitle"> Avance de presupuesto </h5>
-
+                    <div class="row">
+                        <div class="col-12 col-md-12 col-lg-11">
+                            <h4 class="card-title"><span class="lstick m-r-20"></span>Información general</h4>
+                            <h5 class="card-subtitle"> Avance de presupuesto </h5>
+                        </div>
                     </div>
-
+                        
                     <div>
-
                         {% for i in datos_barras|slice:"4" %}
                         <div style="display: inline-block; width: 300px; margin: 5px; vertical-align: middle;">
-
                             <canvas id="myChart{{i.0.proyecto.id}}"></canvas>
-
                         </div>
 
                         <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
@@ -80,9 +77,7 @@
 
                     <div>
                         <div class="my-3">
-
-                            <h4 class="card-title">Información de reposición/saldos</h4>
-
+                            <h4 class="card-title"><span class="lstick m-r-20"></span>Información de reposición/saldos</h4>
                         </div>
                         <div class="table-responsive">
 
@@ -120,13 +115,10 @@
 
                                                 <span style="width: 11%; color: rgb({{i.0.color}});">
                                                     <b>#300</b></span>
-                                               
-        
                                                 {% else %}
         
                                                 <span style="width: 11%; color: rgb({{i.0.color}});">
                                                     <b>{{ i.0.nombre }}</b></span>
-        
                                                 {% endif %}
                                                </div>
                                             </div>

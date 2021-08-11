@@ -6,9 +6,6 @@
 {% block content %}
 
 <div class="container-fluid">
-  <!-- ============================================================== -->
-  <!-- Bread crumb and right sidebar toggle -->
-  <!-- ============================================================== -->
   <div class="row page-titles">
       <div class="col-md-5 align-self-center">
           <h3 class="text-themecolor">Chat en comparativa</h3>
@@ -21,16 +18,14 @@
             <li class="breadcrumb-item">Mensajes</li>
         </ol>
     </div>
-
   </div>
-
 </div>
 
 <div class="row">
-  <div class="col-12">
+  <div class="col">
       <div class="card m-b-0">
           <!-- .chat-row -->
-          <div class="chat-main-box">
+          <div class="chat-main-box bg-light">
               <!-- .chat-left-panel -->
               <div class="chat-left-aside">
                   <div class="open-panel"><i class="ti-angle-right"></i></div>
@@ -38,22 +33,22 @@
                       <div class="form-material">
                           <input class="form-control p-20" type="text" placeholder="Datos de la solicitud">
                       </div>
-                      <ul class="chatonline style-none ">
+                      <ul class="chatonline mt-2" type="none" style="padding-left: 15px;">
                           <li>
                             <div class="m-t-10">
-                              <h5 class="m-b-0 font-medium">{{datos.proveedor.name|lower|capfirst}}</h5>
+                              <h5 class="m-b-0">{{datos.proveedor.name|lower|capfirst}}</h5>
                           </div>
                           <div class="m-t-10">
-                            <h5 class="m-b-0 font-medium">{{datos.numero|lower|capfirst}}</h5>
+                            <h5 class="m-b-0">{{datos.numero|lower|capfirst}}</h5>
                         </div>
                         <div class="m-t-10">
-                            <h5 class="m-b-0 font-medium">{{datos.proyecto|lower|capfirst}}</h5>
+                            <h5 class="m-b-0">{{datos.proyecto|lower|capfirst}}</h5>
                         </div>
                           <div class="m-t-10">
-                            <h5 class="m-b-0 font-medium">O.C: {{datos.o_c}}</h5>
+                            <h5 class="m-b-0">O.C: {{datos.o_c}}</h5>
                         </div>
                             <div class="m-t-10">
-                              <h5 class="m-b-0 font-medium 
+                              <h5 class="m-b-0 
                               {% if datos.estado == 'ESPERA'%}
                               text-info"
                               {% elif datos.estado == 'ADJUNTO ✓'%}
@@ -98,9 +93,9 @@
               </div>
               <!-- .chat-left-panel -->
               <!-- .chat-right-panel -->
-              <div class="chat-right-aside">
-                  <div class="chat-main-header">
-                      <div class="p-20 b-b">
+              <div class="chat-right-aside bg-body">
+                  <div class="chat-main-header bg-light">
+                      <div class="p-10 b-b">
                           <h3 class="box-title">Mensajes</h3>
                       </div>
                   </div>
@@ -113,24 +108,34 @@
 
         <!--chat Row -->
         <li class="reverse">
-          <div class="chat-content">
-              <h5>{{i.usuario.identificacion}}</h5>
-              <div class="box bg-light-inverse">{{ i.mensaje }}</div>
-          </div>
-          <div class="chat-img"><img src="{{i.usuario.imagenlogo.url}}" /></div>
-          <div class="chat-time">{{i.fecha|date:"d-m-Y"}}</div>
+            <div class="d-flex flex-column align-items-end">
+                <div class="chat-content mb-0">
+                    <div class="box bg-light-inverse mb-0">{{ i.mensaje }}</div>
+                    <div class="chat-img text-center mb-0">
+                        <img src="{{i.usuario.imagenlogo.url}}" style="width: 30px;"/>
+                        <h6 class="mt-1 mb-0">{{i.usuario.identificacion}}</h6>
+                    </div>
+                </div>
+                <div class="chat-time" style="margin-right: 52px;">{{i.fecha|date:"d-m-Y"}}</div>
+
+            </div>
       </li>
 
 
         {% else %}
 
         <li>
-            <div class="chat-img"><img src="{{i.usuario.imagenlogo.url}}" /></div>
-            <div class="chat-content">
-                <h5>{{i.usuario.identificacion}}</h5>
-                <div class="box bg-light-info">{{ i.mensaje }}</div>
+            <div class="d-flex flex-column">
+                <div class="chat-content mb-0">
+                    <div class="chat-img text-center mb-0">
+                        <img src="{{i.usuario.imagenlogo.url}}" style="width: 30px;"/>
+                        <h6 class="mt-1 mb-0">{{i.usuario.identificacion}}</h6>
+                    </div>
+                    <div class="box bg-light-info mb-0">{{ i.mensaje }}</div>
+                </div>
+                <div class="chat-time" style="margin-left: 55px;">{{i.fecha|date:"d-m-Y"}}</div>
+
             </div>
-            <div class="chat-time">{{i.fecha|date:"d-m-Y"}}</div>
         </li>
     
     
@@ -142,18 +147,18 @@
                       </ul>
                   </div>
                   
-                  <div class="card-body b-t">
+                  <div class="card-body b-t bg-light">
                       <div class="row">                 
-                          <div class="col-8">
-                            <form action="" method="POST">
+                          <div class="col-11">
+                            <form method="POST">
                               {% csrf_token %}
-                              <textarea placeholder="Tipea tu mensaje" class="form-control b-0" name="mensaje"></textarea>
+                              <textarea placeholder="Escribe un mensaje aquí" class="form-control" name="mensaje" required></textarea>
               
                             </div>
-                          <div class="col-4 text-right">
+                            <div class="col-1">
                
                               {% csrf_token %}
-                              <button type="submit" class="btn btn-info btn-circle btn-lg"><i class="fa fa-paper-plane-o"></i> </button>
+                              <button type="submit" class="btn btn-info btn-circle btn-lg"><i class="fa fa-paper-plane-o" style="margin-left: -4px;"></i> </button>
                             </form>
                             </div>
                       </div>

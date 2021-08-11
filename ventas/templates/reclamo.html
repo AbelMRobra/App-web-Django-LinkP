@@ -6,10 +6,7 @@
 
 {% block content %}
 
-<div class="container-fluid r-aside">
-    <!-- ============================================================== -->
-    <!-- Cabeza de la pagina -->
-    <!-- ============================================================== -->
+<div class="container-fluid">
     <div class="row page-titles">
         <div class="col-md-5 align-self-center">
             <h3 class="text-themecolor">Reclamo numero {{datos.numero}}</h3>
@@ -23,112 +20,102 @@
 
             </ol>
         </div>
-
     </div>
+</div>
 
-  </div>
-
-  <div class="row">
+<div class="row">
     <div class="col-lg-6 col-md-12">
-    <div class="card">
-        <div class="card-body">
-
-            <div class="d-flex">
-                <div>
-                    <h4 class="card-title"><span class="lstick"></span>Resumen de datos</h4></div>
-
-            </div>
-            
-            <div class="m-t-10">
-                <h5 class="m-b-0 font-medium">Fecha: {{datos.fecha_reclamo}}</h5>
-                <h6 class="text-muted">Dia que se recibio el reclamo</h6>
-            </div>
-            <div class="m-t-10">
-                <h5 class="m-b-0 font-medium">Unidad: {{datos.unidad}}</h5>
-                <h6 class="text-muted">{{datos.proyecto}}</h6>
-            </div>
-            <div class="m-t-10">
-                <h5 class="m-b-0 font-medium">Propietario: {{datos.propietario}}</h5>
-                <h6 class="text-muted">Esta información puede estar desactualizada</h6>
-            </div>
-            <div class="m-t-10">
-                <h5 class="m-b-0 font-medium">Contacto: {{datos.usuario}}</h5>
-                <h6 class="text-muted">Tel: {{datos.telefono}} - Email: {{datos.email}}</h6>
-            </div>
-            <div class="m-t-10">
-                <h5 class="m-b-0 font-medium">Responsable: {{datos.responsable.identificacion}}</h5>
-                <h6 class="text-muted">Personal de Link Inversiones que resolvera el reclamo</h6>
-            </div>
-            <div class="m-t-10">
-                <h5 class="m-b-0 font-medium">Estado: {{datos.estado}}</h5>
-                
-            </div>
-
-        </div>
-    </div>
-
-    <div class="card">
-        <div class="card-body">
-
-            <div class="d-flex">
-                <div>
-                    <h4 class="card-title"><span class="lstick"></span>Modificar estado</h4>
-                    <h6 class="text-muted">Listo, trabajando o con problemas</h6></div>
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex">
+                    <div>
+                        <h4 class="card-title"><span class="lstick"></span>Resumen de datos</h4>
                     </div>
+                </div>
 
-                    
+                <div class="m-t-10">
+                    <h5 class="m-b-0 font-medium">Fecha: {{datos.fecha_reclamo}}</h5>
+                    <h6 class="text-muted">Dia que se recibio el reclamo</h6>
+                </div>
+                <div class="m-t-10">
+                    <h5 class="m-b-0 font-medium">Unidad: {{datos.unidad}}</h5>
+                    <h6 class="text-muted">{{datos.proyecto}}</h6>
+                </div>
+                <div class="m-t-10">
+                    <h5 class="m-b-0 font-medium">Propietario: {{datos.propietario}}</h5>
+                    <h6 class="text-muted">Esta información puede estar desactualizada</h6>
+                </div>
+                <div class="m-t-10">
+                    <h5 class="m-b-0 font-medium">Contacto: {{datos.usuario}}</h5>
+                    <h6 class="text-muted">Tel: {{datos.telefono}} - Email: {{datos.email}}</h6>
+                </div>
+                <div class="m-t-10">
+                    <h5 class="m-b-0 font-medium">Responsable: {{datos.responsable.identificacion}}</h5>
+                    <h6 class="text-muted">Personal de Link Inversiones que resolvera el reclamo</h6>
+                </div>
+                <div class="m-t-10">
+                    <h5 class="m-b-0 font-medium">Estado: {{datos.estado}}</h5>
 
+                </div>
             </div>
-            
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex">
+                    <div>
+                        <h4 class="card-title"><span class="lstick"></span>Modificar estado</h4>
+                        <h6 class="text-muted">Listo, trabajando o con problemas</h6>
+                    </div>
+                </div>
+            </div>
+
             <div class="m-t-10" style="margin: 15px;">
-                <form  method="POST"> 
+                <form method="POST">
                     {% csrf_token %}
-                <button type="submit" name="LISTO" class="btn btn-success btn-circle"><i class="fa fa-check"></i> </button>
-                <button type="submit" name="TRABAJANDO" class="btn btn-warning btn-circle"><i class="fa fa-clock-o"></i> </button>
-                <button type="submit" name="PROBLEMAS" class="btn btn-danger btn-circle"><i class="fa fa-exclamation"></i> </button>
+                    <button type="submit" name="LISTO" class="btn btn-success btn-circle"><i class="fa fa-check"></i>
+                    </button>
+                    <button type="submit" name="TRABAJANDO" class="btn btn-warning btn-circle"><i
+                            class="fa fa-clock-o"></i> </button>
+                    <button type="submit" name="PROBLEMAS" class="btn btn-danger btn-circle"><i
+                            class="fa fa-exclamation"></i> </button>
                 </form>
-
-        </div>
-    </div>
-</div>
-<div class="col-lg-6 col-md-12">
-    <div class="card">
-        <div class="card-body">
-
-            <div class="d-flex">
-                <div>
-                    <h4 class="card-title"><span class="lstick"></span>Descripción del problema</h4>
-                    <h6 class="text-muted">{{datos.clasificacion}}</h6></div>
-
             </div>
-            
-            <div class="m-t-10">
-                <p style="white-space: pre-wrap;"> {{datos.descripcion}} </p></div>
-
         </div>
     </div>
-    
-
-    <div class="card">
-        <div class="card-body">
-
-            <div class="d-flex">
-                <div>
-                    <h4 class="card-title"><span class="lstick"></span>Editiar o eliminar</h4>
-                    <h6 class="text-muted">Editar, asignar resposable o eliminar</h6></div>
+    <div class="col-lg-6 col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex">
+                    <div>
+                        <h4 class="card-title"><span class="lstick"></span>Descripción del problema</h4>
+                        <h6 class="text-muted">{{datos.clasificacion}}</h6>
                     </div>
-                   
-            </div>
-            
-            <div class="m-t-10" style="margin: 15px;">
-                <a href="{% url 'Editar reclamo' datos.id %}" class="btn btn-info btn-circle"><i class="fa fa-list"></i> </a>
-                <button type="button" class="btn btn-info btn-circle"><i class="ti-trash"></i> </button>
+                </div>
 
+                <div class="m-t-10">
+                    <p style="white-space: pre-wrap;"> {{datos.descripcion}} </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex">
+                    <div>
+                        <h4 class="card-title"><span class="lstick"></span>Editiar o eliminar</h4>
+                        <h6 class="text-muted">Editar, asignar resposable o eliminar</h6>
+                    </div>
+                </div>
+            </div>
+
+            <div class="m-t-10" style="margin: 15px;">
+                <a href="{% url 'Editar reclamo' datos.id %}" class="btn btn-info btn-circle"><i class="fa fa-list"></i>
+                </a>
+                <button type="button" class="btn btn-danger btn-circle"><i class="ti-trash"></i> </button>
+            </div>
         </div>
     </div>
 </div>
 
-</div>
-
-    
 {% endblock %}
