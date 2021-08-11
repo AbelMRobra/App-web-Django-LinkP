@@ -972,15 +972,18 @@ def comparativas(request, estado, creador):
                     
 Buenas!,
 
-Tu orden de compra fue autorizada!
+La O.C numero {} fue autorizada!
 
-El numero de la misma es: {}
+Te recordamos que para que no tengas problemas con el pago debes cumplir los siguientes pasos:
 
-No olvides dejar una copia fisica en la oficina, de no hacerlo no se efectuara el pago!
+* Entrega una copia fisica en la oficina en Lamadrid 377 4B, San Miguel del Tucuman, Tucuman
+* Firma la copia fisica en el espacio correspondiente
+* En caso de observaciones, comunicate con el que corresponda para aclararlas
 
-Gracias!
+Esperamos que termine bien tu dia!
 
-Saludos!
+Saludos desde el equipo de Link-P
+
                     """.format(comparativa.o_c))
                     mensaje['From']=settings.EMAIL_HOST_USER
                     mensaje['To']=datosusuario.objects.get(identificacion = comparativa.creador).email
@@ -1035,17 +1038,16 @@ Saludos!
                     # Construimos el mensaje simple
                     mensaje = MIMEText("""
                     
-                    Buenas!,
+Buenas!,
 
-                    Tu Orden de compra fue rechazada por el siguiente motivo:
+La orden de compra {} fue rechaza!
 
-                    {}
+Por favor ingresa a www.linkp.online por si hay mensajes y/o comunicate con el responsable.
 
-                    Por favor ingresa a www.linkp.online y comunicate con el equipo de presupuestos para solucionar el problema
+Que tengas un buen dia!
 
-                    Gracias!
-                    Saludos!
-                    """.format(request.POST['MENSAJE']))
+Saludos desde el equipo de Link-P
+                    """.format(comparativa.o_c))
                     mensaje['From']=settings.EMAIL_HOST_USER
                     mensaje['To']=datosusuario.objects.get(identificacion = comparativa.creador).email
                     mensaje['Subject']="Atención! La OC para {} fue rechazada!".format(comparativa.proveedor.name)
