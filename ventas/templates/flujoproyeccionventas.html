@@ -1,0 +1,326 @@
+{% extends "users/inicio2.html" %}
+
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+
+<div class="container-fluid">
+    <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+            <h3 class="text-themecolor">Flujo de proyeccion por ventas</h3>
+        </div>
+
+        <div class="col-md-7 align-self-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+                <li class="breadcrumb-item">Flujo por ventas</li>
+            </ol>
+        </div>
+    </div>
+</div>
+<div class="row ">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex">
+                    <div>
+                        <h3 class="card-title m-b-5"><span class="lstick"></span>Ventas unidades</h3>
+                        <h5 class="card-subtitle m-b-5">Resumen de ventas por unidades por meses de cada proyecto</h5>
+                    </div>
+                </div>
+            </div>
+            <h2>Periodo de tiempo</h2>
+          <form action="" method="post"> {% csrf_token %}
+
+            <div class="row">
+                <div class="col-6">
+                    <span>Fecha inicial</span>
+                    {{periodo.fi_periodo|date:'d/m/Y'}}
+                        <input name="fi_periodo" type="date" value="{{periodo.fi_periodo|date:'d/m/Y'}}" class="form-control form-control">
+               
+                </div>
+                <div class="col-6">
+
+                        
+            <span>Fecha final</span>
+            {{periodo.ff_periodo|date:'d/m/Y'}}
+                <input name="ff_periodo" type="date" value="{{periodo.ff_periodo|date:'d/m/Y'}}" class="form-control form-control">
+         
+                </div>
+            </div>
+            <button type="submit" class="bnt btn-primary">cambiar</button>
+          </form>
+        
+    
+    
+            <div class="row d-flex justify-content-center my-5">
+                <div>
+                    <table class="table table-bordered">
+                        <thead style="font-size: 16px;">
+                            <tr>
+                                <th>Proyecto</th>
+
+
+                                
+                                {% for i in proyectos %}
+                                    
+                               
+                                    
+
+                                <th style="font-size: 12px;">
+                                    <div class="d-flex">
+                                        <p>
+                                           {{i}}
+                                        </p>
+                                        <div class="btn-group ml-auto">
+                                            <a href="JavaScript:void(0)" class="icon-options-vertical link" data-toggle="dropdown"
+                                            aria-haspopup="true" aria-expanded="false"></a>
+                                            <div class="dropdown-menu dropdown-menu-right">
+                                                <a class="dropdown-item" href="#"  data-toggle="modal" data-target="#{{i.id}}"><i
+                                                    class="fa fa-pencil-square-o mr-2"></i>Modificar</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </th>
+                                
+             
+                             
+                                <div class="modal fade" id="{{i.id}}" tabindex="-1" role="dialog" aria-labelledby="{{i.id}}" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header" style="background: rgb(36,160,237); background: linear-gradient(315deg, rgba(36,160,237,1) 0%, rgba(56,56,130,1) 22%, rgba(0,212,255,1) 100%);">
+                                                <h5 class="modal-title text-light" id="exampleModalLongTitle">Modificar "proyecto"</h5>
+                                                <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form action="#" method="POST">
+                
+                                                    {% csrf_token %}
+                                                 
+                                                  
+                                                            <span>Fecha inicial</span>
+                                                            <div class="mb-3">
+                                                                <input name="fecha_inicial" type="date" value="" class="form-control form-control">
+                                                            </div>
+                                                    
+                                                            <span>Fecha final</span>
+                                                            <div class="mb-3">
+                                                                <input name="fecha_final" type="date" value="" class="form-control form-control">
+                                                            </div>
+                                                    
+                                                            <span>Ritmo</span>
+                                                            <div class="mb-3">
+                                                                <input name="ritmo_venta" type="number" value="0" class="form-control form-control">
+                                                            </div>
+                                                       
+                                                    
+                                                    <div>
+                                                        <button class="btn btn-info" type="submit" name="id" value="{{i.id}}"
+                                                            style="margin-top: 10px;">Modificar</button>
+                
+                                                    </div>
+                                                </form>
+                
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-info"
+                                                    data-dismiss="modal">Cerrar</button>
+                
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+
+                            </tr>
+                        </thead>
+
+                        <tbody style="font-size: 14px;">
+                            <tr>
+                                
+                         
+                                    
+                                <td>Fecha inicial</td>
+                                {% for fi in datos_proyecciones.0 %}
+                                
+                                {% if fi is None %}
+                                <td>-</td>
+                                {% else %}
+                                <td>{{fi}}</td>
+                                {% endif %}
+                                    
+                                   
+                                {% endfor %}
+                            </tr>
+                            <tr>
+                                <td>Fecha final</td>
+                                
+                                {% for ff in datos_proyecciones.1 %}
+                             
+                                {% if ff is None %}
+                                <td>-</td>
+                                {% else %}
+                                <td>{{ff}}</td>
+                                {% endif %}
+                            {% endfor %}
+                            </tr>
+                            <tr>
+                                <td>Ritmo</td>
+                                {% for r in datos_proyecciones.2 %}
+                                <td>{{r}}</td>
+                            {% endfor %}
+                            </tr>
+                            <tr>
+                                <td>Unidades disponibles</td>
+                                {% for r in datos_proyecciones.3 %}
+                                <td>{{r}}</td>
+                            {% endfor %}
+                            </tr>
+                           
+                        </tbody>
+                    </table>
+                    
+                
+                        
+                </div>
+            </div>
+
+            <div class="card-body">
+                <canvas id="myChart" width="400" height="150"></canvas>
+            
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.0/Chart.bundle.min.js"></script>
+                <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+            
+                <script>
+
+                var ctx = document.getElementById('myChart').getContext('2d');
+                var myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: [{% for f in meses %}
+                            "{{f|date:'m / Y'}}",{% endfor %}],
+                    datasets: [
+                    {% for i in datos_grafico %}
+                    {
+                        label:" {{i.0}}",
+                        data: {{i.2}},
+                        backgroundColor: "rgba({{i.1}}, 0.4)",
+                        borderColor: 'rgba({{i.1}})',
+                        borderWidth: 1
+                    },
+
+                    {% endfor %}  ]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        xAxes: [{
+                            stacked: true
+                        }],
+                        yAxes: [{
+                            stacked: true
+
+                        }]
+                        }
+                }
+            });
+            </script>
+            </div>
+            <div class="card-body">
+                <canvas id="myChart1" width="400" height="150"></canvas>
+            
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.0/Chart.bundle.min.js"></script>
+                <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+            
+                <script>
+
+                var ctx = document.getElementById('myChart1').getContext('2d');
+                var myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: [{% for f in fechas %}
+                            "{{f|date:'m / Y'}}",{% endfor %}],
+                    datasets: [
+                    {% for proyecto in ventas_proyectos %}
+                    {
+                        label:" {{proyecto.0}}",
+                        data: [{% for t in proyecto.1 %}
+                        {{t}},{% endfor %}],
+                        backgroundColor: "rgba({{proyecto.0.color}}, 0.4)",
+                        borderColor: 'rgba({{proyecto.0.color}})',
+                        borderWidth: 1
+                    },
+
+                    {% endfor %}  ]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        xAxes: [{
+                            stacked: true
+                        }],
+                        yAxes: [{
+                            stacked: true
+
+                        }]
+                        }
+                }
+            });
+            </script>
+            </div>
+            <div class="card-body">
+                <div class="d-flex">
+                    <div>
+                        <h3 class="card-title m-b-5"><span class="lstick"></span>Ventas unidades</h3>
+                        <h5 class="card-subtitle m-b-5">Resumen de ventas por unidades por meses de cada proyecto</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <canvas id="myChart2" width="400" height="150"></canvas>
+            
+                <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+                <script>
+                    var ctx = document.getElementById('myChart2').getContext('2d');
+                    var chart = new Chart(ctx, {
+                       
+                        type: 'line',
+                        data: {
+                            labels: [{% for f in fechas %}
+                            "{{f|date:'m / Y'}}",{% endfor %}],
+                            datasets: [{
+                                label: 'Desviación',
+                                backgroundColor: 'rgb(9, 10, 9)',
+                                borderColor: 'rgb(9, 10, 9)',
+                                fill: false,
+                                showLine: true,
+                                borderWidth: 2,
+                                data: [1,6,7,3,2,7,5,1,6,7]
+                            }],
+                
+                        },
+                
+                      
+                        options: {
+                            responsive: true,
+                            plugins: {
+                                    legend: {
+                                        position: 'top',
+                                        },
+                                        title: {
+                                        display: true,
+                                        text: 'Chart.js Line Chart'
+                                        }
+                                }
+                            }
+                    });
+                </script>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

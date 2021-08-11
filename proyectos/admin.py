@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Proyectos, Unidades
+from .models import ProyeccionesProyectos, Proyectos, Unidades
 from import_export import resources
 from import_export.admin import ImportExportModelAdmin
 
@@ -19,9 +19,10 @@ class UnidadesResource(resources.ModelResource):
         model = Unidades
 
 class UnidadesAdmin(ImportExportModelAdmin, admin.ModelAdmin):
-    list_display = ('proyecto','piso_unidad', 'nombre_unidad', 'asig')
+    list_display = ('proyecto','piso_unidad', 'nombre_unidad', 'asig','estado')
     search_fields = ('proyecto__nombre','piso_unidad', 'nombre_unidad', 'asig')
     resources_class = UnidadesResource
 
 admin.site.register(Proyectos, ProyectosAdmin)
 admin.site.register(Unidades, UnidadesAdmin)
+admin.site.register(ProyeccionesProyectos)
