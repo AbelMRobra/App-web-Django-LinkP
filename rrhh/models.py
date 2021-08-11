@@ -358,6 +358,7 @@ class Sugerencia(models.Model):
     prioridad = models.CharField(choices=Prioridad.choices, default=Prioridad.BAJA, max_length=20, verbose_name="Prioridad")
     estado = models.CharField(choices=Estado.choices, default=Estado.ESPERA, max_length=20, verbose_name="Estado")
     descripcion = models.TextField(verbose_name="Descripción")
+    respuestas  =models.TextField(verbose_name="Respuestas",default="")
     adjunto = models.FileField(verbose_name="Adjunto", blank=True, null=True)
     fecha_listo = models.DateField(verbose_name="Fecha", blank=True, null=True)
 
