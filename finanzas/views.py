@@ -8,7 +8,7 @@ from xhtml2pdf import pisa
 from django.shortcuts import render,redirect
 
 from django.http import HttpResponse
-from django.template import Context
+from django.template import Context, context
 from django.urls import reverse_lazy
 from django.template.loader import get_template
 from django.contrib.staticfiles import finders
@@ -3102,8 +3102,11 @@ def retirodesocios(request):
 
 def arqueo_diario(request, id_arqueo):
 
-    data_cruda = Arqueo.objects.get(id = id_arqueo)
+    context = {}
 
+    data_cruda = Arqueo.objects.get(id = id_arqueo)
+    context["data_cruda"] = data_cruda
+    
     data = data_cruda
 
     data_frame = pd.read_excel(data.arqueo)
@@ -3112,24 +3115,25 @@ def arqueo_diario(request, id_arqueo):
 
     datos = []
 
-    array_pesos = np.array(data_frame['EFECTIVO'])
-
-    pesos = sum(array_pesos)
-
-    array_cheques = np.array(data_frame['CHEQUES'])
-
-    cheques = sum(array_cheques)
-
-    array_usd = np.array(data_frame['USD'])
-
-    usd = sum(array_usd)
-
-    array_euro = np.array(data_frame['EUROS'])
-
-    euro = sum(array_euro)
+    pesos = sum(np.array(data_frame['EFECTIVO']))
+    cheques = sum(np.array(data_frame['CHEQUES']))
+    usd = sum(np.array(data_frame['USD']))
+    euro = sum(np.array(data_frame['EUROS']))
+    
+    try:
+        inversiones = sum(np.array(data_frame['INVERSIONES']))
+    except:
+        inversiones = 0
+    try:
+        inversiones_usd = sum(np.array(data_frame['INVERSIONES USD']))
+    except:
+        inversiones_usd= 0
 
     cambio_usd = data_frame['CAMBIO USD'][0]
     cambio_euro = data_frame['CAMBIO EURO'][0]
+
+    context["cambio_usd"] = cambio_usd
+    context["cambio_euro"] = cambio_euro
 
     pesos_usd = usd*Constantes.objects.get(nombre = "USD_BLUE").valor
     pesos_euros = euro*Constantes.objects.get(nombre = "EURO_BLUE").valor
@@ -3186,6 +3190,16 @@ def arqueo_diario(request, id_arqueo):
 
         consolidado_actual = consolidado_actual + consolidado - data_frame.loc[numero, 'MONEDA EXTRANJERA'] + data_frame.loc[numero, 'USD']*cambio_usd + data_frame.loc[numero, 'EUROS']*cambio_euro
 
+        try:
+            inversiones = data_frame.loc[numero, 'INVERSIONES']
+        except:
+            inversiones = 0
+
+        try:
+            inversiones_usd = data_frame.loc[numero, 'INVERSIONES USD']
+        except:
+            inversiones_usd = 0
+
         
         try:
             # ----> Armemos lo de los cheques
@@ -3209,26 +3223,22 @@ def arqueo_diario(request, id_arqueo):
         except:
             info_cheque = []
 
-        datos.append((proyecto, data_frame.loc[numero, 'PROYECTO'], data_frame.loc[numero, 'EFECTIVO'], data_frame.loc[numero, 'USD'], data_frame.loc[numero, 'EUROS'], data_frame.loc[numero, 'CHEQUES'], data_frame.loc[numero, 'MONEDA EXTRANJERA'], banco, consolidado, list_bank_proj_info, info_cheque))
+        datos.append((proyecto, data_frame.loc[numero, 'PROYECTO'], data_frame.loc[numero, 'EFECTIVO'], data_frame.loc[numero, 'USD'], data_frame.loc[numero, 'EUROS'], data_frame.loc[numero, 'CHEQUES'], data_frame.loc[numero, 'MONEDA EXTRANJERA'], banco, consolidado, list_bank_proj_info, info_cheque, inversiones, inversiones_usd))
 
         numero += 1
 
-    otros_datos = [usd, euro, pesos, cheques, bancos, consolidados, consolidado_actual, moneda_extranjera_actual]
+    otros_datos = [usd, euro, pesos, cheques, bancos, consolidados, consolidado_actual, moneda_extranjera_actual, inversiones, inversiones_usd]
 
+    context["datos"] = datos
+    context["otros_datos"] = otros_datos
 
     grafico = []
 
     n = data_cruda
 
     frame = pd.read_excel(n.arqueo)
-
-    array_extranjera = np.array(frame['MONEDA EXTRANJERA'])
-
-    extranjera = sum(array_extranjera)
-
-    array_efectivo = np.array(frame['EFECTIVO'])
-
-    efectivo = sum(array_efectivo)
+    extranjera = sum(np.array(frame['MONEDA EXTRANJERA']))
+    efectivo = sum(np.array(frame['EFECTIVO']))
 
     #Aqui sumamos los bancos
 
@@ -3239,18 +3249,17 @@ def arqueo_diario(request, id_arqueo):
         if "BANCO" in m:
 
             array_banco = np.array(frame[m])
-
             banco = banco +  sum(array_banco)
 
     array_cheque = np.array(frame['CHEQUES'])
-
     cheque = sum(array_cheque)
-
     grafico.append((n.fecha, extranjera, efectivo, banco, cheque))
-
     grafico = sorted(grafico, key=lambda tup: tup[0])
+    
+    context["grafico"] = grafico
+    
 
-    return render(request, 'arqueo.html', {'datos':datos, 'data_cruda':data_cruda, 'otros_datos':otros_datos, 'grafico':grafico, 'cambio_usd':cambio_usd, 'cambio_euro':cambio_euro})
+    return render(request, 'arqueo.html', context)
 
 def arqueos(request):
 

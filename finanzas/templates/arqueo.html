@@ -71,6 +71,13 @@
                     <!-- Este es el total de la caja {{otros_datos.5|floatformat:0|intcomma}}-->
                 </div>
 
+                <div class="m-t-10">
+                    <h5 class="m-b-0 font-medium text-info">Inversiones: $ {{otros_datos.8|floatformat:0|intcomma}}</h5>
+                    <h5 class="m-b-0 mt-2 font-medium text-info">Inversiones USD: $ {{otros_datos.9|floatformat:0|intcomma}}</h5>
+
+                    <!-- Este es el total de la caja {{otros_datos.5|floatformat:0|intcomma}}-->
+                </div>
+
             </div>
         </div>
     </div>
@@ -120,7 +127,7 @@
                 <h6 class="card-subtitle">Resumen de datos</h6>
                 <div class="table-responsive">
                     <table class="table table-bordered" style="width: 99%;">
-                        <thead>
+                        <thead style="font-size: 14px;">
                             <tr>
                                 <th>Proyecto</th>
                                 <th>Efectivo</th>
@@ -135,13 +142,13 @@
                             </tr>
                         </thead>
 
-                        <tbody style="font-size: 14px;">
+                        <tbody style="font-size: 12px;">
 
                             {% for i in datos %}
 
                             <tr>
 
-                                <td style="max-width: 100px;"
+                                <td style="max-width: 150px;"
                                     {% if i.0 %} class="text-success" {% else %} class="text-info" {% endif %}>
 
                                     {{ i.1|lower|capfirst }}
@@ -155,9 +162,9 @@
                                         data-target="#ModalCheques{{i.1|cut:' '|cut:'('|cut:')'}}">${{ i.5|floatformat:0|intcomma }}</a></td>
                                 <td>${{ i.6|floatformat:0|intcomma }}</td>
                                 <td>${{ i.8|floatformat:0|intcomma }}</td>
-                                <td style="color: rgb(89, 171, 70);">U$S {{ i.3|floatformat:0|intcomma }}</td>
-                                <td style="color: rgb(76, 88, 173)">€ {{ i.4|floatformat:0|intcomma }}</td>
-                                <td style="color: rgb(76, 88, 173)">$ {{i.11}}</td>
+                                <td style="color: rgb(89, 171, 70);">U$S_{{ i.3|floatformat:0|intcomma }}</td>
+                                <td style="color: rgb(76, 88, 173)">€_{{ i.4|floatformat:0|intcomma }}</td>
+                                <td style="color: rgb(76, 88, 173)">${{i.11|floatformat:0|intcomma}}</td>
 
 
 

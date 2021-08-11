@@ -60,17 +60,9 @@
                     <img src="{% static 'img/solicitudcompra.png' %}" alt="" style="max-width:100px; height:auto; margin: 5px;">
                 </div>
 
-                {% if request.user|has_group:"COMPRAS NIVEL 7" %}
-
-
                 <a href="{% url 'Comparativas' 0 0 %}"><button class="btn btn-success">
                         Ingresar</button></a>
 
-                {% else %}
-
-                <a href="#"><button class="btn btn-secondary">
-                    Sin permisos</button></a>
-                {% endif %}
 
             </div>
 

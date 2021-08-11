@@ -1017,7 +1017,7 @@ def inicio(request):
 
         usuario = 0
         datos_vista_usuario["usuario"] = 0
-        datos_vista_usuario["atajos"] = 0
+        datos_vista_usuario["atajos"] = []
         datos_vista_usuario["cantidad_atajos"] = 0
 
     context["datos_vista_usuario"] = datos_vista_usuario
@@ -2188,7 +2188,6 @@ def registro_contable_caja(request, caja, user_caja, estado, mes, year):
     context["list_year"] = list_year
     
     return render(request, 'users/registro_contable_caja.html', context)
-
 
 def registro_contable(request, date_i):
 
