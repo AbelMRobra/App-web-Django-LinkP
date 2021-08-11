@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.urls import path
 from django.conf.urls import url
 from . import views
+from . import views_flujo
 from .views import descargadeventas, DescargaPricing, PdfCotiza
 from django.contrib.auth.decorators import login_required
 
@@ -19,7 +20,7 @@ urlpatterns = [
     url(r'^pricing/(?P<id_proyecto>\d+)/$', login_required(views.pricing), name = 'Pricing'),
     url(r'^editarasig/(?P<id_unidad>\d+)/$', login_required(views.editarasignacion), name = 'Editar asignacion'),
     url(r'^cotizador/(?P<id_unidad>\d+)/$', login_required(views.cotizador), name = 'Cotizador'),
-    path('emailpdfcoti/<int:id_unidad>/<int:id_cliente>/<str:info_coti>', PdfCotiza.as_view(), name = "Email del coti"),
+    path('emailpdfcoti/<int:id_unidad>/<int:id_cliente>/<str:info_coti>/$', PdfCotiza.as_view(), name = "Email del coti"),
     url(r'^editarventa/(?P<id_venta>\d+)/$', login_required(views.editarventa), name = 'Editar venta'),
     url(r'^detalleventa/(?P<id_venta>\d+)/$', login_required(views.detalleventa), name = 'Detalle venta'),
     url(r'^eliminarventa/(?P<id_venta>\d+)/$', login_required(views.eliminarventa), name = 'Eliminar venta'),
@@ -48,6 +49,8 @@ urlpatterns = [
     url(r'^descargarventas/$', login_required(descargadeventas.as_view()), name = 'Descargar ventas'),
     url(r'^descargapricing/(?P<id_proyecto>\d+)/$', login_required(DescargaPricing.as_view()), name = 'Descargar del pricing'),
     
+   
+    path('flujoventas/',login_required(views_flujo.flujoventas),name='Flujo de ventas'),
   
 
 ]

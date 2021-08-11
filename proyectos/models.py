@@ -132,3 +132,14 @@ class Unidades(models.Model):
     def __str__(self):
         return '{} - {}'.format(self.piso_unidad, self.nombre_unidad)
 
+
+class ProyeccionesProyectos(models.Model):
+    fecha_inicial = models.DateField(blank=True,null=True)
+    fecha_final = models.DateField(blank=True,null=True)
+    proyecto = models.ForeignKey(Proyectos, on_delete=models.CASCADE)
+    ritmo_venta=models.IntegerField()
+    cant_unidades = models.IntegerField()
+
+
+    def __str__(self):
+        return self.proyecto.nombre
