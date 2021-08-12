@@ -19,82 +19,84 @@
         </div>
 
     </div>
-</div>
 
-
-<div class="row">
-    <form method="POST">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-body ">
-                    {% csrf_token %}
-
-                    <h3> Minuta</h3>
-
-                    <div>
-                        <small> Datos generales de la minuta
-                        </small>
-                    </div>
-
-                    <div class="bg-light p-3">
-
-                        <div class="row">
-                            <div class="col-12">
-                                <label for="temageneral" style="width: 300px;">
-                                    <h5>Nombre</h5>
-                                </label>
-
-                                <input type="text" name="nombre" class="form-control form-control"
-                                    placeholder="Temas del dia" style="width: 300px;">
-
-                            </div>
-
-                            <div class="col-12">
-
-                                <label for="integrantes" style="width: 300px;">
-                                    <h5>Fecha</h5>
-                                </label>
-
-                                <input type="date" name="fecha" class="form-control form-control" style="width: 300px;">
-
-                            </div>
-
-
-                            <div class="col-12">
-
-                                <label for="integrantes" style="width: 300px;">
-                                    <h5>Integrantes</h5>
-                                </label>
-
-                                <input type="text" name="integrantes" class="form-control form-control"
-                                    style="width: 300px;" placeholder="Ejemplo: AR - LA - CA">
-
-                            </div>
-
-                            <div class="col-12">
-
-                                <label for="reunion" style="width: 300px;">
-                                    <h5>Clave</h5>
-                                </label>
-
-                                <input type="text" name="reunion" class="form-control form-control"
-                                    style="width: 300px;" placeholder="Esta clave vinculara tus minutas">
-
-                            </div>
-
+    <div class="row">
+        <form method="POST">
+            <div class="col-9">
+                <div class="card">
+                    <div class="card-body ">
+                        {% csrf_token %}
+    
+                        <h3> Minuta</h3>
+    
+                        <div>
+                            <small> Datos generales de la minuta
+                            </small>
                         </div>
-                    </div>
-
-                    <div class="m-2">
-                        <button type="submit" class="btn"><i class="fa fa-upload text-info"><span class="text-info ml-2"
-                                    style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif"><b>Crear
-                                        minuta</b></span></i></button>
+    
+                        <div class="bg-light p-3">
+    
+                            <div class="row">
+                                <div class="col-12">
+                                    <label for="temageneral" style="width: 300px;">
+                                        <h5>Nombre</h5>
+                                    </label>
+    
+                                    <input type="text" name="nombre" class="form-control form-control"
+                                        placeholder="Temas del dia" style="width: 300px;">
+    
+                                </div>
+    
+                                <div class="col-12">
+    
+                                    <label for="integrantes" style="width: 300px;">
+                                        <h5>Fecha</h5>
+                                    </label>
+    
+                                    <input type="date" name="fecha" class="form-control form-control" style="width: 300px;">
+    
+                                </div>
+    
+    
+                                <div class="col-12">
+    
+                                    <label for="integrantes" style="width: 300px;">
+                                        <h5>Integrantes</h5>
+                                    </label>
+    
+                                    <input type="text" name="integrantes" class="form-control form-control"
+                                        style="width: 300px;" placeholder="Ejemplo: AR - LA - CA">
+    
+                                </div>
+    
+                                <div class="col-12">
+    
+                                    <label for="reunion" style="width: 300px;">
+                                        <h5>Clave</h5>
+                                    </label>
+    
+                                    <input type="text" name="reunion" class="form-control form-control"
+                                        style="width: 300px;" placeholder="Esta clave vinculara tus minutas">
+    
+                                </div>
+    
+                            </div>
+                        </div>
+    
+                        <div class="m-2">
+                            <button type="submit" class="btn"><i class="fa fa-upload text-info"><span class="text-info ml-2"
+                                        style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif"><b>Crear
+                                            minuta</b></span></i></button>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </form>
+        </form>
+    </div>
 </div>
+
+
+
 
 
 <aside class="right-side-panel">

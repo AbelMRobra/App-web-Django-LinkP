@@ -16,165 +16,167 @@
             </ol>
         </div>
     </div>
-</div>
 
-<div class="row">
-    <!-- column -->
-    <div class="col-12">
-        <div class="card">
-            <div class="card-body">
-                <h4 class="card-title"><span class="lstick m-r-20"></span>Listado de proyectos</h4>
-                <h6 class="card-subtitle">Los proyectos proximos a realizar</h6>
-                <div class="table-responsive">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th style="vertical-align: middle;" rowspan="2">Logo</th>
-                                <th style="vertical-align: middle;" rowspan="2">Nombre</th>
-                                <th style="vertical-align: middle; text-align: center;" colspan="2">Inicio de obra</th>
-                                <th style="vertical-align: middle; text-align: center;" colspan="2">Entrega del proyecto</th>
-                                <th style="vertical-align: middle;" rowspan="2">Tamaño</th>
+    <div class="row">
+        <!-- column -->
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title"><span class="lstick m-r-20"></span>Listado de proyectos</h4>
+                    <h6 class="card-subtitle">Los proyectos proximos a realizar</h6>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th style="vertical-align: middle;" rowspan="2">Logo</th>
+                                    <th style="vertical-align: middle;" rowspan="2">Nombre</th>
+                                    <th style="vertical-align: middle; text-align: center;" colspan="2">Inicio de obra</th>
+                                    <th style="vertical-align: middle; text-align: center;" colspan="2">Entrega del proyecto</th>
+                                    <th style="vertical-align: middle;" rowspan="2">Tamaño</th>
+                                </tr>
+    
+                                <tr style="font-size: 12px;">
+                                    <th style="vertical-align: middle; text-align: center;">Planificado </th>
+                                    <th style="vertical-align: middle; text-align: center;">Contractual </th>
+                                    <th style="vertical-align: middle; text-align: center;">Planificado </th>
+                                    <th style="vertical-align: middle; text-align: center;">Contractual </th>
+    
+    
+                                </tr>
+    
                             </tr>
-
-                            <tr style="font-size: 12px;">
-                                <th style="vertical-align: middle; text-align: center;">Planificado </th>
-                                <th style="vertical-align: middle; text-align: center;">Contractual </th>
-                                <th style="vertical-align: middle; text-align: center;">Planificado </th>
-                                <th style="vertical-align: middle; text-align: center;">Contractual </th>
-
-
-                            </tr>
-
-                        </tr>
-
-                        </thead>
-                        <tbody>
-
-                            {% for i in datos %}
-
-                            <tr style="font-size: 12px;">
-
-                                {% if i.iamgen %}
-                                <td> <b><img src="{{i.iamgen.url}}" class="img-fluid" alt="Logo"
-                                            style="max-width: 50px; height:auto;"></b> </td>
-                                {% else %}
-
-                                <td> <b><img src="#" class="img-fluid" alt="..."
-                                            style="max-width: 50px; height:auto;"></b> </td>
-                                {% endif %}
-
-                                <td>
-                                    {% if request.user|has_group:"PROYECTO NIVEL 1" %}
-                                    <a href="#" data-toggle="modal" data-target="#modalmodif{{i.id}}">{{i.nombre}}</a>
+    
+                            </thead>
+                            <tbody>
+    
+                                {% for i in datos %}
+    
+                                <tr style="font-size: 12px;">
+    
+                                    {% if i.iamgen %}
+                                    <td> <b><img src="{{i.iamgen.url}}" class="img-fluid" alt="Logo"
+                                                style="max-width: 50px; height:auto;"></b> </td>
                                     {% else %}
-                                    {{i.nombre}}
+    
+                                    <td> <b><img src="#" class="img-fluid" alt="..."
+                                                style="max-width: 50px; height:auto;"></b> </td>
                                     {% endif %}
-                                </td>
-                                <div class="modal fade" id="modalmodif{{i.id}}" tabindex="-1" role="dialog" aria-labelledby="modalmodif{{i.id}}Title" aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header" style="background: rgb(36,160,237);
-                                            background: linear-gradient(315deg, rgba(36,160,237,1) 0%, rgba(56,56,130,1) 22%, rgba(0,212,255,1) 100%);">
-                                            <h5 class="modal-title text-light" id="exampleModalLongTitle">Modificar proyecto</h5>
-                                            <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                            </div>
-                                            <div class="modal-body">
-            
-                                            <form method="POST" style="margin: 15px;">
-                                                {% csrf_token %}
-                                                <h5><b>Inicio de obra</b></h5>
-                                                
-                                                <p>Planificado</p>
-                                                <input name="fecha_i" type="date" value="{{i.fecha_i|date:'Y-m-d'}}" class="form-control form-control mb-3" style="width: 100%;">
-                                                <p></p>
-                                                <p>Contractual</p>
-                                                <input name="fecha_i_contrato" type="date" value="{{i.fecha_i_contrato|date:'Y-m-d'}}" class="form-control form-control mb-3" style="width: 100%;">
-                                                
-                                                <h5><b>Entrega del proyecto</b></h5>
-                                                <p>Planificado</p>
-                                                <input name="fecha_f" type="date" value="{{i.fecha_f|date:'Y-m-d'}}" class="form-control form-control mb-3" style="width: 100%;">
-                                                <p>Contractual</p>
-                                                <input name="fecha_f_contrato" type="date" value="{{i.fecha_f_contrato|date:'Y-m-d'}}" class="form-control form-control mb-3" style="width: 100%;">
-                                                <div class="mt-4">
-                                                    <button type="submit" name="id_proyecto" value="{{i.id}}" class="btn btn-info">Cargar</button>
+    
+                                    <td>
+                                        {% if request.user|has_group:"PROYECTO NIVEL 1" %}
+                                        <a href="#" data-toggle="modal" data-target="#modalmodif{{i.id}}">{{i.nombre}}</a>
+                                        {% else %}
+                                        {{i.nombre}}
+                                        {% endif %}
+                                    </td>
+                                    <div class="modal fade" id="modalmodif{{i.id}}" tabindex="-1" role="dialog" aria-labelledby="modalmodif{{i.id}}Title" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header" style="background: rgb(36,160,237);
+                                                background: linear-gradient(315deg, rgba(36,160,237,1) 0%, rgba(56,56,130,1) 22%, rgba(0,212,255,1) 100%);">
+                                                <h5 class="modal-title text-light" id="exampleModalLongTitle">Modificar proyecto</h5>
+                                                <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
                                                 </div>
-                                            </form>
-                                            
-                                            </div>
-                                            <div class="modal-footer">
-                                            <button type="button" class="btn btn-info" data-dismiss="modal">Cerrar</button>
-                                    
+                                                <div class="modal-body">
+                
+                                                <form method="POST" style="margin: 15px;">
+                                                    {% csrf_token %}
+                                                    <h5><b>Inicio de obra</b></h5>
+                                                    
+                                                    <p>Planificado</p>
+                                                    <input name="fecha_i" type="date" value="{{i.fecha_i|date:'Y-m-d'}}" class="form-control form-control mb-3" style="width: 100%;">
+                                                    <p></p>
+                                                    <p>Contractual</p>
+                                                    <input name="fecha_i_contrato" type="date" value="{{i.fecha_i_contrato|date:'Y-m-d'}}" class="form-control form-control mb-3" style="width: 100%;">
+                                                    
+                                                    <h5><b>Entrega del proyecto</b></h5>
+                                                    <p>Planificado</p>
+                                                    <input name="fecha_f" type="date" value="{{i.fecha_f|date:'Y-m-d'}}" class="form-control form-control mb-3" style="width: 100%;">
+                                                    <p>Contractual</p>
+                                                    <input name="fecha_f_contrato" type="date" value="{{i.fecha_f_contrato|date:'Y-m-d'}}" class="form-control form-control mb-3" style="width: 100%;">
+                                                    <div class="mt-4">
+                                                        <button type="submit" name="id_proyecto" value="{{i.id}}" class="btn btn-info">Cargar</button>
+                                                    </div>
+                                                </form>
+                                                
+                                                </div>
+                                                <div class="modal-footer">
+                                                <button type="button" class="btn btn-info" data-dismiss="modal">Cerrar</button>
+                                        
+                                                </div>
                                             </div>
                                         </div>
+            
                                     </div>
-        
-                                </div>
-
-                                {% if i.fecha_i %}
-                                
-                                <td style="text-align: center;">{{i.fecha_i|date:"d/m/Y"}}</td>
-
-                                {% else %}
-
-                                <td style="text-align: center;">--/--/----</td>
-                                
-                                {% endif %}
-
-                                {% if i.fecha_i_contrato %}
-
-                                <td style="text-align: center;"> {{i.fecha_i_contrato|date:"d/m/Y"}}</td>
-
-                                {% else %}
-
-                                <td style="text-align: center;">--/--/----</td>
-
-                                {% endif %}
-
-                                {% if i.fecha_f %}
-                                
-                                <td style="text-align: center;">{{i.fecha_f|date:"d/m/Y"}}</td>
-
-                                {% else %}
-
-                                <td style="text-align: center;">--/--/----</td>
-                                
-                                {% endif %}
-
-                                {% if i.i.fecha_f_contrato %}
-
-                                <td style="text-align: center;">{{i.fecha_f_contrato|date:"d/m/Y"}}</td>
-
-
-                                {% else %}
-
-                                <td style="text-align: center;">--/--/----</td>
-
-                                {% endif %}
-                                                               
-
-                                <td style="color: rgb({{i.color}});"><b>{{i.m2|floatformat:0|intcomma}} m2</b> </td>
-                            </tr>
-
-
-                            {% endfor %}
-
-                            <tr>
-                                <th colspan="4">Total a realizar</th>
-                                <th></th>
-                                <th></th>
-                                <th>{{total_m2|floatformat:0|intcomma}} m2</th>
-
-                            </tr>
-
-                        </tbody>
-                    </table>
+    
+                                    {% if i.fecha_i %}
+                                    
+                                    <td style="text-align: center;">{{i.fecha_i|date:"d/m/Y"}}</td>
+    
+                                    {% else %}
+    
+                                    <td style="text-align: center;">--/--/----</td>
+                                    
+                                    {% endif %}
+    
+                                    {% if i.fecha_i_contrato %}
+    
+                                    <td style="text-align: center;"> {{i.fecha_i_contrato|date:"d/m/Y"}}</td>
+    
+                                    {% else %}
+    
+                                    <td style="text-align: center;">--/--/----</td>
+    
+                                    {% endif %}
+    
+                                    {% if i.fecha_f %}
+                                    
+                                    <td style="text-align: center;">{{i.fecha_f|date:"d/m/Y"}}</td>
+    
+                                    {% else %}
+    
+                                    <td style="text-align: center;">--/--/----</td>
+                                    
+                                    {% endif %}
+    
+                                    {% if i.i.fecha_f_contrato %}
+    
+                                    <td style="text-align: center;">{{i.fecha_f_contrato|date:"d/m/Y"}}</td>
+    
+    
+                                    {% else %}
+    
+                                    <td style="text-align: center;">--/--/----</td>
+    
+                                    {% endif %}
+                                                                   
+    
+                                    <td style="color: rgb({{i.color}});"><b>{{i.m2|floatformat:0|intcomma}} m2</b> </td>
+                                </tr>
+    
+    
+                                {% endfor %}
+    
+                                <tr>
+                                    <th colspan="4">Total a realizar</th>
+                                    <th></th>
+                                    <th></th>
+                                    <th>{{total_m2|floatformat:0|intcomma}} m2</th>
+    
+                                </tr>
+    
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+
 
 
 {% endblock %}

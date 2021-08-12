@@ -5,9 +5,7 @@
 {% block content %}
 
 <div class="container-fluid">
-    <!-- ============================================================== -->
-    <!-- Bread crumb and right sidebar toggle -->
-    <!-- ============================================================== -->
+
     <div class="row page-titles">
         <div class="col-md-5 align-self-center">
             <h3 class="text-themecolor">Modificar Minuta</h3>
@@ -23,101 +21,103 @@
 
     </div>
 
-</div>
-<div class="row">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-body ">
-
-                <form method="POST">
-                    {% csrf_token %}
-                    <h3>Cabecera de minuta</h3>
-
-                    <div>
-                        <small> Datos generales
-                        </small>
-                    </div>
-
-                    <div class="bg-light p-3">
-                        <div class="row">
-
-                            <div class="col-12">
-                                <label for="temageneral" style="width: 300px;">
-                                    <h5>Creador</h5>
-                                </label>
-
-                                <select name="creador" class="form-control form-control" style="width: 300px;">
-                       
-                                    {% for l in list_users %}
-                                    <option {% if data.creador.identificacion == l.identificacion %} selected {% endif %}>{{l.identificacion}}</option>
-                                    {% endfor %}
-                                    
-                                    </select>
-
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body ">
+    
+                    <form method="POST">
+                        {% csrf_token %}
+                        <h3>Cabecera de minuta</h3>
+    
+                        <div>
+                            <small> Datos generales
+                            </small>
+                        </div>
+    
+                        <div class="bg-light p-3">
+                            <div class="row">
+    
+                                <div class="col-12">
+                                    <label for="temageneral" style="width: 300px;">
+                                        <h5>Creador</h5>
+                                    </label>
+    
+                                    <select name="creador" class="form-control form-control" style="width: 300px;">
+                           
+                                        {% for l in list_users %}
+                                        <option {% if data.creador.identificacion == l.identificacion %} selected {% endif %}>{{l.identificacion}}</option>
+                                        {% endfor %}
+                                        
+                                        </select>
+    
+                                </div>
+    
+                                <div class="col-12">
+                                    <label for="temageneral" style="width: 300px;">
+                                        <h5>Nombre</h5>
+                                    </label>
+    
+                                    <input type="text" name="nombre" class="form-control form-control"
+                                        value="{{data.nombre|lower|capfirst}}" style="width: 300px;">
+    
+                                </div>
+    
+                                <div class="col-12">
+    
+                                    <label for="fecha" style="width: 300px;">
+                                        <h5>Fecha</h5>
+                                    </label>
+    
+                                    <input type="date" name="fecha" class="form-control form-control" style="width: 300px;"
+                                    value="{{data.fecha|date:'Y-m-d'}}">
+    
+                                </div>
+    
+    
+                                <div class="col-12">
+    
+                                    <label for="integrantes" style="width: 300px;">
+                                        <h5>Integrantes</h5>
+                                    </label>
+    
+                                    <input type="text" name="integrantes" class="form-control form-control"
+                                        style="width: 300px;"
+                                        value="{{data.integrantes}}"
+                                        >
+    
+                                </div>
+    
+                                <div class="col-12">
+    
+                                    <label for="integrantes" style="width: 300px;">
+                                        <h5>Clave</h5>
+                                    </label>
+    
+                                    <input type="text" name="reunion" class="form-control form-control"
+                                        style="width: 300px;"
+                                        value="{% if data.reunion %}{{data.reunion}}{% else %}{% endif %}"
+                                        >
+    
+                                </div>
                             </div>
-
-                            <div class="col-12">
-                                <label for="temageneral" style="width: 300px;">
-                                    <h5>Nombre</h5>
-                                </label>
-
-                                <input type="text" name="nombre" class="form-control form-control"
-                                    value="{{data.nombre|lower|capfirst}}" style="width: 300px;">
-
-                            </div>
-
-                            <div class="col-12">
-
-                                <label for="fecha" style="width: 300px;">
-                                    <h5>Fecha</h5>
-                                </label>
-
-                                <input type="date" name="fecha" class="form-control form-control" style="width: 300px;"
-                                value="{{data.fecha|date:'Y-m-d'}}">
-
-                            </div>
-
-
-                            <div class="col-12">
-
-                                <label for="integrantes" style="width: 300px;">
-                                    <h5>Integrantes</h5>
-                                </label>
-
-                                <input type="text" name="integrantes" class="form-control form-control"
-                                    style="width: 300px;"
-                                    value="{{data.integrantes}}"
-                                    >
-
-                            </div>
-
-                            <div class="col-12">
-
-                                <label for="integrantes" style="width: 300px;">
-                                    <h5>Clave</h5>
-                                </label>
-
-                                <input type="text" name="reunion" class="form-control form-control"
-                                    style="width: 300px;"
-                                    value="{% if data.reunion %}{{data.reunion}}{% else %}{% endif %}"
-                                    >
-
+    
+    
+                            <div class="d-flex justify-content-center my-3">
+                                <button type="submit" class="btn btn-success">Modificar</button>
+    
                             </div>
                         </div>
-
-
-                        <div class="d-flex justify-content-center my-3">
-                            <button type="submit" class="btn btn-success">Modificar</button>
-
-                        </div>
-                    </div>
-
-
-                </form>
+    
+    
+                    </form>
+                </div>
             </div>
         </div>
     </div>
+
 </div>
+
 
 
 

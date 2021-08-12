@@ -1,12 +1,12 @@
 from django.shortcuts import render, redirect
+import requests
 from rrhh.models import Sugerencia,datosusuario
 from .funciones.mandaremail import mandar_email
-from datetime import date
+import datetime
 
 def sugerencias(request):
 
     if request.method == 'POST':
-
         try:
 
             sugerencia_selec = Sugerencia.objects.get(id = int(request.POST['id']))
@@ -62,6 +62,27 @@ def sugerencias(request):
 
         except:
             pass
+        if 'respuesta' in request.POST.dict():
+            respuesta=request.POST.dict()['respuesta']
+            id_sug=request.POST.dict()['sugerencia']
+            
+            sugerencia=Sugerencia.objects.get(pk=id_sug)
+            respuestas=sugerencia.respuestas
+            if respuestas is None:
+                sugerencia.respuestas=respuesta
+            else:
+                sugerencia.respuestas=respuestas + '|' + respuesta
+            sugerencia.save()
 
-    data = Sugerencia.objects.all().order_by("-id")
+            return redirect('Sugerencias')
+
+    sugerencias = Sugerencia.objects.all().order_by("-id")
+
+    data=[]
+    for i in sugerencias:
+        sug=[]
+        resp=i.respuestas
+        respuestas=resp.split('|')
+        sug.extend([i,respuestas])
+        data.append(sug)
     return render (request, 'users/sugerencias.html', {'data':data})

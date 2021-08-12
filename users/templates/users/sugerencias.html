@@ -17,332 +17,342 @@
             </ol>
         </div>
     </div>
-</div>
 
-<div class="row">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-12">
-                        <div class="d-flex align-items-center">
-                            <div>
-
-                                <h4 class="card-title"><span class="lstick m-r-20"></span>Panel de sugerencias</h4>
-                                <h4 class="card-subtitle"></span>Panel de sugerencias para mejorar link-p</h4>
-                            </div>
-                            <div class="btn-group ml-auto">
-                                <a href="JavaScript:void(0)" class="icon-options-vertical link" data-toggle="dropdown"
-                                    aria-haspopup="true" aria-expanded="false"></a>
-                                <div class="dropdown-menu dropdown-menu-right">
-                                    <a class="dropdown-item" href="#" data-toggle="modal"
-                                        data-target="#ModalCrearSugerencia"><i
-                                            class="fa fa-plus-circle mr-2"></i>Añadir</a>
-
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="d-flex align-items-center">
+                                <div>
+    
+                                    <h4 class="card-title"><span class="lstick m-r-20"></span>Panel de sugerencias</h4>
+                                    <h4 class="card-subtitle"></span>Panel de sugerencias para mejorar link-p</h4>
                                 </div>
-                            </div>
-                        </div>
-
-                        <!-- Modal Respuesta -->
-                        <div class="modal fade" id="ModalCrearSugerencia" tabindex="-1" role="dialog"
-                            aria-labelledby="ModalCrearSugerenciaTitle" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header" style="background-color: #2a3e52;">
-                                        <h5 class="modal-title text-light" id="exampleModalLongTitle">
-                                            Agergar sugerencia </h5>
-                                        <button type="button" class="close text-light" data-dismiss="modal"
-                                            aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <form method="POST" style="margin: 15px;" enctype="multipart/form-data"
-                                            id="upload-image-form">
-                                            {% csrf_token %}
-
-                                            <h6>Sugerencia</h6>
-                                            <div class="input-group mb-3">
-                                                <input name="nombre" type="text" class="form-control form-control"
-                                                    style="width: 300px;">
-                                            </div>
-
-                                            <h6>Descripcion</h6>
-                                            <div class="input-group mb-3">
-                                                <textarea name="descripcion" cols="100" rows="4"
-                                                    class="form-control"></textarea>
-                                            </div>
-
-                                            <h6>Archivo</h6>
-                                            <div class="input-group mb-3">
-                                                <input name="adjunto" type="file" class="" style="width: 300px;">
-                                            </div>
-                                            <button type="submit" class="btn btn-info">
-                                                <b>Cargar</b></button>
-
-                                            {{ form.as_p }}
-
-                                        </form>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary"
-                                            data-dismiss="modal">Cerrar</button>
+                                <div class="btn-group ml-auto">
+                                    <a href="JavaScript:void(0)" class="icon-options-vertical link" data-toggle="dropdown"
+                                        aria-haspopup="true" aria-expanded="false"></a>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" href="#" data-toggle="modal"
+                                            data-target="#ModalCrearSugerencia"><i
+                                                class="fa fa-plus-circle mr-2"></i>Añadir</a>
+    
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <!-- fin modal crear-->
-
-                        <div class="row mt-3">
-                            <div class="col-12">
-                                <div class="table-responsive m-t-4">
-                                    <table class="table" style="width: 99%;">
-                                        <thead>
-                                            <tr>
-                                                <th>Creador</th>
-                                                <th>Sugerencia</th>
-                                                <th>Prioridad</th>
-                                                <th style="text-align: center;">Estado</th>
-                                                <th></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-
-                                            {% for i in data %}
-                                            <tr>
-                                                <td>
-                                                    <img src="{{i.usuario.imagenlogo.url}}" alt="usuario" width="30">
-                                                    {{i.usuario.nombre}}
-                                                </td>
-                                                <td>
-                                                    <div>
-                                                        <a href="#" data-toggle="modal"
-                                                            data-target="#ModalDescripcion{{i.id}}"><span>{{i.nombre|lower|capfirst}}</span></i></a>
-
-                                                        {% if i.adjunto %}
-
-                                                        <a href="{{i.adjunto.url}}" target="_blank" class="ml-3"><i
-                                                                class="fa fa-paperclip" aria-hidden="true"></i></a>{% endif %}
-                                                    </div>
-                                                </td>
-                                                <!-- Modal Descripcion -->
-                                                <div class="modal fade" id="ModalDescripcion{{i.id}}" tabindex="-1"
-                                                    role="dialog" aria-labelledby="ModalDescripcionTitle"
-                                                    aria-hidden="true">
-                                                    <div class="modal-dialog modal-dialog-centered" role="document">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header"
-                                                                style="background-color: #2a3e52;">
-                                                                <h5 class="modal-title text-light"
-                                                                    id="exampleModalLongTitle">
-                                                                    Descripcion </h5>
-                                                                <button type="button" class="close text-light"
-                                                                    data-dismiss="modal" aria-label="Close">
-                                                                    <span aria-hidden="true">&times;</span>
-                                                                </button>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                <span>{{i.descripcion}}</span>
-
-                                                            </div>
-
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-secondary"
-                                                                    data-dismiss="modal">Cerrar</button>
-
+    
+    
+                            <!-- Modal Respuesta -->
+                            <div class="modal fade" id="ModalCrearSugerencia" tabindex="-1" role="dialog"
+                                aria-labelledby="ModalCrearSugerenciaTitle" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header" style="background-color: #2a3e52;">
+                                            <h5 class="modal-title text-light" id="exampleModalLongTitle">
+                                                Agergar sugerencia </h5>
+                                            <button type="button" class="close text-light" data-dismiss="modal"
+                                                aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form method="POST" style="margin: 15px;" enctype="multipart/form-data"
+                                                id="upload-image-form">
+                                                {% csrf_token %}
+    
+                                                <h6>Sugerencia</h6>
+                                                <div class="input-group mb-3">
+                                                    <input name="nombre" type="text" class="form-control form-control"
+                                                        style="width: 300px;">
+                                                </div>
+    
+                                                <h6>Descripcion</h6>
+                                                <div class="input-group mb-3">
+                                                    <textarea name="descripcion" cols="100" rows="4"
+                                                        class="form-control"></textarea>
+                                                </div>
+    
+                                                <h6>Archivo</h6>
+                                                <div class="input-group mb-3">
+                                                    <input name="adjunto" type="file" class="" style="width: 300px;">
+                                                </div>
+                                                <button type="submit" class="btn btn-info">
+                                                    <b>Cargar</b></button>
+    
+                                                {{ form.as_p }}
+    
+                                            </form>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-dismiss="modal">Cerrar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- fin modal crear-->
+    
+                            <div class="row mt-3">
+                                <div class="col-12">
+                                    <div class="table-responsive m-t-4">
+                                        <table class="table" style="width: 99%;">
+                                            <thead>
+                                                <tr>
+                                                    <th>Creador</th>
+                                                    <th>Sugerencia</th>
+                                                    <th>Prioridad</th>
+                                                    <th style="text-align: center;">Estado</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+    
+                                                {% for i in data %}
+                                                <tr>
+                                                    <td>
+                                                        <img src="{% if  i.0.usuario.imagenlogo %}{{i.0.usuario.imagenlogo.url}}{% else %}{% static 'img/anonimo2.png' %}{% endif %}" class="mr-1" alt="usuario" width="30">
+                                                        {{i.0.usuario.nombre}}
+                                                    </td>
+                                                    <td>
+                                                        <div>
+                                                            <a href="#" data-toggle="modal"
+                                                                data-target="#ModalDescripcion{{i.0.id}}"><span>{{i.0.nombre|lower|capfirst}}</span></i></a>
+    
+                                                            {% if i.0.adjunto %}
+    
+                                                            <a href="{{i.0.adjunto.url}}" target="_blank" class="ml-3"><i
+                                                                    class="fa fa-paperclip" aria-hidden="true"></i></a>{% endif %}
+                                                        </div>
+                                                    </td>
+                                                    <!-- Modal Descripcion -->
+                                                    <div class="modal fade" id="ModalDescripcion{{i.0.id}}" tabindex="-1"
+                                                        role="dialog" aria-labelledby="ModalDescripcionTitle"
+                                                        aria-hidden="true">
+                                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header"
+                                                                    style="background-color: #2a3e52;">
+                                                                    <h5 class="modal-title text-light"
+                                                                        id="exampleModalLongTitle">
+                                                                        Descripcion </h5>
+                                                                    <button type="button" class="close text-light"
+                                                                        data-dismiss="modal" aria-label="Close">
+                                                                        <span aria-hidden="true">&times;</span>
+                                                                    </button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <span>{{i.0.descripcion}}</span>
+    
+                                                                </div>
+    
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-secondary"
+                                                                        data-dismiss="modal">Cerrar</button>
+    
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
-
-                                                <!-- Modal Respuesta -->
-                                                <div class="modal fade" id="ModalRespuesta{{i.id}}" tabindex="-1"
-                                                    role="dialog" aria-labelledby="ModalRespuesta{{i.id}}"
-                                                    aria-hidden="true">
-                                                    <div class="modal-dialog modal-dialog-centered" role="document">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header"
-                                                                style="background-color: #2a3e52;">
-                                                                <h5 class="modal-title text-light"
-                                                                    id="exampleModalLongTitle">
-                                                                    Hola {{i.usuario}} gracias por tu mensaje! </h5>
-                                                                <button type="button" class="close text-light"
-                                                                    data-dismiss="modal" aria-label="Close">
-                                                                    <span aria-hidden="true">&times;</span>
-                                                                </button>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                <form action="POST">
-                                                                    <div class="input-group mb-3">
-
-                                                                        <input name="respuesta" type="text"
-                                                                            class="form-control form-control"
-                                                                            style="width: 300px;">
-                                                                    </div>
-
-                                                                    <button type="submit" class="btn btn-info mb-4">
-                                                                        <b>Enviar</b></button>
-
-                                                                </form>
-                                                                {% if i.respuesta %}
-                                                                <h6>{{i.respuesta}}</h6>
-                                                                {% endif %}
-
-                                                            </div>
-
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-secondary"
-                                                                    data-dismiss="modal">Cerrar</button>
-
+    
+                                                    <!-- Modal Respuesta -->
+                                                    <div class="modal fade" id="ModalRespuesta{{i.0.id}}" tabindex="-1"
+                                                        role="dialog" aria-labelledby="ModalRespuesta{{i.id}}"
+                                                        aria-hidden="true">
+                                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header"
+                                                                    style="background-color: #2a3e52;">
+                                                                    <h5 class="modal-title text-light"
+                                                                        id="exampleModalLongTitle">
+                                                                        Hola {{i.0.usuario}} gracias por tu mensaje! </h5>
+                                                                    <button type="button" class="close text-light"
+                                                                        data-dismiss="modal" aria-label="Close">
+                                                                        <span aria-hidden="true">&times;</span>
+                                                                    </button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <form method="POST"> {% csrf_token %}
+                                                                        <div class="input-group mb-3">
+    
+                                                                            <input name="respuesta" type="text"
+                                                                                class="form-control form-control"
+                                                                                required
+                                                                                style="width: 300px;">
+                                                                        </div>
+    
+                                                                        <button type="submit" name="sugerencia" value="{{i.0.id}}" class="btn btn-info mb-4">
+                                                                            <b>Enviar</b></button>
+    
+                                                                    </form>
+                                                                   <h6 style="font-weight: 900;" >Respuestas</h6>
+                                                                    {% if i.1 %}
+                                                                   
+                                                                   {% for r in i.1 %}
+                                                                       <h6>{{r}}</h6>
+                                                                   {% endfor %}
+                                                                       
+                                                                    {% endif %}
+    
+                                                                </div>
+    
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-secondary"
+                                                                        data-dismiss="modal">Cerrar</button>
+    
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                                <td>
-                                                    <span>{{i.prioridad|lower|capfirst}}</span>
-                                                </td>
-
-                                                <td style="text-align: center; vertical-align: top;">
-                                                    {% if i.estado == "LISTO" %}
-                                                    <div><i class="fa fa-lg fa-check-circle-o text-success"
-                                                            aria-hidden="true"></i></div>
-                                                    {% elif i.estado == "ESPERA"%}
-                                                    {% if user.username == "AR" %}
-                                                    <form method="POST">
-                                                        {% csrf_token %}
-                                                        <button class="btn" type="submit" name="ENTREGADO"
-                                                            style="padding: 0%;" value="{{i.id}}"><i
-                                                                class="fa fa-lg fa-clock-o text-info"
-                                                                aria-hidden="true"></i></button>
-                                                    </form>
-                                                    {% else %}
-                                                    <i class="fa fa-lg fa-clock-o text-info" aria-hidden="true"></i>
+                                                    <td>
+                                                        <span>{{i.0.prioridad|lower|capfirst}}</span>
+                                                    </td>
+    
+                                                    <td style="text-align: center; vertical-align: top;">
+                                                        {% if i.0.estado == "LISTO" %}
+                                                        <div><i class="fa fa-lg fa-check-circle-o text-success"
+                                                                aria-hidden="true"></i></div>
+                                                        {% elif i.0.estado == "ESPERA"%}
+                                                        {% if user.username == "AR" %}
+                                                        <form method="POST">
+                                                            {% csrf_token %}
+                                                            <button class="btn" type="submit" name="ENTREGADO"
+                                                                style="padding: 0%;" value="{{i.0.id}}"><i
+                                                                    class="fa fa-lg fa-clock-o text-info"
+                                                                    aria-hidden="true"></i></button>
+                                                        </form>
+                                                        {% else %}
+                                                        <i class="fa fa-lg fa-clock-o text-info" aria-hidden="true"></i>
+                                                        {% endif %}
+                                                        {% endif %}
+                                                    </td>
+    
+                                                    {% if i.0.usuario.identificacion == request.user.username %}
+    
+                                                    <td>
+                                                        <div class="btn-group ml-auto">
+                                                            <a href="JavaScript:void(0)" class="icon-options-vertical link"
+                                                                data-toggle="dropdown" aria-haspopup="true"
+                                                                aria-expanded="false"></a>
+                                                            <div class="dropdown-menu dropdown-menu-right">
+                                                                <a class="dropdown-item" href="#" data-toggle="modal"
+                                                                    data-target="#ModalEditar{{i.0.id}}"><i
+                                                                        class="fa fa-pencil mr-2"></i>Editar</a>
+                                                            {% if request.user.username == 'AR' or  request.user.username == 'FM' or request.user.username == 'JNT'  %}
+                                                                <a class="dropdown-item" href="#" data-toggle="modal"
+                                                                    data-target="#ModalRespuesta{{i.0.id}}"><i
+                                                                        class="fa fa-comments-o mr-2"></i>Mensaje</a>
+                                                                        {% endif %}
+                                                                <a class="dropdown-item text-danger" href="#"
+                                                                    data-toggle="modal"
+                                                                    data-target="#ModalBorrar{{i.0.id}}"><i
+                                                                        class="fa fa-trash-o mr-2"></i>Borrar</a>
+                                                            </div>
+                                                        </div>
+                                                    </td>
                                                     {% endif %}
-                                                    {% endif %}
-                                                </td>
-
-                                                {% if i.usuario.identificacion == request.user.username %}
-
-                                                <td>
-                                                    <div class="btn-group ml-auto">
-                                                        <a href="JavaScript:void(0)" class="icon-options-vertical link"
-                                                            data-toggle="dropdown" aria-haspopup="true"
-                                                            aria-expanded="false"></a>
-                                                        <div class="dropdown-menu dropdown-menu-right">
-                                                            <a class="dropdown-item" href="#" data-toggle="modal"
-                                                                data-target="#ModalEditar{{i.id}}"><i
-                                                                    class="fa fa-pencil mr-2"></i>Editar</a>
-                                                            <a class="dropdown-item" href="#" data-toggle="modal"
-                                                                data-target="#ModalRespuesta{{i.id}}"><i
-                                                                    class="fa fa-comments-o mr-2"></i>Mensaje</a>
-                                                            <a class="dropdown-item text-danger" href="#"
-                                                                data-toggle="modal"
-                                                                data-target="#ModalBorrar{{i.id}}"><i
-                                                                    class="fa fa-trash-o mr-2"></i>Borrar</a>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                {% endif %}
-                                                <div class="modal fade" id="ModalBorrar{{i.id}}" tabindex="-1"
-                                                    role="dialog" aria-labelledby="ModalBorrar{{i.id}}"
-                                                    aria-hidden="true">
-                                                    <div class="modal-dialog modal-dialog-centered" role="document">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header"
-                                                                style="background: rgb(36,160,237); background: linear-gradient(315deg, rgba(36,160,237,1) 0%, rgba(56,56,130,1) 22%, rgba(0,212,255,1) 100%);">
-                                                                <h5 class="modal-title text-light"
-                                                                    id="exampleModalLongTitle">Borrar
-                                                                    sugerencia
-                                                                </h5>
-                                                                <button type="button" class="close text-light"
-                                                                    data-dismiss="modal" aria-label="Close">
-                                                                    <span aria-hidden="true">&times;</span>
-                                                                </button>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                <form method="POST">
-
-                                                                    {% csrf_token %}
-
-                                                                    <p class="my-2">¿{{i.usuario}} Está seguro que desea
-                                                                        borrar tu sugerencia?</p>
-
-                                                                    <div>
-                                                                        <button class="btn btn-danger" type="submit"
-                                                                            name="eliminar" value="{{i.id}}"
-                                                                            style="margin-top: 10px;">Borrar</button>
-
-                                                                    </div>
-                                                                </form>
-
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-info"
-                                                                    data-dismiss="modal">Cerrar</button>
-
+    
+                                                    <div class="modal fade" id="ModalBorrar{{i.0.id}}" tabindex="-1"
+                                                        role="dialog" aria-labelledby="ModalBorrar{{i.0.id}}"
+                                                        aria-hidden="true">
+                                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header"
+                                                                    style="background: rgb(36,160,237); background: linear-gradient(315deg, rgba(36,160,237,1) 0%, rgba(56,56,130,1) 22%, rgba(0,212,255,1) 100%);">
+                                                                    <h5 class="modal-title text-light"
+                                                                        id="exampleModalLongTitle">Borrar
+                                                                        sugerencia
+                                                                    </h5>
+                                                                    <button type="button" class="close text-light"
+                                                                        data-dismiss="modal" aria-label="Close">
+                                                                        <span aria-hidden="true">&times;</span>
+                                                                    </button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <form method="POST">
+    
+                                                                        {% csrf_token %}
+    
+                                                                        <p class="my-2">¿{{i.0.usuario}} Está seguro que desea
+                                                                            borrar tu sugerencia?</p>
+    
+                                                                        <div>
+                                                                            <button class="btn btn-danger" type="submit"
+                                                                                name="eliminar" value="{{i.0.id}}"
+                                                                                style="margin-top: 10px;">Borrar</button>
+    
+                                                                        </div>
+                                                                    </form>
+    
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-info"
+                                                                        data-dismiss="modal">Cerrar</button>
+    
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                                <div class="modal fade" id="ModalEditar{{i.id}}" tabindex="-1"
-                                                    role="dialog" aria-labelledby="ModalEditar{{i.id}}Title"
-                                                    aria-hidden="true">
-                                                    <div class="modal-dialog modal-dialog-centered" role="document">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header"
-                                                                style="background-color: #2a3e52;">
-                                                                <h5 class="modal-title text-light"
-                                                                    id="exampleModalLongTitle">
-                                                                    Editar </h5>
-                                                                <button type="button" class="close text-light"
-                                                                    data-dismiss="modal" aria-label="Close">
-                                                                    <span aria-hidden="true">&times;</span>
-                                                                </button>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                <form method="POST" style="margin: 15px;"
-                                                                    enctype="multipart/form-data"
-                                                                    id="upload-image-form">
-                                                                    {% csrf_token %}
-
-                                                                    <h6>Sugerencia</h6>
-                                                                    <div class="input-group mb-3">
-                                                                        <input name="nombre" type="text"
-                                                                            class="form-control form-control"
-                                                                            style="width: 300px;" value="{{i.nombre}}">
-                                                                    </div>
-
-                                                                    <h6>Descripcion</h6>
-                                                                    <div class="input-group mb-3">
-                                                                        <textarea name="descripcion" cols="100" rows="4"
-                                                                            class="form-control">{{i.descripcion}}</textarea>
-                                                                    </div>
-
-                                                                    <h6>Archivo</h6>
-                                                                    <div class="input-group mb-3">
-                                                                        <input name="adjunto" type="file" class=""
-                                                                            style="width: 300px;">
-                                                                    </div>
-
-                                                                    <button type="submit" name="id" value="{{i.id}}"
-                                                                        class="btn btn-info">
-                                                                        <b>Editar</b></button>
-                                                                    {{ form.as_p }}
-
-                                                                </form>
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-secondary"
-                                                                    data-dismiss="modal">Cerrar</button>
-
+                                                    <div class="modal fade" id="ModalEditar{{i.0.id}}" tabindex="-1"
+                                                        role="dialog" aria-labelledby="ModalEditar{{i.0.id}}Title"
+                                                        aria-hidden="true">
+                                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header"
+                                                                    style="background-color: #2a3e52;">
+                                                                    <h5 class="modal-title text-light"
+                                                                        id="exampleModalLongTitle">
+                                                                        Editar </h5>
+                                                                    <button type="button" class="close text-light"
+                                                                        data-dismiss="modal" aria-label="Close">
+                                                                        <span aria-hidden="true">&times;</span>
+                                                                    </button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <form method="POST" style="margin: 15px;"
+                                                                        enctype="multipart/form-data"
+                                                                        id="upload-image-form">
+                                                                        {% csrf_token %}
+    
+                                                                        <h6>Sugerencia</h6>
+                                                                        <div class="input-group mb-3">
+                                                                            <input name="nombre" type="text"
+                                                                                class="form-control form-control" required
+                                                                                style="width: 300px;" value="{{i.0.nombre}}">
+                                                                        </div>
+    
+                                                                        <h6>Descripcion</h6>
+                                                                        <div class="input-group mb-3">
+                                                                            <textarea name="descripcion" cols="100" rows="4"
+                                                                              required  class="form-control">{{i.0.descripcion}}</textarea>
+                                                                        </div>
+    
+                                                                        <h6>Archivo</h6>
+                                                                        <div class="input-group mb-3">
+                                                                            <input name="adjunto" type="file" class=""
+                                                                                style="width: 300px;">
+                                                                        </div>
+    
+                                                                        <button type="submit" name="id" value="{{i.0.id}}"
+                                                                            class="btn btn-info">
+                                                                            <b>Editar</b></button>
+                                                                        {{ form.as_p }}
+    
+                                                                    </form>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-secondary"
+                                                                        data-dismiss="modal">Cerrar</button>
+    
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            </tr>
-                                            {% endfor %}
-                                        </tbody>
-                                    </table>
+                                                </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -352,6 +362,5 @@
         </div>
     </div>
 </div>
-
 
 {% endblock %}

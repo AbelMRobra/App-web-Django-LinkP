@@ -19,335 +19,334 @@
             </ol>
         </div>
     </div>
-</div>
 
-
-<div class="row">
-    <div class="col">
-        <div class="card">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col">
-                        
-                        
-
-                        <div class="row">
-                            <div class="col-12">
-                                <ul class="nav nav-tabs">
-                                    <li class="active"><a data-toggle="tab" href="#alta">Activos</a></li>
-                                    <li><a data-toggle="tab" href="#personal">Personales</a></li>
-                                    <li><a data-toggle="tab" href="#media">Archivados</a></li>
-                                </ul>
+    <div class="row">
+        <div class="col">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col">
+                            
+                            
+    
+                            <div class="row">
+                                <div class="col-12">
+                                    <ul class="nav nav-tabs">
+                                        <li class="active"><a data-toggle="tab" href="#alta">Activos</a></li>
+                                        <li><a data-toggle="tab" href="#personal">Personales</a></li>
+                                        <li><a data-toggle="tab" href="#media">Archivados</a></li>
+                                    </ul>
+                                </div>
                             </div>
-                        </div>
-
-                        <div class="tab-content">
-                            <div id="alta" class="tab-pane fade  in active">
-
-                                <div class="row mt-3">
-                                    <div class="col-12">
-                                        <div class="div d-flex">
-                                            <div class="ml-2">
-                                                <h4 class="card-title"><span class="lstick m-r-20"></span>Minutas activas</h4>
-                                                <h6 class="card-subtitle">Listado de las minutas en las que participe y se encuentran aun activas.</h6>
-                                            </div>
-                                            <div class="btn-group ml-auto">
-                                                <a href="JavaScript:void(0)" class="icon-options-vertical link" data-toggle="dropdown"
-                                                aria-haspopup="true" aria-expanded="false"></a>
-                                                <div class="dropdown-menu dropdown-menu-right">
-                                                    <a class="dropdown-item" href="{% url 'Minutas Crear' %}"><i class="fa fa-plus-circle mr-2"></i>Nueva minuta</a>
-                                                    
+    
+                            <div class="tab-content">
+                                <div id="alta" class="tab-pane fade  in active">
+    
+                                    <div class="row mt-3">
+                                        <div class="col-12">
+                                            <div class="div d-flex">
+                                                <div class="ml-2">
+                                                    <h4 class="card-title"><span class="lstick m-r-20"></span>Minutas activas</h4>
+                                                    <h6 class="card-subtitle">Listado de las minutas en las que participe y se encuentran aun activas.</h6>
+                                                </div>
+                                                <div class="btn-group ml-auto">
+                                                    <a href="JavaScript:void(0)" class="icon-options-vertical link" data-toggle="dropdown"
+                                                    aria-haspopup="true" aria-expanded="false"></a>
+                                                    <div class="dropdown-menu dropdown-menu-right">
+                                                        <a class="dropdown-item" href="{% url 'Minutas Crear' %}"><i class="fa fa-plus-circle mr-2"></i>Nueva minuta</a>
+                                                        
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-
-                                        <div class="table-responsive m-t-4">
-                                            <table id="example" class="table">
-                                                <thead>
-                                                    <tr>
-                                                        <th style="text-align: center;">Creador</th>
-                                                        <th>Tema</th>
-                                                        <th>Integrantes</th>
-                                                        <th>Fecha</th>
-                                                        <th></th>
-                                                    </tr>
-                                                </thead>
-
-                                                <tbody style="font-size: 14px;">
-
-                                                    {% for i in minutas_activas %}
-                                                    {% if user.username in creador.identificacion or user.username in i.integrantes%}
-                                                    <tr>
-                                                
-                                                        <td style="width: 100px; text-align: center;">
-                                                            <div class="d-flex flex-column align-items-center">
-                                                                <img src="{{i.creador.imagenlogo.url}}" class="rounded" style="width: 40px;" alt="">
-                                                            </div>
-                                                        </td>
-                                                       
-                                                        <td>
-
-                                                            <h6 class="card-title"><a href="{% url 'Minutas Id' i.id %}">{{i.nombre|lower|capfirst}}</a></h6> 
-                                                            {% if i.reunion %} <p class="card-subtitle">Clave: {{i.reunion}}</p> {% else %} <p>-</p> {% endif %}
-                                                        </td>
-                                                        <td>
-                                                            <h6 class="card-subtitle">{{i.integrantes}}</h6>
-                                                            
-                                                        </td>
-                                                        <td>
-                                                            <p>{{i.fecha|date:"d-m-Y"}}</p>
-                                                        </td>
-
-                                                        <td>
-                                                            <div class="btn-group ml-auto">
-                                                                <a href="JavaScript:void(0)"
-                                                                    class="icon-options-vertical link"
-                                                                    data-toggle="dropdown" aria-haspopup="true"
-                                                                    aria-expanded="false"></a>
-                                                                <div class="dropdown-menu dropdown-menu-right">
-                                                                    <a class="dropdown-item"
-                                                                        href="{% url 'Minutas Id' i.id %}"><i
-                                                                            class="fa fa-pencil-square-o mr-2"></i>Ingresar</a>
-                                                                            {% if request.user.username == i.creador.identificacion %}
-                                                                    <a class="dropdown-item" href="#"
-                                                                        data-toggle="modal"
-                                                                        data-target="#ModalMinutaBorrar{{i.id}}"
-                                                                        name="subir_item"><i class="fa fa-trash text-danger mr-2"></i>Borrar
-                                                                        minuta</a>
-                                                                        {% else %}
-
-                                                                        {% endif %}
+    
+                                            <div class="table-responsive m-t-4">
+                                                <table id="example" class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th style="text-align: center;">Creador</th>
+                                                            <th>Tema</th>
+                                                            <th>Integrantes</th>
+                                                            <th>Fecha</th>
+                                                            <th></th>
+                                                        </tr>
+                                                    </thead>
+    
+                                                    <tbody style="font-size: 14px;">
+    
+                                                        {% for i in minutas_activas %}
+                                                        {% if user.username in creador.identificacion or user.username in i.integrantes%}
+                                                        <tr>
+                                                    
+                                                            <td style="width: 100px; text-align: center;">
+                                                                <div class="d-flex flex-column align-items-center">
+                                                                    <img src="{{i.creador.imagenlogo.url}}" class="rounded" style="width: 40px;" alt="">
                                                                 </div>
-                                                            </div>
-
-                                                            <div class="modal fade" id="ModalMinutaBorrar{{i.id}}"
-                                                                tabindex="-1" role="dialog"
-                                                                aria-labelledby="ModalMinutaBorrar{{i.id}}"
-                                                                aria-hidden="true">
-                                                                <div class="modal-dialog modal-dialog-centered"
-                                                                    role="document">
-                                                                    <div class="modal-content">
-                                                                        <div class="modal-header"
-                                                                            style="background: rgb(36,160,237); background: linear-gradient(315deg, rgba(36,160,237,1) 0%, rgba(56,56,130,1) 22%, rgba(0,212,255,1) 100%);">
-                                                                            <h5 class="modal-title text-light"
-                                                                                id="exampleModalLongTitle">Editar
-                                                                                tarea/acuerdo
-                                                                            </h5>
-                                                                            <button type="button"
-                                                                                class="close text-light"
-                                                                                data-dismiss="modal" aria-label="Close">
-                                                                                <span aria-hidden="true">&times;</span>
-                                                                            </button>
-                                                                        </div>
-                                                                        <div class="modal-body">
-
-                                                                            <form method="POST" style="margin: 15px;">
-
-                                                                                {% csrf_token %}
-
-                                                                                <h6>¿Estás seguro de que deseas borrar
-                                                                                    esta minuta?</h6>
-                                                                                    <button
-                                                                                    class="btn btn-danger "
-                                                                                    type="submit" name="delete" value="{{i.id}}"
-                                                                                    style="text-decoration: none;"> Borrar</button>
-
-                                                                            </form>
-                                                                            <div class="modal-footer">
-                                                                                <button type="button"
-                                                                                    class="btn btn-secondary"
-                                                                                    data-dismiss="modal">Cerrar</button>
-
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-
-                                                    </tr>
-                                                    {% endif %}
-
-                                                    {% endfor %}
-
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div id="personal" class="tab-pane fade">
-                                <div class="row mt-3">
-                                    <div class="col-12">
-                                        <div class="ml-2">
-                                            <h4 class="card-title"><span class="lstick m-r-20"></span>
-                                                Acuerdos pendientes</h4>
-                                            <h6 class="card-subtitle">
-                                                Todos los acuerdos de las distintas minutas
-                                            </h6>
-                                        </div>
-
-
-                                        <div class="table-responsive m-t-4">
-                                            <table id="example" class="table">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Minuta</th>
-                                                        <th>Tema</th>
-                                                        <th>Fecha limite</th>
-                                                        <th>Estado</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    {% for acuerdo in acuerdos_pendientes  %}
-                                                    <tr>
-                                                        
-                                                       
-                                                                     
-                                                        <td><a href="{% url 'Minutas Id' acuerdo.minuta.id %}">{{acuerdo.minuta}} </a></td>
-                                                        <td>{{acuerdo.tema}}</td>
-                                                        <td>{{acuerdo.fecha_limite|date:'d/m/Y' }}</td>
-                        
-                                                            <td style="width: 8%;">
-                                                         <form method="POST">
-                                                                    {% csrf_token %}
-                                                                    <button class="btn fa fa-lg fa-exclamation-circle text-warning" type="submit"
-                                                                        style="text-decoration: none;" name="check" value="{{acuerdo.id}}"></button>
-                            
-                                                                </form>
                                                             </td>
-                                                        
-                                                   
-                                                   
-                                                    </tr>
-                                                    {% endfor %}
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div id="media" class="tab-pane fade">
-                                <div class="row mt-3">
-                                    <div class="col-12">
-                                        <div class="ml-2">
-                                            <h4 class="card-title"><span class="lstick m-r-20"></span>
-                                                Minutas archivadas</h4>
-                                            <h6 class="card-subtitle">
-                                                Estas minutas tienen una versión mas actualizada
-                                            </h6>
-                                        </div>
-                                        <div class="table-responsive m-t-4">
-                                            <table id="example" class="table">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Creador</th>
-                                                        <th>Tema</th>
-                                                        <th>Integrantes</th>
-                                                        <th>Fecha</th>
-                                                        <th></th>
-                                                    </tr>
-                                                </thead>
-
-                                                <tbody style="font-size: 14px;">
-
-                                                    {% for i in minutas_archivadas %}
-                                                    {% if user.username in creador.identificacion or user.username in i.integrantes%}
-                                                    <tr>
-                                                        <td style="width: 100px;">
-                                                            <div class="d-flex flex-column align-items-center">
-                                                                <img src="{{i.creador.imagenlogo.url}}" class="rounded" style="width: 40px;" alt="">
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <h6 class="card-title"><a href="{% url 'Minutas Id' i.id %}">{{i.nombre|lower|capfirst}}</a></h6> 
-                                                            {% if i.reunion %}<p class="card-subtitle">Clave: {{i.reunion}}</p> {% else %} <p>-</p> {% endif %}
-                                                        </td>
-                                                        <td>
-                                                            <h6 class="card-subtitle">{{i.integrantes}}</h6>
-                                                        </td>
-                                                        
-                                                        <td>
-                                                            <p>{{i.fecha|date:"d-m-Y"}}</p>
-                                                        </td>
-                                                        <td>
-                                                            <div class="btn-group ml-auto">
-                                                                <a href="JavaScript:void(0)"
-                                                                    class="icon-options-vertical link"
-                                                                    data-toggle="dropdown" aria-haspopup="true"
-                                                                    aria-expanded="false"></a>
-                                                                <div class="dropdown-menu dropdown-menu-right">
-                                                                    <a class="dropdown-item"
-                                                                        href="{% url 'Minutas Id' i.id %}"><i
-                                                                            class="fa fa-pencil-square-o mr-2"></i>Ingresar</a>
-                                                                            {% if request.user.username == i.creador.identificacion %}
-                                                                    <a class="dropdown-item" href="#"
-                                                                        data-toggle="modal"
-                                                                        data-target="#ModalMinutaBorrar{{i.id}}"
-                                                                        name="subir_item"><i class="fa fa-trash text-danger mr-2"></i>Borrar
-                                                                        minuta</a>
-                                                                        {% else %}
-
-                                                                        {% endif %}
+                                                           
+                                                            <td>
+    
+                                                                <h6 class="card-title"><a href="{% url 'Minutas Id' i.id %}">{{i.nombre|lower|capfirst}}</a></h6> 
+                                                                {% if i.reunion %} <p class="card-subtitle">Clave: {{i.reunion}}</p> {% else %} <p>-</p> {% endif %}
+                                                            </td>
+                                                            <td>
+                                                                <h6 class="card-subtitle">{{i.integrantes}}</h6>
+                                                                
+                                                            </td>
+                                                            <td>
+                                                                <p>{{i.fecha|date:"d-m-Y"}}</p>
+                                                            </td>
+    
+                                                            <td>
+                                                                <div class="btn-group ml-auto">
+                                                                    <a href="JavaScript:void(0)"
+                                                                        class="icon-options-vertical link"
+                                                                        data-toggle="dropdown" aria-haspopup="true"
+                                                                        aria-expanded="false"></a>
+                                                                    <div class="dropdown-menu dropdown-menu-right">
+                                                                        <a class="dropdown-item"
+                                                                            href="{% url 'Minutas Id' i.id %}"><i
+                                                                                class="fa fa-pencil-square-o mr-2"></i>Ingresar</a>
+                                                                                {% if request.user.username == i.creador.identificacion %}
+                                                                        <a class="dropdown-item" href="#"
+                                                                            data-toggle="modal"
+                                                                            data-target="#ModalMinutaBorrar{{i.id}}"
+                                                                            name="subir_item"><i class="fa fa-trash text-danger mr-2"></i>Borrar
+                                                                            minuta</a>
+                                                                            {% else %}
+    
+                                                                            {% endif %}
+                                                                    </div>
                                                                 </div>
-                                                            </div>
-
-                                                            <div class="modal fade" id="ModalMinutaBorrar{{i.id}}"
-                                                                tabindex="-1" role="dialog"
-                                                                aria-labelledby="ModalMinutaBorrar{{i.id}}"
-                                                                aria-hidden="true">
-                                                                <div class="modal-dialog modal-dialog-centered"
-                                                                    role="document">
-                                                                    <div class="modal-content">
-                                                                        <div class="modal-header"
-                                                                            style="background: rgb(36,160,237); background: linear-gradient(315deg, rgba(36,160,237,1) 0%, rgba(56,56,130,1) 22%, rgba(0,212,255,1) 100%);">
-                                                                            <h5 class="modal-title text-light"
-                                                                                id="exampleModalLongTitle">Editar
-                                                                                tarea/acuerdo
-                                                                            </h5>
-                                                                            <button type="button"
-                                                                                class="close text-light"
-                                                                                data-dismiss="modal" aria-label="Close">
-                                                                                <span aria-hidden="true">&times;</span>
-                                                                            </button>
-                                                                        </div>
-                                                                        <div class="modal-body">
-
-                                                                            <form method="POST" style="margin: 15px;">
-
-                                                                                {% csrf_token %}
-
-                                                                                <h6>¿Estás seguro de que deseas borrar
-                                                                                    esta minuta?</h6>
-                                                                                    <button
-                                                                                    class="btn btn-danger "
-                                                                                    type="submit" name="delete" value="{{i.id}}"
-                                                                                    style="text-decoration: none;"> Borrar</button>
-
-                                                                            </form>
-                                                                            <div class="modal-footer">
+    
+                                                                <div class="modal fade" id="ModalMinutaBorrar{{i.id}}"
+                                                                    tabindex="-1" role="dialog"
+                                                                    aria-labelledby="ModalMinutaBorrar{{i.id}}"
+                                                                    aria-hidden="true">
+                                                                    <div class="modal-dialog modal-dialog-centered"
+                                                                        role="document">
+                                                                        <div class="modal-content">
+                                                                            <div class="modal-header"
+                                                                                style="background: rgb(36,160,237); background: linear-gradient(315deg, rgba(36,160,237,1) 0%, rgba(56,56,130,1) 22%, rgba(0,212,255,1) 100%);">
+                                                                                <h5 class="modal-title text-light"
+                                                                                    id="exampleModalLongTitle">Editar
+                                                                                    tarea/acuerdo
+                                                                                </h5>
                                                                                 <button type="button"
-                                                                                    class="btn btn-secondary"
-                                                                                    data-dismiss="modal">Cerrar</button>
-
+                                                                                    class="close text-light"
+                                                                                    data-dismiss="modal" aria-label="Close">
+                                                                                    <span aria-hidden="true">&times;</span>
+                                                                                </button>
+                                                                            </div>
+                                                                            <div class="modal-body">
+    
+                                                                                <form method="POST" style="margin: 15px;">
+    
+                                                                                    {% csrf_token %}
+    
+                                                                                    <h6>¿Estás seguro de que deseas borrar
+                                                                                        esta minuta?</h6>
+                                                                                        <button
+                                                                                        class="btn btn-danger "
+                                                                                        type="submit" name="delete" value="{{i.id}}"
+                                                                                        style="text-decoration: none;"> Borrar</button>
+    
+                                                                                </form>
+                                                                                <div class="modal-footer">
+                                                                                    <button type="button"
+                                                                                        class="btn btn-secondary"
+                                                                                        data-dismiss="modal">Cerrar</button>
+    
+                                                                                </div>
                                                                             </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                    {% endif %}
-
-                                                    {% endfor %}
-
-                                                </tbody>
-                                            </table>
+                                                            </td>
+    
+                                                        </tr>
+                                                        {% endif %}
+    
+                                                        {% endfor %}
+    
+                                                    </tbody>
+                                                </table>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
+                                <div id="personal" class="tab-pane fade">
+                                    <div class="row mt-3">
+                                        <div class="col-12">
+                                            <div class="ml-2">
+                                                <h4 class="card-title"><span class="lstick m-r-20"></span>
+                                                    Acuerdos pendientes</h4>
+                                                <h6 class="card-subtitle">
+                                                    Todos los acuerdos de las distintas minutas
+                                                </h6>
+                                            </div>
+    
+    
+                                            <div class="table-responsive m-t-4">
+                                                <table id="example" class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Minuta</th>
+                                                            <th>Tema</th>
+                                                            <th>Fecha limite</th>
+                                                            <th>Estado</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {% for acuerdo in acuerdos_pendientes  %}
+                                                        <tr>
+                                                            
+                                                           
+                                                                         
+                                                            <td><a href="{% url 'Minutas Id' acuerdo.minuta.id %}">{{acuerdo.minuta}} </a></td>
+                                                            <td>{{acuerdo.tema}}</td>
+                                                            <td>{{acuerdo.fecha_limite|date:'d/m/Y' }}</td>
+                            
+                                                                <td style="width: 8%;">
+                                                             <form method="POST">
+                                                                        {% csrf_token %}
+                                                                        <button class="btn fa fa-lg fa-exclamation-circle text-warning" type="submit"
+                                                                            style="text-decoration: none;" name="check" value="{{acuerdo.id}}"></button>
+                                
+                                                                    </form>
+                                                                </td>
+                                                            
+                                                       
+                                                       
+                                                        </tr>
+                                                        {% endfor %}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="media" class="tab-pane fade">
+                                    <div class="row mt-3">
+                                        <div class="col-12">
+                                            <div class="ml-2">
+                                                <h4 class="card-title"><span class="lstick m-r-20"></span>
+                                                    Minutas archivadas</h4>
+                                                <h6 class="card-subtitle">
+                                                    Estas minutas tienen una versión mas actualizada
+                                                </h6>
+                                            </div>
+                                            <div class="table-responsive m-t-4">
+                                                <table id="example" class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Creador</th>
+                                                            <th>Tema</th>
+                                                            <th>Integrantes</th>
+                                                            <th>Fecha</th>
+                                                            <th></th>
+                                                        </tr>
+                                                    </thead>
+    
+                                                    <tbody style="font-size: 14px;">
+    
+                                                        {% for i in minutas_archivadas %}
+                                                        {% if user.username in creador.identificacion or user.username in i.integrantes%}
+                                                        <tr>
+                                                            <td style="width: 100px;">
+                                                                <div class="d-flex flex-column align-items-center">
+                                                                    <img src="{{i.creador.imagenlogo.url}}" class="rounded" style="width: 40px;" alt="">
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <h6 class="card-title"><a href="{% url 'Minutas Id' i.id %}">{{i.nombre|lower|capfirst}}</a></h6> 
+                                                                {% if i.reunion %}<p class="card-subtitle">Clave: {{i.reunion}}</p> {% else %} <p>-</p> {% endif %}
+                                                            </td>
+                                                            <td>
+                                                                <h6 class="card-subtitle">{{i.integrantes}}</h6>
+                                                            </td>
+                                                            
+                                                            <td>
+                                                                <p>{{i.fecha|date:"d-m-Y"}}</p>
+                                                            </td>
+                                                            <td>
+                                                                <div class="btn-group ml-auto">
+                                                                    <a href="JavaScript:void(0)"
+                                                                        class="icon-options-vertical link"
+                                                                        data-toggle="dropdown" aria-haspopup="true"
+                                                                        aria-expanded="false"></a>
+                                                                    <div class="dropdown-menu dropdown-menu-right">
+                                                                        <a class="dropdown-item"
+                                                                            href="{% url 'Minutas Id' i.id %}"><i
+                                                                                class="fa fa-pencil-square-o mr-2"></i>Ingresar</a>
+                                                                                {% if request.user.username == i.creador.identificacion %}
+                                                                        <a class="dropdown-item" href="#"
+                                                                            data-toggle="modal"
+                                                                            data-target="#ModalMinutaBorrar{{i.id}}"
+                                                                            name="subir_item"><i class="fa fa-trash text-danger mr-2"></i>Borrar
+                                                                            minuta</a>
+                                                                            {% else %}
+    
+                                                                            {% endif %}
+                                                                    </div>
+                                                                </div>
+    
+                                                                <div class="modal fade" id="ModalMinutaBorrar{{i.id}}"
+                                                                    tabindex="-1" role="dialog"
+                                                                    aria-labelledby="ModalMinutaBorrar{{i.id}}"
+                                                                    aria-hidden="true">
+                                                                    <div class="modal-dialog modal-dialog-centered"
+                                                                        role="document">
+                                                                        <div class="modal-content">
+                                                                            <div class="modal-header"
+                                                                                style="background: rgb(36,160,237); background: linear-gradient(315deg, rgba(36,160,237,1) 0%, rgba(56,56,130,1) 22%, rgba(0,212,255,1) 100%);">
+                                                                                <h5 class="modal-title text-light"
+                                                                                    id="exampleModalLongTitle">Editar
+                                                                                    tarea/acuerdo
+                                                                                </h5>
+                                                                                <button type="button"
+                                                                                    class="close text-light"
+                                                                                    data-dismiss="modal" aria-label="Close">
+                                                                                    <span aria-hidden="true">&times;</span>
+                                                                                </button>
+                                                                            </div>
+                                                                            <div class="modal-body">
+    
+                                                                                <form method="POST" style="margin: 15px;">
+    
+                                                                                    {% csrf_token %}
+    
+                                                                                    <h6>¿Estás seguro de que deseas borrar
+                                                                                        esta minuta?</h6>
+                                                                                        <button
+                                                                                        class="btn btn-danger "
+                                                                                        type="submit" name="delete" value="{{i.id}}"
+                                                                                        style="text-decoration: none;"> Borrar</button>
+    
+                                                                                </form>
+                                                                                <div class="modal-footer">
+                                                                                    <button type="button"
+                                                                                        class="btn btn-secondary"
+                                                                                        data-dismiss="modal">Cerrar</button>
+    
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        {% endif %}
+    
+                                                        {% endfor %}
+    
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                               
                             </div>
-                           
                         </div>
                     </div>
                 </div>
@@ -355,6 +354,9 @@
         </div>
     </div>
 </div>
+
+
+
 
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 

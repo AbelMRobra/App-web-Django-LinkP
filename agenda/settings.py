@@ -69,11 +69,13 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware', #DJANGO WHITENOISE CONFIGURATION
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django_session_timeout.middleware.SessionTimeoutMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
 ]
 
 ROOT_URLCONF = 'agenda.urls'
@@ -176,7 +178,10 @@ if os.getcwd() == '/app':
 # Configuración de la sesión del usuario
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
-SESSION_COOKIE_AGE = 7200
+#SESSION_COOKIE_AGE = 7200
+SESSION_EXPIRE_AFTER_LAST_ACTIVITY =True
+SESSION_EXPIRE_SECONDS = 1800 
+SESSION_TIMEOUT_REDIRECT = '/login'
 
 # Email
 
