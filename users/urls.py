@@ -3,7 +3,9 @@ from django.urls import path
 from django.conf.urls import url
 from . import views
 from . import views_sugerencias
-from .views import DescargarRegistroContable, PdfMinutas
+from . import views_chanchito
+from .views import PdfMinutas
+from .views_chanchito import DescargarRegistroContable
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 
@@ -43,11 +45,11 @@ urlpatterns = [
 
 
     # Template de registro contable
-    url(r'registro_contable_home$', login_required(views.registro_contable_home), name = 'Registro Contable Home'),
-    url(r'registro_contable_cajas$', login_required(views.registro_contable_cajas), name = 'Registro Contable Cajas'),
-    path("registro_contable_caja/<str:caja>/<str:user_caja>/<int:estado>/<int:mes>/<int:year>/" ,login_required(views.registro_contable_caja) ,name='Registro Contable Caja'),
-    url(r'registro_contable/(?P<date_i>\d+)/$', login_required(views.registro_contable), name = 'Registro Contable'),
-    url(r'registro_contable_editar/$', login_required(views.editar_registro_contable), name = 'Registro Contable Edicion'),
+    url(r'registro_contable_home$', login_required(views_chanchito.registro_contable_home), name = 'Registro Contable Home'),
+    url(r'registro_contable_cajas$', login_required(views_chanchito.registro_contable_cajas), name = 'Registro Contable Cajas'),
+    path("registro_contable_caja/<str:caja>/<str:user_caja>/<int:estado>/<int:mes>/<int:year>/" ,login_required(views_chanchito.registro_contable_caja) ,name='Registro Contable Caja'),
+    url(r'registro_contable/(?P<date_i>\d+)/$', login_required(views_chanchito.registro_contable), name = 'Registro Contable'),
+    url(r'registro_contable_editar/$', login_required(views_chanchito.editar_registro_contable), name = 'Registro Contable Edicion'),
     url(r'^des_registro$', login_required(DescargarRegistroContable.as_view()), name = 'Descarga registro contable'),
 ]
 

@@ -35,7 +35,7 @@ class Consulta(models.Model):
     medio_contacto=models.CharField(verbose_name='Medio de contacto',max_length=50,blank=True,null=True)
     usuario=models.ForeignKey(datosusuario, on_delete=models.CASCADE,blank=True,null=True)
     tipologia=models.CharField(max_length=50,blank=True,null=True)
-    tipologia2= models.ManyToManyField(Tipologia,blank=True,null=True)
+    tipologia2= models.ManyToManyField(Tipologia, blank=True)
     adjunto_propuesta = models.FileField(verbose_name="Propuesta", blank=True, null=True)
 
     class Meta:
