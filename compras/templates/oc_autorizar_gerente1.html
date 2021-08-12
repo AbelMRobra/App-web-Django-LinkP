@@ -9,9 +9,6 @@
 <link href="{% static 'adminpro/main/css/pages/footable-page.css' %}" rel="stylesheet">
 
 <div class="container-fluid">
-    <!-- ============================================================== -->
-    <!-- Bread crumb and right sidebar toggle -->
-    <!-- ============================================================== -->
     <div class="row page-titles">
         <div class="col-md-5 align-self-center">
             <h3 class="text-themecolor">Ordenes de compra para firmar</h3>
@@ -25,19 +22,16 @@
 
             </ol>
         </div>
-
     </div>
-
-  </div>
+</div>
 
 {% if request.user|has_group:"COMPRAS NIVEL 4" %}
 
-
 <div class="row">
-<div class="col-lg-12 col-xlg-12 button-group">
+<div class="col col-xlg-12 button-group">
     <div class="card">
         <div class="card-body">
-            <h4 class="card-title">Panel de solicitudes</h4>
+            <h4 class="card-title"><span class="lstick m-r-20"></span>Panel de solicitudes</h4>
             <h6 class="card-subtitle">Ordenes de compra o comparativas para ser aprobadas</h6>
 
             <div style="text-align: left;">

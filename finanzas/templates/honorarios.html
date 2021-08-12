@@ -15,6 +15,7 @@
         <div class="col-md-7 align-self-center">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'App Finanzas' %}">Panel</a></li>
                 <li class="breadcrumb-item">Honorarios</li>
             </ol>
         </div>
@@ -22,152 +23,152 @@
 </div>
 
 
-<div class = "jumbotron" style="background-color: white; margin-bottom: 0px; text-align: center;" > 
-
-    <div >
-        <h2>Resumen de honorarios</h2>
-
-    </div>
-
-    <div style="margin-bottom: 2rem;">
-        <h5><a href="{% url 'Modificar Honorarios' %}"class="fa fa-pencil-square-o fa-lg"></a> Detalle de honorarios</h5>
-    </div>
-
-    <div class="row">
-    <div class="card bg-light  mb-3 col-lg-4 col-12 border" style=" vertical-align: top;">
-        <div class="card-header">Ingresos</div>  
-        <div class="card-body">
-            <h6>Cuotas a cobrar: <small>$ {{honorarios.0.cuotas|floatformat:0|intcomma}}</small></h6>
-            <h6>Ventas proyectadas: <small>$ {{honorarios.0.ventas|floatformat:0|intcomma}}</small></h6>
-            <h6 style="color: #468049;">Subtotal: <small>$ {{datos_honorarios.0|floatformat:0|intcomma}}</small></h6>
-            <b><hr class = "my-4" style="width: 75%; "></b>
-            <h6>Creditos: <small>$ {{honorarios.0.creditos|floatformat:0|intcomma}}</small></h6>
-            <h6 style="color: #468049  ;">Total: <small>$ {{datos_honorarios.1|floatformat:0|intcomma}}</small></h6>
-        </div>
-      </div>
-
-
-        <div class="card bg-light  mb-3 col-lg-4 col-12 border" style=" vertical-align: top;">
-            <div class="card-header">Costos</div>
+<div class="row">
+    <div class="col">
+        <div class="card">
             <div class="card-body">
-                <h6>Gastos de estr.y GIO: <small>$ {{honorarios.0.estructura_gio|floatformat:0|intcomma}}</small></h6>
-                <h6>Aportes: <small>$ {{honorarios.0.aportes|floatformat:0|intcomma}}</small></h6>
-                <h6>Sueldo socios: <small>$ {{honorarios.0.socios|floatformat:0|intcomma}}</small></h6>
-                <h6>Comisión de venta: <small>$ {{datos_honorarios.2|floatformat:0|intcomma}}</small></h6>
-                <h6 style="color: #C54A4A ;">Subtotal: <small>$ {{datos_honorarios.3|floatformat:0|intcomma}}</small></h6>
-                <b><hr class = "my-4" style="width: 75%; "></b>
-                <h6>Deudas: <small>$ {{honorarios.0.deudas|floatformat:0|intcomma}}</small></h6>
-                
-                <h6 style="color: #C54A4A;">Total: <small>$ {{datos_honorarios.4|floatformat:0|intcomma}}</small></h6>
-            </div>
-          </div>
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <div>
+                        <h4 class="card-title"><span class="lstick m-r-20"></span>Resumen de honorarios</h4>
+                        <h5 class="card-subtitle"></span>Detalle de honorarios</h5>
+                    </div>
+                    <div>
+                        <a class="btn text-info" href="{% url 'Modificar Honorarios' %}"><i
+                                class="fa fa-pencil-square-o mr-2"></i>Editar</a>
+                    </div>
+                </div>
 
-          <div class="card bg-light  mb-3 col-lg-4 col-12 border" style=" vertical-align: top;">
-            <div class="card-header">Beneficio</div>
-            <div class="card-body">
-                <h6 style="margin-bottom: 10px;">Caja actual: <small>$ {{honorarios.0.caja_actual|floatformat:0|intcomma}}</small></h6>
-
-                <h6 style="color:#2D3FBD; margin-bottom: 10px;">Total: <small>$ {{datos_honorarios.5|floatformat:0|intcomma}}</small></h6>
-
-                <h6>Retiros futuros: <small>$ {{honorarios.0.retiro_socios|floatformat:0|intcomma}}</small></h6>
-
-                <h6 style="color:#2D3FBD; margin-bottom: 10px;">Total con retiros: <small>$ {{datos_honorarios.8|floatformat:0|intcomma}}</small></h6>
-                <canvas id="myChart2"></canvas>
-
-                <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
-              <script>
-            
-                  var ctx = document.getElementById('myChart2').getContext('2d');
-                  var chart = new Chart(ctx, {
-                      // The type of chart we want to create
-                      type: 'doughnut',
-                      // The data for our dataset
-                      data: {
-                      datasets: [{        
-                          data: [{{datos_honorarios.7|floatformat:0}}, {{datos_honorarios.6|floatformat:0}}],
-                          backgroundColor: ['rgba(189, 67, 45, 0.5)', 'rgba(45, 63, 189, 0.5)'],    
-                      }],
-            
-                      labels: ['Costos', 'Beneficio']
-                    },
-                      options: {
-                        legend: {
-                            position: 'right'
-                        },
-                      },
-            
-                    });
-            
-              </script>
-
-            </div>
-          </div>
-          </div>
-
-    <div style="text-align: left;">
-        <small>* Estimación a 48 meses </small>
-    </div>
-    
-
- 
-    <div>
-
-        <div style="margin-bottom: 2rem;">
-            <h5>Disponibilidades por proyecto</h5>
-        </div>
-        <table class = "table" style="text-align: center; width: 99%;">
-            <thead>
-    
-                <tr class = "table-dark">
-                    <th scope = "row" style="vertical-align: middle;" rowspan="2">  Proyecto </th>
-                    <th scope = "row" style="vertical-align: middle;" rowspan="2"> Cont.Prom.disp</th>                   
-                    <th scope = "row" style="vertical-align: middle;" colspan="4"> Unidades pendientes</th>
-                    <th scope = "row" style="vertical-align: middle;" colspan="2"> Ctas Ctes</th>
-                    <th scope = "row" style="vertical-align: middle;" rowspan="2"> TOTAL</th>
-
-                </tr>
-
-                <tr class = "table-dark">
-
-                    <th scope = "row" style="vertical-align: middle;"> Depart.</th>
-                    <th scope = "row" style="vertical-align: middle;"> Cocheras</th> 
-                    <th scope = "row" style="vertical-align: middle;"> M2</th> 
-                    <th scope = "row" style="vertical-align: middle;"> Total Hº</th>
-                    <th scope = "row" style="vertical-align: middle;"> Adeudado Hº</th>
-                    <th scope = "row" style="vertical-align: middle;"> Pendiente Hº</th>                    
-  
-                </tr>
-            </thead>
-            {% for i in datos_totales %}   
-            <tbody>
-    
-                <tr>
-                    <td style="vertical-align: middle;">
-                        
-                        <img src="{{i.0.iamgen.url}}"  class="img-fluid" alt="..." style="max-width: 70px; height:auto;"> 
-
+                <div class="row d-flex justify-content-around">
+                    <div class="col col-lg-3 bg-light p-4 shadow">
+                        <h4 class="text-center my-3">Ingresos</h4>
                         <div>
-
-                            <small style="color: rgb({{i.0.color}})"><b>{{ i.0.nombre}}</b></small>
+                            <h6>Cuotas a cobrar: <small>$ {{honorarios.0.cuotas|floatformat:0|intcomma}}</small></h6>
+                            <h6>Ventas proyectadas: <small>$ {{honorarios.0.ventas|floatformat:0|intcomma}}</small></h6>
+                            <h6 style="color: #468049;">Subtotal: <small>$ {{datos_honorarios.0|floatformat:0|intcomma}}</small></h6>
+                            <b>
+                                <hr class="my-4" style="width: 100%; ">
+                            </b>
+                            <h6>Creditos: <small>$ {{honorarios.0.creditos|floatformat:0|intcomma}}</small></h6>
+                            <h6 style="color: #468049  ;">Total: <small>$ {{datos_honorarios.1|floatformat:0|intcomma}}</small></h6>
                         </div>
-                    
-                    </td>
-                    <td class="priority-4" style="width: 10%; vertical-align: middle;">$ {{ i.5|floatformat:0|intcomma }}</td>                      
-                    <td class="priority-4" style="width: 10%; vertical-align: middle;"> {{ i.2|floatformat:0|intcomma }}</td> 
-                    <td class="priority-4" style="width: 10%; vertical-align: middle;">{{ i.1|floatformat:0|intcomma }}</td> 
-                    <td style="width: 10%; vertical-align: middle; vertical-align: middle;">{{ i.4|floatformat:0|intcomma }} M2</td> 
-                    <td style="width: 10%; vertical-align: middle;"> <strong>{{ i.3|floatformat:0|intcomma }} M3</strong>   </td>
-                    <td class="priority-4" style="width: 10%; vertical-align: middle;">{{ i.6|floatformat:0|intcomma }} M3</td>
-                    <td class="priority-4" style="width: 10%; vertical-align: middle;">{{ i.7|floatformat:0|intcomma }} M3</td>
-                    <td class="priority-4" style="width: 10%; vertical-align: middle;"> <strong>{{ i.8|floatformat:0|intcomma }} M3</strong></td> 
-                    
+                    </div>
 
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table> 
-          
-   </div>
+                    <div class="col col-lg-3 bg-light p-4 shadow">
+                        <h4 class="text-center my-3">Costos</h4>
+                        <div>
+                            <h6>Gastos de estr.y GIO: <small>$ {{honorarios.0.estructura_gio|floatformat:0|intcomma}}</small></h6>
+                            <h6>Aportes: <small>$ {{honorarios.0.aportes|floatformat:0|intcomma}}</small></h6>
+                            <h6>Sueldo socios: <small>$ {{honorarios.0.socios|floatformat:0|intcomma}}</small></h6>
+                            <h6>Comisión de venta: <small>$ {{datos_honorarios.2|floatformat:0|intcomma}}</small></h6>
+                            <h6 style="color: #C54A4A ;">Subtotal: <small>$ {{datos_honorarios.3|floatformat:0|intcomma}}</small></h6>
+                            <b>
+                                <hr class="my-4" style="width: 100%; ">
+                            </b>
+                            <h6>Deudas: <small>$ {{honorarios.0.deudas|floatformat:0|intcomma}}</small></h6>
+                            <h6 style="color: #C54A4A;">Total: <small>$ {{datos_honorarios.4|floatformat:0|intcomma}}</small></h6>
+                        </div>
+                    </div>
 
+                    <div class="col col-lg-3 bg-light p-4 shadow">
+                        <h4 class="text-center my-3">Benificios</h4>
+                        <div>
+                            <h6 style="margin-bottom: 10px;">Caja actual: <small>$ {{honorarios.0.caja_actual|floatformat:0|intcomma}}</small></h6>
+                            <h6 style="color:#2D3FBD; margin-bottom: 10px;">Total: <small>$  {{datos_honorarios.5|floatformat:0|intcomma}}</small></h6>
+                            <h6>Retiros futuros: <small>$ {{honorarios.0.retiro_socios|floatformat:0|intcomma}}</small>
+                            </h6>
+                            <h6 style="color:#2D3FBD; margin-bottom: 10px;">Total con retiros: <small>$ {{datos_honorarios.8|floatformat:0|intcomma}}</small></h6>
+                            <canvas id="myChart2"></canvas>
+
+                            <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+                            <script>
+            
+                                var ctx = document.getElementById('myChart2').getContext('2d');
+                                var chart = new Chart(ctx, {
+                                    // The type of chart we want to create
+                                    type: 'doughnut',
+                                    // The data for our dataset
+                                    data: {
+                                    datasets: [{        
+                                        data: [{{datos_honorarios.7|floatformat:0}}, {{datos_honorarios.6|floatformat:0}}],
+                                        backgroundColor: ['rgba(189, 67, 45, 0.5)', 'rgba(45, 63, 189, 0.5)'],    
+                                    }],
+                          
+                                    labels: ['Costos', 'Beneficio']
+                                  },
+                                    options: {
+                                      legend: {
+                                          position: 'right'
+                                      },
+                                    },
+                          
+                                  });
+                          
+                            </script>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    <small>* Estimación a 48 meses </small>
+                </div>
+
+                <div>
+                    <div class="my-4">
+                        <h4 class="card-title"><span class="lstick m-r-20"></span>Disponibilidades por proyecto</h4>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table" style="text-align: center; width: 99%; font-size: 14px;" >
+                            <thead>
+
+                                <tr class="table-dark">
+                                    <th scope="row" style="vertical-align: middle;" rowspan="2"> Proyecto </th>
+                                    <th scope="row" style="vertical-align: middle;" rowspan="2"> Cont.Prom.disp</th>
+                                    <th scope="row" style="vertical-align: middle;" colspan="4"> Unidades pendientes </th>
+                                    <th scope="row" style="vertical-align: middle;" colspan="2"> Ctas Ctes</th>
+                                    <th scope="row" style="vertical-align: middle;" rowspan="2"> TOTAL</th>
+
+                                </tr>
+
+                                <tr class="table-dark">
+
+                                    <th scope="row" style="vertical-align: middle;"> Depart.</th>
+                                    <th scope="row" style="vertical-align: middle;"> Cocheras</th>
+                                    <th scope="row" style="vertical-align: middle;"> M2</th>
+                                    <th scope="row" style="vertical-align: middle;"> Total Hº</th>
+                                    <th scope="row" style="vertical-align: middle;"> Adeudado Hº</th>
+                                    <th scope="row" style="vertical-align: middle;"> Pendiente Hº</th>
+
+                                </tr>
+                            </thead>
+                            {% for i in datos_totales %}
+                            <tbody>
+                                <tr>
+                                    <td style="vertical-align: middle;">
+                                        <img src="{{i.0.iamgen.url}}" class="img-fluid" alt="..." style="max-width: 70px; height:auto;">
+                                        <div>
+                                            <small style="color: rgb({{i.0.color}})"><b>{{ i.0.nombre}}</b></small>
+                                        </div>
+
+                                    </td>
+                                    <td style="width: 10%; vertical-align: middle;">$ {{ i.5|floatformat:0|intcomma }}</td>
+                                    <td style="width: 10%; vertical-align: middle;"> {{ i.2|floatformat:0|intcomma }}</td>
+                                    <td style="width: 10%; vertical-align: middle;">{{ i.1|floatformat:0|intcomma }}</td>
+                                    <td style="width: 10%; vertical-align: middle; vertical-align: middle;">{{ i.4|floatformat:0|intcomma }} M2</td>
+                                    <td style="width: 10%; vertical-align: middle;"> <strong>{{ i.3|floatformat:0|intcomma }} M3</strong> </td>
+                                    <td style="width: 10%; vertical-align: middle;">{{ i.6|floatformat:0|intcomma }} M3</td>
+                                    <td style="width: 10%; vertical-align: middle;">{{ i.7|floatformat:0|intcomma }} M3</td>
+                                    <td style="width: 10%; vertical-align: middle;"> <strong>{{ i.8|floatformat:0|intcomma }} M3</strong></td>
+
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}

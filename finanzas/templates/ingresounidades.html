@@ -14,157 +14,160 @@
         <div class="col-md-7 align-self-center">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
-                <li class="breadcrumb-item">Panel</li>
+                <li class="breadcrumb-item"><a href="{% url 'App Finanzas' %}">Panel</a></li>
+                
+                <li class="breadcrumb-item">Panel adm.</li>
 
             </ol>
         </div>
-
     </div>
+</div>
+<div class="row">
+    <div class="col">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div>
+                        <h4 class="card-title"><span class="lstick m-r-20"></span>Listado de unidades</h4>
+                        <h5 class="card-subtitle"></span>Este panel modifica propiedades de la unidad</h5>
+                    </div>
+                    <div class="btn-group ml-auto">
+                        <a href="JavaScript:void(0)" class="icon-options-vertical link" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false"></a>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a class="dropdown-item" href="{% url 'Descargar ingreso unidades' %}" ><i
+                                    class="fa fa-file-excel-o mr-2"></i>Excel</a>
+                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#ModalExcel" ><i
+                                    class="fa fa-pencil-square-o mr-2"></i>Edicion por excel</a>
 
-  </div>
-
-  <div class="col-lg-12 col-xlg-6 button-group">
-    <div class="card">
-        <div class="card-body">
-            <h4 class="card-title"><a href="{% url 'Descargar ingreso unidades' %}" class="text-success"><i class="fa fa-file-excel-o"></i></a> Listado de unidades</h4>
-            <h6 class="card-subtitle">Este panel modifica propiedades de la unidad</h6>
-
-            <div style="text-align: left;">
-                <a href="#" data-toggle="modal" data-target="#ModalExcel" class="dropbtn btn btn-success">Edición por Excel</a>
-
-                <!-- Modal lista de caja -->
-                <div class="modal fade" id="ModalExcel" tabindex="-1" role="dialog" aria-labelledby="ModalExcel"
-                    aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header"
-                                style="background: rgb(36,160,237);
-                                            background: linear-gradient(315deg, rgba(36,160,237,1) 0%, rgba(56,56,130,1) 22%, rgba(0,212,255,1) 100%);">
-                                <h5 class="modal-title text-light" id="exampleModalLongTitle">Cargar archivo</h5>
-                                <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <form method="POST" enctype="multipart/form-data" id="upload-image-form">
-
-                                {% csrf_token %}
-                                    <h6>Subir archivo</h6>
-                                    <div class="mb-3">
-                                        <label for="formFile" class="form-label">Archivo predeterminado</label>
-                                        <input name="archivo" type="file" id="formFile">
-                                    </div>
-                                    
-                                </div>
-                                
-                                <div class="modal-footer">
-                                    <button class="btn btn-success" type="submit">Cargar</button>
-                                    <button type="button" class="btn btn-info" data-dismiss="modal">Cerrar</button>
-                                </div>
-                            </form>
                         </div>
                     </div>
                 </div>
-                <div class="dropdown">
-                    <button class="dropbtn btn btn-primary">{{proyecto_marcado|lower|capfirst}}</button>
-                    <div class="dropdown-content">
-                        <a href="{% url 'Unidades señadas' estado 0 %}" >Todos</a>
 
-                        {% for i in listado %}
-                
-                        <a href="{% url 'Unidades señadas' estado i.id %}" >{{i.nombre|lower|capfirst}}</a>
-                
-                        {% endfor %}
+                    <!-- Modal lista de caja -->
+                    <div class="modal fade" id="ModalExcel" tabindex="-1" role="dialog" aria-labelledby="ModalExcel"
+                        aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header" style="background-color: #2a3e52;">
+                                    <h5 class="modal-title text-light" id="exampleModalLongTitle">Cargar archivo</h5>
+                                    <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form method="POST" enctype="multipart/form-data" id="upload-image-form">
+
+                                        {% csrf_token %}
+                                        <h6>Subir archivo</h6>
+                                        <div class="mb-3">
+                                            <label for="formFile" class="form-label">Archivo predeterminado</label>
+                                            <input name="archivo" type="file" id="formFile">
+                                        </div>
+
+                                </div>
+
+                                <div class="modal-footer">
+                                    <button class="btn btn-info" type="submit">Cargar</button>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                </div>
+                                </form>
+                            </div>
+                        </div>
                     </div>
-                  </div>
-        
 
-            <div class ="dataTables_filter">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            {{proyecto_marcado|lower|capfirst}}
+                        </button>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="{% url 'Unidades señadas' estado 0 %}">Todos</a>
+                            {% for i in listado %}
+                            <a class="dropdown-item" href="{% url 'Unidades señadas' estado i.id %}">{{i.nombre|lower|capfirst}}</a>
+                            {% endfor %}
+                        </div>
+                    </div>
 
-                <form method="POST">
-        
-                    {% csrf_token %}
-                <label>
-                    Buscar:
-                    <input type="search" class placeholder aria-controls="example23" name="palabra">
-                </label>
-
-            </form>
-
-            </div>
-            <div class="table-responsive">
-
-                <table class="table" style="font-size: 14px;">
-                    <thead>
-                        <tr>
-                            <th>Proyecto</th>
-                            <th>Unidad</th>
-                            <th>Asignación</th>
-                            <th>Estado</th>
-                            <th style="text-align: center;">II.BB</th>
-                            <th style="text-align: center;">Com.</th>
- 
-                        </tr>
-                    </thead>
-                    <tbody>
+                    <div class="dataTables_filter">
                         <form method="POST">
-                        {% for i in datos|slice:"250" %}
-                        <tr>
-
-                        <td>
-                            <b>{{i.proyecto.nombre|lower|capfirst}}</b></td>
-          
-                        <td>{{i.piso_unidad}} - {{i.nombre_unidad}}</td>
-                        
-
-                        
                             {% csrf_token %}
-
-                        <input type="hidden" name="nombre{{i.id}}" value="{{i.id}}">
-                        <td style="max-width: 100px;"><select name="asig{{i.id}}" class="form-select form-select-sm">
-                            <option value="PROYECTO" {% if i.asig == 'PROYECTO'%} selected {% endif %}>PROYECTO</option>
-                            <option value="TERRENO" {% if i.asig == 'TERRENO'%} selected {% endif %}>TERRENO</option>
-                            <option value="HON. LINK" {% if i.asig == 'HON. LINK'%} selected {% endif %}>HON. LINK</option>
-                            <option value="SOCIOS" {% if i.asig == 'SOCIOS' %} selected {% endif %}>SOCIOS</option>
-                        </select></td>
-                        <td style="max-width: 100px;"><select name="estado{{i.id}}" class="form-select form-select-sm">
-                            <option value="SEÑADA" {% if i.estado == 'SEÑADA'%} selected {% endif %}>SEÑADA</option>
-                            <option value="VENDIDA" {% if i.estado == 'VENDIDA'%} selected {% endif %}>VENDIDA</option>
-                            <option value="DISPONIBLE" {% if i.estado == 'DISPONIBLE'%} selected {% endif %}>DISPONIBLE</option>
-                        </select></td>
-                        <td style="max-width: 30px; text-align: center;">
-                            
-                            <input type="checkbox" name="iibb{{i.id}}" id="iibb{{i.id}}" class="filled-in chk-col-blue" {% if i.estado_iibb == 'SI' %}checked{% endif %} />
-                            <label for="iibb{{i.id}}"></label>
-
-                        </td>
-                        <td style="max-width: 30px; text-align: center;">
-                            
-                            <input type="checkbox" name="comision{{i.id}}" id="comision{{i.id}}" class="filled-in chk-col-blue" {% if i.estado_comision == 'SI' %} checked {% endif %} />
-                            <label for="comision{{i.id}}"></label>
-                     
-                            </td>
-                        
-                    </tr>
-
-                    {% endfor %}
-
-                    </tbody>
-                    </table>
-                    <div class="d-flex justify-content-center">
-                        <button type="submit" class="btn btn-success btn-circle fa fa-check"></button>
+                            <label>
+                                Buscar:
+                                <input type="search" class placeholder aria-controls="example23" name="palabra">
+                            </label>
+                        </form>
                     </div>
-                    
-                    </form>
-            </div>
+                    <div class="table-responsive">
+                        <table class="table" style="font-size: 14px;">
+                            <thead>
+                                <tr>
+                                    <th>Proyecto</th>
+                                    <th>Unidad</th>
+                                    <th>Asignación</th>
+                                    <th>Estado</th>
+                                    <th style="text-align: center;">II.BB</th>
+                                    <th style="text-align: center;">Com.</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <form method="POST">
+                                    {% for i in datos|slice:"250" %}
+                                    <tr>
+                                        <td>
+                                            <b>{{i.proyecto.nombre|lower|capfirst}}</b>
+                                        </td>
+                                        <td>{{i.piso_unidad}} - {{i.nombre_unidad}}</td>
+
+                                        {% csrf_token %}
+
+                                        <input type="hidden" name="nombre{{i.id}}" value="{{i.id}}">
+                                        <td style="max-width: 100px;"><select name="asig{{i.id}}"
+                                                class="form-select form-select-sm">
+                                                <option value="PROYECTO" {% if i.asig == 'PROYECTO' %} selected {% endif %}>
+                                                    PROYECTO</option>
+                                                <option value="TERRENO" {% if i.asig == 'TERRENO' %} selected {% endif %}>
+                                                    TERRENO</option>
+                                                <option value="HON. LINK" {% if i.asig == 'HON. LINK' %} selected {% endif %}>
+                                                    HON. LINK</option>
+                                                <option value="SOCIOS" {% if i.asig == 'SOCIOS' %} selected {% endif %}>SOCIOS
+                                                </option>
+                                            </select></td>
+                                        <td style="max-width: 100px;"><select name="estado{{i.id}}"
+                                                class="form-select form-select-sm">
+                                                <option value="SEÑADA" {% if i.estado == 'SEÑADA' %} selected {% endif %}>
+                                                    SEÑADA</option>
+                                                <option value="VENDIDA" {% if i.estado == 'VENDIDA' %} selected {% endif %}>
+                                                    VENDIDA</option>
+                                                <option value="DISPONIBLE" {% if i.estado == 'DISPONIBLE' %} selected {% endif %}>DISPONIBLE</option>
+                                            </select></td>
+                                        <td style="max-width: 30px; text-align: center;">
+
+                                            <input type="checkbox" name="iibb{{i.id}}" id="iibb{{i.id}}"
+                                                class="filled-in chk-col-blue" {% if i.estado_iibb == 'SI' %}checked{% endif %} />
+                                            <label for="iibb{{i.id}}"></label>
+
+                                        </td>
+                                        <td style="max-width: 30px; text-align: center;">
+
+                                            <input type="checkbox" name="comision{{i.id}}" id="comision{{i.id}}"
+                                                class="filled-in chk-col-blue" {% if i.estado_comision == 'SI' %} checked {% endif %} />
+                                            <label for="comision{{i.id}}"></label>
+
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                            </tbody>
+                        </table>
+                        <div class="d-flex justify-content-center">
+                            <button type="submit" class="btn btn-success btn-circle fa fa-check"></button>
+                        </div>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-  </div>
-
-                        
+</div>
 
 
- 
-    
 {% endblock %}

@@ -6,7 +6,7 @@
 
 {% block content %}
 
-{% if request.user|has_group:"VENTAS NIVEL 3" %} 
+{% if request.user|has_group:"VENTAS NIVEL 3" %}
 
 <div class="container-fluid">
 
@@ -18,8 +18,7 @@
         <div class="col-md-7 align-self-center">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
-                <li class="breadcrumb-item"><a
-                    href="{% url 'Panel de pricing'%}">Panel</a>
+                <li class="breadcrumb-item"><a href="{% url 'Panel de pricing'%}">Panel</a>
                 </li>
                 <li class="breadcrumb-item">Pricing</li>
             </ol>
@@ -31,205 +30,223 @@
     <div class="col-12">
         <div class="card overflow-auto">
             <div class="card-body">
-
                 <div style="text-align: center; margin-bottom: 50px;">
                     <img src="{{datos.proyecto.iamgen.url}}" class="img-fluid" alt="..."
                         style="max-width:200px;width:auto;height:auto; margin-top: 5px; margin-bottom: 5px;">
                 </div>
 
-                    <div style="text-align: left; display: inline-block;">
-                        {% if request.user|has_group:"MANDO MEDIO" %}
-                        <a type="button" data-toggle="modal" data-target="#exampleModalCenter">
-                            <i class="fa fa-pencil-square-o fa-lg"
-                            aria-hidden="true"
-                            data-toggle="tooltip" data-placement="right" title="" data-original-title="Editar precio base"></i>
-                        </a>
-                        {% endif %}
 
-                        <!-- Modal -->
-                        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header" style="background: rgb(36,160,237);
-                                background: linear-gradient(315deg, rgba(36,160,237,1) 0%, rgba(56,56,130,1) 22%, rgba(0,212,255,1) 100%);">
-                                <h5 class="modal-title text-light" id="exampleModalLongTitle">Estas por modificar el precio del pricing!</h5>
+                <div class="d-flex align-items-center">
+                    <div>
+                        <h4 class="card-title" style="color: rgb({{datos.proyecto.color}})"><span
+                                class="lstick m-r-20"></span>{{datos.proyecto.nombre}} - Precio base:
+                            ${{datos.proyecto.desde|floatformat:0|intcomma}} - Reposición de contado:
+                            ${{datos.otros_datos.0.4|floatformat:0|intcomma}}</h4>
+
+                    </div>
+                    <div class="btn-group ml-auto">
+                        <a href="JavaScript:void(0)" class="icon-options-vertical link" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false"></a>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            {% if request.user|has_group:"MANDO MEDIO" %}
+                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#exampleModalCenter"><i
+                                    class="fa fa-pencil-square-o mr-2"></i>Editar precio base</a>
+                            {% endif %}
+                            <a class="dropdown-item" href="{% url 'Features Project' datos.proyecto.id %}"><i
+                                    class="fa fa-home mr-2"></i>Admin pricing</a>
+                            <a class="dropdown-item" href="{% url 'Descargar del pricing' datos.proyecto.id %}"><i
+                                    class="fa fa-file-excel-o mr-2"></i>Excel</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal -->
+                <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+                    aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header" style="background-color: #2a3e52;">
+                                <h5 class="modal-title text-light" id="exampleModalLongTitle">Estas por modificar el
+                                    precio del pricing!</h5>
                                 <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
-                                </div>
-                                <div class="modal-body">
-
-
-                                Cuando lo modifiques, espera unos segundos a que cargue todo!
-                                
+                            </div>
+                            <div class="modal-body">
+                                <p>Cuando lo modifiques, espera unos segundos a que cargue todo!</p>
                                 <form method="GET" style="margin: 15px;">
-                
                                     <div class="input-group mb-3">
-                                
-                                            <div class="input-group-prepend">
-                                
-                                                <span class="input-group-text">$</span>
-                                    
-                                            </div>
-                                    
-                                            <input name="precio_venta" type="number" class="form-control form-control" aria-label="Amount" style="width: 100px;">
-                                        
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">$</span>
+                                        </div>
+                                        <input name="precio_venta" type="number" class="form-control form-control"
+                                            aria-label="Amount" style="width: 100px;">
                                     </div>
-                                
                                 </form>
-                                
-                                </div>
-                                <div class="modal-footer">
-                                <button type="button" class="btn btn-info" data-dismiss="modal">Cerrar</button>
-                        
-                                </div>
-                            </div>
-                            </div>
 
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                            </div>
                         </div>
-
-                        <a href="{% url 'Features Project' datos.proyecto.id %}"
-                        style="text-decoration: none;  margin-left: 10px;" data-toggle="tooltip" data-placement="right" title="" data-original-title="Admin pricing de unidades"><img src="{% static 'img/casa.png' %}" alt=""
-                                style="max-width:20px; height:auto;"></a>
-                        <a href="{% url 'Descargar del pricing' datos.proyecto.id %}"
-                            style="text-align: end; margin-top: 5px; text-decoration: none;  margin-left: 10px;" data-toggle="tooltip" data-placement="right" title="" data-original-title="Descargar Excel"> <img src="{% static 'img/sobresalir.png' %}"
-                                alt="" style="max-width:20px; height:auto;"></a>
-
                     </div>
+                </div>
 
-                    <div style="text-align: left; display: inline-block; margin-left: 20px;">
+                <table id="example" class="table table-striped table-bordered" style="width:100%">
+                    <thead>
+                        <tr style="font-size: 14px;">
+                            <th>Unidad</th>
+                            <th>Tipologia</th>
+                            <th data-toggle="tooltip" data-placement="right" title=""
+                                data-original-title="Superficie Equivalente">Sup*</th>
+                            <th>Asignación</th>
+                            <th>Estado</th>
+                            <th>Contado</th>
+                            <th data-toggle="tooltip" data-placement="right" title=""
+                                data-original-title="Superficie Equivalente">Financiado</th>
+                            <th>Pagos</th>
+                            <th></th>
+                        </tr>
+                    </thead>
 
-                        <h5
-                                style="color: rgb({{datos.proyecto.color}})">
-                                {{datos.proyecto.nombre}} - Precio base: ${{datos.proyecto.desde|floatformat:0|intcomma}} - Reposición de contado: ${{datos.otros_datos.0.4|floatformat:0|intcomma}}
-                            </h5>
-                    </div>
+                    <tbody style="font-size: 14px;">
 
-                    <table id="example" class="table table-striped table-bordered" style="width:100%">
-                        <thead>
-                            <tr style="font-size: 14px;">
-                                <th>Unidad</th>
-                                <th>Tipologia</th>
-                                <th data-toggle="tooltip" data-placement="right" title="" data-original-title="Superficie Equivalente">Sup*</th>
-                                <th>Asignación</th>
-                                <th>Estado</th>
-                                <th>Contado</th>
-                                <th data-toggle="tooltip" data-placement="right" title="" data-original-title="Superficie Equivalente">Financiado</th>
-                                <th>Pagos</th>
-                                <th></th>
-                            </tr>
-                        </thead>
+                        {% for i in datos.datos_unidades %}
+                        <tr>
+                            <td>
+                                <div class="row">
+                                    <a href=" {% url 'Cotizador' i.0.id %}"
+                                        style="color: rgb({{datos.proyecto.color}});"><b>{{i.0.piso_unidad}} -
+                                            {{i.0.nombre_unidad}}</b></a>
+                                </div>
 
-                        <tbody style="font-size: 14px;">   
-    
-                            {% for i in datos.datos_unidades %}
-                            <tr>
-                                <td>
-                                    <div class="row">
-                                        <a href=" {% url 'Cotizador' i.0.id %}" style="color: rgb({{datos.proyecto.color}});"><b>{{i.0.piso_unidad}} - {{i.0.nombre_unidad}}</b></a>
-                                    </div>
-
-                                    {% if i.0.plano_venta %}
-                                    <a href="{{ i.0.plano_venta.url }}" target="_blank"><i class="fa fa-file-pdf-o text-danger"></i></a>
-                                    {% endif %}
-                                </td>
-                                
-                                {% if i.0.tipo == "DEPARTAMENTO" %}
-                                
-                                <td> <img src="{% static 'img/piso.png' %}" alt="" style="max-width:15px; height:auto; margin: 2px;" >DEPTO
-                                <h6 class="card-subtitle" style="margin-top: 1px; font-size: 12px;">{{i.0.tipologia}}</h6></td>
-                                
-                                {% elif i.0.tipo == "LOCAL"%}
-            
-                                <td> <img src="{% static 'img/tienda.png' %}" alt="" style="max-width:15px; height:auto; margin: 2px;" >{{i.0.tipo}}
-                                <h6 class="card-subtitle" style="margin-top: 1px; font-size: 12px;">{{i.0.tipologia}}</h6></td>
-                                
-                                
-                                {% else %}
-            
-                                <td> <img src="{% static 'img/coche.png' %}" alt="" style="max-width:15px; height:auto; margin: 2px;" >{{i.0.tipo}}
-                                <h6 class="card-subtitle" style=" margin-top: 1px; font-size: 12px;">{{i.0.tipologia}}</h6></td>
-            
-            
+                                {% if i.0.plano_venta %}
+                                <a href="{{ i.0.plano_venta.url }}" target="_blank"><i
+                                        class="fa fa-file-pdf-o text-danger"></i></a>
                                 {% endif %}
+                            </td>
 
-                                <td>{{i.1|floatformat:2}} m2</td>
-                                <td>{{i.0.asig|lower|capfirst}}</td>
-                                
-                                {% if i.9 != 0 and perms.ventas.view_ventasrealizadas %}
-                      
-                                <td><div class="label label-table label-{% if i.0.estado == "DISPONIBLE" %}success{% elif i.0.estado == "SEÑADA" %}warning{% else %}info{% endif %}">{{i.0.estado|lower|capfirst}}</div></td>
+                            {% if i.0.tipo == "DEPARTAMENTO" %}
 
-                                {% else %}
-            
-                                <td><div class="label label-table label-{% if i.0.estado == "DISPONIBLE" %}success{% elif i.0.estado == "SEÑADA" %}warning{% else %}info{% endif %}">{{i.0.estado|lower|capfirst}}</div></td>
-            
-                                {% endif %}
-            
-                                {% if i.2 >= 0 %}
-                                <td>$ {{i.4|floatformat:0|intcomma}}
-                                    <h6 class="card-subtitle" style="margin-top: 1px; font-size: 12px;">Por M2: $ {{i.2|floatformat:0|intcomma}}</h6> </td>
-                                <td>$ {{i.5|floatformat:0|intcomma}}
-                                    <h6 class="card-subtitle" style="margin-top: 1px; font-size: 12px;">Por M2: $ {{i.6|floatformat:0|intcomma}}</h6> </td>
-                                </td>
+                            <td> <img src="{% static 'img/piso.png' %}" alt=""
+                                    style="max-width:15px; height:auto; margin: 2px;">DEPTO
+                                <h6 class="card-subtitle" style="margin-top: 1px; font-size: 12px;">{{i.0.tipologia}}
+                                </h6>
+                            </td>
 
-                                <td>Anticipo: $ {{i.7|floatformat:0|intcomma}}
-                                    <h6 class="card-subtitle" style="margin-top: 1px; font-size: 12px;">Cuotas ({{datos.meses}}): $ {{i.8|floatformat:0|intcomma}}</h6>
-                                </td>
-                                
-                                {% else %}
-                
-                                <td>{{i.4|lower|capfirst}}</td>
-                                <td>{{i.2|lower|capfirst}}</td>
-                                <td>{{i.2|lower|capfirst}}</td>
-                         
-                
-                                {% endif %}
-                                
-                                <td><div class="btn-group ml-auto">
+                            {% elif i.0.tipo == "LOCAL"%}
+
+                            <td> <img src="{% static 'img/tienda.png' %}" alt=""
+                                    style="max-width:15px; height:auto; margin: 2px;">{{i.0.tipo}}
+                                <h6 class="card-subtitle" style="margin-top: 1px; font-size: 12px;">{{i.0.tipologia}}
+                                </h6>
+                            </td>
+
+                            {% else %}
+
+                            <td> <img src="{% static 'img/coche.png' %}" alt=""
+                                    style="max-width:15px; height:auto; margin: 2px;">{{i.0.tipo}}
+                                <h6 class="card-subtitle" style=" margin-top: 1px; font-size: 12px;">{{i.0.tipologia}}
+                                </h6>
+                            </td>
+
+                            {% endif %}
+
+                            <td>{{i.1|floatformat:2}} m2</td>
+                            <td>{{i.0.asig|lower|capfirst}}</td>
+
+                            {% if i.9 != 0 and perms.ventas.view_ventasrealizadas %}
+
+                            <td>
+                                <div class="label label-table label-{% if i.0.estado == " DISPONIBLE " %}success{% elif i.0.estado == "SEÑADA" %}warning{% else %}info{% endif %}">
+                                    {{i.0.estado|lower|capfirst}}</div>
+                            </td>
+
+                            {% else %}
+
+                            <td>
+                                <div class="label label-table label-{% if i.0.estado == " DISPONIBLE " %}success{% elif i.0.estado == "SEÑADA" %}warning{% else %}info{% endif %} ">
+                                    {{i.0.estado|lower|capfirst}}</div>
+                            </td>
+
+                            {% endif %}
+
+                            {% if i.2 >= 0 %}
+                            <td>$ {{i.4|floatformat:0|intcomma}}
+                                <h6 class="card-subtitle" style="margin-top: 1px; font-size: 12px;">Por M2: $
+                                    {{i.2|floatformat:0|intcomma}}</h6>
+                            </td>
+                            <td>$ {{i.5|floatformat:0|intcomma}}
+                                <h6 class="card-subtitle" style="margin-top: 1px; font-size: 12px;">Por M2: $
+                                    {{i.6|floatformat:0|intcomma}}</h6>
+                            </td>
+                            </td>
+
+                            <td>Anticipo: $ {{i.7|floatformat:0|intcomma}}
+                                <h6 class="card-subtitle" style="margin-top: 1px; font-size: 12px;">Cuotas
+                                    ({{datos.meses}}): $ {{i.8|floatformat:0|intcomma}}</h6>
+                            </td>
+
+                            {% else %}
+
+                            <td>{{i.4|lower|capfirst}}</td>
+                            <td>{{i.2|lower|capfirst}}</td>
+                            <td>{{i.2|lower|capfirst}}</td>
+
+
+                            {% endif %}
+
+                            <td>
+                                <div class="btn-group ml-auto">
                                     <a href="JavaScript:void(0)" class="icon-options-vertical link"
                                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
                                     <div class="dropdown-menu dropdown-menu-right">
-                                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#ModalPlano{{i.0.id}}"><i class="fa fa-file-pdf-o mr-2 text-danger"></i>Cargar plano</a>
-                                      
+                                        <a class="dropdown-item" href="#" data-toggle="modal"
+                                            data-target="#ModalPlano{{i.0.id}}"><i
+                                                class="fa fa-file-pdf-o mr-2 text-danger"></i>Cargar plano</a>
+
                                     </div>
-                                </div></td>
-                                <div class="modal fade" id="ModalPlano{{i.0.id}}" tabindex="-1" role="dialog" aria-labelledby="ModalPlano{{i.0.id}}" aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header" style="background: rgb(36,160,237);
-                                            background: linear-gradient(315deg, rgba(36,160,237,1) 0%, rgba(56,56,130,1) 22%, rgba(0,212,255,1) 100%);">
-                                            <h5 class="modal-title text-light" id="exampleModalLongTitle">Cargar planos</h5>
-                                            <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+                                </div>
+                            </td>
+
+                            <div class="modal fade" id="ModalPlano{{i.0.id}}" tabindex="-1" role="dialog"
+                                aria-labelledby="ModalPlano{{i.0.id}}" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header"
+                                            style="background-color: #2a3e52;">
+                                            <h5 class="modal-title text-light" id="exampleModalLongTitle">Cargar planos
+                                            </h5>
+                                            <button type="button" class="close text-light" data-dismiss="modal"
+                                                aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
-                                            </div>
-                                            <div class="modal-body">
-                                                                                       
-                                                <form method="POST" style="margin: 15px;" enctype="multipart/form-data" action=" {% url 'cargarplano' datos.proyecto.id %} "> {% csrf_token %}
-                                                    <p>Agregar el plano correspondiente a la unidad</p>
-                                                    <div class="input-group mb-3">
-                                                        <input type="file" name="plano" required class="form-control form-control" style="width: 100px;">
-                                                    </div>
-    
-                                                    <button type="submit" name="unidad" value="{{i.0.id}}" class="btn btn-info">Cargar</button>
-                                                
-                                                </form>
-                                            
-                                            </div>
-                                            <div class="modal-footer">
-                                            <button type="button" class="btn btn-info" data-dismiss="modal">Cerrar</button>
-                                    
-                                            </div>
+                                        </div>
+                                        <div class="modal-body">
+
+                                            <form method="POST" style="margin: 15px;" enctype="multipart/form-data"
+                                                action=" {% url 'cargarplano' datos.proyecto.id %} "> {% csrf_token %}
+                                                <p>Agregar el plano correspondiente a la unidad</p>
+                                                <div class="input-group mb-3">
+                                                    <input type="file" name="plano" required
+                                                        class="form-control form-control" style="width: 100px;">
+                                                </div>
+
+                                                <button type="submit" name="unidad" value="{{i.0.id}}"
+                                                    class="btn btn-info">Cargar</button>
+                                            </form>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-dismiss="modal">Cerrar</button>
                                         </div>
                                     </div>
-        
                                 </div>
-                
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
+                            </div>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
@@ -237,22 +254,18 @@
 
 
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-<script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js" defer></script>
-<script src="https://cdn.datatables.net/1.10.23/js/dataTables.bootstrap4.min.js" defer></script>
-
-
 
 <script>
     $(document).ready(function () {
         $('#example').DataTable({
             "language": {
-            "lengthMenu": "Mostar _MENU_ documentos",
-            "zeroRecords": "No se encontro nada - perdon ",
-            "info": "Pagina _PAGE_ de _PAGES_",
-            "infoEmpty": "Sin registros disponibles",
-            "infoFiltered": "(filtrado de _MAX_ registros totales)",
-            "search": "Buscar"
-        },
+                "lengthMenu": "Mostar _MENU_ documentos",
+                "zeroRecords": "No se encontro nada - perdon ",
+                "info": "Pagina _PAGE_ de _PAGES_",
+                "infoEmpty": "Sin registros disponibles",
+                "infoFiltered": "(filtrado de _MAX_ registros totales)",
+                "search": "Buscar"
+            },
             "paging": false,
             "ordering": false,
             "info": false,
@@ -261,8 +274,6 @@
     });
 </script>
 
-
 {% endif %}
- 
-    
+
 {% endblock %}

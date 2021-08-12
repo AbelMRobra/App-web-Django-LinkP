@@ -20,48 +20,48 @@
 
             </ol>
         </div>
-
     </div>
-
 </div>
 
 <div class="row">
-    <div class="col-12">
+    <div class="col">
         <div class="card">
             <div class="card-body">
-                <h4 class="card-title">Compras {% if proyecto %}- <b
-                        style="color: rgb({{proyecto.color}});">{{proyecto.nombre}}</b>{% else %} ultimas 500 compras {% endif %}</h4>
-                <h6 class="card-subtitle">Detalle de las compras realizadas por proyecto</h6>
+                <div class="d-flex align-items-center">
+                    <div>
+                        <h4 class="card-title"><span class="lstick m-r-20"></span>Compras {% if proyecto %}- <b
+                            style="color: rgb({{proyecto.color}});">{{proyecto.nombre}}</b>{% else %} ultimas 500 compras {% endif %}</h4>
+                        <h6 class="card-subtitle">Detalle de las compras realizadas por proyecto</h6>
+
+                    </div>
+                    <div class="btn-group ml-auto">
+                        <a href="JavaScript:void(0)" class="icon-options-vertical link" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false"></a>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            {% if request.user|has_group:"COMPRAS NIVEL 2" and request.user.username != "HC" %}
+                            <a class="dropdown-item" href="/compras/cargacompras"><i class="fa fa-plus-circle mr-2"></i>Agregar compra</a>
+                            {% endif %}
+                            <a class="dropdown-item" href="{% url 'Descargar compras' %}"><i
+                                    class="fa fa-file-excel-o mr-2"></i>Excel</a>
+                        </div>
+                    </div>
+                </div>
+         
                 <div class="table-responsive m-t-40">
                     <div class="dt-buttons">
-
-                        <!-- prueba boton -->
                         <div class="btn-group">
-                            {% if request.user|has_group:"COMPRAS NIVEL 2" and request.user.username != "HC" %}
-                            <a href="/compras/cargacompras" class="btn" ><i
-                                class="fa fa-plus-circle  text-info"><span class="text-info ml-2"
-                                    style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif"><b>Añadir compra</b></span></i></a>
-                                    {% endif %}
-                                    <a href= "{% url 'Descargar compras' %}" class="btn" ><i
-                                        class="fa fa-file-excel-o  text-success"><span class="text-success ml-2"
-                                            style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif"><b>Excel</b></span></i></a>
-                            
-                            
-                                            <button type="button" class="btn text-info dropdown-toggle"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onclick="myFunction()">
-                                {% if proyecto %}{{proyecto.nombre|lower|capfirst}}{% else %}
-                                Proyecto {% endif %}
+                            <button type="button" class="btn btn-info dropdown-toggle"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            {% if proyecto %}{{proyecto.nombre|lower|capfirst}}{% else %}
+                            Proyecto {% endif %}
                             </button>
                             <div class="dropdown-menu">
                                 <a class="dropdown-item" href="{% url 'Compras' 0 %}">ultimas 500</a>
                                 {% for i in proyectos %}
                                 <a class="dropdown-item" href="{% url 'Compras' i.id %}">{{i.nombre|lower|capfirst}}</a>
                                 {% endfor %}
-
                             </div>
                         </div>
-
-
                     </div>
 
                     <div class="table-responsive">
@@ -107,8 +107,7 @@
                                     aria-labelledby="Modalprecio{{i.1.id}}" aria-hidden="true">
                                         <div class="modal-dialog modal-dialog-centered" role="document">
                                             <div class="modal-content">
-                                                <div class="modal-header" style="background: rgb(36,160,237);
-                                                background: linear-gradient(315deg, rgba(36,160,237,1) 0%, rgba(56,56,130,1) 22%, rgba(0,212,255,1) 100%);">
+                                                <div class="modal-header" style="background-color: #2a3e52;">
                                                     <h5 class="modal-title text-light" id="exampleModalLongTitle">Modificar precio</h5>
                                                     <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
                                                         <span aria-hidden="true">&times;</span>
@@ -133,7 +132,7 @@
     
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <button type="button" class="btn btn-info"
+                                                    <button type="button" class="btn btn-secondary"
                                                         data-dismiss="modal">Cerrar</button>
     
                                                 </div>
