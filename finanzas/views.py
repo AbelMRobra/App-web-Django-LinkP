@@ -2275,7 +2275,7 @@ def estudioindice(request, fecha1, fecha2):
         except:
             proyectos_agregados.append(r.proyecto)
 
-    print(ingresos_diferencia)
+   
 
     return render(request, 'estudio_indice.html')
 
@@ -2971,7 +2971,7 @@ def almacenero(request):
 
             if i[0] != "csrfmiddlewaretoken":
 
-                print(i)
+               
 
                 return redirect('Historico almacenero', id_proyecto = int(i[0]), fecha = int(i[1]))
 
@@ -3122,6 +3122,7 @@ def arqueo_diario(request, id_arqueo):
     
     try:
         inversiones = sum(np.array(data_frame['INVERSIONES']))
+       
     except:
         inversiones = 0
     try:
@@ -3155,7 +3156,8 @@ def arqueo_diario(request, id_arqueo):
     datos_grafico = [porcentaje_usd, porcentaje_euros, porcentaje_pesos]
 
     numero = 0
-
+    inversiones=0
+    inversiones_usd=0
     for i in lista_proyecto:
 
         try:
@@ -3191,15 +3193,17 @@ def arqueo_diario(request, id_arqueo):
         consolidado_actual = consolidado_actual + consolidado - data_frame.loc[numero, 'MONEDA EXTRANJERA'] + data_frame.loc[numero, 'USD']*cambio_usd + data_frame.loc[numero, 'EUROS']*cambio_euro
 
         try:
-            inversiones = data_frame.loc[numero, 'INVERSIONES']
+            inversion = data_frame.loc[numero, 'INVERSIONES']
+            
         except:
-            inversiones = 0
-
+            inversion = 0
+        
+        inversiones += inversion
         try:
-            inversiones_usd = data_frame.loc[numero, 'INVERSIONES USD']
+            inversion_usd = data_frame.loc[numero, 'INVERSIONES USD']
         except:
-            inversiones_usd = 0
-
+            inversion_usd = 0
+        inversiones_usd += inversion_usd
         
         try:
             # ----> Armemos lo de los cheques
@@ -3226,7 +3230,12 @@ def arqueo_diario(request, id_arqueo):
         datos.append((proyecto, data_frame.loc[numero, 'PROYECTO'], data_frame.loc[numero, 'EFECTIVO'], data_frame.loc[numero, 'USD'], data_frame.loc[numero, 'EUROS'], data_frame.loc[numero, 'CHEQUES'], data_frame.loc[numero, 'MONEDA EXTRANJERA'], banco, consolidado, list_bank_proj_info, info_cheque, inversiones, inversiones_usd))
 
         numero += 1
-
+    
+   
+    #AQUI SE SUMA EL TOTAL DE INVERSIONES EN PESOS Y EN DOLARES AL TOTAL
+    precio_dolar=data_frame.loc[0, 'CAMBIO USD']
+    
+    consolidado_actual=consolidado_actual + inversiones + (inversiones_usd * precio_dolar)
     otros_datos = [usd, euro, pesos, cheques, bancos, consolidados, consolidado_actual, moneda_extranjera_actual, inversiones, inversiones_usd]
 
     context["datos"] = datos
