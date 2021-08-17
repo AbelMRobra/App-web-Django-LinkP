@@ -29,6 +29,7 @@ def registro_contable_home(request):
 def registro_contable_cajas(request):
 
     context = {}
+    context["mensaje"] = "no"
 
     if request.method == 'POST':
         try:
