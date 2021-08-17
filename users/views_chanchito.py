@@ -101,29 +101,22 @@ def registro_contable_cajas(request):
                 context["mensaje"] = "ok"
 
         except:
-            pass
-        try:
-            data_caja = request.POST['borrar_selec'].split("&")
-            cajas_eliminar = RegistroContable.objects.filter(creador = request.user.username, caja = data_caja[0], usuario__identificacion = data_caja[1], fecha__range = (request.POST['fecha_desde'], request.POST['fecha_hasta']))
-            for caja in cajas_eliminar:
-                caja.delete()
 
-        except:
-            data_caja = request.POST['borrar'].split("&")
-            cajas_eliminar = RegistroContable.objects.filter(creador = request.user.username, caja = data_caja[0], usuario__identificacion = data_caja[1])
-            for caja in cajas_eliminar:
-                caja.delete()
+            try:
+                data_caja = request.POST['borrar_selec'].split("&")
+                fecha_i = request.POST['fecha_i']
+                fecha_f = request.POST['fecha_f']
+                cajas_eliminar = RegistroContable.objects.filter(creador = request.user.username, caja = data_caja[0], usuario__identificacion = data_caja[1], fecha__renge = (fecha_i, fecha_f))
+                for caja in cajas_eliminar:
+                    caja.delete()
 
-        try:
-            data_caja = request.POST['borrar_select'].split("&")
-            fecha_i = request.POST['fecha_i']
-            fecha_f = request.POST['fecha_f']
-            cajas_eliminar = RegistroContable.objects.filter(creador = request.user.username, caja = data_caja[0], usuario__identificacion = data_caja[1], fecha__renge = (fecha_i, fecha_f))
-            for caja in cajas_eliminar:
-                caja.delete()
+            except:
+                data_caja = request.POST['borrar'].split("&")
+                cajas_eliminar = RegistroContable.objects.filter(creador = request.user.username, caja = data_caja[0], usuario__identificacion = data_caja[1])
+                for caja in cajas_eliminar:
+                    caja.delete()
 
-        except:
-            pass
+
 
     user = datosusuario.objects.get(identificacion = request.user.username)
 
