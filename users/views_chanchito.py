@@ -103,13 +103,16 @@ def registro_contable_cajas(request):
         except:
             pass
         try:
-            data_caja = request.POST['borrar'].split("&")
-            cajas_eliminar = RegistroContable.objects.filter(creador = request.user.username, caja = data_caja[0], usuario__identificacion = data_caja[1])
+            data_caja = request.POST['borrar_selec'].split("&")
+            cajas_eliminar = RegistroContable.objects.filter(creador = request.user.username, caja = data_caja[0], usuario__identificacion = data_caja[1], fecha__range = (request.POST['fecha_desde'], request.POST['fecha_hasta']))
             for caja in cajas_eliminar:
                 caja.delete()
 
         except:
-            pass
+            data_caja = request.POST['borrar'].split("&")
+            cajas_eliminar = RegistroContable.objects.filter(creador = request.user.username, caja = data_caja[0], usuario__identificacion = data_caja[1])
+            for caja in cajas_eliminar:
+                caja.delete()
 
         try:
             data_caja = request.POST['borrar_select'].split("&")
