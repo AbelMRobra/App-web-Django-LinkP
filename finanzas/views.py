@@ -3227,7 +3227,7 @@ def arqueo_diario(request, id_arqueo):
         except:
             info_cheque = []
 
-        datos.append((proyecto, data_frame.loc[numero, 'PROYECTO'], data_frame.loc[numero, 'EFECTIVO'], data_frame.loc[numero, 'USD'], data_frame.loc[numero, 'EUROS'], data_frame.loc[numero, 'CHEQUES'], data_frame.loc[numero, 'MONEDA EXTRANJERA'], banco, consolidado, list_bank_proj_info, info_cheque, inversiones, inversiones_usd))
+        datos.append((proyecto, data_frame.loc[numero, 'PROYECTO'], data_frame.loc[numero, 'EFECTIVO'], data_frame.loc[numero, 'USD'], data_frame.loc[numero, 'EUROS'], data_frame.loc[numero, 'CHEQUES'], data_frame.loc[numero, 'MONEDA EXTRANJERA'], banco, consolidado, list_bank_proj_info, info_cheque, inversion, inversion_usd))
 
         numero += 1
     
@@ -3269,7 +3269,7 @@ def arqueo_diario(request, id_arqueo):
     
 
     return render(request, 'arqueo.html', context)
-
+    
 def arqueos(request):
 
     if request.method == 'POST':

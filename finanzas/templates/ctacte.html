@@ -24,202 +24,198 @@
             </ol>
         </div>
     </div>
-</div>
 
-<div class="row ">
-    <div class="col-12">
-        <div class="card overflow-auto">
-            <div class="card-body">
-                <div style="text-align: center; margin-bottom: 50px;">
-                    <img src="{{ctacte.venta.unidad.proyecto.iamgen.url}}" class="img-fluid" alt="..."
-                        style="max-width:200px;width:auto;height:auto; margin-top: 5px; margin-bottom: 5px;">
-                </div>
-
-                <!-- Modal Frozen -->
-                <div class="modal fade" id="Modalconstante" tabindex="-1" role="dialog"
-                    aria-labelledby="ModalconstanteTitle" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header" style="background-color: #2a3e52;">
-                                <h5 class="modal-title text-light" id="exampleModalLongTitle">Cuota Frozen</h5>
-                                <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
+    <div class="row ">
+        <div class="col-12">
+            <div class="card overflow-auto">
+                <div class="card-body">
+     
+    
+                    <!-- Modal Frozen -->
+                    <div class="modal fade" id="Modalconstante" tabindex="-1" role="dialog"
+                        aria-labelledby="ModalconstanteTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header" style="background-color: #2a3e52;">
+                                    <h5 class="modal-title text-light" id="exampleModalLongTitle">Cuota Frozen</h5>
+                                    <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+    
+                                    <form role="form" method="POST">
+    
+                                        {% csrf_token %}
+                                        <span>Agregar valor</span>
+                                       
+                                        <div class="my-3">
+                                            <input name="valor" type="number" step="any" class="form-control form-control">
+                                        </div>
+                                        <button type="submit" class="btn btn-info" name="frozen" value="1">Mandar</button>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+    
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+    
+                                </div>
                             </div>
-                            <div class="modal-body">
-
-                                <form role="form" method="POST">
-
-                                    {% csrf_token %}
-                                    <span>Agregar valor</span>
-                                   
-                                    <div class="my-3">
-                                        <input name="valor" type="number" step="any" class="form-control form-control">
-                                    </div>
-                                    <button type="submit" class="btn btn-info" name="frozen" value="1">Mandar</button>
-                                </form>
-                            </div>
-                            <div class="modal-footer">
-
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-
+                        </div>
+                    </div>
+    
+    
+                    <div class="d-flex align-items-center">
+                        <div>
+    
+                            <h4 class="card-title"><span class="lstick m-r-20"></span><b style="color: rgb({{ctacte.venta.unidad.proyecto.color}});">{{ctacte.venta.unidad.proyecto.nombre}} - {{ctacte.venta.comprador}}
+                                ({{ctacte.venta.unidad.piso_unidad}} - {{ctacte.venta.unidad.nombre_unidad}})</b> </h4>
+                            <h6 class="card-subtitle"></span>Plan de cuotas</h6>
+                        </div>
+                        <div class="btn-group ml-auto">
+                            <a href="JavaScript:void(0)" class="icon-options-vertical link" data-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false"></a>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a class="dropdown-item" href="{% url 'Agregar cuota' ctacte.id %}"><i
+                                        class="fa fa-plus-circle mr-2"></i>Añadir cuota</a>
+                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#Modalconstante"><i
+                                        class="fa fa-snowflake-o mr-2"></i>Congelar cuota</a>
+                                <a class="dropdown-item" href="{% url 'Resumen cuenta corriente' ctacte.id  %}"><i
+                                        class="fa fa-file-text-o mr-2"></i>Resumen</a>
+                                <a class="dropdown-item" href=" {% url 'Cuenta corriente venta boleto' ctacte.id  %}"><i
+                                        class="fa fa-eercast mr-2"></i>Boleto</a>
+                                <a class="dropdown-item" href="{% url 'Descargar cuenta' id_cuenta=ctacte.id  %}"><i
+                                        class="fa fa-file-excel-o mr-2"></i>Excel</a>
+    
                             </div>
                         </div>
                     </div>
                 </div>
-
-
-                <div class="d-flex align-items-center">
-                    <div>
-
-                        <h4 class="card-title"><span class="lstick m-r-20"></span>Panel de administración de cuenta</h4>
-                        <h4 class="card-subtitle"></span>Panel de administración de cuentas de cada proyecto</h4>
-                    </div>
-                    <div class="btn-group ml-auto">
-                        <a href="JavaScript:void(0)" class="icon-options-vertical link" data-toggle="dropdown"
-                            aria-haspopup="true" aria-expanded="false"></a>
-                        <div class="dropdown-menu dropdown-menu-right">
-                            <a class="dropdown-item" href="{% url 'Agregar cuota' ctacte.id %}"><i
-                                    class="fa fa-plus-circle mr-2"></i>Añadir cuota</a>
-                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#Modalconstante"><i
-                                    class="fa fa-snowflake-o mr-2"></i>Congelar cuota</a>
-                            <a class="dropdown-item" href="{% url 'Resumen cuenta corriente' ctacte.id  %}"><i
-                                    class="fa fa-file-text-o mr-2"></i>Resumen</a>
-                            <a class="dropdown-item" href=" {% url 'Cuenta corriente venta boleto' ctacte.id  %}"><i
-                                    class="fa fa-eercast mr-2"></i>Boleto</a>
-                            <a class="dropdown-item" href="{% url 'Descargar cuenta' id_cuenta=ctacte.id  %}"><i
-                                    class="fa fa-file-excel-o mr-2"></i>Excel</a>
-
+    
+                <form method="POST">
+                    {% csrf_token %}
+                    {% if frozen %}
+                    <div class="row d-flex justify-content-end">
+                        <div class="col-2">
+    
+                            <input type="checkbox" id="checkAll" class="filled-in chk-col-blue" />
+                            <label for="checkAll">Marcar todo</label>
+    
                         </div>
                     </div>
-                </div>
-            </div>
+                    {% endif %}
 
-            <div style="text-align: left; display: inline-block; margin-left: 20px;">
+                    
 
-                <h5 style="color: rgb({{ctacte.venta.unidad.proyecto.color}})">{{ctacte.venta.comprador}}
-                    ({{ctacte.venta.unidad.piso_unidad}} - {{ctacte.venta.unidad.nombre_unidad}})
-                </h5>
-            </div>
-
-            <form method="POST">
-                {% csrf_token %}
-                {% if frozen %}
-                <div class="row d-flex justify-content-end">
-                    <div class="col-2">
-
-                        <input type="checkbox" id="checkAll" class="filled-in chk-col-blue" />
-                        <label for="checkAll">Marcar todo</label>
-
-                    </div>
-                </div>
-                {% endif %}
-                <table id="example" class="table table-striped table-bordered" style="width:100%">
-                    <thead style="font-size: 14px;">
-                            <tr>
-                                <th>Concepto</th>
-                                <th style=" text-align: center;">B</th>
-                        <th>Fecha</th>
-                        <th>Moneda</th>
-                        <th>Total</th>
-                        <th>Pago</th>
-                        <th>Saldo</th>
-                        <th>Cotización</th>
-                        <th>Pagos</th>
-                        <th></th>
-                        {% if frozen %}
-                        <th style="text-align: center;"><i class="fa fa-snowflake-o"></i></th>
-                        {% endif %}
-
-                        </tr>
-                    </thead>
-
-                    <tbody style="font-size: 14px;">
-
-                        {% for i in datos_cuenta %}
-                        <tr>
-                            <td>
-                                
-                                <div style="display: inline-block;" {% if i.0.pagada == "SI" %} class="text-success" {% endif %}> {{i.0.concepto|upper}}</div>
-                            </td>
-                            <td style="text-align: center;">
-
-                                {% if i.0.boleto == "NO BOLETO" %}
-
-                                <a href="{% url 'Boleto en cuota' ctacte.id i.0.id %}"><b style="color: #CE2615;"> ⚫
-                                </a>
-
-                                {% else %}
-
-                                <a href="{% url 'Boleto en cuota' ctacte.id i.0.id %}"><b
-                                        style="color: #34CE15;">{{i.0.porc_boleto|floatformat:2}} </a>
-
+                        <table id="example" class="table table-striped table-bordered" style="width:100%">
+                            <thead style="font-size: 14px;">
+                                    <tr>
+                                        <th>Concepto</th>
+                                        <th style=" text-align: center;">B</th>
+                                <th>Fecha</th>
+                                <th>Moneda</th>
+                                <th>Total</th>
+                                <th>Saldo</th>
+                                <th>Cotización</th>
+                                <th>Pagos</th>
+                                {% if frozen %}
+                                <th style="text-align: center;"><i class="fa fa-snowflake-o mr-2"></i></th>
                                 {% endif %}
-                            </td>
-                            <td>{{i.0.fecha|date:"d-m-Y"}}</td>
-                            <td> {{i.0.constante.nombre|lower|capfirst}}</td>
-                            <td>{{i.0.precio|floatformat:2}}</td>
-                            <td>{{i.1|floatformat:2}}
-                                <h6 class="card-subtitle mb-0" style="margin-top: 2px; font-size:13px;">
-                                    ${{i.6|floatformat:2|intcomma}}</h6>
-                            </td>
-                            <td {% if i.2 == 0 %} style="color: #1FC730;" {% endif %}> {{i.2|floatformat:2}}
-
-                                <h6 class="card-subtitle mb-0" style="margin-top: 2px; font-size:13px;">
-                                    ${{i.3|floatformat:0|intcomma}}</h6>
-                            </td>
-
-                            {% if i.5 == 0 %}
-                            <td> ${{i.0.constante.valor|floatformat:2|intcomma}}</td>
-                            {% else %}
-                            <td> ${{i.5|floatformat:2|intcomma}}</td>
-                            {% endif %}
-                            <td>
-                                <div class="d-flex align-items-center">
-                                    <a href="{% url 'Pagos' i.0.id %}" class="btn btn-sm btn-success fa fa-sign-in"></a>
+                                <th></th>
+        
+                                </tr>
+                            </thead>
+        
+                            <tbody style="font-size: 13px;">
+        
+                                {% for i in datos_cuenta %}
+                                <tr>
+                                    <td>
+                                        
+                                        <div style="display: inline-block;">  <a href="{% url 'Pagos' i.0.id %}">{{i.0.concepto|upper}}</a> {% if i.0.pagada == "SI" %} <i  class="btn fa fa-lg fa-check-circle text-success"></i> {% endif %}</div>
+                                    </td>
+                                    <td style="text-align: center;">
+        
+                                        {% if i.0.boleto == "NO BOLETO" %}
+        
+                                        <a class="fa fa-lg fa-plus-circle mt-2 text-warning" href="{% url 'Boleto en cuota' ctacte.id i.0.id %}">
+                                        </a>
+        
+                                        {% else %}
+        
+                                        <a href="{% url 'Boleto en cuota' ctacte.id i.0.id %}"><b
+                                                style="color: #34CE15;">{{i.0.porc_boleto|floatformat:2}}</a>
+        
+                                        {% endif %}
+                                    </td>
+                                    <td>{{i.0.fecha|date:"d/m/Y"}}</td>
+                                    <td> {{i.0.constante.nombre|lower|capfirst}}</td>
+                                    <td>{{i.0.precio|floatformat:2}}</td>
+                                    <td>{{i.1|floatformat:2}}
+                                        <h6 class="card-subtitle mb-0" style="margin-top: 2px; font-size:13px;">
+                                            ${{i.6|floatformat:2|intcomma}}</h6>
+                                    </td>
+                                    <td {% if i.2 == 0 %} style="color: #1FC730;" {% endif %}> {{i.2|floatformat:2}}
+        
+                                        <h6 class="card-subtitle mb-0" style="margin-top: 2px; font-size:13px;">
+                                            ${{i.3|floatformat:0|intcomma}}</h6>
+                                    </td>
+        
+                                    {% if i.5 == 0 %}
+                                    <td> ${{i.0.constante.valor|floatformat:2|intcomma}}</td>
+                                    {% else %}
+                                    <td> ${{i.5|floatformat:2|intcomma}}</td>
+                                    {% endif %}
                                     
-                                </div>
-                            </td>
-                            <td>
-                                <div class="btn-group ml-auto">
-                                    <a href="JavaScript:void(0)" class="icon-options-vertical link" data-toggle="dropdown"
-                                        aria-haspopup="true" aria-expanded="false"></a>
-                                    <div class="dropdown-menu dropdown-menu-right">
-                                        <a class="dropdown-item" href="{% url 'Editar cuota' i.0.id %}"><i
-                                                class="fa fa-pencil mr-2"></i>Editar cuota</a>
-                                        <a class="dropdown-item" href="{% url 'Eliminar cuota' i.0.id %}"><i
-                                                class="fa fa-trash text-danger mr-2"></i>Borrar</a>
-                                     
-            
-                                    </div>
-                                </div>
-                            </td>
-                            {% if frozen %}
-                            <td style="text-align: center;">
+                                    {% if frozen %}
+                                    <td style="text-align: center;">
+        
+                                        <input type="checkbox" name="cuota{{i.0.id}}" value="{{i.0.id}}" id="cuota{{i.0.id}}"
+                                            class="filled-in chk-col-blue" {% if 'FROZEN' in i.0.constante.nombre %} checked {% endif %} />
+                                        <label for="cuota{{i.0.id}}"></label>
+        
+                                    </td>
+                                    {% endif %}
+                                    <td>
+                                        <div class="btn-group ml-auto">
+                                            <a href="JavaScript:void(0)" class="icon-options-vertical link" data-toggle="dropdown"
+                                                aria-haspopup="true" aria-expanded="false"></a>
+                                            <div class="dropdown-menu dropdown-menu-right">
+                                                <a class="dropdown-item" href="{% url 'Pagos' i.0.id %}"><i
+                                                    class="fa fa-money mr-2"></i>Pagos</a>
+                                                <a class="dropdown-item" href="{% url 'Editar cuota' i.0.id %}"><i
+                                                        class="fa fa-pencil mr-2"></i>Editar cuota</a>
+                                                <a class="dropdown-item" href="{% url 'Eliminar cuota' i.0.id %}"><i
+                                                        class="fa fa-trash text-danger mr-2"></i>Borrar</a>
+                                             
+                    
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
 
-                                <input type="checkbox" name="cuota{{i.0.id}}" value="{{i.0.id}}" id="cuota{{i.0.id}}"
-                                    class="filled-in chk-col-blue" {% if 'FROZEN' in i.0.constante.nombre %} checked {% endif %} />
-                                <label for="cuota{{i.0.id}}"></label>
+                    
+                    
+    
+                    {% if frozen %}
+    
+                    <div class="d-flex justify-content-center">
+                        <button type="submit" class="btn btn-success btn-circle fa fa-check mb-2"></button>
+                    </div>
+    
+                    {% endif %}
+    
+                </form>
 
-                            </td>
-                            {% endif %}
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-
-                {% if frozen %}
-
-                <div class="d-flex justify-content-center">
-                    <button type="submit" class="btn btn-success btn-circle fa fa-check"></button>
-                </div>
-
-                {% endif %}
-
-            </form>
+            </div>
         </div>
     </div>
 </div>
+
+
 
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 
@@ -237,7 +233,9 @@
             "paging": false,
             "searching": false,
             "ordering": false,
-            "info": false
+            "info": false,
+
+            
 
         });
     });

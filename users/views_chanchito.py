@@ -28,12 +28,22 @@ def registro_contable_home(request):
 
 def registro_contable_cajas(request):
 
+    context = {}
+
     if request.method == 'POST':
         try:
             if request.POST['carga_archivo'] == "1":
+
                 archivo_pandas = pd.read_excel(request.FILES['archivo'])
                 registros_nuevo = archivo_pandas
                 numero = 0
+
+                columnas_necesarias = ["Usuario", "Creador", "Auxiliar", "Desc. cuenta", "Desc. auxiliar", "Saldo (CTE)", "Subauxiliar", "Fecha de emisión"]
+
+                for c in columnas_necesarias:
+
+                    if c not in registros_nuevo.columns:
+                        context["mensaje"] = "Columna {} no detectada, revise".format(c)
 
                 # Bucle para cargar registros
 
@@ -66,24 +76,29 @@ def registro_contable_cajas(request):
                     else:
                         nota = registros_nuevo.loc[numero, "Subauxiliar"]
 
-                    b = RegistroContable(
+                    try:
+                        nuevo_registro = RegistroContable(
 
-                        usuario = usuario,
-                        creador = registros_nuevo.loc[numero, "Creador"],
-                        fecha = registros_nuevo.loc[numero, "Fecha de emisión"],
-                        estado = estado,
-                        caja = caja,
-                        cuenta = cuenta,
-                        categoria = categoria,
-                        importe = importe,
-                        nota = nota,
+                            usuario = usuario,
+                            creador = registros_nuevo.loc[numero, "Creador"],
+                            fecha = registros_nuevo.loc[numero, "Fecha de emisión"],
+                            estado = estado,
+                            caja = caja,
+                            cuenta = cuenta,
+                            categoria = categoria,
+                            importe = importe,
+                            nota = nota,
 
-                    )
+                        )
 
-                    b.save()
-                    numero += 1
+                        nuevo_registro.save()
+                        numero += 1
+                    except:
+                        mensaje = "Error en la fila {}".format(numero)
+                        numero += 1
 
-                return redirect('Registro Contable Cajas')
+                context["mensaje"] = "ok"
+
         except:
             pass
         try:
@@ -152,7 +167,13 @@ def registro_contable_cajas(request):
 
                 cajas_administras.append((nombre,ingresos, gastos, balance, user_adm, usuarios_participan))
 
-    return render(request, 'chanchito/registro_contable_cajas.html', {'total_cajas':total_cajas, 'cajas_administras':cajas_administras, "user":user})
+    
+    context["total_cajas"] = total_cajas
+    context["cajas_administras"] = cajas_administras
+    context["user"] = user
+
+
+    return render(request, 'chanchito/registro_contable_cajas.html', context)
 
 def registro_contable_caja(request, caja, user_caja, estado, mes, year):
     mes = mes

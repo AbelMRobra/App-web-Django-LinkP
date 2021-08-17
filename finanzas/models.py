@@ -81,11 +81,17 @@ class RegistroAlmacenero(models.Model):
         return '{}'.format(self.proyecto)
 
 class CuentaCorriente(models.Model):
+
+    class Estado(models.TextChoices):
+        activo= "activo"
+        baja= "baja"
+
     venta = models.ForeignKey(VentasRealizadas, on_delete=models.CASCADE, verbose_name = "Venta Realizada")
     flujo = models.TextField(verbose_name="Flujo", blank=True, null=True)
     flujo_m3 = models.TextField(verbose_name="Flujo en M3", blank=True, null=True)
     flujo_boleto = models.TextField(verbose_name="Flujo boleto", blank=True, null=True)
     flujo_boleto_m3 = models.TextField(verbose_name="Flujo boleto M3", blank=True, null=True)
+    estado = models.CharField(choices=Estado.choices, max_length=20, verbose_name="Estado", default="activo")
     
     class Meta:
         verbose_name="Cuenta corriente"

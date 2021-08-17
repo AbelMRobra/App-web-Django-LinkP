@@ -18,184 +18,186 @@
             </ol>
         </div>
     </div>
-</div>
 
-
-<div class="row">
-    <div class="col-lg-3 col-xlg-3">
-        <div class="card">
-            <div class="card-body text-center">
-
-                <div>
-                    <h6>Panel de administración</h6>
-                </div>
-
-                {% if request.user|has_group:"ADMIN NIVEL 1" %}
-
-                <form method="POST" style="margin-top: 30px;">
-
-                    {% csrf_token %}
-
-                    
-                    <select name="proyecto" class="custom-select">
-
-                        {% for i in datos %}
-
-                        <option value="{{i.0}}">{{i.1}}</option>
-
-                        {% endfor %}
-                    </select>
-
-                    <div class="my-4" >
-                        <button class="btn btn-info" type="submit">
-                            Buscar</button>
+    <div class="row">
+        <div class="col-lg-3 col-xlg-3">
+            <div class="card">
+                <div class="card-body text-center">
+    
+                    <div>
+                        <h6>Panel de administración</h6>
                     </div>
-
-                </form>
-
-                {% else %}
-
-                <div>
-                    <img src="{% static 'img/animation_500_kmuydpt0.gif' %}" alt="" style="max-width:100px; height:auto; margin: 5px;">
+    
+                    {% if request.user|has_group:"ADMIN NIVEL 1" %}
+    
+                    <form method="POST" style="margin-top: 30px;">
+    
+                        {% csrf_token %}
+    
+                        
+                        <select name="proyecto" class="custom-select">
+    
+                            {% for i in datos %}
+    
+                            <option value="{{i.0}}">{{i.1}}</option>
+    
+                            {% endfor %}
+                        </select>
+    
+                        <div class="my-4" >
+                            <button class="btn btn-info" type="submit">
+                                Buscar</button>
+                        </div>
+    
+                    </form>
+    
+                    {% else %}
+    
+                    <div>
+                        <img src="{% static 'img/animation_500_kmuydpt0.gif' %}" alt="" style="max-width:100px; height:auto; margin: 5px;">
+                    </div>
+    
+                    <a href="#"><button class="btn btn-info">
+                        Sin permisos</button></a>
+                    {% endif %}
+    
                 </div>
-
-                <a href="#"><button class="btn btn-info">
-                    Sin permisos</button></a>
-                {% endif %}
-
             </div>
         </div>
-    </div>
-
-    <div class="col-lg-3 col-xlg-3">
-        <div class="card">
-            <div class="card-body text-center">
-                <div>
-                    <h6>Estados de cuenta</h6>
+    
+        <div class="col-lg-3 col-xlg-3">
+            <div class="card">
+                <div class="card-body text-center">
+                    <div>
+                        <h6>Estados de cuenta</h6>
+                    </div>
+    
+                    <div>
+                        <img src="{% static 'img/InformeArea.png' %}" alt="" style="max-width:100px; height:auto; margin: 5px;">
+                    </div>
+    
+                    {% if request.user|has_group:"ADMIN NIVEL 1" %}
+    
+                    <a href="{% url 'Resumen de cuentas' %}"><button class="btn btn-success">
+                            Ingresar</button></a>
+    
+                    {% else %}
+    
+                    <a href="#"><button class="btn btn-secondary">
+                        Sin permisos</button></a>
+                    {% endif %}
+    
                 </div>
-
-                <div>
-                    <img src="{% static 'img/InformeArea.png' %}" alt="" style="max-width:100px; height:auto; margin: 5px;">
-                </div>
-
-                {% if request.user|has_group:"ADMIN NIVEL 1" %}
-
-                <a href="{% url 'Resumen de cuentas' %}"><button class="btn btn-success">
-                        Ingresar</button></a>
-
-                {% else %}
-
-                <a href="#"><button class="btn btn-secondary">
-                    Sin permisos</button></a>
-                {% endif %}
-
             </div>
         </div>
-    </div>
-
-
-
-    <div class="col-lg-3 col-xlg-4">
-        <div class="card">
-            <div class="card-body text-center">
-                <div>
-                    <h6>Flujo de ingresos</h6>
+    
+    
+    
+        <div class="col-lg-3 col-xlg-4">
+            <div class="card">
+                <div class="card-body text-center">
+                    <div>
+                        <h6>Flujo de ingresos</h6>
+                    </div>
+    
+                    <div>
+                        <img src="{% static 'img/FlujoIngresos.png' %}" alt="" style="max-width:100px; height:auto; margin: 5px;">
+                    </div>
+                    {% if request.user|has_group:"ADMIN NIVEL 1" %}
+    
+                    <a href="{% url 'Total cuenta' 1 0 0 0 %}"><button class="btn btn-primary">
+                            Ingresar</button></a>
+                    {% else %}
+    
+                    <a href="#"><button class="btn btn-secondary">
+                        Sin permisos</button></a>
+                    {% endif %}
+    
                 </div>
-
-                <div>
-                    <img src="{% static 'img/FlujoIngresos.png' %}" alt="" style="max-width:100px; height:auto; margin: 5px;">
-                </div>
-                {% if request.user|has_group:"ADMIN NIVEL 1" %}
-
-                <a href="{% url 'Total cuenta' 1 0 0 0 %}"><button class="btn btn-primary">
-                        Ingresar</button></a>
-                {% else %}
-
-                <a href="#"><button class="btn btn-secondary">
-                    Sin permisos</button></a>
-                {% endif %}
-
+    
             </div>
-
-        </div>
-    </div>
-</div>
-
-<div class="row">
-    <div class="col-lg-3 col-xlg-3">
-        <div class="card">
-            <div class="card-body text-center">
-                <div>
-                    <h6>Registro de pagos</h6>
-                </div>
-
-                <div>
-                    <img src="{% static 'img/RegistroPagos.png' %}" alt="" style="max-width:100px; height:auto; margin: 5px;">
-                </div>
-                {% if request.user|has_group:"ADMIN NIVEL 1" %}
-
-                <a href="{% url 'Panel de pagos total' 0 %}"><button class="btn btn-dark">
-                        Ingresar</button></a>
-                        {% else %}
-
-                        <a href="#"><button class="btn btn-secondary">
-                            Sin permisos</button></a>
-                        {% endif %}
-            </div>
-
-        </div>
-    </div>
-
-    <div class="col-lg-3 col-xlg-3">
-        <div class="card">
-            <div class="card-body text-center">
-                <div>
-                    <h6>Calculadora</h6>
-                </div>
-
-                <div>
-                    <img src="{% static 'img/Calculadora.png' %}" alt="" style="max-width:100px; height:auto; margin: 5px;">
-                </div>
-                {% if request.user|has_group:"ADMIN NIVEL 1" %}
-
-                <a href="{% url 'Calculadora' %}"><button class="btn btn-info">
-                        Ingresar</button></a>
-                        {% else %}
-
-                        <a href="#"><button class="btn btn-secondary">
-                            Sin permisos</button></a>
-                        {% endif %}
-            </div>
-
-        </div>
-    </div>
-
-    <div class="col-lg-3 col-xlg-4">
-        <div class="card">
-            <div class="card-body text-center">
-                <div>
-                    <h6>Totalizador total Renta</h6>
-                </div>
-
-                <div>
-                    <img src="{% static 'img/analisisperiodos.png' %}" alt="" style="max-width:100px; height:auto; margin: 5px;">
-                </div>
-                {% if request.user|has_group:"ADMIN NIVEL 1" %}
-
-                <a href="{% url 'totalizadorrentaanticipadatotal' %} "><button class="btn btn-success">
-                        Ingresar</button></a>
-                {% else %}
-
-                <a href="#"><button class="btn btn-secondary">
-                    Sin permisos</button></a>
-                {% endif %}
-
-            </div>
-
         </div>
     </div>
     
+    <div class="row">
+        <div class="col-lg-3 col-xlg-3">
+            <div class="card">
+                <div class="card-body text-center">
+                    <div>
+                        <h6>Registro de pagos</h6>
+                    </div>
+    
+                    <div>
+                        <img src="{% static 'img/RegistroPagos.png' %}" alt="" style="max-width:100px; height:auto; margin: 5px;">
+                    </div>
+                    {% if request.user|has_group:"ADMIN NIVEL 1" %}
+    
+                    <a href="{% url 'Panel de pagos total' 0 %}"><button class="btn btn-dark">
+                            Ingresar</button></a>
+                            {% else %}
+    
+                            <a href="#"><button class="btn btn-secondary">
+                                Sin permisos</button></a>
+                            {% endif %}
+                </div>
+    
+            </div>
+        </div>
+    
+        <div class="col-lg-3 col-xlg-3">
+            <div class="card">
+                <div class="card-body text-center">
+                    <div>
+                        <h6>Calculadora</h6>
+                    </div>
+    
+                    <div>
+                        <img src="{% static 'img/Calculadora.png' %}" alt="" style="max-width:100px; height:auto; margin: 5px;">
+                    </div>
+                    {% if request.user|has_group:"ADMIN NIVEL 1" %}
+    
+                    <a href="{% url 'Calculadora' %}"><button class="btn btn-info">
+                            Ingresar</button></a>
+                            {% else %}
+    
+                            <a href="#"><button class="btn btn-secondary">
+                                Sin permisos</button></a>
+                            {% endif %}
+                </div>
+    
+            </div>
+        </div>
+    
+        <div class="col-lg-3 col-xlg-4">
+            <div class="card">
+                <div class="card-body text-center">
+                    <div>
+                        <h6>Totalizador total Renta</h6>
+                    </div>
+    
+                    <div>
+                        <img src="{% static 'img/analisisperiodos.png' %}" alt="" style="max-width:100px; height:auto; margin: 5px;">
+                    </div>
+                    {% if request.user|has_group:"ADMIN NIVEL 1" %}
+    
+                    <a href="{% url 'totalizadorrentaanticipadatotal' %} "><button class="btn btn-success">
+                            Ingresar</button></a>
+                    {% else %}
+    
+                    <a href="#"><button class="btn btn-secondary">
+                        Sin permisos</button></a>
+                    {% endif %}
+    
+                </div>
+    
+            </div>
+        </div>
+        
+    </div>
 </div>
+
+
+
 
 <aside class="right-side-panel">
     <h3 class="p-relative"><span class="lstick"></span>¿Cómo se usa?</h3>

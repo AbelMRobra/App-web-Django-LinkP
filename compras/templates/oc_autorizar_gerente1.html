@@ -135,7 +135,7 @@
                                     {% endif %}
                                     {{i.2.proyecto|lower|capfirst}} - {{i.2.numero|lower|capfirst}}</h6>
                             </td>
-                            <td style="font-size: 14px;"><b>$ {{i.2.monto|floatformat:0|intcomma}}</b></td> 
+                            <td style="font-size: 14px;"><b>${{i.2.monto|floatformat:0|intcomma}}</b></td> 
                             {% if i.2.o_c %}<td><div>{{i.2.o_c|upper}}</div>{% else %}<td><div> -</div>{% endif %}</td>
                             
 

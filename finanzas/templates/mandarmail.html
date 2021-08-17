@@ -19,85 +19,87 @@
                 <li class="breadcrumb-item"><a
                         href="{% url 'Cuenta corriente proyecto' datos.venta.proyecto.id %}">Panel</a>
                 </li>
-                <li class="breadcrumb-item">Enviar correo cuenta</li>
+                <li class="breadcrumb-item">Email</li>
             </ol>
         </div>
     </div>
-</div>
-
-<div class="row">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-body row">
-                <div class="col-12 justify-content-center">
-
-                    <div class="row d-flex justify-content-center">
-                        <div class="col col-md-12 col-lg-12 text-center">
-
-                            <img src="{{datos.venta.proyecto.iamgen.url}}" class="img-fluid" alt="..."
-                                style="max-width:200px;width:auto;height:auto; margin-top: 5px; margin-bottom: 5px;">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body row">
+                    <div class="col-12 justify-content-center">
+    
+                        <div class="row d-flex justify-content-center">
+    
+                            <div>
+            
+                                <h4 class="card-title"><span class="lstick m-r-20"></span><b style="color: rgb({{datos.venta.proyecto.color}});">{{datos.venta.unidad.proyecto.nombre}} - {{datos.venta.comprador}}
+                                    ({{datos.venta.unidad.piso_unidad}} - {{datos.venta.unidad.nombre_unidad}})</b> </h4>
+                                <h6 class="card-subtitle"></span>Emails registrados</h6>
+                            </div>
+    
                         </div>
-                        <div class="text-center mt-3">
-                            <h5 style="color: rgb({{datos.venta.proyecto.color}})">
-                                {{ datos.venta.proyecto.nombre}}
-                            </h5>
-                            <h5>{{ datos.venta.comrpador }}</h5>
-                        </div>
+                        <form role="form" enctype="multipart/form-data" action="" method="POST" id="upload-image-form"
+                            style="margin: 30px;">
+                            {% csrf_token %}
+    
+                            <div>
+                                <div style="display: inline-block; margin: 10px; width: 200px;">
+    
+                                    <label for="email">
+                                        <h6>Email de la cuenta</h6>
+                                    </label>
+    
+                                </div>
+    
+                                <div style="display: inline-block; margin: 10px; ">
+    
+                                    <input name="email" type="email" class="form-control form-control"
+                                        value="{{datos.venta.email}}" list="provee" style="width: 300px;" required>
+    
+                                </div>
+                            </div>
+
+                            
+    
+                            <button type="submit" class="btn btn-info"><i class="fa fa-envelope-o text-light"></i>
+                                Enviar</button>
+    
+                            {{ form.as_p }}
+                        </form>
+
+                        <hr>
+    
+    
+                        <table class="table">
+                            <thead>
+                                <th>Fecha</th>
+                                <th>Cuenta corriente</th>
+                                <th style="text-align: center;">Usuario</th>
+                                <th style="text-align: center;">Archivo</th>
+                            </thead>
+    
+                            <tbody>
+                                {% for email in registro_emails %}
+                                <tr>
+                                    <td>{{email.fecha|date:'d/m/Y'}}</td>
+                                    <td>{{email.destino|lower}}</td>
+                                    <td style="text-align: center;">{{email.usuario}}</td>
+                                    <td style="text-align: center;"><a href="{{email.estado_cuenta.url}}" target="_blank"><i
+                                                class="fa fa-file-pdf-o text-danger"></i></a></td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+    
                     </div>
-                    <form role="form" enctype="multipart/form-data" action="" method="POST" id="upload-image-form"
-                        style="margin: 30px;">
-                        {% csrf_token %}
-
-                        <div>
-                            <div style="display: inline-block; margin: 10px; width: 200px;">
-
-                                <label for="email">
-                                    <h6>Email de la cuenta</h6>
-                                </label>
-
-                            </div>
-
-                            <div style="display: inline-block; margin: 10px; ">
-
-                                <input name="email" type="email" class="form-control form-control"
-                                    value="{{datos.venta.email}}" list="provee" style="width: 300px;" required>
-
-                            </div>
-                        </div>
-
-                        <button type="submit" class="btn btn-info"><i class="fa fa-envelope-o text-light"></i>
-                            Enviar</button>
-
-                        {{ form.as_p }}
-                    </form>
-
-
-                    <table class="table">
-                        <thead>
-                            <th>Fecha</th>
-                            <th>Cuenta corriente</th>
-                            <th>Usuario</th>
-                            <th>Archivo</th>
-                        </thead>
-
-                        <tbody>
-                            {% for email in registro_emails %}
-                            <tr>
-                                <td>{{email.fecha|date:'d/m/Y'}}</td>
-                                <td>{{email.destino|lower}}</td>
-                                <td>{{email.usuario}}</td>
-                                <td><a href="{{email.estado_cuenta.url}}" target="_blank"><i
-                                            class="fa fa-file-pdf-o text-danger"></i></a></td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+
 {% if mensaje %}
 
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
