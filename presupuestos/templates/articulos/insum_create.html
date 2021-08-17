@@ -8,38 +8,90 @@
 <div class="container-fluid">
     <div class="row page-titles">
         <div class="col-md-5 align-self-center">
-            <h3 class="text-themecolor">Crear un artículo</h3>
+            <h3 class="text-themecolor">Formulario del articulo</h3>
         </div>
 
         <div class="col-md-7 align-self-center">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
                 <li class="breadcrumb-item"><a href="/presupuestos/insum_panel">Panel de Artículos</a></li>
-                <li class="breadcrumb-item">Crear un artículo</li>
+                <li class="breadcrumb-item">Articulo</li>
             </ol>
         </div>
     </div>
-</div>
 
-<div class="row">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-body d-flex justify-content-center ">
-
-                <div class="col-6 d-flex justify-content-center bg-light p-3">
-
-                    <form method="post">
-                        {% csrf_token %}
-                        {{ form.as_p }}
-                        <p>{{f.mensaje}}</p>
-                        <div class="text-center mt-4">
-                            <button type='submit' class="btn btn-info">Guardar</button>
-                        </div>
-                    </form>
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body d-flex justify-content-center ">
+    
+                    <div class="col-6 d-flex justify-content-center bg-light p-3">
+    
+                        <form method="post">
+                            {% csrf_token %}
+                            {{ form.as_p }}
+                            <p>{{f.mensaje}}</p>
+                            <div class="text-center mt-4">
+                                <button type='submit' class="btn btn-info">Guardar</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+
+
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+{% if mensaje == "no" %}
+
+{% elif mensaje == "ok" %}
+
+
+<script>
+
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 5000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+    })
+
+    Toast.fire({
+        icon: 'success',
+        title: 'Articulo editado correctamente'
+    })
+
+</script>
+{% else %}
+<script>
+
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 10000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+    })
+
+    Toast.fire({
+        icon: 'error',
+        title: '{{mensaje}}'
+    })
+
+</script>
+{% endif %}
 
 {% endblock %}

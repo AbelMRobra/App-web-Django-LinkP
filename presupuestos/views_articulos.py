@@ -74,6 +74,9 @@ def articulos_crear(request):
 
 def articulos_editar(request, id_articulos):
 
+    context = {}
+    context['mensaje'] = 'no'
+
     art = Articulos.objects.get(codigo=id_articulos)
 
     if request.method == 'GET':
@@ -82,9 +85,14 @@ def articulos_editar(request, id_articulos):
         form = ArticulosForm(request.POST, instance = art)
         if form.is_valid():
             form.save()
-        return redirect('Panel de cambios')
+            context['mensaje'] = 'ok'
+        else:
+            context['mensaje'] = 'Hubo un error'
 
-    return render(request, 'articulos/insum_create.html', {'form':form})
+
+    context['form'] = form
+
+    return render(request, 'articulos/insum_create.html', context)
 
 def articulos_eliminar(request, id_articulos):
 
