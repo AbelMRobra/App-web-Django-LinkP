@@ -2,6 +2,7 @@ import os
 import datetime
 import pandas as pd
 import numpy as np
+import random
 from django.db.models import Sum
 from io import  BytesIO
 from xhtml2pdf import pisa
@@ -28,7 +29,7 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.base import MIMEBase
 from email import encoders
 from rrhh.models import datosusuario, RegistroContable
-from .functions import fechas_cc, flujo_ingreso_cliente, flujo_ingreso_proyecto, promedio_almacenero, registroemail
+from .functions import fechas_cc, flujo_ingreso_cliente, flujo_ingreso_proyecto, promedio_almacenero, registroemail, resumen_cuentas
 
 
 # Create your views here.
@@ -3341,246 +3342,36 @@ Saludos!
 
 def cuentacte_resumen(request):
 
-    data_project = []
-    data_project_proyecto = []
-    data_project_link = []
-    data_project_terreno = []
-    data_project_b = []
 
-    list_p = Cuota.objects.values_list("cuenta_corriente__venta__proyecto__id", flat = True)
-    list_p = list(set(list_p))
+    if len(Cuota.objects.values_list("cuenta_corriente__venta__proyecto__id", flat = True)) > 0:
 
-    # Total de las cuentas 
-    cuotas_anteriores_t = 0
-    pagos_anteriores_t = 0
-    deuda_t = 0
-    cuotas_posterior_t = 0
-    pagos_posterior_t = 0
-    pagos_pesos_t = 0
-    adelantos_t = 0
+        list_p = Cuota.objects.values_list("cuenta_corriente__venta__proyecto__id", flat = True)
+        list_p = list(set(list_p))
 
-    # Total de las proyecto
-    cuotas_anteriores_t_proyecto = 0
-    pagos_anteriores_t_proyecto = 0
-    deuda_t_proyecto = 0
-    cuotas_posterior_t_proyecto = 0
-    pagos_posterior_t_proyecto = 0
-    pagos_pesos_t_proyecto = 0
-    adelantos_t_proyecto = 0
+        id_proyecto = random.choice(list_p)
 
-    # Total de las link
-    cuotas_anteriores_t_link = 0
-    pagos_anteriores_t_link = 0
-    deuda_t_link = 0
-    cuotas_posterior_t_link = 0
-    pagos_posterior_t_link = 0
-    pagos_pesos_t_link = 0
-    adelantos_t_link = 0
+        lista_proyecto = []
+        for l in list_p:
+            aux = Proyectos.objects.get(id = int(l))
+            lista_proyecto.append(aux)
 
-    # Total de las terreno
-    cuotas_anteriores_t_terreno = 0
-    pagos_anteriores_t_terreno = 0
-    deuda_t_terreno = 0
-    cuotas_posterior_t_terreno = 0
-    pagos_posterior_t_terreno = 0
-    pagos_pesos_t_terreno = 0
-    adelantos_t_terreno = 0 
+        if request.method == 'POST':
 
-    for project in list_p:
+            proyecto_elegido = request.POST["proyecto"].split("-")
+            id_proyecto = proyecto_elegido[0]
+            
+        data_proyecto = resumen_cuentas(id_proyecto)
+        context = {}
+        context["proyecto"] = Proyectos.objects.get(id = int(id_proyecto))
+        context["data_cuadro"] = data_proyecto
+        context["lista_proyecto"] = lista_proyecto
 
-        # Total de las cuentas
+    else:
+        context = {}
+        context["sin_data"] = 1
 
-        proyecto = Proyectos.objects.get(id = int(project))
 
-        today = datetime.date.today()
-
-        cuotas_anteriores = sum(np.array(Cuota.objects.values_list('precio', flat=True).filter(fecha__lt = today, cuenta_corriente__venta__proyecto__id = project))*np.array(Cuota.objects.values_list('constante__valor', flat=True).filter(fecha__lt = today, cuenta_corriente__venta__proyecto__id = project)))
-        pagos_anteriores = sum(np.array(Pago.objects.values_list('pago', flat=True).filter(cuota__fecha__lt = today, cuota__cuenta_corriente__venta__proyecto__id = project))*np.array(Pago.objects.values_list('cuota__constante__valor', flat=True).filter(cuota__fecha__lt = today, cuota__cuenta_corriente__venta__proyecto__id = project)))
-        deuda = cuotas_anteriores - pagos_anteriores
-
-        cuotas_posterior = sum(np.array(Cuota.objects.values_list('precio', flat=True).filter(fecha__gte = today, cuenta_corriente__venta__proyecto__id = project))*np.array(Cuota.objects.values_list('constante__valor', flat=True).filter(fecha__gte = today, cuenta_corriente__venta__proyecto__id = project)))
-        pagos_posterior= sum(np.array(Pago.objects.values_list('pago', flat=True).filter(cuota__fecha__gte = today, cuota__cuenta_corriente__venta__proyecto__id = project))*np.array(Pago.objects.values_list('cuota__constante__valor', flat=True).filter(cuota__fecha__gte = today, cuota__cuenta_corriente__venta__proyecto__id = project)))
-        pagos_pesos= sum(np.array(Pago.objects.values_list('pago_pesos', flat=True).filter(cuota__fecha__lt = today, cuota__cuenta_corriente__venta__proyecto__id = project)))
-        adelantos = cuotas_posterior - pagos_posterior
-
-        # Acomodo para valores considerando adelantos
-
-        cuotas_posterior = cuotas_posterior - pagos_posterior
-
-        array_pesos = np.array([cuotas_anteriores, pagos_anteriores, deuda, cuotas_posterior, pagos_posterior, adelantos])
-        array_h = array_pesos/Constantes.objects.get(id = 7).valor
-
-        cuotas_anteriores_t += cuotas_anteriores
-        pagos_anteriores_t += pagos_anteriores
-        deuda_t += deuda
-        cuotas_posterior_t += cuotas_posterior
-        pagos_posterior_t += pagos_posterior
-        pagos_pesos_t += pagos_pesos
-        adelantos_t += adelantos
-
-        data_project.append((proyecto, array_pesos, array_h, pagos_pesos))
-
-        # Total de las cuentas pero proyecto
-
-        cuotas_anteriores = sum(np.array(Cuota.objects.values_list('precio', flat=True).filter(fecha__lt = today, cuenta_corriente__venta__proyecto__id = project, cuenta_corriente__venta__unidad__asig = "PROYECTO"))*np.array(Cuota.objects.values_list('constante__valor', flat=True).filter(fecha__lt = today, cuenta_corriente__venta__proyecto__id = project, cuenta_corriente__venta__unidad__asig = "PROYECTO")))
-        pagos_anteriores = sum(np.array(Pago.objects.values_list('pago', flat=True).filter(cuota__fecha__lt = today, cuota__cuenta_corriente__venta__proyecto__id = project, cuota__cuenta_corriente__venta__unidad__asig = "PROYECTO"))*np.array(Pago.objects.values_list('cuota__constante__valor', flat=True).filter(cuota__fecha__lt = today, cuota__cuenta_corriente__venta__proyecto__id = project, cuota__cuenta_corriente__venta__unidad__asig = "PROYECTO")))
-        deuda = cuotas_anteriores - pagos_anteriores
-
-        cuotas_posterior = sum(np.array(Cuota.objects.values_list('precio', flat=True).filter(fecha__gte = today, cuenta_corriente__venta__proyecto__id = project, cuenta_corriente__venta__unidad__asig = "PROYECTO"))*np.array(Cuota.objects.values_list('constante__valor', flat=True).filter(fecha__gte = today, cuenta_corriente__venta__proyecto__id = project, cuenta_corriente__venta__unidad__asig = "PROYECTO")))
-        pagos_posterior= sum(np.array(Pago.objects.values_list('pago', flat=True).filter(cuota__fecha__gte = today, cuota__cuenta_corriente__venta__proyecto__id = project, cuota__cuenta_corriente__venta__unidad__asig = "PROYECTO"))*np.array(Pago.objects.values_list('cuota__constante__valor', flat=True).filter(cuota__fecha__gte = today, cuota__cuenta_corriente__venta__proyecto__id = project, cuota__cuenta_corriente__venta__unidad__asig = "PROYECTO")))
-        pagos_pesos= sum(np.array(Pago.objects.values_list('pago_pesos', flat=True).filter(cuota__fecha__lt = today, cuota__cuenta_corriente__venta__proyecto__id = project, cuota__cuenta_corriente__venta__unidad__asig = "PROYECTO")))
-        adelantos = cuotas_posterior - pagos_posterior
-
-        # Acomodo para valores considerando adelantos
-
-        cuotas_posterior = cuotas_posterior - pagos_posterior
-
-        array_pesos = np.array([cuotas_anteriores, pagos_anteriores, deuda, cuotas_posterior, pagos_posterior, adelantos])
-        array_h = array_pesos/Constantes.objects.get(id = 7).valor
-
-        cuotas_anteriores_t_proyecto += cuotas_anteriores
-        pagos_anteriores_t_proyecto += pagos_anteriores
-        deuda_t_proyecto += deuda
-        cuotas_posterior_t_proyecto += cuotas_posterior
-        pagos_posterior_t_proyecto += pagos_posterior
-        pagos_pesos_t_proyecto += pagos_pesos
-        adelantos_t_proyecto += adelantos
-
-        data_project_proyecto.append((proyecto, array_pesos, array_h, pagos_pesos))
-
-        # Total de las cuentas pero link
-
-        cuotas_anteriores = sum(np.array(Cuota.objects.values_list('precio', flat=True).filter(fecha__lt = today, cuenta_corriente__venta__proyecto__id = project, cuenta_corriente__venta__unidad__asig = "HON. LINK"))*np.array(Cuota.objects.values_list('constante__valor', flat=True).filter(fecha__lt = today, cuenta_corriente__venta__proyecto__id = project, cuenta_corriente__venta__unidad__asig = "HON. LINK")))
-        pagos_anteriores = sum(np.array(Pago.objects.values_list('pago', flat=True).filter(cuota__fecha__lt = today, cuota__cuenta_corriente__venta__proyecto__id = project, cuota__cuenta_corriente__venta__unidad__asig = "HON. LINK"))*np.array(Pago.objects.values_list('cuota__constante__valor', flat=True).filter(cuota__fecha__lt = today, cuota__cuenta_corriente__venta__proyecto__id = project, cuota__cuenta_corriente__venta__unidad__asig = "HON. LINK")))
-        deuda = cuotas_anteriores - pagos_anteriores
-
-        cuotas_posterior = sum(np.array(Cuota.objects.values_list('precio', flat=True).filter(fecha__gte = today, cuenta_corriente__venta__proyecto__id = project, cuenta_corriente__venta__unidad__asig = "HON. LINK"))*np.array(Cuota.objects.values_list('constante__valor', flat=True).filter(fecha__gte = today, cuenta_corriente__venta__proyecto__id = project, cuenta_corriente__venta__unidad__asig = "HON. LINK")))
-        pagos_posterior= sum(np.array(Pago.objects.values_list('pago', flat=True).filter(cuota__fecha__gte = today, cuota__cuenta_corriente__venta__proyecto__id = project, cuota__cuenta_corriente__venta__unidad__asig = "HON. LINK"))*np.array(Pago.objects.values_list('cuota__constante__valor', flat=True).filter(cuota__fecha__gte = today, cuota__cuenta_corriente__venta__proyecto__id = project, cuota__cuenta_corriente__venta__unidad__asig = "HON. LINK")))
-        pagos_pesos= sum(np.array(Pago.objects.values_list('pago_pesos', flat=True).filter(cuota__fecha__lt = today, cuota__cuenta_corriente__venta__proyecto__id = project, cuota__cuenta_corriente__venta__unidad__asig = "HON. LINK")))
-        adelantos = cuotas_posterior - pagos_posterior
-
-        # Acomodo para valores considerando adelantos
-
-        cuotas_posterior = cuotas_posterior - pagos_posterior
-
-        array_pesos = np.array([cuotas_anteriores, pagos_anteriores, deuda, cuotas_posterior, pagos_posterior, adelantos])
-        array_h = array_pesos/Constantes.objects.get(id = 7).valor
-
-        cuotas_anteriores_t_link += cuotas_anteriores
-        pagos_anteriores_t_link += pagos_anteriores
-        deuda_t_link += deuda
-        cuotas_posterior_t_link += cuotas_posterior
-        pagos_posterior_t_link += pagos_posterior
-        pagos_pesos_t_link += pagos_pesos
-        adelantos_t_link += adelantos
-
-        data_project_link.append((proyecto, array_pesos, array_h, pagos_pesos))
-
-        # Total de las cuentas pero terreno
-
-        cuotas_anteriores = sum(np.array(Cuota.objects.values_list('precio', flat=True).filter(fecha__lt = today, cuenta_corriente__venta__proyecto__id = project, cuenta_corriente__venta__unidad__asig = "TERRENO"))*np.array(Cuota.objects.values_list('constante__valor', flat=True).filter(fecha__lt = today, cuenta_corriente__venta__proyecto__id = project, cuenta_corriente__venta__unidad__asig = "TERRENO")))
-        pagos_anteriores = sum(np.array(Pago.objects.values_list('pago', flat=True).filter(cuota__fecha__lt = today, cuota__cuenta_corriente__venta__proyecto__id = project, cuota__cuenta_corriente__venta__unidad__asig = "TERRENO"))*np.array(Pago.objects.values_list('cuota__constante__valor', flat=True).filter(cuota__fecha__lt = today, cuota__cuenta_corriente__venta__proyecto__id = project, cuota__cuenta_corriente__venta__unidad__asig = "TERRENO")))
-        deuda = cuotas_anteriores - pagos_anteriores
-
-        cuotas_posterior = sum(np.array(Cuota.objects.values_list('precio', flat=True).filter(fecha__gte = today, cuenta_corriente__venta__proyecto__id = project, cuenta_corriente__venta__unidad__asig = "TERRENO"))*np.array(Cuota.objects.values_list('constante__valor', flat=True).filter(fecha__gte = today, cuenta_corriente__venta__proyecto__id = project, cuenta_corriente__venta__unidad__asig = "TERRENO")))
-        pagos_posterior= sum(np.array(Pago.objects.values_list('pago', flat=True).filter(cuota__fecha__gte = today, cuota__cuenta_corriente__venta__proyecto__id = project, cuota__cuenta_corriente__venta__unidad__asig = "TERRENO"))*np.array(Pago.objects.values_list('cuota__constante__valor', flat=True).filter(cuota__fecha__gte = today, cuota__cuenta_corriente__venta__proyecto__id = project, cuota__cuenta_corriente__venta__unidad__asig = "TERRENO")))
-        pagos_pesos= sum(np.array(Pago.objects.values_list('pago_pesos', flat=True).filter(cuota__fecha__lt = today, cuota__cuenta_corriente__venta__proyecto__id = project, cuota__cuenta_corriente__venta__unidad__asig = "TERRENO")))
-        adelantos = cuotas_posterior - pagos_posterior
-
-        # Acomodo para valores considerando adelantos
-
-        cuotas_posterior = cuotas_posterior - pagos_posterior
-
-        array_pesos = np.array([cuotas_anteriores, pagos_anteriores, deuda, cuotas_posterior, pagos_posterior, adelantos])
-        array_h = array_pesos/Constantes.objects.get(id = 7).valor
-
-        cuotas_anteriores_t_terreno += cuotas_anteriores
-        pagos_anteriores_t_terreno += pagos_anteriores
-        deuda_t_terreno += deuda
-        cuotas_posterior_t_terreno += cuotas_posterior
-        pagos_posterior_t_terreno += pagos_posterior
-        pagos_pesos_t_terreno += pagos_pesos
-        adelantos_t_terreno += adelantos
-
-        data_project_terreno.append((proyecto, array_pesos, array_h, pagos_pesos))
-
-    array_total = [cuotas_anteriores_t, pagos_pesos_t, deuda_t, cuotas_posterior_t, pagos_posterior_t, adelantos_t]
-    array_total_h = np.array(array_total)/Constantes.objects.get(id = 7).valor
-    array_total_proyecto = [cuotas_anteriores_t_proyecto, pagos_pesos_t_proyecto, deuda_t_proyecto, cuotas_posterior_t_proyecto, pagos_posterior_t_proyecto, adelantos_t_proyecto]
-    array_total_proyecto_h = np.array(array_total)/Constantes.objects.get(id = 7).valor
-    array_total_link = [cuotas_anteriores_t_link, pagos_pesos_t_link, deuda_t_link, cuotas_posterior_t_link, pagos_posterior_t_link, adelantos_t_link]
-    array_total_terreno = [cuotas_anteriores_t_terreno, pagos_pesos_t_terreno, deuda_t_terreno, cuotas_posterior_t_terreno, pagos_posterior_t_terreno, adelantos_t_terreno]
-
-    array_total_h = list(array_total_h)
-    array_total_h.append(pagos_anteriores_t/Constantes.objects.get(id = 7).valor)
-
-    array_total_proyecto_h = list(array_total_proyecto_h)
-    array_total_proyecto_h.append(pagos_anteriores_t/Constantes.objects.get(id = 7).valor)
-
-    cuotas_anteriores_b_t = 0
-    pagos_anteriores_b_t = 0
-    deuda_b_t = 0
-    cuotas_posterior_b_t = 0
-    pagos_posterior_b_t = 0
-    pagos_pesos_b_t = 0
-    adelantos_b_t = 0
-
-    for project in list_p:
-
-        proyecto = Proyectos.objects.get(id = int(project))
-
-        today = datetime.date.today()
-
-        cuotas_anteriores = sum(np.array(Cuota.objects.values_list('precio', flat=True).filter(fecha__lt = today, cuenta_corriente__venta__proyecto__id = project).exclude(porc_boleto = None))*np.array(Cuota.objects.values_list('constante__valor', flat=True).filter(fecha__lt = today, cuenta_corriente__venta__proyecto__id = project).exclude(porc_boleto = None))*np.array(Cuota.objects.values_list('porc_boleto', flat=True).filter(fecha__lt = today, cuenta_corriente__venta__proyecto__id = project).exclude(porc_boleto = None)))
-        pagos_anteriores = sum(np.array(Pago.objects.values_list('pago', flat=True).filter(cuota__fecha__lt = today, cuota__cuenta_corriente__venta__proyecto__id = project).exclude(cuota__porc_boleto = None))*np.array(Pago.objects.values_list('cuota__constante__valor', flat=True).filter(cuota__fecha__lt = today, cuota__cuenta_corriente__venta__proyecto__id = project).exclude(cuota__porc_boleto = None))*np.array(Pago.objects.values_list('cuota__porc_boleto', flat=True).filter(cuota__fecha__lt = today, cuota__cuenta_corriente__venta__proyecto__id = project).exclude(cuota__porc_boleto = None)))
-        deuda = cuotas_anteriores - pagos_anteriores
-
-        cuotas_posterior = sum(np.array(Cuota.objects.values_list('precio', flat=True).filter(fecha__gte = today, cuenta_corriente__venta__proyecto__id = project).exclude(porc_boleto = None))*np.array(Cuota.objects.values_list('constante__valor', flat=True).filter(fecha__gte = today, cuenta_corriente__venta__proyecto__id = project).exclude(porc_boleto = None))*np.array(Cuota.objects.values_list('porc_boleto', flat=True).filter(fecha__gte = today, cuenta_corriente__venta__proyecto__id = project).exclude(porc_boleto = None)))
-        pagos_posterior= sum(np.array(Pago.objects.values_list('pago', flat=True).filter(cuota__fecha__gte = today, cuota__cuenta_corriente__venta__proyecto__id = project).exclude(cuota__porc_boleto = None))*np.array(Pago.objects.values_list('cuota__constante__valor', flat=True).filter(cuota__fecha__gte = today, cuota__cuenta_corriente__venta__proyecto__id = project).exclude(cuota__porc_boleto = None))*np.array(Pago.objects.values_list('cuota__porc_boleto', flat=True).filter(cuota__fecha__gte = today, cuota__cuenta_corriente__venta__proyecto__id = project).exclude(cuota__porc_boleto = None)))
-        pagos_pesos= sum(np.array(Pago.objects.values_list('pago_pesos', flat=True).filter(cuota__fecha__gte = today, cuota__cuenta_corriente__venta__proyecto__id = project)))
-        adelantos = cuotas_posterior - pagos_posterior
-
-        # Acomodo para valores considerando adelantos
-
-        cuotas_posterior = cuotas_posterior - pagos_posterior
-
-        array_pesos = np.array([cuotas_anteriores, pagos_anteriores, deuda, cuotas_posterior, pagos_posterior, adelantos])
-        array_h = array_pesos/Constantes.objects.get(id = 7).valor
-
-        cuotas_anteriores_b_t += cuotas_anteriores
-        pagos_anteriores_b_t += pagos_anteriores
-        deuda_b_t += deuda
-        cuotas_posterior_b_t += cuotas_posterior
-        pagos_posterior_b_t += pagos_posterior
-        pagos_pesos_b_t += pagos_pesos
-        adelantos_b_t += adelantos
-
-        data_project_b.append((proyecto, array_pesos, array_h, pagos_pesos))
-
-    array_b_total = [cuotas_anteriores_b_t, pagos_pesos_b_t, deuda_b_t, cuotas_posterior_b_t, pagos_posterior_b_t, adelantos_b_t]
-
-    data = CuentaCorriente.objects.all()
-
-    fecha_inicial_hoy = datetime.date.today()
-
-    datos = []
-
-    for c in data:
-
-        pagos = sum(np.array(Pago.objects.values_list('pago_pesos').filter(cuota__cuenta_corriente = c)))
-        
-        cuotas_anteriores = sum(np.array(Cuota.objects.values_list('precio', flat=True).filter(fecha__lte = fecha_inicial_hoy, cuenta_corriente = c))*np.array(Cuota.objects.values_list('constante__valor', flat=True).filter(fecha__lte = fecha_inicial_hoy, cuenta_corriente = c)))
-        pagos_anteriores = sum(np.array(Pago.objects.values_list('pago', flat=True).filter(cuota__fecha__lte = fecha_inicial_hoy, cuota__cuenta_corriente = c))*np.array(Pago.objects.values_list('cuota__constante__valor', flat=True).filter(cuota__fecha__lte = fecha_inicial_hoy, cuota__cuenta_corriente = c)))
-        cuotas_posteriores = sum(np.array(Cuota.objects.values_list('precio', flat=True).filter(fecha__gt = fecha_inicial_hoy, cuenta_corriente = c))*np.array(Cuota.objects.values_list('constante__valor', flat=True).filter(fecha__gt = fecha_inicial_hoy, cuenta_corriente = c)))
-        adelantos = sum(np.array(Pago.objects.values_list('pago', flat=True).filter(cuota__fecha__gt = fecha_inicial_hoy, cuota__cuenta_corriente = c))*np.array(Pago.objects.values_list('cuota__constante__valor', flat=True).filter(cuota__fecha__gt = fecha_inicial_hoy, cuota__cuenta_corriente = c)))
-        
-        
-        adeudado = cuotas_anteriores - pagos_anteriores
-        pendiente = cuotas_posteriores - adelantos
-        
-        datos.append((c, pagos, adeudado, pendiente))
-
-    return render(request, 'ctacte_resumen.html', {"datos":datos, "data_project_link":data_project_link,"data_project_terreno":data_project_terreno,"data_project_proyecto":data_project_proyecto,"data_project":data_project, "data_project_b":data_project_b, "array_total_link":array_total_link,"array_total_terreno":array_total_terreno,"array_total_proyecto":array_total_proyecto,"array_total":array_total, "array_total_h":array_total_h, "array_total_proyecto_h":array_total_proyecto_h, "array_b_total":array_b_total})
+    return render(request, 'ctacte_resumen.html', context)
 
 def calculadora (request):
 
