@@ -19,230 +19,232 @@
             </ol>
         </div>
     </div>
-</div>
 
-<div class="row">
-    <div class="col-lg-6 col-md-12">
-        <div class="card">
-            <div class="card-body">
-                <div class="d-flex">
-                    <div>
-                        <h4 class="card-title"><span class="lstick"></span>Resumen de datos</h4>
+    <div class="row">
+        <div class="col-lg-6 col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex">
+                        <div>
+                            <h4 class="card-title"><span class="lstick"></span>Resumen de datos</h4>
+                        </div>
+    
                     </div>
-
+    
+                    <div class="m-t-10">
+                        <h5 class="m-b-0 font-medium">Fecha del arqueo: {{ data_cruda.fecha|date:"d-m-Y" }}</h5>
+                        <h6 class="text-muted">De esta fecha se alimenta los datos</h6>
+                    </div>
+                    <div class="m-t-10">
+                        <h5 class="m-b-0 font-medium">Efectivo: $ {{otros_datos.2|floatformat:0|intcomma}}</h5>
+                        <h6 class="text-muted">Liquidez en pesos</h6>
+                    </div>
+                    <div class="m-t-10">
+                        <h5 class="m-b-0 font-medium">Bancos: $ {{otros_datos.4|floatformat:0|intcomma}}</h5>
+                        <h6 class="text-muted">Suma de todos los bancos</h6>
+                    </div>
+                    <div class="m-t-10">
+                        <h5 class="m-b-0 font-medium">Cheques: $ {{otros_datos.3|floatformat:0|intcomma}}</h5>
+                        <h6 class="text-muted">Suma de valores cheques a cobrar</h6>
+                    </div>
+                    <div class="m-t-10">
+                        <h5 class="m-b-0 font-medium">Dolares: U$D {{otros_datos.0|floatformat:0|intcomma}}</h5>
+                        <h6 class="text-muted">Liquidez en dolares, tipo de cambio ${{ cambio_usd|floatformat:0|intcomma }}
+                        </h6>
+                    </div>
+                    <div class="m-t-10">
+                        <h5 class="m-b-0 font-medium">Euros: € {{otros_datos.1|floatformat:0|intcomma}}</h5>
+                        <h6 class="text-muted">Liquidez en Euros, tipo de cambio ${{ cambio_euro|floatformat:0|intcomma }}
+                        </h6>
+                    </div>
+                    <div class="m-t-10">
+                        <h5 class="m-b-0 font-medium">Total historico: $ {{otros_datos.5|floatformat:0|intcomma}}</h5>
+                        <h6 class="text-muted">Caja consolidada en pesos historica</h6>
+    
+                        <!-- Este es el total de la caja {{otros_datos.5|floatformat:0|intcomma}}-->
+                    </div>
+                    <div class="m-t-10">
+                        <h5 class="m-b-0 font-medium">Total: $ {{otros_datos.6|floatformat:0|intcomma}}</h5>
+                        <h6 class="text-muted">Caja consolidada en pesos a valores de hoy</h6>
+    
+                        <!-- Este es el total de la caja {{otros_datos.5|floatformat:0|intcomma}}-->
+                    </div>
+    
+                    <div class="m-t-10">
+                        <h5 class="m-b-0 font-medium text-info">Inversiones: $ {{otros_datos.8|floatformat:0|intcomma}}</h5>
+                        <h5 class="m-b-0 mt-2 font-medium text-info">Inversiones USD: $ {{otros_datos.9|floatformat:0|intcomma}}</h5>
+    
+                        <!-- Este es el total de la caja {{otros_datos.5|floatformat:0|intcomma}}-->
+                    </div>
+    
                 </div>
-
-                <div class="m-t-10">
-                    <h5 class="m-b-0 font-medium">Fecha del arqueo: {{ data_cruda.fecha|date:"d-m-Y" }}</h5>
-                    <h6 class="text-muted">De esta fecha se alimenta los datos</h6>
-                </div>
-                <div class="m-t-10">
-                    <h5 class="m-b-0 font-medium">Efectivo: $ {{otros_datos.2|floatformat:0|intcomma}}</h5>
-                    <h6 class="text-muted">Liquidez en pesos</h6>
-                </div>
-                <div class="m-t-10">
-                    <h5 class="m-b-0 font-medium">Bancos: $ {{otros_datos.4|floatformat:0|intcomma}}</h5>
-                    <h6 class="text-muted">Suma de todos los bancos</h6>
-                </div>
-                <div class="m-t-10">
-                    <h5 class="m-b-0 font-medium">Cheques: $ {{otros_datos.3|floatformat:0|intcomma}}</h5>
-                    <h6 class="text-muted">Suma de valores cheques a cobrar</h6>
-                </div>
-                <div class="m-t-10">
-                    <h5 class="m-b-0 font-medium">Dolares: U$D {{otros_datos.0|floatformat:0|intcomma}}</h5>
-                    <h6 class="text-muted">Liquidez en dolares, tipo de cambio ${{ cambio_usd|floatformat:0|intcomma }}
-                    </h6>
-                </div>
-                <div class="m-t-10">
-                    <h5 class="m-b-0 font-medium">Euros: € {{otros_datos.1|floatformat:0|intcomma}}</h5>
-                    <h6 class="text-muted">Liquidez en Euros, tipo de cambio ${{ cambio_euro|floatformat:0|intcomma }}
-                    </h6>
-                </div>
-                <div class="m-t-10">
-                    <h5 class="m-b-0 font-medium">Total historico: $ {{otros_datos.5|floatformat:0|intcomma}}</h5>
-                    <h6 class="text-muted">Caja consolidada en pesos historica</h6>
-
-                    <!-- Este es el total de la caja {{otros_datos.5|floatformat:0|intcomma}}-->
-                </div>
-                <div class="m-t-10">
-                    <h5 class="m-b-0 font-medium">Total: $ {{otros_datos.6|floatformat:0|intcomma}}</h5>
-                    <h6 class="text-muted">Caja consolidada en pesos a valores de hoy</h6>
-
-                    <!-- Este es el total de la caja {{otros_datos.5|floatformat:0|intcomma}}-->
-                </div>
-
-                <div class="m-t-10">
-                    <h5 class="m-b-0 font-medium text-info">Inversiones: $ {{otros_datos.8|floatformat:0|intcomma}}</h5>
-                    <h5 class="m-b-0 mt-2 font-medium text-info">Inversiones USD: $ {{otros_datos.9|floatformat:0|intcomma}}</h5>
-
-                    <!-- Este es el total de la caja {{otros_datos.5|floatformat:0|intcomma}}-->
-                </div>
-
             </div>
         </div>
-    </div>
-
-    <div class="col-lg-6 col-md-12">
-        <div class="card">
-            <div class="card-body">
-                <div class="d-flex">
-                    <div>
-                        <h4 class="card-title"><span class="lstick"></span>Proporción</h4>
+    
+        <div class="col-lg-6 col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex">
+                        <div>
+                            <h4 class="card-title"><span class="lstick"></span>Proporción</h4>
+                        </div>
+    
                     </div>
-
-                </div>
-
-                <div style="display: inline-block; width: 310px; margin: 10px;">
-
-                    <canvas id="myChart2"></canvas>
-
-                </div>
-
-                <table class="table vm font-14">
-                    <tr>
-                        <td class="b-0">Moneda extranjera</td>
-                        <td class="text-right font-medium b-0"><script>document.write(Math.round(Math.round({{otros_datos.7|floatformat:0}})/Math.round({{otros_datos.6|floatformat:0}})*100))</script>%</td>
-                    </tr>
-                    <tr>
-                        <td>Efectivo</td>
-                        <td class="text-right font-medium"><script>document.write(Math.round(Math.round({{grafico.0.2|floatformat:0}})/Math.round({{otros_datos.6|floatformat:0}})*100))</script>%</td>
-                    </tr>
-                    <tr>
-                        <td>Banco</td>
-                        <td class="text-right font-medium"><script>document.write(Math.round(Math.round({{grafico.0.3|floatformat:0}})/Math.round({{otros_datos.6|floatformat:0}})*100))</script>%</td>
-                    </tr>
-                    <tr>
-                        <td>Cheque</td>
-                        <td class="text-right font-medium"><script>document.write(Math.round(Math.round({{grafico.0.4|floatformat:0}})/Math.round({{otros_datos.6|floatformat:0}})*100))</script>%</td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-12">
-        <div class="card">
-            <div class="card-body">
-                <h4 class="card-title">Detalle por proyecto</h4>
-                <h6 class="card-subtitle">Resumen de datos</h6>
-                <div class="table-responsive">
-                    <table class="table table-bordered" style="width: 99%;">
-                        <thead style="font-size: 14px;">
-                            <tr>
-                                <th>Proyecto</th>
-                                <th>Efectivo</th>
-                                <th>Banco</th>
-                                <th>Cheques</th>
-                                <th>Moneda Ext.</th>
-                                <th>Caja Historica</th>
-                                <th>Dolares</th>
-                                <th>Euros</th>
-                                <th>Inversiones</th>
-
-                            </tr>
-                        </thead>
-
-                        <tbody style="font-size: 12px;">
-
-                            {% for i in datos %}
-
-                            <tr>
-
-                                <td style="max-width: 150px;"
-                                    {% if i.0 %} class="text-success" {% else %} class="text-info" {% endif %}>
-
-                                    {{ i.1|lower|capfirst }}
-      
-                                </td>
-
-                                <td>${{ i.2|floatformat:0|intcomma }}</td>
-                                <td><a type="button" class="text-info" data-toggle="modal"
-                                        data-target="#ModalArqueo{{i.1|cut:' '|cut:'('|cut:')'}}">${{ i.7|floatformat:0|intcomma }}</a></td>
-                                <td><a type="button" class="text-info" data-toggle="modal"
-                                        data-target="#ModalCheques{{i.1|cut:' '|cut:'('|cut:')'}}">${{ i.5|floatformat:0|intcomma }}</a></td>
-                                <td>${{ i.6|floatformat:0|intcomma }}</td>
-                                <td>${{ i.8|floatformat:0|intcomma }}</td>
-                                <td style="color: rgb(89, 171, 70);">U$S_{{ i.3|floatformat:0|intcomma }}</td>
-                                <td style="color: rgb(76, 88, 173)">€_{{ i.4|floatformat:0|intcomma }}</td>
-                                <td style="color: rgb(76, 88, 173)">${{i.11|floatformat:0|intcomma}}</td>
-
-
-
-                            </tr>
-                            <!-- Modal registro bancos-->
-                            <div class="modal fade" id="ModalArqueo{{i.1|cut:' '|cut:'('|cut:')'}}" tabindex="-1"
-                                role="dialog" aria-labelledby="ModalArqueo" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header" style="background: rgb(33, 74, 99);
-                                        background: linear-gradient(315deg, rgba(36,160,237,1) 0%, rgba(56,56,130,1) 22%, rgba(0,212,255,1) 100%);">
-                                            <h5 class="modal-title text-light" id="exampleModalLongTitle">Registro por bancos</h5>
-                                            <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <div class="modal-body" style="font-size: 12px;">
-                                            {% for i in i.9 %}
-                                            <span class="font-bold">{{i.0}}</span>
-
-                                            <p>${{i.1|floatformat:0|intcomma }}</p>
-                                            {% endfor %}
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-info"
-                                                data-dismiss="modal">Cerrar</button>
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                      
-                            <!-- Modal cheques-->
-                            <div class="modal fade" id="ModalCheques{{i.1|cut:' '|cut:'('|cut:')'}}" tabindex="-1"
-                                role="dialog" aria-labelledby="ModalCheques" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header" style="background: rgb(33, 74, 99);
-                                        background: linear-gradient(315deg, rgba(36,160,237,1) 0%, rgba(56,56,130,1) 22%, rgba(0,212,255,1) 100%);">
-                                            <h5 class="modal-title text-light" id="exampleModalLongTitle">Registro cheques</h5>
-                                            <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <div class="modal-body">
-
-                                        {% for a in i.10 %}
-                                        <div class="row">
-                                            <div class="col-5"><h6>{{a.1}}</h6></span>
-                                            <h6 class="card-subtitle" style="font-size: 10px; margin-top: 2px;">{{a.0}}</h6></div>
-                                            <div class="col-3"><h6 style="font-size: 12px;">E: {{a.2|date:"d/m/Y"}}</h6>
-                                            <h6 style="font-size: 12px;">V: {{a.3|date:"d/m/Y"}}</h6></div>
-                                            <div class="col-4"><h6>$ {{a.4|floatformat:0|intcomma}}</h6>
-                                                <h6 class="card-subtitle" style="font-size: 10px; margin-top: 2px;">
-                                                    {{a.5}}</h6>
-                                                </div>
-                                        </div>
-                                        {% endfor %}
-                                         
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-info"
-                                                data-dismiss="modal">Cerrar</button>
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            {% endfor %}
-                        </tbody>
+    
+                    <div style="display: inline-block; width: 310px; margin: 10px;">
+    
+                        <canvas id="myChart2"></canvas>
+    
+                    </div>
+    
+                    <table class="table vm font-14">
+                        <tr>
+                            <td class="b-0">Moneda extranjera</td>
+                            <td class="text-right font-medium b-0"><script>document.write(Math.round(Math.round({{otros_datos.7|floatformat:0}})/Math.round({{otros_datos.6|floatformat:0}})*100))</script>%</td>
+                        </tr>
+                        <tr>
+                            <td>Efectivo</td>
+                            <td class="text-right font-medium"><script>document.write(Math.round(Math.round({{grafico.0.2|floatformat:0}})/Math.round({{otros_datos.6|floatformat:0}})*100))</script>%</td>
+                        </tr>
+                        <tr>
+                            <td>Banco</td>
+                            <td class="text-right font-medium"><script>document.write(Math.round(Math.round({{grafico.0.3|floatformat:0}})/Math.round({{otros_datos.6|floatformat:0}})*100))</script>%</td>
+                        </tr>
+                        <tr>
+                            <td>Cheque</td>
+                            <td class="text-right font-medium"><script>document.write(Math.round(Math.round({{grafico.0.4|floatformat:0}})/Math.round({{otros_datos.6|floatformat:0}})*100))</script>%</td>
+                        </tr>
                     </table>
-
+                </div>
+            </div>
+        </div>
+    
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Detalle por proyecto</h4>
+                    <h6 class="card-subtitle">Resumen de datos</h6>
+                    <div class="table-responsive">
+                        <table class="table table-bordered" style="width: 99%;">
+                            <thead style="font-size: 14px;">
+                                <tr>
+                                    <th>Proyecto</th>
+                                    <th>Efectivo</th>
+                                    <th>Banco</th>
+                                    <th>Cheques</th>
+                                    <th>Moneda Ext.</th>
+                                    <th>Caja Historica</th>
+                                    <th>Dolares</th>
+                                    <th>Euros</th>
+                                    <th>Inversiones</th>
+    
+                                </tr>
+                            </thead>
+    
+                            <tbody style="font-size: 12px;">
+    
+                                {% for i in datos %}
+    
+                                <tr>
+    
+                                    <td style="max-width: 150px;"
+                                        {% if i.0 %} class="text-success" {% else %} class="text-info" {% endif %}>
+    
+                                        {{ i.1|lower|capfirst }}
+          
+                                    </td>
+    
+                                    <td>${{ i.2|floatformat:0|intcomma }}</td>
+                                    <td><a type="button" class="text-info" data-toggle="modal"
+                                            data-target="#ModalArqueo{{i.1|cut:' '|cut:'('|cut:')'}}">${{ i.7|floatformat:0|intcomma }}</a></td>
+                                    <td><a type="button" class="text-info" data-toggle="modal"
+                                            data-target="#ModalCheques{{i.1|cut:' '|cut:'('|cut:')'}}">${{ i.5|floatformat:0|intcomma }}</a></td>
+                                    <td>${{ i.6|floatformat:0|intcomma }}</td>
+                                    <td>${{ i.8|floatformat:0|intcomma }}</td>
+                                    <td style="color: rgb(89, 171, 70);">U$S_{{ i.3|floatformat:0|intcomma }}</td>
+                                    <td style="color: rgb(76, 88, 173)">€_{{ i.4|floatformat:0|intcomma }}</td>
+                                    <td style="color: rgb(76, 88, 173)">${{i.11|floatformat:0|intcomma}}</td>
+    
+    
+    
+                                </tr>
+                                <!-- Modal registro bancos-->
+                                <div class="modal fade" id="ModalArqueo{{i.1|cut:' '|cut:'('|cut:')'}}" tabindex="-1"
+                                    role="dialog" aria-labelledby="ModalArqueo" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header" style="background: rgb(33, 74, 99);
+                                            background: linear-gradient(315deg, rgba(36,160,237,1) 0%, rgba(56,56,130,1) 22%, rgba(0,212,255,1) 100%);">
+                                                <h5 class="modal-title text-light" id="exampleModalLongTitle">Registro por bancos</h5>
+                                                <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body" style="font-size: 12px;">
+                                                {% for i in i.9 %}
+                                                <span class="font-bold">{{i.0}}</span>
+    
+                                                <p>${{i.1|floatformat:0|intcomma }}</p>
+                                                {% endfor %}
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-info"
+                                                    data-dismiss="modal">Cerrar</button>
+    
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                          
+                                <!-- Modal cheques-->
+                                <div class="modal fade" id="ModalCheques{{i.1|cut:' '|cut:'('|cut:')'}}" tabindex="-1"
+                                    role="dialog" aria-labelledby="ModalCheques" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header" style="background: rgb(33, 74, 99);
+                                            background: linear-gradient(315deg, rgba(36,160,237,1) 0%, rgba(56,56,130,1) 22%, rgba(0,212,255,1) 100%);">
+                                                <h5 class="modal-title text-light" id="exampleModalLongTitle">Registro cheques</h5>
+                                                <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+    
+                                            {% for a in i.10 %}
+                                            <div class="row">
+                                                <div class="col-5"><h6>{{a.1}}</h6></span>
+                                                <h6 class="card-subtitle" style="font-size: 10px; margin-top: 2px;">{{a.0}}</h6></div>
+                                                <div class="col-3"><h6 style="font-size: 12px;">E: {{a.2|date:"d/m/Y"}}</h6>
+                                                <h6 style="font-size: 12px;">V: {{a.3|date:"d/m/Y"}}</h6></div>
+                                                <div class="col-4"><h6>$ {{a.4|floatformat:0|intcomma}}</h6>
+                                                    <h6 class="card-subtitle" style="font-size: 10px; margin-top: 2px;">
+                                                        {{a.5}}</h6>
+                                                    </div>
+                                            </div>
+                                            {% endfor %}
+                                             
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-info"
+                                                    data-dismiss="modal">Cerrar</button>
+    
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+    
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+
 
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
