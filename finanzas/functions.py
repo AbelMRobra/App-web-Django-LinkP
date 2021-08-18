@@ -114,7 +114,7 @@ def flujo_ingreso_proyecto(id, array):
         data_flujo_proyecto[key]['PTotalb'] = sum(np.array(consulta_principal_cuotas_fechas.values_list('precio', flat =True))*np.array(consulta_principal_cuotas_fechas.values_list('constante__valor', flat =True))*np.array(consulta_principal_cuotas_fechas.values_list('porc_boleto', flat =True))) - sum(np.array(consulta_principal_pagos_fechas.values_list('pago', flat =True)) *np.array(consulta_principal_pagos_fechas.values_list('cuota__constante__valor', flat =True))*np.array(consulta_principal_pagos_fechas.values_list('cuota__porc_boleto', flat =True)))
         data_flujo_proyecto[key]['M3ºLinkb'] = data_flujo_proyecto[key]['PLinkb']/precio_hormigon
         data_flujo_proyecto[key]['M3ºProyectob'] = data_flujo_proyecto[key]['PProyectob']/precio_hormigon
-        data_flujo_proyecto[key]['M3ºTotalb'] = data_flujo_proyecto[key]['M3ºLinkb']/precio_hormigon
+        data_flujo_proyecto[key]['M3ºTotalb'] = data_flujo_proyecto[key]['PTotalb']/precio_hormigon
 
 
     consulta_principal_cuotas_fechas = consulta_principal_cuotas
@@ -132,7 +132,7 @@ def flujo_ingreso_proyecto(id, array):
     data_flujo_proyecto_total['PTotalb'] = sum(np.array(consulta_principal_cuotas_fechas.values_list('precio', flat =True))*np.array(consulta_principal_cuotas_fechas.values_list('constante__valor', flat =True))*np.array(consulta_principal_cuotas_fechas.values_list('porc_boleto', flat =True))) - sum(np.array(consulta_principal_pagos_fechas.values_list('pago', flat =True)) *np.array(consulta_principal_pagos_fechas.values_list('cuota__constante__valor', flat =True))*np.array(consulta_principal_pagos_fechas.values_list('cuota__porc_boleto', flat =True)))
     data_flujo_proyecto_total['M3ºLinkb'] = data_flujo_proyecto_total['PLinkb']/precio_hormigon
     data_flujo_proyecto_total['M3ºProyectob'] = data_flujo_proyecto_total['PProyectob']/precio_hormigon
-    data_flujo_proyecto_total['M3ºTotalb'] = data_flujo_proyecto_total['M3ºLinkb']/precio_hormigon
+    data_flujo_proyecto_total['M3ºTotalb'] = data_flujo_proyecto_total['PTotalb']/precio_hormigon
 
     return [data_flujo_proyecto, data_flujo_proyecto_total]
 
