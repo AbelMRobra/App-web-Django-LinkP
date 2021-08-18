@@ -379,10 +379,10 @@
                                     <th style="vertical-align: middle;">Unidad </th>
                                     <th style="vertical-align: middle;">Cobrado </th>
                                     <th style="vertical-align: middle;">Mora</th>
-                                    <th style="vertical-align: middle;">Pendiente</th>
+                                    <th style="vertical-align: middle;">Pend.</th>
                                     <th style="vertical-align: middle;">M3 cobrado</th>
                                     <th style="vertical-align: middle;">M3 mora</th>
-                                    <th style="vertical-align: middle;">M3 pendiente</th>
+                                    <th style="vertical-align: middle;">M3 pend.</th>
                                 </tr>
 
                             </thead>
@@ -393,13 +393,13 @@
 
                                 <tr style="font-size: 12px;">
                                     <td style="text-align: left;">{{i.0.venta.comprador|lower|capfirst}}</td>
-                                    <td> {{i.0.venta.unidad.piso_unidad}} - {{i.0.venta.unidad.nombre_unidad}}</td>
+                                    <td> {{i.0.venta.unidad.piso_unidad}}-{{i.0.venta.unidad.nombre_unidad}}</td>
                                     <td> ${{i.1|floatformat:2|intcomma}}</td>
                                     <td> ${{i.2|floatformat:2|intcomma}}</td>
                                     <td> ${{i.3|floatformat:2|intcomma}}</td>
-                                    <td> {{i.4|floatformat:2|intcomma}}ºM3</td>
-                                    <td> {{i.5|floatformat:2|intcomma}}ºM3</td>
-                                    <td> {{i.6|floatformat:2|intcomma}}ºM3</td>
+                                    <td> {{i.4|floatformat:2|intcomma}}</td>
+                                    <td> {{i.5|floatformat:2|intcomma}}</td>
+                                    <td> {{i.6|floatformat:2|intcomma}}</td>
 
                                 </tr>
 
