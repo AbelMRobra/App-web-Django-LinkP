@@ -22,7 +22,7 @@
         </div>
     </div>
 
-    {% if request.user|has_group:"ADMIN NIVEL 1" %}
+{% if request.user|has_group:"ADMIN NIVEL 1" %}
 
 <div class="row">
     <div class="col-12">
@@ -144,7 +144,7 @@
                                 <tr>
                                     <th class="sticky bg-body text-center">Cliente</th>
                                     {% for i in flujo_proyecto_cliente.1 %}
-                                    <th class="text-center">{{i}}</th>
+                                    <th class="text-center">{{i|lower|capfirst}}</th>
                                     {% endfor %}
                                     
    
@@ -168,7 +168,7 @@
                                 <tr>
                                     <td class="sticky bg-body">{{key|date:"d/m/Y"}}</td>
                                     {% for i in value %}
-                                    <td class="text-center">{{i.1.M3ºTotal|floatformat:2|intcomma}}</td>
+                                    <td class="text-center">{{i.1|floatformat:2|intcomma}}</td>
                                     {% endfor %}
 
                                 </tr>
@@ -304,33 +304,6 @@
 <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js" defer></script>
 <script src="https://cdn.datatables.net/1.10.23/js/dataTables.bootstrap4.min.js" defer></script>
 
-<!-- <script>
-    $('#rotar').click(function(){
-        $("table").each(function() {
-            var $this = $(this);
-            var newrows = [];
-            $this.find("tr").each(function(){
-                var i = 0;
-                $(this).find("td, th").each(function(){
-                    i++;
-                    if(newrows[i] === undefined) { newrows[i] = $("<tr></tr>"); }
-                    if(i == 1)
-                        newrows[i].append("<th>" + this.innerHTML  + "</th>");
-                    else
-                        newrows[i].append("<td>" + this.innerHTML  + "</td>");
-                });
-            });
-            $this.find("tr").remove();
-            $.each(newrows, function(){
-                $this.append(this);
-            });
-        });
-        
-        return false;
-    });
-    
-    </script> -->
-
 <script>
 
     $(document).ready(function () {
@@ -384,6 +357,7 @@
             buttons: [
                 {
                     extend: 'excelHtml5',
+                    footer: true,
                     title: 'Flujo de ingresos en pesos por cliente',
                     className: "btn btn-info",
 

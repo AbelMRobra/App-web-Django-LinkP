@@ -4,6 +4,7 @@ import pandas as pd
 import numpy as np
 import random
 
+
 from django.shortcuts import render,redirect
 from presupuestos.models import Proyectos, Presupuestos, Constantes, Modelopresupuesto, Registrodeconstantes
 from .models import Almacenero, CuentaCorriente, Cuota, Pago, RegistroAlmacenero, ArchivosAdmFin, Arqueo, RetirodeSocios, MovimientoAdmin, Honorarios,PagoRentaAnticipada, RegistroEmail
@@ -76,7 +77,6 @@ def totalcuentacte(request, id_proyecto, cliente, moneda, boleto):
     context["fechas"] = fechas_cc(id_proyecto)
     context["listado"] = listado
     context["informacion_general"] = len(CuentaCorriente.objects.filter(venta__proyecto = proyecto).exclude(estado = "baja"))
-
 
     if cliente == "0":
 
