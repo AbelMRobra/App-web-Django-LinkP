@@ -43,8 +43,13 @@
                             <div class="dropdown-menu dropdown-menu-right">
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#ModalProyecto"><i
                                         class="fa fa-plus-circle mr-2"></i>Elegir proyecto</a>
+                                {% if cliente == "0" %}
                                 <a class="dropdown-item" href="{% url 'Total cuenta' proyecto.id 1 0 0 %}" ><i
                                     class="fa fa-users mr-2"></i>Flujo por cliente</a>
+                                {% else %}
+                                <a class="dropdown-item" href="{% url 'Total cuenta' proyecto.id 0 0 0 %}" ><i
+                                    class="fa fa-file mr-2"></i>Flujo del proyecto</a>
+                                {% endif %}
 
     
                             </div>
@@ -133,6 +138,9 @@
 
                      
                     </div>
+
+                    <hr>
+                    <h4>{{flujo_proyecto_cliente.3}}</h4>
 
 
                     <div class="table-responsive">

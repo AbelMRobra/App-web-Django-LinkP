@@ -107,6 +107,8 @@ def flujo_ingreso_proyecto_cliente(id, array, moneda, boleto):
 
     if moneda == "0" and boleto == "0":
 
+        mensaje = "Tu consulta esta lista!, moneda: ARS - boleto: No activado"
+
         data_flujo_proyecto = {fecha:  [(cuenta, (
             sum(
             np.array(con_c.filter(fecha__range = ((fecha - datetime.timedelta(days = 1)), fecha + relativedelta(months=+1)), cuenta_corriente = cuenta).values_list("precio", flat = True))*
@@ -131,6 +133,8 @@ def flujo_ingreso_proyecto_cliente(id, array, moneda, boleto):
 
     elif  moneda == "1" and boleto == "0":
 
+        mensaje = "Tu consulta esta lista!, moneda: Hormigón - boleto: No activado"
+
         data_flujo_proyecto = {fecha:  [(cuenta, (
             sum(
             np.array(con_c.filter(fecha__range = ((fecha - datetime.timedelta(days = 1)), fecha + relativedelta(months=+1)), cuenta_corriente = cuenta).values_list("precio", flat = True))*
@@ -153,7 +157,7 @@ def flujo_ingreso_proyecto_cliente(id, array, moneda, boleto):
         
 
 
-    return [data_flujo_proyecto, cuentas_corrientes, flujo_total]
+    return [data_flujo_proyecto, cuentas_corrientes, flujo_total, mensaje]
 
 def flujo_ingreso_cliente(id):
 
@@ -318,14 +322,14 @@ def resumen_cuentas(id_proyecto):
     pagos_desde_hoy = sum(np.array(pago_consulta_f.values_list('pago', flat=True))*np.array(pago_consulta_f.values_list('cuota__constante__valor', flat=True)))
     deuda_final = cuotas_desde_hoy - pagos_desde_hoy
     
-    context_data["context_data_total"]["pesos_cobrado"] = cuotas_hasta_hoy
+    context_data["context_data_total"]["pesos_cobrado"] = (pagos_hasta_hoy_historico + mora + deuda_final)
     context_data["context_data_total"]["pesos_pagado"] = pagos_hasta_hoy
     context_data["context_data_total"]["pesos_pagado_historico"] = pagos_hasta_hoy_historico
     context_data["context_data_total"]["pesos_mora"] = mora
     context_data["context_data_total"]["pesos_pendiente"] = cuotas_desde_hoy
     context_data["context_data_total"]["pesos_adelantado"] = pagos_desde_hoy
     context_data["context_data_total"]["pesos_deuda"] = deuda_final
-    context_data["context_data_total"]["m3_cobrado"] = cuotas_hasta_hoy/precio_hormigon
+    context_data["context_data_total"]["m3_cobrado"] = (cuotas_hasta_hoy + deuda_final)/precio_hormigon
     context_data["context_data_total"]["m3_pagado"] = pagos_hasta_hoy/precio_hormigon
     context_data["context_data_total"]["m3_mora"] = mora/precio_hormigon
     context_data["context_data_total"]["m3_deuda"] = deuda_final/precio_hormigon
@@ -349,14 +353,14 @@ def resumen_cuentas(id_proyecto):
     pagos_desde_hoy = sum(np.array(pago_consulta_f_proy.values_list('pago', flat=True))*np.array(pago_consulta_f_proy.values_list('cuota__constante__valor', flat=True)))
     deuda_final = cuotas_desde_hoy - pagos_desde_hoy
     
-    context_data["context_data_proyecto"]["pesos_cobrado"] = cuotas_hasta_hoy
+    context_data["context_data_proyecto"]["pesos_cobrado"] = (pagos_hasta_hoy_historico + mora + deuda_final)
     context_data["context_data_proyecto"]["pesos_pagado"] = pagos_hasta_hoy
     context_data["context_data_proyecto"]["pesos_pagado_historico"] = pagos_hasta_hoy_historico
     context_data["context_data_proyecto"]["pesos_mora"] = mora
     context_data["context_data_proyecto"]["pesos_pendiente"] = cuotas_desde_hoy
     context_data["context_data_proyecto"]["pesos_adelantado"] = pagos_desde_hoy
     context_data["context_data_proyecto"]["pesos_deuda"] = deuda_final
-    context_data["context_data_proyecto"]["m3_cobrado"] = cuotas_hasta_hoy/precio_hormigon
+    context_data["context_data_proyecto"]["m3_cobrado"] = (cuotas_hasta_hoy + deuda_final)/precio_hormigon
     context_data["context_data_proyecto"]["m3_pagado"] = pagos_hasta_hoy/precio_hormigon
     context_data["context_data_proyecto"]["m3_mora"] = mora/precio_hormigon
     context_data["context_data_proyecto"]["m3_deuda"] = deuda_final/precio_hormigon
@@ -380,14 +384,14 @@ def resumen_cuentas(id_proyecto):
     pagos_desde_hoy = sum(np.array(pago_consulta_f_link.values_list('pago', flat=True))*np.array(pago_consulta_f_link.values_list('cuota__constante__valor', flat=True)))
     deuda_final = cuotas_desde_hoy - pagos_desde_hoy
     
-    context_data["context_data_link"]["pesos_cobrado"] = cuotas_hasta_hoy
+    context_data["context_data_link"]["pesos_cobrado"] = (pagos_hasta_hoy_historico + mora + deuda_final)
     context_data["context_data_link"]["pesos_pagado"] = pagos_hasta_hoy
     context_data["context_data_link"]["pesos_pagado_historico"] = pagos_hasta_hoy_historico
     context_data["context_data_link"]["pesos_mora"] = mora
     context_data["context_data_link"]["pesos_pendiente"] = cuotas_desde_hoy
     context_data["context_data_link"]["pesos_adelantado"] = pagos_desde_hoy
     context_data["context_data_link"]["pesos_deuda"] = deuda_final
-    context_data["context_data_link"]["m3_cobrado"] = cuotas_hasta_hoy/precio_hormigon
+    context_data["context_data_link"]["m3_cobrado"] = (cuotas_hasta_hoy + deuda_final)/precio_hormigon
     context_data["context_data_link"]["m3_pagado"] = pagos_hasta_hoy/precio_hormigon
     context_data["context_data_link"]["m3_mora"] = mora/precio_hormigon
     context_data["context_data_link"]["m3_deuda"] = deuda_final/precio_hormigon
@@ -411,14 +415,14 @@ def resumen_cuentas(id_proyecto):
     pagos_desde_hoy = sum(np.array(pago_consulta_f_terreno.values_list('pago', flat=True))*np.array(pago_consulta_f_terreno.values_list('cuota__constante__valor', flat=True)))
     deuda_final = cuotas_desde_hoy - pagos_desde_hoy
     
-    context_data["context_data_terreno"]["pesos_cobrado"] = cuotas_hasta_hoy
+    context_data["context_data_terreno"]["pesos_cobrado"] = (pagos_hasta_hoy_historico + mora + deuda_final)
     context_data["context_data_terreno"]["pesos_pagado"] = pagos_hasta_hoy
     context_data["context_data_terreno"]["pesos_pagado_historico"] = pagos_hasta_hoy_historico
     context_data["context_data_terreno"]["pesos_mora"] = mora
     context_data["context_data_terreno"]["pesos_pendiente"] = cuotas_desde_hoy
     context_data["context_data_terreno"]["pesos_adelantado"] = pagos_desde_hoy
     context_data["context_data_terreno"]["pesos_deuda"] = deuda_final
-    context_data["context_data_terreno"]["m3_cobrado"] = cuotas_hasta_hoy/precio_hormigon
+    context_data["context_data_terreno"]["m3_cobrado"] = (cuotas_hasta_hoy + deuda_final)/precio_hormigon
     context_data["context_data_terreno"]["m3_pagado"] = pagos_hasta_hoy/precio_hormigon
     context_data["context_data_terreno"]["m3_mora"] = mora/precio_hormigon
     context_data["context_data_terreno"]["m3_deuda"] = deuda_final/precio_hormigon
@@ -442,14 +446,14 @@ def resumen_cuentas(id_proyecto):
     pagos_desde_hoy = sum(np.array(pago_consulta_f.values_list('pago', flat=True))*np.array(pago_consulta_f.values_list('cuota__constante__valor', flat=True))*np.array(pago_consulta_f.values_list('cuota__porc_boleto', flat=True)))
     deuda_final = cuotas_desde_hoy - pagos_desde_hoy
     
-    context_data["boleto_context_data_total"]["pesos_cobrado"] = cuotas_hasta_hoy
+    context_data["boleto_context_data_total"]["pesos_cobrado"] = (pagos_hasta_hoy_historico + mora + deuda_final)
     context_data["boleto_context_data_total"]["pesos_pagado"] = pagos_hasta_hoy
     context_data["boleto_context_data_total"]["pesos_pagado_historico"] = pagos_hasta_hoy_historico
     context_data["boleto_context_data_total"]["pesos_mora"] = mora
     context_data["boleto_context_data_total"]["pesos_pendiente"] = cuotas_desde_hoy
     context_data["boleto_context_data_total"]["pesos_adelantado"] = pagos_desde_hoy
     context_data["boleto_context_data_total"]["pesos_deuda"] = deuda_final
-    context_data["boleto_context_data_total"]["m3_cobrado"] = cuotas_hasta_hoy/precio_hormigon
+    context_data["boleto_context_data_total"]["m3_cobrado"] = (cuotas_hasta_hoy + deuda_final)/precio_hormigon
     context_data["boleto_context_data_total"]["m3_pagado"] = pagos_hasta_hoy/precio_hormigon
     context_data["boleto_context_data_total"]["m3_mora"] = mora/precio_hormigon
     context_data["boleto_context_data_total"]["m3_deuda"] = deuda_final/precio_hormigon
@@ -473,14 +477,14 @@ def resumen_cuentas(id_proyecto):
     pagos_desde_hoy = sum(np.array(pago_consulta_f_proy.values_list('pago', flat=True))*np.array(pago_consulta_f_proy.values_list('cuota__constante__valor', flat=True))*np.array(pago_consulta_f_proy.values_list('cuota__porc_boleto', flat=True)))
     deuda_final = cuotas_desde_hoy - pagos_desde_hoy
     
-    context_data["boleto_context_data_proyecto"]["pesos_cobrado"] = cuotas_hasta_hoy
+    context_data["boleto_context_data_proyecto"]["pesos_cobrado"] = (pagos_hasta_hoy_historico + mora + deuda_final)
     context_data["boleto_context_data_proyecto"]["pesos_pagado"] = pagos_hasta_hoy
     context_data["boleto_context_data_proyecto"]["pesos_pagado_historico"] = pagos_hasta_hoy_historico
     context_data["boleto_context_data_proyecto"]["pesos_mora"] = mora
     context_data["boleto_context_data_proyecto"]["pesos_pendiente"] = cuotas_desde_hoy
     context_data["boleto_context_data_proyecto"]["pesos_adelantado"] = pagos_desde_hoy
     context_data["boleto_context_data_proyecto"]["pesos_deuda"] = deuda_final
-    context_data["boleto_context_data_proyecto"]["m3_cobrado"] = cuotas_hasta_hoy/precio_hormigon
+    context_data["boleto_context_data_proyecto"]["m3_cobrado"] = (cuotas_hasta_hoy + deuda_final)/precio_hormigon
     context_data["boleto_context_data_proyecto"]["m3_pagado"] = pagos_hasta_hoy/precio_hormigon
     context_data["boleto_context_data_proyecto"]["m3_mora"] = mora/precio_hormigon
     context_data["boleto_context_data_proyecto"]["m3_deuda"] = deuda_final/precio_hormigon
@@ -504,14 +508,14 @@ def resumen_cuentas(id_proyecto):
     pagos_desde_hoy = sum(np.array(pago_consulta_f_link.values_list('pago', flat=True))*np.array(pago_consulta_f_link.values_list('cuota__constante__valor', flat=True))*np.array(pago_consulta_f_link.values_list('cuota__porc_boleto', flat=True)))
     deuda_final = cuotas_desde_hoy - pagos_desde_hoy
     
-    context_data["boleto_context_data_link"]["pesos_cobrado"] = cuotas_hasta_hoy
+    context_data["boleto_context_data_link"]["pesos_cobrado"] = (pagos_hasta_hoy_historico + mora + deuda_final)
     context_data["boleto_context_data_link"]["pesos_pagado"] = pagos_hasta_hoy
     context_data["boleto_context_data_link"]["pesos_pagado_historico"] = pagos_hasta_hoy_historico
     context_data["boleto_context_data_link"]["pesos_mora"] = mora
     context_data["boleto_context_data_link"]["pesos_pendiente"] = cuotas_desde_hoy
     context_data["boleto_context_data_link"]["pesos_adelantado"] = pagos_desde_hoy
     context_data["boleto_context_data_link"]["pesos_deuda"] = deuda_final
-    context_data["boleto_context_data_link"]["m3_cobrado"] = cuotas_hasta_hoy/precio_hormigon
+    context_data["boleto_context_data_link"]["m3_cobrado"] = (cuotas_hasta_hoy  + deuda_final)/precio_hormigon
     context_data["boleto_context_data_link"]["m3_pagado"] = pagos_hasta_hoy/precio_hormigon
     context_data["boleto_context_data_link"]["m3_mora"] = mora/precio_hormigon
     context_data["boleto_context_data_link"]["m3_deuda"] = deuda_final/precio_hormigon
@@ -535,14 +539,14 @@ def resumen_cuentas(id_proyecto):
     pagos_desde_hoy = sum(np.array(pago_consulta_f_terreno.values_list('pago', flat=True))*np.array(pago_consulta_f_terreno.values_list('cuota__constante__valor', flat=True))*np.array(pago_consulta_f_terreno.values_list('cuota__porc_boleto', flat=True)))
     deuda_final = cuotas_desde_hoy - pagos_desde_hoy
     
-    context_data["boleto_context_data_terreno"]["pesos_cobrado"] = cuotas_hasta_hoy
+    context_data["boleto_context_data_terreno"]["pesos_cobrado"] = (pagos_hasta_hoy_historico + mora + deuda_final)
     context_data["boleto_context_data_terreno"]["pesos_pagado"] = pagos_hasta_hoy
     context_data["boleto_context_data_terreno"]["pesos_pagado_historico"] = pagos_hasta_hoy_historico
     context_data["boleto_context_data_terreno"]["pesos_mora"] = mora
     context_data["boleto_context_data_terreno"]["pesos_pendiente"] = cuotas_desde_hoy
     context_data["boleto_context_data_terreno"]["pesos_adelantado"] = pagos_desde_hoy
     context_data["boleto_context_data_terreno"]["pesos_deuda"] = deuda_final
-    context_data["boleto_context_data_terreno"]["m3_cobrado"] = cuotas_hasta_hoy/precio_hormigon
+    context_data["boleto_context_data_terreno"]["m3_cobrado"] = (cuotas_hasta_hoy + deuda_final)/precio_hormigon
     context_data["boleto_context_data_terreno"]["m3_pagado"] = pagos_hasta_hoy/precio_hormigon
     context_data["boleto_context_data_terreno"]["m3_mora"] = mora/precio_hormigon
     context_data["boleto_context_data_terreno"]["m3_deuda"] = deuda_final/precio_hormigon
