@@ -83,7 +83,7 @@ def totalcuentacte(request, id_proyecto, cliente, moneda, boleto):
         context["flujo_proyecto"] = flujo_ingreso_proyecto(id_proyecto, context["fechas"])
 
     else:
-        context["flujo_proyecto_cliente"] = flujo_ingreso_proyecto_cliente(id_proyecto, context["fechas"])
+        context["flujo_proyecto_cliente"] = flujo_ingreso_proyecto_cliente(id_proyecto, context["fechas"], moneda, boleto)
     
     context["cliente"] = cliente
 
