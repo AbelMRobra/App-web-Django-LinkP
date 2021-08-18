@@ -173,17 +173,17 @@
                     
     
                     <table class="table table-striped table-bordered mt-4">
-                        <thead style="font-size: 15px;">
+                        <thead style="font-size: 14px;">
                             <tr>
                                 <th style="vertical-align: middle; width: 80px;">Concepto</th>                                                    
                                 <th style="vertical-align: middle; text-align: center;">Cobrado</th>
-                                <th style="vertical-align: middle; text-align: center;">Mora</th>
-                                <th style="vertical-align: middle; text-align: center;">Total</th>
-                                <th style="vertical-align: middle; text-align: center;">Pendiente</th>                                                                
+                                <th style="vertical-align: middle; text-align: center;">Mora</th>                               
+                                <th style="vertical-align: middle; text-align: center;">Pend.</th>
+                                <th style="vertical-align: middle; text-align: center;">Total</th>                                                                
                                 <th style="vertical-align: middle; text-align: center;">M3 cobrados</th>
-                                <th style="vertical-align: middle; text-align: center;">M3 mora</th>
+                                <th style="vertical-align: middle; text-align: center;">M3 mora</th>                               
+                                <th style="vertical-align: middle; text-align: center;">M3 pend.</th>
                                 <th style="vertical-align: middle; text-align: center;">M3 total</th>
-                                <th style="vertical-align: middle; text-align: center;">M3 pendiente</th>
                             
                             </tr>
 
@@ -202,12 +202,13 @@
                                 </td>
                                 <td class="text-center"> ${{data_cuadro.context_data_proyecto.pesos_pagado_historico|floatformat:2|intcomma}}</td>
                                 <td class="text-center"> ${{data_cuadro.context_data_proyecto.pesos_mora|floatformat:2|intcomma}}</td>
-                                <td class="text-center"> ${{data_cuadro.context_data_proyecto.pesos_cobrado|floatformat:2|intcomma}}</td>
                                 <td class="text-center"> ${{data_cuadro.context_data_proyecto.pesos_deuda|floatformat:2|intcomma}}</td>
+                                <td class="text-center"> ${{data_cuadro.context_data_proyecto.pesos_cobrado|floatformat:2|intcomma}}</td>
                                 <td class="text-center"> {{data_cuadro.context_data_proyecto.m3_pagado|floatformat:2|intcomma}}ºM3</td>
                                 <td class="text-center"> {{data_cuadro.context_data_proyecto.m3_mora|floatformat:2|intcomma}}ºM3</td>
-                                <td class="text-center"> {{data_cuadro.context_data_proyecto.m3_cobrado|floatformat:2|intcomma}}ºM3</td>
                                 <td class="text-center"> {{data_cuadro.context_data_proyecto.m3_deuda|floatformat:2|intcomma}}ºM3</td>
+                                <td class="text-center"> {{data_cuadro.context_data_proyecto.m3_cobrado|floatformat:2|intcomma}}ºM3</td>
+                                
 
                             </tr>
 
@@ -217,13 +218,13 @@
                                     <h6>Link</h6>
                                 </td>
                                 <td class="text-center"> ${{data_cuadro.context_data_link.pesos_pagado_historico|floatformat:2|intcomma}}</td>
-                                <td class="text-center"> ${{data_cuadro.context_data_link.pesos_mora|floatformat:2|intcomma}}</td>
-                                <td class="text-center"> ${{data_cuadro.context_data_link.pesos_cobrado|floatformat:2|intcomma}}</td>
+                                <td class="text-center"> ${{data_cuadro.context_data_link.pesos_mora|floatformat:2|intcomma}}</td>                                
                                 <td class="text-center"> ${{data_cuadro.context_data_link.pesos_deuda|floatformat:2|intcomma}}</td>
+                                <td class="text-center"> ${{data_cuadro.context_data_link.pesos_cobrado|floatformat:2|intcomma}}</td>
                                 <td class="text-center"> {{data_cuadro.context_data_link.m3_pagado|floatformat:2|intcomma}}ºM3</td>
-                                <td class="text-center"> {{data_cuadro.context_data_link.m3_mora|floatformat:2|intcomma}}ºM3</td>
-                                <td class="text-center"> {{data_cuadro.context_data_link.m3_cobrado|floatformat:2|intcomma}}ºM3</td>
+                                <td class="text-center"> {{data_cuadro.context_data_link.m3_mora|floatformat:2|intcomma}}ºM3</td>                               
                                 <td class="text-center"> {{data_cuadro.context_data_link.m3_deuda|floatformat:2|intcomma}}ºM3</td>
+                                <td class="text-center"> {{data_cuadro.context_data_link.m3_cobrado|floatformat:2|intcomma}}ºM3</td>
 
                             </tr>
 
@@ -233,12 +234,14 @@
                                 </td>
                                 <td class="text-center"> ${{data_cuadro.context_data_terreno.pesos_pagado_historico|floatformat:2|intcomma}}</td>
                                 <td class="text-center"> ${{data_cuadro.context_data_terreno.pesos_mora|floatformat:2|intcomma}}</td>
-                                <td class="text-center"> ${{data_cuadro.context_data_terreno.pesos_cobrado|floatformat:2|intcomma}}</td>
+                                
                                 <td class="text-center"> ${{data_cuadro.context_data_terreno.pesos_deuda|floatformat:2|intcomma}}</td>
+                                <td class="text-center"> ${{data_cuadro.context_data_terreno.pesos_cobrado|floatformat:2|intcomma}}</td>
                                 <td class="text-center"> {{data_cuadro.context_data_terreno.m3_pagado|floatformat:2|intcomma}}ºM3</td>
                                 <td class="text-center"> {{data_cuadro.context_data_terreno.m3_mora|floatformat:2|intcomma}}ºM3</td>
-                                <td class="text-center"> {{data_cuadro.context_data_terreno.m3_cobrado|floatformat:2|intcomma}}ºM3</td>
+                                
                                 <td class="text-center"> {{data_cuadro.context_data_terreno.m3_deuda|floatformat:2|intcomma}}ºM3</td>
+                                <td class="text-center"> {{data_cuadro.context_data_terreno.m3_cobrado|floatformat:2|intcomma}}ºM3</td>
 
                             </tr>
                             <tr>
@@ -247,12 +250,14 @@
                                 </td>
                                 <td class="text-center font-bold"> ${{data_cuadro.context_data_total.pesos_pagado_historico|floatformat:2|intcomma}}</td>
                                 <td class="text-center font-bold"> ${{data_cuadro.context_data_total.pesos_mora|floatformat:2|intcomma}}</td>
-                                <td class="text-center font-bold"> ${{data_cuadro.context_data_total.pesos_cobrado|floatformat:2|intcomma}}</td>
+                                
                                 <td class="text-center font-bold"> ${{data_cuadro.context_data_total.pesos_deuda|floatformat:2|intcomma}}</td>
+                                <td class="text-center font-bold"> ${{data_cuadro.context_data_total.pesos_cobrado|floatformat:2|intcomma}}</td>
                                 <td class="text-center font-bold"> {{data_cuadro.context_data_total.m3_pagado|floatformat:2|intcomma}}ºM3</td>
                                 <td class="text-center font-bold"> {{data_cuadro.context_data_total.m3_mora|floatformat:2|intcomma}}ºM3</td>
-                                <td class="text-center font-bold"> {{data_cuadro.context_data_total.m3_cobrado|floatformat:2|intcomma}}ºM3</td>
+                                
                                 <td class="text-center font-bold"> {{data_cuadro.context_data_total.m3_deuda|floatformat:2|intcomma}}ºM3</td>
+                                <td class="text-center font-bold"> {{data_cuadro.context_data_total.m3_cobrado|floatformat:2|intcomma}}ºM3</td>
 
                             </tr>
 
@@ -266,17 +271,17 @@
                     
     
                     <table class="table table-striped table-bordered mt-4">
-                        <thead style="font-size: 15px;">
+                        <thead style="font-size: 14px;">
                             <tr>
                                 <th style="vertical-align: middle; width: 80px;">Concepto</th>                                                    
                                 <th style="vertical-align: middle; text-align: center;">Cobrado</th>
-                                <th style="vertical-align: middle; text-align: center;">Mora</th>
-                                <th style="vertical-align: middle; text-align: center;">Total</th>
-                                <th style="vertical-align: middle; text-align: center;">Pendiente</th>                                                                
+                                <th style="vertical-align: middle; text-align: center;">Mora</th>                               
+                                <th style="vertical-align: middle; text-align: center;">Pend.</th>
+                                <th style="vertical-align: middle; text-align: center;">Total</th>                                                                
                                 <th style="vertical-align: middle; text-align: center;">M3 cobrados</th>
-                                <th style="vertical-align: middle; text-align: center;">M3 mora</th>
+                                <th style="vertical-align: middle; text-align: center;">M3 mora</th>                               
+                                <th style="vertical-align: middle; text-align: center;">M3 pend.</th>
                                 <th style="vertical-align: middle; text-align: center;">M3 total</th>
-                                <th style="vertical-align: middle; text-align: center;">M3 pendiente</th>
                             
                             </tr>
 
@@ -295,12 +300,14 @@
                                 </td>
                                 <td class="text-center"> ${{data_cuadro.boleto_context_data_proyecto.pesos_pagado_historico|floatformat:2|intcomma}}</td>
                                 <td class="text-center"> ${{data_cuadro.boleto_context_data_proyecto.pesos_mora|floatformat:2|intcomma}}</td>
-                                <td class="text-center"> ${{data_cuadro.boleto_context_data_proyecto.pesos_cobrado|floatformat:2|intcomma}}</td>
+                                
                                 <td class="text-center"> ${{data_cuadro.boleto_context_data_proyecto.pesos_deuda|floatformat:2|intcomma}}</td>
+                                <td class="text-center"> ${{data_cuadro.boleto_context_data_proyecto.pesos_cobrado|floatformat:2|intcomma}}</td>
                                 <td class="text-center"> {{data_cuadro.boleto_context_data_proyecto.m3_pagado|floatformat:2|intcomma}}ºM3</td>
                                 <td class="text-center"> {{data_cuadro.boleto_context_data_proyecto.m3_mora|floatformat:2|intcomma}}ºM3</td>
-                                <td class="text-center"> {{data_cuadro.boleto_context_data_proyecto.m3_cobrado|floatformat:2|intcomma}}ºM3</td>
+                                
                                 <td class="text-center"> {{data_cuadro.boleto_context_data_proyecto.m3_deuda|floatformat:2|intcomma}}ºM3</td>
+                                <td class="text-center"> {{data_cuadro.boleto_context_data_proyecto.m3_cobrado|floatformat:2|intcomma}}ºM3</td>
 
                             </tr>
 
@@ -311,12 +318,14 @@
                                 </td>
                                 <td class="text-center"> ${{data_cuadro.boleto_context_data_link.pesos_pagado_historico|floatformat:2|intcomma}}</td>
                                 <td class="text-center"> ${{data_cuadro.boleto_context_data_link.pesos_mora|floatformat:2|intcomma}}</td>
-                                <td class="text-center"> ${{data_cuadro.boleto_context_data_link.pesos_cobrado|floatformat:2|intcomma}}</td>
+                                
                                 <td class="text-center"> ${{data_cuadro.boleto_context_data_link.pesos_deuda|floatformat:2|intcomma}}</td>
+                                <td class="text-center"> ${{data_cuadro.boleto_context_data_link.pesos_cobrado|floatformat:2|intcomma}}</td>
                                 <td class="text-center"> {{data_cuadro.boleto_context_data_link.m3_pagado|floatformat:2|intcomma}}ºM3</td>
                                 <td class="text-center"> {{data_cuadro.boleto_context_data_link.m3_mora|floatformat:2|intcomma}}ºM3</td>
-                                <td class="text-center"> {{data_cuadro.boleto_context_data_link.m3_cobrado|floatformat:2|intcomma}}ºM3</td>
+                                
                                 <td class="text-center"> {{data_cuadro.boleto_context_data_link.m3_deuda|floatformat:2|intcomma}}ºM3</td>
+                                <td class="text-center"> {{data_cuadro.boleto_context_data_link.m3_cobrado|floatformat:2|intcomma}}ºM3</td>
 
                             </tr>
 
@@ -326,12 +335,14 @@
                                 </td>
                                 <td class="text-center"> ${{data_cuadro.boleto_context_data_terreno.pesos_pagado_historico|floatformat:2|intcomma}}</td>
                                 <td class="text-center"> ${{data_cuadro.boleto_context_data_terreno.pesos_mora|floatformat:2|intcomma}}</td>
-                                <td class="text-center"> ${{data_cuadro.boleto_context_data_terreno.pesos_cobrado|floatformat:2|intcomma}}</td>
+                                
                                 <td class="text-center"> ${{data_cuadro.boleto_context_data_terreno.pesos_deuda|floatformat:2|intcomma}}</td>
+                                <td class="text-center"> ${{data_cuadro.boleto_context_data_terreno.pesos_cobrado|floatformat:2|intcomma}}</td>
                                 <td class="text-center"> {{data_cuadro.boleto_context_data_terreno.m3_pagado|floatformat:2|intcomma}}ºM3</td>
                                 <td class="text-center"> {{data_cuadro.boleto_context_data_terreno.m3_mora|floatformat:2|intcomma}}ºM3</td>
-                                <td class="text-center"> {{data_cuadro.boleto_context_data_terreno.m3_cobrado|floatformat:2|intcomma}}ºM3</td>
+                                
                                 <td class="text-center"> {{data_cuadro.boleto_context_data_terreno.m3_deuda|floatformat:2|intcomma}}ºM3</td>
+                                <td class="text-center"> {{data_cuadro.boleto_context_data_terreno.m3_cobrado|floatformat:2|intcomma}}ºM3</td>
 
                             </tr>
                             <tr>
@@ -339,12 +350,14 @@
                                 </td>
                                 <td class="text-center font-bold"> ${{data_cuadro.boleto_context_data_total.pesos_pagado_historico|floatformat:2|intcomma}}</td>
                                 <td class="text-center font-bold"> ${{data_cuadro.boleto_context_data_total.pesos_mora|floatformat:2|intcomma}}</td>
-                                <td class="text-center font-bold"> ${{data_cuadro.boleto_context_data_total.pesos_cobrado|floatformat:2|intcomma}}</td>
+                                
                                 <td class="text-center font-bold"> ${{data_cuadro.boleto_context_data_total.pesos_deuda|floatformat:2|intcomma}}</td>
+                                <td class="text-center font-bold"> ${{data_cuadro.boleto_context_data_total.pesos_cobrado|floatformat:2|intcomma}}</td>
                                 <td class="text-center font-bold"> {{data_cuadro.boleto_context_data_total.m3_pagado|floatformat:2|intcomma}}ºM3</td>
                                 <td class="text-center font-bold"> {{data_cuadro.boleto_context_data_total.m3_mora|floatformat:2|intcomma}}ºM3</td>
-                                <td class="text-center font-bold"> {{data_cuadro.boleto_context_data_total.m3_cobrado|floatformat:2|intcomma}}ºM3</td>
+                                
                                 <td class="text-center font-bold"> {{data_cuadro.boleto_context_data_total.m3_deuda|floatformat:2|intcomma}}ºM3</td>
+                                <td class="text-center font-bold"> {{data_cuadro.boleto_context_data_total.m3_cobrado|floatformat:2|intcomma}}ºM3</td>
 
                             </tr>
 
