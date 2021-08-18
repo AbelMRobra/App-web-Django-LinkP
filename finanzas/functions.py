@@ -11,6 +11,7 @@ from rrhh.models import datosusuario
 
 
 def fechas_cc(id):
+
     proyecto = Proyectos.objects.get(id = id)
 
     hoy = date.today()
@@ -29,7 +30,7 @@ def fechas_cc(id):
 
     fecha_auxiliar = inicio_pagos
 
-    fechas = ""
+    fechas = []
     contador = 0
     contador_year = 1
 
@@ -41,7 +42,7 @@ def fechas_cc(id):
             
             fecha_auxiliar = date(year, 1, 1)
 
-            fechas += str(fecha_auxiliar)+"&"
+            fechas.append(fecha_auxiliar)
             
             contador_year += 1
 
@@ -55,7 +56,7 @@ def fechas_cc(id):
 
             fecha_auxiliar = date(year, mes, 1)
 
-            fechas += str(fecha_auxiliar)+"&"
+            fechas.append(fecha_auxiliar)
 
         contador += 1
 
@@ -65,7 +66,7 @@ def fechas_cc(id):
             
             fecha_auxiliar = date(year, 1, 1)
 
-            fechas += str(fecha_auxiliar)+"&"
+            fechas.append(fecha_auxiliar)
             
     else:
 
@@ -75,75 +76,65 @@ def fechas_cc(id):
 
         fecha_auxiliar = date(year, mes, 1)
 
-        fechas += str(fecha_auxiliar)+"&"
+        fechas.append(fecha_auxiliar)
 
-    proyecto.fechas_ctas_ctes = fechas
-    proyecto.save()
+    return fechas
 
-def flujo_ingreso_proyecto(id):
+def flujo_ingreso_proyecto(id, array):
 
-    proyecto = Proyectos.objects.get(id = id)
-    flujo_ingreso = ""
-    flujo_ingreso_proyecto = ""
-    flujo_ingreso_link = ""
-    flujo_ingreso_m3 = ""
-    flujo_ingreso_proyecto_m3 = ""
-    flujo_ingreso_link_m3 = ""
-    fecha_inicial = 0
-    fechas = proyecto.fechas_ctas_ctes.split("&")
-    fechas.pop()
-    for f in fechas:
-        f = datetime.date(int(f[0:4]), int(f[5:7]), int(f[8:10]))
-        if fecha_inicial == 0:
-            fecha_inicial = f
+    consulta_principal_cuotas = Cuota.objects.filter(cuenta_corriente__venta__proyecto__id = id).exclude(cuenta_corriente__estado = "baja")
+    consulta_principal_pagos = Pago.objects.filter(cuota__cuenta_corriente__venta__proyecto__id = id).exclude(cuota__cuenta_corriente__estado = "baja")
+    precio_hormigon = Constantes.objects.get(id = 7).valor
+    data_flujo_proyecto = {}
+
+    array.pop()
+
+    for fecha in array:
+
+        fecha_inicial = fecha - datetime.timedelta(days = 1)
+        
+        if fecha.month == 12:
+            fecha_final = date(fecha.year + 1, 1, 1)
         else:
-            f = f - datetime.timedelta(days=1)  
+            fecha_final = date(fecha.year, fecha.month + 1, 1)
 
-            valor_general = 0
-            valor_proyecto = 0
-            valor_link= 0
-            valor_general_m3 = 0
-            valor_proyecto_m3 = 0
-            valor_link_m3= 0
+        consulta_principal_cuotas_fechas = consulta_principal_cuotas.filter(fecha__range = (fecha_inicial, fecha_final))
+        consulta_principal_pagos_fechas = consulta_principal_pagos.filter(cuota__fecha__range = (fecha_inicial, fecha_final))
 
-            asignaciones = ["PROYECTO", "TERRENO", "HON. LINK", "SOCIOS"]
+        key = fecha
+        data_flujo_proyecto[key] = {}
+        data_flujo_proyecto[key]['PLink'] = sum(np.array(consulta_principal_cuotas_fechas.filter(cuenta_corriente__venta__unidad__asig = "HON. LINK").values_list('precio', flat =True))*np.array(consulta_principal_cuotas_fechas.filter(cuenta_corriente__venta__unidad__asig = "HON. LINK").values_list('constante__valor', flat =True))) - sum(np.array(consulta_principal_pagos_fechas.filter(cuota__cuenta_corriente__venta__unidad__asig = "HON. LINK").values_list('pago', flat =True))*np.array(consulta_principal_pagos_fechas.filter(cuota__cuenta_corriente__venta__unidad__asig = "HON. LINK").values_list('cuota__constante__valor', flat =True))) + sum(np.array(consulta_principal_cuotas_fechas.filter(cuenta_corriente__venta__unidad__asig = "TERRENO").values_list('precio', flat =True))*np.array(consulta_principal_cuotas_fechas.filter(cuenta_corriente__venta__unidad__asig = "TERRENO").values_list('constante__valor', flat =True))) - sum(np.array(consulta_principal_pagos_fechas.filter(cuota__cuenta_corriente__venta__unidad__asig = "TERRENO").values_list('pago', flat =True))*np.array(consulta_principal_pagos_fechas.filter(cuota__cuenta_corriente__venta__unidad__asig = "TERRENO").values_list('cuota__constante__valor', flat =True)))
+        data_flujo_proyecto[key]['PProyecto'] = sum(np.array(consulta_principal_cuotas_fechas.filter(cuenta_corriente__venta__unidad__asig = "PROYECTO").values_list('precio', flat =True))*np.array(consulta_principal_cuotas_fechas.filter(cuenta_corriente__venta__unidad__asig = "PROYECTO").values_list('constante__valor', flat =True))) - sum(np.array(consulta_principal_pagos_fechas.filter(cuota__cuenta_corriente__venta__unidad__asig = "PROYECTO").values_list('pago', flat =True))*np.array(consulta_principal_pagos_fechas.filter(cuota__cuenta_corriente__venta__unidad__asig = "PROYECTO").values_list('cuota__constante__valor', flat =True)))
+        data_flujo_proyecto[key]['PTotal'] = sum(np.array(consulta_principal_cuotas_fechas.values_list('precio', flat =True))*np.array(consulta_principal_cuotas_fechas.values_list('constante__valor', flat =True))) - sum(np.array(consulta_principal_pagos_fechas.values_list('pago', flat =True))*np.array(consulta_principal_pagos_fechas.values_list('cuota__constante__valor', flat =True)))
+        data_flujo_proyecto[key]['M3ºLink'] = data_flujo_proyecto[key]['PLink']/precio_hormigon
+        data_flujo_proyecto[key]['M3ºProyecto'] = data_flujo_proyecto[key]['PProyecto']/precio_hormigon
+        data_flujo_proyecto[key]['M3ºTotal'] = data_flujo_proyecto[key]['PTotal']/precio_hormigon
+        data_flujo_proyecto[key]['PLinkb'] = sum(np.array(consulta_principal_cuotas_fechas.filter(cuenta_corriente__venta__unidad__asig = "HON. LINK").values_list('precio', flat =True))*np.array(consulta_principal_cuotas_fechas.filter(cuenta_corriente__venta__unidad__asig = "HON. LINK").values_list('constante__valor', flat =True))*np.array(consulta_principal_cuotas_fechas.filter(cuenta_corriente__venta__unidad__asig = "HON. LINK").values_list('porc_boleto', flat =True))) - sum(np.array(consulta_principal_pagos_fechas.filter(cuota__cuenta_corriente__venta__unidad__asig = "HON. LINK").values_list('pago', flat =True))*np.array(consulta_principal_pagos_fechas.filter(cuota__cuenta_corriente__venta__unidad__asig = "HON. LINK").values_list('cuota__constante__valor', flat =True))*np.array(consulta_principal_pagos_fechas.filter(cuota__cuenta_corriente__venta__unidad__asig = "HON. LINK").values_list('cuota__porc_boleto', flat =True))) + sum(np.array(consulta_principal_cuotas_fechas.filter(cuenta_corriente__venta__unidad__asig = "TERRENO").values_list('precio', flat =True))*np.array(consulta_principal_cuotas_fechas.filter(cuenta_corriente__venta__unidad__asig = "TERRENO").values_list('constante__valor', flat =True))*np.array(consulta_principal_cuotas_fechas.filter(cuenta_corriente__venta__unidad__asig = "TERRENO").values_list('porc_boleto', flat =True))) - sum(np.array(consulta_principal_pagos_fechas.filter(cuota__cuenta_corriente__venta__unidad__asig = "TERRENO").values_list('pago', flat =True))*np.array(consulta_principal_pagos_fechas.filter(cuota__cuenta_corriente__venta__unidad__asig = "TERRENO").values_list('cuota__constante__valor', flat =True))*np.array(consulta_principal_pagos_fechas.filter(cuota__cuenta_corriente__venta__unidad__asig = "TERRENO").values_list('cuota__porc_boleto', flat =True)))
+        data_flujo_proyecto[key]['PProyectob'] = sum(np.array(consulta_principal_cuotas_fechas.filter(cuenta_corriente__venta__unidad__asig = "PROYECTO").values_list('precio', flat =True))*np.array(consulta_principal_cuotas_fechas.filter(cuenta_corriente__venta__unidad__asig = "PROYECTO").values_list('constante__valor', flat =True))*np.array(consulta_principal_cuotas_fechas.filter(cuenta_corriente__venta__unidad__asig = "PROYECTO").values_list('porc_boleto', flat =True))) - sum(np.array(consulta_principal_pagos_fechas.filter(cuota__cuenta_corriente__venta__unidad__asig = "PROYECTO").values_list('pago', flat =True))*np.array(consulta_principal_pagos_fechas.filter(cuota__cuenta_corriente__venta__unidad__asig = "PROYECTO").values_list('cuota__constante__valor', flat =True))*np.array(consulta_principal_pagos_fechas.filter(cuota__cuenta_corriente__venta__unidad__asig = "PROYECTO").values_list('cuota__porc_boleto', flat =True)))
+        data_flujo_proyecto[key]['PTotalb'] = sum(np.array(consulta_principal_cuotas_fechas.values_list('precio', flat =True))*np.array(consulta_principal_cuotas_fechas.values_list('constante__valor', flat =True))*np.array(consulta_principal_cuotas_fechas.values_list('porc_boleto', flat =True))) - sum(np.array(consulta_principal_pagos_fechas.values_list('pago', flat =True)) *np.array(consulta_principal_pagos_fechas.values_list('cuota__constante__valor', flat =True))*np.array(consulta_principal_pagos_fechas.values_list('cuota__porc_boleto', flat =True)))
+        data_flujo_proyecto[key]['M3ºLinkb'] = data_flujo_proyecto[key]['PLinkb']/precio_hormigon
+        data_flujo_proyecto[key]['M3ºProyectob'] = data_flujo_proyecto[key]['PProyectob']/precio_hormigon
+        data_flujo_proyecto[key]['M3ºTotalb'] = data_flujo_proyecto[key]['M3ºLinkb']/precio_hormigon
 
-            for asignacion in asignaciones:
-                cuotas_mes = sum(np.array(Cuota.objects.values_list('precio', flat =True).filter(fecha__range = (fecha_inicial, f), cuenta_corriente__venta__proyecto = proyecto, cuenta_corriente__venta__unidad__asig = asignacion))*np.array(Cuota.objects.values_list('constante__valor', flat =True).filter(fecha__range = (fecha_inicial, f), cuenta_corriente__venta__proyecto = proyecto, cuenta_corriente__venta__unidad__asig = asignacion)))
-                pagos_mes = sum(np.array(Pago.objects.values_list('pago', flat =True).filter(cuota__fecha__range = (fecha_inicial, f), cuota__cuenta_corriente__venta__proyecto = proyecto, cuota__cuenta_corriente__venta__unidad__asig = asignacion))*np.array(Pago.objects.values_list('cuota__constante__valor', flat =True).filter(cuota__fecha__range = (fecha_inicial, f), cuota__cuenta_corriente__venta__proyecto = proyecto, cuota__cuenta_corriente__venta__unidad__asig = asignacion)))
-                ingreso_mes = cuotas_mes - pagos_mes
-                valor_general += ingreso_mes
-                if asignacion == "TERRENO" or asignacion == "HON. LINK":
-                    valor_link += ingreso_mes
-                if asignacion == "PROYECTO":
-                    valor_proyecto += ingreso_mes
 
-            flujo_ingreso += str(valor_general) + "&"
-            flujo_ingreso_proyecto += str(valor_proyecto) + "&"
-            flujo_ingreso_link += str(valor_link) + "&"
+    consulta_principal_cuotas_fechas = consulta_principal_cuotas
+    consulta_principal_pagos_fechas = consulta_principal_pagos
 
-            for asignacion in asignaciones:
-                cuotas_mes = sum(np.array(Cuota.objects.values_list('precio', flat =True).filter(fecha__range = (fecha_inicial, f), cuenta_corriente__venta__proyecto = proyecto, cuenta_corriente__venta__unidad__asig = asignacion)))
-                pagos_mes = sum(np.array(Pago.objects.values_list('pago', flat =True).filter(cuota__fecha__range = (fecha_inicial, f), cuota__cuenta_corriente__venta__proyecto = proyecto, cuota__cuenta_corriente__venta__unidad__asig = asignacion)))
-                ingreso_mes = cuotas_mes - pagos_mes
-                valor_general_m3 += ingreso_mes
-                if asignacion == "TERRENO" or asignacion == "HON. LINK":
-                    valor_link_m3 += ingreso_mes
-                if asignacion == "PROYECTO":
-                    valor_proyecto_m3 += ingreso_mes
+    data_flujo_proyecto_total = {}
+    data_flujo_proyecto_total['PLink'] = sum(np.array(consulta_principal_cuotas_fechas.filter(cuenta_corriente__venta__unidad__asig = "HON. LINK").values_list('precio', flat =True))*np.array(consulta_principal_cuotas_fechas.filter(cuenta_corriente__venta__unidad__asig = "HON. LINK").values_list('constante__valor', flat =True))) - sum(np.array(consulta_principal_pagos_fechas.filter(cuota__cuenta_corriente__venta__unidad__asig = "HON. LINK").values_list('pago', flat =True))*np.array(consulta_principal_pagos_fechas.filter(cuota__cuenta_corriente__venta__unidad__asig = "HON. LINK").values_list('cuota__constante__valor', flat =True))) + sum(np.array(consulta_principal_cuotas_fechas.filter(cuenta_corriente__venta__unidad__asig = "TERRENO").values_list('precio', flat =True))*np.array(consulta_principal_cuotas_fechas.filter(cuenta_corriente__venta__unidad__asig = "TERRENO").values_list('constante__valor', flat =True))) - sum(np.array(consulta_principal_pagos_fechas.filter(cuota__cuenta_corriente__venta__unidad__asig = "TERRENO").values_list('pago', flat =True))*np.array(consulta_principal_pagos_fechas.filter(cuota__cuenta_corriente__venta__unidad__asig = "TERRENO").values_list('cuota__constante__valor', flat =True)))
+    data_flujo_proyecto_total['PProyecto'] = sum(np.array(consulta_principal_cuotas_fechas.filter(cuenta_corriente__venta__unidad__asig = "PROYECTO").values_list('precio', flat =True))*np.array(consulta_principal_cuotas_fechas.filter(cuenta_corriente__venta__unidad__asig = "PROYECTO").values_list('constante__valor', flat =True))) - sum(np.array(consulta_principal_pagos_fechas.filter(cuota__cuenta_corriente__venta__unidad__asig = "PROYECTO").values_list('pago', flat =True))*np.array(consulta_principal_pagos_fechas.filter(cuota__cuenta_corriente__venta__unidad__asig = "PROYECTO").values_list('cuota__constante__valor', flat =True)))
+    data_flujo_proyecto_total['PTotal'] = sum(np.array(consulta_principal_cuotas_fechas.values_list('precio', flat =True))*np.array(consulta_principal_cuotas_fechas.values_list('constante__valor', flat =True))) - sum(np.array(consulta_principal_pagos_fechas.values_list('pago', flat =True))*np.array(consulta_principal_pagos_fechas.values_list('cuota__constante__valor', flat =True)))
+    data_flujo_proyecto_total['M3ºLink'] = data_flujo_proyecto_total['PLink']/precio_hormigon
+    data_flujo_proyecto_total['M3ºProyecto'] = data_flujo_proyecto_total['PProyecto']/precio_hormigon
+    data_flujo_proyecto_total['M3ºTotal'] = data_flujo_proyecto_total['PTotal']/precio_hormigon
+    data_flujo_proyecto_total['PLinkb'] = sum(np.array(consulta_principal_cuotas_fechas.filter(cuenta_corriente__venta__unidad__asig = "HON. LINK").values_list('precio', flat =True))*np.array(consulta_principal_cuotas_fechas.filter(cuenta_corriente__venta__unidad__asig = "HON. LINK").values_list('constante__valor', flat =True))*np.array(consulta_principal_cuotas_fechas.filter(cuenta_corriente__venta__unidad__asig = "HON. LINK").values_list('porc_boleto', flat =True))) - sum(np.array(consulta_principal_pagos_fechas.filter(cuota__cuenta_corriente__venta__unidad__asig = "HON. LINK").values_list('pago', flat =True))*np.array(consulta_principal_pagos_fechas.filter(cuota__cuenta_corriente__venta__unidad__asig = "HON. LINK").values_list('cuota__constante__valor', flat =True))*np.array(consulta_principal_pagos_fechas.filter(cuota__cuenta_corriente__venta__unidad__asig = "HON. LINK").values_list('cuota__porc_boleto', flat =True))) + sum(np.array(consulta_principal_cuotas_fechas.filter(cuenta_corriente__venta__unidad__asig = "TERRENO").values_list('precio', flat =True))*np.array(consulta_principal_cuotas_fechas.filter(cuenta_corriente__venta__unidad__asig = "TERRENO").values_list('constante__valor', flat =True))*np.array(consulta_principal_cuotas_fechas.filter(cuenta_corriente__venta__unidad__asig = "TERRENO").values_list('porc_boleto', flat =True))) - sum(np.array(consulta_principal_pagos_fechas.filter(cuota__cuenta_corriente__venta__unidad__asig = "TERRENO").values_list('pago', flat =True))*np.array(consulta_principal_pagos_fechas.filter(cuota__cuenta_corriente__venta__unidad__asig = "TERRENO").values_list('cuota__constante__valor', flat =True))*np.array(consulta_principal_pagos_fechas.filter(cuota__cuenta_corriente__venta__unidad__asig = "TERRENO").values_list('cuota__porc_boleto', flat =True)))
+    data_flujo_proyecto_total['PProyectob'] = sum(np.array(consulta_principal_cuotas_fechas.filter(cuenta_corriente__venta__unidad__asig = "PROYECTO").values_list('precio', flat =True))*np.array(consulta_principal_cuotas_fechas.filter(cuenta_corriente__venta__unidad__asig = "PROYECTO").values_list('constante__valor', flat =True))*np.array(consulta_principal_cuotas_fechas.filter(cuenta_corriente__venta__unidad__asig = "PROYECTO").values_list('porc_boleto', flat =True))) - sum(np.array(consulta_principal_pagos_fechas.filter(cuota__cuenta_corriente__venta__unidad__asig = "PROYECTO").values_list('pago', flat =True))*np.array(consulta_principal_pagos_fechas.filter(cuota__cuenta_corriente__venta__unidad__asig = "PROYECTO").values_list('cuota__constante__valor', flat =True))*np.array(consulta_principal_pagos_fechas.filter(cuota__cuenta_corriente__venta__unidad__asig = "PROYECTO").values_list('cuota__porc_boleto', flat =True)))
+    data_flujo_proyecto_total['PTotalb'] = sum(np.array(consulta_principal_cuotas_fechas.values_list('precio', flat =True))*np.array(consulta_principal_cuotas_fechas.values_list('constante__valor', flat =True))*np.array(consulta_principal_cuotas_fechas.values_list('porc_boleto', flat =True))) - sum(np.array(consulta_principal_pagos_fechas.values_list('pago', flat =True)) *np.array(consulta_principal_pagos_fechas.values_list('cuota__constante__valor', flat =True))*np.array(consulta_principal_pagos_fechas.values_list('cuota__porc_boleto', flat =True)))
+    data_flujo_proyecto_total['M3ºLinkb'] = data_flujo_proyecto_total['PLinkb']/precio_hormigon
+    data_flujo_proyecto_total['M3ºProyectob'] = data_flujo_proyecto_total['PProyectob']/precio_hormigon
+    data_flujo_proyecto_total['M3ºTotalb'] = data_flujo_proyecto_total['M3ºLinkb']/precio_hormigon
 
-            flujo_ingreso_m3 = flujo_ingreso_m3 + str(valor_general_m3) + "&"
-            flujo_ingreso_proyecto_m3  = flujo_ingreso_proyecto_m3 + str(valor_proyecto_m3) + "&"
-            flujo_ingreso_link_m3  = flujo_ingreso_link_m3 + str(valor_link_m3) + "&"
-            fecha_inicial = f
-
-    proyecto.flujo_ingreso = flujo_ingreso
-    proyecto.flujo_ingreso_link = flujo_ingreso_link
-    proyecto.flujo_ingreso_proyecto = flujo_ingreso_proyecto
-    proyecto.flujo_ingreso_m3 = flujo_ingreso_m3
-    proyecto.flujo_ingreso_link_m3 = flujo_ingreso_link_m3
-    proyecto.flujo_ingreso_proyecto_m3 = flujo_ingreso_proyecto_m3
-    proyecto.save()
+    return [data_flujo_proyecto, data_flujo_proyecto_total]
 
 def flujo_ingreso_cliente(id):
 
@@ -265,7 +256,6 @@ def registroemail(id_cuenta, fecha, usuario, archivo):
         
     except:
         mensaje='error'
-
 
 def resumen_cuentas(id_proyecto):
 

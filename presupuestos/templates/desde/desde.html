@@ -19,229 +19,231 @@
             </ol>
         </div>
     </div>
-</div>
 
-<div class="row">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-body">
-                <h4 class="card-title"><span class="lstick m-r-20"></span>Precio de referencia</h4>
-                <h6 class="card-subtitle">Modelo utilizando valores de costo y parametros</h6>
-
-                <div>
-                    <table class="table table-bordered">
-                        <thead style="font-size: 16px;">
-                            <tr>
-                                <th>Proyecto</th>
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title"><span class="lstick m-r-20"></span>Precio de referencia</h4>
+                    <h6 class="card-subtitle">Modelo utilizando valores de costo y parametros</h6>
+    
+                    <div>
+                        <table class="table table-bordered">
+                            <thead style="font-size: 16px;">
+                                <tr>
+                                    <th>Proyecto</th>
+                                    {% for i in datos %}
+                                    <th style="font-size: 12px; color: rgb({{i.3.color}});">{{i.3.nombre}}</th>
+                                    {% endfor %}
+                                </tr>
+                            
+                            </thead>
+    
+                            <tbody>
+                                <tr style="font-size: 14px;">
+                                    <td> Costo minimo </td>
+                                    {% for i in datos %}
+                                    <td>${{i.0.8|floatformat:2|intcomma}}</td>
+                                    {% endfor %}
+                                </tr>
+                                <tr style="font-size: 14px;">
+                                    <td> Precio objetivo </td>
+                                    {% for i in datos %}
+                                    <td>${{i.0.9|floatformat:2|intcomma}}</td>
+                                    {% endfor %}
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <hr>
+    
+                    <h4 class="card-title"><span class="lstick m-r-20"></span>Evolución por parametros</h4>
+                
+                    <div class="table-responsive">
+    
+                        <table class="table table-bordered">
+                            <thead style="font-size: 14px;">
+                    
+                                <tr>
+                                    <th>Proyecto</th>
+                                    <th>Costo</th>
+                                    <th>Imp</th>
+                                    <th>IVA</th>
+                                    <th>Soft</th>
+                                    <th>Terreno </th>
+                                    <th>Hon. Link</th>
+                                    <th>Comer.</th>
+                                    <th>TEM e IIBB </th>
+                                    <th>Ganancia </th>
+                    
+                    
+                                </tr>
+                            </thead>
+                    
+                            <tbody>
+                    
                                 {% for i in datos %}
-                                <th style="font-size: 12px; color: rgb({{i.3.color}});">{{i.3.nombre}}</th>
-                                {% endfor %}
-                            </tr>
-                        
-                        </thead>
-
-                        <tbody>
-                            <tr style="font-size: 14px;">
-                                <td> Costo minimo </td>
-                                {% for i in datos %}
-                                <td>${{i.0.8|floatformat:2|intcomma}}</td>
-                                {% endfor %}
-                            </tr>
-                            <tr style="font-size: 14px;">
-                                <td> Precio objetivo </td>
-                                {% for i in datos %}
-                                <td>${{i.0.9|floatformat:2|intcomma}}</td>
-                                {% endfor %}
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <hr>
-
-                <h4 class="card-title"><span class="lstick m-r-20"></span>Evolución por parametros</h4>
-            
-                <div class="table-responsive">
-
-                    <table class="table table-bordered">
-                        <thead style="font-size: 14px;">
-                
-                            <tr>
-                                <th>Proyecto</th>
-                                <th>Costo</th>
-                                <th>Imp</th>
-                                <th>IVA</th>
-                                <th>Soft</th>
-                                <th>Terreno </th>
-                                <th>Hon. Link</th>
-                                <th>Comer.</th>
-                                <th>TEM e IIBB </th>
-                                <th>Ganancia </th>
-                
-                
-                            </tr>
-                        </thead>
-                
-                        <tbody>
-                
-                            {% for i in datos %}
-                            <tr  style="font-size: 12px;">
-                                <td rowspan="2" style="min-width: 130px; text-align: left; vertical-align: top; width: 10%" >
-                                    <div class="btn-group ml-auto">
-                                        <a href="JavaScript:void(0)" class="icon-options-vertical link" data-toggle="dropdown"
-                                        aria-haspopup="true" aria-expanded="false"></a>
-                                        <div class="dropdown-menu dropdown-menu-right">
-                                            <a class="dropdown-item" href="#"  data-toggle="modal" data-target="#Modalprecio{{i.3.id}}"><i
-                                                class="fa fa-pencil-square-o mr-2"></i>Modificar parametros</a>
-                                        </div>
-                                    </div>
-                                    <small style="font-size: 12px; color: rgb({{i.3.color}});">{{i.3.nombre}}</small>
-                                    <h6 style="font-size: 12px; margin-top: 15px;"><i class="fa fa-building"></i>  ${{i.4|floatformat:2|intcomma}}</h6>
-
-                                </td>
-                                <div class="modal fade" id="Modalprecio{{i.3.id}}" tabindex="-1" role="dialog" aria-labelledby="Modalprecio{{i.3.id}}" aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header" style="background: rgb(36,160,237); background: linear-gradient(315deg, rgba(36,160,237,1) 0%, rgba(56,56,130,1) 22%, rgba(0,212,255,1) 100%);">
-                                                <h5 class="modal-title text-light" id="exampleModalLongTitle">Modificar parametros</h5>
-                                                <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
+                                <tr  style="font-size: 12px;">
+                                    <td rowspan="2" style="min-width: 130px; text-align: left; vertical-align: top; width: 10%" >
+                                        <div class="btn-group ml-auto">
+                                            <a href="JavaScript:void(0)" class="icon-options-vertical link" data-toggle="dropdown"
+                                            aria-haspopup="true" aria-expanded="false"></a>
+                                            <div class="dropdown-menu dropdown-menu-right">
+                                                <a class="dropdown-item" href="#"  data-toggle="modal" data-target="#Modalprecio{{i.3.id}}"><i
+                                                    class="fa fa-pencil-square-o mr-2"></i>Modificar parametros</a>
                                             </div>
-                                            <div class="modal-body">
-                                                <form action="#" method="POST">
-                
-                                                    {% csrf_token %}
-                                                    <div class="row">
-                                                        <div class="col-6">
-                                                            <span>Soft</span>
-                                                            <div class="mb-3">
-                                                                <input name="soft" type="number" step="any" value="{{i.5.soft}}" class="form-control form-control">
+                                        </div>
+                                        <small style="font-size: 12px; color: rgb({{i.3.color}});">{{i.3.nombre}}</small>
+                                        <h6 style="font-size: 12px; margin-top: 15px;"><i class="fa fa-building"></i>  ${{i.4|floatformat:2|intcomma}}</h6>
+    
+                                    </td>
+                                    <div class="modal fade" id="Modalprecio{{i.3.id}}" tabindex="-1" role="dialog" aria-labelledby="Modalprecio{{i.3.id}}" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header" style="background: rgb(36,160,237); background: linear-gradient(315deg, rgba(36,160,237,1) 0%, rgba(56,56,130,1) 22%, rgba(0,212,255,1) 100%);">
+                                                    <h5 class="modal-title text-light" id="exampleModalLongTitle">Modificar parametros</h5>
+                                                    <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form action="#" method="POST">
+                    
+                                                        {% csrf_token %}
+                                                        <div class="row">
+                                                            <div class="col-6">
+                                                                <span>Soft</span>
+                                                                <div class="mb-3">
+                                                                    <input name="soft" type="number" step="any" value="{{i.5.soft}}" class="form-control form-control">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-6">
+                                                                <span>Iva</span>
+                                                                <div class="mb-3">
+                                                                    <input name="iva" type="number" step="any" value="{{i.5.iva}}" class="form-control form-control">
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                        <div class="col-6">
-                                                            <span>Iva</span>
-                                                            <div class="mb-3">
-                                                                <input name="iva" type="number" step="any" value="{{i.5.iva}}" class="form-control form-control">
+                                                        <div class="row">
+                                                            <div class="col-6">
+                                                                <span>Imprevisto</span>
+                                                                <div class="mb-3">
+                                                                    <input name="imprevisto" type="number" step="any" value="{{i.5.imprevitso}}" class="form-control form-control">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-6">
+                                                                <span>Terreno</span>
+                                                                <div class="mb-3">
+                                                                    <input name="terreno" type="number" step="any" value="{{i.5.terreno}}" class="form-control form-control">
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-6">
-                                                            <span>Imprevisto</span>
-                                                            <div class="mb-3">
-                                                                <input name="imprevisto" type="number" step="any" value="{{i.5.imprevitso}}" class="form-control form-control">
+                                                        <div class="row">
+                                                            <div class="col-6">
+                                                                <span>Link</span>
+                                                                <div class="mb-3">
+                                                                    <input name="link" type="number" step="any" value="{{i.5.link}}" class="form-control form-control">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-6">
+                                                                <span>Comer</span>
+                                                                <div class="mb-3">
+                                                                    <input name="comer" type="number" step="any" value="{{i.5.comer}}" class="form-control form-control">
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                        <div class="col-6">
-                                                            <span>Terreno</span>
-                                                            <div class="mb-3">
-                                                                <input name="terreno" type="number" step="any" value="{{i.5.terreno}}" class="form-control form-control">
+                                                        <div class="row">
+                                                            <div class="col-6">
+                                                                <span>Por comer</span>
+                                                                <div class="mb-3">
+                                                                    <input name="porc_comer" type="number" step="any" value="{{i.5.por_comer}}" class="form-control form-control">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-6">
+                                                                <span>Tem. iibb</span>
+                                                                <div class="mb-3">
+                                                                    <input name="temiibb" type="number" step="any" value="{{i.5.tem_iibb}}" class="form-control form-control">
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-6">
-                                                            <span>Link</span>
-                                                            <div class="mb-3">
-                                                                <input name="link" type="number" step="any" value="{{i.5.link}}" class="form-control form-control">
+                                                        <div class="row">
+                                                            <div class="col-6">
+                                                                <span>Por temiibb</span>
+                                                                <div class="mb-3">
+                                                                    <input name="porc_temiibb" type="number" step="any" value="{{i.5.por_temiibb}}" class="form-control form-control">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-6">
+                                                                <span>Ganancia</span>
+                                                                <div class="mb-3">
+                                                                    <input name="ganancia" type="number" step="any" value="{{i.5.ganancia}}" class="form-control form-control">
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                        <div class="col-6">
-                                                            <span>Comer</span>
-                                                            <div class="mb-3">
-                                                                <input name="comer" type="number" step="any" value="{{i.5.comer}}" class="form-control form-control">
+                                                        <div class="row">
+                                                            <div class="col-6">
+                                                                <span>Depto</span>
+                                                                <div class="mb-3">
+                                                                    <input name="depto" type="number" step="any" value="{{i.5.depto}}" class="form-control form-control">
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-6">
-                                                            <span>Por comer</span>
-                                                            <div class="mb-3">
-                                                                <input name="porc_comer" type="number" step="any" value="{{i.5.por_comer}}" class="form-control form-control">
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-6">
-                                                            <span>Tem. iibb</span>
-                                                            <div class="mb-3">
-                                                                <input name="temiibb" type="number" step="any" value="{{i.5.tem_iibb}}" class="form-control form-control">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-6">
-                                                            <span>Por temiibb</span>
-                                                            <div class="mb-3">
-                                                                <input name="porc_temiibb" type="number" step="any" value="{{i.5.por_temiibb}}" class="form-control form-control">
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-6">
-                                                            <span>Ganancia</span>
-                                                            <div class="mb-3">
-                                                                <input name="ganancia" type="number" step="any" value="{{i.5.ganancia}}" class="form-control form-control">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-6">
-                                                            <span>Depto</span>
-                                                            <div class="mb-3">
-                                                                <input name="depto" type="number" step="any" value="{{i.5.depto}}" class="form-control form-control">
-                                                            </div>
+                                                            
                                                         </div>
                                                         
-                                                    </div>
-                                                    
-                                                    <div>
-                                                        <button class="btn btn-info" type="submit" name="id" value="{{i.5.id}}"
-                                                            style="margin-top: 10px;">Modificar</button>
-                
-                                                    </div>
-                                                </form>
-                
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-info"
-                                                    data-dismiss="modal">Cerrar</button>
-                
+                                                        <div>
+                                                            <button class="btn btn-info" type="submit" name="id" value="{{i.5.id}}"
+                                                                style="margin-top: 10px;">Modificar</button>
+                    
+                                                        </div>
+                                                    </form>
+                    
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-info"
+                                                        data-dismiss="modal">Cerrar</button>
+                    
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <td>{{0|floatformat:0}}%</td>
-                                <td>{{i.2.0|floatformat:2}}%</td>
-                                <td>{{i.2.1|floatformat:2}}%</td>
-                                <td>{{i.2.2|floatformat:2}}%</td>
-                                <td>{{i.2.6}}m2 ({{i.1.0|floatformat:0}}%)</td>
-                                <td>{{i.2.7}}m2 ({{i.1.1|floatformat:0}}%)</td>
-                                <td>{{i.2.3|floatformat:2}}%</td>
-                                <td>{{i.2.4|floatformat:2}}%</td>
-                                <td>{{i.2.5|floatformat:2}}%</td>
-
+                                    <td>{{0|floatformat:0}}%</td>
+                                    <td>{{i.2.0|floatformat:2}}%</td>
+                                    <td>{{i.2.1|floatformat:2}}%</td>
+                                    <td>{{i.2.2|floatformat:2}}%</td>
+                                    <td>{{i.2.6}}m2 ({{i.1.0|floatformat:0}}%)</td>
+                                    <td>{{i.2.7}}m2 ({{i.1.1|floatformat:0}}%)</td>
+                                    <td>{{i.2.3|floatformat:2}}%</td>
+                                    <td>{{i.2.4|floatformat:2}}%</td>
+                                    <td>{{i.2.5|floatformat:2}}%</td>
+    
+                                
+                                </tr>
+                                <tr  style="font-size: 12px;">
+                                    <td>${{i.0.1|floatformat:2|intcomma}}</td>
+                                    <td>${{i.0.2|floatformat:2|intcomma}}</td>
+                                    <td>${{i.0.3|floatformat:2|intcomma}}</td>
+                                    <td>${{i.0.4|floatformat:2|intcomma}}</td>
+                                    <td>${{i.0.5|floatformat:2|intcomma}}</td>
+                                    <td>${{i.0.6|floatformat:2|intcomma}}</td>
+                                    <td>${{i.0.7|floatformat:2|intcomma}}</td>
+                                    <td class="text-danger">${{i.0.8|floatformat:2|intcomma}}</td>
+                                    <td class="text-info">${{i.0.9|floatformat:2|intcomma}}</td>
+                                </tr>
                             
-                            </tr>
-                            <tr  style="font-size: 12px;">
-                                <td>${{i.0.1|floatformat:2|intcomma}}</td>
-                                <td>${{i.0.2|floatformat:2|intcomma}}</td>
-                                <td>${{i.0.3|floatformat:2|intcomma}}</td>
-                                <td>${{i.0.4|floatformat:2|intcomma}}</td>
-                                <td>${{i.0.5|floatformat:2|intcomma}}</td>
-                                <td>${{i.0.6|floatformat:2|intcomma}}</td>
-                                <td>${{i.0.7|floatformat:2|intcomma}}</td>
-                                <td class="text-danger">${{i.0.8|floatformat:2|intcomma}}</td>
-                                <td class="text-info">${{i.0.9|floatformat:2|intcomma}}</td>
-                            </tr>
-                        
-                
-                            {% endfor %}
-                        </tbody>
-                    </table>
-
-
+                    
+                                {% endfor %}
+                            </tbody>
+                        </table>
+    
+    
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+
 
     
 {% endblock %}

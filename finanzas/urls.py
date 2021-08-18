@@ -1,6 +1,7 @@
 from django.urls import path, re_path
 from django.conf.urls import url
 from . import views
+from . import views_ctacte_informes
 from .views import DescargarCuentacorriente, DescargarTotalCuentas, PdfPrueba, DescargarResumen, DescargarControlUnidades
 from django.contrib.auth.decorators import login_required
 
@@ -30,8 +31,8 @@ urlpatterns = [
     url(r'^ctactecliente/(?P<id_cliente>\d+)/$', login_required(views.ctactecliente), name = 'Cuenta corriente venta'),
     url(r'^ctacteclienteboleto/(?P<id_cliente>\d+)/$', login_required(views.estructura_boleto), name = 'Cuenta corriente venta boleto'),
     url(r'^boleto/(?P<id_cuenta>\d+)/(?P<id_cuota>\d+)/$', login_required(views.boleto), name = 'Boleto en cuota'),
-    url(r'^totalcuentas/(?P<id_proyecto>\d+)/(?P<cliente>\d+)/(?P<moneda>\d+)/(?P<boleto>\d+)/$', login_required(views.totalcuentacte), name = 'Total cuenta'),
-    url(r'^resumencuentas/$', login_required(views.cuentacte_resumen), name = 'Resumen de cuentas'),
+    url(r'^totalcuentas/(?P<id_proyecto>\d+)/(?P<cliente>\d+)/(?P<moneda>\d+)/(?P<boleto>\d+)/$', login_required(views_ctacte_informes.totalcuentacte), name = 'Total cuenta'),
+    url(r'^resumencuentas/$', login_required(views_ctacte_informes.cuentacte_resumen), name = 'Resumen de cuentas'),
     url(r'^editarcuota/(?P<id_cuota>\d+)/$', login_required(views.editar_cuota), name = 'Editar cuota'),
     url(r'^agregarcuota/(?P<id_cuenta>\d+)/$', login_required(views.agregar_cuota), name = 'Agregar cuota'),
     url(r'^eliminarcuota/(?P<id_cuota>\d+)/$', login_required(views.eliminar_cuota), name = 'Eliminar cuota'),
