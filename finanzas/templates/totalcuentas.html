@@ -150,18 +150,20 @@
    
                                 </tr>
 
-                                <tr>
-                                    <th class="sticky bg-body text-center">Fecha/Asignación</th>
-                                    {% for i in flujo_proyecto_cliente.1 %}
-                                    <th class="text-center">{{i.venta.unidad.asig}}</th>
-                                    {% endfor %}
-                                    
-   
-                                </tr>
+                                
 
                             </thead>
 
                             <tbody style="text-align: center; font-size: 12px;">
+
+                                <tr>
+                                    <td class="sticky bg-body text-center">Fecha/Asignación</td>
+                                    {% for i in flujo_proyecto_cliente.1 %}
+                                    <td class="text-center">{{i.venta.unidad.asig}}</td>
+                                    {% endfor %}
+                                    
+   
+                                </tr>
 
                                 
                                 {% for key, value in flujo_proyecto_cliente.0.items %}
