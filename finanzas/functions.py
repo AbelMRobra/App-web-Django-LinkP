@@ -30,56 +30,15 @@ def fechas_cc(id):
         inicio_pagos = date(hoy.year, hoy.month, 1)
 
     ultima_fecha = Cuota.objects.filter(cuenta_corriente__venta__proyecto = proyecto).order_by("-fecha")[0].fecha
-
     fecha_auxiliar = inicio_pagos
-
+    
     fechas = []
-    contador = 0
-    contador_year = 1
-
-    while fecha_auxiliar < ultima_fecha:
-
-        if (inicio_pagos.month + contador) == 13:
-            
-            year = inicio_pagos.year + contador_year
-            
-            fecha_auxiliar = date(year, 1, 1)
-
-            fechas.append(fecha_auxiliar)
-            
-            contador_year += 1
-
-            contador = - (12 - contador)
-
-        else:
-
-            mes = inicio_pagos.month + contador
-
-            year = inicio_pagos.year + contador_year - 1
-
-            fecha_auxiliar = date(year, mes, 1)
-
-            fechas.append(fecha_auxiliar)
-
-        contador += 1
-
-    if (inicio_pagos.month + contador) == 13:
-            
-            year = inicio_pagos.year + contador_year
-            
-            fecha_auxiliar = date(year, 1, 1)
-
-            fechas.append(fecha_auxiliar)
-            
-    else:
-
-        mes = inicio_pagos.month + contador
-
-        year = inicio_pagos.year + contador_year - 1
-
-        fecha_auxiliar = date(year, mes, 1)
-
+    
+    while fecha_auxiliar < ultima_fecha :
         fechas.append(fecha_auxiliar)
+        fecha_auxiliar += relativedelta(months=+1)
+    fechas.append(fecha_auxiliar)
+
 
     return fechas
 
