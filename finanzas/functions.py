@@ -173,8 +173,6 @@ def flujo_ingreso_proyecto_cliente(id, array):
         key = fecha
         data_flujo_proyecto[key] = data_row
 
-    print(data_flujo_proyecto)
-
     return [data_flujo_proyecto, cuentas_corrientes]
 
 def flujo_ingreso_cliente(id):
