@@ -43,6 +43,8 @@
                             <div class="dropdown-menu dropdown-menu-right">
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#ModalProyecto"><i
                                         class="fa fa-plus-circle mr-2"></i>Elegir proyecto</a>
+                                <a class="dropdown-item" href="{% url 'Total cuenta' proyecto.id 1 0 0 %}" ><i
+                                    class="fa fa-users mr-2"></i>Flujo por cliente</a>
 
     
                             </div>
@@ -137,43 +139,56 @@
 
                         {% if cliente == "1" %}
 
-                        <table id="cliente" class="table table-bordered mt-1">
+                        <table id="example" class="table table-striped table-bordered mt-1">
                             <thead style="font-size: 12px;">
-                                <th class="sticky bg-body">Cliente</th>
-                                <th class="sticky bg-body">Unidad</th>
-                                <th class="sticky bg-body">Asignación</th>
-                                {% for f in fechas %}
-                                <th class="sticky bg-body">{{f|slice:"8:10"}}/{{f|slice:"5:7"}}/{{f|slice:"2:4"}}</th>
-                                {% endfor %}
+                                <tr>
+                                    <th class="sticky bg-body text-center">Cliente</th>
+                                    {% for i in flujo_proyecto_cliente.1 %}
+                                    <th class="text-center">{{i}}</th>
+                                    {% endfor %}
+                                    
+   
+                                </tr>
+
+                                <tr>
+                                    <th class="sticky bg-body text-center">Fecha/Asignación</th>
+                                    {% for i in flujo_proyecto_cliente.1 %}
+                                    <th class="text-center">{{i.venta.unidad.asig}}</th>
+                                    {% endfor %}
+                                    
+   
+                                </tr>
 
                             </thead>
 
-                            <tbody>
+                            <tbody style="text-align: center; font-size: 12px;">
 
-                                {% for cuenta in cuentas_informacion %}
-
-                                <tr style="font-size: 12px;">
-                                    <td class="sticky bg-body">{{cuenta.0|lower|capfirst}}</td>
-                                    <td style="min-width: 100px;">{{cuenta.0.venta.unidad}}</td>
-                                    <td>{{cuenta.0.venta.unidad.asig|lower|capfirst}}</td>
-                                    {% for ingreso in cuenta.1 %}
-                                    {% if moneda == "0" %}
-                                    <td>${{ingreso|floatformat:2|intcomma}}</td>
-                                    {% else %}
-                                    <td>{{ingreso|floatformat:2|intcomma}}</td>
-                                    {% endif %}
+                                
+                                {% for key, value in flujo_proyecto_cliente.0.items %}
+                                <tr>
+                                    <td class="sticky bg-body">{{key|date:"d/m/Y"}}</td>
+                                    {% for i in value %}
+                                    <td class="text-center">{{i.1.M3ºTotal|floatformat:2|intcomma}}</td>
                                     {% endfor %}
-                                    
-                                </tr>
 
+                                </tr>
+                                
                                 {% endfor %}
+                                
 
                             </tbody>
-                            
+
+                            <tfoot style="text-align: center; font-size: 12px;">
+
+
+   
+
+
+                            </tfoot>
+
                         </table>
 
                         {% else %}
-
 
                         <table id="example" class="table table-striped table-bordered mt-1">
                             <thead style="font-size: 12px;">

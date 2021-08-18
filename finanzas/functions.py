@@ -136,6 +136,47 @@ def flujo_ingreso_proyecto(id, array):
 
     return [data_flujo_proyecto, data_flujo_proyecto_total]
 
+def flujo_ingreso_proyecto_cliente(id, array):
+
+    consulta_principal_cuotas = Cuota.objects.filter(cuenta_corriente__venta__proyecto__id = id).exclude(cuenta_corriente__estado = "baja")
+    consulta_principal_pagos = Pago.objects.filter(cuota__cuenta_corriente__venta__proyecto__id = id).exclude(cuota__cuenta_corriente__estado = "baja")
+    cuentas_corrientes = CuentaCorriente.objects.filter(venta__proyecto__id = id).exclude(cuota__cuenta_corriente__estado = "baja")
+    precio_hormigon = Constantes.objects.get(id = 7).valor
+    data_flujo_proyecto = {}
+
+    array.pop()
+
+    for fecha in array:
+
+        fecha_inicial = fecha - datetime.timedelta(days = 1)
+        
+        if fecha.month == 12:
+            fecha_final = date(fecha.year + 1, 1, 1)
+        else:
+            fecha_final = date(fecha.year, fecha.month + 1, 1)
+
+        data_row = []
+
+        for cuenta in cuentas_corrientes:
+
+            consulta_principal_cuotas_fechas = consulta_principal_cuotas.filter(cuenta_corriente = cuenta, fecha__range = (fecha_inicial, fecha_final))
+            consulta_principal_pagos_fechas = consulta_principal_pagos.filter(cuota__cuenta_corriente = cuenta,cuota__fecha__range = (fecha_inicial, fecha_final))
+
+            info_row = {}
+            info_row['PTotal'] = sum(np.array(consulta_principal_cuotas_fechas.values_list('precio', flat =True))*np.array(consulta_principal_cuotas_fechas.values_list('constante__valor', flat =True))) - sum(np.array(consulta_principal_pagos_fechas.values_list('pago', flat =True))*np.array(consulta_principal_pagos_fechas.values_list('cuota__constante__valor', flat =True)))
+            info_row['M3ºTotal'] = info_row['PTotal']/precio_hormigon
+            info_row['PTotalb'] = sum(np.array(consulta_principal_cuotas_fechas.values_list('precio', flat =True))*np.array(consulta_principal_cuotas_fechas.values_list('constante__valor', flat =True))*np.array(consulta_principal_cuotas_fechas.values_list('porc_boleto', flat =True))) - sum(np.array(consulta_principal_pagos_fechas.values_list('pago', flat =True)) *np.array(consulta_principal_pagos_fechas.values_list('cuota__constante__valor', flat =True))*np.array(consulta_principal_pagos_fechas.values_list('cuota__porc_boleto', flat =True)))
+            info_row['M3ºTotalb'] = info_row['PTotalb']/precio_hormigon
+
+            data_row.append((cuenta, info_row))
+
+        key = fecha
+        data_flujo_proyecto[key] = data_row
+
+    print(data_flujo_proyecto)
+
+    return [data_flujo_proyecto, cuentas_corrientes]
+
 def flujo_ingreso_cliente(id):
 
     cuenta_venta = CuentaCorriente.objects.get(id = id)

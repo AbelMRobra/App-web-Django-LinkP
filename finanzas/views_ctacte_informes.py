@@ -10,7 +10,7 @@ from .models import Almacenero, CuentaCorriente, Cuota, Pago, RegistroAlmacenero
 from proyectos.models import Unidades, Proyectos
 from ventas.models import Pricing, VentasRealizadas, FeaturesUni
 from rrhh.models import datosusuario
-from .functions import fechas_cc, flujo_ingreso_cliente, flujo_ingreso_proyecto, promedio_almacenero, registroemail, resumen_cuentas
+from .functions import fechas_cc, flujo_ingreso_proyecto_cliente, flujo_ingreso_proyecto, promedio_almacenero, registroemail, resumen_cuentas
 
 
 def cuentacte_resumen(request):
@@ -74,10 +74,17 @@ def totalcuentacte(request, id_proyecto, cliente, moneda, boleto):
     data_proyecto = resumen_cuentas(id_proyecto)
     context["data_cuadro"] = data_proyecto
     context["fechas"] = fechas_cc(id_proyecto)
-    context["flujo_proyecto"] = flujo_ingreso_proyecto(id_proyecto, context["fechas"])
     context["listado"] = listado
-
     context["informacion_general"] = len(CuentaCorriente.objects.filter(venta__proyecto = proyecto).exclude(estado = "baja"))
 
+
+    if cliente == "0":
+
+        context["flujo_proyecto"] = flujo_ingreso_proyecto(id_proyecto, context["fechas"])
+
+    else:
+        context["flujo_proyecto_cliente"] = flujo_ingreso_proyecto_cliente(id_proyecto, context["fechas"])
+    
+    context["cliente"] = cliente
 
     return render(request, 'totalcuentas.html', context)
