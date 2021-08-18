@@ -141,10 +141,10 @@
 
                         <table id="example" class="table table-striped table-bordered mt-1">
                             <thead style="font-size: 12px;">
-                                <tr>
-                                    <th class="sticky bg-body text-center">Cliente</th>
+                                <tr class="text-justify text-middle">
+                                    <th class="sticky bg-body">Cliente</th>
                                     {% for i in flujo_proyecto_cliente.1 %}
-                                    <th class="text-center">{{i|lower|capfirst}}</th>
+                                    <th>{{i|lower|capfirst}}</th>
                                     {% endfor %}
                                     
    
@@ -154,10 +154,10 @@
 
                             </thead>
 
-                            <tbody style="text-align: center; font-size: 12px;">
+                            <tbody style="font-size: 12px;">
 
                                 <tr>
-                                    <td class="sticky bg-body text-center">Fecha/Asignación</td>
+                                    <td>Fecha/Asignación</td>
                                     {% for i in flujo_proyecto_cliente.1 %}
                                     <td class="text-center">{{i.venta.unidad.asig}}</td>
                                     {% endfor %}
@@ -168,7 +168,7 @@
                                 
                                 {% for key, value in flujo_proyecto_cliente.0.items %}
                                 <tr>
-                                    <td class="sticky bg-body">{{key|date:"d/m/Y"}}</td>
+                                    <td>{{key|date:"d/m/Y"}}</td>
                                     {% for i in value %}
                                     <td class="text-center">{{i.1|floatformat:2|intcomma}}</td>
                                     {% endfor %}
@@ -180,11 +180,14 @@
 
                             </tbody>
 
-                            <tfoot style="text-align: center; font-size: 12px;">
+                            <tfoot style="font-size: 12px;">
+                                <tr class="font-bold">
+                                    <td>Total</td>
+                                    {% for i in flujo_proyecto_cliente.2 %}
+                                    <td class="text-center">{{i|floatformat:2|intcomma}}</td>
+                                    {% endfor %}
 
-
-   
-
+                                </tr>
 
                             </tfoot>
 

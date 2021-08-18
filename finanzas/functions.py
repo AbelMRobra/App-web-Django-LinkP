@@ -16,7 +16,6 @@ from rrhh.models import datosusuario
 def fechas_cc(id):
 
     proyecto = Proyectos.objects.get(id = id)
-
     hoy = date.today()
 
     # Supongamos que existen pagos
@@ -38,7 +37,6 @@ def fechas_cc(id):
         fechas.append(fecha_auxiliar)
         fecha_auxiliar += relativedelta(months=+1)
     fechas.append(fecha_auxiliar)
-
 
     return fechas
 
@@ -110,24 +108,52 @@ def flujo_ingreso_proyecto_cliente(id, array, moneda, boleto):
     if moneda == "0" and boleto == "0":
 
         data_flujo_proyecto = {fecha:  [(cuenta, (
-            sum(np.array(con_c.filter(fecha__range = ((fecha - datetime.timedelta(days = 1)), fecha + relativedelta(months=+1)), cuenta_corriente = cuenta).values_list("precio", flat = True))*
-            np.array(con_c.filter(fecha__range = ((fecha - datetime.timedelta(days = 1)), fecha + relativedelta(months=+1)), cuenta_corriente = cuenta).values_list("constante__valor", flat = True))) 
-            - sum(np.array(con_p.filter(cuota__fecha__range = ((fecha - datetime.timedelta(days = 1)), fecha + relativedelta(months=+1)), cuota__cuenta_corriente = cuenta).values_list("pago", flat = True))*
-            np.array(con_p.filter(cuota__fecha__range = ((fecha - datetime.timedelta(days = 1)), fecha + relativedelta(months=+1)), cuota__cuenta_corriente = cuenta).values_list("cuota__constante__valor", flat = True))))) for cuenta in cuentas_corrientes]
+            sum(
+            np.array(con_c.filter(fecha__range = ((fecha - datetime.timedelta(days = 1)), fecha + relativedelta(months=+1)), cuenta_corriente = cuenta).values_list("precio", flat = True))*
+            np.array(con_c.filter(fecha__range = ((fecha - datetime.timedelta(days = 1)), fecha + relativedelta(months=+1)), cuenta_corriente = cuenta).values_list("constante__valor", flat = True))
+            ) - sum(
+            np.array(con_p.filter(cuota__fecha__range = ((fecha - datetime.timedelta(days = 1)), fecha + relativedelta(months=+1)), cuota__cuenta_corriente = cuenta).values_list("pago", flat = True))*
+            np.array(con_p.filter(cuota__fecha__range = ((fecha - datetime.timedelta(days = 1)), fecha + relativedelta(months=+1)), cuota__cuenta_corriente = cuenta).values_list("cuota__constante__valor", flat = True))
+            ))) for cuenta in cuentas_corrientes]
         
         for fecha in array}
+
+        flujo_total = [((sum(
+            np.array(con_c.filter(cuenta_corriente = cuenta).values_list("precio", flat = True))*
+            np.array(con_c.filter(cuenta_corriente = cuenta).values_list("constante__valor", flat = True))
+            ) - sum(
+            np.array(con_p.filter(cuota__cuenta_corriente = cuenta).values_list("pago", flat = True))*
+            np.array(con_p.filter(cuota__cuenta_corriente = cuenta).values_list("cuota__constante__valor", flat = True))
+            ))) 
+            
+            for cuenta in cuentas_corrientes]
+        
 
     elif  moneda == "1" and boleto == "0":
 
         data_flujo_proyecto = {fecha:  [(cuenta, (
-            sum(np.array(con_c.filter(fecha__range = ((fecha - datetime.timedelta(days = 1)), fecha + relativedelta(months=+1)), cuenta_corriente = cuenta).values_list("precio", flat = True))*
-            np.array(con_c.filter(fecha__range = ((fecha - datetime.timedelta(days = 1)), fecha + relativedelta(months=+1)), cuenta_corriente = cuenta).values_list("constante__valor", flat = True))) 
-            - sum(np.array(con_p.filter(cuota__fecha__range = ((fecha - datetime.timedelta(days = 1)), fecha + relativedelta(months=+1)), cuota__cuenta_corriente = cuenta).values_list("pago", flat = True))*
-            np.array(con_p.filter(cuota__fecha__range = ((fecha - datetime.timedelta(days = 1)), fecha + relativedelta(months=+1)), cuota__cuenta_corriente = cuenta).values_list("cuota__constante__valor", flat = True))))/precio_hormigon) for cuenta in cuentas_corrientes]
+            sum(
+            np.array(con_c.filter(fecha__range = ((fecha - datetime.timedelta(days = 1)), fecha + relativedelta(months=+1)), cuenta_corriente = cuenta).values_list("precio", flat = True))*
+            np.array(con_c.filter(fecha__range = ((fecha - datetime.timedelta(days = 1)), fecha + relativedelta(months=+1)), cuenta_corriente = cuenta).values_list("constante__valor", flat = True))
+            ) - sum(
+            np.array(con_p.filter(cuota__fecha__range = ((fecha - datetime.timedelta(days = 1)), fecha + relativedelta(months=+1)), cuota__cuenta_corriente = cuenta).values_list("pago", flat = True))*
+            np.array(con_p.filter(cuota__fecha__range = ((fecha - datetime.timedelta(days = 1)), fecha + relativedelta(months=+1)), cuota__cuenta_corriente = cuenta).values_list("cuota__constante__valor", flat = True)))
+            )/precio_hormigon) for cuenta in cuentas_corrientes]
         
         for fecha in array}
 
-    return [data_flujo_proyecto, cuentas_corrientes]
+        flujo_total = [(
+            sum(
+            np.array(con_c.filter( cuenta_corriente = cuenta).values_list("precio", flat = True))*
+            np.array(con_c.filter( cuenta_corriente = cuenta).values_list("constante__valor", flat = True))
+            ) - sum(
+            np.array(con_p.filter(cuota__cuenta_corriente = cuenta).values_list("pago", flat = True))*
+            np.array(con_p.filter(cuota__cuenta_corriente = cuenta).values_list("cuota__constante__valor", flat = True)))
+            )/precio_hormigon for cuenta in cuentas_corrientes]
+        
+
+
+    return [data_flujo_proyecto, cuentas_corrientes, flujo_total]
 
 def flujo_ingreso_cliente(id):
 
@@ -251,7 +277,6 @@ def registroemail(id_cuenta, fecha, usuario, archivo):
         mensaje='error'
 
 def resumen_cuentas(id_proyecto):
-
 
     context_data = {}
     context_data["context_data_total"] = {}
