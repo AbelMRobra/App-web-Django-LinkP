@@ -1,4 +1,5 @@
 # Modelos de la BBDD usados
+from django.contrib.auth.decorators import permission_required
 from .models import EstudioMercado, PricingResumen, FeaturesProjects, FeaturesUni, DosierDeVenta, Clientescontacto
 from proyectos.models import Unidades, Proyectos
 from finanzas.models import Almacenero
@@ -992,7 +993,7 @@ def estmercado(request):
         for dato in estudio:
 
             if dato[0] == 'csrfmiddlewaretoken':
-                print("Basura")
+                pass
 
             else:
 
@@ -2852,3 +2853,128 @@ class DescargaPricing(TemplateView):
 
 
 
+def cargaunidadesproyecto(request,**kwargs):
+    if request.method=='POST':
+        
+
+        datos=request.POST.dict()
+
+       
+        id_proyecto=kwargs['id']
+        proyecto=Proyectos.objects.get(pk=id_proyecto)
+        try:
+            cant_uni=int(datos['contador'])
+            nuevas_unidades=[]
+            for form in range(0,cant_uni):
+                if form==0:  
+                    tipo=datos['tipo']
+                    if tipo=='DEPARTAMENTO':
+                        if 'tipologia' in datos:
+                            tipologia=datos['tipologia']
+                        else:
+                            tipologia='MONO'
+                    else:
+                        tipologia=datos['tipo']
+                    unidad=Unidades(
+                        proyecto=proyecto,
+                        piso_unidad=datos['nombre_piso'] + ' ' + datos['numero_piso'],
+                        nombre_unidad=datos['nomenclatura'], #nomenclatura
+                        tipo=tipo,
+                        tipologia=tipologia,
+                        sup_propia=datos['sup_propia'],
+                        sup_balcon=datos['sup_balcon'],
+                        sup_patio=datos['sup_patio'],
+                        sup_comun=datos['sup_comun'],
+                        sup_equiv=datos['sup_equivalente'],
+                    )
+                    
+                else:
+                    form=str(form)
+                    nm='nombre_piso'+form
+                    np='numero_piso'+form
+                    nu='nomenclatura'+form
+                    
+                    supp='sup_propia'+form
+                    supb='sup_balcon'+form
+                    suppa='sup_patio'+form
+                    supc='sup_comun'+form
+                    supq='sup_equivalente'+form
+                    t='tipo'+form
+                    ti='tipologia'+form
+                    tipo=datos[t]
+                    
+                    if tipo=='DEPARTAMENTO':
+                        if ti in datos:
+                            tipologia=datos[ti]
+                        else:
+                            tipologia='MONO'
+                    else:
+                        tipologia=tipo
+                    unidad=Unidades(
+                        proyecto=proyecto,
+                        piso_unidad=datos[nm] + ' ' + datos[np],
+                        nombre_unidad=datos[nu], #nomenclatura
+                        tipo=tipo,
+                        tipologia=tipologia,
+                        sup_propia=datos[supp],
+                        sup_balcon=datos[supb],
+                        sup_patio=datos[suppa],
+                        sup_comun=datos[supc],
+                        sup_equiv=datos[supq],
+                    )
+                nuevas_unidades.append(unidad)
+
+            Unidades.objects.bulk_create(nuevas_unidades)
+        except:
+            mensaje='Ocurrio un error'
+        return redirect('Lista unidades proyecto',proyecto.id)
+    return render(request, 'carga_unidades_proyecto.html',{})
+
+def listaunidadesproyecto(request,**kwargs):
+    id_proyecto=kwargs['id']
+    proyecto=Proyectos.objects.get(pk=id_proyecto)
+    unidades=Unidades.objects.filter(proyecto=id_proyecto)
+
+    if request.method=='POST':
+        datos=request.POST.dict()
+        if 'borrar' in datos:
+            id_unidad=datos['borrar']
+            unidad=Unidades.objects.get(pk=id_unidad)
+            unidad.delete()
+            return redirect('Lista unidades proyecto',id_proyecto)
+        if 'editar' in datos:
+            id_unidad=datos['editar']
+            unidad=Unidades.objects.filter(pk=int(id_unidad))
+            tipo=datos['tipo']
+            if tipo=='DEPARTAMENTO':
+                if 'tipologia' in datos:
+                    tipologia=datos['tipologia']
+                else:
+                    tipologia='MONO'
+            else:
+                tipologia=datos['tipo']
+            unidad.update(
+                proyecto=proyecto,
+                piso_unidad=datos['nombre_piso'] + ' ' + datos['numero_piso'],
+                nombre_unidad=datos['nomenclatura'], #nomenclatura
+                tipo=tipo,
+                tipologia=tipologia,
+                sup_propia=datos['sup_propia'],
+                sup_balcon=datos['sup_balcon'],
+                sup_patio=datos['sup_patio'],
+                sup_comun=datos['sup_comun'],
+                sup_equiv=datos['sup_equivalente'],
+
+            )
+            return redirect('Lista unidades proyecto',id_proyecto)
+    return render(request, 'listado_unidades_proyecto.html',{'unidades':unidades,'proyecto':proyecto})
+
+def panelunidadesproyecto(request):
+    proyectos=Proyectos.objects.all()
+
+    if request.method=='POST':
+        id_proyecto=request.POST.get('proyecto')
+        
+        return redirect('Lista unidades proyecto',int(id_proyecto))
+
+    return render(request, 'panel_unidades_proyecto.html',{'proyectos':proyectos,})
