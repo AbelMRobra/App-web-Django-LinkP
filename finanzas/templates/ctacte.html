@@ -112,16 +112,16 @@
                                     <tr>
                                         <th>Concepto</th>
                                         <th style=" text-align: center;">B</th>
-                                <th>Fecha</th>
-                                <th>Moneda</th>
-                                <th>Total</th>
-                                <th>Saldo</th>
-                                <th>Cotización</th>
-                                <th>Pagos</th>
-                                {% if frozen %}
-                                <th style="text-align: center;"><i class="fa fa-snowflake-o mr-2"></i></th>
-                                {% endif %}
-                                <th></th>
+                                        <th>Fecha</th>
+                                        <th>Moneda</th>
+                                        <th>Total</th>
+                                        <th>Pagado</th>
+                                        <th>Saldo</th>
+                                        <th>Cotización</th>
+                                        {% if frozen %}
+                                        <th style="text-align: center;"><i class="fa fa-snowflake-o mr-2"></i></th>
+                                        {% endif %}
+                                        <th></th>
         
                                 </tr>
                             </thead>
@@ -132,7 +132,7 @@
                                 <tr>
                                     <td>
                                         
-                                        <div style="display: inline-block;">  <a href="{% url 'Pagos' i.0.id %}">{{i.0.concepto|upper}}</a> {% if i.0.pagada == "SI" %} <i  class="btn fa fa-lg fa-check-circle text-success"></i> {% endif %}</div>
+                                        <div style="display: inline-block;"> {% if i.0.pagada == "SI" %} <i  class="btn fa fa-lg fa-check-circle text-success"></i> {% endif %}  <a href="{% url 'Pagos' i.0.id %}">{{i.0.concepto|upper}}</a> </div>
                                     </td>
                                     <td style="text-align: center;">
         
