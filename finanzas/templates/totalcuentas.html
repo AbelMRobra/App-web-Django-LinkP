@@ -312,12 +312,12 @@
                                     <td>{{value.M3ºLinkb|floatformat:2|intcomma}}</td>
                                     <td>{{value.M3ºProyectob|floatformat:2|intcomma}}</td>
                                     <td>{{value.M3ºTotalb|floatformat:2|intcomma}}</td>
-                                    <td>{% if value.PLink < 0 %}-${{value.PLink|cut:"-"|floatformat:2|intcomma}}{% else %}${{value.PLink|floatformat:2|intcomma}}{% endif %}</td>
-                                    <td>{% if value.PProyecto < 0 %}-${{value.PProyecto|cut:"-"|floatformat:2|intcomma}}{% else %}${{value.PProyecto|floatformat:2|intcomma}}{% endif %}</td>
-                                    <td>{% if value.PTotal < 0 %}-${{value.PTotal|cut:"-"|floatformat:2|intcomma}}{% else %}${{value.PTotal|floatformat:2|intcomma}}{% endif %}</td>                                   
-                                    <td>{% if value.PLinkb < 0 %}-${{value.PLinkb|cut:"-"|floatformat:2|intcomma}}{% else %}${{value.PLinkb|floatformat:2|intcomma}}{% endif %}</td>
-                                    <td>{% if value.PProyectob < 0 %}-${{value.PProyectob|cut:"-"|floatformat:2|intcomma}}{% else %}${{value.PProyectob|floatformat:2|intcomma}}{% endif %}</td>
-                                    <td>{% if value.PTotalb < 0 %}-${{value.PTotalb|cut:"-"|floatformat:2|intcomma}}{% else %}${{value.PTotalb|floatformat:2|intcomma}}{% endif %}</td>
+                                    <td>{% if value.PLink < 0 %}-${{value.PLink|floatformat:2|intcomma|cut:"-"}}{% else %}${{value.PLink|floatformat:2|intcomma}}{% endif %}</td>
+                                    <td>{% if value.PProyecto < 0 %}-${{value.PProyecto|floatformat:2|intcomma|cut:"-"}}{% else %}${{value.PProyecto|floatformat:2|intcomma}}{% endif %}</td>
+                                    <td>{% if value.PTotal < 0 %}-${{value.PTotal|floatformat:2|intcomma|cut:"-"}}{% else %}${{value.PTotal|floatformat:2|intcomma}}{% endif %}</td>                                   
+                                    <td>{% if value.PLinkb < 0 %}-${{value.PLinkb|floatformat:2|intcomma|cut:"-"}}{% else %}${{value.PLinkb|floatformat:2|intcomma}}{% endif %}</td>
+                                    <td>{% if value.PProyectob < 0 %}-${{value.PProyectob|floatformat:2|intcomma|cut:"-"}}{% else %}${{value.PProyectob|floatformat:2|intcomma}}{% endif %}</td>
+                                    <td>{% if value.PTotalb < 0 %}-${{value.PTotalb|floatformat:2|intcomma|cut:"-"}}{% else %}${{value.PTotalb|floatformat:2|intcomma}}{% endif %}</td>
                                     
    
                                 </tr>
