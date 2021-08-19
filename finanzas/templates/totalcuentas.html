@@ -43,15 +43,77 @@
                             <div class="dropdown-menu dropdown-menu-right">
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#ModalProyecto"><i
                                         class="fa fa-plus-circle mr-2"></i>Elegir proyecto</a>
-                                {% if cliente == "0" %}
-                                <a class="dropdown-item" href="{% url 'Total cuenta' proyecto.id 1 0 0 %}" ><i
+
+                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#ModalSeleccion"><i
                                     class="fa fa-users mr-2"></i>Flujo por cliente</a>
-                                {% else %}
-                                <a class="dropdown-item" href="{% url 'Total cuenta' proyecto.id 0 0 0 %}" ><i
+                                {% if cliente == "1" %}
+                                <a class="dropdown-item" href="{% url 'Total cuenta' proyecto.id %}" ><i
                                     class="fa fa-file mr-2"></i>Flujo del proyecto</a>
                                 {% endif %}
 
     
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal fade" id="ModalSeleccion" tabindex="-1" role="dialog" aria-labelledby="ModalSeleccion"
+                        aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header" style="background-color: #2a3e52;">
+                                    <h5 class="modal-title text-light" id="exampleModalLongTitle">Formulario de consulta</h5>
+                                    <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form method="POST">
+
+                                        {% csrf_token %}
+                                        <div class="row justify-content-center my-3">
+                                            <div class="col">
+                                                <h5>Tiempo de los datos</h5>
+                                                <input type="radio" name="historico" value="1" id="total" class="filled-in chk-col-blue" checked />
+                                                <label for="total">Historico</label>
+                                                
+                                                <input type="radio" name="historico" value="0"  id="proyecto" class="filled-in chk-col-blue" />
+                                                <label for="proyecto">Pendiente</label> 
+                                                
+  
+                                            </div>
+                                        </div>
+                                        <div class="row justify-content-center my-3">
+                                            <div class="col">
+                                                <h5>Tipo de dato</h5>
+                                                <input type="radio" name="boleto" value="1" id="boleto" class="filled-in chk-col-blue" checked />
+                                                <label for="boleto">Boleto</label>
+                                                
+                                                <input type="radio" name="boleto" value="0"  id="no-boleto" class="filled-in chk-col-blue" />
+                                                <label for="no-boleto">No boleto</label> 
+                                            </div>
+                                        </div>
+                                        <div class="row justify-content-center my-3">
+                                            <div class="col">
+                                                <h5>Moneda</h5>
+                                                <input type="radio" name="moneda" value="0" id="peso" class="filled-in chk-col-blue" checked />
+                                                <label for="peso">$ARS</label>
+                                                
+                                                <input type="radio" name="moneda" value="1"  id="hormigon" class="filled-in chk-col-blue" />
+                                                <label for="hormigon">Hormigón</label> 
+                                            </div>
+                                        </div>
+
+                                        <div>
+                                            <button class="btn btn-info" type="submit" name="id_proyecto" value="{{proyecto.id}}"
+                                                style="margin-top: 10px;">Consultar</button>
+                                        </div>
+                                    </form>
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -136,6 +198,11 @@
                             <h6>{{data_cuadro.context_data_total.m3_deuda|floatformat:2|intcomma}}ºM3</h6>
                         </div>
 
+                        <div class="col-2 bg-light shadow p-4 rounded-3">
+                            <h6><b>Hº adelantado</b></h6>
+                            <h6>{{data_cuadro.context_data_total.m3_adelantado|floatformat:2|intcomma}}ºM3</h6>
+                        </div>
+
                      
                     </div>
 
@@ -149,7 +216,7 @@
 
                         <table id="example" class="table table-striped table-bordered mt-1">
                             <thead style="font-size: 12px;">
-                                <tr class="text-justify text-middle">
+                                <tr class="text-justify">
                                     <th class="sticky bg-body">Cliente</th>
                                     {% for i in flujo_proyecto_cliente.1 %}
                                     <th>{{i|lower|capfirst}}</th>
@@ -165,9 +232,18 @@
                             <tbody style="font-size: 12px;">
 
                                 <tr>
-                                    <td>Fecha/Asignación</td>
+                                    <td class="font-bold">Unidad</td>
                                     {% for i in flujo_proyecto_cliente.1 %}
-                                    <td class="text-center">{{i.venta.unidad.asig}}</td>
+                                    <td class="text-center font-bold">{{i.venta.unidad.piso_unidad}}-{{i.venta.unidad.nombre_unidad}}</td>
+                                    {% endfor %}
+                                    
+   
+                                </tr>
+
+                                <tr>
+                                    <td class="font-bold">Fecha/Asignación</td>
+                                    {% for i in flujo_proyecto_cliente.1 %}
+                                    <td class="text-center font-bold">{{i.venta.unidad.asig}}</td>
                                     {% endfor %}
                                     
    
@@ -236,12 +312,12 @@
                                     <td>{{value.M3ºLinkb|floatformat:2|intcomma}}</td>
                                     <td>{{value.M3ºProyectob|floatformat:2|intcomma}}</td>
                                     <td>{{value.M3ºTotalb|floatformat:2|intcomma}}</td>
-                                    <td>${{value.PLink|floatformat:2|intcomma}}</td>
-                                    <td>${{value.PProyecto|floatformat:2|intcomma}}</td>
-                                    <td>${{value.PTotal|floatformat:2|intcomma}}</td>                                   
-                                    <td>${{value.PLinkb|floatformat:2|intcomma}}</td>
-                                    <td>${{value.PProyectob|floatformat:2|intcomma}}</td>
-                                    <td>${{value.PTotalb|floatformat:2|intcomma}}</td>
+                                    <td>{% if value.PLink < 0 %}-${{value.PLink|cut:"-"|floatformat:2|intcomma}}{% else %}${{value.PLink|floatformat:2|intcomma}}{% endif %}</td>
+                                    <td>{% if value.PProyecto < 0 %}-${{value.PProyecto|cut:"-"|floatformat:2|intcomma}}{% else %}${{value.PProyecto|floatformat:2|intcomma}}{% endif %}</td>
+                                    <td>{% if value.PTotal < 0 %}-${{value.PTotal|cut:"-"|floatformat:2|intcomma}}{% else %}${{value.PTotal|floatformat:2|intcomma}}{% endif %}</td>                                   
+                                    <td>{% if value.PLinkb < 0 %}-${{value.PLinkb|cut:"-"|floatformat:2|intcomma}}{% else %}${{value.PLinkb|floatformat:2|intcomma}}{% endif %}</td>
+                                    <td>{% if value.PProyectob < 0 %}-${{value.PProyectob|cut:"-"|floatformat:2|intcomma}}{% else %}${{value.PProyectob|floatformat:2|intcomma}}{% endif %}</td>
+                                    <td>{% if value.PTotalb < 0 %}-${{value.PTotalb|cut:"-"|floatformat:2|intcomma}}{% else %}${{value.PTotalb|floatformat:2|intcomma}}{% endif %}</td>
                                     
    
                                 </tr>
@@ -261,12 +337,12 @@
                                     <td>{{flujo_proyecto.1.M3ºLinkb|floatformat:2|intcomma}}</td>
                                     <td>{{flujo_proyecto.1.M3ºProyectob|floatformat:2|intcomma}}</td>
                                     <td>{{flujo_proyecto.1.M3ºTotalb|floatformat:2|intcomma}}</td>
-                                    <td>${{flujo_proyecto.1.PLink|floatformat:2|intcomma}}</td>
-                                    <td>${{flujo_proyecto.1.PProyecto|floatformat:2|intcomma}}</td>
-                                    <td>${{flujo_proyecto.1.PTotal|floatformat:2|intcomma}}</td>          
-                                    <td>${{flujo_proyecto.1.PLinkb|floatformat:2|intcomma}}</td>
-                                    <td>${{flujo_proyecto.1.PProyectob|floatformat:2|intcomma}}</td>
-                                    <td>${{flujo_proyecto.1.PTotalb|floatformat:2|intcomma}}</td>
+                                    <td>{% if flujo_proyecto.1.PLink < 0 %}-${{flujo_proyecto.1.PLink|cut:"-"|floatformat:2|intcomma}}{% else %}${{flujo_proyecto.1.PLink|floatformat:2|intcomma}}{% endif %}</td>
+                                    <td>{% if flujo_proyecto.1.PProyecto < 0 %}-${{flujo_proyecto.1.PProyecto|cut:"-"|floatformat:2|intcomma}}{% else %}${{flujo_proyecto.1.PProyecto|floatformat:2|intcomma}}{% endif %}</td>
+                                    <td>{% if flujo_proyecto.1.PTotal < 0 %}-${{flujo_proyecto.1.PTotal|cut:"-"|floatformat:2|intcomma}}{% else %}${{flujo_proyecto.1.PTotal|floatformat:2|intcomma}}{% endif %}</td>          
+                                    <td>{% if flujo_proyecto.1.PLinkb < 0 %}-${{flujo_proyecto.1.PLinkb|cut:"-"|floatformat:2|intcomma}}{% else %}${{flujo_proyecto.1.PLinkb|floatformat:2|intcomma}}{% endif %}</td>
+                                    <td>{% if flujo_proyecto.1.PProyectob < 0 %}-${{flujo_proyecto.1.PProyectob|cut:"-"|floatformat:2|intcomma}}{% else %}${{flujo_proyecto.1.PProyectob|floatformat:2|intcomma}}{% endif %}</td>
+                                    <td>{% if flujo_proyecto.1.PTotalb < 0 %}-${{flujo_proyecto.1.PTotalb|cut:"-"|floatformat:2|intcomma}}{% else %}${{flujo_proyecto.1.PTotalb|floatformat:2|intcomma}}{% endif %}</td>
                                     
    
                                 </tr>
@@ -336,8 +412,9 @@
             dom: 'Bfrtip',
             buttons: [
                 {
+                    footer: true,
                     extend: 'excelHtml5',
-                    title: 'Flujo de ingresos',
+                    title: '{{flujo_proyecto_cliente.3}}',
                     className: "btn btn-info",
 
                 init: function(api, node, config) {
@@ -369,9 +446,9 @@
             dom: 'Bfrtip',
             buttons: [
                 {
-                    extend: 'excelHtml5',
                     footer: true,
-                    title: 'Flujo de ingresos en pesos por cliente',
+                    extend: 'excelHtml5',
+                    title: 'Flujo de ingresos',
                     className: "btn btn-info",
 
                 init: function(api, node, config) {
