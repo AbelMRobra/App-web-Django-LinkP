@@ -100,10 +100,19 @@ class PdfPrueba(View):
                     cuotas_t = (cuotas_t + 1)
 
                     pagos = Pago.objects.filter(cuota = cuota)
+                    
+                    if cuota.pagada=='SI':
+                        pagos_pesos=0
+                        pagos_moneda_dura=0
 
-                    for pago in pagos:
+                        for pago in pagos:
+                            pagos_pesos+=pago.pago_pesos
+                            pagos_moneda_dura+=pago.pago
+                        total_pagado = pagos_pesos/pagos_moneda_dura
+                    else:
+                        for pago in pagos:
 
-                        total_pagado = total_pagado + pago.pago
+                            total_pagado = total_pagado + pago.pago
 
             saldo_moneda = total_moneda - total_pagado
             saldo_pesos = saldo_moneda*moneda.valor
@@ -910,7 +919,7 @@ def ctactecliente(request, id_cliente):
         frozen = 0
 
     if request.method == 'POST':
-
+        
         try:
             if request.POST['frozen']:
                 if len(Constantes.objects.filter(cuenta_corriente = id_cliente)):
@@ -944,6 +953,22 @@ def ctactecliente(request, id_cliente):
                 cuota.constante = Constantes.objects.get(id = 7)
                 cuota.save()
 
+        if 'baja-cuenta' in request.POST.dict():
+     
+            ids=request.POST.dict()['baja-cuenta']
+            lista_ids=ids.split('-')
+            id_cuenta=lista_ids[0]
+            id_proyecto=lista_ids[1]
+            cuenta=CuentaCorriente.objects.get(pk=int(id_cuenta))
+            if cuenta.estado=='activo':
+                cuenta.estado='baja'
+                cuenta.save()
+                return redirect('Cuenta corriente proyecto',id_proyecto)
+
+            else:
+                cuenta.estado='activo'
+                cuenta.save()
+                return redirect('Cuenta corriente proyecto',id_proyecto)
 
     ctacte = CuentaCorriente.objects.get(id = id_cliente)
 

@@ -1,0 +1,64 @@
+{% extends "users/inicio2.html" %}
+
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+
+
+<div class="container-fluid">
+  <div class="row page-titles">
+    <div class="col-md-5 align-self-center">
+      <h3 class="text-themecolor">Gestor de unidades</h3>
+    </div>
+
+    <div class="col-md-7 align-self-center">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'Principal Tecnica' %}">Panel</a></li>
+        <li class="breadcrumb-item">Gestor de unidades</li>
+      </ol>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+
+        <div style="text-align: center;">
+          <h2>Gestor de unidades</h2>
+        </div>
+
+        <div class="text-center my-3">
+          <form method="POST">
+
+            {% csrf_token %}
+
+            <select name="proyecto" class="custom-select" style="width: 250px">
+
+              {% for i in proyectos %}
+
+              <option value="{{i.id}}">{{i}}</option>
+
+              {% endfor %}
+
+            </select>
+            <div class="mt-1">
+              <small> Seleccione un proyecto del listado</small>
+            </div>
+
+            <div>
+              <button class="btn btn-info mt-2" style="width: 250px" type="submit" >Buscar datos</button>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% endblock %}

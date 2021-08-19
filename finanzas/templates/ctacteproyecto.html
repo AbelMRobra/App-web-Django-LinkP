@@ -98,7 +98,12 @@
                                                     class="fa fa-file-pdf-o mr-2"></i>Reporte</a>
                                             <a class="dropdown-item" href="{% url 'Mandar email' i.id %}"><i
                                                     class="fa fa-envelope-o mr-2"></i>Correo</a>
-                                            <a class="dropdown-item" href="{% url 'Detalle venta' i.venta.id %}"><i
+                                                    {% if i.estado == "activo" %} 
+                                                  <form action="{% url 'Cuenta corriente venta' i.id %} " method="post"> {% csrf_token %} <button type="submit" name="baja-cuenta" value="{{i.id}}-{{proyecto.id}}" class="dropdown-item" href=""> <i class="fa fa-user-times" style="margin-right: 10px;"></i>Dar de baja</button></form>
+                                                  {% else %}
+                                                  <form action="{% url 'Cuenta corriente venta' i.id %} " method="post"> {% csrf_token %} <button type="submit" name="baja-cuenta" value="{{i.id}}-{{proyecto.id}}" class="dropdown-item" href=""> <i  class="fa fa-lg fa-check-circle text-success" style="margin-right: 5px;" ></i>Activar</button></form>
+                                                    {% endif %}
+                                                  <a class="dropdown-item" href="{% url 'Detalle venta' i.venta.id %}"><i
                                                     class="fa fa-comment mr-2"></i>Comentarios</a>
                                             <a class="dropdown-item" href="{% url 'Eliminar cuenta corriente' i.id %}"><i
                                                     class="fa fa-trash fa-lg text-danger mr-2"></i>Borrar</a>
