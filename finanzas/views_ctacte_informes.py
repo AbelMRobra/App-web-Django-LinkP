@@ -47,12 +47,14 @@ def cuentacte_resumen(request):
 
     return render(request, 'ctacte_resumen.html', context)
 
-def totalcuentacte(request, id_proyecto, cliente, moneda, boleto):
+def totalcuentacte(request, id_proyecto):
 
+    
     # Listado de los proyectos que tienen cuenta corrientes
 
     proyectos = Proyectos.objects.all()
-
+    context = {}
+    cliente = "0"
     listado = []
 
     for proyecto in proyectos:
@@ -63,12 +65,19 @@ def totalcuentacte(request, id_proyecto, cliente, moneda, boleto):
 
     if request.method == 'POST':
 
+        try:
             proyecto_elegido = request.POST["proyecto"].split("-")
             id_proyecto = proyecto_elegido[0]
+        
+        except:
+
+            id_proyecto = request.POST["id_proyecto"]
+            historico = request.POST["historico"]
+            moneda = request.POST["moneda"]
+            boleto = request.POST["boleto"]
+            cliente = "1"
 
     #### Contenido de los cuadros resumens
-
-    context = {}
 
     proyecto = proyectos.get(id = id_proyecto)
     context["proyecto"] = proyecto
@@ -83,7 +92,7 @@ def totalcuentacte(request, id_proyecto, cliente, moneda, boleto):
         context["flujo_proyecto"] = flujo_ingreso_proyecto(id_proyecto, context["fechas"])
 
     else:
-        context["flujo_proyecto_cliente"] = flujo_ingreso_proyecto_cliente(id_proyecto, context["fechas"], moneda, boleto)
+        context["flujo_proyecto_cliente"] = flujo_ingreso_proyecto_cliente(id_proyecto, context["fechas"], moneda, boleto, historico)
     
     context["cliente"] = cliente
 

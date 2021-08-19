@@ -11,8 +11,6 @@ from proyectos.models import Unidades, Proyectos
 from ventas.models import FeaturesUni
 from rrhh.models import datosusuario
 
-
-
 def fechas_cc(id):
 
     proyecto = Proyectos.objects.get(id = id)
@@ -96,7 +94,7 @@ def flujo_ingreso_proyecto(id, array):
 
     return [data_flujo_proyecto, data_flujo_proyecto_total]
 
-def flujo_ingreso_proyecto_cliente(id, array, moneda, boleto):
+def flujo_ingreso_proyecto_cliente(id, array, moneda, boleto, historico):
 
     con_c = Cuota.objects.filter(cuenta_corriente__venta__proyecto__id = id).exclude(cuenta_corriente__estado = "baja")
     con_p = Pago.objects.filter(cuota__cuenta_corriente__venta__proyecto__id = id).exclude(cuota__cuenta_corriente__estado = "baja")
@@ -105,9 +103,11 @@ def flujo_ingreso_proyecto_cliente(id, array, moneda, boleto):
 
     array.pop()
 
-    if moneda == "0" and boleto == "0":
+    ###### Lo pendiente / moroso
 
-        mensaje = "Tu consulta esta lista!, moneda: ARS - boleto: No activado"
+    if moneda == "0" and boleto == "0" and historico == "0":
+
+        mensaje = "Tu consulta esta lista!, Pendiente en moneda: ARS - boleto: No activado"
 
         data_flujo_proyecto = {fecha:  [(cuenta, (
             sum(
@@ -130,10 +130,9 @@ def flujo_ingreso_proyecto_cliente(id, array, moneda, boleto):
             
             for cuenta in cuentas_corrientes]
         
+    elif  moneda == "1" and boleto == "0" and historico == "0":
 
-    elif  moneda == "1" and boleto == "0":
-
-        mensaje = "Tu consulta esta lista!, moneda: Hormigón - boleto: No activado"
+        mensaje = "Tu consulta esta lista!, moneda: Pendiente en Hormigón - boleto: No activado"
 
         data_flujo_proyecto = {fecha:  [(cuenta, (
             sum(
@@ -154,7 +153,138 @@ def flujo_ingreso_proyecto_cliente(id, array, moneda, boleto):
             np.array(con_p.filter(cuota__cuenta_corriente = cuenta).values_list("pago", flat = True))*
             np.array(con_p.filter(cuota__cuenta_corriente = cuenta).values_list("cuota__constante__valor", flat = True)))
             )/precio_hormigon for cuenta in cuentas_corrientes]
+
+    elif  moneda == "0" and boleto == "1" and historico == "0":
+
+        mensaje = "Tu consulta esta lista!, Pendiente en moneda: ARS - boleto: Activado"
+
+        data_flujo_proyecto = {fecha:  [(cuenta, (
+            sum(
+            np.array(con_c.filter(fecha__range = ((fecha - datetime.timedelta(days = 1)), fecha + relativedelta(months=+1)), cuenta_corriente = cuenta).values_list("precio", flat = True))*
+            np.array(con_c.filter(fecha__range = ((fecha - datetime.timedelta(days = 1)), fecha + relativedelta(months=+1)), cuenta_corriente = cuenta).values_list("constante__valor", flat = True))*
+            np.array(con_c.filter(fecha__range = ((fecha - datetime.timedelta(days = 1)), fecha + relativedelta(months=+1)), cuenta_corriente = cuenta).values_list("porc_boleto", flat = True))
+            ) - sum(
+            np.array(con_p.filter(cuota__fecha__range = ((fecha - datetime.timedelta(days = 1)), fecha + relativedelta(months=+1)), cuota__cuenta_corriente = cuenta).values_list("pago", flat = True))*
+            np.array(con_p.filter(cuota__fecha__range = ((fecha - datetime.timedelta(days = 1)), fecha + relativedelta(months=+1)), cuota__cuenta_corriente = cuenta).values_list("cuota__constante__valor", flat = True))*
+            np.array(con_p.filter(cuota__fecha__range = ((fecha - datetime.timedelta(days = 1)), fecha + relativedelta(months=+1)), cuota__cuenta_corriente = cuenta).values_list("cuota__porc_boleto", flat = True)))
+            )) for cuenta in cuentas_corrientes]
         
+        for fecha in array}
+
+        flujo_total = [(
+            sum(
+            np.array(con_c.filter( cuenta_corriente = cuenta).values_list("precio", flat = True))*
+            np.array(con_c.filter( cuenta_corriente = cuenta).values_list("constante__valor", flat = True))*
+            np.array(con_c.filter( cuenta_corriente = cuenta).values_list("porc_boleto", flat = True))
+            ) - sum(
+            np.array(con_p.filter(cuota__cuenta_corriente = cuenta).values_list("pago", flat = True))*
+            np.array(con_p.filter(cuota__cuenta_corriente = cuenta).values_list("cuota__constante__valor", flat = True))*
+            np.array(con_p.filter(cuota__cuenta_corriente = cuenta).values_list("cuota__porc_boleto", flat = True)))
+            ) for cuenta in cuentas_corrientes]
+
+    elif  moneda == "1" and boleto == "1" and historico == "0":
+
+        mensaje = "Tu consulta esta lista!, Pendiente en moneda: Hormigón - boleto: Activado"
+
+        data_flujo_proyecto = {fecha:  [(cuenta, (
+            sum(
+            np.array(con_c.filter(fecha__range = ((fecha - datetime.timedelta(days = 1)), fecha + relativedelta(months=+1)), cuenta_corriente = cuenta).values_list("precio", flat = True))*
+            np.array(con_c.filter(fecha__range = ((fecha - datetime.timedelta(days = 1)), fecha + relativedelta(months=+1)), cuenta_corriente = cuenta).values_list("constante__valor", flat = True))*
+            np.array(con_c.filter(fecha__range = ((fecha - datetime.timedelta(days = 1)), fecha + relativedelta(months=+1)), cuenta_corriente = cuenta).values_list("porc_boleto", flat = True))
+            ) - sum(
+            np.array(con_p.filter(cuota__fecha__range = ((fecha - datetime.timedelta(days = 1)), fecha + relativedelta(months=+1)), cuota__cuenta_corriente = cuenta).values_list("pago", flat = True))*
+            np.array(con_p.filter(cuota__fecha__range = ((fecha - datetime.timedelta(days = 1)), fecha + relativedelta(months=+1)), cuota__cuenta_corriente = cuenta).values_list("cuota__constante__valor", flat = True))*
+            np.array(con_p.filter(cuota__fecha__range = ((fecha - datetime.timedelta(days = 1)), fecha + relativedelta(months=+1)), cuota__cuenta_corriente = cuenta).values_list("cuota__porc_boleto", flat = True)))
+            )/precio_hormigon) for cuenta in cuentas_corrientes]
+        
+        for fecha in array}
+
+        flujo_total = [(
+            sum(
+            np.array(con_c.filter( cuenta_corriente = cuenta).values_list("precio", flat = True))*
+            np.array(con_c.filter( cuenta_corriente = cuenta).values_list("constante__valor", flat = True))*
+            np.array(con_c.filter( cuenta_corriente = cuenta).values_list("porc_boleto", flat = True))
+            ) - sum(
+            np.array(con_p.filter(cuota__cuenta_corriente = cuenta).values_list("pago", flat = True))*
+            np.array(con_p.filter(cuota__cuenta_corriente = cuenta).values_list("cuota__constante__valor", flat = True))*
+            np.array(con_p.filter(cuota__cuenta_corriente = cuenta).values_list("cuota__porc_boleto", flat = True)))
+            )/precio_hormigon for cuenta in cuentas_corrientes]
+
+    ###### Lo historico
+
+    elif moneda == "0" and boleto == "0" and historico == "1":
+
+        mensaje = "Tu consulta esta lista!, Historico en moneda: ARS - boleto: No activado"
+
+        data_flujo_proyecto = {fecha:  [(cuenta, (
+            sum(
+            np.array(con_p.filter(cuota__fecha__range = ((fecha - datetime.timedelta(days = 1)), fecha + relativedelta(months=+1)), cuota__cuenta_corriente = cuenta).values_list("pago_pesos", flat = True))
+            ))) for cuenta in cuentas_corrientes]
+        
+        for fecha in array}
+
+        flujo_total = [((
+            sum(
+            np.array(con_p.filter(cuota__cuenta_corriente = cuenta).values_list("pago_pesos", flat = True))
+            ))) 
+            
+            for cuenta in cuentas_corrientes]
+        
+    elif  moneda == "1" and boleto == "0" and historico == "1":
+
+        mensaje = "Tu consulta esta lista!, Historico en moneda: Hormigón - boleto: No activado"
+
+        data_flujo_proyecto = {fecha:  [(cuenta, (
+            sum(
+            np.array(con_p.filter(cuota__fecha__range = ((fecha - datetime.timedelta(days = 1)), fecha + relativedelta(months=+1)), cuota__cuenta_corriente = cuenta).values_list("pago", flat = True))*
+            np.array(con_p.filter(cuota__fecha__range = ((fecha - datetime.timedelta(days = 1)), fecha + relativedelta(months=+1)), cuota__cuenta_corriente = cuenta).values_list("cuota__constante__valor", flat = True)))
+            )/precio_hormigon) for cuenta in cuentas_corrientes]
+        
+        for fecha in array}
+
+        flujo_total = [(
+            sum(
+            np.array(con_p.filter(cuota__cuenta_corriente = cuenta).values_list("pago", flat = True))*
+            np.array(con_p.filter(cuota__cuenta_corriente = cuenta).values_list("cuota__constante__valor", flat = True)))
+            )/precio_hormigon for cuenta in cuentas_corrientes]
+
+    elif  moneda == "0" and boleto == "1" and historico == "1":
+
+        mensaje = "Tu consulta esta lista!, Historico en moneda: ARS - boleto: Activado"
+
+        data_flujo_proyecto = {fecha:  [(cuenta, (
+            sum(
+            np.array(con_p.filter(cuota__fecha__range = ((fecha - datetime.timedelta(days = 1)), fecha + relativedelta(months=+1)), cuota__cuenta_corriente = cuenta).values_list("pago_pesos", flat = True))*
+            np.array(con_p.filter(cuota__fecha__range = ((fecha - datetime.timedelta(days = 1)), fecha + relativedelta(months=+1)), cuota__cuenta_corriente = cuenta).values_list("cuota__porc_boleto", flat = True)))
+            )) for cuenta in cuentas_corrientes]
+        
+        for fecha in array}
+
+        flujo_total = [(
+            sum(
+            np.array(con_p.filter(cuota__cuenta_corriente = cuenta).values_list("pago_pesos", flat = True))*
+            np.array(con_p.filter(cuota__cuenta_corriente = cuenta).values_list("cuota__porc_boleto", flat = True)))
+            ) for cuenta in cuentas_corrientes]
+
+    elif  moneda == "1" and boleto == "1" and historico == "1":
+
+        mensaje = "Tu consulta esta lista!, Historico en moneda: Hormigón - boleto: Activado"
+
+        data_flujo_proyecto = {fecha:  [(cuenta, (
+            sum(
+            np.array(con_p.filter(cuota__fecha__range = ((fecha - datetime.timedelta(days = 1)), fecha + relativedelta(months=+1)), cuota__cuenta_corriente = cuenta).values_list("pago", flat = True))*
+            np.array(con_p.filter(cuota__fecha__range = ((fecha - datetime.timedelta(days = 1)), fecha + relativedelta(months=+1)), cuota__cuenta_corriente = cuenta).values_list("cuota__constante__valor", flat = True))*
+            np.array(con_p.filter(cuota__fecha__range = ((fecha - datetime.timedelta(days = 1)), fecha + relativedelta(months=+1)), cuota__cuenta_corriente = cuenta).values_list("cuota__porc_boleto", flat = True)))
+            )/precio_hormigon) for cuenta in cuentas_corrientes]
+        
+        for fecha in array}
+
+        flujo_total = [(
+            sum(
+            np.array(con_p.filter(cuota__cuenta_corriente = cuenta).values_list("pago", flat = True))*
+            np.array(con_p.filter(cuota__cuenta_corriente = cuenta).values_list("cuota__constante__valor", flat = True))*
+            np.array(con_p.filter(cuota__cuenta_corriente = cuenta).values_list("cuota__porc_boleto", flat = True)))
+            )/precio_hormigon for cuenta in cuentas_corrientes]
 
 
     return [data_flujo_proyecto, cuentas_corrientes, flujo_total, mensaje]
@@ -333,6 +463,8 @@ def resumen_cuentas(id_proyecto):
     context_data["context_data_total"]["m3_pagado"] = pagos_hasta_hoy/precio_hormigon
     context_data["context_data_total"]["m3_mora"] = mora/precio_hormigon
     context_data["context_data_total"]["m3_deuda"] = deuda_final/precio_hormigon
+
+    context_data["context_data_total"]["m3_adelantado"] = pagos_desde_hoy/precio_hormigon
 
     ####### ESTE PUNTO ES PROYECTO
 
