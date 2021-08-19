@@ -127,12 +127,15 @@
                             </thead>
         
                             <tbody style="font-size: 13px;">
-        
-                                {% for i in datos_cuenta %}
+
+                                {% for i in datos_cuenta %}                               
                                 <tr>
                                     <td>
-                                        
-                                        <div style="display: inline-block;"> {% if i.0.pagada == "SI" %} <i  class="btn fa fa-lg fa-check-circle text-success"></i> {% endif %}  <a href="{% url 'Pagos' i.0.id %}">{{i.0.concepto|upper}}</a> </div>
+                                        <div style="display: inline-block;"> {% if i.0.pagada == "SI" %} 
+                                            <i class="btn fa fa-lg fa-check-circle text-success"></i>
+                                            {% else %}
+                                            <i id="id_aqui" class="btn fa fa-lg fa-exclamation-circle text-warning"></i>
+                                            {% endif %}  <a href="{% url 'Pagos' i.0.id %}">{{i.0.concepto|upper}}</a> </div>
                                     </td>
                                     <td style="text-align: center;">
         
@@ -194,6 +197,7 @@
                                     </td>
                                 </tr>
                                 {% endfor %}
+
                             </tbody>
                         </table>
 
@@ -215,7 +219,18 @@
     </div>
 </div>
 
+<a id="add" href="#id_aqui"  class="btn btn-lg btn-info btn-circle fa fa-search-plus"></a>
 
+<style>
+
+
+    #add{
+        position: fixed;
+        bottom: 60px;
+        right: 20px;
+    }
+
+</style>
 
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 
