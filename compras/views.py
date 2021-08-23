@@ -1437,8 +1437,7 @@ Saludos desde el equipo de Link-P
 
             mensaje = "Comp con OC (" + str(len(Comparativas.objects.all().exclude(estado = "AUTORIZADA").exclude(adj_oc = ''))) + ")"
 
-            datos_base = Comparativas.objects.all().exclude(estado = "AUTORIZADA", creador = mensaje_creador).exclude(adj_oc = '').order_by("-fecha_c")
-
+            datos_base = Comparativas.objects.filter(creador = mensaje_creador).exclude(estado = "AUTORIZADA").exclude(adj_oc = '').order_by("-fecha_c")
 
             datos = []
 
