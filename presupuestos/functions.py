@@ -6,7 +6,7 @@ from .models import Capitulos, PresupuestosAlmacenados, Analisis, Articulos
 def bot_telegram(send, id, token):
     url = "https://api.telegram.org/bot" + token + "/sendMessage"
 
-    params = {
+    events = {
         'chat_id' : id,
         'text' : send
     }

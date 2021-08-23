@@ -23,6 +23,7 @@ from openpyxl import Workbook
 from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
 from .serializers import ArtSerializer
 from .functions import auditor_presupuesto,auditor_presupuesto_p
+from .functions_saldo import Creditocapitulo
 from .wabot import WABot
 
 def registroconstante(request):
@@ -676,7 +677,9 @@ def presupuestorepcompleto(request, id_proyecto):
         
         crudo.append((c, valor_capitulo, 0.0, listado_analisis))
 
-    datos =[]
+    
+    
+    datos =[ ]
 
     for i in crudo:
         i = list(i)
@@ -869,65 +872,27 @@ def creditos(request, id_proyecto):
 
     datos = Creditocapitulo(id_proyecto)
 
-    valor_saldo = 0
-
-    for dato in datos:
-        valor_saldo = valor_saldo + dato[4]
+    context = {}
+    context['explosion'] = datos[0]
+    context['explosion_no'] = datos[1]
+    context['proyecto'] = proyecto
+    context['valor_saldo'] = sum(np.array([ data[4] for data in datos[0] if data[4] > 0]))
+    context['valor_credito'] = sum(np.array([ data[4] for data in datos[0] if data[4] < 0])) + sum(np.array([ data[4] for data in datos[1] if data[4] < 0])) 
 
     #Guardamos el valor del credito en la base de presupuestos
 
     try:
 
         Cred_act = Presupuestos.objects.get(proyecto = proyecto)
-
-        Cred_act.credito = valor_saldo
-
+        Cred_act.credito = context['valor_credito']
         Cred_act.save()
 
     except:
         pass
 
-     #Aqui empieza el filtro
 
-    if request.method == 'POST':
-
-        palabra_buscar = request.POST.items()
-
-        datos_viejos = datos
-
-        datos = []   
-
-        for i in palabra_buscar:
-
-            if i[0] == "palabra":
-        
-                palabra_buscar = i[1]
-
-        if str(palabra_buscar) == "":
-
-            datos = datos_viejos
-
-        else:
-        
-            for i in datos_viejos:
-
-                palabra =(str(palabra_buscar))
-
-                buscador = (str(i[0]))
-
-                if palabra.lower() in buscador.lower():
-
-                    datos.append(i)
-
-
-    #Aqui termina el filtro
-
-    datos = {"datos":datos,
-    "proyecto":proyecto,
-    "valor_saldo":valor_saldo}
-
-  
-    return render(request, 'presupuestos/creditos.html', {"datos":datos})
+ 
+    return render(request, 'presupuestos/creditos.html', context)
 
 def fdr(request, id_proyecto):
 
@@ -2219,99 +2184,6 @@ def Saldoporcapitulo(id_proyecto):
 
 
     return saldo_capitulo
-
-def Creditocapitulo(id_proyecto):
-
-    proyecto = Proyectos.objects.get(id = id_proyecto)
-    modelo = Modelopresupuesto.objects.filter(proyecto = proyecto)
-
-    #Con el siguiente conjunto de formulas creamos la explosión de insumos
-    
-    crudo_analisis = []
-
-    for i in modelo:
-
-        if i.cantidad != None:
-
-            crudo_analisis.append((i.analisis, i.cantidad))
-
-        else:
-
-            if "SOLO MANO DE OBRA" in str(i.analisis.nombre):
-
-                cantidad = sum(np.array(Computos.objects.filter(tipologia = i.vinculacion, proyecto = proyecto).values_list("valor_vacio", flat = True)))
-
-                crudo_analisis.append((i.analisis, cantidad))
-
-            else:
-                cantidad = sum(np.array(Computos.objects.filter(tipologia = i.vinculacion, proyecto = proyecto).values_list("valor_lleno", flat = True)))
-                
-                crudo_analisis.append((i.analisis, cantidad))
-
-    crudo_articulos = []
-
-    for c in crudo_analisis:
-
-        analisis = CompoAnalisis.objects.filter(analisis = c[0])
-
-        for d in analisis:
-
-            cantidad = d.cantidad*c[1]
-
-            crudo_articulos.append((d.articulo, cantidad))
-
-    datos = []
-
-    for t in crudo_articulos:
-        datos.append(t[0])
-
-    datos = list(set(datos))
-
-    datos_viejos = datos
-    datos = []
-
-    for i in datos_viejos:
-        cantidad = 0
-        for c in crudo_articulos:
-            if i == c[0]:
-                cantidad = cantidad + c[1]
-        datos.append((i, cantidad))
-
-    compras = Compras.objects.filter(proyecto = proyecto)
-
-    # Este auxiliar arma una cadena de texto de todos los articulos necesarios
-
-    comprado_aux = ""
-
-    for dato in datos:
-        comprado_aux = comprado_aux + str(dato[0])
-
-    datos_viejos = datos
-    
-    datos = []
-
-    for i in datos_viejos:
-        comprado = 0
-        for c in compras:
-            if c.proyecto == proyecto and c.articulo == i[0]:
-                comprado = comprado + c.cantidad
-        
-        cantidad_saldo = i[1] - comprado
-
-        saldo = cantidad_saldo * i[0].valor
-
-        if saldo < 0:
-        
-            datos.append((i[0], i[1], comprado, cantidad_saldo, saldo ))
-
-    # Esta parte arma los articulos que no estan en el presupuesto, compara el nombre si esta adentro de la cadena auxiliar 
-
-    for compra in compras:
-        if str(compra.articulo.nombre) not in comprado_aux and compra.proyecto == proyecto and str(compra.articulo.nombre)!="FONDO DE REPARO ACT. UOCRA" and str(compra.articulo.nombre)!="ANTICIPO FINANCIERO ACT. UOCRA" :
-            saldo = compra.articulo.valor*compra.cantidad
-            datos.append((compra.articulo, 0, compra.cantidad, -compra.cantidad, -saldo))
-
-    return datos
 
 def presupuesto_auditor(request):
 

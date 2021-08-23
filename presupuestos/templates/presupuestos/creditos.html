@@ -18,91 +18,96 @@
             </ol>
         </div>
     </div>
-</div>
 
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body row">
+                    <div class="col-12 justify-content-center">
 
-<div class="row">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-body row">
-                <div class="col-12 justify-content-center">
-
-                    <div class="row d-flex justify-content-center">
-                        <div class="col col-md-12 col-lg-12 text-center">
-
-                            <img src="{{datos.proyecto.iamgen.url}}" class="img-fluid" alt="..."
-                                style="max-width:200px;width:auto;height:auto; margin-top: 1rem;">
-
-                        </div>
-                        <div class="text-center my-3">
-                            <h6 style="color: rgb({{datos.proyecto.color}}); margin-top: 10px;">
-                                Creditos del proyecto {{datos.proyecto}}</h6>
+                        <div class="d-flex align-items-center">
+                            <div>
+        
+                                <h4 class="card-title"><span class="lstick m-r-20"></span><b style="color: rgb({{proyecto.color}});">{{proyecto.nombre}} creditos</b> <a href="#" class="fa fa-question-circle ml-2" data-toggle="modal" data-target="#ModalInfo"></a></h4>
+                                <h6 class="card-subtitle"></span>Credito generado por compras</h6>
+                            </div>
 
                         </div>
+    
+    
+                        <div class="table-responsive">
+    
+                            <table id="example" class="table table-striped table-bordered" style="width:100%">
+    
+                                <thead>
+                                    <tr style="font-size: 14px;">
+                                        <th>Articulo</th>
+                                        <th>Unidad</th>
+                                        <th>Valor </th>
+                                        <th>Requerido </th>
+                                        <th>Comprado</th>
+                                        <th>Sobrante</th>
+                                        <th>Credito</th>
+                                    </tr>
+                                </thead>
+    
+                                <tbody>
+    
+                                    {% for i in explosion %}
+                                        {% if i.4 < 0 %}
+    
+                                        <tr style="font-size: 13px;">
+                                            <td><b>{{i.0|lower|capfirst}}</b></td>
+                                            <td>${{i.0.valor|floatformat:2|intcomma}}</td>
+                                            <td>{{i.0.unidad}}</td>
+                                            <td>{{i.1|floatformat:2|intcomma}}</td>
+                                            <td>{{i.2|floatformat:2|intcomma}}</td>
+                                            <td>{{i.3|floatformat:2|intcomma}}</td>
+                                            <td>{% if i.4 < 0 %}-${{i.4|floatformat:2|intcomma|cut:"-"}}{% else %}${{i.4|floatformat:2|intcomma}}{% endif %}</td>
+                                        </tr>
+                                        {% endif %}
+                                    {% endfor %}
+
+                                    {% for i in explosion_no %}
+                                        <tr style="font-size: 13px;">
+                                            <td><b>{{i.0|lower|capfirst}}</b></td>
+                                            <td>${{i.0.valor|floatformat:2|intcomma}}</td>
+                                            <td>{{i.0.unidad}}</td>
+                                            <td>{{i.1|floatformat:2|intcomma}}</td>
+                                            <td>{{i.2|floatformat:2|intcomma}}</td>
+                                            <td>{{i.3|floatformat:2|intcomma}}</td>
+                                            <td>{% if i.4 < 0 %}-${{i.4|floatformat:2|intcomma|cut:"-"}}{% else %}${{i.4|floatformat:2|intcomma}}{% endif %}</td>
+                                        </tr>
+   
+                                    {% endfor %}
+                                </tbody>
+
+                                <tfoot>
+                                    <tr class="font-bold" style="font-size: 13px;">
+                                        <td colspan="6"><b>Valor total del credito</b></td>
+                                        <td>{% if valor_credito < 0 %}-${{valor_credito|floatformat:2|intcomma|cut:"-"}}{% else %}${{valor_credito|floatformat:2|intcomma}}{% endif %}</td>
+                                    </tr>
+                                    <tr class="font-bold" style="font-size: 13px;">
+                                        <td colspan="6"><b>Valor total del saldo</b></td>
+                                        <td>{% if valor_saldo < 0 %}-${{valor_saldo|floatformat:2|intcomma|cut:"-"}}{% else %}${{valor_saldo|floatformat:2|intcomma}}{% endif %}</td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+    
+                        </div>
+    
+      
+
+    
                     </div>
-
-                    <h3 style="color: rgb({{datos.proyecto.color}}) ;"></h3>
-
-                    {% if datos.datos %}
-
-                    <div class="table-responsive">
-
-                        <table id="example" class="table table-striped table-bordered" style="width:100%">
-
-                            <thead>
-                                <tr>
-                                    <th>Articulo</th>
-                                    <th>Valor </th>
-                                    <th>Requerido </th>
-                                    <th>Comprado</th>
-                                    <th>Sobrante</th>
-                                    <th>Credito</th>
-                                </tr>
-                            </thead>
-
-                            <tbody>
-
-                                {% for i in datos.datos %}
-
-                                <tr>
-                                    <td><b>{{i.0|lower|capfirst}}</b></td>
-                                    <td> ${{i.0.valor|floatformat:0|intcomma}}</td>
-                                    <td> ${{i.1|floatformat:0|intcomma}} ({{i.0.unidad}})</td>
-                                    <td> {{i.2|floatformat:0|intcomma}} ({{i.0.unidad}})</td>
-                                    <td> {{i.3|floatformat:0|intcomma}} ({{i.0.unidad}})</td>
-                                    <td> ${{i.4|floatformat:0|intcomma}}</td>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-
-                    </div>
-
-                    <div>
-                        <h6 style=" color: rgb({{datos.proyecto.color}}) ;">Valor total en creditos:
-                            ${{datos.valor_saldo|floatformat:0|intcomma}}
-                            <strong>(${{datos.valor_proyecto|floatformat:2}} Millones)</strong>
-                        </h6>
-                    </div>
-
-                    {% else %}
-                    <div class="text-center">
-                        <h6> Este proyecto no tiene creditos </h6>
-                        <small> Sigue asi</small>
-                    </div>
-
-                    <div class="text-center"  style="margin-top: 2%; margin-bottom: 10%;">
-                        <img src="{% static 'img/comunicaciones.png' %}"
-                            style="max-width:10%;width:auto;height:auto; margin-top: 1rem;">
-                    </div>
-
-                    {% endif %}
-
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+
+
 
 
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
@@ -120,7 +125,7 @@
             "infoFiltered": "(filtrado de _MAX_ registros totales)",
             "search": "Buscar"
         },
-            "paging": false,
+
             "ordering": false,
             "info": false
         });
