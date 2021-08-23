@@ -79,6 +79,8 @@ def proyectos(request):
 
     return render(request, 'proyectos.html', {'datos':datos, 'total_m2':total_m2})
 
+
+
 def unidades(request):
 
     unidades = Unidades.objects.all()

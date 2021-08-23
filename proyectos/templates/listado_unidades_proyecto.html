@@ -16,7 +16,7 @@
                 <li class="breadcrumb-item"><a href="{% url 'Principal Tecnica' %}">Panel</a></li>
     
              
-                <li class="breadcrumb-item">Listado de unidades</li>
+                <li class="breadcrumb-item">Listado de unidades</li> 
             </ol>
         </div>
     </div>
@@ -27,8 +27,33 @@
                 <div class="card-body">
                     <div class="d-flex align-items-center">
                         <div>
-                            <h4 class="card-title"><span class="lstick m-r-20"></span>Listado de unidades generadas hasta la fecha dentro del proyecto</h4>
-                 
+                            <h4 class="card-title"><span class="lstick m-r-20"></span>Listado de unidades generadas hasta la fecha dentro del proyecto <a href="#" data-toggle="modal" data-target="#ModalGuia"><i class="fa fa-info-circle mt-2"></i></a></h4> 
+                            <div id="ModalGuia" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="ModalGuia"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-header" style="background-color: #2a3e52;">
+                  <h5 class="modal-title  text-light" id="exampleModalLongTitle">Explicación de uso</h5>
+                  <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <div class="tab-content">
+                    <p><span>Gestor de unidades</span>
+                      Si las unidades tienen información asociada no se pueden borrar por lo cual deberas informar a una persona del area IT.
+                    </p>
+                   
+                  </div>
+                </div>
+
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-info" data-dismiss="modal">Cerrar</button>
+
+                </div>
+              </div>
+            </div>
+          </div>
 
                         </div>
                         <div class="btn-group ml-auto">
@@ -53,12 +78,12 @@
                                     <th>Nomen.</th>
                                     <th>Tipo</th>
                                     <th>Tipologia</th>
-                                    <th>Sup.Propia</th>
-                                    <th>Sup.Patio</th>
-                                    <th>Sup.Balcon</th>
-                                    <th>Sup.Comun</th>
-                                    <th>Sup.Total</th>
-                                    <th>Sup.Equiv</th>
+                                    <th>S.Propia</th>
+                                    <th>S.Patio</th>
+                                    <th>S.Balcon</th>
+                                    <th>S.Comun</th>
+                                    <th>S.Total</th>
+                                    <th>S.Equiv</th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -101,7 +126,7 @@
 
                             <td>{{i.piso_unidad}}</td>
                             <td>{{i.nombre_unidad}}</td>
-                            <td>{{i.tipo}}</td>
+                            <td>{{i.tipo|truncatechars:7}}</td>
                             <td>{{i.tipologia}}</td>
                             <td>{{i.sup_propia}}</td>
                             <td>{{i.sup_patio}}</td>
@@ -162,12 +187,16 @@
                                                                 <div class="col">
                                                                     <div>
                                                                         <select name="nombre_piso"
-                                                                            class="form-control form-control" value="{{i.nombre_piso}}">
-                                                                            <option value="SS" selected>Subsuelo
+                                                                            class="form-control form-control">
+                                                                               
+                                                                            <option  {% if i.piso_unidad == 'SS'  %}
+                                                                            selected  {% endif %} value="SS">SS
                                                                             </option>
-                                                                            <option value="PB">Planta Baja
+                                                                            <option {% if i.piso_unidad == 'PB'  %}
+                                                                            selected  {% endif %} value="PB">PB
                                                                             </option>
-                                                                            <option value="PISO">Piso N°
+                                                                            <option {% if 'PISO' in i.piso_unidad  %}
+                                                                            selected  {% endif %} value="PISO">PISO
                                                                             </option>
                                                                         </select>
 
@@ -225,17 +254,29 @@
                                                                     <div>
                                                                         <select name="tipo"
                                                                             class="form-control form-control" value="{{i.tipo}}">
-                                                                            <option value="BAULERA" selected>
+                                                                            <option 
+                                                                            {% if i.tipo == "BAULERA" %}
+                                                                            selected
+                                                                            {% endif %}
+                                                                                 value="BAULERA" >
                                                                                 Baulera
                                                                             </option>
-                                                                            <option value="COCHERA">Cochera
+                                                                            <option {% if i.tipo == "COCHERA" %}
+                                                                            selected
+                                                                            {% endif %} value="COCHERA">Cochera
                                                                             </option>
-                                                                            <option value="COCHERA S/D">Cochera
+                                                                            <option  {% if i.tipo == "COCHERA S/D" %}
+                                                                            selected
+                                                                            {% endif %}  value="COCHERA S/D">Cochera
                                                                                 s/d
                                                                             </option>
-                                                                            <option value="DEPARTAMENTO">
+                                                                            <option  {% if i.tipo == "DEPARTAMENTO" %}
+                                                                            selected
+                                                                            {% endif %} value="DEPARTAMENTO">
                                                                                 Departamento</option>
-                                                                            <option value="LOCAL">Local</option>
+                                                                            <option {% if i.tipo == "LOCAL" %}
+                                                                            selected
+                                                                            {% endif %} value="LOCAL">Local</option>
                                                                         </select>
 
                                                                     </div>
@@ -256,12 +297,28 @@
                                                                         <select name="tipologia"
                                                                             class="form-control form-control" value="{{i.tipologia}}">
                                                                     
-                                                                            <option value="MONO">Mono</option>
-                                                                            <option value="1D">1D</option>
-                                                                            <option value="2D">2D</option>
-                                                                            <option value="3D">3D</option>
-                                                                            <option value="ESTUDIO">Estudio
-                                                                            </option>
+                                                               
+                                                           
+                                                               
+                                                                    <option value="" {% if i.tipo != 'DEPARTAMENTO' %}  selected   {% endif %}>-</option>
+                                                                   
+                                                                    <option {% if i.tipologia == "MONO" %}
+                                                                    selected
+                                                                    {% endif %}  value="MONO">Mono</option>
+                                                                    <option {% if i.tipologia == "1D" %}
+                                                                    selected
+                                                                    {% endif %}  value="1D">1D</option>
+                                                                    <option {% if i.tipologia == "2D" %}
+                                                                    selected
+                                                                    {% endif %}   value="2D">2D</option>
+                                                                    <option {% if i.tipologia == "3D" %}
+                                                                    selected
+                                                                    {% endif %}  value="3D">3D</option>
+                                                                    <option {% if i.tipologia == "ESTUDIO" %}
+                                                                    selected
+                                                                    {% endif %}  value="ESTUDIO">Estudio
+                                                                    </option>
+                                                                          
                                                                         </select>
 
                                                                     </div>
@@ -482,6 +539,7 @@
                     extend: 'excelHtml5',
                     title: 'Unidades de proyecto',
                     className: "btn btn-info",
+                    footer: true,
 
                     init: function(api, node, config) {
                         $(node).removeClass('dt-button buttons-excel buttons-html5')
@@ -492,7 +550,8 @@
                     text: 'PDF',
                     title: 'Unidades de proyecto',
                     className: "btn btn-primary",
-
+                    footer: true,
+                    
                     init: function(api, node, config) {
                         $(node).removeClass('dt-button buttons-excel buttons-html5')
                         },
