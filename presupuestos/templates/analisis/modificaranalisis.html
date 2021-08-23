@@ -19,134 +19,134 @@
 
     </div>
 
-</div>
-<div class="row">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-body ">
-                <form method="POST">
-                    {% csrf_token %}
-                    <div class="my-4">
-                        <h4 class="card-title"> Datos generales</h4>
-                        <h6 class="card-subtitle">En caso de que el análisis sea solo mano de obra escribir en el nombre <strong>(SOLO MANO DE OBRA)</strong></h6>        
-                    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body ">
+                    <form method="POST">
+                        {% csrf_token %}
+                        <div class="my-4">
+                            <h4 class="card-title"> Datos generales</h4>
+                            <h6 class="card-subtitle">En caso de que el análisis sea solo mano de obra escribir en el nombre <strong>(SOLO MANO DE OBRA)</strong></h6>        
+                        </div>
 
-                    <div class="bg-light p-3">
-                        <div class="row">
-                            <div class="col-lg-4 col-md-4 row-sm">
+                        <div class="bg-light p-3">
+                            <div class="row">
+                                <div class="col-lg-4 col-md-4 row-sm">
 
-                                <label for="codigo">
-                                    <h5>Codigo del analisis:</h5>
-                                </label>
+                                    <label for="codigo">
+                                        <h5>Codigo del analisis:</h5>
+                                    </label>
 
-                                <input type="number" name="codigo" class="form-control form-control"
-                                    value="{{datos.analisis.codigo}}" readonly=True>
+                                    <input type="number" name="codigo" class="form-control form-control"
+                                        value="{{datos.analisis.codigo}}" readonly=True>
 
+                                </div>
+
+                                <div class="col-lg-4 col-md-4 row-sm">
+
+                                    <label for="nombre">
+                                        <h5>Nombre del analisis:</h5>
+                                    </label>
+
+                                    <input type="text" class="form-control form-control" name="nombre"
+                                        value="{{datos.analisis.nombre}}">
+
+                                </div>
+
+                                <div class="col-lg-4 col-md-4 row-sm">
+
+                                    <label for="unidad">
+                                        <h5>Unidad:</h5>
+                                    </label>
+
+                                    <input type="text" class="form-control form-control" name="unidad"
+                                        value={{datos.analisis.unidad}}>
+
+                                </div>
                             </div>
+                        </div>
 
-                            <div class="col-lg-4 col-md-4 row-sm">
-
-                                <label for="nombre">
-                                    <h5>Nombre del analisis:</h5>
-                                </label>
-
-                                <input type="text" class="form-control form-control" name="nombre"
-                                    value="{{datos.analisis.nombre}}">
-
+                        <div class="row my-4">
+                            <div class="col-12 col-lg-10">
+                                <h4 class="card-title"> Artículos</h4>
+                                <h6 class="card-subtitle">Prestar atención a las unidades que aparecen en los articulos</h6>
                             </div>
-
-                            <div class="col-lg-4 col-md-4 row-sm">
-
-                                <label for="unidad">
-                                    <h5>Unidad:</h5>
-                                </label>
-
-                                <input type="text" class="form-control form-control" name="unidad"
-                                    value={{datos.analisis.unidad}}>
+                            <div class="col-12 col-lg-2">
+                                <button type="button" class="btn btn-outline-primary" onclick="myFunction()">Agregar
+                                    campos</button>
 
                             </div>
                         </div>
-                    </div>
 
-                    <div class="row my-4">
-                        <div class="col-12 col-lg-10">
-                            <h4 class="card-title"> Artículos</h4>
-                            <h6 class="card-subtitle">Prestar atención a las unidades que aparecen en los articulos</h6>
-                        </div>
-                        <div class="col-12 col-lg-2">
-                            <button type="button" class="btn btn-outline-primary" onclick="myFunction()">Agregar
-                                campos</button>
+                        <p class="text-danger">{{datos.mensaje}}</p>
 
-                        </div>
-                    </div>
+                        <div class="bg-light">
+                            <div class="campoarticulos">
+                                <div class="analisis">
+                                    {% for i in datos.datos %}
+                                    <div class="col">
+                                        <div class="row bg-light py-3">
+                                            <div class="col-lg-6 col-md-6 row-sm">
+                                                <label for="articulo{{ i.3 }}">
+                                                    <h6>Articulo</h6>
+                                                </label>
 
-                    <p class="text-danger">{{datos.mensaje}}</p>
+                                                <input name="articulo{{ i.3 }}" type="search" list="art"
+                                                    class="form-control form-control" value="{{ i.0 }}">
+                                            </div>
 
-                    <div class="bg-light">
-                        <div class="campoarticulos">
-                            <div class="analisis">
-                                {% for i in datos.datos %}
+                                            <div class="col-lg-6 col-md-6 row-sm">
+                                                <label for="cantidad{{ i.3 }}">
+                                                    <h6>Cantidad</h6>
+                                                </label>
+
+                                                <input name="cantidad{{ i.3 }}" type="number"
+                                                    class="form-control form-control" placeholder="{{ i.1 }}">
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                            <div class="campo">
                                 <div class="col">
                                     <div class="row bg-light py-3">
                                         <div class="col-lg-6 col-md-6 row-sm">
-                                            <label for="articulo{{ i.3 }}">
+                                            <label for="articulo">
                                                 <h6>Articulo</h6>
                                             </label>
 
-                                            <input name="articulo{{ i.3 }}" type="search" list="art"
-                                                class="form-control form-control" value="{{ i.0 }}">
+                                            <input name="articulo" type="search" class="form-control form-control"
+                                                placeholder="Agregar un articulo" list="art">
                                         </div>
 
                                         <div class="col-lg-6 col-md-6 row-sm">
-                                            <label for="cantidad{{ i.3 }}">
+                                            <label for="cantidad">
                                                 <h6>Cantidad</h6>
                                             </label>
 
-                                            <input name="cantidad{{ i.3 }}" type="number"
-                                                class="form-control form-control" placeholder="{{ i.1 }}">
-
+                                            <input name="cantidad" type="number" step="any"
+                                                class="form-control form-control" placeholder="Cantidad">
                                         </div>
                                     </div>
                                 </div>
-                                {% endfor %}
                             </div>
                         </div>
 
-                        <div class="campo">
-                            <div class="col">
-                                <div class="row bg-light py-3">
-                                    <div class="col-lg-6 col-md-6 row-sm">
-                                        <label for="articulo">
-                                            <h6>Articulo</h6>
-                                        </label>
-
-                                        <input name="articulo" type="search" class="form-control form-control"
-                                            placeholder="Agregar un articulo" list="art">
-                                    </div>
-
-                                    <div class="col-lg-6 col-md-6 row-sm">
-                                        <label for="cantidad">
-                                            <h6>Cantidad</h6>
-                                        </label>
-
-                                        <input name="cantidad" type="number" step="any"
-                                            class="form-control form-control" placeholder="Cantidad">
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="d-flex justify-content-center my-3">
+                            <button type="submit" class="btn btn-success">Cargar analisis</button>
                         </div>
-                    </div>
 
-                    <div class="d-flex justify-content-center my-3">
-                        <button type="submit" class="btn btn-success">Cargar analisis</button>
-                    </div>
-
-                    <datalist id="art">
-                        {% for i in datos.articulos %}
-                        <option value="{{ i.nombre }}">({{i.unidad}})</option>
-                        {% endfor %}
-                    </datalist>
-                </form>
+                        <datalist id="art">
+                            {% for i in datos.articulos %}
+                            <option value="{{ i.nombre }}">({{i.unidad}})</option>
+                            {% endfor %}
+                        </datalist>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

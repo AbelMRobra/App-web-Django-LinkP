@@ -20,114 +20,108 @@
             </ol>
         </div>
     </div>
-</div>
-{% if request.user|has_group:"COMPRAS NIVEL 4" %}
-<div class="row">
-    <div class="col button-group">
-        <div class="card">
-            <div class="card-body">
-                <h4 class="card-title"><span class="lstick m-r-20"></span>Listado de todas las ordenes</h4>
-                <h6 class="card-subtitle">Esta firma representa el visto bueno para generar la OP</h6>
+    {% if request.user|has_group:"COMPRAS NIVEL 4" %}
+    <div class="row">
+        <div class="col button-group">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title"><span class="lstick m-r-20"></span>Listado de todas las ordenes</h4>
+                    <h6 class="card-subtitle">Esta firma representa el visto bueno para generar la OP</h6>
 
-                <div style="text-align: left;">
-                    <div class="btn-group">
-                        <button type="button" class="btn dropdown-toggle bg-primary text-light ml-2" data-toggle="dropdown"
-                            aria-haspopup="true" aria-expanded="false" onclick="myFunction()">
-                            {{estado_selec}}
-                        </button>
-                        <div class="dropdown-menu">
-                            <a class="dropdown-item" href="{% url 'OC autorizadas' 0 %}">Todas</a>
-                            <a class="dropdown-item" href="{% url 'OC autorizadas' 1 %}">Vistas</a>
-                            <a class="dropdown-item" href="{% url 'OC autorizadas' 2 %}">No vistas</a>
-                            <a class="dropdown-item" href="{% url 'OC autorizadas' 3 %}">Observadas</a>
+                    <div style="text-align: left;">
+                        <div class="btn-group">
+                            <button type="button" class="btn dropdown-toggle bg-primary text-light ml-2"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onclick="myFunction()">
+                                {{estado_selec}}
+                            </button>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="{% url 'OC autorizadas' 0 %}">Todas</a>
+                                <a class="dropdown-item" href="{% url 'OC autorizadas' 1 %}">Vistas</a>
+                                <a class="dropdown-item" href="{% url 'OC autorizadas' 2 %}">No vistas</a>
+                                <a class="dropdown-item" href="{% url 'OC autorizadas' 3 %}">Observadas</a>
 
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                {% if datos %}
+                    {% if datos %}
 
-                <div class="table-responsive">
-                    <table id="example" class="table">
-                        <thead>
-                            <tr>
-                                <th>User</th>
-                                <th>Proveedor</th>
-                                <th>O.C</th>
-                                <th>Valor</th>
-                                <th>Check</th>
-                            </tr>
-                        </thead>
-                        <tbody>
+                    <div class="table-responsive">
+                        <table id="example" class="table">
+                            <thead>
+                                <tr>
+                                    <th style="text-align: center; width: 30px;">Usuario</th>
+                                    <th>Proveedor</th>
+                                    <th>Valor</th>
+                                    <th>O.C</th>
+                                    <th style="text-align: center;">Check</th>
+                                </tr>
+                            </thead>
+                            <tbody>
 
-                            {% for i in datos|slice:"120" %}
-                            <tr>
-                                <td>
-                                    <span class="round round-primary"><img src="{{i.0.imagenlogo.url}}" alt="user"
-                                            width="50"></span>
-                                    <h6 class="card-subtitle" style="font-size: 12px; margin-top: 2px;"><span
-                                            class="text-muted"> {{i.2.fecha_c|date:"d/m/Y"}}</span></h6>
-                                </td>
-                                <td>{{i.2.proveedor.name|lower|capfirst}}{% if i.2.tipo_oc%} - {{i.2.tipo_oc}} {% endif %}
-                                    <h6 class="card-subtitle" style="font-size: 14px; margin-top: 2px;">
-                                        <a href="{% url 'Mensajes en comparativas' i.2.id %}"
-                                            class=" fa fa-comments-o fa-lg"></a>
-                                        <a href="{{ i.2.adjunto.url }}" class=" fa fa-paperclip fa-lg"></a>
-                                        {% if i.2.adj_oc %}
-                                        <a href="{{ i.2.adj_oc.url }}"><img src="{% static 'img/OC.png' %}"
-                                                style="max-width:20px; height:auto;"></a>
-                                        {% endif %}
-                                        {{i.2.proyecto|lower|capfirst}} - {{i.2.numero|lower|capfirst}}
-                                    </h6>
-                                </td>
-                                <td>
-                                    <div>{{i.2.o_c|upper}}</div>
-                                    {% if i.2.estado == "ESPERA" %}
-                                    <div class="label label-table label-info">Espera</div>
-                                    {% else %}
-                                    <div class="label label-table label-success">PL</div>{% endif %}
-                                    {% if i.2.visto == "VISTO" %}
-                                    <div class="label label-table label-success">SP</div>
-                                    {% elif i.2.visto == "NO_VISTO" %}
-                                    <div class="label label-table label-danger">No vista</div>
-                                    {% else %}
-                                    <div class="label label-table label-warning">Observada</div>{% endif %}
-                                </td>
-                                <td>${{i.2.monto|floatformat:0|intcomma}}</td>
+                                {% for i in datos|slice:"120" %}
+                                <tr>
+                                    <td style="text-align: center;">
+                                        <img src="{{i.0.imagenlogo.url}}" alt="user" width="40" class="img-circle">
+                                        <h6 class="card-subtitle" style="font-size: 12px; margin-top: 2px;"><span
+                                                class="text-muted">{{i.2.fecha_c|date:"d/m/Y"}}</span></h6>
+                                    </td>
+                                    <td>
+                                        <span>
+                                            {{i.2.proveedor.name|lower|capfirst}}{% if i.2.tipo_oc%} - {{i.2.tipo_oc}} {% endif %}
+                                        </span>
+                                        <h6 class="card-subtitle" style="font-size: 14px; margin-top: 2px;">
+                                            <a href="{% url 'Mensajes en comparativas' i.2.id %}"
+                                                class=" fa fa-comments-o fa-lg"></a>
+                                            <a href="{{ i.2.adjunto.url }}" class=" fa fa-paperclip fa-lg"></a>
+                                            {% if i.2.adj_oc %}
+                                            <a href="{{ i.2.adj_oc.url }}"><img src="{% static 'img/OC.png' %}"
+                                                    style="max-width:20px; height:auto;"></a>
+                                            {% endif %}
+                                            {{i.2.proyecto|lower|capfirst}} - {{i.2.numero|lower|capfirst}}
+                                        </h6>
+                                    </td>
+                                    <td>${{i.2.monto|floatformat:0|intcomma}}</td>
+                                    <td>
+                                        <div>{{i.2.o_c|upper}}</div>
+                                        {% if i.2.estado == "ESPERA" %}
+                                        <div class="label label-table label-info">Espera</div>
+                                        {% else %}
+                                        <div class="label label-table label-success">PL</div>{% endif %}
+                                        {% if i.2.visto == "VISTO" %}
+                                        <div class="label label-table label-success">SP</div>
+                                        {% elif i.2.visto == "NO_VISTO" %}
+                                        <div class="label label-table label-danger">No vista</div>
+                                        {% else %}
+                                        <div class="label label-table label-warning">Observada</div>{% endif %}
+                                    </td>
 
-                                {% if request.user.username == "SP" or request.user.username == "AR" or request.user.username == "ar" %}
-                                <td>
-                                    <form action="" method="POST">
-                                        {% csrf_token %}
-
-                                        <div style="display: inline-block; max-width: 45%;">
-
-                                            <button class="btn btn-sm btn-success" type="submit" name="APROBADA"
-                                                value="{{i.2.id}}"><span class="hint--left hint--success"
-                                                    aria-label="Todo OK!">✓</span></button>
-
-                                        </div>
-
-                                        <div style="display: inline-block; max-width: 45%;">
-
-                                            <button class="btn btn-sm btn-warning" type="submit" name="ADJAPROB"
-                                                value="{{i.2.id}}"><span class="hint--left hint--warning"
-                                                    aria-label="Puedes dejar una consulta!, esta acción no frenara el circuito de pago!">?</span></button>
-
-                                        </div>
-                                    </form>
-                                </td>
-                                {% endif %}
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                    {% endif %}
+                                    {% if request.user.username == "SP" or request.user.username == "AR" or request.user.username == "ar" %}
+                                    <td style="text-align: center;">
+                                        <img src="{% static 'img/SP.png' %}" width="40" class="img-circle">
+                                        <form action="" method="POST">
+                                            {% csrf_token %}
+                                            <div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
+                                                <button type="submit" class="btn" name="APROBADA" value="{{i.2.id}}"><i
+                                                        class="fa fa-check text-success"></i></button>
+                                                <button type="submit" class="btn" name="ADJAPROB" value="{{i.2.id}}"><i
+                                                        class="fa fa-question text-warning"></i></button>
+                                            </div>
+                                        </form>
+                                    </td>
+                                    {% endif %}
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
 
 {% else %}
 
