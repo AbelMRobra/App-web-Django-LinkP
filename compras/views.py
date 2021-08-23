@@ -1047,7 +1047,7 @@ def comparativas(request, estado, creador):
 
 
     if estado == "0":
-
+        consulta = con_comparativas
         mensaje = "Estado"
 
     if estado == "1":
