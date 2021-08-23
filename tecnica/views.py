@@ -176,9 +176,15 @@ def registrodesviosid(request, id_registro):
 
     return render(request, 'registro_id.html')
 
-def principaltecnica(request):
 
-    return render(request, 'tecnica_principal.html')
+def principaltecnica(request):
+    proyectos=Proyectos.objects.all()
+
+    if request.method=='POST':
+        id_proyecto=request.POST.get('proyecto')
+        
+        return redirect('Lista unidades proyecto',int(id_proyecto))
+    return render(request, 'tecnica_principal.html',{'proyectos':proyectos,})
 
 def bbddgroup(request):
 

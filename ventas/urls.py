@@ -51,8 +51,6 @@ urlpatterns = [
     
    
     path('flujoventas/',login_required(views_flujo.flujoventas),name='Flujo de ventas'),
-    path('cargaunidadesproyecto/<int:id>',login_required(views.cargaunidadesproyecto),name='Carga unidades proyecto'),
-    path('listaunidadesproyecto/<int:id>',login_required(views.listaunidadesproyecto),name='Lista unidades proyecto'),
-    path('panelunidadesproyecto/',login_required(views.panelunidadesproyecto),name='Panel unidades proyecto'),
+    
 
 ]
