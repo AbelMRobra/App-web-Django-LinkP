@@ -8,7 +8,7 @@ import smtplib
 import requests
 from agenda import settings
 
-def mandar_email(comparativa, mensaje):
+def mandarEmail(comparativa, mensaje):
 
     if mensaje == 1:
         encabezado = "Todo listo! La O.C para {} esta autorizada!".format(comparativa.proveedor.name)
@@ -68,7 +68,7 @@ Saludos desde el equipo de Link-P
                     datosusuario.objects.get(identificacion = comparativa.creador).email,
                     mensaje.as_string())
 
-def Avisos():
+def mensajeCierreOc():
     
     fc = AvisoOrdenesCompras.objects.get(id=1).fecha_carga
 

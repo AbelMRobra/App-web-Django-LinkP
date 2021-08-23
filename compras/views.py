@@ -28,7 +28,7 @@ from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
 from django.views.generic.base import TemplateView  
 from rest_framework.generics import ListAPIView
 from .serializers import articulos_Serializer
-from .functions_comparativas import Avisos, mandar_email
+from .functions_comparativas import mensajeCierreOc, mandarEmail
 
 
 
@@ -892,7 +892,7 @@ def descargacomparativas(request):
     return render(request, 'descargacom.html')
 
 def comparativas(request, estado, creador):
-
+    
     # Consultas necesarias
 
     con_comparativas = Comparativas.objects.all()
@@ -962,7 +962,7 @@ def comparativas(request, estado, creador):
 
                 try:
 
-                    mandar_email(comparativa, 1)
+                    mandarEmail(comparativa, 1)
 
                     if comparativa.creador == "AT" or comparativa.creador == "LG":
 
@@ -996,7 +996,7 @@ def comparativas(request, estado, creador):
                 
                 try:
 
-                    mandar_email(comparativa, 2)
+                    mandarEmail(comparativa, 2)
 
                     if comparativa.creador == "AT" or comparativa.creador == "LG":
 
@@ -1365,9 +1365,25 @@ def comparativas(request, estado, creador):
 
         if estado == "6":
 
-            mensaje = "Comp con OC (" + str(len(Comparativas.objects.all().exclude(estado = "AUTORIZADA").exclude(adj_oc = ''))) + ")"
+            consulta_estado = con_comparativas.exclude(estado = "AUTORIZADA").exclude(adj_oc = '').order_by("-fecha_c")
+            consulta_estado = datos_base.exclude(estado = "NO AUTORIZADA")
 
-            datos_base = Comparativas.objects.filter(creador = mensaje_creador).exclude(estado = "AUTORIZADA").exclude(adj_oc = '').order_by("-fecha_c")
+            creadores = list(set(consulta_estado.values_list('creador').order_by('creador')))
+
+            list_creadores = []
+
+            for c in creadores:
+
+                try:
+
+                    usuario = datosusuario.objects.get(identificacion = c[0])
+                    list_creadores.append(usuario)
+
+                except:
+                    None
+
+            datos_base = consulta_estado.filter(creador = mensaje_creador)
+            mensaje = "Comp con OC (" + str(len(con_comparativas)) + ")"
 
             datos = []
 
@@ -1400,8 +1416,8 @@ def comparativas(request, estado, creador):
     context['comparativa_oc'] = len(con_comparativas.exclude(estado = "AUTORIZADA").exclude(adj_oc = ''))
     context['adjunto'] = len(con_comparativas.filter(estado = "ADJUNTO ✓"))
     context['fecha_pago'] = fecha_pago
-    context['aviso'] = Avisos()[0]
-    context['fecha_cierre'] = Avisos()[1]
+    context['aviso'] = mensajeCierreOc()[0]
+    context['fecha_cierre'] = mensajeCierreOc()[1]
 
     return render(request, 'comparativas.html', context)
 '''
