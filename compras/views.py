@@ -1206,7 +1206,7 @@ def comparativas(request, estado, creador):
         if estado == "6":
 
             consulta_estado = con_comparativas.exclude(estado = "AUTORIZADA").exclude(adj_oc = '').order_by("-fecha_c")
-            consulta_estado = datos_base.exclude(estado = "NO AUTORIZADA")
+            consulta_estado = consulta_estado.exclude(estado = "NO AUTORIZADA")
 
             creadores = list(set(consulta_estado.values_list('creador').order_by('creador')))
 
@@ -1222,7 +1222,7 @@ def comparativas(request, estado, creador):
                 except:
                     None
 
-            datos_base = consulta_estado
+            datos_base = consulta_estado.filter(creador = mensaje_creador)
             mensaje = "Comp con OC (" + str(len(con_comparativas)) + ")"
 
             datos = []
@@ -1380,7 +1380,7 @@ def comparativas(request, estado, creador):
         if estado == "6":
 
             consulta_estado = con_comparativas.exclude(estado = "AUTORIZADA").exclude(adj_oc = '').order_by("-fecha_c")
-            consulta_estado = datos_base.exclude(estado = "NO AUTORIZADA")
+            consulta_estado = consulta_estado.exclude(estado = "NO AUTORIZADA")
 
             creadores = list(set(consulta_estado.values_list('creador').order_by('creador')))
 
