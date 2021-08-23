@@ -1222,8 +1222,8 @@ def comparativas(request, estado, creador):
                 except:
                     None
 
-            datos_base = consulta_estado.filter(creador = mensaje_creador)
-            mensaje = "Comp con OC (" + str(len(con_comparativas)) + ")"
+            datos_base = consulta_estado
+            mensaje = "Comp con OC (" + str(len(consulta_estado)) + ")"
 
             datos = []
             for d in datos_base:
@@ -1397,7 +1397,7 @@ def comparativas(request, estado, creador):
                     None
 
             datos_base = consulta_estado.filter(creador = mensaje_creador)
-            mensaje = "Comp con OC (" + str(len(con_comparativas)) + ")"
+            mensaje = "Comp con OC (" + str(len(consulta_estado)) + ")"
 
             datos = []
 
