@@ -1053,23 +1053,23 @@ def comparativas(request, estado, creador):
     if estado == "1":
 
         consulta = con_comparativas.filter(estado = "ESPERA")
-        mensaje = "Espera: " + str(len(consulta)) + "({})".format(len(consulta.filter(publica = "NO")))
+        mensaje = "Espera: " + str(len(consulta)) + " Privadas: ({})".format(len(consulta.filter(publica = "NO")))
 
     if estado == "2":
 
         consulta = con_comparativas.filter(estado = "ADJUNTO ✓")
-        mensaje = "Adjunto ✓: " + str(len(con_comparativas)) + "({})".format(len(consulta.filter(publica = "NO")))
+        mensaje = "Adjunto ✓: " + str(len(con_comparativas)) + " Privadas: ({})".format(len(consulta.filter(publica = "NO")))
 
     if estado == "3":
         
         consulta = con_comparativas.filter(estado = "NO AUTORIZADA")
-        mensaje = "Rechazadas: " + str(len(consulta)) + "({})".format(len(consulta.filter(publica = "NO")))
+        mensaje = "Rechazadas: " + str(len(consulta)) + " Privadas: ({})".format(len(consulta.filter(publica = "NO")))
 
  
     if estado == "4":
 
         consulta = con_comparativas.filter(estado = "AUTORIZADA")
-        mensaje = "Autorizadas: " + str(len(con_comparativas)) + "({})".format(len(consulta.filter(publica = "NO")))
+        mensaje = "Autorizadas: " + str(len(con_comparativas)) + " Privadas: ({})".format(len(consulta.filter(publica = "NO")))
 
     if estado == "5":
         consulta = con_comparativas.filter(autoriza = "SP").exclude(estado = "AUTORIZADA")
@@ -1079,7 +1079,7 @@ def comparativas(request, estado, creador):
 
         consulta = con_comparativas.exclude(estado = "AUTORIZADA").exclude(adj_oc = '').order_by("-fecha_c")
         consulta = consulta.exclude(estado = "NO AUTORIZADA")
-        mensaje = "Comp con OC: " + str(len(consulta)) + "({})".format(len(consulta.filter(publica = "NO")))
+        mensaje = "Comp con OC: " + str(len(consulta)) + " Privadas: ({})".format(len(consulta.filter(publica = "NO")))
 
     datos_base = consulta.order_by("-fecha_c")
 
@@ -1129,7 +1129,7 @@ def comparativas(request, estado, creador):
     context['espera'] = len(con_comparativas.filter(estado = "ESPERA"))
     context['autorizada'] = len(con_comparativas.filter(estado = "AUTORIZADA"))
     context['rechazada'] = len(con_comparativas.filter(estado = "NO AUTORIZADA"))
-    context['comparativa_oc'] = len(con_comparativas.exclude(estado = "AUTORIZADA").exclude(adj_oc = ''))
+    context['comparativa_oc'] = len(con_comparativas.exclude(estado = "AUTORIZADA").exclude(estado = "NO AUTORIZADA").exclude(adj_oc = ''))
     context['adjunto'] = len(con_comparativas.filter(estado = "ADJUNTO ✓"))
     context['fecha_pago'] = fecha_pago
     context['aviso'] = mensajeCierreOc()[0]
