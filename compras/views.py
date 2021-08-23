@@ -1058,7 +1058,7 @@ def comparativas(request, estado, creador):
     if estado == "2":
 
         consulta = con_comparativas.filter(estado = "ADJUNTO ✓")
-        mensaje = "Adjunto ✓: " + str(len(con_comparativas)) + " Privadas: ({})".format(len(consulta.filter(publica = "NO")))
+        mensaje = "Adjunto ✓: " + str(len(consulta)) + " Privadas: ({})".format(len(consulta.filter(publica = "NO")))
 
     if estado == "3":
         
@@ -1069,7 +1069,7 @@ def comparativas(request, estado, creador):
     if estado == "4":
 
         consulta = con_comparativas.filter(estado = "AUTORIZADA")
-        mensaje = "Autorizadas: " + str(len(con_comparativas)) + " Privadas: ({})".format(len(consulta.filter(publica = "NO")))
+        mensaje = "Autorizadas: " + str(len(consulta)) + " Privadas: ({})".format(len(consulta.filter(publica = "NO")))
 
     if estado == "5":
         consulta = con_comparativas.filter(autoriza = "SP").exclude(estado = "AUTORIZADA")
