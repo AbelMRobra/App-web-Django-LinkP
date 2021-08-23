@@ -1205,13 +1205,27 @@ def comparativas(request, estado, creador):
 
         if estado == "6":
 
-            mensaje = "Comp con OC (" + str(len(Comparativas.objects.all().exclude(estado = "AUTORIZADA").exclude(adj_oc = ''))) + ")"
+            consulta_estado = con_comparativas.exclude(estado = "AUTORIZADA").exclude(adj_oc = '').order_by("-fecha_c")
+            consulta_estado = datos_base.exclude(estado = "NO AUTORIZADA")
 
-            datos_base = Comparativas.objects.all().exclude(estado = "AUTORIZADA").exclude(adj_oc = '').order_by("-fecha_c")
+            creadores = list(set(consulta_estado.values_list('creador').order_by('creador')))
 
+            list_creadores = []
+
+            for c in creadores:
+
+                try:
+
+                    usuario = datosusuario.objects.get(identificacion = c[0])
+                    list_creadores.append(usuario)
+
+                except:
+                    None
+
+            datos_base = consulta_estado
+            mensaje = "Comp con OC (" + str(len(con_comparativas)) + ")"
 
             datos = []
-
             for d in datos_base:
 
                 mensajes = ComparativasMensaje.objects.filter(comparativa = d)
