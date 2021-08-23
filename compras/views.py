@@ -1084,7 +1084,8 @@ def comparativas(request, estado, creador):
     datos_base = consulta.order_by("-fecha_c")
 
     if creador != "0":
-        datos_base.filter(creador = mensaje_creador)
+        
+        datos_base = consulta.filter(creador = mensaje_creador).order_by("-fecha_c")
         
     creadores = list(set(consulta.values_list('creador').order_by('creador')))   
 
