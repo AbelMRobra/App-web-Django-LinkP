@@ -8,13 +8,13 @@
 
 <link href="{% static 'adminpro/main/css/pages/footable-page.css' %}" rel="stylesheet">
 
-<div class="container-fluid r-aside">
+<div class="container-fluid">
     <div class="row page-titles">
         <div class="col-md-5 align-self-center">
             <h3 class="text-themecolor">Solicitudes de compra</h3>
         </div>
 
-        <div class="col-md-7 col-lg-4 align-self-center">
+        <div class="col-md-7 align-self-center">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
                 <li class="breadcrumb-item"><a href="{% url 'Principal compras' %}">Panel</a></li>
@@ -25,15 +25,17 @@
     </div>
 
     <div class="row">
-        <div class="col-lg-9 col-xlg-9 button-group">
+        <div class="col-lg-12 col-xlg-12 button-group">
             <div class="card">
                 <div class="card-body">
     
                     <div class="d-flex align-self-center">
                         <div>
-                            <h4 class="card-title"><span class="lstick"></span>Panel de solicitudes</h4>
-                            <h6 class="card-subtitle">Ordenes de compra o comparativas para ser aprobadas</h6>
+                            <h4 class="card-title"><span class="lstick"></span>Panel de solicitudes - {{aviso}} <a href="#" class="fa fa-question-circle ml-2" data-toggle="modal" data-target="#ModalInfo"></a></h4>
+                            <h6 class="card-subtitle">La proxima fecha de cierre es {{fecha_cierre|date:"d/m/Y"}}</h6>
                         </div>
+
+                        
     
                         <div class="btn-group ml-auto">
                             <a href="JavaScript:void(0)" class="icon-options-vertical link" data-toggle="dropdown"
@@ -51,13 +53,40 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="modal fade" id="ModalInfo" tabindex="-1" role="dialog" aria-labelledby="ModalInfo"
+                        aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header" style="background-color: #2a3e52;">
+                                    <h5 class="modal-title text-light" id="exampleModalLongTitle">Información</h5>
+                                    <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <p class="font-bold">Recomendaciones:</p>
+                                    <p>* Completa el formulario para solicitar el pago de una OC</p>
+                                    <p>* Consulta quien autoriza la misma antes de crearla</p>
+                                    <p>* Ten presente los tiempos de cierre</p>
+                                    <p>* Si no ves la opción para agregar, solicita los permisos</p>
+                                    <p>* Una vez cargada, no olvides entregar una copia fisica en la oficina</p>
+                                   
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
     
                     <div style="text-align: left;">
     
                        
                         <!-- Boton para creador-->
                         <div class="btn-group">
-                            <button type="button" class="btn dropdown-toggle text-primary ml-2" data-toggle="dropdown"
+                            <button type="button" class="btn btn-info dropdown-toggle ml-2" data-toggle="dropdown"
                                 aria-haspopup="true" aria-expanded="false" onclick="myFunction()">
                                 {{mensaje_creador}}
                             </button>
@@ -74,7 +103,7 @@
                         </div>
     
                         <div class="btn-group">
-                            <button type="button" class="btn dropdown-toggle text-primary ml-2" data-toggle="dropdown"
+                            <button type="button" class="btn btn-info dropdown-toggle ml-2" data-toggle="dropdown"
                                 aria-haspopup="true" aria-expanded="false" onclick="myFunction()">
                                 {{mensaje}}
                             </button>
@@ -94,23 +123,10 @@
                             </div>
                         </div>
     
+
+                        <div >
     
-                        <div class="dataTables_filter">
-    
-                            <form method="POST">
-    
-                                {% csrf_token %}
-                                <label>
-                                    Buscar:
-                                    <input type="search" class placeholder aria-controls="example23" name="palabra">
-                                </label>
-    
-                            </form>
-    
-                        </div>
-                        <div class="table-responsive">
-    
-                            <table class="table">
+                            <table id="example" class="table">
                                 <thead>
                                     <tr>
                                         <th style="text-align: center; width: 30px;">User</th>
@@ -199,7 +215,7 @@
                                                 {{i.2.proyecto|lower|capfirst}} - {{i.2.numero|lower|capfirst}}
                                             </h6>
                                         </td>
-                                        <td style="font-size: 14px;"><b>$ {{i.2.monto|floatformat:0|intcomma}}</b></td>
+                                        <td style="font-size: 14px;"><b>${{i.2.monto|floatformat:2|intcomma}}</b></td>
                                         {% if i.2.o_c %}<td>
                                             <div>{{i.2.o_c|upper}}</div>{% else %}
                                         <td>
@@ -253,36 +269,31 @@
 
 
 
-<aside class="right-side-panel">
-    <h3 class="p-relative"><span class="lstick"></span>¿Cómo funciona?</h3>
-    <div class="row">
 
-        <div class="col-md-12 m-t-10">
-            <div class="card">
-                <div class="card-body">
-                    <img src="{% static 'img/animation_500_kmv3afam.gif' %}" alt="Funny image" width="200px">
-                    <p>Para ingresar una nueva solicitud has click en <b style="color: blue;">Añadir</b> y completa el
-                        formulario</p>
-                    <p> Cuando este cargado apareceras en el listado con iconos que muestran adjuntos o una sala de chat
-                    </p>
-                    <p> <i class="fa fa-comments-o fa-lg" style="color: #1d5acb;"></i> - <i
-                            class=" fa fa-paperclip fa-lg" style="color: #1d5acb;"></i> - <img
-                            src="{% static 'img/OC.png' %}"
-                            style="max-width:20px; height:auto; vertical-align: middle;"></p>
-                    <p> Durante la semana sera aprobada por quien corresponda, <b style="color: blue;">revisa</b> el
-                        estado</p>
-                    <p><i class="fa fa-hourglass-end" aria-hidden="true" style="color: blue;"></i> - <i
-                            class="fa fa-times" aria-hidden="true" style="color: darkred;"></i> - <i class="fa fa-check"
-                            aria-hidden="true" style="color: orange;"></i> - <i class="fa fa-check" aria-hidden="true"
-                            style="color: green;"></i></p>
-                    <p>Proxima fecha de pago: {{fecha_pago|date:"d-m-Y"}}</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</aside>
 
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js" defer></script>
+<script src="https://cdn.datatables.net/1.10.23/js/dataTables.bootstrap4.min.js" defer></script>
+
+<script>
+    $(document).ready(function () {
+        $('#example').DataTable({
+            "language": {
+            "lengthMenu": "Mostar _MENU_ documentos",
+            "zeroRecords": "Son coincidencias",
+            "info": "Pagina _PAGE_ de _PAGES_",
+            "infoEmpty": "Sin registros disponibles",
+            "infoFiltered": "(filtrado de _MAX_ registros totales)",
+            "search": "Buscar"
+        },
+
+            "ordering": false,
+            "info": false,
+            "paging": false,
+        });
+    });
+</script>
 
 
 <script>

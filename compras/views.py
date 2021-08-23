@@ -28,6 +28,7 @@ from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
 from django.views.generic.base import TemplateView  
 from rest_framework.generics import ListAPIView
 from .serializers import articulos_Serializer
+from .functions_comparativas import Avisos, mandar_email
 
 
 
@@ -892,6 +893,10 @@ def descargacomparativas(request):
 
 def comparativas(request, estado, creador):
 
+    # Consultas necesarias
+
+    con_comparativas = Comparativas.objects.all()
+
     # Codigo para fecha de pagos
 
     fecha_inicial = datetime.date.today()
@@ -908,9 +913,7 @@ def comparativas(request, estado, creador):
 
         mensaje_creador = datosusuario.objects.get(id = creador).identificacion
 
-    creadores = Comparativas.objects.values_list('creador').order_by('creador')
-
-    creadores = list(set(creadores))
+    creadores = list(set(con_comparativas.values_list('creador').order_by('creador')))
 
     list_creadores = []
 
@@ -959,42 +962,7 @@ def comparativas(request, estado, creador):
 
                 try:
 
-                    # Establecemos conexion con el servidor smtp de gmail
-                    mailServer = smtplib.SMTP(settings.EMAIL_HOST, settings.EMAIL_PORT)
-                    mailServer.ehlo()
-                    mailServer.starttls()
-                    mailServer.ehlo()
-                    mailServer.login(settings.EMAIL_HOST_USER, settings.EMAIL_HOST_PASSWORD)
-
-                    # Construimos el mensaje simple
-                    
-                    mensaje = MIMEText("""
-                    
-Buenas!,
-
-La O.C numero {} fue autorizada!
-
-Te recordamos que para que no tengas problemas con el pago debes cumplir los siguientes pasos:
-
-* Entrega una copia fisica en la oficina en Lamadrid 377 4B, San Miguel del Tucuman, Tucuman
-* Firma la copia fisica en el espacio correspondiente
-* En caso de observaciones, comunicate con el que corresponda para aclararlas
-
-Esperamos que termine bien tu dia!
-
-Saludos desde el equipo de Link-P
-
-                    """.format(comparativa.o_c))
-                    mensaje['From']=settings.EMAIL_HOST_USER
-                    mensaje['To']=datosusuario.objects.get(identificacion = comparativa.creador).email
-                    mensaje['Subject']="Todo listo! La O.C para {} esta autorizada!".format(comparativa.proveedor.name)
-
-
-                    # Envio del mensaje
-
-                    mailServer.sendmail(settings.EMAIL_HOST_USER,
-                                    datosusuario.objects.get(identificacion = comparativa.creador).email,
-                                    mensaje.as_string())
+                    mandar_email(comparativa, 1)
 
                     if comparativa.creador == "AT" or comparativa.creador == "LG":
 
@@ -1028,35 +996,7 @@ Saludos desde el equipo de Link-P
                 
                 try:
 
-                    # Establecemos conexion con el servidor smtp de gmail
-                    mailServer = smtplib.SMTP(settings.EMAIL_HOST, settings.EMAIL_PORT)
-                    mailServer.ehlo()
-                    mailServer.starttls()
-                    mailServer.ehlo()
-                    mailServer.login(settings.EMAIL_HOST_USER, settings.EMAIL_HOST_PASSWORD)
-
-                    # Construimos el mensaje simple
-                    mensaje = MIMEText("""
-                    
-Buenas!,
-
-La orden de compra {} fue rechaza!
-
-Por favor ingresa a www.linkp.online por si hay mensajes y/o comunicate con el responsable.
-
-Que tengas un buen dia!
-
-Saludos desde el equipo de Link-P
-                    """.format(comparativa.o_c))
-                    mensaje['From']=settings.EMAIL_HOST_USER
-                    mensaje['To']=datosusuario.objects.get(identificacion = comparativa.creador).email
-                    mensaje['Subject']="Atención! La OC para {} fue rechazada!".format(comparativa.proveedor.name)
-
-                    # Envio del mensaje
-
-                    mailServer.sendmail(settings.EMAIL_HOST_USER,
-                                    datosusuario.objects.get(identificacion = comparativa.creador).email,
-                                    mensaje.as_string())
+                    mandar_email(comparativa, 2)
 
                     if comparativa.creador == "AT" or comparativa.creador == "LG":
 
@@ -1119,16 +1059,6 @@ Saludos desde el equipo de Link-P
                     comparativa.comentario = str((request.user.username) + ": Sin motivo")
 
                     comparativa.save()
-
-
-
-    #Aqui calculo para saber cuantos de cada uno hay
-
-    num_espera = len(Comparativas.objects.filter(estado = "ESPERA"))
-    num_adj = len(Comparativas.objects.filter(estado = "ADJUNTO ✓"))
-    num_rechazada = len(Comparativas.objects.filter(estado = "NO AUTORIZADA"))
-    num_autorizada = len(Comparativas.objects.filter(estado = "AUTORIZADA"))
-    num_comparativa_oc = len(Comparativas.objects.all().exclude(estado = "AUTORIZADA").exclude(adj_oc = ''))
 
 
     if creador == "0":
@@ -1457,55 +1387,23 @@ Saludos desde el equipo de Link-P
 
     list_creadores = sorted(list_creadores, key=lambda creador : creador.identificacion)
     
-    #Aqui empieza el filtro
+    context = {}
+    context['mensaje_creador'] = mensaje_creador
+    context['list_creadores'] = list_creadores
+    context['datos'] = datos
+    context['estado'] = estado
+    context['creador'] = creador
+    context['mensaje'] = mensaje
+    context['espera'] = len(con_comparativas.filter(estado = "ESPERA"))
+    context['autorizada'] = len(con_comparativas.filter(estado = "AUTORIZADA"))
+    context['rechazada'] = len(con_comparativas.filter(estado = "NO AUTORIZADA"))
+    context['comparativa_oc'] = len(con_comparativas.exclude(estado = "AUTORIZADA").exclude(adj_oc = ''))
+    context['adjunto'] = len(con_comparativas.filter(estado = "ADJUNTO ✓"))
+    context['fecha_pago'] = fecha_pago
+    context['aviso'] = Avisos()[0]
+    context['fecha_cierre'] = Avisos()[1]
 
-    if request.method == 'POST':
-
-        datos_post = request.POST.items()
-
-        for d in datos_post:
-
-            if d[0] == 'palabra':
-
-                datos_viejos = datos
-
-                datos = []  
-
-                palabra_buscar = request.POST["palabra"]
-
-                if str(palabra_buscar) == "":
-
-                    datos = datos_viejos
-
-                else:
-                
-                    for i in datos_viejos:
-
-                        palabra =(str(palabra_buscar))
-
-                        lista_palabra = palabra.split()
-
-                        buscar = (str(i[2].proyecto)+str(i[2].numero)+str(i[2].o_c)+str(i[2].creador)+str(i[2].proveedor.name))
-
-                        contador = 0
-
-                        for palabra in lista_palabra:
-
-                            contador2 = 0
-
-                            if palabra.lower() in buscar.lower():
-
-                                contador += 1
-
-                        if contador == len(lista_palabra):
-
-                            datos.append(i)
-
-
-    return render(request, 'comparativas.html', {'mensaje_creador':mensaje_creador, 
-    'list_creadores':list_creadores, 'datos':datos, "estado":estado, 
-    "creador":creador, "mensaje":mensaje, "espera":num_espera, "autorizada":num_autorizada, 
-    "rechazada":num_rechazada, "comparativa_oc":num_comparativa_oc, "adjunto":num_adj, "fecha_pago":fecha_pago})
+    return render(request, 'comparativas.html', context)
 '''
 def modificar_precio_articulo_compra(request,id_proyecto):
     datos_compra={}
