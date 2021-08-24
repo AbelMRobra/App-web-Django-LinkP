@@ -3016,7 +3016,7 @@ def arqueo_diario(request, id_arqueo):
     porcentaje_pesos = 100 - porcentaje_euros - porcentaje_usd
 
     bancos = 0
-
+    total_bancos_usd=0
     consolidados = 0
 
     consolidado_actual = 0
@@ -3041,18 +3041,33 @@ def arqueo_diario(request, id_arqueo):
         nombre_columnas = data_frame.columns
 
         banco = 0
-
+        
+        
         list_bank_proj_info = []
-
+        
+        
+        list_bancos_usd=[]
+        banco_usd=0
         for n in nombre_columnas:
-
-            if "BANCO" in n:
+    
+            if "BANCO" in n and "USD" in n:
+                #totalizador de los bancos por fila
+                banco_usd= banco_usd + data_frame.loc[numero, n]
+                #totalizador de todos los bancos de todas las filas
+                total_bancos_usd=total_bancos_usd+data_frame.loc[numero, n]
+                if data_frame.loc[numero, n] != 0:
+                    list_bancos_usd.append((n, data_frame.loc[numero, n]))
+              
+            
+            elif "BANCO" in n:
                 banco = banco + data_frame.loc[numero, n]
                 bancos = bancos + data_frame.loc[numero, n]
                 if data_frame.loc[numero, n] != 0:
                     list_bank_proj_info.append((n, data_frame.loc[numero, n]))
-
-
+            
+            
+        
+    
 
         consolidado = data_frame.loc[numero, 'EFECTIVO'] + data_frame.loc[numero, 'CHEQUES'] + data_frame.loc[numero, 'MONEDA EXTRANJERA'] + banco
 
@@ -3097,16 +3112,18 @@ def arqueo_diario(request, id_arqueo):
         except:
             info_cheque = []
 
-        datos.append((proyecto, data_frame.loc[numero, 'PROYECTO'], data_frame.loc[numero, 'EFECTIVO'], data_frame.loc[numero, 'USD'], data_frame.loc[numero, 'EUROS'], data_frame.loc[numero, 'CHEQUES'], data_frame.loc[numero, 'MONEDA EXTRANJERA'], banco, consolidado, list_bank_proj_info, info_cheque, inversion, inversion_usd))
+        datos.append((proyecto, data_frame.loc[numero, 'PROYECTO'], data_frame.loc[numero, 'EFECTIVO'], data_frame.loc[numero, 'USD'], data_frame.loc[numero, 'EUROS'], data_frame.loc[numero, 'CHEQUES'], data_frame.loc[numero, 'MONEDA EXTRANJERA'], banco, consolidado, list_bank_proj_info, info_cheque, inversion, inversion_usd,list_bancos_usd,banco_usd))
 
         numero += 1
     
    
     #AQUI SE SUMA EL TOTAL DE INVERSIONES EN PESOS Y EN DOLARES AL TOTAL
     precio_dolar=data_frame.loc[0, 'CAMBIO USD']
-    
-    consolidado_actual=consolidado_actual + inversiones + (inversiones_usd * precio_dolar)
-    otros_datos = [usd, euro, pesos, cheques, bancos, consolidados, consolidado_actual, moneda_extranjera_actual, inversiones, inversiones_usd]
+   
+    banco_usd_pesificado=total_bancos_usd*precio_dolar
+
+    consolidado_actual=consolidado_actual + inversiones + (inversiones_usd * precio_dolar) + banco_usd_pesificado
+    otros_datos = [usd, euro, pesos, cheques, bancos, consolidados, consolidado_actual, moneda_extranjera_actual, inversiones, inversiones_usd,total_bancos_usd,banco_usd_pesificado]
 
     context["datos"] = datos
     context["otros_datos"] = otros_datos
