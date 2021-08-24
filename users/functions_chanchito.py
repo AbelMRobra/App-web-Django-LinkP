@@ -103,4 +103,60 @@ def cajasDerivadas(usuario, palabra, caja):
 
                 nuevo_registro.save()
 
+def cajasActivas(user):
+
+    consulta_principal = RegistroContable.objects.filter(usuario = user)
+
+    cajas_usuario = list(set(consulta_principal.values_list("caja", flat=True).order_by("-fecha").distinct()))
+
+    total_cajas = []
+
+    for caja in cajas_usuario:
+
+        con_caja = consulta_principal.filter(caja = caja)
+        
+        nombre = caja
+        ingresos = sum(np.array(con_caja.filter(estado = "INGRESOS").values_list("importe", flat=True)))
+        gastos = sum(np.array(con_caja.filter(estado = "GASTOS").values_list("importe", flat=True)))
+        balance = ingresos - gastos
+        automatico = sum(np.array(con_caja.filter(nota__contains = "AUTO-").values_list("importe", flat=True)))
+        usuarios = con_caja.values_list('creador', flat = True).distinct()
+
+        aux = 0
+        usuarios_participan = [(datosusuario.objects.get(identificacion = u), aux + 15) for u in usuarios]
+        
+        total_cajas.append((nombre, ingresos, gastos, balance, usuarios_participan, automatico))
+
+def cajasAdministras(user):
+
+    con_general = RegistroContable.objects.all()
+    consulta_principal = RegistroContable.objects.filter(creador = user)
+    cajas_administradas = list(set(consulta_principal.exclude(usuario = user).values_list("caja", flat=True).order_by("-fecha").distinct()))
+    usuarios_cajas = list(set(consulta_principal.exclude(usuario = user).values_list("usuario", flat=True).order_by("-fecha").distinct()))
+    cajas_administras = []
+
+    for usuario in usuarios_cajas:
+        user_adm = datosusuario.objects.get(id = usuario)
+        
+        for caja in cajas_administradas:
+            if len(consulta_principal.filter(usuario = user_adm, caja = caja).exclude(usuario = user)):
+                usuarios_participan = []
+                nombre = caja
+                ingresos = sum(np.array(con_general.filter(usuario = user_adm, estado = "INGRESOS", caja = caja).values_list("importe", flat=True)))
+                gastos = sum(np.array(con_general.filter(usuario = user_adm, estado = "GASTOS", caja = caja).values_list("importe", flat=True)))
+                balance = ingresos - gastos
+                automatico = sum(np.array(con_general.filter(usuario = user_adm, nota__contains = "AUTO-", caja = caja).values_list("importe", flat=True)))
+                usuarios_v = con_general.filter(usuario = user_adm, caja = caja).values_list('creador', flat = True).distinct()
+                
+                aux = 0
+                for u in usuarios_v:
+                    user_aux = datosusuario.objects.get(identificacion = u)
+                    usuarios_participan.append((user_aux, aux))
+                    aux += 15
+
+                cajas_administras.append((nombre,ingresos, gastos, balance, user_adm, usuarios_participan, automatico))
+
+    return cajas_administras
+
+
         

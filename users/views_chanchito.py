@@ -9,43 +9,26 @@ from rrhh.models import datosusuario, DicRegistroContable, RegistroContable, Arq
 from finanzas.models import Arqueo
 from openpyxl import Workbook
 from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
-from .functions_chanchito import cajasDerivadas, calcularResumenIngresos
+from .functions_chanchito import cajasDerivadas, calcularResumenIngresos, cajasActivas, cajasAdministras
+from .functions import saludo
 
 def registro_contable_registro(request):
 
     usuario = datosusuario.objects.get(identificacion = request.user.username)
 
-    # Saludo de bienvenida
-
-    hora_actual = datetime.datetime.now()
-    
-    if hora_actual.hour >= 20:
-        mensaje_bievenida = "¡Buenas noches {}!".format(request.user.first_name)
-    elif hora_actual.hour >= 13:
-        mensaje_bievenida = "¡Buenas tardes {}!".format(request.user.first_name)
-    else:
-        mensaje_bievenida = "¡Buen dia {}!".format(request.user.first_name)
-
     context = {}
-    context['mensaje_bievenida'] = mensaje_bievenida
+    context['mensaje_bievenida'] = saludo().format(request.user.first_name)
     context['datos'] = calcularResumenIngresos(usuario)
 
     return render(request, "chanchito/registro_contable_reporte.html", context)
 
 def registro_contable_home(request):
 
-    # Saludo de bienvenida
-    hora_actual = datetime.datetime.now()
-    if hora_actual.hour >= 20:
-        mensaje_bievenida = "¡Buenas noches {}!".format(request.user.first_name)
-    elif hora_actual.hour >= 13:
-        mensaje_bievenida = "¡Buenas tardes {}!".format(request.user.first_name)
-    else:
-        mensaje_bievenida = "¡Buen dia {}!".format(request.user.first_name)
+    context = {}
+    context['mensaje_bievenida'] = saludo().format(request.user.first_name)
+    context['fecha'] = datetime.date.today()
 
-    fecha = datetime.date.today()
-
-    return render(request, 'chanchito/registro_contable_home.html', {"mensaje_bievenida":mensaje_bievenida, "fecha":fecha})
+    return render(request, 'chanchito/registro_contable_home.html', context)
 
 def registro_contable_cajas(request):
 
@@ -157,53 +140,11 @@ def registro_contable_cajas(request):
 
     user = datosusuario.objects.get(identificacion = request.user.username)
 
-    cajas_usuario = list(set(RegistroContable.objects.filter(usuario = user).values_list("caja", flat=True).order_by("-fecha").distinct()))
+    context["total_cajas"] = cajasActivas(user)
+    context["cajas_administras"] = cajasAdministras(user)
 
-    total_cajas = []
-
-    for caja in cajas_usuario:
-        usuarios_participan = []
-        nombre = caja
-        ingresos = sum(np.array(RegistroContable.objects.filter(usuario = user, estado = "INGRESOS", caja = caja).values_list("importe", flat=True)))
-        gastos = sum(np.array(RegistroContable.objects.filter(usuario = user, estado = "GASTOS", caja = caja).values_list("importe", flat=True)))
-        balance = ingresos - gastos
-
-        usuarios = RegistroContable.objects.filter(usuario = user, caja = caja).values_list('creador', flat = True).distinct()
-
-        aux = 0
-        for u in usuarios:
-            user_aux = datosusuario.objects.get(identificacion = u)
-            usuarios_participan.append((user_aux, aux))
-            aux += 15
-        total_cajas.append((nombre,ingresos, gastos, balance, usuarios_participan))
-
-    cajas_administradas = list(set(RegistroContable.objects.filter(creador = user).exclude(usuario = user).values_list("caja", flat=True).order_by("-fecha").distinct()))
-    usuarios_cajas = list(set(RegistroContable.objects.filter(creador = user).exclude(usuario = user).values_list("usuario", flat=True).order_by("-fecha").distinct()))
-    cajas_administras = []
-
-    for usuario in usuarios_cajas:
-        user_adm = datosusuario.objects.get(id = usuario)
-        
-        for caja in cajas_administradas:
-            if len(RegistroContable.objects.filter(usuario = user_adm, creador = user, caja = caja).exclude(usuario = user)):
-                usuarios_participan = []
-                nombre = caja
-                ingresos = sum(np.array(RegistroContable.objects.filter(usuario = user_adm, estado = "INGRESOS", caja = caja).exclude(usuario = user).values_list("importe", flat=True)))
-                gastos = sum(np.array(RegistroContable.objects.filter(usuario = user_adm, estado = "GASTOS", caja = caja).exclude(usuario = user).values_list("importe", flat=True)))
-                balance = ingresos - gastos
-                usuarios_v = RegistroContable.objects.filter(usuario = user_adm, caja = caja).values_list('creador', flat = True).distinct()
-                
-                aux = 0
-                for u in usuarios_v:
-                    user_aux = datosusuario.objects.get(identificacion = u)
-                    usuarios_participan.append((user_aux, aux))
-                    aux += 15
-
-                cajas_administras.append((nombre,ingresos, gastos, balance, user_adm, usuarios_participan))
-
+  
     
-    context["total_cajas"] = total_cajas
-    context["cajas_administras"] = cajas_administras
     context["user"] = user
 
 
