@@ -27,13 +27,13 @@
             <div class="card">
                 <div class="card-body">
 
-                    <div class="text-center">
-                        <img src="{% if datos.proyecto.iamgen.url %} {{datos.proyecto.iamgen.url}} {% else %} {% static 'img/Linkp.png' %} {% endif %}" class="img-fluid" alt="..."
-                            style="max-width:200px;width:auto;height:auto; margin-top: 1rem; margin-bottom: 10px;">
-                        <h6 style="color: rgb({{datos.proyecto.color}}); font-family: Arial, Helvetica, sans-serif;">
-                            {{datos.proyecto.nombre}}</h6>
+                    <div class="d-flex align-items-center">
+                        <div>
+    
+                            <h4 class="card-title"><span class="lstick m-r-20"></span><b style="color: rgb({{datos.proyecto.color}});">{{datos.proyecto.nombre}}</b></h4>
+                            <h6 class="card-subtitle"></span>Capitulos y analisis del proyecto</h6>
+                        </div>
                     </div>
-
 
                     {% if datos.datos %}
 
