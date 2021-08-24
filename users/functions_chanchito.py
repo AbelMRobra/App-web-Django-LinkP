@@ -54,9 +54,9 @@ def calcularResumenIngresos(usuario):
 
             comercial_shajor = sum(np.array(consulta_usuario.filter(categoria = "INGRESO SUELDOS COMERCIAL", fecha__range = (fecha_inicial_auxiliar, fecha_final), estado = "INGRESOS").values_list("importe", flat=True)))
             sigma_shajor =  sum(np.array(consulta_usuario.filter(categoria = "INGRESOS SIGMA", nota__contains = "SHAJOR", fecha__range = (fecha_inicial_auxiliar, fecha_final), estado = "INGRESOS").values_list("importe", flat=True)))
-            sigma_blanco = sum(np.array(consulta_usuario.filter(categoria = "INGRESOS SIGMA", fecha__range = (fecha_inicial_auxiliar, fecha_final), estado = "INGRESOS").exclude(nota__contains = "SHAJOR").values_list("importe", flat=True)))
+            sigma_blanco = sum(np.array(consulta_usuario.filter(categoria = "INGRESOS SIGMA", nota__contains = "BANCO", fecha__range = (fecha_inicial_auxiliar, fecha_final), estado = "INGRESOS").exclude(nota__contains = "SHAJOR").values_list("importe", flat=True)))
             azlepi_shajor =  sum(np.array(consulta_usuario.filter(categoria = "INGRESOS AZLEPI", nota__contains = "SHAJOR", fecha__range = (fecha_inicial_auxiliar, fecha_final), estado = "INGRESOS").values_list("importe", flat=True)))
-            azlepi_blanco = sum(np.array(consulta_usuario.filter(categoria = "INGRESOS AZLEPI", fecha__range = (fecha_inicial_auxiliar, fecha_final), estado = "INGRESOS").exclude(nota__contains = "SHAJOR").values_list("importe", flat=True)))
+            azlepi_blanco = sum(np.array(consulta_usuario.filter(categoria = "INGRESOS AZLEPI", nota__contains = "BANCO", fecha__range = (fecha_inicial_auxiliar, fecha_final), estado = "INGRESOS").exclude(nota__contains = "SHAJOR").values_list("importe", flat=True)))
             total = comercial_shajor + sigma_shajor + sigma_blanco + azlepi_shajor + azlepi_blanco
 
             ingresos_mensuales.append((comercial_shajor, sigma_shajor, sigma_blanco, azlepi_shajor, azlepi_blanco, total))
