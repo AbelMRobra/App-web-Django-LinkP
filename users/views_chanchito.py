@@ -9,13 +9,16 @@ from rrhh.models import datosusuario, DicRegistroContable, RegistroContable, Arq
 from finanzas.models import Arqueo
 from openpyxl import Workbook
 from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
+from .functions_chanchito import cajasDerivadas, calcularResumenIngresos
 
 def registro_contable_registro(request):
 
     usuario = datosusuario.objects.get(identificacion = request.user.username)
 
     # Saludo de bienvenida
+
     hora_actual = datetime.datetime.now()
+    
     if hora_actual.hour >= 20:
         mensaje_bievenida = "¡Buenas noches {}!".format(request.user.first_name)
     elif hora_actual.hour >= 13:
@@ -25,77 +28,7 @@ def registro_contable_registro(request):
 
     context = {}
     context['mensaje_bievenida'] = mensaje_bievenida
-
-    # Resolver parte de ingresos
-
-    consulta_principal = RegistroContable.objects.filter(usuario = usuario)
-
-    cajas_activas = consulta_principal.values_list("caja", flat=True).distinct()
-
-    fechas_cajas = consulta_principal.filter(estado = "INGRESOS").values_list("fecha", flat=True).order_by("fecha")
-
-    fecha_inicial = datetime.date(fechas_cajas[0].year, fechas_cajas[0].month, 1)
-
-    fechas_totales = []
-
-    while fecha_inicial < date.today():
-        fechas_totales.append(fecha_inicial)
-
-        if fecha_inicial.month == 12:
-            fecha_inicial = datetime.date(fecha_inicial.year + 1, 1, 1)
-        else:
-            fecha_inicial = datetime.date(fecha_inicial.year, fecha_inicial.month + 1, 1)
-    
-    context['fechas_totales'] = fechas_totales
-
-    datos_caja = []
-    
-
-    for caja in cajas_activas:
-
-        ingresos = []
-
-        for fecha in  fechas_totales:
-
-            if fecha.month == 12:
-                fecha_final = datetime.date(fecha.year + 1, 1, 1)
-            else:
-                fecha_final = datetime.date(fecha.year, fecha.month + 1, 1)
-
-            fecha_inicial_auxiliar = fecha - datetime.timedelta(days=1)
-
-            ingresos_mes = sum(np.array(consulta_principal.filter(caja = caja, fecha__range = (fecha_inicial_auxiliar, fecha_final), estado = "INGRESOS").values_list("importe", flat=True)))
-
-            ingresos.append(ingresos_mes)
-
-        ingreso_total_caja = sum(np.array(consulta_principal.filter(caja = caja, estado = "INGRESOS").values_list("importe", flat=True)))
-
-        datos_caja.append((caja, ingresos, ingreso_total_caja))
-
-    context['datos_caja'] = datos_caja
-
-    ingresos_mensuales = []
-
-    for fecha in  fechas_totales:
-
-        if fecha.month == 12:
-            fecha_final = datetime.date(fecha.year + 1, 1, 1)
-        else:
-            fecha_final = datetime.date(fecha.year, fecha.month + 1, 1)
-
-        fecha_inicial_auxiliar = fecha - datetime.timedelta(days=1)
-
-        ingresos_mes = sum(np.array(consulta_principal.filter(fecha__range = (fecha_inicial_auxiliar, fecha_final), estado = "INGRESOS").values_list("importe", flat=True)))
-
-        ingresos_mensuales.append(ingresos_mes)
-
-    ingresos_mensuales.append(sum(np.array(consulta_principal.filter(estado = "INGRESOS").values_list("importe", flat=True))))
-
-    context['ingresos_mensuales'] = ingresos_mensuales
-
-    conceptos_ingresos = consulta_principal.filter(estado = "INGRESOS").values_list("nota", flat=True).distinct()
-
-    context['conceptos_ingresos'] = conceptos_ingresos
+    context['datos'] = calcularResumenIngresos(usuario)
 
     return render(request, "chanchito/registro_contable_reporte.html", context)
 
@@ -124,32 +57,8 @@ def registro_contable_cajas(request):
             if request.POST['actualizar_cajas'] == "1":
 
                 usuario = datosusuario.objects.get(identificacion = request.user.username)
-                consulta_principal = RegistroContable.objects.filter(usuario = usuario)
-
-                # Primero creamos los registros de retiros personales
-                
-                consulta_filtrada = consulta_principal.filter(nota__contains = "RETIROS PERSONALES")
-
-                for consulta in consulta_filtrada:
-                    nueva_nota = "AUTO-"+str(consulta.id)+"-"+str(consulta.nota)
-
-                    if len(consulta_filtrada.filter(nota = nueva_nota)) == 0:
-
-                        nuevo_registro = RegistroContable(
-
-                            usuario = usuario,
-                            creador = consulta.creador,
-                            fecha = consulta.fecha,
-                            estado = "INGRESOS",
-                            caja = "PERSONAL",
-                            cuenta = consulta.cuenta,
-                            categoria = consulta.categoria,
-                            importe = consulta.importe,
-                            nota = nueva_nota,
-
-                        )
-
-                        nuevo_registro.save()
+                cajasDerivadas(usuario, "RETIROS PERSONALES", "PERSONAL")
+                cajasDerivadas(usuario, "DEPOSITO BANCO", "CAJA BANCO")
 
                 context["mensaje"] = "ok"
 
@@ -162,7 +71,7 @@ def registro_contable_cajas(request):
                     registros_nuevo = archivo_pandas
                     numero = 0
 
-                    columnas_necesarias = ["Usuario", "Creador", "Auxiliar", "Desc. cuenta", "Desc. auxiliar", "Saldo (CTE)", "Subauxiliar", "Fecha de emisión"]
+                    columnas_necesarias = ["Usuario", "Creador", "Auxiliar", "Desc. cuenta", "Desc. auxiliar", "Saldo (CTE)", "SALDO USD", "Subauxiliar", "Fecha de emisión"]
 
                     for c in columnas_necesarias:
 
@@ -170,6 +79,8 @@ def registro_contable_cajas(request):
                             context["mensaje"] = "Columna {} no detectada, revise".format(c)
 
                     # Bucle para cargar registros
+
+                    con_dicc = DicRegistroContable.objects.all()
 
                     for row in range(registros_nuevo.shape[0]):
                         usuario = datosusuario.objects.get(identificacion = str(registros_nuevo.loc[numero, "Usuario"]))
@@ -180,23 +91,25 @@ def registro_contable_cajas(request):
                             estado = "GASTOS"
                             importe = abs(registros_nuevo.loc[numero, "Saldo (CTE)"])
 
-                        if len(DicRegistroContable.objects.filter(entrada = registros_nuevo.loc[numero, "Auxiliar"])) > 0:
-                            caja = DicRegistroContable.objects.filter(entrada = registros_nuevo.loc[numero, "Auxiliar"])[0].salida
+                        importe_usd = abs(registros_nuevo.loc[numero, "SALDO USD"])
+                        
+                        if len(con_dicc.filter(entrada = registros_nuevo.loc[numero, "Auxiliar"])) > 0:
+                            caja = con_dicc.filter(entrada = registros_nuevo.loc[numero, "Auxiliar"])[0].salida
                         else:
                             caja = registros_nuevo.loc[numero, "Auxiliar"]
 
-                        if len(DicRegistroContable.objects.filter(entrada = registros_nuevo.loc[numero, "Desc. cuenta"])) > 0:
-                            cuenta = DicRegistroContable.objects.filter(entrada = registros_nuevo.loc[numero, "Desc. cuenta"])[0].salida
+                        if len(con_dicc.filter(entrada = registros_nuevo.loc[numero, "Desc. cuenta"])) > 0:
+                            cuenta = con_dicc.filter(entrada = registros_nuevo.loc[numero, "Desc. cuenta"])[0].salida
                         else:
                             cuenta = registros_nuevo.loc[numero, "Desc. cuenta"]
 
-                        if len(DicRegistroContable.objects.filter(entrada = registros_nuevo.loc[numero, "Desc. auxiliar"])) > 0:
-                            categoria = DicRegistroContable.objects.filter(entrada = registros_nuevo.loc[numero, "Desc. auxiliar"])[0].salida
+                        if len(con_dicc.filter(entrada = registros_nuevo.loc[numero, "Desc. auxiliar"])) > 0:
+                            categoria = con_dicc.filter(entrada = registros_nuevo.loc[numero, "Desc. auxiliar"])[0].salida
                         else:
                             categoria = registros_nuevo.loc[numero, "Desc. auxiliar"]
                         
-                        if len(DicRegistroContable.objects.filter(entrada = registros_nuevo.loc[numero, "Subauxiliar"])) > 0:
-                            nota = DicRegistroContable.objects.filter(entrada = registros_nuevo.loc[numero, "Subauxiliar"])[0].salida
+                        if len(con_dicc.filter(entrada = registros_nuevo.loc[numero, "Subauxiliar"])) > 0:
+                            nota = con_dicc.filter(entrada = registros_nuevo.loc[numero, "Subauxiliar"])[0].salida
                         else:
                             nota = registros_nuevo.loc[numero, "Subauxiliar"]
 
@@ -211,6 +124,7 @@ def registro_contable_cajas(request):
                                 cuenta = cuenta,
                                 categoria = categoria,
                                 importe = importe,
+                                importe_usd = importe_usd,
                                 nota = nota,
 
                             )

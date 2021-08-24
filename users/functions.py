@@ -1,5 +1,11 @@
 from compras.models import AvisoOrdenesCompras,Comparativas
+from rrhh.models import RegistroContable
 import datetime as dt
+
+
+# Función de cajas derivadas
+
+
 
 def Avisos(usuario,aviso):
     nt=False

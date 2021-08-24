@@ -307,6 +307,7 @@ class RegistroContable(models.Model):
     cuenta = models.CharField(max_length=400, verbose_name="Cuenta")
     categoria = models.CharField(max_length=400, verbose_name="Categoria")
     importe = models.FloatField(verbose_name="Importe")
+    importe_usd = models.FloatField(verbose_name="Importe USD", blank=True, null=True)
     nota = models.CharField(max_length=400, verbose_name="Nota")
     adjunto = models.FileField(verbose_name="Adjunto", blank=True, null=True)
     codigo = models.CharField(max_length=400, verbose_name="Codigo", blank=True, null=True)
