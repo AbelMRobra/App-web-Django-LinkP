@@ -46,6 +46,7 @@ urlpatterns = [
 
     # Template de registro contable
     url(r'registro_contable_home$', login_required(views_chanchito.registro_contable_home), name = 'Registro Contable Home'),
+    url(r'registro_contable_reporte$', login_required(views_chanchito.registro_contable_registro), name = 'Registro Contable Reporte'),
     url(r'registro_contable_cajas$', login_required(views_chanchito.registro_contable_cajas), name = 'Registro Contable Cajas'),
     path("registro_contable_caja/<str:caja>/<str:user_caja>/<int:estado>/<int:mes>/<int:year>/" ,login_required(views_chanchito.registro_contable_caja) ,name='Registro Contable Caja'),
     url(r'registro_contable/(?P<date_i>\d+)/$', login_required(views_chanchito.registro_contable), name = 'Registro Contable'),

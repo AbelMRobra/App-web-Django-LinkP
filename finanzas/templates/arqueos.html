@@ -22,104 +22,106 @@
             </ol>
         </div>
     </div>
-</div>
 
-<div class="row">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-12 col-lg-9">
-                        <div class="d-flex justify-content-between">
-                            <div>
-                                <h4 class="card-title"><span class="lstick"></span> Arqueos registrados</h4>
-                                <h6 class="card-subtitle">Registros de tablas</h6>
-                            </div>
-                            <div class="m-2">
-                                <button type="button" class="btn" data-toggle="modal" data-target="#ModalArqueo"><i class="fa fa-plus-circle  text-info"><span class="text-info ml-2" style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif"><b>Añadir</b></span></i></button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Modal fecha estado Subitem -->
-                <div class="modal fade" id="ModalArqueo" tabindex="-1" role="dialog" aria-labelledby="ModalArqueo"
-                    aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header" style="background-color: #2a3e52;">
-                                <h5 class="modal-title text-light" id="exampleModalLongTitle">Cargar un archivo</h5>
-                                <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <form method="POST" style="margin: 15px;" enctype="multipart/form-data"
-                                    id="upload-image-form">
-                                    {% csrf_token %}
-
-                                    <h6>Fecha del arqueo</h6>
-                                    <div class="input-group mb-3">
-                                        <input name="fecha" type="date" class="form-control form-control"
-                                            style="width: 300px;">
-                                    </div>
-
-                                    <h6>Archivo</h6>
-                                    <div class="input-group mb-3">
-                                        <input name="adjunto" type="file" class="form-control form-control"
-                                            style="width: 300px;">
-                                    </div>
-
-                                    <button type="submit" class="btn btn-info"><b>Cargar</b></button>
-                                </form>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12 col-lg-9">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <h4 class="card-title"><span class="lstick"></span> Arqueos registrados</h4>
+                                    <h6 class="card-subtitle">Registros de tablas</h6>
+                                </div>
+                                <div class="m-2">
+                                    <button type="button" class="btn" data-toggle="modal" data-target="#ModalArqueo"><i class="fa fa-plus-circle  text-info"><span class="text-info ml-2" style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif"><b>Añadir</b></span></i></button>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-12 col-lg-9">
-
-                        <div class="table-responsive">
-                            <table class="table">
-                                <tbody>
-                                    {% for i in data %}
-                                    <tr>
-                                        <td>
-                                            <h6 style="font-size: 14px;"><a href="{% url 'Arqueo diario' i.id %}">Arqueo con
-                                                    fecha {{i.fecha|date:"d-m-Y"}}</a></h6>
-                                            <h6 class="card-subtitle" style="font-size: 12px;">Nombre del archivo:
-                                                "{{i.arqueo}}"</h6>
-                                        </td>
-                                        <td style="width: 10px; vertical-align: top;">
-                                            <div class="btn-group ml-auto">
-                                                <a href="JavaScript:void(0)" class="icon-options-vertical link" data-toggle="dropdown"
-                                                    aria-haspopup="true" aria-expanded="false"></a>
-                                                <div class="dropdown-menu dropdown-menu-right">
-                                                    <a class="dropdown-item" href="{{i.arqueo.url}}"><i
-                                                        class="fa fa-file-excel-o mr-2"></i>Excel</a>
-                                                    <form method="POST">
-                                                    <button class="dropdown-item" type="submit"
-                                                    name="delete" value="{{i.id}}"><i class="fa fa-trash text-danger mr-2"></i>Borrar</button>
-                                                    {% csrf_token %}
-                                                    </form>
+    
+                    <!-- Modal fecha estado Subitem -->
+                    <div class="modal fade" id="ModalArqueo" tabindex="-1" role="dialog" aria-labelledby="ModalArqueo"
+                        aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header" style="background-color: #2a3e52;">
+                                    <h5 class="modal-title text-light" id="exampleModalLongTitle">Cargar un archivo</h5>
+                                    <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form method="POST" style="margin: 15px;" enctype="multipart/form-data"
+                                        id="upload-image-form">
+                                        {% csrf_token %}
+    
+                                        <h6>Fecha del arqueo</h6>
+                                        <div class="input-group mb-3">
+                                            <input name="fecha" type="date" class="form-control form-control"
+                                                style="width: 300px;">
+                                        </div>
+    
+                                        <h6>Archivo</h6>
+                                        <div class="input-group mb-3">
+                                            <input name="adjunto" type="file" class="form-control form-control"
+                                                style="width: 300px;">
+                                        </div>
+    
+                                        <button type="submit" class="btn btn-info"><b>Cargar</b></button>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 col-lg-9">
+    
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <tbody>
+                                        {% for i in data %}
+                                        <tr>
+                                            <td>
+                                                <h6 style="font-size: 14px;"><a href="{% url 'Arqueo diario' i.id %}">Arqueo con
+                                                        fecha {{i.fecha|date:"d-m-Y"}}</a></h6>
+                                                <h6 class="card-subtitle" style="font-size: 12px;">Nombre del archivo:
+                                                    "{{i.arqueo}}"</h6>
+                                            </td>
+                                            <td style="width: 10px; vertical-align: top;">
+                                                <div class="btn-group ml-auto">
+                                                    <a href="JavaScript:void(0)" class="icon-options-vertical link" data-toggle="dropdown"
+                                                        aria-haspopup="true" aria-expanded="false"></a>
+                                                    <div class="dropdown-menu dropdown-menu-right">
+                                                        <a class="dropdown-item" href="{{i.arqueo.url}}"><i
+                                                            class="fa fa-file-excel-o mr-2"></i>Excel</a>
+                                                        <form method="POST">
+                                                        <button class="dropdown-item" type="submit"
+                                                        name="delete" value="{{i.id}}"><i class="fa fa-trash text-danger mr-2"></i>Borrar</button>
+                                                        {% csrf_token %}
+                                                        </form>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    {% endfor %}
-                                </tbody>
-                            </table>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
+    
                 </div>
-
             </div>
         </div>
     </div>
+    
 </div>
+
 
 <aside class="right-side-panel">
     <h3 class="p-relative"><span class="lstick"></span>¿Como funciona?</h3>

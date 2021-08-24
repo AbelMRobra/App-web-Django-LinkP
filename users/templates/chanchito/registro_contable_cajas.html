@@ -36,6 +36,11 @@
                             <div class="dropdown-menu dropdown-menu-right">
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#ModalCargaMasiva"><i
                                         class="fa fa-plus-circle mr-2"></i>Añadir desde tango</a>
+                                <a class="dropdown-item" href="{% url 'Registro Contable Reporte' %}" ><i
+                                    class="fa fa-file-text mr-2"></i>Reporte ingresos</a>
+                                    <form method="POST">{% csrf_token %} 
+                                    <button class="dropdown-item" type="submit" name="actualizar_cajas" value="1" ><i
+                                        class="fa fa-refresh mr-2"></i>Actualizar cajas derivadas</button></form>
     
     
                             </div>
