@@ -32,9 +32,11 @@ def Avisos(usuario,aviso):
        
 
     if (fecha_f-fecha_hoy).days<0:
-        aviso.fecha_carga=fc + dt.timedelta(15)
+        aviso.fecha_carga=fc + dt.timedelta(14)
         aviso.save()
-
+   
+   
+    
     no_autorizadas=Comparativas.objects.filter(estado="NO AUTORIZADA",creador=usuario)
     no_conformes=Comparativas.objects.filter(visto="VISTO NO CONFORME",creador=usuario)
 

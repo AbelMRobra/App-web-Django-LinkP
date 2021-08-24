@@ -891,17 +891,25 @@ def descargacomparativas(request):
 
     return render(request, 'descargacom.html')
 
-def comparativas(request, estado, creador):
+def comparativas(request, estado, creador,autoriza):
     
     # Consultas necesarias
 
     con_comparativas = Comparativas.objects.all()
+
+    usuarios=datosusuario.objects.all()
+    sp=usuarios.get(identificacion='PL')
+    pl=usuarios.get(identificacion='SP')
+
+    list_autoriza=[sp,pl]
 
     # Codigo para fecha de pagos
 
     fecha_inicial = datetime.date.today()
 
     fecha_pago = datetime.date(2021, 4, 16)
+
+    mensaje_PL_SP='Autoriza'
 
     while fecha_pago <= fecha_inicial:
         fecha_pago = fecha_pago + datetime.timedelta(days=14)
@@ -1065,7 +1073,23 @@ def comparativas(request, estado, creador):
         consulta = con_comparativas.filter(estado = "NO AUTORIZADA")
         mensaje = "Rechazadas: " + str(len(consulta)) + " Privadas: ({})".format(len(consulta.filter(publica = "NO")))
 
- 
+       
+        if autoriza=='0':
+            mensaje_PL_SP='Todos'
+            
+        else:
+            usuario=usuarios.get(pk=autoriza)
+          
+            if usuario.identificacion=='SP':
+                consulta=consulta.filter(autoriza = "SP")
+                mensaje = "Rechazadas: " + str(len(consulta)) + " Privadas: ({})".format(len(consulta.filter(publica = "NO")))
+                mensaje_PL_SP='SP'
+            
+            elif usuario.identificacion=='PL':
+                consulta=consulta.filter(autoriza = "PL")
+                mensaje = "Rechazadas: " + str(len(consulta)) + " Privadas: ({})".format(len(consulta.filter(publica = "NO")))
+                mensaje_PL_SP='PL'
+             
     if estado == "4":
 
         consulta = con_comparativas.filter(estado = "AUTORIZADA")
@@ -1125,6 +1149,7 @@ def comparativas(request, estado, creador):
     context['datos'] = datos
     context['estado'] = estado
     context['creador'] = creador
+    context['autoriza'] = autoriza
     context['mensaje'] = mensaje
     context['espera'] = len(con_comparativas.filter(estado = "ESPERA"))
     context['autorizada'] = len(con_comparativas.filter(estado = "AUTORIZADA"))
@@ -1134,7 +1159,8 @@ def comparativas(request, estado, creador):
     context['fecha_pago'] = fecha_pago
     context['aviso'] = mensajeCierreOc()[0]
     context['fecha_cierre'] = mensajeCierreOc()[1]
-
+    context['mensaje_PL_SP']=mensaje_PL_SP
+    context['list_autoriza']=list_autoriza
     return render(request, 'comparativas.html', context)
 '''
 def modificar_precio_articulo_compra(request,id_proyecto):
