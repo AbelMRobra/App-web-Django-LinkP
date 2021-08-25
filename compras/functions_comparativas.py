@@ -70,7 +70,8 @@ Saludos desde el equipo de Link-P
 
 def mensajeCierreOc():
     
-    fc = AvisoOrdenesCompras.objects.get(id=1).fecha_carga
+    aviso = AvisoOrdenesCompras.objects.get(id=1)
+    fc=aviso.fecha_carga
 
     fecha_hoy=dt.date.today()
   
@@ -79,7 +80,9 @@ def mensajeCierreOc():
     weekd=fc.weekday()
 
     fecha_i = fc - dt.timedelta(weekd)
+    
     fecha_f = fc  + dt.timedelta(4-weekd)
+    
     
     if fecha_hoy <= fecha_f and fecha_hoy >= fecha_i:
         
@@ -91,6 +94,10 @@ def mensajeCierreOc():
             
     else:
         semana_compra = "No es semana de compras"
+
+    if (fecha_f-fecha_hoy).days<0:
+        aviso.fecha_carga=fc + dt.timedelta(14)
+        aviso.save()
 
     return [semana_compra, fc]
        

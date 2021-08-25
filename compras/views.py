@@ -1,5 +1,4 @@
 import io
-from matplotlib.backends.backend_agg import FigureCanvasAgg
 from random import sample
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
@@ -26,7 +25,6 @@ import matplotlib.pyplot as plt
 from openpyxl import Workbook
 from openpyxl.styles import Alignment, Border, Font, PatternFill, Side 
 from django.views.generic.base import TemplateView  
-from rest_framework.generics import ListAPIView
 from .serializers import articulos_Serializer
 from .functions_comparativas import mensajeCierreOc, mandarEmail
 
@@ -891,17 +889,25 @@ def descargacomparativas(request):
 
     return render(request, 'descargacom.html')
 
-def comparativas(request, estado, creador):
+def comparativas(request, estado, creador,autoriza):
     
     # Consultas necesarias
 
     con_comparativas = Comparativas.objects.all()
+
+    usuarios=datosusuario.objects.all()
+    sp=usuarios.get(identificacion='PL')
+    pl=usuarios.get(identificacion='SP')
+
+    list_autoriza=[sp,pl]
 
     # Codigo para fecha de pagos
 
     fecha_inicial = datetime.date.today()
 
     fecha_pago = datetime.date(2021, 4, 16)
+
+    mensaje_PL_SP='Autoriza'
 
     while fecha_pago <= fecha_inicial:
         fecha_pago = fecha_pago + datetime.timedelta(days=14)
@@ -1080,8 +1086,25 @@ def comparativas(request, estado, creador):
         consulta = consulta.exclude(estado = "NO AUTORIZADA")
         mensaje = "Comp con OC: " + str(len(consulta)) + " Privadas: ({})".format(len(consulta.filter(publica = "NO")))
 
+    if autoriza=='0':
+            mensaje_PL_SP='Todos'
+            
+    else:
+        usuario=usuarios.get(pk=autoriza)
+        
+        if usuario.identificacion=='SP':
+            consulta=consulta.filter(autoriza = "SP")
+            mensaje = "Rechazadas: " + str(len(consulta)) + " Privadas: ({})".format(len(consulta.filter(publica = "NO")))
+            mensaje_PL_SP='SP'
+        
+        elif usuario.identificacion=='PL':
+            consulta=consulta.filter(autoriza = "PL")
+            mensaje = "Rechazadas: " + str(len(consulta)) + " Privadas: ({})".format(len(consulta.filter(publica = "NO")))
+            mensaje_PL_SP='PL'
+    
+    
     datos_base = consulta.order_by("-fecha_c")
-
+     
     if creador != "0":
         
         datos_base = consulta.filter(creador = mensaje_creador).order_by("-fecha_c")
@@ -1124,6 +1147,7 @@ def comparativas(request, estado, creador):
     context['datos'] = datos
     context['estado'] = estado
     context['creador'] = creador
+    context['autoriza'] = autoriza
     context['mensaje'] = mensaje
     context['espera'] = len(con_comparativas.filter(estado = "ESPERA"))
     context['autorizada'] = len(con_comparativas.filter(estado = "AUTORIZADA"))
@@ -1133,41 +1157,10 @@ def comparativas(request, estado, creador):
     context['fecha_pago'] = fecha_pago
     context['aviso'] = mensajeCierreOc()[0]
     context['fecha_cierre'] = mensajeCierreOc()[1]
-
+    context['mensaje_PL_SP']=mensaje_PL_SP
+    context['list_autoriza']=list_autoriza
     return render(request, 'comparativas.html', context)
-'''
-def modificar_precio_articulo_compra(request,id_proyecto):
-    datos_compra={}
-    mensaje=''
-    if request.method=='POST':
-        response=request.POST
-        
-        #itero los datos que llegan del formulario y los guardo en un diccionario
-        for dato in response:
-            datos_compra[dato]=response[dato]
 
-        #guardo el id de la compra que se quiere modificar
-        id_compra=datos_compra['modificar']
-
-        #obtengo el objeto de la compra que quiero modificar
-        compra=Compras.objects.get(pk=id_compra)
-
-        #si existe el objeto ....
-        if compra:
-            compra.precio=datos_compra['precio']
-            compra.save()
-            mensaje='Modificacion realizada con exito'
-            return redirect('Compras' , id_proyecto)
-
-        #si no existe ...
-        else:
-            mensaje='No se pudo encontrar la compra'
-            return redirect('Compras' , id_proyecto)
-    context={
-        'mensaje':mensaje
-    }
-    return render(request, 'compras.html',context)
-'''
 def compras(request, id_proyecto):
 
     if id_proyecto == "0":
@@ -1224,9 +1217,7 @@ def certificados(request):
 
     return render(request, 'certificados.html', datos_enviados )
 
-
 # ----------------------------------------------------- VISTAS PARA PROVEEDORES ---------------------------------------------- 
-
 
 def proveedores(request):
 
