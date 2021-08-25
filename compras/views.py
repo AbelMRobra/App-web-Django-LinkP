@@ -24,7 +24,8 @@ from dateutil.relativedelta import relativedelta
 import matplotlib.pyplot as plt
 from openpyxl import Workbook
 from openpyxl.styles import Alignment, Border, Font, PatternFill, Side 
-from django.views.generic.base import TemplateView  
+from django.views.generic.base import TemplateView 
+from rest_framework.generics import ListAPIView
 from .serializers import articulos_Serializer
 from .functions_comparativas import mensajeCierreOc, mandarEmail
 
@@ -889,12 +890,12 @@ def descargacomparativas(request):
 
     return render(request, 'descargacom.html')
 
-def comparativas(request, estado, creador,autoriza):
+def comparativas(request, estado, creador, autoriza):
     
     # Consultas necesarias
 
     con_comparativas = Comparativas.objects.all()
-
+    
     usuarios=datosusuario.objects.all()
     sp=usuarios.get(identificacion='PL')
     pl=usuarios.get(identificacion='SP')
@@ -1054,59 +1055,66 @@ def comparativas(request, estado, creador,autoriza):
 
     if estado == "0":
         consulta = con_comparativas
-        mensaje = "Estado"
+        mensaje_aux = "Totales"
 
     if estado == "1":
 
         consulta = con_comparativas.filter(estado = "ESPERA")
-        mensaje = "Espera: " + str(len(consulta)) + " Privadas: ({})".format(len(consulta.filter(publica = "NO")))
-
+        mensaje_aux = "Espera" 
     if estado == "2":
 
         consulta = con_comparativas.filter(estado = "ADJUNTO ✓")
-        mensaje = "Adjunto ✓: " + str(len(consulta)) + " Privadas: ({})".format(len(consulta.filter(publica = "NO")))
+        mensaje_aux = "Adjunto ✓" 
 
     if estado == "3":
         
         consulta = con_comparativas.filter(estado = "NO AUTORIZADA")
-        mensaje = "Rechazadas: " + str(len(consulta)) + " Privadas: ({})".format(len(consulta.filter(publica = "NO")))
+        mensaje_aux = "Rechazadas"
 
     if estado == "4":
 
         consulta = con_comparativas.filter(estado = "AUTORIZADA")
-        mensaje = "Autorizadas: " + str(len(consulta)) + " Privadas: ({})".format(len(consulta.filter(publica = "NO")))
+        mensaje_aux = "Autorizadas"
 
     if estado == "5":
         consulta = con_comparativas.filter(autoriza = "SP").exclude(estado = "AUTORIZADA")
-        mensaje = "Estado SP"
+        mensaje_aux = "Estado SP"
 
     if estado == "6":
 
         consulta = con_comparativas.exclude(estado = "AUTORIZADA").exclude(adj_oc = '').order_by("-fecha_c")
         consulta = consulta.exclude(estado = "NO AUTORIZADA")
-        mensaje = "Comp con OC: " + str(len(consulta)) + " Privadas: ({})".format(len(consulta.filter(publica = "NO")))
+        mensaje_aux = "Comp con OC"
 
     if autoriza=='0':
-            mensaje_PL_SP='Todos'
+            
+            mensaje_PL_SP = 'Todos'
+            consult_totales = con_comparativas
             
     else:
+        
         usuario=usuarios.get(pk=autoriza)
         
         if usuario.identificacion=='SP':
             consulta=consulta.filter(autoriza = "SP")
-            mensaje = "Rechazadas: " + str(len(consulta)) + " Privadas: ({})".format(len(consulta.filter(publica = "NO")))
-            mensaje_PL_SP='SP'
+            mensaje_aux = f"{mensaje_aux}: {str(len(consulta))}, Privadas: {len(consulta.filter(publica = 'NO'))}"
+            consult_totales = con_comparativas.filter(autoriza = "SP")
+            mensaje_PL_SP =' SP'
+            
         
         elif usuario.identificacion=='PL':
             consulta=consulta.filter(autoriza = "PL")
-            mensaje = "Rechazadas: " + str(len(consulta)) + " Privadas: ({})".format(len(consulta.filter(publica = "NO")))
-            mensaje_PL_SP='PL'
-    
-    
+            mensaje_aux = f"{mensaje_aux}: {str(len(consulta))}, Privadas: {len(consulta.filter(publica = 'NO'))}"
+            consult_totales = con_comparativas.filter(autoriza = "PL")
+            mensaje_PL_SP = 'PL'
+            
+
+        if estado=='0':
+            mensaje_aux=mensaje_aux
+
     datos_base = consulta.order_by("-fecha_c")
-     
     if creador != "0":
-        
+       
         datos_base = consulta.filter(creador = mensaje_creador).order_by("-fecha_c")
         
     creadores = list(set(consulta.values_list('creador').order_by('creador')))   
@@ -1138,7 +1146,7 @@ def comparativas(request, estado, creador,autoriza):
         datos.append((usuario, mensajes, d))
             
     # Reordenar la lista
-
+  
     list_creadores = sorted(list_creadores, key=lambda creador : creador.identificacion)
     
     context = {}
@@ -1148,12 +1156,12 @@ def comparativas(request, estado, creador,autoriza):
     context['estado'] = estado
     context['creador'] = creador
     context['autoriza'] = autoriza
-    context['mensaje'] = mensaje
-    context['espera'] = len(con_comparativas.filter(estado = "ESPERA"))
-    context['autorizada'] = len(con_comparativas.filter(estado = "AUTORIZADA"))
-    context['rechazada'] = len(con_comparativas.filter(estado = "NO AUTORIZADA"))
-    context['comparativa_oc'] = len(con_comparativas.exclude(estado = "AUTORIZADA").exclude(estado = "NO AUTORIZADA").exclude(adj_oc = ''))
-    context['adjunto'] = len(con_comparativas.filter(estado = "ADJUNTO ✓"))
+    context['mensaje'] = mensaje_aux
+    context['espera'] = len(consult_totales.filter(estado = "ESPERA"))
+    context['autorizada'] = len(consult_totales.filter(estado = "AUTORIZADA"))
+    context['rechazada'] = len(consult_totales.filter(estado = "NO AUTORIZADA"))
+    context['comparativa_oc'] = len(consult_totales.exclude(estado = "AUTORIZADA").exclude(estado = "NO AUTORIZADA").exclude(adj_oc = ''))
+    context['adjunto'] = len(consult_totales.filter(estado = "ADJUNTO ✓"))
     context['fecha_pago'] = fecha_pago
     context['aviso'] = mensajeCierreOc()[0]
     context['fecha_cierre'] = mensajeCierreOc()[1]
