@@ -95,12 +95,11 @@
                                         </div>
                                         <small style="font-size: 12px; color: rgb({{i.3.color}});">{{i.3.nombre}}</small>
                                         <h6 style="font-size: 12px; margin-top: 15px;"><i class="fa fa-building"></i>  ${{i.4|floatformat:2|intcomma}}</h6>
-    
                                     </td>
                                     <div class="modal fade" id="Modalprecio{{i.3.id}}" tabindex="-1" role="dialog" aria-labelledby="Modalprecio{{i.3.id}}" aria-hidden="true">
                                         <div class="modal-dialog modal-dialog-centered" role="document">
                                             <div class="modal-content">
-                                                <div class="modal-header" style="background: rgb(36,160,237); background: linear-gradient(315deg, rgba(36,160,237,1) 0%, rgba(56,56,130,1) 22%, rgba(0,212,255,1) 100%);">
+                                                <div class="modal-header" style="background-color: #2a3e52;">
                                                     <h5 class="modal-title text-light" id="exampleModalLongTitle">Modificar parametros</h5>
                                                     <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
                                                         <span aria-hidden="true">&times;</span>
@@ -199,7 +198,7 @@
                     
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <button type="button" class="btn btn-info"
+                                                    <button type="button" class="btn btn-secondary"
                                                         data-dismiss="modal">Cerrar</button>
                     
                                                 </div>
@@ -215,7 +214,6 @@
                                     <td>{{i.2.3|floatformat:2}}%</td>
                                     <td>{{i.2.4|floatformat:2}}%</td>
                                     <td>{{i.2.5|floatformat:2}}%</td>
-    
                                 
                                 </tr>
                                 <tr  style="font-size: 12px;">
@@ -234,8 +232,8 @@
                                 {% endfor %}
                             </tbody>
                         </table>
-    
-    
+
+
                     </div>
                 </div>
             </div>

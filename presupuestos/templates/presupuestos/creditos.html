@@ -48,6 +48,7 @@
                                         <th>Comprado</th>
                                         <th>Sobrante</th>
                                         <th>Credito</th>
+                                        <th></th>
                                     </tr>
                                 </thead>
     
@@ -64,6 +65,143 @@
                                             <td>{{i.2|floatformat:2|intcomma}}</td>
                                             <td>{{i.3|floatformat:2|intcomma}}</td>
                                             <td>{% if i.4 < 0 %}-${{i.4|floatformat:2|intcomma|cut:"-"}}{% else %}${{i.4|floatformat:2|intcomma}}{% endif %}</td>
+                                            <td>
+                                                <div class="btn-group ml-auto">
+                                                    <a href="JavaScript:void(0)" class="icon-options-vertical link" data-toggle="dropdown"
+                                                    aria-haspopup="true" aria-expanded="false"></a>
+                                                    <div class="dropdown-menu dropdown-menu-right">
+                                                        <!-- 
+                                                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#Modalcapitulo{{i.0.id}}"><i
+                                                            class="fa fa-pencil-square-o mr-2"></i>Modificar capitulo</a>
+                                                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#Modalanalisis{{i.0.id}}"><i
+                                                            class="fa fa-pencil-square-o mr-2"></i>Modificar analisis</a>
+                                                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#Modalnuevo{{i.0.id}}"><i
+                                                            class="fa fa-pencil-square-o mr-2"></i>Crear nuevo</a>
+                                                            -->
+                                                    <p>Proximamente</p>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <div class="modal fade" id="Modalcapitulo{{i.0.id}}" tabindex="-1" role="dialog"
+                                            aria-labelledby="Modalcapitulo{{i.0.id}}" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header" style="background-color: #2a3e52;">
+                                                            <h5 class="modal-title text-light" id="exampleModalLongTitle">Modificar capitulo</h5>
+                                                            <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <form action="#" method="POST">
+            
+                                                                {% csrf_token %}
+                                                                <p>Capitlo</p>
+                                                                <select name="capitulo" id="" class="form-control">
+                                                                    <option value="1">1</option>
+                                                                    <option value="2">2</option>
+                                                                    <option value="3">3</option>
+                                                                    <option value="4">4</option>
+                                                                </select>
+                                                                <div>
+                                                                    <button class="btn btn-info" type="submit" name="modificar-capitulo" value="{{i.1.id}}"
+                                                                        style="margin-top: 10px;">Modificar</button>
+            
+                                                                </div>
+                                                            </form>
+            
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary"
+                                                                data-dismiss="modal">Cerrar</button>
+            
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- analisis -->
+                                            <div class="modal fade" id="Modalanalisis{{i.0.id}}" tabindex="-1" role="dialog"
+                                            aria-labelledby="Modalanalisis{{i.0.id}}" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header" style="background-color: #2a3e52;">
+                                                            <h5 class="modal-title text-light" id="exampleModalLongTitle">Modificar analisis</h5>
+                                                            <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <form action="#" method="POST">
+            
+                                                                {% csrf_token %}
+                                                                <p>Capitlo</p>
+                                                                <select name="capitulo" id="" class="form-control">
+                                                                    <option value="1">1</option>
+                                                                    <option value="2">2</option>
+                                                                    <option value="3">3</option>
+                                                                    <option value="4">4</option>
+                                                                </select>
+                                                                <p>Analisis</p>
+                                                                <select name="capitulo" id="" class="form-control">
+                                                                    <option value="1">1</option>
+                                                                    <option value="2">2</option>
+                                                                    <option value="3">3</option>
+                                                                    <option value="4">4</option>
+                                                                </select>
+
+                                                                <div>
+                                                                    <button class="btn btn-info" type="submit" name="modificar-analisis" value="{{i.1.id}}"
+                                                                        style="margin-top: 10px;">Modificar</button>
+            
+                                                                </div>
+                                                            </form>
+            
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary"
+                                                                data-dismiss="modal">Cerrar</button>
+            
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- nuevo -->
+                                            <div class="modal fade" id="Modalnuevo{{i.0.id}}" tabindex="-1" role="dialog"
+                                            aria-labelledby="Modalnuevo{{i.0.id}}" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header" style="background-color: #2a3e52;">
+                                                            <h5 class="modal-title text-light" id="exampleModalLongTitle">Modificar precio</h5>
+                                                            <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <form action="#" method="POST">
+            
+                                                                {% csrf_token %}
+                                                                <p>Capitlo</p>
+                                                                <input type="text" name="capitulo" class="form-control" required>
+                                                                <p>Analisis</p>
+                                                                <input type="text" name="analisis" class="form-control" required>
+
+                                                                <div>
+                                                                    <button class="btn btn-info" type="submit" name="crear" value="{{i.1.id}}"
+                                                                        style="margin-top: 10px;">Crear</button>
+            
+                                                                </div>
+                                                            </form>
+            
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary"
+                                                                data-dismiss="modal">Cerrar</button>
+            
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </tr>
                                         {% endif %}
                                     {% endfor %}
@@ -77,6 +215,145 @@
                                             <td>{{i.2|floatformat:2|intcomma}}</td>
                                             <td>{{i.3|floatformat:2|intcomma}}</td>
                                             <td>{% if i.4 < 0 %}-${{i.4|floatformat:2|intcomma|cut:"-"}}{% else %}${{i.4|floatformat:2|intcomma}}{% endif %}</td>
+                                            <td>
+                                                <div class="btn-group ml-auto">
+                                                    
+                                                    <a href="JavaScript:void(0)" class="icon-options-vertical link" data-toggle="dropdown"
+                                                    aria-haspopup="true" aria-expanded="false"></a>
+                                                    <div class="dropdown-menu dropdown-menu-right">
+                                                        <!-- 
+                                                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#Modalcapitulo{{i.0.id}}"><i
+                                                            class="fa fa-pencil-square-o mr-2"></i>Modificar capitulo</a>
+                                                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#Modalanalisis{{i.0.id}}"><i
+                                                            class="fa fa-pencil-square-o mr-2"></i>Modificar analisis</a>
+                                                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#Modalnuevo{{i.0.id}}"><i
+                                                            class="fa fa-pencil-square-o mr-2"></i>Crear nuevo</a>
+                                                            -->
+                                                    <p>Proximamente</p>
+                                                    </div>
+                                                    
+                                                </div>
+                                            </td>
+                                            <div class="modal fade" id="Modalcapitulo{{i.0.id}}" tabindex="-1" role="dialog"
+                                            aria-labelledby="Modalcapitulo{{i.0.id}}" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header" style="background-color: #2a3e52;">
+                                                            <h5 class="modal-title text-light" id="exampleModalLongTitle">Modificar capitulo</h5>
+                                                            <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <form action="#" method="POST">
+            
+                                                                {% csrf_token %}
+                                                                <p>Capitlo</p>
+                                                                <select name="capitulo" id="" class="form-control">
+                                                                    <option value="1">1</option>
+                                                                    <option value="2">2</option>
+                                                                    <option value="3">3</option>
+                                                                    <option value="4">4</option>
+                                                                </select>
+                                                                <div>
+                                                                    <button class="btn btn-info" type="submit" name="modificar-capitulo" value="{{i.1.id}}"
+                                                                        style="margin-top: 10px;">Modificar</button>
+            
+                                                                </div>
+                                                            </form>
+            
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary"
+                                                                data-dismiss="modal">Cerrar</button>
+            
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- analisis -->
+                                            <div class="modal fade" id="Modalanalisis{{i.0.id}}" tabindex="-1" role="dialog"
+                                            aria-labelledby="Modalanalisis{{i.0.id}}" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header" style="background-color: #2a3e52;">
+                                                            <h5 class="modal-title text-light" id="exampleModalLongTitle">Modificar analisis</h5>
+                                                            <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <form action="#" method="POST">
+            
+                                                                {% csrf_token %}
+                                                                <p>Capitlo</p>
+                                                                <select name="capitulo" id="" class="form-control">
+                                                                    <option value="1">1</option>
+                                                                    <option value="2">2</option>
+                                                                    <option value="3">3</option>
+                                                                    <option value="4">4</option>
+                                                                </select>
+                                                                <p>Analisis</p>
+                                                                <select name="capitulo" id="" class="form-control">
+                                                                    <option value="1">1</option>
+                                                                    <option value="2">2</option>
+                                                                    <option value="3">3</option>
+                                                                    <option value="4">4</option>
+                                                                </select>
+
+                                                                <div>
+                                                                    <button class="btn btn-info" type="submit" name="modificar-analisis" value="{{i.1.id}}"
+                                                                        style="margin-top: 10px;">Modificar</button>
+            
+                                                                </div>
+                                                            </form>
+            
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary"
+                                                                data-dismiss="modal">Cerrar</button>
+            
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- nuevo -->
+                                            <div class="modal fade" id="Modalnuevo{{i.0.id}}" tabindex="-1" role="dialog"
+                                            aria-labelledby="Modalnuevo{{i.0.id}}" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header" style="background-color: #2a3e52;">
+                                                            <h5 class="modal-title text-light" id="exampleModalLongTitle">Modificar precio</h5>
+                                                            <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <form action="#" method="POST">
+            
+                                                                {% csrf_token %}
+                                                                <p>Capitlo</p>
+                                                                <input type="text" name="capitulo" class="form-control" required>
+                                                                <p>Analisis</p>
+                                                                <input type="text" name="analisis" class="form-control" required>
+
+                                                                <div>
+                                                                    <button class="btn btn-info" type="submit" name="crear" value="{{i.1.id}}"
+                                                                        style="margin-top: 10px;">Crear</button>
+            
+                                                                </div>
+                                                            </form>
+            
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary"
+                                                                data-dismiss="modal">Cerrar</button>
+            
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </tr>
    
                                     {% endfor %}
@@ -95,10 +372,6 @@
                             </table>
     
                         </div>
-    
-      
-
-    
                     </div>
                 </div>
             </div>
@@ -110,28 +383,39 @@
 
 
 
-<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-<script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js" defer></script>
-<script src="https://cdn.datatables.net/1.10.23/js/dataTables.bootstrap4.min.js" defer></script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 <script>
+
     $(document).ready(function () {
         $('#example').DataTable({
             "language": {
-            "lengthMenu": "Mostar _MENU_ documentos",
-            "zeroRecords": "No se encontro nada - perdon ",
-            "info": "Pagina _PAGE_ de _PAGES_",
-            "infoEmpty": "Sin registros disponibles",
-            "infoFiltered": "(filtrado de _MAX_ registros totales)",
-            "search": "Buscar"
-        },
-
-            "ordering": false,
+                "lengthMenu": "Mostar _MENU_ documentos",
+                "zeroRecords": "No se encontro nada - perdon ",
+                "info": "Pagina _PAGE_ de _PAGES_",
+                "infoEmpty": "Sin registros disponibles",
+                "infoFiltered": "(filtrado de _MAX_ registros totales)",
+                "search": "Buscar"
+            },
             "info": false,
+            "ordering": false,
             "pading": false
+            dom: 'Bfrtip',
+            buttons: [
+                {
+                    extend: 'excelHtml5',
+                    title: 'Creditos-proyecto',
+                    className: "btn btn-info",
+
+                    init: function(api, node, config) {
+                        $(node).removeClass('dt-button buttons-excel buttons-html5')
+                        }
+                },
+            ]
+
         });
     });
 </script>
-
 
 {% endblock %}

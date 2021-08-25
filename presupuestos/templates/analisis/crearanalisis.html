@@ -12,113 +12,114 @@
 
         <div class="col-md-7 align-self-center">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'Lista de analisis' %}">Biblioteca</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'Panel de analisis' %}">A.P.U</a></li>
                 <li class="breadcrumb-item">Crear Análisis</li>
             </ol>
         </div>
     </div>
-</div>
 
-<div class="row">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-body ">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body ">
 
-                <form method="POST">
-                    {% csrf_token %}
-                    <div class="my-4">
-                        <h4 class="card-title"> Datos generales</h4>
-                        <h6 class="card-subtitle">En caso de que el análisis sea solo mano de obra escribir en el nombre
-                            <strong>(SOLO MANO DE OBRA)</strong></h6>
-                    </div>
-                    <div class="bg-light p-3">
-                        <div class="row">
+                    <form method="POST">
+                        {% csrf_token %}
+                        <div class="my-4">
+                            <h4 class="card-title"> Datos generales</h4>
+                            <h6 class="card-subtitle">En caso de que el análisis sea solo mano de obra escribir en el nombre
+                                <strong>(SOLO MANO DE OBRA)</strong></h6>
+                        </div>
+                        <div class="bg-light p-3">
+                            <div class="row">
 
-                            <div class="col-lg-4 col-md-4 row-sm">
-                                <label for="codigo">
-                                    <h5>Codigo del análisis:</h5>
-                                </label>
+                                <div class="col-lg-4 col-md-4 row-sm">
+                                    <label for="codigo">
+                                        <h5>Codigo del análisis:</h5>
+                                    </label>
 
-                                <input type="number" name="codigo" class="form-control form-control"
-                                    placeholder="Solo numeros">
+                                    <input type="number" name="codigo" class="form-control form-control"
+                                        placeholder="Solo numeros">
 
+                                </div>
+
+                                <div class="col-lg-4 col-md-4 row-sm">
+
+                                    <label for="nombre">
+                                        <h5>Nombre del análisis:</h5>
+                                    </label>
+
+                                    <input type="text" class="form-control form-control" name="nombre" placeholder="Nombre">
+
+                                </div>
+
+                                <div class="col-lg-4 col-md-4 row-sm">
+
+                                    <label for="unidad">
+                                        <h5>Unidad:</h5>
+                                    </label>
+
+                                    <input type="text" class="form-control form-control" name="unidad"
+                                        placeholder="UN/KG/M3">
+
+                                </div>
                             </div>
-
-                            <div class="col-lg-4 col-md-4 row-sm">
-
-                                <label for="nombre">
-                                    <h5>Nombre del análisis:</h5>
-                                </label>
-
-                                <input type="text" class="form-control form-control" name="nombre" placeholder="Nombre">
-
+                        </div>
+                        <div class="row my-4">
+                            <div class="col-12 col-lg-10">
+                                <h4 class="card-title"> Artículos</h4>
+                                <h6 class="card-subtitle"> Prestar atención a las unidades - <strong>AR</strong></h6>
                             </div>
-
-                            <div class="col-lg-4 col-md-4 row-sm">
-
-                                <label for="unidad">
-                                    <h5>Unidad:</h5>
-                                </label>
-
-                                <input type="text" class="form-control form-control" name="unidad"
-                                    placeholder="UN/KG/M3">
+                            <div class="col-12 col-lg-2">
+                                <button type="button" class="btn btn-outline-primary" onclick="myFunction()">Agregar
+                                    campos</button>
 
                             </div>
                         </div>
-                    </div>
-                    <div class="row my-4">
-                        <div class="col-12 col-lg-10">
-                            <h4 class="card-title"> Artículos</h4>
-                            <h6 class="card-subtitle"> Prestar atención a las unidades - <strong>AR</strong></h6>
-                        </div>
-                        <div class="col-12 col-lg-2">
-                            <button type="button" class="btn btn-outline-primary" onclick="myFunction()">Agregar
-                                campos</button>
 
-                        </div>
-                    </div>
+                        <p class="text-danger">{{datos.mensaje}}</p>
 
-                    <p class="text-danger">{{datos.mensaje}}</p>
+                        <div class="bg-light">
+                            <div class="campoarticulos">
+                                <div class="campo">
+                                    <div class="col">
+                                        <div class="row bg-light py-3">
+                                            <div class="col-lg-6 col-md-6 row-sm">
+                                                <label for="articulo">
+                                                    <h6>Artículo</h6>
+                                                </label>
+                                                <input name="articulo" type="search" class="form-control form-control"
+                                                    placeholder="Nombre del articulo" list="art">
+                                            </div>
 
-                    <div class="bg-light">
-                        <div class="campoarticulos">
-                            <div class="campo">
-                                <div class="col">
-                                    <div class="row bg-light py-3">
-                                        <div class="col-lg-6 col-md-6 row-sm">
-                                            <label for="articulo">
-                                                <h6>Artículo</h6>
-                                            </label>
-                                            <input name="articulo" type="search" class="form-control form-control"
-                                                placeholder="Nombre del articulo" list="art">
-                                        </div>
+                                            <div class="col-lg-6 col-md-6 row-sm">
+                                                <label for="cantidad">
+                                                    <h6>Cantidad</h6>
+                                                </label>
 
-                                        <div class="col-lg-6 col-md-6 row-sm">
-                                            <label for="cantidad">
-                                                <h6>Cantidad</h6>
-                                            </label>
+                                                <input name="cantidad" type="number" step="any"
+                                                    class="form-control form-control" placeholder="Cantidad">
 
-                                            <input name="cantidad" type="number" step="any"
-                                                class="form-control form-control" placeholder="Cantidad">
-
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="d-flex justify-content-center my-3">
-                        <button type="submit" class="btn btn-info">Cargar análisis</button>
+                        <div class="d-flex justify-content-center my-3">
+                            <button type="submit" class="btn btn-info">Cargar análisis</button>
 
-                    </div>
+                        </div>
 
-                    <datalist id="art">
-                        {% for i in datos.articulos %}
-                        <option value="{{ i.nombre }}">({{i.unidad}})</option>
-                        {% endfor %}
-                    </datalist>
-                </form>
+                        <datalist id="art">
+                            {% for i in datos.articulos %}
+                            <option value="{{ i.nombre }}">({{i.unidad}})</option>
+                            {% endfor %}
+                        </datalist>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
