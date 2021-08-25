@@ -181,6 +181,7 @@ def cargaunidadesproyecto(request,**kwargs):
                         sup_patio=datos['sup_patio'],
                         sup_comun=datos['sup_comun'],
                         sup_equiv=datos['sup_equivalente'],
+                        plano_venta=request.FILES['plano_venta']
                     )
                     
                 else:
@@ -216,6 +217,7 @@ def cargaunidadesproyecto(request,**kwargs):
                         sup_patio=datos[suppa],
                         sup_comun=datos[supc],
                         sup_equiv=datos[supq],
+                        plano_venta=request.FILES['plano_venta']
                     )
                 nuevas_unidades.append(unidad)
 
@@ -227,7 +229,9 @@ def cargaunidadesproyecto(request,**kwargs):
 
 def listaunidadesproyecto(request,**kwargs):
     id_proyecto=kwargs['id']
-    proyecto=Proyectos.objects.get(pk=id_proyecto)
+
+    objetoproyecto=Proyectos.objects.get(pk=id_proyecto)
+
     unidades=Unidades.objects.filter(proyecto=id_proyecto)
 
     total_sup_comun=unidades.aggregate(sup_total=Sum('sup_comun'))['sup_total']
@@ -285,7 +289,7 @@ def listaunidadesproyecto(request,**kwargs):
 
         elif 'editar' in datos:
             id_unidad=datos['editar']
-            unidad=Unidades.objects.filter(pk=int(id_unidad))
+            unidad=Unidades.objects.get(pk=int(id_unidad))
             tipo=datos['tipo']
             if tipo=='DEPARTAMENTO':
                 if 'tipologia' in datos:
@@ -294,18 +298,20 @@ def listaunidadesproyecto(request,**kwargs):
                     tipologia='MONO'
             else:
                 tipologia=datos['tipo']
-            unidad.update(
-                proyecto=proyecto,
-                piso_unidad=datos['nombre_piso'] + ' ' + datos['numero_piso'],
-                nombre_unidad=datos['nomenclatura'], #nomenclatura
-                tipo=tipo,
-                tipologia=tipologia,
-                sup_propia=datos['sup_propia'],
-                sup_balcon=datos['sup_balcon'],
-                sup_patio=datos['sup_patio'],
-                sup_comun=datos['sup_comun'],
-                sup_equiv=datos['sup_equivalente'],
+          
+            archivos=request.FILES
+            unidad.piso_unidad=datos['nombre_piso'] + ' ' + datos['numero_piso']
+            unidad.nombre_unidad=datos['nomenclatura'] #nomenclatura
+            unidad.tipo=tipo
+            unidad.tipologia=tipologia
+            unidad.sup_propia=float(datos['sup_propia'])
+            unidad.sup_balcon=float(datos['sup_balcon'])
+            unidad.sup_patio=float(datos['sup_patio'])
+            unidad.sup_comun=float(datos['sup_comun'])
+            unidad.sup_equiv=float(datos['sup_equivalente'])
+            unidad.plano_venta=archivos['plano_venta']
+            unidad.save()
 
-            )
+         
             return redirect('Lista unidades proyecto',id_proyecto)
-    return render(request, 'listado_unidades_proyecto.html',{'unidades':unidades,'proyecto':proyecto,'sup_totales':sup_totales})
+    return render(request, 'listado_unidades_proyecto.html',{'unidades':unidades,'proyecto':objetoproyecto,'sup_totales':sup_totales})
