@@ -896,7 +896,7 @@ def comparativas(request, estado, creador,autoriza):
     # Consultas necesarias
 
     con_comparativas = Comparativas.objects.all()
-
+    
     usuarios=datosusuario.objects.all()
     sp=usuarios.get(identificacion='PL')
     pl=usuarios.get(identificacion='SP')
@@ -1056,59 +1056,70 @@ def comparativas(request, estado, creador,autoriza):
 
     if estado == "0":
         consulta = con_comparativas
-        mensaje = "Estado"
+        mensaje_aux = "Estado"
 
     if estado == "1":
 
         consulta = con_comparativas.filter(estado = "ESPERA")
-        mensaje = "Espera: " + str(len(consulta)) + " Privadas: ({})".format(len(consulta.filter(publica = "NO")))
-
+        mensaje_aux = "Espera: " 
     if estado == "2":
 
         consulta = con_comparativas.filter(estado = "ADJUNTO ✓")
-        mensaje = "Adjunto ✓: " + str(len(consulta)) + " Privadas: ({})".format(len(consulta.filter(publica = "NO")))
+        mensaje_aux = "Adjunto ✓: " 
 
     if estado == "3":
         
         consulta = con_comparativas.filter(estado = "NO AUTORIZADA")
-        mensaje = "Rechazadas: " + str(len(consulta)) + " Privadas: ({})".format(len(consulta.filter(publica = "NO")))
+        mensaje_aux = "Rechazadas: "
 
-       
-        if autoriza=='0':
-            mensaje_PL_SP='Todos'
-            
-        else:
-            usuario=usuarios.get(pk=autoriza)
-          
-            if usuario.identificacion=='SP':
-                consulta=consulta.filter(autoriza = "SP")
-                mensaje = "Rechazadas: " + str(len(consulta)) + " Privadas: ({})".format(len(consulta.filter(publica = "NO")))
-                mensaje_PL_SP='SP'
-            
-            elif usuario.identificacion=='PL':
-                consulta=consulta.filter(autoriza = "PL")
-                mensaje = "Rechazadas: " + str(len(consulta)) + " Privadas: ({})".format(len(consulta.filter(publica = "NO")))
-                mensaje_PL_SP='PL'
-             
     if estado == "4":
 
         consulta = con_comparativas.filter(estado = "AUTORIZADA")
-        mensaje = "Autorizadas: " + str(len(consulta)) + " Privadas: ({})".format(len(consulta.filter(publica = "NO")))
+        mensaje_aux = "Autorizadas: "
 
     if estado == "5":
         consulta = con_comparativas.filter(autoriza = "SP").exclude(estado = "AUTORIZADA")
-        mensaje = "Estado SP"
+        mensaje_aux = "Estado SP"
 
     if estado == "6":
 
         consulta = con_comparativas.exclude(estado = "AUTORIZADA").exclude(adj_oc = '').order_by("-fecha_c")
         consulta = consulta.exclude(estado = "NO AUTORIZADA")
-        mensaje = "Comp con OC: " + str(len(consulta)) + " Privadas: ({})".format(len(consulta.filter(publica = "NO")))
+        mensaje_aux = "Comp con OC: "
+
+    
+
+    
+    if autoriza=='0' and estado=='0':
+        mensaje_PL_SP='Autoriza'
+        mensaje='Estado'
+
+    elif autoriza=='0' and estado!='0' :
+        mensaje_PL_SP='Autoriza'
+        mensaje = mensaje_aux + str(len(consulta)) + " Privadas: ({})".format(len(consulta.filter(publica = "NO")))
+            
+    else:
+        
+        usuario=usuarios.get(pk=autoriza)
+        
+        if usuario.identificacion=='SP':
+            consulta=consulta.filter(autoriza = "SP")
+            mensaje = mensaje_aux + str(len(consulta)) + " Privadas: ({})".format(len(consulta.filter(publica = "NO")))
+            mensaje_PL_SP='SP'
+            
+        
+        elif usuario.identificacion=='PL':
+            consulta=consulta.filter(autoriza = "PL")
+            mensaje = mensaje_aux + str(len(consulta)) + " Privadas: ({})".format(len(consulta.filter(publica = "NO")))
+            mensaje_PL_SP='PL'
+            
+
+        if estado=='0':
+            mensaje=mensaje_aux
 
     datos_base = consulta.order_by("-fecha_c")
-
     if creador != "0":
-        
+       
         datos_base = consulta.filter(creador = mensaje_creador).order_by("-fecha_c")
         
     creadores = list(set(consulta.values_list('creador').order_by('creador')))   
@@ -1140,7 +1151,7 @@ def comparativas(request, estado, creador,autoriza):
         datos.append((usuario, mensajes, d))
             
     # Reordenar la lista
-
+  
     list_creadores = sorted(list_creadores, key=lambda creador : creador.identificacion)
     
     context = {}
@@ -1162,39 +1173,7 @@ def comparativas(request, estado, creador,autoriza):
     context['mensaje_PL_SP']=mensaje_PL_SP
     context['list_autoriza']=list_autoriza
     return render(request, 'comparativas.html', context)
-'''
-def modificar_precio_articulo_compra(request,id_proyecto):
-    datos_compra={}
-    mensaje=''
-    if request.method=='POST':
-        response=request.POST
-        
-        #itero los datos que llegan del formulario y los guardo en un diccionario
-        for dato in response:
-            datos_compra[dato]=response[dato]
 
-        #guardo el id de la compra que se quiere modificar
-        id_compra=datos_compra['modificar']
-
-        #obtengo el objeto de la compra que quiero modificar
-        compra=Compras.objects.get(pk=id_compra)
-
-        #si existe el objeto ....
-        if compra:
-            compra.precio=datos_compra['precio']
-            compra.save()
-            mensaje='Modificacion realizada con exito'
-            return redirect('Compras' , id_proyecto)
-
-        #si no existe ...
-        else:
-            mensaje='No se pudo encontrar la compra'
-            return redirect('Compras' , id_proyecto)
-    context={
-        'mensaje':mensaje
-    }
-    return render(request, 'compras.html',context)
-'''
 def compras(request, id_proyecto):
 
     if id_proyecto == "0":
