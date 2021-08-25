@@ -1,0 +1,587 @@
+{% extends "users/inicio2.html" %}
+
+{% load static %}
+
+{% block content %}
+
+
+<div class="container-fluid">
+    <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+            <h3 class="text-themecolor">Gestor de unidades de {{proyecto.nombre}}</h3>
+        </div>
+
+        <div class="col-md-7 align-self-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'Principal Tecnica' %}">Panel</a></li>
+    
+             
+                <li class="breadcrumb-item">Listado de unidades</li> 
+            </ol>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div>
+                            <h4 class="card-title"><span class="lstick m-r-20"></span>Listado de unidades generadas hasta la fecha dentro del proyecto <a href="#" data-toggle="modal" data-target="#ModalGuia"><i class="fa fa-info-circle mt-2"></i></a></h4> 
+                            <div id="ModalGuia" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="ModalGuia"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-header" style="background-color: #2a3e52;">
+                  <h5 class="modal-title  text-light" id="exampleModalLongTitle">Explicación de uso</h5>
+                  <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <div class="tab-content">
+                    <p><span>Gestor de unidades</span>
+                      Si las unidades tienen información asociada no se pueden borrar por lo cual deberas informar a una persona del area IT.
+                    </p>
+                   
+                  </div>
+                </div>
+
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-info" data-dismiss="modal">Cerrar</button>
+
+                </div>
+              </div>
+            </div>
+          </div>
+
+                        </div>
+                        <div class="btn-group ml-auto">
+                            <a href="JavaScript:void(0)" class="icon-options-vertical link" data-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false"></a>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a class="dropdown-item" href="{% url 'Carga unidades proyecto' proyecto.id %}"><i
+                                        class="fa fa-plus-circle mr-2"></i>Agregar</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <form method="POST">
+
+                        <table id="example" class="table table-striped table-bordered"
+                            style="width:100%; font-size: 14px;">
+                            <thead>
+                                <tr>
+                                    
+                                    <th></th>
+                                    <th>Unidad</th>
+                                    <th>Nomen.</th>
+                                    <th>Tipo</th>
+                                    <th>Tipologia</th>
+                                    <th>S.Propia</th>
+                                    <th>S.Patio</th>
+                                    <th>S.Balcon</th>
+                                    <th>S.Comun</th>
+                                    <th>S.Total</th>
+                                    <th>S.Equiv</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                   
+                        {% if unidades|length == 0 %}
+                        <tr>
+                            <td>No hay unidades</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                          </tr>         
+                        {% else %}
+
+                        {% for i in unidades %}
+                        <tr>
+                                                        
+                            {% if i.permiso == 0 %}
+                            <td style="text-align: center;">
+
+                                <input type="checkbox" disabled id="unidad{{i.id}}" class="filled-in chk-col-blue"/>
+                                <label for="unidad{{i.id}}"></label>
+
+                            </td>
+                            {% elif  i.permiso == 1 %}
+                            <td style="text-align: center;">
+
+                                <input type="checkbox" name="unidad{{i.id}}" value="{{i.id}}" id="unidad{{i.id}}"
+                                    class="filled-in chk-col-blue"/>
+                                <label for="unidad{{i.id}}"></label>
+
+                            </td>
+                            {% endif%}
+
+                            <td>{{i.piso_unidad}}</td>
+                            <td>{{i.nombre_unidad}}</td>
+                            <td>{{i.tipo|truncatechars:7}}</td>
+                            <td>{{i.tipologia}}</td>
+                            <td>{{i.sup_propia}}</td>
+                            <td>{{i.sup_patio}}</td>
+                            <td>{{i.sup_balcon}}</td>
+                            <td>{{i.sup_comun}}</td>
+                            <td>{{i.sup_total|floatformat:2}}</td>
+                            <td>{{i.sup_equiv}}</td>
+                         
+                        
+                            <td>
+                                <div class="btn-group ml-auto">
+                                    <a href="JavaScript:void(0)" class="icon-options-vertical link"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" href="#" data-toggle="modal"
+                                            data-target="#ModalEditar{{i.id}}"><i
+                                                class="fa fa-pencil-square-o mr-2"></i>Editar</a>
+                                                
+                                                {% if i.permiso == 0 %}
+                                                <a class="dropdown-item"><i class="fa fa-trash mr-2"></i>Sin permiso</a>
+                                                {% elif i.permiso == 1 %}     
+                                                <a class="dropdown-item" href="#" data-toggle="modal"
+                                                data-target="#ModalBorrar{{i.id}}"><i
+                                                    class="fa fa-trash mr-2 text-danger"></i>Borrar</a>
+                                                {% endif %}
+                                        
+
+                                    </div>
+                                </div>
+                            </td>
+                            <div class="modal fade" id="ModalEditar{{i.id}}" tabindex="-1" role="dialog"
+                                aria-labelledby="ModalEditar{{i.id}}Title" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header" style="background-color: #2a3e52;">
+                                            <h5 class="modal-title text-light" id="exampleModalLongTitle">
+                                                Modificar unidad</h5>
+                                            <button type="button" class="close text-light" data-dismiss="modal"
+                                                aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p>Modificar caracteristicas de la unidad</p>
+                                            <form method="POST" style="margin: 15px;">
+                                                {% csrf_token %}
+                                                <div class="p-2">
+                                                    <div class="row">
+                                                        <div class="col-4">
+                                                            <div class="mt-3">
+
+                                                                <label for="nombre_piso">
+                                                                    <h6>Piso</h6>
+                                                                </label>
+
+                                                            </div>
+                                                            <div class="row d-flex justify-content-center mt-1">
+                                                                <div class="col">
+                                                                    <div>
+                                                                        <select name="nombre_piso"
+                                                                            class="form-control form-control">
+                                                                               
+                                                                            <option  {% if i.piso_unidad == 'SS'  %}
+                                                                            selected  {% endif %} value="SS">SS
+                                                                            </option>
+                                                                            <option {% if i.piso_unidad == 'PB'  %}
+                                                                            selected  {% endif %} value="PB">PB
+                                                                            </option>
+                                                                            <option {% if 'PISO' in i.piso_unidad  %}
+                                                                            selected  {% endif %} value="PISO">PISO
+                                                                            </option>
+                                                                        </select>
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-4">
+                                                            <div class="mt-3">
+
+                                                                <label for="numero_piso">
+                                                                    <h6>N°</h6>
+                                                                </label>
+
+                                                            </div>
+                                                            <div class="row d-flex justify-content-center mt-1">
+                                                                <div class="col">
+                                                                    <div>
+                                                                        <input type="text" name="numero_piso"
+                                                                            class="form-control form-control" value="{{i.piso_unidad|last}}">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-4">
+                                                            <div class="mt-3">
+                                                                <label for="nomenclatura">
+                                                                    <h6>Nomenclatura</h6>
+                                                                </label>
+                                                            </div>
+
+                                                            <div class="row d-flex justify-content-center mt-1">
+                                                                <div class="col">
+                                                                    <div>
+                                                                        <input name="nomenclatura" type="text"
+                                                                            class="form-control form-control" value="{{i.piso_unidad.0}}"
+                                                                            placeholder="Ej: A">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-4">
+                                                            <div class="mt-3">
+
+                                                                <label for="tipo">
+                                                                    <h6>Tipo</h6>
+                                                                </label>
+
+                                                            </div>
+                                                            <div class="row d-flex justify-content-center mt-1">
+                                                                <div class="col">
+                                                                    <div>
+                                                                        <select name="tipo"
+                                                                            class="form-control form-control" value="{{i.tipo}}">
+                                                                            <option 
+                                                                            {% if i.tipo == "BAULERA" %}
+                                                                            selected
+                                                                            {% endif %}
+                                                                                 value="BAULERA" >
+                                                                                Baulera
+                                                                            </option>
+                                                                            <option {% if i.tipo == "COCHERA" %}
+                                                                            selected
+                                                                            {% endif %} value="COCHERA">Cochera
+                                                                            </option>
+                                                                            <option  {% if i.tipo == "COCHERA S/D" %}
+                                                                            selected
+                                                                            {% endif %}  value="COCHERA S/D">Cochera
+                                                                                s/d
+                                                                            </option>
+                                                                            <option  {% if i.tipo == "DEPARTAMENTO" %}
+                                                                            selected
+                                                                            {% endif %} value="DEPARTAMENTO">
+                                                                                Departamento</option>
+                                                                            <option {% if i.tipo == "LOCAL" %}
+                                                                            selected
+                                                                            {% endif %} value="LOCAL">Local</option>
+                                                                        </select>
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-4">
+                                                            <div class="mt-3">
+
+                                                                <label for="tipologia">
+                                                                    <h6>Tipologia</h6>
+                                                                </label>
+
+                                                            </div>
+                                                            <div class="row d-flex justify-content-center mt-1">
+                                                                <div class="col">
+                                                                    <div>
+                                                                        <select name="tipologia"
+                                                                            class="form-control form-control" value="{{i.tipologia}}">
+                                                                    
+                                                               
+                                                           
+                                                               
+                                                                    <option value="" {% if i.tipo != 'DEPARTAMENTO' %}  selected   {% endif %}>-</option>
+                                                                   
+                                                                    <option {% if i.tipologia == "MONO" %}
+                                                                    selected
+                                                                    {% endif %}  value="MONO">Mono</option>
+                                                                    <option {% if i.tipologia == "1D" %}
+                                                                    selected
+                                                                    {% endif %}  value="1D">1D</option>
+                                                                    <option {% if i.tipologia == "2D" %}
+                                                                    selected
+                                                                    {% endif %}   value="2D">2D</option>
+                                                                    <option {% if i.tipologia == "3D" %}
+                                                                    selected
+                                                                    {% endif %}  value="3D">3D</option>
+                                                                    <option {% if i.tipologia == "ESTUDIO" %}
+                                                                    selected
+                                                                    {% endif %}  value="ESTUDIO">Estudio
+                                                                    </option>
+                                                                          
+                                                                        </select>
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-4">
+                                                            <div class="mt-3">
+                                                                <label for="sup_propia">
+                                                                    <h6>Sup. Propia</h6>
+                                                                </label>
+                                                            </div>
+
+                                                            <div class="row d-flex justify-content-center mt-1">
+                                                                <div class="col">
+                                                                    <div>
+                                                                        <input name="sup_propia" step="0"
+                                                                            type="text"
+                                                                            class="form-control form-control" value="{{i.sup_propia}}"
+                                                                            placeholder="m2" min="1" required>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-4">
+                                                            <div class="mt-3">
+                                                                <label for="sup_patio">
+                                                                    <h6>Sup. Patio</h6>
+                                                                </label>
+                                                            </div>
+
+                                                            <div class="row d-flex justify-content-center mt-1">
+                                                                <div class="col">
+                                                                    <div>
+                                                                        <input name="sup_patio" 
+                                                                            type="text"
+                                                                            class="form-control form-control" value="{{i.sup_patio}}"
+                                                                            placeholder="m2" min="1" required>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-4">
+                                                            <div class="mt-3">
+                                                                <label for="sup_balcon">
+                                                                    <h6>Sup. Balcon</h6>
+                                                                </label>
+                                                            </div>
+
+                                                            <div class="row d-flex justify-content-center mt-1">
+                                                                <div class="col">
+                                                                    <div>
+                                                                        <input name="sup_balcon" step="0"
+                                                                            type="text"
+                                                                            class="form-control form-control" value="{{i.sup_balcon}}"
+                                                                            placeholder="m2" min="1" required>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-4">
+                                                            <div class="mt-3">
+                                                                <label for="sup_comun">
+                                                                    <h6>Sup. Comun</h6>
+                                                                </label>
+                                                            </div>
+
+                                                            <div class="row d-flex justify-content-center mt-1">
+                                                                <div class="col">
+                                                                    <div>
+                                                                        <input name="sup_comun" step="0"
+                                                                            type="text"
+                                                                            class="form-control form-control" value="{{i.sup_comun}}"
+                                                                            placeholder="m2" min="1" required>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-4">
+                                                            <div class="mt-3">
+                                                                <label for="sup_equivalente">
+                                                                    <h6>Sup. Equivalente</h6>
+                                                                </label>
+                                                            </div>
+
+                                                            <div class="row d-flex justify-content-center mt-1">
+                                                                <div class="col">
+                                                                    <div>
+                                                                        <input name="sup_equivalente"
+                                                                            type="text"
+                                                                            class="form-control form-control" value="{{i.sup_equiv}}"
+                                                                            placeholder="m2" min="1" required>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <button type="submit" name="editar" value="{{i.id}}"
+                                                    class="btn btn-info mt-3">Editar</button>
+                                                </div>
+                                            </form>
+
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-dismiss="modal">Cerrar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Modal borrar -->
+                            <div class="modal fade" id="ModalBorrar{{i.id}}" tabindex="-1" role="dialog"
+                                aria-labelledby="ModalBorrar{{i.id}}Title" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header" style="background-color: #2a3e52;">
+                                            <h5 class="modal-title text-light" id="exampleModalLongTitle">
+                                                Eliminar unidad</h5>
+                                            <button type="button" class="close text-light" data-dismiss="modal"
+                                                aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form method="POST" style="margin: 15px;">
+                                                {% csrf_token %}
+                                                
+                                                <p>¿Estas seguro que deseas borrar esta unidad?</p>
+                                                <button type="submit" name="borrar" value="{{i.id}}"
+                                                class="btn btn-danger mt-2">Borrar</button>
+                                            </form>
+
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-dismiss="modal">Cerrar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                   
+                        </tr>
+                      
+                        {% endfor %}
+
+                        {% endif %}
+                               
+            
+                       
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th></th>
+                                    <th>Unidad</th>
+                                    <th>Nomen.</th>
+                                    <th>Tipo</th>
+                                    <th>Tipologia</th>
+                                    <th>{{sup_totales.total_sup_propia|floatformat:2}} m2</th>
+                                    <th>{{sup_totales.total_sup_patio|floatformat:2}} m2</th>
+                                    <th>{{sup_totales.total_sup_balcon|floatformat:2}} m2</th>
+                                    <th>{{sup_totales.total_sup_comun|floatformat:2}} m2</th>
+                                    <th>{{sup_totales.total_sup_total|floatformat:2}} m2</th>
+                                    <th>{{sup_totales.total_sup_equiv|floatformat:2}} m2</th>
+                                    <th></th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                        
+
+                    <div class="d-flex justify-content-center">
+                        <button type="submit" name="borrado-masivo" class="btn btn-danger btn-circle fa fa-trash mb-2"></button>
+                    </div>
+                        
+
+                            
+                </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<a id="add" href="{% url  'Carga unidades proyecto' proyecto.id  %}"><i class="fa fa-2x fa-plus-circle mr-2"></i></a>
+
+
+<style>
+    #add{
+        position: fixed;
+        bottom: 60px;
+        right: 20px;
+    }
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script>
+
+    $(document).ready(function () {
+        $('#example').DataTable({
+            "language": {
+                "lengthMenu": "Mostar _MENU_ documentos",
+                "zeroRecords": "Sin coinsidencias",
+                "info": "Pagina _PAGE_ de _PAGES_",
+                "infoEmpty": "Sin registros disponibles",
+                "infoFiltered": "(filtrado de _MAX_ registros totales)",
+                "search": "Buscar"
+            },
+            "paging": false,
+            "info": false,
+            "ordering": false,
+            "searching": false,
+            dom: 'Bfrtip',
+            buttons: [
+                {
+                    extend: 'excelHtml5',
+                    title: 'Unidades de proyecto',
+                    className: "btn btn-info",
+                    footer: true,
+
+                    init: function(api, node, config) {
+                        $(node).removeClass('dt-button buttons-excel buttons-html5')
+                        }
+                },
+                {
+                    extend: 'pdf',
+                    text: 'PDF',
+                    title: 'Unidades de proyecto',
+                    className: "btn btn-primary",
+                    footer: true,
+                    
+                    init: function(api, node, config) {
+                        $(node).removeClass('dt-button buttons-excel buttons-html5')
+                        },
+                    exportOptions: {
+                            modifier: {
+                            page: 'current'
+                        }
+                    }
+        }
+            ]
+
+        });
+    });
+</script>
+
+<script>
+    $("#checkAll").change(function () {
+        $("input:checkbox").prop('checked', $(this).prop("checked"));
+    });
+</script>
+
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+

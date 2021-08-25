@@ -98,24 +98,48 @@
 
     <div class="row">
         <div class="col-lg-3 col-xlg-4">
+
             <div class="card">
                 <div class="card-body text-center">
+    
                     <div>
                         <h6>Gestor de unidades</h6>
                     </div>
+                    
 
-                    <div>
-                        <img src="{% static 'img/InformeArea.png' %}" alt=""
-                            style="max-width:100px; height:auto; margin: 5px;">
-                    </div>
-
-                    {% if request.user|has_group:"TECNICA NIVEL 1" %}
-                    <a href="{% url 'Panel unidades proyecto' %}"><button class="btn btn-info"> Ingresar</button></a>
+                    {% if request.user|has_group:"TECNICA NIVEL 3" %}
+    
+                    <form method="POST" style="margin-top: 30px;">
+    
+                        {% csrf_token %}
+    
+                        
+                        <select name="proyecto" class="custom-select">
+    
+                            {% for i in proyectos %}
+    
+                                 <option value="{{i.id}}">{{i}}</option>
+    
+                            {% endfor %}
+                        </select>
+    
+                        <div class="my-4" >
+                            <button class="btn btn-dark" type="submit">
+                                Buscar</button>
+                        </div>
+    
+                    </form>
+    
                     {% else %}
-
-                    <a href="#"><button class="btn btn-secondary">
-                            Sin permisos</button></a>
+    
+                    <div>
+                        <img src="{% static 'img/animation_500_kmuydpt0.gif' %}" alt="" style="max-width:100px; height:auto; margin: 5px;">
+                    </div>
+    
+                    <a href="#"><button class="btn btn-info">
+                        Sin permisos</button></a>
                     {% endif %}
+    
                 </div>
             </div>
         </div>
