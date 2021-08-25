@@ -3065,10 +3065,6 @@ def arqueo_diario(request, id_arqueo):
                 if data_frame.loc[numero, n] != 0:
                     list_bank_proj_info.append((n, data_frame.loc[numero, n]))
             
-            
-        
-    
-
         consolidado = data_frame.loc[numero, 'EFECTIVO'] + data_frame.loc[numero, 'CHEQUES'] + data_frame.loc[numero, 'MONEDA EXTRANJERA'] + banco
 
         consolidados = consolidados + consolidado

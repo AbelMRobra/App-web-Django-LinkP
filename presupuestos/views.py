@@ -879,7 +879,7 @@ def creditos(request, id_proyecto):
     context['valor_saldo'] = sum(np.array([ data[4] for data in datos[0] if data[4] > 0]))
     context['valor_credito'] = sum(np.array([ data[4] for data in datos[0] if data[4] < 0])) + sum(np.array([ data[4] for data in datos[1] if data[4] < 0])) 
 
-    #Guardamos el valor del credito en la base de presupuestos
+    # Guardamos el valor del credito en la base de presupuestos
 
     try:
 
@@ -890,8 +890,6 @@ def creditos(request, id_proyecto):
     except:
         pass
 
-
- 
     return render(request, 'presupuestos/creditos.html', context)
 
 def fdr(request, id_proyecto):

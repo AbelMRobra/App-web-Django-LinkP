@@ -1065,7 +1065,6 @@ def comparativas(request, estado, creador):
         consulta = con_comparativas.filter(estado = "NO AUTORIZADA")
         mensaje = "Rechazadas: " + str(len(consulta)) + " Privadas: ({})".format(len(consulta.filter(publica = "NO")))
 
- 
     if estado == "4":
 
         consulta = con_comparativas.filter(estado = "AUTORIZADA")
