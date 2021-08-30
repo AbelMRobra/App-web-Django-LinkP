@@ -40,8 +40,11 @@ def registro_contable_cajas(request):
             if request.POST['actualizar_cajas'] == "1":
 
                 usuario = datosusuario.objects.get(identificacion = request.user.username)
-                cajasDerivadas(usuario, "RETIROS PERSONALES", "PERSONAL")
-                cajasDerivadas(usuario, "DEPOSITO BANCO", "CAJA BANCO")
+                consulta_principal = RegistroContable.objects.filter(creador = usuario).values_list("usuario", flat = True)
+                for consulta in consulta_principal:
+                    usuario = datosusuario.objects.get(id = consulta)
+                    cajasDerivadas(usuario, "RETIROS PERSONALES", "PERSONAL")
+                    cajasDerivadas(usuario, "DEPOSITO BANCO", "CAJA BANCO")
 
                 context["mensaje"] = "ok"
 
@@ -142,14 +145,10 @@ def registro_contable_cajas(request):
                     for caja in cajas_eliminar:
                         caja.delete()
 
-
-
     user = datosusuario.objects.get(identificacion = request.user.username)
 
     context["total_cajas"] = cajasActivas(user)
     context["cajas_administras"] = cajasAdministras(user)
-
-  
     
     context["user"] = user
 
