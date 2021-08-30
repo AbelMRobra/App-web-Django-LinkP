@@ -1840,7 +1840,7 @@ def InformeArea(request):
                 total_fdr_300 = total_fdr_300 + datos_presup.fdr
                 total_ant_300  =  total_ant_300 + datos_presup.anticipos
                 imprevisto_300 = imprevisto_300 + datos_presup.imprevisto
-                saldo_total_300 = saldo_total_300 + valor_proyecto_materiales_300 + valor_proyecto_mo_300 + total_creditos_300 + total_fdr_300 + total_ant_300 + imprevisto_300
+                saldo_total_300 = saldo_total_300 + valor_proyecto_materiales_300 + valor_proyecto_mo_300 + total_creditos_300 + total_fdr_300 - total_ant_300 + imprevisto_300
 
             except:
                  basura = 1
@@ -1859,7 +1859,7 @@ def InformeArea(request):
                 total_ant = datos_presup.anticipos
                 imprevisto = datos_presup.imprevisto
 
-                saldo_total = valor_proyecto_materiales + valor_proyecto_mo + total_creditos + total_fdr + total_ant + imprevisto
+                saldo_total = valor_proyecto_materiales + valor_proyecto_mo + total_creditos + total_fdr - total_ant + imprevisto
 
                 proy_presup.append((proyecto, valor_proyecto, vr_M2, valor_proyecto_materiales, valor_proyecto_mo, total_creditos, saldo_total, total_fdr, total_ant, imprevisto))
             except:

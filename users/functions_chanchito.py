@@ -67,7 +67,7 @@ def calcularResumenIngresos(usuario):
 
 def cajasDerivadas(usuario, palabra, caja):
 
-    consulta_principal = RegistroContable.objects.filter(usuario = usuario)
+    consulta_principal = RegistroContable.objects.filter(creador = usuario)
 
     # Primero creamos los registros de retiros personales
     
