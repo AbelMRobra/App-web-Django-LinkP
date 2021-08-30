@@ -154,7 +154,7 @@ def editarcomparativas(request, id_comp):
             except:
                 pass
         
-        return redirect('Comparativas', estado = 0, creador = 0)
+        return redirect('Comparativas', estado = 0, creador = 0, autoriza = 0)
 
         
     return render(request, 'comparativas_editar.html', {'contratos':contratos, 'proveedores':proveedores, 'comparativa':comparativa})
