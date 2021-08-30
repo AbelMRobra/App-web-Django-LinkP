@@ -215,6 +215,8 @@
                                             <th> Categoria </th>
                                             <th> Nota </th>
                                             <th> Importe </th>
+
+                                            <th> Importe USD</th>
                                         </tr>
                                     </thead>
         
@@ -367,6 +369,12 @@
                                             <td style="min-width: 100px;"><b>${{i.importe|floatformat:0|intcomma}}</b></td>
                                             {% else %}
                                             <td style="min-width: 100px;"><b>-${{i.importe|floatformat:0|intcomma}}</b></td>
+                                            {% endif %}
+
+                                            {% if i.estado == "INGRESOS" %}
+                                            <td style="min-width: 100px;"><b>U$D{{i.importe_usd|floatformat:0|intcomma}}</b></td>
+                                            {% else %}
+                                            <td style="min-width: 100px;"><b>-U$D{{i.importe_usd|floatformat:0|intcomma}}</b></td>
                                             {% endif %}
                                             
                                         </tr>
