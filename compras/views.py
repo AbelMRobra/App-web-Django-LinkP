@@ -107,10 +107,10 @@ def cargarocautorizar(request):
             try:
                 b.contrato = Contratos.objects.get(id=int(request.POST['contrato']))
                 b.save()
-                return redirect('Comparativas', estado = 0, creador = 0)
+                return redirect('Comparativas', estado = 0, creador = 0, autoriza = 0)
             except:
 
-                return redirect('Comparativas', estado = 0, creador = 0)
+                return redirect('Comparativas', estado = 0, creador = 0, autoriza = 0)
 
         
     return render(request, 'cargarocautorizar.html', {'mensaje':mensaje, 'proveedores':proveedores, 'contratos':contratos})
