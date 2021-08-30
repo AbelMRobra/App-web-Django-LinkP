@@ -1,0 +1,425 @@
+{% extends "users/inicio2.html" %}
+{% load static %}
+{% load humanize %}
+{% load apptags_extras %}
+{% block content %}
+
+<div class="container-fluid">
+    <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+            <h3 class="text-themecolor">Caja completa</h3>
+        </div>
+
+        <div class="col-md-7 align-self-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'Registro Contable Home' %}">Chanchito</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'Registro Contable Cajas' %}">Cajas</a></li>
+                <li class="breadcrumb-item">Caja</li>
+            </ol>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title"><span class="lstick m-r-20"></span>{{caja}}</h4>
+                        <h6 class="card-subtitle">Los gastos registrados</h6>
+                        <div class="col-12 col-md-12 col-lg-12 justify-content-center">
+                            <div>
+                                
+                                <a href="#" data-toggle="modal" data-target="#ModalCuenta1" class="btn btn-info">Agregar</a>
+    
+                                <div id="ModalCuenta1" class="modal fade" tabindex="-1" role="dialog"
+                                        aria-labelledby="ModalCuenta1" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header" style="background: rgb(36,160,237);
+                                        background: linear-gradient(315deg, rgba(36,160,237,1) 0%, rgba(56,56,130,1) 22%, rgba(0,212,255,1) 100%);">
+                                                    <h5 class="modal-title  text-light" id="exampleModalLongTitle">Cargar un elemento</h5>
+                                                    <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="tab-content">
+                                                        
+                                                        
+                                                        <form method="POST"
+                                                            enctype="multipart/form-data" id="upload-image-form">
+    
+                                                            {% csrf_token %}
+                                                            <div class="row">
+                                                                <div class="col-6">
+    
+                                                                    <h6>Fecha</h6>
+            
+                                                                    <div class="input-group mb-3">
+            
+                                                                        <input name="fecha" type="date"
+                                                                            class="form-control form-control" style="width: 300px;">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-6">
+                                                                    <h6>Cuenta</h6>
+            
+                                                                    <div class="input-group mb-3">
+            
+                                                                        <input name="cuenta" type="search" class="form-control form-control"
+                                                                        placeholder="Efectivo/Tarjeta de credito" list="provee">
+            
+                                                                    </div>
+    
+                                                                </div>
+                                                            </div>
+    
+                                                            <div class="row">
+                                                                <div class="col-6">
+    
+                                                                    <h6>Categoría</h6>
+            
+                                                                    <div class="input-group mb-3">
+            
+                                                                        <input name="categoria" type="search" class="form-control form-control"
+                                                                        placeholder="Sueldo Mensual/Plus" list="list_cat_ing">
+            
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-6">
+                                                                    <h6>Importe</h6>
+            
+                                                                    <div class="input-group mb-3">
+            
+                                                                        <input name="importe" type="number"
+                                                                            class="form-control form-control border border-success"
+                                                                            style="width: 300px;">
+                                                                    </div>
+    
+                                                                </div>
+                                                            </div>
+    
+    
+                                                            <h6>Nota</h6>
+    
+                                                            <div class="input-group mb-3">
+    
+                                                                <input name="nota" type="text"
+                                                                    class="form-control form-control" style="width: 300px;">
+                                                            </div>
+    
+                                                            <div>
+                                                                <label for="adjunto">
+                                                                    <h6>Adjunto</h6>
+                                                                </label>
+                                                            </div>
+                                                            <div class="row d-flex justify-content-center my-3">
+                                                                <div class="col col-md-8 col-lg-8">
+                                                                    
+                                                                    <input type="file" class="form-control-file" name="adjunto"
+                                                                    aria-describedby="fileHelp">
+                                                                    
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                
+                                                                <h6>Tipo</h6>
+                                                                <div class="col-6 text-end text-success">
+                                                                    <input type="radio" name="tipo" id="ingresos" value="INGRESOS" checked>
+                                                                    <label for="ingresos">INGRESOS</label>
+                                                                </div>
+                                                                <div class="col-6 text-danger">
+                                                                    <input type="radio" name="tipo" id="gastos" value="GASTOS">
+                                                                    <label for="gastos">GASTOS</label>
+                                                                </div>
+                                                            </div>
+    
+                                                            <button type="submit" class="btn" ><i
+                                                                class="fa fa-arrow-up  text-info"><span class="text-info ml-2"
+                                                                    style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif"><b>Cargar</b></span></i></button>
+    
+    
+                                                        </form>
+    
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-info"
+                                                        data-dismiss="modal">Cerrar</button>
+    
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+    
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-info dropdown-toggle ml-2"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onclick="myFunction()">
+                                        Tipo
+                                    </button>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja user_caja 0 mes year %}">General</a>
+                                        <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja user_caja 2 mes year %}">Gastos</a>
+                                        <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja user_caja 1 mes year %}">Ingresos</a>
+    
+                
+                                    </div>
+                                </div>
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-dark dropdown-toggle ml-2"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onclick="myFunction()">
+                                        Mes
+                                    </button>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja user_caja estado 0 year %}">Todos</a>
+                                       <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja user_caja estado 1 year %}">Enero</a>
+                                       <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja user_caja estado 2 year %}">Febrero</a>
+                                       <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja user_caja estado 3 year %}">Marzo</a>
+                                       <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja user_caja estado 4 year %}">Abril</a>
+                                       <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja user_caja estado 5 year %}">Mayo</a>
+                                       <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja user_caja estado 6 year %}">Junio</a>
+                                       <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja user_caja estado 7 year %}">Julio</a>
+                                       <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja user_caja estado 8 year %}">Agosto</a>
+                                       <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja user_caja estado 9 year %}">Septiembre</a>
+                                       <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja user_caja estado 10 year %}">Octubre</a>
+                                       <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja user_caja estado 11 year %}">Noviembre</a>
+                                        <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja user_caja estado 12 year %}">Diciembre</a>
+           
+                                    </div>
+             
+                                </div>
+                                <div class="btn-group">                                
+                                    <button type="button" class="btn btn-dark dropdown-toggle ml-2"
+                                          data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onclick="myFunction()">
+                                           Año
+                                       </button>
+                                       <div class="dropdown-menu">
+                                         {% for i in list_year %}
+                                           <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja user_caja estado mes i %}">{{i}}</a>
+                                            {% endfor %}           
+                                        </div>
+                    
+                                        </div>
+    
+     
+                                </div>
+                            </div>
+    
+                            <div class="table-responsive">
+                                <table id="example1" class="table table-bordered " style="width:100%; font-size: 14px;">
+                                    <thead style="font-size: 12px;">
+                                        <tr>
+                                            <th> Dia </th>
+                                            <th> Caja </th>
+                                            <th> Cargo </th>
+                                            <th> Cuenta </th>
+                                            <th> Categoria </th>
+                                            <th> Nota </th>
+                                            <th> Importe </th>
+                                            <th>USD</th>
+                                        </tr>
+                                    </thead>
+        
+                                    <tbody style="font-size: 12px;">
+                                        {% for i in data %}
+                                        <tr>
+                                            <td>{{i.fecha|date:"Y/m/d"}}</td>
+                                            <td style="min-width: 150px;"><a href="#" data-toggle="modal"
+                                                data-target="#Modal{{i.id}}">{{i.caja}}</a></td>
+                                            <td style="min-width: 100px;">{{i.creador}}</td>
+        
+                                            <!-- Modal  -->
+                                            <div id="Modal{{i.id}}" class="modal fade" tabindex="-1" role="dialog"
+                                            aria-labelledby="Modal{{i.id}}" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header"
+                                                        style="background: rgb(36,160,237);
+                                                            background: linear-gradient(315deg, rgba(36,160,237,1) 0%, rgba(56,56,130,1) 22%, rgba(0,212,255,1) 100%);">
+                                                        <h5 class="modal-title  text-light"
+                                                            id="exampleModalLongTitle">Editar</h5>
+                                                        <button type="button" class="close text-light"
+                                                            data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+    
+                                                        <form method="POST" style="margin: 15px;"
+                                                            enctype="multipart/form-data" id="upload-image-form">
+    
+                                                            {% csrf_token %}
+                                                            <div class="row">
+                                                                <div class="col-6">
+                                                                    <h6>Fecha</h6>
+                                                                    <div class="input-group mb-3">
+                                                                        
+                                                                        <input name="fecha" type="date"
+                                                                        class="form-control form-control"
+                                                                        style="width: 300px;" value="{{i.fecha|date:'Y-m-d'}}">
+                                                                    </div>
+                                                                </div>
+                                                                
+                                                                <div class="col-6">
+                                                                    <h6>Cargó</h6>
+                                                                    <div class="input-group mb-3">
+                                                                        
+                                                                        <input name="cargo" type="search"
+                                                                        class="form-control form-control"
+                                                                        value="{{i.creador}}">
+                                                                        
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+    
+                                                            <div class="row">
+                                                                <div class="col-6">
+    
+                                                                    <h6>Caja</h6>
+    
+                                                                    <div class="input-group mb-3">
+    
+                                                                        <input name="caja" type="text"
+                                                                            class="form-control form-control"
+                                                                            value="{{i.caja}}">
+    
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-6">
+                                                                    <h6>Cuenta</h6>
+                                                                    <div class="input-group mb-3">
+    
+                                                                        <input name="cuenta" type="search"
+                                                                            class="form-control form-control"
+                                                                            value="{{i.cuenta}}">
+    
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-6">
+                                                                    <h6>Categoria</h6>
+    
+                                                                    <div class="input-group mb-3">
+    
+                                                                        <input name="categoria" type="search"
+                                                                            class="form-control form-control"
+                                                                            value="{{i.categoria}}">
+    
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-6">
+                                                                    <h6>Importe</h6>
+    
+                                                                    <div class="input-group mb-3">
+    
+                                                                        <input name="importe" type="number"
+                                                                            class="form-control form-control border border-success"
+                                                                            style="width: 300px;"
+                                                                            value="{{i.importe}}">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                          
+                                                           
+                                                            
+                                                            <h6>Nota</h6>
+    
+                                                            <div class="input-group mb-3">
+    
+                                                                <input name="nota" type="text"
+                                                                    class="form-control form-control"
+                                                                    style="width: 300px;"
+                                                                    value="{{i.nota}}">
+                                                            </div>
+                                                            <div>
+                                                                <label for="adjunto">
+                                                                    <h6>Adjunto</h6>
+                                                                </label>
+                                                            </div>
+                                                            <div class="row d-flex justify-content-center my-3">
+                                                                <div class="col col-md-8 col-lg-8">
+                    
+                                                                    <input type="file" class="form-control-file" name="adjunto"
+                                                                        aria-describedby="fileHelp">
+                    
+                                                                </div>
+                                                            </div>
+    
+                                                            <button type="submit" name="editar" value="{{i.id}}" class="btn"><i class="fa fa-arrow-up text-info"><span class="text-info ml-2" style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif"><b>Editar</b></span></i></button>
+    
+                                                            <button type="submit" name="borrar" value="{{i.id}}" class="btn"><i class="fa fa-trash text-danger"><span class="text-danger ml-2" style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif"><b>borrar</b></span></i></button>
+    
+                                                        </form>
+    
+    
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-info"
+                                                            data-dismiss="modal">Cerrar</button>
+    
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                            <td style="min-width: 100px;">{{i.cuenta}}</td>
+                                            <td style="min-width: 100px;">{{i.categoria}}</td>
+                                            <td style="min-width: 250px;">{{i.nota}}</td>
+                                            {% if i.estado == "INGRESOS" %}
+                                            <td style="min-width: 100px;"><b>${{i.importe|floatformat:0|intcomma}}</b></td>
+                                            {% else %}
+                                            <td style="min-width: 100px;"><b>-${{i.importe|floatformat:0|intcomma}}</b></td>
+                                            {% endif %}
+
+                                            {% if i.estado == "INGRESOS" %}
+                                            <td style="min-width: 100px;"><b>U$D{{i.importe_usd|floatformat:0|intcomma}}</b></td>
+                                            {% else %}
+                                            <td style="min-width: 100px;"><b>-U$D{{i.importe_usd|floatformat:0|intcomma}}</b></td>
+                                            {% endif %}
+                                            
+                                        </tr>
+        
+                                        {% endfor %}
+        
+                                    </tbody>
+        
+                                </table>
+                            </div>
+                        </div>
+                        
+                </div>
+            </div>
+        </div>
+</div>
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<script>
+
+    $(document).ready(function () {
+        $('#example1').DataTable({
+            "language": {
+            "lengthMenu": "Mostar _MENU_ documentos",
+            "zeroRecords": "No se encontro nada - perdon ",
+            "info": "Pagina _PAGE_ de _PAGES_",
+            "infoEmpty": "Sin registros disponibles",
+            "infoFiltered": "(filtrado de _MAX_ registros totales)",
+            "search": "Buscar"
+        },
+            "order": [[0, "desc"]],
+        });
+    });
+</script>
+
+<style>
+    #img-tarjeta:hover{
+        transform: scale(1.07);
+        box-shadow: 2px 4px 4px 1px rgba(0, 0, 0, 0.1)
+    }
+
+</style>
+
+
+
+{% endblock %}
