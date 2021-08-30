@@ -238,7 +238,7 @@ def registro_contable_caja(request, caja, user_caja, estado, mes, year):
     context["year"] = year
     context["list_year"] = list_year
     
-    return render(request, 'chanchito/registro_contable_caja.html', context)
+    return render(request, 'chanchito/registro_contable_caja_detalle.html', context)
 
 def registro_contable(request, date_i):
 
