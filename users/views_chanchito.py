@@ -61,64 +61,70 @@ def registro_contable_cajas(request):
                         if c not in registros_nuevo.columns:
                             context["mensaje"] = "Columna {} no detectada, revise".format(c)
 
+
                     # Bucle para cargar registros
 
-                    con_dicc = DicRegistroContable.objects.all()
+                    try:
 
-                    for row in range(registros_nuevo.shape[0]):
-                        usuario = datosusuario.objects.get(identificacion = str(registros_nuevo.loc[numero, "Usuario"]))
-                        if registros_nuevo.loc[numero, "Saldo (CTE)"] >= 0:
-                            estado = "INGRESOS"
-                            importe = abs(registros_nuevo.loc[numero, "Saldo (CTE)"])
-                        else:
-                            estado = "GASTOS"
-                            importe = abs(registros_nuevo.loc[numero, "Saldo (CTE)"])
+                        con_dicc = DicRegistroContable.objects.all()
 
-                        importe_usd = abs(registros_nuevo.loc[numero, "SALDO USD"])
-                        
-                        if len(con_dicc.filter(entrada = registros_nuevo.loc[numero, "Auxiliar"])) > 0:
-                            caja = con_dicc.filter(entrada = registros_nuevo.loc[numero, "Auxiliar"])[0].salida
-                        else:
-                            caja = registros_nuevo.loc[numero, "Auxiliar"]
+                        for row in range(registros_nuevo.shape[0]):
+                            usuario = datosusuario.objects.get(identificacion = str(registros_nuevo.loc[numero, "Usuario"]))
+                            if registros_nuevo.loc[numero, "Saldo (CTE)"] >= 0:
+                                estado = "INGRESOS"
+                                importe = abs(registros_nuevo.loc[numero, "Saldo (CTE)"])
+                            else:
+                                estado = "GASTOS"
+                                importe = abs(registros_nuevo.loc[numero, "Saldo (CTE)"])
 
-                        if len(con_dicc.filter(entrada = registros_nuevo.loc[numero, "Desc. cuenta"])) > 0:
-                            cuenta = con_dicc.filter(entrada = registros_nuevo.loc[numero, "Desc. cuenta"])[0].salida
-                        else:
-                            cuenta = registros_nuevo.loc[numero, "Desc. cuenta"]
+                            importe_usd = abs(registros_nuevo.loc[numero, "SALDO USD"])
+                            
+                            if len(con_dicc.filter(entrada = registros_nuevo.loc[numero, "Auxiliar"])) > 0:
+                                caja = con_dicc.filter(entrada = registros_nuevo.loc[numero, "Auxiliar"])[0].salida
+                            else:
+                                caja = registros_nuevo.loc[numero, "Auxiliar"]
 
-                        if len(con_dicc.filter(entrada = registros_nuevo.loc[numero, "Desc. auxiliar"])) > 0:
-                            categoria = con_dicc.filter(entrada = registros_nuevo.loc[numero, "Desc. auxiliar"])[0].salida
-                        else:
-                            categoria = registros_nuevo.loc[numero, "Desc. auxiliar"]
-                        
-                        if len(con_dicc.filter(entrada = registros_nuevo.loc[numero, "Subauxiliar"])) > 0:
-                            nota = con_dicc.filter(entrada = registros_nuevo.loc[numero, "Subauxiliar"])[0].salida
-                        else:
-                            nota = registros_nuevo.loc[numero, "Subauxiliar"]
+                            if len(con_dicc.filter(entrada = registros_nuevo.loc[numero, "Desc. cuenta"])) > 0:
+                                cuenta = con_dicc.filter(entrada = registros_nuevo.loc[numero, "Desc. cuenta"])[0].salida
+                            else:
+                                cuenta = registros_nuevo.loc[numero, "Desc. cuenta"]
 
-                        try:
-                            nuevo_registro = RegistroContable(
+                            if len(con_dicc.filter(entrada = registros_nuevo.loc[numero, "Desc. auxiliar"])) > 0:
+                                categoria = con_dicc.filter(entrada = registros_nuevo.loc[numero, "Desc. auxiliar"])[0].salida
+                            else:
+                                categoria = registros_nuevo.loc[numero, "Desc. auxiliar"]
+                            
+                            if len(con_dicc.filter(entrada = registros_nuevo.loc[numero, "Subauxiliar"])) > 0:
+                                nota = con_dicc.filter(entrada = registros_nuevo.loc[numero, "Subauxiliar"])[0].salida
+                            else:
+                                nota = registros_nuevo.loc[numero, "Subauxiliar"]
 
-                                usuario = usuario,
-                                creador = registros_nuevo.loc[numero, "Creador"],
-                                fecha = registros_nuevo.loc[numero, "Fecha de emisión"],
-                                estado = estado,
-                                caja = caja,
-                                cuenta = cuenta,
-                                categoria = categoria,
-                                importe = importe,
-                                importe_usd = importe_usd,
-                                nota = nota,
+                            try:
+                                nuevo_registro = RegistroContable(
 
-                            )
+                                    usuario = usuario,
+                                    creador = registros_nuevo.loc[numero, "Creador"],
+                                    fecha = registros_nuevo.loc[numero, "Fecha de emisión"],
+                                    estado = estado,
+                                    caja = caja,
+                                    cuenta = cuenta,
+                                    categoria = categoria,
+                                    importe = importe,
+                                    importe_usd = importe_usd,
+                                    nota = nota,
 
-                            nuevo_registro.save()
-                            numero += 1
-                        except:
-                            mensaje = "Error en la fila {}".format(numero)
-                            numero += 1
+                                )
 
-                    context["mensaje"] = "ok"
+                                nuevo_registro.save()
+                                numero += 1
+                            except:
+                                mensaje = "Error en la fila {}".format(numero)
+                                numero += 1
+
+                        context["mensaje"] = "ok"
+
+                    except:
+                        pass
 
             except:
 
