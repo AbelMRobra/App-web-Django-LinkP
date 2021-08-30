@@ -36,137 +36,6 @@
     </div>
   </div>
 
-  <!-- guia1 -->
-  <div class="alerta-guia" id="alerta-guia-1">
-    <div>
-      <button class="btn text-danger" onclick="finalizar('sidebar-guia','alerta-guia-1')"><i
-          class="fa fa-times-circle"></i></button>
-    </div>
-    <h4>Panel principal de accesos</h4>
-    <p>En este panel podrás encontrar los accesos directos a las Apps de cada área.</p>
-    <p><b>Necesitas permisos especiales para acceder a ellas</b>, si crees que hubo un error y deberías poder acceder a
-      una de ellas, no dudes en comunicarte con alguien del área de IT para poder otorgarte los permisos necesarios.</p>
-    <div class="guia-indice">
-      <span>Pasos 1 / 5</span>
-      <button class="btn btn-info"
-        onclick="guia1('alerta-guia-1', 'alerta-guia-2','sidebar-guia','perfilusuario-guia')">Seguir</button>
-    </div>
-  </div>
-
-  <!-- guia2 -->
-
-  <div class="alerta-guia" id="alerta-guia-2">
-    <div>
-      <button class="btn text-danger" onclick="finalizar('perfilusuario-guia','alerta-guia-2')"><i
-          class="fa fa-times-circle"></i></button>
-    </div>
-    <h4>Panel perfil de usuario</h4>
-    <p>En esta sección encontrarás tu información personal y una sección donde utilizar link coins.</p>
-    <p><b> Link coins</b> son monedas otorgadas por la empresa para que sus empleados puedan reconocer el trabajo y buen
-      desempeño de un compañero.
-      ¡Estas monedas tienen un valor económico y pueden ser canjeadas por increíbles premios!</p>
-    <img src="{% static 'img/monedalink2.png' %}" alt="linkcoins">
-    <span>! No olvides reconocer a tus compañeros !</span>
-    <div class="guia-indice">
-      <span>Pasos 2 / 5</span>
-      <button class="btn btn-info"
-        onclick="guia1('alerta-guia-2', 'alerta-guia-3','perfilusuario-guia','panelnovedades-guia' )">Seguir</button>
-    </div>
-  </div>
-  <!-- guia3 -->
-
-  <div class="alerta-guia" id="alerta-guia-3">
-    <div>
-      <button class="btn text-danger" onclick="finalizar('panelnovedades-guia','alerta-guia-3')"><i
-          class="fa fa-times-circle"></i></button>
-    </div>
-    <h4>Panel de novedades</h4>
-    <p>En esta sección encontrarás las últimas novedades de la empresa, así como también los cumpleaños de tus
-      compañeros.</p>
-
-    <div class="guia-indice">
-      <span>Pasos 3 / 5</span>
-      <button class="btn btn-info"
-        onclick="guia1('alerta-guia-3', 'alerta-guia-4','panelnovedades-guia', 'sugerencias-guia')">Seguir</button>
-    </div>
-  </div>
-  <!-- guia4 -->
-  <div class="alerta-guia" id="alerta-guia-4">
-    <div>
-      <button class="btn text-danger" onclick="finalizar('sugerencias-guia','alerta-guia-4')"><i
-          class="fa fa-times-circle"></i></button>
-    </div>
-    <h4>Panel de sugerencias</h4>
-    <p>Dentro de esta sección podrás encontrar un buzón de sugerencias o recomendaciones para que juntos podamos seguir
-      mejorando linkp.</p>
-
-    <div class="guia-indice">
-      <span>Pasos 4 / 5</span>
-      <button class="btn btn-info"
-        onclick="guia1('alerta-guia-4', 'alerta-guia-5','sugerencias-guia', 'chanchito-guia')">Seguir</button>
-    </div>
-  </div>
-
-  <!-- guia5 -->
-  <div class="alerta-guia" id="alerta-guia-5">
-    <div>
-      <button class="btn text-danger" onclick="finalizar('chanchito-guia','alerta-guia-5')"><i
-          class="fa fa-times-circle"></i></button>
-    </div>
-    <h4>Chanchito!</h4>
-    <p>Esta herramienta está pensada para que puedas manejar tus finanzas y llevar un registro sobre ellas. Los datos
-      que registres aquí son completamente privados y únicamente podrán verlos <b>tú</b> y la persona que <b>tú
-        autorices.</b></p>
-
-    <div class="guia-indice">
-      <span>Pasos 5 / 5</span>
-      <button class="btn btn-success" onclick="finalizar('chanchito-guia','alerta-guia-5')" data-toggle="modal"
-        data-target="#ModalGuiaFinal">Finalizar</button>
-    </div>
-  </div>
-  <!-- modal guia  -->
-
-  <div id="ModalGuiaFinal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="ModalGuiaFinal"
-    aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-      <div class="modal-content">
-        <div class="modal-header" style="background-color: #2a3e52;">
-          <h5 class="modal-title  text-light" id="exampleModalLongTitle">Final de la guia</h5>
-          <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <div class="tab-content">
-            <h4>Llegamos al final de la guía</h4>
-            <p>¡Desde LinkP te deseamos la mejor de las suertes y esperamos que nuestra herramienta te ayude a facilitar
-              tu trabajo!</p>
-          </div>
-        </div>
-
-        {% if datos_vista_usuario.usuario.tutorial == 'NO' %}
-
-        <form method="POST">
-          {% csrf_token %}
-          <div class="modal-footer">
-            <button type="submit" name="tutorial" value="1" class="btn btn-info">Cerrar</button>
-          </div>
-
-        </form>
-
-        {% else %}
-
-        <div class="modal-footer">
-          <button type="button" class="btn btn-info" data-dismiss="modal">Cerrar</button>
-
-        </div>
-
-        {% endif %}
-        
-      </div>
-    </div>
-  </div>
-
   <div id="main-wrapper">
     <header class="topbar">
       <nav class="navbar top-navbar navbar-expand-md navbar-light">
@@ -193,9 +62,6 @@
 
           </ul>
 
-          {% block app_tools %}
-
-          {% endblock %}
 
           {% if datos_mensajeria %}
           <ul class="navbar-nav my-lg-0" style="margin-left: 5px;">
@@ -555,7 +421,9 @@
 
     {% block content %}
 
-    <div class="container-fluid">
+    {% include '../includes/home/guia_usuario.html' %}
+
+    <div class="container-fluid r-side">
       <div class="row page-titles">
         <div class="col-md-12 col-lg-9 col-xl-9 d-flex align-self-center justify-content-between">
           <h3 class="text-themecolor">{{mensaje_bievenida}}</h3>
@@ -563,345 +431,311 @@
           <a href="#" data-toggle="modal" data-target="#ModalGuia" id="guia-icono"><i class="fa fa-lg fa-info-circle mt-2"></i></a>
           {% endif%}
         </div>
+      </div>
 
-        <div class="container-fluid r-side">
+      {% if datos_vista_usuario.usuario.tutorial == 'NO' %}
+      <div class="row" id="guiamedia">
+        <div class="card">
+          <div class="card-body">
 
-          {% if datos_vista_usuario.usuario.tutorial == 'NO' %}
-          <div class="row" id="guiamedia">
-            <div class="card">
-              <div class="card-body">
-
-                <div class="row">
-                  <div class="col-3">
-                    <img src="{% static 'img/car2.jpg' %}" class="bounce animated"
-                      style="width: 100%; height:auto; vertical-align: middle; margin-right: 10px;">
-                  </div>
-
-                  <div class="col-6">
-                    <h4 class="card-title">¿Sos nuevo en la empresa o querés conocer mejor linkp?</h4>
-                    <p>Generamos un recorrido para que puedas conocer las funciones básicas y la organización del sitio.
-                    </p>
-                    <p>Inicia <a href="#" data-toggle="modal" data-target="#ModalGuia">aquí</a> tu explicación y guia
-                      del sitio.</p>
-                  </div>
-                </div>
+            <div class="row">
+              <div class="col-3">
+                <img src="{% static 'img/car2.jpg' %}" class="bounce animated"
+                  style="width: 100%; height:auto; vertical-align: middle; margin-right: 10px;">
               </div>
-            </div>
-          </div>
-          {% endif%}
 
-
-          
-          <div id="ModalGuia" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="ModalGuia"
-            aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-              <div class="modal-content">
-                <div class="modal-header" style="background-color: #2a3e52;">
-                  <h5 class="modal-title  text-light" id="exampleModalLongTitle">Explicacion guiada</h5>
-                  <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div class="modal-body">
-                  <div class="tab-content">
-                    <p><span>LINK-P</span>
-                      Es una aplicación web pensada y diseñada para facilitar el uso y gestión de los datos de link
-                    </p>
-                    <p>Nuestro sistema se desconecta automáticamente cada 2 horas para cuidar mejor nuestra información.
-                    </p>
-                    <p>¿Deseas que iniciemos nuestro recorrido?</p>
-                  </div>
-                </div>
-
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-success" onclick="guia()" data-dismiss="modal">Iniciar</button>
-                  <button type="button" class="btn btn-info" data-dismiss="modal">Cerrar</button>
-
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- empieza accesos directos -->
-          <div class="row">
-            <div class="mb-4 ">
-              <div class="">
-                <div class="row d-flex" style="gap: 32px;">
-
-                  {% for atajo in datos_vista_usuario.atajos %}
-                  <div
-                    class="col-5 col-md-3 col-lg-2 shadow-sm bg-body border text-center d-flex justify-content-center align-items-center"
-                    style="height: 120px;">
-                    <a href="{{atajo.url}}">
-                      <img src="{{atajo.icono.url}}"
-                        style="max-width:75px; height:auto;">
-                      <p style="font-size: 14px;" class="mt-1">{{atajo.nombre}}</p>
-                    </a>
-                    <div class="btn-group ml-auto" style="position: absolute; top: 10px; right: 10px;">
-                      <a href="JavaScript:void(0)" class="icon-options-vertical link text-info" data-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="false"></a>
-                      <div class="dropdown-menu dropdown-menu-right">
-                        <form method="POST">
-                          {% csrf_token %}
-                          <button class="btn" type="submit" name="atajo_delete" value="{{atajo.id}}"><i class="fa fa-trash mr-2"></i>Quitar</button>
-                        </form>
-                      </div>
-                    </div>
-                  </div>
-
-                  {% endfor %}
-                  
-                  {% if datos_vista_usuario.cantidad_atajos < 4 %}
-                  <div
-                    class="col-5 col-md-3 col-lg-2 shadow-sm bg-light  border text-center d-flex justify-content-center align-items-center"
-                    style="height: 120px;">
-                    <a href="#" data-toggle="modal" data-target="#ModalAccDir">
-                      <i class="fa fa-2x fa-plus-circle mt-2"></i>
-                      <p style="font-size: 14px;">Acceso directo</p>
-                    </a>
-                  </div>
-
-                  {% endif %}
-
-                  <div id="ModalAccDir" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="ModalAccDir"
-                    aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered" role="document">
-                      <div class="modal-content">
-                        <div class="modal-header" style="background-color: #2a3e52;">
-                          <h5 class="modal-title  text-light" id="exampleModalLongTitle">Agregar Acceso directo</h5>
-                          <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                          </button>
-                        </div>
-                        <div class="modal-body">
-                          <form method="POST">
-                            {% csrf_token %}
-                            <div class="tab-content">
-                              <p>¿Qué acceso directo te gustaría colocar?</p>
-                            </div>
-                            <select name="atajo_entrar" class="form-control mt-2">
-                              {% for i in todos_atajos%}
-                              <option value="{{i.id}}">{{i.nombre}}</option>
-                              {% endfor %}
-  
-                            </select>
-                            <button type="submit" class="btn btn-info mt-4" >Agregar</button>
-                          </form>
-                        </div>
-                        <div class="modal-footer">
-                          <button type="button" class="btn btn-info" data-dismiss="modal">Cerrar</button>
-
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div id="ModalAccDirEditar" class="modal fade" tabindex="-1" role="dialog"
-                    aria-labelledby="ModalAccDirEditar" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered" role="document">
-                      <div class="modal-content">
-                        <div class="modal-header" style="background-color: #2a3e52;">
-                          <h5 class="modal-title  text-light" id="exampleModalLongTitle">Modificar Acceso directo</h5>
-                          <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                          </button>
-                        </div>
-                        <div class="modal-body">
-                          <form action="POST">
-                            <div class="tab-content">
-                              <p>¿Qué acceso directo te gustaría colocar?</p>
-                            </div>
-                            <select name="accesos" class="form-control mt-2">
-                              <option value="1">Acceso1</option>
-                              <option value="2">Acceso2</option>
-                              <option value="3">Acceso3</option>
-                              <option value="4">Acceso4</option>
-                            </select>
-                            <button type="button" class="btn btn-info mt-4" type="submit" name="editar"
-                              value="{{id}}">Editar</button>
-                          </form>
-                        </div>
-                        <div class="modal-footer">
-                          <button type="button" class="btn btn-info" data-dismiss="modal">Cerrar</button>
-
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- termina accesos directos -->
-
-          <!-- empieza aviso OC -->
-
-          {% if avisos_comparativas.autorizado %}
-
-          <div class="row">
-            <div class="card">
-              <div class="card-body">
-                <div class="row">
-                  <div class="col-12 col-md-10 col-lg-9">
-
-                    {% if avisos_comparativas.semana_compras == 0 %}
-                    <h4 class="card-title">Todavia no es semana de cierre de OC </h4>
-                    {% elif avisos_comparativas.semana_compras == 1 %}
-                    <h4 class="card-title text-warning">En esta semana puedes cargar tus OC </h4>
-                    {% elif avisos_comparativas.semana_compras == 2 %}
-                    <h4 class="card-title text-danger">Hasta hoy puedes cargar tus OC !</h4>
-                    {% endif %}
-
-                  </div>
-                  <div class="col col-md-12 col-lg-9 mt-4">
-
-                    {% if avisos_comparativas.no_conformes or avisos_comparativas.no_autorizadas %}
-
-                    <div class="row d-flex justify-content-around">
-                      {% if avisos_comparativas.no_conformes %}
-                      <div class="col col-md-6 col-lg-6 d-flex ">
-                        <img src="{% static 'img/SP.png' %}" alt="cara Sebastian" width="50">
-
-                        <p class="ml-2 mt-2"> Tienes <a href="#" data-toggle="modal"
-                            data-target="#ModalSPcompras">{{avisos_comparativas.no_conformes.1}}</a> OC observadas. </p>
-
-                      </div>
-                      {% endif %}
-
-                      {% if avisos_comparativas.no_autorizadas %}
-                      <div class="col col-md-6 col-lg-6 d-flex">
-                        <img src="{% static 'img/PL.png' %}" alt="cara Pablo" width="50">
-
-                        <p class="ml-2 mt-2"> Tienes <a href="#" data-toggle="modal"
-                            data-target="#ModalPLcompras">{{avisos_comparativas.no_autorizadas.1}}</a> OC rechazadas.
-                        </p>
-
-                      </div>
-                      {% endif %}
-                    </div>
-
-                    {% else %}
-
-                    <div class="row d-flex">
-                      <div class="col col-md-10 col-lg-9 d-flex">
-                        <i class="fa fa-lg fa-check-circle text-success mt-1"></i>
-                        <p class="ml-2">¡Felicitaciones! Tienes todas tus OC autorizadas</p>
-                      </div>
-                    </div>
-                    {% endif %}
-                  </div>
-
-                </div>
-
-                <!-- modal OC SP -->
-                <div id="ModalSPcompras" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="ModalSPcompras"
-                  aria-hidden="true">
-                  <div class="modal-dialog modal-dialog-centered" role="document">
-                    <div class="modal-content">
-                      <div class="modal-header" style="background-color: #2a3e52;">
-                        <h5 class="modal-title  text-light" id="exampleModalLongTitle">Ordenes de compras a revisar</h5>
-                        <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
-                          <span aria-hidden="true">&times;</span>
-                        </button>
-                      </div>
-                      <div class="modal-body">
-                        <div class="tab-content">
-                          <h4>Estas son las órdenes de compras que debes revisar de SP.</h4>
-                          <!-- for de ordenes -->
-
-                          {% for comparativa in avisos_comparativas.no_conformes.0 %}
-                          <p>OC: {{comparativa.o_c}} - {{comparativa.proveedor}}</p>
-                          {% endfor %}
-
-                        </div>
-                      </div>
-
-                      <div class="modal-footer">
-                        <button type="button" class="btn btn-info" data-dismiss="modal">Cerrar</button>
-
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <!-- modal OC PL -->
-                <div id="ModalPLcompras" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="ModalPLcompras"
-                  aria-hidden="true">
-                  <div class="modal-dialog modal-dialog-centered" role="document">
-                    <div class="modal-content">
-                      <div class="modal-header" style="background-color: #2a3e52;">
-                        <h5 class="modal-title  text-light" id="exampleModalLongTitle">Ordenes de compras a revisar</h5>
-                        <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
-                          <span aria-hidden="true">&times;</span>
-                        </button>
-                      </div>
-                      <div class="modal-body">
-                        <div class="tab-content">
-                          <h5>Estas son las órdenes de compras que debes revisar de PL.</h5>
-                          <!-- for de ordenes -->
-
-                          {% for comparativa in avisos_comparativas.no_autorizadas.0 %}
-                          <p>OC: {{comparativa.o_c}} - {{comparativa.proveedor}}</p>
-                          {% endfor %}
-
-
-                        </div>
-                      </div>
-
-                      <div class="modal-footer">
-                        <button type="button" class="btn btn-info" data-dismiss="modal">Cerrar</button>
-
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {% endif %}
-          <!-- Termina aviso OC -->
-         
-
-          <div class="row">
-            <div class="card">
-              <div class="card-body">
-                <div>
-                  <h4 class="card-title"><span class="lstick"></span>Nuestro equipo</h4>
-                </div>
-
-                <div class="table-responsive">
-                  <table class="table">
-                    <tbody>
-
-                      {% for m in miembros %}
-                      <tr>
-                        {% if m.imagenlogo %}
-                        <td><span class="round"><img src="{{m.imagenlogo.url}}" alt="user" width="50"></span></td>
-                        {% else %}
-                        <td><span class="round"><img src="{% static 'img/anonimo2.png' %}" alt="user" width="50"></span>
-                        </td>
-                        {% endif %}
-                        <td>
-                          <h6><b>{{m.identificacion}}</b> - {{m.nombre}} </h6><small
-                            class="text-muted">{{m.area|lower|capfirst}}: {{m.cargo|lower}} - {{m.email}}</small>
-                        </td>
-                      </tr>
-
-                      {% endfor %}
-
-                    </tbody>
-                  </table>
-                </div>
+              <div class="col-6">
+                <h4 class="card-title">¿Sos nuevo en la empresa o querés conocer mejor linkp?</h4>
+                <p>Generamos un recorrido para que puedas conocer las funciones básicas y la organización del sitio.
+                </p>
+                <p>Inicia <a href="#" data-toggle="modal" data-target="#ModalGuia">aquí</a> tu explicación y guia
+                  del sitio.</p>
               </div>
             </div>
           </div>
         </div>
       </div>
+      {% endif%}
+
+      <!-- empieza accesos directos -->
+      <div class="row">
+        <div class="col-12 col-lg-12">
+          <div class="mb-4 ">
+            <div class="">
+              <div class="row d-flex" style="gap: 32px;">
+
+                {% for atajo in datos_vista_usuario.atajos %}
+                <div
+                  class="col-5 col-md-3 col-lg-2 shadow-sm bg-body border text-center d-flex justify-content-center align-items-center"
+                  style="height: 120px;">
+                  <a href="{{atajo.url}}">
+                    <img src="{{atajo.icono.url}}"
+                      style="max-width:75px; height:auto;">
+                    <p style="font-size: 14px;" class="mt-1">{{atajo.nombre}}</p>
+                  </a>
+                  <div class="btn-group ml-auto" style="position: absolute; top: 10px; right: 10px;">
+                    <a href="JavaScript:void(0)" class="icon-options-vertical link text-info" data-toggle="dropdown"
+                      aria-haspopup="true" aria-expanded="false"></a>
+                    <div class="dropdown-menu dropdown-menu-right">
+                      <form method="POST">
+                        {% csrf_token %}
+                        <button class="btn" type="submit" name="atajo_delete" value="{{atajo.id}}"><i class="fa fa-trash mr-2"></i>Quitar</button>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+
+                {% endfor %}
+                
+                {% if datos_vista_usuario.cantidad_atajos < 4 %}
+                <div
+                  class="col-5 col-md-3 col-lg-2 shadow-sm bg-light  border text-center d-flex justify-content-center align-items-center"
+                  style="height: 120px;">
+                  <a href="#" data-toggle="modal" data-target="#ModalAccDir">
+                    <i class="fa fa-2x fa-plus-circle mt-2"></i>
+                    <p style="font-size: 14px;">Acceso directo</p>
+                  </a>
+                </div>
+
+                {% endif %}
+
+                <div id="ModalAccDir" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="ModalAccDir"
+                  aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header" style="background-color: #2a3e52;">
+                        <h5 class="modal-title  text-light" id="exampleModalLongTitle">Agregar Acceso directo</h5>
+                        <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <form method="POST">
+                          {% csrf_token %}
+                          <div class="tab-content">
+                            <p>¿Qué acceso directo te gustaría colocar?</p>
+                          </div>
+                          <select name="atajo_entrar" class="form-control mt-2">
+                            {% for i in todos_atajos%}
+                            <option value="{{i.id}}">{{i.nombre}}</option>
+                            {% endfor %}
+
+                          </select>
+                          <button type="submit" class="btn btn-info mt-4" >Agregar</button>
+                        </form>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-info" data-dismiss="modal">Cerrar</button>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div id="ModalAccDirEditar" class="modal fade" tabindex="-1" role="dialog"
+                  aria-labelledby="ModalAccDirEditar" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header" style="background-color: #2a3e52;">
+                        <h5 class="modal-title  text-light" id="exampleModalLongTitle">Modificar Acceso directo</h5>
+                        <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <form action="POST">
+                          <div class="tab-content">
+                            <p>¿Qué acceso directo te gustaría colocar?</p>
+                          </div>
+                          <select name="accesos" class="form-control mt-2">
+                            <option value="1">Acceso1</option>
+                            <option value="2">Acceso2</option>
+                            <option value="3">Acceso3</option>
+                            <option value="4">Acceso4</option>
+                          </select>
+                          <button type="button" class="btn btn-info mt-4" type="submit" name="editar"
+                            value="{{id}}">Editar</button>
+                        </form>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-info" data-dismiss="modal">Cerrar</button>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+  </div>
+
+      {% if avisos_comparativas.autorizado %}
+
+      <div class="row">
+        <div class="col-12 col-lg-9">
+          <div class="card">
+            <div class="card-body">
+
+                {% if avisos_comparativas.semana_compras == 0 %}
+                <h4 class="card-title"><span class="lstick"></span>Todavia no es semana de cierre de OC </h4>
+                {% elif avisos_comparativas.semana_compras == 1 %}
+                <h4 class="card-title text-warning"><span class="lstick"></span>En esta semana puedes cargar tus OC </h4>
+                {% elif avisos_comparativas.semana_compras == 2 %}
+                <h4 class="card-title text-danger"><span class="lstick"></span>Hasta hoy puedes cargar tus OC !</h4>
+                {% endif %}
+
+                <div class="row">
+
+                  {% if avisos_comparativas.no_conformes or avisos_comparativas.no_autorizadas %}
+
+                  <div class="row d-flex justify-content-around">
+
+                        {% if avisos_comparativas.no_conformes %}
+                        <div class="col-lg-6 d-flex  mt-4">
+                          <img src="{% static 'img/SP.png' %}" width="50" height="auto">
+
+                          <p class="ml-2 mt-2"> Tienes <a href="#" data-toggle="modal"
+                              data-target="#ModalSPcompras">{{avisos_comparativas.no_conformes.1}}</a> OC observadas. </p>
+
+                        </div>
+                        {% endif %}
+
+                        {% if avisos_comparativas.no_autorizadas %}
+
+                        <div class="col-lg-6 d-flex mt-4">
+                          <img src="{% static 'img/PL.png' %}" width="50" height="auto">
+
+                          <p class="ml-2 mt-2"> Tienes <a href="#" data-toggle="modal"
+                              data-target="#ModalPLcompras">{{avisos_comparativas.no_autorizadas.1}}</a> OC rechazadas.
+                          </p>
+
+                        </div>
+                        {% endif %}
+                  </div>
+
+                  {% else %}
+
+                  <div class="row d-flex">
+                    <div class="col col-md-10 col-lg-9 d-flex">
+                      <i class="fa fa-lg fa-check-circle text-success mt-1"></i>
+                      <p class="ml-2">¡Felicitaciones! Tienes todas tus OC autorizadas</p>
+                    </div>
+                  </div>
+
+                  {% endif %}
+                
+                </div>
+
+              <!-- modal OC SP -->
+              <div id="ModalSPcompras" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="ModalSPcompras"
+                aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header" style="background-color: #2a3e52;">
+                      <h5 class="modal-title  text-light" id="exampleModalLongTitle">Ordenes de compras a revisar</h5>
+                      <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <div class="tab-content">
+                        <h4>Estas son las órdenes de compras que debes revisar de SP.</h4>
+                        <!-- for de ordenes -->
+
+                        {% for comparativa in avisos_comparativas.no_conformes.0 %}
+                        <p>OC: {{comparativa.o_c}} - {{comparativa.proveedor}}</p>
+                        {% endfor %}
+
+                      </div>
+                    </div>
+
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-info" data-dismiss="modal">Cerrar</button>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- modal OC PL -->
+              <div id="ModalPLcompras" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="ModalPLcompras"
+                aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header" style="background-color: #2a3e52;">
+                      <h5 class="modal-title  text-light" id="exampleModalLongTitle">Ordenes de compras a revisar</h5>
+                      <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <div class="tab-content">
+                        <h5>Estas son las órdenes de compras que debes revisar de PL.</h5>
+                        <!-- for de ordenes -->
+
+                        {% for comparativa in avisos_comparativas.no_autorizadas.0 %}
+                        <p>OC: {{comparativa.o_c}} - {{comparativa.proveedor}}</p>
+                        {% endfor %}
+
+
+                      </div>
+                    </div>
+
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-info" data-dismiss="modal">Cerrar</button>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div> 
+      </div>
+
+      {% endif %}
+
+      <div class="row">
+        <div class="col-12 col-lg-9">
+          <div class="card">
+            <div class="card-body">
+              <div>
+                <h4 class="card-title"><span class="lstick"></span>Nuestro equipo</h4>
+              </div>
+  
+              <div class="table-responsive">
+                <table class="table">
+                  <tbody>
+  
+                    {% for m in miembros %}
+                    <tr>
+                      {% if m.imagenlogo %}
+                      <td><span class="round"><img src="{{m.imagenlogo.url}}" alt="user" width="50"></span></td>
+                      {% else %}
+                      <td><span class="round"><img src="{% static 'img/anonimo2.png' %}" alt="user" width="50"></span>
+                      </td>
+                      {% endif %}
+                      <td>
+                        <h6><b>{{m.identificacion}}</b> - {{m.nombre}} </h6><small
+                          class="text-muted">{{m.area|lower|capfirst}}: {{m.cargo|lower}} - {{m.email}}</small>
+                      </td>
+                    </tr>
+  
+                    {% endfor %}
+  
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+      </div>
 
       <aside class="right-side-panel" id="panelnovedades-guia">
 
         <h3 class="p-relative"><span class="lstick"></span> Novedades</h3>
-
+  
         {% for i in anuncios %}
         <div class="row">
           <div class="col-md-12 m-t-10">
@@ -909,7 +743,7 @@
               <a type="button" style="text-decoration: none;" data-toggle="modal" data-target="#ModalAnuncio{{i.id}}">
                 <img class="card-img-top img-responsive" src="{{i.imagen.url}}" alt="Novedad">
               </a>
-
+  
               <div class="card-body">
                 <h3 class="font-normal">{{i.titulo}}</h3>
                 {% if i.categoria == "COMUNIDAD" %}
@@ -924,7 +758,7 @@
             </div>
           </div>
         </div>
-
+  
         <!-- Modal anuncio -->
         <div class="modal fade" id="ModalAnuncio{{i.id}}" tabindex="-1" role="dialog" aria-labelledby="ModalPremioTitle"
           aria-hidden="true">
@@ -937,17 +771,19 @@
                 </button>
               </div>
               <div class="modal-body">
-
+  
                 <img class="card-img-top img-responsive" src="{{i.imagen.url}}" alt="Card image cap"
                   style="width: 465px; height: auto; ">
-
+  
               </div>
             </div>
           </div>
         </div>
         {% endfor %}
-
+  
       </aside>
+
+    </div>
 
       {% endblock %}
 
@@ -955,8 +791,75 @@
         <footer class="footer">© Link-P</footer>
       </a>
 
-    </div>
+    
+
+
   </div>
+
+  {% block js_unicos %}
+
+  <script src="{% static 'adminpro/main/js/perfect-scrollbar.jquery.min.js' %}"></script>
+  <script src="{%static  'js/dataTables.bootstrap4.min.js' %}"></script>
+
+  <style>
+        #pulse:hover{
+            transform: scale(1.05);
+
+        }
+
+  </style>
+
+  <script>
+    function guia() {
+      let sidebar = document.getElementById('sidebar-guia');
+      sidebar.classList.add('alerta-guia-borde');
+      let alertaguia1 = document.getElementById('alerta-guia-1').style.display = "block";
+  
+    }
+    function guia1(cerrar, abrir, idcerrar, idabrir) {
+      console.log(cerrar, abrir, idcerrar, idabrir);
+      let sidebar = document.getElementById(idcerrar);
+      sidebar.classList.remove('alerta-guia-borde');
+      let alertaguia1 = document.getElementById(cerrar).style.display = "none";
+      let guiausuario = document.getElementById(idabrir);
+      guiausuario.classList.add('alerta-guia-borde');
+      let alertaguia2 = document.getElementById(abrir).style.display = "block";
+  
+    }
+    function finalizar(resaltado, id) {
+      let sidebar = document.getElementById(resaltado);
+      sidebar.classList.remove('alerta-guia-borde');
+      let modalcerrar = document.getElementById(id).style.display = "none";
+  
+    }
+  
+    // alert  linkcoins 
+    {% if monedas %}
+            
+    const Toast = Swal.mixin({
+      toast: true,
+      position: 'top-end',
+      showConfirmButton: false,
+      timer: 3100,
+      timerProgressBar: true,
+      didOpen: (toast) => {
+        toast.addEventListener('mouseenter', Swal.stopTimer)
+        toast.addEventListener('mouseleave', Swal.resumeTimer)
+      }
+    })
+  
+    Toast.fire({
+      imageUrl: "{% static 'img/regalito.gif' %}",
+      imageHeight: 100,
+      title: '{{monedas.1.moneda.usuario_portador.identificacion}} te envio una moneda!' , 
+  
+    })
+    {% endif %}
+  </script>
+  
+  {% endblock %}
+
+  
 
   <script src="{% static 'js/jquery-3.5.1.js' %}"></script>
   <script src="{% static 'adminpro/assets/plugins/bootstrap/js/popper.min.js' %}"></script>
@@ -978,53 +881,7 @@
 </html>
 
 
-<script>
-  function guia() {
-    let sidebar = document.getElementById('sidebar-guia');
-    sidebar.classList.add('alerta-guia-borde');
-    let alertaguia1 = document.getElementById('alerta-guia-1').style.display = "block";
 
-  }
-  function guia1(cerrar, abrir, idcerrar, idabrir) {
-    console.log(cerrar, abrir, idcerrar, idabrir);
-    let sidebar = document.getElementById(idcerrar);
-    sidebar.classList.remove('alerta-guia-borde');
-    let alertaguia1 = document.getElementById(cerrar).style.display = "none";
-    let guiausuario = document.getElementById(idabrir);
-    guiausuario.classList.add('alerta-guia-borde');
-    let alertaguia2 = document.getElementById(abrir).style.display = "block";
-
-  }
-  function finalizar(resaltado, id) {
-    let sidebar = document.getElementById(resaltado);
-    sidebar.classList.remove('alerta-guia-borde');
-    let modalcerrar = document.getElementById(id).style.display = "none";
-
-  }
-
-  // alert  linkcoins 
-  {% if monedas %}
-          
-  const Toast = Swal.mixin({
-    toast: true,
-    position: 'top-end',
-    showConfirmButton: false,
-    timer: 3100,
-    timerProgressBar: true,
-    didOpen: (toast) => {
-      toast.addEventListener('mouseenter', Swal.stopTimer)
-      toast.addEventListener('mouseleave', Swal.resumeTimer)
-    }
-  })
-
-  Toast.fire({
-    imageUrl: "{% static 'img/regalito.gif' %}",
-    imageHeight: 100,
-    title: '{{monedas.1.moneda.usuario_portador.identificacion}} te envio una moneda!' , 
-
-  })
-  {% endif %}
-</script>
 
 
 <!-- function count() {

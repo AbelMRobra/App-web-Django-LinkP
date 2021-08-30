@@ -4,6 +4,7 @@ from django.conf.urls import url
 from . import views
 from . import views_sugerencias
 from . import views_chanchito
+from . import views_linkcoins
 from .views import PdfMinutas
 from .views_chanchito import DescargarRegistroContable
 from django.conf import settings
@@ -13,8 +14,9 @@ urlpatterns = [
     url(r'^$', views.welcome, name = 'Bienvenido'),
     url(r'^guia$', login_required(views.guia), name = 'Guia'),
     url(r'^linkp$', login_required(views.linkp), name = 'Link P'),
-    url(r'^canjemoneda$', login_required(views.canjemonedas), name = 'Canje de monedas'),
-    url(r'^canjesrealizados$', login_required(views.canjerealizados), name = 'Canjes realizados'),
+    url(r'^canjemoneda$', login_required(views_linkcoins.canjemonedas), name = 'Canje de monedas'),
+    url(r'^canjesrealizados$', login_required(views_linkcoins.canjerealizados), name = 'Canjes realizados'),
+    url(r'^generador$', login_required(views_linkcoins.generador_linkcoins), name = 'Generador'),
     url(r'^moneda$', views.monedalink, name = 'Moneda Link'),
     url(r'^register$', views.register, name = 'Registro'),
     url(r'^login$', views.login, name = 'Login'),

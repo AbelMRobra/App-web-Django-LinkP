@@ -1,0 +1,163 @@
+{% load static %}
+
+<div id="ModalGuia" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="ModalGuia"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header" style="background-color: #2a3e52;">
+              <h5 class="modal-title  text-light" id="exampleModalLongTitle">Explicacion guiada</h5>
+              <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="tab-content">
+                <p><span>LINK-P</span>
+                  Es una aplicación web pensada y diseñada para facilitar el uso y gestión de los datos de link
+                </p>
+                <p>Nuestro sistema se desconecta automáticamente cada 2 horas para cuidar mejor nuestra información.
+                </p>
+                <p>¿Deseas que iniciemos nuestro recorrido?</p>
+              </div>
+            </div>
+
+            <div class="modal-footer">
+              <button type="button" class="btn btn-success" onclick="guia()" data-dismiss="modal">Iniciar</button>
+              <button type="button" class="btn btn-info" data-dismiss="modal">Cerrar</button>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+<!-- guia1 -->
+<div class="alerta-guia" id="alerta-guia-1">
+    <div>
+      <button class="btn text-danger" onclick="finalizar('sidebar-guia','alerta-guia-1')"><i
+          class="fa fa-times-circle"></i></button>
+    </div>
+    <h4>Panel principal de accesos</h4>
+    <p>En este panel podrás encontrar los accesos directos a las Apps de cada área.</p>
+    <p><b>Necesitas permisos especiales para acceder a ellas</b>, si crees que hubo un error y deberías poder acceder a
+      una de ellas, no dudes en comunicarte con alguien del área de IT para poder otorgarte los permisos necesarios.</p>
+    <div class="guia-indice">
+      <span>Pasos 1 / 5</span>
+      <button class="btn btn-info"
+        onclick="guia1('alerta-guia-1', 'alerta-guia-2','sidebar-guia','perfilusuario-guia')">Seguir</button>
+    </div>
+  </div>
+
+  <!-- guia2 -->
+
+  <div class="alerta-guia" id="alerta-guia-2">
+    <div>
+      <button class="btn text-danger" onclick="finalizar('perfilusuario-guia','alerta-guia-2')"><i
+          class="fa fa-times-circle"></i></button>
+    </div>
+    <h4>Panel perfil de usuario</h4>
+    <p>En esta sección encontrarás tu información personal y una sección donde utilizar link coins.</p>
+    <p><b> Link coins</b> son monedas otorgadas por la empresa para que sus empleados puedan reconocer el trabajo y buen
+      desempeño de un compañero.
+      ¡Estas monedas tienen un valor económico y pueden ser canjeadas por increíbles premios!</p>
+    <img src="{% static 'img/monedalink2.png' %}" alt="linkcoins">
+    <span>! No olvides reconocer a tus compañeros !</span>
+    <div class="guia-indice">
+      <span>Pasos 2 / 5</span>
+      <button class="btn btn-info"
+        onclick="guia1('alerta-guia-2', 'alerta-guia-3','perfilusuario-guia','panelnovedades-guia' )">Seguir</button>
+    </div>
+  </div>
+  <!-- guia3 -->
+
+  <div class="alerta-guia" id="alerta-guia-3">
+    <div>
+      <button class="btn text-danger" onclick="finalizar('panelnovedades-guia','alerta-guia-3')"><i
+          class="fa fa-times-circle"></i></button>
+    </div>
+    <h4>Panel de novedades</h4>
+    <p>En esta sección encontrarás las últimas novedades de la empresa, así como también los cumpleaños de tus
+      compañeros.</p>
+
+    <div class="guia-indice">
+      <span>Pasos 3 / 5</span>
+      <button class="btn btn-info"
+        onclick="guia1('alerta-guia-3', 'alerta-guia-4','panelnovedades-guia', 'sugerencias-guia')">Seguir</button>
+    </div>
+  </div>
+  <!-- guia4 -->
+  <div class="alerta-guia" id="alerta-guia-4">
+    <div>
+      <button class="btn text-danger" onclick="finalizar('sugerencias-guia','alerta-guia-4')"><i
+          class="fa fa-times-circle"></i></button>
+    </div>
+    <h4>Panel de sugerencias</h4>
+    <p>Dentro de esta sección podrás encontrar un buzón de sugerencias o recomendaciones para que juntos podamos seguir
+      mejorando linkp.</p>
+
+    <div class="guia-indice">
+      <span>Pasos 4 / 5</span>
+      <button class="btn btn-info"
+        onclick="guia1('alerta-guia-4', 'alerta-guia-5','sugerencias-guia', 'chanchito-guia')">Seguir</button>
+    </div>
+  </div>
+
+  <!-- guia5 -->
+  <div class="alerta-guia" id="alerta-guia-5">
+    <div>
+      <button class="btn text-danger" onclick="finalizar('chanchito-guia','alerta-guia-5')"><i
+          class="fa fa-times-circle"></i></button>
+    </div>
+    <h4>Chanchito!</h4>
+    <p>Esta herramienta está pensada para que puedas manejar tus finanzas y llevar un registro sobre ellas. Los datos
+      que registres aquí son completamente privados y únicamente podrán verlos <b>tú</b> y la persona que <b>tú
+        autorices.</b></p>
+
+    <div class="guia-indice">
+      <span>Pasos 5 / 5</span>
+      <button class="btn btn-success" onclick="finalizar('chanchito-guia','alerta-guia-5')" data-toggle="modal"
+        data-target="#ModalGuiaFinal">Finalizar</button>
+    </div>
+  </div>
+  
+  <!-- modal guia  -->
+
+  <div id="ModalGuiaFinal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="ModalGuiaFinal"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header" style="background-color: #2a3e52;">
+          <h5 class="modal-title  text-light" id="exampleModalLongTitle">Final de la guia</h5>
+          <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="tab-content">
+            <h4>Llegamos al final de la guía</h4>
+            <p>¡Desde LinkP te deseamos la mejor de las suertes y esperamos que nuestra herramienta te ayude a facilitar
+              tu trabajo!</p>
+          </div>
+        </div>
+
+        {% if datos_vista_usuario.usuario.tutorial == 'NO' %}
+
+        <form method="POST">
+          {% csrf_token %}
+          <div class="modal-footer">
+            <button type="submit" name="tutorial" value="1" class="btn btn-info">Cerrar</button>
+          </div>
+
+        </form>
+
+        {% else %}
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-info" data-dismiss="modal">Cerrar</button>
+
+        </div>
+
+        {% endif %}
+        
+      </div>
+    </div>
+  </div>

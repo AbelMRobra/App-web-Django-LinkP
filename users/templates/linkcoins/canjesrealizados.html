@@ -1,0 +1,165 @@
+{% extends "users/inicio2.html" %}
+{% load apptags_extras %}
+
+{% load static %}
+
+{% block content %}
+
+<div class="container-fluid ">
+    <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+            <h3 class="text-themecolor">{{mensaje_bievenida}}</h3>
+        </div>
+        <div class="col-md-7 align-self-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'App de rrhh' %}">Panel</a></li>
+                <li class="breadcrumb-item">Tabla de canjes</li>
+            </ol>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+
+                    <div class="d-flex">
+                        <h4 class="card-title"><span class="lstick m-r-20"></span>Canjes realizados</h4>
+                        <div class="btn-group ml-auto">
+                            <a href="JavaScript:void(0)" class="icon-options-vertical link" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false"></a>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a class="dropdown-item" href="{% url 'Generador' %}"><i
+                                    class="fa fa-wrench mr-2"></i>Generador de monedas</a>
+
+                                    
+                            </div>
+                        </div>
+                    </div>
+    
+
+                    <div class="row d-flex justify-content-between my-4 text-center mr-2 ml-2">
+
+                        <div class="col-2 bg-light shadow p-4 rounded-3">
+                            {% if data_linkcoins.usuario_mas_recibio.0.imagenlogo %}
+                            <img src="{{data_linkcoins.usuario_mas_recibio.0.imagenlogo.url}}" width="50px" class="img-circle" />
+                            {% else %}
+                            <img src="{% static 'img/anonimo2.png' %}" width="50px" class="img-circle" />{% endif%}
+                            
+                            <h6 class="mt-2"><b>Usuario con mas monedas</b></h6>
+                            <small>{{data_linkcoins.usuario_mas_recibio.1}} monedas</small>
+                            
+                        </div>
+                        <div class="col-2 bg-light shadow p-4 rounded-3">
+                            {% if data_linkcoins.mensajeMasCorto.2.imagenlogo %}
+                            <img src="{{data_linkcoins.mensajeMasCorto.2.imagenlogo.url}}" width="50px" class="img-circle" />
+                            {% else %}
+                            <img src="{% static 'img/anonimo2.png' %}" width="50px" class="img-circle" />{% endif%}
+
+                            <h6 class="mt-2"><b>El mensaje mas corto</b></h6>
+                            <small>{{data_linkcoins.mensajeMasCorto.1}} letras</small>
+     
+                        </div>
+                        <div class="col-2 bg-light shadow p-4 rounded-3">
+                            {% if data_linkcoins.mensaje_largo.2.imagenlogo %}
+                            <img src="{{data_linkcoins.mensaje_largo.2.imagenlogo.url}}" width="50px" class="img-circle" />
+                            {% else %}
+                            <img src="{% static 'img/anonimo2.png' %}" width="50px" class="img-circle" />{% endif%}
+
+                            <h6 class="mt-2"><b>El mensaje mas largo</b></h6>
+                            <small>{{data_linkcoins.mensaje_largo.1}} letras</small>
+     
+                        </div>
+                        <div class="col-2 bg-light shadow p-4 rounded-3">
+                            <img src="{% static 'img/anonimo2.png' %}" width="50px" class="img-circle" />
+
+                            <h6 class="mt-2"><b>{{data_linkcoins.area_querida.0}}</b></h6>
+                            <small>{{data_linkcoins.area_querida.1}} monedas</small>
+
+ 
+                        </div>
+                   
+                    </div>
+                    <div class="table-responsive">
+                        <table id="example" class="table">
+                            <thead>
+                                <tr>
+                                    <th>Premios</th>
+                                    <th>Usuario</th>
+                                    <th class="text-center">Costo <img class="ml-1"
+                                        src="{% static 'img/monedalink2.png' %}" alt=""
+                                        style="max-width:20px; height:auto; vertical-align: middle;"></th>
+                                    <th style="text-align: center; vertical-align: top;">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                {% for d in data %}
+                                
+                                <tr>
+                                    <td>{{d.premio}}</td>
+                                    <td>{{d.usuario.nombre}}</td>
+                                    <td class="text-center">{{d.monedas}}</td>
+                                    <td style="text-align: center; vertical-align: top;">
+                                        {% if d.entregado == "NO" %}
+                                        <b style="display:none">No canjeado</b>
+                                        <form method="POST">
+                                            {% csrf_token %}
+                                            <button class="btn fa fa-lg fa-exclamation-circle text-warning" type="submit" name="ENTREGADO"
+                                                style="padding: 0%;" value="{{d.id}}"></button></form>
+                                            
+                                        {% else %}
+                                        <b style="display:none">Canjeado</b>
+                                        <i class="fa fa-lg fa-check-circle text-success"></i>
+                                        {% endif %}</td>
+                                                
+                                    </tr>
+                                
+                                {% endfor %}
+
+                            </tbody>
+                        </table>
+                        </div>
+                               
+                    </div>
+                </div>
+            </div>
+        </div>
+
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+
+    $(document).ready(function () {
+        $('#example').DataTable({
+            "language": {
+                "lengthMenu": "Mostar _MENU_ documentos",
+                "zeroRecords": "No se encontro nada - perdon ",
+                "info": "Pagina _PAGE_ de _PAGES_",
+                "infoEmpty": "Sin registros disponibles",
+                "infoFiltered": "(filtrado de _MAX_ registros totales)",
+                "search": "Buscar"
+            },
+            "info": false,
+            "ordering": false,
+            "paging": false,
+            dom: 'Bfrtip',
+            buttons: [
+                {
+                    extend: 'excelHtml5',
+                    title: 'Canjes realizados',
+                    className: "btn btn-info",
+
+                    init: function(api, node, config) {
+                        $(node).removeClass('dt-button buttons-excel buttons-html5')
+                        }
+                },
+            ]
+
+        });
+    });
+</script>
+
+{% endblock %}

@@ -1,0 +1,175 @@
+{% extends "users/inicio2.html" %}
+{% load apptags_extras %}
+
+{% load static %}
+
+{% block content %}
+
+<div class="container-fluid ">
+    <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+            <h3 class="text-themecolor">{{mensaje_bievenida}}</h3>
+        </div>
+        <div class="col-md-7 align-self-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'App de rrhh' %}">Panel</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'Canjes realizados' %}">Tabla de canjes</a></li>
+                <li class="breadcrumb-item">Generador</li>
+            </ol>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+    
+                    <h4 class="card-title"><span class="lstick m-r-20"></span>Generador de Linkcoins</h4>
+                    <h6 class="card-subtitle">Este generador creada monedas de forma independiente al sistema, solo debe ser utilizado por personal designado</h6>
+
+                    <!-- Modal Bitacoras -->
+                    <div class="modal fade" id="ModalGenerador" tabindex="-1" role="dialog"
+                        aria-labelledby="ModalGeneradorCrearTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header" style="background-color: #2a3e52;">
+                                    <h5 class="modal-title text-light" id="exampleModalLongTitle">Generar nuevas monedas</h5>
+                                    <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+    
+                                    <form method="POST" style="margin: 15px;">
+    
+                                        {% csrf_token %}
+
+                                        <h6><small>Usuario que recibe</small> </h6>
+    
+                                        <div class="input-group mb-3">
+    
+                                            <select name="usuario" class="form-control form-control-line">
+                                                {% if list_usuarios %}
+                                                {% for i in list_usuarios %}
+        
+                                                <option value="{{i.id}}" selected> {{i.nombre}}</option>
+        
+                                                {% endfor %}
+                                                {% endif %}
+        
+                                            </select>
+
+                                        </div>
+    
+                                        <h6><small>Cantidad</small> </h6>
+    
+                                        <div class="input-group mb-3">
+    
+                                            <input type="number" name="cantidad" class="form-control form-control-line">
+                                        </div>
+    
+                                        <h6><small>Mensaje</small> </h6>
+    
+                                        <div class="input-group mb-3">
+    
+                                            <textarea rows="5" name="mensaje" class="form-control form-control-line"></textarea>
+    
+                                        </div>
+    
+                                        <button type="submit"
+                                            class="btn btn-info">Generar</button>
+    
+                                    </form>
+    
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+
+
+
+                        <div class="col-12 mt-4">
+
+
+                            {% for i in data_generador %}
+
+                            <div class="sl-item">
+                                <div class="sl-left"> <img src="{{i.0.imagenlogo.url}}" width="35px" class="img-circle mr-2" /> Se entregaron {{i.1}} linkcoins<span class="sl-date">a {{i.0.nombre}}</span></div>
+                                <div class="sl-right">
+                                    <div><p class="m-t-10">El mensaje fue: <i>"{{i.2}}"</i> </p> </div>
+                
+                                </div>
+                            </div>
+                            <hr>
+
+                            {% endfor %}
+
+
+
+                        </div>
+
+                               
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% if request.user|has_group:"RRHH NIVEL 10" %}
+<a id="add" href="#" data-toggle="modal" data-target="#ModalGenerador" class="btn btn-lg btn-info btn-circle fa fa-5x fa-plus"></a>
+{% endif %}
+
+
+<style>
+
+    #add {
+        position: fixed;
+        bottom: 60px;
+        right: 20px;
+    }
+
+</style>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+
+    $(document).ready(function () {
+        $('#example').DataTable({
+            "language": {
+                "lengthMenu": "Mostar _MENU_ documentos",
+                "zeroRecords": "No se encontro nada - perdon ",
+                "info": "Pagina _PAGE_ de _PAGES_",
+                "infoEmpty": "Sin registros disponibles",
+                "infoFiltered": "(filtrado de _MAX_ registros totales)",
+                "search": "Buscar"
+            },
+            "info": false,
+            "ordering": false,
+            "paging": false,
+            dom: 'Bfrtip',
+            buttons: [
+                {
+                    extend: 'excelHtml5',
+                    title: 'Canjes realizados',
+                    className: "btn btn-info",
+
+                    init: function(api, node, config) {
+                        $(node).removeClass('dt-button buttons-excel buttons-html5')
+                        }
+                },
+            ]
+
+        });
+    });
+</script>
+
+{% endblock %}
