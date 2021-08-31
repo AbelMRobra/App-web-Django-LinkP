@@ -270,15 +270,53 @@
                                     </div> -->
                                     <div style="display: flex; justify-content: space-between; margin-top: 15px">
                                         <div>
-                                            <span class="label label-info label-rounded">Colaborador</span>
+                                            <span class="label label-primary label-rounded">Colaborador</span>
                                         </div>
 
                                     </div>
 
-                                    <a href="#" class="bg-info plus-hover quarter-circle-bottom-right"style="position: absolute; bottom: 3px; right:3px"><i class="fa fa-plus text-light" style="margin-top: 8px; margin-left: 10px;"></i></a>
+                                    <a  href="#"data-toggle="modal" data-target="#ModalCajas{{i.0|cut:' '}}"  class="bg-primary plus-hover quarter-circle-bottom-right"style="position: absolute; bottom: 3px; right:3px"><i class="fa fa-plus text-light" style="margin-top: 8px; margin-left: 10px;"></i></a>
                                 </div>
                             </div>
                         </div>
+
+                        <!-- Modal exploratorio -->
+
+                        <div class="modal fade" id="ModalCajas{{i.0|cut:' '}}" tabindex="-1" role="dialog" aria-labelledby="ModalCajas" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                              <div class="modal-content">
+                                <div class="modal-header" style="background-color: #2a3e52;">
+                                  <h5 class="modal-title text-light" id="exampleModalLongTitle">Detalle de la caja</h5>
+                                  <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                  </button>
+                                </div>
+                                <div class="modal-body">
+                                  <div class="row">
+                                    <div class="mx-4 rounded-circle border {% if i.10 == 100 %} border-success {% else %} border-danger {% endif %} d-flex align-items-center justify-content-center" style="height: 160px; width: 160px;">
+                                      <h1 class="text-center">{{i.10|floatformat:0}}%</h1>
+                                    </div>
+                                    <div class="col-6">
+                                      <div>
+                                        <h4>Balance</h4>
+                                        <small class="text-subtitule ml-1">${{i.3|floatformat:2|intcomma}} / {{i.9|floatformat:2|intcomma}} USD</small>
+                                      </div>
+                                      <div class="mt-2">
+                                        <h4>Detalle</h4>
+                                        <h6 class="text-subtitule ml-1">Gastos:</h6>
+                                        <small class="text-subtitule ml-3">${{i.2|floatformat:2|intcomma}} / {{i.8|floatformat:2|intcomma}} USD</small>
+                                        <h6 class="text-subtitule ml-1 mt-1">Ingresos:</h6>
+                                        <small class="text-subtitule ml-3">${{i.1|floatformat:2|intcomma}} / {{i.7|floatformat:2|intcomma}} USD</small>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="modal-footer">
+                                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
     
                         <div class="modal fade" id="ModalBorrar{{i.0|cut:' '}}" tabindex="-1" role="dialog"
                                     aria-labelledby="ModalBorrar{{i.0|cut:' '}}" aria-hidden="true">
@@ -335,15 +373,21 @@
          border-radius: 100px 0 0 0;
     
     }
-      .plus-hover:hover{
-        position: absolute;
-        bottom: 15px;
-        transform: scale(2);
-        transform-origin: right bottom;
     
-      }
-    </style>
-
+    
+    .plus-hover:hover{
+      position: absolute;
+      bottom: 15px;
+      animation: scale ease-in-out 0.3s forwards;
+    
+    }
+    
+    @keyframes scale {
+      from {transform: scale(1);transform-origin: right bottom;}
+      to {transform: scale(2);transform-origin: right bottom;}
+    }
+    
+</style>
 
 
 <style>

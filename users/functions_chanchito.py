@@ -160,13 +160,15 @@ def cajasAdministras(user):
                 gastos_usd = sum(np.array(con_general.filter(usuario = user_adm, estado = "GASTOS", caja = caja).exclude(importe_usd = None).values_list("importe_usd", flat=True)))
                 balance_usd = ingresos_usd - gastos_usd
 
+                porcentaje = len(consulta_principal.filter(usuario = user_adm, caja = caja).exclude(importe_usd = None))/len(consulta_principal.filter(usuario = user_adm, caja = caja))*100
+
                 aux = 0
                 for u in usuarios_v:
                     user_aux = datosusuario.objects.get(identificacion = u)
                     usuarios_participan.append((user_aux, aux))
                     aux += 15
 
-                cajas_administras.append((nombre, ingresos, gastos, balance, user_adm, usuarios_participan, automatico, ingresos_usd, gastos_usd, balance_usd,))
+                cajas_administras.append((nombre, ingresos, gastos, balance, user_adm, usuarios_participan, automatico, ingresos_usd, gastos_usd, balance_usd, porcentaje))
 
     return cajas_administras
 
