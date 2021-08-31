@@ -9,7 +9,7 @@ from rrhh.models import datosusuario, DicRegistroContable, RegistroContable, Arq
 from finanzas.models import Arqueo
 from openpyxl import Workbook
 from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
-from .functions_chanchito import cajasDerivadas, calcularResumenIngresos, cajasActivas, cajasAdministras
+from .functions_chanchito import cajasDerivadas, calcularResumenIngresos, cajasActivas, cajasAdministras, recalculoDolarCaja
 from .functions import saludo
 
 def registro_contable_registro(request):
@@ -156,6 +156,10 @@ def registro_contable_cajas(request):
     return render(request, 'chanchito/registro_contable_cajas.html', context)
 
 def registro_contable_caja(request, caja, user_caja, estado, mes, year):
+
+    context = {}
+    context["mensaje"] = recalculoDolarCaja(caja, user_caja)
+    
     mes = mes
     year = year
 
@@ -229,7 +233,7 @@ def registro_contable_caja(request, caja, user_caja, estado, mes, year):
     if int(year) != 0:
         data = data.filter(fecha__year = year)
 
-    context = {}
+    
     context["data"] = data
     context["caja"] = caja
     context["user_caja"] = user_caja

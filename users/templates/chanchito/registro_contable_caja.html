@@ -365,15 +365,15 @@
                                             <td style="min-width: 100px;">{{i.categoria}}</td>
                                             <td style="min-width: 250px;">{{i.nota}}</td>
                                             {% if i.estado == "INGRESOS" %}
-                                            <td style="min-width: 100px;"><b>${{i.importe|floatformat:0|intcomma}}</b></td>
+                                            <td style="min-width: 100px;"><b>${{i.importe|floatformat:2|intcomma}}</b></td>
                                             {% else %}
-                                            <td style="min-width: 100px;"><b>-${{i.importe|floatformat:0|intcomma}}</b></td>
+                                            <td style="min-width: 100px;"><b>-${{i.importe|floatformat:2|intcomma}}</b></td>
                                             {% endif %}
 
                                             {% if i.estado == "INGRESOS" %}
-                                            <td style="min-width: 100px;"><b>U$D{{i.importe_usd|floatformat:0|intcomma}}</b></td>
+                                            <td style="min-width: 100px;"><b class="text-success">{{i.importe_usd|floatformat:2|intcomma}}</b></td>
                                             {% else %}
-                                            <td style="min-width: 100px;"><b>-U$D{{i.importe_usd|floatformat:0|intcomma}}</b></td>
+                                            <td style="min-width: 100px;"><b class="text-success">-{{i.importe_usd|floatformat:2|intcomma}}</b></td>
                                             {% endif %}
                                             
                                         </tr>
@@ -420,6 +420,30 @@
 
 </style>
 
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+{% if mensaje %}
+<script>
+
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 5000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+    })
+
+    Toast.fire({
+        icon: 'success',
+        title: '{{mensaje}}'
+    })
+
+</script>
+
+{% endif %}
 
 
 {% endblock %}

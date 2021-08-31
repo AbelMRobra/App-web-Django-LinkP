@@ -1,6 +1,8 @@
 from rrhh.models import datosusuario, RegistroContable
+from finanzas.models import Arqueo
 from datetime import datetime, date, timedelta
 import numpy as np
+import pandas as pd
 
 def calcularResumenIngresos(usuario):
 
@@ -129,7 +131,6 @@ def cajasActivas(user):
 
     return total_cajas
 
-
 def cajasAdministras(user):
 
     con_general = RegistroContable.objects.all()
@@ -160,6 +161,33 @@ def cajasAdministras(user):
                 cajas_administras.append((nombre,ingresos, gastos, balance, user_adm, usuarios_participan, automatico))
 
     return cajas_administras
+
+def recalculoDolarCaja(caja, user_caja):
+
+    con_principal = RegistroContable.objects.filter(caja = caja, usuario__identificacion = user_caja, importe_usd = None).order_by("-fecha")
+
+    n = 0
+
+    for consulta in con_principal:
+        try:
+            arqueo = Arqueo.objects.filter(fecha = consulta.fecha)[0]
+            data_frame = pd.read_excel(arqueo.arqueo)
+            cambio_usd = data_frame['CAMBIO USD'][0]
+            consulta.importe_usd = consulta.importe/float(cambio_usd)
+            consulta.save()
+            n += 1
+        except:
+            pass
+    
+    if n > 0:
+
+        mensaje = f"Se actualizaron {n} registros"
+
+        return mensaje
+
+    else:
+
+        return 0
 
 
         
