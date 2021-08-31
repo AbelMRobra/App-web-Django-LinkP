@@ -80,7 +80,13 @@ def registro_contable_cajas(request):
                                 estado = "GASTOS"
                                 importe = abs(registros_nuevo.loc[numero, "Saldo (CTE)"])
 
-                            importe_usd = abs(importe/float(registros_nuevo.loc[numero, "SALDO USD"]))
+                            if float(registros_nuevo.loc[numero, "SALDO USD"]) > 0:
+
+                                importe_usd = abs(importe/float(registros_nuevo.loc[numero, "SALDO USD"]))
+
+                            else:
+
+                                importe_usd = None
                             
                             if len(con_dicc.filter(entrada = registros_nuevo.loc[numero, "Auxiliar"])) > 0:
                                 caja = con_dicc.filter(entrada = registros_nuevo.loc[numero, "Auxiliar"])[0].salida
