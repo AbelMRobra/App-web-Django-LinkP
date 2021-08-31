@@ -100,15 +100,16 @@
     
                         <div class="col-12 col-md-4 col-lg-3 col-xlg-3">
                             <div class="card" id="img-tarjeta">
-                                <div class="card-body bg-light text-center">
+                                <div class="card-body text-center rounded-3" style="background-color: #2a3e52;">
                                     <div class="d-flex justify-content-between">
     
                                         <div>
-                                            <h6><img src="{{user.imagenlogo.url}}" alt="usuario"
+                                            <h6 class="text-light"><img class="mr-2" src="{{user.imagenlogo.url}}" alt="usuario"
                                                     style="max-width:30px; height:auto;"> {{i.0}}</h6>
+                                            
                                         </div>
                                         <div class="btn-group mt-1">
-                                            <a href="JavaScript:void(0)" class="icon-options-vertical link"
+                                            <a href="JavaScript:void(0)" class="icon-options-vertical link text-light"
                                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
                                             <div class="dropdown-menu dropdown-menu-right">
                                                 <a href="#" class="dropdown-item" data-toggle="modal"
@@ -120,26 +121,25 @@
     
                                     </div>
                                     
+                                    <a class="mt-1" href="{% url 'Registro Contable Caja' i.0 user.identificacion 0 0 0 %}"><button class="btn btn-lg btn-outline-light text-secondary btn-circle fa fa-lg fa-inbox" data-toggle="tooltip" data-placement="bottom" title="Explorar caja"></button></a>
     
-                                    <div class="text-left" style="margin-top: 2px;">
+                                    <!-- <div class="text-left" style="margin-top: 2px;">
                                         <div><small> Ingresos: ${{i.1|floatformat:2|intcomma}} </small></div>
                                         <div><small class="text-danger"> Gastos: ${{i.2|floatformat:2|intcomma}} </small></div>
                                         <div><small class="text-info"> Saldo: ${{i.3|floatformat:2|intcomma}} </small></div>
                                         <div><small class="text-succes"> Automatico: ${{i.5|floatformat:2|intcomma}} </small></div>
-                                    </div>
+                                    </div> -->
                                     <div style="display: flex; justify-content: space-between; margin-top: 15px">
+
+
+                                        <div>
+                                            <span class="label label-primary label-rounded">Dueño</span>
+                                        </div>
     
-                                        <span style="position:relative">
-                                            {% for u in i.4 %}
-                                            <a href="#" style="position: relative; left: -{{u.1}}px; "><img src="{{u.0.imagenlogo.url}}" class="img-circle" alt="usuario"
-                                                    width="30"></a>
-                                            {% endfor %}
-    
-                                        </span>
-    
-                                        <a href="{% url 'Registro Contable Caja' i.0 user.identificacion 0 0 0 %}"><button class="btn btn-secondary">Ingresar</button></a>
     
                                     </div>
+
+                                    <a href="#" class="bg-primary plus-hover quarter-circle-bottom-right"style="position: absolute; bottom: 3px; right:3px"><i class="fa fa-plus text-light" style="margin-top: 8px; margin-left: 10px;"></i></a>
                                 </div>
                             </div>
                         </div>
@@ -237,12 +237,12 @@
     
                         <div class="col-12 col-md-4 col-lg-3 col-xlg-3">
                             <div class="card" id="img-tarjeta">
-                                <div class="card-body bg-light text-center">
+                                <div class="card-body bg-light text-center rounded-3">
     
                                     <div class="d-flex justify-content-between">
     
                                         <div>
-                                            <h6><img src="{{i.4.imagenlogo.url}}" alt=""
+                                            <h6 class="text-dark"><img class="mr-2" src="{{i.4.imagenlogo.url}}" alt=""
                                                     style="max-width:30px; height:auto; margin: 5px;"> {{i.0}}</h6>
                                         </div>
                                         <div class="btn-group mt-1">
@@ -257,28 +257,25 @@
                                         </div>
     
                                     </div>
+
+                                    <a class="mt-1" href="{% url 'Registro Contable Caja' i.0 i.4.identificacion 0 0 0 %}"><button class="btn btn-lg btn-outline-dark btn-circle fa fa-lg fa-inbox" data-toggle="tooltip" data-placement="bottom" title="Explorar caja"></button></a>
        
-    
+<!--     
                                     <div class="text-left" style="margin-top: 2px;">
     
                                         <div><small>Ingresos: ${{i.1|floatformat:2|intcomma}}</small></div>
                                         <div><small class="text-danger">Gastos: ${{i.2|floatformat:2|intcomma}}</small></div>
                                         <div><small class="text-info">Saldo: ${{i.3|floatformat:2|intcomma}}</small></div>
                                         <div><small class="text-succes">Automatico: ${{i.6|floatformat:2|intcomma}}</small></div>
-                                    </div>
+                                    </div> -->
                                     <div style="display: flex; justify-content: space-between; margin-top: 15px">
-    
-                                        <span style="position:relative">
-                                            {% for u in i.5 %}
-                                            <a href="#" style="position: relative; left: -{{u.1}}px; "><img src="{{u.0.imagenlogo.url}}" class="img-circle" alt="usuario"
-                                                    width="30"></a>
-                                            {% endfor %}
-    
-                                        </span>
-    
-                                        <a href="{% url 'Registro Contable Caja' i.0 i.4.identificacion 0 0 0 %}"><button class="btn btn-secondary">Ingresar</button></a>
-    
+                                        <div>
+                                            <span class="label label-info label-rounded">Colaborador</span>
+                                        </div>
+
                                     </div>
+
+                                    <a href="#" class="bg-info plus-hover quarter-circle-bottom-right"style="position: absolute; bottom: 3px; right:3px"><i class="fa fa-plus text-light" style="margin-top: 8px; margin-left: 10px;"></i></a>
                                 </div>
                             </div>
                         </div>
@@ -288,7 +285,7 @@
                                     <div class="modal-dialog modal-dialog-centered" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header"
-                                                style="background: rgb(36,160,237); background: linear-gradient(315deg, rgba(36,160,237,1) 0%, rgba(56,56,130,1) 22%, rgba(0,212,255,1) 100%);">
+                                                style="background-color: #2a3e52;">
                                                 <h5 class="modal-title text-light" id="exampleModalLongTitle">Borrar caja {{i.0}}</h5>
                                                 <button type="button" class="close text-light" data-dismiss="modal"
                                                     aria-label="Close">
@@ -330,6 +327,22 @@
     
     </div>
 </div>
+
+<style>
+    .quarter-circle-bottom-right{
+         width: 30px;
+         height: 30px;
+         border-radius: 100px 0 0 0;
+    
+    }
+      .plus-hover:hover{
+        position: absolute;
+        bottom: 15px;
+        transform: scale(2);
+        transform-origin: right bottom;
+    
+      }
+    </style>
 
 
 

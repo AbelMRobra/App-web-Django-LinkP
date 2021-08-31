@@ -124,10 +124,14 @@ def cajasActivas(user):
         automatico = sum(np.array(con_caja.filter(nota__contains = "AUTO-").values_list("importe", flat=True)))
         usuarios = con_caja.values_list('creador', flat = True).distinct()
 
+        ingresos_usd = sum(np.array(con_caja.filter(estado = "INGRESOS").exclude(importe_usd = None).values_list("importe_usd", flat=True)))
+        gastos_usd = sum(np.array(con_caja.filter(estado = "GASTOS").exclude(importe_usd = None).values_list("importe_usd", flat=True)))
+        balance_usd = ingresos_usd - gastos_usd
+
         aux = 0
         usuarios_participan = [(datosusuario.objects.get(identificacion = u), aux + 15) for u in usuarios]
         
-        total_cajas.append((nombre, ingresos, gastos, balance, usuarios_participan, automatico))
+        total_cajas.append((nombre, ingresos, gastos, balance, usuarios_participan, automatico, ingresos_usd, gastos_usd, balance_usd))
 
     return total_cajas
 
@@ -152,13 +156,17 @@ def cajasAdministras(user):
                 automatico = sum(np.array(con_general.filter(usuario = user_adm, nota__contains = "AUTO-", caja = caja).values_list("importe", flat=True)))
                 usuarios_v = con_general.filter(usuario = user_adm, caja = caja).values_list('creador', flat = True).distinct()
                 
+                ingresos_usd = sum(np.array(con_general.filter(usuario = user_adm, estado = "INGRESOS", caja = caja).exclude(importe_usd = None).values_list("importe_usd", flat=True)))
+                gastos_usd = sum(np.array(con_general.filter(usuario = user_adm, estado = "GASTOS", caja = caja).exclude(importe_usd = None).values_list("importe_usd", flat=True)))
+                balance_usd = ingresos_usd - gastos_usd
+
                 aux = 0
                 for u in usuarios_v:
                     user_aux = datosusuario.objects.get(identificacion = u)
                     usuarios_participan.append((user_aux, aux))
                     aux += 15
 
-                cajas_administras.append((nombre,ingresos, gastos, balance, user_adm, usuarios_participan, automatico))
+                cajas_administras.append((nombre, ingresos, gastos, balance, user_adm, usuarios_participan, automatico, ingresos_usd, gastos_usd, balance_usd,))
 
     return cajas_administras
 
