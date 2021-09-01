@@ -26,8 +26,8 @@ class CuentaCorrienteAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = ('venta', )
 
 class CuotaAdmin(ImportExportModelAdmin, admin.ModelAdmin):
-    list_display = ('fecha', 'cuenta_corriente', 'constante')
-    search_fields = ('cuenta_corriente__id',)
+    list_display = ('concepto', 'fecha', 'cuenta_corriente', 'constante')
+    search_fields = ('concepto', 'cuenta_corriente__id',)
 
 class PagoResource(resources.ModelResource):
     class Meta:
