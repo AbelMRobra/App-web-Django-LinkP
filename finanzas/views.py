@@ -108,7 +108,11 @@ class PdfPrueba(View):
                         for pago in pagos:
                             pagos_pesos+=pago.pago_pesos
                             pagos_moneda_dura+=pago.pago
-                        total_pagado = pagos_pesos/pagos_moneda_dura
+
+                        if pagos_moneda_dura != 0:
+                            total_pagado = pagos_pesos/pagos_moneda_dura
+                        else:
+                            total_pagado = 1
                     else:
                         for pago in pagos:
 
