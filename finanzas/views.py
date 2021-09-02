@@ -102,8 +102,8 @@ class PdfPrueba(View):
                     if cuota.pagada == 'SI':
                         
                         total_pagado = cuota.precio
-                else:  
-                    total_pagado = total_pagado + sum(np.array(Pago.objects.filter(cuota = cuota).values_list("pago", flat = True)))
+                    else:  
+                        total_pagado = total_pagado + sum(np.array(Pago.objects.filter(cuota = cuota).values_list("pago", flat = True)))
 
             saldo_moneda = total_moneda - total_pagado
             saldo_pesos = saldo_moneda*moneda.valor
