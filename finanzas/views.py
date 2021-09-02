@@ -3,6 +3,7 @@ import datetime
 import pandas as pd
 import numpy as np
 import random
+import statistics as stat
 from django.db.models import Sum
 from io import  BytesIO
 from xhtml2pdf import pisa
@@ -77,17 +78,30 @@ class PdfPrueba(View):
 
         for cuota in cuotas:
 
-            nombre_conceptos.append(cuota.concepto)
+            nombre_conceptos.append(cuota.concepto.upper())
 
         nombre_conceptos = set(nombre_conceptos)
 
         saldo_total_pesos = 0
-
+  
         for nombre in nombre_conceptos:
 
-            moneda = 0
+            moneda = cuotas.filter(concepto__icontain = nombre).exclude(concepto__icontain = "FROZEN").values_list("moneda__id", flat = True)
+
+            if len(moneda) == 0:
+
+                moneda = Constantes.objects.get(id = 7).valor
+
+            else:
+
+                id_moneda = stat.mode(moneda)
+
+                moneda = Constantes.objects.get(id = id_moneda).valor
+            
             total_moneda = 0
+            
             cuotas_t = 0
+            
             total_pagado = 0
 
             for cuota in cuotas:
@@ -95,17 +109,23 @@ class PdfPrueba(View):
                 if nombre == cuota.concepto:
 
                     moneda = cuota.constante
-                    total_moneda = total_moneda + cuota.precio
+                    
+                    total_moneda = total_moneda + cuota.precio*cuota.constante.valor
 
                     cuotas_t = (cuotas_t + 1)
                     
                     if cuota.pagada == 'SI':
                         
-                        total_pagado = total_pagado + cuota.precio
+                        total_pagado = total_pagado + cuota.precio*cuota.constante.valor
+                    
                     else:  
-                        total_pagado = total_pagado + sum(np.array(Pago.objects.filter(cuota = cuota).values_list("pago", flat = True)))
+                        
+                        total_pagado = total_pagado + (sum(np.array(Pago.objects.filter(cuota = cuota).values_list("pago", flat = True)))*sum(np.array(Pago.objects.filter(cuota = cuota).values_list("cuota__constante__valor", flat = True))))
 
+            total_moneda = total_moneda/moneda
+            total_pagado = total_pagado/moneda
             saldo_moneda = total_moneda - total_pagado
+            
             saldo_pesos = saldo_moneda*moneda.valor
             saldo_total_pesos = saldo_total_pesos + saldo_pesos
             
@@ -120,7 +140,7 @@ class PdfPrueba(View):
 
         datos = sorted(datos, key=lambda datos: datos[7], reverse=True)
 
-        #Aqui creo la curva de ingresos por mes
+        #########  Aqui creo la curva de ingresos por mes
 
         fechas = []
 
