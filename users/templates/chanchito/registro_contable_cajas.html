@@ -113,9 +113,9 @@
                                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
                                             <div class="dropdown-menu dropdown-menu-right">
                                                 <a href="#" class="dropdown-item" data-toggle="modal"
-                                                    data-target="#ModalBorrarTodo{{user.username}}{{i.0|cut:' '}}"><i class="fa fa-trash-o mr-2"></i>Borrar</a>
+                                                    data-target="#ModalBorrarTodo{{user.username}}{{i.0|cut:' '}}{{i.0|cut:'.'}}"><i class="fa fa-trash-o mr-2"></i>Borrar</a>
                                                 <a href="#" class="dropdown-item text-danger" data-toggle="modal"
-                                                    data-target="#ModalBorrar{{user.username}}{{i.0|cut:' '}}"><i class="fa fa-trash-o mr-2"></i>Borrar todo</a>
+                                                    data-target="#ModalBorrar{{user.username}}{{i.0|cut:' '}}{{i.0|cut:'.'}}"><i class="fa fa-trash-o mr-2"></i>Borrar todo</a>
                                             </div>
                                         </div>
     
@@ -154,12 +154,12 @@
     
                                     </div>
 
-                                    <a href="#"data-toggle="modal" data-target="#ModalCajas{{user.username}}{{i.0|cut:' '}}"  class="bg-primary plus-hover quarter-circle-bottom-right"style="position: absolute; bottom: 3px; right:3px"><i class="fa fa-plus text-light" style="margin-top: 8px; margin-left: 10px;"></i></a>
+                                    <a href="#"data-toggle="modal" data-target="#ModalCajas{{user.username}}{{i.0|cut:' '}}{{i.0|cut:'.'}}"  class="bg-primary plus-hover quarter-circle-bottom-right"style="position: absolute; bottom: 3px; right:3px"><i class="fa fa-plus text-light" style="margin-top: 8px; margin-left: 10px;"></i></a>
                                 </div>
                             </div>
                         </div>
     
-                        <div class="modal fade" id="ModalCajas{{user.username}}{{i.0|cut:' '}}" tabindex="-1" role="dialog" aria-labelledby="ModalCajas" aria-hidden="true">
+                        <div class="modal fade" id="ModalCajas{{user.username}}{{i.0|cut:' '}}{{i.0|cut:'.'}}" tabindex="-1" role="dialog" aria-labelledby="ModalCajas" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered" role="document">
                               <div class="modal-content">
                                 <div class="modal-header" style="background-color: #2a3e52;">
@@ -195,7 +195,7 @@
                             </div>
                           </div>
                     
-                        <div class="modal fade" id="ModalBorrar{{user.username}}{{i.0|cut:' '}}" tabindex="-1" role="dialog"
+                        <div class="modal fade" id="ModalBorrar{{user.username}}{{i.0|cut:' '}}{{i.0|cut:'.'}}" tabindex="-1" role="dialog"
                             aria-labelledby="ModalBorrar{{i.0|cut:' '}}" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered" role="document">
                                 <div class="modal-content">
@@ -233,7 +233,7 @@
                             </div>
                         </div>
     
-                        <div class="modal fade" id="ModalBorrarTodo{{user.username}}{{i.0|cut:' '}}" tabindex="-1" role="dialog"
+                        <div class="modal fade" id="ModalBorrarTodo{{user.username}}{{i.0|cut:' '}}{{i.0|cut:'.'}}" tabindex="-1" role="dialog"
                             aria-labelledby="ModalBorrar{{i.0|cut:' '}}" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered" role="document">
                                 <div class="modal-content">
@@ -301,9 +301,9 @@
                                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
                                             <div class="dropdown-menu dropdown-menu-right">
                                                 <a href="#" class="dropdown-item" data-toggle="modal"
-                                                    data-target="#ModalBorrarTodo{{i.4.id}}{{i.0|cut:' '}}"><i class="fa fa-trash-o mr-2"></i>Borrar</a>
+                                                    data-target="#ModalBorrarTodo{{i.4.id}}{{i.0|cut:' '}}{{i.0|cut:'.'}}"><i class="fa fa-trash-o mr-2"></i>Borrar</a>
                                                 <a href="#" class="dropdown-item text-danger" data-toggle="modal"
-                                                    data-target="#ModalBorrar{{i.4.id}}{{i.0|cut:' '}}"><i class="fa fa-trash-o mr-2"></i>Borrar todo</a>
+                                                    data-target="#ModalBorrar{{i.4.id}}{{i.0|cut:' '}}{{i.0|cut:'.'}}"><i class="fa fa-trash-o mr-2"></i>Borrar todo</a>
                                             </div>
                                         </div>
     
@@ -339,14 +339,14 @@
 
                                     </div>
 
-                                    <a  href="#"data-toggle="modal" data-target="#ModalCajas{{i.4.id}}{{i.0|cut:' '}}"  class="bg-secondary plus-hover quarter-circle-bottom-right"style="position: absolute; bottom: 3px; right:3px"><i class="fa fa-plus text-light" style="margin-top: 8px; margin-left: 10px;"></i></a>
+                                    <a  href="#"data-toggle="modal" data-target="#ModalCajas{{i.4.id}}{{i.0|cut:' '}}{{i.0|cut:'.'}}"  class="bg-secondary plus-hover quarter-circle-bottom-right"style="position: absolute; bottom: 3px; right:3px"><i class="fa fa-plus text-light" style="margin-top: 8px; margin-left: 10px;"></i></a>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Modal exploratorio -->
 
-                        <div class="modal fade" id="ModalCajas{{i.4.id}}{{i.0|cut:' '}}" tabindex="-1" role="dialog" aria-labelledby="ModalCajas" aria-hidden="true">
+                        <div class="modal fade" id="ModalCajas{{i.4.id}}{{i.0|cut:' '}}{{i.0|cut:'.'}}" tabindex="-1" role="dialog" aria-labelledby="ModalCajas" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered" role="document">
                               <div class="modal-content">
                                 <div class="modal-header" style="background-color: #2a3e52;">
@@ -382,7 +382,7 @@
                             </div>
                           </div>
     
-                        <div class="modal fade" id="ModalBorrar{{i.4.id}}{{i.0|cut:' '}}" tabindex="-1" role="dialog"
+                        <div class="modal fade" id="ModalBorrar{{i.4.id}}{{i.0|cut:' '}}{{i.0|cut:'.'}}" tabindex="-1" role="dialog"
                                     aria-labelledby="ModalBorrar{{i.0|cut:' '}}" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered" role="document">
                                         <div class="modal-content">
@@ -420,7 +420,7 @@
                                     </div>
                             </div>
 
-                        <div class="modal fade" id="ModalBorrarTodo{{i.4.id}}{{i.0|cut:' '}}" tabindex="-1" role="dialog"
+                        <div class="modal fade" id="ModalBorrarTodo{{i.4.id}}{{i.0|cut:' '}}{{i.0|cut:'.'}}" tabindex="-1" role="dialog"
                             aria-labelledby="ModalBorrar{{i.0|cut:' '}}" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered" role="document">
                                 <div class="modal-content">
