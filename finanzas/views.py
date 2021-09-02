@@ -90,13 +90,13 @@ class PdfPrueba(View):
 
             if len(moneda) == 0:
 
-                moneda = Constantes.objects.get(id = 7).valor
+                moneda = Constantes.objects.get(id = 7)
 
             else:
 
                 id_moneda = stat.mode(moneda)
 
-                moneda = Constantes.objects.get(id = id_moneda).valor
+                moneda = Constantes.objects.get(id = id_moneda)
             
             total_moneda = 0
             
