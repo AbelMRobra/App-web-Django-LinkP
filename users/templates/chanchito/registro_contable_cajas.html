@@ -169,24 +169,31 @@
                                   </button>
                                 </div>
                                 <div class="modal-body">
-                                  <div class="row">
-                                    <div class="mx-4 rounded-circle border {% if i.10 == 100 %} border-success {% else %} border-danger {% endif %} d-flex align-items-center justify-content-center" style="height: 160px; width: 160px;">
-                                      <h1 class="text-center">{{i.10|floatformat:0}}%</h1>
-                                    </div>
-                                    <div class="col-6">
-                                      <div>
-                                        <h4>Balance</h4>
-                                        <small class="text-subtitule ml-1">${{i.3|floatformat:2|intcomma}} / {{i.9|floatformat:2|intcomma}} USD</small>
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <h4>Registros dolarizados</h4>
+                                            <div class="mx-4 rounded-circle border {% if i.10 == 100 %} border-success {% else %} border-danger {% endif %} d-flex align-items-center justify-content-center" style="height: 160px; width: 160px;">
+                                            <h1 class="text-center">{{i.9|floatformat:0}}%</h1>
+                                            </div>
+    
+                                        </div>
+                                        
+                                        <div class="col-6">
+    
+                                            <h4>Detalles</h4>
+                                          
+                                            <div class="mt-1">
+                                            <h5>Balance</h5>
+                                            <small class="text-subtitule ml-1 text-info">${{i.3|floatformat:2|intcomma}} / {{i.8|floatformat:2|intcomma}} USD</small>
+                                          </div>
+                                          <div class="mt-2">
+                                            <h5 class="text-subtitule ml-1">Gastos:</h5>
+                                            <small class="text-subtitule ml-3 text-danger">${{i.2|floatformat:2|intcomma}} / {{i.7|floatformat:2|intcomma}} USD</small>
+                                            <h5 class="text-subtitule ml-1 mt-1">Ingresos:</h5>
+                                            <small class="text-subtitule ml-3 text-success">${{i.1|floatformat:2|intcomma}} / {{i.6|floatformat:2|intcomma}} USD</small>
+                                          </div>
+                                        </div>
                                       </div>
-                                      <div class="mt-2">
-                                        <h4>Detalle</h4>
-                                        <h6 class="text-subtitule ml-1">Gastos:</h6>
-                                        <small class="text-subtitule ml-3">${{i.2|floatformat:2|intcomma}} / {{i.8|floatformat:2|intcomma}} USD</small>
-                                        <h6 class="text-subtitule ml-1 mt-1">Ingresos:</h6>
-                                        <small class="text-subtitule ml-3">${{i.1|floatformat:2|intcomma}} / {{i.7|floatformat:2|intcomma}} USD</small>
-                                      </div>
-                                    </div>
-                                  </div>
                                 </div>
                                 <div class="modal-footer">
                                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
@@ -357,20 +364,27 @@
                                 </div>
                                 <div class="modal-body">
                                   <div class="row">
-                                    <div class="mx-4 rounded-circle border {% if i.10 == 100 %} border-success {% else %} border-danger {% endif %} d-flex align-items-center justify-content-center" style="height: 160px; width: 160px;">
-                                      <h1 class="text-center">{{i.10|floatformat:0}}%</h1>
-                                    </div>
                                     <div class="col-6">
-                                      <div>
-                                        <h4>Balance</h4>
-                                        <small class="text-subtitule ml-1">${{i.3|floatformat:2|intcomma}} / {{i.9|floatformat:2|intcomma}} USD</small>
+                                        <h4>Registros dolarizados</h4>
+                                        <div class="mx-4 rounded-circle border {% if i.10 == 100 %} border-success {% else %} border-danger {% endif %} d-flex align-items-center justify-content-center" style="height: 160px; width: 160px;">
+                                        <h1 class="text-center">{{i.10|floatformat:0}}%</h1>
+                                        </div>
+
+                                    </div>
+                                    
+                                    <div class="col-6">
+
+                                        <h4>Detalles</h4>
+                                      
+                                        <div class="mt-1">
+                                        <h5>Balance</h5>
+                                        <small class="text-subtitule ml-1 text-info">${{i.3|floatformat:2|intcomma}} / {{i.9|floatformat:2|intcomma}} USD</small>
                                       </div>
                                       <div class="mt-2">
-                                        <h4>Detalle</h4>
-                                        <h6 class="text-subtitule ml-1">Gastos:</h6>
-                                        <small class="text-subtitule ml-3">${{i.2|floatformat:2|intcomma}} / {{i.8|floatformat:2|intcomma}} USD</small>
-                                        <h6 class="text-subtitule ml-1 mt-1">Ingresos:</h6>
-                                        <small class="text-subtitule ml-3">${{i.1|floatformat:2|intcomma}} / {{i.7|floatformat:2|intcomma}} USD</small>
+                                        <h5 class="text-subtitule ml-1">Gastos:</h5>
+                                        <small class="text-subtitule ml-3 text-danger">${{i.2|floatformat:2|intcomma}} / {{i.8|floatformat:2|intcomma}} USD</small>
+                                        <h5 class="text-subtitule ml-1 mt-1">Ingresos:</h5>
+                                        <small class="text-subtitule ml-3 text-success">${{i.1|floatformat:2|intcomma}} / {{i.7|floatformat:2|intcomma}} USD</small>
                                       </div>
                                     </div>
                                   </div>

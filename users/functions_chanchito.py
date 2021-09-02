@@ -128,10 +128,18 @@ def cajasActivas(user):
         gastos_usd = sum(np.array(con_caja.filter(estado = "GASTOS").exclude(importe_usd = None).values_list("importe_usd", flat=True)))
         balance_usd = ingresos_usd - gastos_usd
 
+        try:
+
+            porcentaje = len(con_caja.filter(caja = caja).exclude(importe_usd = None))/len(con_caja.filter(caja = caja))*100
+
+        except:
+
+            porcentaje = 100
+
         aux = 0
         usuarios_participan = [(datosusuario.objects.get(identificacion = u), aux + 15) for u in usuarios]
         
-        total_cajas.append((nombre, ingresos, gastos, balance, usuarios_participan, automatico, ingresos_usd, gastos_usd, balance_usd))
+        total_cajas.append((nombre, ingresos, gastos, balance, usuarios_participan, automatico, ingresos_usd, gastos_usd, balance_usd, porcentaje))
 
     return total_cajas
 
