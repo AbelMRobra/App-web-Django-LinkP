@@ -101,18 +101,10 @@ class PdfPrueba(View):
 
                     pagos = Pago.objects.filter(cuota = cuota)
                     
-                    if cuota.pagada=='SI':
-                        pagos_pesos=0
-                        pagos_moneda_dura=0
-
-                        for pago in pagos:
-                            pagos_pesos+=pago.pago_pesos
-                            pagos_moneda_dura+=pago.pago
-
-                        if pagos_moneda_dura != 0:
-                            total_pagado = pagos_pesos/pagos_moneda_dura
-                        else:
-                            total_pagado = 1
+                    if cuota.pagada == 'SI':
+                        
+                        total_pagado = cuota.precio
+                    
                     else:
                         for pago in pagos:
 
