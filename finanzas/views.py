@@ -78,7 +78,7 @@ class PdfPrueba(View):
 
         for cuota in cuotas:
 
-            nombre_conceptos.append(cuota.concepto.upper())
+            nombre_conceptos.append(cuota.concepto)
 
         nombre_conceptos = set(nombre_conceptos)
 
