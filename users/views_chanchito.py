@@ -170,7 +170,10 @@ def registro_contable_caja(request, caja, user_caja, estado, mes, year):
     year = year
 
     user = datosusuario.objects.get(identificacion = request.user.username)
-    list_year = list(set(RegistroContable.objects.filter(usuario = user, caja = caja).values_list("fecha__year", flat=True)))
+    con_principal = RegistroContable.objects.filter(usuario = user, caja = caja)
+
+    
+    list_year = list(set(con_principal.values_list("fecha__year", flat=True)))
     if request.method == 'POST':
         try:
 
@@ -246,7 +249,10 @@ def registro_contable_caja(request, caja, user_caja, estado, mes, year):
     context["estado"] = estado
     context["mes"] = mes
     context["year"] = year
-    context["list_year"] = list_year
+    context["list_year"] = list_year 
+    context["ingresos"] = sum(np.array(con_principal.filter(estado = "INGRESOS").values_list("importe", flat=True)))
+    context["gastos"] = sum(np.array(con_principal.filter(estado = "GASTOS").values_list("importe", flat=True)))
+    context["saldo"] = context["ingresos"] - context["gastos"]
     
     return render(request, 'chanchito/registro_contable_caja.html', context)
 

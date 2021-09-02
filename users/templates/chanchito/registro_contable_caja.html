@@ -7,7 +7,7 @@
 <div class="container-fluid">
     <div class="row page-titles">
         <div class="col-md-5 align-self-center">
-            <h3 class="text-themecolor">Caja completa</h3>
+            <h3 class="text-themecolor">{{caja}}</h3>
         </div>
 
         <div class="col-md-7 align-self-center">
@@ -23,19 +23,27 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="card-title"><span class="lstick m-r-20"></span>{{caja}}</h4>
-                        <h6 class="card-subtitle">Los gastos registrados</h6>
+
+                    <div class="d-flex justify-content-center text-center shadow-sm mb-5">
+
+                        <div class="row col-12 col-lg-12 show-grid m-3">
+                            <div class="col-md-4 col-4 font-bold"><i class="fa fa-plus"></i> Ingresos <b class="text-success ml-2">${{ingresos|floatformat:2|intcomma}}</b></div>
+                            <div class="col-md-4 col-4  font-bold"><i class="fa fa-inbox"></i> Saldo: <b class="text-info ml-2">${{saldo|floatformat:2|intcomma}}</b></div>
+                            <div class="col-md-4 col-4  font-bold"><i class="fa fa fa-credit-card-alt"></i> Gastos <b class="text-danger ml-2">${{gastos|floatformat:2|intcomma}}</b></div>
+                        </div>
+
+                    </div>
+                    
+
                         <div class="col-12 col-md-12 col-lg-12 justify-content-center">
-                            <div>
+                            <div class="d-flex justify-content-end">
                                 
-                                <a href="#" data-toggle="modal" data-target="#ModalCuenta1" class="btn btn-info">Agregar</a>
-    
+
                                 <div id="ModalCuenta1" class="modal fade" tabindex="-1" role="dialog"
                                         aria-labelledby="ModalCuenta1" aria-hidden="true">
                                         <div class="modal-dialog modal-dialog-centered" role="document">
                                             <div class="modal-content">
-                                                <div class="modal-header" style="background: rgb(36,160,237);
-                                        background: linear-gradient(315deg, rgba(36,160,237,1) 0%, rgba(56,56,130,1) 22%, rgba(0,212,255,1) 100%);">
+                                                <div class="modal-header" style="background-color: #2a3e52;">
                                                     <h5 class="modal-title  text-light" id="exampleModalLongTitle">Cargar un elemento</h5>
                                                     <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
                                                         <span aria-hidden="true">&times;</span>
@@ -152,7 +160,7 @@
                                     </div>
     
                                 <div class="btn-group">
-                                    <button type="button" class="btn btn-info dropdown-toggle ml-2"
+                                    <button type="button" class="btn btn-secondary btn-rounded dropdown-toggle ml-2"
                                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onclick="myFunction()">
                                         Tipo
                                     </button>
@@ -165,7 +173,7 @@
                                     </div>
                                 </div>
                                 <div class="btn-group">
-                                    <button type="button" class="btn btn-dark dropdown-toggle ml-2"
+                                    <button type="button" class="btn btn-secondary btn-rounded  dropdown-toggle ml-2"
                                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onclick="myFunction()">
                                         Mes
                                     </button>
@@ -188,7 +196,7 @@
              
                                 </div>
                                 <div class="btn-group">                                
-                                    <button type="button" class="btn btn-dark dropdown-toggle ml-2"
+                                    <button type="button" class="btn btn-secondary btn-rounded  dropdown-toggle ml-2"
                                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onclick="myFunction()">
                                            Año
                                        </button>
@@ -204,7 +212,7 @@
                                 </div>
                             </div>
     
-                            <div class="table-responsive">
+                            <div class="table-responsive mt-2">
                                 <table id="example1" class="table table-bordered " style="width:100%; font-size: 14px;">
                                     <thead style="font-size: 12px;">
                                         <tr>
@@ -391,7 +399,18 @@
         </div>
 </div>
 
+<a id="add" href="#" data-toggle="modal" data-target="#ModalCuenta1" class="btn btn-lg btn-info btn-circle fa fa-5x fa-plus"></a>
 
+<style>
+
+
+    #add{
+        position: fixed;
+        bottom: 60px;
+        right: 20px;
+    }
+
+</style>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
@@ -408,6 +427,20 @@
             "search": "Buscar"
         },
             "order": [[0, "desc"]],
+
+            dom: 'Bfrtip',
+            buttons: [
+                {
+                    footer: true,
+                    extend: 'excelHtml5',
+                    title: '{{caja}}',
+                    className: "btn btn-info",
+
+                init: function(api, node, config) {
+                    $(node).removeClass('dt-button buttons-excel buttons-html5')
+                    }
+                },
+            ]
         });
     });
 </script>
