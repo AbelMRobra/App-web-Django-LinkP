@@ -86,7 +86,7 @@ class PdfPrueba(View):
   
         for nombre in nombre_conceptos:
 
-            moneda = cuotas.filter(concepto__contains = nombre).exclude(concepto__contains = "FROZEN").values_list("moneda__id", flat = True)
+            moneda = cuotas.filter(concepto__contains = nombre).exclude(concepto__contains = "FROZEN").values_list("constante__id", flat = True)
 
             if len(moneda) == 0:
 
