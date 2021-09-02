@@ -122,8 +122,8 @@ class PdfPrueba(View):
                         
                         total_pagado = total_pagado + (sum(np.array(Pago.objects.filter(cuota = cuota).values_list("pago", flat = True)))*sum(np.array(Pago.objects.filter(cuota = cuota).values_list("cuota__constante__valor", flat = True))))
 
-            total_moneda = total_moneda/moneda
-            total_pagado = total_pagado/moneda
+            total_moneda = total_moneda/moneda.valor
+            total_pagado = total_pagado/moneda.valor
             saldo_moneda = total_moneda - total_pagado
             
             saldo_pesos = saldo_moneda*moneda.valor
