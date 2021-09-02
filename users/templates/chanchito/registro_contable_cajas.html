@@ -105,7 +105,8 @@
     
                                         <div>
                                             <h6 class="text-light"><img class="mr-2" src="{{user.imagenlogo.url}}" alt="usuario"
-                                                    style="max-width:30px; height:auto;"> {{i.0}}</h6>
+                                                    style="max-width:30px; height:auto;"> {{i.0}} </h6>
+                                                    
                                             
                                         </div>
                                         <div class="btn-group mt-1">
@@ -121,36 +122,28 @@
     
                                     </div>
 
-                                    <div class="row d-flex justify-content-center ">
+                                    <div class="row d-flex justify-content-left ">
 
-                                        <div class="col-6 col-lg 1 mt-2">
-                                            <a class="mt-1" href="{% url 'Registro Contable Caja' i.0 user.identificacion 0 0 0 %}"><button class="btn btn-lg btn-outline-light text-secondary btn-circle fa fa-lg fa-inbox" data-toggle="tooltip" data-placement="bottom" title="Explorar caja"></button></a>
-    
+                                        
+                                        <div>
+                                            <span class="label label-success label-rounded">INGRESOS: ${{i.1|floatformat:2|intcomma}}</span>
                                         </div>
-    
-                                        <div class="col-6 col-lg 2" style="text-align: right;">
-                                            <div>
-                                                <span class="label label-success label-rounded">${{i.1|floatformat:2|intcomma}}</span>
-                                            </div>
-                                            <div>
-                                                <span class="label label-danger label-rounded">${{i.2|floatformat:2|intcomma}}</span>
-                                            </div>
-                                            <div>
-                                                <span class="label label-info label-rounded">${{i.3|floatformat:2|intcomma}}</span>
-                                            </div>
-    
+                                        <div class="mt-1">
+                                            <span class="label label-danger label-rounded">GASTOS: ${{i.2|floatformat:2|intcomma}}</span>
                                         </div>
-
+                                        <div class="mt-1">
+                                            <span class="label label-info label-rounded">BALLANCE: ${{i.3|floatformat:2|intcomma}}</span>
+                                        </div>
 
                                     </div>
                                     
-                                    <div style="display: flex; justify-content: space-between; margin-top: 15px">
+                                    <div class="row d-flex justify-content-center mt-2">
 
 
-                                        <div>
-                                            <span class="label label-primary label-rounded">Dueño</span>
-                                        </div>
-    
+                                        <a class="mt-1" href="{% url 'Registro Contable Caja' i.0 user.identificacion 0 0 0 %}"><button class="btn btn-sm btn-outline-light text-secondary btn-circle fa fa-lg fa-inbox" data-toggle="tooltip" data-placement="bottom" title="Explorar caja"></button></a>
+                                            
+                                            
+                    
     
                                     </div>
 
@@ -316,34 +309,26 @@
     
                                     </div>
 
-                                    <div class="row d-flex justify-content-center ">
+                                    <div class="row d-flex justify-content-left ">
 
-                                        <div class="col-6 col-lg 1 mt-2">
-
-                                            <a class="mt-1" href="{% url 'Registro Contable Caja' i.0 i.4.identificacion 0 0 0 %}"><button class="btn btn-lg btn-outline-secondary btn-circle fa fa-lg fa-inbox" data-toggle="tooltip" data-placement="bottom" title="Explorar caja"></button></a>
-       
-                                        </div>
-    
-                                        <div class="col-6 col-lg 2" style="text-align: right;">
-
-                                            <div>
-                                                <span class="label label-success label-rounded">${{i.1|floatformat:2|intcomma}}</span>
-                                            </div>
-                                            <div>
-                                                <span class="label label-danger label-rounded">${{i.2|floatformat:2|intcomma}}</span>
-                                            </div>
-                                            <div>
-                                                <span class="label label-info label-rounded">${{i.3|floatformat:2|intcomma}}</span>
-                                            </div>
-
-                                        </div>
-                                    </div>
-
-                                    <div style="display: flex; justify-content: space-between; margin-top: 15px">
+                                        
                                         <div>
-                                            <span class="label label-info label-rounded">Colaborador</span>
+                                            <span class="label label-success label-rounded">INGRESOS: ${{i.1|floatformat:2|intcomma}}</span>
+                                        </div>
+                                        <div class="mt-1">
+                                            <span class="label label-danger label-rounded">GASTOS: ${{i.2|floatformat:2|intcomma}}</span>
+                                        </div>
+                                        <div class="mt-1">
+                                            <span class="label label-info label-rounded">BALLANCE: ${{i.3|floatformat:2|intcomma}}</span>
                                         </div>
 
+                                    </div>
+                                    
+                                    <div class="row d-flex justify-content-center mt-2">
+
+
+                                        <a class="mt-1" href="{% url 'Registro Contable Caja' i.0 i.4.identificacion 0 0 0 %}"><button class="btn btn-sm btn-secondary text-secondary btn-circle fa fa-lg fa-inbox" data-toggle="tooltip" data-placement="bottom" title="Explorar caja"></button></a>
+                                            
                                     </div>
 
                                     <a  href="#"data-toggle="modal" data-target="#ModalCajas{{i.4.id}}{{i.0|cut:' '|cut:'.'}}"  class="bg-secondary plus-hover quarter-circle-bottom-right"style="position: absolute; bottom: 3px; right:3px"><i class="fa fa-plus text-light" style="margin-top: 8px; margin-left: 10px;"></i></a>
