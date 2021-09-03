@@ -387,9 +387,13 @@
 
 {% if que_hacer_general %}
 
+<a id="add" href="#" class="btn btn-lg btn-info btn-circle fa fa-5x fa-question-circle"></a>
+
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 
 <script>
+  $( "#add" ).click(function() {
     Swal.fire({
     title: 'Bienvenido {{request.user.first_name}}',
     allowOutsideClick: false,
@@ -399,9 +403,22 @@
     imageHeight: 200,
     imageAlt: 'Custom image',
     })
-
+  });
 
 </script>
+
+<style>
+    #add{
+        position: fixed;
+        bottom: 60px;
+        right: 20px;
+    }
+
+</style>
+
+
+
+
 
 
 
