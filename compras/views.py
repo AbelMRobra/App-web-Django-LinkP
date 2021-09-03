@@ -70,50 +70,72 @@ def cargarocautorizar(request):
     proveedores = Proveedores.objects.all()
     contratos = Contratos.objects.all()
 
+    context = {}
+
     mensaje = 0
 
     if request.method == "POST":
 
-        try:
-            proveedor = Proveedores.objects.get(name=request.POST['proveedor'])
-        except:
-            mensaje = "El proveedor solicitado no esta cargado, solicite su carga con el área de presupuestos"
-            proveedor = 0
+        # Error posible numero 1 -> Que el proveedor no exista 
 
-        if proveedor:
+        if len(Proveedores.objects.filter(name=request.POST['proveedor'])) == 0:
+            context['mensaje_e'] = "El proveedor seleccionado no existe"
 
-            b = Comparativas(
+        elif len(request.POST['numerooc']) > 10:
+            context['mensaje_e'] = "El numero de OC es demasiado largo, pruebe un formato 99-9999"
 
-                proveedor = proveedor,
-                proyecto = request.POST['proyecto'],
-                numero  = request.POST['referencia'],
-                monto = float(request.POST['valor']),
-                adjunto = request.FILES['imagen'],
-                o_c = request.POST['numerooc'],
-                autoriza = request.POST['autoriza'],
-                publica = request.POST['publica'],
-                creador = str(request.user.username),
-                tipo_oc = request.POST['tipo_oc'],
-            )
-
-            b.save()
+        else:
 
             try:
-                b.adj_oc = request.FILES['oc']
+                
+                proveedor = Proveedores.objects.get(name=request.POST['proveedor'])
+
+                b = Comparativas(
+
+                    proveedor = proveedor,
+                    proyecto = request.POST['proyecto'],
+                    numero  = request.POST['referencia'],
+                    monto = float(request.POST['valor']),
+                    adjunto = request.FILES['imagen'],
+                    o_c = request.POST['numerooc'],
+                    autoriza = request.POST['autoriza'],
+                    publica = request.POST['publica'],
+                    creador = str(request.user.username),
+                    tipo_oc = request.POST['tipo_oc'],
+                )
+
                 b.save()
+
+                try:
+                    b.adj_oc = request.FILES['oc']
+                    b.save()
+                
+                except:
+                    
+                    pass
+
+                try:
+                    b.contrato = Contratos.objects.get(id=int(request.POST['contrato']))
+                    b.save()
+                    return redirect(f'/compras/comparativas/{10}/{0}/{0}#{b.id}')
+                except:
+
+                    return redirect(f'/compras/comparativas/{10}/{0}/{0}#{b.id}')
+
+            except UnicodeEncodeError:
+                
+                context['mensaje_e'] = "Algún documento adjunto tiene tildes, 'ñ' o simbolos no permitidos"
+
             except:
-                pass
+                
+                context['mensaje_e'] = "Surgio un error inesperado"
 
-            try:
-                b.contrato = Contratos.objects.get(id=int(request.POST['contrato']))
-                b.save()
-                return redirect('Comparativas', estado = 0, creador = 0, autoriza = 0)
-            except:
-
-                return redirect('Comparativas', estado = 0, creador = 0, autoriza = 0)
-
+    
+    context['mensaje'] = mensaje
+    context['proveedores'] = proveedores
+    context['contratos'] = contratos
         
-    return render(request, 'cargarocautorizar.html', {'mensaje':mensaje, 'proveedores':proveedores, 'contratos':contratos})
+    return render(request, 'cargarocautorizar.html', context)
 
 def editarcomparativas(request, id_comp):
 
@@ -154,7 +176,7 @@ def editarcomparativas(request, id_comp):
             except:
                 pass
         
-        return redirect('Comparativas', estado = 0, creador = 0, autoriza = 0)
+        return redirect(f'/compras/comparativas/{20}/{0}/{0}#{comparativa.id}')
 
         
     return render(request, 'comparativas_editar.html', {'contratos':contratos, 'proveedores':proveedores, 'comparativa':comparativa})
@@ -891,7 +913,20 @@ def descargacomparativas(request):
     return render(request, 'descargacom.html')
 
 def comparativas(request, estado, creador, autoriza):
-    
+
+    if 10 <= int(estado) < 20:
+        mensaje = 1
+        estado = str(int(estado) - 10)
+
+    elif 20 <= int(estado) < 30:
+
+        mensaje = 2
+        estado = str(int(estado) - 20)
+
+    else:
+
+        estado = estado
+
     # Consultas necesarias
 
     con_comparativas = Comparativas.objects.all()
@@ -1167,6 +1202,19 @@ def comparativas(request, estado, creador, autoriza):
     context['fecha_cierre'] = mensajeCierreOc()[1]
     context['mensaje_PL_SP']=mensaje_PL_SP
     context['list_autoriza']=list_autoriza
+
+    try:
+
+        if mensaje == 1:
+            context['mensaje_s']="Su OC fue cargada correctamente!"
+
+        if mensaje == 2:
+            context['mensaje_s']="Su OC se edito correctamente"
+
+    except:
+        
+        pass
+
     return render(request, 'comparativas.html', context)
 
 def compras(request, id_proyecto):

@@ -16,7 +16,7 @@
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{% url 'Principal compras' %}">Panel</a></li>
                 <li class="breadcrumb-item"><a href="{% url 'Comparativas' 0 0 0 %}">Solicitud</a></li>
-                <li class="breadcrumb-item">Formulario de solicitud</li>
+                <li class="breadcrumb-item">Formulario</li>
             </ol>
         </div>
     </div>
@@ -279,7 +279,32 @@
     </div>
 </div>
 
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+{% if mensaje_e %}
+
+<script>
+
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 5000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+    })
+
+    Toast.fire({
+        icon: 'warning',
+        title: '{{mensaje_e}}'
+    })
+
+</script>
+
+{% endif %}
 
 
 {% endblock %}

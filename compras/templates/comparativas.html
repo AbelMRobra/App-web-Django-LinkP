@@ -89,7 +89,7 @@
                        
                         <!-- Boton SP y PL-->
                         <div class="btn-group">
-                            <button type="button" class="btn btn-info dropdown-toggle ml-2" data-toggle="dropdown"
+                            <button type="button" class="btn btn-secondary btn-rounded dropdown-toggle ml-2" data-toggle="dropdown"
                                 aria-haspopup="true" aria-expanded="false">
                                 {{mensaje_PL_SP}}
                             </button>
@@ -106,7 +106,7 @@
                         </div>
                         <!-- Boton para creador-->
                         <div class="btn-group">
-                            <button type="button" class="btn btn-info dropdown-toggle ml-2" data-toggle="dropdown"
+                            <button type="button" class="btn btn-secondary btn-rounded dropdown-toggle ml-2" data-toggle="dropdown"
                                 aria-haspopup="true" aria-expanded="false" onclick="myFunction()">
                                 {{mensaje_creador}}
                             </button>
@@ -123,7 +123,7 @@
                         </div>
     
                         <div class="btn-group">
-                            <button type="button" class="btn btn-info dropdown-toggle ml-2" data-toggle="dropdown"
+                            <button type="button" class="btn btn-secondary btn-rounded dropdown-toggle ml-2" data-toggle="dropdown"
                                 aria-haspopup="true" aria-expanded="false" onclick="myFunction()">
                                 {{mensaje}}
                             </button>
@@ -164,7 +164,7 @@
     
                                     {% if i.2.publica == "SI" or request.user.username == i.2.autoriza or request.user.username == i.2.creador %}
     
-                                    <tr>
+                                    <tr id = {{i.2.id}}>
                                         <td style="text-align: center;">
                                             <img src="{{i.0.imagenlogo.url}}" width="40" class="img-circle">
                                             <h6 class="card-subtitle" style="font-size: 12px; margin-top: 2px;"><span
@@ -287,6 +287,47 @@
         </div>
     </div>
 </div>
+
+<a id="add" href="{% url 'Cargar O.C para autorizar' %}" class="btn btn-lg btn-info btn-circle fa fa-5x fa-plus"></a>
+
+<style>
+
+
+    #add{
+        position: fixed;
+        bottom: 60px;
+        right: 20px;
+    }
+
+</style>
+
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+{% if mensaje_s %}
+
+<script>
+
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 5000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+    })
+
+    Toast.fire({
+        icon: 'success',
+        title: '{{mensaje_s}}'
+    })
+
+</script>
+
+{% endif %}
+
 <style>
     #actions-hover{
         position: absolute;
@@ -348,6 +389,26 @@ function actionhoverout() {
 
 }
 </script>
+
+<script>
+
+    var url = window.location.href
+    var id = url.split('#')
+    var id_elemento = id[1]
+
+    console.log(id_elemento)
+
+    function PaintRow(id_elemento){
+    cell = document.getElementById(id_elemento);
+    cell.style.background = "#DBD8D8";
+
+    }
+
+    PaintRow(id_elemento)
+
+</script>
+
+
 
 
 
