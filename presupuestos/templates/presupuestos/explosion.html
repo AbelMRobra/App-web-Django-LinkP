@@ -14,8 +14,8 @@
 
         <div class="col-md-7 align-self-center">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
-                <li class="breadcrumb-item"><a href="{% url 'Panel de presupuestos' %}">Panel</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'presupuesto_proyecto' id_proyecto  %}">Presupuesto</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'Panel de presupuestos por capitulo' id_proyecto  %}">Reposición</a></li>
                 <li class="breadcrumb-item">Explosión</li>
 
             </ol>
@@ -26,19 +26,28 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="card-title">Explosión de insumos - <b
-                            style="color: rgb({{datos.proyecto.color}});">{{datos.proyecto}}</b></h4>
-                    <h6 class="card-subtitle">Detalle de los articulos del proyecto</h6>
-                    <div class="table-responsive m-t-40">
+                    <div class="d-flex align-items-center">
                         <div>
-                            <div class="dt-buttons">
-
-                                <a href="{% url 'Descarga Exp' id_proyecto=datos.proyecto.id %}"
-                                    class="dt-button buttons-copy buttons-html5">Excel</a>
-
-                            </div>
+                            <h4 class="card-title"><span class="lstick m-r-20"></span><b style="color: rgb({{datos.proyecto.color}});">{{datos.proyecto}}</b> - Explosión de insumos</h4>
+                            <h6 class="card-subtitle"></span>Detalle de los articulos del proyecto</h6>
+                        </div>
+                        <div class="mr-2" id="actions-hover" style="display: none;" >
+                            <span style="font-size: smaller;" class="bg-light p-2 rounded  border ">Opciones panel</span>
+                            <div id="actions-hover-after"></div>
                         </div>
 
+                        <div class="btn-group ml-auto">
+                            <a  href="JavaScript:void(0)" class="icon-options-vertical link" data-toggle="dropdown" 
+                                aria-haspopup="true" aria-expanded="false" onmouseover="actionhoverover('actions-hover')" onmouseout="actionhoverout('actions-hover')"></a>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a class="dropdown-item" href="{% url 'Descarga Exp' id_proyecto=datos.proyecto.id %}"><i
+                                        class="fa fa-file-excel-o mr-2"></i>Excel</a>
+    
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive mt-3">
                         <table id="example" class="table table-striped table-bordered" style="width:100%">
                             <thead>
                                 <tr>

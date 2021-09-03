@@ -1,7 +1,7 @@
 from django.urls import path, re_path
 from django.conf.urls import url
 from . import views, views_articulos, views_constantes
-from .views import ReporteExplosion, ReporteExplosionCap, ArticulosListApiView
+from .views import ReporteExplosion, ReporteExplosionCap, ArticulosListApiView, panel_presupuestos, presupuesto_auditor
 from django.contrib.auth.decorators import login_required
 
 urlpatterns = [
@@ -25,9 +25,10 @@ urlpatterns = [
     url(r'^crearanalisis/(?P<id_analisis>\d+)/$', login_required(views.modificaranalisis), name = 'Modificar analisis'),
     url(r'^ver_analisis/(?P<id_analisis>\d+)/$', login_required(views.ver_analisis), name = 'Composición Analisis'),
     #----------------URL PARA PRESPUESTOS -----------------------------------------  
-
+    path('panelpresupuestos',login_required(views.panel_presupuestos),name="Panel de presupuestos"),
+    path('presupuestoproyecto/<int:id>/',login_required(views.presupuestostotal),name="presupuesto_proyecto"),
     url(r'^presupuestos/auditor/$', login_required(views.presupuesto_auditor), name = 'Auditor de P'),
-    url(r'^presupuestos/$', login_required(views.presupuestostotal), name = 'Panel de presupuestos'),
+
     url(r'^saldocap/(?P<id_proyecto>\d+)/$', login_required(views.saldocapitulo), name = 'Saldo por capitulo'),
     url(r'^debugsa/(?P<id_proyecto>\d+)/$', login_required(views.debugsa), name = 'Debug Saldo'),
     url(r'^explosion/(?P<id_proyecto>\d+)/$', login_required(views.explosion), name = 'Explosión de insumos'),

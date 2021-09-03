@@ -30,9 +30,14 @@
                             <h6 class="card-subtitle"></span>Base de datos completa</h6>
                         </div>
                         {% if request.user|has_group:"PRESUPUESTO NIVEL 3" %}
+                        <div class="mr-2" id="actions-hover" style="display: none;" >
+                            <span style="font-size: smaller;" class="bg-light p-2 rounded  border ">Opciones panel</span>
+                            <div id="actions-hover-after"></div>
+                        </div>
+
                         <div class="btn-group ml-auto">
-                            <a href="JavaScript:void(0)" class="icon-options-vertical link" data-toggle="dropdown"
-                                aria-haspopup="true" aria-expanded="false"></a>
+                            <a  href="JavaScript:void(0)" class="icon-options-vertical link" data-toggle="dropdown" 
+                                aria-haspopup="true" aria-expanded="false" onmouseover="actionhoverover('actions-hover')" onmouseout="actionhoverout('actions-hover')"></a>
                             <div class="dropdown-menu dropdown-menu-right">
                                 <a class="dropdown-item" href="/presupuestos/insumcreate"><i
                                         class="fa fa-plus-circle mr-2"></i>Añadir articulo</a>
@@ -72,10 +77,13 @@
                                 
                                 {% if request.user|has_group:"PRESUPUESTO NIVEL 3" %}
                                 <td>
-
+                                    <div class="mr-2" id="actions-hover{{i.id}}" style="display: none;" >
+                                        <span style="font-size: smaller;" class="bg-light p-2 rounded  border ">Opciones panel</span>
+                                        <div id="actions-hover-after"></div>
+                                    </div>
                                     <div class="btn-group ml-auto">
-                                        <a href="JavaScript:void(0)" class="icon-options-vertical link" data-toggle="dropdown"
-                                            aria-haspopup="true" aria-expanded="false"></a>
+                                        <a  href="JavaScript:void(0)" class="icon-options-vertical link" data-toggle="dropdown" 
+                                        aria-haspopup="true" aria-expanded="false" onmouseover="actionhoverover('actions-hover{{i.id}}')" onmouseout="actionhoverout('actions-hover{{i.id}}')"></a>
                                         <div class="dropdown-menu dropdown-menu-right">
                                             <a class="dropdown-item" href="{% url 'Editar_insumo' i.codigo %}" ><i
                                                     class="fa fa-pencil-square-o mr-2"></i>Editar</a>
@@ -98,7 +106,25 @@
     </div>
 </div>
 
-
+<style>
+    #actions-hover{
+        position: absolute;
+        right: 35px;
+        
+        }
+    #actions-hover-after{
+        position: relative;
+        top: 11px;
+        width: 0;
+      height: 0;
+      border-top: 7px solid transparent;
+      border-left: 7px solid #ececec;
+      border-bottom: 7px solid transparent;
+        
+        }
+  
+   
+</style>
 
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 
@@ -116,6 +142,19 @@
         });
 
     });
+
+
+    function actionhoverover(id) {
+    let label = document.getElementById(id);
+    label = label.style.cssText = "position: absolute; right: 45px; display:flex;";
+
+    }
+    function actionhoverout(id) {
+        let label = document.getElementById(id);
+        label = label.style.display = "none"
+        
+
+    }
 </script>
 
 

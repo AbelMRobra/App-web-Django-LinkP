@@ -14,7 +14,8 @@
 
         <div class="col-md-7 align-self-center">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'Panel de presupuestos' %}">Panel</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'presupuesto_proyecto' id_proyecto  %}">Presupuesto</a></li>
                 <li class="breadcrumb-item">Fondos</li>
             </ol>
         </div>
@@ -27,29 +28,20 @@
                 <div class="card-body row">
                     <div class="col-12 justify-content-center">
 
-                        <div class="row d-flex justify-content-center">
-                            <div class="col col-md-12 col-lg-12 text-center">
-
-                                <img src="{% if datos.proyecto.iamgen.url %} {{datos.proyecto.iamgen.url}} {% else %} {% static 'img/Linkp.png' %} {% endif %}" class="img-fluid" alt="..."
-                                    style="max-width:200px;width:auto;height:auto; margin-top: 1rem;">
-
+                        <div class="d-flex align-items-center">
+                            <div>
+                                <h4 class="card-title"><span class="lstick m-r-20"></span><b
+                                        style="color: rgb({{datos.proyecto.color}});">{{datos.proyecto}}</b></h4>
+                                <h6 class="card-subtitle"></span>Fondos de reparo</h6>
                             </div>
-                            <div class="text-center my-3">
-                                <h6
-                                    style="color: rgb({{datos.proyecto.color}}); font-family: Arial, Helvetica, sans-serif;  margin-top: 10px;">
-                                    Fondos de reparo {{datos.proyecto}}</h6>
 
-                            </div>
                         </div>
 
                         {% if datos.datos %}
 
                         <div class="table-responsive">
-
-                            <table id="example" class="table table-striped table-bordered" style="width:100%">
-
+                            <table id="example" class="table table-striped table-bordered" style="font-size: 14px;">
                                 <thead>
-
                                     <tr>
                                         <th>Proveedor</th>
                                         <th>Descripcion</th>
@@ -59,9 +51,7 @@
                                 </thead>
 
                                 <tbody>
-
                                     {% for i in datos.datos %}
-
                                     <tr>
                                         <td><b>{{i.0.name}}</b></td>
                                         <td> {{i.0.descrip}}</td>
@@ -71,16 +61,13 @@
                                     {% endfor %}
                                 </tbody>
 
-
                             </table>
-
                         </div>
 
                         <div>
                             <h6 style="color: rgb({{datos.proyecto.color}})">Valor total en fondos a devolver:
                                 ${{datos.valor_fdr|floatformat:0|intcomma}}</h6>
                         </div>
-
 
                         {% else %}
 
@@ -90,10 +77,8 @@
                         </div>
 
                         <div class="text-center"  style="text-align: center; margin-top: 2%; margin-bottom: 10%;">
-
                             <img src="{% static 'img/comunicaciones.png' %}"
-                                style="max-width:10%;width:auto;height:auto; margin-top: 1rem;">
-
+                                style="max-width:10%; width:70px; height:70px; margin-top: 1rem;">
                         </div>
 
                         {% endif %}

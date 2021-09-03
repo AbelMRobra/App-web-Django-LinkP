@@ -22,6 +22,7 @@ from datetime import date
 from openpyxl import Workbook
 from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
 from .serializers import ArtSerializer
+from users.functions import saludo
 from .functions import auditor_presupuesto,auditor_presupuesto_p
 from .functions_saldo import Creditocapitulo
 from .funciones_credito import ajustar_analisis, ajustar_capitulo, ajustar_todo
@@ -182,22 +183,8 @@ def registroconstante(request):
 
     return render(request, 'constantes/historico.html', {'datos':datos, 'fecha':fecha, 'hormigon':hormigon_list, 'usd':usd, 'usd_blue':usd_blue, 'uva':uva, 'cac':cac})
 
-def presupuestostotal(request):
+def panel_presupuestos(request):
 
-    response_servidor = {"messages": "Perri"}
-    numero_prueba = "5493813540261-1599137567@g.us"
-    # No tengo idea para que sirve
-
-    presupuestador = 0
-
-    variacion = 0
-
-    variacion_year = 0  
-    
-    variacion_year_2 = 0  
-
-    variacion_anuales = 0 
-    
     proyectos_inicial = Proyectos.objects.order_by("nombre")
 
     proyectos = []
@@ -215,108 +202,111 @@ def presupuestostotal(request):
 
             var = "No tiene cargado nada"
 
+        if request.method=='POST':
+            id_proyecto=request.POST.get('proyecto')
+
+            return redirect('presupuesto_proyecto',id_proyecto)
+    return render(request, 'presupuestos/principal_presupuestos.html', {'proyectos':proyectos})
+
+def presupuestostotal(request,id):
+    
+    response_servidor = {"messages": "Perri"}
+    numero_prueba = "5493813540261-1599137567@g.us"
+    
+    # No tengo idea para que sirve
+
+    presupuestador = 0
+
+    variacion = 0
+
+    variacion_year = 0  
+    
+    variacion_year_2 = 0  
+
+    variacion_anuales = 0 
+
+
     datos = 0
 
     registro = 0
 
-    if request.method == 'POST':
+    proyecto = Proyectos.objects.get(pk=id)
 
-        #Trae el proyecto elegido
+    try:
+        if int(request.POST['action']) == 2:
 
-        proyecto = Proyectos.objects.get(id = int(request.POST["proyecto"]))
+            data_aux = PresupuestosAlmacenados.objects.filter(proyecto = proyecto, nombre = "vigente")
 
-        try:
-            if int(request.POST['action']) == 2:
+            variable = PresupuestosAlmacenados(
+                proyecto = proyecto,
+                nombre = str("{}".format(datetime.date.today())),
+                archivo = data_aux[0].archivo,
+            )
 
-                data_aux = PresupuestosAlmacenados.objects.filter(proyecto = proyecto, nombre = "vigente")
+            variable.save()
 
-                variable = PresupuestosAlmacenados(
-                    proyecto = proyecto,
-                    nombre = str("{}".format(datetime.date.today())),
-                    archivo = data_aux[0].archivo,
-                )
-
-                variable.save()
-
-            if int(request.POST['action']) == 1:
-                archivo_vigente = PresupuestosAlmacenados.objects.get(proyecto = proyecto, nombre = "vigente")
-                archivo_vigente.nombre = str("{}".format(datetime.date.today()))
-                archivo_vigente.save()
-        except:
-            pass
+        if int(request.POST['action']) == 1:
+            archivo_vigente = PresupuestosAlmacenados.objects.get(proyecto = proyecto, nombre = "vigente")
+            archivo_vigente.nombre = str("{}".format(datetime.date.today()))
+            archivo_vigente.save()
+    except:
+        pass
 
 
-        # Comprobamos si existe el fichero csv en el almacen
+    # Comprobamos si existe el fichero csv en el almacen
 
-        if len(PresupuestosAlmacenados.objects.filter(proyecto = proyecto, nombre = "vigente")) == 0:
-            today = datetime.date.today()
-            wb = Workbook()
-            ws = wb.active
-            ws.title = "Almacen"
-            ws["A1"] = "Capitulo"
-            ws["B1"] = "Modelo"
-            ws["C1"] = "Analisis"
-            ws["D1"] = "Cantidad An"
-            ws["E1"] = "Articulo"
-            ws["F1"] = "Cantidad Ar"
-            ws["G1"] = "Precio"
-            ws["H1"] = "Cantidad Art Totales"
-            ws["I1"] = "Monto"
+    if len(PresupuestosAlmacenados.objects.filter(proyecto = proyecto, nombre = "vigente")) == 0:
+        today = datetime.date.today()
+        wb = Workbook()
+        ws = wb.active
+        ws.title = "Almacen"
+        ws["A1"] = "Capitulo"
+        ws["B1"] = "Modelo"
+        ws["C1"] = "Analisis"
+        ws["D1"] = "Cantidad An"
+        ws["E1"] = "Articulo"
+        ws["F1"] = "Cantidad Ar"
+        ws["G1"] = "Precio"
+        ws["H1"] = "Cantidad Art Totales"
+        ws["I1"] = "Monto"
 
-            contador = 2
+        contador = 2
 
-            capitulo = Capitulos.objects.all()
-            compo = CompoAnalisis.objects.all()
-            computo = Computos.objects.all()
-            for c in capitulo:
-                modelo = Modelopresupuesto.objects.filter(proyecto = proyecto, capitulo = c ).order_by("orden")
-                for d in modelo:
-                    cantidad = d.cantidad
-                    if d.cantidad == None:
-                        if "SOLO MANO DE OBRA" in str(d.analisis): 
-                            cantidad = 0
-                            for h in computo:
-                                if h.proyecto == proyecto and h.tipologia == d.vinculacion:
-                                    cantidad = cantidad + h.valor_vacio                      
-                            for e in compo:
-                                if e.analisis == d.analisis:
-                                    ws["A{}".format(contador)] = c.nombre
-                                    ws["B{}".format(contador)] = d.id
-                                    ws["C{}".format(contador)] = d.analisis.codigo
-                                    ws["D{}".format(contador)] = cantidad
-                                    ws["E{}".format(contador)] = e.articulo.codigo
-                                    ws["F{}".format(contador)] = e.cantidad
-                                    ws["G{}".format(contador)] = e.articulo.valor
-                                    ws["H{}".format(contador)] = e.cantidad * cantidad
-                                    ws["I{}".format(contador)] = e.cantidad * e.articulo.valor * cantidad
-                                    contador += 1
+        capitulo = Capitulos.objects.all()
+        compo = CompoAnalisis.objects.all()
+        computo = Computos.objects.all()
+        for c in capitulo:
+            modelo = Modelopresupuesto.objects.filter(proyecto = proyecto, capitulo = c ).order_by("orden")
+            for d in modelo:
+                cantidad = d.cantidad
+                if d.cantidad == None:
+                    if "SOLO MANO DE OBRA" in str(d.analisis): 
+                        cantidad = 0
+                        for h in computo:
+                            if h.proyecto == proyecto and h.tipologia == d.vinculacion:
+                                cantidad = cantidad + h.valor_vacio                      
+                        for e in compo:
+                            if e.analisis == d.analisis:
+                                ws["A{}".format(contador)] = c.nombre
+                                ws["B{}".format(contador)] = d.id
+                                ws["C{}".format(contador)] = d.analisis.codigo
+                                ws["D{}".format(contador)] = cantidad
+                                ws["E{}".format(contador)] = e.articulo.codigo
+                                ws["F{}".format(contador)] = e.cantidad
+                                ws["G{}".format(contador)] = e.articulo.valor
+                                ws["H{}".format(contador)] = e.cantidad * cantidad
+                                ws["I{}".format(contador)] = e.cantidad * e.articulo.valor * cantidad
+                                contador += 1
 
-                        else:
-
-                            cantidad = 0
-
-                            for h in computo:
-
-                                if h.proyecto == proyecto and h.tipologia == d.vinculacion:
-                                    
-                                    cantidad = cantidad + h.valor_lleno
-
-                            for e in compo:
-
-                                if e.analisis == d.analisis:
-
-                                    ws["A{}".format(contador)] = c.nombre
-                                    ws["B{}".format(contador)] = d.id
-                                    ws["C{}".format(contador)] = d.analisis.codigo
-                                    ws["D{}".format(contador)] = cantidad
-                                    ws["E{}".format(contador)] = e.articulo.codigo
-                                    ws["F{}".format(contador)] = e.cantidad
-                                    ws["G{}".format(contador)] = e.articulo.valor
-                                    ws["H{}".format(contador)] = e.cantidad * cantidad
-                                    ws["I{}".format(contador)] = e.cantidad * e.articulo.valor * cantidad
-                                    contador += 1
-                            
                     else:
+
+                        cantidad = 0
+
+                        for h in computo:
+
+                            if h.proyecto == proyecto and h.tipologia == d.vinculacion:
+                                
+                                cantidad = cantidad + h.valor_lleno
 
                         for e in compo:
 
@@ -332,306 +322,338 @@ def presupuestostotal(request):
                                 ws["H{}".format(contador)] = e.cantidad * cantidad
                                 ws["I{}".format(contador)] = e.cantidad * e.articulo.valor * cantidad
                                 contador += 1
-
-            #Establecer el nombre del archivo
-            nombre_archivo = "{}.{}Almacen.xls".format(str(proyecto.nombre).replace(" ", ""),str(today))
-            nombre_archivo
-            mUrl = settings.MEDIA_URL
-            mRoot = settings.MEDIA_ROOT
-            wb.save(mRoot + "/{}".format(nombre_archivo))
-          
-            variable = PresupuestosAlmacenados(
-                proyecto = proyecto,
-                nombre = "vigente",
-                archivo = (nombre_archivo),
-            )
-
-            variable.save()
-
-            # BOT la actualización
-
-            try:
-
-                archivo = PresupuestosAlmacenados.objects.filter(proyecto = proyecto, nombre = "vigente")[0].archivo
-                df = pd.read_excel(archivo)
-                repo_nuevo = sum(np.array(df['Monto'].values))
-
-                anterior_archivo = PresupuestosAlmacenados.objects.filter(proyecto = proyecto).order_by("-id").exclude(nombre = "vigente")[0].archivo
-                df = pd.read_excel(anterior_archivo)
-                repo_anterior = sum(np.array(df['Monto'].values))
-
-                var = round((repo_nuevo/repo_anterior-1)*100, 2)
-
-                if var != 0:
-
-                    send = "{} ha actualizado {}. Variación: {}%".format(request.user.first_name, proyecto.nombre, var)
-                    id = "-455382561"
-                    token = "1880193427:AAH-Ej5ColiocfDZrDxUpvsJi5QHWsASRxA"
-                    url = "https://api.telegram.org/bot" + token + "/sendMessage"
-                    params = {
-                        'chat_id' : id,
-                        'text' : send
-                    }
-                    requests.post(url, params=params)
-                    bot_wp = WABot(response_servidor)
-                    bot_wp.send_message(numero_prueba, send)
-
+                        
                 else:
-                    send = "{} guardo una copia de {}".format(request.user.first_name, proyecto.nombre)
-                    id = "-455382561"
-                    token = "1880193427:AAH-Ej5ColiocfDZrDxUpvsJi5QHWsASRxA"
-                    url = "https://api.telegram.org/bot" + token + "/sendMessage"
-                    params = {
-                        'chat_id' : id,
-                        'text' : send
-                    }
-                    requests.post(url, params=params)
-                    bot_wp = WABot(response_servidor)
-                    bot_wp.send_message(numero_prueba, send)
 
-                if proyecto.presupuesto == "BASE" and var != 0:
+                    for e in compo:
 
-                    send = "{}, has actualizado el proyecto BASE, empieza el proceso de actualización de proyectos extrapolados".format(request.user.first_name)
+                        if e.analisis == d.analisis:
 
-                    id = "-455382561"
+                            ws["A{}".format(contador)] = c.nombre
+                            ws["B{}".format(contador)] = d.id
+                            ws["C{}".format(contador)] = d.analisis.codigo
+                            ws["D{}".format(contador)] = cantidad
+                            ws["E{}".format(contador)] = e.articulo.codigo
+                            ws["F{}".format(contador)] = e.cantidad
+                            ws["G{}".format(contador)] = e.articulo.valor
+                            ws["H{}".format(contador)] = e.cantidad * cantidad
+                            ws["I{}".format(contador)] = e.cantidad * e.articulo.valor * cantidad
+                            contador += 1
 
-                    token = "1880193427:AAH-Ej5ColiocfDZrDxUpvsJi5QHWsASRxA"
+        #Establecer el nombre del archivo
+        nombre_archivo = "{}.{}Almacen.xls".format(str(proyecto.nombre).replace(" ", ""),str(today))
+        nombre_archivo
+        mUrl = settings.MEDIA_URL
+        mRoot = settings.MEDIA_ROOT
+        wb.save(mRoot + "/{}".format(nombre_archivo))
+        
+        variable = PresupuestosAlmacenados(
+            proyecto = proyecto,
+            nombre = "vigente",
+            archivo = (nombre_archivo),
+        )
 
-                    url = "https://api.telegram.org/bot" + token + "/sendMessage"
+        variable.save()
 
-                    params = {
-                        'chat_id' : id,
-                        'text' : send
-                    }
-
-                    requests.post(url, params=params)
-                    bot_wp = WABot(response_servidor)
-                    bot_wp.send_message(numero_prueba, send)
-
-                    proyectos_extrapolados = Proyectos.objects.filter(presupuesto = "EXTRAPOLADO")
-
-                    send_1 = "Proyectos actualizados: "
-                    send_2 = "Proyectos sin actualizar: "
-
-                    for p in proyectos_extrapolados:
-
-                        try:
-                        
-                        
-                            aux_var = Presupuestos.objects.get(proyecto = p)
-                            aux_var.valor = aux_var.valor * (1+(var/100))
-                            aux_var.saldo = aux_var.saldo * (1+(var/100))
-                            aux_var.saldo_mat = aux_var.saldo_mat * (1+(var/100))
-                            aux_var.saldo_mo =  aux_var.saldo_mo * (1+(var/100))
-                            aux_var.save()
-
-                            almacenero = Almacenero.objects.get(proyecto = p)
-
-                            iva_compras = (aux_var.imprevisto + aux_var.saldo_mat + aux_var.saldo_mo + aux_var.credito + aux_var.fdr)*0.07875
-
-                            almacenero.pendiente_iva_ventas = iva_compras
-
-                            almacenero.save()
-
-                            send_1 += "{} con {}% - ".format(p, var)
-
-                            
-
-                        except:
-
-                            send_2 += "{} - ".format(p)
-
-
-                    params = {
-                        'chat_id' : id,
-                        'text' : send_1
-                    }
-
-                    requests.post(url, params=params)
-                    bot_wp = WABot(response_servidor)
-                    bot_wp.send_message(numero_prueba, send_1)
-
-                    params = {
-                        'chat_id' : id,
-                        'text' : send_2
-                    }
-
-                    requests.post(url, params=params)
-                    bot_wp = WABot(response_servidor)
-                    bot_wp.send_message(numero_prueba, send_2)
-
-                    send = "Proceso de actualización de proyectos extrapolados completo. Tambien actualice el IVA en el almacenero. Disculpen los mensajes"
-
-                    params = {
-                        'chat_id' : id,
-                        'text' : send
-                    }
-
-                    requests.post(url, params=params)
-                    bot_wp = WABot(response_servidor)
-                    bot_wp.send_message(numero_prueba, send)
-
-
-            except:
-                pass
+        # BOT la actualización
 
         try:
 
-            presup_info = Presupuestos.objects.get(proyecto = proyecto)
-            presupuestador = datosusuario.objects.get(identificacion=presup_info.presupuestador)
+            archivo = PresupuestosAlmacenados.objects.filter(proyecto = proyecto, nombre = "vigente")[0].archivo
+            df = pd.read_excel(archivo)
+            repo_nuevo = sum(np.array(df['Monto'].values))
 
-        except:
+            anterior_archivo = PresupuestosAlmacenados.objects.filter(proyecto = proyecto).order_by("-id").exclude(nombre = "vigente")[0].archivo
+            df = pd.read_excel(anterior_archivo)
+            repo_anterior = sum(np.array(df['Monto'].values))
 
-            presupuestador = 0
+            var = round((repo_nuevo/repo_anterior-1)*100, 2)
 
-        # Completamos los datos del tablero
+            if var != 0:
 
-        archivo = PresupuestosAlmacenados.objects.filter(proyecto = proyecto, nombre = "vigente")[0].archivo
+                send = "{} ha actualizado {}. Variación: {}%".format(request.user.first_name, proyecto.nombre, var)
+                id = "-455382561"
+                token = "1880193427:AAH-Ej5ColiocfDZrDxUpvsJi5QHWsASRxA"
+                url = "https://api.telegram.org/bot" + token + "/sendMessage"
+                params = {
+                    'chat_id' : id,
+                    'text' : send
+                }
+                requests.post(url, params=params)
+                bot_wp = WABot(response_servidor)
+                bot_wp.send_message(numero_prueba, send)
 
-        df = pd.read_excel(archivo)
+            else:
+                send = "{} guardo una copia de {}".format(request.user.first_name, proyecto.nombre)
+                id = "-455382561"
+                token = "1880193427:AAH-Ej5ColiocfDZrDxUpvsJi5QHWsASRxA"
+                url = "https://api.telegram.org/bot" + token + "/sendMessage"
+                params = {
+                    'chat_id' : id,
+                    'text' : send
+                }
+                requests.post(url, params=params)
+                bot_wp = WABot(response_servidor)
+                bot_wp.send_message(numero_prueba, send)
 
-        valor_reposicion = sum(np.array(df['Monto'].values))
+            if proyecto.presupuesto == "BASE" and var != 0:
+
+                send = "{}, has actualizado el proyecto BASE, empieza el proceso de actualización de proyectos extrapolados".format(request.user.first_name)
+
+                id = "-455382561"
+
+                token = "1880193427:AAH-Ej5ColiocfDZrDxUpvsJi5QHWsASRxA"
+
+                url = "https://api.telegram.org/bot" + token + "/sendMessage"
+
+                params = {
+                    'chat_id' : id,
+                    'text' : send
+                }
+
+                requests.post(url, params=params)
+                bot_wp = WABot(response_servidor)
+                bot_wp.send_message(numero_prueba, send)
+
+                proyectos_extrapolados = Proyectos.objects.filter(presupuesto = "EXTRAPOLADO")
+
+                send_1 = "Proyectos actualizados: "
+                send_2 = "Proyectos sin actualizar: "
+
+                for p in proyectos_extrapolados:
+
+                    try:
+                    
+                    
+                        aux_var = Presupuestos.objects.get(proyecto = p)
+                        aux_var.valor = aux_var.valor * (1+(var/100))
+                        aux_var.saldo = aux_var.saldo * (1+(var/100))
+                        aux_var.saldo_mat = aux_var.saldo_mat * (1+(var/100))
+                        aux_var.saldo_mo =  aux_var.saldo_mo * (1+(var/100))
+                        aux_var.save()
+
+                        almacenero = Almacenero.objects.get(proyecto = p)
+
+                        iva_compras = (aux_var.imprevisto + aux_var.saldo_mat + aux_var.saldo_mo + aux_var.credito + aux_var.fdr)*0.07875
+
+                        almacenero.pendiente_iva_ventas = iva_compras
+
+                        almacenero.save()
+
+                        send_1 += "{} con {}% - ".format(p, var)
+
+                        
+
+                    except:
+
+                        send_2 += "{} - ".format(p)
 
 
-        # saldo
+                params = {
+                    'chat_id' : id,
+                    'text' : send_1
+                }
 
-        list_articulos = df['Articulo'].unique()
+                requests.post(url, params=params)
+                bot_wp = WABot(response_servidor)
+                bot_wp.send_message(numero_prueba, send_1)
 
-        valor_saldo = 0
-        valor_proyecto_materiales = 0
-        valor_proyecto_mo = 0
+                params = {
+                    'chat_id' : id,
+                    'text' : send_2
+                }
 
-        for art in list_articulos:
-            cantidad_solicitada = sum(np.array(df[df['Articulo'] == art]['Cantidad Art Totales'].values))
-            valor = Articulos.objects.get(codigo = art).valor
-            comprados = sum(np.array(Compras.objects.filter(proyecto = proyecto, articulo__codigo = art).values_list("cantidad", flat = True)))
-            saldo_art = cantidad_solicitada*valor - valor*comprados
-            if saldo_art > 0:
-                valor_saldo = valor_saldo + saldo_art
+                requests.post(url, params=params)
+                bot_wp = WABot(response_servidor)
+                bot_wp.send_message(numero_prueba, send_2)
 
-                if str(art)[0] == "3":
-                    valor_proyecto_materiales += saldo_art
-                else:
-                    valor_proyecto_mo += saldo_art
+                send = "Proceso de actualización de proyectos extrapolados completo. Tambien actualice el IVA en el almacenero. Disculpen los mensajes"
 
-        # Guardamos los saldos en el almacenero
+                params = {
+                    'chat_id' : id,
+                    'text' : send
+                }
 
-        try:
+                requests.post(url, params=params)
+                bot_wp = WABot(response_servidor)
+                bot_wp.send_message(numero_prueba, send)
 
-            Saldo_act = Presupuestos.objects.get(proyecto = proyecto)
-            Saldo_act.saldo = valor_saldo
-            Saldo_act.saldo_mat = valor_proyecto_materiales
-            Saldo_act.saldo_mo = valor_proyecto_mo
-
-            Saldo_act.save()
-
-            almacenero = Almacenero.objects.get(proyecto = proyecto)
-
-            iva_compras = (Saldo_act.imprevisto + Saldo_act.saldo_mat + Saldo_act.saldo_mo + Saldo_act.credito + Saldo_act.fdr)*0.07875
-
-            almacenero.pendiente_iva_ventas = iva_compras
-
-            almacenero.save()
 
         except:
             pass
 
-        # Crea el avance
+    try:
 
-        avance = 0
+        presup_info = Presupuestos.objects.get(proyecto = proyecto)
+        presupuestador = datosusuario.objects.get(identificacion=presup_info.presupuestador)
 
-        if valor_reposicion != 0:
-            avance = (1 - (valor_saldo/valor_reposicion))*100
-            pendiente = 100 - avance
+    except:
 
-        # Guarda los datos
+        presupuestador = 0
 
-        datos = []
+    # Completamos los datos del tablero
 
-        datos.append((proyecto, valor_reposicion, valor_saldo, avance, pendiente))
+    archivo = PresupuestosAlmacenados.objects.filter(proyecto = proyecto, nombre = "vigente")[0].archivo
 
-        # Crea el historico
+    df = pd.read_excel(archivo)
 
-        valor_proyecto = RegistroValorProyecto.objects.filter(proyecto = proyecto)
+    valor_reposicion = sum(np.array(df['Monto'].values))
 
-        registro = []
 
-        for valor in valor_proyecto:
+    # saldo
 
-            registro.append((valor.fecha, valor.precio_proyecto/1000000))
+    list_articulos = df['Articulo'].unique()
+
+    valor_saldo = 0
+    valor_proyecto_materiales = 0
+    valor_proyecto_mo = 0
+
+    for art in list_articulos:
+        cantidad_solicitada = sum(np.array(df[df['Articulo'] == art]['Cantidad Art Totales'].values))
+        valor = Articulos.objects.get(codigo = art).valor
+        comprados = sum(np.array(Compras.objects.filter(proyecto = proyecto, articulo__codigo = art).values_list("cantidad", flat = True)))
+        saldo_art = cantidad_solicitada*valor - valor*comprados
+        if saldo_art > 0:
+            valor_saldo = valor_saldo + saldo_art
+
+            if str(art)[0] == "3":
+                valor_proyecto_materiales += saldo_art
+            else:
+                valor_proyecto_mo += saldo_art
+
+    # Guardamos los saldos en el almacenero
+
+    try:
+
+        Saldo_act = Presupuestos.objects.get(proyecto = proyecto)
+        Saldo_act.saldo = valor_saldo
+        Saldo_act.saldo_mat = valor_proyecto_materiales
+        Saldo_act.saldo_mo = valor_proyecto_mo
+
+        Saldo_act.save()
+
+        almacenero = Almacenero.objects.get(proyecto = proyecto)
+
+        iva_compras = (Saldo_act.imprevisto + Saldo_act.saldo_mat + Saldo_act.saldo_mo + Saldo_act.credito + Saldo_act.fdr)*0.07875
+
+        almacenero.pendiente_iva_ventas = iva_compras
+
+        almacenero.save()
+
+    except:
+        pass
+
+    # Crea el avance
+
+    avance = 0
+
+    if valor_reposicion != 0:
+        avance = (1 - (valor_saldo/valor_reposicion))*100
+        pendiente = 100 - avance
+
+    # Guarda los datos
+
+    datos = []
+
+    datos.append((proyecto, valor_reposicion, valor_saldo, avance, pendiente))
+
+    # Crea el historico
+
+    valor_proyecto = RegistroValorProyecto.objects.filter(proyecto = proyecto)
+
+    registro = []
+
+    for valor in valor_proyecto:
+
+        registro.append((valor.fecha, valor.precio_proyecto/1000000))
+
+    try:
+
+        Presup_act = Presupuestos.objects.get(proyecto = proyecto)
+        Presup_act.valor = valor_reposicion
+        Presup_act.save()
+
+        # Trato de establecer el precio de Link-P
+
+        valor_linkp = valor_reposicion
+        parametros = Prametros.objects.get(proyecto = proyecto)
+        valor_linkp = (valor_linkp/(1 + parametros.tasa_des_p))*(1 + parametros.soft)       
+        valor_linkp = valor_linkp*(1 + parametros.imprevitso)
+        porc_terreno = parametros.terreno/parametros.proyecto.m2*100
+        porc_link = parametros.link/parametros.proyecto.m2*100
+        aumento_tem = parametros.tem_iibb*parametros.por_temiibb*(1+parametros.ganancia)
+        aumento_comer = parametros.comer*(1+(porc_terreno + porc_link)/100)*(1+parametros.ganancia)           
+        valor_linkp = valor_linkp/(1-aumento_tem- aumento_comer)           
+        m2 = (parametros.proyecto.m2 - parametros.terreno - parametros.link)
+        valor_costo = valor_linkp/m2
+        proyecto.precio_linkp = valor_costo
+        proyecto.save()
+
+    except:
+        pass
+
+    registro = registro[-60:]
+
+
+    try:
+
+        variacion = (((valor_reposicion/1000000)/registro[-30][1]) -1)*100
+
+        today = datetime.date.today()
+
+        date = datetime.date(today.year, 1, 1)
+
+        date_2 = datetime.date((today.year - 1), 1, 1)
 
         try:
 
-            Presup_act = Presupuestos.objects.get(proyecto = proyecto)
-            Presup_act.valor = valor_reposicion
-            Presup_act.save()
+            dato = RegistroValorProyecto.objects.filter(fecha = date, proyecto = proyectos)
 
-            # Trato de establecer el precio de Link-P
+            valor = (((valor_reposicion)/dato[0].precio_proyecto) -1)*100
 
-            valor_linkp = valor_reposicion
-            parametros = Prametros.objects.get(proyecto = proyecto)
-            valor_linkp = (valor_linkp/(1 + parametros.tasa_des_p))*(1 + parametros.soft)       
-            valor_linkp = valor_linkp*(1 + parametros.imprevitso)
-            porc_terreno = parametros.terreno/parametros.proyecto.m2*100
-            porc_link = parametros.link/parametros.proyecto.m2*100
-            aumento_tem = parametros.tem_iibb*parametros.por_temiibb*(1+parametros.ganancia)
-            aumento_comer = parametros.comer*(1+(porc_terreno + porc_link)/100)*(1+parametros.ganancia)           
-            valor_linkp = valor_linkp/(1-aumento_tem- aumento_comer)           
-            m2 = (parametros.proyecto.m2 - parametros.terreno - parametros.link)
-            valor_costo = valor_linkp/m2
-            proyecto.precio_linkp = valor_costo
-            proyecto.save()
+            variacion_year = [date, valor]
+
 
         except:
-            pass
 
-        registro = registro[-60:]
+            variacion_year = 0
 
-    
+            variacion_anuales = 0
+
         try:
+            dato_1 = RegistroValorProyecto.objects.filter(fecha = date, proyecto = proyectos)
+            dato_2 = RegistroValorProyecto.objects.filter(fecha = date_2, proyecto = proyectos)
 
-            variacion = (((valor_reposicion/1000000)/registro[-30][1]) -1)*100
+            valor = ((dato_1[0].precio_proyecto/dato_2[0].precio_proyecto) -1)*100
 
-            today = datetime.date.today()
-
-            date = datetime.date(today.year, 1, 1)
-
-            date_2 = datetime.date((today.year - 1), 1, 1)
-
-            try:
-
-                dato = RegistroValorProyecto.objects.filter(fecha = date, proyecto = proyectos)
-
-                valor = (((valor_reposicion)/dato[0].precio_proyecto) -1)*100
-
-                variacion_year = [date, valor]
-
-
-            except:
-
-                variacion_year = 0
-
-                variacion_anuales = 0
-
-            try:
-                dato_1 = RegistroValorProyecto.objects.filter(fecha = date, proyecto = proyectos)
-                dato_2 = RegistroValorProyecto.objects.filter(fecha = date_2, proyecto = proyectos)
-
-                valor = ((dato_1[0].precio_proyecto/dato_2[0].precio_proyecto) -1)*100
-
-                variacion_year_2 = [date_2, valor]
-
-            except:
-
-                variacion_year_2 = 0
+            variacion_year_2 = [date_2, valor]
 
         except:
 
-            variacion = 0
+            variacion_year_2 = 0
 
-        proyectos = 0
+    except:
 
-    return render(request, 'presupuestos/principalpresupuesto.html', {"datos":datos, "proyectos":proyectos, "valor":registro, "presupuestador":presupuestador, "variacion":variacion, "variacion_year":variacion_year, "variacion_year_2":variacion_year_2, "variacion_anuales":variacion_anuales})
+        variacion = 0
+
+    proyectos = 0
+
+    context = {}
+    context['datos'] = datos
+    context['proyectos'] = proyectos
+    context['valor'] = registro
+    context['presupuestador'] = presupuestador
+    context['variacion'] = variacion
+    context['variacion_year'] = variacion_year
+    context['variacion_year_2'] = variacion_year_2
+    context['variacion_anuales'] = variacion_anuales
+
+    #### Toda esta parte va a ser del presupuestador
+
+    if request.user.username == presupuestador.identificacion:
+        context['que_hacer_general'] = True
+
+    return render(request, 'presupuestos/presupuesto_proyecto.html', context)
 
 def presupuestorepcompleto(request, id_proyecto):
 
@@ -678,9 +700,7 @@ def presupuestorepcompleto(request, id_proyecto):
         
         crudo.append((c, valor_capitulo, 0.0, listado_analisis))
 
-    
-    
-    datos =[ ]
+    datos =[]
 
     for i in crudo:
         i = list(i)
@@ -710,9 +730,8 @@ def presupuestorepcompleto(request, id_proyecto):
     valor_proyecto_completo = valor_proyecto
 
     datos = {"datos":datos, "proyecto":proyecto, "valor_proyecto":valor_proyecto,"valor_proyecto_completo":valor_proyecto_completo}
-
     
-    return render(request, 'presupuestos/presuprepabierto.html', {"datos":datos})
+    return render(request, 'presupuestos/presuprepabierto.html', {"datos":datos, "id_proyecto": id_proyecto})
 
 def saldocapitulo(request, id_proyecto):
 
@@ -788,7 +807,7 @@ def saldocapitulo(request, id_proyecto):
 
     datos = {"proyecto":proyecto, "datos":datos, "saldo":valor_saldo}
                 
-    return render(request, 'presupuestos/saldocapitulo.html', {"datos":datos})
+    return render(request, 'presupuestos/saldocapitulo.html', {"datos":datos, "id_proyecto":id_proyecto})
 
 def SaldoCapArticulos(request, id_proyecto, id_capitulo):
 
@@ -859,7 +878,7 @@ def SaldoCapArticulos(request, id_proyecto, id_capitulo):
      "datos_saldo":datos_saldo, "capitulo":capitulo,
      "saldo":saldo_cap}
 
-    return render(request, 'presupuestos/saldoartcapitulo.html', {"datos":datos})
+    return render(request, 'presupuestos/saldoartcapitulo.html', {"datos":datos, "id_proyecto": id_proyecto})
 
 def debugsa(request, id_proyecto):
 
@@ -899,26 +918,66 @@ def creditos(request, id_proyecto):
 
     datos = Creditocapitulo(id_proyecto)
 
-    context = {}
-    context['explosion'] = datos[0]
-    context['explosion_no'] = datos[1]
-    context['proyecto'] = proyecto
-    context['valor_saldo'] = sum(np.array([ data[4] for data in datos[0] if data[4] > 0]))
-    context['valor_credito'] = sum(np.array([ data[4] for data in datos[0] if data[4] < 0])) + sum(np.array([ data[4] for data in datos[1] if data[4] < 0])) 
+    valor_saldo = 0
+
+    for dato in datos:
+        valor_saldo = valor_saldo + dato[4]
 
     #### Guardamos el valor del credito en la base de presupuestos
 
     try:
 
         Cred_act = Presupuestos.objects.get(proyecto = proyecto)
-        Cred_act.credito = context['valor_credito']
+
+        Cred_act.credito = valor_saldo
+
         Cred_act.save()
 
     except:
         
         pass
 
-    return render(request, 'presupuestos/creditos.html', context)
+     #Aqui empieza el filtro
+
+    if request.method == 'POST':
+
+        palabra_buscar = request.POST.items()
+
+        datos_viejos = datos
+
+        datos = []   
+
+        for i in palabra_buscar:
+
+            if i[0] == "palabra":
+        
+                palabra_buscar = i[1]
+
+        if str(palabra_buscar) == "":
+
+            datos = datos_viejos
+
+        else:
+        
+            for i in datos_viejos:
+
+                palabra =(str(palabra_buscar))
+
+                buscador = (str(i[0]))
+
+                if palabra.lower() in buscador.lower():
+
+                    datos.append(i)
+
+
+    #Aqui termina el filtro
+
+    datos = {"datos":datos,
+    "proyecto":proyecto,
+    "valor_saldo":valor_saldo}
+
+  
+    return render(request, 'presupuestos/creditos.html', {"datos":datos})
 
 def fdr(request, id_proyecto):
 
@@ -982,7 +1041,7 @@ def fdr(request, id_proyecto):
     "valor_fdr":valor_fdr}
 
   
-    return render(request, 'presupuestos/fdr.html', {"datos":datos})
+    return render(request, 'presupuestos/fdr.html', {"datos":datos, "id_proyecto": id_proyecto})
 
 def anticiposf(request, id_proyecto):
 
@@ -1046,7 +1105,7 @@ def anticiposf(request, id_proyecto):
     "valor_fdr":valor_ant}
 
   
-    return render(request, 'presupuestos/anticiposf.html', {"datos":datos})
+    return render(request, 'presupuestos/anticiposf.html', {"datos":datos, "id_proyecto": id_proyecto})
 
 def explosion(request, id_proyecto):
 
@@ -1163,7 +1222,7 @@ def explosion(request, id_proyecto):
     datos = {"datos":datos,
     "proyecto":proyecto}
 
-    return render(request, 'presupuestos/explosion.html', {"datos":datos})
+    return render(request, 'presupuestos/explosion.html', {"datos":datos,"id_proyecto":id_proyecto} )
 
 def presupuestosanalisis(request, id_proyecto, id_capitulo):
 
@@ -1250,7 +1309,7 @@ def presupuestosanalisis(request, id_proyecto, id_capitulo):
 
     datos = {"datos":datos, "proyecto":proyecto, "capitulo":capitulo}
 
-    return render(request, 'presupuestos/presupuestoanalisis.html', {"datos":datos})
+    return render(request, 'presupuestos/presupuestoanalisis.html', {"datos":datos, "id_proyecto":id_proyecto })
 
 def presupuestoscapitulo(request, id_proyecto):
 
@@ -1345,7 +1404,7 @@ def presupuestoscapitulo(request, id_proyecto):
         datos = {"datos":datos, "proyecto":proyecto, "valor_proyecto":valor_proyecto,"valor_proyecto_completo":valor_proyecto_completo}
 
     
-    return render(request, 'presupuestos/presupuestocapitulo.html', {"datos":datos})
+    return render(request, 'presupuestos/presupuestocapitulo.html', {"datos":datos, "id_proyecto" : id_proyecto})
 
 def ver_analisis(request, id_analisis):
 
@@ -2210,6 +2269,99 @@ def Saldoporcapitulo(id_proyecto):
 
 
     return saldo_capitulo
+
+def Creditocapitulo(id_proyecto):
+
+    proyecto = Proyectos.objects.get(id = id_proyecto)
+    modelo = Modelopresupuesto.objects.filter(proyecto = proyecto)
+
+    #Con el siguiente conjunto de formulas creamos la explosión de insumos
+    
+    crudo_analisis = []
+
+    for i in modelo:
+
+        if i.cantidad != None:
+
+            crudo_analisis.append((i.analisis, i.cantidad))
+
+        else:
+
+            if "SOLO MANO DE OBRA" in str(i.analisis.nombre):
+
+                cantidad = sum(np.array(Computos.objects.filter(tipologia = i.vinculacion, proyecto = proyecto).values_list("valor_vacio", flat = True)))
+
+                crudo_analisis.append((i.analisis, cantidad))
+
+            else:
+                cantidad = sum(np.array(Computos.objects.filter(tipologia = i.vinculacion, proyecto = proyecto).values_list("valor_lleno", flat = True)))
+                
+                crudo_analisis.append((i.analisis, cantidad))
+
+    crudo_articulos = []
+
+    for c in crudo_analisis:
+
+        analisis = CompoAnalisis.objects.filter(analisis = c[0])
+
+        for d in analisis:
+
+            cantidad = d.cantidad*c[1]
+
+            crudo_articulos.append((d.articulo, cantidad))
+
+    datos = []
+
+    for t in crudo_articulos:
+        datos.append(t[0])
+
+    datos = list(set(datos))
+
+    datos_viejos = datos
+    datos = []
+
+    for i in datos_viejos:
+        cantidad = 0
+        for c in crudo_articulos:
+            if i == c[0]:
+                cantidad = cantidad + c[1]
+        datos.append((i, cantidad))
+
+    compras = Compras.objects.filter(proyecto = proyecto)
+
+    # Este auxiliar arma una cadena de texto de todos los articulos necesarios
+
+    comprado_aux = ""
+
+    for dato in datos:
+        comprado_aux = comprado_aux + str(dato[0])
+
+    datos_viejos = datos
+    
+    datos = []
+
+    for i in datos_viejos:
+        comprado = 0
+        for c in compras:
+            if c.proyecto == proyecto and c.articulo == i[0]:
+                comprado = comprado + c.cantidad
+        
+        cantidad_saldo = i[1] - comprado
+
+        saldo = cantidad_saldo * i[0].valor
+
+        if saldo < 0:
+        
+            datos.append((i[0], i[1], comprado, cantidad_saldo, saldo ))
+
+    # Esta parte arma los articulos que no estan en el presupuesto, compara el nombre si esta adentro de la cadena auxiliar 
+
+    for compra in compras:
+        if str(compra.articulo.nombre) not in comprado_aux and compra.proyecto == proyecto and str(compra.articulo.nombre)!="FONDO DE REPARO ACT. UOCRA" and str(compra.articulo.nombre)!="ANTICIPO FINANCIERO ACT. UOCRA" :
+            saldo = compra.articulo.valor*compra.cantidad
+            datos.append((compra.articulo, 0, compra.cantidad, -compra.cantidad, -saldo))
+
+    return datos
 
 def presupuesto_auditor(request):
 
