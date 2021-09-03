@@ -14,7 +14,8 @@
 
         <div class="col-md-7 align-self-center">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'Panel de presupuestos' %}">Panel</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'presupuesto_proyecto' id_proyecto  %}">Presupuesto</a></li>
                 <li class="breadcrumb-item">Anticipos</li>
             </ol>
         </div>
@@ -27,26 +28,21 @@
                 <div class="card-body row">
                     <div class="col-12 justify-content-center">
 
-                        <div class="row d-flex justify-content-center">
-                            <div class="col col-md-12 col-lg-12 text-center">
-                               
-                                <img src="{% if datos.proyecto.iamgen.url %} {{datos.proyecto.iamgen.url}} {% else %} {% static 'img/Linkp.png' %} {% endif %}" class="img-fluid" alt="..."
-                                    style="max-width:200px;width:auto;height:auto; margin-top: 1rem;">
-                                    
+                        <div class="d-flex align-items-center">
+                            <div>
+                                <h4 class="card-title"><span class="lstick m-r-20"></span><b
+                                        style="color: rgb({{datos.proyecto.color}});">{{datos.proyecto}}</b></h4>
+                                <h6 class="card-subtitle"></span>Anticipos Financieros</h6>
                             </div>
-                            <div class="text-center my-3">
-                                <h6 style="color: rgb({{datos.proyecto.color}});  margin-top: 10px;">
-                                    Anticipos Financieros {{datos.proyecto}}</h6>
 
-
-                            </div>
                         </div>
+
 
                         {% if datos.datos %}
 
-                        <div class="table-responsive">
+                        <div class="table-responsive mt-4">
 
-                            <table id="example" class="table table-striped table-bordered" style="width:100%">
+                            <table id="example" class="table table-striped table-bordered" style="font-size: 14px;">
 
                                 <thead>
 
@@ -90,7 +86,7 @@
 
                         <div class="text-center"  style="margin-top: 2%; margin-bottom: 10%;">
                             <img src="{% static 'img/comunicaciones.png' %}"
-                                style="max-width:10%;width:auto;height:auto; margin-top: 1rem;">
+                                style="max-width:10%;width:70px;height:70px; margin-top: 1rem;">
                         </div>
 
                         {% endif %}

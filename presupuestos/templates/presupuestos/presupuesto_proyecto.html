@@ -1,0 +1,388 @@
+{% extends "users/inicio2.html" %}
+
+{% load humanize %}
+{% load static %}
+{% load apptags_extras %}
+{% block content %}
+
+
+<div class="container-fluid">
+  <div class="row page-titles">
+    <div class="col-md-5 align-self-center">
+      <h3 class="text-themecolor">Presupuesto del proyecto</h3>
+    </div>
+
+    <div class="col-md-7 align-self-center">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'Panel de presupuestos' %}">Panel</a></li>
+        <li class="breadcrumb-item">Presupuesto</li>
+      </ol>
+    </div>
+  </div>
+
+
+  <div class="row">
+    <div class="col-12">
+      <div class="card mb-2">
+        <div class="card-body">
+          <div class="d-flex align-items-center">
+            <div>
+              <h4 class="card-title"><span class="lstick m-r-20"></span><b
+                  style="color: rgb({{datos.0.0.color}});">{{datos.0.0.nombre}}</b></h4>
+              <h6></span>Variaciones de los ultimos 30 dias
+                {% if variacion > 0 %}
+                <b style="font-family: Arial, Helvetica, sans-serif; color: #34CE15;">+ {{variacion|floatformat:2}} %
+                </b>
+                {% elif variacion == 0 %}
+                <b style="font-family: Arial, Helvetica, sans-serif; color: #1563CE;">= {{variacion|floatformat:2}} %
+                </b>
+                {% else %}
+                <b style="font-family: Arial, Helvetica, sans-serif; color: #CE3115;">- {{variacion|floatformat:2}} %
+                </b>
+                {% endif %}
+              </h6>
+
+              {% if variacion_year != 0 %}
+              <h6></span>Desde el {{variacion_year.0}}:
+
+                {% if variacion_year.1 > 0 %}
+                <b style="font-family: Arial, Helvetica, sans-serif; color: #34CE15;">+
+                  {{variacion_year.1|floatformat:2}} % </b>
+                {% else %}
+                <b style="font-family: Arial, Helvetica, sans-serif; color: #CE3115;">-
+                  {{variacion_year.1|floatformat:2}} % </b>
+                {% endif %}
+              </h6>
+
+              {% endif %}
+
+              {% if variacion_year_2 != 0 %}
+
+              <h6></span>Desde el {{variacion_year_2.0}}:
+
+                {% if variacion_year_2.1 > 0 %}
+                <b style="font-family: Arial, Helvetica, sans-serif; color: #34CE15;">+
+                  {{variacion_year_2.1|floatformat:2}} % </b>
+                {% else %}
+                <b style="font-family: Arial, Helvetica, sans-serif; color: #CE3115;">-
+                  {{variacion_year_2.1|floatformat:2}}% </b>
+                {% endif %}
+              </h6>
+
+              {% endif %}
+
+              <h6 class="card-subtitle mt-1"></span>{{datos.0.0.descrip}}</h6>
+            </div>
+
+            <div class="mr-2" id="actions-hover" style="display: none;">
+              <span style="font-size: smaller;" class="bg-light p-2 rounded  border ">Opciones panel</span>
+              <div id="actions-hover-after"></div>
+            </div>
+
+            <div class="btn-group ml-auto">
+              <a href="JavaScript:void(0)" class="icon-options-vertical link" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false" onmouseover="actionhoverover('actions-hover')"
+                onmouseout="actionhoverout('actions-hover')"></a>
+              <div class="dropdown-menu dropdown-menu-right">
+                <a class="dropdown-item" href="{% url 'Creditos de proyectos' datos.0.0.id %}"><i
+                    class="fa fa-credit-card-alt mr-2"></i>Creditos</a>
+                <a class="dropdown-item" href="{% url 'Fondos de reparo' datos.0.0.id %}"><i
+                    class="fa fa-angle-double-right mr-2"></i>F.D.R.</a>
+                <a class="dropdown-item" href="{% url 'Anticipos' datos.0.0.id %}"><i
+                    class="fa fa-money mr-2"></i>Anticipos</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-1">
+
+    <div class="col-12 col-md-6 col-lg-3 my-2" style="height: 130px;">
+      <div class="card p-3 h-100">
+        <div class="p-1 d-flex align-items-center h-100">
+          <div class="col-2 col-lg-3 p-0 align-self-center">
+            <a href="{% url 'Presupuesto de reposición abierto' datos.0.0.id %}">
+              <img src="{% static 'img/expense-top.png' %}" alt="Income" width="40px"/>
+              </a> 
+          </div>  
+          <div class="col-9 col-lg-8 p-0 pl-2">
+            <h6 class="text-muted">Presup. abierto</h6>
+
+          </div>
+          <div class="col-1 col-lg-1 p-0 align-self-start">
+            <a href="#" data-toggle="modal" data-target="#ModalAbierto"><i class="fa fa-info-circle"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="modal fade" id="ModalAbierto" tabindex="-1" role="dialog" aria-labelledby="ModalAbierto" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header" style="background-color: #2a3e52;">
+            <h5 class="modal-title text-light" id="exampleModalLongTitle">Presup. abierto</h5>
+            <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p class="font-bold">Descripción:</p>
+            <p>El presupuesto abierto sirve para leer todos los componentes que componen un presupuesto de manera muy descriptiva y completa.</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 col-md-6 col-lg-3 my-2" style="height: 130px;">
+      <div class="card p-3 h-100">
+        <div class="p-1 d-flex align-items-center h-100">
+            <div class="col-2 col-lg-3 p-0 align-self-center">
+              <a href="{% url 'Panel de presupuestos por capitulo' datos.0.0.id %}">
+              <img src="{% static 'img/expense-center.png' %}" alt="Income" width="40px"/>
+              </a>
+            </div>
+            <div class="col-9 col-lg-8 p-0 pl-2">
+                <h6 class="text-muted">Valor reposición</h6>
+                <h4 class="m-t-0">${{datos.0.1|floatformat:0|intcomma}}</h4>
+            </div>
+            <div class="col-1 p-0 align-self-start">
+              <a href="#" data-toggle="modal" data-target="#ModalRepo"><i class="fa fa-info-circle"></i></a>
+            </div>
+        </div>
+      </div>
+    </div>
+    <!-- ModalRepo -->
+
+    <div class="modal fade" id="ModalRepo" tabindex="-1" role="dialog" aria-labelledby="ModalRepo" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header" style="background-color: #2a3e52;">
+            <h5 class="modal-title text-light" id="exampleModalLongTitle">Valor reposición</h5>
+            <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p class="font-bold">Descripción:</p>
+            <p>El segmento de valor de reposición encontrarás el precio de cuanto costaría construir el edificio a valores actuales</p>
+            <p>Está organizado por análisis completos dentro de los capítulos del proyecto</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 col-md-6 col-lg-3 my-2" style="height: 130px;">
+      <div class="card p-3 h-100">
+        <div class="p-1 d-flex align-items-center h-100">
+            <div class="col-2 col-lg-3  p-0 align-self-center">
+              <a href="{% url 'Saldo por capitulo' datos.0.0.id %}">
+                <img src="{% static 'img/expense-bottom.png' %}" alt="Income" width="40px"/>
+              </a>
+            </div>
+            <div class="col-9 col-lg-8 p-0 pl-2">
+                <h6 class="text-muted">Saldo del proyecto</h6>
+                <h4 class="m-t-0">${{datos.0.2|floatformat:0|intcomma}}</h4>
+            </div>
+            <div class="col-1 p-0 align-self-start">
+             <a href="#" data-toggle="modal" data-target="#ModalSaldo"><i class="fa fa-info-circle"></i></a>
+            </div>
+          </div>
+      </div>
+    </div>
+    <!-- ModalSaldo -->
+    <div class="modal fade" id="ModalSaldo" tabindex="-1" role="dialog" aria-labelledby="ModalSaldo" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header" style="background-color: #2a3e52;">
+            <h5 class="modal-title text-light" id="exampleModalLongTitle">Saldo del proyecto</h5>
+            <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p class="font-bold">Descripción:</p>
+            <p>En saldo del proyecto encontrarás cuanto te queda aún por gastar</p>
+            <p>Está organizado por capítulos y artículos</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 col-md-6 col-lg-3 my-2" style="height: 130px;">
+      <div class="card p-3 h-100">
+        <div class="p-1 d-flex align-items-center h-100">
+            <div class="col-2 p-0 align-self-center">
+              <img
+                src="{% if presupuestador.imagenlogo.url %} {{presupuestador.imagenlogo.url}} {% else %} {% static 'img/anonimo2.png' %} {% endif %}"
+                alt="User" width="40px" />
+            </div>
+            <div class="col-10">
+              <h6 class="m-t-10">{{presupuestador.nombre|truncatechars:17}}</h6>
+              <h6 style="font-size: 12px; " class="text-muted my-1 ">{{presupuestador.cargo}}</h6>
+              <h6 style="font-size: 10px; " class="text-muted my-0">{{presupuestador.email|truncatechars:20}}</h6>
+              
+              <div class="row mt-1">
+                <div class="col-6" style="text-align: end;">
+                  <form method="POST">{% csrf_token %}
+                    <input type="hidden" name="proyecto" value="{{datos.0.0.id}}">
+                    <button type="submit" name="action" value="1" class="btn btn-sm fa fa-refresh text-secondary"></button>
+                  </form>
+                </div>
+                <div class="col-6" style="text-align: start;">
+                  <form method="POST">{% csrf_token %}
+                    <input type="hidden" name="proyecto" value="{{datos.0.0.id}}">
+                    <button type="submit" name="action" value="2" class="btn btn-sm fa fa-cloud text-secondary"></button>
+                  </form>
+                </div>
+              </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="row">
+    <div class="col-12 col-lg-9 my-2" style="height: 330px;">
+      <div class="card h-100">
+        <div class="card-body">
+          <div class="d-flex">
+            <div>
+              <h3 class="card-title m-b-5"><span class="lstick"></span>Variación del precio de reposición</h3>
+              <h6 class="card-subtitle">Ultimos 60 dias</h6>
+            </div>
+          </div>
+
+          <canvas id="myChart" height="100px"></canvas>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 col-md-6 col-lg-3 my-2" style="height: 330px;">
+      <div class="card h-100">
+        <div class="card-body">
+          <div>
+            <h4 class="card-title"><span class="lstick"></span> Avance del proyecto</h4>
+          </div>
+
+          <div>
+            <canvas id="myChart2" height="350px"></canvas>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+<script>
+  var ctx = document.getElementById('myChart').getContext('2d');
+  var chart = new Chart(ctx, {
+    // The type of chart we want to create
+    type: 'line',
+
+    // The data for our dataset
+    data: {
+      labels: [
+        {% for i in valor %}
+                '{{i.0}}',                   
+                {% endfor %}
+  'Hoy',],
+  datasets: [
+    {
+      label: 'Valor de reposición',
+      backgroundColor: 'rgb({{datos.0.0.color}}, 0.3)',
+      borderColor: 'rgb({{datos.0.0.color}})',
+      fill: true,
+      data: [
+        {% for i in valor %}
+                {{ i.1|floatformat:0}},
+    {% endfor %}
+    Math.round({{ datos.0.1|floatformat:0}}/1000000),
+                
+
+                ]
+            },
+            ],
+
+        },
+
+  // Configuration options go here
+  options: {
+
+    scales: {
+
+      xAxes: [
+        {
+
+
+          display: false,
+
+        }
+      ],
+        yAxes: [
+          {
+            ticks: {
+              callback: function (label, index, labels) {
+                return '$ ' + label + ' M';
+
+              }
+            },
+            scaleLabel: {
+              display: true,
+              labelString: '1 M = $1.000.000'
+            },
+
+            stacked: false
+          }
+        ],
+
+          },
+  },
+    });
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+<script>
+
+  var ctx = document.getElementById('myChart2').getContext('2d');
+
+  var chart = new Chart(ctx, {
+    // The type of chart we want to create
+    type: 'doughnut',
+    // The data for our dataset
+    data: {
+      datasets: [{
+        data: [{{ datos.0.3|floatformat:0}}, {{ datos.0.4|floatformat:0}}],
+    backgroundColor: ['rgba({{datos.0.0.color}}, 0.5)', 'rgba(152, 165, 194, 0.5)'],
+  }],
+
+    labels: ['Avance', 'Pendiente']
+        },
+  options: {
+    cutoutPercentage: 80,
+    legend: {
+      position: 'bottom'
+    },
+    },
+
+        });
+
+</script>
+{% endblock %}

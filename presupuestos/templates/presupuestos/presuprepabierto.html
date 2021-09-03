@@ -10,13 +10,14 @@
 <div class="container-fluid">
     <div class="row page-titles">
         <div class="col-md-5 align-self-center">
-            <h3 class="text-themecolor">Presupuesto de reposición</h3>
+            <h3 class="text-themecolor">Presupuesto de aperturado</h3>
         </div>
 
         <div class="col-md-7 align-self-center">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
-                <li class="breadcrumb-item">Presupuesto</li>
+                <li class="breadcrumb-item"><a href="{% url 'Panel de presupuestos' %}">Panel</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'presupuesto_proyecto' id_proyecto  %}">Presupuesto</a></li>
+                <li class="breadcrumb-item">Aperturado</li>
             </ol>
         </div>
     </div>
@@ -33,6 +34,7 @@
                             <h4 class="card-title"><span class="lstick m-r-20"></span><b style="color: rgb({{datos.proyecto.color}});">{{datos.proyecto.nombre}}</b></h4>
                             <h6 class="card-subtitle"></span>Capitulos y analisis del proyecto</h6>
                         </div>
+                        
                     </div>
 
                     {% if datos.datos %}
