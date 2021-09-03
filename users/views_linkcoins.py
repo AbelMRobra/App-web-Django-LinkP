@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect
-from rrhh.models import EntregaMoneda, datosusuario, CanjeMonedas
+from rrhh.models import EntregaMoneda, datosusuario, CanjeMonedas, PremiosMonedas, MonedaLink
 from statistics import mode
-from .functions_linkcoins import estadisticasLinkcoin
-
+from .functions_linkcoins import estadisticasLinkcoin, email_canje_rrhh, email_canje_usuario
+from datetime import date, datetime
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
@@ -100,7 +100,7 @@ def generador_linkcoins(request):
 
 def canjemonedas(request):
 
-    mensaje = ""
+    context = {}
 
     usuario = datosusuario.objects.get(identificacion = request.user)
 
@@ -116,101 +116,31 @@ def canjemonedas(request):
 
             if today.day <= 10:
 
-                rrhh = "am@linkinversiones.com.ar"
-
                 premio_solicitado = PremiosMonedas.objects.get(id = int(request.POST['premio']))
 
                 if monedas_canjear >= premio_solicitado.cantidad:
 
                     canje = CanjeMonedas(
                         usuario = usuario,
-                        fecha = datetime.date.today(),
+                        fecha = date.today(),
                         premio = str(premio_solicitado.nombre),
                         monedas = int(premio_solicitado.cantidad),
                     )
 
                     canje.save()
 
-                    # Establecemos conexion con el servidor smtp de gmail
-                    mailServer = smtplib.SMTP(settings.EMAIL_HOST, settings.EMAIL_PORT)
-                    mailServer.ehlo()
-                    mailServer.starttls()
-                    mailServer.ehlo()
-                    mailServer.login(settings.EMAIL_HOST_USER, settings.EMAIL_HOST_PASSWORD)
-
-                    # Construimos el mensaje simple
-                    
-                    mensaje = MIMEText("""
-                
-Hola!,
-
-{} acaba de canjear Linkcoins, el premio es {} que costó {} monedas.
-
-Podrás visualizarlo en el panel de seguimiento. Cualquier duda, comunicate con el equipo de IT.
-
-Saludos!
-
--- Link-Help 
+                    email_canje_rrhh(usuario, canje.premio, canje.monedas)
+                    email_canje_usuario(usuario.email, usuario, canje.premio, canje.monedas)
 
 
-                    
-                    """.format(usuario, canje.premio, canje.monedas))
-                    mensaje['From']=settings.EMAIL_HOST_USER
-                    mensaje['To']= rrhh
-                    mensaje['Subject']="{} realizo un canje".format(usuario)
-
-
-                    # Envio del mensaje
-
-                    mailServer.sendmail(settings.EMAIL_HOST_USER,
-                                    rrhh,
-                                    mensaje.as_string())
-
-                    # Establecemos conexion con el servidor smtp de gmail
-                    mailServer = smtplib.SMTP(settings.EMAIL_HOST, settings.EMAIL_PORT)
-                    mailServer.ehlo()
-                    mailServer.starttls()
-                    mailServer.ehlo()
-                    mailServer.login(settings.EMAIL_HOST_USER, settings.EMAIL_HOST_PASSWORD)
-
-                    # Construimos el mensaje simple
-                    
-                    mensaje = MIMEText("""
-                    
-¡Hola!,
-
-Acabas canjear {}  Linkcoins por el siguiente premio: {}.
-
-El equipo de RRHH te notificará cuando el mismo esté disponible para retirarlo (esta gestión puede tomar hasta 10 días hábiles posteriores a la fecha límite de canje).
-
-Si hubiera algún problema del sistema, comunicate con el equipo de IT para solucionarlo.
-
-Saludos,
-
--- Link-Help 
-
-                
-                    """.format(canje.monedas, canje.premio))
-                    mensaje['From']=settings.EMAIL_HOST_USER
-                    mensaje['To']= usuario.email
-                    mensaje['Subject']="Realizaste un canje de Linkcoins".format(usuario)
-
-
-                    # Envio del mensaje
-
-                    mailServer.sendmail(settings.EMAIL_HOST_USER,
-                                    usuario.email,
-                                    mensaje.as_string())
-
-
-                    return redirect('Canje de monedas')
+                    context['canje_realizado'] = True 
 
                 else:
-                    mensaje = "No tienes suficientes monedas para canjear el premio seleccionado"
+                    context['mensaje'] = "No tienes suficientes monedas para canjear el premio seleccionado"
 
             else:
 
-                mensaje = "Solo puedes canjear hasta el dia 10 de cada mes"
+                context['mensaje'] = "Solo puedes canjear hasta el dia 10 de cada mes"
 
         except:
 
@@ -267,5 +197,8 @@ Saludos,
 
     dato_monedas = {'monedas_recibidas':monedas_recibidas, 'monedas_disponibles':monedas_disponibles, 'monedas':monedas, 'monedas_canjear':monedas_canjear}
   
-    return render(request, "users/canjemonedas.html", {'mensaje':mensaje, "premios":premios, 'dato_monedas':dato_monedas})
+    context['premios'] = premios
+    context['dato_monedas'] = dato_monedas
+
+    return render(request, "linkcoins/canjemonedas.html", context)
 

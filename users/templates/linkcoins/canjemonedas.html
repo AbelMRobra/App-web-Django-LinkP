@@ -18,171 +18,168 @@
             </ol>
         </div>
     </div>
-</div>
 
-
-<div class="row">
-    <div class="col-12 col-md-12 col-lg-10">
-        <div class="card">
-            <div class="card-body">
-                {% if request.user|has_group:"RRHH NIVEL 10" %}
-                <div class="row">
-                    <div class="col-12 col-md-12 col-lg-11">
-                        <h4 class="card-title"><span class="lstick m-r-20"></span>Gestor de canjes</h4>
-                        <form method="POST" class="mb-3">
-                            {% csrf_token %}
-                            <div class="p-4 bg-light">
-
-                                <div class="row">
-                                    <div class="col-12 col-md-8 col-lg-9">
-                                        <label for="inputCanje" class="form-label">Premios</label>
-                                        <input type="text" name="nombre" class="form-control">
+    <div class="row">
+        <div class="col-12 col-md-12 col-lg-10">
+            <div class="card">
+                <div class="card-body">
+                    {% if request.user|has_group:"RRHH NIVEL 10" %}
+                    <div class="row">
+                        <div class="col-12 col-md-12 col-lg-11">
+                            <h4 class="card-title"><span class="lstick m-r-20"></span>Gestor de canjes</h4>
+                            <form method="POST" class="mb-3">
+                                {% csrf_token %}
+                                <div class="p-4 bg-light">
+    
+                                    <div class="row">
+                                        <div class="col-12 col-md-8 col-lg-9">
+                                            <label for="inputCanje" class="form-label">Premios</label>
+                                            <input type="text" name="nombre" class="form-control">
+                                        </div>
+                                        <div class="col-12 col-md-4 col-lg-3">
+                                            <label for="inputMoneda" class="form-label">Monedas</label>
+                                            <input type="number" name="cantidad" class="form-control">
+                                        </div>
                                     </div>
-                                    <div class="col-12 col-md-4 col-lg-3">
-                                        <label for="inputMoneda" class="form-label">Monedas</label>
-                                        <input type="number" name="cantidad" class="form-control">
-                                    </div>
+                                    <button class="btn btn-info mt-4" name="id" value="0">Crear</button>
                                 </div>
-                                <button class="btn btn-info mt-4" name="id" value="0">Crear</button>
-                            </div>
-                        </form>
+                            </form>
+                        </div>
                     </div>
-                </div>
-
-                {% endif %}
-
-                <h4 class="card-title"><span class="lstick m-r-20"></span>Tabla de canjes</h4>
-                <h6>Monedas recibidas: {{dato_monedas.monedas_recibidas}} | Monedas disponibles:
-                    {{dato_monedas.monedas_canjear}}</h6>
-                <h6 class="text-danger">{{mensaje}}</h6>
-                <div class="row">
-                    <div class="col-12 col-md-12 col-lg-11">
-
-                        <div class="table-responsive m-t-4">
-                            <table class="table stylish-table">
-                                <thead>
-                                    <tr>
-                                        <th style="width: min-width: 150px; ;">Premios</th>
-                                        <th style="text-align: right;">Linkcoins</th>
-                                        <th style="text-align: center;">Canjear</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <!-- if administrador -->
-
-                                    {% for i in premios %}
-                                    <tr>
-                                        <td>
-                                            {% if request.user|has_group:"RRHH NIVEL 10" %}
-                                            <a href="#" class="fa fa-trash text-danger my-2" data-toggle="modal"
-                                                data-target="#modalBorrar{{i.id}}"></a>
-                                            <!-- Modal borrar -->
-                                            <div class="modal fade" id="modalBorrar{{i.id}}" tabindex="-1" role="dialog"
-                                                aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                                                <div class="modal-dialog modal-dialog-centered" role="document">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header" style="background: rgb(36,160,237);
-                                            background: linear-gradient(315deg, rgba(36,160,237,1) 0%, rgba(56,56,130,1) 22%, rgba(0,212,255,1) 100%);">
-                                                            <h5 class="modal-title text-light" id="exampleModalLongTitle">Borrar
-                                                                premio</h5>
-                                                            <button type="button" class="close text-light data-dismiss=" modal
-                                                                aria-label="Close">
-                                                                <span aria-hidden="true">&times;</span>
-                                                            </button>
-                                                        </div>
-                                                        <div class="modal-body">
-
-                                                            <form action="" method="POST">
-                                                                {% csrf_token %}
-
-                                                                <p>¿Está seguro que desea borrar este premio?</p>
-                                                                <button class="btn btn-danger" type="submit"
-                                                                    name="borrar" value="{{i.id}}"
-                                                                    style="margin-top: 10px;">Borrar</button>
-                                                            </form>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-info"
-                                                                data-dismiss="modal">Cerrar</button>
-
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <a href="#" class="fa fa-pencil-square-o my-2" data-toggle="modal"
-                                                data-target="#modalModificar{{i.id}}"></a>
-                                            <!-- Modal modificar -->
-                                            <div class="modal fade" id="modalModificar{{i.id}}" tabindex="-1"
-                                                role="dialog" aria-labelledby="exampleModalCenterTitle"
-                                                aria-hidden="true">
-                                                <div class="modal-dialog modal-dialog-centered" role="document">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header" style="background: rgb(36,160,237);
-                                            background: linear-gradient(315deg, rgba(36,160,237,1) 0%, rgba(56,56,130,1) 22%, rgba(0,212,255,1) 100%);">
-                                                            <h5 class="modal-title text-light" id="exampleModalLongTitle">Modificar
-                                                                premio</h5>
-                                                            <button type="button" class="close text-light" data-dismiss="modal"
-                                                                aria-label="Close">
-                                                                <span aria-hidden="true">&times;</span>
-                                                            </button>
-                                                        </div>
-                                                        <div class="modal-body">
-
-                                                            <form action="" method="POST">
-                                                                {% csrf_token %}
-
-                                                                <div class="col-12">
-                                                                    <label for="inputCanje"
-                                                                        class="form-label">Nombre</label>
-                                                                    <input type="text" name="nombre"
-                                                                        value="{{i.nombre}}" class="form-control">
-                                                                </div>
-                                                                <div class="col-12">
-                                                                    <label for="inputMoneda"
-                                                                        class="form-label">Monedas</label>
-                                                                    <input type="number" name="cantidad"
-                                                                        value="{{i.cantidad}}" class="form-control">
-                                                                </div>
-                                                                <div>
-                                                                    <button class="btn btn-info ml-3" type="submit"
-                                                                        name="id" value="{{i.id}}"
-                                                                        style="margin-top: 10px;">Modificar</button>
-
-                                                                </div>
-                                                            </form>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-info"
-                                                                data-dismiss="modal">Cerrar</button>
-
+    
+                    {% endif %}
+    
+                    <h4 class="card-title"><span class="lstick m-r-20"></span>Tabla de canjes</h4>
+                    <h6>Monedas recibidas: {{dato_monedas.monedas_recibidas}} | Monedas disponibles:
+                        {{dato_monedas.monedas_canjear}}</h6>
+                    <h6 class="text-danger">{{mensaje}}</h6>
+                    <div class="row">
+                        <div class="col-12 col-md-12 col-lg-11">
+    
+                            <div class="table-responsive m-t-4">
+                                <table class="table stylish-table">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: min-width: 150px; ;">Premios</th>
+                                            <th style="text-align: right;">Linkcoins</th>
+                                            <th style="text-align: center;">Canjear</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- if administrador -->
+    
+                                        {% for i in premios %}
+                                        <tr>
+                                            <td>
+                                                {% if request.user|has_group:"RRHH NIVEL 10" %}
+                                                <a href="#" class="fa fa-trash text-danger my-2" data-toggle="modal"
+                                                    data-target="#modalBorrar{{i.id}}"></a>
+                                                <!-- Modal borrar -->
+                                                <div class="modal fade" id="modalBorrar{{i.id}}" tabindex="-1" role="dialog"
+                                                    aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header" style="background-color: #2a3e52;">
+                                                                <h5 class="modal-title text-light" id="exampleModalLongTitle">Borrar
+                                                                    premio</h5>
+                                                                <button type="button" class="close text-light data-dismiss=" modal
+                                                                    aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+    
+                                                                <form action="" method="POST">
+                                                                    {% csrf_token %}
+    
+                                                                    <p>¿Está seguro que desea borrar este premio?</p>
+                                                                    <button class="btn btn-danger" type="submit"
+                                                                        name="borrar" value="{{i.id}}"
+                                                                        style="margin-top: 10px;">Borrar</button>
+                                                                </form>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-info"
+                                                                    data-dismiss="modal">Cerrar</button>
+    
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            {% endif %}
-                                            {{i.nombre}}
-                                        </td>
-                                        <td style="text-align: right;">{{i.cantidad}} <img
-                                                src="{% static 'img/monedalink2.png' %}" alt=""
-                                                style="max-width:21px; height:auto; vertical-align: top;"></td>
-
-                                        <td style="text-align: center;">
-                                            <form
-                                                onsubmit="return confirm('¿Estás seguro de que deseas canjear tus puntos?. No puedes cambiar tus canjes una vez realizados.');"
-                                                method="POST">
-                                                {% csrf_token %}
-                                                <button type="submit" name="premio" value="{{i.id}}"
-                                                    class="btn fa fa-lg fa-gift text-info"
-                                                    style="padding: 0%;"></button>
-                                            </form>
-                                        </td>
-
-                                    </tr>
-                                    {% endfor %}
-
-
-                                </tbody>
-                            </table>
+                                                <a href="#" class="fa fa-pencil-square-o my-2" data-toggle="modal"
+                                                    data-target="#modalModificar{{i.id}}"></a>
+                                                <!-- Modal modificar -->
+                                                <div class="modal fade" id="modalModificar{{i.id}}" tabindex="-1"
+                                                    role="dialog" aria-labelledby="exampleModalCenterTitle"
+                                                    aria-hidden="true">
+                                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header" style="background-color: #2a3e52;">
+                                                                <h5 class="modal-title text-light" id="exampleModalLongTitle">Modificar
+                                                                    premio</h5>
+                                                                <button type="button" class="close text-light" data-dismiss="modal"
+                                                                    aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+    
+                                                                <form action="" method="POST">
+                                                                    {% csrf_token %}
+    
+                                                                    <div class="col-12">
+                                                                        <label for="inputCanje"
+                                                                            class="form-label">Nombre</label>
+                                                                        <input type="text" name="nombre"
+                                                                            value="{{i.nombre}}" class="form-control">
+                                                                    </div>
+                                                                    <div class="col-12">
+                                                                        <label for="inputMoneda"
+                                                                            class="form-label">Monedas</label>
+                                                                        <input type="number" name="cantidad"
+                                                                            value="{{i.cantidad}}" class="form-control">
+                                                                    </div>
+                                                                    <div>
+                                                                        <button class="btn btn-info ml-3" type="submit"
+                                                                            name="id" value="{{i.id}}"
+                                                                            style="margin-top: 10px;">Modificar</button>
+    
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-info"
+                                                                    data-dismiss="modal">Cerrar</button>
+    
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                {% endif %}
+                                                {{i.nombre}}
+                                            </td>
+                                            <td style="text-align: right;">{{i.cantidad}} <img
+                                                    src="{% static 'img/monedalink2.png' %}" alt=""
+                                                    style="max-width:21px; height:auto; vertical-align: top;"></td>
+    
+                                            <td style="text-align: center;">
+                                                <form
+                                                    onsubmit="return confirm('¿Estás seguro de que deseas canjear tus puntos?. No puedes cambiar tus canjes una vez realizados.');"
+                                                    method="POST">
+                                                    {% csrf_token %}
+                                                    <button type="submit" name="premio" value="{{i.id}}"
+                                                        class="btn fa fa-lg fa-gift text-info"
+                                                        style="padding: 0%;"></button>
+                                                </form>
+                                            </td>
+    
+                                        </tr>
+                                        {% endfor %}
+    
+    
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -190,6 +187,9 @@
         </div>
     </div>
 </div>
+
+
+
 
 <aside class="right-side-panel">
     <h3 class="p-relative"><span class="lstick"></span>¿Cómo funciona?</h3>
@@ -210,6 +210,31 @@
         </div>
     </div>
 </aside>
+
+
+{% if canje_realizado %}
+
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+    Swal.fire({
+    title: 'Todo listo!',
+    allowOutsideClick: false,
+    text: 'Tu canje se realizo correctamente',
+    imageUrl: 'https://picsum.photos/id/635/400/200',
+    imageWidth: 400,
+    imageHeight: 200,
+    imageAlt: 'Custom image',
+    }).then(function() {
+    window.location = "canjemoneda";
+});
+
+</script>
+
+
+
+{% endif %}
+
 
 
 
