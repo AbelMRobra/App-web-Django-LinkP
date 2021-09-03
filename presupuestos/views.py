@@ -24,6 +24,7 @@ from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
 from .serializers import ArtSerializer
 from .functions import auditor_presupuesto,auditor_presupuesto_p
 from .functions_saldo import Creditocapitulo
+from .funciones_credito import ajustar_analisis, ajustar_capitulo, ajustar_todo
 from .wabot import WABot
 
 def registroconstante(request):
@@ -870,6 +871,32 @@ def creditos(request, id_proyecto):
 
     proyecto = Proyectos.objects.get(id = id_proyecto)
 
+    if request.method=='POST':
+
+        # Variables para trabajar 
+        
+        datos=request.POST.dict()
+        
+        cantidad_sobrante=float(datos['sobrante'])
+
+        if 'modificar-analisis' in datos:
+
+            ajustar_analisis(proyecto, cantidad_sobrante, datos['analisis'], datos['modificar-analisis'])
+
+            #-> Ajusta el analisis siempre
+
+        if 'modificar-capitulo' in datos:
+
+            ajustar_capitulo()
+
+            #-> Ajusta el capitulo siempre
+
+        if 'crear' in datos:
+
+            ajustar_todo()
+
+            #-> Crea un analisis dentro un capitulo para ajustar
+
     datos = Creditocapitulo(id_proyecto)
 
     context = {}
@@ -879,7 +906,7 @@ def creditos(request, id_proyecto):
     context['valor_saldo'] = sum(np.array([ data[4] for data in datos[0] if data[4] > 0]))
     context['valor_credito'] = sum(np.array([ data[4] for data in datos[0] if data[4] < 0])) + sum(np.array([ data[4] for data in datos[1] if data[4] < 0])) 
 
-    # Guardamos el valor del credito en la base de presupuestos
+    #### Guardamos el valor del credito en la base de presupuestos
 
     try:
 
@@ -888,6 +915,7 @@ def creditos(request, id_proyecto):
         Cred_act.save()
 
     except:
+        
         pass
 
     return render(request, 'presupuestos/creditos.html', context)

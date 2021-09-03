@@ -12,7 +12,7 @@ class ArticulosResource(resources.ModelResource):
 
 class ArticulosAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = ('codigo', 'nombre',  'valor', 'constante')
-    search_fields = ('codigo', 'nombre',  'valor', 'constante')
+    search_fields = ('codigo', 'nombre')
     resources_class = ArticulosResource
 
 class AnalisisResource(resources.ModelResource):
