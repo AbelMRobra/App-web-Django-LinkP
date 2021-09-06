@@ -607,7 +607,7 @@ def presupuestostotal(request,id):
 
         try:
 
-            dato = RegistroValorProyecto.objects.filter(fecha = date, proyecto = proyectos)
+            dato = RegistroValorProyecto.objects.filter(fecha = date, proyecto = proyecto)
 
             valor = (((valor_reposicion)/dato[0].precio_proyecto) -1)*100
 
@@ -621,8 +621,8 @@ def presupuestostotal(request,id):
             variacion_anuales = 0
 
         try:
-            dato_1 = RegistroValorProyecto.objects.filter(fecha = date, proyecto = proyectos)
-            dato_2 = RegistroValorProyecto.objects.filter(fecha = date_2, proyecto = proyectos)
+            dato_1 = RegistroValorProyecto.objects.filter(fecha = date, proyecto = proyecto)
+            dato_2 = RegistroValorProyecto.objects.filter(fecha = date_2, proyecto = proyecto)
 
             valor = ((dato_1[0].precio_proyecto/dato_2[0].precio_proyecto) -1)*100
 
@@ -652,6 +652,7 @@ def presupuestostotal(request,id):
 
     if request.user.username == presupuestador.identificacion:
         context['que_hacer_general'] = True
+    
 
     return render(request, 'presupuestos/presupuesto_proyecto.html', context)
 
@@ -1927,7 +1928,6 @@ def InformeArea(request):
                 total_fdr_300 = total_fdr_300 + datos_presup.fdr
                 total_ant_300  =  total_ant_300 + datos_presup.anticipos
                 imprevisto_300 = imprevisto_300 + datos_presup.imprevisto
-                saldo_total_300 = saldo_total_300 + valor_proyecto_materiales_300 + valor_proyecto_mo_300 + total_creditos_300 + total_fdr_300 - total_ant_300 + imprevisto_300
 
             except:
                  basura = 1
@@ -1972,6 +1972,8 @@ def InformeArea(request):
             except:
                 pass
     
+    saldo_total_300 = valor_proyecto_materiales_300 + valor_proyecto_mo_300 + total_creditos_300 + total_fdr_300 - total_ant_300 + imprevisto_300
+
     proy_presup.append((proyecto_300, valor_proyecto_300, vr_M2_300, valor_proyecto_materiales_300, valor_proyecto_mo_300, total_creditos_300, saldo_total_300, total_fdr_300, total_ant_300, imprevisto_300))
 
     cant_proy_act = len(proy_presup)
