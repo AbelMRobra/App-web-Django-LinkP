@@ -1608,6 +1608,8 @@ def indicelink(request, id_moneda, id_time):
             
             for p in presupuesto_aux:
 
+                print(p)
+
                 pend_gast_presup = pend_gast_presup + p.saldo_mat + p.saldo_mo + p.imprevisto + p.credito + p.fdr
         else:
 
