@@ -1605,9 +1605,10 @@ def indicelink(request, id_moneda, id_time):
         if "#300" in dato.proyecto.nombre:
             pend_gast_presup = 0
             presupuesto_aux = Presupuestos.objects.filter(proyecto__nombre__icontains = "#300")
+            
             for p in presupuesto_aux:
 
-                pend_gast_presup += p.saldo_mat + p.saldo_mo + p.imprevisto + p.credito + p.fdr
+                pend_gast_presup = pend_gast_presup + p.saldo_mat + p.saldo_mo + p.imprevisto + p.credito + p.fdr
         else:
 
             pend_gast = almacenero.pendiente_admin + almacenero.pendiente_comision + presupuesto.saldo_mat + presupuesto.saldo_mo + presupuesto.imprevisto + presupuesto.credito + presupuesto.fdr - almacenero.pendiente_adelantos + almacenero.pendiente_iva_ventas + almacenero.pendiente_iibb_tem +almacenero.cheques_emitidos
