@@ -1608,9 +1608,9 @@ def indicelink(request, id_moneda, id_time):
             
             for p in presupuesto_aux:
 
-                print(pend_gast_presup)
-
                 pend_gast_presup = pend_gast_presup + p.saldo_mat + p.saldo_mo + p.imprevisto + p.credito + p.fdr
+            
+            pend_gast = almacenero.pendiente_admin + almacenero.pendiente_comision + pend_gast_presup - almacenero.pendiente_adelantos + almacenero.pendiente_iva_ventas + almacenero.pendiente_iibb_tem +almacenero.cheques_emitidos
         else:
 
             pend_gast = almacenero.pendiente_admin + almacenero.pendiente_comision + presupuesto.saldo_mat + presupuesto.saldo_mo + presupuesto.imprevisto + presupuesto.credito + presupuesto.fdr - almacenero.pendiente_adelantos + almacenero.pendiente_iva_ventas + almacenero.pendiente_iibb_tem +almacenero.cheques_emitidos
