@@ -1,6 +1,6 @@
 from rest_framework.generics import ListAPIView
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, response
 from django.views.generic.base import TemplateView  
 from django.conf import settings
 from proyectos.models import Proyectos
@@ -11,21 +11,18 @@ from ventas.models import PricingResumen, VentasRealizadas
 from registro.models import RegistroValorProyecto, RegistroConstantes
 from rrhh.models import datosusuario
 from .models import Articulos, Constantes, DatosProyectos, Prametros, Desde, Analisis, CompoAnalisis, Modelopresupuesto, Capitulos, Presupuestos, Registrodeconstantes, PorcentajeCapitulo, PresupuestosAlmacenados
-import sqlite3
 import pandas as pd
 import numpy as np
-import json
 import datetime
-import csv
 import requests
-from datetime import date
 from openpyxl import Workbook
-from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
+from openpyxl.styles import Alignment,Font, PatternFill
 from .serializers import ArtSerializer
 from users.functions import saludo
 from .functions import auditor_presupuesto,auditor_presupuesto_p
 from .functions_saldo import Creditocapitulo
 from .funciones_credito import ajustar_analisis, ajustar_capitulo, ajustar_todo
+from .functions_presupuestos import *
 from .wabot import WABot
 
 def registroconstante(request):
@@ -231,190 +228,67 @@ def presupuestostotal(request,id):
     registro = 0
 
     proyecto = Proyectos.objects.get(pk=id)
+    datos=request.POST.dict()
+    presupuestos_alm=PresupuestosAlmacenados.objects.all()
 
     try:
-        if int(request.POST['action']) == 2:
+        if int(datos['action']) == 2:
 
-            data_aux = PresupuestosAlmacenados.objects.filter(proyecto = proyecto, nombre = "vigente")
+            data_aux = presupuestos_alm.get(proyecto = proyecto, nombre = "vigente")
 
-            variable = PresupuestosAlmacenados(
+            nuevo_presupuesto = PresupuestosAlmacenados(
                 proyecto = proyecto,
                 nombre = str("{}".format(datetime.date.today())),
-                archivo = data_aux[0].archivo,
+                archivo = data_aux.archivo,
             )
 
-            variable.save()
+            nuevo_presupuesto.save()
 
-        if int(request.POST['action']) == 1:
-            archivo_vigente = PresupuestosAlmacenados.objects.get(proyecto = proyecto, nombre = "vigente")
+        if int(datos['action']) == 1:
+            archivo_vigente = presupuestos_alm.get(proyecto = proyecto, nombre = "vigente")
             archivo_vigente.nombre = str("{}".format(datetime.date.today()))
             archivo_vigente.save()
     except:
         pass
 
 
-    # Comprobamos si existe el fichero csv en el almacen
+    # Comprobamos si existe el fichero csv en el almacen, si no existe se crea
 
-    if len(PresupuestosAlmacenados.objects.filter(proyecto = proyecto, nombre = "vigente")) == 0:
-        today = datetime.date.today()
-        wb = Workbook()
-        ws = wb.active
-        ws.title = "Almacen"
-        ws["A1"] = "Capitulo"
-        ws["B1"] = "Modelo"
-        ws["C1"] = "Analisis"
-        ws["D1"] = "Cantidad An"
-        ws["E1"] = "Articulo"
-        ws["F1"] = "Cantidad Ar"
-        ws["G1"] = "Precio"
-        ws["H1"] = "Cantidad Art Totales"
-        ws["I1"] = "Monto"
-
-        contador = 2
-
-        capitulo = Capitulos.objects.all()
-        compo = CompoAnalisis.objects.all()
-        computo = Computos.objects.all()
-        for c in capitulo:
-            modelo = Modelopresupuesto.objects.filter(proyecto = proyecto, capitulo = c ).order_by("orden")
-            for d in modelo:
-                cantidad = d.cantidad
-                if d.cantidad == None:
-                    if "SOLO MANO DE OBRA" in str(d.analisis): 
-                        cantidad = 0
-                        for h in computo:
-                            if h.proyecto == proyecto and h.tipologia == d.vinculacion:
-                                cantidad = cantidad + h.valor_vacio                      
-                        for e in compo:
-                            if e.analisis == d.analisis:
-                                ws["A{}".format(contador)] = c.nombre
-                                ws["B{}".format(contador)] = d.id
-                                ws["C{}".format(contador)] = d.analisis.codigo
-                                ws["D{}".format(contador)] = cantidad
-                                ws["E{}".format(contador)] = e.articulo.codigo
-                                ws["F{}".format(contador)] = e.cantidad
-                                ws["G{}".format(contador)] = e.articulo.valor
-                                ws["H{}".format(contador)] = e.cantidad * cantidad
-                                ws["I{}".format(contador)] = e.cantidad * e.articulo.valor * cantidad
-                                contador += 1
-
-                    else:
-
-                        cantidad = 0
-
-                        for h in computo:
-
-                            if h.proyecto == proyecto and h.tipologia == d.vinculacion:
-                                
-                                cantidad = cantidad + h.valor_lleno
-
-                        for e in compo:
-
-                            if e.analisis == d.analisis:
-
-                                ws["A{}".format(contador)] = c.nombre
-                                ws["B{}".format(contador)] = d.id
-                                ws["C{}".format(contador)] = d.analisis.codigo
-                                ws["D{}".format(contador)] = cantidad
-                                ws["E{}".format(contador)] = e.articulo.codigo
-                                ws["F{}".format(contador)] = e.cantidad
-                                ws["G{}".format(contador)] = e.articulo.valor
-                                ws["H{}".format(contador)] = e.cantidad * cantidad
-                                ws["I{}".format(contador)] = e.cantidad * e.articulo.valor * cantidad
-                                contador += 1
-                        
-                else:
-
-                    for e in compo:
-
-                        if e.analisis == d.analisis:
-
-                            ws["A{}".format(contador)] = c.nombre
-                            ws["B{}".format(contador)] = d.id
-                            ws["C{}".format(contador)] = d.analisis.codigo
-                            ws["D{}".format(contador)] = cantidad
-                            ws["E{}".format(contador)] = e.articulo.codigo
-                            ws["F{}".format(contador)] = e.cantidad
-                            ws["G{}".format(contador)] = e.articulo.valor
-                            ws["H{}".format(contador)] = e.cantidad * cantidad
-                            ws["I{}".format(contador)] = e.cantidad * e.articulo.valor * cantidad
-                            contador += 1
-
-        #Establecer el nombre del archivo
-        nombre_archivo = "{}.{}Almacen.xls".format(str(proyecto.nombre).replace(" ", ""),str(today))
-        nombre_archivo
-        mUrl = settings.MEDIA_URL
-        mRoot = settings.MEDIA_ROOT
-        wb.save(mRoot + "/{}".format(nombre_archivo))
+    if  presupuestos_alm.filter(proyecto = proyecto, nombre = "vigente").count() == 0:
         
-        variable = PresupuestosAlmacenados(
-            proyecto = proyecto,
-            nombre = "vigente",
-            archivo = (nombre_archivo),
-        )
-
-        variable.save()
-
+        computo = Computos.objects.all()
+        generar_excel(computo,proyecto)
         # BOT la actualización
 
         try:
 
-            archivo = PresupuestosAlmacenados.objects.filter(proyecto = proyecto, nombre = "vigente")[0].archivo
+            archivo = presupuestos_alm.get(proyecto = proyecto, nombre = "vigente").archivo
             df = pd.read_excel(archivo)
             repo_nuevo = sum(np.array(df['Monto'].values))
 
-            anterior_archivo = PresupuestosAlmacenados.objects.filter(proyecto = proyecto).order_by("-id").exclude(nombre = "vigente")[0].archivo
+            anterior_archivo = presupuestos_alm.get(proyecto = proyecto).order_by("-id").exclude(nombre = "vigente")[0].archivo
             df = pd.read_excel(anterior_archivo)
             repo_anterior = sum(np.array(df['Monto'].values))
 
             var = round((repo_nuevo/repo_anterior-1)*100, 2)
 
             if var != 0:
-
+                
                 send = "{} ha actualizado {}. Variación: {}%".format(request.user.first_name, proyecto.nombre, var)
-                id = "-455382561"
-                token = "1880193427:AAH-Ej5ColiocfDZrDxUpvsJi5QHWsASRxA"
-                url = "https://api.telegram.org/bot" + token + "/sendMessage"
-                params = {
-                    'chat_id' : id,
-                    'text' : send
-                }
-                requests.post(url, params=params)
-                bot_wp = WABot(response_servidor)
-                bot_wp.send_message(numero_prueba, send)
+                notificar_botwp(send,response_servidor,numero_prueba)
+                
 
             else:
                 send = "{} guardo una copia de {}".format(request.user.first_name, proyecto.nombre)
-                id = "-455382561"
-                token = "1880193427:AAH-Ej5ColiocfDZrDxUpvsJi5QHWsASRxA"
-                url = "https://api.telegram.org/bot" + token + "/sendMessage"
-                params = {
-                    'chat_id' : id,
-                    'text' : send
-                }
-                requests.post(url, params=params)
-                bot_wp = WABot(response_servidor)
-                bot_wp.send_message(numero_prueba, send)
+                notificar_botwp(send,response_servidor,numero_prueba)
+                
 
             if proyecto.presupuesto == "BASE" and var != 0:
 
                 send = "{}, has actualizado el proyecto BASE, empieza el proceso de actualización de proyectos extrapolados".format(request.user.first_name)
 
-                id = "-455382561"
-
-                token = "1880193427:AAH-Ej5ColiocfDZrDxUpvsJi5QHWsASRxA"
-
-                url = "https://api.telegram.org/bot" + token + "/sendMessage"
-
-                params = {
-                    'chat_id' : id,
-                    'text' : send
-                }
-
-                requests.post(url, params=params)
-                bot_wp = WABot(response_servidor)
-                bot_wp.send_message(numero_prueba, send)
-
+                notificar_botwp(send,response_servidor,numero_prueba)
+                
                 proyectos_extrapolados = Proyectos.objects.filter(presupuesto = "EXTRAPOLADO")
 
                 send_1 = "Proyectos actualizados: "
@@ -442,41 +316,20 @@ def presupuestostotal(request,id):
 
                         send_1 += "{} con {}% - ".format(p, var)
 
-                        
-
                     except:
 
                         send_2 += "{} - ".format(p)
 
 
-                params = {
-                    'chat_id' : id,
-                    'text' : send_1
-                }
 
-                requests.post(url, params=params)
-                bot_wp = WABot(response_servidor)
-                bot_wp.send_message(numero_prueba, send_1)
+                notificar_botwp(send_1,response_servidor,numero_prueba)
 
-                params = {
-                    'chat_id' : id,
-                    'text' : send_2
-                }
-
-                requests.post(url, params=params)
-                bot_wp = WABot(response_servidor)
-                bot_wp.send_message(numero_prueba, send_2)
+        
+                notificar_botwp(send_2,response_servidor,numero_prueba)
 
                 send = "Proceso de actualización de proyectos extrapolados completo. Tambien actualice el IVA en el almacenero. Disculpen los mensajes"
 
-                params = {
-                    'chat_id' : id,
-                    'text' : send
-                }
-
-                requests.post(url, params=params)
-                bot_wp = WABot(response_servidor)
-                bot_wp.send_message(numero_prueba, send)
+                notificar_botwp(send,response_servidor,numero_prueba)
 
 
         except:
@@ -649,9 +502,13 @@ def presupuestostotal(request,id):
     context['variacion_anuales'] = variacion_anuales
 
     #### Toda esta parte va a ser del presupuestador
+    try:
+        presup=presupuestador.identificacion
+        if request.user.username == presup:
+            context['que_hacer_general'] = True
+    except:
+        context['que_hacer_general'] = False
 
-    if request.user.username == presupuestador.identificacion:
-        context['que_hacer_general'] = True
 
     return render(request, 'presupuestos/presupuesto_proyecto.html', context)
 
