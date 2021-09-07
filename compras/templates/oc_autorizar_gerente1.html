@@ -23,181 +23,182 @@
             </ol>
         </div>
     </div>
-</div>
 
-{% if request.user|has_group:"COMPRAS NIVEL 4" %}
+    {% if request.user|has_group:"COMPRAS NIVEL 4" %}
 
-<div class="row">
-<div class="col col-xlg-12 button-group">
-    <div class="card">
-        <div class="card-body">
-            <h4 class="card-title"><span class="lstick m-r-20"></span>Panel de solicitudes</h4>
-            <h6 class="card-subtitle">Ordenes de compra o comparativas para ser aprobadas</h6>
+    <div class="row">
+        <div class="col col-xlg-12 button-group">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title"><span class="lstick m-r-20"></span>Panel de solicitudes</h4>
+                    <h6 class="card-subtitle">Ordenes de compra o comparativas para ser aprobadas</h6>
 
-            <div style="text-align: left;">
+                    <div style="text-align: left;">
 
-                <div class="btn-group">
-                    <button type="button" class="btn btn-primary dropdown-toggle ml-2"
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onclick="myFunction()">
-                        {{estado_selec}}
-                    </button>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" href="{% url 'Comparativas G1' 0 0 %}">Todos</a>
-                        <a class="dropdown-item" href="{% url 'Comparativas G1' 3 0 %}">En espera ({{cant_oc_sp.cant_espera}})</a>
-                        <a class="dropdown-item" href="{% url 'Comparativas G1' 4 0 %}">Adjunto listo ({{cant_oc_sp.cant_adjunto}})</a> 
-                        <a class="dropdown-item" href="{% url 'Comparativas G1' 1 0 %}">Autorizadas ({{cant_oc_sp.cant_autorizada}})</a>
-                        <a class="dropdown-item" href="{% url 'Comparativas G1' 2 0 %}">Rechazadas ({{cant_oc_sp.cant_no_autorizada}})</a>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-primary dropdown-toggle ml-2"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onclick="myFunction()">
+                                {{estado_selec}}
+                            </button>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="{% url 'Comparativas G1' 0 0 %}">Todos</a>
+                                <a class="dropdown-item" href="{% url 'Comparativas G1' 3 0 %}">En espera ({{cant_oc_sp.cant_espera}})</a>
+                                <a class="dropdown-item" href="{% url 'Comparativas G1' 4 0 %}">Adjunto listo ({{cant_oc_sp.cant_adjunto}})</a> 
+                                <a class="dropdown-item" href="{% url 'Comparativas G1' 1 0 %}">Autorizadas ({{cant_oc_sp.cant_autorizada}})</a>
+                                <a class="dropdown-item" href="{% url 'Comparativas G1' 2 0 %}">Rechazadas ({{cant_oc_sp.cant_no_autorizada}})</a>
 
+                            </div>
+                        </div>
+                
+                        
+                    <div class="table-responsive">
+
+                        <table id="example" class="table">
+                            <thead>
+                                <tr>
+                                    <th style="text-align: center; width: 30px;">User</th>
+                                    <th>Proveedor</th>
+                                    <th>Valor</th>
+                                    <th>O.C</th>
+                                    <th style="text-align: center;">Autoriza</th>
+
+                                </tr>
+                            </thead>
+                            <tbody style="font-size: 14px;">
+                                
+                                    {% for i in datos|slice:"120" %}
+
+
+                                    <tr>
+                                    <td style="text-align: center;">
+                                        <img src="{{i.0.imagenlogo.url}}" width="40" class="img-circle">
+                                        <h6 class="card-subtitle" style="font-size: 12px; margin-top: 2px;"><span class="text-muted"> {{i.2.fecha_c|date:"d/m/Y"}}</span></h6></td>
+                                    <td>
+                                        {% if i.2.estado == "ESPERA" %}
+                                        <i class="fa fa-hourglass-end" aria-hidden="true" style="color: blue;"></i>      
+                                        {% endif %}       
+                                        {% if i.2.estado == "AUTORIZADA" %}
+                                        {% if i.2.comentario %}  
+                                        <span class="hint--left hint--danger"aria-label="{{i.comentario}}">
+                                        {% endif %}
+                                        <i class="fa fa-check" aria-hidden="true" style="color: green;"></i>
+                                        {% if i.2.comentario %}
+                                        </span>
+                                        {% endif %}
+                                        {% endif %}
+                                        {% if i.2.estado == "NO AUTORIZADA" %}
+                                            {% if i.2.comentario %}
+                                            <span class="hint--left hint--danger" aria-label="{{i.2.comentario}}">
+                    
+                                                {% endif %}
+                                        
+                                                <i class="fa fa-times" aria-hidden="true" style="color: darkred;"></i>
+                    
+                                            {% if i.2.comentario %}
+                                        
+                                                </span>
+                    
+                                                {% endif %}
+                                        {% endif %}
+                    
+                                        {% if i.2.estado == "ADJUNTO ✓" %}        
+                                            {% if i.2.comentario %}
+                                            
+                                            <span class="hint--left hint--danger" aria-label="{{i.2.comentario}}">
+                    
+                                                {% endif %}
+                                                <i class="fa fa-check" aria-hidden="true" style="color: orange;"></i>
+                                            {% if i.2.comentario %}
+                                                </span>
+                                                {% endif %}
+                                        {% endif %}
+
+                                        
+                                        <!-- Condicional para editar -->
+                                        
+                                        {% if i.2.estado != "AUTORIZADA" and i.2.creador == user.username %}
+                                        <a href="{% url 'Editar comparativas' i.2.id %}">{{i.2.proveedor.name|lower|capfirst}}{% if i.2.tipo_oc%} - {{i.2.tipo_oc}} {% endif %} </a>
+                                        {% else %}       
+                                        {{i.2.proveedor.name|lower|capfirst}}{% if i.2.tipo_oc%} - {{i.2.tipo_oc}} {% endif %}
+                                        {% endif %} 
+                                        
+                                        <!-- Iconos y otros datos -->
+                                        <h6 class="card-subtitle" style="font-size: 14px; margin-top: 2px;">
+                                            
+                                            {% if i.2.contrato %}
+                                            <a href="{% url 'Contratos descripcion' i.2.contrato.id %}" class=" fa fa-plus-square-o fa-lg text-danger "></a>{% endif %}
+                                            <a href="{% url 'Mensajes en comparativas' i.2.id %}" class=" fa fa-comments-o fa-lg"></a>
+                                            <a href="{{ i.2.adjunto.url }}" class=" fa fa-paperclip fa-lg"></a> 
+                                            {% if i.2.adj_oc %}
+                                            <a href="{{ i.2.adj_oc.url }}"><img src="{% static 'img/OC.png' %}" style="max-width:18px; height:auto;"></a>
+                                            {% endif %}
+                                            {{i.2.proyecto|lower|capfirst}} - {{i.2.numero|lower|capfirst}}</h6>
+                                    </td>
+                                    <td style="font-size: 14px;"><b>${{i.2.monto|floatformat:0|intcomma}}</b></td> 
+                                    {% if i.2.o_c %}<td><div>{{i.2.o_c|upper}}</div>{% else %}<td><div> -</div>{% endif %}</td>
+                                    
+
+                                    <td style="text-align: center;"> 
+
+                                        <img src="{% static 'img/SP.png' %}" width="40" class="img-circle">
+
+                                            {% if request.user.username == i.2.autoriza and i.2.estado != "AUTORIZADA" %}
+
+                                            <form action="" method="POST">
+                                                {% csrf_token %}
+            
+                                                <div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
+                                                    <button type="submit" class="btn"   name = "APROBADA" value="{{i.2.id}}" ><i class="fa fa-check" style="color: green;"></i></button>
+                                                    <button type="submit" class="btn"  name = "NO APROBADA" value="{{i.2.id}}" ><i class="fa fa-times" style="color: darkred;"></i></button>
+                                                </div>
+                                
+                                            </form>
+
+                                            {% endif %}
+
+
+                                        </td>
+
+                                    </tr>
+
+                                    {% endfor %}
+                        
+                
+                            </tbody>
+                        </table>
+                    </div>
+                
                     </div>
                 </div>
-        
-                  
-            <div class="table-responsive">
-
-                <table id="example" class="table">
-                    <thead>
-                        <tr>
-                            <th style="text-align: center; width: 30px;">User</th>
-                            <th>Proveedor</th>
-                            <th>Valor</th>
-                            <th>O.C</th>
-                            <th style="text-align: center;">Autoriza</th>
-
-                        </tr>
-                    </thead>
-                    <tbody style="font-size: 14px;">
-                        
-                            {% for i in datos|slice:"120" %}
-
-
-                            <tr>
-                            <td style="text-align: center;">
-                                <img src="{{i.0.imagenlogo.url}}" width="40" class="img-circle">
-                                <h6 class="card-subtitle" style="font-size: 12px; margin-top: 2px;"><span class="text-muted"> {{i.2.fecha_c|date:"d/m/Y"}}</span></h6></td>
-                            <td>
-                                {% if i.2.estado == "ESPERA" %}
-                                <i class="fa fa-hourglass-end" aria-hidden="true" style="color: blue;"></i>      
-                                {% endif %}       
-                                {% if i.2.estado == "AUTORIZADA" %}
-                                {% if i.2.comentario %}  
-                                <span class="hint--left hint--danger"aria-label="{{i.comentario}}">
-                                {% endif %}
-                                <i class="fa fa-check" aria-hidden="true" style="color: green;"></i>
-                                {% if i.2.comentario %}
-                                </span>
-                                {% endif %}
-                                {% endif %}
-                                {% if i.2.estado == "NO AUTORIZADA" %}
-                                    {% if i.2.comentario %}
-                                    <span class="hint--left hint--danger" aria-label="{{i.2.comentario}}">
-            
-                                        {% endif %}
-                                
-                                        <i class="fa fa-times" aria-hidden="true" style="color: darkred;"></i>
-            
-                                    {% if i.2.comentario %}
-                                
-                                        </span>
-            
-                                        {% endif %}
-                                {% endif %}
-            
-                                {% if i.2.estado == "ADJUNTO ✓" %}        
-                                    {% if i.2.comentario %}
-                                    
-                                    <span class="hint--left hint--danger" aria-label="{{i.2.comentario}}">
-            
-                                        {% endif %}
-                                        <i class="fa fa-check" aria-hidden="true" style="color: orange;"></i>
-                                    {% if i.2.comentario %}
-                                        </span>
-                                        {% endif %}
-                                {% endif %}
-
-                                
-                                <!-- Condicional para editar -->
-                                
-                                {% if i.2.estado != "AUTORIZADA" and i.2.creador == user.username %}
-                                <a href="{% url 'Editar comparativas' i.2.id %}">{{i.2.proveedor.name|lower|capfirst}}{% if i.2.tipo_oc%} - {{i.2.tipo_oc}} {% endif %} </a>
-                                {% else %}       
-                                {{i.2.proveedor.name|lower|capfirst}}{% if i.2.tipo_oc%} - {{i.2.tipo_oc}} {% endif %}
-                                {% endif %} 
-                                
-                                <!-- Iconos y otros datos -->
-                                <h6 class="card-subtitle" style="font-size: 14px; margin-top: 2px;">
-                                    
-                                    {% if i.2.contrato %}
-                                    <a href="{% url 'Contratos descripcion' i.2.contrato.id %}" class=" fa fa-plus-square-o fa-lg text-danger "></a>{% endif %}
-                                    <a href="{% url 'Mensajes en comparativas' i.2.id %}" class=" fa fa-comments-o fa-lg"></a>
-                                    <a href="{{ i.2.adjunto.url }}" class=" fa fa-paperclip fa-lg"></a> 
-                                    {% if i.2.adj_oc %}
-                                    <a href="{{ i.2.adj_oc.url }}"><img src="{% static 'img/OC.png' %}" style="max-width:18px; height:auto;"></a>
-                                    {% endif %}
-                                    {{i.2.proyecto|lower|capfirst}} - {{i.2.numero|lower|capfirst}}</h6>
-                            </td>
-                            <td style="font-size: 14px;"><b>${{i.2.monto|floatformat:0|intcomma}}</b></td> 
-                            {% if i.2.o_c %}<td><div>{{i.2.o_c|upper}}</div>{% else %}<td><div> -</div>{% endif %}</td>
-                            
-
-                            <td style="text-align: center;"> 
-
-                                <img src="{% static 'img/SP.png' %}" width="40" class="img-circle">
-
-                                    {% if request.user.username == i.2.autoriza and i.2.estado != "AUTORIZADA" %}
-
-                                    <form action="" method="POST">
-                                        {% csrf_token %}
-    
-                                        <div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
-                                            <button type="submit" class="btn"   name = "APROBADA" value="{{i.2.id}}" ><i class="fa fa-check" style="color: green;"></i></button>
-                                            <button type="submit" class="btn"  name = "NO APROBADA" value="{{i.2.id}}" ><i class="fa fa-times" style="color: darkred;"></i></button>
-                                        </div>
-                        
-                                    </form>
-
-                                    {% endif %}
-
-
-                                </td>
-
-                            </tr>
-
-                            {% endfor %}
-                  
-        
-                    </tbody>
-                </table>
-            </div>
-        
             </div>
         </div>
     </div>
-</div>
-</div>
 
-{% else %}
+    {% else %}
 
-<div class="row">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-body row">
-                <div class="col-12 justify-content-center">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body row">
+                    <div class="col-12 justify-content-center">
 
-                    <div class="row justify-content-center text-center">
-                        <div class="col-6">
-                            <img src="{% static 'img/Linkp.png' %}" alt="" style="width: 120px;">
-                            <span>
-                                Lo sentimos, no tienes permisos para ver esta página.
-                            </span>
+                        <div class="row justify-content-center text-center">
+                            <div class="col-6">
+                                <img src="{% static 'img/Linkp.png' %}" alt="" style="width: 120px;">
+                                <span>
+                                    Lo sentimos, no tienes permisos para ver esta página.
+                                </span>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    {% endif %}
 </div>
 
-{% endif %}
 
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 

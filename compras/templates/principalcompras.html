@@ -18,184 +18,185 @@
             </ol>
         </div>
     </div>
+
+
+    <div class="row">
+        <div class="col-lg-3 col-xlg-3">
+            <div class="card">
+                <div class="card-body text-center">
+                    <div>
+                        <h6>Proveedores</h6>
+                    </div>
+
+                    <div>
+                        <img src="{% static 'img/proveedores.png' %}" alt="" style="max-width:100px; height:auto; margin: 5px;">
+                    </div>
+
+                    {% if request.user|has_group:"COMPRAS NIVEL 1" %}
+
+                    <a href="{% url 'Proveedores' %}"><button class="btn btn-info">
+                            Ingresar</button></a>
+    
+                    {% else %}
+
+                    <a href="#"><button class="btn btn-secondary">
+                        Sin permisos</button></a>
+                    {% endif %}
+
+                </div>
+
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-xlg-3">
+            <div class="card">
+                <div class="card-body text-center">
+                    <div>
+                        <h6>Solicitudes de compra</h6>
+                    </div>
+
+                    <div>
+                        <img src="{% static 'img/solicitudcompra.png' %}" alt="" style="max-width:100px; height:auto; margin: 5px;">
+                    </div>
+
+                    <a href="{% url 'Comparativas' 0 0 0 %}"><button class="btn btn-success">
+                            Ingresar</button></a>
+
+
+                </div>
+
+            </div>
+        </div>
+
+
+
+        <div class="col-lg-3 col-xlg-4">
+            <div class="card">
+                <div class="card-body text-center">
+                    <div>
+                        <h6>Registros de compras</h6>
+                    </div>
+
+                    <div>
+                        <img src="{% static 'img/registrocompras.png' %}" alt="" style="max-width:100px; height:auto; margin: 5px;">
+                    </div>
+
+                    {% if request.user|has_group:"COMPRAS NIVEL 3" %}
+
+                    <a href="{% url 'Compras' 0 %}"><button class="btn btn-primary">
+                            Ingresar</button></a>
+
+                    {% else %}
+
+                    <a href="#"><button class="btn btn-secondary">
+                        Sin permisos</button></a>
+                    {% endif %}
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-3 col-xlg-3">
+            <div class="card">
+                <div class="card-body text-center">
+                    <div>
+                        <h6>Chek de OC autorizadas</h6>
+                    </div>
+
+                    <div>
+                        <img src="{% static 'img/checkOC.png' %}" alt="" style="max-width:100px; height:auto; margin: 5px;">
+                    </div>
+
+                    {% if request.user|has_group:"COMPRAS NIVEL 4" %}
+                    <a href="{% url 'Principal OC-OP' %}"><button class="btn btn-dark">
+                            Ingresar</button></a>
+                    {% else %}
+
+                    <a href="#"><button class="btn btn-secondary">
+                        Sin permisos</button></a>
+                    {% endif %}
+                </div>
+
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-xlg-3">
+            <div class="card">
+                <div class="card-body text-center">
+                    <div>
+                        <h6>Analisis de periodos</h6>
+                    </div>
+
+                    <div>
+                        <img src="{% static 'img/analisisperiodos.png' %}" alt="" style="max-width:100px; height:auto; margin: 5px;">
+                    </div>
+                    {% if request.user|has_group:"COMPRAS NIVEL 5" %}
+                    <a href="{% url 'Informe compras' %}"><button class="btn btn-info">
+                            Ingresar</button></a>
+                    {% else %}
+
+                    <a href="#"><button class="btn btn-secondary">
+                        Sin permisos</button></a>
+                    {% endif %}
+                </div>
+
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-xlg-4">
+            <div class="card">
+                <div class="card-body text-center">
+                    <div>
+                        <h6>Seguimiento general</h6>
+                    </div>
+
+                    <div>
+                        <img src="{% static 'img/FlujoIngresos.png' %}" alt="" style="max-width:100px; height:auto; margin: 5px;">
+                    </div>
+                    {% if request.user|has_group:"COMPRAS NIVEL 5" %}
+                    <a href="{% url 'Analisis Compras' %}"><button class="btn btn-success">
+                            Ingresar</button></a>
+                    {% else %}
+
+                    <a href="#"><button class="btn btn-secondary">
+                        Sin permisos</button></a>
+                    {% endif %}
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-3 col-xlg-3">
+            <div class="card">
+                <div class="card-body text-center">
+                    <div>
+                        <h6>Contratos</h6>
+                    </div>
+
+                    <div>
+                        <img src="{% static 'img/contratos.png' %}" alt="" style="max-width:100px; height:auto; margin: 5px;">
+                    </div>
+
+                    {% if request.user|has_group:"COMPRAS NIVEL 2" %}
+                    <a href="{% url 'Contratos' %}"><button class="btn btn-primary">
+                            Ingresar</button></a>
+                    {% else %}
+
+                    <a href="#"><button class="btn btn-secondary">
+                        Sin permisos</button></a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+            
+    </div>
 </div>
 
-
-<div class="row">
-    <div class="col-lg-3 col-xlg-3">
-        <div class="card">
-            <div class="card-body text-center">
-                <div>
-                    <h6>Proveedores</h6>
-                </div>
-
-                <div>
-                    <img src="{% static 'img/proveedores.png' %}" alt="" style="max-width:100px; height:auto; margin: 5px;">
-                </div>
-
-                {% if request.user|has_group:"COMPRAS NIVEL 1" %}
-
-                <a href="{% url 'Proveedores' %}"><button class="btn btn-info">
-                        Ingresar</button></a>
- 
-                {% else %}
-
-                <a href="#"><button class="btn btn-secondary">
-                    Sin permisos</button></a>
-                {% endif %}
-
-            </div>
-
-        </div>
-    </div>
-
-    <div class="col-lg-3 col-xlg-3">
-        <div class="card">
-            <div class="card-body text-center">
-                <div>
-                    <h6>Solicitudes de compra</h6>
-                </div>
-
-                <div>
-                    <img src="{% static 'img/solicitudcompra.png' %}" alt="" style="max-width:100px; height:auto; margin: 5px;">
-                </div>
-
-                <a href="{% url 'Comparativas' 0 0 0 %}"><button class="btn btn-success">
-                        Ingresar</button></a>
-
-
-            </div>
-
-        </div>
-    </div>
-
-
-
-    <div class="col-lg-3 col-xlg-4">
-        <div class="card">
-            <div class="card-body text-center">
-                <div>
-                    <h6>Registros de compras</h6>
-                </div>
-
-                <div>
-                    <img src="{% static 'img/registrocompras.png' %}" alt="" style="max-width:100px; height:auto; margin: 5px;">
-                </div>
-
-                {% if request.user|has_group:"COMPRAS NIVEL 3" %}
-
-                <a href="{% url 'Compras' 0 %}"><button class="btn btn-primary">
-                        Ingresar</button></a>
-
-                {% else %}
-
-                <a href="#"><button class="btn btn-secondary">
-                    Sin permisos</button></a>
-                {% endif %}
-
-            </div>
-
-        </div>
-    </div>
-</div>
-
-<div class="row">
-    <div class="col-lg-3 col-xlg-3">
-        <div class="card">
-            <div class="card-body text-center">
-                <div>
-                    <h6>Chek de OC autorizadas</h6>
-                </div>
-
-                <div>
-                    <img src="{% static 'img/checkOC.png' %}" alt="" style="max-width:100px; height:auto; margin: 5px;">
-                </div>
-
-                {% if request.user|has_group:"COMPRAS NIVEL 4" %}
-                <a href="{% url 'Principal OC-OP' %}"><button class="btn btn-dark">
-                        Ingresar</button></a>
-                {% else %}
-
-                <a href="#"><button class="btn btn-secondary">
-                    Sin permisos</button></a>
-                {% endif %}
-            </div>
-
-        </div>
-    </div>
-
-    <div class="col-lg-3 col-xlg-3">
-        <div class="card">
-            <div class="card-body text-center">
-                <div>
-                    <h6>Analisis de periodos</h6>
-                </div>
-
-                <div>
-                    <img src="{% static 'img/analisisperiodos.png' %}" alt="" style="max-width:100px; height:auto; margin: 5px;">
-                </div>
-                {% if request.user|has_group:"COMPRAS NIVEL 5" %}
-                <a href="{% url 'Informe compras' %}"><button class="btn btn-info">
-                        Ingresar</button></a>
-                {% else %}
-
-                <a href="#"><button class="btn btn-secondary">
-                    Sin permisos</button></a>
-                {% endif %}
-            </div>
-
-        </div>
-    </div>
-
-    <div class="col-lg-3 col-xlg-4">
-        <div class="card">
-            <div class="card-body text-center">
-                <div>
-                    <h6>Seguimiento general</h6>
-                </div>
-
-                <div>
-                    <img src="{% static 'img/FlujoIngresos.png' %}" alt="" style="max-width:100px; height:auto; margin: 5px;">
-                </div>
-                {% if request.user|has_group:"COMPRAS NIVEL 5" %}
-                <a href="{% url 'Analisis Compras' %}"><button class="btn btn-success">
-                        Ingresar</button></a>
-                {% else %}
-
-                <a href="#"><button class="btn btn-secondary">
-                    Sin permisos</button></a>
-                {% endif %}
-            </div>
-
-        </div>
-    </div>
-</div>
-<div class="row">
-    <div class="col-lg-3 col-xlg-3">
-        <div class="card">
-            <div class="card-body text-center">
-                <div>
-                    <h6>Contratos</h6>
-                </div>
-
-                <div>
-                    <img src="{% static 'img/contratos.png' %}" alt="" style="max-width:100px; height:auto; margin: 5px;">
-                </div>
-
-                {% if request.user|has_group:"COMPRAS NIVEL 2" %}
-                <a href="{% url 'Contratos' %}"><button class="btn btn-primary">
-                        Ingresar</button></a>
-                {% else %}
-
-                <a href="#"><button class="btn btn-secondary">
-                    Sin permisos</button></a>
-                {% endif %}
-            </div>
-        </div>
-    </div>
-
-        
-</div>
 
 <aside class="right-side-panel">
     <h3 class="p-relative"><span class="lstick"></span>¿Cómo se usa?</h3>

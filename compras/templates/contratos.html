@@ -22,69 +22,69 @@
             </ol>
         </div>
     </div>
-</div>
 
-{% if request.user|has_group:"COMPRAS NIVEL 2" %}
+    {% if request.user|has_group:"COMPRAS NIVEL 2" %}
 
-<div class="row">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-body row">
-                <div class="col-12 justify-content-center">
-                    <h4 class="card-title"><span class="lstick"></span>
-                        Detalle de contratos</h4>
-                        <h6 class="card-subtitle">Listado de contratos</h6>
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body row">
+                    <div class="col-12 justify-content-center">
+                        <h4 class="card-title"><span class="lstick"></span>
+                            Detalle de contratos</h4>
+                            <h6 class="card-subtitle">Listado de contratos</h6>
 
 
-                    <table id="example" class="table table-striped table-bordered" style="width:100%;">
-                        <thead>
-                            <tr>
-                                <th>Codigo</th>
-                                <th>Nombre del contrato</th>
-                                <th>Proveedor</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for d in data %}
-                            <tr>
-                                <td>{{d.np}}</td>
-                                <td><a href="{% url 'Contratos descripcion' d.id %}"><span>{{d.nombre}}</span></a></td>
-                                <td>{{d.proveedor.name|lower|capfirst}}</td>
-                            </tr>
+                        <table id="example" class="table table-striped table-bordered" style="width:100%;">
+                            <thead>
+                                <tr>
+                                    <th>Codigo</th>
+                                    <th>Nombre del contrato</th>
+                                    <th>Proveedor</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for d in data %}
+                                <tr>
+                                    <td>{{d.np}}</td>
+                                    <td><a href="{% url 'Contratos descripcion' d.id %}"><span>{{d.nombre}}</span></a></td>
+                                    <td>{{d.proveedor.name|lower|capfirst}}</td>
+                                </tr>
 
-                            {% endfor %}
+                                {% endfor %}
 
-                        </tbody>
-                    </table>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
-{% else %}
+    {% else %}
 
-<div class="row">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-body row">
-                <div class="col-12 justify-content-center">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body row">
+                    <div class="col-12 justify-content-center">
 
-                    <div class="row justify-content-center text-center">
-                        <div class="col-6">
-                            <img src="{% static 'img/Linkp.png' %}" alt="" style="width: 120px;">
-                            <span>
-                                Lo sentimos, no tienes permisos para ver esta página.
-                            </span>
+                        <div class="row justify-content-center text-center">
+                            <div class="col-6">
+                                <img src="{% static 'img/Linkp.png' %}" alt="" style="width: 120px;">
+                                <span>
+                                    Lo sentimos, no tienes permisos para ver esta página.
+                                </span>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
-{% endif %}
+    {% endif %}
+</div>
 
 
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
