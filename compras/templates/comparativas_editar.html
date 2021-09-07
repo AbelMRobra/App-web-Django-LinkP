@@ -127,13 +127,13 @@
                                         <div class="row justify-content-center my-3">
                                             <div class="col col-md-12 col-lg-8">
                                                 
-                                                <input type="radio" name="tipo_oc" value="MATERIALES" id="tipo-oc" class="filled-in chk-col-blue" checked />
+                                                <input type="radio" name="tipo_oc" value="MATERIALES" id="tipo-oc" class="filled-in chk-col-blue" {% if comparativa.tipo_oc == "MATERIALES" %}checked{% endif %} />
                                                 <label for="tipo-oc">Materiales</label>
                                                 
-                                                <input type="radio" name="tipo_oc" value="SERVICIOS"  id="tipo-oc-2" class="filled-in chk-col-blue" />
+                                                <input type="radio" name="tipo_oc" value="SERVICIOS"  id="tipo-oc-2" class="filled-in chk-col-blue" {% if comparativa.tipo_oc == "SERVICIOS" %}checked{% endif %}/>
                                                 <label for="tipo-oc-2">Servicios</label> 
                                                 
-                                                <input type="radio" name="tipo_oc" value="CONTRATOS"  id="tipo-oc-3" class="filled-in chk-col-blue" />
+                                                <input type="radio" name="tipo_oc" value="CONTRATOS"  id="tipo-oc-3" class="filled-in chk-col-blue" {% if comparativa.tipo_oc == "CONTRATOS" %}checked{% endif %}/>
 
                                                 <label for="tipo-oc-3">Contratos</label> 
 
