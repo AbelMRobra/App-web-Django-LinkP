@@ -205,11 +205,6 @@ def panel_presupuestos(request):
 
 def presupuestostotal(request,id):
     
-    response_servidor = {"messages": "Perri"}
-    numero_prueba = "5493813540261-1599137567@g.us"
-    
-    # No tengo idea para que sirve
-
     presupuestador = 0
 
     variacion = 0
@@ -219,7 +214,6 @@ def presupuestostotal(request,id):
     variacion_year_2 = 0  
 
     variacion_anuales = 0 
-
 
     datos = 0
 
@@ -256,6 +250,7 @@ def presupuestostotal(request,id):
         
         computo = Computos.objects.all()
         generar_excel(computo,proyecto)
+        
         # BOT la actualización
 
         try:
@@ -264,7 +259,7 @@ def presupuestostotal(request,id):
             df = pd.read_excel(archivo)
             repo_nuevo = sum(np.array(df['Monto'].values))
 
-            anterior_archivo = presupuestos_alm.get(proyecto = proyecto).order_by("-id").exclude(nombre = "vigente")[0].archivo
+            anterior_archivo = presupuestos_alm.filter(proyecto = proyecto).order_by("-id").exclude(nombre = "vigente")[0].archivo
             df = pd.read_excel(anterior_archivo)
             repo_anterior = sum(np.array(df['Monto'].values))
 
@@ -276,8 +271,8 @@ def presupuestostotal(request,id):
                 send = "{} ha actualizado {}. Variación: {}%".format(request.user.first_name, proyecto.nombre, var)
                 bot_telegram(send,id,token)
 
-                bot_wp = WABot(response_servidor)
-                bot_wp.send_message(numero_prueba, send)
+                # bot_wp = WABot(response_servidor)
+                # bot_wp.send_message(numero_prueba, send)
 
                 
 
@@ -285,10 +280,12 @@ def presupuestostotal(request,id):
                 id = "-455382561"
                 token = "1880193427:AAH-Ej5ColiocfDZrDxUpvsJi5QHWsASRxA"
                 send = "{} guardo una copia de {}".format(request.user.first_name, proyecto.nombre)
+
+                
                 bot_telegram(send,id,token)
                 
-                bot_wp = WABot(response_servidor)
-                bot_wp.send_message(numero_prueba, send)
+                # bot_wp = WABot(response_servidor)
+                # bot_wp.send_message(numero_prueba, send)
 
 
             if proyecto.presupuesto == "BASE" and var != 0:
@@ -297,8 +294,8 @@ def presupuestostotal(request,id):
                 id = "-455382561"
                 token = "1880193427:AAH-Ej5ColiocfDZrDxUpvsJi5QHWsASRxA"
                 bot_telegram(send,id,token)
-                bot_wp = WABot(response_servidor)
-                bot_wp.send_message(numero_prueba, send)
+                # bot_wp = WABot(response_servidor)
+                # bot_wp.send_message(numero_prueba, send)
     
                 proyectos_extrapolados = Proyectos.objects.filter(presupuesto = "EXTRAPOLADO")
 
@@ -327,20 +324,18 @@ def presupuestostotal(request,id):
 
                         send_1 += "{} con {}% - ".format(p, var)
 
+                        bot_telegram(send_1,id,token)
+
                     except:
 
                         send_2 += "{} - ".format(p)
 
+                        bot_telegram(send_2,id,token)
 
-
-                bot_telegram(send_1,response_servidor,numero_prueba)
-
-        
-                bot_telegram(send_2,response_servidor,numero_prueba)
 
                 send = "Proceso de actualización de proyectos extrapolados completo. Tambien actualice el IVA en el almacenero. Disculpen los mensajes"
 
-                bot_telegram(send,response_servidor,numero_prueba)
+                bot_telegram(send,id,token)
 
 
         except:
