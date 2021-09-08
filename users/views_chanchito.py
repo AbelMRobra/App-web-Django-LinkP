@@ -169,7 +169,7 @@ def registro_contable_caja(request, caja, user_caja, estado, mes, year):
     mes = mes
     year = year
 
-    user = datosusuario.objects.get(identificacion = request.user.username)
+    user = datosusuario.objects.get(identificacion = user_caja)
     con_principal = RegistroContable.objects.filter(usuario = user, caja = caja)
 
     
