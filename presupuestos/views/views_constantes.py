@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
-from .models import Constantes, Articulos, Presupuestos
-from .form import ConsForm
-from .functions import bot_telegram
+from presupuestos.models import Constantes, Articulos, Presupuestos
+from presupuestos.form import ConsForm
+from presupuestos.functions.functions_presupuestos import bot_telegram
 
 def constantes_crear(request):
 

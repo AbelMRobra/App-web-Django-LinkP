@@ -1,7 +1,6 @@
-from django.urls import path, re_path
+from django.urls import path
 from django.conf.urls import url
-from . import views, views_articulos, views_constantes
-from .views import ReporteExplosion, ReporteExplosionCap, ArticulosListApiView, panel_presupuestos, presupuesto_auditor
+from presupuestos.views import views, views_articulos, views_constantes,views_creditos
 from django.contrib.auth.decorators import login_required
 
 urlpatterns = [
@@ -32,11 +31,11 @@ urlpatterns = [
     url(r'^saldocap/(?P<id_proyecto>\d+)/$', login_required(views.saldocapitulo), name = 'Saldo por capitulo'),
     url(r'^debugsa/(?P<id_proyecto>\d+)/$', login_required(views.debugsa), name = 'Debug Saldo'),
     url(r'^explosion/(?P<id_proyecto>\d+)/$', login_required(views.explosion), name = 'Explosión de insumos'),
-    url(r'^creditos/(?P<id_proyecto>\d+)/$', login_required(views.creditos), name = 'Creditos de proyectos'),
+    url(r'^creditos/(?P<id_proyecto>\d+)/$', login_required(views_creditos.creditos), name = 'Creditos de proyectos'),
     url(r'^fdr/(?P<id_proyecto>\d+)/$', login_required(views.fdr), name = 'Fondos de reparo'),
     url(r'^anticipos/(?P<id_proyecto>\d+)/$', login_required(views.anticiposf), name = 'Anticipos'),
-    url(r'^des_explosion/(?P<id_proyecto>\d+)/$', login_required(ReporteExplosion.as_view()), name = 'Descarga Exp'),
-    url(r'^des_explosion_cap/(?P<id_proyecto>\d+)/$', login_required(ReporteExplosionCap.as_view()), name = 'Descarga Exp Cap'),
+    url(r'^des_explosion/(?P<id_proyecto>\d+)/$', login_required(views.ReporteExplosion.as_view()), name = 'Descarga Exp'),
+    url(r'^des_explosion_cap/(?P<id_proyecto>\d+)/$', login_required(views.ReporteExplosionCap.as_view()), name = 'Descarga Exp Cap'),
     url(r'^presupuestos_cap/(?P<id_proyecto>\d+)/$', login_required(views.presupuestoscapitulo), name = 'Panel de presupuestos por capitulo'),
     url(r'^presuprepabierto/(?P<id_proyecto>\d+)/$', login_required(views.presupuestorepcompleto), name = 'Presupuesto de reposición abierto'),
     url(r'^presupuestos_cap/(?P<id_proyecto>\d+)/(?P<id_capitulo>\d+)/$', login_required(views.presupuestosanalisis), name = 'Panel de presupuestos por analisis'),
@@ -49,7 +48,7 @@ urlpatterns = [
     url(r'^parametros/$', login_required(views.parametros), name = 'Parametros'),
 
     #----------------URL SERVICIOS -----------------------------------------
-    url(r'^api/articulos/search$', ArticulosListApiView.as_view(), name = 'Articulo Buscar'),
+    url(r'^api/articulos/search$', views.ArticulosListApiView.as_view(), name = 'Articulo Buscar'),
     
     
     

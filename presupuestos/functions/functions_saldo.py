@@ -1,5 +1,5 @@
 import numpy as np
-from .models import Modelopresupuesto, CompoAnalisis
+from presupuestos.models import Modelopresupuesto, CompoAnalisis
 from proyectos.models import Proyectos
 from compras.models import Compras
 from computos.models import Computos

@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
-from .models import Articulos, Constantes
-from .filters import ArticulosFilter
-from .form import ConsForm, ArticulosForm
+from presupuestos.models import Articulos, Constantes
+from presupuestos.filters import ArticulosFilter
+from presupuestos.form import ArticulosForm
 
 def articulos_listado_maestro(request):
 
