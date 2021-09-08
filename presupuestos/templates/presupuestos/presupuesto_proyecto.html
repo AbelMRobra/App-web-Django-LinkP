@@ -102,123 +102,80 @@
   <div class="row mb-1">
 
     <div class="col-12 col-md-6 col-lg-3 my-2" style="height: 130px;">
-      <div class="card p-3 h-100">
+      <a href="{% url 'Presupuesto de reposición abierto' datos.0.0.id %}">
+      <div class="card p-3 h-100 card1">
+        <div class="go-corner" >
+          <div class="go-arrow" >
+             →
+          </div>
+        </div>
+        
+        <p >El presupuesto abierto sirve para leer todos los componentes que componen un presupuesto de manera muy descriptiva y completa.</p>
         <div class="p-1 d-flex align-items-center h-100">
-          <div class="col-2 col-lg-3 p-0 align-self-center">
-            <a href="{% url 'Presupuesto de reposición abierto' datos.0.0.id %}">
+          <div class="col-2 col-lg-3 p-0 align-self-center ">
+            <a >
               <img src="{% static 'img/expense-top.png' %}" alt="Income" width="40px"/>
               </a> 
           </div>  
           <div class="col-9 col-lg-8 p-0 pl-2">
             <h6 class="text-muted">Presup. abierto</h6>
+          </div>
+        </div>
+      </div>
+    </a> 
+    </div>
 
-          </div>
-          <div class="col-1 col-lg-1 p-0 align-self-start">
-            <a href="#" data-toggle="modal" data-target="#ModalAbierto"><i class="fa fa-info-circle"></i></a>
-          </div>
-        </div>
-      </div>
-    </div>
-    
-    <div class="modal fade" id="ModalAbierto" tabindex="-1" role="dialog" aria-labelledby="ModalAbierto" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-          <div class="modal-header" style="background-color: #2a3e52;">
-            <h5 class="modal-title text-light" id="exampleModalLongTitle">Presup. abierto</h5>
-            <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <p class="font-bold">Descripción:</p>
-            <p>El presupuesto abierto sirve para leer todos los componentes que componen un presupuesto de manera muy descriptiva y completa.</p>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-          </div>
-        </div>
-      </div>
-    </div>
 
     <div class="col-12 col-md-6 col-lg-3 my-2" style="height: 130px;">
-      <div class="card p-3 h-100">
-        <div class="p-1 d-flex align-items-center h-100">
-            <div class="col-2 col-lg-3 p-0 align-self-center">
-              <a href="{% url 'Panel de presupuestos por capitulo' datos.0.0.id %}">
-              <img src="{% static 'img/expense-center.png' %}" alt="Income" width="40px"/>
-              </a>
-            </div>
-            <div class="col-9 col-lg-8 p-0 pl-2">
-                <h6 class="text-muted">Valor reposición</h6>
-                <h4 class="m-t-0">${{datos.0.1|floatformat:0|intcomma}}</h4>
-            </div>
-            <div class="col-1 p-0 align-self-start">
-              <a href="#" data-toggle="modal" data-target="#ModalRepo"><i class="fa fa-info-circle"></i></a>
-            </div>
-        </div>
-      </div>
-    </div>
-    <!-- ModalRepo -->
-
-    <div class="modal fade" id="ModalRepo" tabindex="-1" role="dialog" aria-labelledby="ModalRepo" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-          <div class="modal-header" style="background-color: #2a3e52;">
-            <h5 class="modal-title text-light" id="exampleModalLongTitle">Valor reposición</h5>
-            <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
+      <a href="{% url 'Panel de presupuestos por capitulo' datos.0.0.id %}">
+      <div class="card p-3 h-100 card1">
+        <div class="go-corner" >
+          <div class="go-arrow" >
+             →
           </div>
-          <div class="modal-body">
-            <p class="font-bold">Descripción:</p>
-            <p>El segmento de valor de reposición encontrarás el precio de cuanto costaría construir el edificio a valores actuales</p>
+        </div>
+        
+        <p>El segmento de valor de reposición encontrarás el precio de cuanto costaría construir el edificio a valores actuales</p>
             <p>Está organizado por análisis completos dentro de los capítulos del proyecto</p>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+        <div class="p-1 d-flex align-items-center h-100">
+          <div class="col-2 col-lg-3 p-0 align-self-center ">
+            <a>
+              <img src="{% static 'img/expense-center.png' %}" alt="Income" width="40px"/>
+              </a> 
+          </div>  
+          <div class="col-9 col-lg-8 p-0 pl-2">
+            <h6 class="text-muted">Valor reposición</h6>
+            <h4 class="m-t-0">${{datos.0.1|floatformat:0|intcomma}}</h4>
           </div>
         </div>
       </div>
+    </a> 
     </div>
 
     <div class="col-12 col-md-6 col-lg-3 my-2" style="height: 130px;">
-      <div class="card p-3 h-100">
+      <a href="{% url 'Saldo por capitulo' datos.0.0.id %}">
+      <div class="card p-3 h-100 card1">
+        <div class="go-corner" >
+          <div class="go-arrow" >
+             →
+          </div>
+        </div>
+        
+        <p>En saldo del proyecto encontrarás cuanto te queda aún por gastar</p>
+        <p>Está organizado por capítulos y artículos</p>
         <div class="p-1 d-flex align-items-center h-100">
-            <div class="col-2 col-lg-3  p-0 align-self-center">
-              <a href="{% url 'Saldo por capitulo' datos.0.0.id %}">
-                <img src="{% static 'img/expense-bottom.png' %}" alt="Income" width="40px"/>
-              </a>
-            </div>
-            <div class="col-9 col-lg-8 p-0 pl-2">
-                <h6 class="text-muted">Saldo del proyecto</h6>
-                <h4 class="m-t-0">${{datos.0.2|floatformat:0|intcomma}}</h4>
-            </div>
-            <div class="col-1 p-0 align-self-start">
-             <a href="#" data-toggle="modal" data-target="#ModalSaldo"><i class="fa fa-info-circle"></i></a>
-            </div>
-          </div>
-      </div>
-    </div>
-    <!-- ModalSaldo -->
-    <div class="modal fade" id="ModalSaldo" tabindex="-1" role="dialog" aria-labelledby="ModalSaldo" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-          <div class="modal-header" style="background-color: #2a3e52;">
-            <h5 class="modal-title text-light" id="exampleModalLongTitle">Saldo del proyecto</h5>
-            <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <p class="font-bold">Descripción:</p>
-            <p>En saldo del proyecto encontrarás cuanto te queda aún por gastar</p>
-            <p>Está organizado por capítulos y artículos</p>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+          <div class="col-2 col-lg-3 p-0 align-self-center ">
+            <a>
+              <img src="{% static 'img/expense-bottom.png' %}" alt="Income" width="40px"/>
+              </a> 
+          </div>  
+          <div class="col-9 col-lg-8 p-0 pl-2">
+            <h6 class="text-muted">Saldo del proyecto</h6>
+            <h4 class="m-t-0">${{datos.0.2|floatformat:0|intcomma}}</h4>
           </div>
         </div>
       </div>
+    </a> 
     </div>
 
     <div class="col-12 col-md-6 col-lg-3 my-2" style="height: 130px;">
@@ -286,6 +243,68 @@
   </div>
 </div>
 
+<style>
+    .go-corner {
+	 display: flex;
+	 align-items: center;
+	 justify-content: center;
+	 position: absolute;
+	 width: 32px;
+	 height: 32px;
+	 overflow: hidden;
+	 top: 0;
+	 right: 0;
+	 background-color: #5b7999;;
+	 border-radius: 0 4px 0 32px;
+}
+ .go-arrow {
+	 margin-top: -4px;
+	 margin-right: -4px;
+	 color: white;
+	 font-family: courier, sans;
+}
+.card1 p{
+  display: none;
+  font-size: 10px;
+}
+ .card1 {
+	 display: block;
+	 position: relative;
+	 border-radius: 4px;
+	 text-decoration: none;
+	 z-index: 0;
+	 overflow: hidden;
+}
+ .card1:before {
+	 content: "";
+	 position: absolute;
+	 z-index: -1;
+	 top: -16px;
+	 right: -16px;
+	 background: #5b7999;;
+	 height: 32px;
+	 width: 32px;
+	 border-radius: 32px;
+	 transform: scale(1);
+	 transform-origin: 50% 50%;
+	 transition: transform 0.25s ease-out;
+}
+ .card1:hover:before {
+	 transform: scale(21);
+}
+ .card1:hover h6 {
+   display: none;
+}
+ .card1:hover p {
+   display: block;
+	 transition: all 0.3s ease-out;
+	 color: white;
+}
+ 
+ .card1:hover img {
+  display: none;
+  }
+</style>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 <script>
@@ -408,17 +427,12 @@
 </script>
 
 <style>
-  @keyframes example {
-  0% {transform: scale(0.9);}
-  50% {transform: scale(1);}
-  100% {transform: scale(0.9);}
-  }
-  #add{
-      position: fixed;
-      bottom: 60px;
-      right: 20px;
-      animation: example 1s ease-in-out infinite;
-  }
+    #add{
+        position: fixed;
+        bottom: 60px;
+        right: 20px;
+    }
+
 </style>
 
 
