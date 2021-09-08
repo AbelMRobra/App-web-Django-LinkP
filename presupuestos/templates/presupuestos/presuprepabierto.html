@@ -121,6 +121,51 @@
 
 <a id="add" href="#"  data-toggle="modal" data-target="#ModalCheck" class="btn btn-lg btn-info btn-circle fa fa-5x fa-check-square-o"></a>
 
+<div class="modal fade" id="ModalCheck" tabindex="-1" role="dialog" aria-labelledby="ModalCheck" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+        
+            <form method="POST">
+                <div class="modal-body">
+                    <button type="button" class="close text-dark" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-2">
+                            <img src="{% static 'img/bot.png' %}" width="40px" alt="">
+                        </div>
+                        <div class="col-10 mb-3">
+                            <h4 class="my-2 text-title text-center">Checklist de presupeusto</h4>
+                        </div>
+                        
+                        {% for check in checklist %}
+
+                        <div class="d-flex">
+                            <input type="checkbox" name="{{check.id}}-entregado" id="{{check.id}}-entregado" {% if check.entregado %}checked {% endif %}
+                            class="filled-in chk-col-blue" />
+                            <label class="mr-3" for="{{check.id}}-entregado">E</label>
+                            <input type="checkbox" name="{{check.id}}-cuantificado" id="{{check.id}}-cuantificado" {% if check.cuantificado %}checked {% endif %}
+                            class="filled-in chk-col-blue" />
+                            <label class="mr-3" for="{{check.id}}-cuantificado">C</label>
+                            <input type="number" name="{{check.id}}-check" value="{{check.id}}" hidden>
+                            <h6 >{{check.descrip}}</h6>
+                        </div>
+                        
+                        {% endfor %}
+           
+                    </div>
+                </div>
+                <div class="text-center mb-3">
+                    <button class="btn btn-primary" type="submit" name="cargar" value="">Cargar</button>
+                    
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <style>
     @keyframes example {
     0% {transform: scale(0.9);}
@@ -185,49 +230,7 @@
     });
 </script>
 
-<div class="modal fade" id="ModalCheck" tabindex="-1" role="dialog" aria-labelledby="ModalCheck" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-        
-            <form method="POST">
-                <div class="modal-body">
-                    <button type="button" class="close text-dark" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
 
-                    {% csrf_token %}
-                    <div class="row">
-                        <div class="col-2">
-                            <img src="{% static 'img/bot.png' %}" width="40px" alt="">
-                        </div>
-                        <div class="col-10 mb-3">
-                            <h4 class="my-2 text-title text-center">Checklist de presupeusto</h4>
-                        </div>
-                        
-                        {% for check in checklist %}
-
-                        <div class="d-flex">
-                            <input type="checkbox" name="entregado" id="entregado" {% if check.entregado %}checked {% endif %}
-                            class="filled-in chk-col-blue" />
-                            <label class="mr-3" for="entregado">E</label>
-                            <input type="checkbox" name="cuantificado" id="cuantificado" {% if check.cuantificado %}checked {% endif %}
-                            class="filled-in chk-col-blue" />
-                            <label class="mr-3" for="cuantificado">C</label>
-                            <h6 >{{check.descrip}}</h6>
-                        </div>
-                        
-                        {% endfor %}
-           
-                    </div>
-                </div>
-                <div class="text-center mb-3">
-                    <button class="btn btn-primary" type="submit" name="cargar" value="">Cargar</button>
-                    
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
 
 
 {% endblock %}

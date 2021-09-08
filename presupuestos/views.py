@@ -659,6 +659,28 @@ def presupuestostotal(request,id):
 
 def presupuestorepcompleto(request, id_proyecto):
 
+    if request.method == 'POST':
+
+        datos_post = request.POST.items()
+
+        for dato in datos_post:
+            if "check" in dato[0]:
+                check_element = DocumentacionProyectoPresupuesto.objects.get(id = int(dato[1]))
+                try:
+                    if request.POST[f'{dato[1]}-entregado'] == "on":
+                        check_element.entregado = True
+
+                except:
+                    check_element.entregado = False
+
+                try:
+                    if request.POST[f'{dato[1]}-cuantificado'] == "on":
+                        check_element.cuantificado = True
+
+                except:
+                    check_element.cuantificado = False
+                check_element.save()
+                        
     proyecto = Proyectos.objects.get(id = id_proyecto)
     capitulo = Capitulos.objects.all()
 
