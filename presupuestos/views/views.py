@@ -624,8 +624,6 @@ def presupuestorepcompleto(request, id_proyecto):
     context["valor_proyecto_completo"] = valor_proyecto_completo
     context["id_proyecto"] = id_proyecto
     context["checklist"] = DocumentacionProyectoPresupuesto.objects.filter(proyecto = proyecto).order_by("id")
-    
-    print("\n"*50 + "Hola!")
 
     return render(request, 'presupuestos/presuprepabierto.html', context)
 
