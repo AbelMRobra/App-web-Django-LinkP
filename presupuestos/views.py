@@ -11,6 +11,7 @@ from ventas.models import PricingResumen, VentasRealizadas
 from registro.models import RegistroValorProyecto, RegistroConstantes
 from rrhh.models import datosusuario
 from .models import Articulos, Constantes, DatosProyectos, Prametros, Desde, Analisis, CompoAnalisis, Modelopresupuesto, Capitulos, Presupuestos, Registrodeconstantes, PorcentajeCapitulo, PresupuestosAlmacenados
+from .models import DocumentacionProyectoPresupuesto
 import sqlite3
 import pandas as pd
 import numpy as np
@@ -660,8 +661,6 @@ def presupuestorepcompleto(request, id_proyecto):
 
     proyecto = Proyectos.objects.get(id = id_proyecto)
     capitulo = Capitulos.objects.all()
-    compo = CompoAnalisis.objects.all()
-    computo = Computos.objects.all()
 
     archivo = PresupuestosAlmacenados.objects.filter(proyecto = proyecto, nombre = "vigente")[0].archivo
     df = pd.read_excel(archivo)
@@ -730,9 +729,15 @@ def presupuestorepcompleto(request, id_proyecto):
 
     valor_proyecto_completo = valor_proyecto
 
-    datos = {"datos":datos, "proyecto":proyecto, "valor_proyecto":valor_proyecto,"valor_proyecto_completo":valor_proyecto_completo}
-    
-    return render(request, 'presupuestos/presuprepabierto.html', {"datos":datos, "id_proyecto": id_proyecto})
+    context = {}
+    context["datos"] = datos
+    context["proyecto"] = proyecto
+    context["valor_proyecto"] = valor_proyecto
+    context["valor_proyecto_completo"] = valor_proyecto_completo
+    context["id_proyecto"] = id_proyecto
+    context["checklist"] = DocumentacionProyectoPresupuesto.objects.filter(proyecto = proyecto).order_by("id")
+  
+    return render(request, 'presupuestos/presuprepabierto.html', context)
 
 def saldocapitulo(request, id_proyecto):
 
