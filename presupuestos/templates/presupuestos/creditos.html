@@ -60,7 +60,7 @@
                                         <tr style="font-size: 13px;">
                                             <td><b>{{i.0|lower|capfirst}}</b></td>
                                             <td>${{i.0.valor|floatformat:2|intcomma}}</td>
-                                            <td>{{i.0.unidad}}</td>
+                                            <td>{{i.0.codigo}}</td>
                                             <td>{{i.1|floatformat:2|intcomma}}</td>
                                             <td>{{i.2|floatformat:2|intcomma}}</td>
                                             <td>{{i.3|floatformat:2|intcomma}}</td>
@@ -70,15 +70,14 @@
                                                     <a href="JavaScript:void(0)" class="icon-options-vertical link" data-toggle="dropdown"
                                                     aria-haspopup="true" aria-expanded="false"></a>
                                                     <div class="dropdown-menu dropdown-menu-right">
-                                                        <!-- 
+                                                        
                                                         <a class="dropdown-item" href="#" data-toggle="modal" data-target="#Modalcapitulo{{i.0.id}}"><i
                                                             class="fa fa-pencil-square-o mr-2"></i>Modificar capitulo</a>
                                                         <a class="dropdown-item" href="#" data-toggle="modal" data-target="#Modalanalisis{{i.0.id}}"><i
                                                             class="fa fa-pencil-square-o mr-2"></i>Modificar analisis</a>
                                                         <a class="dropdown-item" href="#" data-toggle="modal" data-target="#Modalnuevo{{i.0.id}}"><i
                                                             class="fa fa-pencil-square-o mr-2"></i>Crear nuevo</a>
-                                                            -->
-                                                    <p>Proximamente</p>
+                                                           
                                                     </div>
                                                 </div>
                                             </td>
@@ -93,19 +92,38 @@
                                                             </button>
                                                         </div>
                                                         <div class="modal-body">
-                                                            <form action="#" method="POST">
-            
+                                                            <form  method="POST">
+                                                                <input type="text" name="sobrante" value="{{i.3}}" hidden>
                                                                 {% csrf_token %}
                                                                 <p>Capitlo</p>
                                                                 <select name="capitulo" id="" class="form-control">
-                                                                    <option value="1">1</option>
-                                                                    <option value="2">2</option>
-                                                                    <option value="3">3</option>
-                                                                    <option value="4">4</option>
+                                                                   
+                                                                                          
+                                                                 {% if i.6|length > 0 %}
+                                                                 
+                                                                    {% for x in i.6  %}
+                                                                    
+                                                                        <option value="{{x.id}}">{{x.nombre}}</option>
+                                                                            
+                                                                    {% endfor %}
+                                                                </select>
+                                                                       
+                                                            </select>
+                                                            <div>
+                                                                <button class="btn btn-info" type="submit" name="modificar-capitulo" value="{{i.0.id}}"
+                                                                    style="margin-top: 10px;">Modificar</button>
+        
+                                                            </div>
+                                                                {% else %}
+                                                                    <option value="">No hay capitulos</option>
+                                                                     
+                                                                 {% endif %}
+                                                                     
+                                                                </select>
+                                                                       
                                                                 </select>
                                                                 <div>
-                                                                    <button class="btn btn-info" type="submit" name="modificar-capitulo" value="{{i.1.id}}"
-                                                                        style="margin-top: 10px;">Modificar</button>
+
             
                                                                 </div>
                                                             </form>
@@ -132,25 +150,27 @@
                                                         </div>
                                                         <div class="modal-body">
                                                             <form action="#" method="POST">
-            
+                                                                    <input type="text" name="sobrante" value="{{i.3}}" hidden>
                                                                 {% csrf_token %}
-                                                                <p>Capitlo</p>
-                                                                <select name="capitulo" id="" class="form-control">
-                                                                    <option value="1">1</option>
-                                                                    <option value="2">2</option>
-                                                                    <option value="3">3</option>
-                                                                    <option value="4">4</option>
-                                                                </select>
+                                                 
                                                                 <p>Analisis</p>
-                                                                <select name="capitulo" id="" class="form-control">
-                                                                    <option value="1">1</option>
-                                                                    <option value="2">2</option>
-                                                                    <option value="3">3</option>
-                                                                    <option value="4">4</option>
+                                                                <select name="analisis"  class="form-control">
+                                                                   
+                                                                    {% if i.5|length > 0 %}
+                                                                        {% for j in i.5  %}
+                                                                            <option value="{{j.codigo}}">{{j}}</option>
+                                                                        {% endfor %}
+                                                                    {% else %}
+                                                                    <option value=""> No hay analisis</option>
+                                                                   
+                                                                    {% endif %}
+                                                                       
+                                                                  
+                                                                       
                                                                 </select>
 
                                                                 <div>
-                                                                    <button class="btn btn-info" type="submit" name="modificar-analisis" value="{{i.1.id}}"
+                                                                    <button class="btn btn-info" type="submit" name="modificar-analisis" value="{{i.0.codigo}}"
                                                                         style="margin-top: 10px;">Modificar</button>
             
                                                                 </div>
@@ -172,22 +192,46 @@
                                                 <div class="modal-dialog modal-dialog-centered" role="document">
                                                     <div class="modal-content">
                                                         <div class="modal-header" style="background-color: #2a3e52;">
-                                                            <h5 class="modal-title text-light" id="exampleModalLongTitle">Modificar precio</h5>
+                                                            <h5 class="modal-title text-light" id="exampleModalLongTitle">Crear analisis</h5>
                                                             <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
                                                                 <span aria-hidden="true">&times;</span>
                                                             </button>
                                                         </div>
                                                         <div class="modal-body">
-                                                            <form action="#" method="POST">
-            
+                                                            <form  method="POST">
+                                                                <input type="text" name="sobrante" value="{{i.3}}" hidden>
+
                                                                 {% csrf_token %}
-                                                                <p>Capitlo</p>
-                                                                <input type="text" name="capitulo" class="form-control" required>
+                                                                <p>Capitulo existente</p>
+                                                                <select name="capitulo" class="form-control">
+                                                                 
+                                                                    {% if i.6|length > 0 %}
+                                                                    
+                                                                    {% for x in i.6  %}
+                                                                    <option value="">Seleccione capitulo</option>
+                                                                    <option value="{{x.id}}">{{x.nombre}}</option>
+                                                                        
+                                                                    {% endfor %}
+                                                                   {% else %}
+                                                               <option value="">No hay capitulos</option>
+                                                                        
+                                                                    {% endif %}
+                                                                        
+                                                                   </select>
+                                                                    
+                                                                <p>Capitulo nuevo</p>
+                                                                <input type="text" name="nombre-capitulo" class="form-control" placeholder="Nombre del capitulo" required>
                                                                 <p>Analisis</p>
-                                                                <input type="text" name="analisis" class="form-control" required>
+                                                                <input type="text" name="nombre-analisis" class="form-control" placeholder="Nombre del analisis" required>
+
+                                                                <p>Codigo</p>
+                                                                <input type="text" name="codigo-analisis" class="form-control" placeholder="Codigo del analisis" required>
+
+                                                                <p>Unidad</p>
+                                                                <input type="text" name="unidad-analisis" class="form-control" placeholder="Unidad del analisis" required>
 
                                                                 <div>
-                                                                    <button class="btn btn-info" type="submit" name="crear" value="{{i.1.id}}"
+                                                                    <button class="btn btn-info" type="submit" name="crear" value="{{i.0.codigo}}"
                                                                         style="margin-top: 10px;">Crear</button>
             
                                                                 </div>
@@ -250,10 +294,9 @@
                                                                 {% csrf_token %}
                                                                 <p>Capitlo</p>
                                                                 <select name="capitulo" id="" class="form-control">
-                                                                    <option value="1">1</option>
-                                                                    <option value="2">2</option>
-                                                                    <option value="3">3</option>
-                                                                    <option value="4">4</option>
+                                                                  
+                                                           
+                                                                      
                                                                 </select>
                                                                 <div>
                                                                     <button class="btn btn-info" type="submit" name="modificar-capitulo" value="{{i.1.id}}"
@@ -379,6 +422,11 @@
     </div>
 </div>
 
+
+
+
+
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 <script>
@@ -395,7 +443,7 @@
             },
             "info": false,
             "ordering": false,
-            "pading": false,
+            "pading": false
             dom: 'Bfrtip',
             buttons: [
                 {
