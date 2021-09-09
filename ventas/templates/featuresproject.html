@@ -39,7 +39,7 @@
                                     <th>Tamaño</th>
                                     <th>Base</th>
                                     {% for f in features %}
-                                    <th data-tablesaw-priority="3" data-toggle="tooltip" title="{{f.nombre|lower|capfirst}}"><b hidden>{{f.nombre|lower|capfirst}}</b> ({{f.inc|lower|capfirst}}%)</th>
+                                    <th style="max-width: 30px;" data-tablesaw-priority="3" data-toggle="tooltip" title="{{f.nombre|lower|capfirst}}"><b hidden>{{f.nombre|lower|capfirst}}</b> ({{f.inc|lower|capfirst}}%)</th>
                                     {% endfor %}
                                     <th>Final</th>
                                     
