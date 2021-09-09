@@ -1316,6 +1316,8 @@ def dosier(request):
 
 def pricing(request, id_proyecto):
 
+    context = {}
+
     #Aqui empieza para cambiar el precio base
 
     precio_nuevo = 0
@@ -1499,23 +1501,29 @@ def pricing(request, id_proyecto):
         m2 = dato.sup_propia + dato.sup_balcon + dato.sup_comun + dato.sup_patio
 
         datos_tabla_unidad.append((dato, m2, desde, dato.id, contado, financiado, financiado_m2, fin_ant, valor_cuotas, venta))
+
+
+    try:
         
-    almacenero = Almacenero.objects.get(proyecto = proyecto)
+        almacenero = Almacenero.objects.get(proyecto = proyecto)
 
-    #Aqui resto el 6%  --> Ya no resto el 6%, solo guardo los cambios en la BBDD
+        #Aqui resto el 6%  --> Ya no resto el 6%, solo guardo los cambios en la BBDD
 
-    almacenero.ingreso_ventas = ingreso_ventas - ingreso_ventas*0.00
-    almacenero.save()
-    almacenero.unidades_socios = unidades_socios - unidades_socios*0.00
-    almacenero.save()
-    almacenero.pendiente_comision = comision
-    almacenero.save()
+        almacenero.ingreso_ventas = ingreso_ventas - ingreso_ventas*0.00
+        almacenero.save()
+        almacenero.unidades_socios = unidades_socios - unidades_socios*0.00
+        almacenero.save()
+        almacenero.pendiente_comision = comision
+        almacenero.save()
 
-    #################### Comento el calculo de IIBB
+        #################### Comento el calculo de IIBB
 
-    # almacenero.pendiente_iibb_tem = (almacenero.cuotas_a_cobrar + iibb + almacenero.pendiente_iibb_tem_link)*0.02235
-    
-    almacenero.save()
+        # almacenero.pendiente_iibb_tem = (almacenero.cuotas_a_cobrar + iibb + almacenero.pendiente_iibb_tem_link)*0.02235
+        
+        almacenero.save()
+
+    except:
+        context['mensaje_2'] = "No se encontro un almacenero para vincular"
 
     cantidad = len(datos_tabla_unidad)
 
