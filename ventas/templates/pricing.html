@@ -91,6 +91,7 @@
                     <table id="example" class="table" style="width:100%">
                         <thead>
                             <tr style="font-size: 14px;">
+                                <th>Nº</th>
                                 <th>Unidad</th>
                                 <th>Tipologia</th>
                                 <th>Asignación</th>
@@ -110,6 +111,7 @@
     
                             {% for i in datos_unidades %}
                             <tr>
+                                <td>{{i.0.orden}}</td>
                                 <td>
                                     <h6>
                                         {% if i.0.plano_venta %}
