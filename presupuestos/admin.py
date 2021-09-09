@@ -1,9 +1,20 @@
 from django.contrib import admin
 from .models import Constantes, Articulos, DatosProyectos, Presupuestos, Prametros, Desde, Analisis, CompoAnalisis, Capitulos, Modelopresupuesto, Registrodeconstantes, InformeMensual, Bitacoras, PresupuestosAlmacenados
+from .models import DocumentacionProyectoPresupuesto
 from import_export import resources
 from import_export.admin import ImportExportModelAdmin
 
 # Register your models here.
+
+class DocumentacionProyectoPresupuestoResource(resources.ModelResource):
+    class Meta:
+        model = DocumentacionProyectoPresupuesto
+
+class DocumentacionProyectoPresupuestoAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    list_display = ('proyecto', 'descrip',  'entregado', 'cuantificado')
+    search_fields = ('proyecto__nombre', 'descrip')
+    resources_class = DocumentacionProyectoPresupuestoResource
+
 class ArticulosResource(resources.ModelResource):
     class Meta:
         model = Articulos
@@ -116,3 +127,5 @@ admin.site.register(CompoAnalisis, CompoAnalisisAdmin)
 admin.site.register(Modelopresupuesto, ModelopresupuestoAdmin)
 admin.site.register(InformeMensual, InformeMensualAdmin)
 admin.site.register(Bitacoras, BitacorasAdmin)
+admin.site.register(DocumentacionProyectoPresupuesto, DocumentacionProyectoPresupuestoAdmin)
+

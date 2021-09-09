@@ -31,71 +31,71 @@
                     <div class="d-flex align-items-center">
                         <div>
     
-                            <h4 class="card-title"><span class="lstick m-r-20"></span><b style="color: rgb({{datos.proyecto.color}});">{{datos.proyecto.nombre}}</b></h4>
+                            <h4 class="card-title"><span class="lstick m-r-20"></span><b style="color: rgb({{proyecto.color}});">{{proyecto.nombre}}</b></h4>
                             <h6 class="card-subtitle"></span>Capitulos y analisis del proyecto</h6>
                         </div>
                         
                     </div>
 
-                    {% if datos.datos %}
+                    {% if datos %}
 
-                    <table class="table" id="example" style="text-align: center;">
-                        <thead>
+                    {% for i in datos %}
 
-                            <tr>
-                                <th style="vertical-align: middle;"> Nº </th>
-                                <th style="vertical-align: middle; text-align: left;">Capitulos/analisis</th>
-                                <th></th>
-                                <th></th>
-                                <th style="vertical-align: middle; text-align: left;"> Estimado </th>
-                                <th style="vertical-align: middle; text-align: center;"> Inc. </th>
-                            </tr>
-                        </thead>
+                    <table class="table">
 
                         <tbody>
 
-                            {% for i in datos.datos %}
-
-                            <tr class="table-active">
-                                <td style="color: rgb({{datos.proyecto.color}})">{{i.0.id}}</td>
-                                <td style="text-align: left;">{{i.0.nombre|lower|capfirst}}</td>
-                                <td></td>
-                                <td></td>
-                                <td style="text-align: left;">${{i.1|floatformat:2|intcomma}}</td>
-                                <td style="text-align: center;">{{i.2|floatformat:0|intcomma}}%</td>
+                            <tr class="card-title text-left">
+                                <td style="width: 15px; color: rgb({{proyecto.color}});">{{i.0.id}}</td>
+                                <td style="max-width: 250px;">
+                                    <a class="get-code mr-2" data-toggle="collapse" href="#pgr{{i.0.id}}" aria-expanded="true"><i class="fa fa-level-down" title="Ver capitulo" data-toggle="tooltip"></i></a>
+                                    
+                                    <b class="mr-3 font-bold">{{i.0.nombre|lower|capfirst}}:</b> ${{i.1|floatformat:2|intcomma}} ({{i.2|floatformat:0|intcomma}}%)
+                                    </td>
                             </tr>
 
-                            {% for i in i.3 %}
-
-                            <tr style="font-size: 12px;">
-
-                                <td style="text-align: left;"></td>
-
-                                <td style="text-align: left;"> {{ i.0.analisis.nombre|lower|capfirst }}
-                                    <h6 class="card-subtitle" style="font-size: 12px; margin-top: 2px;"><span
-                                            class="text-muted">{% if i.0.comentario %}{{ i.0.comentario }}{% endif %}</span>
-                                    </h6>
-                                </td>
-                                <td> ${{ i.1|floatformat:2|intcomma }}</td>
-                                <td> {{ i.2|floatformat:0|intcomma }} ({{ i.0.analisis.unidad }})</td>
-                                <td> ${{ i.3|floatformat:2|intcomma }}</td>
-                                <td></td>
-
-                            </tr>
-
-                            {% endfor %}
-
-
-
-                            {% endfor %}
                         </tbody>
 
                     </table>
 
+                    <div class="collapse m-t-15 well" id="pgr{{i.0.id}}" aria-expanded="true">
+                    <table class="table" style="text-align: center;">
+
+                        <tbody>
+
+                            
+                                {% for i in i.3 %}
+
+                                <tr style="font-size: 12px;">
+
+                                    <td style="text-align: left;"></td>
+
+                                    <td style="text-align: left;"> <a class="text-dark" href="#">{{ i.0.analisis.nombre|lower|capfirst }}</a> 
+                                        <h6 class="card-subtitle" style="font-size: 12px; margin-top: 2px;"><span
+                                                class="text-muted">{% if i.0.comentario %}{{ i.0.comentario }}{% endif %}</span>
+                                        </h6>
+                                    </td>
+                                    <td> ${{ i.1|floatformat:2|intcomma }}</td>
+                                    <td> {{ i.2|floatformat:0|intcomma }}({{ i.0.analisis.unidad }})</td>
+                                    <td> ${{ i.3|floatformat:2|intcomma }}</td>
+                                    <td></td>
+
+                                </tr>
+
+                                {% endfor %}
+
+                        </tbody>
+
+                    </table>
+                    </div>
+                    {% endfor %}
+
+                
+
                     <div style="text-align: center;">
-                        <h6 style="color: rgb({{datos.proyecto.color}}); font-family: Arial, Helvetica, sans-serif;">
+                        <h6 style="color: rgb({{proyecto.color}}); font-family: Arial, Helvetica, sans-serif;">
                             Valor
-                            de reposición del proyecto: ${{datos.valor_proyecto_completo|floatformat:0|intcomma}} </h6>
+                            de reposición del proyecto: ${{valor_proyecto_completo|floatformat:0|intcomma}} </h6>
                     </div>
 
                     {% else %}
@@ -119,8 +119,83 @@
     </div>
 </div>
 
+<a id="add" href="#"  data-toggle="modal" data-target="#ModalCheck" class="btn btn-lg btn-info btn-circle fa fa-5x fa-check-square-o"></a>
+
+<div class="modal fade" id="ModalCheck" tabindex="-1" role="dialog" aria-labelledby="ModalCheck" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+        
+            <form method="POST">
+                <div class="modal-body">
+                    <button type="button" class="close text-dark" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-2">
+                            <img src="{% static 'img/bot.png' %}" width="40px" alt="">
+                        </div>
+                        <div class="col-10 mb-3">
+                            <h4 class="my-2 text-title text-center">Checklist de presupeusto</h4>
+                        </div>
+                        
+                        {% for check in checklist %}
+
+                        <div class="d-flex">
+                            <input type="checkbox" name="{{check.id}}-entregado" id="{{check.id}}-entregado" {% if check.entregado %}checked {% endif %}
+                            class="filled-in chk-col-blue" />
+                            <label class="mr-3" for="{{check.id}}-entregado">E</label>
+                            <input type="checkbox" name="{{check.id}}-cuantificado" id="{{check.id}}-cuantificado" {% if check.cuantificado %}checked {% endif %}
+                            class="filled-in chk-col-blue" />
+                            <label class="mr-3" for="{{check.id}}-cuantificado">C</label>
+                            <input type="number" name="{{check.id}}-check" value="{{check.id}}" hidden>
+                            <h6 >{{check.descrip}}</h6>
+                        </div>
+                        
+                        {% endfor %}
+           
+                    </div>
+                </div>
+                <div class="text-center mb-3">
+                    <button class="btn btn-primary" type="submit" name="cargar" value="">Cargar</button>
+                    
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+    @keyframes example {
+    0% {transform: scale(0.9);}
+    50% {transform: scale(1);}
+    100% {transform: scale(0.9);}
+    }
+    #add{
+        position: fixed;
+        bottom: 60px;
+        right: 20px;
+        animation: example 1s ease-in-out infinite;
+    }
+
+</style>
+
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script>
+
+    $(window).scroll(function () {
+        sessionStorage.scrollTop = $(this).scrollTop();
+    });
+    $(document).ready(function () {
+        if (sessionStorage.scrollTop != "undefined") {
+            $(window).scrollTop(sessionStorage.scrollTop);
+        }
+    });
+</script>
+
 
 <script>
 
@@ -156,4 +231,7 @@
 </script>
 
 
+
+
 {% endblock %}
+

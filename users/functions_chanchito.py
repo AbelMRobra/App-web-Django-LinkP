@@ -1,5 +1,6 @@
 from rrhh.models import datosusuario, RegistroContable
 from finanzas.models import Arqueo
+from presupuestos.models import Registrodeconstantes
 from datetime import datetime, date, timedelta
 import numpy as np
 import pandas as pd
@@ -36,6 +37,7 @@ def calcularResumenIngresos(usuario):
     context['fechas_totales'] = fechas_totales
 
     context['datos'] = {}
+    context['datos_h'] = {}
 
     for usuario in list:
 
@@ -44,6 +46,7 @@ def calcularResumenIngresos(usuario):
         consulta_usuario = consulta_principal.filter(usuario = usuario)
 
         ingresos_mensuales = []
+        ingresos_mensuales_h = []
 
         for fecha in  fechas_totales:
 
@@ -63,7 +66,15 @@ def calcularResumenIngresos(usuario):
 
             ingresos_mensuales.append((comercial_shajor, sigma_shajor, sigma_blanco, azlepi_shajor, azlepi_blanco, total))
 
+            try:
+                valor_h = Registrodeconstantes.objects.get(constante__id = 7, fecha = fecha).valor
+            except:
+                valor_h = 1
+
+            ingresos_mensuales_h.append(np.array([comercial_shajor, sigma_shajor, sigma_blanco, azlepi_shajor, azlepi_blanco, total])/valor_h)
+
         context['datos'][usuario.identificacion] = ingresos_mensuales
+        context['datos_h'][usuario.identificacion] = ingresos_mensuales_h
 
     return context
 

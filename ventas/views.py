@@ -1316,6 +1316,8 @@ def dosier(request):
 
 def pricing(request, id_proyecto):
 
+    context = {}
+
     #Aqui empieza para cambiar el precio base
 
     precio_nuevo = 0
@@ -1364,12 +1366,12 @@ def pricing(request, id_proyecto):
     iibb = 0
     comision = 0
     unidades_socios = 0
+    contado_total = 0
 
     #Datos resumenes de arriba
 
     sumatoria_contado = 0
     sumatoria_financiado = 0
-
    
     for dato in datos:
 
@@ -1397,17 +1399,28 @@ def pricing(request, id_proyecto):
 
             basura = 1
         
-        #try:
+        try:
+            contado = m2*dato.proyecto.desde
+        
+        except:
 
-        contado = m2*dato.proyecto.desde
+            contado = 0
+            context['mensajes'] = ["El proyecto no tiene un precio desde para calcular"]
 
         features_unidad = FeaturesUni.objects.filter(unidad = dato)
 
-        for f2 in features_unidad:
+        if len(features_unidad) != 0:
 
-            contado = contado*f2.feature.inc
+            for f2 in features_unidad:
 
-        desde = round((contado/m2), 4)
+                contado = contado*f2.feature.inc
+
+            desde = round((contado/m2), 4)
+        
+        else:
+
+            desde = 0
+            context['mensajes'] = ["El proyecto no tiene features"]
 
         #Aqui calculamos el contado/financiado
         
@@ -1496,26 +1509,34 @@ def pricing(request, id_proyecto):
                            
         #Aqui sumamos los datos
 
-        m2 = dato.sup_propia + dato.sup_balcon + dato.sup_comun + dato.sup_patio
+        # m2 = dato.sup_propia + dato.sup_balcon + dato.sup_comun + dato.sup_patio
+
+        contado_total += contado
 
         datos_tabla_unidad.append((dato, m2, desde, dato.id, contado, financiado, financiado_m2, fin_ant, valor_cuotas, venta))
+
+
+    try:
         
-    almacenero = Almacenero.objects.get(proyecto = proyecto)
+        almacenero = Almacenero.objects.get(proyecto = proyecto)
 
-    #Aqui resto el 6%  --> Ya no resto el 6%, solo guardo los cambios en la BBDD
+        #Aqui resto el 6%  --> Ya no resto el 6%, solo guardo los cambios en la BBDD
 
-    almacenero.ingreso_ventas = ingreso_ventas - ingreso_ventas*0.00
-    almacenero.save()
-    almacenero.unidades_socios = unidades_socios - unidades_socios*0.00
-    almacenero.save()
-    almacenero.pendiente_comision = comision
-    almacenero.save()
+        almacenero.ingreso_ventas = ingreso_ventas - ingreso_ventas*0.00
+        almacenero.save()
+        almacenero.unidades_socios = unidades_socios - unidades_socios*0.00
+        almacenero.save()
+        almacenero.pendiente_comision = comision
+        almacenero.save()
 
-    #################### Comento el calculo de IIBB
+        #################### Comento el calculo de IIBB
 
-    # almacenero.pendiente_iibb_tem = (almacenero.cuotas_a_cobrar + iibb + almacenero.pendiente_iibb_tem_link)*0.02235
-    
-    almacenero.save()
+        # almacenero.pendiente_iibb_tem = (almacenero.cuotas_a_cobrar + iibb + almacenero.pendiente_iibb_tem_link)*0.02235
+        
+        almacenero.save()
+
+    except:
+        context['mensajes'].append("No se encontro un almacenero para vincular")
 
     cantidad = len(datos_tabla_unidad)
 
@@ -1523,9 +1544,16 @@ def pricing(request, id_proyecto):
 
     #Aqui calculo promedio contado y promedio financiado
 
-    promedio_contado = sumatoria_contado/m2_totales_disp
-    promedio_financiado = sumatoria_financiado/m2_totales_disp
+    try:
 
+        promedio_contado = sumatoria_contado/m2_totales_disp
+        promedio_financiado = sumatoria_financiado/m2_totales_disp
+
+    except:
+        promedio_contado = 0
+        promedio_financiado = 0
+        context['mensajes'].append("No se encontro desglose de superficie") 
+    
     proyecto.precio_pricing = promedio_contado
     proyecto.save()
 
@@ -1557,9 +1585,17 @@ def pricing(request, id_proyecto):
 
     anticipo = anticipo*100
 
-    datos = {"proyecto":proyecto, "datos":datos, "mensaje":mensaje, "datos_unidades":datos_unidades, "otros_datos":otros_datos, "anticipo":anticipo, "meses":meses}
+    context["proyecto"] = proyecto
+    context["datos"] = datos
+    context["mensaje"] = mensaje
+    context["datos_unidades"] = datos_unidades
+    context["otros_datos"] = otros_datos
+    context["anticipo"] = anticipo
+    context["meses"] = meses
+    context['m2_totales'] = m2_totales
+    context['contado_total'] = contado_total
 
-    return render(request, 'pricing.html', {"datos":datos})
+    return render(request, 'pricing.html', context)
 
 def cargarplano(request,**kwargs):
     if request.method=='POST':
@@ -2165,27 +2201,50 @@ Por favor no responder este email
 
 def featuresproject(request, id_proj):
 
+    proyecto = Proyectos.objects.get(id = id_proj)
+
+    context = {}
+
     if request.method == 'POST':
-        data_post = request.POST.items()
-        for d in data_post:
 
-            if d[0] != 'csrfmiddlewaretoken':
-                aux = d[0].split(sep='&')
+        try:
+            nuevo_feature = FeaturesProjects(
+                proyecto = proyecto,
+                nombre = request.POST['nombre'],
+                inc = request.POST['inc'],
+            )
 
-                if len(FeaturesUni.objects.filter(feature__nombre = aux[0], unidad = int(aux[1]))) == 1 and d[1] == "off":
-                    feature_un = FeaturesUni.objects.filter(feature__nombre = aux[0], unidad = int(aux[1]))
-                    feature_un.delete()
+            nuevo_feature.save()
 
-                if len(FeaturesUni.objects.filter(feature__nombre = aux[0], unidad = int(aux[1]))) == 0 and d[1] == "on":
-                
-                    unidad = Unidades.objects.get(id = int(aux[1]))
-                    feature = FeaturesProjects.objects.get(proyecto = unidad.proyecto, nombre = aux[0])
-                
-                    feature_un = FeaturesUni(
-                        feature = feature,
-                        unidad = unidad)
-                    feature_un.save()
+            context["mensaje"] = "Atributo creado correctamente!"
 
+        except:
+            pass
+
+        try:
+            data_post = request.POST.items()
+            for d in data_post:
+
+                if d[0] != 'csrfmiddlewaretoken':
+                    aux = d[0].split(sep='&')
+
+                    if len(FeaturesUni.objects.filter(feature__nombre = aux[0], unidad = int(aux[1]))) == 1 and d[1] == "off":
+                        feature_un = FeaturesUni.objects.filter(feature__nombre = aux[0], unidad = int(aux[1]))
+                        feature_un.delete()
+
+                    if len(FeaturesUni.objects.filter(feature__nombre = aux[0], unidad = int(aux[1]))) == 0 and d[1] == "on":
+                    
+                        unidad = Unidades.objects.get(id = int(aux[1]))
+                        feature = FeaturesProjects.objects.get(proyecto = unidad.proyecto, nombre = aux[0])
+                    
+                        feature_un = FeaturesUni(
+                            feature = feature,
+                            unidad = unidad)
+                        feature_un.save()
+        
+            context["mensaje"] = "Unidades editadas correctamente!"
+        except:
+            pass
     unidades = Unidades.objects.filter(proyecto__id = id_proj).order_by("orden")
   
     features = FeaturesProjects.objects.filter(proyecto__id = id_proj)
@@ -2224,7 +2283,10 @@ def featuresproject(request, id_proj):
 
         data.append((u, unid_features, m2, base, final))
 
-    return render(request, 'featuresproject.html', {'features':features, 'data':data})
+        context["features"] = features
+        context["data"] = data
+
+    return render(request, 'featuresproject.html', context)
 
 class descargadeventas(TemplateView):
 

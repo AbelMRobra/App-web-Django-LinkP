@@ -241,7 +241,6 @@ class Bitacoras(models.Model):
         verbose_name="Bitacora"
         verbose_name_plural="Bitacoras"
 
-#figura en el admin como Almacenes
 class PresupuestosAlmacenados(models.Model):
     proyecto = models.ForeignKey(Proyectos, on_delete=models.CASCADE, verbose_name = "Proyecto")
     nombre = models.CharField(max_length=200, verbose_name="Nombre")
@@ -250,6 +249,20 @@ class PresupuestosAlmacenados(models.Model):
     class Meta:
         verbose_name="Almacen"
         verbose_name_plural="Almacenes"
+
+class DocumentacionProyectoPresupuesto(models.Model):
+
+    proyecto = models.ForeignKey(Proyectos, on_delete=models.CASCADE, verbose_name = "Proyecto")
+    descrip = models.CharField(max_length=200, verbose_name="Descripción")
+    entregado = models.BooleanField(verbose_name="Entregado")
+    cuantificado = models.BooleanField(verbose_name="Cuantificado")
+
+    class Meta:
+        verbose_name="Check-list-Documentacion"
+        verbose_name_plural="Check-list-Documentacion"
+
+    def __str__(self):
+        return f'{self.proyecto.nombre}-{self.descrip}'
 
 
 

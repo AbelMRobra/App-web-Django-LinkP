@@ -175,6 +175,9 @@ def editarcomparativas(request, id_comp):
                 comparativa.save()
             except:
                 pass
+
+            comparativa.estado = "ESPERA"
+            comparativa.save()
         
         return redirect(f'/compras/comparativas/{20}/{0}/{0}#{comparativa.id}')
 

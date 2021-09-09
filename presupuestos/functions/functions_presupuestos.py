@@ -5,12 +5,14 @@ import requests
 from presupuestos.wabot import WABot
 import datetime as dt
 import pandas as pd
-import requests
 from presupuestos.models import Capitulos, PresupuestosAlmacenados, Analisis, Articulos
 
 
 
 def bot_telegram(send, id, token):
+
+    print("Active la funcion")
+    
     url = "https://api.telegram.org/bot" + token + "/sendMessage"
 
     params = {

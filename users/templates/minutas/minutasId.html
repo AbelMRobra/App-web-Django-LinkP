@@ -3,6 +3,8 @@
 {% load static %}
 {% block content %}
 
+
+
 <div class="container-fluid">
     <div class="row page-titles">
         <div class="col-md-5 align-self-center">
@@ -286,154 +288,161 @@
     
                     <div>
     
-                        {% if data.reunion %}
-    
-                        <table class="table">
-    
-                            <tbody>
-                                {% if acuerdos_viejos %}
-                                {% for a in acuerdos_viejos %}
-                                <tr style="vertical-align: middle;">
-                               
-                                    <td style="width: 70%;">{{a.tema}}
-                                    </td>
-                                    <td style="width: 14%;">{% if a.fecha_limite %} <b class="{{a.fecha_limite|fecha_limite}}">{{a.fecha_limite|date:"d/m/Y"}}</b> {% else %} Sin fecha {% endif %}</td>
-                                    <td style="width: 8%;">{% if a.responsable %}{{a.responsable}}{% else %} S/A {% endif %}
-                                    </td>
-                                    <td style="width: 8%; text-align: center;">{% if a.estado == "CHECK" %}
-                                        <form method="POST" id="icon">
-                                            {% csrf_token %}
-                                            <button class="btn fa fa-lg fa-check-circle text-success" type="submit"
-                                                style="text-decoration: none;" name="no_check" value="{{a.id}}"></button>
-    
-                                        </form>{% else %}<form method="POST" id="icon">
-                                            {% csrf_token %}
-                                            <button class="btn fa fa-lg fa-exclamation-circle text-warning" type="submit"
-                                                style="text-decoration: none;" name="check" value="{{a.id}}"></button>{% endif %}
-    
-                                        </form>
-                                    </td>
-                                    <td>
-                                        <div class="btn-group ml-auto">
-                                            <a href="JavaScript:void(0)" class="icon-options-vertical link" data-toggle="dropdown"
-                                            aria-haspopup="true" aria-expanded="false"></a>
-                                            <div class="dropdown-menu dropdown-menu-right">
-                                                <a class="dropdown-item" href="#"data-toggle="modal"
-                                                data-target="#ModalTema{{a.id}}"><i
-                                                    class="fa fa-pencil-square-o mr-2"></i>Modificar acuerdo</a>
-                                                
-                                                <a class="dropdown-item" href="#" data-toggle="modal"
-                                                data-target="#ModalBorrarAcuerdo{{a.id}}"><i
-                                                    class="fa fa-trash text-danger mr-2"></i>Borrar acuerdo</a>
-                                                    
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <div class="modal fade" id="ModalBorrarAcuerdo{{a.id}}" tabindex="-1" role="dialog"
-                                        aria-labelledby="ModalBorrarAcuerdo{{a.id}}" aria-hidden="true">
-                                        <div class="modal-dialog modal-dialog-centered" role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-header" style="background: rgb(36,160,237); background: linear-gradient(315deg, rgba(36,160,237,1) 0%, rgba(56,56,130,1) 22%, rgba(0,212,255,1) 100%);">
-                                                    <h5 class="modal-title text-light" id="exampleModalLongTitle">Editar tarea/acuerdo
-                                                    </h5>
-                                                    <button type="button" class="close text-light" data-dismiss="modal"
-                                                        aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                </div>
-                                                <div class="modal-body">
-    
-                                                    <form method="POST" style="margin: 15px;">
-    
-                                                        {% csrf_token %}
-    
-                                                        <h6>¿Estás seguro de que deseas borrar este acuerdo?</h6>
-                                                        <button class="btn btn-danger " type="submit"
-                                                        name="delete" value="{{a.id}}">Borrar</button>
+                    {% if data.reunion %}
+
+                        {% if acuerdos_viejos %}
+
+                        <div id="lista">
+                        {% for a in acuerdos_viejos %}
+                            <div data-id="{{a.id}}" >
+                                
+                                <table class="table">
+                                    <tbody>
+                                        
+                                        <tr style="vertical-align: middle;">
+                                    
+                                            <td style="width: 70%;"><i class="dragable fa fa-bars mr-3"></i>{{a.tema}}
+                                            </td>
+                                            <td style="width: 14%;">{% if a.fecha_limite %} <b class="{{a.fecha_limite|fecha_limite}}">{{a.fecha_limite|date:"d/m/Y"}}</b> {% else %} Sin fecha {% endif %}</td>
+                                            <td style="width: 8%;">{% if a.responsable %}{{a.responsable}}{% else %} S/A {% endif %}
+                                            </td>
+                                            <td style="width: 8%; text-align: center;">{% if a.estado == "CHECK" %}
+                                                <form method="POST" id="icon">
+                                                    {% csrf_token %}
+                                                    <button class="btn fa fa-lg fa-check-circle text-success" type="submit"
+                                                        style="text-decoration: none;" name="no_check" value="{{a.id}}"></button>
+            
+                                                </form>{% else %}<form method="POST" id="icon">
+                                                    {% csrf_token %}
+                                                    <button class="btn fa fa-lg fa-exclamation-circle text-warning" type="submit"
+                                                        style="text-decoration: none;" name="check" value="{{a.id}}"></button>{% endif %}
+            
+                                                </form>
+                                            </td>
+                                            <td>
+                                                <div class="btn-group ml-auto">
+                                                    <a href="JavaScript:void(0)" class="icon-options-vertical link" data-toggle="dropdown"
+                                                    aria-haspopup="true" aria-expanded="false"></a>
+                                                    <div class="dropdown-menu dropdown-menu-right">
+                                                        <a class="dropdown-item" href="#"data-toggle="modal"
+                                                        data-target="#ModalTema{{a.id}}"><i
+                                                            class="fa fa-pencil-square-o mr-2"></i>Modificar acuerdo</a>
                                                         
-                                                    </form>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary"
-                                                            data-dismiss="modal">Cerrar</button>
-    
+                                                        <a class="dropdown-item" href="#" data-toggle="modal"
+                                                        data-target="#ModalBorrarAcuerdo{{a.id}}"><i
+                                                            class="fa fa-trash text-danger mr-2"></i>Borrar acuerdo</a>
+                                                            
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <div class="modal fade" id="ModalBorrarAcuerdo{{a.id}}" tabindex="-1" role="dialog"
+                                                aria-labelledby="ModalBorrarAcuerdo{{a.id}}" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header" style="background-color: #2a3e52;">
+                                                            <h5 class="modal-title text-light" id="exampleModalLongTitle">Editar tarea/acuerdo
+                                                            </h5>
+                                                            <button type="button" class="close text-light" data-dismiss="modal"
+                                                                aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+            
+                                                            <form method="POST" style="margin: 15px;">
+            
+                                                                {% csrf_token %}
+            
+                                                                <h6>¿Estás seguro de que deseas borrar este acuerdo?</h6>
+                                                                <button class="btn btn-danger " type="submit"
+                                                                name="delete" value="{{a.id}}">Borrar</button>
+                                                                
+                                                            </form>
+ 
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </div>
-    
-                                    <!-- Modal de las responsable -->
-                                    <div class="modal fade" id="ModalTema{{a.id}}" tabindex="-1" role="dialog"
-                                        aria-labelledby="ModalResponsableTitle" aria-hidden="true">
-                                        <div class="modal-dialog modal-dialog-centered" role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-header" style="background: rgb(36,160,237); background: linear-gradient(315deg, rgba(36,160,237,1) 0%, rgba(56,56,130,1) 22%, rgba(0,212,255,1) 100%);">
-                                                    <h5 class="modal-title text-light" id="exampleModalLongTitle">Editar tarea/acuerdo
-                                                    </h5>
-                                                    <button type="button" class="close text-light" data-dismiss="modal"
-                                                        aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                </div>
-                                                <div class="modal-body">
-    
-                                                    <form method="POST" style="margin: 15px;">
-                                                        {% csrf_token %}
-    
-                                                        <h6><small>Tema/Acuerdo</small> </h6>
-                                                        <div class="input-group mb-3">
-                                                            <input name="tema" type="text" class="form-control form-control"
-                                                                style="width: 300px;" value="{{a.tema}}">
+            
+                                            <!-- Modal de las responsable -->
+                                            <div class="modal fade" id="ModalTema{{a.id}}" tabindex="-1" role="dialog"
+                                                aria-labelledby="ModalResponsableTitle" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                                    
+                                                    <div class="modal-content">
+                                                        
+                                                        <div class="modal-body">
+                                                            <div class = "row">
+                                                                <div class="col-2">
+                                                                        <img src="{% static 'img/bot.png' %}" width="40px" alt="">
+                                                                    </div>
+                                                                    <div class="col-8 mb-3">
+                                                                        <h4 class="my-2 text-title text-center">Editar acuerdo</h4>
+                                                                    </div>
+                                                                <div class="col-2">
+                                                                    <button type="button" class="close text-dark" data-dismiss="modal"
+                                                                    aria-label="Close">
+                                                                        <span aria-hidden="true">&times;</span>
+                                                                    </button>
+                                                                </div>
+                                                                
+                                                            </div>
+            
+                                                            <form method="POST" style="margin: 15px;">
+                                                                {% csrf_token %}
+            
+                                                                <h6><small>Tema/Acuerdo</small> </h6>
+                                                                <div class="input-group mb-3">
+                                                                    <input name="tema" type="text" class="form-control form-control"
+                                                                        style="width: 300px;" value="{{a.tema}}">
+                                                                </div>
+            
+                                                                <h6><small>Responsable</small> </h6>
+                                                                <div class="input-group mb-3">
+                                                                    <div class="input-group mb-3">
+                                                                        <input name="responsable" type="text"
+                                                                            class="form-control form-control" style="width: 300px;"
+                                                                            value="{{a.responsable}}">
+                                                                    </div>
+            
+                                                                    <h6><small>Fecha a cumplir</small> </h6>
+                                                                    <div class="input-group mb-3">
+                                                                        <input name="fecha_limite" type="date"
+                                                                            class="form-control form-control" style="width: 300px;"
+                                                                            value="{{a.fecha_limite|date:'Y-m-d'}}">
+                                                                    </div>
+            
+                                                                    <div class="row m-2">
+                                                                        <button type="submit" class="btn btn-rounded btn-info " name="id"
+                                                                            value="{{a.id}}">Modificar</button>
+                                                                    </div>
+            
+                                                                </div>
+                                                            </form>
+
                                                         </div>
-    
-                                                        <h6><small>Responsable</small> </h6>
-                                                        <div class="input-group mb-3">
-                                                            <div class="input-group mb-3">
-                                                                <input name="responsable" type="text"
-                                                                    class="form-control form-control" style="width: 300px;"
-                                                                    value="{{a.responsable}}">
-                                                            </div>
-    
-                                                            <h6><small>Fecha a cumplir</small> </h6>
-                                                            <div class="input-group mb-3">
-                                                                <input name="fecha_limite" type="date"
-                                                                    class="form-control form-control" style="width: 300px;"
-                                                                    value="{{a.fecha_limite|date:'Y-m-d'}}">
-                                                            </div>
-    
-                                                            <div class="row m-2">
-                                                                <button type="submit" class="btn btn-info" name="id"
-                                                                    value="{{a.id}}">Modificar</button>
-                                                            </div>
-    
-                                                        </div>
-                                                    </form>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary"
-                                                            data-dismiss="modal">Cerrar</button>
-    
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                </tr>
-    
-                                {% endfor %}
-                                {% else %}
-                                <tr>
-                                    <td>No hay acuerdos o temas pendientes</td>
-                                </tr>
-                                {% endif %}
-    
-                            </tbody>
-                        </table>
-    
+                                        </tr>                     
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        {% endfor %}
+
+                        </div>
+
                         {% else %}
-    
-                        <p>Esta minuta no tiene vinculación</p>
-    
+
+                        <p>No hay acuerdos o temas pendientes</p>
                         {% endif %}
+
+                    {% else %}
+
+                    <p>Esta minuta no tiene vinculación</p>
+
+                    {% endif %}
                     </div>
                 </div>
             </div>
@@ -443,7 +452,16 @@
 
 
 <a id="add" href="#" data-toggle="modal" data-target="#ModalAcuerdo" class="btn btn-lg btn-info btn-circle fa fa-5x fa-plus"></a>
+
+<style>
+    .dragable{
+        cursor:grabbing
+    }
+</style>
+
+
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+
 <script>
 
     $(window).scroll(function () {
@@ -452,6 +470,33 @@
     $(document).ready(function () {
         if (sessionStorage.scrollTop != "undefined") {
             $(window).scrollTop(sessionStorage.scrollTop);
+        }
+    });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+
+<script>
+    const lista = document.getElementById('lista');
+
+    Sortable.create(lista, {
+        animation:150,
+        dragClass: "seleccionado",
+        onEnd: () =>{
+            console.log("algo");
+        },
+        group: "acuerdos",
+        store:{
+            //guarda orden lista
+            set: (sortable) =>{
+                const orden = sortable.toArray();
+                localStorage.setItem(sortable.options.group.name, orden.join('|'));
+            },
+            get:(sortable) =>{
+                const orden = localStorage.getItem(sortable.options.group.name);
+                return orden ? orden.split('|')  : [];
+
+            }
         }
     });
 </script>

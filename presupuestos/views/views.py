@@ -17,7 +17,8 @@ from compras.models import Compras
 from registro.models import RegistroValorProyecto
 from rrhh.models import datosusuario
 from presupuestos.models import Articulos, Constantes, DatosProyectos, Prametros,Analisis,CompoAnalisis, Modelopresupuesto, \
-                    Capitulos,Presupuestos, Registrodeconstantes, PorcentajeCapitulo, PresupuestosAlmacenados
+                    Capitulos,Presupuestos, Registrodeconstantes, PorcentajeCapitulo, PresupuestosAlmacenados, \
+                    DocumentacionProyectoPresupuesto
 from presupuestos.serializers import ArtSerializer
 from presupuestos.functions.functions_presupuestos import *
 from presupuestos.wabot import WABot
@@ -204,11 +205,6 @@ def panel_presupuestos(request):
 
 def presupuestostotal(request,id):
     
-    response_servidor = {"messages": "Perri"}
-    numero_prueba = "5493813540261-1599137567@g.us"
-    
-    # No tengo idea para que sirve
-
     presupuestador = 0
 
     variacion = 0
@@ -218,7 +214,6 @@ def presupuestostotal(request,id):
     variacion_year_2 = 0  
 
     variacion_anuales = 0 
-
 
     datos = 0
 
@@ -255,6 +250,7 @@ def presupuestostotal(request,id):
         
         computo = Computos.objects.all()
         generar_excel(computo,proyecto)
+        
         # BOT la actualización
 
         try:
@@ -263,7 +259,7 @@ def presupuestostotal(request,id):
             df = pd.read_excel(archivo)
             repo_nuevo = sum(np.array(df['Monto'].values))
 
-            anterior_archivo = presupuestos_alm.get(proyecto = proyecto).order_by("-id").exclude(nombre = "vigente")[0].archivo
+            anterior_archivo = presupuestos_alm.filter(proyecto = proyecto).order_by("-id").exclude(nombre = "vigente")[0].archivo
             df = pd.read_excel(anterior_archivo)
             repo_anterior = sum(np.array(df['Monto'].values))
 
@@ -275,8 +271,8 @@ def presupuestostotal(request,id):
                 send = "{} ha actualizado {}. Variación: {}%".format(request.user.first_name, proyecto.nombre, var)
                 bot_telegram(send,id,token)
 
-                bot_wp = WABot(response_servidor)
-                bot_wp.send_message(numero_prueba, send)
+                # bot_wp = WABot(response_servidor)
+                # bot_wp.send_message(numero_prueba, send)
 
                 
 
@@ -284,10 +280,12 @@ def presupuestostotal(request,id):
                 id = "-455382561"
                 token = "1880193427:AAH-Ej5ColiocfDZrDxUpvsJi5QHWsASRxA"
                 send = "{} guardo una copia de {}".format(request.user.first_name, proyecto.nombre)
+
+                
                 bot_telegram(send,id,token)
                 
-                bot_wp = WABot(response_servidor)
-                bot_wp.send_message(numero_prueba, send)
+                # bot_wp = WABot(response_servidor)
+                # bot_wp.send_message(numero_prueba, send)
 
 
             if proyecto.presupuesto == "BASE" and var != 0:
@@ -296,8 +294,8 @@ def presupuestostotal(request,id):
                 id = "-455382561"
                 token = "1880193427:AAH-Ej5ColiocfDZrDxUpvsJi5QHWsASRxA"
                 bot_telegram(send,id,token)
-                bot_wp = WABot(response_servidor)
-                bot_wp.send_message(numero_prueba, send)
+                # bot_wp = WABot(response_servidor)
+                # bot_wp.send_message(numero_prueba, send)
     
                 proyectos_extrapolados = Proyectos.objects.filter(presupuesto = "EXTRAPOLADO")
 
@@ -326,20 +324,18 @@ def presupuestostotal(request,id):
 
                         send_1 += "{} con {}% - ".format(p, var)
 
+                        bot_telegram(send_1,id,token)
+
                     except:
 
                         send_2 += "{} - ".format(p)
 
+                        bot_telegram(send_2,id,token)
 
-
-                bot_telegram(send_1,response_servidor,numero_prueba)
-
-        
-                bot_telegram(send_2,response_servidor,numero_prueba)
 
                 send = "Proceso de actualización de proyectos extrapolados completo. Tambien actualice el IVA en el almacenero. Disculpen los mensajes"
 
-                bot_telegram(send,response_servidor,numero_prueba)
+                bot_telegram(send,id,token)
 
 
         except:
@@ -524,10 +520,30 @@ def presupuestostotal(request,id):
 
 def presupuestorepcompleto(request, id_proyecto):
 
+    if request.method == 'POST':
+
+        datos_post = request.POST.items()
+
+        for dato in datos_post:
+            if "check" in dato[0]:
+                check_element = DocumentacionProyectoPresupuesto.objects.get(id = int(dato[1]))
+                try:
+                    if request.POST[f'{dato[1]}-entregado'] == "on":
+                        check_element.entregado = True
+
+                except:
+                    check_element.entregado = False
+
+                try:
+                    if request.POST[f'{dato[1]}-cuantificado'] == "on":
+                        check_element.cuantificado = True
+
+                except:
+                    check_element.cuantificado = False
+                check_element.save()
+                        
     proyecto = Proyectos.objects.get(id = id_proyecto)
     capitulo = Capitulos.objects.all()
-    compo = CompoAnalisis.objects.all()
-    computo = Computos.objects.all()
 
     archivo = PresupuestosAlmacenados.objects.filter(proyecto = proyecto, nombre = "vigente")[0].archivo
     df = pd.read_excel(archivo)
@@ -596,9 +612,15 @@ def presupuestorepcompleto(request, id_proyecto):
 
     valor_proyecto_completo = valor_proyecto
 
-    datos = {"datos":datos, "proyecto":proyecto, "valor_proyecto":valor_proyecto,"valor_proyecto_completo":valor_proyecto_completo}
-    
-    return render(request, 'presupuestos/presuprepabierto.html', {"datos":datos, "id_proyecto": id_proyecto})
+    context = {}
+    context["datos"] = datos
+    context["proyecto"] = proyecto
+    context["valor_proyecto"] = valor_proyecto
+    context["valor_proyecto_completo"] = valor_proyecto_completo
+    context["id_proyecto"] = id_proyecto
+    context["checklist"] = DocumentacionProyectoPresupuesto.objects.filter(proyecto = proyecto).order_by("id")
+
+    return render(request, 'presupuestos/presuprepabierto.html', context)
 
 def saldocapitulo(request, id_proyecto):
 

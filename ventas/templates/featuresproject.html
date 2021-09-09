@@ -5,11 +5,13 @@
 
 {% block content %}
 
+<link href="{% static 'adminpro/assets/plugins/tablesaw-master/dist/tablesaw.css' %}" rel="stylesheet">
+
 <div class="container-fluid">
 
     <div class="row page-titles">
         <div class="col-md-5 align-self-center">
-            <h3 class="text-themecolor">Caracteristicas del unidades</h3>
+            <h3 class="text-themecolor">Atributos de las unidades</h3>
         </div>
 
         <div class="col-md-7 align-self-center">
@@ -20,66 +22,215 @@
             </ol>
         </div>
     </div>
-</div>
-<div class="row ">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-body">
 
-                <div class="table-responsive">
-                    <table class="table" style="width:99%">
-                        <thead  style="font-size: 14px;" >
-                            <tr>
-                                <th>Unidad</th>
-                                <th>Tamaño</th>
-                                <th>Base</th>
-                                {% for f in features %}
-                                <th style="-webkit-transform: rotate(-45deg);-moz-transform: rotate(-45deg);">{{f.nombre|lower|capfirst}} ({{f.inc|lower|capfirst}}%)</th>
-                                {% endfor %}
-                                <th>Final</th>
-                                
-                            </tr>
-                        </thead>
-
-                        <tbody style="font-size: 14px;">
-                            <form method="POST">
-                            {% for u in data %}
-                                {% csrf_token %}
+    <div class="row ">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+    
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="table-responsive">
+                        
+                        <table id="example" data-tablesaw-mode="columntoggle" class="table" style="width:99%">
+                            <thead  style="font-size: 14px;" >
                                 <tr>
-                                    <td style="width: 120px;">{{u.0.piso_unidad}} - {{u.0.nombre_unidad}}</td>
-                                    <td style="width: 100px;">{{u.2}} m2</td>
-                                    <td  style="width: 120px;">$ {{u.3|floatformat:0|intcomma}}</td>
-                                    {% for fu in u.1 %}
-                                    <td>
-                                        <input type="hidden" name="{{fu.1.nombre}}&{{u.0.id}}"  value="off">
-                                        <input type="checkbox" name="{{fu.1.nombre}}&{{u.0.id}}" id="{{fu.1.nombre}}&{{u.0.id}}" class="filled-in chk-col-blue" {% if fu.0 == "SI" %}checked{% endif %} />
-                                        <label for="{{fu.1.nombre}}&{{u.0.id}}"></label>
-                                        </td>
-
+                                    <th>Unidad</th>
+                                    <th>Tamaño</th>
+                                    <th>Base</th>
+                                    {% for f in features %}
+                                    <th style="max-width: 30px;" data-tablesaw-priority="3" data-toggle="tooltip" title="{{f.nombre|lower|capfirst}}"><b hidden>{{f.nombre|lower|capfirst}}</b> ({{f.inc|lower|capfirst}}%)</th>
                                     {% endfor %}
-                                    <td style="width: 120px;">$ {{u.4|floatformat:0|intcomma}}</td>
+                                    <th>Final</th>
+                                    
                                 </tr>
-                            
-                            {% endfor %}
-                        </tbody>
+                            </thead>
+    
+                            <tbody style="font-size: 14px;">
+                                
+                                {% for u in data %}
+                                    
+                                    <tr>
+                                        <td style="width: 120px;">{{u.0.piso_unidad}} - {{u.0.nombre_unidad}}</td>
+                                        <td style="width: 100px;">{{u.2}} m2</td>
+                                        <td  style="width: 120px;">$ {{u.3|floatformat:0|intcomma}}</td>
+                                        {% for fu in u.1 %}
+                                        <td>
+                                            <input type="hidden" name="{{fu.1.nombre}}&{{u.0.id}}"  value="off">
+                                            <input type="checkbox" name="{{fu.1.nombre}}&{{u.0.id}}" id="{{fu.1.nombre}}&{{u.0.id}}" class="filled-in chk-col-blue" {% if fu.0 == "SI" %}checked{% endif %} />
+                                            <label for="{{fu.1.nombre}}&{{u.0.id}}"></label>
+                                            </td>
+    
+                                        {% endfor %}
+                                        <td style="width: 120px;">$ {{u.4|floatformat:0|intcomma}}</td>
+                                    </tr>
+                                
+                                {% endfor %}
+                            </tbody>
+
+                            <tfoot  style="font-size: 14px;" >
+                                <tr>
+                                    <th>Unidad</th>
+                                    <th>Tamaño</th>
+                                    <th>Base</th>
+                                    {% for f in features %}
+                                    <th data-tablesaw-priority="3" data-toggle="tooltip" data-placement="top" title="{{f.nombre|lower|capfirst}}"><b hidden>{{f.nombre|lower|capfirst}}</b> ({{f.inc|lower|capfirst}}%)</th>
+                                    {% endfor %}
+                                    <th>Final</th>
+                                    
+                                </tr>
+                            </tfoot>
+
                         </table>
-                        <div class="d-flex justify-content-center">
-                            <button type="submit" class="btn btn-success btn-circle fa fa-check"></button>
-                        </div>
+                            
+                    </div>
 
-                        </form>
+                    <div class="d-flex justify-content-center">
+                        <button id="add"  type="submit" class="btn btn-success btn-circle fa fa-cloud"></button>
+                    </div>
+
+                    </form>
+    
                 </div>
-
             </div>
         </div>
     </div>
 </div>
 
+<a id="add2" href="#" data-toggle="modal" data-target="#ModalAgregar" class="btn btn-info btn-circle fa fa-plus"></a>
 
-<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-<script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js" defer></script>
-<script src="https://cdn.datatables.net/1.10.23/js/dataTables.bootstrap4.min.js" defer></script>
-<script src="extensions/sticky-header/bootstrap-table-sticky-header.js"></script>
+<!-- Modal de las agregar -->
+<div class="modal fade" id="ModalAgregar" tabindex="-1" role="dialog"
+aria-labelledby="ModalResponsableTitle" aria-hidden="true">
+<div class="modal-dialog modal-dialog-centered" role="document">
+    
+    <div class="modal-content">
+        
+        <div class="modal-body">
+            <div class = "row">
+                <div class="col-2">
+                        <img src="{% static 'img/bot.png' %}" width="40px" alt="">
+                    </div>
+                    <div class="col-8 mb-3">
+                        <h4 class="my-2 text-title text-center">Crear un atributo</h4>
+                    </div>
+                <div class="col-2">
+                    <button type="button" class="close text-dark" data-dismiss="modal"
+                    aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                
+            </div>
+
+            <form method="POST" style="margin: 15px;">
+                {% csrf_token %}
+
+                <h6><small>Nombre</small> </h6>
+                <div class="input-group mb-3">
+                    <input name="nombre" type="text" class="form-control form-control"
+                        style="width: 300px;">
+                </div>
+
+                <h6><small>Porcenaje (Ejemplo: +3% -> 1.03)</small> </h6>
+                <div class="input-group mb-3">
+                    <div class="input-group mb-3">
+                        <input name="inc" type="number" step="any"
+                            class="form-control form-control" style="width: 300px;">
+                    </div>
+
+                    <div class="row m-2">
+                        <button type="submit" class="btn btn-rounded btn-info " name="id"
+                            value="{{a.id}}">Crear</button>
+                    </div>
+
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+</div>
+<style>
+
+    #add{
+        position: fixed;
+        bottom: 90px;
+        right: 20px;
+        z-index: 10;
+    }
+
+    #add2{
+        position: fixed;
+        bottom: 40px;
+        right: 20px;
+        z-index: 10;
+    }
+
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="{% static 'adminpro/assets/plugins/tablesaw-master/dist/tablesaw.js' %}"></script>
+<script src="{% static 'adminpro/assets/plugins/tablesaw-master/dist/tablesaw-init.js' %}"></script>
+
+<script>
+
+    $(document).ready(function () {
+        $('#example').DataTable({
+            "language": {
+                "lengthMenu": "Mostar _MENU_ documentos",
+                "zeroRecords": "No se encontro nada - perdon ",
+                "info": "Pagina _PAGE_ de _PAGES_",
+                "infoEmpty": "Sin registros disponibles",
+                "infoFiltered": "(filtrado de _MAX_ registros totales)",
+                "search": "Buscar"
+            },
+            "info": false,
+            "ordering": false,
+            "paging": false,
+            dom: 'Bfrtip',
+            buttons: [
+                {
+                    extend: 'excelHtml5',
+                    title: 'Creditos-proyecto',
+                    className: "btn btn-info",
+
+                    init: function(api, node, config) {
+                        $(node).removeClass('dt-button buttons-excel buttons-html5')
+                        }
+                },
+            ]
+
+        });
+    });
+</script>
+
+
+
+{% if mensaje %}
+
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 5000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+    })
+
+    Toast.fire({
+        icon: 'success',
+        title: '{{mensaje}}'
+    })
+
+</script>
+
+{% endif %}
 
 <script>
      
