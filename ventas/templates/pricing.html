@@ -36,6 +36,8 @@
                                     class="lstick m-r-20"></span> <b>{{proyecto.nombre}}</b> - Precio base:
                                 ${{proyecto.desde|floatformat:0|intcomma}} - Reposición de contado:
                                 ${{otros_datos.0.4|floatformat:0|intcomma}}</h4>
+                                <h6>Total del pricing: ${{contado_total|floatformat:0|intcomma}}</h6>
+                                <h6>Total de m2: {{contado_tm2_totalesotal|floatformat:2|intcomma}} M2</h6>
     
                         </div>
                         <div class="btn-group ml-auto">

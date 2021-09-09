@@ -1366,6 +1366,7 @@ def pricing(request, id_proyecto):
     iibb = 0
     comision = 0
     unidades_socios = 0
+    contado_total = 0
 
     #Datos resumenes de arriba
 
@@ -1511,6 +1512,8 @@ def pricing(request, id_proyecto):
 
         # m2 = dato.sup_propia + dato.sup_balcon + dato.sup_comun + dato.sup_patio
 
+        contado_total += contado
+
         datos_tabla_unidad.append((dato, m2, desde, dato.id, contado, financiado, financiado_m2, fin_ant, valor_cuotas, venta))
 
 
@@ -1590,6 +1593,8 @@ def pricing(request, id_proyecto):
     context["otros_datos"] = otros_datos
     context["anticipo"] = anticipo
     context["meses"] = meses
+    context['m2_totales'] = m2_totales
+    context['contado_total'] = contado_total
 
     return render(request, 'pricing.html', context)
 
