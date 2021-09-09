@@ -1523,7 +1523,7 @@ def pricing(request, id_proyecto):
         almacenero.save()
 
     except:
-        context['mensaje_2'] = "No se encontro un almacenero para vincular"
+        context['mensajes'] = ["No se encontro un almacenero para vincular"]
 
     cantidad = len(datos_tabla_unidad)
 
@@ -1531,9 +1531,16 @@ def pricing(request, id_proyecto):
 
     #Aqui calculo promedio contado y promedio financiado
 
-    promedio_contado = sumatoria_contado/m2_totales_disp
-    promedio_financiado = sumatoria_financiado/m2_totales_disp
+    try:
 
+        promedio_contado = sumatoria_contado/m2_totales_disp
+        promedio_financiado = sumatoria_financiado/m2_totales_disp
+
+    except:
+        promedio_contado = 0
+        promedio_financiado = 0
+        context['mensajes'].append("No se encontro desglose de superficie") 
+    
     proyecto.precio_pricing = promedio_contado
     proyecto.save()
 
