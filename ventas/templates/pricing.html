@@ -30,17 +30,17 @@
             <div class="card overflow-auto">
                 <div class="card-body">
                     <div style="text-align: center; margin-bottom: 50px;">
-                        <img src="{{datos.proyecto.iamgen.url}}" class="img-fluid" alt="..."
+                        <img src="{{proyecto.iamgen.url}}" class="img-fluid" alt="..."
                             style="max-width:200px;width:auto;height:auto; margin-top: 5px; margin-bottom: 5px;">
                     </div>
     
     
                     <div class="d-flex align-items-center">
                         <div>
-                            <h4 class="card-title" style="color: rgb({{datos.proyecto.color}})"><span
-                                    class="lstick m-r-20"></span>{{datos.proyecto.nombre}} - Precio base:
-                                ${{datos.proyecto.desde|floatformat:0|intcomma}} - Reposición de contado:
-                                ${{datos.otros_datos.0.4|floatformat:0|intcomma}}</h4>
+                            <h4 class="card-title" style="color: rgb({{proyecto.color}})"><span
+                                    class="lstick m-r-20"></span>{{proyecto.nombre}} - Precio base:
+                                ${{proyecto.desde|floatformat:0|intcomma}} - Reposición de contado:
+                                ${{otros_datos.0.4|floatformat:0|intcomma}}</h4>
     
                         </div>
                         <div class="btn-group ml-auto">
@@ -51,9 +51,9 @@
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#exampleModalCenter"><i
                                         class="fa fa-pencil-square-o mr-2"></i>Editar precio base</a>
                                 {% endif %}
-                                <a class="dropdown-item" href="{% url 'Features Project' datos.proyecto.id %}"><i
+                                <a class="dropdown-item" href="{% url 'Features Project' proyecto.id %}"><i
                                         class="fa fa-home mr-2"></i>Admin pricing</a>
-                                <a class="dropdown-item" href="{% url 'Descargar del pricing' datos.proyecto.id %}"><i
+                                <a class="dropdown-item" href="{% url 'Descargar del pricing' proyecto.id %}"><i
                                         class="fa fa-file-excel-o mr-2"></i>Excel</a>
                             </div>
                         </div>
@@ -110,12 +110,12 @@
     
                         <tbody style="font-size: 14px;">
     
-                            {% for i in datos.datos_unidades %}
+                            {% for i in datos_unidades %}
                             <tr>
                                 <td>
                                     <div class="row">
                                         <a href=" {% url 'Cotizador' i.0.id %}"
-                                            style="color: rgb({{datos.proyecto.color}});"><b>{{i.0.piso_unidad}} -
+                                            style="color: rgb({{proyecto.color}});"><b>{{i.0.piso_unidad}} -
                                                 {{i.0.nombre_unidad}}</b></a>
                                     </div>
     
@@ -224,7 +224,7 @@
                                             <div class="modal-body">
     
                                                 <form method="POST" style="margin: 15px;" enctype="multipart/form-data"
-                                                    action=" {% url 'cargarplano' datos.proyecto.id %} "> {% csrf_token %}
+                                                    action=" {% url 'cargarplano' proyecto.id %} "> {% csrf_token %}
                                                     <p>Agregar el plano correspondiente a la unidad</p>
                                                     <div class="input-group mb-3">
                                                         <input type="file" name="plano" required
