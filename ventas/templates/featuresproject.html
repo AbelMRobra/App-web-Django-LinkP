@@ -39,7 +39,7 @@
                                     <th>Tamaño</th>
                                     <th>Base</th>
                                     {% for f in features %}
-                                    <th data-tablesaw-priority="3" style="-webkit-transform: rotate(-45deg);-moz-transform: rotate(-45deg);">{{f.nombre|lower|capfirst}} ({{f.inc|lower|capfirst}}%)</th>
+                                    <th data-tablesaw-priority="3" data-toggle="tooltip" title="{{f.nombre|lower|capfirst}}"><b hidden>{{f.nombre|lower|capfirst}}</b> ({{f.inc|lower|capfirst}}%)</th>
                                     {% endfor %}
                                     <th>Final</th>
                                     
@@ -67,6 +67,20 @@
                                 
                                 {% endfor %}
                             </tbody>
+
+                            <tfoot  style="font-size: 14px;" >
+                                <tr>
+                                    <th>Unidad</th>
+                                    <th>Tamaño</th>
+                                    <th>Base</th>
+                                    {% for f in features %}
+                                    <th data-tablesaw-priority="3" data-toggle="tooltip" data-placement="top" title="{{f.nombre|lower|capfirst}}"><b hidden>{{f.nombre|lower|capfirst}}</b> ({{f.inc|lower|capfirst}}%)</th>
+                                    {% endfor %}
+                                    <th>Final</th>
+                                    
+                                </tr>
+                            </tfoot>
+
                         </table>
                             
                     </div>
@@ -127,7 +141,7 @@ aria-labelledby="ModalResponsableTitle" aria-hidden="true">
 
                     <div class="row m-2">
                         <button type="submit" class="btn btn-rounded btn-info " name="id"
-                            value="{{a.id}}">Modificar</button>
+                            value="{{a.id}}">Crear</button>
                     </div>
 
                 </div>
@@ -143,12 +157,14 @@ aria-labelledby="ModalResponsableTitle" aria-hidden="true">
         position: fixed;
         bottom: 90px;
         right: 20px;
+        z-index: 10;
     }
 
     #add2{
         position: fixed;
         bottom: 40px;
         right: 20px;
+        z-index: 10;
     }
 
 </style>
