@@ -1399,17 +1399,27 @@ def pricing(request, id_proyecto):
 
             basura = 1
         
-        #try:
+        try:
+            contado = m2*dato.proyecto.desde
+        
+        except:
 
-        contado = m2*dato.proyecto.desde
+            contado = 0
+            context['mensajes'] = ["El proyecto no tiene un precio desde para calcular"]
 
         features_unidad = FeaturesUni.objects.filter(unidad = dato)
 
-        for f2 in features_unidad:
+        if len(features_unidad) != 0:
 
-            contado = contado*f2.feature.inc
+            for f2 in features_unidad:
 
-        desde = round((contado/m2), 4)
+                contado = contado*f2.feature.inc
+
+            desde = round((contado/m2), 4)
+        
+        else:
+
+            context['mensajes'] = ["El proyecto no tiene features"]
 
         #Aqui calculamos el contado/financiado
         
@@ -1498,7 +1508,7 @@ def pricing(request, id_proyecto):
                            
         #Aqui sumamos los datos
 
-        m2 = dato.sup_propia + dato.sup_balcon + dato.sup_comun + dato.sup_patio
+        # m2 = dato.sup_propia + dato.sup_balcon + dato.sup_comun + dato.sup_patio
 
         datos_tabla_unidad.append((dato, m2, desde, dato.id, contado, financiado, financiado_m2, fin_ant, valor_cuotas, venta))
 
@@ -1523,7 +1533,7 @@ def pricing(request, id_proyecto):
         almacenero.save()
 
     except:
-        context['mensajes'] = ["No se encontro un almacenero para vincular"]
+        context['mensajes'].append("No se encontro un almacenero para vincular")
 
     cantidad = len(datos_tabla_unidad)
 

@@ -29,16 +29,11 @@
         <div class="col-12">
             <div class="card overflow-auto">
                 <div class="card-body">
-                    <div style="text-align: center; margin-bottom: 50px;">
-                        <img src="{{proyecto.iamgen.url}}" class="img-fluid" alt="..."
-                            style="max-width:200px;width:auto;height:auto; margin-top: 5px; margin-bottom: 5px;">
-                    </div>
-    
     
                     <div class="d-flex align-items-center">
                         <div>
                             <h4 class="card-title" style="color: rgb({{proyecto.color}})"><span
-                                    class="lstick m-r-20"></span>{{proyecto.nombre}} - Precio base:
+                                    class="lstick m-r-20"></span> <b>{{proyecto.nombre}}</b> - Precio base:
                                 ${{proyecto.desde|floatformat:0|intcomma}} - Reposición de contado:
                                 ${{otros_datos.0.4|floatformat:0|intcomma}}</h4>
     
@@ -91,14 +86,15 @@
                         </div>
                     </div>
     
-                    <table id="example" class="table table-striped table-bordered" style="width:100%">
+                    <table id="example" class="table" style="width:100%">
                         <thead>
                             <tr style="font-size: 14px;">
                                 <th>Unidad</th>
                                 <th>Tipologia</th>
-                                <th data-toggle="tooltip" data-placement="right" title=""
-                                    data-original-title="Superficie Equivalente">Sup*</th>
                                 <th>Asignación</th>
+                                <th data-toggle="tooltip" data-placement="right" title=""
+                                    data-original-title="Superficie Equivalente">Superficie</th>
+                                
                                 <th>Estado</th>
                                 <th>Contado</th>
                                 <th data-toggle="tooltip" data-placement="right" title=""
@@ -113,46 +109,27 @@
                             {% for i in datos_unidades %}
                             <tr>
                                 <td>
-                                    <div class="row">
+                                    <h6>
+                                        {% if i.0.plano_venta %}
+                                        <a href="{{ i.0.plano_venta.url }}" target="_blank"><i
+                                                class="fa fa-file-pdf-o text-danger mr-2"></i></a>
+                                        {% endif %}
                                         <a href=" {% url 'Cotizador' i.0.id %}"
                                             style="color: rgb({{proyecto.color}});"><b>{{i.0.piso_unidad}} -
                                                 {{i.0.nombre_unidad}}</b></a>
-                                    </div>
+                                            </h6>
     
-                                    {% if i.0.plano_venta %}
-                                    <a href="{{ i.0.plano_venta.url }}" target="_blank"><i
-                                            class="fa fa-file-pdf-o text-danger"></i></a>
-                                    {% endif %}
+                                    
                                 </td>
     
-                                {% if i.0.tipo == "DEPARTAMENTO" %}
+
     
-                                <td> <img src="{% static 'img/piso.png' %}" alt=""
-                                        style="max-width:15px; height:auto; margin: 2px;">DEPTO
-                                    <h6 class="card-subtitle" style="margin-top: 1px; font-size: 12px;">{{i.0.tipologia}}
-                                    </h6>
-                                </td>
+                                <td>{{i.0.tipologia|lower|capfirst}}</td>
+                                <td>{{i.0.asig|lower|capfirst}}</td>
     
-                                {% elif i.0.tipo == "LOCAL"%}
-    
-                                <td> <img src="{% static 'img/tienda.png' %}" alt=""
-                                        style="max-width:15px; height:auto; margin: 2px;">{{i.0.tipo}}
-                                    <h6 class="card-subtitle" style="margin-top: 1px; font-size: 12px;">{{i.0.tipologia}}
-                                    </h6>
-                                </td>
-    
-                                {% else %}
-    
-                                <td> <img src="{% static 'img/coche.png' %}" alt=""
-                                        style="max-width:15px; height:auto; margin: 2px;">{{i.0.tipo}}
-                                    <h6 class="card-subtitle" style=" margin-top: 1px; font-size: 12px;">{{i.0.tipologia}}
-                                    </h6>
-                                </td>
-    
-                                {% endif %}
     
                                 <td>{{i.1|floatformat:2}} m2</td>
-                                <td>{{i.0.asig|lower|capfirst}}</td>
+                                
     
                                 {% if i.9 != 0 and perms.ventas.view_ventasrealizadas %}
     
