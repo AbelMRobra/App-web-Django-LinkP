@@ -5,6 +5,7 @@ from proyectos.models import Proyectos
 # Create your models here.
 
 
+
 class NotaDePedido(models.Model):
 
     class SioNo(models.TextChoices):
@@ -292,6 +293,19 @@ class Logros(models.Model):
     def __str__(self):
         return self.nombre
 
+class Cajas(models.Model):
+    #caja = models.CharField(max_length=50)
+    usuarios_visibles = models.ManyToManyField(datosusuario)
+
+    class Meta:
+        """Meta definition for MODELNAME."""
+
+        verbose_name = 'Caja'
+        verbose_name_plural = 'Cajas'
+
+    def __str__(self):
+        """Unicode representation of MODELNAME."""
+        return str(self.id)
 class RegistroContable(models.Model):
 
     class estados(models.TextChoices):
@@ -304,6 +318,7 @@ class RegistroContable(models.Model):
     fecha = models.DateField(verbose_name="Fecha")
     estado = models.CharField(choices=estados.choices, default=estados.INGRESOS, max_length=20, verbose_name="Ingreso o gasto")
     caja = models.CharField(max_length=400, verbose_name="Caja", default="Personal", blank=True, null=True)
+    modelo_caja=models.ForeignKey(Cajas, on_delete=models.CASCADE, verbose_name="Modelo caja", blank=True, null=True)
     cuenta = models.CharField(max_length=400, verbose_name="Cuenta")
     categoria = models.CharField(max_length=400, verbose_name="Categoria")
     importe = models.FloatField(verbose_name="Importe")

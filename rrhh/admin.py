@@ -1,5 +1,9 @@
 from django.contrib import admin
-from .models import datosusuario, mensajesgenerales, NotaDePedido, Vacaciones, MonedaLink, EntregaMoneda, Anuncios, Seguimiento, PremiosMonedas, RegistroContable, CanjeMonedas, Minutas, Sugerencia, DicRegistroContable, Atajos, ArqueoChanchito, ArchivosGenerales
+from .models import (datosusuario, mensajesgenerales, NotaDePedido, Vacaciones,
+                    MonedaLink, EntregaMoneda, Anuncios, Seguimiento, PremiosMonedas,RegistroContable, 
+                    CanjeMonedas, Minutas, Sugerencia, DicRegistroContable, Atajos, ArqueoChanchito, 
+                    ArchivosGenerales,Cajas)
+
 from import_export import resources
 from import_export.admin import ImportExportModelAdmin
 
@@ -46,7 +50,7 @@ class RegistroContableResource(resources.ModelResource):
         model = RegistroContable
 
 class RegistroContableAdmin(ImportExportModelAdmin, admin.ModelAdmin):
-    list_display = ('usuario', 'fecha', 'nota',  'categoria')
+    list_display = ('usuario','creador', 'fecha', 'nota',  'categoria')
     search_fields = ('usuario__identificacion', 'nota',  'categoria')
     resources_class = RegistroContableResource
 
@@ -166,3 +170,4 @@ admin.site.register(MonedaLink, MonedaLinkAdmin)
 admin.site.register(EntregaMoneda, EntregaMonedaAdmin)
 admin.site.register(Anuncios, AnunciosAdmin)
 admin.site.register(Seguimiento, SeguimientoAdmin)
+admin.site.register(Cajas)

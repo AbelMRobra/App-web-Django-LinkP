@@ -9,7 +9,7 @@ from rrhh.models import datosusuario, DicRegistroContable, RegistroContable, Arq
 from finanzas.models import Arqueo
 from openpyxl import Workbook
 from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
-from .functions_chanchito import cajasDerivadas, calcularResumenIngresos, cajasActivas, cajasAdministras, recalculoDolarCaja
+from .functions_chanchito import cajasDerivadas, calcularResumenIngresos, cajasActivas, cajasAdministras, recalculoDolarCaja,agregar_objeto_caja
 from .functions import saludo
 
 def registro_contable_registro(request):
@@ -34,6 +34,8 @@ def registro_contable_cajas(request):
 
     context = {}
     context["mensaje"] = "no"
+    cajas=RegistroContable.objects.all()
+    agregar_objeto_caja(cajas)
 
     if request.method == 'POST':
         try:
@@ -150,11 +152,15 @@ def registro_contable_cajas(request):
                     cajas_eliminar = RegistroContable.objects.filter(creador = request.user.username, caja = data_caja[0], usuario__identificacion = data_caja[1])
                     for caja in cajas_eliminar:
                         caja.delete()
-
+    
+    #usuario en sesion
     user = datosusuario.objects.get(identificacion = request.user.username)
-
+    
     context["total_cajas"] = cajasActivas(user)
+    #print(cajasActivas(user))
     context["cajas_administras"] = cajasAdministras(user)
+    # for i in cajasAdministras(user):
+    #     print(i.modelo_caja.usuarios_visibles)
     
     context["user"] = user
 
