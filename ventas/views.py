@@ -1419,6 +1419,7 @@ def pricing(request, id_proyecto):
         
         else:
 
+            desde = 0
             context['mensajes'] = ["El proyecto no tiene features"]
 
         #Aqui calculamos el contado/financiado
