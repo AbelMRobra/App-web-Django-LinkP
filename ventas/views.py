@@ -1372,7 +1372,6 @@ def pricing(request, id_proyecto):
 
     sumatoria_contado = 0
     sumatoria_financiado = 0
-
    
     for dato in datos:
 
@@ -2202,27 +2201,50 @@ Por favor no responder este email
 
 def featuresproject(request, id_proj):
 
+    proyecto = Proyectos.objects.get(id = id_proj)
+
+    context = {}
+
     if request.method == 'POST':
-        data_post = request.POST.items()
-        for d in data_post:
 
-            if d[0] != 'csrfmiddlewaretoken':
-                aux = d[0].split(sep='&')
+        try:
+            nuevo_feature = FeaturesProjects(
+                proyecto = proyecto,
+                nombre = request.POST['nombre'],
+                inc = request.POST['inc'],
+            )
 
-                if len(FeaturesUni.objects.filter(feature__nombre = aux[0], unidad = int(aux[1]))) == 1 and d[1] == "off":
-                    feature_un = FeaturesUni.objects.filter(feature__nombre = aux[0], unidad = int(aux[1]))
-                    feature_un.delete()
+            nuevo_feature.save()
 
-                if len(FeaturesUni.objects.filter(feature__nombre = aux[0], unidad = int(aux[1]))) == 0 and d[1] == "on":
-                
-                    unidad = Unidades.objects.get(id = int(aux[1]))
-                    feature = FeaturesProjects.objects.get(proyecto = unidad.proyecto, nombre = aux[0])
-                
-                    feature_un = FeaturesUni(
-                        feature = feature,
-                        unidad = unidad)
-                    feature_un.save()
+            context["mensaje"] = "Atributo creado correctamente!"
 
+        except:
+            pass
+
+        try:
+            data_post = request.POST.items()
+            for d in data_post:
+
+                if d[0] != 'csrfmiddlewaretoken':
+                    aux = d[0].split(sep='&')
+
+                    if len(FeaturesUni.objects.filter(feature__nombre = aux[0], unidad = int(aux[1]))) == 1 and d[1] == "off":
+                        feature_un = FeaturesUni.objects.filter(feature__nombre = aux[0], unidad = int(aux[1]))
+                        feature_un.delete()
+
+                    if len(FeaturesUni.objects.filter(feature__nombre = aux[0], unidad = int(aux[1]))) == 0 and d[1] == "on":
+                    
+                        unidad = Unidades.objects.get(id = int(aux[1]))
+                        feature = FeaturesProjects.objects.get(proyecto = unidad.proyecto, nombre = aux[0])
+                    
+                        feature_un = FeaturesUni(
+                            feature = feature,
+                            unidad = unidad)
+                        feature_un.save()
+        
+            context["mensaje"] = "Unidades editadas correctamente!"
+        except:
+            pass
     unidades = Unidades.objects.filter(proyecto__id = id_proj).order_by("orden")
   
     features = FeaturesProjects.objects.filter(proyecto__id = id_proj)
@@ -2261,7 +2283,10 @@ def featuresproject(request, id_proj):
 
         data.append((u, unid_features, m2, base, final))
 
-    return render(request, 'featuresproject.html', {'features':features, 'data':data})
+        context["features"] = features
+        context["data"] = data
+
+    return render(request, 'featuresproject.html', context)
 
 class descargadeventas(TemplateView):
 
