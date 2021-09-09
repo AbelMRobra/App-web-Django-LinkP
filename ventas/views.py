@@ -1572,9 +1572,15 @@ def pricing(request, id_proyecto):
 
     anticipo = anticipo*100
 
-    datos = {"proyecto":proyecto, "datos":datos, "mensaje":mensaje, "datos_unidades":datos_unidades, "otros_datos":otros_datos, "anticipo":anticipo, "meses":meses}
+    context["proyecto"] = proyecto
+    context["datos"] = datos
+    context["mensaje"] = mensaje
+    context["datos_unidades"] = datos_unidades
+    context["otros_datos"] = otros_datos
+    context["anticipo"] = anticipo
+    context["meses"] = meses
 
-    return render(request, 'pricing.html', {"datos":datos})
+    return render(request, 'pricing.html', context)
 
 def cargarplano(request,**kwargs):
     if request.method=='POST':
