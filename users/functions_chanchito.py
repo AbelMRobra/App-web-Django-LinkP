@@ -75,6 +75,7 @@ def calcularResumenIngresos(usuario):
 
         context['datos'][usuario.identificacion] = ingresos_mensuales
         context['datos_h'][usuario.identificacion] = ingresos_mensuales_h
+        context['con_sigma_shajor'] = consulta_usuario.filter(categoria = "INGRESOS SIGMA", nota__contains = "SHAJOR", estado = "INGRESOS").order_by("fecha")
 
     return context
 

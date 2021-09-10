@@ -44,71 +44,75 @@
 
                     <h6 class="font-bold">Usuario : {{usuario}}</h6>
 
-                    <table class="table table-striped table-bordered mt-4">
-                        <thead style="font-size: 15px;">
-                            <tr>
-                                <th>Fecha</th>
-                                {% for fecha in datos.fechas_totales %}                                                    
-                                <th style="vertical-align: middle; text-align: center;">{{fecha|date:"d/m/Y"}}</th>
-                                {% endfor %}
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered mt-4">
+                            <thead style="font-size: 15px;">
+                                <tr>
+                                    <th>Fecha</th>
+                                    {% for fecha in datos.fechas_totales %}                                                    
+                                    <th style="vertical-align: middle; text-align: center;">{{fecha|date:"d/m/Y"}}</th>
+                                    {% endfor %}
+                                    
+                                </tr>
+    
                                 
-                            </tr>
+    
+                            </thead>
+    
+                            <tbody>
+                                <tr style="font-size: 13px;">
+                                    <td style="vertical-align: middle; width: 150px;">Comercial</td>
+                                    {% for val in value %}
+                                    <td style="vertical-align: middle; text-align: center;">${{val.0|floatformat:2|intcomma}}</td>
+                                    {% endfor %}
+                                    
+                                </tr>
+                                <tr style="font-size: 13px;">
+                                    <td style="vertical-align: middle; width: 150px;">Sigma shajor</td>
+                                    {% for val in value %}
+                                    <td style="vertical-align: middle; text-align: center;">${{val.1|floatformat:2|intcomma}}</td>
+                                    {% endfor %}
+                                    
+                                </tr>
+                                <tr style="font-size: 13px;">
+                                    <td style="vertical-align: middle; width: 150px;">Sigma</td>
+                                    {% for val in value %}
+                                    <td style="vertical-align: middle; text-align: center;">${{val.2|floatformat:2|intcomma}}</td>
+                                    {% endfor %}
+                                    
+                                </tr>
+                                <tr style="font-size: 13px;">
+                                    <td style="vertical-align: middle; width: 150px;">Azlepi shajor</td>
+                                    {% for val in value %}
+                                    <td style="vertical-align: middle; text-align: center;">${{val.3|floatformat:2|intcomma}}</td>
+                                    {% endfor %}
+                                    
+                                </tr>
+                                <tr style="font-size: 13px;">
+                                    <td style="vertical-align: middle; width: 150px;">Azlepi</td>
+                                    {% for val in value %}
+                                    <td style="vertical-align: middle; text-align: center;">${{val.4|floatformat:2|intcomma}}</td>
+                                    {% endfor %}
+                                    
+                                </tr>
+    
+                            </tbody>
+    
+                            <tfoot>
+    
+                                <tr class="font-bold" style="font-size: 13px;">
+                                    <td style="vertical-align: middle; width: 150px;">Total</td>
+                                    {% for val in value %}
+                                    <td style="vertical-align: middle; text-align: center;">${{val.5|floatformat:2|intcomma}}</td>
+                                    {% endfor %}
+                                </tr>
+    
+    
+                            </tfoot>
+                        </table>
+                    </div>
 
-                            
-
-                        </thead>
-
-                        <tbody>
-                            <tr style="font-size: 13px;">
-                                <td style="vertical-align: middle; width: 150px;">Comercial</td>
-                                {% for val in value %}
-                                <td style="vertical-align: middle; text-align: center;">${{val.0|floatformat:2|intcomma}}</td>
-                                {% endfor %}
-                                
-                            </tr>
-                            <tr style="font-size: 13px;">
-                                <td style="vertical-align: middle; width: 150px;">Sigma shajor</td>
-                                {% for val in value %}
-                                <td style="vertical-align: middle; text-align: center;">${{val.1|floatformat:2|intcomma}}</td>
-                                {% endfor %}
-                                
-                            </tr>
-                            <tr style="font-size: 13px;">
-                                <td style="vertical-align: middle; width: 150px;">Sigma</td>
-                                {% for val in value %}
-                                <td style="vertical-align: middle; text-align: center;">${{val.2|floatformat:2|intcomma}}</td>
-                                {% endfor %}
-                                
-                            </tr>
-                            <tr style="font-size: 13px;">
-                                <td style="vertical-align: middle; width: 150px;">Azlepi shajor</td>
-                                {% for val in value %}
-                                <td style="vertical-align: middle; text-align: center;">${{val.3|floatformat:2|intcomma}}</td>
-                                {% endfor %}
-                                
-                            </tr>
-                            <tr style="font-size: 13px;">
-                                <td style="vertical-align: middle; width: 150px;">Azlepi</td>
-                                {% for val in value %}
-                                <td style="vertical-align: middle; text-align: center;">${{val.4|floatformat:2|intcomma}}</td>
-                                {% endfor %}
-                                
-                            </tr>
-
-                        </tbody>
-
-                        <tfoot>
-
-                            <tr class="font-bold" style="font-size: 13px;">
-                                <td style="vertical-align: middle; width: 150px;">Total</td>
-                                {% for val in value %}
-                                <td style="vertical-align: middle; text-align: center;">${{val.5|floatformat:2|intcomma}}</td>
-                                {% endfor %}
-                            </tr>
-
-
-                        </tfoot>
-                    </table>
+                    
 
                     {% endfor %}
 
@@ -119,71 +123,91 @@
 
                     <h6 class="font-bold">Usuario: {{usuario}}</h6>
 
-                    <table class="table table-striped table-bordered mt-4">
-                        <thead style="font-size: 15px;">
-                            <tr>
-                                <th>Fecha</th>
-                                {% for fecha in datos.fechas_totales %}                                                    
-                                <th style="vertical-align: middle; text-align: center;">{{fecha|date:"d/m/Y"}}</th>
-                                {% endfor %}
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered mt-4">
+                            <thead style="font-size: 15px;">
+                                <tr>
+                                    <th>Fecha</th>
+                                    {% for fecha in datos.fechas_totales %}                                                    
+                                    <th style="vertical-align: middle; text-align: center;">{{fecha|date:"d/m/Y"}}</th>
+                                    {% endfor %}
+                                    
+                                </tr>
+    
                                 
-                            </tr>
+    
+                            </thead>
+    
+                            <tbody>
+                                <tr style="font-size: 13px;">
+                                    <td style="vertical-align: middle; width: 150px;">Comercial</td>
+                                    {% for val in value %}
+                                    <td style="vertical-align: middle; text-align: center;">{{val.0|floatformat:2|intcomma}}</td>
+                                    {% endfor %}
+                                    
+                                </tr>
+                                <tr style="font-size: 13px;">
+                                    <td style="vertical-align: middle; width: 150px;"><a href="#" data-toggle="modal" data-target="#ModalInfo{{usuario}}">Sigma shajor</a></td>
 
-                            
+                                    <div class="modal fade" id="ModalInfo{{usuario}}" tabindex="-1" role="dialog" aria-labelledby="ModalResponsableTitle" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-body">
+                                                    <ul>
+                                                        {% for registro in datos.con_sigma_shajor%}
+                                                        <li>{{registro}}</li>
+                                                        {% endfor %}
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% for val in value %}
+                                    <td style="vertical-align: middle; text-align: center;">{{val.1|floatformat:2|intcomma}}</td>
+                                    {% endfor %}
+                                    
+                                </tr>
 
-                        </thead>
-
-                        <tbody>
-                            <tr style="font-size: 13px;">
-                                <td style="vertical-align: middle; width: 150px;">Comercial</td>
-                                {% for val in value %}
-                                <td style="vertical-align: middle; text-align: center;">{{val.0|floatformat:2|intcomma}}</td>
-                                {% endfor %}
                                 
-                            </tr>
-                            <tr style="font-size: 13px;">
-                                <td style="vertical-align: middle; width: 150px;">Sigma shajor</td>
-                                {% for val in value %}
-                                <td style="vertical-align: middle; text-align: center;">{{val.1|floatformat:2|intcomma}}</td>
-                                {% endfor %}
-                                
-                            </tr>
-                            <tr style="font-size: 13px;">
-                                <td style="vertical-align: middle; width: 150px;">Sigma</td>
-                                {% for val in value %}
-                                <td style="vertical-align: middle; text-align: center;">{{val.2|floatformat:2|intcomma}}</td>
-                                {% endfor %}
-                                
-                            </tr>
-                            <tr style="font-size: 13px;">
-                                <td style="vertical-align: middle; width: 150px;">Azlepi shajor</td>
-                                {% for val in value %}
-                                <td style="vertical-align: middle; text-align: center;">{{val.3|floatformat:2|intcomma}}</td>
-                                {% endfor %}
-                                
-                            </tr>
-                            <tr style="font-size: 13px;">
-                                <td style="vertical-align: middle; width: 150px;">Azlepi</td>
-                                {% for val in value %}
-                                <td style="vertical-align: middle; text-align: center;">{{val.4|floatformat:2|intcomma}}</td>
-                                {% endfor %}
-                                
-                            </tr>
+                                <tr style="font-size: 13px;">
+                                    <td style="vertical-align: middle; width: 150px;">Sigma</td>
+                                    {% for val in value %}
+                                    <td style="vertical-align: middle; text-align: center;">{{val.2|floatformat:2|intcomma}}</td>
+                                    {% endfor %}
+                                    
+                                </tr>
+                                <tr style="font-size: 13px;">
+                                    <td style="vertical-align: middle; width: 150px;">Azlepi shajor</td>
+                                    {% for val in value %}
+                                    <td style="vertical-align: middle; text-align: center;">{{val.3|floatformat:2|intcomma}}</td>
+                                    {% endfor %}
+                                    
+                                </tr>
+                                <tr style="font-size: 13px;">
+                                    <td style="vertical-align: middle; width: 150px;">Azlepi</td>
+                                    {% for val in value %}
+                                    <td style="vertical-align: middle; text-align: center;">{{val.4|floatformat:2|intcomma}}</td>
+                                    {% endfor %}
+                                    
+                                </tr>
+    
+                            </tbody>
+    
+                            <tfoot>
+    
+                                <tr class="font-bold" style="font-size: 13px;">
+                                    <td style="vertical-align: middle; width: 150px;">Total</td>
+                                    {% for val in value %}
+                                    <td style="vertical-align: middle; text-align: center;">{{val.5|floatformat:2|intcomma}}</td>
+                                    {% endfor %}
+                                </tr>
+    
+    
+                            </tfoot>
+                        </table>
+                    </div>
 
-                        </tbody>
-
-                        <tfoot>
-
-                            <tr class="font-bold" style="font-size: 13px;">
-                                <td style="vertical-align: middle; width: 150px;">Total</td>
-                                {% for val in value %}
-                                <td style="vertical-align: middle; text-align: center;">{{val.5|floatformat:2|intcomma}}</td>
-                                {% endfor %}
-                            </tr>
-
-
-                        </tfoot>
-                    </table>
+                    
 
                     {% endfor %}
 
