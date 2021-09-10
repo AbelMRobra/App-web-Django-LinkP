@@ -30,7 +30,7 @@
                             <div>
     
                                 <h6 class="font-medium text-light">Unidad: {{datos.piso_unidad}} - {{datos.nombre_unidad}}</h6>
-                                <h6 class="font-medium text-light">Entrega: {{tiempo_restante}} Meses</h6>
+                                <h6 class="font-medium text-light">{% if tiempo_restante > 0 %}Entrega: {{tiempo_restante}} Meses {% else %} Entregado {% endif %}</h6>
                                 <h6 class="font-medium text-light">Superficie: {{m2|floatformat:2}}m2</h6>
                                 <h6 class="font-medium text-light">Precio de contado: ${{precio_contado|floatformat:0|intcomma}}</h6>
 
@@ -267,16 +267,20 @@
                                                 <div style="display: inline-block;">
     
                                                     <label for="cuotas_esp">
-                                                        <h6>Cuotas esperas maximas {{tiempo_restante}} </h6>
+                                                        <h6>Cuotas esperas</h6>
                                                     </label>
     
                                                 </div>
     
                                                 <div class="row d-flex my-1">
                                                     <div class="col">
-    
+                                                        {% if tiempo_restante > 0 %}
                                                         <input name="cuotas_esp" type="number" required
                                                             class="form-control form-control" value="{{resultados.3}}">
+                                                        {% else %}
+                                                        <input name="cuotas_esp" type="number" required readonly
+                                                            class="form-control form-control" value="0">
+                                                        {% endif %}
     
                                                     </div>
                                                 </div>
@@ -309,8 +313,13 @@
     
                                                 <div class="row d-flex my-1">
                                                     <div class="col col-md-12 col-lg-11"> 
+                                                        {% if tiempo_restante > 0 %}
                                                         <input name="aporte" type="number" class="form-control form-control"
                                                         required  value="{{resultados.7}}">
+                                                        {% else %}
+                                                        <input name="aporte" type="number" class="form-control form-control"
+                                                        required readonly  value="0">
+                                                        {% endif %}
     
                                                     </div>
                                                 </div>
@@ -388,14 +397,19 @@
                 
                                                 <div style="display: inline-block;">
                                                     <label for="cuotas_esp">
-                                                        <h6>Cuotas esperas {{tiempo_restante}} </h6>
+                                                        <h6>Cuotas esperas </h6>
                                                     </label>
                                                 </div>
                 
                                                 <div class="row d-flex my-1">
                                                     <div class="col col-md-12 col-lg-12">
-                                                        <input onfocusout="checkopt2()" id="cuotas_esp" name="cuotas_esp" type="number"
-                                                            class="form-control form-control" list="art" >
+                                                        {% if tiempo_restante > 0 %}
+                                                        <input onfocusout="checkopt2()" id="cuotas_esp" name="cuotas_esp" type="number" required
+                                                            class="form-control form-control" value="{{tiempo_restante}}" >
+                                                        {% else %}
+                                                        <input onfocusout="checkopt2()" id="cuotas_esp" name="cuotas_esp" type="number" required readonly
+                                                            class="form-control form-control" value="0" >
+                                                        {% endif %}
                                                     </div>
                                                 </div>
                                                 <div style="display: inline-block;">
@@ -423,8 +437,16 @@
                 
                                                 <div class="row d-flex my-1">
                                                     <div class="col col-md-12 col-lg-11">
+                                                        {% if tiempo_restante > 0 %}
                                                         <input onfocusout="checkopt2()" id="aporte" name="aporte" type="number" class="form-control form-control"
-                                                            list="art"  placeholder="0">
+                                                            required>
+
+                                                        {% else %}
+
+                                                        <input onfocusout="checkopt2()" id="aporte" name="aporte" type="number" class="form-control form-control"
+                                                            required readonly value="0">
+
+                                                        {% endif %}
                                                     </div>
                                                 </div>
                                                 
@@ -436,8 +458,8 @@
                 
                                                 <div class="row d-flex my-1">
                                                     <div class="col col-md-12 col-lg-11">
-                                                        <input onfocusout="checkopt2()" id="descuento" name="descuento" type="number"
-                                                            class="form-control form-control" placeholder="0">
+                                                        <input onfocusout="checkopt2()" id="descuento" name="descuento" type="number" step="any"
+                                                            class="form-control form-control">
                                                     </div>
                                                 </div>
                                             </div>

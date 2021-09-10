@@ -2054,12 +2054,16 @@ Por favor no responder este email
 
         # Esta es la parte para adjuntar (prueba)
         mRoot = settings.MEDIA_ROOT
-        plano_adjunto = open(mRoot + "/{}".format(unidad.plano_venta.name), 'rb')
-        adjunto_MIME = MIMEBase('application', "octet-stream")
-        adjunto_MIME.set_payload(plano_adjunto.read())
-        encoders.encode_base64(adjunto_MIME)
-        adjunto_MIME.add_header('Content-Disposition', 'attachment; filename="Plano de la unidad.pdf"')
-        mensaje.attach(adjunto_MIME)
+
+        if unidad.plano_venta:
+            plano_adjunto = open(mRoot + "/{}".format(unidad.plano_venta.name), 'rb')
+            adjunto_MIME = MIMEBase('application', "octet-stream")
+            adjunto_MIME.set_payload(plano_adjunto.read())
+            encoders.encode_base64(adjunto_MIME)
+            adjunto_MIME.add_header('Content-Disposition', 'attachment; filename="Plano de la unidad.pdf"')
+            mensaje.attach(adjunto_MIME)
+
+
         adjunto_MIME = MIMEBase('application', "octet-stream")
         adjunto_MIME.set_payload(response.content)
         encoders.encode_base64(adjunto_MIME)
