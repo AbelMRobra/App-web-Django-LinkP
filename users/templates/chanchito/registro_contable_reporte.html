@@ -68,7 +68,22 @@
                                     
                                 </tr>
                                 <tr style="font-size: 13px;">
-                                    <td style="vertical-align: middle; width: 150px;">Sigma shajor</td>
+                                    <td style="vertical-align: middle; width: 150px;"><a href="#" data-toggle="modal" data-target="#ModalInfo{{usuario}}">Sigma shajor</a></td>
+                                    
+                                    <div class="modal fade" id="ModalInfo{{usuario}}" tabindex="-1" role="dialog" aria-labelledby="ModalResponsableTitle" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-body">
+                                                    <ul>
+                                                        {% for registro in datos.con_sigma_shajor%}
+                                                        <li>{{registro.caja|lower|capfirst}}, {{registro.creador}}, {{registro.fecha|date:"d/m/Y"}}: {{registro.monto|floatformat:2|intcomma}}</li>
+                                                        {% endfor %}
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
                                     {% for val in value %}
                                     <td style="vertical-align: middle; text-align: center;">${{val.1|floatformat:2|intcomma}}</td>
                                     {% endfor %}
@@ -147,21 +162,9 @@
                                     
                                 </tr>
                                 <tr style="font-size: 13px;">
-                                    <td style="vertical-align: middle; width: 150px;"><a href="#" data-toggle="modal" data-target="#ModalInfo{{usuario}}">Sigma shajor</a></td>
+                                    <td style="vertical-align: middle; width: 150px;">Sigma shajor</td>
 
-                                    <div class="modal fade" id="ModalInfo{{usuario}}" tabindex="-1" role="dialog" aria-labelledby="ModalResponsableTitle" aria-hidden="true">
-                                        <div class="modal-dialog modal-dialog-centered" role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-body">
-                                                    <ul>
-                                                        {% for registro in datos.con_sigma_shajor%}
-                                                        <li>{{registro.caja|lower|capfirst}}, {{registro.creador}}, {{registro.fecha|date:"d/m/Y"}}</li>
-                                                        {% endfor %}
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    
                                     {% for val in value %}
                                     <td style="vertical-align: middle; text-align: center;">{{val.1|floatformat:2|intcomma}}</td>
                                     {% endfor %}
