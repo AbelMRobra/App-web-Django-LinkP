@@ -56,6 +56,9 @@ def calcularResumenIngresos(usuario):
                 fecha_final = date(fecha.year, fecha.month + 1, 1)
 
             fecha_inicial_auxiliar = fecha - timedelta(days=1)
+            print(fecha)
+            print(fecha_inicial_auxiliar)
+            print(fecha_final)
 
             comercial_shajor = sum(np.array(consulta_usuario.filter(categoria = "INGRESO SUELDOS COMERCIAL", fecha__range = (fecha_inicial_auxiliar, fecha_final), estado = "INGRESOS").values_list("importe", flat=True)))
             sigma_shajor =  sum(np.array(consulta_usuario.filter(categoria = "INGRESOS SIGMA", nota__contains = "SHAJOR", fecha__range = (fecha_inicial_auxiliar, fecha_final), estado = "INGRESOS").values_list("importe", flat=True)))
