@@ -4,7 +4,8 @@ from .models import EstudioMercado, PricingResumen, FeaturesProjects, FeaturesUn
 from proyectos.models import Unidades, Proyectos
 from finanzas.models import Almacenero
 from rrhh.models import datosusuario
-from ventas.models import Pricing, ArchivosAreaVentas, VentasRealizadas, ArchivoFechaEntrega, ArchivoVariacionHormigon, ReclamosPostventa
+from ventas.models import Pricing, ArchivosAreaVentas, VentasRealizadas, ArchivoFechaEntrega, ArchivoVariacionHormigon, ReclamosPostventa, \
+                            ImgEnlacesProyecto
 from presupuestos.models import Constantes, Desde, Registrodeconstantes
 from crm.models import Consulta, Tipologia
 
@@ -35,6 +36,7 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.base import MIMEBase
 from email import encoders
 from .functions import calculo_cotizacion
+from .functions_unidades import calculo_m2_unidad, cliente_crm, plan_financiacion_cotizador, info_para_cotizador
 from .wabot import WABot
 import smtplib
 
@@ -1912,21 +1914,13 @@ def detalleventa(request, id_venta):
 
 def cotizador(request, id_unidad):
 
-    info_coti_email = 0
+
+    context = {}
+
     datos = Unidades.objects.get(id = id_unidad)
     today = datetime.date.today()
-    tiempo_restante = (datos.proyecto.fecha_f.year - today.year)*12 + (datos.proyecto.fecha_f.month - today.month)
-    hormigon = Constantes.objects.get(id = 7)
-    cliente = 0
-    m2 = 0
 
-    if datos.sup_equiv > 0:
-
-        m2 = datos.sup_equiv
-
-    else:
-
-        m2 = datos.sup_propia + datos.sup_balcon + datos.sup_comun + datos.sup_patio
+    m2 = calculo_m2_unidad(datos)
 
     precio_contado = m2*datos.proyecto.desde
 
@@ -1938,98 +1932,28 @@ def cotizador(request, id_unidad):
 
     desde = round((precio_contado/m2), 4)
 
-    resultados = []
-
     if request.method == 'POST':
 
-        if len(Clientescontacto.objects.filter( email = request.POST['email'])) > 0:
-            cliente = Clientescontacto.objects.get(email =request.POST['email'])
-        else:
-            cliente = Clientescontacto(
 
-                nombre = request.POST['nombre'],
-                apellido = request.POST['apellido'],
-                email = request.POST['email']
-            )
+        try:
+            context["cliente"] = cliente_crm(request.POST['email'], nombre = request.POST['nombre'], apellido = request.POST['apellido'], telefono = request.POST['telefono'])
 
-            cliente.save()
-            if request.POST['telefono']:
-                cliente.telefono = request.POST['telefono']
-                cliente.save()
+        except:
 
-        anticipo = request.POST["anticipo"]
-        anticipo_h = float(request.POST["anticipo"])/hormigon.valor
-        cuota_esp = request.POST["cuotas_esp"]
-        aporte = request.POST["aporte"]
-        cuotas_p = request.POST["cuotas_p"]
-        observacion=request.POST['observacion']
-        descuento= float(request.POST['descuento'])
-        total_cuotas = float(cuota_esp) + float(cuotas_p)*1.65 + float(aporte)
+            context["cliente"] = cliente_crm(request.POST['email'])
 
-        cuotas_espera = []
-        cuotas_pose = []
-        aporte_va = []
+        context["resultados"] = plan_financiacion_cotizador(request.POST["anticipo"], request.POST["cuotas_esp"], request.POST["aporte"], request.POST["cuotas_p"], request.POST['observacion'], request.POST['descuento'], precio_contado, datos)
 
-        for i in range(1):
-            cuotas_espera.append(0)
-            cuotas_pose.append(0)
-            aporte_va.append(0)
+        context["info_coti_email"] = info_para_cotizador(context["resultados"])
 
-        for i in range(int(cuota_esp)):
-            cuotas_espera.append(1)
-            cuotas_pose.append(0)
-            aporte_va.append(0)
+    
+    context["imagenes_carru"] = ImgEnlacesProyecto.objects.filter(proyecto = datos.proyecto)
+    context["tiempo_restante"] = (datos.proyecto.fecha_f.year - today.year)*12 + (datos.proyecto.fecha_f.month - today.month)
+    context["datos"] = datos
+    context["precio_contado"] = precio_contado
+    context["m2"] = m2
 
-        if int(aporte) > 0:
-            aporte_va.pop()
-            aporte_va.append(int(aporte))
-
-        for d in range(int(cuotas_p)):
-            cuotas_pose.append(1.65)
-
-        precio_contado = precio_contado*(1 - descuento)
-        valor_auxiliar_espera = npf.npv(rate=(datos.proyecto.tasa_f/100), values=cuotas_espera)
-        valor_auxiliar_pose = npf.npv(rate=(datos.proyecto.tasa_f/100), values=cuotas_pose)
-        valor_auxiliar_aporte = npf.npv(rate=(datos.proyecto.tasa_f/100), values=aporte_va)
-        factor = valor_auxiliar_aporte + valor_auxiliar_espera + valor_auxiliar_pose
-        incremento = (total_cuotas/factor) - 1
-        precio_finan = ((precio_contado - float(anticipo))*(1 + incremento)) + float(anticipo)
-
-        importe_cuota_esp = (precio_finan-float(anticipo))/total_cuotas
-        importe_aporte = importe_cuota_esp*float(aporte)
-
-        if int(cuotas_p) > 0:
-
-            importe_cuota_p = importe_cuota_esp*1.65
-
-        else:
-
-            importe_cuota_p = 0
-
-        importe_cuota_p_h = importe_cuota_p/hormigon.valor
-        importe_aporte_h = importe_aporte/hormigon.valor
-        importe_cuota_esp_h = importe_cuota_esp/hormigon.valor
-
-        if cuota_esp != 0:
-            valor_cuota_espera = importe_cuota_esp/float(cuota_esp)
-        else:
-            valor_cuota_espera = 0
-        if aporte != 0:
-            valor_cuota_entrega = importe_aporte/float(aporte)
-        else:
-            valor_cuota_entrega = 0
-        if cuotas_p != 0:
-            valor_cuota_pose = importe_cuota_p/float(cuotas_p)
-        else:
-            valor_cuota_pose = 0
-
-        resultados = [anticipo, anticipo_h, precio_finan, cuota_esp, importe_aporte, cuotas_p, importe_cuota_esp,
-            aporte, importe_cuota_p, importe_cuota_p_h, importe_cuota_esp_h, importe_aporte_h, valor_cuota_espera,
-            valor_cuota_entrega, valor_cuota_pose, observacion, descuento]
-
-        info_coti_email = str(cuota_esp)+"&"+str(aporte)+"&"+str(cuotas_p)+"&"+str(anticipo)+"&"+str(descuento)+"&"+str(observacion)
-
-    return render(request, 'cotizador.html', {'info_coti_email':info_coti_email, 'tiempo_restante':tiempo_restante, 'datos':datos, 'resultados':resultados, 'precio_contado':precio_contado, 'm2':m2, 'cliente':cliente})
+    return render(request, 'cotizador.html', context)
 
 class PdfCotiza(View):
 
@@ -2220,6 +2144,27 @@ def featuresproject(request, id_proj):
 
         except:
             pass
+
+        try:
+            edit_feature = FeaturesProjects.objects.get(id = int(request.POST['modificar']))
+            edit_feature.nombre = request.POST['nombre_editar']
+            edit_feature.inc = request.POST['inc']
+            edit_feature.save()
+
+            context["mensaje"] = "Se edito correctamente el atributo"
+
+        except:
+            pass
+
+        try:
+            edit_feature = FeaturesProjects.objects.get(id = int(request.POST['borrar']))
+            edit_feature.delete()
+
+            context["mensaje"] = "Se borro correctamente el atributo"
+
+        except:
+            pass
+
 
         try:
             data_post = request.POST.items()

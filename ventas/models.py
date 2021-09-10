@@ -217,3 +217,16 @@ class FeaturesUni(models.Model):
     def _str_(self):
         return '{}'.format(self.feature.nombre)
 
+class ImgEnlacesProyecto(models.Model):
+    
+    proyecto = models.ForeignKey(Proyectos, on_delete=models.CASCADE, verbose_name = "Proyecto")
+    enlace = models.CharField(max_length=200, verbose_name = "Enlaces")
+
+    class Meta:
+        verbose_name="Enlace de imagenes"
+        verbose_name_plural="Enlaces de imagenes"
+
+    def _str_(self):
+        return '{}'.format(self.proyecto.nombre)
+
+

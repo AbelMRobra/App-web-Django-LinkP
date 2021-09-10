@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import PricingResumen, VentasRealizadas, EstudioMercado, Pricing, ArchivosAreaVentas, ArchivoFechaEntrega, ArchivoVariacionHormigon, ReclamosPostventa, FeaturesProjects, Clientescontacto
+from .models import PricingResumen, VentasRealizadas, EstudioMercado, Pricing, ArchivosAreaVentas, ArchivoFechaEntrega, \
+                ArchivoVariacionHormigon, ReclamosPostventa, FeaturesProjects, Clientescontacto, ImgEnlacesProyecto
 from import_export import resources
 from import_export.admin import ImportExportModelAdmin
 
@@ -98,3 +99,4 @@ admin.site.register(ArchivosAreaVentas, ArchivosAdmin)
 admin.site.register(ArchivoFechaEntrega, ArchivoFechaEntregaAdmin)
 admin.site.register(ArchivoVariacionHormigon, ArchivoVariacionHormigonAdmin)
 admin.site.register(ReclamosPostventa, ReclamosPostventaAdmin)
+admin.site.register(ImgEnlacesProyecto)

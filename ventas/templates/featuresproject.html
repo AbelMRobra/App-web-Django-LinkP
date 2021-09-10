@@ -39,7 +39,57 @@
                                     <th>Tamaño</th>
                                     <th>Base</th>
                                     {% for f in features %}
-                                    <th style="max-width: 30px;" data-tablesaw-priority="3" data-toggle="tooltip" title="{{f.nombre|lower|capfirst}}"><b hidden>{{f.nombre|lower|capfirst}}</b> ({{f.inc|lower|capfirst}}%)</th>
+                                    <th style="max-width: 30px;" data-tablesaw-priority="3" data-toggle="tooltip" title="{{f.nombre|lower|capfirst}}"><a href="#" data-toggle="modal" data-target="#ModalModificar{{f.id}}"><b hidden>{{f.nombre|lower|capfirst}}</b> ({{f.inc|lower|capfirst}}%)</a></th>
+
+                                    <div class="modal fade" id="ModalModificar{{f.id}}" tabindex="-1" role="dialog" aria-labelledby="ModalModificar" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                            <div class="modal-content">
+
+                                            
+                                                <form method="POST">
+                                                    <div class="modal-body">
+                                                        <button type="button" class="close text-dark" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+
+                                                        {% csrf_token %}
+                                                        <div class="row">
+                                                            <div class="col-2">
+                                                                <img src="{% static 'img/bot.png' %}" width="30px" alt="pedrobot">
+                                                            </div>
+                                                            <div class="col-10">
+                                                                <h4 class="my-2 text-title text-center">Modificar atributo</h4>
+                                                            </div>
+
+                                                            <div class="mt-3">
+                                                                <h6>Nombre</h6>
+                                                                <input type="text" name="nombre_editar" value="{{f.nombre}}" class="form-control">
+                                                            </div>
+
+                                                            <div class="mt-3">
+                                                                <h6>Valor</h6>
+                                                                <input type="number" step="any" name="inc" value="{{f.inc}}" class="form-control">
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="text-center mb-3">
+                                                        <button class="btn btn-primary" type="submit" name="modificar" value="{{f.id}}">Modificar</button>
+                                                        
+                                                    </div>
+                                                </form>
+                                                <form method="POST">
+                                                    {% csrf_token %}
+                                                    <div class="text-center mb-3">
+                                                        <button class="btn btn-outline-danger btn-circle fa fa-trash-o" type="submit" name="borrar" value="{{f.id}}"></button>
+                                                        
+                                                    </div>
+                                                </form>
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
                                     {% endfor %}
                                     <th>Final</th>
                                     

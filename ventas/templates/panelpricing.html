@@ -20,45 +20,46 @@
       </ol>
     </div>
   </div>
-</div>
-
-<div class="row">
-  <div class="col-12">
-    <div class="card">
-      <div class="card-body">
-
-        <div style="text-align: center;">
-          <h2>Pricing de unidades</h2>
-        </div>
-
-        <div class="text-center my-3">
-          <form method="POST">
-
-            {% csrf_token %}
-
-            <select name="proyecto" class="custom-select" style="width: 250px">
-
-              {% for i in datos%}
-
-              <option value="{{i}}">{{i}}</option>
-
-              {% endfor %}
-
-            </select>
-            <div class="mt-1">
-              <small> Seleccione un proyecto del listado</small>
-            </div>
-
-            <div>
-              <button class="btn btn-info mt-2" style="width: 250px" type="submit" >Buscar datos</button>
-            </div>
-
-          </form>
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+  
+          <div style="text-align: center;">
+            <h2>Pricing de unidades</h2>
+          </div>
+  
+          <div class="text-center my-3">
+            <form method="POST">
+  
+              {% csrf_token %}
+  
+              <select name="proyecto" class="custom-select" style="width: 250px">
+  
+                {% for i in datos%}
+  
+                <option value="{{i}}">{{i}}</option>
+  
+                {% endfor %}
+  
+              </select>
+              <div class="mt-1">
+                <small> Seleccione un proyecto del listado</small>
+              </div>
+  
+              <div>
+                <button class="btn btn-info mt-2" style="width: 250px" type="submit" >Buscar datos</button>
+              </div>
+  
+            </form>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </div>
+
+
 
 
 {% endblock %}
