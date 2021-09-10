@@ -27,6 +27,7 @@ def calcularResumenIngresos(usuario):
     fechas_totales = []
 
     while fecha_inicial < date.today():
+        
         fechas_totales.append(fecha_inicial)
 
         if fecha_inicial.month == 12:
@@ -34,7 +35,6 @@ def calcularResumenIngresos(usuario):
         else:
             fecha_inicial = date(fecha_inicial.year, fecha_inicial.month + 1, 1)
 
-    fechas_totales.pop()
     
     context['fechas_totales'] = fechas_totales
 
@@ -57,10 +57,7 @@ def calcularResumenIngresos(usuario):
             else:
                 fecha_final = date(fecha.year, fecha.month + 1, 1)
 
-            fecha_inicial_auxiliar = fecha - timedelta(days=1)
-            print(fecha)
-            print(fecha_inicial_auxiliar)
-            print(fecha_final)
+            fecha_inicial_auxiliar = fecha
 
             comercial_shajor = sum(np.array(consulta_usuario.filter(categoria = "INGRESO SUELDOS COMERCIAL", fecha__range = (fecha_inicial_auxiliar, fecha_final), estado = "INGRESOS").values_list("importe", flat=True)))
             sigma_shajor =  sum(np.array(consulta_usuario.filter(categoria = "INGRESOS SIGMA", nota__contains = "SHAJOR", fecha__range = (fecha_inicial_auxiliar, fecha_final), estado = "INGRESOS").values_list("importe", flat=True)))
