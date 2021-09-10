@@ -33,6 +33,8 @@ def calcularResumenIngresos(usuario):
             fecha_inicial = date(fecha_inicial.year + 1, 1, 1)
         else:
             fecha_inicial = date(fecha_inicial.year, fecha_inicial.month + 1, 1)
+
+    fechas_totales.pop()
     
     context['fechas_totales'] = fechas_totales
 

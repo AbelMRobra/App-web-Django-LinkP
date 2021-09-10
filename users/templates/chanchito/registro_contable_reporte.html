@@ -76,7 +76,7 @@
                                                 <div class="modal-body">
                                                     <ul>
                                                         {% for registro in datos.con_sigma_shajor%}
-                                                        <li>{{registro.caja|lower|capfirst}}, {{registro.creador}}, {{registro.fecha|date:"d/m/Y"}}: {{registro.monto|floatformat:2|intcomma}}</li>
+                                                        <li>{{registro.caja|lower|capfirst}}, {{registro.creador}}, {{registro.fecha|date:"d/m/Y"}}: {{registro.importe|floatformat:2|intcomma}}</li>
                                                         {% endfor %}
                                                     </ul>
                                                 </div>
