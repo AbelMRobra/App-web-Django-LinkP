@@ -28,6 +28,7 @@ from django.views.generic.base import TemplateView
 from rest_framework.generics import ListAPIView
 from .functions_comparativas import mensajeCierreOc, mandarEmail
 from .funciones.f_g_mandar_email import *
+from django.db.models import Q
 
 
 def contratos(request):
@@ -678,10 +679,13 @@ def panelvisto(request, estado, creador):
         '3': 'Visto no conforme',
     }
 
-    cant_todas = len(con_principal)
-    cant_vistas= len(con_principal.filter(fecha_c__gte = "2021-02-01", estado = "AUTORIZADA", visto = dic_estados['1'].upper()))
-    cant_no_vistas = len(con_principal.filter(fecha_c__gte = "2021-02-01", estado = "AUTORIZADA", visto = dic_estados['2'].upper()))
-    cant_no_conforme = len(con_principal.filter(fecha_c__gte = "2021-02-01", estado = "AUTORIZADA", visto = dic_estados['3'].upper()))
+
+    
+
+    cant_todas = con_principal.count()
+    cant_vistas= con_principal.filter(fecha_c__gte = "2021-02-01", estado = "AUTORIZADA", visto = dic_estados['1'].upper()).exclude(Q(autoriza = "PL") | Q(publica = "NO")).count()
+    cant_no_vistas = con_principal.filter(fecha_c__gte = "2021-02-01", estado = "AUTORIZADA", visto = dic_estados['2'].upper()).exclude(Q(autoriza = "PL") | Q(publica = "NO")).count()
+    cant_no_conforme = con_principal.filter(fecha_c__gte = "2021-02-01", estado = "AUTORIZADA", visto = dic_estados['3'].upper()).exclude(Q(autoriza = "PL") | Q(publica = "NO")).count()
 
     cant_oc_sp = {
         "cant_todas":cant_todas,
