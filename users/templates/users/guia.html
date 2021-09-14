@@ -171,7 +171,7 @@
 
                                 <h6><small>Cantidad de Linkcoins</small> </h6>
                                 <div class="input-group mb-3">
-                                    <input name="cantidad" max="{{monedas_disponibles}}" step="0" type="number"
+                                    <input name="cantidad" min="0" max="{{monedas_disponibles}}" step="0" type="number"
                                         class="form-control form-control" style="width: 100%">
                                 </div>
 
@@ -180,7 +180,7 @@
                                     <textarea class="form-control" id="exampleTextarea" rows="3"
                                         name="mensaje"></textarea>
                                 </div>
-                                <button type="submit" class="btn btn-info">Regalar</button>
+                                <button type="submit" name="regalar" class="btn btn-info">Regalar</button>
                             </form>
 
                         </div>

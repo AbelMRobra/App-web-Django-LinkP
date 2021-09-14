@@ -276,25 +276,29 @@ def guia(request):
         #de las monedas del usuario en sesion , agregar las disponibles
         monedas_disponibles = [m for m in monedas_usuario if monedas_entregadas.filter(moneda = m).count() == 0]
 
-        
-        usuario_destino=datos_usuarios.get(id = int(datos["usuario"]))
+        if 'regalar' in datos:
+            usuario_destino=datos_usuarios.get(id = int(datos["usuario"]))
 
-        mens=datos["mensaje"]
-        cantidad=int(datos['cantidad'])
+            mens=datos["mensaje"]
 
-        monedas_para_entregar = [EntregaMoneda(
-                                moneda = monedas_disponibles[c],
-                                usuario_recibe = usuario_destino,
-                                mensaje = mens) for c in range(cantidad)]
 
-        EntregaMoneda.objects.bulk_create(monedas_para_entregar)
+            cantidad=int(datos['cantidad'])
 
-        try:
-            aviso_recepcion_monedas(usuario_destino.email , mens, request.user.username,cantidad)
-        except:
-            mensaje='No se pudo enviar el email'
 
-        return redirect('Guia')
+
+            monedas_para_entregar = [EntregaMoneda(
+                                    moneda = monedas_disponibles[c],
+                                    usuario_recibe = usuario_destino,
+                                    mensaje = mens) for c in range(cantidad)]
+
+            EntregaMoneda.objects.bulk_create(monedas_para_entregar)
+
+            try:
+                aviso_recepcion_monedas(usuario_destino.email , mens, request.user.username,cantidad)
+            except:
+                mensaje='No se pudo enviar el email'
+
+            return redirect('Guia')
 
     try:
         
