@@ -35,7 +35,24 @@
 
             <div style="text-align: left;">
 
-  
+                <div class="btn-group">
+                    <button type="button" class="btn btn-rounded btn-outline-secondary dropdown-toggle ml-2"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onclick="myFunction()">
+                        {{estado_selec}}
+                    </button>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="{% url 'Comparativas G1' 0 creador %}">Todos</a>
+                        <a class="dropdown-item" href="{% url 'Comparativas G1' 3 creador %}">En espera ({{cant_oc_sp.cant_espera}})</a>
+                        <a class="dropdown-item" href="{% url 'Comparativas G1' 4 creador %}">Adjunto listo ({{cant_oc_sp.cant_adjunto}})</a> 
+                        <a class="dropdown-item" href="{% url 'Comparativas G1' 1 creador %}">Autorizadas ({{cant_oc_sp.cant_autorizada}})</a>
+                        <a class="dropdown-item" href="{% url 'Comparativas G1' 2 creador %}">Rechazadas ({{cant_oc_sp.cant_no_autorizada}})</a>
+
+                    </div>
+                </div>
+
+
+        
+                  
             <div class="table-responsive">
 
                 <table id="example" class="table">
