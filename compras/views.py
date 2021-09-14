@@ -679,9 +679,9 @@ def panelvisto(request, estado, creador):
     }
 
     cant_todas = len(con_principal)
-    cant_vistas= len(con_principal.filter(visto = dic_estados['1'].upper()))
-    cant_no_vistas = len(con_principal.filter(visto = dic_estados['2'].upper()))
-    cant_no_conforme = len(con_principal.filter(visto = dic_estados['3'].upper()))
+    cant_vistas= len(con_principal.filter(fecha_c__gte = "2021-02-01", estado = "AUTORIZADA", visto = dic_estados['1'].upper()))
+    cant_no_vistas = len(con_principal.filter(fecha_c__gte = "2021-02-01", estado = "AUTORIZADA", visto = dic_estados['2'].upper()))
+    cant_no_conforme = len(con_principal.filter(fecha_c__gte = "2021-02-01", estado = "AUTORIZADA", visto = dic_estados['3'].upper()))
 
     cant_oc_sp = {
         "cant_todas":cant_todas,
