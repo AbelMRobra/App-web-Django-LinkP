@@ -58,7 +58,7 @@
                     <div class="dropdown-menu">
                         <a class="dropdown-item" href="{% url 'Comparativas G1' estado 0 %}">Todos</a>
                         {% for c in creadores%}
-                        <a class="dropdown-item" href="#">{{c}}</a>
+                        <a class="dropdown-item" href="{% url 'Comparativas G1' estado c %}">{{c}}</a>
                         {% endfor %}
                     </div>
                 </div>
