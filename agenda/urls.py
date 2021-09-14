@@ -22,6 +22,7 @@ from django.conf.urls import url
 urlpatterns = [
    
     path('', include('users.urls')),
+    path('api/', include('compras.urls_api')),
     path('presupuestos/', include('presupuestos.urls')),
     path('finanzas/', include('finanzas.urls')),
     path('proyectos/', include('proyectos.urls')),

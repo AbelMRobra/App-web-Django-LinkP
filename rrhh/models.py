@@ -292,6 +292,23 @@ class Logros(models.Model):
     def __str__(self):
         return self.nombre
 
+class Cajas(models.Model):
+
+    usuario = models.ForeignKey(datosusuario, on_delete=models.CASCADE, verbose_name="Usuario")
+    nombre = models.CharField(max_length=400, verbose_name="Nombre")
+    usuarios_visibles = models.ManyToManyField(datosusuario, related_name="Visibilidad", verbose_name="Usuario visibles", blank=True, null=True)
+
+    class Meta:
+
+        verbose_name = 'Caja'
+        verbose_name_plural = 'Cajas'
+
+    def __str__(self):
+
+        return f'{self.usuario.identificacion}, {self.nombre}'
+
+
+
 class RegistroContable(models.Model):
 
     class estados(models.TextChoices):
@@ -304,6 +321,7 @@ class RegistroContable(models.Model):
     fecha = models.DateField(verbose_name="Fecha")
     estado = models.CharField(choices=estados.choices, default=estados.INGRESOS, max_length=20, verbose_name="Ingreso o gasto")
     caja = models.CharField(max_length=400, verbose_name="Caja", default="Personal", blank=True, null=True)
+    caja_vinculada=models.ForeignKey(Cajas, on_delete=models.CASCADE, verbose_name="Caja vinculada", blank=True, null=True)
     cuenta = models.CharField(max_length=400, verbose_name="Cuenta")
     categoria = models.CharField(max_length=400, verbose_name="Categoria")
     importe = models.FloatField(verbose_name="Importe")
@@ -393,4 +411,24 @@ class ArchivosGenerales(models.Model):
 
     def __str__(self):
         return self.nombre
+
+
+class PresupuestoPersonal(models.Model):
+
+    usuario = models.ForeignKey(datosusuario, on_delete=models.CASCADE, verbose_name="Usuario")
+    fecha = models.DateField(verbose_name="Fecha")
+    nombre = models.CharField(max_length=400, verbose_name="Nombre")
+    importe = models.FloatField(verbose_name="Importe")
+    pagado = models.BooleanField(verbose_name="Pagado")
+
+    class Meta:
+
+        verbose_name="Presupuesto personal"
+        verbose_name_plural="Presupuestos personal"
+
+    def __str__(self):
+
+        return f'{self.usuario.identificacion}, {self.nombre}'
+
+
     

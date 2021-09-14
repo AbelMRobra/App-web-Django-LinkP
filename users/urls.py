@@ -47,10 +47,11 @@ urlpatterns = [
 
 
     # Template de registro contable
+    url(r'^registro_contable_gastos$', login_required(views_chanchito.registro_contable_gastos), name = 'Control Gastos'),
     url(r'registro_contable_home$', login_required(views_chanchito.registro_contable_home), name = 'Registro Contable Home'),
     url(r'registro_contable_reporte$', login_required(views_chanchito.registro_contable_registro), name = 'Registro Contable Reporte'),
     url(r'registro_contable_cajas$', login_required(views_chanchito.registro_contable_cajas), name = 'Registro Contable Cajas'),
-    path("registro_contable_caja/<str:caja>/<str:user_caja>/<int:estado>/<int:mes>/<int:year>/" ,login_required(views_chanchito.registro_contable_caja) ,name='Registro Contable Caja'),
+    path("registro_contable_caja/<int:caja>/<int:estado>/<int:mes>/<int:year>/" ,login_required(views_chanchito.registro_contable_caja) ,name='Registro Contable Caja'),
     url(r'registro_contable/(?P<date_i>\d+)/$', login_required(views_chanchito.registro_contable), name = 'Registro Contable'),
     url(r'registro_contable_editar/$', login_required(views_chanchito.editar_registro_contable), name = 'Registro Contable Edicion'),
     url(r'^des_registro$', login_required(DescargarRegistroContable.as_view()), name = 'Descarga registro contable'),

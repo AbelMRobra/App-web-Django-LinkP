@@ -5,12 +5,16 @@ import datetime
 import pandas as pd
 import numpy as np
 from datetime import date
-from rrhh.models import datosusuario, DicRegistroContable, RegistroContable, ArqueoChanchito
+from rrhh.models import datosusuario, DicRegistroContable, RegistroContable, ArqueoChanchito, PresupuestoPersonal, Cajas
 from finanzas.models import Arqueo
 from openpyxl import Workbook
 from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
-from .functions_chanchito import cajasDerivadas, calcularResumenIngresos, cajasActivas, cajasAdministras, recalculoDolarCaja
+from .functions_chanchito import cajasDerivadas, calcularResumenIngresos, cajasActivas, cajasAdministras, recalculoDolarCaja, agregar_objeto_caja
 from .functions import saludo
+
+def registro_contable_gastos(request):
+
+    return render(request, 'chanchito/registro_contable_gastos.html')
 
 def registro_contable_registro(request):
 
@@ -24,9 +28,38 @@ def registro_contable_registro(request):
 
 def registro_contable_home(request):
 
+    agregar_objeto_caja()
+
+    today = date.today()
+
+    if request.method == 'POST':
+        
+        datos_post = request.POST.items()
+
+        presup_personal = PresupuestoPersonal.objects.filter(usuario__identificacion = request.user.username, pagado = True, fecha__month = today.month, fecha__year = today.year)
+
+        for presup in presup_personal:
+            presup.pagado = False
+            presup.save()
+
+        for dato in datos_post:
+            if not "csrf" in dato[0]:
+
+                presup_personal = PresupuestoPersonal.objects.get(id = int(dato[0].split("-")[1]))
+                presup_personal.pagado = True
+                presup_personal.save()
+
+
     context = {}
     context['mensaje_bievenida'] = saludo().format(request.user.first_name)
     context['fecha'] = datetime.date.today()
+
+    # -> Parte del presupuesto personal
+
+    data_presupuesto_personal = PresupuestoPersonal.objects.filter(usuario__identificacion = request.user.username, fecha__month = today.month, fecha__year = today.year).order_by("fecha")
+
+    context['data_presupuesto_personal'] = data_presupuesto_personal
+    context['data_presupuesto_personal_total'] = sum(np.array(data_presupuesto_personal.filter(pagado = False).values_list("importe", flat=True)))
 
     return render(request, 'chanchito/registro_contable_home.html', context)
 
@@ -35,8 +68,38 @@ def registro_contable_cajas(request):
     context = {}
     context["mensaje"] = "no"
 
+    user = datosusuario.objects.get(identificacion = request.user.username)
+
     if request.method == 'POST':
+
         try:
+
+            if request.POST['visible'] == "1":
+
+                cajas_visibles = Cajas.objects.filter(usuarios_visibles__in = [user,])
+
+                for caja in cajas_visibles:
+                    caja.usuarios_visibles.remove(user)
+
+                datos_post = request.POST.items()
+
+                for dato in datos_post:
+                    
+                    try:
+                        caja_incorporar = Cajas.objects.get(id = int(dato[0]))
+                        caja_incorporar.usuarios_visibles.add(user)
+                        caja_incorporar.save()
+
+                    except:
+                        pass
+
+        except:
+            
+            pass
+
+
+        try:
+
             if request.POST['actualizar_cajas'] == "1":
 
                 usuario = datosusuario.objects.get(identificacion = request.user.username)
@@ -49,109 +112,135 @@ def registro_contable_cajas(request):
                 context["mensaje"] = "ok"
 
         except:
+
+            pass
             
-            try:
-                if request.POST['carga_archivo'] == "1":
+        try:
+            
+            if request.POST['carga_archivo'] == "1":
 
-                    archivo_pandas = pd.read_excel(request.FILES['archivo'])
-                    registros_nuevo = archivo_pandas
-                    numero = 0
+                archivo_pandas = pd.read_excel(request.FILES['archivo'])
+                registros_nuevo = archivo_pandas
+                numero = 0
 
-                    columnas_necesarias = ["Usuario", "Creador", "Auxiliar", "Desc. cuenta", "Desc. auxiliar", "Saldo (CTE)", "SALDO USD", "Subauxiliar", "Fecha de emisión"]
+                columnas_necesarias = ["Usuario", "Creador", "Auxiliar", "Desc. cuenta", "Desc. auxiliar", "Saldo (CTE)", "SALDO USD", "Subauxiliar", "Fecha de emisión"]
 
-                    for c in columnas_necesarias:
+                for c in columnas_necesarias:
 
-                        if c not in registros_nuevo.columns:
-                            context["mensaje"] = "Columna {} no detectada, revise".format(c)
+                    if c not in registros_nuevo.columns:
+                        context["mensaje"] = "Columna {} no detectada, revise".format(c)
 
 
-                    # Bucle para cargar registros
-
-                    try:
-
-                        con_dicc = DicRegistroContable.objects.all()
-
-                        for row in range(registros_nuevo.shape[0]):
-                            usuario = datosusuario.objects.get(identificacion = str(registros_nuevo.loc[numero, "Usuario"]))
-                            if registros_nuevo.loc[numero, "Saldo (CTE)"] >= 0:
-                                estado = "INGRESOS"
-                                importe = abs(registros_nuevo.loc[numero, "Saldo (CTE)"])
-                            else:
-                                estado = "GASTOS"
-                                importe = abs(registros_nuevo.loc[numero, "Saldo (CTE)"])
-
-                            if float(registros_nuevo.loc[numero, "SALDO USD"]) > 0:
-
-                                importe_usd = abs(importe/float(registros_nuevo.loc[numero, "SALDO USD"]))
-
-                            else:
-
-                                importe_usd = None
-                            
-                            if len(con_dicc.filter(entrada = registros_nuevo.loc[numero, "Auxiliar"])) > 0:
-                                caja = con_dicc.filter(entrada = registros_nuevo.loc[numero, "Auxiliar"])[0].salida
-                            else:
-                                caja = registros_nuevo.loc[numero, "Auxiliar"]
-
-                            if len(con_dicc.filter(entrada = registros_nuevo.loc[numero, "Desc. cuenta"])) > 0:
-                                cuenta = con_dicc.filter(entrada = registros_nuevo.loc[numero, "Desc. cuenta"])[0].salida
-                            else:
-                                cuenta = registros_nuevo.loc[numero, "Desc. cuenta"]
-
-                            if len(con_dicc.filter(entrada = registros_nuevo.loc[numero, "Desc. auxiliar"])) > 0:
-                                categoria = con_dicc.filter(entrada = registros_nuevo.loc[numero, "Desc. auxiliar"])[0].salida
-                            else:
-                                categoria = registros_nuevo.loc[numero, "Desc. auxiliar"]
-                            
-                            if len(con_dicc.filter(entrada = registros_nuevo.loc[numero, "Subauxiliar"])) > 0:
-                                nota = con_dicc.filter(entrada = registros_nuevo.loc[numero, "Subauxiliar"])[0].salida
-                            else:
-                                nota = registros_nuevo.loc[numero, "Subauxiliar"]
-
-                            try:
-                                nuevo_registro = RegistroContable(
-
-                                    usuario = usuario,
-                                    creador = registros_nuevo.loc[numero, "Creador"],
-                                    fecha = registros_nuevo.loc[numero, "Fecha de emisión"],
-                                    estado = estado,
-                                    caja = caja,
-                                    cuenta = cuenta,
-                                    categoria = categoria,
-                                    importe = importe,
-                                    importe_usd = importe_usd,
-                                    nota = nota,
-
-                                )
-
-                                nuevo_registro.save()
-                                numero += 1
-                            except:
-                                mensaje = "Error en la fila {}".format(numero)
-                                numero += 1
-
-                        context["mensaje"] = "ok"
-
-                    except:
-                        pass
-
-            except:
+                # Bucle para cargar registros
 
                 try:
-                    data_caja = request.POST['borrar_selec'].split("&")
-                    fecha_i = request.POST['fecha_i']
-                    fecha_f = request.POST['fecha_f']
-                    cajas_eliminar = RegistroContable.objects.filter(creador = request.user.username, caja = data_caja[0], usuario__identificacion = data_caja[1], fecha__renge = (fecha_i, fecha_f))
-                    for caja in cajas_eliminar:
-                        caja.delete()
+
+                    con_dicc = DicRegistroContable.objects.all()
+
+                    for row in range(registros_nuevo.shape[0]):
+                        usuario = datosusuario.objects.get(identificacion = str(registros_nuevo.loc[numero, "Usuario"]))
+                        
+                        if registros_nuevo.loc[numero, "Saldo (CTE)"] >= 0:
+                            estado = "INGRESOS"
+                            importe = abs(registros_nuevo.loc[numero, "Saldo (CTE)"])
+                        else:
+                            estado = "GASTOS"
+                            importe = abs(registros_nuevo.loc[numero, "Saldo (CTE)"])
+
+                        if float(registros_nuevo.loc[numero, "SALDO USD"]) > 0:
+
+                            importe_usd = abs(importe/float(registros_nuevo.loc[numero, "SALDO USD"]))
+
+                        else:
+
+                            importe_usd = None
+                        
+                        if len(con_dicc.filter(entrada = registros_nuevo.loc[numero, "Auxiliar"])) > 0:
+                            caja = con_dicc.filter(entrada = registros_nuevo.loc[numero, "Auxiliar"])[0].salida
+                        else:
+                            caja = registros_nuevo.loc[numero, "Auxiliar"]
+
+                        if len(con_dicc.filter(entrada = registros_nuevo.loc[numero, "Desc. cuenta"])) > 0:
+                            cuenta = con_dicc.filter(entrada = registros_nuevo.loc[numero, "Desc. cuenta"])[0].salida
+                        else:
+                            cuenta = registros_nuevo.loc[numero, "Desc. cuenta"]
+
+                        if len(con_dicc.filter(entrada = registros_nuevo.loc[numero, "Desc. auxiliar"])) > 0:
+                            categoria = con_dicc.filter(entrada = registros_nuevo.loc[numero, "Desc. auxiliar"])[0].salida
+                        else:
+                            categoria = registros_nuevo.loc[numero, "Desc. auxiliar"]
+                        
+                        if len(con_dicc.filter(entrada = registros_nuevo.loc[numero, "Subauxiliar"])) > 0:
+                            nota = con_dicc.filter(entrada = registros_nuevo.loc[numero, "Subauxiliar"])[0].salida
+                        else:
+                            nota = registros_nuevo.loc[numero, "Subauxiliar"]
+
+                        ### Crear la caja
+
+                        try:
+                            caja = Cajas.objects.get(usuario = usuario, nombre = caja)
+
+                        except:
+
+                            caja = Cajas(
+                                usuario = usuario,
+                                nombre = caja,
+                            )
+
+                        try:
+                            nuevo_registro = RegistroContable(
+
+                                usuario = usuario,
+                                creador = registros_nuevo.loc[numero, "Creador"],
+                                fecha = registros_nuevo.loc[numero, "Fecha de emisión"],
+                                estado = estado,
+                                caja = caja,
+                                cuenta = cuenta,
+                                categoria = categoria,
+                                importe = importe,
+                                importe_usd = importe_usd,
+                                nota = nota,
+
+                            )
+
+                            nuevo_registro.save()
+                            numero += 1
+                        except:
+                            mensaje = "Error en la fila {}".format(numero)
+                            numero += 1
+
+                    context["mensaje"] = "ok"
 
                 except:
-                    data_caja = request.POST['borrar'].split("&")
-                    cajas_eliminar = RegistroContable.objects.filter(creador = request.user.username, caja = data_caja[0], usuario__identificacion = data_caja[1])
-                    for caja in cajas_eliminar:
-                        caja.delete()
+                    pass
 
-    user = datosusuario.objects.get(identificacion = request.user.username)
+        except:
+
+            pass
+
+        try:
+
+            fecha_i = request.POST['fecha_desde']
+            fecha_f = request.POST['fecha_hasta']
+            cajas_eliminar = RegistroContable.objects.filter(creador = request.user.username, caja_vinculada__id = int(request.POST['borrar_selec']), fecha__range = (fecha_i, fecha_f))
+            for caja in cajas_eliminar:
+                caja.delete()
+
+        except:
+
+            pass
+
+        try:
+
+            cajas_eliminar = RegistroContable.objects.filter(creador = request.user.username, caja_vinculada = int(request.POST['borrar']), )
+            for caja in cajas_eliminar:
+                caja.delete()
+
+        except:
+
+            pass
+
+    
 
     context["total_cajas"] = cajasActivas(user)
     context["cajas_administras"] = cajasAdministras(user)
@@ -161,41 +250,44 @@ def registro_contable_cajas(request):
 
     return render(request, 'chanchito/registro_contable_cajas.html', context)
 
-def registro_contable_caja(request, caja, user_caja, estado, mes, year):
+def registro_contable_caja(request, caja, estado, mes, year):
 
     context = {}
-    context["mensaje"] = recalculoDolarCaja(caja, user_caja)
+    caja = Cajas.objects.get(id = caja)
+    context["mensaje"] = recalculoDolarCaja(caja, caja.usuario)
     
     mes = mes
     year = year
 
-    user = datosusuario.objects.get(identificacion = user_caja)
-    con_principal = RegistroContable.objects.filter(usuario = user, caja = caja)
+    con_principal = RegistroContable.objects.filter(caja_vinculada = caja).order_by("-fecha")
 
-    
     list_year = list(set(con_principal.values_list("fecha__year", flat=True)))
+
     if request.method == 'POST':
         try:
 
-            b = RegistroContable(
-                usuario = user,
+            nuevo_registro = RegistroContable(
+                usuario = caja.usuario,
                 creador = request.user.username,
                 fecha = request.POST['fecha'],
                 estado = request.POST['tipo'],
-                caja = caja,
+                caja = caja.nombre,
+                caja_vinculada = caja,
                 cuenta = request.POST['cuenta'],
                 categoria = request.POST['categoria'],
                 importe = float(request.POST['importe']),
                 nota = request.POST['nota'],
                 )
+            
+            nuevo_registro.save()
 
             try:
-                b.adjunto = request.FILES['adjunto']
-                b.save()
+                nuevo_registro.adjunto = request.FILES['adjunto']
+                nuevo_registro.save()
 
             except:
-                b.save()
-
+                pass
+                
         except:
             pass
         try:
@@ -224,17 +316,13 @@ def registro_contable_caja(request, caja, user_caja, estado, mes, year):
         except:
             pass
     
-    if request.user.username == user_caja:
-        data = RegistroContable.objects.filter(usuario = user, caja = caja).order_by("-fecha")
-    else:
-        data = RegistroContable.objects.filter(usuario__identificacion = user_caja, caja = caja).order_by("-fecha")
     
     if estado == 0:
-        data = data
+        data = con_principal
     elif estado == 1:
-        data = data.filter(estado = "INGRESOS")
+        data = con_principal.filter(estado = "INGRESOS")
     else:
-        data = data.filter(estado = "GASTOS")
+        data = con_principal.filter(estado = "GASTOS")
     
     if int(mes) != 0:
         data = data.filter(fecha__month = mes)
@@ -245,7 +333,7 @@ def registro_contable_caja(request, caja, user_caja, estado, mes, year):
     
     context["data"] = data
     context["caja"] = caja
-    context["user_caja"] = user_caja
+    context["user_caja"] = caja.usuario
     context["estado"] = estado
     context["mes"] = mes
     context["year"] = year

@@ -7,7 +7,7 @@
 <div class="container-fluid">
     <div class="row page-titles">
         <div class="col-md-5 align-self-center">
-            <h3 class="text-themecolor">{{caja}}</h3>
+            <h3 class="text-themecolor">{{caja.usuario.identificacion}}, {{caja.nombre}}</h3>
         </div>
 
         <div class="col-md-7 align-self-center">
@@ -74,7 +74,7 @@
                                                                     <div class="input-group mb-3">
             
                                                                         <input name="cuenta" type="search" class="form-control form-control"
-                                                                        placeholder="Efectivo/Tarjeta de credito" list="provee">
+                                                                        placeholder="Efectivo" list="provee">
             
                                                                     </div>
     
@@ -89,7 +89,7 @@
                                                                     <div class="input-group mb-3">
             
                                                                         <input name="categoria" type="search" class="form-control form-control"
-                                                                        placeholder="Sueldo Mensual/Plus" list="list_cat_ing">
+                                                                        placeholder="Sueldo" list="list_cat_ing">
             
                                                                     </div>
                                                                 </div>
@@ -140,21 +140,21 @@
                                                                     <label for="gastos">GASTOS</label>
                                                                 </div>
                                                             </div>
+
+                                                            <hr>
+
+                                                            <div class="mt-2" style="text-align: center;">
+                                                                <button type="submit" class="btn btn-circle btn-success fa fa-cloud-upload" ></button>
+                                                            </div>
     
-                                                            <button type="submit" class="btn" ><i
-                                                                class="fa fa-arrow-up  text-info"><span class="text-info ml-2"
-                                                                    style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif"><b>Cargar</b></span></i></button>
+                                                            
     
     
                                                         </form>
     
                                                     </div>
                                                 </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-info"
-                                                        data-dismiss="modal">Cerrar</button>
-    
-                                                </div>
+
                                             </div>
                                         </div>
                                     </div>
@@ -165,9 +165,9 @@
                                         Tipo
                                     </button>
                                     <div class="dropdown-menu">
-                                        <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja user_caja 0 mes year %}">General</a>
-                                        <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja user_caja 2 mes year %}">Gastos</a>
-                                        <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja user_caja 1 mes year %}">Ingresos</a>
+                                        <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja.id 0 mes year %}">General</a>
+                                        <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja.id 2 mes year %}">Gastos</a>
+                                        <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja.id 1 mes year %}">Ingresos</a>
     
                 
                                     </div>
@@ -178,19 +178,19 @@
                                         Mes
                                     </button>
                                     <div class="dropdown-menu">
-                                        <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja user_caja estado 0 year %}">Todos</a>
-                                       <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja user_caja estado 1 year %}">Enero</a>
-                                       <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja user_caja estado 2 year %}">Febrero</a>
-                                       <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja user_caja estado 3 year %}">Marzo</a>
-                                       <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja user_caja estado 4 year %}">Abril</a>
-                                       <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja user_caja estado 5 year %}">Mayo</a>
-                                       <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja user_caja estado 6 year %}">Junio</a>
-                                       <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja user_caja estado 7 year %}">Julio</a>
-                                       <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja user_caja estado 8 year %}">Agosto</a>
-                                       <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja user_caja estado 9 year %}">Septiembre</a>
-                                       <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja user_caja estado 10 year %}">Octubre</a>
-                                       <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja user_caja estado 11 year %}">Noviembre</a>
-                                        <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja user_caja estado 12 year %}">Diciembre</a>
+                                        <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja.id estado 0 year %}">Todos</a>
+                                       <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja.id estado 1 year %}">Enero</a>
+                                       <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja.id estado 2 year %}">Febrero</a>
+                                       <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja.id estado 3 year %}">Marzo</a>
+                                       <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja.id estado 4 year %}">Abril</a>
+                                       <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja.id estado 5 year %}">Mayo</a>
+                                       <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja.id estado 6 year %}">Junio</a>
+                                       <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja.id estado 7 year %}">Julio</a>
+                                       <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja.id estado 8 year %}">Agosto</a>
+                                       <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja.id estado 9 year %}">Septiembre</a>
+                                       <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja.id estado 10 year %}">Octubre</a>
+                                       <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja.id estado 11 year %}">Noviembre</a>
+                                        <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja.id estado 12 year %}">Diciembre</a>
            
                                     </div>
              
@@ -202,7 +202,7 @@
                                        </button>
                                        <div class="dropdown-menu">
                                          {% for i in list_year %}
-                                           <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja user_caja estado mes i %}">{{i}}</a>
+                                           <a class="dropdown-item" href="{% url 'Registro Contable Caja' caja.id estado mes i %}">{{i}}</a>
                                             {% endfor %}           
                                         </div>
                     
@@ -241,8 +241,7 @@
                                             <div class="modal-dialog modal-dialog-centered" role="document">
                                                 <div class="modal-content">
                                                     <div class="modal-header"
-                                                        style="background: rgb(36,160,237);
-                                                            background: linear-gradient(315deg, rgba(36,160,237,1) 0%, rgba(56,56,130,1) 22%, rgba(0,212,255,1) 100%);">
+                                                        style="background-color: #2a3e52;">
                                                         <h5 class="modal-title  text-light"
                                                             id="exampleModalLongTitle">Editar</h5>
                                                         <button type="button" class="close text-light"
@@ -352,20 +351,24 @@
                     
                                                                 </div>
                                                             </div>
+
+                                                            <hr>
+
+                                                            <div class="mt-2" style="text-align: center;">
+
+                                                                <button type="submit" name="editar" value="{{i.id}}" class="btn btn-success btn-circle fa fa-cloud-upload"></button>
     
-                                                            <button type="submit" name="editar" value="{{i.id}}" class="btn"><i class="fa fa-arrow-up text-info"><span class="text-info ml-2" style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif"><b>Editar</b></span></i></button>
+                                                                <button type="submit" name="borrar" value="{{i.id}}" class="btn btn-danger btn-circle fa fa-trash"></button>
     
-                                                            <button type="submit" name="borrar" value="{{i.id}}" class="btn"><i class="fa fa-trash text-danger"><span class="text-danger ml-2" style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif"><b>borrar</b></span></i></button>
+
+                                                            </div>
     
+                                                            
                                                         </form>
     
     
                                                     </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-info"
-                                                            data-dismiss="modal">Cerrar</button>
-    
-                                                    </div>
+
                                                 </div>
                                             </div>
                                         </div>

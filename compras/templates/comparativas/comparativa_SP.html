@@ -23,9 +23,8 @@
             </ol>
         </div>
     </div>
-</div>
 
-{% if request.user|has_group:"COMPRAS NIVEL 4" %}
+    {% if request.user|has_group:"COMPRAS NIVEL 4" %}
 
 <div class="row">
 <div class="col col-xlg-12 button-group">
@@ -37,17 +36,30 @@
             <div style="text-align: left;">
 
                 <div class="btn-group">
-                    <button type="button" class="btn btn-primary dropdown-toggle ml-2"
+                    <button type="button" class="btn btn-rounded btn-outline-secondary dropdown-toggle ml-2"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onclick="myFunction()">
                         {{estado_selec}}
                     </button>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" href="{% url 'Comparativas G1' 0 0 %}">Todos</a>
-                        <a class="dropdown-item" href="{% url 'Comparativas G1' 3 0 %}">En espera ({{cant_oc_sp.cant_espera}})</a>
-                        <a class="dropdown-item" href="{% url 'Comparativas G1' 4 0 %}">Adjunto listo ({{cant_oc_sp.cant_adjunto}})</a> 
-                        <a class="dropdown-item" href="{% url 'Comparativas G1' 1 0 %}">Autorizadas ({{cant_oc_sp.cant_autorizada}})</a>
-                        <a class="dropdown-item" href="{% url 'Comparativas G1' 2 0 %}">Rechazadas ({{cant_oc_sp.cant_no_autorizada}})</a>
+                        <a class="dropdown-item" href="{% url 'Comparativas G1' 0 creador %}">Todos</a>
+                        <a class="dropdown-item" href="{% url 'Comparativas G1' 3 creador %}">En espera ({{cant_oc_sp.cant_espera}})</a>
+                        <a class="dropdown-item" href="{% url 'Comparativas G1' 4 creador %}">Adjunto listo ({{cant_oc_sp.cant_adjunto}})</a> 
+                        <a class="dropdown-item" href="{% url 'Comparativas G1' 1 creador %}">Autorizadas ({{cant_oc_sp.cant_autorizada}})</a>
+                        <a class="dropdown-item" href="{% url 'Comparativas G1' 2 creador %}">Rechazadas ({{cant_oc_sp.cant_no_autorizada}})</a>
 
+                    </div>
+                </div>
+
+                <div class="btn-group">
+                    <button type="button" class="btn btn-rounded btn-outline-secondary dropdown-toggle ml-2"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onclick="myFunction()">
+                        {{estado_creador}}
+                    </button>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="{% url 'Comparativas G1' estado 0 %}">Todos</a>
+                        {% for c in creadores%}
+                        <a class="dropdown-item" href="{% url 'Comparativas G1' estado c %}">{{c}}</a>
+                        {% endfor %}
                     </div>
                 </div>
         
@@ -143,7 +155,7 @@
 
                                 <img src="{% static 'img/SP.png' %}" width="40" class="img-circle">
 
-                                    {% if request.user.username == i.2.autoriza and i.2.estado != "AUTORIZADA" %}
+                                    {% if request.user.username == i.2.autoriza %}
 
                                     <form action="" method="POST">
                                         {% csrf_token %}
@@ -198,6 +210,9 @@
 </div>
 
 {% endif %}
+</div>
+
+
 
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 

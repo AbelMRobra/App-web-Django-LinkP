@@ -26,14 +26,9 @@ from openpyxl import Workbook
 from openpyxl.styles import Alignment, Border, Font, PatternFill, Side 
 from django.views.generic.base import TemplateView 
 from rest_framework.generics import ListAPIView
-from .serializers import articulos_Serializer
 from .functions_comparativas import mensajeCierreOc, mandarEmail
+from .funciones.f_g_mandar_email import *
 
-
-
-def principalcompras(request):
-
-    return render(request, "principalcompras.html")
 
 def contratos(request):
 
@@ -64,78 +59,6 @@ def contratosdescripcion(request, id_contrato):
     pagos = Comparativas.objects.filter(contrato = data)
 
     return render(request, 'contratosdescripcion.html', {"data":data, "adjuntos":adjuntos, "pagos":pagos})
-
-def cargarocautorizar(request):
-
-    proveedores = Proveedores.objects.all()
-    contratos = Contratos.objects.all()
-
-    context = {}
-
-    mensaje = 0
-
-    if request.method == "POST":
-
-        # Error posible numero 1 -> Que el proveedor no exista 
-
-        if len(Proveedores.objects.filter(name=request.POST['proveedor'])) == 0:
-            context['mensaje_e'] = "El proveedor seleccionado no existe"
-
-        elif len(request.POST['numerooc']) > 10:
-            context['mensaje_e'] = "El numero de OC es demasiado largo, pruebe un formato 99-9999"
-
-        else:
-
-            try:
-                
-                proveedor = Proveedores.objects.get(name=request.POST['proveedor'])
-
-                b = Comparativas(
-
-                    proveedor = proveedor,
-                    proyecto = request.POST['proyecto'],
-                    numero  = request.POST['referencia'],
-                    monto = float(request.POST['valor']),
-                    adjunto = request.FILES['imagen'],
-                    o_c = request.POST['numerooc'],
-                    autoriza = request.POST['autoriza'],
-                    publica = request.POST['publica'],
-                    creador = str(request.user.username),
-                    tipo_oc = request.POST['tipo_oc'],
-                )
-
-                b.save()
-
-                try:
-                    b.adj_oc = request.FILES['oc']
-                    b.save()
-                
-                except:
-                    
-                    pass
-
-                try:
-                    b.contrato = Contratos.objects.get(id=int(request.POST['contrato']))
-                    b.save()
-                    return redirect(f'/compras/comparativas/{10}/{0}/{0}#{b.id}')
-                except:
-
-                    return redirect(f'/compras/comparativas/{10}/{0}/{0}#{b.id}')
-
-            except UnicodeEncodeError:
-                
-                context['mensaje_e'] = "Algún documento adjunto tiene tildes, 'ñ' o simbolos no permitidos"
-
-            except:
-                
-                context['mensaje_e'] = "Surgio un error inesperado"
-
-    
-    context['mensaje'] = mensaje
-    context['proveedores'] = proveedores
-    context['contratos'] = contratos
-        
-    return render(request, 'cargarocautorizar.html', context)
 
 def editarcomparativas(request, id_comp):
 
@@ -432,20 +355,6 @@ def comprasdisponibles(request):
 
     return render(request, 'retiros.html', {"datos":datos})
 
-class ArticulosAPIView(ListAPIView):
-    serializer_class=articulos_Serializer
-
-    def get_queryset(self):
-        kword=self.request.query_params.get('kword','')
-
-        if len(Articulos.objects.filter(nombre__icontains=kword))>0 and len(kword) > 1:
-
-            return Articulos.objects.filter(nombre__icontains=kword)
-
-        else:
-
-            return Articulos.objects.all()[0:5]
-
 def cargacompras(request):
 
     proyectos = Proyectos.objects.all()
@@ -628,91 +537,35 @@ def ocautorizargerente1(request, estado, creador):
 
                 try:
 
-                    # Establecemos conexion con el servidor smtp de gmail
-                    mailServer = smtplib.SMTP(settings.EMAIL_HOST, settings.EMAIL_PORT)
-                    mailServer.ehlo()
-                    mailServer.starttls()
-                    mailServer.ehlo()
-                    mailServer.login(settings.EMAIL_HOST_USER, settings.EMAIL_HOST_PASSWORD)
+                    recibe = datosusuario.objects.get(identificacion = comparativa.creador).email
+                    subject = f"Tu O.C {comparativa.o_c} para {comparativa.proveedor.name} esta autorizada!"
+                    mandar_email(1, recibe, subject)
 
-                    # Construimos el mensaje simple
-                    
-                    mensaje = MIMEText("""
-                    
-Buenas!,
-
-Este es un mensaje automatico de Link-P, por favor no conteste.
-
-Tu orden de compra fue autorizada por SP en el dia de la fecha
-
-El numero de la misma es el siguiente: {}
-
-Para continuar, debes dejar una copia fisica en la oficina cumpliendo los tiempos del circuito
-
-Si este mensaje es un error, por favor comunicate con el equipo de IT
-
-Muchas gracias, saludos!
-                    """.format(comparativa.o_c))
-                    mensaje['From']=settings.EMAIL_HOST_USER
-                    mensaje['To']=datosusuario.objects.get(identificacion = comparativa.creador).email
-                    mensaje['Subject']="Tu O.C para {} esta autorizada!".format(comparativa.proveedor.name)
-
-
-                    # Envio del mensaje
-
-                    mailServer.sendmail(settings.EMAIL_HOST_USER,
-                                    datosusuario.objects.get(identificacion = comparativa.creador).email,
-                                    mensaje.as_string())
 
                 except:
 
                     pass
 
             if d[0] == 'NO APROBADA':
-                id_selec = d[1]
 
+                id_selec = d[1]
                 comparativa = Comparativas.objects.get(id = id_selec)
                 comparativa.estado = "NO AUTORIZADA"
                 comparativa.save()
                 
                 try:
 
-                    # Establecemos conexion con el servidor smtp de gmail
-                    mailServer = smtplib.SMTP(settings.EMAIL_HOST, settings.EMAIL_PORT)
-                    mailServer.ehlo()
-                    mailServer.starttls()
-                    mailServer.ehlo()
-                    mailServer.login(settings.EMAIL_HOST_USER, settings.EMAIL_HOST_PASSWORD)
-
-                    # Construimos el mensaje simple
-                    mensaje = MIMEText("""
-                    
-Buenas!,
-
-Este es un mensaje automatico de Link-P, por favor no conteste.
-
-Tu orden de compra fue RECHAZADA por SP en el dia de la fecha
-
-Debes comunicarte con el para responder las dudas que tenga para continuar con el circuito
-
-Si este mensaje es un error, por favor comunicate con el equipo de IT
-
-Muchas gracias, saludos!
-                    """.format(request.POST['MENSAJE']))
-                    mensaje['From']=settings.EMAIL_HOST_USER
-                    mensaje['To']=datosusuario.objects.get(identificacion = comparativa.creador).email
-                    mensaje['Subject']="Atención! La OC para {} fue rechazada!".format(comparativa.proveedor.name)
-
-                    # Envio del mensaje
-
-                    mailServer.sendmail(settings.EMAIL_HOST_USER,
-                                    datosusuario.objects.get(identificacion = comparativa.creador).email,
-                                    mensaje.as_string())
-
+                    recibe = datosusuario.objects.get(identificacion = comparativa.creador).email
+                    subject = f"Atención! La OC {comparativa.o_c} para {comparativa.proveedor.name} fue rechazada!"
+                    mandar_email(2, recibe, subject)
 
                 except:
 
                     pass
+
+    context = {}
+
+    con_principal = Comparativas.objects.filter(autoriza = "SP")
 
     dic_estados = {
         '0':'Todas',
@@ -726,11 +579,11 @@ Muchas gracias, saludos!
 
     # Datos de las cantidades de cada uno
 
-    cant_todas = len(Comparativas.objects.filter(autoriza = "SP"))
-    cant_espera = len(Comparativas.objects.filter(autoriza = "SP", estado = dic_estados['3'].upper()))
-    cant_autorizada = len(Comparativas.objects.filter(autoriza = "SP", estado = dic_estados['1'].upper()))
-    cant_no_autorizada = len(Comparativas.objects.filter(autoriza = "SP", estado = dic_estados['2'].upper()))
-    cant_adjunto = len(Comparativas.objects.filter(autoriza = "SP", estado = dic_estados['4'].upper()))
+    cant_todas = len(con_principal)
+    cant_espera = len(con_principal.filter(estado = dic_estados['3'].upper()))
+    cant_autorizada = len(con_principal.filter(estado = dic_estados['1'].upper()))
+    cant_no_autorizada = len(con_principal.filter(estado = dic_estados['2'].upper()))
+    cant_adjunto = len(con_principal.filter(estado = dic_estados['4'].upper()))
 
     cant_oc_sp = {
         "cant_todas":cant_todas,
@@ -740,14 +593,32 @@ Muchas gracias, saludos!
         "cant_adjunto":cant_adjunto,
     }
 
-    if estado == "0":
-        datos_base = Comparativas.objects.filter(autoriza = "SP").order_by("-fecha_c")
-    else:
-        datos_base = Comparativas.objects.filter(autoriza = "SP", estado = estado_selec.upper()).order_by("-fecha_c")
-    
-    datos = []
+    context["cant_oc_sp"] = cant_oc_sp
+    context["estado_selec"] = estado_selec
+    context["estado"] = estado
 
-    for d in datos_base:
+    if estado == "0":
+        con_filtro_estado = con_principal.order_by("-fecha_c")
+    else:
+        con_filtro_estado = con_principal.filter(estado = estado_selec.upper()).order_by("-fecha_c")
+
+    context["creadores"] = con_principal.values_list("creador", flat = True).distinct()
+    context["creadores"].order_by("creador")
+
+    if creador == "0":
+        context["estado_creador"] = "Creador"
+    else:
+        context["estado_creador"] = creador
+
+    context["creador"] = creador
+
+    if creador != "0":
+
+        con_filtro_estado = con_filtro_estado.filter(creador = creador)
+    
+    datos_render = []
+
+    for d in con_filtro_estado:
 
         mensajes = ComparativasMensaje.objects.filter(comparativa = d)
 
@@ -757,11 +628,13 @@ Muchas gracias, saludos!
         else:
             usuario = 0
 
-        datos.append((usuario, mensajes, d))
+        datos_render.append((usuario, mensajes, d))
 
-    return render(request, "oc_autorizar_gerente1.html", {"datos":datos, "estado_selec":estado_selec, "cant_oc_sp":cant_oc_sp})
+    context["datos"] = datos_render
 
-def panelvisto(request, estado):
+    return render(request, "comparativas/comparativa_SP.html", context)
+
+def panelvisto(request, estado, creador):
 
     if request.method == 'POST':
 
@@ -790,37 +663,13 @@ def panelvisto(request, estado):
 
                 comparativa.save()
 
-                # Establecemos conexion con el servidor smtp de gmail
-                mailServer = smtplib.SMTP(settings.EMAIL_HOST, settings.EMAIL_PORT)
-                mailServer.ehlo()
-                mailServer.starttls()
-                mailServer.ehlo()
-                mailServer.login(settings.EMAIL_HOST_USER, settings.EMAIL_HOST_PASSWORD)
+                recibe = datosusuario.objects.get(identificacion = comparativa.creador).email
+                subject = f"Tu OC {comparativa.o_c} de {comparativa.proveedor.name} esta observada por SP"
+                mandar_email(3, recibe, subject)
 
-                # Construimos el mensaje simple
-                
-                mensaje = MIMEText("""
-                    
-Buenas!,
+    context = {}
 
-SP tiene dudas sobre esta OC: {}
-
-Por favor comunicate con el para responder su duda
-
-Gracias!
-
-Saludos!
-                """.format(comparativa.o_c))
-                mensaje['From']=settings.EMAIL_HOST_USER
-                mensaje['To']=datosusuario.objects.get(identificacion = comparativa.creador).email
-                mensaje['Subject']="Tu OC de {} esta observada por SP".format(comparativa.proveedor.name)
-
-
-                # Envio del mensaje
-
-                mailServer.sendmail(settings.EMAIL_HOST_USER,
-                                datosusuario.objects.get(identificacion = comparativa.creador).email,
-                                mensaje.as_string())
+    con_principal = Comparativas.objects.all()
 
     dic_estados = {
         '0':'Todas',
@@ -829,21 +678,53 @@ Saludos!
         '3': 'Visto no conforme',
     }
 
+    cant_todas = len(con_principal)
+    cant_vistas= len(con_principal.filter(visto = dic_estados['1'].upper()))
+    cant_no_vistas = len(con_principal.filter(visto = dic_estados['2'].upper()))
+    cant_no_conforme = len(con_principal.filter(visto = dic_estados['3'].upper()))
+
+    cant_oc_sp = {
+        "cant_todas":cant_todas,
+        "cant_vistas":cant_vistas,
+        "cant_no_vistas":cant_no_vistas,
+        "cant_no_conforme":cant_no_conforme,
+
+    }
+
+    context["cant_oc_sp"] = cant_oc_sp
+
     estado_selec = dic_estados[estado]
     
     datos = 0
 
     if estado == "0":
 
-        datos_base = Comparativas.objects.filter(fecha_c__gte = "2021-02-01", estado = "AUTORIZADA").order_by("-fecha_c")
+        con_filtro_estado = con_principal.filter(fecha_c__gte = "2021-02-01", estado = "AUTORIZADA").order_by("-fecha_c")
 
     else:
     
-        datos_base = Comparativas.objects.filter(visto = estado_selec.upper(), estado = "AUTORIZADA", fecha_c__gte = "2021-02-01").order_by("-fecha_c")
+        con_filtro_estado = con_principal.filter(visto = estado_selec.upper(), estado = "AUTORIZADA", fecha_c__gte = "2021-02-01").order_by("-fecha_c")
+
+    context["creadores"] = con_principal.values_list("creador", flat = True).distinct()
+    context["creadores"].order_by("creador")
+
+    if creador == "0":
+        context["estado_creador"] = "Creador"
+    else:
+        context["estado_creador"] = creador
+
+    context["creador"] = creador
+
+    if creador != "0":
+
+        con_filtro_estado = con_filtro_estado.filter(creador = creador)
+
+    context['estado_selec'] = estado_selec
+    context['estado'] = estado
 
     datos = []
 
-    for d in datos_base:
+    for d in con_filtro_estado:
 
         if not (d.autoriza == "PL" and d.publica == "NO"):
 
@@ -857,7 +738,9 @@ Saludos!
 
             datos.append((usuario, mensajes, d))
 
-    return render(request, 'ocautorizadas.html', {'datos':datos, 'estado_selec':estado_selec})
+    context['datos'] = datos
+
+    return render(request, 'comparativas/comparativa_check.html', context)
 
 def mensajescomparativas(request, id_comparativa):
 
@@ -1278,55 +1161,6 @@ def certificados(request):
 
 # ----------------------------------------------------- VISTAS PARA PROVEEDORES ---------------------------------------------- 
 
-def proveedores(request):
-
-    def a():
-        return 10
-
-    b = {1:2, 2:3, 4:6}
-
-    datos = Proveedores.objects.all()
-
-    datos_prov={}
-    mensaje=0
-    if request.method == 'POST':
-        datos_proveedor = request.POST
-        for item in datos_proveedor:
-            if item!='csrfmiddlewaretoken':
-                datos_prov[item]=datos_proveedor[item]
-
-        if 'modificar' in datos_prov:
-              
-            id_prov=datos_prov['modificar']
-            prov=Proveedores.objects.get(pk=id_prov)
-            prov.name=datos_prov['nombre']
-            prov.phone=int(datos_prov['telefono'])
-            prov.descrip=datos_prov['descripcion']
-            prov.save()
-            mensaje='Registro modificado con exito'
-            return redirect('Proveedores')
-
-        elif 'delete' in datos_prov:
-            id_prov=datos_prov['delete']
-            prov=Proveedores.objects.get(pk=id_prov)
-            prov.delete()
-            
-            mensaje='Registro eliminado con exito'
-            return redirect('Proveedores')
-
-
-        else:
-            prov=Proveedores(
-                name=datos_prov['nombre'],
-                phone=datos_prov['telefono'],
-                 descrip=datos_prov['descripcion'],
-            )
-            mensaje='Registro creado con exito'
-
-            if prov:
-                prov.save()
-                
-    return render(request, 'proveedores.html', {'datos':datos ,'mensaje':mensaje})
 
 # ----------------------------------------------------- VISTAS STOCK ----------------------------------------------
  

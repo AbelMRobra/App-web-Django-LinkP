@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import datosusuario, mensajesgenerales, NotaDePedido, Vacaciones, MonedaLink, EntregaMoneda, Anuncios, Seguimiento, PremiosMonedas, RegistroContable, CanjeMonedas, Minutas, Sugerencia, DicRegistroContable, Atajos, ArqueoChanchito, ArchivosGenerales
+from .models import Cajas, datosusuario, mensajesgenerales, NotaDePedido, Vacaciones, MonedaLink, EntregaMoneda, Anuncios, Seguimiento, PremiosMonedas, RegistroContable, CanjeMonedas, Minutas, Sugerencia, DicRegistroContable, Atajos, ArqueoChanchito, ArchivosGenerales, PresupuestoPersonal
 from import_export import resources
 from import_export.admin import ImportExportModelAdmin
 
@@ -149,6 +149,9 @@ class SugerenciaAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = ('usuario', 'nombre')
     resources_class = SugerenciaResource
 
+
+admin.site.register(Cajas)
+admin.site.register(PresupuestoPersonal)
 admin.site.register(ArchivosGenerales)
 admin.site.register(ArqueoChanchito, ArqueoChanchitoAdmin)
 admin.site.register(Atajos, AtajosAdmin)

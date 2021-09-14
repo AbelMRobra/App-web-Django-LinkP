@@ -19,7 +19,7 @@
     </div>
 
     <div class="row">
-        <div class="col-9">
+        <div class="col-12 col-lg-9">
             <div class="card">
                 <div class="card-body">
                     <h4 class="card-title"><span class="lstick m-r-20"></span>Panel principal</h4>
@@ -66,6 +66,26 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <div class="col-9 col-md-4 col-lg-4 col-xlg-3">
+                                <div class="card" id="img-tarjeta">
+                                    <div class="card-body bg-light text-center">
+                                        <div>
+                                            <h6>Presupuesto</h6>
+                                        </div>
+                                        <small>Finanzas personales</small>
+                    
+                                        <div>
+                                            <img src="{% static 'img/financial.png' %}" alt=""
+                                                style="max-width:100px; height:auto; margin: 5px;">
+                                        </div>
+                    
+                                        <a href="{% url 'Control Gastos' %}"><button class="btn btn-dark">
+                                                Ingresar</button></a>
+                    
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                 </div>
             </div>
@@ -74,6 +94,76 @@
     </div>
 </div>
 
+<a id="add" href="#" data-toggle="modal" data-target="#ModalPresupuesto" class="btn btn-lg btn-info btn-circle fa fa-check-square-o"></a>
+
+<div class="modal fade" id="ModalPresupuesto" tabindex="-1" role="dialog" aria-labelledby="ModalPresupuesto" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+        
+            <form method="POST">
+                <div class="modal-body">
+                    <button type="button" class="close text-dark" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-2">
+                            <img src="{% static 'img/bot.png' %}" width="35px" alt="pedrobot">
+                        </div>
+                        <div class="col-10">
+                            <h4 class="my-2 text-title text-center">Presupuesto del mes</h4>
+                        </div>
+               
+
+                        <div class="mt-4">
+
+                            {% for data in data_presupuesto_personal %}
+                            <div class="row">
+                                <div class="col-8">
+                                    <!--  -->
+                                    <input type="checkbox" name="pp-{{data.id}}" id="{{data.id}}" {% if data.pagado %} checked {% endif %}>
+                                    <label for="{{data.id}}">{{data.nombre}}</label>
+                                    <!--  -->
+                                </div>
+                                <div class="col-4">
+                                    <p>${{data.importe|floatformat:0|intcomma}}</p>
+                                </div>
+                            </div>
+
+                            {% endfor %}
+
+                            <hr>
+                            <div class="row">
+                                <div class="col-8">
+                                    <p>Pendiente a pagar</p>
+                                </div>
+                                <div class="col-4">
+                                    <p>${{data_presupuesto_personal_total|floatformat:0|intcomma}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center mb-3">
+                    <button class="btn btn-primary" type="submit">Guardar</button>
+                    
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+
+    #add{
+        position: fixed;
+        bottom: 60px;
+        right: 20px;
+        z-index: 10;
+    }
+
+</style>
 
 
 <aside class="right-side-panel">

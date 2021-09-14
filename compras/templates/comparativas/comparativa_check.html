@@ -30,15 +30,30 @@
 
                     <div style="text-align: left;">
                         <div class="btn-group">
-                            <button type="button" class="btn dropdown-toggle bg-primary text-light ml-2"
+                            <button type="button" class="btn dropdown-toggle btn-rounded btn-outline-secondary ml-2"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onclick="myFunction()">
                                 {{estado_selec}}
                             </button>
                             <div class="dropdown-menu">
-                                <a class="dropdown-item" href="{% url 'OC autorizadas' 0 %}">Todas</a>
-                                <a class="dropdown-item" href="{% url 'OC autorizadas' 1 %}">Vistas</a>
-                                <a class="dropdown-item" href="{% url 'OC autorizadas' 2 %}">No vistas</a>
-                                <a class="dropdown-item" href="{% url 'OC autorizadas' 3 %}">Observadas</a>
+                                <a class="dropdown-item" href="{% url 'OC autorizadas' 0 creador %}">Todas ({{cant_oc_sp.cant_todas}})</a>
+                                <a class="dropdown-item" href="{% url 'OC autorizadas' 1 creador %}">Vistas ({{cant_oc_sp.cant_vistas}})</a>
+                                <a class="dropdown-item" href="{% url 'OC autorizadas' 2 creador %}">No vistas ({{cant_oc_sp.cant_no_vistas}})</a>
+                                <a class="dropdown-item" href="{% url 'OC autorizadas' 3 creador %}">Observadas ({{cant_oc_sp.cant_no_conforme}})</a>
+
+                            </div>
+                        </div>
+  
+                        <div class="btn-group">
+                            <button type="button" class="btn dropdown-toggle btn-rounded btn-outline-secondary ml-2"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onclick="myFunction()">
+                                {{estado_creador}}
+                            </button>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="{% url 'OC autorizadas' estado 0 %}">Todos</a>
+                                {% for c in creadores %}
+                                <a class="dropdown-item" href="{% url 'OC autorizadas' estado c %}">{{c}}</a>
+                                {% endfor %}
+             
 
                             </div>
                         </div>
