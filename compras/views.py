@@ -602,7 +602,7 @@ def ocautorizargerente1(request, estado, creador):
     else:
         con_filtro_estado = con_principal.filter(estado = estado_selec.upper()).order_by("-fecha_c")
 
-    context["creadores"] = con_principal.values_list("creador", flat = True).distinct()
+    context["creadores"] = con_principal.exclude(creador = None).values_list("creador", flat = True).distinct()
     context["creadores"].order_by("creador")
 
     if creador == "0":
@@ -705,7 +705,7 @@ def panelvisto(request, estado, creador):
     
         con_filtro_estado = con_principal.filter(visto = estado_selec.upper(), estado = "AUTORIZADA", fecha_c__gte = "2021-02-01").order_by("-fecha_c")
 
-    context["creadores"] = con_principal.values_list("creador", flat = True).distinct()
+    context["creadores"] = con_principal.exclude(creador = None).values_list("creador", flat = True).distinct()
     context["creadores"].order_by("creador")
 
     if creador == "0":
