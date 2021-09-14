@@ -683,9 +683,9 @@ def panelvisto(request, estado, creador):
     
 
     cant_todas = con_principal.count()
-    cant_vistas= con_principal.filter(fecha_c__gte = "2021-02-01", estado = "AUTORIZADA", visto = dic_estados['1'].upper()).exclude(Q(autoriza = "PL") | Q(publica = "NO")).count()
-    cant_no_vistas = con_principal.filter(fecha_c__gte = "2021-02-01", estado = "AUTORIZADA", visto = dic_estados['2'].upper()).exclude(Q(autoriza = "PL") | Q(publica = "NO")).count()
-    cant_no_conforme = con_principal.filter(fecha_c__gte = "2021-02-01", estado = "AUTORIZADA", visto = dic_estados['3'].upper()).exclude(Q(autoriza = "PL") | Q(publica = "NO")).count()
+    cant_vistas= con_principal.filter(fecha_c__gte = "2021-02-01", estado = "AUTORIZADA", visto = dic_estados['1'].upper()).exclude(Q(autoriza = "PL") & Q(publica = "NO")).count()
+    cant_no_vistas = con_principal.filter(fecha_c__gte = "2021-02-01", estado = "AUTORIZADA", visto = dic_estados['2'].upper()).exclude(Q(autoriza = "PL") & Q(publica = "NO")).count()
+    cant_no_conforme = con_principal.filter(fecha_c__gte = "2021-02-01", estado = "AUTORIZADA", visto = dic_estados['3'].upper()).exclude(Q(autoriza = "PL") & Q(publica = "NO")).count()
 
     cant_oc_sp = {
         "cant_todas":cant_todas,
