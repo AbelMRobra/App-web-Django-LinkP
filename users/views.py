@@ -33,6 +33,8 @@ from statistics import mode
 from xhtml2pdf import pisa
 from statistics import mode
 from .functions import Avisos
+from .functions_linkcoins import aviso_recepcion_monedas
+from django.db.models import Q
 
 class PdfMinutas(View):
 
@@ -179,15 +181,13 @@ def monedalink(request):
 
     monedas = MonedaLink.objects.filter(usuario_portador = usuario)
 
-    monedas_disponibles = 0
+ 
+    
+    monedas_disponibles =sum([1 for m in monedas if EntregaMoneda.objects.filter(moneda=m).count()==0])
+    
 
-    for m in monedas:
+    monedas_recibidas = EntregaMoneda.objects.filter(usuario_recibe = usuario).count()
 
-        if len(EntregaMoneda.objects.filter(moneda = m)) == 0:
-
-            monedas_disponibles += 1
-
-    monedas_recibidas = len(EntregaMoneda.objects.filter(usuario_recibe = usuario))
     recibidas_list = EntregaMoneda.objects.filter(usuario_recibe = usuario).values_list("mensaje", flat = True)
 
     recibidas_list = list(set(recibidas_list))
@@ -254,111 +254,78 @@ def guia(request):
     otros_datos = 0
     monedas_disponibles_canje = 0
 
+    loged_user=request.user.username
+
+    datos_usuarios=datosusuario.objects.all()
+
+    monedas_entregadas=EntregaMoneda.objects.all()
+
+    monedas=MonedaLink.objects.all()
     try:
-        usuario = datosusuario.objects.get(identificacion = request.user.username)
+        usuario = datos_usuarios.get(identificacion = loged_user)
 
     except:
 
         usuario = 0
 
     if request.method == 'POST':
+        datos = request.POST.dict()
+        #monedas del usuario en sesion
+        monedas_usuario = monedas.filter(usuario_portador = usuario)
 
-        monedas = MonedaLink.objects.filter(usuario_portador = usuario)
+        #de las monedas del usuario en sesion , agregar las disponibles
+        monedas_disponibles = [m for m in monedas_usuario if monedas_entregadas.filter(moneda = m).count() == 0]
 
-        monedas_disponibles = []
-
-        for m in monedas:
-
-            if len(EntregaMoneda.objects.filter(moneda = m)) == 0:
-
-                monedas_disponibles.append(m)
         
-        index_num = 0
+        usuario_destino=datos_usuarios.get(id = int(datos["usuario"]))
 
-        for i in range(int(request.POST["cantidad"])):
+        mens=datos["mensaje"]
+        cantidad=int(datos['cantidad'])
 
-            b = EntregaMoneda(
-                moneda = monedas_disponibles[index_num],
-                usuario_recibe = datosusuario.objects.get(id = int(request.POST["usuario"])),
-                mensaje = request.POST["mensaje"])
-                
+        monedas_para_entregar = [EntregaMoneda(
+                                moneda = monedas_disponibles[c],
+                                usuario_recibe = usuario_destino,
+                                mensaje = mens) for c in range(cantidad)]
 
-            b.save()
-
-            index_num += 1
+        EntregaMoneda.objects.bulk_create(monedas_para_entregar)
 
         try:
-
-            # Establecemos conexion con el servidor smtp de gmail
-            mailServer = smtplib.SMTP(settings.EMAIL_HOST, settings.EMAIL_PORT)
-            mailServer.ehlo()
-            mailServer.starttls()
-            mailServer.ehlo()
-            mailServer.login(settings.EMAIL_HOST_USER, settings.EMAIL_HOST_PASSWORD)
-
-            # Construimos el mensaje simple
-            
-            mensaje = MIMEText("""
-            
-            Recibiste una moneda!,
-
-            "{}"
-
-            - {}
-
-            """.format(b.mensaje, request.user.username))
-            mensaje['From']=settings.EMAIL_HOST_USER
-            mensaje['To']=b.usuario_recibe.email
-            mensaje['Subject']="Recibiste una moneda!!"
-
-
-            # Envio del mensaje
-
-            mailServer.sendmail(settings.EMAIL_HOST_USER,
-                            b.usuario_recibe.email,
-                            mensaje.as_string())
-
+            aviso_recepcion_monedas(usuario_destino.email , mens, request.user.username,cantidad)
         except:
+            mensaje='No se pudo enviar el email'
 
-            pass
+        return redirect('Guia')
 
     try:
-
-        list_usuarios = datosusuario.objects.all().exclude(identificacion = request.user.username).order_by("identificacion").exclude(estado = "NO ACTIVO")
+        
+        list_usuarios = datos_usuarios.filter(~Q(identificacion = loged_user ) & ~Q(estado = "NO ACTIVO")).order_by("identificacion")
 
         ########################################
         # Calculo de monedasentregadas (Listado)
         ########################################
         
-        list_user_unique = EntregaMoneda.objects.filter(moneda__usuario_portador__identificacion = request.user.username).values_list("usuario_recibe__id", flat = True).distinct()
+        list_user_unique = monedas_entregadas.filter(moneda__usuario_portador__identificacion = loged_user).values_list("usuario_recibe__id", flat = True).distinct()
 
         info_coins_entregadas = []
 
         for user in list_user_unique:
 
-            coins_entregadas = datosusuario.objects.get(id = user)
-            coins_cantidad = len(EntregaMoneda.objects.filter(moneda__usuario_portador__identificacion = request.user.username, usuario_recibe__id = user))
+            coins_entregadas = datos_usuarios.get(id = user)
+            coins_cantidad = monedas_entregadas.filter(moneda__usuario_portador__identificacion = loged_user, usuario_recibe__id = user).count()
             info_coins_entregadas.append((coins_entregadas, coins_cantidad))
         
         ########################################
         # Calculo de monedas disponibles para dar
         ########################################
-
-        monedas = MonedaLink.objects.filter(usuario_portador = usuario)
-
-        monedas_disponibles = 0
+        monedas_usuario = monedas.filter(usuario_portador = usuario)
         
-        for m in monedas:
 
-            if len(EntregaMoneda.objects.filter(moneda = m)) == 0:
-
-                monedas_disponibles += 1
-
+        monedas_disponibles =sum([1 for m in monedas_usuario if monedas_entregadas.filter(moneda=m).count()==0])
         ########################################
         # Precio por DAR
         ########################################
 
-        if len(monedas) == monedas_disponibles:
+        if monedas.count() == monedas_disponibles:
             amor = 0
         else:
             amor = 1
@@ -367,14 +334,14 @@ def guia(request):
         # Premio al puesto numero 1 y 2
         ########################################
 
-        rey_l = EntregaMoneda.objects.all().values_list("usuario_recibe", flat = True)
+        rey_l = monedas_entregadas.values_list("usuario_recibe", flat = True)
 
         try:
             if int(usuario.id) == int(mode(rey_l)):
                 rey = 1
 
                 
-            rey_2 = EntregaMoneda.objects.all().values_list("usuario_recibe", flat = True).exclude(usuario_recibe__id = int(mode(rey_l)))
+            rey_2 = monedas_entregadas.values_list("usuario_recibe", flat = True).exclude(usuario_recibe__id = int(mode(rey_l)))
 
             if int(usuario.id) == int(mode(rey_2)):
                 rey = 2
@@ -385,9 +352,10 @@ def guia(request):
         # Calculo de monedas recibidas 
         ########################################
   
-        monedas_recibidas = len(EntregaMoneda.objects.filter(usuario_recibe = usuario))
-        monedas_disponibles_canje = monedas_recibidas - sum(CanjeMonedas.objects.filter(usuario = usuario).values_list("monedas", flat=True))
-        recibidas_list = EntregaMoneda.objects.filter(usuario_recibe = usuario).values_list("mensaje", flat = True)
+        monedas_recibidas = monedas_entregadas.filter(usuario_recibe = usuario).count()
+        monedas_canjeadas =  sum(CanjeMonedas.objects.filter(usuario = usuario).values_list("monedas", flat=True))
+        monedas_disponibles_canje = monedas_recibidas - monedas_canjeadas
+        recibidas_list = monedas_entregadas.filter(usuario_recibe = usuario).values_list("mensaje", flat = True)
 
         recibidas_list = list(set(recibidas_list))
 
@@ -395,7 +363,7 @@ def guia(request):
    
         for r in recibidas_list:
 
-            data = EntregaMoneda.objects.filter(usuario_recibe = usuario, mensaje = r)
+            data = monedas_entregadas.filter(usuario_recibe = usuario, mensaje = r)
 
             usuarios_entrega = ""
 
@@ -417,17 +385,18 @@ def guia(request):
         list_usuarios = 0
 
     try:
-        datos = datosusuario.objects.get(identificacion = request.user)
+        datos = datos_usuarios.get(identificacion = request.user)
 
         if datos:
 
-            areas = datosusuario.objects.values_list("area").exclude(estado = "NO ACTIVO").distinct()
+            areas = datos_usuarios.values_list("area").exclude(estado = "NO ACTIVO").distinct()
 
             otros_datos = []
 
             for a in areas:
 
-                miembros = datosusuario.objects.filter(area = a[0]).order_by("identificacion").exclude(estado = "NO ACTIVO")
+                miembros = datos_usuarios.filter(area = a[0]).order_by("identificacion").exclude(estado = "NO ACTIVO")
+               
 
                 otros_datos.append((a, miembros))
 
@@ -437,18 +406,18 @@ def guia(request):
 
     try:
 
-        usuario = datosusuario.objects.get(identificacion = request.user.username)
+        usuario = datos_usuarios.get(identificacion = loged_user)
 
     except:
         usuario = 0
 
-    monedas_recibidas = len(EntregaMoneda.objects.filter(usuario_recibe = usuario))
+    monedas_recibidas = monedas_entregadas.filter(usuario_recibe = usuario).count()
 
     ########################################
     # Logros Argentino
     ########################################
 
-    argentino = len(EntregaMoneda.objects.filter(moneda__usuario_portador__identificacion = request.user.username, mensaje__icontains = "bolud"))
+    argentino = monedas_entregadas.filter(moneda__usuario_portador__identificacion = loged_user, mensaje__icontains = "bolud").count()
 
 
     ########################################
@@ -456,7 +425,7 @@ def guia(request):
     ########################################
 
     try:
-        logros = Logros.objects.filter(usuario = datosusuario.objects.get(identificacion = request.user.username))
+        logros = Logros.objects.filter(usuario = datos_usuarios.get(identificacion = loged_user))
     
     except:
         logros = 0  
