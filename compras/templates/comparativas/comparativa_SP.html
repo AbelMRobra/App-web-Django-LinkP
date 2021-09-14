@@ -50,7 +50,18 @@
                     </div>
                 </div>
 
-
+                <div class="btn-group">
+                    <button type="button" class="btn btn-rounded btn-outline-secondary dropdown-toggle ml-2"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onclick="myFunction()">
+                        {{estado_creador}}
+                    </button>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="{% url 'Comparativas G1' estado 0 %}">Todos</a>
+                        {% for c in creadores%}
+                        <a class="dropdown-item" href="#">{{c}}</a>
+                        {% endfor %}
+                    </div>
+                </div>
         
                   
             <div class="table-responsive">
