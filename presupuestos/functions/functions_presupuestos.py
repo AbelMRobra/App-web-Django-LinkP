@@ -10,8 +10,6 @@ from presupuestos.models import Capitulos, PresupuestosAlmacenados, Analisis, Ar
 
 
 def bot_telegram(send, id, token):
-
-    print("Active la funcion")
     
     url = "https://api.telegram.org/bot" + token + "/sendMessage"
 

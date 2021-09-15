@@ -100,8 +100,10 @@ def editarcomparativas(request, id_comp):
             except:
                 pass
 
-            comparativa.estado = "ESPERA"
-            comparativa.save()
+            if comparativa.estado == "NO AUTORIZADA":
+
+                comparativa.estado = "ESPERA"
+                comparativa.save()
         
         return redirect(f'/compras/comparativas/{20}/{0}/{0}#{comparativa.id}')
 
@@ -678,9 +680,6 @@ def panelvisto(request, estado, creador):
         '2': 'No_visto',
         '3': 'Visto no conforme',
     }
-
-
-    
 
     cant_todas = con_principal.count()
     cant_vistas= con_principal.filter(fecha_c__gte = "2021-02-01", estado = "AUTORIZADA", visto = dic_estados['1'].upper()).exclude(Q(autoriza = "PL") & Q(publica = "NO")).count()
