@@ -43,7 +43,7 @@ def get_capitulos_analisis(proyecto,datos):
                 analisis=i.analisis.nombre
                 #si el nombre del analisis esta en la lista de analisis del proyecto lo filtra entonces lo agrega al array 
                 if analisis in nombres_analisis:
-                    obj=Analisis.objects.get(nombre=analisis)
+                    obj=Analisis.objects.filter(nombre=analisis)
                     #array de analisis pertencientes al proyecto para este articyulo
                     lista_analisis.append(obj)
 
