@@ -128,7 +128,7 @@ def pricing_editar_unidad(id_unidad, numero, piso, nombre, tipologia, superficie
         unidad_a_editar.sup_equiv = superficie
         unidad_a_editar.save()
 
-        return [1, "Unidad editada correctamente correctamente!"]
+        return [1, "Unidad editada correctamente!"]
 
     except:
 
