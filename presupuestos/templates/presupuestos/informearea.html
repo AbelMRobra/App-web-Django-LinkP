@@ -27,13 +27,7 @@
                 <div class="card">
                     <div class="card-body row">
                         <div class="col-12 justify-content-center">
-                            <div class="row">
-                                <div class="col-12 col-md-12 col-lg-11">
-                                    <h4 class="card-title"><span class="lstick m-r-20"></span>Información general</h4>
-                                    <h5 class="card-subtitle"> Avance de presupuesto </h5>
-                                </div>
-                            </div>
-    
+ 
                             <div>
                                 <div class="my-3">
                                     <h4 class="card-title"><span class="lstick m-r-20"></span>Información de reposición/saldos</h4>
@@ -100,7 +94,39 @@
         </div>
     </div>
 
-
-    
 </div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script>
+
+    $(document).ready(function () {
+        $('#example').DataTable({
+            "language": {
+                "lengthMenu": "Mostar _MENU_ documentos",
+                "zeroRecords": "No se encontro nada - perdon ",
+                "info": "Pagina _PAGE_ de _PAGES_",
+                "infoEmpty": "Sin registros disponibles",
+                "infoFiltered": "(filtrado de _MAX_ registros totales)",
+                "search": "Buscar"
+            },
+            "info": false,
+            "ordering": false,
+            "pading": false,
+            dom: 'Bfrtip',
+            buttons: [
+                {
+                    extend: 'excelHtml5',
+                    title: 'CInforme del área',
+                    className: "btn btn-info",
+
+                    init: function(api, node, config) {
+                        $(node).removeClass('dt-button buttons-excel buttons-html5')
+                        }
+                },
+            ]
+
+        });
+    });
+</script>
 {% endblock %}
