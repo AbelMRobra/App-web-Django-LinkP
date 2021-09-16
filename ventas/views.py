@@ -38,6 +38,7 @@ from email import encoders
 from .functions import calculo_cotizacion
 from .functions_unidades import calculo_m2_unidad, cliente_crm, plan_financiacion_cotizador, info_para_cotizador
 from .wabot import WABot
+from .funciones.f_pricing import *
 import smtplib
 
 
@@ -1319,10 +1320,14 @@ def dosier(request):
 def pricing(request, id_proyecto):
 
     context = {}
-
+    context['alertas'] = []
     #Aqui empieza para cambiar el precio base
 
     precio_nuevo = 0
+
+    if request.method == 'POST':
+
+        context["mensaje"] = pricing_editar_unidad(request.POST["editar"], request.POST["numero"],  request.POST["piso"], request.POST["nombre"], request.POST["tipologia"], request.POST["superficie"])
 
     if request.method == 'GET':
 
@@ -1339,10 +1344,6 @@ def pricing(request, id_proyecto):
             datos_modificar.save()
 
     proyecto = Proyectos.objects.get(id = id_proyecto)
-
-    datos = Unidades.objects.filter(proyecto = proyecto).order_by("orden")
-
-    mensaje = 0
     otros_datos = 0
     anticipo = 0.4
     fecha_entrega =  datetime.datetime.strptime(str(proyecto.fecha_f), '%Y-%m-%d')
@@ -1358,7 +1359,6 @@ def pricing(request, id_proyecto):
     fin_ant = 0
     valor_cuotas = 0
 
-    mensaje = 2
     otros_datos = []
     datos_tabla_unidad = []
     m2_totales = 0
@@ -1375,96 +1375,58 @@ def pricing(request, id_proyecto):
     sumatoria_contado = 0
     sumatoria_financiado = 0
    
-    for dato in datos:
+    unidades = Unidades.objects.filter(proyecto = proyecto).order_by("orden")
 
-        if dato.sup_equiv > 0:
+    for unidad in unidades:
 
-            m2 = round(dato.sup_equiv, 2)
+        m2_resultante = unidades_calculo_m2(unidad.id)
 
-        else:
-
-            m2 = round((dato.sup_propia + dato.sup_balcon + dato.sup_comun + dato.sup_patio), 2)
+        ventas_actualizar_datos(unidad)
 
         try:
-
-            m2_panel = round((dato.sup_propia + dato.sup_balcon + dato.sup_comun + dato.sup_patio), 2)
-
-            venta = VentasRealizadas.objects.get(unidad = dato.id)
-
-            venta.m2 = m2_panel
-
-            venta.asignacion = dato.asig
-
-            venta.save()
-        
-        except:
-
-            basura = 1
-        
-        try:
-            contado = m2*dato.proyecto.desde
+            
+            contado = m2_resultante*unidad.proyecto.desde
         
         except:
 
             contado = 0
-            context['mensajes'] = ["El proyecto no tiene un precio desde para calcular"]
+            context['alertas'].append("El proyecto no tiene un precio desde para calcular")
 
-        features_unidad = FeaturesUni.objects.filter(unidad = dato)
+        # Calculamos el precio por atributos
 
-        if len(features_unidad) != 0:
+        precio_base_final = unidades_calculo_precio_final(unidad.id)
 
-            for f2 in features_unidad:
-
-                contado = contado*f2.feature.inc
-
-            desde = round((contado/m2), 4)
-        
-        else:
-
-            desde = 0
-            context['mensajes'] = ["El proyecto no tiene features"]
+        desde = round((precio_base_final[1]/m2_resultante), 4)
 
         #Aqui calculamos el contado/financiado
         
-        values = [0]
+        financiado = unidades_calculo_financiacion(unidad, meses, precio_base_final[0], m2_resultante)
 
-        for m in range((meses)):
-            values.append(1)
-
-        anticipo = 0.4
-
-        valor_auxiliar = npf.npv(rate=(dato.proyecto.tasa_f/100), values=values)
-
-        incremento = (meses/(1-anticipo)/(((anticipo/(1-anticipo))*meses)+valor_auxiliar))
-
-        financiado = contado*incremento
-
-        financiado_m2 = financiado/m2
+        financiado_m2 = financiado/m2_resultante
         
-        fin_ant = financiado*anticipo
+        anticipo = financiado*0.4
 
-        valor_cuotas = (financiado - fin_ant)/meses
+        valor_cuotas = (financiado - anticipo)/meses
 
         #Aqui actualizamos los datos del almacenero
 
-        if (dato.estado == "DISPONIBLE" and dato.asig == "PROYECTO") or (dato.asig == "SOCIOS") or (dato.estado == "SEÑADA" and dato.asig == "PROYECTO"):
+        if (unidad.estado == "DISPONIBLE" and unidad.asig == "PROYECTO") or (unidad.asig == "SOCIOS") or (unidad.estado == "SEÑADA" and unidad.asig == "PROYECTO"):
             
             ingreso_ventas = ingreso_ventas + contado
 
-            if dato.asig == "SOCIOS":
+            if unidad.asig == "SOCIOS":
 
                 unidades_socios = unidades_socios + contado
 
         #Aqui calculamos IIBB -> IIBB en estado "NO" -- HON.LINK o TERRENO
 
-        if (dato.estado_iibb == "NO"):
+        if (unidad.estado_iibb == "NO"):
 
             iibb = iibb + contado
 
-
         #Aqui calculamos comision -> comsion en estado "NO" -- PROYECTO (No socios)
 
-        if (dato.estado_comision == "NO" and dato.asig == "PROYECTO"):
+        if (unidad.estado_comision == "NO" and unidad.asig == "PROYECTO"):
 
             comision = comision + contado*0.03 
 
@@ -1477,7 +1439,7 @@ def pricing(request, id_proyecto):
 
         try:
   
-            venta= VentasRealizadas.objects.filter(unidad = dato.id).exclude(estado = "BAJA")
+            venta= VentasRealizadas.objects.filter(unidad = unidad.id).exclude(estado = "BAJA")
 
             contador = 0
 
@@ -1493,52 +1455,32 @@ def pricing(request, id_proyecto):
 
         #Aqui vamos armando los m2 totales y los m2 de cocheras
 
-        m2_totales = m2_totales + m2
+        m2_totales = m2_totales + m2_resultante
 
         try:
 
-            if dato.asig == "PROYECTO":
+            if unidad.asig == "PROYECTO":
 
                 sumatoria_contado = sumatoria_contado + contado
                 sumatoria_financiado = sumatoria_financiado + financiado
-                m2_totales_disp = m2_totales_disp + m2
+                m2_totales_disp = m2_totales_disp + m2_resultante
 
         except:
             basura = 1
         
-        if dato.tipo == "COCHERA":
+        if unidad.tipo == "COCHERA":
             cocheras += 1
                            
-        #Aqui sumamos los datos
-
-        # m2 = dato.sup_propia + dato.sup_balcon + dato.sup_comun + dato.sup_patio
-
         contado_total += contado
 
-        datos_tabla_unidad.append((dato, m2, desde, dato.id, contado, financiado, financiado_m2, fin_ant, valor_cuotas, venta))
-
+        datos_tabla_unidad.append((unidad, m2_resultante, desde, unidad.id, contado, financiado, financiado_m2, fin_ant, valor_cuotas, venta))
 
     try:
+
+        pricing_actualizar_almacenero(proyecto, ingreso_ventas, unidades_socios, comision)
         
-        almacenero = Almacenero.objects.get(proyecto = proyecto)
-
-        #Aqui resto el 6%  --> Ya no resto el 6%, solo guardo los cambios en la BBDD
-
-        almacenero.ingreso_ventas = ingreso_ventas - ingreso_ventas*0.00
-        almacenero.save()
-        almacenero.unidades_socios = unidades_socios - unidades_socios*0.00
-        almacenero.save()
-        almacenero.pendiente_comision = comision
-        almacenero.save()
-
-        #################### Comento el calculo de IIBB
-
-        # almacenero.pendiente_iibb_tem = (almacenero.cuotas_a_cobrar + iibb + almacenero.pendiente_iibb_tem_link)*0.02235
-        
-        almacenero.save()
-
     except:
-        context['mensajes'].append("No se encontro un almacenero para vincular")
+        context['alertas'].append("No se encontro un almacenero para vincular")
 
     cantidad = len(datos_tabla_unidad)
 
@@ -1554,7 +1496,7 @@ def pricing(request, id_proyecto):
     except:
         promedio_contado = 0
         promedio_financiado = 0
-        context['mensajes'].append("No se encontro desglose de superficie") 
+        context['alertas'].append("No se encontro desglose de superficie") 
     
     proyecto.precio_pricing = promedio_contado
     proyecto.save()
@@ -1588,16 +1530,14 @@ def pricing(request, id_proyecto):
     anticipo = anticipo*100
 
     context["proyecto"] = proyecto
-    context["datos"] = datos
-    context["mensaje"] = mensaje
+    context["datos"] = unidades
     context["datos_unidades"] = datos_unidades
     context["otros_datos"] = otros_datos
     context["anticipo"] = anticipo
-    context["meses"] = meses
     context['m2_totales'] = m2_totales
     context['contado_total'] = contado_total
 
-    return render(request, 'pricing.html', context)
+    return render(request, 'pricing/pricing_visor.html', context)
 
 def cargarplano(request,**kwargs):
     if request.method=='POST':
@@ -2127,7 +2067,7 @@ Por favor no responder este email
         
         return redirect('modificarcliente', id = cliente.id)
 
-def featuresproject(request, id_proj):
+def atributos_proyecto_panel(request, id_proj):
 
     proyecto = Proyectos.objects.get(id = id_proj)
 
@@ -2136,106 +2076,65 @@ def featuresproject(request, id_proj):
     if request.method == 'POST':
 
         try:
-            nuevo_feature = FeaturesProjects(
-                proyecto = proyecto,
-                nombre = request.POST['nombre'],
-                inc = request.POST['inc'],
-            )
-
-            nuevo_feature.save()
-
-            context["mensaje"] = "Atributo creado correctamente!"
+            context["mensaje"] = atributo_agregar(proyecto, request.POST['nombre'], request.POST['inc'])
 
         except:
             pass
 
         try:
-            edit_feature = FeaturesProjects.objects.get(id = int(request.POST['modificar']))
-            edit_feature.nombre = request.POST['nombre_editar']
-            edit_feature.inc = request.POST['inc']
-            edit_feature.save()
-
-            context["mensaje"] = "Se edito correctamente el atributo"
+            context["mensaje"] = atributo_editar(request.POST['modificar'], request.POST['nombre_editar'], request.POST['inc'])
 
         except:
             pass
 
         try:
-            edit_feature = FeaturesProjects.objects.get(id = int(request.POST['borrar']))
-            edit_feature.delete()
-
-            context["mensaje"] = "Se borro correctamente el atributo"
+            context["mensaje"] = atributo_borrar(request.POST['borrar'])
 
         except:
             pass
-
 
         try:
             data_post = request.POST.items()
-            for d in data_post:
 
-                if d[0] != 'csrfmiddlewaretoken':
-                    aux = d[0].split(sep='&')
+            for dato in data_post:
 
-                    if len(FeaturesUni.objects.filter(feature__nombre = aux[0], unidad = int(aux[1]))) == 1 and d[1] == "off":
-                        feature_un = FeaturesUni.objects.filter(feature__nombre = aux[0], unidad = int(aux[1]))
-                        feature_un.delete()
-
-                    if len(FeaturesUni.objects.filter(feature__nombre = aux[0], unidad = int(aux[1]))) == 0 and d[1] == "on":
+                if '&' in dato[0]:
                     
-                        unidad = Unidades.objects.get(id = int(aux[1]))
-                        feature = FeaturesProjects.objects.get(proyecto = unidad.proyecto, nombre = aux[0])
-                    
-                        feature_un = FeaturesUni(
-                            feature = feature,
-                            unidad = unidad)
-                        feature_un.save()
+                    atributo_asignar_unidad(dato)
+
+                    context["mensaje"] = [1, "Atributos modificados correctamente!"]
         
-            context["mensaje"] = "Unidades editadas correctamente!"
-        except:
+        except:           
             pass
+
     unidades = Unidades.objects.filter(proyecto__id = id_proj).order_by("orden")
   
-    features = FeaturesProjects.objects.filter(proyecto__id = id_proj)
+    atributos_proyecto = FeaturesProjects.objects.filter(proyecto__id = id_proj)
 
-    data = []
+    informacion_unidades = []
 
-    for u in unidades:
+    for unidad in unidades:
 
-        unid_features = []
+        atributo_unidad = []
 
-        for f in features:
-            if len(FeaturesUni.objects.filter(feature = f, unidad = u)) == 1:
-                unid_features.append(("SI", f))
-            if len(FeaturesUni.objects.filter(feature = f, unidad = u)) == 0:
-                unid_features.append(("NO", f))
+        for atributo in atributos_proyecto:
+            if len(FeaturesUni.objects.filter(feature = atributo, unidad = unidad)) == 1:
+                atributo_unidad.append(("SI", atributo))
+            if len(FeaturesUni.objects.filter(feature = atributo, unidad = unidad)) == 0:
+                atributo_unidad.append(("NO", atributo))
 
-        if u.sup_equiv > 0:
+        m2_resultante = unidades_calculo_m2(unidad.id)
+        precios = unidades_calculo_precio_final(unidad.id)
+        precio_base = precios[0]
+        precio_final = precios[1]
 
-            m2 = round(u.sup_equiv, 2)
 
-        else:
+        informacion_unidades.append((unidad, atributo_unidad, m2_resultante, precio_base, precio_final))
 
-            m2 = round((u.sup_propia + u.sup_balcon + u.sup_comun + u.sup_patio), 2)
+        context["features"] = atributos_proyecto
+        context["data"] = informacion_unidades
 
-        base = m2*u.proyecto.desde
-        final = base
-
-        features_unidad = FeaturesUni.objects.filter(unidad = u)
-
-        for f2 in features_unidad:
-
-            final = final*f2.feature.inc
-
-        u.contado = final
-        u.save()
-
-        data.append((u, unid_features, m2, base, final))
-
-        context["features"] = features
-        context["data"] = data
-
-    return render(request, 'featuresproject.html', context)
+    return render(request, 'pricing/pricing_atributos_panel.html', context)
 
 class descargadeventas(TemplateView):
 

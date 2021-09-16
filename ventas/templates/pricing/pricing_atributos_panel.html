@@ -274,8 +274,8 @@ aria-labelledby="ModalResponsableTitle" aria-hidden="true">
     })
 
     Toast.fire({
-        icon: 'success',
-        title: '{{mensaje}}'
+        icon: '{% if mensaje.0 == 1 %}success{% else %}warning{% endif %}',
+        title: '{{mensaje.1}}'
     })
 
 </script>

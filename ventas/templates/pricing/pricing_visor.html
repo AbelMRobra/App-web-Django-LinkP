@@ -181,11 +181,61 @@
                                         <div class="dropdown-menu dropdown-menu-right">
                                             <a class="dropdown-item" href="#" data-toggle="modal"
                                                 data-target="#ModalPlano{{i.0.id}}"><i
-                                                    class="fa fa-file-pdf-o mr-2 text-danger"></i>Cargar plano</a>
-    
+                                                class="fa fa-file-pdf-o mr-2 text-danger"></i>Cargar plano</a>
+                                            <a class="dropdown-item" href="#" data-toggle="modal"
+                                                data-target="#ModalEditar{{i.0.id}}"><i
+                                                class="fa fa-pencil-square-o mr-2"></i>Editar unidad</a>
                                         </div>
                                     </div>
                                 </td>
+
+                                <div class="modal fade" id="ModalEditar{{i.0.id}}" tabindex="-1" role="dialog" aria-labelledby="ModalEditar{{i.0.id}}" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                
+                                            <div class="modal-body">
+                                                <button type="button" class="close text-dark" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                                <form method="post">
+                                                    {% csrf_token %}
+                                                    <div class="row">
+                                                        <div class="col-2">
+                                                            <img src="{% static 'img/bot.png' %}" width="40px" alt="">
+                                                        </div>
+                                                        <div class="col-10 mb-3">
+                                                            <h4 class="my-2 text-title text-center">Editor de unidades</h4>
+                                                        </div>
+                                                        <div>
+                                                            <label for="piso">Numero</label>
+                                                            <input type="text" name="numero" class="form-control" value="{{i.0.orden}}">
+                                                        </div>
+                                                        <div>
+                                                            <label for="piso">Piso</label>
+                                                            <input type="text" name="piso" class="form-control" value="{{i.0.piso_unidad}}">
+                                                        </div>
+                                                        <div>
+                                                            <label for="nombre">Nombre</label>
+                                                            <input type="text" name="nombre" class="form-control" value="{{i.0.nombre_unidad}}">
+                                                        </div>
+                                                        <div class="mt-2">
+                                                            <label for="tipologia">Tipologia</label>
+                                                            <input type="text" name="tipologia" class="form-control" value="{{i.0.tipologia|lower|capfirst}}">
+                                                        </div>
+                                                        <div class="mt-2">
+                                                            <label for="superficie">Superficie</label>
+                                                            <input type="number" step="any" name="superficie" class="form-control" value="{{i.1|floatformat:2}}">
+                                                        </div>
+                                                        <div class="my-3">
+                                                            <button type="submit" name="editar" value="{{i.0.id}}" class="btn btn-primary">Editar</button>
+                                                        </div>
+                                        
+                                                    </div>
+                                                </form> 
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
     
                                 <div class="modal fade" id="ModalPlano{{i.0.id}}" tabindex="-1" role="dialog"
                                     aria-labelledby="ModalPlano{{i.0.id}}" aria-hidden="true">
@@ -252,10 +302,10 @@
                             <h4 class="my-2 text-title text-center">Las siguientes acciones no se realizaron</h4>
                         </div>
                         
-                        {% for mensaje in mensajes %}
+                        {% for alerta in alertas %}
 
                         <ul>
-                            <li>{{mensaje}}</li>
+                            <li>{{alerta}}</li>
                         </ul>
                         {% endfor %}
            
@@ -280,6 +330,32 @@
     }
 
 </style>
+
+{% if mensaje %}
+
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 5000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+    })
+
+    Toast.fire({
+        icon: '{% if mensaje.0 == 1 %}success{% else %}warning{% endif %}',
+        title: '{{mensaje.1}}'
+    })
+
+</script>
+
+{% endif %}
 
 
 

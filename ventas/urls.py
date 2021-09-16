@@ -40,7 +40,7 @@ urlpatterns = [
     url(r'^resumenprecio$', login_required(views.resumenprecio), name = 'Resumen de precio'),
     url(r'^cargarventa$', login_required(views.cargarventa), name = 'Cargar Venta'),
     url(r'^cargar_venta$', login_required(views.cargar_venta), name = 'Cargar una Venta'),
-    url(r'^featuresproject/(?P<id_proj>\d+)/$', login_required(views.featuresproject), name = 'Features Project'),
+    url(r'^featuresproject/(?P<id_proj>\d+)/$', login_required(views.atributos_proyecto_panel), name = 'Features Project'),
     path('cargarplano/<int:id>' ,login_required(views.cargarplano),name="cargarplano"),
 
     ###########################
