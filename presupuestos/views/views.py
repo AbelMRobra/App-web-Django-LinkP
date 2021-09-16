@@ -1816,7 +1816,7 @@ def InformeArea(request):
                 total_fdr_300 = total_fdr_300 + datos_presup.fdr
                 total_ant_300  =  total_ant_300 + datos_presup.anticipos
                 imprevisto_300 = imprevisto_300 + datos_presup.imprevisto
-                saldo_total_300 = saldo_total_300 + valor_proyecto_materiales_300 + valor_proyecto_mo_300 + total_creditos_300 + total_fdr_300 - total_ant_300 + imprevisto_300
+                saldo_total_300 = saldo_total_300 + datos_presup.saldo_mat + datos_presup.saldo_mo + datos_presup.credito + datos_presup.fdr - datos_presup.anticipos + datos_presup.imprevisto
 
             except:
                  basura = 1
