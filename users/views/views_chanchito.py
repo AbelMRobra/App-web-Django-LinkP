@@ -1,16 +1,18 @@
 from django.shortcuts import render, redirect
 from django.views.generic.base import TemplateView 
 from django.http import HttpResponse
-import datetime
 import pandas as pd
 import numpy as np
-from datetime import date
-from rrhh.models import datosusuario, DicRegistroContable, RegistroContable, ArqueoChanchito, PresupuestoPersonal, Cajas
-from finanzas.models import Arqueo
 from openpyxl import Workbook
-from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
-from .functions_chanchito import cajasDerivadas, calcularResumenIngresos, cajasActivas, cajasAdministras, recalculoDolarCaja, agregar_objeto_caja
-from .functions import saludo
+from openpyxl.styles import  Font, PatternFill
+import datetime
+from datetime import date
+
+from finanzas.models import Arqueo
+from rrhh.models import datosusuario, DicRegistroContable, RegistroContable, ArqueoChanchito, PresupuestoPersonal, Cajas
+
+from users.funciones.functions_chanchito import cajasDerivadas, calcularResumenIngresos, cajasActivas, cajasAdministras, recalculoDolarCaja, agregar_objeto_caja
+from users.funciones.functions import saludo
 
 def registro_contable_gastos(request):
 

@@ -1,5 +1,5 @@
-from compras.models import AvisoOrdenesCompras,Comparativas
-from rrhh.models import RegistroContable
+from compras.models import Comparativas
+
 import datetime as dt
 
 

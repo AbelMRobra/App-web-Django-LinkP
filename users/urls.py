@@ -1,23 +1,15 @@
 from django.contrib import admin
 from django.urls import path
 from django.conf.urls import url
-from . import views
-from . import views_sugerencias
-from . import views_chanchito
-from . import views_linkcoins
-from .views import PdfMinutas
-from .views_chanchito import DescargarRegistroContable
-from django.conf import settings
 from django.contrib.auth.decorators import login_required
+
+
+from users.views import views , views_sugerencias ,views_chanchito ,views_linkcoins
+
+
 
 urlpatterns = [
     url(r'^$', views.welcome, name = 'Bienvenido'),
-    url(r'^guia$', login_required(views.guia), name = 'Guia'),
-    url(r'^linkp$', login_required(views.linkp), name = 'Link P'),
-    url(r'^canjemoneda$', login_required(views_linkcoins.canjemonedas), name = 'Canje de monedas'),
-    url(r'^canjesrealizados$', login_required(views_linkcoins.canjerealizados), name = 'Canjes realizados'),
-    url(r'^generador$', login_required(views_linkcoins.generador_linkcoins), name = 'Generador'),
-    url(r'^moneda$', views.monedalink, name = 'Moneda Link'),
     url(r'^register$', views.register, name = 'Registro'),
     url(r'^login$', views.login, name = 'Login'),
     url(r'^logout$', views.logout, name = 'Logout'),
@@ -43,7 +35,7 @@ urlpatterns = [
     url(r'minutascrear$', login_required(views.minutascrear), name = 'Minutas Crear'),
     url(r'minutasmodificar/(?P<id_minuta>\d+)/$', login_required(views.minutasmodificar), name = 'Minutas Modificar'),
     url(r'minutasid/(?P<id_minuta>\d+)/$', login_required(views.minutasid), name = 'Minutas Id'),
-    url(r'^pdfminutas/(?P<id_minuta>\d+)/$', PdfMinutas.as_view(), name = "PDF Minutas"),
+    url(r'^pdfminutas/(?P<id_minuta>\d+)/$', views.PdfMinutas.as_view(), name = "PDF Minutas"),
 
 
     # Template de registro contable
@@ -54,7 +46,15 @@ urlpatterns = [
     path("registro_contable_caja/<int:caja>/<int:estado>/<int:mes>/<int:year>/" ,login_required(views_chanchito.registro_contable_caja) ,name='Registro Contable Caja'),
     url(r'registro_contable/(?P<date_i>\d+)/$', login_required(views_chanchito.registro_contable), name = 'Registro Contable'),
     url(r'registro_contable_editar/$', login_required(views_chanchito.editar_registro_contable), name = 'Registro Contable Edicion'),
-    url(r'^des_registro$', login_required(DescargarRegistroContable.as_view()), name = 'Descarga registro contable'),
+    url(r'^des_registro$', login_required(views_chanchito.DescargarRegistroContable.as_view()), name = 'Descarga registro contable'),
+
+    #linkcoins
+    url(r'^movimientoslinkcoins$', login_required(views_linkcoins.perfil_movimientos_linkcoins), name = 'Guia'),
+    url(r'^linkp$', login_required(views.linkp), name = 'Link P'),
+    url(r'^canjemoneda$', login_required(views_linkcoins.canjear_monedas), name = 'Canje de monedas'),
+    url(r'^canjesrealizados$', login_required(views_linkcoins.canjes_realizados), name = 'Canjes realizados'),
+    url(r'^generador$', login_required(views_linkcoins.generador_linkcoins), name = 'Generador'),
+
 ]
 
 

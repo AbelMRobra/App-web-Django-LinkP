@@ -316,7 +316,7 @@
                 src="{{ request.user.username|logo }}" alt="user" /><span class="hide-menu">{{user.first_name}}</span></a>
 
             <ul aria-expanded="false" class="collapse">
-              <li><a href="/guia">Mi perfil</a></li>
+              <li><a href=" {% url 'Guia' %} ">Mi perfil</a></li>
               {% if request.user|has_group:"PRESUPUESTO NIVEL 10" %}
               <li><a href="/informes">Informes</a></li>
               {% endif %}

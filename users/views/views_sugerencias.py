@@ -1,8 +1,10 @@
 from django.shortcuts import render, redirect
 import requests
+
 from rrhh.models import Sugerencia,datosusuario
-from .funciones.mandaremail import mandar_email
-import datetime
+
+from users.funciones.mandaremail import mandar_email
+
 
 def sugerencias(request):
 

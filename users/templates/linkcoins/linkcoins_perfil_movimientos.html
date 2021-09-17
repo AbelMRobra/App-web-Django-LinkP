@@ -8,10 +8,17 @@
 <div class="container-fluid r-aside">
     <div class="row page-titles">
         <div class="col-md-5 align-self-center">
-            <h3 class="text-themecolor">Tu perfil</h3>
+            <h3 class="text-themecolor">Canje de monedas</h3>
+        </div>
+        <div class="col-md-7 align-self-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+         
+                <li class="breadcrumb-item">Mi perfil</li>
+            </ol>
         </div>
     </div>
-</div>
+
 
 <div class="row">
     <div class="col-lg-6 col-xlg-4">
@@ -21,7 +28,13 @@
                     <div>
                         <h4 class="card-title">{{request.user.first_name}} {{request.user.last_name}}</h4>
                     </div>
-                    <div class="pro-img m-t-20">{% if datos %}<img src="{{datos.imagenlogo.url}}" alt="user"
+                    <div class="pro-img m-t-20">{% if datos %}<img 
+                    {% if datos.imagenlogo  %}
+                    src="{{datos.imagenlogo.url}}"
+                    {% else %}
+                    src="#"
+                    {% endif %}
+                         alt="user"
                             class="img-circle img-responsive">{% else %}<img src="{% static 'img/grupo.png' %}"
                             alt="user" class="img-circle img-responsive">{% endif %}</div>
                     <h3 class="m-b-0">{% if datos %} <small>{{datos.area}}</small>{% else %}<small>Invitado</small>{% endif %}</h3>
@@ -105,6 +118,8 @@
         </div>
     </div>
 </div>
+<div class="row">
+
 
 <div class="col-12">
     <div class="card">
@@ -165,7 +180,7 @@
 
                                 <h6><small>Cantidad de Linkcoins</small> </h6>
                                 <div class="input-group mb-3">
-                                    <input name="cantidad" max="{{monedas_disponibles}}" step="0" type="number"
+                                    <input name="cantidad" min="0" max="{{monedas_disponibles}}" step="0" type="number"
                                         class="form-control form-control" style="width: 100%">
                                 </div>
 
@@ -174,11 +189,11 @@
                                     <textarea class="form-control" id="exampleTextarea" rows="3"
                                         name="mensaje"></textarea>
                                 </div>
-                                <button type="submit" class="btn btn-info">Regalar</button>
+                                <button type="submit" name="regalar" class="btn btn-info">Regalar</button>
                             </form>
 
                         </div>
-                        <div class="modal-footer">
+                        <div class="modal-footer"> 
                             <button type="button" class="btn btn-info" data-dismiss="modal">Cerrar</button>
 
                         </div>
@@ -224,15 +239,24 @@
                     <div style="width: 8%;" class="mx-4 my-2">
                         <div class="row" style="background:#2a3e52; border-radius: 5px;">
                             <div class="col-12 text-center mt-2">
-                                <img src="{{i.0.imagenlogo.url}}" class="rounded" style="width: 30px;" alt="imagen usuario">
+                                <img
+                                    
+                                    {% if i.1 %}
+                                        src="{{i.1.url}}" 
+                                    {% else %}
+                                    src="#"
+                                    {% endif %}
+                                        
+                                
+                                 class="rounded" style="width: 30px;" alt="imagen usuario">
                             </div>
                             <div class="col-12 text-light my-2">
                                 <div>
                                     <img src="{% static 'img/monedaLinkBlanco.png' %}" alt="moneda link"
                                         style="max-width:15px; height:auto; vertical-align: middle;">
-                                    <span style="font-size: 12px;">{{i.1}}</span>
+                                    <span style="font-size: 12px;">{{i.0.suma}}</span>
                                     <span
-                                        style="font-weight: bold; font-size: 12px; margin-left: 5px;">{{i.0.identificacion}}</span>
+                                        style="font-weight: bold; font-size: 12px; margin-left: 5px;">{{i.0.user_recibe}}</span>
                                 </div>
                             </div>
                         </div>
@@ -247,8 +271,8 @@
         </div>
     </div>
 </div>
-
-
+</div>
+</div>
 
 
 <div class="">

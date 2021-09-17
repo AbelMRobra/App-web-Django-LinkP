@@ -1,4 +1,16 @@
 import os
+import datetime
+import requests
+from datetime import date
+import pandas as pd
+import numpy as np
+from statistics import mode
+from xhtml2pdf import pisa
+from statistics import mode
+import smtplib
+from email.mime.text import MIMEText
+
+
 from django.shortcuts import render, redirect
 from django.contrib.auth import logout as do_logout
 from django.contrib.auth import authenticate
@@ -7,7 +19,13 @@ from django.contrib.auth import login as do_login
 from django.contrib.auth.forms import UserCreationForm
 from django.http import HttpResponse
 from django.views.generic import View
-from django.template.loader import get_template 
+from django.template.loader import get_template
+from django.contrib.auth.models import User
+from django.contrib.auth import models
+
+
+from agenda import settings
+
 from finanzas.models import Almacenero, RegistroAlmacenero, Arqueo, RetirodeSocios, Honorarios
 from presupuestos.models import Presupuestos, InformeMensual, TareasProgramadas, Bitacoras
 from proyectos.models import Proyectos, Unidades
@@ -15,24 +33,11 @@ from ventas.models import VentasRealizadas
 from compras.models import Compras, Comparativas, AvisoOrdenesCompras
 from registro.models import RegistroValorProyecto
 from rrhh.models import datosusuario, mensajesgenerales, NotaDePedido, Vacaciones, MonedaLink, EntregaMoneda, Anuncios, Seguimiento, Minutas, Acuerdos, PremiosMonedas, Logros, RegistroContable, CanjeMonedas, DicRegistroContable, ArqueoChanchito
-from .models import Atajos
-import datetime
-import requests
-from datetime import date
-import pandas as pd
-import numpy as np
-from django.contrib.auth.models import User
-import smtplib
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
-from email.mime.base import MIMEBase
-from email import encoders
-from agenda import settings
-from django.contrib.auth import models
-from statistics import mode
-from xhtml2pdf import pisa
-from statistics import mode
-from .functions import Avisos
+
+
+from users.models import Atajos
+from users.funciones.functions import Avisos
+
 
 class PdfMinutas(View):
 
@@ -109,105 +114,6 @@ def linkp(request):
 
     return render(request, 'users/linkp.html')
 
-def monedalink(request):
-
-    usuario = datosusuario.objects.get(identificacion = request.user)
-
-    if request.method == 'POST':
-
-        monedas = MonedaLink.objects.filter(usuario_portador = usuario)
-
-        monedas_disponibles = []
-
-        for m in monedas:
-
-            if len(EntregaMoneda.objects.filter(moneda = m)) == 0:
-
-                monedas_disponibles.append(m)
-
-        index_num = 0
-
-        for i in range(int(request.POST["cantidad"])):
-
-            b = EntregaMoneda(
-                moneda = monedas_disponibles[index_num],
-                usuario_recibe = datosusuario.objects.get(id = int(request.POST["usuario"])),
-                mensaje = request.POST["mensaje"])
-                
-
-            b.save()
-
-            index_num += 1
-
-        try:
-
-            # Establecemos conexion con el servidor smtp de gmail
-            mailServer = smtplib.SMTP(settings.EMAIL_HOST, settings.EMAIL_PORT)
-            mailServer.ehlo()
-            mailServer.starttls()
-            mailServer.ehlo()
-            mailServer.login(settings.EMAIL_HOST_USER, settings.EMAIL_HOST_PASSWORD)
-
-            # Construimos el mensaje simple
-            
-            mensaje = MIMEText("""
-            
-            Recibiste una moneda!,
-
-            "{}"
-
-            - {}
-
-            """.format(b.mensaje, request.user.username))
-            mensaje['From']=settings.EMAIL_HOST_USER
-            mensaje['To']=b.usuario_recibe.email
-            mensaje['Subject']="Recibiste una moneda!!"
-
-
-            # Envio del mensaje
-
-            mailServer.sendmail(settings.EMAIL_HOST_USER,
-                            b.usuario_recibe.email,
-                            mensaje.as_string())
-
-        except:
-
-            pass
-
-
-    list_usuarios = datosusuario.objects.all().exclude(identificacion = request.user)
-
-    monedas = MonedaLink.objects.filter(usuario_portador = usuario)
-
-    monedas_disponibles = 0
-
-    for m in monedas:
-
-        if len(EntregaMoneda.objects.filter(moneda = m)) == 0:
-
-            monedas_disponibles += 1
-
-    monedas_recibidas = len(EntregaMoneda.objects.filter(usuario_recibe = usuario))
-    recibidas_list = EntregaMoneda.objects.filter(usuario_recibe = usuario).values_list("mensaje", flat = True)
-
-    recibidas_list = list(set(recibidas_list))
-
-    recibidas = []
-
-    for r in recibidas_list:
-
-        data = EntregaMoneda.objects.filter(usuario_recibe = usuario, mensaje = r)
-
-        usuarios_entrega = ""
-
-        for d in data:
-
-            if str(d.moneda.usuario_portador.identificacion) not in usuarios_entrega:
-                usuarios_entrega = usuarios_entrega + str(d.moneda.usuario_portador.identificacion) + ""
-
-        recibidas.append((len(data), r, usuarios_entrega))
-  
-    return render(request, 'users/monedaslink.html', {"recibidas":recibidas, "monedas_recibidas":monedas_recibidas, "monedas_disponibles":monedas_disponibles, "list_usuarios":list_usuarios})
 
 def vacaciones(request):
 
@@ -247,224 +153,6 @@ def password(request):
 
     return render(request, "users/password.html", {'mensaje':mensaje})
 
-def guia(request):
-
-    amor = 0
-    rey = 0
-    otros_datos = 0
-    monedas_disponibles_canje = 0
-
-    try:
-        usuario = datosusuario.objects.get(identificacion = request.user.username)
-
-    except:
-
-        usuario = 0
-
-    if request.method == 'POST':
-
-        monedas = MonedaLink.objects.filter(usuario_portador = usuario)
-
-        monedas_disponibles = []
-
-        for m in monedas:
-
-            if len(EntregaMoneda.objects.filter(moneda = m)) == 0:
-
-                monedas_disponibles.append(m)
-        
-        index_num = 0
-
-        for i in range(int(request.POST["cantidad"])):
-
-            b = EntregaMoneda(
-                moneda = monedas_disponibles[index_num],
-                usuario_recibe = datosusuario.objects.get(id = int(request.POST["usuario"])),
-                mensaje = request.POST["mensaje"])
-                
-
-            b.save()
-
-            index_num += 1
-
-        try:
-
-            # Establecemos conexion con el servidor smtp de gmail
-            mailServer = smtplib.SMTP(settings.EMAIL_HOST, settings.EMAIL_PORT)
-            mailServer.ehlo()
-            mailServer.starttls()
-            mailServer.ehlo()
-            mailServer.login(settings.EMAIL_HOST_USER, settings.EMAIL_HOST_PASSWORD)
-
-            # Construimos el mensaje simple
-            
-            mensaje = MIMEText("""
-            
-            Recibiste una moneda!,
-
-            "{}"
-
-            - {}
-
-            """.format(b.mensaje, request.user.username))
-            mensaje['From']=settings.EMAIL_HOST_USER
-            mensaje['To']=b.usuario_recibe.email
-            mensaje['Subject']="Recibiste una moneda!!"
-
-
-            # Envio del mensaje
-
-            mailServer.sendmail(settings.EMAIL_HOST_USER,
-                            b.usuario_recibe.email,
-                            mensaje.as_string())
-
-        except:
-
-            pass
-
-    try:
-
-        list_usuarios = datosusuario.objects.all().exclude(identificacion = request.user.username).order_by("identificacion").exclude(estado = "NO ACTIVO")
-
-        ########################################
-        # Calculo de monedasentregadas (Listado)
-        ########################################
-        
-        list_user_unique = EntregaMoneda.objects.filter(moneda__usuario_portador__identificacion = request.user.username).values_list("usuario_recibe__id", flat = True).distinct()
-
-        info_coins_entregadas = []
-
-        for user in list_user_unique:
-
-            coins_entregadas = datosusuario.objects.get(id = user)
-            coins_cantidad = len(EntregaMoneda.objects.filter(moneda__usuario_portador__identificacion = request.user.username, usuario_recibe__id = user))
-            info_coins_entregadas.append((coins_entregadas, coins_cantidad))
-        
-        ########################################
-        # Calculo de monedas disponibles para dar
-        ########################################
-
-        monedas = MonedaLink.objects.filter(usuario_portador = usuario)
-
-        monedas_disponibles = 0
-        
-        for m in monedas:
-
-            if len(EntregaMoneda.objects.filter(moneda = m)) == 0:
-
-                monedas_disponibles += 1
-
-        ########################################
-        # Precio por DAR
-        ########################################
-
-        if len(monedas) == monedas_disponibles:
-            amor = 0
-        else:
-            amor = 1
-
-        ########################################
-        # Premio al puesto numero 1 y 2
-        ########################################
-
-        rey_l = EntregaMoneda.objects.all().values_list("usuario_recibe", flat = True)
-
-        try:
-            if int(usuario.id) == int(mode(rey_l)):
-                rey = 1
-
-                
-            rey_2 = EntregaMoneda.objects.all().values_list("usuario_recibe", flat = True).exclude(usuario_recibe__id = int(mode(rey_l)))
-
-            if int(usuario.id) == int(mode(rey_2)):
-                rey = 2
-        except:
-            rey = 0
-
-        ########################################
-        # Calculo de monedas recibidas 
-        ########################################
-  
-        monedas_recibidas = len(EntregaMoneda.objects.filter(usuario_recibe = usuario))
-        monedas_disponibles_canje = monedas_recibidas - sum(CanjeMonedas.objects.filter(usuario = usuario).values_list("monedas", flat=True))
-        recibidas_list = EntregaMoneda.objects.filter(usuario_recibe = usuario).values_list("mensaje", flat = True)
-
-        recibidas_list = list(set(recibidas_list))
-
-        recibidas = []
-   
-        for r in recibidas_list:
-
-            data = EntregaMoneda.objects.filter(usuario_recibe = usuario, mensaje = r)
-
-            usuarios_entrega = ""
-
-            for d in data:
-
-                if str(d.moneda.usuario_portador.identificacion) not in usuarios_entrega:
-                    usuarios_entrega = usuarios_entrega + str(d.moneda.usuario_portador.identificacion) + ""
-
-            recibidas.append((len(data), r, usuarios_entrega))
-
-        datos = 0
-
-        otros_datos = 0
-
-    except:
-        recibidas = 0
-        monedas_recibidas = 0
-        monedas_disponibles = 0
-        list_usuarios = 0
-
-    try:
-        datos = datosusuario.objects.get(identificacion = request.user)
-
-        if datos:
-
-            areas = datosusuario.objects.values_list("area").exclude(estado = "NO ACTIVO").distinct()
-
-            otros_datos = []
-
-            for a in areas:
-
-                miembros = datosusuario.objects.filter(area = a[0]).order_by("identificacion").exclude(estado = "NO ACTIVO")
-
-                otros_datos.append((a, miembros))
-
-    except:
-
-        datos = 0
-
-    try:
-
-        usuario = datosusuario.objects.get(identificacion = request.user.username)
-
-    except:
-        usuario = 0
-
-    monedas_recibidas = len(EntregaMoneda.objects.filter(usuario_recibe = usuario))
-
-    ########################################
-    # Logros Argentino
-    ########################################
-
-    argentino = len(EntregaMoneda.objects.filter(moneda__usuario_portador__identificacion = request.user.username, mensaje__icontains = "bolud"))
-
-
-    ########################################
-    # Logros
-    ########################################
-
-    try:
-        logros = Logros.objects.filter(usuario = datosusuario.objects.get(identificacion = request.user.username))
-    
-    except:
-        logros = 0  
-
-
-    conten = {"argentino":argentino, "logros":logros, "rey":rey, "amor":amor, "datos":datos, "otros_datos":otros_datos, "recibidas":recibidas, "monedas_recibidas":monedas_recibidas, "monedas_disponibles":monedas_disponibles, "monedas_disponibles_canje":monedas_disponibles_canje, "list_usuarios":list_usuarios, "info_coins_entregadas":info_coins_entregadas}
-
-    return render(request, "users/guia.html", conten)
 
 
 def dashboard(request):
