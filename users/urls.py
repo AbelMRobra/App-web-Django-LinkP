@@ -1,22 +1,16 @@
 from django.contrib import admin
 from django.urls import path
 from django.conf.urls import url
-from . import views
-from . import views_sugerencias
-from . import views_chanchito
-from . import views_linkcoins
-from .views import PdfMinutas
-from .views_chanchito import DescargarRegistroContable
-from django.conf import settings
 from django.contrib.auth.decorators import login_required
+
+from users.views import views , views_sugerencias , views_chanchito ,views_linkcoins
+from users.views.views import PdfMinutas
+from users.views.views_chanchito import DescargarRegistroContable
+
+
 
 urlpatterns = [
     url(r'^$', views.welcome, name = 'Bienvenido'),
-    url(r'^guia$', login_required(views.guia), name = 'Guia'),
-    url(r'^linkp$', login_required(views.linkp), name = 'Link P'),
-    url(r'^canjemoneda$', login_required(views_linkcoins.canjemonedas), name = 'Canje de monedas'),
-    url(r'^canjesrealizados$', login_required(views_linkcoins.canjerealizados), name = 'Canjes realizados'),
-    url(r'^generador$', login_required(views_linkcoins.generador_linkcoins), name = 'Generador'),
     url(r'^moneda$', views.monedalink, name = 'Moneda Link'),
     url(r'^register$', views.register, name = 'Registro'),
     url(r'^login$', views.login, name = 'Login'),
@@ -55,6 +49,14 @@ urlpatterns = [
     url(r'registro_contable/(?P<date_i>\d+)/$', login_required(views_chanchito.registro_contable), name = 'Registro Contable'),
     url(r'registro_contable_editar/$', login_required(views_chanchito.editar_registro_contable), name = 'Registro Contable Edicion'),
     url(r'^des_registro$', login_required(DescargarRegistroContable.as_view()), name = 'Descarga registro contable'),
+
+
+    #LINKCOINS
+    url(r'^movimientos$', login_required(views_linkcoins.perfil_movimientos_linkcoins), name = 'Guia'),
+    url(r'^linkp$', login_required(views.linkp), name = 'Link P'),
+    url(r'^canjemoneda$', login_required(views_linkcoins.canjear_monedas), name = 'Canje de monedas'),
+    url(r'^canjesrealizados$', login_required(views_linkcoins.canjes_realizados), name = 'Canjes realizados'),
+    url(r'^generador$', login_required(views_linkcoins.generador_linkcoins), name = 'Generador'),
 ]
 
 

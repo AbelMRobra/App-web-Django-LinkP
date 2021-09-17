@@ -5,6 +5,7 @@ from proyectos.models import Proyectos
 # Create your models here.
 
 
+
 class NotaDePedido(models.Model):
 
     class SioNo(models.TextChoices):
