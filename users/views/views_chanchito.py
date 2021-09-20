@@ -70,6 +70,7 @@ def registro_contable_cajas(request):
     context = {}
     context["mensaje"] = "no"
 
+    agregar_objeto_caja()
     user = datosusuario.objects.get(identificacion = request.user.username)
 
     if request.method == 'POST':
@@ -196,7 +197,8 @@ def registro_contable_cajas(request):
                                 creador = registros_nuevo.loc[numero, "Creador"],
                                 fecha = registros_nuevo.loc[numero, "Fecha de emisión"],
                                 estado = estado,
-                                caja = caja,
+                                caja = caja.nombre,
+                                caja_vinculada = caja,
                                 cuenta = cuenta,
                                 categoria = categoria,
                                 importe = importe,
