@@ -25,7 +25,10 @@
                 <div class="card-body ">
 
                     <form method="POST">
+                       
                         {% csrf_token %}
+
+                        <input type="number" name="contador" id="contador" value="1" hidden>
                         <div class="my-4">
                             <h4 class="card-title"> Datos generales</h4>
                             <h6 class="card-subtitle">En caso de que el análisis sea solo mano de obra escribir en el nombre
@@ -40,7 +43,7 @@
                                     </label>
 
                                     <input type="number" name="codigo" class="form-control form-control"
-                                        placeholder="Solo numeros">
+                                        placeholder="Solo numeros" required>
 
                                 </div>
 
@@ -50,7 +53,7 @@
                                         <h5>Nombre del análisis:</h5>
                                     </label>
 
-                                    <input type="text" class="form-control form-control" name="nombre" placeholder="Nombre">
+                                    <input type="text" class="form-control form-control" name="nombre" placeholder="Nombre" required>
 
                                 </div>
 
@@ -60,8 +63,8 @@
                                         <h5>Unidad:</h5>
                                     </label>
 
-                                    <input type="text" class="form-control form-control" name="unidad"
-                                        placeholder="UN/KG/M3">
+                                    <input type="text" class="form-control form-control" name="unidad" 
+                                        placeholder="UN/KG/M3" required>
 
                                 </div>
                             </div>
@@ -72,7 +75,7 @@
                                 <h6 class="card-subtitle"> Prestar atención a las unidades - <strong>AR</strong></h6>
                             </div>
                             <div class="col-12 col-lg-2">
-                                <button type="button" class="btn btn-outline-primary" onclick="myFunction()">Agregar
+                                <button type="button"  class="btn btn-outline-primary" onclick="myFunction()">Agregar
                                     campos</button>
 
                             </div>
@@ -90,7 +93,7 @@
                                                     <h6>Artículo</h6>
                                                 </label>
                                                 <input name="articulo" type="search" class="form-control form-control"
-                                                    placeholder="Nombre del articulo" list="art">
+                                                    placeholder="Nombre del articulo" list="art" required>
                                             </div>
 
                                             <div class="col-lg-6 col-md-6 row-sm">
@@ -99,7 +102,7 @@
                                                 </label>
 
                                                 <input name="cantidad" type="number" step="any"
-                                                    class="form-control form-control" placeholder="Cantidad">
+                                                    class="form-control form-control" placeholder="Cantidad" required>
 
                                             </div>
                                         </div>
@@ -109,7 +112,7 @@
                         </div>
 
                         <div class="d-flex justify-content-center my-3">
-                            <button type="submit" class="btn btn-info">Cargar análisis</button>
+                            <button type="submit" class="btn btn-info" name="crear-analisis">Cargar análisis</button>
 
                         </div>
 
@@ -129,12 +132,14 @@
 <script>
 
     var i = 1;
-
+    let contador = document.getElementById('contador');
     function myFunction() {
+        aux = parseInt(contador.value)
+        contador.value = aux + 1;
 
         i++
         $(".campo").clone().appendTo(".campoarticulos").attr("class", "campo-" + i);
-        $(".campoarticulos").last().find('.campo').find('input').each(function (index) {
+        $(".campoarticulos").last().find('.campo-'+i).find('input').each(function (index) {
 
             $(this).attr("name", $(this).attr("name") + i);
         });

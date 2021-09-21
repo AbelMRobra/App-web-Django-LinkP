@@ -1,16 +1,16 @@
 from django.urls import path
 from django.conf.urls import url
-from presupuestos.views import views, views_articulos, views_constantes,views_creditos
+from presupuestos.views import views, views_articulos, views_constantes,views_creditos,views_analisis
 from django.contrib.auth.decorators import login_required
 
 urlpatterns = [
     #----------------URL PARA CONSTANTES -----------------------------------------
-    url(r'^cons_list/$', login_required(views_constantes.constantes_panel_maestro), name = 'Cons_list'),
-    url(r'^cons_panel/$', login_required(views_constantes.constantes_panel), name = 'Cons_panel'),
-    url(r'^cons_create/$', login_required(views_constantes.constantes_crear), name = 'Cons_create'),
-    url(r'^cons_editar/(?P<id_cons>\d+)/$', login_required(views_constantes.constantes_editar), name = 'Editar_cons'),
-    url(r'^cons_eliminar/(?P<id_cons>\d+)/$', login_required(views_constantes.constantes_eliminar), name = 'Eliminar_cons'),
-    url(r'^registro/$', login_required(views.registroconstante), name = 'Registro'),
+    url(r'^conslist/$', login_required(views_constantes.constantes_panel_maestro), name = 'Cons_list'),
+    url(r'^conspanel/$', login_required(views_constantes.constantes_panel), name = 'Cons_panel'),
+    url(r'^conscreate/$', login_required(views_constantes.constantes_crear), name = 'Cons_create'),
+    url(r'^conseditar/(?P<id_cons>\d+)/$', login_required(views_constantes.constantes_editar), name = 'Editar_cons'),
+    url(r'^conseliminar/(?P<id_cons>\d+)/$', login_required(views_constantes.constantes_eliminar), name = 'Eliminar_cons'),
+    url(r'^registro/$', login_required(views_constantes.registro_constante), name = 'Registro'),
     #----------------URL PARA ARTICULOS -----------------------------------------    
     url(r'^insum_list/$', login_required(views_articulos.articulos_listado_maestro), name = 'Lista de insumos'),   
     url(r'^insum_panel/$', login_required(views_articulos.articulos_listado_general), name = 'Panel de cambios'),
@@ -18,11 +18,11 @@ urlpatterns = [
     url(r'^insum_editar/(?P<id_articulos>\d+)/$', login_required(views_articulos.articulos_editar), name = 'Editar_insumo'),
     url(r'^insum_eliminar/(?P<id_articulos>\d+)/$', login_required(views_articulos.articulos_eliminar), name = 'Eliminar_insumo'),
     #----------------URL PARA ANALISIS -----------------------------------------  
-    url(r'^analisis_list/$', login_required(views.analisis_list), name = 'Lista de analisis'),
-    url(r'^panelanalisis/$', login_required(views.panelanalisis), name = 'Panel de analisis'),
-    url(r'^crearanalisis/$', login_required(views.crearanalisis), name = 'Crear analisis'),
-    url(r'^crearanalisis/(?P<id_analisis>\d+)/$', login_required(views.modificaranalisis), name = 'Modificar analisis'),
-    url(r'^ver_analisis/(?P<id_analisis>\d+)/$', login_required(views.ver_analisis), name = 'Composición Analisis'),
+    url(r'^analisislista/$', login_required(views_analisis.analisis_lista), name = 'Lista de analisis'),
+    url(r'^panelanalisis/$', login_required(views_analisis.analisis_panel), name = 'Panel de analisis'),
+    url(r'^crearanalisis/$', login_required(views_analisis.analisis_crear), name = 'Crear analisis'),
+    url(r'^crearanalisis/(?P<id_analisis>\d+)/$', login_required(views_analisis.analisis_modificar), name = 'Modificar analisis'),
+    url(r'^veranalisis/(?P<id_analisis>\d+)/$', login_required(views_analisis.analisis_individual_ver), name = 'Composición Analisis'),
     #----------------URL PARA PRESPUESTOS -----------------------------------------  
     path('panelpresupuestos',login_required(views.panel_presupuestos),name="Panel de presupuestos"),
     path('presupuestoproyecto/<int:id>/',login_required(views.presupuestostotal),name="presupuesto_proyecto"),

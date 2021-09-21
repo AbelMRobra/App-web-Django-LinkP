@@ -1,10 +1,12 @@
 
 from django.shortcuts import render, redirect
-from proyectos.models import Proyectos
-from presupuestos.models import  Presupuestos
-from presupuestos.functions.functions_saldo import Creditocapitulo
 import numpy as np
-from presupuestos.functions.functions_credito import ajustar_analisis, ajustar_capitulo, ajustar_todo,get_capitulos_analisis
+
+from proyectos.models import Proyectos
+
+from presupuestos.models import  Presupuestos
+from presupuestos.funciones.functions_saldo import Creditocapitulo
+from presupuestos.funciones.functions_credito import ajustar_analisis, ajustar_capitulo, ajustar_todo,get_capitulos_analisis
 
 
 def creditos(request, id_proyecto):
