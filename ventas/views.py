@@ -17,7 +17,7 @@ from django.shortcuts import render
 from django.views.generic import View
 from django.conf import settings
 from numpy.lib import twodim_base
-from datetime import date
+
 from django.shortcuts import redirect
 from django.template.loader import get_template
 import datetime
@@ -39,6 +39,7 @@ from .functions import calculo_cotizacion
 from .functions_unidades import calculo_m2_unidad, cliente_crm, plan_financiacion_cotizador, info_para_cotizador
 from .wabot import WABot
 from .funciones.f_pricing import *
+from .funciones.f_atributos import *
 import smtplib
 
 
@@ -1317,227 +1318,6 @@ def dosier(request):
 
     return render(request, 'dosier.html', {'data_project': data_project, 'dosier': dosier})
 
-def pricing(request, id_proyecto):
-
-    context = {}
-    context['alertas'] = []
-    #Aqui empieza para cambiar el precio base
-
-    precio_nuevo = 0
-
-    if request.method == 'POST':
-
-        context["mensaje"] = pricing_editar_unidad(request.POST["editar"], request.POST["numero"],  request.POST["piso"], request.POST["nombre"], request.POST["tipologia"], request.POST["superficie"])
-
-    if request.method == 'GET':
-
-        nuevo_precio = request.GET.items()
-
-        for precio in nuevo_precio:
-
-            datos_modificar = Proyectos.objects.get(id = id_proyecto)
-
-            precio_nuevo = precio[1]
-
-            datos_modificar.desde = precio_nuevo
-
-            datos_modificar.save()
-
-    proyecto = Proyectos.objects.get(id = id_proyecto)
-    otros_datos = 0
-    anticipo = 0.4
-    fecha_entrega =  datetime.datetime.strptime(str(proyecto.fecha_f), '%Y-%m-%d')
-
-    ahora = datetime.datetime.utcnow()
-
-    y = fecha_entrega.year - ahora.year
-    n = fecha_entrega.month - ahora.month
-    meses = y*12 + n
-
-    financiado = 0
-    financiado_m2 = 0
-    fin_ant = 0
-    valor_cuotas = 0
-
-    otros_datos = []
-    datos_tabla_unidad = []
-    m2_totales = 0
-    m2_totales_disp = 0
-    cocheras = 0
-    ingreso_ventas = 0
-    iibb = 0
-    comision = 0
-    unidades_socios = 0
-    contado_total = 0
-
-    #Datos resumenes de arriba
-
-    sumatoria_contado = 0
-    sumatoria_financiado = 0
-   
-    unidades = Unidades.objects.filter(proyecto = proyecto).order_by("orden")
-
-    for unidad in unidades:
-
-        m2_resultante = unidades_calculo_m2(unidad.id)
-
-        ventas_actualizar_datos(unidad)
-
-        try:
-            
-            contado = m2_resultante*unidad.proyecto.desde
-        
-        except:
-
-            contado = 0
-            context['alertas'].append("El proyecto no tiene un precio desde para calcular")
-
-        # Calculamos el precio por atributos
-
-        precio_base_final = unidades_calculo_precio_final(unidad.id)
-
-        desde = round((precio_base_final[1]/m2_resultante), 4)
-
-        #Aqui calculamos el contado/financiado
-        
-        financiado = unidades_calculo_financiacion(unidad, meses, precio_base_final[0], m2_resultante)
-
-        financiado_m2 = financiado/m2_resultante
-        
-        anticipo = financiado*0.4
-
-        valor_cuotas = (financiado - anticipo)/meses
-
-        #Aqui actualizamos los datos del almacenero
-
-        if (unidad.estado == "DISPONIBLE" and unidad.asig == "PROYECTO") or (unidad.asig == "SOCIOS") or (unidad.estado == "SEÑADA" and unidad.asig == "PROYECTO"):
-            
-            ingreso_ventas = ingreso_ventas + contado
-
-            if unidad.asig == "SOCIOS":
-
-                unidades_socios = unidades_socios + contado
-
-        #Aqui calculamos IIBB -> IIBB en estado "NO" -- HON.LINK o TERRENO
-
-        if (unidad.estado_iibb == "NO"):
-
-            iibb = iibb + contado
-
-        #Aqui calculamos comision -> comsion en estado "NO" -- PROYECTO (No socios)
-
-        if (unidad.estado_comision == "NO" and unidad.asig == "PROYECTO"):
-
-            comision = comision + contado*0.03 
-
-        #except:
-
-            #desde = "NO DEFINIDO"
-            #contado = "NO DEFINIDO"
-
-        venta = 0
-
-        try:
-  
-            venta= VentasRealizadas.objects.filter(unidad = unidad.id).exclude(estado = "BAJA")
-
-            contador = 0
-
-            for v in venta:
-                contador += 1
-
-            if contador == 0:
-                venta = 0
-    
-        except:
-            venta = 0
-
-
-        #Aqui vamos armando los m2 totales y los m2 de cocheras
-
-        m2_totales = m2_totales + m2_resultante
-
-        try:
-
-            if unidad.asig == "PROYECTO":
-
-                sumatoria_contado = sumatoria_contado + contado
-                sumatoria_financiado = sumatoria_financiado + financiado
-                m2_totales_disp = m2_totales_disp + m2_resultante
-
-        except:
-            basura = 1
-        
-        if unidad.tipo == "COCHERA":
-            cocheras += 1
-                           
-        contado_total += contado
-
-        datos_tabla_unidad.append((unidad, m2_resultante, desde, unidad.id, contado, financiado, financiado_m2, fin_ant, valor_cuotas, venta))
-
-    try:
-
-        pricing_actualizar_almacenero(proyecto, ingreso_ventas, unidades_socios, comision)
-        
-    except:
-        context['alertas'].append("No se encontro un almacenero para vincular")
-
-    cantidad = len(datos_tabla_unidad)
-
-    departamentos = cantidad - cocheras
-
-    #Aqui calculo promedio contado y promedio financiado
-
-    try:
-
-        promedio_contado = sumatoria_contado/m2_totales_disp
-        promedio_financiado = sumatoria_financiado/m2_totales_disp
-
-    except:
-        promedio_contado = 0
-        promedio_financiado = 0
-        context['alertas'].append("No se encontro desglose de superficie") 
-    
-    proyecto.precio_pricing = promedio_contado
-    proyecto.save()
-
-    if request.method == 'GET':
-
-        nuevo_precio = request.GET.items()
-
-        for precio in nuevo_precio:
-
-            precio_nuevo = precio[1]
-
-            date = datetime.date.today()
-
-            b = PricingResumen(
-                proyecto = proyecto,
-                fecha = date,
-                precio_prom_contado = promedio_contado,
-                precio_prom_financiado = promedio_financiado,
-                base_precio = precio_nuevo,
-                anticipo = 0.4,
-                cuotas_pend = meses,
-            )
-            
-            b.save()
-
-    otros_datos.append((m2_totales, cantidad, departamentos, cocheras, promedio_contado, promedio_financiado))
-
-    datos_unidades = datos_tabla_unidad
-
-    anticipo = anticipo*100
-
-    context["proyecto"] = proyecto
-    context["datos"] = unidades
-    context["datos_unidades"] = datos_unidades
-    context["otros_datos"] = otros_datos
-    context["anticipo"] = anticipo
-    context['m2_totales'] = m2_totales
-    context['contado_total'] = contado_total
-
-    return render(request, 'pricing/pricing_visor.html', context)
 
 def cargarplano(request,**kwargs):
     if request.method=='POST':
@@ -1556,42 +1336,6 @@ def cargarplano(request,**kwargs):
         else:
             mensaje='No se pudo guardar el pdf'
             return redirect('Pricing',id_proyecto)
-
-def panelpricing(request):
-
-    proyectos = Unidades.objects.all()
-
-
-    datos  = []
-
-    for proyecto in proyectos:
-        datos.append(proyecto.proyecto.nombre)
-
-    datos = list(set(datos))
-
-    if request.method == 'POST':
-
-        palabra_buscar = request.POST.items()
-
-        contador = 1
-
-        for dato in palabra_buscar:
-
-            if contador == 1:
-                contador += 1
-            
-            
-            if dato[0] == "proyecto":
-
-
-                proyecto = Proyectos.objects.get(nombre = dato[1])
-
-                id_proyecto = proyecto.id
-                
-                return redirect( 'Pricing', id_proyecto = id_proyecto )
-
-
-    return render(request, 'panelpricing.html', {"datos":datos})
 
 def cargarventa(request):
 
@@ -2067,74 +1811,6 @@ Por favor no responder este email
         
         return redirect('modificarcliente', id = cliente.id)
 
-def atributos_proyecto_panel(request, id_proj):
-
-    proyecto = Proyectos.objects.get(id = id_proj)
-
-    context = {}
-
-    if request.method == 'POST':
-
-        try:
-            context["mensaje"] = atributo_agregar(proyecto, request.POST['nombre'], request.POST['inc'])
-
-        except:
-            pass
-
-        try:
-            context["mensaje"] = atributo_editar(request.POST['modificar'], request.POST['nombre_editar'], request.POST['inc'])
-
-        except:
-            pass
-
-        try:
-            context["mensaje"] = atributo_borrar(request.POST['borrar'])
-
-        except:
-            pass
-
-        try:
-            data_post = request.POST.items()
-
-            for dato in data_post:
-
-                if '&' in dato[0]:
-                    
-                    atributo_asignar_unidad(dato)
-
-                    context["mensaje"] = [1, "Atributos modificados correctamente!"]
-        
-        except:           
-            pass
-
-    unidades = Unidades.objects.filter(proyecto__id = id_proj).order_by("orden")
-  
-    atributos_proyecto = FeaturesProjects.objects.filter(proyecto__id = id_proj)
-
-    informacion_unidades = []
-
-    for unidad in unidades:
-
-        atributo_unidad = []
-
-        for atributo in atributos_proyecto:
-            if len(FeaturesUni.objects.filter(feature = atributo, unidad = unidad)) == 1:
-                atributo_unidad.append(("SI", atributo))
-            if len(FeaturesUni.objects.filter(feature = atributo, unidad = unidad)) == 0:
-                atributo_unidad.append(("NO", atributo))
-
-        m2_resultante = unidades_calculo_m2(unidad.id)
-        precios = unidades_calculo_precio_final(unidad.id)
-        precio_base = precios[0]
-        precio_final = precios[1]
-
-
-        informacion_unidades.append((unidad, atributo_unidad, m2_resultante, precio_base, precio_final))
-
-        context["features"] = atributos_proyecto
-        context["data"] = informacion_unidades
-
-    return render(request, 'pricing/pricing_atributos_panel.html', context)
 
 class descargadeventas(TemplateView):
 

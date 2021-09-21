@@ -3,80 +3,7 @@ import numpy_financial as npf
 
 from finanzas.models import Almacenero
 from ventas.models import FeaturesProjects, FeaturesUni, VentasRealizadas
-from proyectos.models import Unidades
-
-def atributo_agregar(proyecto, nombre, inc):
-
-    try:
-
-        nuevo_atributo = FeaturesProjects(
-            proyecto = proyecto,
-            nombre = nombre,
-            inc = inc
-        )
-
-        nuevo_atributo.save()
-
-        return [1, "Atributo creado correctamente!"]
-
-    except:
-
-        return [0, "Ocurrio un error inesperado"]
-
-def atributo_editar(id_atributo, nombre, inc):
-
-    try:
-
-        atributo_a_editar = FeaturesProjects.objects.get(id = int(id_atributo))
-        atributo_a_editar.nombre = nombre
-        atributo_a_editar.inc = inc
-        atributo_a_editar.save()
-
-        return [1, "Atributo editado correctamente!"]
-
-    except:
-
-        return [0, "Ocurrio un error inesperado"]
-
-def atributo_borrar(id_atributo):
-
-    try:
-
-        atributo_a_borrar = FeaturesProjects.objects.get(id = int(id_atributo))
-        atributo_a_borrar.delete()
-
-        return [1, "Atributo borrado correctamente!"]
-
-    except:
-
-        return [0, "Ocurrio un error inesperado"]
-
-def atributo_asignar_unidad(info_template):
-
-    nombre_unidad = info_template[0].split(sep='&')
-    nombre = nombre_unidad[0]
-    id_unidad = nombre_unidad[1]
-
-    if len(FeaturesUni.objects.filter(feature__nombre = nombre, unidad = int(id_unidad))) == 0 and info_template[1] == "on":
-                    
-        unidad = Unidades.objects.get(id = int(id_unidad))
-        atributo = FeaturesProjects.objects.get(proyecto = unidad.proyecto, nombre = nombre)
-    
-        nueva_asignacion_atributo_a_unidad = FeaturesUni(
-            
-            feature = atributo,
-            unidad = unidad)
-        
-        nueva_asignacion_atributo_a_unidad.save()
-
-
-    if len(FeaturesUni.objects.filter(feature__nombre = nombre, unidad = int(id_unidad))) > 0 and info_template[1] == "off":
-        
-        asignacion_existente = FeaturesUni.objects.filter(feature__nombre = nombre, unidad = int(id_unidad))
-
-        for asignacion in asignacion_existente:
-
-            asignacion.delete()
+from proyectos.models import Unidades, Proyectos
 
 def unidades_calculo_m2(id_unidad):
 
@@ -116,6 +43,14 @@ def unidades_calculo_precio_final(id_unidad):
     unidad.save()
 
     return [precio_base, precio_final]
+
+def pricing_modificar_precio_desde(id_proyecto, precio_desde):
+    
+    proyecto = Proyectos.objects.get(id = id_proyecto)
+    
+    proyecto.desde = precio_desde
+
+    proyecto.save()
 
 def pricing_editar_unidad(id_unidad, numero, piso, nombre, tipologia, superficie):
     try:
@@ -174,6 +109,8 @@ def ventas_actualizar_datos(unidad):
         venta.asignacion = unidad.asig
 
         venta.save()
+
+
 
 
 
