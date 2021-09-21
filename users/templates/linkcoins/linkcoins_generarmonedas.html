@@ -76,8 +76,8 @@
     
                                         </div>
     
-                                        <button type="submit" name="generar"
-                                            class="btn btn-info">Generar</button>
+                                        <button type="submit"
+                                            class="btn btn-info" name="generar" >Generar</button>
     
                                     </form>
     
@@ -102,14 +102,14 @@
                             <div class="sl-item">
                                 <div class="sl-left"> <img 
                                     
-                                    {% if i.1 %}
-                                    src="{{i.1.url}}" 
+                                    {% if i.0.imagenlogo %}
+                                    src="{{i.0.imagenlogo.url}}" 
                                     {% else %}
                                     src="#" 
                                     {% endif %}
                                         
                                     
-                                    width="35px" class="img-circle mr-2" /> Se entregaron {{i.0.cant}} linkcoins<span class="sl-date">a {{i.0.name}}</span></div>
+                                    width="35px" class="img-circle mr-2" /> Se entregaron {{i.1}} linkcoins<span class="sl-date">a {{i.0.nombre}}</span></div>
                                 <div class="sl-right">
                                     <div><p class="m-t-10">El mensaje fue: <i>"{{i.0.mens}}"</i> </p> </div>
                 
