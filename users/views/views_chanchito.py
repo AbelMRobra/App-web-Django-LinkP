@@ -71,6 +71,8 @@ def registro_contable_cajas(request):
 
     context = {}
     context["mensaje"] = "no"
+    cajas=RegistroContable.objects.all()
+    agregar_objeto_caja(cajas)
 
     user = datosusuario.objects.get(identificacion = request.user.username)
 
@@ -249,7 +251,10 @@ def registro_contable_cajas(request):
     
 
     context["total_cajas"] = cajasActivas(user)
+    #print(cajasActivas(user))
     context["cajas_administras"] = cajasAdministras(user)
+    # for i in cajasAdministras(user):
+    #     print(i.modelo_caja.usuarios_visibles)
     
     context["user"] = user
 

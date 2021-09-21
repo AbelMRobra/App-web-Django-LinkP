@@ -5,6 +5,7 @@ from proyectos.models import Proyectos
 # Create your models here.
 
 
+
 class NotaDePedido(models.Model):
 
     class SioNo(models.TextChoices):
@@ -306,8 +307,6 @@ class Cajas(models.Model):
     def __str__(self):
 
         return f'{self.usuario.identificacion}, {self.nombre}'
-
-
 
 class RegistroContable(models.Model):
 

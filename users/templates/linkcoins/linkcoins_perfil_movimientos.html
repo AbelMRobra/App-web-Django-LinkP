@@ -29,12 +29,12 @@
                         <h4 class="card-title">{{request.user.first_name}} {{request.user.last_name}}</h4>
                     </div>
                     <div class="pro-img m-t-20">{% if datos %}<img 
-                    {% if datos.imagenlogo  %}
-                    src="{{datos.imagenlogo.url}}"
+                    {% if datos.imagenlogo %}
+                        src="{{datos.imagenlogo.url}}"
                     {% else %}
-                    src="#"
+                        src="#"
                     {% endif %}
-                         alt="user"
+                        src="" alt="user"
                             class="img-circle img-responsive">{% else %}<img src="{% static 'img/grupo.png' %}"
                             alt="user" class="img-circle img-responsive">{% endif %}</div>
                     <h3 class="m-b-0">{% if datos %} <small>{{datos.area}}</small>{% else %}<small>Invitado</small>{% endif %}</h3>
@@ -120,6 +120,8 @@
 </div>
 <div class="row">
 
+
+<div class="row">
 
 <div class="col-12">
     <div class="card">
@@ -241,8 +243,8 @@
                             <div class="col-12 text-center mt-2">
                                 <img
                                     
-                                    {% if i.1 %}
-                                        src="{{i.1.url}}" 
+                                    {% if  i.0.imagenlogo %}
+                                        src="{{i.0.imagenlogo.url}}" 
                                     {% else %}
                                     src="#"
                                     {% endif %}
@@ -271,8 +273,10 @@
         </div>
     </div>
 </div>
+
 </div>
 </div>
+
 
 
 <div class="">
