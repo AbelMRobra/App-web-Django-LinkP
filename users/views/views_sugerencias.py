@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 import requests
-
+import datetime as dt
 from rrhh.models import Sugerencia,datosusuario
 
 from users.funciones.mandaremail import mandar_email
@@ -9,50 +9,58 @@ from users.funciones.mandaremail import mandar_email
 def sugerencias(request):
 
     if request.method == 'POST':
-        try:
+        datos=request.POST.dict()
+        usuarios = datosusuario.objects.all()
+        archivo=request.FILES.get('adjunto',None)
 
-            sugerencia_selec = Sugerencia.objects.get(id = int(request.POST['id']))
-            sugerencia_selec.nombre = request.POST['nombre']
-            sugerencia_selec.descripcion = request.POST['descripcion']
+        if 'crear' in datos:
 
-            try:
-                sugerencia_selec.adjunto = request.FILES['adjunto']
-                sugerencia_selec.save()
-            except:
-                sugerencia_selec.save()
-           
-        except:
-            pass
-
-        try:
-
-            creador = datosusuario.objects.get(identificacion = request.user.username)
+            creador = usuarios.get(identificacion = request.user.username)
             nueva_consulta = Sugerencia(
                 usuario = creador,
                 nombre = request.POST['nombre'],
                 descripcion = request.POST['descripcion'],
+                adjunto=archivo,
             )
             nueva_consulta.save()
-
-            try:
-                nueva_consulta.adjunto = request.FILES['adjunto']
-            except:
-                pass
-
+            
             mensaje = """{} ha cargado una nueva sugerencia: {}  """.format(creador.identificacion, request.POST['nombre'])
             titulo = "Nueva sugerencia Link-P"
-            usuarios_it = datosusuario.objects.filter(area = "IT")
+            usuarios_it = usuarios.filter(area = "IT")
 
             for user in usuarios_it:
-                email = user.email
-                mandar_email(mensaje, email, titulo)
+                mandar_email(mensaje, user.email, titulo)
+
+            return redirect('Sugerencias')
 
 
-        except:
-            pass
-        try:
-            today  = date.today()
-            sugerencia = Sugerencia.objects.get(id = int(request.POST['ENTREGADO']))
+        if 'editar' in datos:
+            nombre=datos['nombre']
+            descrip=datos['descripcion']
+
+            archivo=request.FILES.get('adjunto',None)
+     
+            sugerencia_selec = Sugerencia.objects.get(id = int(datos['editar']))
+            sugerencia_selec.nombre = nombre
+            sugerencia_selec.descripcion = descrip
+            if archivo is not None:
+                sugerencia_selec.adjunto = archivo
+            sugerencia_selec.save()
+   
+            return redirect('Sugerencias')
+
+        if 'eliminar' in datos:
+
+            sug=Sugerencia.objects.get(pk=int(datos['eliminar']))
+            sug.delete()
+
+            return redirect('Sugerencias')
+
+
+        if 'ENTREGADO' in datos:
+
+            today  = dt.date.today()
+            sugerencia = Sugerencia.objects.get(id = int(datos['ENTREGADO']))
             sugerencia.estado = "LISTO"
             sugerencia.fecha_listo = today
             sugerencia.save()
@@ -62,23 +70,30 @@ def sugerencias(request):
             mensaje = "Trabajamos y resolvimos tu sugerencia {}, cuentanos tu experiencia y si es lo que buscabas para seguir mejorando!, te deseamos un gran dia!".format(sugerencia.nombre)
             mandar_email(mensaje, email, titulo)
 
-        except:
-            pass
-        if 'respuesta' in request.POST.dict():
-            respuesta=request.POST.dict()['respuesta']
-            id_sug=request.POST.dict()['sugerencia']
+            return redirect('Sugerencias')
+        #RESPUESTAS
+        if 'respuesta' in datos:
+            respuesta=datos['respuesta']
+            id_sug=datos['sugerencia']
             
             sugerencia=Sugerencia.objects.get(pk=id_sug)
             respuestas=sugerencia.respuestas
+
             if respuestas is None:
                 sugerencia.respuestas=respuesta
             else:
                 sugerencia.respuestas=respuestas + '|' + respuesta
             sugerencia.save()
 
+
+            titulo='Tienes una respuesta a la sugerencia "{}"'.format(sugerencia.nombre)
+            mensaje='Tu sugerencia: {}  . Nueva respuesta : {}'.format(sugerencia.descripcion ,respuesta)
+
+            mandar_email(mensaje, sugerencia.usuario.email, titulo)
             return redirect('Sugerencias')
 
     sugerencias = Sugerencia.objects.all().order_by("-id")
+
 
     data=[]
     for i in sugerencias:

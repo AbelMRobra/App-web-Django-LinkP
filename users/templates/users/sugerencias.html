@@ -64,20 +64,20 @@
                                                 <h6>Sugerencia</h6>
                                                 <div class="input-group mb-3">
                                                     <input name="nombre" type="text" class="form-control form-control"
-                                                        style="width: 300px;">
+                                                        style="width: 300px;" required>
                                                 </div>
     
                                                 <h6>Descripcion</h6>
                                                 <div class="input-group mb-3">
                                                     <textarea name="descripcion" cols="100" rows="4"
-                                                        class="form-control"></textarea>
+                                                        class="form-control" required></textarea>
                                                 </div>
     
                                                 <h6>Archivo</h6>
                                                 <div class="input-group mb-3">
                                                     <input name="adjunto" type="file" class="" style="width: 300px;">
                                                 </div>
-                                                <button type="submit" class="btn btn-info">
+                                                <button type="submit" class="btn btn-info" name="crear">
                                                     <b>Cargar</b></button>
     
                                                 {{ form.as_p }}
@@ -227,7 +227,7 @@
                                                         {% endif %}
                                                     </td>
     
-                                                    {% if i.0.usuario.identificacion == request.user.username %}
+                                                    {% if i.0.usuario.identificacion == request.user.username or request.user.username == 'AR' or  request.user.username == 'FM' or request.user.username == 'JNT'%}
     
                                                     <td>
                                                         <div class="btn-group ml-auto">
@@ -237,16 +237,16 @@
                                                             <div class="dropdown-menu dropdown-menu-right">
                                                                 <a class="dropdown-item" href="#" data-toggle="modal"
                                                                     data-target="#ModalEditar{{i.0.id}}"><i
-                                                                        class="fa fa-pencil mr-2"></i>Editar</a>
-                                                            {% if request.user.username == 'AR' or  request.user.username == 'FM' or request.user.username == 'JNT'  %}
+                                                                        class="fa fa-pencil mr-2" ></i>Editar</a>
+  
                                                                 <a class="dropdown-item" href="#" data-toggle="modal"
                                                                     data-target="#ModalRespuesta{{i.0.id}}"><i
                                                                         class="fa fa-comments-o mr-2"></i>Mensaje</a>
-                                                                        {% endif %}
+                                                              
                                                                 <a class="dropdown-item text-danger" href="#"
                                                                     data-toggle="modal"
                                                                     data-target="#ModalBorrar{{i.0.id}}"><i
-                                                                        class="fa fa-trash-o mr-2"></i>Borrar</a>
+                                                                        class="fa fa-trash-o mr-2" ></i>Borrar</a>
                                                             </div>
                                                         </div>
                                                     </td>
@@ -303,7 +303,7 @@
                                                                     <h5 class="modal-title text-light"
                                                                         id="exampleModalLongTitle">
                                                                         Editar </h5>
-                                                                    <button type="button" class="close text-light"
+                                                                    <button type="button"  class="close text-light"
                                                                         data-dismiss="modal" aria-label="Close">
                                                                         <span aria-hidden="true">&times;</span>
                                                                     </button>
@@ -333,7 +333,7 @@
                                                                                 style="width: 300px;">
                                                                         </div>
     
-                                                                        <button type="submit" name="id" value="{{i.0.id}}"
+                                                                        <button type="submit" name="editar" value="{{i.0.id}}"
                                                                             class="btn btn-info">
                                                                             <b>Editar</b></button>
                                                                         {{ form.as_p }}
