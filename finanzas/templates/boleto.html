@@ -31,7 +31,13 @@
                     <div class="row d-flex justify-content-center">
                         <div class="col col-md-12 col-lg-12 text-center">
 
-                            <img src="{{ctacte.venta.unidad.proyecto.iamgen.url}}" class="img-fluid" alt="..."
+                            <img 
+                            {% if ctacte.venta.unidad.proyecto.imagen %}
+                            src="{{ctacte.venta.unidad.proyecto.imagen.url}}"
+                            {% else %}
+                                src="#"
+                            {% endif %}
+                            class="img-fluid" alt="..."
                                 style="max-width:200px;width:auto;height:auto; margin-top: 5px; margin-bottom: 5px;">
                         </div>
                         <div class="text-center mt-3">

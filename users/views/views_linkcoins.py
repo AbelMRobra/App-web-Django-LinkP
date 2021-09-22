@@ -85,18 +85,10 @@ def perfil_movimientos_linkcoins(request):
             return redirect('Guia')
 
     
-    try:
-        info_coins_entregadas,monedas_disponibles,recibidas,amor,monedas_disponibles_canje,list_usuarios,rey,rey_l,rey_2=calculos(datos_usuarios,monedas,monedas_entregadas,usuario,loged_user,canjemonedas)
     
-        datos = 0
-
-        otros_datos = 0
-
-    except:
-        recibidas = 0
-        monedas_recibidas = 0
-        monedas_disponibles = 0
-        list_usuarios = 0
+    info_coins_entregadas,monedas_disponibles,recibidas,amor,monedas_disponibles_canje,list_usuarios,rey,rey_l,rey_2=calculos(datos_usuarios,monedas,monedas_entregadas,usuario,loged_user,canjemonedas)
+    
+    
 
     try:
         datos = datos_usuarios.get(identificacion = request.user)
@@ -220,7 +212,7 @@ def generador_linkcoins(request):
     #USUARIOS QUE HAN RECIBIDO MONEDAS GENERADAS POR LINK
  
     datos_monedas_entregadas = EntregaMoneda.objects.filter(Q(moneda__nombre__icontains = "LINK")) \
-                    .values(user=F('usuario_recibe__identificacion'),name=F('usuario_recibe__nombre'),mens=F('mensaje')) \
+                    .values(user=F('usuario_recibe__identificacion'),nombre=F('usuario_recibe__nombre'),mens=F('mensaje')) \
                     .distinct().annotate(cant=Count('id'))
 
     data_generador = [(i , datosusuario.objects.get(identificacion = i['user']).imagenlogo) for i in datos_monedas_entregadas]

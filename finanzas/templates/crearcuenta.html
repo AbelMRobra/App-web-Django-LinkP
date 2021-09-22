@@ -35,7 +35,15 @@
                     <div class="row justify-content-center">
                         <div class="col-12 col-md-12 col-lg-12 text-center">
 
-                            <img src="{{proyecto.iamgen.url}}" class="img-fluid" alt="..."
+                            <img 
+                            
+                            {% if proyecto.imagen %}
+                            src="{{proyecto.imagen.url}}"
+                            {% else %}
+                            src="#"
+                            {% endif %}
+                                
+                            class="img-fluid" alt="..."
                                 style="max-width:200px;width:auto;height:auto; margin-top: 5px; margin-bottom: 5px;">
 
                         </div>

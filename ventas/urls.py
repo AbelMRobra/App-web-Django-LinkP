@@ -18,14 +18,12 @@ urlpatterns = [
     url(r'^crearreclamo$', login_required(views.crearreclamo), name = 'Crear reclamo'),
     url(r'^estmerc$', login_required(views.estmercado), name = 'Estudio de mercado'),
     url(r'^panelunidades$', login_required(views.panelunidades), name = 'Panel de unidades'),
-    url(r'^pricing/(?P<id_proyecto>\d+)/$', login_required(views_pricing.pricing_visor), name = 'Pricing'),
     url(r'^editarasig/(?P<id_unidad>\d+)/$', login_required(views.editarasignacion), name = 'Editar asignacion'),
     url(r'^cotizador/(?P<id_unidad>\d+)/$', login_required(views.cotizador), name = 'Cotizador'),
     path('emailpdfcoti/<int:id_unidad>/<int:id_cliente>/<str:info_coti>', PdfCotiza.as_view(), name = "Email del coti"),
     url(r'^editarventa/(?P<id_venta>\d+)/$', login_required(views.editarventa), name = 'Editar venta'),
     url(r'^detalleventa/(?P<id_venta>\d+)/$', login_required(views.detalleventa), name = 'Detalle venta'),
     url(r'^eliminarventa/(?P<id_venta>\d+)/$', login_required(views.eliminarventa), name = 'Eliminar venta'),
-    url(r'^panelpricing$', login_required(views_pricing.pricing_panel), name = 'Panel de pricing'),
     url(r'^radiografia$', login_required(views.radiografia), name = 'Radiografia del cliente'),
     url(r'^informeventa$', login_required(views.informeventa), name = 'Informe de venta'),
     url(r'^fechaentrega$', login_required(views.fechaentrega), name = 'Fecha de entrega'),
@@ -43,7 +41,10 @@ urlpatterns = [
     url(r'^cargar_venta$', login_required(views.cargar_venta), name = 'Cargar una Venta'),
     url(r'^featuresproject/(?P<id_proj>\d+)/$', login_required(views_atributos.atributos_proyecto_panel), name = 'Features Project'),
     path('cargarplano/<int:id>' ,login_required(views.cargarplano),name="cargarplano"),
-
+    ##########################
+    # URL de pricing
+     url(r'^pricing/(?P<id_proyecto>\d+)/$', login_required(views_pricing.pricing_visor), name = 'Pricing'),
+     url(r'^panelpricing$', login_required(views_pricing.pricing_panel), name = 'Panel de pricing'),
     ###########################
     # URL de descarga
     ###########################    

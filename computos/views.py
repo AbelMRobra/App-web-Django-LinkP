@@ -118,10 +118,6 @@ def CrearListaComputos(request):
 
                             dato_tipologia_form = i
 
-                            print(dato_proyecto_form)
-                            print(dato_planta_form)
-                            print(dato_rubro_form)
-                            print(dato_tipologia_form)
 
                             b = Computos(
                                 proyecto = dato_proyecto_form,

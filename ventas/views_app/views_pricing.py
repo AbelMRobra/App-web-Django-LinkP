@@ -35,7 +35,9 @@ def pricing_visor(request, id_proyecto):
 
         context["mensaje"] = pricing_editar_unidad(request.POST["editar"], request.POST["numero"],  request.POST["piso"], request.POST["nombre"], request.POST["tipologia"], request.POST["superficie"])
 
-        pricing_actualizar_almacenero(proyecto, ingreso_ventas, unidades_socios, comision)
+        
+        
+        #pricing_actualizar_almacenero(proyecto, ingreso_ventas, unidades_socios, comision)
 
     if request.method == 'GET':
 

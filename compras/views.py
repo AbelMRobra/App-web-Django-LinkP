@@ -340,8 +340,7 @@ def comprasdisponibles(request):
             
             elif i[0] == "documento":
 
-                print(compra_c)
-                print(documento_c)
+                pass
 
 
     lista = []
@@ -1527,7 +1526,7 @@ def cargaretiro(request, nombre_compra):
 
     for i in compras:
         if str(i.nombre) == "29032019.PUERTAS":
-            print(i.nombre)
+            pass
 
     return render(request, 'cargaretiro.html',)
 

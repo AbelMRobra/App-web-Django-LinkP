@@ -157,73 +157,74 @@ def cargaunidadesproyecto(request,**kwargs):
         datos=request.POST.dict()
         
         proyecto=Proyectos.objects.get(pk=id_proyecto)
-        try:
-            cant_uni=int(datos['contador'])
-            nuevas_unidades=[]
-            for form in range(0,cant_uni):
-                if form==0:  
-                    tipo=datos['tipo']
-                    if tipo=='DEPARTAMENTO':
-                        if 'tipologia' in datos:
-                            tipologia=datos['tipologia']
-                        else:
-                            tipologia='MONO'
+        
+        cant_uni=int(datos['contador'])
+        nuevas_unidades=[]
+        for form in range(0,cant_uni):
+            if form==0:  
+                tipo=datos['tipo']
+                if tipo=='DEPARTAMENTO':
+                    if 'tipologia' in datos:
+                        tipologia=datos['tipologia']
                     else:
-                        tipologia=datos['tipo']
-                    unidad=Unidades(
-                        proyecto=proyecto,
-                        piso_unidad=datos['nombre_piso'] + ' ' + datos['numero_piso'],
-                        nombre_unidad=datos['nomenclatura'], #nomenclatura
-                        tipo=tipo,
-                        tipologia=tipologia,
-                        sup_propia=datos['sup_propia'],
-                        sup_balcon=datos['sup_balcon'],
-                        sup_patio=datos['sup_patio'],
-                        sup_comun=datos['sup_comun'],
-                        sup_equiv=datos['sup_equivalente'],
-                        plano_venta=request.FILES['plano_venta']
-                    )
-                    
+                        tipologia='MONO'
                 else:
-                    form=str(form)
-                    nm='nombre_piso'+form
-                    np='numero_piso'+form
-                    nu='nomenclatura'+form
-                    
-                    supp='sup_propia'+form
-                    supb='sup_balcon'+form
-                    suppa='sup_patio'+form
-                    supc='sup_comun'+form
-                    supq='sup_equivalente'+form
-                    t='tipo'+form
-                    ti='tipologia'+form
-                    tipo=datos[t]
-                    
-                    if tipo=='DEPARTAMENTO':
-                        if ti in datos:
-                            tipologia=datos[ti]
-                        else:
-                            tipologia='MONO'
+                    tipologia=datos['tipo']
+                plano=request.FILES.get('plano_venta',None)
+                unidad=Unidades(
+                    proyecto=proyecto,
+                    piso_unidad=datos['nombre_piso'] + ' ' + datos['numero_piso'],
+                    nombre_unidad=datos['nomenclatura'], #nomenclatura
+                    tipo=tipo,
+                    tipologia=tipologia,
+                    sup_propia=datos['sup_propia'],
+                    sup_balcon=datos['sup_balcon'],
+                    sup_patio=datos['sup_patio'],
+                    sup_comun=datos['sup_comun'],
+                    sup_equiv=datos['sup_equivalente'],
+                    plano_venta=plano
+                )
+                
+            else:
+                form=str(form)
+                nm='nombre_piso'+form
+                np='numero_piso'+form
+                nu='nomenclatura'+form
+                
+                supp='sup_propia'+form
+                supb='sup_balcon'+form
+                suppa='sup_patio'+form
+                supc='sup_comun'+form
+                supq='sup_equivalente'+form
+                t='tipo'+form
+                ti='tipologia'+form
+                tipo=datos[t]
+                
+                if tipo=='DEPARTAMENTO':
+                    if ti in datos:
+                        tipologia=datos[ti]
                     else:
-                        tipologia=tipo
-                    unidad=Unidades(
-                        proyecto=proyecto,
-                        piso_unidad=datos[nm] + ' ' + datos[np],
-                        nombre_unidad=datos[nu], #nomenclatura
-                        tipo=tipo,
-                        tipologia=tipologia,
-                        sup_propia=datos[supp],
-                        sup_balcon=datos[supb],
-                        sup_patio=datos[suppa],
-                        sup_comun=datos[supc],
-                        sup_equiv=datos[supq],
-                        plano_venta=request.FILES['plano_venta']
-                    )
-                nuevas_unidades.append(unidad)
+                        tipologia='MONO'
+                else:
+                    tipologia=tipo
+                
+                unidad=Unidades(
+                    proyecto=proyecto,
+                    piso_unidad=datos[nm] + ' ' + datos[np],
+                    nombre_unidad=datos[nu], #nomenclatura
+                    tipo=tipo,
+                    tipologia=tipologia,
+                    sup_propia=datos[supp],
+                    sup_balcon=datos[supb],
+                    sup_patio=datos[suppa],
+                    sup_comun=datos[supc],
+                    sup_equiv=datos[supq],
+                    plano_venta=plano
+                )
+            nuevas_unidades.append(unidad)
 
-            Unidades.objects.bulk_create(nuevas_unidades)
-        except:
-            mensaje='Ocurrio un error'
+        Unidades.objects.bulk_create(nuevas_unidades)
+        
         return redirect('Lista unidades proyecto',proyecto.id)
     return render(request, 'carga_unidades_proyecto.html',{'proyecto':id_proyecto})
 

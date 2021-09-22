@@ -41,6 +41,7 @@ def calculos(datos_usuarios,monedas,monedas_entregadas,usuario,loged_user,canjem
         # Premio al puesto numero 1 y 2
         ########################################
 
+        rey=0
         rey_l = monedas_entregadas.values_list("usuario_recibe", flat = True)
 
         try:
@@ -54,7 +55,7 @@ def calculos(datos_usuarios,monedas,monedas_entregadas,usuario,loged_user,canjem
                 rey = 2
         except:
             rey = 0
-
+        
         ########################################
         # Calculo de monedas recibidas 
         ########################################
@@ -81,6 +82,7 @@ def calculos(datos_usuarios,monedas,monedas_entregadas,usuario,loged_user,canjem
 
             recibidas.append((len(data), r, usuarios_entrega))
 
+        
         return info_coins_entregadas,monedas_disponibles,recibidas,amor,monedas_disponibles_canje,list_usuarios,rey,rey_l,rey_2
 
 def estadisticasLinkcoin():

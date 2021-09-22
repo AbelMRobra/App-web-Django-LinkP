@@ -72,7 +72,7 @@ def registro_contable_cajas(request):
     context = {}
     context["mensaje"] = "no"
     cajas=RegistroContable.objects.all()
-    agregar_objeto_caja(cajas)
+    
 
     user = datosusuario.objects.get(identificacion = request.user.username)
 
@@ -379,9 +379,9 @@ def registro_contable(request, date_i):
                     try:
                         arqueo = Arqueo.objects.filter(fecha = fecha)[0]
                         data_frame = pd.read_excel(arqueo.arqueo)
-                        print("Estoy con el dataframe")
+              
                         data_caja = data_frame[data_frame['PROYECTO'] == ArqueoChanchito.objects.filter(usuario = user, caja = caja)[0].arqueo]['EFECTIVO']
-                        print(np.array(data_caja))
+                 
                     except:
                         pass
         else:
