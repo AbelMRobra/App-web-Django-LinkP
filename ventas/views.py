@@ -2068,7 +2068,7 @@ class DescargaPricing(TemplateView):
             for m in range((meses)):
                 values.append(1)
             anticipo = 0.4
-            valor_auxiliar = np.npv(rate=(dato.proyecto.tasa_f/100), values=values)
+            valor_auxiliar = npf.npv(rate=(dato.proyecto.tasa_f/100), values=values)
             incremento = (meses/(1-anticipo)/(((anticipo/(1-anticipo))*meses)+valor_auxiliar))
             financiado = contado*incremento
             financiado_m2 = financiado/m2                

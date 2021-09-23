@@ -30,7 +30,15 @@
             <div class="card-body">
 
                 <div style="text-align: center; margin-bottom: 50px;">
-                    <img src="{{proyecto.iamgen.url}}" class="img-fluid" alt="..."
+                    <img 
+                    
+                    {% if proyecto.imagen %}
+                    src="{{proyecto.imagen.url}}"
+                    {% else %}
+                    src="#"
+                    {% endif %}
+                        
+                    class="img-fluid" alt="..."
                         style="max-width:200px;width:auto;height:auto; margin-top: 5px; margin-bottom: 5px;">
                 </div>
           

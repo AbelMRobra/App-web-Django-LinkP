@@ -7,7 +7,7 @@ from users.funciones.mandaremail import mandar_email
 
 
 def sugerencias(request):
-
+    mensaje=''
     if request.method == 'POST':
         datos=request.POST.dict()
         usuarios = datosusuario.objects.all()
@@ -68,7 +68,11 @@ def sugerencias(request):
             email = sugerencia.usuario.email
             titulo = """Hola {}!, completamos tu sugerencia!  """.format(sugerencia.usuario.nombre)
             mensaje = "Trabajamos y resolvimos tu sugerencia {}, cuentanos tu experiencia y si es lo que buscabas para seguir mejorando!, te deseamos un gran dia!".format(sugerencia.nombre)
-            mandar_email(mensaje, email, titulo)
+            
+            try:
+                mandar_email(mensaje, email, titulo)
+            except:
+                mensaje='Ocurrio un error con el envio del email'
 
             return redirect('Sugerencias')
         #RESPUESTAS
@@ -102,4 +106,4 @@ def sugerencias(request):
         respuestas=resp.split('|')
         sug.extend([i,respuestas])
         data.append(sug)
-    return render (request, 'users/sugerencias.html', {'data':data})
+    return render (request, 'users/sugerencias.html', {'data':data,'mensaje':mensaje})

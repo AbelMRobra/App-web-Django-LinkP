@@ -310,7 +310,7 @@ def listaunidadesproyecto(request,**kwargs):
             unidad.sup_patio=float(datos['sup_patio'])
             unidad.sup_comun=float(datos['sup_comun'])
             unidad.sup_equiv=float(datos['sup_equivalente'])
-            unidad.plano_venta=archivos['plano_venta']
+            unidad.plano_venta=archivos.get('plano_venta',None)
             unidad.save()
 
          
