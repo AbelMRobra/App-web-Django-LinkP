@@ -193,6 +193,7 @@ def registro_contable_cajas(request):
                                     usuario = usuario,
                                     nombre = caja,
                                 )
+                                caja_vincular.save()
 
                             try:
                                 nuevo_registro = RegistroContable(
