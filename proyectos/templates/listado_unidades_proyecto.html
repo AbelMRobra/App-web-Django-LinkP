@@ -195,10 +195,10 @@
                                                                         <select name="nombre_piso"
                                                                             class="form-control form-control">
                                                                                
-                                                                            <option  {% if i.piso_unidad == 'SS'  %}
+                                                                            <option  {% if 'SS' in i.piso_unidad  %}
                                                                             selected  {% endif %} value="SS">SS
                                                                             </option>
-                                                                            <option {% if i.piso_unidad == 'PB'  %}
+                                                                            <option {% if 'PB' in i.piso_unidad  %}
                                                                             selected  {% endif %} value="PB">PB
                                                                             </option>
                                                                             <option {% if 'PISO' in i.piso_unidad  %}
@@ -239,7 +239,7 @@
                                                                 <div class="col">
                                                                     <div>
                                                                         <input name="nomenclatura" type="text"
-                                                                            class="form-control form-control" value="{{i.piso_unidad.0}}"
+                                                                            class="form-control form-control" value="{{i.nombre_unidad}}"
                                                                             placeholder="Ej: A">
                                                                     </div>
                                                                 </div>

@@ -155,7 +155,7 @@ def cargaunidadesproyecto(request,**kwargs):
     
     if request.method=='POST':
         datos=request.POST.dict()
-        
+        archivos=request.FILES
         proyecto=Proyectos.objects.get(pk=id_proyecto)
         
         cant_uni=int(datos['contador'])
@@ -170,7 +170,7 @@ def cargaunidadesproyecto(request,**kwargs):
                         tipologia='MONO'
                 else:
                     tipologia=datos['tipo']
-                plano=request.FILES.get('plano_venta',None)
+                plano=archivos.get('plano_venta',None)
                 unidad=Unidades(
                     proyecto=proyecto,
                     piso_unidad=datos['nombre_piso'] + ' ' + datos['numero_piso'],
@@ -195,11 +195,12 @@ def cargaunidadesproyecto(request,**kwargs):
                 supb='sup_balcon'+form
                 suppa='sup_patio'+form
                 supc='sup_comun'+form
+                plano='plano_venta'+form
                 supq='sup_equivalente'+form
                 t='tipo'+form
                 ti='tipologia'+form
                 tipo=datos[t]
-                
+                plano_v=archivos.get(plano,None)
                 if tipo=='DEPARTAMENTO':
                     if ti in datos:
                         tipologia=datos[ti]
@@ -219,7 +220,7 @@ def cargaunidadesproyecto(request,**kwargs):
                     sup_patio=datos[suppa],
                     sup_comun=datos[supc],
                     sup_equiv=datos[supq],
-                    plano_venta=plano
+                    plano_venta=plano_v
                 )
             nuevas_unidades.append(unidad)
 
@@ -301,6 +302,7 @@ def listaunidadesproyecto(request,**kwargs):
                 tipologia=datos['tipo']
           
             archivos=request.FILES
+            plano_v=archivos.get('plano_venta',None)
             unidad.piso_unidad=datos['nombre_piso'] + ' ' + datos['numero_piso']
             unidad.nombre_unidad=datos['nomenclatura'] #nomenclatura
             unidad.tipo=tipo
@@ -310,7 +312,10 @@ def listaunidadesproyecto(request,**kwargs):
             unidad.sup_patio=float(datos['sup_patio'])
             unidad.sup_comun=float(datos['sup_comun'])
             unidad.sup_equiv=float(datos['sup_equivalente'])
-            unidad.plano_venta=archivos.get('plano_venta',None)
+            if plano_v is not None:
+                unidad.plano_venta=plano_v
+            else:
+                pass
             unidad.save()
 
          
