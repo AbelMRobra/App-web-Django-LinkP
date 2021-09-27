@@ -34,6 +34,7 @@ urlpatterns = [
     path('rrhh/', include('rrhh.urls')),
     path('tecnica/', include('tecnica.urls')),
     path('crm/', include('crm.urls')),
+    path('curvas/', include('curvas.urls')),
     path('admin/', admin.site.urls),
 
 ]

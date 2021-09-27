@@ -67,6 +67,7 @@ INSTALLED_APPS = [
     'rrhh',
     'tecnica',
     'crm',
+    'curvas',
 
     
 ]
@@ -83,6 +84,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
+    'django_userforeignkey.middleware.UserForeignKeyMiddleware',
 
 ]
 
