@@ -212,7 +212,7 @@ def cajasAdministras(user):
 
 def recalculoDolarCaja(caja, user_caja):
 
-    con_principal = RegistroContable.objects.filter(caja = caja, usuario__identificacion = user_caja, importe_usd = None).order_by("-fecha")
+    con_principal = RegistroContable.objects.filter(caja_vinculada = caja, usuario__identificacion = user_caja, importe_usd = None).order_by("-fecha")
 
     n = 0
 
