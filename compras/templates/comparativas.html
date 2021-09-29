@@ -139,6 +139,9 @@
                                     ({{rechazada}})</a>
                                 <a class="dropdown-item" href="{% url 'Comparativas' 6 creador autoriza %}">Comparativas con OC
                                     ({{comparativa_oc}})</a>
+
+                                <a class="dropdown-item" href="{% url 'Comparativas' 7 creador autoriza %}">Sin filtros
+                                    ({{comparativa_oc}})</a>
     
                             </div>
                         </div>
@@ -160,7 +163,7 @@
                                 </thead>
                                 <tbody style="font-size: 14px;">
     
-                                    {% for i in datos|slice:"120" %}
+                                    {% for i in datos %}
     
                                     {% if i.2.publica == "SI" or request.user.username == i.2.autoriza or request.user.username == i.2.creador %}
     

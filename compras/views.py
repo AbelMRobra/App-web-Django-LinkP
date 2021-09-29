@@ -818,7 +818,7 @@ def comparativas(request, estado, creador, autoriza):
     # Consultas necesarias
 
     con_comparativas = Comparativas.objects.all()
-    
+
     usuarios=datosusuario.objects.all()
     sp=usuarios.get(identificacion='PL')
     pl=usuarios.get(identificacion='SP')
@@ -1009,6 +1009,11 @@ def comparativas(request, estado, creador, autoriza):
         consulta = consulta.exclude(estado = "NO AUTORIZADA")
         mensaje_aux = "Comp con OC"
 
+    if estado == "7":
+
+        consulta = con_comparativas.order_by("-fecha_c")
+        mensaje_aux = "Sin filtro"
+
     if autoriza=='0':
             
             mensaje_PL_SP = 'Todos'
@@ -1036,6 +1041,7 @@ def comparativas(request, estado, creador, autoriza):
             mensaje_aux=mensaje_aux
 
     datos_base = consulta.order_by("-fecha_c")
+    
     if creador != "0":
        
         datos_base = consulta.filter(creador = mensaje_creador).order_by("-fecha_c")
@@ -1071,6 +1077,11 @@ def comparativas(request, estado, creador, autoriza):
     # Reordenar la lista
   
     list_creadores = sorted(list_creadores, key=lambda creador : creador.identificacion)
+
+    # Recortamos para evitar problemas para renderizar
+
+    if estado != "7":
+        datos = datos[0:150]
     
     context = {}
     context['mensaje_creador'] = mensaje_creador
