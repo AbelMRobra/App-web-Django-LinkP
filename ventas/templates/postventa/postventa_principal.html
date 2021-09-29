@@ -115,7 +115,7 @@
                                 
                                 <td style="min-width: 130px;">
                                     {% for adjunto in i.1 %}
-                                    <a href="{{adjunto.reclamo.url}}" data-toggle="tooltip" data-placement="left" title="{{adjunto.nombre}}"><i class="fa fa-lg fa-file-pdf-o text-danger mr-1"></i></a>
+                                    <a href="{{adjunto.archivo.url}}" data-toggle="tooltip" data-placement="left" title="{{adjunto.nombre}}"><i class="fa fa-lg fa-file-pdf-o text-danger mr-1"></i></a>
                                     {% endfor %}
                                 <a href="#" data-toggle="modal" data-target="#ModalAdjunto{{i.0.id}}" ><i data-toggle="tooltip" data-placement="left" title="Agregar archivo" class="fa fa-lg fa-plus-circle text-info"></i></a>
                                 
