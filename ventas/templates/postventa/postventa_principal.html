@@ -1,0 +1,933 @@
+{% extends "users/inicio2.html" %}
+{% load apptags_extras %}
+
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+
+<div class="container-fluid">
+    <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+            <h3 class="text-themecolor">Panel principal postventa</h3>
+        </div>
+
+        <div class="col-md-7 align-self-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+                <li class="breadcrumb-item">Postventa</li>
+
+            </ol>
+        </div>
+    </div>
+</div>
+
+<div class="col-lg-12 col-xlg-6 button-group">
+    <div class="card">
+        <div class="card-body">
+            <div class="d-flex justify-content-between">
+                <div>
+                    <h4 class="card-title"><span class="lstick"></span>Listado de reclamos</h4>
+                    <h6 class="card-subtitle">Seguimiento de los mismos</h6>
+                </div>
+                <div class="btn-group ml-auto">
+                    <a href="JavaScript:void(0)" class="icon-options-vertical link" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false"></a>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <a class="dropdown-item" href="{% url 'Crear reclamo' %}"><i
+                                class="fa fa-plus-circle mr-2"></i>Nuevo reclamo</a>
+                        <a class="dropdown-item" href="{% url 'Reporte Reclamo' %}"><i
+                                class="fa fa-book mr-2"></i>Reporte</a>
+                    </div>
+                </div>
+            </div>
+
+            <div style="text-align: left;">
+                <div class="table-responsive">
+                    <table id="example" class="table" style="width:100%">
+                        <thead style="display: none;">
+                            <tr style="font-size: 14px;">
+                                <th class="text-center">VB</th>
+                                <th class="text-center">Resp.</th>
+                                <th>Nº</th>
+                                <th>Proyecto</th>
+                                <th>Unidad</th>
+                                <th>Detalle</th>
+                                <th>Fechas</th>
+                                <th>Estado</th>
+                                <th>Adjuntos</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            {% for i in datos %}
+                            <tr style="font-size: 14px;">
+                                <td class="text-center">
+                                    <i style="display: none;">{{i.0.visto}}</i>
+                                    {% if i.0.visto %}
+                                    <i class="fa fa-lg fa-check-circle text-success"></i>
+                                    {% else %}
+                                    <form  method="POST">
+                                    {% csrf_token %}
+                                    <button type="submit" name="cambio_estado" value="{{i.0.id}}" class="btn fa fa-lg fa-exclamation-circle text-warning"></button></form>
+                                    {% endif %}
+                                </td>
+                                <td class="text-center">
+                                    <i style="display: none;">{{i.0.responsable}}</i>
+                                    {% if i.0.responsable %}
+                                    <img src="{{i.0.responsable.imagenlogo.url}}"
+                                            alt="user" width="30">
+                                    {% else %}
+                                    <img src="{% static 'img/anonimo2.png' %}"
+                                            alt="user" width="30">
+                                    {% endif %}</td>
+                                <td class="font-bold">{{i.0.numero}}</td>
+                                <td class="font-bold">{{i.0.proyecto|lower|capfirst}}</td>
+                                <td class="font-bold text-info">{{i.0.unidad}}</td>                               
+                                <td><a href="{% url 'Reclamo' i.0.id %}">{{i.0.propietario|lower|capfirst}}
+                                        <h6 class="card-subtitle mb-0 mt-1">Contacto: {{i.0.usuario|lower|capfirst}}</h6>
+                                    </a>
+                                </td>
+                                <td style="width: 130px; min-width: 130px;">
+                                    
+                                    <small>{{i.0.fecha_reclamo|date:"Y/m/d"}}</small>
+                                    {% if i.0.fecha_solucion %}
+                                    <div>
+                                        <small>{{i.0.fecha_solucion|date:"Y/m/d"}}<i class="fa fa-check-circle text-success ml-1"></i></small>
+                                    </div>
+
+                                    {% endif %}
+                                </td>
+                                
+                                <td>
+                                    <i style="display: none;">{{i.0.estado}}</i>
+                                    {% if i.0.estado == 'LISTO' %}
+                                    <i data-toggle="tooltip" data-placement="left" title="Listo" class="fa fa-lg fa-check-circle text-success"></i>
+                                    {% elif i.0.estado == 'TRABAJANDO' %}
+                                    <i data-toggle="tooltip" data-placement="left" title="Trabajando!" class="fa fa-lg fa-child text-warning"></i>
+                                    {% elif i.0.estado == 'PROBLEMAS' %}
+                                    <i data-toggle="tooltip" data-placement="left" title="Problemas" class="fa fa-lg fa-grav text-danger"></i>
+                                    {% else %}
+                                    <i data-toggle="tooltip" data-placement="left" title="En espera" class="fa fa-lg fa-clock-o text-info"></i>
+                                    {% endif %}
+                                </td>
+                                
+                                <td style="min-width: 130px;">
+                                    {% for adjunto in i.1 %}
+                                    <a href="{{adjunto.reclamo.url}}" data-toggle="tooltip" data-placement="left" title="{{adjunto.nombre}}"><i class="fa fa-lg fa-file-pdf-o text-danger mr-1"></i></a>
+                                    {% endfor %}
+                                <a href="#" data-toggle="modal" data-target="#ModalAdjunto{{i.0.id}}" ><i data-toggle="tooltip" data-placement="left" title="Agregar archivo" class="fa fa-lg fa-plus-circle text-info"></i></a>
+                                
+                                </td>
+
+                                <td>
+                                    <div class="btn-group ml-auto">
+                                        <a href="JavaScript:void(0)" class="icon-options-vertical link"
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
+                                        <div class="dropdown-menu dropdown-menu-right">
+                                                   
+                                            <a class="dropdown-item" href="#" data-toggle="modal"
+                                            data-target="#ModalEditarReclamo{{i.0.id}}"><i
+                                                class="fa fa-pencil-square-o mr-2"></i>Editar</a>
+                                            <a class="dropdown-item" href="#" data-toggle="modal"
+                                            data-target="#ModalBorrarAdjuntos{{i.0.id}}"><i
+                                                class="fa fa-file-pdf-o mr-2 text-danger"></i>Borrar adjuntos</a>
+                                            <a class="dropdown-item" href="#" data-toggle="modal"
+                                            data-target="#ModalBorrarReclamo{{i.0.id}}"><i
+                                                class="fa fa-trash mr-2 text-danger"></i>Borrar reclamo</a>
+                                                   
+                                        </div>
+                                    </div>
+                                </td>
+
+                            </tr>
+
+                            <div class="modal fade" id="ModalEditarReclamo{{i.0.id}}" tabindex="-1" role="dialog" aria-labelledby="ModalEditarReclamo{{i.0.id}}" aria-hidden="true">
+                                <div class="modal-dialog modal-lg" role="document">
+                                    <div class="modal-content">
+                                    
+                                        <div class="modal-body">
+                                            <button type="button" class="close text-dark" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                
+                                            <div class="row">
+                                                <div class="col-1">
+                                                    <img src="{% static 'img/bot.png' %}" width="40px" alt="">
+                                                </div>
+                                                <div class="col-11 mb-3">
+                                                    <h4 class="font-bold ml-3">Editar reclamo {{i.0.nombre}}</h4>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="row p-4">
+                                                <form role="form" method="POST"> {% csrf_token %}
+                                                               
+                            
+                                                    <div class="row">
+                            
+                                                        <div class="col-4">
+                                                            <div>
+                            
+                                                                <label for="numero">
+                                                                    <h6>Nº del reclamo</h6>
+                                                                </label>
+                            
+                                                            </div>
+                            
+                                                            <div class="row d-flex justify-content-center mt-1 mb-2">
+                                                                <div class="col">
+                                                                    <div>
+                            
+                                                                        <input name="numero_editar" type="number" class="form-control form-control"
+                                                                            value="{{i.0.numero}}" required="true">
+                            
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        
+                            
+                                                        <div class="col-4">
+                                                            <div>
+                            
+                                                                <label for="clasificacion">
+                                                                    <h6>Clasificación</h6>
+                                                                </label>
+                            
+                                                            </div>
+                            
+                                                            <div class="row d-flex justify-content-center mt-1 mb-2">
+                                                                <div class="col">
+                                                                    <div>
+                            
+                                                                        <input name="clasificacion_editar" type="search"
+                                                                            class="form-control form-control" list="clasificacion" value="{{i.0.clasificacion}}">
+                            
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                            
+                                                        </div>
+                                                        <div class="col-4">
+                                                            <div>
+                            
+                                                                <label for="numero">
+                                                                    <h6>Fecha</h6>
+                                                                </label>
+                            
+                                                            </div>
+                            
+                                                            <div class="row d-flex justify-content-center mt-1 mb-2">
+                                                                <div class="col">
+                                                                    <div>
+                            
+                                                                        <input name="fecha_editar" type="date" class="form-control form-control" value="{{i.0.fecha_reclamo|date:'Y-m-d'}}"
+                                                                            required="true">
+                            
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                            
+                                                        </div>
+                                                    </div>
+                            
+                                                    <div class="row">
+                                                        <div class="col-4">
+                                                            <div>
+                            
+                                                                <label for="proyecto">
+                                                                    <h6>Proyecto</h6>
+                                                                </label>
+                            
+                                                            </div>
+                            
+                                                            <div class="row d-flex justify-content-center mt-1 mb-2">
+                                                                <div class="col">
+                                                                    <div>
+                            
+                                                                        <input name="proyecto_editar" type="search" class="form-control form-control" value="{{i.0.proyecto|lower|capfirst}}"
+                                                                            list="proyectos_postventa">
+                            
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-4">
+                                                            <div>
+                            
+                                                                <label for="unidad">
+                                                                    <h6>Unidad</h6>
+                                                                </label>
+                            
+                                                            </div>
+                            
+                                                            <div class="row d-flex justify-content-center mt-1 mb-2">
+                                                                <div class="col">
+                                                                    <div>
+                            
+                                                                        <input name="unidad_editar" type="text" class="form-control form-control"
+                                                                            value="{{i.0.unidad}}">
+                            
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                            
+                                                        </div>
+                                                        <div class="col-4">
+                                                            <div>
+                            
+                                                                <label for="propietario">
+                                                                    <h6>Propietario</h6>
+                                                                </label>
+                            
+                                                            </div>
+                            
+                                                            <div class="row d-flex justify-content-center mt-1 mb-2">
+                                                                <div class="col">
+                                                                    <div>
+                            
+                                                                        <input name="propietario_editar" type="text" class="form-control form-control"
+                                                                        value="{{i.0.propietario|lower|capfirst}}" required="true">
+                            
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                            
+                                                    <div class="row">
+                                                        <div class="col-4">
+                                                            
+                                                            <div>
+                            
+                                                                <label for="usuario">
+                                                                    <h6>Contacto</h6>
+                                                                </label>
+                            
+                                                            </div>
+                            
+                                                            <div class="row d-flex justify-content-center mt-1 mb-2">
+                                                                <div class="col">
+                                                                    <div>
+                            
+                                                                        <input name="usuario_editar" type="text" class="form-control form-control"
+                                                                            value="{{i.0.usuario|lower|capfirst}}" required="true">
+                            
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-4">
+                                                            <div>
+                            
+                                                                <label for="telefono">
+                                                                    <h6>Telefono</h6>
+                                                                </label>
+                            
+                                                            </div>
+                            
+                                                            <div class="row d-flex justify-content-center mt-1 mb-2">
+                                                                <div class="col">
+                                                                    <div>
+                            
+                                                                        <input name="telefono_editar" type="number" class="form-control form-control"
+                                                                            value="{{i.0.telefono}}">
+                            
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                            
+                                                        </div>
+                                                        <div class="col-4">
+                                                            <div>
+                            
+                                                                <label for="email">
+                                                                    <h6>Email</h6>
+                                                                </label>
+                            
+                                                            </div>
+                            
+                                                            <div class="row d-flex justify-content-center mt-1 mb-2">
+                                                                <div class="col">
+                                                                    <div>
+                            
+                                                                        <input name="email_editar" type="text" class="form-control form-control"
+                                                                            value="{{i.0.email}}">
+                            
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-4">
+                                                            <div>
+                            
+                                                                <label for="Responsable">
+                                                                    <h6>Responsable</h6>
+                                                                </label>
+                            
+                                                            </div>
+                            
+                                                            <div class="row d-flex justify-content-center mt-1 mb-2">
+                                                                <div class="col">
+                                                                    <div>
+                            
+                                                                        <input name="responsable_editar" type="text" class="form-control form-control"
+                                                                            value="{{i.0.responsable}}">
+                            
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                            
+                                                    <div>
+                                                        <div>
+                            
+                                                            <label for="descripcion">
+                                                                <h6>Descripción</h6>
+                                                            </label>
+                            
+                                                        </div>
+                            
+                                                        <div class="row d-flex justify-content-center mt-1 mb-2">
+                                                            <div class="col">
+                                                                <div>
+                                                                    <textarea class="form-control" id="exampleTextarea" rows="3"
+                                                                    name="descripcion_editar">{{i.0.descripcion}}</textarea>
+                            
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>                             
+                            
+                                                    <div class="row d-flex justify-content-center mt-2">
+                                                        <div class="col-lg-6 text-center">
+                                                            <button type="submit" name="editar_reclamo" value="{{i.0.id}}" class="btn btn-primary">Editar</button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="modal fade" id="ModalBorrarAdjuntos{{i.0.id}}" tabindex="-1" role="dialog" aria-labelledby="ModalBorrarAdjuntos{{i.0.id}}" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                    
+                                        <div class="modal-body">
+                                            <button type="button" class="close text-dark" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                
+                                            <div class="row">
+                                                <div class="col-1">
+                                                    <img src="{% static 'img/bot.png' %}" width="40px" alt="">
+                                                </div>
+                                                <div class="col-11 mb-3">
+                                                    <h4 class="font-bold ml-3">Borrar adjuntos de reclamo {{i.0.nombre}}</h4>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="row p-4">
+                                                <form action="" method="POST">
+                                                                {% csrf_token %}
+
+                                                    {% if i.1|length > 0 %}
+                                                    <h4 class="mb-2">Seleccione los archivos</h4> 
+                                                    <hr style="width: 50%"/>
+                                                    {% else %}
+                                                    <h4>Todo limpio!</h4> 
+                                                    {% endif %}
+
+                                                    {% for adjunto in i.1 %}
+
+                                                        <input type="checkbox" name="adjunto-{{adjunto.id}}" value="{{adjunto.id}}"
+                                                        id="adjunto{{adjunto.id}}">
+
+                                                        <label class="ml-2" for="adjunto{{adjunto.id}}">
+                                                            {{adjunto.nombre}}</label>
+                                                    
+                                                    {% endfor %}              
+                            
+                                                    <div class="row d-flex justify-content-center mt-2">
+                                                        
+                                                        {% if i.1|length > 0 %}
+                                                        <div class="col-lg-6 text-center">
+                                                            <button type="submit" name="borrar_adjuntos" value="{{i.0.id}}" class="btn btn-danger">Borrar</button>
+                                                        </div>
+                                                        {% endif %}
+                                                            
+                                                   
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="modal fade" id="ModalBorrarReclamo{{i.0.id}}" tabindex="-1" role="dialog" aria-labelledby="ModalBorrarReclamo{{i.0.id}}" aria-hidden="true">
+                                <div class="modal-dialog " role="document">
+                                    <div class="modal-content">
+                                    
+                                        <div class="modal-body">
+                                            <button type="button" class="close text-dark" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                
+                                            <div class="row">
+                                                <div class="col-1">
+                                                    <img src="{% static 'img/bot.png' %}" width="40px" alt="">
+                                                </div>
+                                                <div class="col-11 mb-3">
+                                                    <h4 class="font-bold ml-3">Borrar reclamo {{i.0.nombre}}</h4>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="row p-4">
+                                                <form action="" method="POST">
+                                                                {% csrf_token %}
+                                                    
+                                                    <h4 class="text-danger font-bold">¿Seguro?</h4> 
+                                                    
+                                                    <h5 class="mt-2">Esta acción no se puede deshacer</h5>  
+                            
+                                                    <div class="row d-flex justify-content-center mt-2">
+                                                        <div class="col-lg-6 text-center">
+                                                            <button type="submit" name="borrar_reclamo" value="{{i.0.id}}" class="btn btn-danger">Borrar</button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="modal fade" id="ModalAdjunto{{i.0.id}}" tabindex="-1" role="dialog" aria-labelledby="ModalAdjunto" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                    
+                                        <div class="modal-body">
+                                            <button type="button" class="close text-dark" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                
+                                            <div class="row">
+                                                <div class="col-2">
+                                                    <img src="{% static 'img/bot.png' %}" width="40px" alt="">
+                                                </div>
+                                                <div class="col-10 mb-3">
+                                                    <h4 class="font-bold ml-3">Agregar reclamo adjunto</h4>
+                                                </div>
+                                                
+                                                <form role="form" enctype="multipart/form-data" action="" method="POST"
+                                                id="upload-image-form">
+                                                {% csrf_token %}
+                                                    <div>
+                                                        <label for="nombre">
+                                                            <h6>Nombre</h6>
+                                                        </label>
+                                                    </div>
+                                
+                                                    <div class="row d-flex justify-content-center mb-2">
+                                                        <div class="col">
+                                                            <div>
+                                                                <input name="nombre_adjunto" type="text" class="form-control form-control" required="true">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                            
+                                                    <div>
+                                                        <label for="adjunto">
+                                                            <h6>Adjunto</h6>
+                                                        </label>
+                                                    </div>
+                                
+                                                    <div class="row d-flex justify-content-center  mb-2">
+                                                        <div class="col">
+                                                            <div>
+                                
+                                                                <input name="adjunto" type="file" class="form-control form-control" required="true">
+                                
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class="row d-flex justify-content-center my-4">
+                                                        <div class="col-lg-6 text-center">
+                                                            <button type="submit" name="reclamo_para_adjuntar" value="{{i.0.id}}" class="btn btn-primary">Agregar</button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modales en general -->
+
+<div class="modal fade" id="ModalReclamo" tabindex="-1" role="dialog" aria-labelledby="ModalReclamo" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+        
+            <div class="modal-body">
+                <button type="button" class="close text-dark" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+    
+                <div class="row">
+                    <div class="col-1">
+                        <img src="{% static 'img/bot.png' %}" width="40px" alt="">
+                    </div>
+                    <div class="col-11 mb-3">
+                        <h4 class="font-bold ml-3">Completa el formulario</h4>
+                    </div>
+                </div>
+                
+                <div class="row p-4">
+                    <form role="form" action="" method="POST">
+                        {% csrf_token %}
+
+                   <div class="row">
+
+                       <div class="col-4">
+                           <div>
+
+                               <label for="numero">
+                                   <h6>Nº del reclamo</h6>
+                               </label>
+
+                           </div>
+
+                           <div class="row d-flex justify-content-center mt-1 mb-2">
+                               <div class="col">
+                                   <div>
+
+                                       <input name="numero_nuevo" type="number" class="form-control form-control"
+                                           placeholder=".." required="true">
+
+                                   </div>
+                               </div>
+                           </div>
+                       </div>
+                       
+
+                       <div class="col-4">
+                           <div>
+
+                               <label for="clasificacion">
+                                   <h6>Clasificación</h6>
+                               </label>
+
+                           </div>
+
+                           <div class="row d-flex justify-content-center mt-1 mb-2">
+                               <div class="col">
+                                   <div>
+
+                                       <input name="clasificacion_nuevo" type="search"
+                                           class="form-control form-control" list="clasificacion">
+
+                                   </div>
+                               </div>
+                           </div>
+
+                       </div>
+                       <div class="col-4">
+                           <div>
+
+                               <label for="numero">
+                                   <h6>Fecha</h6>
+                               </label>
+
+                           </div>
+
+                           <div class="row d-flex justify-content-center mt-1 mb-2">
+                               <div class="col">
+                                   <div>
+
+                                       <input name="fecha_nuevo" type="date" class="form-control form-control"
+                                           required="true">
+
+                                   </div>
+                               </div>
+                           </div>
+
+                       </div>
+                   </div>
+
+                   <div class="row">
+                       <div class="col-4">
+                           <div>
+
+                               <label for="proyecto">
+                                   <h6>Proyecto</h6>
+                               </label>
+
+                           </div>
+
+                           <div class="row d-flex justify-content-center mt-1 mb-2">
+                               <div class="col">
+                                   <div>
+
+                                       <input name="proyecto_nuevo" type="search" class="form-control form-control"
+                                           list="proyectos_postventa">
+
+                                   </div>
+                               </div>
+                           </div>
+                       </div>
+                       <div class="col-4">
+                           <div>
+
+                               <label for="unidad">
+                                   <h6>Unidad</h6>
+                               </label>
+
+                           </div>
+
+                           <div class="row d-flex justify-content-center mt-1 mb-2">
+                               <div class="col">
+                                   <div>
+
+                                       <input name="unidad_nuevo" type="text" class="form-control form-control"
+                                           placeholder="Piso - Numero ">
+
+                                   </div>
+                               </div>
+                           </div>
+
+                       </div>
+                       <div class="col-4">
+                           <div>
+
+                               <label for="propietario">
+                                   <h6>Propietario</h6>
+                               </label>
+
+                           </div>
+
+                           <div class="row d-flex justify-content-center mt-1 mb-2">
+                               <div class="col">
+                                   <div>
+
+                                       <input name="propietario_nuevo" type="text" class="form-control form-control"
+                                           placeholder="Dueño de la unidad" required="true">
+
+                                   </div>
+                               </div>
+                           </div>
+                       </div>
+                   </div>
+
+                   <div class="row">
+                       <div class="col-4">
+                           
+                           <div>
+
+                               <label for="usuario">
+                                   <h6>Contacto</h6>
+                               </label>
+
+                           </div>
+
+                           <div class="row d-flex justify-content-center mt-1 mb-2">
+                               <div class="col">
+                                   <div>
+
+                                       <input name="usuario_nuevo" type="text" class="form-control form-control"
+                                           placeholder="Con quien hablamos" required="true">
+
+                                   </div>
+                               </div>
+                           </div>
+                       </div>
+                       <div class="col-4">
+                           <div>
+
+                               <label for="telefono">
+                                   <h6>Telefono</h6>
+                               </label>
+
+                           </div>
+
+                           <div class="row d-flex justify-content-center mt-1 mb-2">
+                               <div class="col">
+                                   <div>
+
+                                       <input name="telefono_nuevo" type="number" class="form-control form-control"
+                                           placeholder="Telefono del contacto">
+
+                                   </div>
+                               </div>
+                           </div>
+
+                       </div>
+                       <div class="col-4">
+                           <div>
+
+                               <label for="email">
+                                   <h6>Email</h6>
+                               </label>
+
+                           </div>
+
+                           <div class="row d-flex justify-content-center mt-1 mb-2">
+                               <div class="col">
+                                   <div>
+
+                                       <input name="email_nuevo" type="text" class="form-control form-control"
+                                           placeholder="Email del contacto">
+
+                                   </div>
+                               </div>
+                           </div>
+                       </div>
+                   </div>
+
+                   <div>
+                       <div>
+
+                           <label for="descripcion">
+                               <h6>Descripción</h6>
+                           </label>
+
+                       </div>
+
+                       <div class="row d-flex justify-content-center mt-1 mb-2">
+                           <div class="col">
+                               <div>
+                                   <textarea class="form-control" id="exampleTextarea" rows="3"
+                                   name="descripcion_nuevo"></textarea>
+
+                               </div>
+                           </div>
+                       </div>
+                   </div>                             
+
+                   <div class="row d-flex justify-content-center mt-2">
+                       <div class="col-lg-6 text-center">
+                           <button type="submit" class="btn btn-primary">Subir</button>
+                       </div>
+                   </div>
+               </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<a id="add3" href="#" data-toggle="modal" data-target="#ModalAgregar"><i class="btn btn-warning btn-circle fa fa-file" data-toggle="tooltip" data-placement="left" title="Reporte"></i></a>
+<a id="add" href="https://docs.google.com/forms/d/e/1FAIpQLSch3E723dhB14wjS-BHIk6MK3XwERpSaRZ4YmXAX9JftdbuFA/viewform"><i class="btn btn-primary btn-circle fa fa-google-plus" data-toggle="tooltip" data-placement="left" title="Google Forms"></i></a>
+<a id="add2" href="#" data-toggle="modal" data-target="#ModalReclamo"><i class="btn btn-info btn-circle fa fa-plus" data-toggle="tooltip" data-placement="left" title="Nuevo reclamo"></i></a>
+
+<style>
+
+    #add{
+        position: fixed;
+        bottom: 90px;
+        right: 20px;
+        z-index: 10;
+    }
+
+    #add2{
+        position: fixed;
+        bottom: 40px;
+        right: 20px;
+        z-index: 10;
+    }
+
+    #add3{
+        position: fixed;
+        bottom: 140px;
+        right: 20px;
+        z-index: 10;
+        /* animation: scale 1.2s infinite ; */
+    }
+
+    @keyframes scale {
+        0% {transform: scale(1);}
+        50% {transform: scale(1.3);}
+        100% {transform: scale(1);}
+    }
+
+</style>
+
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $('#example').DataTable({
+            "language": {
+                "lengthMenu": "Mostar _MENU_ documentos",
+                "zeroRecords": "No se encontro nada - perdon ",
+                "info": "Pagina _PAGE_ de _PAGES_",
+                "infoEmpty": "Sin registros disponibles",
+                "infoFiltered": "(filtrado de _MAX_ registros totales)",
+                "search": "Buscar"
+            },
+            "paging": false,
+            "ordering": true,
+            "info": false,
+            "searching": true,
+            dom: 'Bfrtip',
+            buttons: [
+                {
+                    footer: true,
+                    extend: 'excelHtml5',
+                    title: 'Reclamos',
+                    className: "btn btn-success",
+
+                init: function(api, node, config) {
+                    $(node).removeClass('dt-button buttons-excel buttons-html5')
+                    }
+                },
+            ]
+
+        });
+    });
+</script>
+
+{% if mensaje %}
+
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 5000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+    })
+
+    Toast.fire({
+        icon: '{% if mensaje.0 == 1 %}success{% else %}error{% endif %}',
+        title: '{{mensaje.1}}'
+    })
+
+</script>
+
+{% endif %}
+
+{% endblock %}

@@ -3,7 +3,7 @@ from django.urls import path
 from django.conf.urls import url
 from . import views
 from . import views_flujo
-from .views_app import views_pricing, views_atributos
+from .views_app import views_pricing, views_atributos, views_postventa
 from .views import descargadeventas, DescargaPricing, PdfCotiza
 from django.contrib.auth.decorators import login_required
 
@@ -11,11 +11,7 @@ urlpatterns = [
     url(r'^appcomercial/$', login_required(views.appcomercial), name = 'App comercial'),
     url(r'^apparchivoscomercial/$', login_required(views.apparchivoscomercial), name = 'App archivos comercial'),
     url(r'^dosier/$', login_required(views.dosier), name = 'Dosier'),
-    url(r'^reclamospostventa$', login_required(views.reclamospostventa), name = 'Reclamos Postventa'),
-    url(r'^reclamo/(?P<id_reclamo>\d+)/$', login_required(views.reclamo), name = 'Reclamo'),
-    url(r'^reportereclamo/$', login_required(views.reportereclamos), name = 'Reporte Reclamo'),
-    url(r'^editarreclamo/(?P<id_reclamo>\d+)/$', login_required(views.editarreclamo), name = 'Editar reclamo'),
-    url(r'^crearreclamo$', login_required(views.crearreclamo), name = 'Crear reclamo'),
+    
     url(r'^estmerc$', login_required(views.estmercado), name = 'Estudio de mercado'),
     url(r'^panelunidades$', login_required(views.panelunidades), name = 'Panel de unidades'),
     url(r'^editarasig/(?P<id_unidad>\d+)/$', login_required(views.editarasignacion), name = 'Editar asignacion'),
@@ -52,6 +48,13 @@ urlpatterns = [
     url(r'^descargapricing/(?P<id_proyecto>\d+)/$', login_required(DescargaPricing.as_view()), name = 'Descargar del pricing'),
     
    
+    url(r'^postventaprincipal$', login_required(views_postventa.postventa_panel_principal), name = 'Reclamos Postventa'),
+    url(r'^reclamo/(?P<id_reclamo>\d+)/$', login_required(views_postventa.postventa_reclamo_detalle), name = 'Reclamo'),
+    url(r'^reportereclamo/$', login_required(views_postventa.postventa_reporte), name = 'Reporte Reclamo'),
+    url(r'^editarreclamo/(?P<id_reclamo>\d+)/$', login_required(views_postventa.editarreclamo), name = 'Editar reclamo'),
+    url(r'^crearreclamo$', login_required(views_postventa.crearreclamo), name = 'Crear reclamo'),
+
+
     path('flujoventas/',login_required(views_flujo.flujoventas),name='Flujo de ventas'),
     
 
