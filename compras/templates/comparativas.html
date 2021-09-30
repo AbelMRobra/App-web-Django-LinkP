@@ -152,7 +152,7 @@
                             <table id="example" class="table mt-4">
                                 <thead style="display: none;">
                                     <tr>
-                                        
+                                        <th></th>
                                         <th style="text-align: center; width: 30px;">User</th>
                                         <th>Proveedor</th>
                                         <th>Valor</th>
@@ -347,7 +347,11 @@
     </div>
 </div>
 
-<a id="add" href="{% url 'Cargar O.C para autorizar' %}" class="btn btn-lg btn-info btn-circle fa fa-5x fa-plus"></a>
+<a id="add" href="{% url 'Cargar O.C para autorizar' %}"
+
+data-toggle="tooltip" data-placement="left" title="Subir una nueva orden"
+
+class="btn btn-info btn-circle fa fa-plus"></a>
 
 <style>
 

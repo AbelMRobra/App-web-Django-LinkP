@@ -5,5 +5,6 @@ from django.contrib.auth.decorators import login_required
 
 
 urlpatterns = [
+    path('curvasprincipal' , views.curvas_principal , name='curvas'),
     
 ]

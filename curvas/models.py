@@ -8,10 +8,13 @@ from proyectos.models import Proyectos
 
 class PartidasCapitulos(models.Model):
     nombre = models.CharField(max_length=50)
-    capitulo = models.ForeignKey(Capitulos , on_delete=models.CASCADE)
-    proyecto = models.ForeignKey(Proyectos , on_delete=models.CASCADE)
+    capitulo = models.ForeignKey(Capitulos ,null=True, on_delete=models.SET_NULL)
+    proyecto = models.ForeignKey(Proyectos  ,null=True, on_delete=models.SET_NULL)
     fecha_inicial = models.DateField()
     fecha_final = models.DateField()
+    fecha_i_aplicacion=models.DateField(blank=True,null=True,verbose_name='Fecha inicial de aplicacion')
+    fecha_f_aplicacion=models.DateField(blank=True,null=True,verbose_name='Fecha final de aplicacion')
+
 
     
     class Meta:
@@ -20,7 +23,7 @@ class PartidasCapitulos(models.Model):
 
     def __str__(self):
         """Unicode representation of MODELNAME."""
-        return '{} - {}'.format(self.proyecto,self.capitulo)
+        return '{} - {}'.format(self.proyecto,self.nombre)
 
 class SubPartidasCapitulos(models.Model):
     nombre = models.CharField(max_length=50)
@@ -34,7 +37,7 @@ class SubPartidasCapitulos(models.Model):
 
     def __str__(self):
         """Unicode representation of MODELNAME."""
-        return '{} - {}'.format(self.proyecto,self.capitulo)
+        return '{} - {}'.format(self.nombre,self.partida)
 
 #Particiones
 class ComposicionesSubpartidas(models.Model):
