@@ -1,4 +1,88 @@
-<!DOCTYPE html>
+{% extends "users/inicio2.html" %}
+
+{% load static %}
+
+{% block content %}
+
+
+<div class="container-fluid">
+    <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+            <h3 class="text-themecolor">Gestor de unidades de {{proyecto.nombre}}</h3>
+        </div>
+
+        <div class="col-md-7 align-self-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'Principal Tecnica' %}">Panel</a></li>
+    
+             
+                <li class="breadcrumb-item">Listado de unidades</li> 
+            </ol>
+        </div>
+    </div>
+
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <form action="" method="POST"> {% csrf_token %}
+                   <div class="row">
+                       <div class="col"> <label for="fecha_final">Fecha final</label>
+                        <input type="date" name="fecha_final" required></div>
+                       <div class="col">
+                           <select name="proyecto" id="proyecto">
+                               
+                               {% for p in proyectos  %}
+                                   <option value="{{p.id}}">{{p.nombre}}</option>
+                               {% endfor %}
+                                   
+                           </select>
+                       </div>
+
+                       <ul>
+                           
+                           {% for analisis in analisis_saldos  %}
+                              <li>{{analisis}}</li>
+                           {% endfor %}
+                               
+                       </ul>
+                   </div>
+
+                    <button>Calcular</button>
+                </form>
+                </div>
+                </div>
+</div>
+</div>
+</div>
+
+
+
+<style>
+    #add{
+        position: fixed;
+        bottom: 60px;
+        right: 20px;
+    }
+</style>
+
+
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -9,6 +93,12 @@
 <body>
     <h5>{{partidas}}</h5>
     <br>
-    <h5>{{analisis_saldos}}</h5>
+    
+    {% for analisis in analisis_saldos  %}
+    <ul>
+        <li>{{analisis}}</li>
+    </ul>        
+    {% endfor %}
+        
 </body>
-</html>
+</html> -->

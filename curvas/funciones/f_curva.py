@@ -1,11 +1,30 @@
 from curvas.models import SubPartidasCapitulos,ComposicionesSubpartidas
 import numpy as np
+import datetime as dt
 from presupuestos.models import Modelopresupuesto, CompoAnalisis, Capitulos
 from proyectos.models import Proyectos
 from compras.models import Compras
 from computos.models import Computos
 from django.db.models import Q
+
  
+
+
+def generar_fechas(fi,ff):
+
+    inicio=dt.date(fi.year , fi.month , 1)
+
+    fechas=[]
+
+    while inicio.year != ff.year and inicio.month != ff.month:
+        fechas.append(dt.date(inicio.year , inicio.month ,1))
+        inicio=inicio + dt.timedelta(30)
+
+    return fechas
+
+
+
+
 def saldo_capitulo(contenedor,fecha_i,fecha_f):
 
     # Primero vemos todas las consultas
@@ -55,10 +74,10 @@ def saldo_capitulo(contenedor,fecha_i,fecha_f):
 
     explosion_insumos = [
 
-        [data[0],  #ARTICULO
-        data[1],    #SUMA DE ARTICULOS DEL PRESUPUESTO
-        sum(compras.filter(articulo = data[0]).values_list("cantidad", flat=True)), #ARTICULOS COMPRADOS
-        (data[1] - sum(compras.filter(articulo = data[0]).values_list("cantidad", flat=True))), #CANTIDAD DISPONIBLE EN EL SALDO
+        [data[0],  #ARTICULO 0
+        data[1],    #SUMA DE ARTICULOS DEL PRESUPUESTO 1
+        sum(compras.filter(articulo = data[0]).values_list("cantidad", flat=True)), #ARTICULOS COMPRADOS 2
+        (data[1] - sum(compras.filter(articulo = data[0]).values_list("cantidad", flat=True))), #CANTIDAD DISPONIBLE EN EL SALDO 3
         (data[1] - sum(compras.filter(articulo = data[0]).values_list("cantidad", flat=True)))*data[0].valor] #SALDO
             
         for data in articulos_cant_proyecto]
@@ -67,32 +86,49 @@ def saldo_capitulo(contenedor,fecha_i,fecha_f):
     
     
 
+    #partidas : contenedores -> subpartidas : bolsas -> composicionesubpartidas : bolsitas 
+    #las bolsitas contienen el articulo y la cantidad que necesito
+
+    #obtener las bolsas pertenecientes al contenedor actual y que cumplan el rango de fecha establecido
     subpartidas=SubPartidasCapitulos.objects.filter(Q(partida__id=contenedor.id) & (Q(fecha_final__gt = fecha_i) & Q(fecha_final__lt = fecha_f) | (Q(fecha_inicial__gt = fecha_i) & Q(fecha_inicial__lt = fecha_f)) ) )
     
-    compos_subpartidas=[ComposicionesSubpartidas.objects.filter(subpartida__id=s.id) for s in subpartidas]
 
-    for c in compos_subpartidas:
-        for i in c:
-            print(i.articulo)
+    #obtener las bolsitas pertenecientes a las bolsas filtradas
 
+    compos_subpartidas=[ComposicionesSubpartidas.objects.filter(subpartida__id=subpartida.id) for subpartida in subpartidas]
 
     cont=0
+
+    #iteramos sobre la explosion de insumos para encontrar los articulos que solicita cada bolsita 
     for e in explosion_insumos:
-        
-        for cs in compos_subpartidas:
-            for i in cs:
-                if i.articulo == e[0]:
-                    if i.cantidad < e[2]:
-                        explosion_insumos[cont][2] = e[2] - i.cantidad
+        for compo in compos_subpartidas:
+            for arti in compo:
+                #si el articulo de la explosion de insumos coincide con el de esta bolsita entrar:
+                if arti.articulo == e[0]:
+
+                    print(arti.articulo)
+                    #cantidad disponible en la explosion
+                    cantidad_disponible=e[3]
+                    
+                    #si la cantidad que solicita la bolsita es menor o igual a la cantidad disponible en la explosion de insumos
+                    if arti.cantidad <= cantidad_disponible:
+                        print(arti.cantidad)
+                        
+                        
+                        #restamos la cantidad de la bolsita a la cantidad disponible y modificamos en el array
+                        print(cont)
+                        print(explosion_insumos[cont][3])
+                        explosion_insumos[cont][3] = cantidad_disponible - arti.cantidad
+
+                        
                         
                     else:
-                        pass
+                        print('no se llego a cubrir la cantidad solicitada')
                     
 
-    cont += 1
+        cont += 1
     #proceso de asignacion dr articulos
 
-    
 
     detalle={
         'explosion_insumos':explosion_insumos,
