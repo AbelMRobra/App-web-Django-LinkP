@@ -185,6 +185,7 @@ class ReclamosPostventa(models.Model):
     responsable =  models.ForeignKey(datosusuario, on_delete=models.CASCADE, verbose_name="Responsable", blank=True, null=True)
     clasificacion = models.CharField(max_length=300, verbose_name = "Clasificacion del problema")
     descripcion = models.TextField(verbose_name="Descripción del problema")
+    visto = models.BooleanField(default=False, verbose_name="Visto por responsable")
 
     class Meta:
         verbose_name = "Reclamo de Postventa"
@@ -192,6 +193,19 @@ class ReclamosPostventa(models.Model):
 
     def __str__(self):
         return self.propietario
+
+class AdjuntosReclamosPostventa(models.Model):
+
+    nombre = models.CharField(max_length=100, verbose_name = "Nombre del archivo", blank=True, null=True)
+    reclamo = models.ForeignKey(ReclamosPostventa, on_delete=models.CASCADE, verbose_name="Reclamo asociado")
+    archivo = models.FileField(verbose_name="Adjunto")
+
+    class Meta:
+        verbose_name = "Adjunto de reclamo"
+        verbose_name_plural = "Adjuntos de reclamo"
+
+    def __str__(self):
+        return f'{self.reclamo.numero}, {self.reclamo.propietario}'
 
 
 class FeaturesProjects(models.Model):

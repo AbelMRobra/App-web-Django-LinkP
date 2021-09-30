@@ -383,18 +383,11 @@
                 class="hide-menu">Comercialización</span></a>
 
           </li>
-          <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i
-                class="zmdi zmdi-calendar"></i><span class="hide-menu">Postventa</span></a>
-            <ul aria-expanded="false" class="collapse">
-
-              {% if request.user|has_group:"POSTVENTA NIVEL 1" %}
-              <li><a href="{% url 'Reclamos Postventa' %}">Reclamos</a></li>
-              {% else %}
-              <li>No tienes permisos para ver este espacio</li>
-              {% endif %}
-
-            </ul>
+          {% if request.user|has_group:"POSTVENTA NIVEL 1" %}
+          <li><a href="{% url 'Reclamos Postventa' %}"><i class="zmdi zmdi-calendar"></i><span
+            class="hide-menu">Postventa</span></a>
           </li>
+          {% endif %}
 
           <li class="nav-small-cap">SIGMA</li>
 

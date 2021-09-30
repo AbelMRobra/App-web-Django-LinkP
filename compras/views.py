@@ -1094,6 +1094,7 @@ def comparativas(request, estado, creador, autoriza):
     context['espera'] = len(consult_totales.filter(estado = "ESPERA"))
     context['autorizada'] = len(consult_totales.filter(estado = "AUTORIZADA"))
     context['rechazada'] = len(consult_totales.filter(estado = "NO AUTORIZADA"))
+    context['sin_filtro'] = len(consult_totales)
     context['comparativa_oc'] = len(consult_totales.exclude(estado = "AUTORIZADA").exclude(estado = "NO AUTORIZADA").exclude(adj_oc = ''))
     context['adjunto'] = len(consult_totales.filter(estado = "ADJUNTO ✓"))
     context['fecha_pago'] = fecha_pago
