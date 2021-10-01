@@ -1,4 +1,4 @@
-from curvas.models import SubPartidasCapitulos,ComposicionesSubpartidas
+from curvas.models import SubPartidasCapitulos,ComposicionesSubpartidas, PartidasCapitulos
 import numpy as np
 import datetime as dt
 from presupuestos.models import Modelopresupuesto, CompoAnalisis, Capitulos
@@ -7,27 +7,38 @@ from compras.models import Compras
 from computos.models import Computos
 from django.db.models import Q
 
- 
+def generar_fechas(fecha_inicial, fecha_final):
 
-
-def generar_fechas(fi,ff):
-
-    inicio=dt.date(fi.year , fi.month , 1)
+    fecha_inicial_reseteada = dt.date(fecha_inicial.year , fecha_inicial.month , 1)
+    fecha_final_reseteada = dt.date(int(fecha_final[0:4]), int(fecha_final[5:7]), 1)
 
     fechas=[]
 
-    while inicio.year != ff.year and inicio.month != ff.month:
-        fechas.append(dt.date(inicio.year , inicio.month ,1))
-        inicio=inicio + dt.timedelta(30)
+    while fecha_inicial_reseteada.year != fecha_final_reseteada.year and fecha_inicial_reseteada.month != fecha_final_reseteada.month:
+        fechas.append(dt.date(fecha_inicial_reseteada.year , fecha_inicial_reseteada.month ,1))
+        fecha_inicial_reseteada = fecha_inicial_reseteada + dt.timedelta(30)
+
+    fechas.append(dt.date(fecha_inicial_reseteada.year , fecha_inicial_reseteada.month ,1))
 
     return fechas
 
+def curvas_informacion_cash(id_proyecto, fecha_inicial, fecha_final):
 
+    contenedores = PartidasCapitulos.objects.filter(Q(proyecto__id=id_proyecto) & (Q(fecha_final__gt = fecha_inicial) & Q(fecha_final__lt = fecha_final)) | (Q(fecha_inicial__gt = fecha_inicial) & Q(fecha_inicial__lt = fecha_final)))
 
+    data_cash = []
 
-def saldo_capitulo(contenedor,fecha_i,fecha_f):
+    for contenedor in contenedores:
 
-    # Primero vemos todas las consultas
+        data_contenedor = datos_del_contenedor(contenedor, fecha_inicial, fecha_final)
+
+        data_cash.append(data_contenedor)
+
+    return data_cash
+
+def datos_del_contenedor(contenedor,fecha_i,fecha_f):
+
+    # PASO 1: Consultas necesarias
 
     proyecto = Proyectos.objects.get(id = contenedor.proyecto.id)
     capitulo = Capitulos.objects.get(id = contenedor.capitulo.id)
@@ -39,7 +50,8 @@ def saldo_capitulo(contenedor,fecha_i,fecha_f):
     compras = Compras.objects.filter(proyecto = proyecto , capitulo=contenedor.capitulo)
 
     subpartidas=SubPartidasCapitulos.objects.filter(partida=contenedor)
-    # Este bucle determina los analisis y su cantidad dentro de un proyecto
+    
+    # PASO 2: Determino la explosión de insumos del contenedor
 
     data_analisis = [
         
@@ -52,25 +64,17 @@ def saldo_capitulo(contenedor,fecha_i,fecha_f):
         
         for modelo in con_modelo ]
 
-    # Este bucle determina los cantidad de articulos según la cantidad del analisis
-
     data_articulos = [(componente.articulo, componente.cantidad*data[1]) 
     
         for data in data_analisis
 
         for componente in con_compoan.filter(analisis = data[0])]
 
-    # Este bucle determina el listado de articulos del proyecto
-
     articulos_proyecto = list(set([articulo[0] for articulo in data_articulos]))
-
-    # Este bucle determina el listado de articulos del proyecto y su cantidad total
 
     articulos_cant_proyecto = [(articulo, sum(map(lambda n: n[1], filter(lambda n: n[0] == articulo, data_articulos))))
     
     for articulo in articulos_proyecto]
-
-    # En este bucle determino articulos presentes en el presupuesto, cantidad necesaria, comprado, saldo, saldo en pesos
 
     explosion_insumos = [
 
@@ -83,7 +87,12 @@ def saldo_capitulo(contenedor,fecha_i,fecha_f):
         for data in articulos_cant_proyecto]
     
     saldo_total=sum([i[4] for i in explosion_insumos])
+
+    # PASO 3: Calculo el detalle de los sub-contenedores
+
+    sub_contenedores = SubPartidasCapitulos.objects.filter(Q(partida__id=contenedor.id) & (Q(fecha_final__gt = fecha_i) & Q(fecha_final__lt = fecha_f) | (Q(fecha_inicial__gt = fecha_i) & Q(fecha_inicial__lt = fecha_f)) ) )
     
+    data_subContenedores_dataResultante = data_sub_contenedores_data_resultante(sub_contenedores, explosion_insumos)
     
 
     #partidas : contenedores -> subpartidas : bolsas -> composicionesubpartidas : bolsitas 
@@ -136,25 +145,42 @@ def saldo_capitulo(contenedor,fecha_i,fecha_f):
         'subpartidas':subpartidas,
     }
 
+    flujo_contenedor = 0
+    data_sub_contenedores = 0
 
-
-    return detalle
-
-def curva_calculo_contenedor(id_proyecto, contenedor):
-
-     # Primero calculo los articulos 
     
-    detalle_capitulo = saldo_capitulo(id_proyecto, contenedor)
+    
+    datos_del_contenedor = {
+        "contendor": contenedor,
+        "saldo_contenedor":saldo_total,
+        "flujo_contenedor":flujo_contenedor,
+        "detalle_contenedor":explosion_insumos,
+        "data_sub_contenedores":data_sub_contenedores,
+    }
 
-    detalle_bolsas = curva_calculo_bolsas(contenedor)
+
+
+    return datos_del_contenedor
+
+def data_sub_contenedores_data_resultante():
+
+    return None
+
+# def curva_calculo_contenedor(id_proyecto, contenedor):
+
+#      # Primero calculo los articulos 
+    
+#     detalle_capitulo = saldo_capitulo(id_proyecto, contenedor)
+
+#     detalle_bolsas = curva_calculo_bolsas(contenedor)
 
 
 
-def curva_calculo_bolsas(contenedor):
+# def curva_calculo_bolsas(contenedor):
 
-    con_elementos_bolsas = ['Elemento 1', 'Elemento 2']
-    con_bolsas = ['Elemento 1', 'Elemento 2']
+#     con_elementos_bolsas = ['Elemento 1', 'Elemento 2']
+#     con_bolsas = ['Elemento 1', 'Elemento 2']
 
-    for bolsa in con_bolsas:
-        elemento_bolsa = bolsa
-        costo_volsa = sum(np.array())
+#     for bolsa in con_bolsas:
+#         elemento_bolsa = bolsa
+#         costo_volsa = sum(np.array())
