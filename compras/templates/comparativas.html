@@ -32,7 +32,7 @@
                     <div class="d-flex align-items-center">
                         <div>
                             <h4 class="card-title"><span class="lstick"></span>Panel de solicitudes - {{aviso}} <a href="#" class="fa fa-question-circle ml-2" data-toggle="modal" data-target="#ModalInfo"></a></h4>
-                            <h6 class="card-subtitle">La proxima fecha de cierre es {{fecha_cierre|date:"d/m/Y"}}</h6>
+                            <h6 class="font-bold">La proxima fecha de <b class="text-info">cierre</b> es <b class="text-info">{{fecha_cierre|date:"d/m/Y"}}</b> </h6>
                             
                         </div>
                         <div class="mr-2" id="actions-hover" style="display: none;" >
@@ -84,7 +84,7 @@
                         </div>
                     </div>
     
-                    <div style="text-align: left;">
+                    <div class="mt-2" style="text-align: left;">
     
                        
                         <!-- Boton SP y PL-->
@@ -149,10 +149,10 @@
 
                         <div class="table-responsive">
     
-                            <table id="example" class="table">
-                                <thead>
+                            <table id="example" class="table mt-4">
+                                <thead style="display: none;">
                                     <tr>
-                                        
+                                        <th></th>
                                         <th style="text-align: center; width: 30px;">User</th>
                                         <th>Proveedor</th>
                                         <th>Valor</th>
@@ -168,20 +168,56 @@
                                     {% if i.2.publica == "SI" or request.user.username == i.2.autoriza or request.user.username == i.2.creador %}
     
                                     <tr id = {{i.2.id}}>
+
+                                        <td style="width: 20px;">
+
+                                            {% if i.2.visto_gerente %}
+                                            <i
+                                            data-toggle="tooltip" data-placement="top" title="El gerente de producción dio su visto bueno!"
+                                            class="btn fa fa-lg fa-check-circle text-success"></i>
+                                            {% else %}
+
+                                                {% if request.user.username == "LA" %}
+
+                                                <form method="POST">{% csrf_token %}
+                                                    <button name="visto_bueno_gerente" value="{{i.2.id}}" type="submit" class="btn">
+
+                                                        <i
+                                                        data-toggle="tooltip" data-placement="top" title="Tu pedido aun no fue revisado por el gerente"
+                                                        class="fa fa-exclamation-triangle text-warning"></i>
+                                                    </button>
+                                                </form>
+
+                                                {% else %}
+                                                <i
+                                                data-toggle="tooltip" data-placement="top" title="Tu pedido aun no fue revisado por el gerente"
+                                                class="btn fa fa-exclamation-triangle text-warning"></i>
+                                                {% endif %}
+                                            {% endif %}
+                                        </td>
                                         <td style="text-align: center;">
-                                            <img src="{{i.0.imagenlogo.url}}" width="40" class="img-circle">
+                                            <img
+                                            
+                                            data-toggle="tooltip" data-placement="top" title="Usuario {{i.0.identificacion}}" 
+
+                                            src="{{i.0.imagenlogo.url}}" width="40" class="img-circle">
                                             <h6 class="card-subtitle" style="font-size: 12px; margin-top: 2px;"><span
                                                     class="text-muted"> {{i.2.fecha_c|date:"d/m/Y"}}</span></h6>
                                         </td>
+                                        
                                         <td>
                                             {% if i.2.estado == "ESPERA" %}
-                                            <i class="fa fa-hourglass-end" aria-hidden="true" style="color: blue;"></i>
+                                            <i
+                                            data-toggle="tooltip" data-placement="top" title="A la espera de revisión"
+                                            class="fa fa-hourglass-end" aria-hidden="true" style="color: blue;"></i>
                                             {% endif %}
                                             {% if i.2.estado == "AUTORIZADA" %}
                                             {% if i.2.comentario %}
                                             <span class="hint--left hint--danger" aria-label="{{i.comentario}}">
                                                 {% endif %}
-                                                <i class="fa fa-check" aria-hidden="true" style="color: green;"></i>
+                                                <i
+                                                data-toggle="tooltip" data-placement="top" title="Todo listo!"
+                                                class="fa fa-check" aria-hidden="true" style="color: green;"></i>
                                                 {% if i.2.comentario %}
                                             </span>
                                             {% endif %}
@@ -192,7 +228,9 @@
     
                                                 {% endif %}
     
-                                                <i class="fa fa-times" aria-hidden="true" style="color: darkred;"></i>
+                                                <i
+                                                data-toggle="tooltip" data-placement="top" title="Rechazada!"
+                                                class="fa fa-times" aria-hidden="true" style="color: darkred;"></i>
     
                                                 {% if i.2.comentario %}
     
@@ -207,7 +245,9 @@
                                             <span class="hint--left hint--danger" aria-label="{{i.2.comentario}}">
     
                                                 {% endif %}
-                                                <i class="fa fa-check" aria-hidden="true" style="color: orange;"></i>
+                                                <i
+                                                data-toggle="tooltip" data-placement="top" title="El adjunto fue revisado"
+                                                class="fa fa-check" aria-hidden="true" style="color: orange;"></i>
                                                 {% if i.2.comentario %}
                                             </span>
                                             {% endif %}
@@ -231,26 +271,42 @@
                                                     class=" fa fa-plus-square-o fa-lg text-danger "></a>{% endif %}
                                                 <a href="{% url 'Mensajes en comparativas' i.2.id %}"
                                                     class=" fa fa-comments-o fa-lg"></a>
-                                                <a href="{{ i.2.adjunto.url }}" target="_blank" class=" fa fa-paperclip fa-lg"></a>
+                                                <a
+                                                data-toggle="tooltip" data-placement="right" title="Adjunto!"
+                                                href="{{ i.2.adjunto.url }}" target="_blank" class=" fa fa-paperclip fa-lg"></a>
                                                 {% if i.2.adj_oc %}
-                                                <a href="{{ i.2.adj_oc.url }}" target="_blank"><img src="{% static 'img/OC.png' %}"
+                                                <a href="{{ i.2.adj_oc.url }}"
+                                                data-toggle="tooltip" data-placement="right" title="Copia de la OC"
+                                                target="_blank"><img src="{% static 'img/OC.png' %}"
                                                         style="max-width:18px; height:auto;"></a>
                                                 {% endif %}
                                                 {{i.2.proyecto|lower|capfirst}} - {{i.2.numero|lower|capfirst}}
                                             </h6>
                                         </td>
-                                        <td style="font-size: 14px;"><b>${{i.2.monto|floatformat:2|intcomma}}</b></td>
-                                        {% if i.2.o_c %}<td>
-                                            <div>{{i.2.o_c|upper}}</div>{% else %}
+                                        <td  style="font-size: 14px;"><b>${{i.2.monto|floatformat:2|intcomma}}</b></td>
+                                        {% if i.2.o_c %}<td class="text-center">
+                                            <div
+                                            data-toggle="tooltip" data-placement="top" title="Este es el numero de OC"
+                                            >{{i.2.o_c|upper}}</div>{% else %}
                                         <td>
-                                            <div> -</div>{% endif %}
+                                            <div
+                                            data-toggle="tooltip" data-placement="top" title="No se declaro el numero de OC"
+                                            > -</div>{% endif %}
                                         </td>
     
     
                                         <td style="text-align: center;">
     
-                                            <img {% if i.2.autoriza == "SP" %} src="{% static 'img/SP.png' %}" {% else %}
-                                                src="{% static 'img/PL.png' %}" {% endif %} width="40" class="img-circle">
+                                            <img
+                                            
+                                            data-toggle="tooltip" data-placement="left" 
+                                            
+                                            {% if i.2.autoriza == "SP" %}
+                                            title="SP autorizara esta OC" src="{% static 'img/SP.png' %}" 
+                                            
+                                            {% else %} title="PL autorizara esta OC" src="{% static 'img/PL.png' %}" 
+                                            
+                                            {% endif %} width="40" class="img-circle">
     
                                             {% if request.user.username == i.2.autoriza %}
     
@@ -291,7 +347,11 @@
     </div>
 </div>
 
-<a id="add" href="{% url 'Cargar O.C para autorizar' %}" class="btn btn-lg btn-info btn-circle fa fa-5x fa-plus"></a>
+<a id="add" href="{% url 'Cargar O.C para autorizar' %}"
+
+data-toggle="tooltip" data-placement="left" title="Subir una nueva orden"
+
+class="btn btn-info btn-circle fa fa-plus"></a>
 
 <style>
 
@@ -300,6 +360,8 @@
         position: fixed;
         bottom: 60px;
         right: 20px;
+        animation: scale 1.2s infinite ;
+
     }
 
 </style>
@@ -348,6 +410,34 @@
         
         }
 </style>
+
+{% if mensaje_accion %}
+
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 5000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+    })
+
+    Toast.fire({
+        icon: '{% if mensaje_accion.0 == 1 %}success{% else %}error{% endif %}',
+        title: '{{mensaje_accion.1}}'
+    })
+
+</script>
+
+{% endif %}
+
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 
 <script>

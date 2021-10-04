@@ -1,27 +1,36 @@
-from proyectos.models import ProyectosTerceros
+from proyectos.models import Proyectos
 from django.shortcuts import render , redirect
-from curvas.funciones.f_curva import saldo_capitulo
+from django.http import HttpResponse
+from curvas.funciones.f_curva import *
 import datetime as dt
 from .models import PartidasCapitulos
 from django.db.models import Q
 
-def curvas_principal(request):
+def curvas_principal():
 
-    fecha_i = dt.date.today()
-    fecha_f = dt.date(2022,9,28)
+    #-> PREVIO: Datos que tendre
 
-    id_proyecto=1
+    fecha_inicial_enviada = dt.date.today()
+
+    fecha_final_enviada = "2022-01-12"
+
+    id_proyecto_enviado = 1
+
+    #-> PASO 1: Hacer array de fechas
+
+    array_fechas = generar_fechas(fecha_inicial_enviada, fecha_final_enviada)
+
+    #-> PASO 2: Toda la información del cash
+
+    informacion_cash = curvas_informacion_cash(id_proyecto_enviado, fecha_inicial_enviada, fecha_final_enviada)
+
+    json_final = {
+        "array_fechas": array_fechas,
+        "informacion_cash": informacion_cash,
+    }
+
+    return HttpResponse(json_final)
 
 
-    contenedor=PartidasCapitulos.objects.filter(Q(proyecto__id=id_proyecto) & (Q(fecha_final__gt = fecha_i) & Q(fecha_final__lt = fecha_f)) | (Q(fecha_inicial__gt = fecha_i) & Q(fecha_inicial__lt = fecha_f)))
     
-    analisis_saldos=[saldo_capitulo(cont,fecha_i,fecha_f) for cont in contenedor]
-
-
-
-
-
-    template_name='curvas_principal.html'
-    context={'partidas':contenedor,
-             'analisis_saldos':analisis_saldos}
-    return render(request , template_name , context)
+    
