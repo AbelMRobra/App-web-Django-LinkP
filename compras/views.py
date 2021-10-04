@@ -802,6 +802,8 @@ def descargacomparativas(request):
 
 def comparativas(request, estado, creador, autoriza):
 
+    context = {}
+
     if 10 <= int(estado) < 20:
         mensaje = 1
         estado = str(int(estado) - 10)
@@ -844,6 +846,22 @@ def comparativas(request, estado, creador, autoriza):
         mensaje_creador = datosusuario.objects.get(id = creador).identificacion
 
     if request.method == 'POST':
+
+        datos_post = request.POST.dict()
+
+        if 'visto_bueno_gerente' in datos_post:
+
+            try:
+
+                comparativa_modificar = Comparativas.objects.get(id = int(request.POST['visto_bueno_gerente']))
+                comparativa_modificar.visto_gerente = True
+                comparativa_modificar.save()
+
+                context['mensaje_accion'] = [1, "Todo listo!"]
+
+            except:
+
+                context['mensaje_accion'] = [0, "Error inesperado"]
 
         datos_post = request.POST.items()
 
@@ -1083,7 +1101,7 @@ def comparativas(request, estado, creador, autoriza):
     if estado != "7":
         datos = datos[0:150]
     
-    context = {}
+    
     context['mensaje_creador'] = mensaje_creador
     context['list_creadores'] = list_creadores
     context['datos'] = datos
@@ -1094,6 +1112,7 @@ def comparativas(request, estado, creador, autoriza):
     context['espera'] = len(consult_totales.filter(estado = "ESPERA"))
     context['autorizada'] = len(consult_totales.filter(estado = "AUTORIZADA"))
     context['rechazada'] = len(consult_totales.filter(estado = "NO AUTORIZADA"))
+    context['sin_filtro'] = len(consult_totales)
     context['comparativa_oc'] = len(consult_totales.exclude(estado = "AUTORIZADA").exclude(estado = "NO AUTORIZADA").exclude(adj_oc = ''))
     context['adjunto'] = len(consult_totales.filter(estado = "ADJUNTO ✓"))
     context['fecha_pago'] = fecha_pago

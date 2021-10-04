@@ -194,6 +194,8 @@ def registro_contable_cajas(request):
                                     nombre = caja,
                                 )
 
+                                caja_vincular.save()
+
                             try:
                                 nuevo_registro = RegistroContable(
 
@@ -247,8 +249,6 @@ def registro_contable_cajas(request):
         except:
 
             pass
-
-    
 
     context["total_cajas"] = cajasActivas(user)
     #print(cajasActivas(user))

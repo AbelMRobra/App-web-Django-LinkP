@@ -24,7 +24,7 @@ def curvas_principal(request):
     #-> PASO 2: Toda la información del cash
 
     informacion_cash = curvas_informacion_cash(id_proyecto_enviado, fecha_inicial_enviada, fecha_final_enviada)
-    print(type(informacion_cash))
+    
     json_final = {
         #"array_fechas": array_fechas,
         "informacion_cash": informacion_cash,
