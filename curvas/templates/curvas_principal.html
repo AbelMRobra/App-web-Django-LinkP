@@ -27,25 +27,17 @@
             <div class="card-body">
                 <form action="" method="POST"> {% csrf_token %}
                    <div class="row">
-                       <div class="col"> <label for="fecha_final">Fecha final</label>
-                        <input type="date" name="fecha_final" required></div>
+                
                        <div class="col">
-                           <select name="proyecto" id="proyecto">
-                               
-                               {% for p in proyectos  %}
-                                   <option value="{{p.id}}">{{p.nombre}}</option>
-                               {% endfor %}
-                                   
-                           </select>
+                        
+                        {% for info  in json_final.informacion_cash %}
+                            <ul>
+                                <li>{{info}} , {{info|length }}</li>
+                            </ul>
+                        {% endfor %}
+                            
                        </div>
 
-                       <ul>
-                           
-                           {% for analisis in analisis_saldos  %}
-                              <li>{{analisis}}</li>
-                           {% endfor %}
-                               
-                       </ul>
                    </div>
 
                     <button>Calcular</button>
