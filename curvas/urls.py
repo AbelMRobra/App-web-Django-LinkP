@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 
 urlpatterns = [
     path('curvasprincipal' , views.curvas_principal , name='curvas'),
-    path('api' , viewsets.prueba().as_view() , name='api'),
+    # path('api' , viewsets.prueba().as_view() , name='api'),
+    path('apicurvas' , viewsets.APICurvas.as_view() , name='api'),
     
 ]

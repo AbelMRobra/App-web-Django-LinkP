@@ -187,6 +187,8 @@ if os.getcwd() == '/app':
     BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
+
+
 # Configuración de la sesión del usuario
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
@@ -201,3 +203,22 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'linkphelp@gmail.com'
 EMAIL_HOST_PASSWORD = 'link2020'
+
+
+CORS_ALLOWED_ORIGINS = [
+
+    "http://localhost:8080","http://127.0.0.1:8000"
+   
+]
+CORS_ORIGIN_WHITELIST = [
+'http://localhost:3000',
+'http://localhost:8000',
+'http://localhost:8080',
+
+]
+CORS_ALLOW_HEADERS = [
+  
+    "authorization",
+    "x-csrftoken",
+
+]

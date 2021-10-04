@@ -8,9 +8,12 @@ from compras.models import Compras
 from computos.models import Computos
 from django.db.models import Q
 
+import json
+
 def generar_fechas(fecha_inicial, fecha_final):
 
     fecha_inicial_reseteada = dt.date(fecha_inicial.year , fecha_inicial.month , 1)
+    
     fecha_final_reseteada = dt.date(int(fecha_final[0:4]), int(fecha_final[5:7]), 1)
 
     fechas=[]
@@ -20,7 +23,7 @@ def generar_fechas(fecha_inicial, fecha_final):
         fecha_inicial_reseteada = fecha_inicial_reseteada + dt.timedelta(32)
 
     fechas.append(dt.date(fecha_inicial_reseteada.year , fecha_inicial_reseteada.month ,1))
-
+    
     return fechas
 
 def armar_flujo(fecha_inicial, fecha_final, saldo, fechas):
@@ -124,6 +127,8 @@ def datos_del_contenedor(contenedor,fecha_i,fecha_f):
     detalle = data_subContenedores_dataResultante["detalle_contenedor"]
     data_sub_contenedores = data_subContenedores_dataResultante["destalles_subcontenedores"]
 
+    detalle=detalle.to_dict('records')
+
     data_completa = {
         "id":f'{contenedor.proyecto.id}-{contenedor.capitulo.id}',
         "saldo":saldo,
@@ -132,7 +137,7 @@ def datos_del_contenedor(contenedor,fecha_i,fecha_f):
         "data_sub_contenedores":data_sub_contenedores,
     }
 
-    print(data_completa)
+    
     
     return data_completa
 
@@ -160,6 +165,7 @@ def data_sub_contenedores_data_resultante(sub_contenedores, explosion_insumos,fe
 
             df_filtrado_mask = df_filtrado_mask.reset_index()
 
+            print(df_filtrado_mask ,len(df_filtrado_mask))
         
             saldo_actual=df_filtrado_mask.loc[0,'Saldo']
             #asignar todo lo que necesita la bolsita
@@ -215,9 +221,13 @@ def data_sub_contenedores_data_resultante(sub_contenedores, explosion_insumos,fe
 
         destalles_subcontenedores[f'{sub_contenedor.id}'] = data_subcontenedor
 
+    
+    
+    
     data_completa = {
         "detalle_contenedor": explosion_principal,
-        "destalles_subcontenedores":destalles_subcontenedores
+        "destalles_subcontenedores":destalles_subcontenedores,
+     
     }
 
     return data_completa
@@ -266,3 +276,17 @@ def data_sub_contenedores_data_resultante(sub_contenedores, explosion_insumos,fe
     #proceso de asignacion dr articulos
 
     return None
+
+
+def guardar_json(datos,id_proyecto):
+
+    proyecto=Proyectos.objects.get(pk=id_proyecto).nombre
+
+    path='curvas/datos_json/flujo_{}.json'.format(proyecto)
+
+
+
+    with open(path,'w+') as file:
+        contenido= json.dumps(datos, indent = 4,default=str)
+        file.write(contenido)
+        file.close()

@@ -7,7 +7,8 @@ from .models import PartidasCapitulos
 from django.db.models import Q
 
 def curvas_principal(request):
-
+    context={}
+    template_name='curvas_principal.html'
     #-> PREVIO: Datos que tendre
 
     fecha_inicial_enviada = dt.date.today()
@@ -23,13 +24,14 @@ def curvas_principal(request):
     #-> PASO 2: Toda la información del cash
 
     informacion_cash = curvas_informacion_cash(id_proyecto_enviado, fecha_inicial_enviada, fecha_final_enviada)
-
+    print(type(informacion_cash))
     json_final = {
-        "array_fechas": array_fechas,
+        #"array_fechas": array_fechas,
         "informacion_cash": informacion_cash,
     }
 
-    return HttpResponse(json_final)
+    context['json_final']=json_final
+    return render(request,template_name,context)
 
 
     
