@@ -6,7 +6,7 @@ import datetime as dt
 from .models import PartidasCapitulos
 from django.db.models import Q
 
-def curvas_principal():
+def curvas_principal(request):
 
     #-> PREVIO: Datos que tendre
 
