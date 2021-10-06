@@ -297,7 +297,7 @@ class Cajas(models.Model):
 
     usuario = models.ForeignKey(datosusuario, on_delete=models.CASCADE, verbose_name="Usuario")
     nombre = models.CharField(max_length=400, verbose_name="Nombre")
-    usuarios_visibles = models.ManyToManyField(datosusuario, related_name="Visibilidad", verbose_name="Usuario visibles", blank=True, null=True)
+    usuarios_visibles = models.ManyToManyField(datosusuario, related_name="Visibilidad", verbose_name="Usuario visibles", blank=True)
 
     class Meta:
 
