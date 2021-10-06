@@ -334,9 +334,6 @@ def gananciasmensuales(ventas,proyectos,fechas_ordenadas):
 
 def calculo_cotizacion(unidad, features_unidad, info_coti, valor_hormigon):
 
-
-
-
     m2 = 0
     if unidad.sup_equiv > 0:
         m2 = unidad.sup_equiv

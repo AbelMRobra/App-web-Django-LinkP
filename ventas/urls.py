@@ -3,8 +3,9 @@ from django.urls import path
 from django.conf.urls import url
 from . import views
 from . import views_flujo
-from .views_app import views_pricing, views_atributos, views_postventa
-from .views import descargadeventas, DescargaPricing, PdfCotiza
+from .views_app import views_pricing, views_atributos, views_postventa, views_cotizador
+from .views import descargadeventas, DescargaPricing
+from .views_app.views_cotizador import PDF_cotizacion
 from django.contrib.auth.decorators import login_required
 
 urlpatterns = [
@@ -15,8 +16,8 @@ urlpatterns = [
     url(r'^estmerc$', login_required(views.estmercado), name = 'Estudio de mercado'),
     url(r'^panelunidades$', login_required(views.panelunidades), name = 'Panel de unidades'),
     url(r'^editarasig/(?P<id_unidad>\d+)/$', login_required(views.editarasignacion), name = 'Editar asignacion'),
-    url(r'^cotizador/(?P<id_unidad>\d+)/$', login_required(views.cotizador), name = 'Cotizador'),
-    path('emailpdfcoti/<int:id_unidad>/<int:id_cliente>/<str:info_coti>', PdfCotiza.as_view(), name = "Email del coti"),
+    url(r'^cotizador/(?P<id_unidad>\d+)/$', login_required(views_cotizador.cotizador), name = 'Cotizador'),
+    path('emailpdfcoti/<int:id_unidad>/<int:id_cliente>/<str:info_coti>', PDF_cotizacion.as_view(), name = "Email del coti"),
     url(r'^editarventa/(?P<id_venta>\d+)/$', login_required(views.editarventa), name = 'Editar venta'),
     url(r'^detalleventa/(?P<id_venta>\d+)/$', login_required(views.detalleventa), name = 'Detalle venta'),
     url(r'^eliminarventa/(?P<id_venta>\d+)/$', login_required(views.eliminarventa), name = 'Eliminar venta'),
