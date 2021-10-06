@@ -26,7 +26,7 @@ class ExcelCuentasCorrientes(TemplateView):
 
             total_cuentas = sum(np.array(cuotas_iterar.values_list("precio", flat=True)))
             
-            ws = wb.create_sheet(f'{cuenta.venta.unidad.piso_unidad}-{cuenta.venta.unidad.nombre_unidad}, {cuenta.venta.comprador}'.replace("-", " "))
+            ws = wb.create_sheet(f'{cuenta.venta.unidad.piso_unidad}-{cuenta.venta.unidad.nombre_unidad}, {cuenta.venta.comprador}'.replace("-", " ").replace("º", ""))
             ws.sheet_view.showGridLines = False
 
             thin_border = Border(left=Side(style='thin'), 
