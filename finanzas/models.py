@@ -92,7 +92,10 @@ class CuentaCorriente(models.Model):
     flujo_boleto = models.TextField(verbose_name="Flujo boleto", blank=True, null=True)
     flujo_boleto_m3 = models.TextField(verbose_name="Flujo boleto M3", blank=True, null=True)
     estado = models.CharField(choices=Estado.choices, max_length=20, verbose_name="Estado", default="activo")
-    
+    direccion = models.CharField(max_length=30, verbose_name = "Direccion", blank=True, null=True)
+    telefono_fijo = models.CharField(max_length=15, verbose_name = "Telefono fijo", blank=True, null=True)
+    telefono_celular = models.CharField(max_length=15, verbose_name = "Telefono celular", blank=True, null=True)
+
     class Meta:
         verbose_name="Cuenta corriente"
         verbose_name_plural="Cuentas corrientes"

@@ -3,6 +3,7 @@ from django.conf.urls import url
 from . import views
 from . import views_ctacte_informes
 from .views import DescargarCuentacorriente, DescargarTotalCuentas, PdfPrueba, DescargarResumen, DescargarControlUnidades
+from .views_excels import ExcelCuentasCorrientes
 from django.contrib.auth.decorators import login_required
 
 
@@ -48,6 +49,10 @@ urlpatterns = [
     url(r'^calculadora/$', login_required(views.calculadora), name = 'Calculadora'),
 
     url(r'^superavalorcta/(?P<id_cuota>\d+)/$', login_required(views.superarvalorcta), name = 'Cta cliente valor superado'),
+
+
+
+     url(r'^cuenta_corriente_excel_proyecto/(?P<id_proyecto>\d+)/$', login_required(ExcelCuentasCorrientes.as_view()), name = 'Cuenta corriente Excel'),
 
     #----------------URL ADMINISTRACION -----------------------------------------
 
