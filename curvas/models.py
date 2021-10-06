@@ -23,7 +23,7 @@ class PartidasCapitulos(models.Model):
 
     def __str__(self):
         """Unicode representation of MODELNAME."""
-        return '{} - {}'.format(self.proyecto,self.nombre)
+        return '{} - {}'.format(self.proyecto.id,self.capitulo.id)
 
 class SubPartidasCapitulos(models.Model):
     nombre = models.CharField(max_length=50)

@@ -1,26 +1,53 @@
 from curvas.models import SubPartidasCapitulos,ComposicionesSubpartidas, PartidasCapitulos
 import numpy as np
+import pandas as pd
 import datetime as dt
 from presupuestos.models import Modelopresupuesto, CompoAnalisis, Capitulos
 from proyectos.models import Proyectos
 from compras.models import Compras
 from computos.models import Computos
 from django.db.models import Q
+import os
+
+import json
 
 def generar_fechas(fecha_inicial, fecha_final):
 
     fecha_inicial_reseteada = dt.date(fecha_inicial.year , fecha_inicial.month , 1)
+    
     fecha_final_reseteada = dt.date(int(fecha_final[0:4]), int(fecha_final[5:7]), 1)
 
     fechas=[]
 
     while fecha_inicial_reseteada.year != fecha_final_reseteada.year and fecha_inicial_reseteada.month != fecha_final_reseteada.month:
         fechas.append(dt.date(fecha_inicial_reseteada.year , fecha_inicial_reseteada.month ,1))
-        fecha_inicial_reseteada = fecha_inicial_reseteada + dt.timedelta(30)
+        fecha_inicial_reseteada = fecha_inicial_reseteada + dt.timedelta(32)
 
     fechas.append(dt.date(fecha_inicial_reseteada.year , fecha_inicial_reseteada.month ,1))
-
+    
     return fechas
+
+def armar_flujo(fecha_inicial, fecha_final, saldo, fechas):
+
+    meses_cuota = (fecha_final.year -  fecha_inicial.year) * 12 + (fecha_final.month -  fecha_inicial.month) +1  
+    valor_cuota = saldo/meses_cuota
+    
+    flujo=[]
+
+    for fecha in fechas:
+        if fecha.month == fecha_inicial.month and fecha.year == fecha_inicial.year:
+            flujo.append(valor_cuota)
+            
+        elif fecha.month == fecha_final.month and fecha.year == fecha_final.year:
+            flujo.append(valor_cuota)
+            
+        elif fecha > fecha_inicial and fecha < fecha_final:
+            flujo.append(valor_cuota)
+            
+        else:
+            flujo.append(0)
+            
+    return flujo
 
 def curvas_informacion_cash(id_proyecto, fecha_inicial, fecha_final):
 
@@ -78,7 +105,7 @@ def datos_del_contenedor(contenedor,fecha_i,fecha_f):
 
     explosion_insumos = [
 
-        [data[0],  #ARTICULO 0
+        [data[0].codigo,  #ARTICULO 0
         data[1],    #SUMA DE ARTICULOS DEL PRESUPUESTO 1
         sum(compras.filter(articulo = data[0]).values_list("cantidad", flat=True)), #ARTICULOS COMPRADOS 2
         (data[1] - sum(compras.filter(articulo = data[0]).values_list("cantidad", flat=True))), #CANTIDAD DISPONIBLE EN EL SALDO 3
@@ -92,95 +119,149 @@ def datos_del_contenedor(contenedor,fecha_i,fecha_f):
 
     sub_contenedores = SubPartidasCapitulos.objects.filter(Q(partida__id=contenedor.id) & (Q(fecha_final__gt = fecha_i) & Q(fecha_final__lt = fecha_f) | (Q(fecha_inicial__gt = fecha_i) & Q(fecha_inicial__lt = fecha_f)) ) )
     
-    data_subContenedores_dataResultante = data_sub_contenedores_data_resultante(sub_contenedores, explosion_insumos)
-    
+    fechas=generar_fechas(fecha_i,fecha_f)
 
-    #partidas : contenedores -> subpartidas : bolsas -> composicionesubpartidas : bolsitas 
-    #las bolsitas contienen el articulo y la cantidad que necesito
+    data_subContenedores_dataResultante = data_sub_contenedores_data_resultante(sub_contenedores, explosion_insumos, fecha_i,fecha_f, fechas)
 
-    #obtener las bolsas pertenecientes al contenedor actual y que cumplan el rango de fecha establecido
-    subpartidas=SubPartidasCapitulos.objects.filter(Q(partida__id=contenedor.id) & (Q(fecha_final__gt = fecha_i) & Q(fecha_final__lt = fecha_f) | (Q(fecha_inicial__gt = fecha_i) & Q(fecha_inicial__lt = fecha_f)) ) )
-    
+    saldo = sum(np.array(data_subContenedores_dataResultante["detalle_contenedor"]["Saldo"]))
+    flujo = armar_flujo(contenedor.fecha_i_aplicacion, contenedor.fecha_f_aplicacion, saldo_total, fechas)
+    detalle = data_subContenedores_dataResultante["detalle_contenedor"]
+    data_sub_contenedores = data_subContenedores_dataResultante["destalles_subcontenedores"]
 
-    #obtener las bolsitas pertenecientes a las bolsas filtradas
+    detalle=detalle.to_dict('records')
 
-    compos_subpartidas=[ComposicionesSubpartidas.objects.filter(subpartida__id=subpartida.id) for subpartida in subpartidas]
-
-    cont=0
-
-    #iteramos sobre la explosion de insumos para encontrar los articulos que solicita cada bolsita 
-    for e in explosion_insumos:
-        for compo in compos_subpartidas:
-            for arti in compo:
-                #si el articulo de la explosion de insumos coincide con el de esta bolsita entrar:
-                if arti.articulo == e[0]:
-
-                    print(arti.articulo)
-                    #cantidad disponible en la explosion
-                    cantidad_disponible=e[3]
-                    
-                    #si la cantidad que solicita la bolsita es menor o igual a la cantidad disponible en la explosion de insumos
-                    if arti.cantidad <= cantidad_disponible:
-                        print(arti.cantidad)
-                        
-                        
-                        #restamos la cantidad de la bolsita a la cantidad disponible y modificamos en el array
-                        print(cont)
-                        print(explosion_insumos[cont][3])
-                        explosion_insumos[cont][3] = cantidad_disponible - arti.cantidad
-
-                        
-                        
-                    else:
-                        print('no se llego a cubrir la cantidad solicitada')
-                    
-
-        cont += 1
-    #proceso de asignacion dr articulos
-
-
-    detalle={
-        'explosion_insumos':explosion_insumos,
-        'saldo_total':saldo_total,
-        'subpartidas':subpartidas,
-    }
-
-    flujo_contenedor = 0
-    data_sub_contenedores = 0
-
-    
-    
-    datos_del_contenedor = {
-        "contendor": contenedor,
-        "saldo_contenedor":saldo_total,
-        "flujo_contenedor":flujo_contenedor,
-        "detalle_contenedor":explosion_insumos,
+    data_completa = {
+        "id":f'{contenedor.proyecto.id}-{contenedor.capitulo.id}',
+        "saldo":saldo,
+        "flujo":flujo,
+        "detalle":detalle,
         "data_sub_contenedores":data_sub_contenedores,
     }
 
-
-
-    return datos_del_contenedor
-
-def data_sub_contenedores_data_resultante():
-
-    return None
-
-# def curva_calculo_contenedor(id_proyecto, contenedor):
-
-#      # Primero calculo los articulos 
     
-#     detalle_capitulo = saldo_capitulo(id_proyecto, contenedor)
+    
+    return data_completa
 
-#     detalle_bolsas = curva_calculo_bolsas(contenedor)
+def data_sub_contenedores_data_resultante(sub_contenedores, explosion_insumos,fecha_i,fecha_f, fechas):
+
+    explosion_principal = pd.DataFrame(explosion_insumos, columns=['Art', 'Soli', 'Buy', 'Pend', 'Saldo'],)
+
+    destalles_subcontenedores={}
+
+    for sub_contenedor in sub_contenedores:
+
+        necesidad_contenedor = ComposicionesSubpartidas.objects.filter(subpartida = sub_contenedor)
+
+        necesidad_posible = []
+
+        saldo_total = 0
+     
+        for necesidad in necesidad_contenedor:
 
 
+            mask = necesidad.articulo.codigo
 
-# def curva_calculo_bolsas(contenedor):
+            df_filtrado_mask = explosion_principal[explosion_principal["Art"] == mask]
 
-#     con_elementos_bolsas = ['Elemento 1', 'Elemento 2']
-#     con_bolsas = ['Elemento 1', 'Elemento 2']
+            
+            df_filtrado_mask = df_filtrado_mask.reset_index()
 
-#     for bolsa in con_bolsas:
-#         elemento_bolsa = bolsa
-#         costo_volsa = sum(np.array())
+            if len(df_filtrado_mask) > 0:
+
+        
+                saldo_actual=df_filtrado_mask.loc[0,'Saldo']
+                #asignar todo lo que necesita la bolsita
+                if df_filtrado_mask.loc[0, "Pend"] > necesidad.cantidad:
+                                
+                    gasto=necesidad.cantidad * necesidad.articulo.valor
+
+                    saldo_nuevo=saldo_actual - gasto
+                    
+                    necesidad_posible.extend([necesidad.articulo, necesidad.cantidad, 0 , saldo_nuevo])
+
+                    valor = df_filtrado_mask.loc[0, "Pend"]
+
+                    resultado = valor - necesidad.cantidad
+
+                    explosion_principal.loc[explosion_principal["Art"] == mask, "Pend"] = resultado
+
+                    explosion_principal.loc[explosion_principal["Saldo"] == saldo_actual, "Saldo"] = saldo_nuevo
+
+
+                #asignar lo que puedo
+                elif df_filtrado_mask.loc[0, "Pend"] > 0:
+
+                    disponible=df_filtrado_mask.loc[0, "Pend"]
+
+                    asignar=disponible
+
+                    no_asignado=necesidad.cantidad - asignar
+
+                    gasto=asignar * necesidad.articulo.valor
+                    saldo_nuevo=saldo_actual - gasto
+
+                    necesidad_posible.extend([necesidad.articulo, asignar, no_asignado,saldo_nuevo])
+
+                    explosion_principal.loc[explosion_principal["Art"] == mask, "Pend"] = 0
+
+                    explosion_principal.loc[explosion_principal["Saldo"] == saldo_actual, "Saldo"] = saldo_nuevo
+
+                else:
+                    necesidad_posible.extend([necesidad.articulo, 0, necesidad.articulo, 0])
+                    saldo_nuevo=df_filtrado_mask[0,'Saldo']
+                    explosion_principal.loc[explosion_principal["Saldo"] == saldo_actual, "Saldo"] = saldo_nuevo
+
+                saldo_total += saldo_nuevo
+                fecha_sub=sub_contenedor.fecha_inicial
+                sub_cont=sub_contenedor.fecha_final
+
+            else:
+                saldo_total += 0
+                fecha_sub=0
+                sub_cont=0
+
+        flujo = armar_flujo(fecha_sub, sub_cont, saldo_total,fechas)
+
+
+        data_subcontenedor = {
+            "flujo":flujo,
+            "necesidad_posible":necesidad_posible,
+            "saldo_suncontenedor":saldo_total,
+            'fecha_inicial':sub_contenedor.fecha_inicial,
+            'fecha_final':sub_contenedor.fecha_final,
+        }
+
+        destalles_subcontenedores[f'{sub_contenedor.id}'] = data_subcontenedor
+
+    
+    
+    
+    data_completa = {
+        "detalle_contenedor": explosion_principal,
+        "destalles_subcontenedores":destalles_subcontenedores,
+
+     
+    }
+
+    return data_completa
+
+
+def guardar_json(datos,id_proyecto):
+
+
+    ruta_actual = os.getcwd()
+    path='{}/curvas/datos_json'.format(ruta_actual)
+    #crea la carpeta de los json en el caso de que no exista
+    if not os.path.exists(path):
+        os.makedirs(path)
+        
+
+    proyecto=Proyectos.objects.get(pk=id_proyecto).nombre
+
+    path='{}/flujo_{}.json'.format(path,proyecto)
+
+
+    with open(path,'w+') as file:
+        contenido= json.dumps(datos, indent = 4,default=str)
+        file.write(contenido)
+        file.close()
