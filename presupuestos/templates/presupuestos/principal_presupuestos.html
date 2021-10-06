@@ -21,8 +21,8 @@
   </div>
 
 
-  <div class="row">
-    <div class="col-lg-3 col-xlg-3">
+  <div class="row col-12 col-lg-9">
+    <div class="col-6 col-lg-4 col-xlg-3">
       <div class="card">
         <div class="card-body text-center">
           <div>
@@ -48,7 +48,7 @@
       </div>
     </div>
 
-    <div class="col-lg-3 col-xlg-3">
+    <div class="col-6 col-lg-4 col-xlg-3">
       <div class="card">
         <div class="card-body text-center">
           <div>
@@ -74,7 +74,7 @@
       </div>
     </div>
 
-    <div class="col-lg-3 col-xlg-4">
+    <div class="col-6 col-lg-4 col-xlg-4">
       <div class="card">
         <div class="card-body text-center">
           <div>
@@ -100,10 +100,8 @@
         </div>
       </div>
     </div>
-  </div>
 
-  <div class="row">
-    <div class="col-lg-3 col-xlg-3">
+    <div class="col-6 col-lg-4 col-xlg-3">
       <div class="card">
         <div class="card-body text-center">
 
@@ -116,7 +114,7 @@
           <form method="POST" style="margin-top: 30px;">
             {% csrf_token %}
 
-            <select name="proyecto" class="form-control">
+            <select style="width: 170px;" name="proyecto" class="form-control">
 
               {% if request.user.username == "HC" %}
 
@@ -174,7 +172,7 @@
       </div>
     </div>
 
-    <div class="col-lg-3 col-xlg-3">
+    <div class="col-6 col-lg-4 col-xlg-3">
       <div class="card">
         <div class="card-body text-center">
           <div>
@@ -201,7 +199,7 @@
       </div>
     </div>
 
-    <div class="col-lg-3 col-xlg-4">
+    <div class="col-6 col-lg-4 col-xlg-4">
       <div class="card">
         <div class="card-body text-center">
           <div>
@@ -227,10 +225,8 @@
         </div>
       </div>
     </div>
-  </div>
 
-  <div class="row">
-    <div class="col-lg-3 col-xlg-3">
+    <div class="col-6 col-lg-4 col-xlg-3">
       <div class="card">
         <div class="card-body text-center">
           <div>
@@ -257,27 +253,20 @@
   </div>
 </div>
 
-  <aside class="right-side-panel">
-    <h3 class="p-relative"><span class="lstick"></span>¿Cómo funciona?</h3>
-    <div class="row">
+<aside class="right-side-panel">
+  <h3 class="p-relative"><span class="lstick"></span>Presupuestos</h3>
+  <h5 class="p-relative">Aplicación</h5>
+  <div class="row">
+      
       <div class="col-md-12 m-t-10">
         <div class="card">
           <div class="card-body">
-            <img src="{% static 'img/animation_500_kmv3afam.gif' %}" alt="Funny image" width="200px">
-            <p><b class="text-dark">Constantes</b> son los valores por lo cual toda la base de presupuestos se
-              actualizará
-            </p>
-            <p><b class="text-success">Articulos</b> administras la base de datos de insumos</p>
-            <p><b class="text-warning">Biblioteca APU</b> son los analisis usados para armar los presupuestos</p>
-            <p><b class="text-danger">Control</b> muestra presupuestos e información de avance y monitoreo</p>
-            <p><b class="text-info">Indicador de precios</b> es una referencia en función del costo</p>
-            <p><b class="text-primary">Informe de área</b> muestra información global</p>
-          </div>
-        </div>
+          <img src="{% static 'img/animation_500_kmv3afam.gif' %}" alt="Funny image" width="200px">
+          <p>La aplicación de presupuestos esta diseñada para la estimación, control y monitoreo de los presupuestos de los distintos proyectos </p>
       </div>
-    </div>
-  </aside>
-
-
+          </div>
+      </div>
+  </div>
+</aside>
 
 {% endblock %}

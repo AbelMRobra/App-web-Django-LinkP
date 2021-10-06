@@ -197,7 +197,8 @@ def presupuestostotal(request,id):
         presupuestador = datosusuario.objects.get(identificacion=presup_info.presupuestador)
 
     except:
-
+        
+        presup_info = 0
         presupuestador = 0
 
     # Completamos los datos del tablero
@@ -349,6 +350,7 @@ def presupuestostotal(request,id):
 
     context = {}
     context['datos'] = datos
+    context['datos_presupuesto'] = presup_info
     context['proyectos'] = proyectos
     context['valor'] = registro
     context['presupuestador'] = presupuestador
@@ -624,8 +626,6 @@ def debugsa(request, id_proyecto):
     datos = debugsaldo(id_proyecto)
 
     return render(request, 'presupuestos/debugsaldo.html', {"datos":datos})
-
-
 
 def fdr(request, id_proyecto):
 
@@ -1423,8 +1423,6 @@ def Fondosdereparo(id_proyecto):
 
     return datos
 
-
-
 def Saldoporcapitulo(id_proyecto):
 
     #Traemos las compras y el presupuesto
@@ -1555,8 +1553,6 @@ def Saldoporcapitulo(id_proyecto):
 
 
     return saldo_capitulo
-
-
 
 def presupuesto_auditor(request):
 
@@ -2075,8 +2071,6 @@ def debugsaldo(id_proyecto):
 
         return mensaje
     
-# ---> Aqui empiezan los servicios
-
 class ArticulosListApiView(ListAPIView):
     serializer_class = ArtSerializer
 
@@ -2090,7 +2084,6 @@ class ArticulosListApiView(ListAPIView):
         else:
 
             return Articulos.objects.filter(nombre__icontains = kword)[0:40]|Articulos.objects.filter(codigo__icontains = kword)[0:40]
-
 
 def registro_contable(request):
 

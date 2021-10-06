@@ -30,6 +30,9 @@
             <div>
               <h4 class="card-title"><span class="lstick m-r-20"></span><b
                   style="color: rgb({{datos.0.0.color}});">{{datos.0.0.nombre}}</b></h4>
+
+              {% if datos_presupuesto %}<h5 style="color: rgb({{datos.0.0.color}});">Imprevisto: ${{datos_presupuesto.imprevisto|floatformat:0|intcomma}}</h5>{% endif %}
+
               <h6></span>Variaciones de los ultimos 30 dias
                 {% if variacion > 0 %}
                 <b style="font-family: Arial, Helvetica, sans-serif; color: #34CE15;">+ {{variacion|floatformat:2}} %
