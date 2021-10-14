@@ -4,6 +4,7 @@ from . import views
 from . import views_ctacte_informes
 from .views import DescargarCuentacorriente, DescargarTotalCuentas, PdfPrueba, DescargarResumen, DescargarControlUnidades
 from .views_excels import ExcelCuentasCorrientes
+from .views_finanzas import views_ctacte
 from django.contrib.auth.decorators import login_required
 
 
@@ -22,21 +23,29 @@ urlpatterns = [
     path("totalizadortentaanticipada/<int:id>" ,login_required(views.totalizadorRentaAnticipada) ,name='Totalizador Renta Anticipada'),
 
     #----------------URL CUENTAS CORRIENTES -----------------------------------------
+
+
+    url(r'^ctacte_proyecto/(?P<id_proyecto>\d+)/$', login_required(views_ctacte.ctacte_proyecto), name = 'Cuenta corriente proyecto'),
+    url(r'^ctacte_cliente/(?P<id_cliente>\d+)/$', login_required(views_ctacte.ctacte_cliente), name = 'Cuenta corriente venta'),
+
+    url(r'^ctacte_cuota_eliminar/(?P<id_cuota>\d+)/$', login_required(views_ctacte.ctacte_cuota_eliminar), name = 'Eliminar cuota'),
+    url(r'^ctacte_cuota_editar/(?P<id_cuota>\d+)/$', login_required(views_ctacte.ctacte_cuota_editar), name = 'Editar cuota'),
+
     url(r'^appfinanzas/$', login_required(views.appfinanzas), name = 'App Finanzas'),
     url(r'^panelctacte/$', login_required(views.panelctacote), name = 'Panel cuentas corrientes'),
     url(r'^crearcuenta/(?P<id_proyecto>\d+)/$', login_required(views.crearcuenta), name = 'Crear cuenta corriente'),
     url(r'^mandarmail/(?P<id_cuenta>\d+)/$', login_required(views.mandarmail), name = 'Mandar email'),
     url(r'^deudores/(?P<id_proyecto>\d+)$', login_required(views.deudores), name = 'Deudores'),
     url(r'^resumen/(?P<id_cliente>\d+)/$', login_required(views.resumenctacte), name = 'Resumen cuenta corriente'),
-    url(r'^ctacteproyecto/(?P<id_proyecto>\d+)/$', login_required(views.ctacteproyecto), name = 'Cuenta corriente proyecto'),
-    url(r'^ctactecliente/(?P<id_cliente>\d+)/$', login_required(views.ctactecliente), name = 'Cuenta corriente venta'),
+    
+    
     url(r'^ctacteclienteboleto/(?P<id_cliente>\d+)/$', login_required(views.estructura_boleto), name = 'Cuenta corriente venta boleto'),
     url(r'^boleto/(?P<id_cuenta>\d+)/(?P<id_cuota>\d+)/$', login_required(views.boleto), name = 'Boleto en cuota'),
     url(r'^totalcuentas/(?P<id_proyecto>\d+)/$', login_required(views_ctacte_informes.totalcuentacte), name = 'Total cuenta'),
     url(r'^resumencuentas/$', login_required(views_ctacte_informes.cuentacte_resumen), name = 'Resumen de cuentas'),
-    url(r'^editarcuota/(?P<id_cuota>\d+)/$', login_required(views.editar_cuota), name = 'Editar cuota'),
+    
     url(r'^agregarcuota/(?P<id_cuenta>\d+)/$', login_required(views.agregar_cuota), name = 'Agregar cuota'),
-    url(r'^eliminarcuota/(?P<id_cuota>\d+)/$', login_required(views.eliminar_cuota), name = 'Eliminar cuota'),
+    
     url(r'^pagos/(?P<id_cuota>\d+)/$', login_required(views.pagos), name = 'Pagos'),
     url(r'^agregarpagos/(?P<id_cuota>\d+)/$', login_required(views.agregar_pagos), name = 'Agregar pagos'),
     url(r'^eliminarpago/(?P<id_pago>\d+)/$', login_required(views.eliminar_pago), name = 'Eliminar pago'),

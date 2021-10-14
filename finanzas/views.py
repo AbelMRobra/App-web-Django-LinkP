@@ -367,51 +367,6 @@ def eliminar_pago(request, id_pago):
 
     return render(request, 'eliminar_pago.html', {"pago":pago})
 
-def editar_cuota(request, id_cuota):
-
-    cuota = Cuota.objects.get(id = id_cuota)
-
-    if request.method == 'POST':
-
-        datos = request.POST.items()
-
-        for i in datos:
-
-            if  'fecha' in i[0] and i[1] != "":
-
-                cuota.fecha = str(i[1])
-
-                cuota.save()
-
-            if  'concepto' in i[0] and i[1] != "":
-
-                cuota.concepto = str(i[1])
-
-                cuota.save()
-
-            if  'precio' in i[0] and i[1] != "":
-
-                cuota.precio = float(i[1])
-
-                cuota.save()
-
-            if  'tipo_venta' in i[0]:
-
-                if i[1] == "HORM":
-
-                    cuota.constante = Constantes.objects.get(nombre = "Hº VIVIENDA")
-                    
-                    cuota.save()
-
-                if i[1] == "USD":
-
-                    cuota.constante = Constantes.objects.get(nombre = "USD")
-
-                    cuota.save()
-
-        return redirect('Cuenta corriente venta', id_cliente = cuota.cuenta_corriente.id)
-
-    return render(request, 'editar_cuota.html', {"cuota":cuota})
 
 def agregar_cuota(request, id_cuenta):
 
@@ -683,17 +638,7 @@ def agregar_pagos(request, id_cuota):
 
     return render(request, 'agregar_pagos.html', {'cuota':cuota})
 
-def eliminar_cuota(request, id_cuota):
 
-    cuota = Cuota.objects.get(id = id_cuota)
-
-    if request.method == 'POST':
-
-        cuota.delete()
-
-        return redirect('Cuenta corriente venta', id_cliente = cuota.cuenta_corriente.id)
-
-    return render(request, 'eliminar_cuota.html', {"cuota":cuota})
 
 def crearcuenta(request, id_proyecto):
 
@@ -775,13 +720,7 @@ def crearcuenta(request, id_proyecto):
 
     return render(request, 'crearcuenta.html', {"datos":datos, "proyecto":proyecto})
 
-def ctacteproyecto(request, id_proyecto):
 
-    proyecto = Proyectos.objects.get(id = id_proyecto)
-
-    datos = CuentaCorriente.objects.filter(venta__proyecto = proyecto)
-
-    return render(request, 'ctacteproyecto.html', {"proyecto":proyecto, "datos":datos})
 
 def principalfinanzas(request):
 
@@ -921,102 +860,6 @@ def resumenctacte(request, id_cliente):
 
     return render(request, 'resumencta.html', {"ctacte":ctacte, "datos":datos, "datos_cuotas":datos_cuotas, "saldo_total_pesos":saldo_total_pesos})
 
-def ctactecliente(request, id_cliente):
-
-    try:
-
-        frozen = Constantes.objects.get(cuenta_corriente = id_cliente)
-
-    except:
-        frozen = 0
-
-    if request.method == 'POST':
-        
-        try:
-            if request.POST['frozen']:
-                if len(Constantes.objects.filter(cuenta_corriente = id_cliente)):
-                    frozen.valor = request.POST['valor']
-                    frozen.save()
-                else:
-                    frozen = Constantes(
-                        nombre = "FROZEN-{}".format(id_cliente),
-                        valor =request.POST['valor'],
-                        descrip = "Constante para cuenta corrientes",
-                        cuenta_corriente = id_cliente
-                    )
-
-                    frozen.save()
-
-        except:
-            data = request.POST.items()
-            list_cuotas_id = Cuota.objects.filter(cuenta_corriente__id = id_cliente, constante = frozen).values_list("id", flat = True)
-            list_cuotas_id = list(set(list_cuotas_id))
-            for d in data:
-                if "cuota" in d[0]:
-                    cuota = Cuota.objects.get(id = d[1])
-                    cuota.constante = frozen
-                    cuota.save()
-                    try:
-                        list_cuotas_id.remove(int(d[1]))
-                    except:
-                        pass
-            for nf in list_cuotas_id:
-                cuota = Cuota.objects.get(id = nf)
-                cuota.constante = Constantes.objects.get(id = 7)
-                cuota.save()
-
-        if 'baja-cuenta' in request.POST.dict():
-     
-            ids=request.POST.dict()['baja-cuenta']
-            lista_ids=ids.split('-')
-            id_cuenta=lista_ids[0]
-            id_proyecto=lista_ids[1]
-            cuenta=CuentaCorriente.objects.get(pk=int(id_cuenta))
-            if cuenta.estado=='activo':
-                cuenta.estado='baja'
-                cuenta.save()
-                return redirect('Cuenta corriente proyecto',id_proyecto)
-
-            else:
-                cuenta.estado='activo'
-                cuenta.save()
-                return redirect('Cuenta corriente proyecto',id_proyecto)
-
-    ctacte = CuentaCorriente.objects.get(id = id_cliente)
-
-    cuotas = Cuota.objects.filter(cuenta_corriente = ctacte)
-
-    pagos = Pago.objects.all()
-
-    datos_cuenta = []
-
-    for cuota in cuotas:
-
-        pago_cuota = sum(np.array(Pago.objects.filter(cuota = cuota).values_list("pago")))
-        pago_pesos = sum(np.array(Pago.objects.filter(cuota = cuota).values_list("pago_pesos")))
-        saldo_cuota = cuota.precio - pago_cuota
-        saldo_pesos = saldo_cuota*cuota.constante.valor
-        pagos_realizados = Pago.objects.filter(cuota = cuota)
-        saldo_cuota = cuota.precio - pago_cuota
-
-        if pago_cuota == 0:
-            cotizacion = 0
-        else:
-            cotizacion = pago_pesos/pago_cuota
-
-        if cuota.precio != 0 and cuota.pagada == "NO":
-            if abs(saldo_cuota*cuota.constante.valor) < 50:
-                cuota.precio = pago_cuota
-                cuota.pagada = "SI"
-                cuota.save()
-                saldo_cuota = 0
-                saldo_pesos = 0
-
-        datos_cuenta.append((cuota, pago_cuota, saldo_cuota, saldo_pesos, pagos_realizados, cotizacion, pago_pesos))
-
-    datos_cuenta = sorted(datos_cuenta, key=lambda datos: datos[0].fecha)
-
-    return render(request, 'ctacte.html', {"frozen":frozen, "ctacte":ctacte, "datos_cuenta":datos_cuenta})
 
 def estructura_boleto(request, id_cliente):
 

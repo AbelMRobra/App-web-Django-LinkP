@@ -50,9 +50,10 @@
                                         <span>Agregar valor</span>
                                        
                                         <div class="my-3">
-                                            <input name="valor" type="number" step="any" class="form-control form-control">
+                                            <input name="valor" value="{{frozen}}" type="number" step="any" class="form-control form-control">
                                         </div>
-                                        <button type="submit" class="btn btn-info" name="frozen" value="1">Mandar</button>
+                                        
+                                        <button type="submit" class="btn btn-info" name="frozen" value="1">Aplicar</button>
                                     </form>
                                 </div>
                                 <div class="modal-footer">
@@ -128,54 +129,71 @@
         
                             <tbody style="font-size: 13px;">
 
-                                {% for i in datos_cuenta %}                               
+                                {% for cuota in cuotas %}                               
                                 <tr>
                                     <td>
-                                        <div style="display: inline-block;"> {% if i.0.pagada == "SI" %} 
-                                            <i class="btn fa fa-lg fa-check-circle text-success"></i>
+                                        <div style="display: inline-block;"> {% if cuota.pagada == "SI" %} 
+                                            <i
+                                            data-toggle="tooltip" data-placement="top" title="Cuota pagada!"
+                                            class="btn fa fa-lg fa-check-circle text-success"></i>
                                             {% else %}
-                                            <i id="id_aqui" class="btn fa fa-lg fa-exclamation-circle text-warning"></i>
-                                            {% endif %}  <a href="{% url 'Pagos' i.0.id %}">{{i.0.concepto|upper}}</a> </div>
+                                            <i
+                                            data-toggle="tooltip" data-placement="top" title="Cuota pendiente"
+                                            id="id_aqui" class="btn fa fa-lg fa-exclamation-circle text-warning"></i>
+                                            {% endif %}  <a href="{% url 'Pagos' cuota.id %}">{{cuota.concepto|upper}}</a> </div>
                                     </td>
                                     <td style="text-align: center;">
         
-                                        {% if i.0.boleto == "NO BOLETO" %}
+                                        {% if cuota.boleto == "NO BOLETO" %}
         
-                                        <a class="fa fa-lg fa-plus-circle mt-2 text-warning" href="{% url 'Boleto en cuota' ctacte.id i.0.id %}">
+                                        <a class="fa fa-lg fa-plus-circle mt-2 text-warning" href="{% url 'Boleto en cuota' ctacte.id cuota.id %}">
                                         </a>
         
                                         {% else %}
         
-                                        <a href="{% url 'Boleto en cuota' ctacte.id i.0.id %}"><b
-                                                style="color: #34CE15;">{{i.0.porc_boleto|floatformat:2}}</a>
+                                        <a href="{% url 'Boleto en cuota' ctacte.id cuota.id %}"><b
+                                                style="color: #34CE15;">{{cuota.porc_boleto|floatformat:2}}</a>
         
                                         {% endif %}
                                     </td>
-                                    <td>{{i.0.fecha|date:"d/m/Y"}}</td>
-                                    <td> {{i.0.constante.nombre|lower|capfirst}}</td>
-                                    <td>{{i.0.precio|floatformat:2}}</td>
-                                    <td>{{i.1|floatformat:2}}
-                                        <h6 class="card-subtitle mb-0" style="margin-top: 2px; font-size:13px;">
-                                            ${{i.6|floatformat:2|intcomma}}</h6>
+                                    <td>{{cuota.fecha|date:"d/m/Y"}}</td>
+                                    <td>{{cuota.constante.nombre|lower|capfirst}}</td>
+                                    <td>{{cuota.precio|floatformat:2}}</td>
+                                    
+                                    <td>{{cuota.pago_moneda_dura|floatformat:2}}
+                                        <h6 class="card-subtitle mb-0"
+                                        data-toggle="tooltip" data-placement="left" title="Pago en pesos historico"
+                                        style="margin-top: 2px; font-size:13px;">
+                                            ${{cuota.pago_pesos|floatformat:2|intcomma}}</h6>
                                     </td>
-                                    <td {% if i.2 == 0 %} style="color: #1FC730;" {% endif %}> {{i.2|floatformat:2}}
+
+                                    <td {% if i.2 == 0 %} style="color: #1FC730;" {% endif %}> 
+                                        
+                                        {{cuota.saldo_moneda_dura|floatformat:2}}
         
-                                        <h6 class="card-subtitle mb-0" style="margin-top: 2px; font-size:13px;">
-                                            ${{i.3|floatformat:0|intcomma}}</h6>
+                                        <h6 class="card-subtitle mb-0"
+                                        data-toggle="tooltip" data-placement="left" title="Saldo en pesos"
+                                        style="margin-top: 2px; font-size:13px;">
+                                        ${{cuota.saldo_pesos|floatformat:0|intcomma}}</h6>
+                                    
                                     </td>
         
-                                    {% if i.5 == 0 %}
-                                    <td> ${{i.0.constante.valor|floatformat:2|intcomma}}</td>
+                                    {% if cuota.cotizacion_cuota == 0 %}
+                                    
+                                    <td> ${{cuota.constante.valor|floatformat:2|intcomma}}</td>
+                                    
                                     {% else %}
-                                    <td> ${{i.5|floatformat:2|intcomma}}</td>
+                                    
+                                    <td> ${{cuota.cotizacion_cuota|floatformat:2|intcomma}}</td>
+                                    
                                     {% endif %}
                                     
                                     {% if frozen %}
                                     <td style="text-align: center;">
         
-                                        <input type="checkbox" name="cuota{{i.0.id}}" value="{{i.0.id}}" id="cuota{{i.0.id}}"
-                                            class="filled-in chk-col-blue" {% if 'FROZEN' in i.0.constante.nombre %} checked {% endif %} />
-                                        <label for="cuota{{i.0.id}}"></label>
+                                        <input type="checkbox" name="cuota{{cuota.id}}" value="{{cuota.id}}" id="cuota{{cuota.id}}"
+                                            class="filled-in chk-col-blue" {% if 'FROZEN' in cuota.constante.nombre %} checked {% endif %} />
+                                        <label for="cuota{{cuota.id}}"></label>
         
                                     </td>
                                     {% endif %}
@@ -184,11 +202,11 @@
                                             <a href="JavaScript:void(0)" class="icon-options-vertical link" data-toggle="dropdown"
                                                 aria-haspopup="true" aria-expanded="false"></a>
                                             <div class="dropdown-menu dropdown-menu-right">
-                                                <a class="dropdown-item" href="{% url 'Pagos' i.0.id %}"><i
+                                                <a class="dropdown-item" href="{% url 'Pagos' cuota.id %}"><i
                                                     class="fa fa-money mr-2"></i>Pagos</a>
-                                                <a class="dropdown-item" href="{% url 'Editar cuota' i.0.id %}"><i
+                                                <a class="dropdown-item" href="{% url 'Editar cuota' cuota.id %}"><i
                                                         class="fa fa-pencil mr-2"></i>Editar cuota</a>
-                                                <a class="dropdown-item" href="{% url 'Eliminar cuota' i.0.id %}"><i
+                                                <a class="dropdown-item" href="{% url 'Eliminar cuota' cuota.id %}"><i
                                                         class="fa fa-trash text-danger mr-2"></i>Borrar</a>
                                              
                     
@@ -207,7 +225,10 @@
                     {% if frozen %}
     
                     <div class="d-flex justify-content-center">
-                        <button type="submit" class="btn btn-success btn-circle fa fa-check mb-2"></button>
+                        <button id="add2"
+                        name="revison_cuenta" value="1"
+                        data-toggle="tooltip" data-placement="left" title="Guardar cambios"
+                        type="submit" class="btn btn-success btn-circle fa fa-check mb-2"></button>
                     </div>
     
                     {% endif %}
@@ -219,18 +240,53 @@
     </div>
 </div>
 
-<a id="add" href="#id_aqui"  class="btn btn-lg btn-info btn-circle fa fa-search-plus"></a>
+<a id="add" href="#id_aqui"
+data-toggle="tooltip" data-placement="left" title="Buscar cuotas impagas"
+class="btn btn-warning btn-circle fa fa-search-plus"></a>
 
 <style>
 
 
     #add{
         position: fixed;
-        bottom: 60px;
+        bottom: 40px;
+        right: 20px;
+    }
+
+    #add2{
+        position: fixed;
+        bottom: 90px;
         right: 20px;
     }
 
 </style>
+
+{% if mensaje %}
+
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 5000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+    })
+
+    Toast.fire({
+        icon: '{% if mensaje.0 == 1 %}success{% else %}warning{% endif %}',
+        title: '{{mensaje.1}}'
+    })
+
+</script>
+
+{% endif %}
 
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 

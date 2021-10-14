@@ -66,7 +66,7 @@
 
                                                 <div style="display: inline-block;">
 
-                                                    <label for="concepto1">
+                                                    <label for="concepto">
                                                         <h6>Concepto de la cuota</h6>
                                                     </label>
 
@@ -77,9 +77,10 @@
                                                     <div class="col-12 col-md-8 col-lg-8">
                                                         <div>
 
-                                                            <input name="concepto1" type="text"
+                                                            <input name="concepto" type="text"
+                                                            required
                                                                 class="form-control form-control" aria-label="Amount"
-                                                                placeholder={{cuota.concepto}}>
+                                                                value="{{cuota.concepto}}">
 
                                                         </div>
                                                     </div>
@@ -88,7 +89,7 @@
 
                                                 <div style="display: inline-block;">
 
-                                                    <label for="precio1">
+                                                    <label for="precio">
                                                         <h6>Precio de venta en moneda
                                                             dura</h6>
                                                     </label>
@@ -105,9 +106,9 @@
 
                                                             </div>
 
-                                                            <input name="precio1" type="number" step="any"
+                                                            <input name="precio" type="number" step="any" required
                                                                 class="form-control form-control" aria-label="Amount"
-                                                                placeholder={{cuota.precio}}>
+                                                                value="{{cuota.precio}}">
 
                                                         </div>
                                                     </div>
@@ -115,7 +116,7 @@
 
                                                 <div style="display: inline-block;">
 
-                                                    <label for="fecha1">
+                                                    <label for="fecha">
                                                         <h6>Fecha de la cuota</h6>
                                                     </label>
 
@@ -125,38 +126,35 @@
                                                 <div class="row justify-content-center my-3">
                                                     <div class="col-12 col-md-8 col-lg-8">
                                                         <div>
-                                                            <input name="fecha1" type="date"
+                                                            <input name="fecha" type="date" required
+                                                            value = "{{cuota.fecha|date:'Y-m-d'}}"
                                                                 class="form-control form-control"  min="2008-01-01">
 
 
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="my-1">
-                                                    <p class=" text-center">
-                                                        Fecha actual:
-                                                        {{cuota.fecha}}
-                                                    </p>
-                                                </div>
-
-
+              
                                                 <div class="row justify-content-center mt-3">
                                                     <div class="col-12 col-md-8 col-lg-8">
 
                                                         <div>
+                                                            
                                                             <div class="custom-control custom-radio"
                                                                 style="margin-top: 1%;">
                                                                 <input type="radio" id="customRadio1" name="tipo_venta"
                                                                     class="custom-control-input" value="HORM"
-                                                                    checked="">
+                                                                    {% if cuota.constante.nombre == 'Hº VIVIENDA' %}checked{% endif %}>
                                                                 <label class="custom-control-label"
                                                                     for="customRadio1">HORMIGÓN</label>
                                                             </div>
 
                                                             <div class="custom-control custom-radio">
                                                                 <input type="radio" id="customRadio2" name="tipo_venta"
+                                                                {% if cuota.constante.nombre == 'USD' %}checked{% endif %}
                                                                     class="custom-control-input" value="USD">
                                                                 <label class="custom-control-label"
+                                                                
                                                                     for="customRadio2">DOLAR</label>
                                                             </div>
                                                         </div>

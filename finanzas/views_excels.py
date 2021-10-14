@@ -1,5 +1,8 @@
 import numpy as np
+import string
+import datetime
 from openpyxl import Workbook
+from openpyxl.worksheet.hyperlink import Hyperlink
 from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
 from django.views.generic.base import TemplateView 
 from django.http import HttpResponse
@@ -7,6 +10,7 @@ from .models import CuentaCorriente, Cuota, Pago
 from proyectos.models import Proyectos
 from presupuestos.models import Constantes, Registrodeconstantes
 from ventas.funciones.f_pricing import unidades_calculo_m2
+from finanzas.funciones import funciones_ctacte
 
 class ExcelCuentasCorrientes(TemplateView):
 
@@ -14,19 +18,27 @@ class ExcelCuentasCorrientes(TemplateView):
 
         proyecto = Proyectos.objects.get(id = id_proyecto)
 
-        con_cuentas_corrientes = CuentaCorriente.objects.filter(venta__proyecto = proyecto)
+        con_cuentas_corrientes = CuentaCorriente.objects.filter(venta__proyecto = proyecto).order_by("venta__unidad__orden")
 
         # Comenzamos a crear las distintas pestañas
 
         wb = Workbook()
+
+        contador = 3
+
+        ws = wb.active
+        ws.title = "Glosario"
+
+        sheets_names = []
 
         for cuenta in con_cuentas_corrientes:
 
             cuotas_iterar = Cuota.objects.filter(cuenta_corriente = cuenta)
 
             total_cuentas = sum(np.array(cuotas_iterar.values_list("precio", flat=True)))
-            
-            ws = wb.create_sheet(f'{cuenta.venta.unidad.piso_unidad}-{cuenta.venta.unidad.nombre_unidad}, {cuenta.venta.comprador}'.replace("-", " ").replace("º", "").replace("/", " "))
+            name_sheet = f'{cuenta.venta.unidad.piso_unidad}-{cuenta.venta.unidad.nombre_unidad}, {cuenta.venta.comprador}'.replace("-", " ").replace("º", "").replace("/", " ").replace(" ", "_").replace(",", "_")
+            ws = wb.create_sheet(name_sheet)
+            sheets_names.append(name_sheet)
             ws.sheet_view.showGridLines = False
 
             thin_border = Border(left=Side(style='thin'), 
@@ -46,7 +58,10 @@ class ExcelCuentasCorrientes(TemplateView):
             ws.column_dimensions['J'].width = 20
             ws.column_dimensions['K'].width = 20
             ws.column_dimensions['L'].width = 20
-            ws.column_dimensions['M'].width = 30
+            ws.column_dimensions['M'].width = 20
+            ws.column_dimensions['N'].width = 30
+
+            ws["A1"].hyperlink = Hyperlink(display="Glosario", ref="A2", location="'Glosario'!A1")
 
             ws["A2"] = "NOMBRE COMPRADOR"
             ws["A3"] = "DIRECCIÓN"
@@ -100,7 +115,7 @@ class ExcelCuentasCorrientes(TemplateView):
             ws["B9"].fill =  PatternFill("solid", fgColor= "CFC9D6")
             ws["B9"].font = Font(bold = True)
             ws["B9"].border = thin_border
-            ws.merge_cells("B9:H9")
+            ws.merge_cells("B9:I9")
 
 
             ws["B10"] = "ASIGNACIÓN"
@@ -109,6 +124,7 @@ class ExcelCuentasCorrientes(TemplateView):
             ws["E10"] = "SUPERFICIE POR UNIDAD EN M2"
             ws["G10"] = "PRECIO M2"
             ws["H10"] = "PRECIO TOTAL"
+            ws["I10"] = "PRECIO M3H"
 
             ws["B10"].font = Font(bold = True, color="EAE3F2")
             ws["C10"].font = Font(bold = True, color="EAE3F2")
@@ -116,6 +132,7 @@ class ExcelCuentasCorrientes(TemplateView):
             ws["E10"].font = Font(bold = True, color="EAE3F2")
             ws["G10"].font = Font(bold = True, color="EAE3F2")
             ws["H10"].font = Font(bold = True, color="EAE3F2")
+            ws["I10"].font = Font(bold = True, color="EAE3F2")
 
             ws["B10"].fill = PatternFill("solid", fgColor= "625E66")
             ws["C10"].fill = PatternFill("solid", fgColor= "625E66")
@@ -123,6 +140,7 @@ class ExcelCuentasCorrientes(TemplateView):
             ws["E10"].fill = PatternFill("solid", fgColor= "625E66")
             ws["G10"].fill = PatternFill("solid", fgColor= "625E66")
             ws["H10"].fill = PatternFill("solid", fgColor= "625E66")
+            ws["I10"].fill = PatternFill("solid", fgColor= "625E66")
 
             ws["B10"].border = thin_border
             ws["C10"].border = thin_border
@@ -130,6 +148,7 @@ class ExcelCuentasCorrientes(TemplateView):
             ws["E10"].border = thin_border
             ws["G10"].border = thin_border
             ws["H10"].border = thin_border
+            ws["I10"].border = thin_border
 
             ws.merge_cells("E10:F10")
 
@@ -138,6 +157,12 @@ class ExcelCuentasCorrientes(TemplateView):
             ws["D11"] = cuenta.venta.unidad.orden
             ws["E11"] = cuenta.venta.unidad.tipologia
             ws["F11"] = unidades_calculo_m2(cuenta.venta.unidad.id)
+            try:
+                ws["G11"] = cuenta.venta.precio_venta_hormigon/unidades_calculo_m2(cuenta.venta.unidad.id)
+            except:
+                ws["G11"] = "Error"
+            ws["H11"] = cuenta.venta.precio_venta
+            ws["I11"] = cuenta.venta.precio_venta_hormigon
 
             ws["D11"].alignment = Alignment(horizontal = "center")
             ws["E11"].alignment = Alignment(horizontal = "center")
@@ -154,7 +179,7 @@ class ExcelCuentasCorrientes(TemplateView):
 
             # Cabeza de la operación boleto
 
-            ws["B13"] = "OPERACIÓN REAL"
+            ws["B13"] = "OPERACIÓN BOLETO"
             ws["B13"].alignment = Alignment(horizontal = "center")
             ws["B13"].fill =  PatternFill("solid", fgColor= "CFC9D6")
             ws["B13"].font = Font(bold = True)
@@ -238,92 +263,99 @@ class ExcelCuentasCorrientes(TemplateView):
             ws["C19"].border = thin_border
             ws.merge_cells("C19:C20")
 
-            ws["D19"] = "CUOTAS"
+            ws["D19"] = "CONCEPTO"
             ws["D19"].alignment = Alignment(horizontal = "center", vertical="center")
             ws["D19"].font = Font(bold = True, color="EAE3F2")
             ws["D19"].fill = PatternFill("solid", fgColor= "625E66")
             ws["D19"].border = thin_border
+            ws.merge_cells("D19:D20")
 
-            ws["D20"] = "PARCIALES"
-            ws["D20"].alignment = Alignment(horizontal = "center", vertical="center")
-            ws["D20"].font = Font(bold = True, color="EAE3F2")
-            ws["D20"].fill = PatternFill("solid", fgColor= "625E66")
-            ws["D20"].border = thin_border
-
-            ws["E19"] = f"{cuotas_iterar.count()}"
+            ws["E19"] = "CUOTAS"
             ws["E19"].alignment = Alignment(horizontal = "center", vertical="center")
             ws["E19"].font = Font(bold = True, color="EAE3F2")
             ws["E19"].fill = PatternFill("solid", fgColor= "625E66")
             ws["E19"].border = thin_border
 
-            ws["E20"] = f'{total_cuentas}'
+            ws["E20"] = "PARCIALES"
             ws["E20"].alignment = Alignment(horizontal = "center", vertical="center")
             ws["E20"].font = Font(bold = True, color="EAE3F2")
             ws["E20"].fill = PatternFill("solid", fgColor= "625E66")
             ws["E20"].border = thin_border
 
-            ws["F19"] = "AUMENTO SALDO % MENSUAL"
+            ws["F19"] = f"{cuotas_iterar.count()}"
             ws["F19"].alignment = Alignment(horizontal = "center", vertical="center")
             ws["F19"].font = Font(bold = True, color="EAE3F2")
             ws["F19"].fill = PatternFill("solid", fgColor= "625E66")
             ws["F19"].border = thin_border
-            ws.merge_cells("F19:K19")
 
-            ws["F20"] = """M3 de hormigón
-             de deuda"""
+            ws["F20"] = round(total_cuentas,2)
             ws["F20"].alignment = Alignment(horizontal = "center", vertical="center")
             ws["F20"].font = Font(bold = True, color="EAE3F2")
             ws["F20"].fill = PatternFill("solid", fgColor= "625E66")
             ws["F20"].border = thin_border
 
-            ws["G20"] = """Valor del M3 de
-            hormigon"""
+            ws["G19"] = "AUMENTO SALDO % MENSUAL"
+            ws["G19"].alignment = Alignment(horizontal = "center", vertical="center")
+            ws["G19"].font = Font(bold = True, color="EAE3F2")
+            ws["G19"].fill = PatternFill("solid", fgColor= "625E66")
+            ws["G19"].border = thin_border
+            ws.merge_cells("G19:L19")
+
+            ws["G20"] = """M3 de hormigón
+             de deuda"""
             ws["G20"].alignment = Alignment(horizontal = "center", vertical="center")
             ws["G20"].font = Font(bold = True, color="EAE3F2")
             ws["G20"].fill = PatternFill("solid", fgColor= "625E66")
             ws["G20"].border = thin_border
 
-            ws["H20"] = """Aumento
-            porcentual"""
+            ws["H20"] = """Valor del M3 de
+            hormigon"""
             ws["H20"].alignment = Alignment(horizontal = "center", vertical="center")
             ws["H20"].font = Font(bold = True, color="EAE3F2")
             ws["H20"].fill = PatternFill("solid", fgColor= "625E66")
             ws["H20"].border = thin_border
 
             ws["I20"] = """Aumento
-            numero"""
+            porcentual"""
             ws["I20"].alignment = Alignment(horizontal = "center", vertical="center")
             ws["I20"].font = Font(bold = True, color="EAE3F2")
             ws["I20"].fill = PatternFill("solid", fgColor= "625E66")
             ws["I20"].border = thin_border
 
-            ws["J20"] = "Cuota"
+            ws["J20"] = """Aumento
+            numero"""
             ws["J20"].alignment = Alignment(horizontal = "center", vertical="center")
             ws["J20"].font = Font(bold = True, color="EAE3F2")
             ws["J20"].fill = PatternFill("solid", fgColor= "625E66")
             ws["J20"].border = thin_border
 
-            ws["K20"] = "Saldo"
+            ws["K20"] = "Cuota"
             ws["K20"].alignment = Alignment(horizontal = "center", vertical="center")
             ws["K20"].font = Font(bold = True, color="EAE3F2")
             ws["K20"].fill = PatternFill("solid", fgColor= "625E66")
             ws["K20"].border = thin_border
 
-            ws["L19"] = """FECHA DE
-            COBRO"""
-            ws["L19"].alignment = Alignment(horizontal = "center", vertical="center")
-            ws["L19"].font = Font(bold = True, color="EAE3F2")
-            ws["L19"].fill = PatternFill("solid", fgColor= "625E66")
-            ws["L19"].border = thin_border
-            ws.merge_cells("L19:L20")
+            ws["L20"] = "Saldo"
+            ws["L20"].alignment = Alignment(horizontal = "center", vertical="center")
+            ws["L20"].font = Font(bold = True, color="EAE3F2")
+            ws["L20"].fill = PatternFill("solid", fgColor= "625E66")
+            ws["L20"].border = thin_border
 
-            ws["M19"] = """FORMA DE 
-            PAGO"""
+            ws["M19"] = """FECHA DE
+            COBRO"""
             ws["M19"].alignment = Alignment(horizontal = "center", vertical="center")
             ws["M19"].font = Font(bold = True, color="EAE3F2")
             ws["M19"].fill = PatternFill("solid", fgColor= "625E66")
             ws["M19"].border = thin_border
             ws.merge_cells("M19:M20")
+
+            ws["N19"] = """FORMA DE 
+            PAGO"""
+            ws["N19"].alignment = Alignment(horizontal = "center", vertical="center")
+            ws["N19"].font = Font(bold = True, color="EAE3F2")
+            ws["N19"].fill = PatternFill("solid", fgColor= "625E66")
+            ws["N19"].border = thin_border
+            ws.merge_cells("N19:N20")
 
             valor_inicial = 21
             year_pivote = 0
@@ -370,9 +402,10 @@ class ExcelCuentasCorrientes(TemplateView):
                 ws["B"+str(valor_inicial)].border = thin_border
                 
                 ws["C"+str(valor_inicial)] = month_names[str(cuota.fecha.month)]
-                ws["D"+str(valor_inicial)] = parciales
-                ws["E"+str(valor_inicial)] = total_cuentas_acumulado
-                ws["F"+str(valor_inicial)] = pago
+                ws["D"+str(valor_inicial)] = cuota.concepto
+                ws["E"+str(valor_inicial)] = parciales
+                ws["F"+str(valor_inicial)] = round(total_cuentas_acumulado, 2)
+                ws["G"+str(valor_inicial)] = pago
 
                 if pago != 0:
                     pago_pesos = sum(np.array(con_pago.values_list("pago_pesos", flat=True)))
@@ -385,24 +418,24 @@ class ExcelCuentasCorrientes(TemplateView):
                     except:
                         valor_hormigon = Constantes.objects.get(id = 7).valor
                 
-                ws["G"+str(valor_inicial)] = valor_hormigon
-                ws["G"+str(valor_inicial)].number_format = '"$"#,##0.00_-'
+                ws["H"+str(valor_inicial)] = valor_hormigon
+                ws["H"+str(valor_inicial)].number_format = '"$"#,##0.00_-'
 
                 if valor_anterior == 0:
-                    ws["H"+str(valor_inicial)] = "-"
+                    ws["I"+str(valor_inicial)] = "-"
 
                 else:
-                    ws["H"+str(valor_inicial)] = (valor_hormigon/valor_anterior-1)*100
-                    ws["H"+str(valor_inicial)].number_format = '#,##0.00_-"%"'
+                    ws["I"+str(valor_inicial)] = (valor_hormigon/valor_anterior-1)*100
+                    ws["I"+str(valor_inicial)].number_format = '#,##0.00_-"%"'
                 
-                ws["I"+str(valor_inicial)] = valor_hormigon - valor_anterior
-                ws["I"+str(valor_inicial)].number_format = '"$"#,##0.00_-'
-
-                ws["J"+str(valor_inicial)] = valor_hormigon*pago
+                ws["J"+str(valor_inicial)] = valor_hormigon - valor_anterior
                 ws["J"+str(valor_inicial)].number_format = '"$"#,##0.00_-'
 
-                ws["K"+str(valor_inicial)] = (total_cuentas_acumulado - pago)*valor_hormigon
+                ws["K"+str(valor_inicial)] = valor_hormigon*pago
                 ws["K"+str(valor_inicial)].number_format = '"$"#,##0.00_-'
+
+                ws["L"+str(valor_inicial)] = (total_cuentas_acumulado - pago)*valor_hormigon
+                ws["L"+str(valor_inicial)].number_format = '"$"#,##0.00_-'
 
                 fechas_pago = ""
                 metodo_pago = ""
@@ -411,8 +444,8 @@ class ExcelCuentasCorrientes(TemplateView):
                     fechas_pago += "/"+str(consulta.fecha)
                     metodo_pago += "/"+str(consulta.metodo)
 
-                ws["L"+str(valor_inicial)] = fechas_pago
-                ws["M"+str(valor_inicial)] = metodo_pago
+                ws["M"+str(valor_inicial)] = fechas_pago
+                ws["N"+str(valor_inicial)] = metodo_pago
                 
                 valor_anterior = valor_hormigon
 
@@ -427,6 +460,7 @@ class ExcelCuentasCorrientes(TemplateView):
                 ws["K"+str(valor_inicial)].border = thin_border
                 ws["L"+str(valor_inicial)].border = thin_border
                 ws["M"+str(valor_inicial)].border = thin_border
+                ws["N"+str(valor_inicial)].border = thin_border
 
                 if pago:
 
@@ -441,15 +475,213 @@ class ExcelCuentasCorrientes(TemplateView):
                     ws["K"+str(valor_inicial)].fill = PatternFill("solid", fgColor= "F5F584")
                     ws["L"+str(valor_inicial)].fill = PatternFill("solid", fgColor= "F5F584")
                     ws["M"+str(valor_inicial)].fill = PatternFill("solid", fgColor= "F5F584")
+                    ws["N"+str(valor_inicial)].fill = PatternFill("solid", fgColor= "F5F584")
 
                 celda_pivote_2 = "B"+str(valor_inicial)
                 valor_inicial += 1
                 parciales += 1
 
-            ws.merge_cells(str(celda_pivote)+":"+str(celda_pivote_2))                
+            ws.merge_cells(str(celda_pivote)+":"+str(celda_pivote_2))
+
+        ws = wb.create_sheet("INGRESOS TOTALES")
+        sheets_names.append("INGRESOS TOTALES")
+        ws.sheet_view.showGridLines = False   
+
+        ws.column_dimensions['A'].width = 20
+        ws.column_dimensions['B'].width = 20
+
+        ws["A1"].hyperlink = Hyperlink(display="Glosario", ref="A2", location="'Glosario'!A1")
+        ws["A4"] = Constantes.objects.get(id = 7).valor
+        ws["A4"].number_format = '"$"#,##0.00_-'
+        ws["A4"].alignment = Alignment(horizontal = "center", vertical="center")
+        ws["A4"].font = Font(bold = True, color="EAE3F2")
+        ws["A4"].fill = PatternFill("solid", fgColor= "625E66")
+        ws["A4"].border = thin_border
+
+
+        ws["A5"] = "Fecha:"
+        ws["A5"].alignment = Alignment(horizontal = "center", vertical="center")
+        ws["A5"].font = Font(bold = True, color="EAE3F2")
+        ws["A5"].fill = PatternFill("solid", fgColor= "625E66")
+        ws["A5"].border = thin_border
+
+
+        ws["B5"] = str(datetime.date.today())
+        ws["B5"].alignment = Alignment(horizontal = "center", vertical="center")
+        ws["B5"].font = Font(bold = True)
+        ws["B5"].border = thin_border
+
+        ws["A8"] = "PRECIO INICIAL"
+        ws["A8"].alignment = Alignment(horizontal = "center", vertical="center")
+        ws["A8"].font = Font(bold = True, color="EAE3F2")
+        ws["A8"].fill = PatternFill("solid", fgColor= "625E66")
+        ws["A8"].border = thin_border
+
+        ws["A9"] = "PAGADO"
+        ws["A9"].alignment = Alignment(horizontal = "center", vertical="center")
+        ws["A9"].font = Font(bold = True, color="EAE3F2")
+        ws["A9"].fill = PatternFill("solid", fgColor= "625E66")
+        ws["A9"].border = thin_border
+        
+        ws.merge_cells("A8:B8")
+        ws.merge_cells("A9:B9")
+
+        fechas = funciones_ctacte.fechas_flujo_excel(proyecto.id)
+
+        contador = 10
+        year_pivote = 0
+        celda_pivote = 0
+        celda_pivote_2 = 0
+        parciales = 1
+        valor_anterior = 0
+        total_cuentas_acumulado = total_cuentas
+
+        for fecha in fechas:
+            
+            ws["A"+str(contador)] = fecha.year
+            ws["A"+str(contador)].alignment = Alignment(horizontal = "center", vertical="center")
+            ws["A"+str(contador)].font = Font(bold = True, color="EAE3F2")
+            ws["A"+str(contador)].fill = PatternFill("solid", fgColor= "625E66")
+            ws["A"+str(contador)].border = thin_border
+
+
+
+            ws["B"+str(contador)] = month_names[str(fecha.month)]
+            ws["B"+str(contador)].alignment = Alignment(horizontal = "center", vertical="center")
+            ws["B"+str(contador)].font = Font(bold = True)
+            ws["B"+str(contador)].border = thin_border
+
+            celda_pivote_2 = "A"+str(contador - 1)
+
+            if year_pivote == 0:
+                    year_pivote = fecha.year
+                    celda_pivote = "A"+str(contador)
+
+            if fecha.year != year_pivote:
+
+                ws.merge_cells(str(celda_pivote)+":"+str(celda_pivote_2))
+                year_pivote = fecha.year
+                celda_pivote = "A"+str(contador)
+
+            contador += 1
+
+        ws.merge_cells(str(celda_pivote)+":A"+str(contador-1))
+        
+        chr_contador = 99
+        chr_contador_2 = 0
+
+        cuotas = Cuota.objects.filter(cuenta_corriente__venta__proyecto = proyecto)
+        
+        for cuenta in con_cuentas_corrientes:
+
+            if chr_contador_2 == 0:
+
+                columna = str(chr(chr_contador))
+
+                if chr_contador == 123:
+                    chr_contador = 97
+                    chr_contador_2 = 97
+                else:
+                    chr_contador += 1
+
+            else:
+
+                columna = str(chr(chr_contador_2))+str(chr(chr_contador))
+  
+            ws.column_dimensions[columna ].width = 20
+
+            ws[columna +"5"] = f'{cuenta.venta.unidad.piso_unidad}-{cuenta.venta.unidad.nombre_unidad}'
+            ws[columna +"6"] = f'{cuenta.venta.comprador}'
+            ws[columna +"7"] = f'{cuenta.venta.unidad.asig}'
+
+            ws[columna +"5"].alignment = Alignment(horizontal = "center", vertical="center")
+            ws[columna +"5"].font = Font(bold = True, color="EAE3F2")
+            ws[columna +"5"].fill = PatternFill("solid", fgColor= "625E66")
+            ws[columna +"5"].border = thin_border
+
+            ws[columna +"6"].alignment = Alignment(horizontal = "center", vertical="center")
+            ws[columna +"6"].font = Font(bold = True, color="EAE3F2")
+            ws[columna +"6"].fill = PatternFill("solid", fgColor= "625E66")
+            ws[columna +"6"].border = thin_border
+
+            ws[columna +"7"].alignment = Alignment(horizontal = "center", vertical="center")
+            ws[columna +"7"].font = Font(bold = True, color="EAE3F2")
+            ws[columna +"7"].fill = PatternFill("solid", fgColor= "625E66")
+            ws[columna +"7"].border = thin_border
+
+            ws[columna +"8"] = cuenta.venta.precio_venta
+            ws[columna +"8"].number_format = '"$"#,##0.00_-'
+            ws[columna +"8"].alignment = Alignment(horizontal = "center", vertical="center")
+            ws[columna +"8"].font = Font(bold = True, color="EAE3F2")
+            ws[columna +"8"].fill = PatternFill("solid", fgColor= "625E66")
+            ws[columna +"8"].border = thin_border
+
+            ws[columna +"9"] = float(cuenta.pagado_cuenta())
+            ws[columna +"9"].number_format = '"$"#,##0.00_-'
+            ws[columna +"9"].alignment = Alignment(horizontal = "center", vertical="center")
+            ws[columna +"9"].font = Font(bold = True, color="EAE3F2")
+            ws[columna +"9"].fill = PatternFill("solid", fgColor= "625E66")
+            ws[columna +"9"].border = thin_border
+                
+                
+            row_fechas = 10
+            
+            for fecha in fechas:
+
+                filter_cuotas = cuotas.filter(cuenta_corriente = cuenta, fecha__year = fecha.year, fecha__month = fecha.month)
+
+                total_pagado =  0 
+                
+                for cuota in filter_cuotas:
+
+                    pagado = float(cuota.pago_pesos())
+                    total_pagado += (float(cuota.saldo_pesos()) + pagado)
+
+                ws[(columna+str(row_fechas))] = total_pagado
+
+                ws[(columna+str(row_fechas))].number_format = '"$"#,##0.00_-'
+                ws[(columna+str(row_fechas))].alignment = Alignment(horizontal = "center", vertical="center")
+                ws[(columna+str(row_fechas))].border = thin_border
+
+                if cuota.pagada == "SI":
+
+                    ws[(columna+str(row_fechas))].fill = PatternFill("solid", fgColor= "C0EC8B")
+
+                elif pagado > 0:
+
+                    ws[(columna+str(row_fechas))].fill = PatternFill("solid", fgColor= "ECE18B")
+
+                else:
+
+                    ws[(columna+str(row_fechas))].fill = PatternFill("solid", fgColor= "E4F6F4")
+
+                row_fechas += 1
+
+
+        # Aqui creamos la parte del glosario
+
+        ws = wb["Glosario"]
+        ws["A2"] = "Glosario del Excel"
+        ws["A2"].font = Font(bold = True)
+
+        ws.sheet_view.showGridLines = False  
+
+        contador = 4
+
+        for name in sheets_names:
+            
+            to_location = "'{0}'!{1}".format(name, 'A1')
+            at_cell = "A"+str(contador)
+            ws[at_cell].hyperlink = Hyperlink(display=name, ref=at_cell, location=to_location)
+            contador += 1
+
+
+
+
+
 
         #Establecer el nombre del archivo
-        nombre_archivo = "CuentasCorrientes{}.xls".format(proyecto.nombre)
+        nombre_archivo = "CuentasCorrientes{}.xls".format(proyecto.nombre).replace(" ", "_").replace(",", "_")
         
         #Definir tipo de respuesta que se va a dar
         response = HttpResponse(content_type = "application/ms-excel")

@@ -14,28 +14,28 @@
                 <li class="breadcrumb-item"><a href="{% url 'Cuenta corriente proyecto' cuota.cuenta_corriente.venta.unidad.proyecto.id %}">Administración</a>
                 </li>
                 <li class="breadcrumb-item"><a href="{% url 'Cuenta corriente venta' cuota.cuenta_corriente.id %}">Cuenta</a></li>
-                <li class="breadcrumb-item">Eliminar Cuota</li>
+                <li class="breadcrumb-item">Eliminar</li>
             </ol>
         </div>
     </div>
-</div>
 
-<div class="row">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-12 col-md-12 col-lg-10 d-flex flex-column align-items-center">
-                        <div class="my-3">
-                            <h3> ¿Estás seguro de eliminar la cuota?</h3>
-                            <h6>Esta acción no se puede restaurar, piensalo bien</h6>
-                        </div>
-                        <div>
-                            <form method="post">
-                                {% csrf_token %}
-                                <button type='submit' class="btn btn-danger">Si, seguro!</button>
-                            </form>
-
+    <div class="row">
+        <div class="col-12 col-lg-9">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12 d-flex flex-column align-items-center">
+                            <div class="my-3">
+                                <h3> ¿Estás seguro de eliminar la cuota?</h3>
+                                <h6>Esta acción no se puede restaurar, piensalo bien</h6>
+                            </div>
+                            <div>
+                                <form method="post">
+                                    {% csrf_token %}
+                                    <button type='submit' class="btn btn-danger">Si, seguro!</button>
+                                </form>
+    
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -43,6 +43,8 @@
         </div>
     </div>
 </div>
+
+
 
 <aside class="right-side-panel">
     <h3 class="p-relative"><span class="lstick"></span>Cuidado!</h3>

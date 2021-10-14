@@ -125,11 +125,23 @@
 </div>
 
 
+<a id="add" href="{% url 'Cuenta corriente Excel' proyecto.id %}" 
 
+data-toggle="tooltip" data-placement="left" title="Reporte del proyecto"
+class="btn btn-success btn-circle fa fa-file-excel-o"></a>
+
+<style>
+
+    #add{
+        position: fixed;
+        bottom: 40px;
+        right: 20px;
+        z-index: 10;
+    }
+
+</style>
 
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-<script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js" defer></script>
-<script src="https://cdn.datatables.net/1.10.23/js/dataTables.bootstrap4.min.js" defer></script>
 
 <script>
     $(document).ready(function () {

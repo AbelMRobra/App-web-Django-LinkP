@@ -1,3 +1,4 @@
+import numpy as np
 from django.db import models
 from proyectos.models import Proyectos
 from ventas.models import VentasRealizadas
@@ -96,6 +97,13 @@ class CuentaCorriente(models.Model):
     telefono_fijo = models.CharField(max_length=15, verbose_name = "Telefono fijo", blank=True, null=True)
     telefono_celular = models.CharField(max_length=15, verbose_name = "Telefono celular", blank=True, null=True)
 
+    def pagado_cuenta(self):
+
+        pagado = sum(np.array(Pago.objects.filter(cuota__cuenta_corriente = self).values_list("pago")))
+
+        return pagado
+
+
     class Meta:
         verbose_name="Cuenta corriente"
         verbose_name_plural="Cuentas corrientes"
@@ -123,6 +131,42 @@ class Cuota(models.Model):
     pagada = models.CharField(choices=Pagada.choices, max_length=20, verbose_name="Pagada", default="NO")
     porc_boleto = models.FloatField(verbose_name="Porcentaje a aplicar boleto", blank=True, null=True, default = 0)
     
+    def pago_moneda_dura(self):
+
+        pago = sum(np.array(Pago.objects.filter(cuota = self).values_list("pago")))
+
+        return pago
+
+    def pago_pesos(self):
+
+        pago = sum(np.array(Pago.objects.filter(cuota = self).values_list("pago_pesos")))
+
+        return pago
+
+    def saldo_moneda_dura(self):
+
+        saldo = self.precio - sum(np.array(Pago.objects.filter(cuota = self).values_list("pago")))
+
+        return saldo
+
+    def saldo_pesos(self):
+
+        saldo = (self.precio - sum(np.array(Pago.objects.filter(cuota = self).values_list("pago"))))*self.constante.valor
+
+        return saldo
+
+    def cotizacion_cuota(self):
+
+        if sum(np.array(Pago.objects.filter(cuota = self).values_list("pago"))) == 0:
+
+            cotizacion = 0
+
+        else:
+
+            cotizacion = sum(np.array(Pago.objects.filter(cuota = self).values_list("pago_pesos")))/sum(np.array(Pago.objects.filter(cuota = self).values_list("pago")))
+
+        return cotizacion
+
     class Meta:
         verbose_name="Cuota"
         verbose_name_plural="Cuotas"
