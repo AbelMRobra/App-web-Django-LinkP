@@ -157,10 +157,13 @@ class ExcelCuentasCorrientes(TemplateView):
             ws["D11"] = cuenta.venta.unidad.orden
             ws["E11"] = cuenta.venta.unidad.tipologia
             ws["F11"] = unidades_calculo_m2(cuenta.venta.unidad.id)
+
             try:
-                ws["G11"] = cuenta.venta.precio_venta_hormigon/unidades_calculo_m2(cuenta.venta.unidad.id)
+                ws["G11"] = cuenta.venta.precio_venta/unidades_calculo_m2(cuenta.venta.unidad.id)
+                ws["G11"].number_format = '"$"#,##0.00_-'
             except:
                 ws["G11"] = "Error"
+
             ws["H11"] = cuenta.venta.precio_venta
             ws["H11"].number_format = '"$"#,##0.00_-'
             ws["I11"] = cuenta.venta.precio_venta_hormigon
@@ -389,6 +392,7 @@ class ExcelCuentasCorrientes(TemplateView):
             }
 
             for cuota in cuotas_iterar:
+
                 con_pago = Pago.objects.filter(cuota = cuota)
                 pago = sum(np.array(con_pago.values_list("pago", flat=True)))
                 total_cuentas_acumulado = total_cuentas_acumulado - pago
@@ -430,9 +434,11 @@ class ExcelCuentasCorrientes(TemplateView):
                 ws["H"+str(valor_inicial)].number_format = '"$"#,##0.00_-'
 
                 if valor_anterior == 0:
+
                     ws["I"+str(valor_inicial)] = "-"
 
                 else:
+
                     ws["I"+str(valor_inicial)] = (valor_hormigon/valor_anterior-1)*100
                     ws["I"+str(valor_inicial)].number_format = '#,##0.00_-"%"'
                 
@@ -449,6 +455,7 @@ class ExcelCuentasCorrientes(TemplateView):
                 metodo_pago = ""
 
                 for consulta in con_pago:
+
                     fechas_pago += "/"+str(consulta.fecha)
                     metodo_pago += "/"+str(consulta.metodo)
 
@@ -470,7 +477,7 @@ class ExcelCuentasCorrientes(TemplateView):
                 ws["M"+str(valor_inicial)].border = thin_border
                 ws["N"+str(valor_inicial)].border = thin_border
 
-                if pago:
+                if pago or cuota.precio == 0:
 
                     ws["C"+str(valor_inicial)].fill = PatternFill("solid", fgColor= "F5F584")
                     ws["D"+str(valor_inicial)].fill = PatternFill("solid", fgColor= "F5F584")
@@ -624,12 +631,26 @@ class ExcelCuentasCorrientes(TemplateView):
             ws[columna +"8"].fill = PatternFill("solid", fgColor= "625E66")
             ws[columna +"8"].border = thin_border
 
-            ws[columna +"9"] = float(cuenta.pagado_cuenta())
+            ws[columna +"9"] = float(cuenta.pagado_pesos_cuenta())
             ws[columna +"9"].number_format = '"$"#,##0.00_-'
             ws[columna +"9"].alignment = Alignment(horizontal = "center", vertical="center")
             ws[columna +"9"].font = Font(bold = True, color="EAE3F2")
             ws[columna +"9"].fill = PatternFill("solid", fgColor= "625E66")
             ws[columna +"9"].border = thin_border
+
+            ws[columna + str(contador)] = float(cuenta.saldo_pesos())
+            ws[columna + str(contador + 1)] = float(cuenta.estado_pesos())
+
+            ws[columna + str(contador)].number_format = '"$"#,##0.00_-'
+            ws[columna + str(contador)].alignment = Alignment(horizontal = "center", vertical="center")
+            ws[columna + str(contador)].font = Font(bold = True)
+            ws[columna + str(contador)].border = thin_border
+
+            ws[columna + str(contador + 1)].number_format = '"$"#,##0.00_-'
+            ws[columna + str(contador + 1)].alignment = Alignment(horizontal = "center", vertical="center")
+            ws[columna + str(contador + 1)].font = Font(bold = True, color="EAE3F2")
+            ws[columna + str(contador + 1)].fill = PatternFill("solid", fgColor= "625E66")
+            ws[columna + str(contador + 1)].border = thin_border
                 
                 
             row_fechas = 10
@@ -653,6 +674,10 @@ class ExcelCuentasCorrientes(TemplateView):
                 ws[(columna+str(row_fechas))].alignment = Alignment(horizontal = "center", vertical="center")
                 ws[(columna+str(row_fechas))].border = thin_border
 
+                if cuota.precio == 0:
+                    cuota.pagada == "SI"
+                    cuota.save()
+
                 if cuota.pagada == "SI":
 
                     ws[(columna+str(row_fechas))].fill = PatternFill("solid", fgColor= "C0EC8B")
@@ -667,7 +692,8 @@ class ExcelCuentasCorrientes(TemplateView):
 
                 row_fechas += 1
 
-
+        ws["A"+str(contador)] = "A PAGAR"
+        ws["A"+str(contador + 1)] = "TOTAL"
         # Aqui creamos la parte del glosario
 
         ws = wb["Glosario"]
@@ -675,6 +701,7 @@ class ExcelCuentasCorrientes(TemplateView):
         ws["A2"].font = Font(bold = True)
 
         ws.sheet_view.showGridLines = False  
+        ws.column_dimensions['A'].width = 100
 
         contador = 4
 

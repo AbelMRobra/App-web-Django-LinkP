@@ -103,6 +103,31 @@ class CuentaCorriente(models.Model):
 
         return pagado
 
+    def pagado_pesos_cuenta(self):
+
+        pagado = sum(np.array(Pago.objects.filter(cuota__cuenta_corriente = self).values_list("pago_pesos")))
+
+        return pagado
+
+    def saldo_pesos(self):
+
+        cuotas_pesos = sum(np.array(Cuota.objects.filter(cuenta_corriente = self).values_list("precio"))*np.array(Cuota.objects.filter(cuenta_corriente = self).values_list("constante__valor")))
+        pagado_pesos = sum(np.array(Pago.objects.filter(cuota__cuenta_corriente = self).values_list("pago"))*np.array(Pago.objects.filter(cuota__cuenta_corriente = self).values_list("cuota__constante__valor")))
+        saldo_pesos = cuotas_pesos - pagado_pesos
+
+        return saldo_pesos
+
+    def estado_pesos(self):
+
+        pagado_pesos_historico = sum(np.array(Pago.objects.filter(cuota__cuenta_corriente = self).values_list("pago_pesos")))
+        cuotas_pesos = sum(np.array(Cuota.objects.filter(cuenta_corriente = self).values_list("precio"))*np.array(Cuota.objects.filter(cuenta_corriente = self).values_list("constante__valor")))
+        pagado_pesos = sum(np.array(Pago.objects.filter(cuota__cuenta_corriente = self).values_list("pago"))*np.array(Pago.objects.filter(cuota__cuenta_corriente = self).values_list("cuota__constante__valor")))
+        saldo_pesos = cuotas_pesos - pagado_pesos
+
+        estado_pesos = saldo_pesos + pagado_pesos_historico
+
+        return estado_pesos
+
 
     class Meta:
         verbose_name="Cuenta corriente"
