@@ -595,6 +595,8 @@ class ExcelCuentasCorrientes(TemplateView):
             else:
 
                 columna = str(chr(chr_contador_2))+str(chr(chr_contador))
+
+            print(columna)
   
             ws.column_dimensions[columna ].width = 20
 
