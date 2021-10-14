@@ -586,7 +586,7 @@ class ExcelCuentasCorrientes(TemplateView):
 
                 columna = str(chr(chr_contador))
 
-                if chr_contador == 123:
+                if chr_contador == 122:
                     chr_contador = 97
                     chr_contador_2 = 97
                 else:
@@ -596,8 +596,6 @@ class ExcelCuentasCorrientes(TemplateView):
 
                 columna = str(chr(chr_contador_2))+str(chr(chr_contador))
 
-            print(columna)
-  
             ws.column_dimensions[columna ].width = 20
 
             ws[columna +"5"] = f'{cuenta.venta.unidad.piso_unidad}-{cuenta.venta.unidad.nombre_unidad}'
