@@ -17,166 +17,156 @@
                 <li class="breadcrumb-item"><a
                     href="{% url 'Cuenta corriente proyecto' cuota.cuenta_corriente.venta.unidad.proyecto.id %}">Administración</a></li>
                 <li class="breadcrumb-item"><a href="{% url 'Cuenta corriente venta' cuota.cuenta_corriente.id %}">Cuenta</a></li>
-                <li class="breadcrumb-item">Editar Cuota</li>
+                <li class="breadcrumb-item">Editar</li>
             </ol>
         </div>
 
     </div>
 
-</div>
-
-<div class="row">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-body row">
-                <div class="col-12 justify-content-center">
-
-                    <div class="row d-flex justify-content-center">
-                        <div class="col-12 col-md-12 col-lg-12 text-center">
-
-                            <img src="{{cuota.cuenta_corriente.venta.unidad.proyecto.iamgen.url}}" class="img-fluid"
-                                alt="..."
-                                style="max-width:200px;width:auto;height:auto; margin-top: 5px; margin-bottom: 5px;">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body row">
+                    <div class="col-12 justify-content-center">
+    
+                        <div class="d-flex align-items-center">
+                            <div>
+        
+                                <h4 class="card-title"><span class="lstick m-r-20"></span><b style="color: rgb({{cuota.cuenta_corriente.venta.unidad.proyecto.color}})">{{cuota.cuenta_corriente.venta.unidad.proyecto.nombre}} - {{cuota.cuenta_corriente.venta.comprador}}
+                                    ({{cuota.cuenta_corriente.venta.unidad.piso_unidad}} - {{cuota.cuenta_corriente.venta.unidad.nombre_unidad}})</b> </h4>
+                                <h6 class="card-subtitle"></span>Editar cuota</h6>
+                            </div>
                         </div>
-                        <div class="text-center mt-3">
-
-                            <h2 style="color: rgb({{cuota.cuenta_corriente.venta.unidad.proyecto.color}})">
-                                Cuenta corriente cliente: {{cuota.cuenta_corriente.venta.comprador}}</h2>
-                            <h5 style="color: rgb({{proyecto.color}})">
-                                {{cuota.cuenta_corriente.venta.unidad.proyecto.nombre}} -
-                                {{cuota.cuenta_corriente.venta.unidad.piso_unidad}} -
-                                {{cuota.cuenta_corriente.venta.unidad.nombre_unidad}}</h5>
-                            <h6>Editar cuota</h6>
-                        </div>
-                    </div>
-
-
-                    <div class="row d-flex justify-content-center">
-                        <div class="col-12 col-md-12 col-lg-6">
-                            <div class="row">
-                                <div class="col bg-light border rounded p-4 ">
-
-                                    <form method="POST">
-
-                                        {% csrf_token %}
-
-                                        <div class="campoctacte">
-
-                                            <div class="campo">
-
-                                                <div style="display: inline-block;">
-
-                                                    <label for="concepto">
-                                                        <h6>Concepto de la cuota</h6>
-                                                    </label>
-
-                                                </div>
-
-
-                                                <div class="row justify-content-center my-3">
-                                                    <div class="col-12 col-md-8 col-lg-8">
-                                                        <div>
-
-                                                            <input name="concepto" type="text"
-                                                            required
-                                                                class="form-control form-control" aria-label="Amount"
-                                                                value="{{cuota.concepto}}">
-
-                                                        </div>
+    
+            
+    
+                        <div class="row d-flex justify-content-center mt-4">
+                            <div class="col-12 col-md-12 col-lg-6">
+                                <div class="row">
+                                    <div class="col bg-light border rounded p-4 ">
+    
+                                        <form method="POST">
+    
+                                            {% csrf_token %}
+    
+                                            <div class="campoctacte">
+    
+                                                <div class="campo">
+    
+                                                    <div style="display: inline-block;">
+    
+                                                        <label for="concepto">
+                                                            <h6>Concepto de la cuota</h6>
+                                                        </label>
+    
                                                     </div>
-                                                </div>
-
-
-                                                <div style="display: inline-block;">
-
-                                                    <label for="precio">
-                                                        <h6>Precio de venta en moneda
-                                                            dura</h6>
-                                                    </label>
-
-                                                </div>
-
-
-                                                <div class="row justify-content-center my-3">
-                                                    <div class="col-12 col-md-8 col-lg-8">
-                                                        <div class="input-group mb-3">
-                                                            <div class="input-group-prepend">
-
-                                                                <span class="input-group-text">$</span>
-
+    
+    
+                                                    <div class="row justify-content-center my-3">
+                                                        <div class="col-12 col-md-8 col-lg-8">
+                                                            <div>
+    
+                                                                <input name="concepto" type="text"
+                                                                required
+                                                                    class="form-control form-control" aria-label="Amount"
+                                                                    value="{{cuota.concepto}}">
+    
                                                             </div>
-
-                                                            <input name="precio" type="number" step="any" required
-                                                                class="form-control form-control" aria-label="Amount"
-                                                                value="{{cuota.precio}}">
-
                                                         </div>
                                                     </div>
-                                                </div>
-
-                                                <div style="display: inline-block;">
-
-                                                    <label for="fecha">
-                                                        <h6>Fecha de la cuota</h6>
-                                                    </label>
-
-                                                </div>
-
-
-                                                <div class="row justify-content-center my-3">
-                                                    <div class="col-12 col-md-8 col-lg-8">
-                                                        <div>
-                                                            <input name="fecha" type="date" required
-                                                            value = "{{cuota.fecha|date:'Y-m-d'}}"
-                                                                class="form-control form-control"  min="2008-01-01">
-
-
-                                                        </div>
+    
+    
+                                                    <div style="display: inline-block;">
+    
+                                                        <label for="precio">
+                                                            <h6>Precio de venta en moneda
+                                                                dura</h6>
+                                                        </label>
+    
                                                     </div>
-                                                </div>
-              
-                                                <div class="row justify-content-center mt-3">
-                                                    <div class="col-12 col-md-8 col-lg-8">
-
-                                                        <div>
-                                                            
-                                                            <div class="custom-control custom-radio"
-                                                                style="margin-top: 1%;">
-                                                                <input type="radio" id="customRadio1" name="tipo_venta"
-                                                                    class="custom-control-input" value="HORM"
-                                                                    {% if cuota.constante.nombre == 'Hº VIVIENDA' %}checked{% endif %}>
-                                                                <label class="custom-control-label"
-                                                                    for="customRadio1">HORMIGÓN</label>
+    
+    
+                                                    <div class="row justify-content-center my-3">
+                                                        <div class="col-12 col-md-8 col-lg-8">
+                                                            <div class="input-group mb-3">
+                                                                <div class="input-group-prepend">
+    
+                                                                    <span class="input-group-text">$</span>
+    
+                                                                </div>
+    
+                                                                <input name="precio" type="number" step="any" required
+                                                                    class="form-control form-control" aria-label="Amount"
+                                                                    value="{{cuota.precio}}">
+    
                                                             </div>
-
-                                                            <div class="custom-control custom-radio">
-                                                                <input type="radio" id="customRadio2" name="tipo_venta"
-                                                                {% if cuota.constante.nombre == 'USD' %}checked{% endif %}
-                                                                    class="custom-control-input" value="USD">
-                                                                <label class="custom-control-label"
+                                                        </div>
+                                                    </div>
+    
+                                                    <div style="display: inline-block;">
+    
+                                                        <label for="fecha">
+                                                            <h6>Fecha de la cuota</h6>
+                                                        </label>
+    
+                                                    </div>
+    
+    
+                                                    <div class="row justify-content-center my-3">
+                                                        <div class="col-12 col-md-8 col-lg-8">
+                                                            <div>
+                                                                <input name="fecha" type="date" required
+                                                                value = "{{cuota.fecha|date:'Y-m-d'}}"
+                                                                    class="form-control form-control"  min="2008-01-01">
+    
+    
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                  
+                                                    <div class="row justify-content-center mt-3">
+                                                        <div class="col-12 col-md-8 col-lg-8">
+    
+                                                            <div>
                                                                 
-                                                                    for="customRadio2">DOLAR</label>
+                                                                <div class="custom-control custom-radio"
+                                                                    style="margin-top: 1%;">
+                                                                    <input type="radio" id="customRadio1" name="tipo_venta"
+                                                                        class="custom-control-input" value="HORM"
+                                                                        {% if cuota.constante.nombre == 'Hº VIVIENDA' %}checked{% endif %}>
+                                                                    <label class="custom-control-label"
+                                                                        for="customRadio1">HORMIGÓN</label>
+                                                                </div>
+    
+                                                                <div class="custom-control custom-radio">
+                                                                    <input type="radio" id="customRadio2" name="tipo_venta"
+                                                                    {% if cuota.constante.nombre == 'USD' %}checked{% endif %}
+                                                                        class="custom-control-input" value="USD">
+                                                                    <label class="custom-control-label"
+                                                                    
+                                                                        for="customRadio2">DOLAR</label>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
+    
                                                 </div>
-
-                                            </div>
-
-
-                                            <div class="row justify-content-center mt-4">
-                                                <div class="col-lg-6 text-center">
-
-                                                    <button type="submit" class="btn btn-info">Editar cuota</button>
-
+    
+    
+                                                <div class="row justify-content-center mt-4">
+                                                    <div class="col-lg-6 text-center">
+    
+                                                        <button type="submit" class="btn btn-info">Editar cuota</button>
+    
+                                                    </div>
                                                 </div>
-                                            </div>
-
-
-                                    </form>
-
+    
+    
+                                        </form>
+    
+                                    </div>
+    
                                 </div>
-
                             </div>
                         </div>
                     </div>
@@ -184,6 +174,7 @@
             </div>
         </div>
     </div>
+
 </div>
 
 

@@ -162,7 +162,9 @@ class ExcelCuentasCorrientes(TemplateView):
             except:
                 ws["G11"] = "Error"
             ws["H11"] = cuenta.venta.precio_venta
+            ws["H11"].number_format = '"$"#,##0.00_-'
             ws["I11"] = cuenta.venta.precio_venta_hormigon
+            ws["I11"].number_format = '#,##0.00_-"M3"'
 
             ws["D11"].alignment = Alignment(horizontal = "center")
             ws["E11"].alignment = Alignment(horizontal = "center")
@@ -175,6 +177,7 @@ class ExcelCuentasCorrientes(TemplateView):
             ws["F11"].border = thin_border
             ws["G11"].border = thin_border
             ws["H11"].border = thin_border
+            ws["I11"].border = thin_border
 
 
             # Cabeza de la operación boleto
@@ -184,7 +187,7 @@ class ExcelCuentasCorrientes(TemplateView):
             ws["B13"].fill =  PatternFill("solid", fgColor= "CFC9D6")
             ws["B13"].font = Font(bold = True)
             ws["B13"].border = thin_border
-            ws.merge_cells("B13:H13")
+            ws.merge_cells("B13:I13")
 
 
             ws["B14"] = "ASIGNACIÓN"
@@ -193,6 +196,7 @@ class ExcelCuentasCorrientes(TemplateView):
             ws["E14"] = "SUPERFICIE POR UNIDAD EN M2"
             ws["G14"] = "PRECIO M2"
             ws["H14"] = "PRECIO TOTAL"
+            ws["I14"] = "PRECIO M3"
 
             ws["B14"].font = Font(bold = True, color="EAE3F2")
             ws["C14"].font = Font(bold = True, color="EAE3F2")
@@ -200,6 +204,7 @@ class ExcelCuentasCorrientes(TemplateView):
             ws["E14"].font = Font(bold = True, color="EAE3F2")
             ws["G14"].font = Font(bold = True, color="EAE3F2")
             ws["H14"].font = Font(bold = True, color="EAE3F2")
+            ws["I14"].font = Font(bold = True, color="EAE3F2")
 
             ws["B14"].fill = PatternFill("solid", fgColor= "625E66")
             ws["C14"].fill = PatternFill("solid", fgColor= "625E66")
@@ -207,6 +212,7 @@ class ExcelCuentasCorrientes(TemplateView):
             ws["E14"].fill = PatternFill("solid", fgColor= "625E66")
             ws["G14"].fill = PatternFill("solid", fgColor= "625E66")
             ws["H14"].fill = PatternFill("solid", fgColor= "625E66")
+            ws["I14"].fill = PatternFill("solid", fgColor= "625E66")
 
             ws["B14"].border = thin_border
             ws["C14"].border = thin_border
@@ -215,6 +221,7 @@ class ExcelCuentasCorrientes(TemplateView):
             ws["F14"].border = thin_border
             ws["G14"].border = thin_border
             ws["H14"].border = thin_border
+            ws["I14"].border = thin_border
 
             ws.merge_cells("E14:F14")
 
@@ -236,6 +243,7 @@ class ExcelCuentasCorrientes(TemplateView):
             ws["F15"].border = thin_border
             ws["G15"].border = thin_border
             ws["H15"].border = thin_border
+            ws["I15"].border = thin_border
 
             ws["B17"] = "* Toda la información detalla es resultado de los datos subidos en LinkP"
             ws.row_dimensions[17].height = 24
@@ -631,6 +639,8 @@ class ExcelCuentasCorrientes(TemplateView):
                 filter_cuotas = cuotas.filter(cuenta_corriente = cuenta, fecha__year = fecha.year, fecha__month = fecha.month)
 
                 total_pagado =  0 
+
+                pagado = 0
                 
                 for cuota in filter_cuotas:
 
