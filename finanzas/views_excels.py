@@ -42,8 +42,8 @@ class ExcelCuentasCorrientes(TemplateView):
 
 
             name_sheet = f'{cuenta.venta.unidad.piso_unidad}-{cuenta.venta.unidad.nombre_unidad}, {cuenta.venta.comprador}'.replace("-", " ").replace("º", "").replace("/", " ").replace(" ", "_").replace(",", "_")
-            ws = wb.create_sheet(name_sheet)
-            sheets_names.append(name_sheet)
+            ws = wb.create_sheet(name_sheet[0:20])
+            sheets_names.append(name_sheet[0:20])
             ws.sheet_view.showGridLines = False
 
             thin_border = Border(left=Side(style='thin'), 
@@ -916,6 +916,36 @@ class ExcelCuentasCorrientes(TemplateView):
 
                         row_fechas += 1
                 
+            columna_final = columna
+
+            row_fechas_total  = 10
+
+            if chr_contador_2 == 0:
+
+                columna = str(chr(chr_contador))
+
+                if chr_contador == 122:
+                    chr_contador = 97
+                    chr_contador_2 = 97
+                else:
+                    chr_contador += 1
+
+            else:
+
+                columna = str(chr(chr_contador_2))+str(chr(chr_contador))
+            
+            ws.column_dimensions[columna ].width = 25
+
+            for fecha in fechas:
+
+                ws[str(columna) + str(row_fechas_total)] = f"=SUM(C{str(row_fechas_total)}:{str(columna_final) + str(row_fechas_total)})"
+                row_fechas_total += 1
+
+                ws[str(columna) + str(row_fechas_total)].alignment = Alignment(horizontal = "center", vertical="center")
+                ws[str(columna) + str(row_fechas_total)].font = Font(bold = True, color="EAE3F2")
+                ws[str(columna) + str(row_fechas_total)].fill = PatternFill("solid", fgColor= "625E66")
+                ws[str(columna) + str(row_fechas_total)].border = thin_border
+
             ws["A"+str(contador)] = "A PAGAR"
             ws["A"+str(contador + 1)] = "TOTAL"
 
