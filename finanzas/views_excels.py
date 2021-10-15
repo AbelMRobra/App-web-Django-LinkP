@@ -460,21 +460,39 @@ class ExcelCuentasCorrientes(TemplateView):
                     valor_hormigon = pago_pesos/pago
                     
                 else:
-                    try:
-                        valor_hormigon = Registrodeconstantes.objects.get(fecha__month = cuota.fecha.mont, fecha__year = cuota.fecha.year, contante__id = 7).valor
-                
-                    except:
-                        valor_hormigon = valor_constante_hormigon
-                
-                ws["H"+str(valor_inicial)] = valor_hormigon
-                ws["H"+str(valor_inicial)].number_format = '"$"#,##0.00_-'
 
+                    facha_busqueda = datetime.date(cuota.fecha.year, cuota.fecha.month, 1)
+
+                    consulta = Registrodeconstantes.objects.filter(fecha = facha_busqueda, constante__nombre = "Hº VIVIENDA")
+
+                    if consulta.count() > 0:
+                        
+                        valor_hormigon = consulta[0].valor
+                        
+                        ws["H"+str(valor_inicial)] = valor_hormigon
+                        ws["H"+str(valor_inicial)].number_format = '"$"#,##0.00_-'
+
+
+                    elif cuota.fecha < datetime.date.today():
+
+                        valor_hormigon = 0
+
+                        ws["H"+str(valor_inicial)] = valor_hormigon
+
+                    else:
+
+                        valor_hormigon = valor_constante_hormigon
+
+                        ws["H"+str(valor_inicial)] = valor_hormigon
+                        ws["H"+str(valor_inicial)].number_format = '"$"#,##0.00_-'
+                
+                
                 if valor_anterior == 0:
 
                     ws["I"+str(valor_inicial)] = "-"
 
                 else:
-
+                    
                     ws["I"+str(valor_inicial)] = (valor_hormigon/valor_anterior-1)*100
                     ws["I"+str(valor_inicial)].number_format = '#,##0.00_-"%"'
                 
@@ -520,7 +538,7 @@ class ExcelCuentasCorrientes(TemplateView):
                 ws["P"+str(valor_inicial)].border = thin_border
                 ws["Q"+str(valor_inicial)].border = thin_border
 
-                if pago or cuota.precio == 0:
+                if pago:
 
                     ws["C"+str(valor_inicial)].fill = PatternFill("solid", fgColor= "F5F584")
                     ws["D"+str(valor_inicial)].fill = PatternFill("solid", fgColor= "F5F584")
@@ -537,6 +555,24 @@ class ExcelCuentasCorrientes(TemplateView):
                     ws["O"+str(valor_inicial)].fill = PatternFill("solid", fgColor= "F5F584")
                     ws["P"+str(valor_inicial)].fill = PatternFill("solid", fgColor= "F5F584")
                     ws["Q"+str(valor_inicial)].fill = PatternFill("solid", fgColor= "F5F584")
+
+                if cuota.precio == 0:
+
+                    ws["C"+str(valor_inicial)].fill = PatternFill("solid", fgColor= "F7C382")
+                    ws["D"+str(valor_inicial)].fill = PatternFill("solid", fgColor= "F7C382")
+                    ws["E"+str(valor_inicial)].fill = PatternFill("solid", fgColor= "F7C382")
+                    ws["F"+str(valor_inicial)].fill = PatternFill("solid", fgColor= "F7C382")
+                    ws["G"+str(valor_inicial)].fill = PatternFill("solid", fgColor= "F7C382")
+                    ws["H"+str(valor_inicial)].fill = PatternFill("solid", fgColor= "F7C382")
+                    ws["I"+str(valor_inicial)].fill = PatternFill("solid", fgColor= "F7C382")
+                    ws["J"+str(valor_inicial)].fill = PatternFill("solid", fgColor= "F7C382")
+                    ws["K"+str(valor_inicial)].fill = PatternFill("solid", fgColor= "F7C382")
+                    ws["L"+str(valor_inicial)].fill = PatternFill("solid", fgColor= "F7C382")
+                    ws["M"+str(valor_inicial)].fill = PatternFill("solid", fgColor= "F7C382")
+                    ws["N"+str(valor_inicial)].fill = PatternFill("solid", fgColor= "F7C382")
+                    ws["O"+str(valor_inicial)].fill = PatternFill("solid", fgColor= "F7C382")
+                    ws["P"+str(valor_inicial)].fill = PatternFill("solid", fgColor= "F7C382")
+                    ws["Q"+str(valor_inicial)].fill = PatternFill("solid", fgColor= "F7C382")
 
                 celda_pivote_2 = "B"+str(valor_inicial)
                 valor_inicial += 1
@@ -682,8 +718,13 @@ class ExcelCuentasCorrientes(TemplateView):
                     ws[columna +"5"].fill = PatternFill("solid", fgColor= "625E66")
                     ws[columna +"5"].border = thin_border
 
+
+                    if cuenta.estado == "activo":
+                        ws[columna +"6"].font = Font(bold = True, color="0FF728")
+                    else:
+                        ws[columna +"6"].font = Font(bold = True, color="F41C0E")
+
                     ws[columna +"6"].alignment = Alignment(horizontal = "center", vertical="center")
-                    ws[columna +"6"].font = Font(bold = True, color="EAE3F2")
                     ws[columna +"6"].fill = PatternFill("solid", fgColor= "625E66")
                     ws[columna +"6"].border = thin_border
 
@@ -731,8 +772,12 @@ class ExcelCuentasCorrientes(TemplateView):
                     ws[columna +"5"].fill = PatternFill("solid", fgColor= "625E66")
                     ws[columna +"5"].border = thin_border
 
+                    if cuenta.estado == "activo":
+                        ws[columna +"6"].font = Font(bold = True, color="0FF728")
+                    else:
+                        ws[columna +"6"].font = Font(bold = True, color="F41C0E")
+
                     ws[columna +"6"].alignment = Alignment(horizontal = "center", vertical="center")
-                    ws[columna +"6"].font = Font(bold = True, color="EAE3F2")
                     ws[columna +"6"].fill = PatternFill("solid", fgColor= "625E66")
                     ws[columna +"6"].border = thin_border
 
