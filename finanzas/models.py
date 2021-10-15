@@ -109,6 +109,20 @@ class CuentaCorriente(models.Model):
 
         return pagado
 
+    def pagado_m3h_cuenta(self):
+
+        try:
+        
+            pagado_pesos = sum(np.array(Pago.objects.filter(cuota__cuenta_corriente = self).values_list("pago"))*np.array(Pago.objects.filter(cuota__cuenta_corriente = self).values_list("cuota__constante__valor")))
+            pagado_m3h = pagado_pesos/Constantes.objects.get(id = 7).valor
+
+
+        except:
+
+            pagado_m3h = 0
+
+        return pagado_m3h
+
     def saldo_pesos(self):
 
         cuotas_pesos = sum(np.array(Cuota.objects.filter(cuenta_corriente = self).values_list("precio"))*np.array(Cuota.objects.filter(cuenta_corriente = self).values_list("constante__valor")))
@@ -116,6 +130,21 @@ class CuentaCorriente(models.Model):
         saldo_pesos = cuotas_pesos - pagado_pesos
 
         return saldo_pesos
+
+    def saldo_m3h(self):
+
+        cuotas_pesos = sum(np.array(Cuota.objects.filter(cuenta_corriente = self).values_list("precio"))*np.array(Cuota.objects.filter(cuenta_corriente = self).values_list("constante__valor")))
+        pagado_pesos = sum(np.array(Pago.objects.filter(cuota__cuenta_corriente = self).values_list("pago"))*np.array(Pago.objects.filter(cuota__cuenta_corriente = self).values_list("cuota__constante__valor")))
+        
+        try:
+
+            saldo_m3 = (cuotas_pesos - pagado_pesos)/Constantes.objects.get(id = 7).valor
+
+        except:
+
+            saldo_m3 = 0
+
+        return saldo_m3
 
     def estado_pesos(self):
 
@@ -127,6 +156,27 @@ class CuentaCorriente(models.Model):
         estado_pesos = saldo_pesos + pagado_pesos_historico
 
         return estado_pesos
+
+    def estado_m3h(self):
+
+        cuotas_pesos = sum(np.array(Cuota.objects.filter(cuenta_corriente = self).values_list("precio"))*np.array(Cuota.objects.filter(cuenta_corriente = self).values_list("constante__valor")))
+        pagado_pesos = sum(np.array(Pago.objects.filter(cuota__cuenta_corriente = self).values_list("pago"))*np.array(Pago.objects.filter(cuota__cuenta_corriente = self).values_list("cuota__constante__valor")))
+
+        if pagado_pesos > cuotas_pesos:
+
+            estado_pesos = pagado_pesos
+
+        else:
+            
+            estado_pesos = cuotas_pesos
+
+        try:
+            estado_m3h = estado_pesos/Constantes.objects.get(id = 7).valor
+
+        except:
+            estado_m3h = 0
+
+        return estado_m3h
 
 
     class Meta:
@@ -168,6 +218,19 @@ class Cuota(models.Model):
 
         return pago
 
+    def pago_m3h(self):
+
+        pago = sum(np.array(Pago.objects.filter(cuota = self).values_list("pago"))*np.array(Pago.objects.filter(cuota = self).values_list("cuota__constante__valor")))
+
+        try:
+            pago = pago/Constantes.objects.get(id = 7).valor
+
+        except:
+
+            pago = 0
+
+        return pago
+
     def saldo_moneda_dura(self):
 
         saldo = self.precio - sum(np.array(Pago.objects.filter(cuota = self).values_list("pago")))
@@ -177,6 +240,22 @@ class Cuota(models.Model):
     def saldo_pesos(self):
 
         saldo = (self.precio - sum(np.array(Pago.objects.filter(cuota = self).values_list("pago"))))*self.constante.valor
+
+        return saldo
+
+    def saldo_m3h(self):
+
+        try:
+
+            valor_cuota = self.precio * self.constante.valor
+
+            pagado = sum(np.array(Pago.objects.filter(cuota = self).values_list("pago"))*np.array(Pago.objects.filter(cuota = self).values_list("cuota__constante__valor")))
+
+            saldo = (valor_cuota - pagado)/Constantes.objects.get(id = 7).valor
+
+        except:
+
+            saldo = 0
 
         return saldo
 
