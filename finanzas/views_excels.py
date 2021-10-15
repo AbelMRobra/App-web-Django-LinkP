@@ -695,15 +695,28 @@ class ExcelCuentasCorrientes(TemplateView):
 
                     columna = str(chr(chr_contador))
 
+                    # Llegamos a la Z
+
                     if chr_contador == 122:
+                        
                         chr_contador = 97
                         chr_contador_2 = 97
+
                     else:
                         chr_contador += 1
 
                 else:
 
                     columna = str(chr(chr_contador_2))+str(chr(chr_contador))
+
+                    if chr_contador == 122:
+
+                        chr_contador = 97
+                        chr_contador_2 += 1
+
+                    else:
+
+                        chr_contador += 1
 
                 ws.column_dimensions[columna ].width = 20
 
@@ -925,26 +938,37 @@ class ExcelCuentasCorrientes(TemplateView):
                 columna = str(chr(chr_contador))
 
                 if chr_contador == 122:
+                    
                     chr_contador = 97
                     chr_contador_2 = 97
+                
                 else:
                     chr_contador += 1
 
             else:
 
                 columna = str(chr(chr_contador_2))+str(chr(chr_contador))
+
+                if chr_contador == 122:
+                    
+                    chr_contador = 97
+                    chr_contador_2 += 1
+
+                else:
+
+                    chr_contador += 1
             
             ws.column_dimensions[columna ].width = 25
 
             for fecha in fechas:
 
                 ws[str(columna) + str(row_fechas_total)] = f"=SUM(C{str(row_fechas_total)}:{str(columna_final) + str(row_fechas_total)})"
-                row_fechas_total += 1
-
                 ws[str(columna) + str(row_fechas_total)].alignment = Alignment(horizontal = "center", vertical="center")
                 ws[str(columna) + str(row_fechas_total)].font = Font(bold = True, color="EAE3F2")
                 ws[str(columna) + str(row_fechas_total)].fill = PatternFill("solid", fgColor= "625E66")
                 ws[str(columna) + str(row_fechas_total)].border = thin_border
+
+                row_fechas_total += 1
 
             ws["A"+str(contador)] = "A PAGAR"
             ws["A"+str(contador + 1)] = "TOTAL"
