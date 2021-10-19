@@ -1,0 +1,334 @@
+{% extends "users/inicio2.html" %}
+
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+    <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+            <h3 class="text-themecolor">Editar venta</h3>
+        </div>
+
+        <div class="col-md-7 align-self-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'App comercial' %}">Panel</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'Cargar Venta' %}">Principal</a></li>
+                <li class="breadcrumb-item">Editar</li>
+            </ol>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body row">
+                    <div class="col-12 justify-content-center">
+                        <h4 class="card-title"><span class="lstick m-r-20"></span>Modifique los datos necesarios</h4>
+                        <h6 class="card-subtitle">Editar venta: {{datos.proyecto.nombre}} -
+                            {{datos.unidad.piso_unidad}} - {{datos.unidad.nombre_unidad}}</h6>
+
+                        <div class="row p-4">
+                            <div class="col bg-light rounded shadow-sm p-4">
+
+                                <form method="POST">
+
+                                    {% csrf_token %}
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <div class="mt-3">
+
+                                                <label for="unidad">
+                                                    <h6>Nombre de la unidad</h6>
+                                                </label>
+
+                                            </div>
+
+                                            <div class="row d-flex justify-content-center">
+                                                <div class="col col-md-8 col-lg-8">
+
+                                                    <input name="unidad" type="text" class="form-control form-control"
+                                                        placeholder="{{datos.proyecto.nombre}} - {{datos.unidad.piso_unidad}} - {{datos.unidad.nombre_unidad}}"
+                                                        readonly=True>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="mt-3">
+
+                                                <label for="comprador">
+                                                    <h6>Comprador</h6>
+                                                </label>
+
+                                            </div>
+                                            <div class="row d-flex justify-content-center">
+                                                <div class="col col-md-8 col-lg-8">
+
+                                                    <input name="comprador" type="text"
+                                                        class="form-control form-control" value="{{datos.comprador}}">
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="mt-3">
+
+                                                <label for="precio_venta">
+                                                    <h6>Precio de venta</h6>
+                                                </label>
+
+                                            </div>
+
+                                            <div class="row d-flex justify-content-center">
+                                                <div class="col col-md-8 col-lg-8">
+                                                    <div class="input-group mb-3">
+
+
+                                                        <div class="input-group-prepend">
+
+                                                            <span class="input-group-text">$</span>
+
+                                                        </div>
+
+                                                        <input name="precio_venta" type="number"
+                                                            class="form-control form-control" aria-label="Amount"
+                                                            value="{{datos.precio_venta}}">
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+
+                                            <div class="mt-3">
+
+                                                <label for="precio_venta_H">
+                                                    <h6>Precio de venta H</h6>
+                                                </label>
+
+                                            </div>
+
+                                            <div class="row d-flex justify-content-center">
+                                                <div class="col col-md-8 col-lg-8">
+                                                    <div class="input-group mb-3">
+
+
+                                                        <div class="input-group-prepend">
+
+                                                            <span class="input-group-text">H°</span>
+
+                                                        </div>
+
+                                                        <input name="precio_venta_H" type="number"
+                                                            class="form-control form-control" aria-label="Amount"
+                                                            value="{{datos.precio_venta_hormigon}}">
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="mt-3">
+
+                                                <label for="precio_contado">
+                                                    <h6>Precio de contado</h6>
+                                                </label>
+
+                                            </div>
+
+                                            <div class="row d-flex justify-content-center">
+                                                <div class="col col-md-8 col-lg-8">
+                                                    <div class="input-group mb-3">
+
+
+                                                        <div class="input-group-prepend">
+
+                                                            <span class="input-group-text">$</span>
+
+                                                        </div>
+
+                                                        <input name="precio_contado" type="number"
+                                                            class="form-control form-control" aria-label="Amount"
+                                                            value="{{datos.precio_contado}}">
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="mt-3">
+
+                                                <label for="anticipo">
+                                                    <h6>Anticipo</h6>
+                                                </label>
+
+                                            </div>
+
+
+                                            <div class="row d-flex justify-content-center">
+                                                <div class="col col-md-8 col-lg-8">
+                                                    <div class="input-group mb-3">
+
+
+                                                        <div class="input-group-prepend">
+
+                                                            <span class="input-group-text">$</span>
+
+                                                        </div>
+
+                                                        <input name="anticipo" type="number"
+                                                            class="form-control form-control"
+                                                            value="{{datos.anticipo}}">
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="mt-3">
+
+                                                <label for="cuotas">
+                                                    <h6>Cuotas restantes</h6>
+                                                </label>
+
+                                            </div>
+
+                                            <div class="row d-flex justify-content-center my-3">
+                                                <div class="col col-md-8 col-lg-8">
+
+                                                    <input name="cuotas" type="number" class="form-control form-control"
+                                                        value="{{datos.cuotas_pend}}">
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="mt-3">
+
+                                                <label for="fecha">
+                                                    <h6>Fecha de la operación</h6>
+                                                </label>
+
+                                            </div>
+
+                                            <div class="row d-flex justify-content-center">
+                                                <div class="col col-md-8 col-lg-8">
+
+                                                    <input value='{{datos.fecha|date:"Y-m-d"}}' name="fecha" type="date"
+                                                        class="form-control form-control">
+                                                </div>
+                                            </div>
+                                        </div>
+                                     
+                                        <div class="col-12">
+                                            <div class="row d-flex justify-content-center">
+                                                <label for="observaciones">
+                                                    <h6>Observaciones de la operación</h6>
+                                                </label>
+                                                <div class="col col-md-10 col-lg-10">
+                                                    <textarea name="observaciones" class="form-control"
+                                                        rows="3">{{datos.observaciones}}</textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 text-center mt-3">
+                                            <div class="row d-flex justify-content-center">
+                                                <div class="col col-md-8 col-lg-8">
+                                                    <div class="custom-control custom-radio">
+                                                        <input type="radio" id="customRadio1" name="tipo_venta"
+                                                            class="custom-control-input" value="VENTA" {% if datos.tipo_venta == "VENTA" %} checked="" {% endif %}>
+                                                        <label class="custom-control-label"
+                                                            for="customRadio1">VENTA</label>
+                                                    </div>
+
+                                                    <div class="custom-control custom-radio">
+                                                        <input type="radio" id="customRadio2" name="tipo_venta"
+                                                            class="custom-control-input" value="CANJE" {% if datos.tipo_venta == "CANJE" %} checked="" {% endif %}>
+                                                        <label class="custom-control-label"
+                                                            for="customRadio2">CANJE</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                  
+                                        <div class="row d-flex justify-content-center mt-4">
+                                            <div class="col-lg-6 text-center">
+
+                                                <button id="add" type="submit" class="btn btn-success btn-circle"
+                                                data-toggle="tooltip" data-placement="left" title="Guardar cambios" 
+                                                    style="margin-bottom: 5%;"><i class="fa fa-check"></i></button>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<a id="add2" href="{% url 'Cargar Venta' %}"  class="btn btn-primary btn-circle">
+    <i data-toggle="tooltip" data-placement="left" title="Volver al panel" class="fa fa-arrow-left"></i></a>
+
+<style>
+
+    #add{
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 10;
+    }
+
+    #add2{
+        position: fixed;
+        bottom: 40px;
+        right: 20px;
+        z-index: 10;
+    }
+
+    h6 {
+        font-size: 16px;
+    }
+
+
+</style>
+
+{% if mensaje %}
+
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 5000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+    })
+
+    Toast.fire({
+        {% if mensaje.0 == 1 %}
+        icon: 'success',
+        {% elif mensaje.0 == 0 %}
+        icon: 'warning',
+        {% endif %}
+        title: '{{mensaje.1}}'
+    })
+
+</script>
+{% endif %}
+
+{% endblock %}

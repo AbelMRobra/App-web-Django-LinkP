@@ -36,8 +36,6 @@
     <div style="text-align: left; margin-bottom: 20px;">
     
         <img src="{{cabecera}}"  class="img-fluid" alt="..." style="width:100%; height:auto;">
-
-
     </div>
 
     <div style="margin-bottom: 0px;"> 
@@ -45,15 +43,10 @@
         <div style="text-align: center;">
 
             <img src="{{unidad.proyecto.iamgen.url}}"  class="img-fluid" alt="..." style="width: 40mm; height:auto; margin-top: 5px; margin-bottom: 20mm;">
-    
-
         </div>
     
         <div style="text-align: center;">
-
             <h4 style="color: rgb({{unidad.proyecto.color}}); font-family: sans-serif">{{ unidad.proyecto.nombre}} </h4>
-        
-
         </div>
     
             <b><hr class = "my-4" style="width: 100%;"></b>
@@ -78,17 +71,12 @@
                                         {% if unidad.tipo == "DEPARTAMENTO" %}
                             
                                         <p><b>TIPO: </b>{{unidad.tipo}} {{unidad.tipologia}} </p>
-                                        
-                            
                                         {% elif  unidad.tipo == "COCHERA" %}
-                            
                                         <p><b>TIPO: </b>{{unidad.tipo}}</p>
-                                        
                             
                                         {% elif  unidad.tipo == "LOCAL" %}
                             
                                         <p><b>TIPO: </b>{{unidad.tipo}}</p>
-                                    
                             
                                         {% endif %}
                                     </td>
@@ -98,17 +86,9 @@
                                         <img src="{{unidad.proyecto.imagen.url}}"  class="img-fluid" alt="..." style="width: 70mm; height:auto; margin-top: 5px; margin-bottom: 20mm;">
 
                                     </td>
-                                    
-
-                                    
-
                                 </th>
                             </tbody>
                         </table>
-            
-                        
-                        
-            
                     </div>
 
             <b><hr class = "my-4" style="width: 100%;"></b>
@@ -129,93 +109,74 @@
                 <tbody>
         
                     <tr style="height: 25px; background-color: rgb(229, 224, 223);">
-                        <td><small><b></b></small></td>
-                        <td><small><b>Concepto</b></small></td>
-                        <td><small><b>Cantidad</b></small></td>
-                        <td><small><b>Monto</b></small></td>
-                        <td><small><b>Valor de la cuota</b></small></td>
-                        <td><small><b>Valor en H°</b></small></td>
+                        <td><b></b></td>
+                        <td><b>Concepto</b></td>
+                        <td><b>Cantidad</b></td>
+                        <td><b>Monto</b></td>
+                        <td><b>Valor de la cuota</b></td>
+                        <td><b>Valor en H°</b></td>
        
                     </tr>
     
     
                     <tr style="height: 25px; ">
-                        <td style="width: 20px;"><small><b></b></small></td>
-                        <td><small>Anticipo</small></td>
-                        <td><small>1.00</small></td>
-                        <td><small>${{data.0|floatformat:2|intcomma}}</small></td>
-                        <td><small>${{data.0|floatformat:2|intcomma}}</small></td>
-                        <td><small>{{data.1|floatformat:2|intcomma}} M3</small></td>
+                        <td style="width: 20px;"><b></b></td>
+                        <td>Anticipo</td>
+                        <td>1.00</td>
+                        <td>${{datos_cotizacion_json.anticipo|floatformat:2|intcomma}}</td>
+                        <td>${{datos_cotizacion_json.anticipo|floatformat:2|intcomma}}</td>
+                        <td>{{datos_cotizacion_json.anticipo_en_hormigon|floatformat:2|intcomma}} M3</td>
               
                     </tr>
                     <tr style="height: 25px; ">
-                        <td style="width: 20px;"><small><b></b></small></td>
-                        <td><small>Cuota espera</small></td>
-                        <td><small>{{data.3|floatformat:2|intcomma}}</small></td>
-                        <td><small>${{data.6|floatformat:2|intcomma}}</small></td>
-                        <td><small>${{data.12|floatformat:2|intcomma}}</small></td>
-                        <td><small>{{data.10|floatformat:2}} M3</small></td>
+                        <td style="width: 20px;"><b></b></td>
+                        <td>Cuota espera</td>
+                        <td>{{datos_cotizacion_json.cuotas_espera|floatformat:2|intcomma}}</td>
+                        <td>${{datos_cotizacion_json.importe_de_las_cuotas_espera|floatformat:2|intcomma}}</td>
+                        <td>${{datos_cotizacion_json.valor_de_la_cuota_espera|floatformat:2|intcomma}}</td>
+                        <td>{{datos_cotizacion_json.importe_de_las_cuotas_espera_en_hormigon|floatformat:2}} M3</td>
               
                     </tr>
                     <tr style="height: 25px; ">
-                        <td style="width: 20px;"><small><b></b></small></td>
-                        <td><small>Entrega</small></td>
-                        <td><small>1.00</small></td>
-                        <td><small>${{data.4|floatformat:2|intcomma}}</small></td>
-                        <td><small>${{data.4|floatformat:2|intcomma}}</small></td>
-                        <td><small>{{data.1|floatformat:2}} M3</small></td>
+                        <td style="width: 20px;"><b></b></td>
+                        <td>Entrega</td>
+                        <td>{{datos_cotizacion_json.aporte|floatformat:2|intcomma}}</td>
+                        <td>${{datos_cotizacion_json.importe_del_aporte|floatformat:2|intcomma}}</td>
+                        <td>${{datos_cotizacion_json.valor_de_la_cuota_entrega|floatformat:2|intcomma}}</td>
+                        <td>{{datos_cotizacion_json.importe_de_las_cuotas_espera_en_hormigon|floatformat:2}} M3</td>
               
                     </tr>
                     <tr style="height: 25px; ">
-                        <td style="width: 20px;"><small><b></b></small></td>
-                        <td><small>Cuota posesión</small></td>
-                        <td><small>{{data.5|floatformat:2|intcomma}}</small></td>
-                        <td><small>${{data.8|floatformat:2|intcomma}}</small></td>
-                        <td><small>${{data.14|floatformat:2|intcomma}}</small></td>
-                        <td><small>{{data.9|floatformat:2}} M3</small></td>
+                        <td style="width: 20px;"><b></b></td>
+                        <td>Cuota posesión</td>
+                        <td>{{datos_cotizacion_json.cuotas_posesion|floatformat:2|intcomma}}</td>
+                        <td>${{datos_cotizacion_json.importe_de_las_cuotas_posesion|floatformat:2|intcomma}}</td>
+                        <td>${{datos_cotizacion_json.valor_de_la_cuota_posesion|floatformat:2|intcomma}}</td>
+                        <td>{{datos_cotizacion_json.importe_de_las_cuotas_posesion_en_hormigon|floatformat:2}} M3</td>
               
                     </tr>
 
                     <tr style="height: 25px; background-color: rgb(81, 75, 74);">
                         <td style="text-align: center; color: rgb(247, 251, 245);" colspan="5"><b>Precio de la unidad financiada</b></td>
-                        <td style="color: rgb(247, 251, 245);"><b>${{data.2|floatformat:2|intcomma}}</b></td>
-        
+                        <td style="color: rgb(247, 251, 245);"><b>${{datos_cotizacion_json.precio_financiado|floatformat:2|intcomma}}</b></td>
                     </tr>
-
                 </tbody>
-        
             </table>
-            
           </div>
      
             <b><hr class = "my-4" style="width: 100%; "></b>
     
         <div style="text-align: left;">
     
-            <div>
-                <small>VALOR M3 DE HORMIGON Y EQUIVALENTE EN PESOS CALCULADO SEGÚN REVISTA VIVIENDA MES EN CURSO </small>
-            </div>
-            <div>
-                <small>Sección CI (CI RUBROS DE OBRA) Código 544 – HORMIGONES – ELABORADO 0130 (Hormigón H21) </small>
-            </div>
-            <div>
-                <small>Dirección Lamadrid 377 4to B, San Miguel del Tucumán, Tucumán</small>
-            </div>
-            <div>
-                <small><b>Cotización vigente por 5 dias habiles</b> </small>
-            </div>
-
-            <div>
-                <small><b>Observaciones: {{data.15}}</b> </small>
-            </div>
-    
-    
+            <div><p>VALOR M3 DE HORMIGON Y EQUIVALENTE EN PESOS CALCULADO SEGÚN REVISTA VIVIENDA MES EN CURSO</p></div>
+            <div><p>Sección CI (CI RUBROS DE OBRA) Código 544 – HORMIGONES – ELABORADO 0130 (Hormigón H21)</p></div>
+            <div><p>Dirección Lamadrid 377 4to B, San Miguel del Tucumán, Tucumán</p></div>
+            <div><p><b>Cotización vigente por 5 dias habiles</b></p></div>
+            
+            <div><p>Especiales aplicados: {{datos_cotizacion_json.descuento}}</p></div>
+            <div><p><b>Observaciones: {{datos_cotizacion_json.observacion}}</b></p></div>
         </div>
-        
-    
-    
     </div>
-    
 </body>
 
 
@@ -248,4 +209,3 @@
 <script src="{% static 'assets/plugins/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js' %}"></script>
 <script src="{% static 'assets/plugins/bootstrap-touchspin/dist/jquery.bootstrap-touchspin.min.js' %}" type="text/javascript"></script>
 <script type="text/javascript" src="{% static 'assets/plugins/multiselect/js/jquery.multi-select.js' %}"></script>
-

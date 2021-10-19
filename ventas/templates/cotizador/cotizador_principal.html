@@ -2,6 +2,7 @@
 {% load static %}
 {% load humanize %}
 {% block content %}
+{% load apptags_extras %}
 
 <div class="container-fluid">
     <div class="row page-titles">
@@ -144,7 +145,7 @@
             
                                     <small><b>*Precio financiado es ${{resultados.2|floatformat:0|intcomma}}</b></small>
                                     <div>
-                                        <small><b>*Precio contado es ${{resultados.19|floatformat:0|intcomma}}</b></small>
+                                        <small><b>*Precio contado es ${{resultados.19|floatformat:0|intcomma}} (- {% porcentual resultados.16 %}%)</b></small>
                                     </div>
                                     
             
@@ -327,7 +328,7 @@
                                                 <div style="display: inline-block;">
     
                                                     <label for="descuento">
-                                                        <h6>Especiales</h6>
+                                                        <h6>Especiales (Para un 5% tipiar 0.05)</h6>
                                                     </label>
     
                                                 </div>
@@ -421,7 +422,7 @@
                                                 <div class="row d-flex my-1">
                                                     <div class="col col-md-12 col-lg-12">
                                                         <input onfocusout="checkopt2()" id="cuotas_p" name="cuotas_p" type="number"
-                                                            class="form-control form-control" list="art" >
+                                                            class="form-control form-control" required value="0" >
                                                     </div>
                                                 </div>
                 
@@ -452,14 +453,14 @@
                                                 
                                                 <div style="display: inline-block;">
                                                     <label for="descuento">
-                                                        <h6>Especiales</h6>
+                                                        <h6>Especiales (Para un 5% tipiar 0.05)</h6>
                                                     </label>
                                                 </div>
                 
                                                 <div class="row d-flex my-1">
                                                     <div class="col col-md-12 col-lg-11">
                                                         <input onfocusout="checkopt2()" id="descuento" name="descuento" type="number" step="any"
-                                                            class="form-control form-control">
+                                                            class="form-control form-control" required value="0">
                                                     </div>
                                                 </div>
                                             </div>

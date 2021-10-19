@@ -1,0 +1,89 @@
+{% extends "users/inicio2.html" %}
+
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+
+<div class="container-fluid r-aside">
+
+    <div class="row page-titles">
+        <div class="col-md-5 col-lg-5 align-self-center">
+            <h3 class="text-themecolor">Eliminar venta</h3>
+        </div>
+
+        <div class="col-md-7 col-lg-4 align-self-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'App comercial' %}">Panel</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'Cargar Venta' %}">Principal</a>
+                </li>
+                <li class="breadcrumb-item">Eliminar</li>
+            </ol>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12 col-lg-9">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12 d-flex flex-column align-items-start">
+    
+    
+                            <h2>Eliminar registro de forma permanente </h2>
+                            <h2>Unidad {{ datos.unidad.proyecto}} - {{datos.unidad.piso_unidad}} -
+                                {{datos.unidad.nombre_unidad }} </h2>
+                            <h2>Vendido a {{ datos.comprador }} </h2>
+                            <small>Esta operación <b class="text-danger font-bold">elimina</b> toda la información del registro</small>
+    
+                            <div class="mt-3">
+    
+                                <form method="POST">
+    
+                                    {% csrf_token %}
+    
+                                    <button class="btn btn-danger" type="submit">Eliminar registro</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<a id="add2" href="{% url 'Cargar Venta' %}"  class="btn btn-primary btn-circle">
+    <i data-toggle="tooltip" data-placement="left" title="Volver al panel" class="fa fa-arrow-left"></i></a>
+
+
+
+<aside class="right-side-panel">
+    <h3 class="p-relative"><span class="lstick"></span>Advertencia</h3>
+    <div class="row d-flex">
+        <div class="col m-t-10">
+            <div class="card">
+                <div class="card-body d-flex flex-column align-items-center ">
+                    <img src="{% static 'img/animation_500_kmuydpt0.gif' %}" alt="Funny image" width="150px">
+                    <p>Estas por eliminar <b class="text-danger">datos</b> de forma permanente, esta acción no se puede reestablecer</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</aside>
+
+<style>
+
+    #add2{
+        position: fixed;
+        bottom: 40px;
+        right: 20px;
+        z-index: 10;
+    }
+
+
+
+
+</style>
+
+{% endblock %}

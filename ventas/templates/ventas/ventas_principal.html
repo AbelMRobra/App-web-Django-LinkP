@@ -1,0 +1,189 @@
+{% extends "users/inicio2.html" %}
+
+{% load static %}
+{% load humanize %}
+{% block content %}
+{% if perms.ventas.view_pricing %}
+
+<div class="container-fluid">
+    <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+            <h3 class="text-themecolor">Panel principal</h3>
+        </div>
+
+        <div class="col-md-7 align-self-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'App comercial' %}">Panel</a></li>
+                <li class="breadcrumb-item">Principal</li>
+            </ol>
+        </div>
+    </div>
+
+    <div class="row ">
+        <div class="col">
+            <div class="card overflow-auto">
+                <div class="card-body">
+                    <div class="div d-flex">
+                        <div>
+                            <h4 class="card-title"><span class="lstick m-r-20"></span>Registros de ventas</h4>
+                            <h6 class="card-subtitle">Panel para llevar control sobre las ventas.</h6>
+                        </div>
+                        <div class="btn-group ml-auto">
+                            <a href="JavaScript:void(0)" class="icon-options-vertical link" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false"></a>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a class="dropdown-item" href="{% url 'Venta agregar' %}"><i class="fa fa-plus-circle mr-2"></i>Cargar una venta</a>
+                                <a class="dropdown-item" href="{% url 'Descargar ventas' %}"><i class="fa fa-file-excel-o mr-2"></i>Descagar Excel</a>
+                                
+                            </div>
+                        </div>
+                    </div>
+    
+    
+                    <div class="tableconteinerabel">
+                        <table id="example" class="table table-bordered" style="width:100%">
+                            <thead style="font-size: 14px;">
+    
+                                <tr>
+                                    <th
+                                    data-toggle="tooltip" data-placement="top" title="Proyecto y unidad"
+                                    >Unidad</th>
+                                    <th
+                                    data-toggle="tooltip" data-placement="top" title="Fecha de realización"
+                                    >Fecha</th>
+                                    <th
+                                    data-toggle="tooltip" data-placement="top" title="Quien figura en el boleto"
+                                    >Comprador</th>
+                                    <th
+                                    data-toggle="tooltip" data-placement="top" title="Representa si sigue vigente la operación"
+                                    >Estado</th>
+                                    <th
+                                    data-toggle="tooltip" data-placement="top" title="Superficie del pricing"
+                                    >Sup.</th>
+                                    <th
+                                    data-toggle="tooltip" data-placement="top" title="Asignación de la unidad"
+                                    >Asignación</th>
+                                    <th
+                                    data-toggle="tooltip" data-placement="top" title="Precio de la operación"
+                                    >$ Venta</th>
+                                    <th
+                                    data-toggle="tooltip" data-placement="top" title="Precio de contado para esta misma operación"
+                                    >$ Contado</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+    
+                            <tbody style="font-size: 12px;">
+    
+                                {% for i in datos %}
+                                <tr>
+
+                                    <td style="color: rgb({{i.unidad.proyecto.color}})"> 
+                                        <b>{{i.unidad.proyecto.nombre|lower|capfirst}}</b>
+                                        <div> {{i.unidad.piso_unidad|lower|capfirst}} -
+
+                                            {% if "0" in i.unidad.nombre_unidad %}
+
+                                            {{i.unidad.nombre_unidad|floatformat:0}} -
+
+                                            {% else %}
+
+                                            {{i.unidad.nombre_unidad|lower|capfirst}} -
+
+                                            {% endif %}
+
+                                            {{i.unidad.tipologia|lower|capfirst}}</div></td>
+    
+                                    <td style="min-width: 100px;">{{i.fecha|date:"d-m-Y"}}</td>
+                                    
+                                    <td style="width: 150px;">  {{i.comprador|lower|capfirst}}  </td>
+    
+                                    {% if i.estado == "ACTIVA" %}
+    
+                                    <td style="color: rgb(81, 169, 104 )"><b>{{i.estado}}</b>
+                                    </td>
+    
+                                    {% else %}
+    
+                                    <td style="color: rgb(169, 88, 81 )"><b>{{i.estado}}</b>
+                                    </td>
+    
+                                    {% endif %}
+                                    <td>  {{i.m2|floatformat:2}}m2  </td>
+                                    <td>  {{i.asignacion}} </td>
+                                    <td>  ${{i.precio_venta|floatformat:0|intcomma}}
+                                        <h6 class="subtitle" style="font-size: 12px;">{{i.precio_venta_hormigon|floatformat:0|intcomma}} M3</h6>
+                                        </td>
+                                    <td>  ${{i.precio_contado|floatformat:0|intcomma}}
+                                        </td>
+                                    
+                                    <td>
+                                        <div class="btn-group ml-auto">
+                                            <a href="JavaScript:void(0)" class="icon-options-vertical link" data-toggle="dropdown"
+                                            aria-haspopup="true" aria-expanded="false"></a>
+                                            <div class="dropdown-menu dropdown-menu-right">
+                                                <a class="dropdown-item" href="{% url 'Detalle venta' i.id %}"><i class="fa fa-book mr-2"></i>Detalle</a>
+                                                <a class="dropdown-item" href="{% url 'Editar venta' i.id %}"><i class="fa fa-pencil-square-o mr-2"></i>Editar</a>
+                                                {% if user.username == "AR" or user.username == "ar" %}
+                                                <a class="dropdown-item" href="{% url 'Eliminar venta' i.id %}"><i class="fa fa-trash text-danger mr-2"></i>Eliminar</a>
+                                                {% endif %}
+                                                
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+    
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endif %}
+
+<a id="add2" href="{% url 'App comercial' %}"  class="btn btn-primary btn-circle">
+    <i data-toggle="tooltip" data-placement="left" title="Volver al panel" class="fa fa-arrow-left"></i></a>
+
+<style>
+
+    #add2{
+        position: fixed;
+        bottom: 40px;
+        right: 20px;
+        z-index: 10;
+    }
+
+    tbody {
+        font-weight: 450;
+    }
+</style>
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+
+
+<script>
+    $(document).ready(function () {
+        $('#example').DataTable({
+            "language": {
+            "lengthMenu": "Mostar _MENU_ documentos",
+            "zeroRecords": "No se encontro nada - perdon ",
+            "info": "Pagina _PAGE_ de _PAGES_",
+            "infoEmpty": "Sin registros disponibles",
+            "infoFiltered": "(filtrado de _MAX_ registros totales)",
+            "search": "Buscar"
+        },
+            "paging": false,
+            "ordering": false,
+            "info": false
+        });
+    });
+</script>
+
+
+{% endblock %}

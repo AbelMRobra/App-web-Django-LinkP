@@ -44,6 +44,9 @@ def unidades_calculo_precio_final(id_unidad):
 
     return [precio_base, precio_final]
 
+def unidades_calculo_precio_desde(id_unidad):
+    return 0
+
 def pricing_modificar_precio_desde(id_proyecto, precio_desde):
     
     proyecto = Proyectos.objects.get(id = id_proyecto)

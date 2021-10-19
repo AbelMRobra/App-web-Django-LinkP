@@ -1,0 +1,113 @@
+{% extends "users/inicio2.html" %}
+
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+    <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+            <h3 class="text-themecolor">Detalle de venta</h3>
+        </div>
+
+        <div class="col-md-7 align-self-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'App comercial' %}">Panel</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'Cargar Venta' %}">Principal</a></li>
+
+                <li class="breadcrumb-item">Detalle de venta</li>
+            </ol>
+        </div>
+
+    </div>
+    <div class="row" style="height: 100%;">
+        <div class="col-12 col-lg-6">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title m-t-10"><i class="fa fa-home text-primary mr-4"></i>{{datos.unidad.proyecto}}: {{datos.unidad.piso_unidad}} {{datos.unidad.nombre_unidad}}</h4>
+                </div>
+
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title m-t-10"><i class="fa fa-user text-primary mr-4"></i>{{datos.comprador}}</h4>
+                </div>
+
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title m-t-10"><i class="fa fa-calendar text-primary mr-4"></i>Se realizo el {{datos.fecha|date:"d/m/Y"}}</h4>
+                </div>
+
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title m-t-10"><i class="fa fa-money mr-4 text-success"></i>${{datos.precio_venta|floatformat:0|intcomma}} / <b>{{datos.precio_venta_hormigon|floatformat:0|intcomma}} M3</b> - Anticipo: ${{datos.anticipo|floatformat:0|intcomma}}</h4>
+                </div>
+
+            </div>
+
+        </div>
+        <div class="col-12 col-lg-6 ">
+            <div class="card overflow-auto h-75">
+                <div class="card-body" >
+
+                    <div class="d-flex row justify-content-center">
+
+                        <div class="d-flex- flex-col text-center">
+
+                            <div style="text-align: center;">
+                                <h2>OBSERVACIONES ANOTADAS
+                                </h2>
+                                <small>Por el área comercial</small>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <hr>
+
+
+                    <div class="mt-3">
+                        <p style="white-space: pre-wrap;">{{datos.observaciones}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<a id="add2" href="{% url 'Cargar Venta' %}"  class="btn btn-primary btn-circle">
+    <i data-toggle="tooltip" data-placement="left" title="Volver al panel" class="fa fa-arrow-left"></i></a>
+
+    <style>
+
+        #add{
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 10;
+        }
+    
+        #add2{
+            position: fixed;
+            bottom: 40px;
+            right: 20px;
+            z-index: 10;
+        }
+    
+        h6 {
+            font-size: 16px;
+        }
+    
+    
+    </style>
+
+
+{% endblock %}

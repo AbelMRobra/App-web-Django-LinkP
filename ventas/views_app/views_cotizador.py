@@ -58,7 +58,7 @@ def cotizador(request, id_unidad):
     context["precio_contado"] = precio_contado
     context["m2"] = m2
 
-    return render(request, 'cotizador.html', context)
+    return render(request, 'cotizador/cotizador_principal.html', context)
 
 class PDF_cotizacion(View):
 
@@ -135,30 +135,30 @@ class PDF_cotizacion(View):
 
         datos_cotizacion_json = {
             "anticipo":datos_cotizacion[0],
-            "anticipo en hormigon":datos_cotizacion[1],
-            "precio financiado":datos_cotizacion[2],
-            "cuotas espera":datos_cotizacion[3],
-            "importe del aporte":datos_cotizacion[4],
-            "cuotas posesion":datos_cotizacion[5],
-            "importe de las cuotas espera":datos_cotizacion[6],
+            "anticipo_en_hormigon":datos_cotizacion[1],
+            "precio_financiado":datos_cotizacion[2],
+            "cuotas_espera":datos_cotizacion[3],
+            "importe_del_aporte":datos_cotizacion[4],
+            "cuotas_posesion":datos_cotizacion[5],
+            "importe_de_las_cuotas_espera":datos_cotizacion[6],
             "aporte":datos_cotizacion[7],
-            "importe de las cuotas posesion":datos_cotizacion[8],
-            "importe de las cuotas posesion en hormigon":datos_cotizacion[9],
-            "importe de las cuotas espera en hormigon":datos_cotizacion[10],
-            "importe del aporte en hormigon":datos_cotizacion[11],
-            "valor de la cuota espera":datos_cotizacion[12],
-            "valor de la cuota entrega":datos_cotizacion[13],
-            "valor de la cuota posesion":datos_cotizacion[14],
+            "importe_de_las_cuotas_posesion":datos_cotizacion[8],
+            "importe_de_las_cuotas_posesion_en_hormigon":datos_cotizacion[9],
+            "importe_de_las_cuotas_espera_en_hormigon":datos_cotizacion[10],
+            "importe_del_aporte_en_hormigon":datos_cotizacion[11],
+            "valor_de_la_cuota_espera":datos_cotizacion[12],
+            "valor_de_la_cuota_entrega":datos_cotizacion[13],
+            "valor_de_la_cuota_posesion":datos_cotizacion[14],
             "observacion":datos_cotizacion[15],
             "descuento":datos_cotizacion[16],
-            "total en pesos":datos_cotizacion[17],
-            "total en hormigon":datos_cotizacion[18],
-            "precio de contado":datos_cotizacion[19],
+            "total_en_pesos":datos_cotizacion[17],
+            "total_en_hormigon":datos_cotizacion[18],
+            "precio_de_contado":datos_cotizacion[19],
         }
 
         # Aqui llamamos y armamos el PDF
       
-        template = get_template('cotizadorpdf.html')
+        template = get_template('cotizador/cotizador_PDF.html')
 
         contexto = {'cliente':cliente, 
         'unidad':unidad, 

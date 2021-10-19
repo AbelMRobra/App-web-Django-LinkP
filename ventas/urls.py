@@ -3,8 +3,8 @@ from django.urls import path
 from django.conf.urls import url
 from . import views
 from . import views_flujo
-from .views_app import views_pricing, views_atributos, views_postventa, views_cotizador
-from .views import descargadeventas, DescargaPricing
+from .views_app import views_pricing, views_atributos, views_postventa, views_cotizador, views_ventas
+from .views import DescargaPricing
 from .views_app.views_cotizador import PDF_cotizacion
 from django.contrib.auth.decorators import login_required
 
@@ -12,15 +12,26 @@ urlpatterns = [
     url(r'^appcomercial/$', login_required(views.appcomercial), name = 'App comercial'),
     url(r'^apparchivoscomercial/$', login_required(views.apparchivoscomercial), name = 'App archivos comercial'),
     url(r'^dosier/$', login_required(views.dosier), name = 'Dosier'),
+
+
+    # ----------> URL para APP Ventas
+    url(r'^ventas_principal$', login_required(views_ventas.ventas_principal), name = 'Cargar Venta'),
+    url(r'^ventas_agregar$', login_required(views_ventas.ventas_agregar), name = 'Venta agregar'),
+    url(r'^ventas_editar/(?P<id_venta>\d+)/$', login_required(views_ventas.ventas_editar), name = 'Editar venta'),
+    url(r'^ventas_eliminar/(?P<id_venta>\d+)/$', login_required(views_ventas.ventas_eliminar), name = 'Eliminar venta'),
+    url(r'^ventas_detalles/(?P<id_venta>\d+)/$', login_required(views_ventas.ventas_detalles), name = 'Detalle venta'),
+    url(r'^ventas_descarga_registros/$', login_required(views_ventas.ExcelRegistroVentas.as_view()), name = 'Descargar ventas'),
+
+    # ----------> URL para APP Pricing
     
     url(r'^estmerc$', login_required(views.estmercado), name = 'Estudio de mercado'),
     url(r'^panelunidades$', login_required(views.panelunidades), name = 'Panel de unidades'),
     url(r'^editarasig/(?P<id_unidad>\d+)/$', login_required(views.editarasignacion), name = 'Editar asignacion'),
     url(r'^cotizador/(?P<id_unidad>\d+)/$', login_required(views_cotizador.cotizador), name = 'Cotizador'),
     path('emailpdfcoti/<int:id_unidad>/<int:id_cliente>/<str:info_coti>', PDF_cotizacion.as_view(), name = "Email del coti"),
-    url(r'^editarventa/(?P<id_venta>\d+)/$', login_required(views.editarventa), name = 'Editar venta'),
-    url(r'^detalleventa/(?P<id_venta>\d+)/$', login_required(views.detalleventa), name = 'Detalle venta'),
-    url(r'^eliminarventa/(?P<id_venta>\d+)/$', login_required(views.eliminarventa), name = 'Eliminar venta'),
+    
+    
+    
     url(r'^radiografia$', login_required(views.radiografia), name = 'Radiografia del cliente'),
     url(r'^informeventa$', login_required(views.informeventa), name = 'Informe de venta'),
     url(r'^fechaentrega$', login_required(views.fechaentrega), name = 'Fecha de entrega'),
@@ -34,8 +45,8 @@ urlpatterns = [
     url(r'^evo_usd$', login_required(views.evousd), name = 'Evolucion USD/m2'),
     url(r'^informe_redes$', login_required(views.informe_redes), name = 'Informe redes'),
     url(r'^resumenprecio$', login_required(views.resumenprecio), name = 'Resumen de precio'),
-    url(r'^cargarventa$', login_required(views.cargarventa), name = 'Cargar Venta'),
-    url(r'^cargar_venta$', login_required(views.cargar_venta), name = 'Cargar una Venta'),
+    
+
     url(r'^featuresproject/(?P<id_proj>\d+)/$', login_required(views_atributos.atributos_proyecto_panel), name = 'Features Project'),
     path('cargarplano/<int:id>' ,login_required(views.cargarplano),name="cargarplano"),
     ##########################
@@ -45,7 +56,7 @@ urlpatterns = [
     ###########################
     # URL de descarga
     ###########################    
-    url(r'^descargarventas/$', login_required(descargadeventas.as_view()), name = 'Descargar ventas'),
+    
     url(r'^descargapricing/(?P<id_proyecto>\d+)/$', login_required(DescargaPricing.as_view()), name = 'Descargar del pricing'),
     
    
