@@ -30,27 +30,18 @@
             <div class="card-body row">
                 <div class="col-12 justify-content-center">
 
-                    <div class="row d-flex justify-content-center">
-                        <div class="col-12 col-md-12 col-lg-12 text-center">
-
-                            <img src="{{cuota.cuenta_corriente.venta.unidad.proyecto.iamgen.url}}" class="img-fluid"
-                                alt="..."
-                                style="max-width:200px;width:auto;height:auto; margin-top: 5px; margin-bottom: 5px;">
-                        </div>
-                        <div class="text-center mt-3">
-
-                            <h2 style="color: rgb({{cuota.cuenta_corriente.venta.unidad.proyecto.color}})">
-                                Cuenta corriente cliente:
-                                {{cuota.cuenta_corriente.venta.comprador}}</h2>
-                            <h5>
-                                {{cuota.cuenta_corriente.venta.unidad.proyecto.nombre}}:
-                                {{cuota.cuenta_corriente.venta.unidad.piso_unidad}} -
-                                {{cuota.cuenta_corriente.venta.unidad.nombre_unidad}}</h5>
-                            <h5> Cuota del mes: {{cuota.fecha}} </h5>
+                    <div class="d-flex align-items-center">
+                        <div>
+    
+                            <h4 class="card-title"><span class="lstick m-r-20"></span><b style="color: rgb({{cuota.cuenta_corriente.venta.unidad.proyecto.color}})"> {{cuota.cuenta_corriente.venta.unidad.proyecto.nombre}} - {{cuota.cuenta_corriente.venta.comprador}}
+                                ({{cuota.cuenta_corriente.venta.unidad.piso_unidad}} - {{cuota.cuenta_corriente.venta.unidad.nombre_unidad}})</b> </h4>
+                            <h6 class="card-subtitle"></span>Cuota del mes: {{cuota.fecha}}</h6>
                         </div>
                     </div>
 
-                    <div class="row d-flex justify-content-center">
+                
+
+                    <div class="row d-flex justify-content-center mt-4">
                         <div class="col-12 col-md-12 col-lg-6">
                             <div class="row">
                                 <div class="col bg-light border rounded p-4 ">

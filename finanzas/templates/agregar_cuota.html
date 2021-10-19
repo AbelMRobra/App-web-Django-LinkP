@@ -29,24 +29,17 @@
             <div class="card-body row">
                 <div class="col-12 justify-content-center">
 
-                    <div class="row  justify-content-center">
-                        <div class="col-12 col-md-12 col-lg-12 text-center">
-
-                            <img src="{{cuenta.venta.unidad.proyecto.iamgen.url}}" class="img-fluid" alt="..."
-                                style="max-width:200px;width:auto;height:auto; margin-top: 5px; margin-bottom: 5px;">
-                        </div>
-                        <div class="text-center mt-3">
-                            <h2 style="color: rgb({{cuenta.venta.unidad.proyecto.color}})">
-                                Cuenta corriente cliente: {{cuenta.venta.comprador}} </h2>
-                            <h5 style="color: rgb({{proyecto.color}})">
-                                {{cuenta.venta.unidad.proyecto.nombre}}
-                                - {{cuenta.venta.unidad.piso_unidad}} -
-                                {{cuenta.venta.unidad.nombre_unidad}}</h5>
-                            <h6>Agregar una cuota</h6>
+                    <div class="d-flex align-items-center">
+                        <div>
+    
+                            <h4 class="card-title"><span class="lstick m-r-20"></span><b style="color: rgb({{cuenta.venta.unidad.proyecto.color}})">{{cuenta.venta.unidad.proyecto.nombre}} - {{cuenta.venta.comprador}}
+                                ({{cuenta.venta.unidad.piso_unidad}} - {{cuenta.venta.unidad.nombre_unidad}})</b> </h4>
+                            <h6 class="card-subtitle"></span>Agregar nueva cuota</h6>
                         </div>
                     </div>
 
-                    <div class="row d-flex justify-content-center">
+
+                    <div class="row d-flex justify-content-center mt-4">
                         <div class="col-12 col-md-12 col-lg-6">
                             <div class="row">
                                 <div class="col bg-light border rounded p-4 ">
