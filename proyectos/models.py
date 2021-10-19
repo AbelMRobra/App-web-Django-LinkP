@@ -130,6 +130,19 @@ class Unidades(models.Model):
         verbose_name="Unidad"
         verbose_name_plural="Unidades"
 
+
+    def superficie(self):
+
+        if self.sup_equiv > 0:
+
+            m2 = self.sup_equiv
+
+        else:
+
+            m2 = self.sup_propia + self.sup_balcon + self.sup_comun + self.sup_patio
+
+        return m2
+
     def __str__(self):
         return '{} - {}'.format(self.piso_unidad, self.nombre_unidad)
 
