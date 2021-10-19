@@ -134,6 +134,11 @@ def is_past_evaluacion1(prueba):
     else:
         return "201, 55, 24"
 
+@register.simple_tag
+def porcentual(number):
+
+    return round(number*100, 0)
+
 
 
 @register.simple_tag
