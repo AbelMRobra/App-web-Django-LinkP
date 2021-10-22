@@ -112,7 +112,7 @@ def archivos_principal(request):
     context['archivos'] = con_archivos
     context['user'] = datosusuario.objects.get(identificacion = request.user.username)
     context['usuarios'] = datosusuario.objects.filter(
-        Q(area = "MKT-COMER") | Q(larea = "DIRECCION") | Q(larea = "IT")
+        Q(area = "MKT-COMER") | Q(area = "DIRECCION") | Q(area = "IT")
         )
     context['proyectos'] = Proyectos.objects.all()
     context['filtros'] = list(set(con_archivos.values_list("nombre", flat=True)))
