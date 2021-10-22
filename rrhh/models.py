@@ -1,10 +1,8 @@
 from statistics import mode
 from django.db import models
 from proyectos.models import Proyectos
-
+from django.contrib.auth.models import User
 # Create your models here.
-
-
 
 class NotaDePedido(models.Model):
 
@@ -53,7 +51,7 @@ class datosusuario(models.Model):
         SI = "SI"
         NO = "NO"
 
-
+    user=models.OneToOneField(User, blank=True,null=True,on_delete=models.SET_NULL)
     identificacion = models.CharField(max_length=200, verbose_name="Identificacion")
     nombre = models.CharField(max_length=200, verbose_name="Nombre, Apellido", blank=True, null=True,)
     imagen = models.CharField(max_length=200, verbose_name="Imagen", blank=True, null=True, editable=False)
@@ -410,7 +408,6 @@ class ArchivosGenerales(models.Model):
 
     def __str__(self):
         return self.nombre
-
 
 class PresupuestoPersonal(models.Model):
 
