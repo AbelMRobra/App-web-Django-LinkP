@@ -122,105 +122,125 @@
                             <p><i class="fa fa-lightbulb-o text-warning ml-1"></i> Variación de Q:
                                 ${{data_resultante.0.1|floatformat:2|intcomma}}</p>
                             <p><i class="fa fa-lightbulb-o text-warning ml-1"></i> Variación de P:
-                                ${{data_resultante_p.1|floatformat:2|intcomma}}</p>
+                                ${{data_resultante_p.0.1|floatformat:2|intcomma}}</p>
                             <p><i class="fa fa-exclamation-triangle text-danger"></i> Errores encontrados Q:
                                 {{data_resultante.0.2}}</p>
                             <small>*No pudo encontrar el articulo en el desde</small>
                                 <p><i class="fa fa-exclamation-triangle text-danger"></i> Errores encontrados P:
-                                    {{data_resultante_p.2}}</p>
+                                    {{data_resultante_p.0.2}}</p>
                             <small>*No pudo actualizar alguna linea al hasta</small>
                         </div>
                         <hr>
                     </div>
 
                     <h4 class="card-title"><span class="lstick m-r-20"></span>Desglose por capitulo</h4>
-                    {% for cap in data_resultante.0.0%}
-                
-                                <a href="#" data-toggle="modal" data-target="#ModalCapitulos{{cap.5}}">
-                                    <div style="display: flex; margin: 10px 0px;">
-                                        <h5 style="width: 600px;">{{cap.0}}:</h5>
+                    {% if data_resultante.0.0 %}
+                        {% for cap in data_resultante.0.0 %}
+
+                    
+                                <a class="my-4" href="#" data-toggle="modal" data-target="#ModalCapitulos{{cap.5}}">
+                                    <div class="d-flex my-2">
+                                        <h5 style="width: 600px;">Lorem, ipsum dolor.{{cap.0}}:</h5>
                                         
                                         <i class="fa fa-lightbulb-o text-warning" style="margin-top: 5px;"></i>
-                                        <h5 style="width: 180px; margin: auto 10px;">${{cap.3|floatformat:2|intcomma}}</h5>
+                                        <h5 style="width: 180px; margin: auto 10px;">Lorem, ipsum dolor.${{cap.3|floatformat:2|intcomma}}</h5>
                                         
                                         <i class="fa fa-exclamation-triangle text-danger" style="margin-top: 5px;"></i>
-                                        <h5 style="margin: auto 10px;">{{cap.4}}</h5>
+                                        <h5 style="margin: auto 10px;">Lorem, ipsum dolor.{{cap.4}}</h5>
                                     </div>
                                 </a>
+                                
+                            <hr style="border: 0; height: 0; border-bottom: 1px solid rgba(255, 255, 255, 0.3);">
                             
-                                <hr style="border: 0;
-                                height: 0;
-                                border-bottom: 1px solid rgba(255, 255, 255, 0.3);">
-                        
-                    <div class="modal fade" id="ModalCapitulos{{cap.5}}" tabindex="-1" role="dialog"
-                        aria-labelledby="ModalCapitulos{{cap.5}}" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered justify-content-center" role="document">
-                            <div class="modal-content" style="width: 80vw;">
-                                <div class="modal-header"
-                                    style="background: rgb(36,160,237);
-                            background: linear-gradient(315deg, rgba(36,160,237,1) 0%, rgba(56,56,130,1) 22%, rgba(0,212,255,1) 100%);width: 80vw;">
-                                    <h5 class="modal-title text-light" id="exampleModalLongTitle">Cargar un archivo</h5>
-                                    <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
+                        <div class="modal fade" id="ModalCapitulos{{cap.5}}" tabindex="-1" role="dialog"
+                            aria-labelledby="ModalCapitulos{{cap.5}}" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered justify-content-center" role="document">
+                                <div class="modal-content" style="width: 80vw;">
+                                    <div class="modal-header" style="background-color: #2a3e52;">
+                                        <h5 class="modal-title text-light" id="exampleModalLongTitle">Cargar un archivo</h5>
+                                        <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
 
-                                    <table class="table">
-                                        <thead>
-                                            <tr>
-                                                <th>Analisis</th>
-                                                <th>Articulo</th>
-                                                <th>Cant.</th>
-                                                <th>Precio</th>
-                                            </tr>
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Analisis</th>
+                                                    <th>Articulo</th>
+                                                    <th>Cant.</th>
+                                                    <th>Precio</th>
+                                                </tr>
+                                            </thead>
 
-                                        </thead>
+                                            <tbody>
+                                            
+                                                {% for salidas in cap.1 %}
+                                                <tr style="font-size: 12px;">
+                                                    <td style="width:350px">{{salidas.0|lower|capfirst}}</td>
+                                                    <td>{{salidas.1|lower|capfirst}}</td>
+                                                    <td style="width:150px">{{salidas.2|floatformat:2|intcomma}}</td>
+                                                    <td style="color: green; width: 120px;">
+                                                        ${{salidas.3|floatformat:2|intcomma}}</td>
+                                                </tr>
+                                                {% endfor %}
 
-                                        <tbody>
-                                            {% for salidas in cap.1 %}
-                                            <tr style="font-size: 12px;">
-                                                <td style="width:350px">{{salidas.0|lower|capfirst}}</td>
-                                                <td>{{salidas.1|lower|capfirst}}</td>
-                                                <td style="width:150px">{{salidas.2|floatformat:2|intcomma}}</td>
-                                                <td style="color: green; width: 120px;">
-                                                    ${{salidas.3|floatformat:2|intcomma}}</td>
-                                            </tr>
-                                            {% endfor %}
+                                                {% for ingresos in cap.2 %}
+                                                <tr style="font-size: 12px;">
+                                                    <td style="width:350px">{{ingresos.0|lower|capfirst}}</td>
+                                                    <td>{{ingresos.1|lower|capfirst}}</td>
+                                                    <td style="width:150px">{{ingresos.2|floatformat:2|intcomma}}</td>
+                                                    <td style="color: red; width: 120px;">${{ingresos.3|floatformat:2|intcomma}}
+                                                    </td>
+                                                </tr>
+                                                {% endfor %}
 
-                                            {% for ingresos in cap.2 %}
-                                            <tr style="font-size: 12px;">
-                                                <td style="width:350px">{{ingresos.0|lower|capfirst}}</td>
-                                                <td>{{ingresos.1|lower|capfirst}}</td>
-                                                <td style="width:150px">{{ingresos.2|floatformat:2|intcomma}}</td>
-                                                <td style="color: red; width: 120px;">${{ingresos.3|floatformat:2|intcomma}}
-                                                </td>
-                                            </tr>
-                                            {% endfor %}
+                                            </tbody>
 
-                                        </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
 
-                                    </table>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-info" data-dismiss="modal">Cerrar</button>
-
+                                    </div>
                                 </div>
                             </div>
+
                         </div>
+                        {% endfor %}
 
-                    </div>
+                    {% else %}
+                    <small>* No hubo cambios de cantidad</small>
+                    {% endif %}
 
-                    {% endfor %}
                     <hr>
+                    <div class="row">
+                        <div class="col-4">
+                            <h4 class="card-title"><span class="lstick m-r-20"></span>Variaciones</h4>
+                            <div class="scrollbox" style="max-height: 300px;">
 
-                    <div>
-                        <canvas id="myChart"></canvas>
+                                {% for variacion in data_resultante_p.1|slice:"30" %}
+
+                                <div class="row d-flex p-2 bg-list-color">
+                                        <span style="font-size: 16px;"><b data-toggle="tooltip" data-placement="right" title="{{variacion.4}}">Articulo: {{variacion.0}} - <b style="font-weight: 350;" class="{% if variacion.3 < 0 %} text-success {% else %} text-danger {% endif %}"> $ {{variacion.3|floatformat:2|intcomma}}</b></b></span>
+                                    <div class="d-flex justify-content-between">
+                                        <span class="text-muted" style="font-size: 14px;">Variacion: {{variacion.1}}%</span>
+                                        <span class="text-muted" style="font-size: 14px;">▲ precio: $ {{variacion.2|floatformat:2|intcomma}}</span>
+ 
+                                    </div>
+                                </div>
+
+                                {% endfor %}
+                                
+                            </div>
+
+                               
+                        </div>
+                        <div class="col-8">
+                            <canvas id="myChart"></canvas>
+                        </div>
                     </div>
-                    
-
-
-
                     {% else %}
                     <div class="my-4">
                         <h4 class="card-subtitle text-center">{{mensaje}}</h4>
@@ -234,6 +254,37 @@
     </div>
 </div>
 
+
+<style>
+    .scrollbox {
+
+    overflow: hidden;
+    }
+
+    .scrollbox:hover {
+        overflow-y: auto;
+    }
+
+    .scrollbox::-webkit-scrollbar {
+    width: 6px;
+    }
+
+    .scrollbox::-webkit-scrollbar-track {
+    background-color: rgb(201, 201, 201);
+    border-radius: 100px;
+    }
+
+      .bg-list-color:nth-child(odd) {
+        border-bottom: white solid 2px;
+        background-color: rgba(160, 160, 160, 0.25);
+    }
+
+    .bg-list-color:nth-child(even) {
+        border-bottom: white solid 2px;
+        background-color: rgba(160, 160, 160, 0.1);
+    }
+</style>
+
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
@@ -242,9 +293,9 @@
     let data = {
         datasets: [{
             label: "Variación absoluta porcentual",
-            labels: [{% for key, value in data_resultante_p.3.items %} {{key}}, {% endfor %}],
+            labels: [{% for key, value in data_resultante_p.0.3.items %} {{key}}, {% endfor %}],
             data: [
-            {% for key, value in data_resultante_p.3.items %}
+            {% for key, value in data_resultante_p.0.3.items %}
                 {
             x: {{value.1}},
             y: {{value.0|floatformat:0}}

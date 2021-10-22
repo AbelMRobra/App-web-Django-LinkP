@@ -22,7 +22,7 @@ from presupuestos.models import Articulos,  DatosProyectos, Prametros,CompoAnali
                     Capitulos,Presupuestos, PorcentajeCapitulo, PresupuestosAlmacenados, \
                     DocumentacionProyectoPresupuesto
 from presupuestos.serializers import ArtSerializer
-from presupuestos.funciones.functions_presupuestos import *
+from ..funciones.f_presupuestos import *
 
 
 #cree registros constantes
@@ -1578,16 +1578,6 @@ def presupuesto_auditor(request):
         fecha_desde=datos_filtro['fecha_desde']
         fecha_hasta=datos_filtro['fecha_hasta']
 
-        try:
-            response_servidor = {"messages": "Perri"}
-            bot_wp = WABot(response_servidor)
-            presupuestador = Presupuestos.objects.get(proyecto = proyecto).presupuestador
-            presupuestador = datosusuario.objects.get(identificacion = presupuestador)
-            send = "{}: El usuario {} esta utilizando Auditor para analizar {}, desde {} hasta {}.".format(presupuestador.nombre, request.user.first_name, proyecto, fecha_desde, fecha_hasta)
-            bot_wp.send_message_user(presupuestador.Telefono, send)
-        except:
-            pass
-
         listado_dias = PresupuestosAlmacenados.objects.filter(proyecto = proyecto).exclude(nombre = "vigente").values_list("nombre", flat = True).distinct()
     
         data_resultante,mensaje= auditor_presupuesto(proyecto,fecha_desde, fecha_hasta)
@@ -2085,9 +2075,7 @@ class ArticulosListApiView(ListAPIView):
 
             return Articulos.objects.filter(nombre__icontains = kword)[0:40]|Articulos.objects.filter(codigo__icontains = kword)[0:40]
 
-def registro_contable(request):
 
-    return render(request, 'registro_contable.html', f )
 
 
 

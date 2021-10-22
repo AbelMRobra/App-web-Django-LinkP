@@ -33,7 +33,7 @@ def auditor_presupuesto(proyecto,fecha_desde, fecha_hasta):
         try:
         
             data_almacenada_desde=data_almacenada_desde_objects[0]
-            data_almacenada_hasta=data_almacenada_hasta_objects[0]
+            data_almacenada_hasta=data_almacenada_hasta_objects.latest("id")
 
             df_desde = pd.read_excel(data_almacenada_desde.archivo)
             df_hasta = pd.read_excel(data_almacenada_hasta.archivo)
@@ -170,7 +170,7 @@ def auditor_presupuesto_p(proyecto, fecha_desde, fecha_hasta):
         
         
         data_almacenada_desde=data_almacenada_desde_objects[0]
-        data_almacenada_hasta=data_almacenada_hasta_objects[0]
+        data_almacenada_hasta=data_almacenada_hasta_objects.latest("id")
 
         df_desde = pd.read_excel(data_almacenada_desde.archivo)
 
@@ -188,11 +188,25 @@ def auditor_presupuesto_p(proyecto, fecha_desde, fecha_hasta):
         df_desde_m2=df_desde
         
         cont_dif_art = 0
+        list_resultante_p = []
         for i in df_desde_m2.index:
             try:
 
+                # Diferencia absoluta de la variación de precios
+
                 dif_articulos[df_desde_m2['Articulo'][i]]= [abs((articulos_M2[df_desde_m2['Articulo'][i]]/df_desde_m2['Precio'][i]-1)*100), cont_dif_art]
 
+
+                # Ponderacion de diferencia de precios por articulo
+                articulo = df_desde_m2['Articulo'][i]
+                var = round(abs((articulos_M2[df_desde_m2['Articulo'][i]]/df_desde_m2['Precio'][i]-1)*100), 2)
+                dif_precio_articulos = round(articulos_M2[df_desde_m2['Articulo'][i]] - df_desde_m2['Precio'][i], 2)
+                variacion_por_articulo = round(dif_precio_articulos*float(df_desde_m2['Cantidad Ar'][i]), 2)
+                capitulo = df_desde_m2['Capitulo'][i]
+                
+                if variacion_por_articulo != 0:
+
+                    list_resultante_p.append((articulo, var, dif_precio_articulos, variacion_por_articulo, capitulo))
 
                 df_desde_m2['Precio'][i]=articulos_M2[df_desde_m2['Articulo'][i]]
 
@@ -208,11 +222,15 @@ def auditor_presupuesto_p(proyecto, fecha_desde, fecha_hasta):
 
         data_resultante_p = [valor_desde_m2, dif_P, cont, dif_articulos]
 
+        list_resultante_p = sorted(list_resultante_p, key = lambda x: abs(x[3]), reverse=True)
+
+        print(list_resultante_p)
+
     else:
         data_resultante_p = 0
+        list_resultante_p = 0
    
-    return data_resultante_p
-
+    return [data_resultante_p, list_resultante_p]
 
 def generar_excel(computo,proyecto):
     capitulo = Capitulos.objects.all()

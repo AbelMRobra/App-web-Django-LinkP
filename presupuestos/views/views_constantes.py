@@ -2,10 +2,7 @@ from django.shortcuts import render, redirect
 
 from presupuestos.models import *
 from presupuestos.form import ConsForm
-from presupuestos.funciones.functions_presupuestos import bot_telegram
-
-
-
+from presupuestos.funciones.f_presupuestos import bot_telegram
 
 def registro_constante(request):
 
