@@ -6,6 +6,8 @@ from datetime import datetime, timedelta
 from rrhh.models import datosusuario, Sugerencia
 from tecnica.models import GerenPlanificacion
 from presupuestos.models import Constantes, Registrodeconstantes
+from django.contrib.auth.models import User
+from rrhh.models import datosusuario 
 
 register = template.Library()
 
@@ -64,6 +66,8 @@ def has_group(user, group_name):
     """
     groups = user.groups.all().values_list('name', flat=True)
     return True if group_name in groups else False
+
+
 
 
 @register.filter('fecha_prueba')
@@ -471,6 +475,18 @@ def thisweek(fecha_inicial_tw, fecha_final_tw):
         else:
             return 0
 
+@register.filter('has_perm')
+def has_perm(ident, group_name):
+    """
+    Verifica se este usuário pertence a un grupo
+    """
+    
+    user=User.objects.get(username=ident)
+    groups = user.groups.all().values_list('name', flat=True)
+    
+
+    
+    return True if group_name.name in groups else False
 
 
 

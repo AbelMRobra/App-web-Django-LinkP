@@ -2,6 +2,10 @@ from compras.models import Comparativas
 
 import datetime as dt
 
+from rrhh.models import datosusuario
+
+from django.contrib.auth.models import User
+
 
 # Función de cajas derivadas
 
@@ -71,3 +75,17 @@ def Avisos(usuario,aviso):
 
     }
     return avisos_comparativas
+
+
+def actualizar_usuarios():
+
+    usuarios=datosusuario.objects.all()
+
+    for usuario in usuarios:
+        user=User.objects.filter(username=usuario.identificacion)
+
+        if user.count() >0 :
+            usuario.user=user[0]
+            usuario.save()
+
+

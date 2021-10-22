@@ -1,0 +1,623 @@
+{% extends "users/inicio2.html" %}
+{% load apptags_extras %}
+
+{% load static %}
+
+{% block content %}
+
+<div class="container-fluid">
+    <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+            <h3 class="text-themecolor">Permisos personal</h3>
+        </div>
+        <div class="col-md-7 align-self-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'App de rrhh' %}">Panel</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'Datos personal' %}">Datos personal</a></li>
+                <li class="breadcrumb-item">Permisos</li>
+            </ol>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <h4 class="card-title"><span class="lstick m-r-20"></span>Información de permisos</h4>
+                        <h6 class="card-subtitle">Información desglosada de que habilita cada permiso dentro del sistema
+                        </h6>
+
+                        <div class="row mt-4">
+                            <ul class="nav nav-tabs profile-tab" role="tablist">
+                                <li class="nav-item"> <a class="nav-link active" data-toggle="tab" href="#admin"
+                                        role="tab">Administración</a> </li>
+                                <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#anuncios"
+                                        role="tab">Anuncios</a> </li>
+                                <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#compras"
+                                        role="tab">Compras</a> </li>
+                                <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#crm"
+                                        role="tab">CRM</a> </li>
+                                <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#finanzas"
+                                        role="tab">Finanzas</a> </li>
+                                <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#gerenciador"
+                                        role="tab">Gerenciador</a> </li>
+                                <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#mandoMedio"
+                                        role="tab">Mando medio</a> </li>
+                                <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#postventa"
+                                        role="tab">Postventa</a> </li>
+                                <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#presupuestos"
+                                        role="tab">Presupuestos</a> </li>
+                                <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#proyecto"
+                                        role="tab">Proyecto</a> </li>
+                                <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#rega"
+                                        role="tab">Rega</a> </li>
+                                <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#rrhh"
+                                        role="tab">RRHH</a> </li>
+                                <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#tecnica"
+                                        role="tab">Tecnica</a> </li>
+                                <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#ventas"
+                                        role="tab">Ventas</a> </li>
+                            </ul>
+                            <!-- Tab panes -->
+                            <div class="tab-content">
+
+                                <div class="tab-pane active" id="admin" role="tabpanel">
+                                    <div class="row mt-4">
+
+                                        <div class="col-6 p-3">
+                                            <div class="card bg-light-inverse shadow rounded p-4 h-100">
+
+
+                                                <h5>ADMIN NIVEL 1</h5>
+                                                <ul>
+                                                    <li>Panel de administración</li>
+                                                    <li>Estados de cuenta</li>
+                                                    <li>Flujo de ingresos</li>
+                                                    <li>Registro de pagos</li>
+                                                    <li>Calculadora</li>
+                                                    <li>Totalizador total Renta</li>
+                                                    <li>Movimiento de administración</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="anuncios" role="tabpanel">
+                                    <div class="row mt-4">
+
+                                        <div class="col-6 p-3">
+                                            <div class="card bg-light-inverse shadow rounded p-4 h-100">
+
+                                                <h5>ANUNCIOS NIVEL 10</h5>
+                                                <ul>
+                                                    <li>Anuncios</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="compras" role="tabpanel">
+                                    <div class="row mt-4">
+                                        <div class="col-6 p-3">
+                                            <div class="card bg-light-inverse shadow rounded p-4 h-100">
+
+                                                <h5>COMPRAS NIVEL 1</h5>
+                                                <ul>
+                                                    <li>Proveedores</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="col-6 p-3">
+                                            <div class="card bg-light-inverse shadow rounded p-4 h-100">
+                                                <h5>COMPRAS NIVEL 2</h5>
+                                                <ul>
+                                                    <li>Cargar O.C para autorizar</li>
+                                                    <li>Agregar compra</li>
+                                                    <li>Contratos</li>
+                                                    <li>Descripción de contrato</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="col-6 p-3">
+                                            <div class="card bg-light-inverse shadow rounded p-4 h-100">
+                                                <h5>COMPRAS NIVEL 3</h5>
+                                                <ul>
+                                                    <li>Registros de compras</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="col-6 p-3">
+                                            <div class="card bg-light-inverse shadow rounded p-4 h-100">
+                                                <h5>COMPRAS NIVEL 4</h5>
+                                                <ul>
+                                                    <li>Check de OC autorizadas</li>
+                                                    <li>Firma para ordenes de pago</li>
+                                                    <li>Ordenes de compra para firmar (solo SP)</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="col-6 p-3">
+                                            <div class="card bg-light-inverse shadow rounded p-4 h-100">
+
+                                                <h5>COMPRAS NIVEL 5</h5>
+                                                <ul>
+                                                    <li>Analisis de periodos</li>
+                                                    <li>Seguimiento general</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="col-6 p-3">
+                                            <div class="card bg-light-inverse shadow rounded p-4 h-100">
+
+                                                <h5>COMPRAS NIVEL 6</h5>
+                                                <ul>
+                                                    <li>Nuevo proveedor</li>
+                                                    <li>Modificar proveedor</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="col-6 p-3">
+                                            <div class="card bg-light-inverse shadow rounded p-4 h-100">
+
+                                                <h5>COMPRAS NIVEL 7</h5>
+                                                <ul>
+                                                    <li>Descargar Excel solicitud de compras</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="col-6 p-3">
+                                            <div class="card bg-light-inverse shadow rounded p-4 h-100">
+
+                                                <h5>COMPRAS NIVEL 8</h5>
+                                                <ul>
+                                                    <li>Permite ver todas las comparativas propias, ajenas-
+                                                        privadas o
+                                                        publicas
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="crm" role="tabpanel">
+                                    <div class="row mt-4">
+
+                                        <div class="col-6 p-3">
+                                            <div class="card bg-light-inverse shadow rounded p-4 h-100">
+
+                                                <h5>CRM NIVEL 1</h5>
+                                                <ul>
+                                                    <li>CRM</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="finanzas" role="tabpanel">
+                                    <div class="row mt-4">
+
+                                        <div class="col-6 p-3">
+                                            <div class="card bg-light-inverse shadow rounded p-4 h-100">
+
+                                                <h5>FINANZAS NIVEL 1</h5>
+                                                <ul>
+                                                    <li>Arqueo diario</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="col-6 p-3">
+                                            <div class="card bg-light-inverse shadow rounded p-4 h-100">
+
+                                                <h5>FINANZAS NIVEL 2</h5>
+                                                <ul>
+                                                    <li>Disponibilidad y asignación</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="col-6 p-3">
+                                            <div class="card bg-light-inverse shadow rounded p-4 h-100">
+
+                                                <h5>FINANZAS NIVEL 3</h5>
+                                                <ul>
+                                                    <li>Analisis de proyectos</li>
+                                                    <li>Control de unidades</li>
+                                                    <li>Honorarios</li>
+                                                    <li>Índice LINK</li>
+                                                    <li>Retiros de socios</li>
+                                                    <li>Credito e Inversiones</li>
+                                                    <li>Precio Referencia</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="gerenciador" role="tabpanel">
+                                    <div class="row mt-4">
+
+                                        <div class="col-6 p-3">
+                                            <div class="card bg-light-inverse shadow rounded p-4 h-100">
+
+                                                <h5>GERENCIADOR NIVEL 1</h5>
+                                                <ul>
+                                                    <li>Panel de gerenciamiento</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="mandoMedio" role="tabpanel">
+                                    <div class="row mt-4">
+
+                                        <div class="col-6 p-3">
+                                            <div class="card bg-light-inverse shadow rounded p-4 h-100">
+
+                                                <h5>MANDO MEDIO</h5>
+                                                <ul>
+                                                    <li>Ingrese una tarea -Dentro de
+                                                        informes</li>
+                                                    <li>Nuevo informe</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="postventa" role="tabpanel">
+                                    <div class="row mt-4">
+
+                                        <div class="col-6 p-3">
+                                            <div class="card bg-light-inverse shadow rounded p-4 h-100">
+
+                                                <h5>POSTVENTA NIVEL 1</h5>
+                                                <ul>
+                                                    <li>Postventa</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="presupuestos" role="tabpanel">
+                                    <div class="row mt-4">
+
+                                        <div class="col-6 p-3">
+                                            <div class="card bg-light-inverse shadow rounded p-4 h-100">
+
+                                                <h5>PRESUPUESTO NIVEL 1</h5>
+                                                <ul>
+                                                    <li>Biblioteca de APU
+                                                    </li>
+                                                    <li>Base de constantes
+                                                    </li>
+                                                    <li>Analisis historico
+                                                    </li>
+                                                    <li>Articulos</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="col-6 p-3">
+                                            <div class="card bg-light-inverse shadow rounded p-4 h-100">
+
+                                                <h5>PRESUPUESTO NIVEL 10
+                                                </h5>
+                                                <ul>
+                                                    <li>Panel de
+                                                        Análisis de
+                                                        Precio Unitario
+                                                    </li>
+                                                    <li>Administración
+                                                        de constantes
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="col-6 p-3">
+                                            <div class="card bg-light-inverse shadow rounded p-4 h-100">
+
+                                                <h5>PRESUPUESTO
+                                                    NIVEL 2</h5>
+                                                <ul>
+                                                    <li>Control de
+                                                        presupuesto
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="col-6 p-3">
+                                            <div class="card bg-light-inverse shadow rounded p-4 h-100">
+
+                                                <h5>PRESUPUESTO
+                                                    NIVEL 3</h5>
+                                                <ul>
+                                                    <li>Informe
+                                                        de área
+                                                    </li>
+                                                    <li>Panel
+                                                        maestro
+                                                        de
+                                                        Artículos
+                                                    </li>
+                                                    <li>Añadir
+                                                        articulo
+                                                    </li>
+                                                    <li>Editar
+                                                        insumo
+                                                    </li>
+                                                    <li>Borrar
+                                                        insumo
+                                                    </li>
+                                                    <li>Indicador
+                                                        de
+                                                        precios
+                                                    </li>
+                                                    <li>Informe
+                                                        de área
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="proyecto" role="tabpanel">
+                                    <div class="row mt-4">
+
+                                        <div class="col-6 p-3">
+                                            <div class="card bg-light-inverse shadow rounded p-4 h-100">
+
+                                                <h5>PROYECTO
+                                                    NIVEL 1
+                                                </h5>
+                                                <ul>
+                                                    <li>Modificar
+                                                        proyecto
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="rega" role="tabpanel">
+                                    <div class="row mt-4">
+
+                                        <div class="col-6 p-3">
+                                            <div class="card bg-light-inverse shadow rounded p-4 h-100">
+
+                                                <h5>REGA
+                                                    NIVEL
+                                                    1
+                                                </h5>
+                                                <ul>
+                                                    <li>Tableros
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="rrhh" role="tabpanel">
+                                    <div class="row mt-4">
+
+                                        <div class="col-6 p-3">
+                                            <div class="card bg-light-inverse shadow rounded p-4 h-100">
+
+                                                <h5>RRHH
+                                                    NIVEL
+                                                    1
+                                                </h5>
+                                                <ul>
+                                                    <li>Datos
+                                                        del
+                                                        personal
+                                                    </li>
+                                                    <li>Linkcoins
+                                                    </li>
+                                                    <li>Planificación
+                                                        del
+                                                        área
+                                                    </li>
+                                                    <li>Añadir
+                                                        archivos
+                                                        generales
+                                                        de
+                                                        la
+                                                        empresa
+                                                    </li>
+                                                    <li>Editar
+                                                        archivo
+                                                    </li>
+                                                    <li>Borrar
+                                                        archivo
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="col-6 p-3">
+                                            <div class="card bg-light-inverse shadow rounded p-4 h-100">
+
+                                                <h5>RRHH
+                                                    NIVEL
+                                                    10
+                                                </h5>
+                                                <ul>
+                                                    <li>Gestor
+                                                        de
+                                                        canjes
+                                                    </li>
+                                                    <li>Borrar
+                                                        premio
+                                                    </li>
+                                                    <li>Generar
+                                                        nuevas
+                                                        monedas
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="tecnica" role="tabpanel">
+                                    <div class="row mt-4">
+
+                                        <div class="col-6 p-3">
+                                            <div class="card bg-light-inverse shadow rounded p-4 h-100">
+
+                                                <h5>TECNICA
+                                                    NIVEL
+                                                    1
+                                                </h5>
+                                                <ul>
+                                                    <li>Correspondencia
+                                                    </li>
+                                                    <li>Registro
+                                                        de
+                                                        desvios
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="col-6 p-3">
+                                            <div class="card bg-light-inverse shadow rounded p-4 h-100">
+
+                                                <h5>TECNICA
+                                                    NIVEL
+                                                    2
+                                                </h5>
+                                                <ul>
+                                                    <li>Planficación
+                                                        O.T
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="col-6 p-3">
+                                            <div class="card bg-light-inverse shadow rounded p-4 h-100">
+
+                                                <h5>TECNICA
+                                                    NIVEL
+                                                    3
+                                                </h5>
+                                                <ul>
+                                                    <li>Gestor
+                                                        de
+                                                        unidades
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="ventas" role="tabpanel">
+                                    <div class="row mt-4">
+
+                                        <div class="col-6 p-3">
+                                            <div class="card bg-light-inverse shadow rounded p-4 h-100">
+
+                                                <h5>VENTAS
+                                                    NIVEL
+                                                    1
+                                                </h5>
+                                                <ul>
+                                                    <li>Folletos
+                                                    </li>
+                                                    <li>Dosieres
+                                                    </li>
+                                                    <li>Panel
+                                                        de
+                                                        archivos
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="col-6 p-3">
+                                            <div class="card bg-light-inverse shadow rounded p-4 h-100">
+
+                                                <h5>VENTAS
+                                                    NIVEL
+                                                    2
+                                                </h5>
+                                                <ul>
+                                                    <li>Evolución
+                                                        Hº
+                                                    </li>
+                                                    <li>Fechas
+                                                        entrega
+                                                    </li>
+                                                    <li>Historial
+                                                        de
+                                                        ventas
+                                                    </li>
+                                                    <li>Evolución
+                                                        USD/m2
+                                                    </li>
+                                                    <li>Radiografia
+                                                        del
+                                                        cliente
+                                                    </li>
+                                                    <li>Investigación
+                                                        de
+                                                        mercado
+                                                    </li>
+                                                    <li>Informe
+                                                        de
+                                                        redes
+                                                    </li>
+                                                    <li>Caja
+                                                        del
+                                                        área
+                                                    </li>
+                                                    <li>Encuesta
+                                                        postventa
+                                                    </li>
+                                                    <li>Informe
+                                                        de
+                                                        ventas
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="col-6 p-3">
+                                            <div class="card bg-light-inverse shadow rounded p-4 h-100">
+
+                                                <h5>VENTAS
+                                                    NIVEL
+                                                    3
+                                                </h5>
+                                                <ul>
+                                                    <li>Panel
+                                                        de
+                                                        ventas
+                                                    </li>
+                                                    <li>Pricing
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="col-6 p-3">
+                                            <div class="card bg-light-inverse shadow rounded p-4 h-100">
+
+                                                <h5>VENTAS
+                                                    NIVEL
+                                                    4
+                                                </h5>
+                                                <ul>
+                                                    <li>Editar
+                                                        precio
+                                                        base
+                                                        en
+                                                        pricing
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

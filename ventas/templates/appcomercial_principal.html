@@ -61,15 +61,27 @@
     
                     {% if request.user|has_group:"VENTAS NIVEL 3" %}
     
+    <form method="POST"> {% csrf_token %}
+        
     
-                    <a href="{% url 'Panel de pricing' %}"><button class="btn btn-success">
-                            Ingresar</button></a>
-    
-                    {% else %}
-    
-                    <a href="#"><button class="btn btn-secondary">
-                            Sin permisos</button></a>
-                    {% endif %}
+        <select name="proyecto" id="proyecto" class="custom-select">
+                        
+                  
+            {% for proyecto in proyectos  %}
+                <option value="{{proyecto}}">{{proyecto}}</option>
+            {% endfor %}
+                
+           </select>
+                  
+           <button type="submit" name="pricing-proyecto" class="btn btn-info">Ingresar</button>
+              {% else %}
+
+              <a href="#"><button class="btn btn-secondary">
+                      Sin permisos</button></a>
+              {% endif %}
+
+
+    </form>
     
                 </div>
             </div>

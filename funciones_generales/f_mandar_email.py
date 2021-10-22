@@ -3,8 +3,10 @@ from agenda import settings
 
 
 def mandar_email(msg, email, titulo):
+    
 
     # Establecemos conexion con el servidor smtp de gmail
+    
     mailServer = smtplib.SMTP(settings.EMAIL_HOST, settings.EMAIL_PORT)
     mailServer.ehlo()
     mailServer.starttls()

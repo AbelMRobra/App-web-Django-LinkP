@@ -1,3 +1,4 @@
+from django.http.response import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.shortcuts import redirect
 from .models import NotaDePedido, datosusuario, ComentariosCorrespondencia, EntregaMoneda, ArchivosGenerales
@@ -9,6 +10,10 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.base import MIMEBase
 from email import encoders
 from agenda import settings
+from django.contrib.auth.models import User,Group
+from django.contrib.auth import logout
+from funciones_generales.f_mandar_email import mandar_email
+from .functions import generar_contraseña,cropping,recizing
 
 def apprrhh(request):
 
@@ -52,31 +57,121 @@ def personal_principal(request):
 
 def personal_perfil(request, id_persona):
 
-    data = datosusuario.objects.get(id = id_persona)
-
+    context={}
+    usuario = datosusuario.objects.get(id = id_persona)
+    grupos= Group.objects.all().order_by('name')
+    
+    
     if request.method == 'POST':
 
-        data.nombre = request.POST['nombre']
-        data.area = request.POST['area']
-        data.cargo = request.POST['cargo']
-        data.email = request.POST['email']
-        data.Telefono = request.POST['telefono']
-        data.Comentarios = request.POST['comentarios']
-        data.estado = request.POST['estado']
-        try:
-            data.fecha_nacimiento = request.POST['fecha_nacimiento']
+        datos=request.POST.dict()
+    
 
-        except:
-            pass
-        try:
-            data.fecha_ingreso = request.POST['fecha_ingreso']
-        except:
-            pass
-        data.save()
+        if 'actualizar-usuario' in datos:
 
-        return redirect('Perfil personal', id_persona = data.id)
+            try:
 
-    return render(request, 'personal_perfil.html', {'data':data})
+                usuario.nombre = datos.get('nombre')
+                usuario.area = datos.get('area')
+                usuario.cargo = datos.get('cargo')
+                usuario.email = datos.get('email')
+                usuario.Telefono = datos.get('telefono')
+                usuario.Comentarios = datos.get('comentarios')
+      
+                usuario.fecha_ingreso=datos.get('fecha_ingreso',None)
+                usuario.fecha_nacimiento=datos.get('fecha_nacimiento',None)
+
+                grupo = Group.objects.get(name='RRHH NIVEL 1') 
+                grupo.user_set.add(User.objects.get(username='FM'))
+                grupo.save()
+
+
+                usuario.save()
+
+                context['codigo']=1            
+            except:
+                context['codigo']=0      
+            
+
+        if 'baja-alta' in datos:
+            try:
+                id_usuario=datos['baja-alta']
+                usuario=datosusuario.objects.get(pk=id_usuario)
+                user=User.objects.get(username=usuario.identificacion)
+
+                
+                
+                if usuario.estado == "ACTIVO":
+                    usuario.estado="NO ACTIVO"
+                    user.is_active=False
+
+                    context['codigo']=2      
+
+                elif usuario.estado=="NO ACTIVO":
+                    usuario.estado="ACTIVO"
+                    user.is_active=True
+
+                    context['codigo']=3
+
+                if user.username==request.user.username:
+                    logout(request)
+
+                usuario.save()
+                user.save()
+        
+                      
+            except:
+                context['codigo']=0     
+
+
+        if 'gestionar-permisos' in datos:
+
+            try:
+                identificacion=datos['gestionar-permisos']
+
+                user=User.objects.get(username=identificacion)
+                
+                permisos_usuario=user.groups.all().values_list('name',flat=True)
+
+            
+                #permisos que vienen desde el template (vienen solo lo que estan chequeados)
+                permisos_template=[perm for perm in datos if 'NIVEL' in perm]
+
+                permisos=Group.objects.all()
+
+                for perm in permisos:
+                    permiso=perm.name
+
+                    if permiso in permisos_template:
+
+                        if not permiso in permisos_usuario:
+                        
+                            grupo=Group.objects.get(name=permiso)
+                            grupo.user_set.add(user)
+
+                    else:
+                        if  permiso in permisos_usuario:
+                        
+                            grupo=Group.objects.get(name=permiso)
+                            grupo.user_set.remove(user)
+
+                user.save()
+
+                du=datosusuario.objects.get(identificacion=identificacion)
+
+
+                context['codigo']=4            
+            except:
+                context['codigo']=0   
+
+        
+    
+
+    
+    context['data']=datosusuario.objects.get(id = id_persona)
+    context['permisos']=grupos
+    
+    return render(request, 'personal_perfil.html',context)
 
 def editarcorrespondencia(request, id_nota):
 
@@ -342,3 +437,114 @@ def notadepedido(request, id_nota):
             pass
 
     return render(request, 'notadepedido.html', {'datos':datos, 'creador':creador, 'destino':destino, 'comentarios':comentarios})
+
+
+
+    
+
+def crear_usuarios(request):        
+
+    if request.method == 'POST':
+        datos=request.POST.dict()
+        
+        
+
+        if 'crear-usuario' in datos: 
+
+            identificacion=datos['identificacion']
+
+            user=User.objects.filter(username=identificacion)
+
+            if user.count()==0:
+
+            #VERIFICAR QUE NO EXISTA OTRO USUARIO 
+                email=datos['email']
+                archivos=request.FILES
+                imagen=archivos.get('imagen')
+                
+                user=User.objects.create(username=identificacion,email=email,password=datos['password'],is_active=True)
+
+                # print(imagen)
+                # modificada=cropping(imagen)
+                # print(modificada)
+
+                usuario=datosusuario(
+                    user=user,
+                    identificacion=identificacion,
+                    nombre=datos['nombre'] + datos['apellido'],
+                    area=datos['area'],
+                    email=email,
+                    Telefono=datos['telefono'],
+                    fecha_ingreso=datos['fecha_ingreso'],
+                    fecha_nacimiento=datos['fecha_nacimiento'],
+                    cargo=datos['cargo'],
+                    imagen=imagen,
+                    imagenlogo=imagen,
+                    )
+
+                
+                usuario.save()
+
+                if usuario:
+                    
+                    path=f'{settings.MEDIA_ROOT}/{imagen}'
+                    
+                    recizing(path)
+                    cropping(path,usuario)
+
+
+                return redirect('Datos personal')
+            else:
+                
+                mensaje='Ya existe un usuario con el identificador {}'.format(user[0].username)
+                print(mensaje)
+                
+                return render(request,'users/crear_usuarios.html',{'mensaje':mensaje})
+
+
+    return render(request,'users/crear_usuarios.html',{})
+
+
+def resetear_contraseña(request):
+
+    if request.method=='POST':
+        datos=request.POST.dict()
+
+        if 'resetear-contraseña' in datos:
+
+            email=datos.get('email')
+            identificacion=datos.get('identificacion')
+          
+
+            usuario=datosusuario.objects.filter(identificacion=identificacion,email=email)
+      
+            user=User.objects.filter(username=identificacion,email=email)
+         
+            
+            if usuario.count() > 0 and user.count() > 0:
+                
+                nueva_contraseña=generar_contraseña()
+
+                usuario=user[0]
+                usuario.set_password(nueva_contraseña)
+                usuario.save()
+                mensaje='Hola {}! Tu nueva contraseña es {}. Una vez logueado en el sistema , podras cambiar la contraseña actual por una propia . Saludos'.format(usuario.username,nueva_contraseña)
+                
+                titulo='Reseteo de contraseña'
+                mens=MIMEText("""{}""".format(mensaje))
+                mandar_email(mens,usuario.email,titulo)
+
+                mensaje='Tu nueva contraseña fue enviada al email corportativo asociado a tu usuario'
+
+                return redirect('Login')
+            else:
+                mensaje='No encontramos un usuario con los datos ingresados !'
+                return render(request , 'resetear_contraseña.html' , {'mensaje':mensaje})
+            
+    
+    return render(request , 'resetear_contraseña.html' , {})
+
+
+def informacion_permisos(request):
+
+    return render(request , 'permisos_personal.html',{})

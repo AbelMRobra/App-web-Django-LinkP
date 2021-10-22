@@ -12,6 +12,7 @@ urlpatterns = [
     url(r'^$', views.welcome, name = 'Bienvenido'),
     url(r'^register$', views.register, name = 'Registro'),
     url(r'^login$', views.login, name = 'Login'),
+    
     url(r'^logout$', views.logout, name = 'Logout'),
     url(r'^inicio$', login_required(views.inicio), name = 'Inicio'),
     url(r'^accounts/login/$', views.welcome, name = 'Redicrección'),
@@ -54,6 +55,8 @@ urlpatterns = [
     url(r'^canjemoneda$', login_required(views_linkcoins.canjear_monedas), name = 'Canje de monedas'),
     url(r'^canjesrealizados$', login_required(views_linkcoins.canjes_realizados), name = 'Canjes realizados'),
     url(r'^generador$', login_required(views_linkcoins.generador_linkcoins), name = 'Generador'),
+
+    
 
 ]
 

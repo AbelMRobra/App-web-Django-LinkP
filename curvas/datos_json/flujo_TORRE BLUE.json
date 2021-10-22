@@ -1,0 +1,151 @@
+{
+    "array_fechas": [
+        "2021-10-01",
+        "2021-11-01",
+        "2021-12-01",
+        "2022-01-01"
+    ],
+    "informacion_cash": [
+        {
+            "id": "1-6",
+            "saldo": 10280.0,
+            "flujo": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "detalle": [
+                {
+                    "Art": 9033.0,
+                    "Soli": 16.0,
+                    "Buy": 0.0,
+                    "Pend": 16.0,
+                    "Saldo": 2880.0
+                },
+                {
+                    "Art": 12.0,
+                    "Soli": 20.0,
+                    "Buy": 2.0,
+                    "Pend": 8.0,
+                    "Saldo": 7400.0
+                },
+                {
+                    "Art": 55.0,
+                    "Soli": 8.0,
+                    "Buy": 0.0,
+                    "Pend": 0.0,
+                    "Saldo": 0.0
+                }
+            ],
+            "data_sub_contenedores": {
+                "1": {
+                    "flujo": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "necesidad_posible": [
+                        "CEMENTO",
+                        "8.0",
+                        "0.0",
+                        "0.0"
+                    ],
+                    "saldo_suncontenedor": 0.0,
+                    "fecha_final": "2022-03-22",
+                    "fecha_inicial": "2022-08-24",
+                    "subcontenedor": {
+                        "id": 1,
+                        "nombre": "subpartida1",
+                        "fecha_inicial": "2022-08-24",
+                        "fecha_final": "2022-03-22",
+                        "partida": 1
+                    }
+                },
+                "2": {
+                    "flujo": [
+                        0.0,
+                        3700.0,
+                        3700.0,
+                        0.0
+                    ],
+                    "necesidad_posible": [
+                        "LADRILLO",
+                        "10",
+                        "0",
+                        "7400.0"
+                    ],
+                    "saldo_suncontenedor": 7400.0,
+                    "fecha_final": "2021-12-23",
+                    "fecha_inicial": "2021-11-16",
+                    "subcontenedor": {
+                        "id": 2,
+                        "nombre": "subpartida2",
+                        "fecha_inicial": "2021-11-16",
+                        "fecha_final": "2021-12-23",
+                        "partida": 1
+                    }
+                }
+            }
+        },
+        {
+            "id": "1-3",
+            "saldo": 2000830.0,
+            "flujo": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "detalle": [
+                {
+                    "Art": 9033.0,
+                    "Soli": 936.0,
+                    "Buy": 0.0,
+                    "Pend": 936.0,
+                    "Saldo": 168480.0
+                },
+                {
+                    "Art": 12.0,
+                    "Soli": 1170.0,
+                    "Buy": 0.0,
+                    "Pend": 1170.0,
+                    "Saldo": 1082250.0
+                },
+                {
+                    "Art": 55.0,
+                    "Soli": 468.0,
+                    "Buy": 0.0,
+                    "Pend": 468.0,
+                    "Saldo": 750100.0
+                }
+            ],
+            "data_sub_contenedores": {}
+        },
+        {
+            "id": "2-1",
+            "saldo": 0.0,
+            "flujo": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "detalle": [],
+            "data_sub_contenedores": {}
+        },
+        {
+            "id": "3-7",
+            "saldo": 0.0,
+            "flujo": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "detalle": [],
+            "data_sub_contenedores": {}
+        }
+    ]
+}

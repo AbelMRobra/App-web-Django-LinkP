@@ -1,6 +1,7 @@
 from statistics import mode
 from django.db import models
 from proyectos.models import Proyectos
+from django.contrib.auth.models import User,Group
 
 # Create your models here.
 
@@ -53,11 +54,12 @@ class datosusuario(models.Model):
         SI = "SI"
         NO = "NO"
 
-
+    #relacionar con el modelo user
+    user=models.ForeignKey(User,blank=True,null=True,on_delete=models.SET_NULL)
     identificacion = models.CharField(max_length=200, verbose_name="Identificacion")
     nombre = models.CharField(max_length=200, verbose_name="Nombre, Apellido", blank=True, null=True,)
     imagen = models.CharField(max_length=200, verbose_name="Imagen", blank=True, null=True, editable=False)
-    imagenlogo = models.ImageField(verbose_name="Imagen", blank=True, null=True)
+    imagenlogo = models.ImageField(verbose_name="Logo", blank=True, null=True)
     area = models.CharField(max_length=200, verbose_name="Area", blank=True, null=True)
     cargo = models.CharField(max_length=200, verbose_name="Cargo", blank=True, null=True)
     email = models.CharField(max_length=200, verbose_name="Email", blank=True, null=True)

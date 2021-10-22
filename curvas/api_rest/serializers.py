@@ -1,7 +1,6 @@
 from rest_framework import serializers
 from presupuestos.models import Articulos
-
-
+from curvas.models import SubPartidasCapitulos,PartidasCapitulos
 
 
 class ArticuloSerialzer(serializers.ModelSerializer):
@@ -15,10 +14,18 @@ class NecesidadPosibleSerializer(serializers.ListField):
 class ListaFlujo(serializers.ListField):
     child=serializers.FloatField()
 
+class SubcontenedoresSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=SubPartidasCapitulos
+        fields='__all__'
+
 class PersonalizadoSerializer(serializers.Serializer):
     flujo=ListaFlujo()
     necesidad_posible=NecesidadPosibleSerializer()
     saldo_suncontenedor=serializers.FloatField()
+    fecha_final=serializers.DateField()
+    fecha_inicial=serializers.DateField()
+    subcontenedor=SubcontenedoresSerializer()
 
 
 class SubContenedoresSerializer(serializers.DictField):
@@ -57,10 +64,3 @@ class CrearFlujoSerializer(serializers.Serializer):
     proyecto=serializers.IntegerField(required=True)
     fecha_final=serializers.CharField(required=True)
 
-
-class explosion_serializer(serializers.Serializer):
-    articulo=ArticuloSerialzer()
-    suma=serializers.FloatField()
-    comprados=serializers.FloatField()
-    dispo=serializers.FloatField()
-    saldo=serializers.FloatField()

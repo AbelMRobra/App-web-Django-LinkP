@@ -44,7 +44,19 @@ import smtplib
 
 
 def appcomercial(request):
-    return render(request, 'appcomercial_principal.html')
+    context = {}
+
+    context["proyectos"] = Unidades.objects.all().values_list("proyecto__nombre", flat=True).distinct()
+
+    if request.method == 'POST':
+
+        if 'pricing-proyecto' in request.POST.dict():
+
+            proyecto = Proyectos.objects.get(nombre = request.POST["proyecto"])
+
+        return redirect( 'Pricing', id_proyecto = proyecto.id )
+
+    return render(request, 'appcomercial_principal.html',context)
 
 def apparchivoscomercial(request):
     return render(request, 'apparchivoscomercial.html')

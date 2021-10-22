@@ -3,6 +3,7 @@
 
 {% load static %}
 
+
 {% block content %}
 
 <div class="container-fluid">
@@ -61,6 +62,9 @@
                             <ul class="nav nav-tabs profile-tab" role="tablist">
                                 <li class="nav-item"> <a class="nav-link active" data-toggle="tab" href="#datos" role="tab">Datos</a> </li>
                                 <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#settings" role="tab">Editar</a> </li>
+                                <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#permisos-usuario" role="tab">Permisos</a> </li>
+                                <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#baja" role="tab">Baja y alta del usuario</a> </li>
+                              
                             </ul>
                             <!-- Tab panes -->
                             <div class="tab-content">
@@ -103,15 +107,6 @@
                                                     <input type="text" value="{{data.cargo}}" class="form-control form-control-line" name="cargo">
                                                 </div>
                                             </div>
-                                            <div class="form-group">
-                                                <label class="col-sm-12">Estado</label>
-                                                <div class="col-sm-12">
-                                                    <select class="form-control form-control-line" name="estado">
-                                                        <option {% if data.estado == "ACTIVO" %} selected {% endif %}>ACTIVO</option>
-                                                        <option {% if data.estado == "NO ACTIVO" %} selected {% endif %}>NO ACTIVO</option>
-                                                    </select>
-                                                </div>
-                                            </div>
 
                                             <div class="form-group">
                                                 <label class="col-md-12">Telefono</label>
@@ -131,6 +126,7 @@
                                                     <input type="date" value="{{data.fecha_ingreso|date:'Y-m-d'}}"  class="form-control form-control-line" name="fecha_ingreso">
                                                 </div>
                                             </div>
+                                
                                             <div class="form-group">
                                                 <label class="col-md-12">Comentarios</label>
                                                 <div class="col-md-12">
@@ -140,10 +136,77 @@
 
                                             <div class="form-group">
                                                 <div class="col-sm-12">
-                                                    <button class="btn btn-success">Actualizar</button>
+                                                    <button name="actualizar-usuario"  class="btn btn-success">Actualizar</button>
                                                 </div>
                                             </div>
                                         </form>
+                                    </div>
+                                </div>
+
+                             
+                                <div class="tab-pane" id="permisos-usuario" role="tabpanel">
+                                    <div class="card-body">
+                                  <div class="row">
+                                      <div class="col-11">
+                                        <h4>Panel de permisos</h4>
+                                        <p>Seleccionar todos los permisos que otorgaras al usuario</p>
+                                      </div>
+                                      <div class="col-1">
+                                        <a href=" {% url 'Permisos' %} " ><i class="fa fa-info-circle fa-lg"></i></a>
+                                      </div>
+                                  </div>
+                                        <form action="" method="POST"> {% csrf_token %}
+                                            <div class="row d-flex">
+                                                {% for perm  in permisos  %}
+
+                                                <div class="col-6 my-2">
+                                                       
+                                                    {% if data|has_perm:perm %}
+                                                    <input type="checkbox" name="{{perm}}" id="{{perm}}" class="form-control"  checked>
+                                                    <label for="{{perm}}">{{perm}}</label>
+                                                    {% else %}
+                                                    <input type="checkbox" name="{{perm}}" id="{{perm}}" class="form-control">
+                                                    <label for="{{perm}}">{{perm}}</label>
+                                                    {% endif %}
+
+                                                    
+
+                                                </div>
+                                                {% endfor %}
+
+                                            </div>
+                                            <div class="mt-3">
+                                                <div>
+                                                    <button type="submit" name="gestionar-permisos" value="{{data.identificacion}}" class="btn btn-primary">Actualizar</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+
+                                <div class="tab-pane" id="baja" role="tabpanel">
+                                    <div class="card-body">
+                                       <form method="post">{% csrf_token %}
+                                    <h4 class="card-title m-t-10 {% if data.estado == 'ACTIVO' %}text-success{% else %}text-danger{% endif %}">{{data.estado|lower|capfirst}}</h4>
+                                      
+
+                                           {% if data.estado == 'ACTIVO' %}
+                                           <div class="alert alert-danger" role="alert">
+                                            Recuerda que si desactivas este usuario no podra ingresar al sistema hasta que sea dado de alta otra vez
+                                           </div>   
+                                           <button class="btn btn-danger" type="submit" name="baja-alta" value="{{data.id}}">
+                                               Desactivar este usuario
+                                            </button>
+                                            {% else %}
+                                            <div class="alert alert-danger" role="alert">
+                                                Recuerda que si activas este usuario podra ingresar al sistema con todos los permisos que tenia asignado
+                                               </div>  
+                                            <button class="btn btn-success" type="submit" name="baja-alta" value="{{data.id}}">
+                                                Activar este usuario
+                                             </button>
+                                            {% endif %}
+                                      
+                                       </form>
                                     </div>
                                 </div>
                             </div>
@@ -155,4 +218,125 @@
     </div>
 </div>
 
+
+    
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+<script>
+   
+
+      
+     
+{% if codigo %}
+    
+    {% if codigo == 1  %}
+    
+    
+    const Toast = Swal.mixin({
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 3100,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+          toast.addEventListener('mouseenter', Swal.stopTimer)
+          toast.addEventListener('mouseleave', Swal.resumeTimer)
+          }
+      })
+          Toast.fire({
+                  title:'Se actualizo con exito el usuario' , 
+                  icon: 'success',
+    
+              })
+
+
+    {% elif codigo == 2 %}
+    
+    
+    const Toast = Swal.mixin({
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 3100,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+          toast.addEventListener('mouseenter', Swal.stopTimer)
+          toast.addEventListener('mouseleave', Swal.resumeTimer)
+          }
+      })
+    Toast.fire({
+          title: 'Se dio de baja el usuario con exito' , 
+          icon: 'success',
+    
+      })
+
+      {% elif codigo == 3 %}
+    
+    
+    const Toast = Swal.mixin({
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 3100,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+          toast.addEventListener('mouseenter', Swal.stopTimer)
+          toast.addEventListener('mouseleave', Swal.resumeTimer)
+          }
+      })
+    Toast.fire({
+          title: 'Se activo el usuario con exito' , 
+          icon: 'success',
+    
+      })
+    
+      {% elif codigo == 4 %}
+    
+    
+    const Toast = Swal.mixin({
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 3100,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+          toast.addEventListener('mouseenter', Swal.stopTimer)
+          toast.addEventListener('mouseleave', Swal.resumeTimer)
+          }
+      })
+    Toast.fire({
+          title: 'Se modificaron los permisos con exito' , 
+          icon: 'success',
+    
+      })
+    
+    {% else %}
+    
+    
+    const Toast = Swal.mixin({
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 3100,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+          toast.addEventListener('mouseenter', Swal.stopTimer)
+          toast.addEventListener('mouseleave', Swal.resumeTimer)
+          }
+      })
+    Toast.fire({
+          title: 'No se pudo realizar la accion solicitada' , 
+          icon: 'error',
+    
+      })
+    
+    {% endif %}
+      
+    
+    {% endif %}
+ 
+
+</script>
 {% endblock %}
+
+

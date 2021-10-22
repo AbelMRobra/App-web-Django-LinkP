@@ -36,7 +36,7 @@ from rrhh.models import datosusuario, mensajesgenerales, NotaDePedido, Vacacione
 
 
 from users.models import Atajos
-from users.funciones.functions import Avisos
+from users.funciones.functions import Avisos,actualizar_usuarios
 
 
 class PdfMinutas(View):
@@ -152,7 +152,6 @@ def password(request):
         mensaje = 1
 
     return render(request, "users/password.html", {'mensaje':mensaje})
-
 
 
 def dashboard(request):
@@ -430,6 +429,8 @@ def inicio(request):
     context = {}
     context["todos_atajos"] = Atajos.objects.all()
     datos_vista_usuario = {}
+
+    actualizar_usuarios()
 
     if request.method == 'POST':
         try:

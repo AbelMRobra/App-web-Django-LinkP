@@ -12,9 +12,12 @@ urlpatterns = [
     url(r'^apprrhh/$', login_required(views.apprrhh), name = 'App de rrhh'),
     url(r'^editarcorres/(?P<id_nota>\d+)/$', login_required(views.editarcorrespondencia), name = 'Editar correspondencia'),
     
-    #----------------URL PARA FIANANZAS -----------------------------------------
+    #----------------URL PARA USERS -----------------------------------------
     url(r'^datospersonal/$', login_required(views.personal_principal), name = 'Datos personal'),
     url(r'^perfilpersonal/(?P<id_persona>\d+)/$', login_required(views.personal_perfil), name = 'Perfil personal'),
+    url(r'^nuevousuario$', views.crear_usuarios, name = 'Crear usuario'),  
+    url(r'^resetearcontraseña$', views.resetear_contraseña, name = 'Resetear contrasena'),   
+    url(r'^permisos$', views.informacion_permisos, name = 'Permisos'),   
 
 
     #----------------URL ARCHIVOS -----------------------------------------

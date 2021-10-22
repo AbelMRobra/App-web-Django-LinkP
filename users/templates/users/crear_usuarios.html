@@ -1,0 +1,274 @@
+{% extends "users/inicio2.html" %}
+
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+
+<div class="container-fluid r-aside">
+    <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+            <h3 class="text-themecolor">Crear usuario</h3>
+        </div>
+
+        <div class="col-md-7 align-self-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'App de rrhh' %}">Panel</a></li>
+                <li class="breadcrumb-item">Crear usuario</li>
+            </ol>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body row">
+                    <div class="col-12 justify-content-center">
+
+                        <div class="row d-flex justify-content-center">
+                            <div class="col col-md-12 col-lg-10">
+                                <div class="row">
+                                    <div class="col bg-light border rounded p-3">
+
+                                        <form role="form" enctype="multipart/form-data" action="" method="POST"
+                                            id="upload-image-form" class="p-4"> {% csrf_token %}
+                                            {% csrf_token %}
+                                            <h4 class="mb-3">Panel de creacion de usuario</h4>
+
+                                            <div class="row d-flex">
+
+                                                <div class="col-3 my-3">
+
+                                                    <div>
+                                                        <label for="nombre">
+                                                            <h6>Nombre</h6>
+                                                        </label>
+                                                    </div>
+
+                                                    <div class="row d-flex justify-content-center">
+                                                        <div class="">
+
+                                                            <input name="nombre" type="text"
+                                                                class="form-control form-control" required>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="col-3 my-3">
+                                                    <div>
+                                                        <label for="apellido">
+                                                            <h6>Apellido</h6>
+                                                        </label>
+                                                    </div>
+
+                                                    <div class="row d-flex justify-content-center">
+                                                        <div class="">
+                                                            <input name="apellido" type="text"
+                                                                class="form-control form-control" required>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-3 my-3">
+                                                    <div>
+                                                        <label for="id">
+                                                            <h6>ID</h6>
+                                                        </label>
+                                                    </div>
+
+                                                    <div class="row d-flex justify-content-center">
+                                                        <div class="">
+                                                            <input name="identificacion" type="text"
+                                                                class="form-control form-control" required>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-3 my-3">
+                                                    <label for="telefono">
+                                                        <h6>Telefono</h6>
+                                                    </label>
+
+                                                    <div class="row d-flex justify-content-center">
+                                                        <div class="">
+
+                                                            <input name="telefono" type="text"
+                                                                class="form-control form-control" required>
+
+                                                        </div>
+                                                    </div>
+                                                    
+                                                </div>
+                                            </div>
+                                            <div class="row d-flex">
+                                                <div class="col-3 my-3">
+                                                    <div>
+                                                        <label for="password">
+                                                            <h6>Contraseña</h6>
+                                                        </label>
+                                                    </div>
+
+                                                    <div class="row d-flex justify-content-center">
+                                                        <div class="">
+
+                                                            <input name="password" type="password"
+                                                                class="form-control form-control" required>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-3 my-3">
+                                                    <div>
+                                                        <label for="area">
+                                                            <h6>Area</h6>
+                                                        </label>
+                                                    </div>
+
+                                                    <div class="row d-flex justify-content-center">
+                                                        <div class="">
+
+                                                            <input name="area" type="text"
+                                                                class="form-control form-control" required>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="col-3 my-3">
+                                                    <div>
+                                                        <label for="cargo">
+                                                            <h6>Cargo</h6>
+                                                        </label>
+                                                    </div>
+
+
+                                                    <div class="row d-flex justify-content-center">
+                                                        <div class="">
+
+                                                            <input name="cargo" type="text"
+                                                                class="form-control form-control" required>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-3 my-3">
+                                                    <div>
+                                                        <label for="email">
+                                                            <h6>E-mail</h6>
+                                                        </label>
+                                                    </div>
+
+                                                    <div class="row d-flex justify-content-center">
+                                                        <div class="">
+
+                                                            <input name="email" type="text"
+                                                                class="form-control form-control" required>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row d-flex">
+
+                                                <div class="col-3 my-3">
+                                                    <div>
+                                                        <label for="fecha_nacimiento">
+                                                            <h6>Fecha nacimiento</h6>
+                                                        </label>
+                                                    </div>
+
+                                                    <div class="row d-flex justify-content-center">
+                                                        <div class="">
+
+                                                            <input name="fecha_nacimiento" type="date"
+                                                                class="form-control form-control" required>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-3 my-3">
+                                                    <div>
+                                                        <label for="fecha_ingreso">
+                                                            <h6>Fecha ingreso</h6>
+                                                        </label>
+                                                    </div>
+
+                                                    <div class="row d-flex justify-content-center">
+                                                        <div class="">
+
+                                                            <input name="fecha_ingreso" type="date"
+                                                                class="form-control form-control" required>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="col-3 my-3">
+                                                    <div>
+                                                        <label for="archivo">
+                                                            <h6>Foto perfil</h6>
+                                                        </label>
+                                                    </div>
+
+                                                    <div class="row d-flex justify-content-center">
+                                                        <div class="">
+                                                            <input type="file" class="form-control-file" name="imagen"
+                                                                aria-describedby="fileHelp" required>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <div class="row d-flex justify-content-center mt-3">
+                                                <div class="col text-center">
+                                                    <button type="submit" class="btn btn-primary" name="crear-usuario">Crear</button>
+                                                </div>
+                                            </div>
+
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
+
+<script src="{% static 'js/jquery-3.5.1.js' %}"></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+  
+            const Toast = Swal.mixin({
+              toast: true,
+              position: 'top-end',
+              showConfirmButton: false,
+              timer: 3100,
+              timerProgressBar: true,
+              didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+              }
+            })
+          
+            Toast.fire({
+           
+              imageHeight: 100,
+              title: '{{mensaje}}, 
+          
+            })
+       
+</script>

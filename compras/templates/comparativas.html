@@ -162,10 +162,10 @@
                                     </tr>
                                 </thead>
                                 <tbody style="font-size: 14px;">
+                                                                                                    
+        {% for i in datos %}
     
-                                    {% for i in datos %}
-    
-                                    {% if i.2.publica == "SI" or request.user.username == i.2.autoriza or request.user.username == i.2.creador %}
+                {% if i.2.publica == "SI" or request.user.username == i.2.autoriza or request.user.username == i.2.creador or request.user|has_group:"COMPRAS NIVEL 8" %}
     
                                     <tr id = {{i.2.id}}>
 

@@ -29,11 +29,15 @@
     
                             <h4 class="card-title"><span class="lstick m-r-20"></span>Cajas disponibles</h4>
                             <h6 class="card-subtitle"></span>Administración general de las cajas que colaboras</h6>
+    
                         </div>
                         <div class="btn-group ml-auto">
                             <a href="JavaScript:void(0)" class="icon-options-vertical link" data-toggle="dropdown"
                                 aria-haspopup="true" aria-expanded="false"></a>
                             <div class="dropdown-menu dropdown-menu-right">
+                                
+                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#ModalCrearCaja">
+                            <i class="fa fa-inbox mr-2" ></i>Nueva Caja</a>
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#ModalCargaMasiva"><i
                                         class="fa fa-plus-circle mr-2"></i>Añadir desde tango</a>
                                 <a class="dropdown-item" href="{% url 'Registro Contable Reporte' %}" ><i
@@ -72,7 +76,7 @@
     
                                         <div class="input-group mb-3">
     
-                                            <input name="archivo" type="file" class="form-control form-control"
+                                            <input name="archivo" type="file" class="form-control form-control" required
                                                 style="width: 300px;">
                                         </div>
     
@@ -415,6 +419,7 @@
                                         </div>
                                     </div>
                             </div>
+            
 
                         <div class="modal fade" id="ModalBorrarTodo{{i.0.id}}" tabindex="-1" role="dialog"
                             aria-labelledby="ModalBorrar{{i.0.id}}" aria-hidden="true">
@@ -466,6 +471,50 @@
                         {% endfor %}
     
                     </div>
+
+                    <div class="modal fade" id="ModalCrearCaja" tabindex="-1" role="dialog"
+                    aria-labelledby="ModalBorrar{{i.0.id}}" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header"
+                                style="background-color: #2a3e52;">
+                                <h5 class="modal-title text-light" id="exampleModalLongTitle">Crear nueva caja</h5>
+                
+                            </div>
+                            <div class="modal-body">
+                                <form method="POST">{% csrf_token %}
+
+                                    <label for="nombre">Nombre</label> <small></small>
+
+                                    <input type="text" name="nombre" class="form-control form-control" required>
+
+                                    <label for="usuario"></label>
+                                    
+                                    <div class="row justify-content-center my-4">
+                                        <div class="col col-md-12 col-lg-8">
+                                            <label for="usuario">Usuario</label>
+                                    
+                                            <input type="radio" name="usuario" value="PL" id="usuario1" class="filled-in chk-col-blue" checked />
+                                            <label for="usuario1">PL</label>
+                                            
+                                            <input type="radio" name="usuario" value="SP"  id="usuario2" class="filled-in chk-col-blue" />
+                                            <label for="usuario2">SP</label> 
+
+                                        </div>
+
+                                      
+                                    </div>
+                                    <button type="submit" class="btn btn-info" name="crear-caja">Crear</button>
+
+                                    
+                          
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
+            </div>
+            
                 </div>
             </div>
         </div>
@@ -512,6 +561,135 @@
             </form>
         </div>
     </div>
+
+
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+       <div class="modal-content">
+           <div class="modal-header"
+               style="background-color: #2a3e52;">
+               <h5 class="modal-title text-light" id="exampleModalLongTitle">Resumen de movimientos</h5>
+               <button type="button" class="close text-light" data-dismiss="modal"
+                   aria-label="Close">
+                   <span aria-hidden="true">&times;</span>
+               </button>
+           </div>
+           <div class="modal-body">
+               <h2>Movimientos repetidos</h2>
+    
+               <ul>
+           {% for rep in repetidos  %}
+    
+                  <ul>{{rep}}</ul>
+               {% endfor %}
+    
+               </ul>
+           
+               <h2>Movimientos asignados a la caja LINK</h2>
+               <ul>
+               {% for n_c in noconocidos  %}
+                    <li>   {{n_c}}</li>
+                   {% endfor %}
+                   
+               </ul>
+               <h2>Movimientos asignados a la CAJA BANCO</h2>
+               <ul>
+               {% for ca in cajabanco  %}
+                    <li>   {{ca}}</li>
+                   {% endfor %}
+                   
+               </ul>
+
+               <h2>Movimientos asignados a la CAJA SEMINARIO</h2>
+               <ul>
+               {% for cs in cajaseminario  %}
+                    <li>   {{cs}}</li>
+                   {% endfor %}
+                   
+               </ul>
+    
+               <h2>Movimientos que no pudieron ser asignados</h2>
+    
+               <ul>
+                {% for n_a in noasignados  %}
+                     <li>   {{n_a}}</li>
+                    {% endfor %}
+                    
+                </ul>
+       
+           </div>
+       </div>
+    </div>
+    </div>
+
+<div class="modal fade" id="modalError" tabindex="-1" role="dialog"
+aria-hidden="true">
+<div class="modal-dialog modal-dialog-centered" role="document">
+   <div class="modal-content">
+       <div class="modal-header"
+           style="background-color: #2a3e52;">
+           <h5 class="modal-title text-light" id="exampleModalLongTitle">Resumen de movimientos</h5>
+           <button type="button" class="close text-light" data-dismiss="modal"
+               aria-label="Close">
+               <span aria-hidden="true">&times;</span>
+           </button>
+       </div>
+       <div class="modal-body">
+       
+       {% if error %}
+       <h2>Errores</h2>
+
+       {{error}}
+       {% endif %}
+           
+
+
+           <h2>Movimientos repetidos</h2>
+           <ul>
+    {% for rep in repetidos  %}
+    
+      <li>{{rep}}</li>
+        {% endfor %}
+    </ul>
+        </ul>
+    
+        <h2>Movimientos asignados a la caja LINK</h2>
+        <ul>
+        {% for n_c in noconocidos  %}
+             <li>   {{n_c}}</li>
+            {% endfor %}
+            
+        </ul>
+        <h2>Movimientos asignados a la CAJA BANCO</h2>
+        <ul>
+        {% for ca in cajabanco  %}
+             <li>   {{ca}}</li>
+            {% endfor %}
+            
+        </ul>
+
+        <h2>Movimientos asignados a la CAJA SEMINARIO</h2>
+        <ul>
+        {% for cs in cajaseminario  %}
+             <li>   {{cs}}</li>
+            {% endfor %}
+            
+        </ul>
+
+        <h2>Movimientos que no pudieron ser asignados</h2>
+
+        <ul>
+         {% for n_a in noasignados  %}
+              <li>   {{n_a}}</li>
+             {% endfor %}
+             
+         </ul>
+       </div>
+   </div>
+</div>
+</div>
+
 </div>
 
 <style>
@@ -569,54 +747,37 @@
 </script>
 
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script
+  src="https://code.jquery.com/jquery-3.6.0.min.js"
+  integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+  crossorigin="anonymous"></script>
 
+{% if codigo == 0 %}
 
-{% if mensaje == "no" %}
+{% elif codigo == 1 %}
 
-{% elif mensaje == "ok" %}
+<script type="text/javascript">
 
+    $(window).on('load', function() {
+        $('#myModal').modal('show');
+    });
+</script>
+{% elif codigo == 2 %}
+<script type="text/javascript">
 
-<script>
-
-    const Toast = Swal.mixin({
-        toast: true,
-        position: 'top-end',
-        showConfirmButton: false,
-        timer: 5000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-            toast.addEventListener('mouseenter', Swal.stopTimer)
-            toast.addEventListener('mouseleave', Swal.resumeTimer)
-        }
-    })
-
-    Toast.fire({
-        icon: 'success',
-        title: 'Caja cargada correctamente'
-    })
-
+    $(window).on('load', function() {
+        $('#modalError').modal('show');
+    });
 </script>
 {% else %}
-<script>
 
-    const Toast = Swal.mixin({
-        toast: true,
-        position: 'top-end',
-        showConfirmButton: false,
-        timer: 10000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-            toast.addEventListener('mouseenter', Swal.stopTimer)
-            toast.addEventListener('mouseleave', Swal.resumeTimer)
-        }
-    })
+<script type="text/javascript">
 
-    Toast.fire({
-        icon: 'error',
-        title: '{{mensaje}}'
-    })
-
+    $(window).on('load', function() {
+        $('#prueba').modal('show');
+    });
 </script>
+    
+    
 {% endif %}
-
 {% endblock %}
