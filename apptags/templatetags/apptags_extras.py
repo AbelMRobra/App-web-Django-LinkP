@@ -5,6 +5,7 @@ from datetime import date
 from datetime import datetime, timedelta 
 from rrhh.models import datosusuario, Sugerencia
 from tecnica.models import GerenPlanificacion
+from django.contrib.auth.models import User
 from presupuestos.models import Constantes, Registrodeconstantes
 
 register = template.Library()
@@ -139,7 +140,18 @@ def porcentual(number):
 
     return round(number*100, 0)
 
+@register.filter('has_perm')
+def has_perm(ident, group_name):
+    """
+    Verifica se este usuário pertence a un grupo
+    """
+    
+    user=User.objects.get(username=ident)
+    groups = user.groups.all().values_list('name', flat=True)
+    
 
+    
+    return True if group_name.name in groups else False
 
 @register.simple_tag
 def is_past_evaluacion2(prueba):

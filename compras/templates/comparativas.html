@@ -165,175 +165,175 @@
     
                                     {% for i in datos %}
     
-                                    {% if i.2.publica == "SI" or request.user.username == i.2.autoriza or request.user.username == i.2.creador %}
-    
-                                    <tr id = {{i.2.id}}>
+                                        {% if i.2.publica == "SI" or request.user.username == i.2.autoriza or request.user.username == i.2.creador or request.user|has_group:"COMPRAS NIVEL 8" %}
+        
+                                        <tr id = {{i.2.id}}>
 
-                                        <td style="width: 20px;">
+                                            <td style="width: 20px;">
 
-                                            {% if i.2.visto_gerente %}
-                                            <i
-                                            data-toggle="tooltip" data-placement="top" title="El gerente de producción dio su visto bueno!"
-                                            class="btn fa fa-lg fa-check-circle text-success"></i>
-                                            {% else %}
-
-                                                {% if request.user.username == "LA" %}
-
-                                                <form method="POST">{% csrf_token %}
-                                                    <button name="visto_bueno_gerente" value="{{i.2.id}}" type="submit" class="btn">
-
-                                                        <i
-                                                        data-toggle="tooltip" data-placement="top" title="Tu pedido aun no fue revisado por el gerente"
-                                                        class="fa fa-exclamation-triangle text-warning"></i>
-                                                    </button>
-                                                </form>
-
+                                                {% if i.2.visto_gerente %}
+                                                <i
+                                                data-toggle="tooltip" data-placement="top" title="El gerente de producción dio su visto bueno!"
+                                                class="btn fa fa-lg fa-check-circle text-success"></i>
                                                 {% else %}
-                                                <i
-                                                data-toggle="tooltip" data-placement="top" title="Tu pedido aun no fue revisado por el gerente"
-                                                class="btn fa fa-exclamation-triangle text-warning"></i>
-                                                {% endif %}
-                                            {% endif %}
-                                        </td>
-                                        <td style="text-align: center;">
-                                            <img
-                                            
-                                            data-toggle="tooltip" data-placement="top" title="Usuario {{i.0.identificacion}}" 
 
-                                            src="{{i.0.imagenlogo.url}}" width="40" class="img-circle">
-                                            <h6 class="card-subtitle" style="font-size: 12px; margin-top: 2px;"><span
-                                                    class="text-muted"> {{i.2.fecha_c|date:"d/m/Y"}}</span></h6>
-                                        </td>
-                                        
-                                        <td>
-                                            {% if i.2.estado == "ESPERA" %}
-                                            <i
-                                            data-toggle="tooltip" data-placement="top" title="A la espera de revisión"
-                                            class="fa fa-hourglass-end" aria-hidden="true" style="color: blue;"></i>
-                                            {% endif %}
-                                            {% if i.2.estado == "AUTORIZADA" %}
-                                            {% if i.2.comentario %}
-                                            <span class="hint--left hint--danger" aria-label="{{i.comentario}}">
-                                                {% endif %}
-                                                <i
-                                                data-toggle="tooltip" data-placement="top" title="Todo listo!"
-                                                class="fa fa-check" aria-hidden="true" style="color: green;"></i>
-                                                {% if i.2.comentario %}
-                                            </span>
-                                            {% endif %}
-                                            {% endif %}
-                                            {% if i.2.estado == "NO AUTORIZADA" %}
-                                            {% if i.2.comentario %}
-                                            <span class="hint--left hint--danger" aria-label="{{i.2.comentario}}">
-    
-                                                {% endif %}
-    
-                                                <i
-                                                data-toggle="tooltip" data-placement="top" title="Rechazada!"
-                                                class="fa fa-times" aria-hidden="true" style="color: darkred;"></i>
-    
-                                                {% if i.2.comentario %}
-    
-                                            </span>
-    
-                                            {% endif %}
-                                            {% endif %}
-    
-                                            {% if i.2.estado == "ADJUNTO ✓" %}
-                                            {% if i.2.comentario %}
-    
-                                            <span class="hint--left hint--danger" aria-label="{{i.2.comentario}}">
-    
-                                                {% endif %}
-                                                <i
-                                                data-toggle="tooltip" data-placement="top" title="El adjunto fue revisado"
-                                                class="fa fa-check" aria-hidden="true" style="color: orange;"></i>
-                                                {% if i.2.comentario %}
-                                            </span>
-                                            {% endif %}
-                                            {% endif %}
-    
-    
-                                            <!-- Condicional para editar -->
-    
-                                            {% if i.2.estado != "AUTORIZADA" and i.2.creador == user.username %}
-                                            <a href="{% url 'Editar comparativas' i.2.id %}">{{i.2.proveedor.name|lower|capfirst}}
-                                            </a>
-                                            {% else %}
-                                            {{i.2.proveedor.name|lower|capfirst}}
-                                            {% endif %}
-    
-                                            <!-- Iconos y otros datos -->
-                                            <h6 class="card-subtitle" style="font-size: 14px; margin-top: 2px;">
-    
-                                                {% if i.2.contrato %}
-                                                <a href="{% url 'Contratos descripcion' i.2.contrato.id %}"
-                                                    class=" fa fa-plus-square-o fa-lg text-danger "></a>{% endif %}
-                                                <a href="{% url 'Mensajes en comparativas' i.2.id %}"
-                                                    class=" fa fa-comments-o fa-lg"></a>
-                                                <a
-                                                data-toggle="tooltip" data-placement="right" title="Adjunto!"
-                                                href="{{ i.2.adjunto.url }}" target="_blank" class=" fa fa-paperclip fa-lg"></a>
-                                                {% if i.2.adj_oc %}
-                                                <a href="{{ i.2.adj_oc.url }}"
-                                                data-toggle="tooltip" data-placement="right" title="Copia de la OC"
-                                                target="_blank"><img src="{% static 'img/OC.png' %}"
-                                                        style="max-width:18px; height:auto;"></a>
-                                                {% endif %}
-                                                {{i.2.proyecto|lower|capfirst}} - {{i.2.numero|lower|capfirst}}
-                                            </h6>
-                                        </td>
-                                        <td  style="font-size: 14px;"><b>${{i.2.monto|floatformat:2|intcomma}}</b></td>
-                                        {% if i.2.o_c %}<td class="text-center">
-                                            <div
-                                            data-toggle="tooltip" data-placement="top" title="Este es el numero de OC"
-                                            >{{i.2.o_c|upper}}</div>{% else %}
-                                        <td>
-                                            <div
-                                            data-toggle="tooltip" data-placement="top" title="No se declaro el numero de OC"
-                                            > -</div>{% endif %}
-                                        </td>
-    
-    
-                                        <td style="text-align: center;">
-    
-                                            <img
-                                            
-                                            data-toggle="tooltip" data-placement="left" 
-                                            
-                                            {% if i.2.autoriza == "SP" %}
-                                            title="SP autorizara esta OC" src="{% static 'img/SP.png' %}" 
-                                            
-                                            {% else %} title="PL autorizara esta OC" src="{% static 'img/PL.png' %}" 
-                                            
-                                            {% endif %} width="40" class="img-circle">
-    
-                                            {% if request.user.username == i.2.autoriza %}
-    
-                                            <form action="" method="POST">
-                                                {% csrf_token %}
-    
-                                                <div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
-                                                    {% if estado == "0" or estado == "1" or estado == "3" or estado == "5" or estado == "6" %}
-                                                    <button type="submit" class="btn" name="ADJAPROB" value="{{i.2.id}}"><i
-                                                            class="fa fa-check" style="color: orange;"></i></button>
+                                                    {% if request.user.username == "LA" %}
+
+                                                    <form method="POST">{% csrf_token %}
+                                                        <button name="visto_bueno_gerente" value="{{i.2.id}}" type="submit" class="btn">
+
+                                                            <i
+                                                            data-toggle="tooltip" data-placement="top" title="Tu pedido aun no fue revisado por el gerente"
+                                                            class="fa fa-exclamation-triangle text-warning"></i>
+                                                        </button>
+                                                    </form>
+
+                                                    {% else %}
+                                                    <i
+                                                    data-toggle="tooltip" data-placement="top" title="Tu pedido aun no fue revisado por el gerente"
+                                                    class="btn fa fa-exclamation-triangle text-warning"></i>
                                                     {% endif %}
-                                                    {% if estado == "0" or estado == "2" or estado == "3" or estado == "5" or estado == "6" %}
-                                                    <button type="submit" class="btn" name="APROBADA" value="{{i.2.id}}"><i
-                                                            class="fa fa-check" style="color: green;"></i></button>
+                                                {% endif %}
+                                            </td>
+                                            <td style="text-align: center;">
+                                                <img
+                                                
+                                                data-toggle="tooltip" data-placement="top" title="Usuario {{i.0.identificacion}}" 
+
+                                                src="{{i.0.imagenlogo.url}}" width="40" class="img-circle">
+                                                <h6 class="card-subtitle" style="font-size: 12px; margin-top: 2px;"><span
+                                                        class="text-muted"> {{i.2.fecha_c|date:"d/m/Y"}}</span></h6>
+                                            </td>
+                                            
+                                            <td>
+                                                {% if i.2.estado == "ESPERA" %}
+                                                <i
+                                                data-toggle="tooltip" data-placement="top" title="A la espera de revisión"
+                                                class="fa fa-hourglass-end" aria-hidden="true" style="color: blue;"></i>
+                                                {% endif %}
+                                                {% if i.2.estado == "AUTORIZADA" %}
+                                                {% if i.2.comentario %}
+                                                <span class="hint--left hint--danger" aria-label="{{i.comentario}}">
                                                     {% endif %}
-                                                    <button type="submit" class="btn" name="NO APROBADA"
-                                                        value="{{i.2.id}}"><i class="fa fa-times"
-                                                            style="color: darkred;"></i></button>
-                                                </div>
-    
-                                            </form>
-    
-                                            {% endif %}
-    
-                                        </td>
-                                    </tr>
-                                    {% endif %}
+                                                    <i
+                                                    data-toggle="tooltip" data-placement="top" title="Todo listo!"
+                                                    class="fa fa-check" aria-hidden="true" style="color: green;"></i>
+                                                    {% if i.2.comentario %}
+                                                </span>
+                                                {% endif %}
+                                                {% endif %}
+                                                {% if i.2.estado == "NO AUTORIZADA" %}
+                                                {% if i.2.comentario %}
+                                                <span class="hint--left hint--danger" aria-label="{{i.2.comentario}}">
+        
+                                                    {% endif %}
+        
+                                                    <i
+                                                    data-toggle="tooltip" data-placement="top" title="Rechazada!"
+                                                    class="fa fa-times" aria-hidden="true" style="color: darkred;"></i>
+        
+                                                    {% if i.2.comentario %}
+        
+                                                </span>
+        
+                                                {% endif %}
+                                                {% endif %}
+        
+                                                {% if i.2.estado == "ADJUNTO ✓" %}
+                                                {% if i.2.comentario %}
+        
+                                                <span class="hint--left hint--danger" aria-label="{{i.2.comentario}}">
+        
+                                                    {% endif %}
+                                                    <i
+                                                    data-toggle="tooltip" data-placement="top" title="El adjunto fue revisado"
+                                                    class="fa fa-check" aria-hidden="true" style="color: orange;"></i>
+                                                    {% if i.2.comentario %}
+                                                </span>
+                                                {% endif %}
+                                                {% endif %}
+        
+        
+                                                <!-- Condicional para editar -->
+        
+                                                {% if i.2.estado != "AUTORIZADA" and i.2.creador == user.username %}
+                                                <a href="{% url 'Editar comparativas' i.2.id %}">{{i.2.proveedor.name|lower|capfirst}}
+                                                </a>
+                                                {% else %}
+                                                {{i.2.proveedor.name|lower|capfirst}}
+                                                {% endif %}
+        
+                                                <!-- Iconos y otros datos -->
+                                                <h6 class="card-subtitle" style="font-size: 14px; margin-top: 2px;">
+        
+                                                    {% if i.2.contrato %}
+                                                    <a href="{% url 'Contratos descripcion' i.2.contrato.id %}"
+                                                        class=" fa fa-plus-square-o fa-lg text-danger "></a>{% endif %}
+                                                    <a href="{% url 'Mensajes en comparativas' i.2.id %}"
+                                                        class=" fa fa-comments-o fa-lg"></a>
+                                                    <a
+                                                    data-toggle="tooltip" data-placement="right" title="Adjunto!"
+                                                    href="{{ i.2.adjunto.url }}" target="_blank" class=" fa fa-paperclip fa-lg"></a>
+                                                    {% if i.2.adj_oc %}
+                                                    <a href="{{ i.2.adj_oc.url }}"
+                                                    data-toggle="tooltip" data-placement="right" title="Copia de la OC"
+                                                    target="_blank"><img src="{% static 'img/OC.png' %}"
+                                                            style="max-width:18px; height:auto;"></a>
+                                                    {% endif %}
+                                                    {{i.2.proyecto|lower|capfirst}} - {{i.2.numero|lower|capfirst}}
+                                                </h6>
+                                            </td>
+                                            <td  style="font-size: 14px;"><b>${{i.2.monto|floatformat:2|intcomma}}</b></td>
+                                            {% if i.2.o_c %}<td class="text-center">
+                                                <div
+                                                data-toggle="tooltip" data-placement="top" title="Este es el numero de OC"
+                                                >{{i.2.o_c|upper}}</div>{% else %}
+                                            <td>
+                                                <div
+                                                data-toggle="tooltip" data-placement="top" title="No se declaro el numero de OC"
+                                                > -</div>{% endif %}
+                                            </td>
+        
+        
+                                            <td style="text-align: center;">
+        
+                                                <img
+                                                
+                                                data-toggle="tooltip" data-placement="left" 
+                                                
+                                                {% if i.2.autoriza == "SP" %}
+                                                title="SP autorizara esta OC" src="{% static 'img/SP.png' %}" 
+                                                
+                                                {% else %} title="PL autorizara esta OC" src="{% static 'img/PL.png' %}" 
+                                                
+                                                {% endif %} width="40" class="img-circle">
+        
+                                                {% if request.user.username == i.2.autoriza %}
+        
+                                                <form action="" method="POST">
+                                                    {% csrf_token %}
+        
+                                                    <div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
+                                                        {% if estado == "0" or estado == "1" or estado == "3" or estado == "5" or estado == "6" %}
+                                                        <button type="submit" class="btn" name="ADJAPROB" value="{{i.2.id}}"><i
+                                                                class="fa fa-check" style="color: orange;"></i></button>
+                                                        {% endif %}
+                                                        {% if estado == "0" or estado == "2" or estado == "3" or estado == "5" or estado == "6" %}
+                                                        <button type="submit" class="btn" name="APROBADA" value="{{i.2.id}}"><i
+                                                                class="fa fa-check" style="color: green;"></i></button>
+                                                        {% endif %}
+                                                        <button type="submit" class="btn" name="NO APROBADA"
+                                                            value="{{i.2.id}}"><i class="fa fa-times"
+                                                                style="color: darkred;"></i></button>
+                                                    </div>
+        
+                                                </form>
+        
+                                                {% endif %}
+        
+                                            </td>
+                                        </tr>
+                                        {% endif %}
     
                                     {% endfor %}
     
