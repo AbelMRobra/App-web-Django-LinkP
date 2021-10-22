@@ -224,8 +224,6 @@ def auditor_presupuesto_p(proyecto, fecha_desde, fecha_hasta):
 
         list_resultante_p = sorted(list_resultante_p, key = lambda x: abs(x[3]), reverse=True)
 
-        print(list_resultante_p)
-
     else:
         data_resultante_p = 0
         list_resultante_p = 0
