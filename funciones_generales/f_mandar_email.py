@@ -19,5 +19,4 @@ def mandar_email(msg, email, titulo):
     # Envio del mensaje
 
     enviar=mailServer.sendmail(settings.EMAIL_HOST_USER,
-                    email,
-                    mensaje.as_string())
+                    email, mensaje.as_string())

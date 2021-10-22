@@ -6,7 +6,7 @@ from email.mime.text import MIMEText
 from django.contrib.auth.models import User,Group
 from django.contrib.auth import logout
 from funciones_generales.f_mandar_email import mandar_email
-from ..funciones.f_usuarios import generar_contraseña, cropping
+from ..funciones.f_usuarios import generar_contraseña, cropping, recizing
 
 
 def perfil_usuario_principal(request):
@@ -29,7 +29,7 @@ def perfil_usuario_perfil(request, id_persona):
 
     context={}
     usuario = datosusuario.objects.get(id = id_persona)
-    grupos= Group.objects.all().order_by('name')
+    grupos= Group.objects.filter(name__icontains = "NIVEL").order_by('name')
     
     
     if request.method == 'POST':
@@ -97,6 +97,7 @@ def perfil_usuario_perfil(request, id_persona):
         if 'gestionar-permisos' in datos:
 
             try:
+
                 identificacion=datos['gestionar-permisos']
 
                 user=User.objects.get(username=identificacion)
@@ -187,7 +188,6 @@ def users_crear(request):
     if request.method == 'POST':
         datos=request.POST.dict()
         
-        
 
         if 'crear-usuario' in datos: 
 
@@ -204,9 +204,7 @@ def users_crear(request):
                 
                 user=User.objects.create(username=identificacion,email=email,password=datos['password'],is_active=True)
 
-                # print(imagen)
-                # modificada=cropping(imagen)
-                # print(modificada)
+            
 
                 usuario=datosusuario(
                     user=user,
@@ -226,15 +224,20 @@ def users_crear(request):
                 usuario.save()
 
                 if usuario:
+                    
                     path=f'{settings.MEDIA_ROOT}/{imagen}'
-                    cropping(path)
+                    
+                    recizing(path)
+                    cropping(path,usuario)
 
 
                 return redirect('Datos personal')
+            
             else:
-                mensaje='Ya existe un usuario con el identificador {}'.format(user[0].username)
                 
-                return render(request,'perfil_usuario/perfil_usuario_crear.html',{'mensaje':mensaje})
+                mensaje='Ya existe un usuario con el identificador {}'.format(user[0].username)
+            
+            return render(request,'perfil_usuario/perfil_usuario_crear.html',{'mensaje':mensaje})
 
 
     return render(request,'perfil_usuario/perfil_usuario_crear.html',{})

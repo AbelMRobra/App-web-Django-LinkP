@@ -9,16 +9,14 @@ def generar_contraseña(size=6 , chars=string.ascii_uppercase + string.digits):
 
 def recizing(path):
     img=Image.open(path)
-    width, height = get_image_dimensions(img)
-    #if img.height > 300 or img.width > 300:
     newsize = (300, 300)
     result= img.resize(newsize)
     result.save(path)
     return result
 
-def cropping(path):
+def cropping(path,usuario):
     
-    result=recizing(path)
+    result=Image.open(path)
     img=result.convert("RGB")
     npImage=np.array(img)
     h,w=img.size
@@ -36,6 +34,16 @@ def cropping(path):
 
     # Save with alpha
     final=Image.fromarray(npImage)
-    Image.fromarray(npImage).save(path)
+    path=str(path)
+    pos_punto=path.find('.')
+    nombre=path[:pos_punto + 1]
+
+   
+    nuevo=nombre + 'png'
+
+    Image.fromarray(npImage).save(nuevo)
+
+    usuario.imagenlogo=nuevo
+    usuario.save()
 
     return final

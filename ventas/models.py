@@ -1,5 +1,6 @@
 from django.db import models
 from proyectos.models import Proyectos, Unidades
+from django.contrib.auth.models import User
 from rrhh.models import datosusuario
 
 # Create your models here.
@@ -60,6 +61,7 @@ class PricingResumen(models.Model):
 class ArchivosComercial(models.Model):
 
     nombre = models.CharField(max_length=100, verbose_name="Nombre del archivo")
+    usuarios_permitidos = models.ManyToManyField(datosusuario, verbose_name = "Usuarios permitidos", blank=True)
     fecha = models.DateField(verbose_name="Fecha que corresponde")
     proyecto = models.ForeignKey(Proyectos, on_delete=models.CASCADE, verbose_name = "Proyecto", null=True, blank=True)
     adjunto = models.FileField(verbose_name="Adjunto")

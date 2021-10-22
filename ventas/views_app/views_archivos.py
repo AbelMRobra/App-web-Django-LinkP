@@ -1,8 +1,10 @@
 from django.shortcuts import render
+from rrhh.models import datosusuario
 from ventas.models import ArchivosComercial
 from proyectos.models import Proyectos
 from users.models import ActividadesUsuarios
 from users.funciones import f_generales
+from django.db.models import Q
 
 def archivos_principal(request):
 
@@ -22,6 +24,14 @@ def archivos_principal(request):
             archivo_editar.nombre = request.POST['nombre']
             archivo_editar.fecha = request.POST['fecha']
             archivo_editar.proyecto = proyecto
+
+            for post in request.POST.items():
+
+                if "editar_usuarios" in post[0]:
+
+                    usuario = datosusuario.objects.get(identificacion = post[0].split("-")[1])
+                    archivo_editar.usuarios_permitidos.add(usuario)
+
 
             try:
                 archivo_editar.adjunto = request.FILES['adjunto']
@@ -80,6 +90,13 @@ def archivos_principal(request):
 
             nuevo_archivo.save()
 
+            for post in request.POST.items():
+
+                if "usuario" in post[0]:
+
+                    usuario = datosusuario.objects.get(identificacion = post[0].split("-")[1])
+                    nuevo_archivo.usuarios_permitidos.add(usuario)
+
             categoria = "archivos_comercial"
             if proyecto:
                 nombre_accion = nuevo_archivo.nombre + " de " + proyecto.nombre
@@ -93,6 +110,10 @@ def archivos_principal(request):
 
     context = {}    
     context['archivos'] = con_archivos
+    context['user'] = datosusuario.objects.get(identificacion = request.user.username)
+    context['usuarios'] = datosusuario.objects.filter(
+        Q(area = "MKT-COMER") | Q(larea = "DIRECCION") | Q(larea = "IT")
+        )
     context['proyectos'] = Proyectos.objects.all()
     context['filtros'] = list(set(con_archivos.values_list("nombre", flat=True)))
     context['filtros_seleccionados'] = context['filtros']

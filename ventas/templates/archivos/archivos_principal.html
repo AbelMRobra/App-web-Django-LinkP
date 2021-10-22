@@ -80,6 +80,7 @@
         
                                             <tbody style="font-size: 13px;">
                                                 {% for archivo in archivos %}
+                                                {% if user in archivo.usuarios_permitidos.all %}
                                                 <tr>
                                                     <td>
                                                         {% if archivo.proyecto %}
@@ -151,6 +152,22 @@
                                                                     </select>
                                                                 </div>
                                                                 <div class="mb-3">
+                                                                    <p>Quien puede ver</p>
+                                                                    <div class="row scrollbox" style="max-height: 90px;">
+                                                                       
+                                                                        <div class="col-6">
+
+                                                                            {% for usuario in usuarios %}
+                                            
+                                                                            <input type="checkbox" name="{{archivo.id}}editar_usuarios-{{usuario.identificacion}}" id="{{archivo.id}}editar_usuarios-{{usuario.identificacion}}" {% if usuario in archivo.usuarios_permitidos.all %} checked {% endif %}>
+                                                                            <label for="{{archivo.id}}editar_usuarios-{{usuario.identificacion}}">{{usuario.identificacion}}</label>
+                                            
+                                                                            {% endfor %}
+                                                                        </div>
+                                                                       
+                                                                    </div>
+                                                                </div>
+                                                                <div class="mb-3">
                                                                     <p>Archivo: {{archivo.adjunto.name}}</p>
                                                                     <input name="adjunto" type="file" class="form-control" value="{{archivo.adjunto.url}}">
                                                                 </div>
@@ -169,6 +186,7 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                                {% endif %}
                                                 {% endfor %}
                                             </tbody>
                                         </table>
@@ -257,11 +275,11 @@
                     {% csrf_token %}
                     <div class="mb-3">
                         <p>Nombre del archivo</p>
-                        <input name="nombre" type="search" class="form-control" list="nombre_archivos">
+                        <input name="nombre" type="search" required class="form-control" list="nombre_archivos">
                     </div>
                     <div class="mb-3">
                         <p>Proyecto</p>
-                        <select name="proyecto" class="form-control">
+                        <select required name="proyecto" class="form-control">
                             <option value="0">General</option>
                             {% for proyecto in proyectos %}
                             <option value="{{proyecto.id}}">{{proyecto.nombre}}</option>
@@ -273,8 +291,13 @@
                         <div class="row scrollbox" style="max-height: 90px;">
                            
                             <div class="col-6">
-                                <input type="checkbox" name="usuario" id="juan">
-                                <label for="juan">Juan</label>
+
+                                {% for usuario in usuarios %}
+
+                                <input type="checkbox" name="usuario-{{usuario.identificacion}}" id="usuario-{{usuario.identificacion}}">
+                                <label for="usuario-{{usuario.identificacion}}">{{usuario.identificacion}}</label>
+
+                                {% endfor %}
                             </div>
                            
                         </div>
@@ -282,11 +305,11 @@
                     
                     <div class="mb-3">
                         <p>Archivo: {{archivo}}</p>
-                        <input name="adjunto" type="file" class="form-control">
+                        <input name="adjunto" required type="file" class="form-control">
                     </div>
                     <div class="mb-3">
                         <p>Fecha</p>
-                        <input name="fecha" type="date" class="form-control">
+                        <input name="fecha" required type="date" class="form-control">
                     </div>
                 
 
