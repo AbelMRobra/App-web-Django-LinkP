@@ -48,7 +48,7 @@ def plan_financiacion_cotizador(anticipo, cuota_esp, aporte, cuotas_p, observaci
     aporte = int(aporte)
     descuento = float(descuento)
     anticipo = float(anticipo)
-    precio_contado = float(precio_contado)
+    precio_contado = float(precio_contado)*(1 - descuento)
 
     # No puede no tener tasa de financiación el proyecto
     # No puede ser el descuento mayor a 1
@@ -229,7 +229,6 @@ def plan_financiacion_cotizador(anticipo, cuota_esp, aporte, cuotas_p, observaci
     return [anticipo, anticipo_h, precio_finan, cuota_esp, importe_aporte, cuotas_p, importe_cuota_esp,
             aporte, importe_cuota_p, importe_cuota_p_h, importe_cuota_esp_h, importe_aporte_h, valor_cuota_espera,
             valor_cuota_entrega, valor_cuota_pose, observacion, descuento, total_pesos, total_hormigon, precio_contado]
-
 
 def info_para_cotizador(array):
 

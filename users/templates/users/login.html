@@ -2,7 +2,7 @@
 {% load apptags_extras %}
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="utf-8">
@@ -18,21 +18,10 @@
     <!-- <link href="{% static 'adminpro/assets/plugins/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet"> -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
-    <!-- page css -->
-    <!-- <link href="{% static 'adminpro/main/css/pages/login-register-lock.css' %}" rel="stylesheet"> -->
-    <!-- Custom CSS -->
-    <!-- <link href="{% static 'adminpro/main/css/style.css' %}" rel="stylesheet"> -->
-    <link href="{% static 'adminpro/main/css/spinners.css' %}" rel="stylesheet">
-    <link href="{% static 'css/login.css' %}" rel="stylesheet">
 
-    <!-- You can change the theme colors from here -->
-    <!-- <link href="{% static 'adminpro/main/css/colors/default-dark.css' %}" id="theme" rel="stylesheet"> -->
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-<![endif]-->
+    <link href="{% static 'adminpro/main/css/spinners.css' %}" rel="stylesheet">
+
+
 </head>
 
 <body class="card-no-border">
@@ -43,61 +32,111 @@
         </div>
     </div>
 
-    <div class="d-flex justify-content-center"
-        style="background-image:url({% static 'img/oficina.jpg' %}); background-size: cover; height: 100vh; opacity: 90%;">
-        <div class="row align-self-center bg-transparency rounded col-10 col-md-6 col-lg-3">
-            <form id="loginform" method="POST">
-                {% csrf_token %}
-                <div class="px-2 py-4">
-                    <div class="text-center mb-2">
-                        <img src="{% static 'img/Linkp.png' %}" alt="" style="width: 100px;">
-                    </div>
-                    <div class="my-3">
-                        <div class="my-1 ">
-                            <div class="col-12">
-                                <input class="" type="text" required="" placeholder="Usuario"
-                                    name="username" id="username">
-                            </div>
+    <div
+        style="background:url({% static 'img/link-fondo.png' %}) 10% 25% ; background-size: cover;  height: 100vh; opacity: 90%;">
+        <div class="d-flex justify-content-end align-self-center p-4" style="height: 100vh;">
+
+            <div class="bg-dark-blue rounded col-8 col-md-6 col-lg-3">
+                <form id="loginform" method="POST">
+                    {% csrf_token %}
+                    <div class="p-4">
+                        <div class="text-center mb-2">
+                            <img src="{% static 'img/Linkpblanco.png' %}" alt="" style="width: 150px;">
                         </div>
-                        <div>
-                            <div>
-                                <input class="" type="password" required="" placeholder="Contraseña"
+
+                        <div class="my-5">
+                           <h3 class="text-white">¡Bienvenido a LinkP!</h3>
+                        </div>
+                        <div class="my-3">
+                            <div class="mt-4">
+                                <input class="login" type="text" required placeholder="Usuario" name="username"
+                                    id="username">
+                            </div>
+                            <div class="mt-4">
+                                <input class="login" type="password" required placeholder="Contraseña"
                                     name="password">
                             </div>
                         </div>
-                    </div>
-                    <div class="mb-3">
-                        <div>
-                            <div class="checkbox checkbox-info pull-left">
-                                <input id="checkbox-signup" type="checkbox" class="filled-in chk-col-light-blue"
-                                    value="lsRememberMe">
-                                <label for="checkbox-signup"> Recuerdame </label>
-                            </div> <a href="javascript:void(0)" id="to-recover" class="text-dark pull-right"></a>
+                        <div class="my-4 d-flex align-items-center text-center">
+                                <input id="checkbox-signup" type="checkbox" class="filled-in chk-col-light-blue" value="lsRememberMe">
+                                <span class="recuerdame">Recuerdame</span>
+                             <a href="javascript:void(0)" id="to-recover" class="text-dark pull-right"></a>
                         </div>
-                    </div>
-                    <div class="text-center">
-                        <div>
-                            <input class="btn btn-block btn-primary btn-rounded" type="submit" onclick="lsRememberMe()"
-                                value="Acceder" style="width: 100px;"></input>
+                        <div class="text-center">
+                            <div>
+                                <input class="btn btn-block btn-light btn-rounded" type="submit"
+                                    onclick="lsRememberMe()" value="Acceder" style="width: 100px;"></input>
+                            </div>
                         </div>
+                        <div class="text-center mt-4">
+                            <a class="recuperar" href="{% url 'Resetear contrasena' %}">¿Perdiste tu contraseña?</a>
+                        </div>
+
+                        {% block content %}
+
+                        {% endblock %}
+
                     </div>
-
-                    {% block content %}
-
-                    {% endblock %}
-
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
     </div>
 
 </body>
-<!-- ============================================================== -->
-<!-- End Wrapper -->
-<!-- ============================================================== -->
-<!-- ============================================================== -->
-<!-- All Jquery -->
-<!-- ============================================================== -->
+
+<style>
+    .bg-dark-blue {
+        background-color: #18232E;
+    }
+
+    input[type=text] {
+        background-color: rgba(0, 0, 0, 0);
+        border-top: none;
+        border-left: none;
+        border-right: none;
+        border-bottom: white 1px linear;
+        color: white;
+        width: 100%;
+
+    }
+
+    input[type=password] {
+        background-color: rgba(0, 0, 0, 0);
+        border-top: none;
+        border-left: none;
+        border-right: none;
+        border-bottom: white 1px linear;
+        color: white;
+        width: 100%;
+
+    }
+    input:-webkit-autofill {
+        -webkit-box-shadow: 0 0 0px 1000px #18232E inset;
+        -webkit-text-fill-color: white;
+    }
+
+    input::placeholder {
+        color: rgba(255, 255, 255, 0.6);
+    }
+    input:focus {
+        outline: none !important;
+    }
+
+    .recuerdame{
+        color: white;
+        margin-left: 8px;
+    }
+
+    .recuperar{
+        color: rgba(255, 255, 255, 0.7);
+    }
+
+    .fondo{
+        background: url("linkp.html") center top cover ;
+    }
+
+</style>
+
 <script src="{% static 'adminpro/assets/plugins/jquery/jquery.min.js' %}"></script>
 <!-- Bootstrap tether Core JavaScript -->
 <script src="{% static 'adminpro/assets/plugins/bootstrap/js/popper.min.js' %}"></script>
@@ -110,9 +149,7 @@
     $(function () {
         $('[data-toggle="tooltip"]').tooltip()
     });
-    // ============================================================== 
-    // Login and Recover Password 
-    // ============================================================== 
+    
     $('#to-recover').on("click", function () {
         $("#loginform").slideUp();
         $("#recoverform").fadeIn();

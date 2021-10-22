@@ -57,6 +57,22 @@ class PricingResumen(models.Model):
     def __str__(self):
         return '{}'.format(self.proyecto)
 
+class ArchivosComercial(models.Model):
+
+    nombre = models.CharField(max_length=100, verbose_name="Nombre del archivo")
+    fecha = models.DateField(verbose_name="Fecha que corresponde")
+    proyecto = models.ForeignKey(Proyectos, on_delete=models.CASCADE, verbose_name = "Proyecto", null=True, blank=True)
+    adjunto = models.FileField(verbose_name="Adjunto")
+
+    class Meta:
+
+        verbose_name="Archivos comercial"
+        verbose_name_plural="Archivos comercial"
+
+    def __str__(self):
+        
+        return '{}'.format(self.nombre)
+
 class DosierDeVenta(models.Model):
     fecha = models.DateField(verbose_name="Fecha que corresponde")
     proyecto = models.ForeignKey(Proyectos, on_delete=models.CASCADE, verbose_name = "Proyecto")
@@ -206,7 +222,6 @@ class AdjuntosReclamosPostventa(models.Model):
 
     def __str__(self):
         return f'{self.reclamo.numero}, {self.reclamo.propietario}'
-
 
 class FeaturesProjects(models.Model):
     proyecto = models.ForeignKey(Proyectos, on_delete=models.CASCADE, verbose_name = "Proyecto")

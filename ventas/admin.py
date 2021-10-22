@@ -1,6 +1,7 @@
 from django.contrib import admin
-from .models import PricingResumen, VentasRealizadas, EstudioMercado, Pricing, ArchivosAreaVentas, ArchivoFechaEntrega, \
-                ArchivoVariacionHormigon, ReclamosPostventa, FeaturesProjects, Clientescontacto, ImgEnlacesProyecto
+from .models import DosierDeVenta, PricingResumen, VentasRealizadas, EstudioMercado, Pricing, ArchivosAreaVentas, ArchivoFechaEntrega, \
+                ArchivoVariacionHormigon, ReclamosPostventa, FeaturesProjects, Clientescontacto, ImgEnlacesProyecto, \
+                    ArchivosComercial
 from import_export import resources
 from import_export.admin import ImportExportModelAdmin
 
@@ -43,6 +44,11 @@ class VentasRealizadasAdmin(ImportExportModelAdmin, admin.ModelAdmin):
 class EstudioMercadoResource(resources.ModelResource):
     class Meta:
         model = EstudioMercado
+
+class ArchivosComercialAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    list_display = ('nombre', 'fecha', 'proyecto')
+    search_fields = ('nombre', 'fecha', )
+    resources_class = ArchivosComercial
         
 class EstudioMercadoAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = ('fecha', 'empresa', 'proyecto', 'precio')
@@ -94,9 +100,11 @@ admin.site.register(FeaturesProjects, FeaturesProjectsAdmin)
 admin.site.register(PricingResumen, PricingResumenAdmin)
 admin.site.register(Pricing, PricingAdmin)
 admin.site.register(VentasRealizadas, VentasRealizadasAdmin)
+admin.site.register(ArchivosComercial, ArchivosComercialAdmin)
 admin.site.register(EstudioMercado, EstudioMercadoAdmin)
 admin.site.register(ArchivosAreaVentas, ArchivosAdmin)
 admin.site.register(ArchivoFechaEntrega, ArchivoFechaEntregaAdmin)
 admin.site.register(ArchivoVariacionHormigon, ArchivoVariacionHormigonAdmin)
 admin.site.register(ReclamosPostventa, ReclamosPostventaAdmin)
 admin.site.register(ImgEnlacesProyecto)
+admin.site.register(DosierDeVenta)

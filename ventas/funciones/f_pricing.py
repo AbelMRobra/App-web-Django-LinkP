@@ -5,6 +5,7 @@ from finanzas.models import Almacenero
 from ventas.models import FeaturesProjects, FeaturesUni, VentasRealizadas
 from proyectos.models import Unidades, Proyectos
 
+
 def unidades_calculo_m2(id_unidad):
 
     unidad = Unidades.objects.get(id = id_unidad)
