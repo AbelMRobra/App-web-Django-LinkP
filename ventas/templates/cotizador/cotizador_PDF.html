@@ -5,207 +5,189 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
     <link rel="stylesheet" href="{% static 'css/hint.css' %}">
-    <link rel="stylesheet" href="{% static 'css/styleabel.css' %}">
     <!-- Hojas de estilos AdminPro -->
-    <link rel="stylesheet" href="{% static 'css/styleabel.css' %}"> 
     <link href="{% static 'adminpro/assets/plugins/bootstrap-select/bootstrap-select.min.css' %}" rel="stylesheet" />
     <link href="{% static 'adminpro/assets/plugins/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
-    <link href="{% static 'adminpro/assets/plugins/perfect-scrollbar/css/perfect-scrollbar.css' %}" rel="stylesheet">
-    <link href="{% static 'adminpro/assets/plugins/chartist-js/dist/chartist.min.css' %}" rel="stylesheet">
-    <link href="{% static 'adminpro/assets/plugins/chartist-plugin-tooltip-master/dist/chartist-plugin-tooltip.css' %}" rel="stylesheet">
-    <link href="{% static 'adminpro/assets/plugins/c3-master/c3.min.css' %}" rel="stylesheet">
-    <link href="{% static 'adminpro/assets/plugins/toast-master/css/jquery.toast.css' %}" rel="stylesheet">
     <link href="{% static 'adminpro/main/css/style.css' %}" rel="stylesheet">
-    <link href="{% static 'adminpro/main/css/pages/dashboard1.css' %}" rel="stylesheet">
     <link href="{% static 'adminpro/main/css/colors/default.css' %}" id="theme" rel="stylesheet">
-    <link href="{% static 'adminpro/main/css/pages/chat-app-page.css' %}" rel="stylesheet">
-    <link href="{% static 'adminpro/main/css/pages/file-upload.css' %}" rel="stylesheet">
-    <link href="{% static 'adminpro/assets/plugins/multiselect/css/multi-select.css' %}" rel="stylesheet" type="text/css" />
-    <link href="{% static 'adminpro/assets/plugins/bootstrap-tagsinput/dist/bootstrap-tagsinput.css' %}" rel="stylesheet" />
-    <link href="{% static 'adminpro/assets/plugins/bootstrap-touchspin/dist/jquery.bootstrap-touchspin.min.css' %}" rel="stylesheet" />
-    <link href="{% static 'adminpro/assets/plugins/multiselect/css/multi-select.css' %}" rel="stylesheet" type="text/css" />
-    <link href="{% static 'adminpro/assets/plugins/bootstrap-datepicker/bootstrap-datepicker.min.css' %}" rel="stylesheet" type="text/css" />
-    <link href="{% static 'adminpro/assets/plugins/select2/dist/css/select2.min.css' %}" rel="stylesheet" type="text/css" />
-    <link href="{% static 'adminpro/assets/plugins/switchery/dist/switchery.min.css' %}" rel="stylesheet" />
     <link href="{% static 'adminpro/assets/plugins/bootstrap-select/bootstrap-select.min.css' %}" rel="stylesheet" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+
 </head>
 
 <body>
     <div style="text-align: left; margin-bottom: 20px;">
-    
-        <img src="{{cabecera}}"  class="img-fluid" alt="..." style="width:100%; height:auto;">
+
+        <img src="{{cabecera}}" class="img-fluid" alt="..." style="width:100%; height:auto;">
     </div>
 
-    <div style="margin-bottom: 0px;"> 
+    <div style="margin-bottom: 0px;">
 
         <div style="text-align: center;">
 
-            <img src="{{unidad.proyecto.iamgen.url}}"  class="img-fluid" alt="..." style="width: 40mm; height:auto; margin-top: 5px; margin-bottom: 20mm;">
+            <img src="{{unidad.proyecto.iamgen.url}}" class="img-fluid" alt="..."
+                style="width: 40mm; height:auto; margin-top: 5px; margin-bottom: 20mm;">
         </div>
-    
-        <div style="text-align: center;">
+
+        <div class="mb-4" style="text-align: center;">
             <h4 style="color: rgb({{unidad.proyecto.color}}); font-family: sans-serif">{{ unidad.proyecto.nombre}} </h4>
         </div>
-    
-            <b><hr class = "my-4" style="width: 100%;"></b>
 
-                    <div style="text-align: center;">
-                        <h1 style="font-family: sans-serif">Resumen de la cotización</h1>
-                    </div>
-                    
-            
-                    <div style="margin-top: 2%; width: 50%;">
+        <b>
+            <hr class="my-4" style="width: 100%;">
+        </b>
 
-                        <table>
-                            <tbody>
-                                <th>
-
-                                    <td style="width: 300;">
-
-                                        <p style="font-family: sans-serif"><b>Fecha: </b>{{today}}</p>
-                                        <p style="font-family: sans-serif"><b>Cliente: </b>{{cliente.nombre}}, {{cliente.apellido}} </p>
-                                        <p style="font-family: sans-serif"><b>Unidad: </b>{{unidad.piso_unidad}} - {{unidad.nombre_unidad}} </p>
-                                        
-                                        {% if unidad.tipo == "DEPARTAMENTO" %}
-                            
-                                        <p><b>TIPO: </b>{{unidad.tipo}} {{unidad.tipologia}} </p>
-                                        {% elif  unidad.tipo == "COCHERA" %}
-                                        <p><b>TIPO: </b>{{unidad.tipo}}</p>
-                            
-                                        {% elif  unidad.tipo == "LOCAL" %}
-                            
-                                        <p><b>TIPO: </b>{{unidad.tipo}}</p>
-                            
-                                        {% endif %}
-                                    </td>
-
-                                    <td style="width: 250; text-align: center;">
-
-                                        <img src="{{unidad.proyecto.imagen.url}}"  class="img-fluid" alt="..." style="width: 70mm; height:auto; margin-top: 5px; margin-bottom: 20mm;">
-
-                                    </td>
-                                </th>
-                            </tbody>
-                        </table>
-                    </div>
-
-            <b><hr class = "my-4" style="width: 100%;"></b>
-    
-    
-            <div style="text-align: center;">
-                <h1 style="font-family: Arial, Helvetica, sans-serif;">Propuesta de pago</h1>
-            </div>
-    
-            <table class = "table table-hover" style="text-align: left;" >
-                <thead>
-        
-                    <tr style="background-color: rgb(81, 75, 74); text-align: left; height: 28px; vertical-align: bottom;">
-                        <th scope = "row" style="color: rgb(247, 241, 240);" colspan="3">Desglose del plan de cuotas propuesto</th>                        
-                    </tr>
-                </thead>
-        
-                <tbody>
-        
-                    <tr style="height: 25px; background-color: rgb(229, 224, 223);">
-                        <td><b></b></td>
-                        <td><b>Concepto</b></td>
-                        <td><b>Cantidad</b></td>
-                        <td><b>Monto</b></td>
-                        <td><b>Valor de la cuota</b></td>
-                        <td><b>Valor en H°</b></td>
-       
-                    </tr>
-    
-    
-                    <tr style="height: 25px; ">
-                        <td style="width: 20px;"><b></b></td>
-                        <td>Anticipo</td>
-                        <td>1.00</td>
-                        <td>${{datos_cotizacion_json.anticipo|floatformat:2|intcomma}}</td>
-                        <td>${{datos_cotizacion_json.anticipo|floatformat:2|intcomma}}</td>
-                        <td>{{datos_cotizacion_json.anticipo_en_hormigon|floatformat:2|intcomma}} M3</td>
-              
-                    </tr>
-                    <tr style="height: 25px; ">
-                        <td style="width: 20px;"><b></b></td>
-                        <td>Cuota espera</td>
-                        <td>{{datos_cotizacion_json.cuotas_espera|floatformat:2|intcomma}}</td>
-                        <td>${{datos_cotizacion_json.importe_de_las_cuotas_espera|floatformat:2|intcomma}}</td>
-                        <td>${{datos_cotizacion_json.valor_de_la_cuota_espera|floatformat:2|intcomma}}</td>
-                        <td>{{datos_cotizacion_json.importe_de_las_cuotas_espera_en_hormigon|floatformat:2}} M3</td>
-              
-                    </tr>
-                    <tr style="height: 25px; ">
-                        <td style="width: 20px;"><b></b></td>
-                        <td>Entrega</td>
-                        <td>{{datos_cotizacion_json.aporte|floatformat:2|intcomma}}</td>
-                        <td>${{datos_cotizacion_json.importe_del_aporte|floatformat:2|intcomma}}</td>
-                        <td>${{datos_cotizacion_json.valor_de_la_cuota_entrega|floatformat:2|intcomma}}</td>
-                        <td>{{datos_cotizacion_json.importe_de_las_cuotas_espera_en_hormigon|floatformat:2}} M3</td>
-              
-                    </tr>
-                    <tr style="height: 25px; ">
-                        <td style="width: 20px;"><b></b></td>
-                        <td>Cuota posesión</td>
-                        <td>{{datos_cotizacion_json.cuotas_posesion|floatformat:2|intcomma}}</td>
-                        <td>${{datos_cotizacion_json.importe_de_las_cuotas_posesion|floatformat:2|intcomma}}</td>
-                        <td>${{datos_cotizacion_json.valor_de_la_cuota_posesion|floatformat:2|intcomma}}</td>
-                        <td>{{datos_cotizacion_json.importe_de_las_cuotas_posesion_en_hormigon|floatformat:2}} M3</td>
-              
-                    </tr>
-
-                    <tr style="height: 25px; background-color: rgb(81, 75, 74);">
-                        <td style="text-align: center; color: rgb(247, 251, 245);" colspan="5"><b>Precio de la unidad financiada</b></td>
-                        <td style="color: rgb(247, 251, 245);"><b>${{datos_cotizacion_json.precio_financiado|floatformat:2|intcomma}}</b></td>
-                    </tr>
-                </tbody>
-            </table>
-          </div>
-     
-            <b><hr class = "my-4" style="width: 100%; "></b>
-    
-        <div style="text-align: left;">
-    
-            <div><p>VALOR M3 DE HORMIGON Y EQUIVALENTE EN PESOS CALCULADO SEGÚN REVISTA VIVIENDA MES EN CURSO</p></div>
-            <div><p>Sección CI (CI RUBROS DE OBRA) Código 544 – HORMIGONES – ELABORADO 0130 (Hormigón H21)</p></div>
-            <div><p>Dirección Lamadrid 377 4to B, San Miguel del Tucumán, Tucumán</p></div>
-            <div><p><b>Cotización vigente por 5 dias habiles</b></p></div>
-            
-            <div><p>Especiales aplicados: {{datos_cotizacion_json.descuento}}</p></div>
-            <div><p><b>Observaciones: {{datos_cotizacion_json.observacion}}</b></p></div>
+        <div class="mt-4" style="text-align: center;">
+            <h1 style="font-family: sans-serif">Resumen de la cotización</h1>
         </div>
+
+
+        <div class="row my-3" style="display: flex; width: 100%;">
+
+            <div class="col-6" style="width: 40%;">
+                <p style="font-family: sans-serif"><b>Fecha: </b>{{today}}</p>
+                <p style="font-family: sans-serif"><b>Cliente: </b>{{cliente.nombre}}, {{cliente.apellido}} </p>
+                <p style="font-family: sans-serif"><b>Unidad: </b>{{unidad.piso_unidad}} -
+                    {{unidad.nombre_unidad}} </p>
+
+                {% if unidad.tipo == "DEPARTAMENTO" %}
+
+                <p><b>TIPO: </b>{{unidad.tipo}} {{unidad.tipologia}} </p>
+                {% elif unidad.tipo == "COCHERA" %}
+                <p><b>TIPO: </b>{{unidad.tipo}}</p>
+
+                {% elif unidad.tipo == "LOCAL" %}
+
+                <p><b>TIPO: </b>{{unidad.tipo}}</p>
+
+                {% endif %}
+            </div>
+
+            <!-- <div class="col-4" style="width: 40%;">
+                <img src="{{unidad.proyecto.imagen.url}}" class="img-fluid" alt="..."
+                    style="width: 70mm; height:auto; margin-top: 5px; margin-bottom: 20mm;">
+            </div> -->
+
+        </div>
+
+        <b>
+            <hr class="my-4" style="width: 100%;">
+        </b>
+
+
+        <div class="mt-4" style="text-align: center;">
+            <h1 style="font-family: Arial, Helvetica, sans-serif;">Propuesta de pago</h1>
+        </div>
+
+        <table class="table table-hover" style="text-align: left;">
+            <thead>
+
+                <tr style="background-color: rgb(81, 75, 74); text-align: left; height: 28px; vertical-align: bottom;">
+                    <th scope="row" style="color: rgb(247, 241, 240);" colspan="3">Desglose del plan de cuotas propuesto
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                <tr style="height: 25px; background-color: rgb(229, 224, 223);">
+                    <td><b></b></td>
+                    <td><b>Concepto</b></td>
+                    <td><b>Cantidad</b></td>
+                    <td><b>Monto</b></td>
+                    <td><b>Valor de la cuota</b></td>
+                    <td><b>Valor en H°</b></td>
+
+                </tr>
+
+
+                <tr style="height: 25px; ">
+                    <td style="width: 20px;"><b></b></td>
+                    <td>Anticipo</td>
+                    <td>1.00</td>
+                    <td>${{datos_cotizacion_json.anticipo|floatformat:2|intcomma}}</td>
+                    <td>${{datos_cotizacion_json.anticipo|floatformat:2|intcomma}}</td>
+                    <td>{{datos_cotizacion_json.anticipo_en_hormigon|floatformat:2|intcomma}} M3</td>
+
+                </tr>
+                <tr style="height: 25px; ">
+                    <td style="width: 20px;"><b></b></td>
+                    <td>Cuota espera</td>
+                    <td>{{datos_cotizacion_json.cuotas_espera|floatformat:2|intcomma}}</td>
+                    <td>${{datos_cotizacion_json.importe_de_las_cuotas_espera|floatformat:2|intcomma}}</td>
+                    <td>${{datos_cotizacion_json.valor_de_la_cuota_espera|floatformat:2|intcomma}}</td>
+                    <td>{{datos_cotizacion_json.importe_de_las_cuotas_espera_en_hormigon|floatformat:2}} M3</td>
+
+                </tr>
+                <tr style="height: 25px; ">
+                    <td style="width: 20px;"><b></b></td>
+                    <td>Entrega</td>
+                    <td>{{datos_cotizacion_json.aporte|floatformat:2|intcomma}}</td>
+                    <td>${{datos_cotizacion_json.importe_del_aporte|floatformat:2|intcomma}}</td>
+                    <td>${{datos_cotizacion_json.valor_de_la_cuota_entrega|floatformat:2|intcomma}}</td>
+                    <td>{{datos_cotizacion_json.importe_de_las_cuotas_espera_en_hormigon|floatformat:2}} M3</td>
+
+                </tr>
+                <tr style="height: 25px; ">
+                    <td style="width: 20px;"><b></b></td>
+                    <td>Cuota posesión</td>
+                    <td>{{datos_cotizacion_json.cuotas_posesion|floatformat:2|intcomma}}</td>
+                    <td>${{datos_cotizacion_json.importe_de_las_cuotas_posesion|floatformat:2|intcomma}}</td>
+                    <td>${{datos_cotizacion_json.valor_de_la_cuota_posesion|floatformat:2|intcomma}}</td>
+                    <td>{{datos_cotizacion_json.importe_de_las_cuotas_posesion_en_hormigon|floatformat:2}} M3</td>
+
+                </tr>
+
+                <tr style="height: 25px; background-color: rgb(81, 75, 74);">
+                    <td style="text-align: center; color: rgb(247, 251, 245);" colspan="5"><b>Precio de la unidad
+                            financiada</b></td>
+                    <td style="color: rgb(247, 251, 245);">
+                        <b>${{datos_cotizacion_json.precio_financiado|floatformat:2|intcomma}}</b>
+                    </td>
+                </tr>
+                <tr style="height: 25px; background-color: rgb(81, 75, 74); border-top: 2px solid white">
+                    <td style="text-align: center; color: rgb(247, 251, 245);" colspan="5"><b>Precio de la unidad
+                            contado</b></td>
+                    <td style="color: rgb(247, 251, 245);">
+                        <b>${{datos_cotizacion_json.precio_de_contado|floatformat:2|intcomma}}</b>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <b>
+        <hr class="my-4" style="width: 100%;">
+    </b>
+
+    <div style="text-align: left;">
+
+        <div>
+            <p>VALOR M3 DE HORMIGON Y EQUIVALENTE EN PESOS CALCULADO SEGÚN REVISTA VIVIENDA MES EN CURSO</p>
+        </div>
+        <div>
+            <p>Sección CI (CI RUBROS DE OBRA) Código 544 – HORMIGONES – ELABORADO 0130 (Hormigón H21)</p>
+        </div>
+        <div>
+            <p>Dirección Lamadrid 377 4to B, San Miguel del Tucumán, Tucumán</p>
+        </div>
+        <div>
+            <p><b>Cotización vigente por 5 dias habiles</b></p>
+        </div>
+
+        <div>
+            <p>Especiales aplicados: {{datos_cotizacion_json.descuento}}</p>
+        </div>
+        <div>
+            <p><b>Observaciones: {{datos_cotizacion_json.observacion}}</b></p>
+        </div>
+    </div>
     </div>
 </body>
 
 
-
-<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-
-<!-- scripts AdminPro -->
-
-<script src="{% static 'adminpro/assets/plugins/jquery/jquery.min.js' %}"></script>
-<script src="{% static 'adminpro/assets/plugins/bootstrap/js/popper.min.js' %}"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+    integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+    crossorigin="anonymous"></script>
 <script src="{% static 'adminpro/assets/plugins/bootstrap/js/bootstrap.min.js' %}"></script>
-<script src="{% static 'adminpro/main/js/perfect-scrollbar.jquery.min.js' %}"></script>
-<script src="{% static 'adminpro/main/js/waves.js' %}"></script>
-<script src="{% static 'adminpro/main/js/sidebarmenu.js' %}"></script>
 <script src="{% static 'adminpro/main/js/custom.min.js' %}"></script>
-<script src="{% static 'adminpro/assets/plugins/sparkline/jquery.sparkline.min.js' %}"></script>
-<script src="{% static 'adminpro/assets/plugins/chartist-js/dist/chartist.min.js' %}"></script>
-<script src="{% static 'adminpro/assets/plugins/chartist-plugin-tooltip-master/dist/chartist-plugin-tooltip.min.js' %}"></script>
-<script src="{% static 'adminpro/assets/plugins/d3/d3.min.js' %}"></script>
-<script src="{% static 'adminpro/assets/plugins/c3-master/c3.min.js' %}"></script>
-<script src="{% static 'adminpro/main/js/dashboard1.js' %}"></script>
-<script src="{% static 'adminpro/assets/plugins/styleswitcher/jQuery.style.switcher.js' %}"></script>
-<script src="{% static 'adminpro/main/js/chat.js' %}"></script>
-<script src="{% static 'assets/plugins/switchery/dist/switchery.min.js' %}"></script>
-<script src="{% static 'assets/plugins/select2/dist/js/select2.full.min.js' %}" type="text/javascript"></script>
-<script src="{% static 'assets/plugins/bootstrap-select/bootstrap-select.min.js' %}" type="text/javascript"></script>
-<script src="{% static 'adminpro/assets/plugins/bootstrap-select/bootstrap-select.min.js' %}" type="text/javascript"></script>
-<script src="{% static 'assets/plugins/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js' %}"></script>
-<script src="{% static 'assets/plugins/bootstrap-touchspin/dist/jquery.bootstrap-touchspin.min.js' %}" type="text/javascript"></script>
-<script type="text/javascript" src="{% static 'assets/plugins/multiselect/js/jquery.multi-select.js' %}"></script>
