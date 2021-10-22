@@ -1,0 +1,496 @@
+{% extends "users/inicio2.html" %}
+{% load apptags_extras %}
+
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+
+
+<div class="container-fluid">
+
+    <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+            <h3 class="text-themecolor">Archivos comercial</h3>
+        </div>
+
+        <div class="col-md-7 align-self-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'App comercial'%}">Panel</a>
+                </li>
+                <li class="breadcrumb-item">Archivos</li>
+            </ol>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div>
+                <div>
+                    <div class="row overflow-hidden" style="height: 480px; max-height: 480px;">
+
+                        <div class="col-2">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 class="card-title font-bold"></span>Filtros</h4>
+      
+                                    <form method="POST">
+                                        <div class="text-center mt-2 mb-4">
+                                            <button class="btn btn-xs btn-primary" type="submit" name="filtro" value="1">Filtrar</button>
+                                        </div>
+                                        {% csrf_token %}
+                                        <div class="row">
+                                            {% for filtro in filtros %}
+                                            <div class="col-12"><input type="checkbox" 
+                                                
+                                                {% if filtro in filtros_seleccionados %} checked {% endif %}
+                                                
+                                                name="{{filtro}}" id="{{filtro}}" class="form-control">
+                                                
+                                                <label for="{{filtro}}"><small>{{filtro|lower|capfirst}}</small> </label></div>
+                                            {% endfor %}
+    
+                                        </div>
+                                        
+                                    </form>
+
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="col-6 scroll-sidebar" style="height: 450px; max-height: 450px;">
+                            <div class="card">
+                                <div class="card-body">
+
+                                    <div class="table-responsive">
+                                        <h4><b>Material almacenado</b></h4>
+    
+                                        <table id="example" class="table" style="width:100%; height: 100%">
+                                            <thead style="display: none;">
+                                                <tr style="font-size: 14px;">
+                                                    <th>Para coti</th>
+                                                    <th>Nombre del archivo</th>
+                                                    <th>Fecha</th>
+                                                    
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+        
+                                            <tbody style="font-size: 13px;">
+                                                {% for archivo in archivos %}
+                                                <tr>
+                                                    <td>
+                                                        {% if archivo.proyecto %}
+                                                            <input type="checkbox" name="enviar" id="{{archivo.id}}">
+                                                            <label for="{{archivo.id}}"></label>
+                                                        {% else %}
+                                                            <input type="checkbox" disabled name="enviar" id="{{archivo.id}}">
+                                                            <label for="{{archivo.id}}"></label>
+                                                        {% endif %}
+                                                    </td>
+                                                    
+                                                    <td><a href="{{archivo.adjunto.url}}" target="_blank">{{archivo.nombre}}</a>
+                                                    {% if archivo.proyecto %}
+                                                    <div class="text-right"> <small class="text-muted mr-3 font-bold" style="color: blue;">{{archivo.proyecto}}</small> </div></td>
+                                                     {% endif %}
+                                                    <td>{{archivo.fecha|date:"d/m/Y"}}</td>
+                                                    
+                                                    <td>
+                                                        <div class="btn-group ml-auto">
+                                                            <a href="JavaScript:void(0)" class="icon-options-vertical link"
+                                                                data-toggle="dropdown" aria-haspopup="true"
+                                                                aria-expanded="false"></a>
+                                                            <div class="dropdown-menu dropdown-menu-right">
+                                                                <a class="dropdown-item" href="#" data-toggle="modal"
+                                                                    data-target="#ModalEditar{{archivo.id}}"><i
+                                                                        class="fa fa-pencil-square-o mr-2"></i>Editar</a>
+                                                                <form method="POST">
+                                                                    {% csrf_token %}
+                                                                    <button class="dropdown-item" class="btn" type="submit" name="eliminar_archivo" value="{{archivo.id}}" ><i
+                                                                        class="fa fa-trash text-danger mr-2"></i>Borrar</button>
+                                                                </form>
+                                                                
+        
+                                                            </div>
+                                                        </div>
+                                                    </td>
+
+                                                    
+        
+                                                </tr>
+
+                                                <!-- Modal -->
+                                                <div class="modal fade" id="ModalEditar{{archivo.id}}" tabindex="-1" role="dialog" aria-labelledby="ModalEditar{{archivo.id}}"
+                                                aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header" style="background-color: #2a3e52;">
+                                                            <h5 class="modal-title text-light" id="exampleModalLongTitle">Editar archivo</h5>
+                                                            <button type="button" class="close text-light" data-dismiss="modal"
+                                                                aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <form method="POST" style="margin: 15px;" enctype="multipart/form-data">
+                                                        <div class="modal-body">
+                                       
+                                                                {% csrf_token %}
+                                                                <div class="mb-3">
+                                                                    <p>Nombre del archivo</p>
+                                                                    <input name="nombre" value="{{archivo.nombre}}" type="search" class="form-control" list="nombre_archivos">
+                                                                </div>
+                                                                <div class="mb-3">
+                                                                    <p>Proyecto</p>
+                                                                    <select name="proyecto" class="form-control">
+                                                                        <option value="0">General</option>
+                                                                        {% for proyecto in proyectos %}
+                                                                        <option value="{{proyecto.id}}" {% if archivo.proyecto.id == proyecto.id %} selected {% endif %}>{{proyecto.nombre}}</option>
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                </div>
+                                                                <div class="mb-3">
+                                                                    <p>Archivo: {{archivo.adjunto.name}}</p>
+                                                                    <input name="adjunto" type="file" class="form-control" value="{{archivo.adjunto.url}}">
+                                                                </div>
+                                                                <div class="mb-3">
+                                                                    <p>Fecha</p>
+                                                                    <input name="fecha" type="date" class="form-control" value="{{archivo.fecha|date:'Y-m-d'}}">
+                                                                </div>
+                                                            
+
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="submit" class="btn btn-info" name="editar_archivo" value="{{archivo.id}}">Actualizar</button>
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                                        </div>
+                                                    </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 class="card-title font-bold"></span>Actividad</h4>
+                                    <ul class="feeds scrollbox" style="font-size: 12px; height: 380px; max-height: 380px;">
+    
+
+                                        {% for actividad in actividades %}
+                
+                                        <li class="bg-proyecto-color">
+                                            <div class="justify-content-between align-items-center w-100">
+                                                <div class="d-flex text-left">
+                                                    <img src="{{actividad.usuario.imagenlogo.url}}" width="25px" height="25px"
+                                                        alt="user" class="mr-2"><span class="font-bold">{{actividad.accion}}</span>
+                                                </div>
+                                                <div><span class="text-muted font-bold" id="{{actividad.id}}"></span</div>
+                                            </div>
+                                        </li>
+                
+                                        {% endfor %}
+                
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        
+                    </div>
+
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="ModalCoti" tabindex="-1" role="dialog" aria-labelledby="ModalCoti" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #2a3e52;">
+                <h5 class="modal-title text-light" id="exampleModalLongTitle">Archivos a cotizador</h5>
+                <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" style="margin: 15px;" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <p>Esta seguro que desea enviar todos archivos en la cotizacion</p>
+                    </div>
+                   
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-success">Confirmar</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="ModalAgregar" tabindex="-1" role="dialog" aria-labelledby="ModalAgregar" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #2a3e52;">
+                <h5 class="modal-title text-light" id="exampleModalLongTitle">Agregar archivo</h5>
+                <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form method="POST" style="margin: 15px;" enctype="multipart/form-data">
+            <div class="modal-body">
+                
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <p>Nombre del archivo</p>
+                        <input name="nombre" type="search" class="form-control" list="nombre_archivos">
+                    </div>
+                    <div class="mb-3">
+                        <p>Proyecto</p>
+                        <select name="proyecto" class="form-control">
+                            <option value="0">General</option>
+                            {% for proyecto in proyectos %}
+                            <option value="{{proyecto.id}}">{{proyecto.nombre}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <p>Quien puede ver</p>
+                        <div class="row scrollbox" style="max-height: 90px;">
+                           
+                            <div class="col-6">
+                                <input type="checkbox" name="usuario" id="juan">
+                                <label for="juan">Juan</label>
+                            </div>
+                           
+                        </div>
+                    </div>  
+                    
+                    <div class="mb-3">
+                        <p>Archivo: {{archivo}}</p>
+                        <input name="adjunto" type="file" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <p>Fecha</p>
+                        <input name="fecha" type="date" class="form-control">
+                    </div>
+                
+
+            </div>
+            <div class="modal-footer">
+                <button type="submit" name="guardar_archivo" value="1" class="btn btn-info">Cargar</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            </div>
+        </form>
+        </div>
+    </div>
+</div>
+
+<datalist id="nombre_archivos">
+
+    {% for filtro in filtros %}
+
+    <option value="{{ filtro }}">({{filtro}})</option>
+
+    {% endfor %}
+
+</datalist>
+
+<a id="coti" href="#" data-toggle="modal" data-target="#ModalCoti"
+    class="btn btn-success btn-circle ">
+    <i data-toggle="tooltip" data-placement="left" title="Cargar adjuntos a cotizador" class="fa fa-files-o"></i></a>
+
+<a id="add" href="#" data-toggle="modal" data-target="#ModalAgregar"
+    class="btn btn-info btn-circle">
+    <i data-toggle="tooltip" data-placement="left" title="Agregar un archivo" class="fa fa-plus"></i></a>
+
+<a id="add2" href="{% url 'App comercial' %}"  class="btn btn-primary btn-circle">
+    <i data-toggle="tooltip" data-placement="left" title="Volver al panel" class="fa fa-arrow-left"></i></a>
+
+
+
+<style>
+
+    table {
+        font-weight: 400;
+    }
+
+    @keyframes example {
+        0% {
+            transform: scale(0.9);
+        }
+
+        50% {
+            transform: scale(1);
+        }
+
+        100% {
+            transform: scale(0.9);
+        }
+    }
+
+    #add {
+        position: fixed;
+        bottom: 90px;
+        right: 20px;
+    }
+
+    #add2{
+        position: fixed;
+        bottom: 40px;
+        right: 20px;
+        z-index: 10;
+    }
+
+    #coti {
+        position: fixed;
+        bottom: 140px;
+        right: 20px;
+    }
+
+    .scrollbox {
+
+    overflow: hidden;
+    }
+
+    .scrollbox:hover {
+    overflow: auto;
+    }
+
+    .scrollbox::-webkit-scrollbar {
+    width: 6px;
+    }
+
+    .scrollbox::-webkit-scrollbar-thumb {
+    background-color: rgb(201, 201, 201);
+    border-radius: 100px;
+    }
+</style>
+
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $('#example').DataTable({
+            "language": {
+                "lengthMenu": "Mostar _MENU_ documentos",
+                "zeroRecords": "No se encontro nada - perdon ",
+                "info": "Pagina _PAGE_ de _PAGES_",
+                "infoEmpty": "Sin registros disponibles",
+                "infoFiltered": "(filtrado de _MAX_ registros totales)",
+                "search": "Buscar"
+            },
+            "paging": false,
+            "ordering": false,
+            "info": false,
+
+        });
+    });
+    document.addEventListener("DOMContentLoaded", function (event) {
+        var scrollpos = localStorage.getItem('scrollpos');
+        if (scrollpos) window.scrollTo(0, scrollpos);
+    });
+
+    window.onbeforeunload = function (e) {
+        localStorage.setItem('scrollpos', window.scrollY);
+    };
+
+
+</script>
+
+<script>
+
+    // time activity function
+    function controlActividad(idActi, fecha) {
+
+
+        let mostarFecha = document.getElementById(idActi)
+
+        let startTime = new Date(fecha)
+
+        let endTime = new Date()
+
+        let timeDiff = endTime.getTime() - startTime.getTime()
+        timeDiff = timeDiff / 1000;
+
+        // Extract integer seconds that do not form a minute using %
+        let seconds = Math.floor(timeDiff % 60);
+
+        // Convert time difference from seconds to minutes using %
+        timeDiff = Math.floor(timeDiff / 60);
+
+        // Extract integer minutes that don't form an hour using %
+        let minutes = timeDiff % 60;
+
+        // Convert time difference from minutes to hours
+        timeDiff = Math.floor(timeDiff / 60);
+
+        // Extract integer hours that don't form a day using %
+        let hours = timeDiff % 24;
+
+        // Convert time difference from hours to days
+        timeDiff = Math.floor(timeDiff / 24);
+
+        // The rest of timeDiff is number of days
+        let days = timeDiff;
+        let totalHours = hours + (days * 24); // add days to hours
+
+        if (minutes < 1) {
+            mostarFecha.innerHTML = "Ahora";
+        } else
+            if (hours < 1) {
+
+                mostarFecha.innerHTML = minutes + " minutos";
+            } else if (days < 1) {
+
+                mostarFecha.innerHTML = hours + " horas";
+            } else {
+
+                mostarFecha.innerHTML = days + " dias";
+
+            }
+
+        setInterval(function () {
+            if (minutes < 1) {
+                mostarFecha.innerHTML = "Ahora";
+            } else
+                if (hours < 1) {
+
+                    mostarFecha.innerHTML = minutes + " minutos";
+                } else if (days < 1) {
+
+                    mostarFecha.innerHTML = hours + " horas";
+                } else {
+
+                    mostarFecha.innerHTML = days + " dias";
+
+                }
+        }, 60000)
+
+    }
+
+
+    {% for actividad in actividades %}
+    controlActividad('{{actividad.id}}', '{{actividad.momento|date:"M d Y H:i:s"}}')
+    {% endfor %}
+
+</script>
+
+
+{% endblock %}

@@ -3,15 +3,21 @@ from django.urls import path
 from django.conf.urls import url
 from . import views
 from . import views_flujo
-from .views_app import views_pricing, views_atributos, views_postventa, views_cotizador, views_ventas
+from .views_app import views_pricing, views_atributos, views_postventa, views_cotizador, views_ventas, views_archivos
 from .views import DescargaPricing
 from .views_app.views_cotizador import PDF_cotizacion
 from django.contrib.auth.decorators import login_required
 
 urlpatterns = [
-    url(r'^appcomercial/$', login_required(views.appcomercial), name = 'App comercial'),
-    url(r'^apparchivoscomercial/$', login_required(views.apparchivoscomercial), name = 'App archivos comercial'),
-    url(r'^dosier/$', login_required(views.dosier), name = 'Dosier'),
+
+    # ----------> URL principal
+    url(r'^comercial_principal/$', login_required(views.comercial_principal), name = 'App comercial'),
+
+    # ----------> URL archivos
+    url(r'^archivos_principal/$', login_required(views_archivos.archivos_principal), name = 'Archivos comercial'),
+
+    # ----------> URL pricing
+    url(r'^pricing_visor/(?P<id_proyecto>\d+)/$', login_required(views_pricing.pricing_visor), name = 'Pricing'),
 
 
     # ----------> URL para APP Ventas
@@ -21,38 +27,28 @@ urlpatterns = [
     url(r'^ventas_eliminar/(?P<id_venta>\d+)/$', login_required(views_ventas.ventas_eliminar), name = 'Eliminar venta'),
     url(r'^ventas_detalles/(?P<id_venta>\d+)/$', login_required(views_ventas.ventas_detalles), name = 'Detalle venta'),
     url(r'^ventas_descarga_registros/$', login_required(views_ventas.ExcelRegistroVentas.as_view()), name = 'Descargar ventas'),
+    path('ventas_cargar_plano/<int:id>' ,login_required(views_ventas.ventas_cargarplano),name="cargarplano"),
 
+    url(r'^apparchivoscomercial/$', login_required(views.apparchivoscomercial), name = 'App archivos comercial'),
+
+
+    
     # ----------> URL para APP Pricing
     
-    url(r'^estmerc$', login_required(views.estmercado), name = 'Estudio de mercado'),
     url(r'^panelunidades$', login_required(views.panelunidades), name = 'Panel de unidades'),
     url(r'^editarasig/(?P<id_unidad>\d+)/$', login_required(views.editarasignacion), name = 'Editar asignacion'),
     url(r'^cotizador/(?P<id_unidad>\d+)/$', login_required(views_cotizador.cotizador), name = 'Cotizador'),
     path('emailpdfcoti/<int:id_unidad>/<int:id_cliente>/<str:info_coti>', PDF_cotizacion.as_view(), name = "Email del coti"),
     
-    
-    
-    url(r'^radiografia$', login_required(views.radiografia), name = 'Radiografia del cliente'),
-    url(r'^informeventa$', login_required(views.informeventa), name = 'Informe de venta'),
-    url(r'^fechaentrega$', login_required(views.fechaentrega), name = 'Fecha de entrega'),
-    url(r'^historialventa$', login_required(views.historialventa), name = 'Historial de venta'),
-    url(r'^cajaarea$', login_required(views.cajaarea), name = 'Caja del area'),
-    url(r'^invmer$', login_required(views.invmer), name = 'Investigacion de mercado'),
-    url(r'^informeredes$', login_required(views.invmer), name = 'Informe redes'),
     url(r'^variacionhormigon$', login_required(views.variacionh), name = 'Variacion H'),
     url(r'^encuestapostventa$', login_required(views.encuestapostventa), name = 'Encuesta de postventa'),
-    url(r'^folleto$', login_required(views.folleto), name = 'Folleto'),
-    url(r'^evo_usd$', login_required(views.evousd), name = 'Evolucion USD/m2'),
-    url(r'^informe_redes$', login_required(views.informe_redes), name = 'Informe redes'),
     url(r'^resumenprecio$', login_required(views.resumenprecio), name = 'Resumen de precio'),
     
 
     url(r'^featuresproject/(?P<id_proj>\d+)/$', login_required(views_atributos.atributos_proyecto_panel), name = 'Features Project'),
-    path('cargarplano/<int:id>' ,login_required(views.cargarplano),name="cargarplano"),
+    
     ##########################
-    # URL de pricing
-     url(r'^pricing/(?P<id_proyecto>\d+)/$', login_required(views_pricing.pricing_visor), name = 'Pricing'),
-     url(r'^panelpricing$', login_required(views_pricing.pricing_panel), name = 'Panel de pricing'),
+    
     ###########################
     # URL de descarga
     ###########################    

@@ -2,10 +2,11 @@ import datetime
 from django.shortcuts import render, redirect
 from ventas.models import VentasRealizadas
 from proyectos.models import Unidades, Proyectos
+from presupuestos.funciones import f_desde
 from ..funciones.f_pricing import *
-
+from users.funciones import f_generales
 from openpyxl import Workbook
-from openpyxl.styles import Alignment, Border, Font, PatternFill, Side 
+from openpyxl.styles import Alignment, Font, PatternFill 
 from django.views.generic.base import TemplateView 
 from django.http import HttpResponse 
 
@@ -108,10 +109,10 @@ def ventas_agregar(request):
 
         else:
 
-            try:
+            # try:
                 m2 = unidades_calculo_m2(unidad.id)
                 precio_pricing = unidades_calculo_precio_final(unidad.id)
-                precio_desde = unidades_calculo_precio_desde(unidad.id)
+                precio_desde = unidades_calculo_precio_desde(unidad.id)*f_desde.presupuestos_precio_desde(unidad.proyecto.id)
 
                 if not "COCHERA" in unidad.tipo:
                     tipo_unidad = "DTO"
@@ -132,7 +133,7 @@ def ventas_agregar(request):
                     precio_venta = precio_venta,
                     precio_venta_hormigon = precio_venta_hormigon,
                     precio_contado = request.POST["precio_contado"],
-                    precio_pricing = precio_pricing,
+                    precio_pricing = precio_pricing[1],
                     precio_desde = precio_desde,
                     anticipo = anticipo,
                     cuotas_pend = cuotas_pend,
@@ -147,13 +148,37 @@ def ventas_agregar(request):
 
                 context['mensaje'] = [1, "Unidad cargada correctamente"]
 
-            except:
+            # except:
 
-                context['mensaje'] = [0, "Error inesperado al tratar de cargar"]
+            #     context['mensaje'] = [0, "Error inesperado al tratar de cargar"]
 
 
     return render(request, 'ventas/ventas_agregar.html', context)
 
+def ventas_cargarplano(request,**kwargs):
+    if request.method=='POST':
+        
+        id_proyecto=kwargs['id']
+        unidad_id=request.POST.get('unidad')
+        plano=request.FILES.get('plano')
+        
+        unidad=Unidades.objects.get(pk=int(unidad_id))
+        if unidad:
+
+            unidad.plano_venta=plano
+
+            unidad.save()
+
+            categoria = "pricing"
+            accion = f"Cargo un plano en {unidad.proyecto}"
+
+            f_generales.generales_registro_actividad(request.user.username, categoria, accion)
+
+
+            return redirect('Pricing',id_proyecto)
+        else:
+            mensaje='No se pudo guardar el pdf'
+            return redirect('Pricing',id_proyecto)
 
 class ExcelRegistroVentas(TemplateView):
 
