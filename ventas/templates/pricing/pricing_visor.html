@@ -10,363 +10,453 @@
 
 <div class="container-fluid">
 
-    <div class="row page-titles">
-        <div class="col-md-5 align-self-center">
-            <h3 class="text-themecolor">Pricing</h3>
+    <div class="row d-flex">
+
+        <div class="col-12 col-lg-4">
+            <div class="card ">
+                <div class="card-body d-flex">
+                    <div class="mb-3">
+                        <h5 class="card-title" style="color: rgb({{proyecto.color}})">Pricing</h5>
+                        <h4 class="card-title" style="color: rgb({{proyecto.color}})"><b>{{proyecto.nombre}}</b></h4>
+                    </div>
+
+                    <div class="btn-group ml-auto">
+                        <a href="JavaScript:void(0)" class="icon-options-vertical link" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false"></a>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            {% if request.user|has_group:"VENTAS NIVEL 4" %}
+                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#exampleModalCenter"><i
+                                    class="fa fa-pencil-square-o mr-2"></i>Editar precio base</a>
+                            {% endif %}
+                            <a class="dropdown-item" href="{% url 'Features Project' proyecto.id %}"><i
+                                    class="fa fa-home mr-2"></i>Admin pricing</a>
+                            <a class="dropdown-item" href="{% url 'Descargar del pricing' proyecto.id %}"><i
+                                    class="fa fa-file-excel-o mr-2"></i>Excel</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
         </div>
 
-        <div class="col-md-7 align-self-center">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
-                <li class="breadcrumb-item"><a href="{% url 'Panel de pricing'%}">Panel</a>
-                </li>
-                <li class="breadcrumb-item">Pricing</li>
-            </ol>
+        <div class="col-12 col-lg-4">
+            <div class="card ">
+                <div class="card-body">
+                    <h5 class="card-title" style="color: rgb({{proyecto.color}})">Generales</h5>
+                    <h6>Precio base: ${{proyecto.desde|floatformat:0|intcomma}}</h6>
+                    <h6>Reposición de contado: ${{otros_datos.0.4|floatformat:0|intcomma}}</h6>
+                </div>
+
+            </div>
         </div>
+
+        <div class="col-12 col-lg-4">
+            <div class="card ">
+                <div class="card-body">
+                    <h5 class="card-title" style="color: rgb({{proyecto.color}})">Totalizadores</h5>
+                    <h6>Total del pricing: ${{precio_final_proyecto|floatformat:0|intcomma}}</h6>
+                    <h6>Total de m2: {{m2_totales|floatformat:2|intcomma}} M2</h6>
+                </div>
+
+            </div>
+        </div>
+
     </div>
 
-    <div class="row ">
-        <div class="col-12">
-            <div class="card overflow-auto">
+    <div class="row d-flex">
+
+        <div class="col-12 col-lg-8 scrollbox" style="height: 485px; max-height: 485px;">
+            <div class="card">
                 <div class="card-body">
-    
-                    <div class="d-flex align-items-center">
-                        <div>
-                            <h4 class="card-title" style="color: rgb({{proyecto.color}})"><span
-                                    class="lstick m-r-20"></span> <b>{{proyecto.nombre}}</b> - Precio base:
-                                ${{proyecto.desde|floatformat:0|intcomma}} - Reposición de contado:
-                                ${{otros_datos.0.4|floatformat:0|intcomma}}</h4>
-                                <h6>Total del pricing: ${{precio_final_proyecto|floatformat:0|intcomma}}</h6>
-                                <h6>Total de m2: {{m2_totales|floatformat:2|intcomma}} M2</h6>
-    
-                        </div>
-                        <div class="btn-group ml-auto">
-                            <a href="JavaScript:void(0)" class="icon-options-vertical link" data-toggle="dropdown"
-                                aria-haspopup="true" aria-expanded="false"></a>
-                            <div class="dropdown-menu dropdown-menu-right">
-                                {% if request.user|has_group:"VENTAS NIVEL 4" %}
-                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#exampleModalCenter"><i
-                                        class="fa fa-pencil-square-o mr-2"></i>Editar precio base</a>
-                                {% endif %}
-                                <a class="dropdown-item" href="{% url 'Features Project' proyecto.id %}"><i
-                                        class="fa fa-home mr-2"></i>Admin pricing</a>
-                                <a class="dropdown-item" href="{% url 'Descargar del pricing' proyecto.id %}"><i
-                                        class="fa fa-file-excel-o mr-2"></i>Excel</a>
-                            </div>
-                        </div>
-                    </div>
-    
-                    <!-- Modal -->
-                    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
-                        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header" style="background-color: #2a3e52;">
-                                    <h5 class="modal-title text-light" id="exampleModalLongTitle">Estas por modificar el
-                                        precio del pricing!</h5>
-                                    <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    <p>Cuando lo modifiques, espera unos segundos a que cargue todo!</p>
-                                    <form method="GET" style="margin: 15px;">
-                                        <div class="input-group mb-3">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text">$</span>
+                    <div class="table-responsive">
+                        <table id="example" class="table" style="width:100%; height: 100%">
+                            <thead>
+                                <tr style="font-size: 14px;">
+                                    <th style="max-width: 40px;">Nº</th>
+                                    <th style="max-width: 120px;">Unidad</th>
+                                    <th>Tipologia</th>
+                                    <th>Asign.</th>
+                                    <th  style="max-width: 110px;" data-toggle="tooltip" data-placement="right" title=""
+                                        data-original-title="Superficie Equivalente">Superficie</th>
+                                    <th style="max-width: 110px;">Contado</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+
+                            <tbody style="font-size: 14px;">
+
+                                {% for i in datos_unidades %}
+                                <tr>
+                                    <td>
+                                        <a href="{% url 'Cotizador' i.0.id %}">
+                                            <div class="arrow_box">
+                                                <h5 class="text-light position-relative"
+                                                    style="margin-top: 5px; margin-left: 10px;">
+                                                    {{i.0.orden}}
+                                                </h5>
+
                                             </div>
-                                            <input name="precio_venta" type="number" class="form-control form-control"
-                                                aria-label="Amount" style="width: 100px;">
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a href=" {% url 'Cotizador' i.0.id %}"
+                                            class="text-light position-relative"><b>{{i.0.piso_unidad}} -
+                                                {{i.0.nombre_unidad}}</b></a>
+                                    </td>
+
+                                    <td>{{i.0.tipologia|lower|capfirst}}</td>
+                                    <td>{{i.0.asig|lower|capfirst|truncatechars:5}}</td>
+                                    <td style="max-width: 110px;">{{i.1|floatformat:2}} m2</td>
+                                    <td  style="max-width: 110px;">${{i.3|floatformat:2|intcomma}}</td>
+
+
+
+                                    <td class="d-flex align-items-center" style="min-width: 30px;">
+                                        {% if i.9 != 0 and perms.ventas.view_ventasrealizadas %}
+                                        <div>
+                                            {% if i.0.estado == "DISPONIBLE" %}
+                                            <i class="fa fa-lg fa-check-circle text-info mr-2" data-toggle="tooltip"
+                                                data-placement="top" title="{{i.0.estado|lower|capfirst}}"
+                                                data-original-title="{{i.0.estado|lower|capfirst}}"></i>
+                                            {% elif i.0.estado == "SEÑADA" %}
+                                            <i class="fa fa-lg fa-exclamation-circle text-warning mr-2"
+                                                data-toggle="tooltip" data-placement="top"
+                                                title="{{i.0.estado|lower|capfirst}}"
+                                                data-original-title="{{i.0.estado|lower|capfirst}}"></i>
+                                            {% else %}
+                                            <i class="fa fa-lg fa-check-circle text-success mr-2" data-toggle="tooltip"
+                                                data-placement="top" title="{{i.0.estado|lower|capfirst}}"
+                                                data-original-title="{{i.0.estado|lower|capfirst}}"></i>
+                                            {% endif %}
                                         </div>
-                                    </form>
-    
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-    
-                    <table id="example" class="table" style="width:100%">
-                        <thead>
-                            <tr style="font-size: 14px;">
-                                <th>Nº</th>
-                                <th>Unidad</th>
-                                <th>Tipologia</th>
-                                <th>Asignación</th>
-                                <th data-toggle="tooltip" data-placement="right" title=""
-                                    data-original-title="Superficie Equivalente">Superficie</th>
-                                
-                                <th>Estado</th>
-                                <th>Contado</th>
-                                <th data-toggle="tooltip" data-placement="right" title=""
-                                    data-original-title="Superficie Equivalente">Financiado</th>
-                                <th>Pagos</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-    
-                        <tbody style="font-size: 14px;">
-    
-                            {% for i in datos_unidades %}
-                            <tr>
-                                <td class="font-bold" style="color: rgb({{proyecto.color}});">{{i.0.orden}}</td>
-                                <td>
-                                    <h6>
+                                        {% else %}
+                                        <div>
+                                            {% if i.0.estado == "DISPONIBLE" %}
+                                            <i class="fa fa-lg fa-check-circle text-info mr-2" data-toggle="tooltip"
+                                                data-placement="top" title="{{i.0.estado|lower|capfirst}}"
+                                                data-original-title="{{i.0.estado|lower|capfirst}}"></i>
+                                            {% elif i.0.estado == "SEÑADA" %}
+                                            <i class="fa fa-lg fa-exclamation-circle text-warning mr-2"
+                                                data-toggle="tooltip" data-placement="top"
+                                                title="{{i.0.estado|lower|capfirst}}"
+                                                data-original-title="{{i.0.estado|lower|capfirst}}"></i>
+                                            {% else %}
+                                            <i class="fa fa-lg fa-check-circle text-success mr-2" data-toggle="tooltip"
+                                                data-placement="top" title="{{i.0.estado|lower|capfirst}}"
+                                                data-original-title="{{i.0.estado|lower|capfirst}}"></i>
+                                            {% endif %}
+                                        </div>
+                                        {% endif %}
                                         {% if i.0.plano_venta %}
                                         <a href="{{ i.0.plano_venta.url }}" target="_blank"><i
-                                                class="fa fa-file-pdf-o text-danger mr-2"></i></a>
+                                                class="fa fa-file-pdf-o text-danger"></i></a>
+                                        {% else %}
+                                        <a href="#" data-toggle="modal" data-target="#ModalPlano{{i.0.id}}"
+                                            target="_blank"><i class="fa fa-file-pdf-o text-secondary"></i></a>
                                         {% endif %}
-                                        <a href=" {% url 'Cotizador' i.0.id %}"
-                                            style="color: rgb({{proyecto.color}});"><b>{{i.0.piso_unidad}} -
-                                                {{i.0.nombre_unidad}}</b></a>
-                                            </h6>
-    
+
+                                        <div class="btn-group ml-auto">
+                                            <a href="JavaScript:void(0)" class="icon-options-vertical link"
+                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
+                                            <div class="dropdown-menu dropdown-menu-right">
+                                                <a class="dropdown-item" href="#" data-toggle="modal"
+                                                    data-target="#ModalPlano{{i.0.id}}"><i
+                                                        class="fa fa-file-pdf-o mr-2 text-danger"></i>Cargar plano</a>
+                                                <a class="dropdown-item" href="#" data-toggle="modal"
+                                                    data-target="#ModalEditar{{i.0.id}}"><i
+                                                        class="fa fa-pencil-square-o mr-2"></i>Editar unidad</a>
+
+                                            </div>
+                                        </div>
+
+                                    </td>
+
+                                    <div class="modal fade" id="ModalPlano{{i.0.id}}" tabindex="-1" role="dialog"
+                                        aria-labelledby="ModalPlano{{i.0.id}}" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header" style="background-color: #2a3e52;">
+                                                    <h5 class="modal-title text-light" id="exampleModalLongTitle">Cargar
+                                                        planos
+                                                    </h5>
+                                                    <button type="button" class="close text-light" data-dismiss="modal"
+                                                        aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+
+                                                    <form method="POST" style="margin: 15px;"
+                                                        enctype="multipart/form-data"
+                                                        action=" {% url 'cargarplano' proyecto.id %} "> {% csrf_token %}
+                                                        <p>Agregar el plano correspondiente a la unidad</p>
+                                                        <div class="input-group mb-3">
+                                                            <input type="file" name="plano" required
+                                                                class="form-control form-control" style="width: 100px;">
+                                                        </div>
+
+                                                        <button type="submit" name="unidad" value="{{i.0.id}}"
+                                                            class="btn btn-info">Cargar</button>
+                                                    </form>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                        data-dismiss="modal">Cerrar</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="modal fade" id="ModalEditar{{i.0.id}}" tabindex="-1" role="dialog" aria-labelledby="ModalEditar{{i.0.id}}" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                            <div class="modal-content">
                                     
-                                </td>
-    
+                                                <div class="modal-body">
+                                                    <button type="button" class="close text-dark" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                    <form method="post">
+                                                        {% csrf_token %}
+                                                        <div class="row">
+                                                            <div class="col-2">
+                                                                <img src="{% static 'img/bot.png' %}" width="40px" alt="">
+                                                            </div>
+                                                            <div class="col-10 mb-3">
+                                                                <h4 class="my-2 text-title text-center">Editor de unidades</h4>
+                                                            </div>
+                                                            <div>
+                                                                <label for="piso">Numero</label>
+                                                                <input type="text" name="numero" class="form-control" value="{{i.0.orden}}">
+                                                            </div>
+                                                            <div>
+                                                                <label for="piso">Piso</label>
+                                                                <input type="text" name="piso" class="form-control" value="{{i.0.piso_unidad}}">
+                                                            </div>
+                                                            <div>
+                                                                <label for="nombre">Nombre</label>
+                                                                <input type="text" name="nombre" class="form-control" value="{{i.0.nombre_unidad}}">
+                                                            </div>
+                                                            <div class="mt-2">
+                                                                <label for="tipologia">Tipologia</label>
+                                                                <input type="text" name="tipologia" class="form-control" value="{{i.0.tipologia|lower|capfirst}}">
+                                                            </div>
+                                                            <div class="mt-2">
+                                                                <label for="superficie">Superficie</label>
+                                                                <input type="number" step="any" name="superficie" class="form-control" value="{{i.1|floatformat:2}}">
+                                                            </div>
+                                                            <div class="my-3">
+                                                                <button type="submit" name="editar" value="{{i.0.id}}" class="btn btn-primary">Editar</button>
+                                                            </div>
+                                            
+                                                        </div>
+                                                    </form> 
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
 
-    
-                                <td>{{i.0.tipologia|lower|capfirst}}</td>
-                                <td>{{i.0.asig|lower|capfirst}}</td>
-    
-    
-                                <td>{{i.1|floatformat:2}} m2</td>
-                                
-    
-                                {% if i.9 != 0 and perms.ventas.view_ventasrealizadas %}
-    
-                                <td>
-                                    <div class="label label-table label-{% if i.0.estado == " DISPONIBLE " %}success{% elif i.0.estado == "SEÑADA" %}warning{% else %}info{% endif %}">
-                                        {{i.0.estado|lower|capfirst}}</div>
-                                </td>
-    
-                                {% else %}
-    
-                                <td>
-                                    <div class="label label-table label-{% if i.0.estado == " DISPONIBLE " %}success{% elif i.0.estado == "SEÑADA" %}warning{% else %}info{% endif %} ">
-                                        {{i.0.estado|lower|capfirst}}</div>
-                                </td>
-    
-                                {% endif %}
-    
-                                {% if i.2 >= 0 %}
-                                <td>$ {{i.4|floatformat:0|intcomma}}
-                                    <h6 class="card-subtitle" style="margin-top: 1px; font-size: 12px;">{{i.2|floatformat:0|intcomma}} $/m2</h6>
-                                </td>
-                                <td>$ {{i.5|floatformat:0|intcomma}}
-                                    <h6 class="card-subtitle" style="margin-top: 1px; font-size: 12px;">{{i.6|floatformat:0|intcomma}}$/m2 </h6>
-                                </td>
-                                </td>
-    
-                                <td>Anticipo: $ {{i.7|floatformat:0|intcomma}}
-                                    <h6 class="card-subtitle" style="margin-top: 1px; font-size: 12px;">Cuotas
-                                        ({{datos.meses}}): $ {{i.8|floatformat:0|intcomma}}</h6>
-                                </td>
-    
-                                {% else %}
-    
-                                <td>{{i.4|lower|capfirst}}</td>
-                                <td>{{i.2|lower|capfirst}}</td>
-                                <td>{{i.2|lower|capfirst}}</td>
-    
-    
-                                {% endif %}
-    
-                                <td>
-                                    <div class="btn-group ml-auto">
-                                        <a href="JavaScript:void(0)" class="icon-options-vertical link"
-                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
-                                        <div class="dropdown-menu dropdown-menu-right">
-                                            <a class="dropdown-item" href="#" data-toggle="modal"
-                                                data-target="#ModalPlano{{i.0.id}}"><i
-                                                class="fa fa-file-pdf-o mr-2 text-danger"></i>Cargar plano</a>
-                                            <a class="dropdown-item" href="#" data-toggle="modal"
-                                                data-target="#ModalEditar{{i.0.id}}"><i
-                                                class="fa fa-pencil-square-o mr-2"></i>Editar unidad</a>
-                                        </div>
-                                    </div>
-                                </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-                                <div class="modal fade" id="ModalEditar{{i.0.id}}" tabindex="-1" role="dialog" aria-labelledby="ModalEditar{{i.0.id}}" aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered" role="document">
-                                        <div class="modal-content">
-                                
-                                            <div class="modal-body">
-                                                <button type="button" class="close text-dark" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                                <form method="post">
-                                                    {% csrf_token %}
-                                                    <div class="row">
-                                                        <div class="col-2">
-                                                            <img src="{% static 'img/bot.png' %}" width="40px" alt="">
-                                                        </div>
-                                                        <div class="col-10 mb-3">
-                                                            <h4 class="my-2 text-title text-center">Editor de unidades</h4>
-                                                        </div>
-                                                        <div>
-                                                            <label for="piso">Numero</label>
-                                                            <input type="text" name="numero" class="form-control" value="{{i.0.orden}}">
-                                                        </div>
-                                                        <div>
-                                                            <label for="piso">Piso</label>
-                                                            <input type="text" name="piso" class="form-control" value="{{i.0.piso_unidad}}">
-                                                        </div>
-                                                        <div>
-                                                            <label for="nombre">Nombre</label>
-                                                            <input type="text" name="nombre" class="form-control" value="{{i.0.nombre_unidad}}">
-                                                        </div>
-                                                        <div class="mt-2">
-                                                            <label for="tipologia">Tipologia</label>
-                                                            <input type="text" name="tipologia" class="form-control" value="{{i.0.tipologia|lower|capfirst}}">
-                                                        </div>
-                                                        <div class="mt-2">
-                                                            <label for="superficie">Superficie</label>
-                                                            <input type="number" step="any" name="superficie" class="form-control" value="{{i.1|floatformat:2}}">
-                                                        </div>
-                                                        <div class="my-3">
-                                                            <button type="submit" name="editar" value="{{i.0.id}}" class="btn btn-primary">Editar</button>
-                                                        </div>
-                                        
-                                                    </div>
-                                                </form> 
-                                            </div>
-                                        </div>
-                                    </div>
+        <div class="col-12 col-lg-4">
+
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title font-bold"></span>Actividad</h4>
+                    <ul class="feeds scrollbox" style="font-size: 12px; height: 410px; max-height: 410px;">
+
+                        {% for actividad in actividades %}
+
+                        <li class="bg-proyecto-color">
+                            <div class="justify-content-between align-items-center w-100">
+                                <div class="d-flex text-left">
+                                    <img src="{{actividad.usuario.imagenlogo.url}}" width="25px" height="25px"
+                                        alt="user" class="mr-2"><span class="font-bold">{{actividad.accion}}</span>
                                 </div>
-    
-                                <div class="modal fade" id="ModalPlano{{i.0.id}}" tabindex="-1" role="dialog"
-                                    aria-labelledby="ModalPlano{{i.0.id}}" aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header"
-                                                style="background-color: #2a3e52;">
-                                                <h5 class="modal-title text-light" id="exampleModalLongTitle">Cargar planos
-                                                </h5>
-                                                <button type="button" class="close text-light" data-dismiss="modal"
-                                                    aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <div class="modal-body">
-    
-                                                <form method="POST" style="margin: 15px;" enctype="multipart/form-data"
-                                                    action=" {% url 'cargarplano' proyecto.id %} "> {% csrf_token %}
-                                                    <p>Agregar el plano correspondiente a la unidad</p>
-                                                    <div class="input-group mb-3">
-                                                        <input type="file" name="plano" required
-                                                            class="form-control form-control" style="width: 100px;">
-                                                    </div>
-    
-                                                    <button type="submit" name="unidad" value="{{i.0.id}}"
-                                                        class="btn btn-info">Cargar</button>
-                                                </form>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary"
-                                                    data-dismiss="modal">Cerrar</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
+                                <div><span class="text-muted font-bold" id="{{actividad.id}}"></span</div>>
+                            </div>
+                        </li>
+
+                        {% endfor %}
+
+                    </ul>
                 </div>
             </div>
         </div>
     </div>
 </div>
-{% if mensajes %}
-<a id="add" href="#"  data-toggle="modal" data-target="#ModalCheck" class="btn btn-lg btn-danger btn-circle fa fa-5x fa-exclamation"></a>
-{% endif %}
+
+
 <div class="modal fade" id="ModalCheck" tabindex="-1" role="dialog" aria-labelledby="ModalCheck" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
-        
 
-                <div class="modal-body">
-                    <button type="button" class="close text-dark" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+            <div class="modal-body">
+                <button type="button" class="close text-dark" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
 
-        
-                    <div class="row">
-                        <div class="col-2">
-                            <img src="{% static 'img/bot.png' %}" width="40px" alt="">
-                        </div>
-                        <div class="col-10 mb-3">
-                            <h4 class="my-2 text-title text-center">Las siguientes acciones no se realizaron</h4>
-                        </div>
-                        
-                        {% for alerta in alertas %}
-
-                        <ul>
-                            <li>{{alerta}}</li>
-                        </ul>
-                        {% endfor %}
-           
+                <div class="row">
+                    <div class="col-2">
+                        <img src="{% static 'img/bot.png' %}" width="40px" alt="">
                     </div>
+                    <div class="col-10 mb-3">
+                        <h4 class="my-2 text-title text-center">Las siguientes acciones no se realizaron</h4>
+                    </div>
+
+                    {% for mensaje in mensajes %}
+
+                    <ul>
+                        <li>{{mensaje}}</li>
+                    </ul>
+                    {% endfor %}
+
                 </div>
+            </div>
 
         </div>
     </div>
 </div>
 
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #2a3e52;">
+                <h5 class="modal-title text-light" id="exampleModalLongTitle">Estas por modificar el
+                    precio del pricing!</h5>
+                <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Cuando lo modifiques, espera unos segundos a que cargue todo!</p>
+                <form method="GET" style="margin: 15px;">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">$</span>
+                        </div>
+                        <input name="precio_venta" type="number" class="form-control form-control" aria-label="Amount"
+                            value="{{proyecto.desde}}" style="width: 100px;">
+                    </div>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if mensajes %}
+<a id="add" href="#" data-toggle="modal" data-target="#ModalCheck"
+    class="btn btn-lg btn-danger btn-circle fa fa-5x fa-exclamation"></a>
+{% endif %}
+
+<a id="add2" href="{% url 'App comercial' %}"  class="btn btn-primary btn-circle">
+    <i data-toggle="tooltip" data-placement="left" title="Volver al panel" class="fa fa-arrow-left"></i></a>
+
 <style>
     @keyframes example {
-    0% {transform: scale(0.9);}
-    50% {transform: scale(1);}
-    100% {transform: scale(0.9);}
+        0% {
+            transform: scale(0.9);
+        }
+
+        50% {
+            transform: scale(1);
+        }
+
+        100% {
+            transform: scale(0.9);
+        }
     }
-    #add{
+
+    #add {
         position: fixed;
-        bottom: 60px;
+        bottom: 90px;
         right: 20px;
         animation: example 1s ease-in-out infinite;
     }
 
+    #add2{
+        position: fixed;
+        bottom: 40px;
+        right: 20px;
+        z-index: 10;
+    }
+
+
+    .scrollbox {
+
+        overflow: hidden;
+    }
+
+    .scrollbox:hover {
+        overflow: auto;
+    }
+
+    .scrollbox::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .scrollbox::-webkit-scrollbar-thumb {
+        background-color: rgb(201, 201, 201);
+        border-radius: 100px;
+    }
+
+
+    .arrow_box:hover {
+        transform: scaleX(1.07);
+
+    }
+
+    .arrow_box {
+        position: absolute;
+        transform: scaleX(1);
+        transform-origin: left center;
+        transition: transform 0.7s;
+
+        background: rgba({{proyecto.color}}, 0.5);
+        width: 130px;
+        height: 30px;
+        margin-top:-5px;
+    }
+
+    .arrow_box:after {
+        left: 100%;
+        top: 50%;
+        border: solid transparent;
+        content: "";
+        height: 0;
+        width: 0;
+        position: absolute;
+        pointer-events: none;
+        border-color: rgba(136, 183, 213, 0);
+
+        border-left-color: rgba({{proyecto.color}}, 0.5);
+        border-width: 14px;
+        margin-top: -14px;
+    }
+
+    .bg-proyecto-color:nth-child(odd) {
+        border-bottom: white solid 2px;
+        background-color: rgba(160, 160, 160, 0.25);
+    }
+
+    .bg-proyecto-color:nth-child(even) {
+        border-bottom: white solid 2px;
+        background-color: rgba(160, 160, 160, 0.1);
+    }
 </style>
 
-{% if mensaje %}
 
-<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script>
-
-    const Toast = Swal.mixin({
-        toast: true,
-        position: 'top-end',
-        showConfirmButton: false,
-        timer: 5000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-            toast.addEventListener('mouseenter', Swal.stopTimer)
-            toast.addEventListener('mouseleave', Swal.resumeTimer)
-        }
-    })
-
-    Toast.fire({
-        icon: '{% if mensaje.0 == 1 %}success{% else %}warning{% endif %}',
-        title: '{{mensaje.1}}'
-    })
-
-</script>
-
-{% endif %}
-
-<script>
-    document.addEventListener("DOMContentLoaded", function(event) { 
-        var scrollpos = localStorage.getItem('scrollpos');
-        if (scrollpos) window.scrollTo(0, scrollpos);
-    });
-
-    window.onbeforeunload = function(e) {
-        localStorage.setItem('scrollpos', window.scrollY);
-    };
-</script>
 
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 
@@ -387,6 +477,93 @@
 
         });
     });
+    document.addEventListener("DOMContentLoaded", function (event) {
+        var scrollpos = localStorage.getItem('scrollpos');
+        if (scrollpos) window.scrollTo(0, scrollpos);
+    });
+
+    window.onbeforeunload = function (e) {
+        localStorage.setItem('scrollpos', window.scrollY);
+    };
+
+
+</script>
+
+<script>
+
+    // time activity function
+    function controlActividad(idActi, fecha) {
+
+
+        let mostarFecha = document.getElementById(idActi)
+
+        let startTime = new Date(fecha)
+
+        let endTime = new Date()
+
+        let timeDiff = endTime.getTime() - startTime.getTime()
+        timeDiff = timeDiff / 1000;
+
+        // Extract integer seconds that do not form a minute using %
+        let seconds = Math.floor(timeDiff % 60);
+
+        // Convert time difference from seconds to minutes using %
+        timeDiff = Math.floor(timeDiff / 60);
+
+        // Extract integer minutes that don't form an hour using %
+        let minutes = timeDiff % 60;
+
+        // Convert time difference from minutes to hours
+        timeDiff = Math.floor(timeDiff / 60);
+
+        // Extract integer hours that don't form a day using %
+        let hours = timeDiff % 24;
+
+        // Convert time difference from hours to days
+        timeDiff = Math.floor(timeDiff / 24);
+
+        // The rest of timeDiff is number of days
+        let days = timeDiff;
+        let totalHours = hours + (days * 24); // add days to hours
+
+        if (minutes < 1) {
+            mostarFecha.innerHTML = "Ahora";
+        } else
+            if (hours < 1) {
+
+                mostarFecha.innerHTML = minutes + " minutos";
+            } else if (days < 1) {
+
+                mostarFecha.innerHTML = hours + " horas";
+            } else {
+
+                mostarFecha.innerHTML = days + " dias";
+
+            }
+
+        setInterval(function () {
+            if (minutes < 1) {
+                mostarFecha.innerHTML = "Ahora";
+            } else
+                if (hours < 1) {
+
+                    mostarFecha.innerHTML = minutes + " minutos";
+                } else if (days < 1) {
+
+                    mostarFecha.innerHTML = hours + " horas";
+                } else {
+
+                    mostarFecha.innerHTML = days + " dias";
+
+                }
+        }, 60000)
+
+    }
+
+    {% for actividad in actividades %}
+    controlActividad('{{actividad.id}}', '{{actividad.momento|date:"M d Y H:i:s"}}')
+    {% endfor %}
+
 </script>
 
 {% endif %}
