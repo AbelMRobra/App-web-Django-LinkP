@@ -254,7 +254,7 @@ def canjear_monedas(request):
         if 'premio' in datos:
             premio=datos['premio']
 
-            if today.day <= 10:
+            if today.day <= 30:
 
                 premio_solicitado = premios.get(id = int(premio))
 
@@ -281,7 +281,7 @@ def canjear_monedas(request):
   
 
             else:
-                mensaje="Solo puedes canjear hasta el dia 10 de cada mes"
+                mensaje="No se encuentra habilitado para canjear"
   
 
         
