@@ -117,7 +117,7 @@ def canjemonedas(request):
         if 'premio' in datos:
             premio=datos['premio']
 
-            if today.day <= 20:
+            if today.day == 32:
 
                 premio_solicitado = premios.get(id = int(premio))
 

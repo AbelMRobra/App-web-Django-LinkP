@@ -500,10 +500,10 @@ class ExcelCuentasCorrientes(TemplateView):
                 ws["J"+str(valor_inicial)].number_format = '"$"#,##0.00_-'
 
                 ws["K"+str(valor_inicial)] = valor_hormigon*pago
-                ws["K"+str(valor_inicial)].number_format = '#,##0.00_-"M3"'
+                ws["K"+str(valor_inicial)].number_format = '"$"#,##0.00_-'
 
                 ws["L"+str(valor_inicial)] = (total_cuentas_acumulado - pago)*valor_hormigon
-                ws["L"+str(valor_inicial)].number_format = '#,##0.00_-"M3"'
+                ws["L"+str(valor_inicial)].number_format = '"$"#,##0.00_-'
 
                 fechas_pago = ""
                 metodo_pago = ""
@@ -517,8 +517,8 @@ class ExcelCuentasCorrientes(TemplateView):
                 ws["N"+str(valor_inicial)] = metodo_pago
 
                 ws["O"+str(valor_inicial)] = cuota.constante.nombre
-                ws["P"+str(valor_inicial)] = cuota.precio
-                ws["Q"+str(valor_inicial)] = round(float(cuota.pago_moneda_dura()))
+                ws["P"+str(valor_inicial)] = round(float(cuota.precio), 2)
+                ws["Q"+str(valor_inicial)] = round(float(cuota.pago_moneda_dura()), 2)
                 
                 valor_anterior = valor_hormigon
 
