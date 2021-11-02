@@ -237,13 +237,6 @@
                                             </div>
                                         </div>
 
-                                        {% if mensaje %}
-
-                                        <div>
-                                            <p style="color: red;"> {{ mensaje }}</p>
-                                        </div>
-
-                                        {% endif %}
 
 
                                     </form>
@@ -268,6 +261,32 @@
         </div>
     </div>
 </div>
+
+{% endif %}
+
+{% if mensaje %}
+
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 5000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+    })
+
+    Toast.fire({
+        icon: '{% if mensaje.0 == 1 %}success{% else %}warning{% endif %}',
+        title: '{{mensaje.1}}'
+    })
+
+</script>
 
 {% endif %}
 

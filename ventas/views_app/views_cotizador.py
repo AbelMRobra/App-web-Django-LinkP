@@ -51,7 +51,6 @@ def cotizador(request, id_unidad):
 
         context["info_coti_email"] = info_para_cotizador(context["resultados"])
 
-    
     context["imagenes_carru"] = ImgEnlacesProyecto.objects.filter(proyecto = datos.proyecto)
     context["tiempo_restante"] = (datos.proyecto.fecha_f.year - today.year)*12 + (datos.proyecto.fecha_f.month - today.month)
     context["datos"] = datos
@@ -121,7 +120,7 @@ class PDF_cotizacion(View):
             "cuotas_espera":datos_recibidos_back[0],
             "aporte":datos_recibidos_back[1],
             "cuotas_posesion":datos_recibidos_back[2],
-            "observacion":"",
+            "observacion":datos_recibidos_back[5],
             "descuento":datos_recibidos_back[4]
         }
 

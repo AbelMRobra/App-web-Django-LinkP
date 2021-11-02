@@ -373,11 +373,11 @@ def presupuestos_panel_control(request,id):
 
     ## -> Estudia las variaciones del proyecto
 
-    try:
-        context['variacion'] = (((valor_reposicion/1000000)/valores_proyecto_registrados[-30][1]) -1)*100
+    # try:
+    context['variacion'] = (((valor_reposicion/1000000)/context['registro_valor_proyecto'][-30][1]) -1)*100
     
-    except:
-        context['variacion'] = "Sin datos suficientes"
+    # except:
+    #     context['variacion'] = "Sin datos suficientes"
     
     today = datetime.date.today()
     
@@ -391,7 +391,9 @@ def presupuestos_panel_control(request,id):
             Q(fecha__gte = inicio_year_inicio_month, proyecto = proyecto) & Q(fecha__lte = inicio_year_final_month, proyecto = proyecto)
         ).values_list("precio_proyecto", flat=True)
 
-        valor = (((valor_reposicion)/np.mean(sum(datos_bases))) -1)*100
+        print(np.mean(sum(datos_bases)))
+
+        valor = (((valor_reposicion)/np.mean(datos_bases)) -1)*100
 
         variacion_year = [inicio_year_inicio_month, valor]
 
@@ -413,9 +415,9 @@ def presupuestos_panel_control(request,id):
             Q(fecha__gte = inicio_yaer_last_inicio_month, proyecto = proyecto) & Q(fecha__lte = inicio_yaer_last_final_month, proyecto = proyecto)
         ).values_list("precio_proyecto", flat=True)
 
-        valor = (((valor_reposicion)/np.mean(sum(datos_bases))) -1)*100
+        valor = (((valor_reposicion)/np.mean(datos_bases)) -1)*100
 
-        variacion_year_2 = [inicio_year_inicio_month, valor]
+        variacion_year_2 = [inicio_yaer_last_inicio_month, valor]
 
         context['variacion_year_2'] = variacion_year_2
 

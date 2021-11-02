@@ -47,13 +47,13 @@
               </h6>
 
               {% if variacion_year != 0 %}
-              <h6></span>Desde el {{variacion_year.0}}:
+              <h6></span>Desde el {{variacion_year.0|date:"m-Y"}}:
 
                 {% if variacion_year.1 > 0 %}
                 <b style="font-family: Arial, Helvetica, sans-serif; color: #34CE15;">+
                   {{variacion_year.1|floatformat:2}} % </b>
                 {% else %}
-                <b style="font-family: Arial, Helvetica, sans-serif; color: #CE3115;">-
+                <b style="font-family: Arial, Helvetica, sans-serif; color: #CE3115;">
                   {{variacion_year.1|floatformat:2}} % </b>
                 {% endif %}
               </h6>
@@ -62,13 +62,13 @@
 
               {% if variacion_year_2 != 0 %}
 
-              <h6></span>Desde el {{variacion_year_2.0}}:
+              <h6></span>Desde el {{variacion_year_2.0|date:"m-Y"}}:
 
                 {% if variacion_year_2.1 > 0 %}
                 <b style="font-family: Arial, Helvetica, sans-serif; color: #34CE15;">+
                   {{variacion_year_2.1|floatformat:2}} % </b>
                 {% else %}
-                <b style="font-family: Arial, Helvetica, sans-serif; color: #CE3115;">-
+                <b style="font-family: Arial, Helvetica, sans-serif; color: #CE3115;">
                   {{variacion_year_2.1|floatformat:2}}% </b>
                 {% endif %}
               </h6>
