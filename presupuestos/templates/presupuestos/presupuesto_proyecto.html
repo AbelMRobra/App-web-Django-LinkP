@@ -29,9 +29,9 @@
           <div class="d-flex align-items-center">
             <div>
               <h4 class="card-title"><span class="lstick m-r-20"></span><b
-                  style="color: rgb({{datos.0.0.color}});">{{datos.0.0.nombre}}</b></h4>
+                  style="color: rgb({{datos_proyecto.proyecto.color}});">{{datos_proyecto.proyecto.nombre}}</b></h4>
 
-              {% if datos_presupuesto %}<h5 style="color: rgb({{datos.0.0.color}});">Imprevisto: ${{datos_presupuesto.imprevisto|floatformat:0|intcomma}}</h5>{% endif %}
+              {% if datos_presupuesto %}<h5 style="color: rgb({{datos_proyecto.proyecto.color}});">Imprevisto: ${{datos_presupuesto.imprevisto|floatformat:0|intcomma}}</h5>{% endif %}
 
               <h6></span>Variaciones de los ultimos 30 dias
                 {% if variacion > 0 %}
@@ -75,7 +75,7 @@
 
               {% endif %}
 
-              <h6 class="card-subtitle mt-1"></span>{{datos.0.0.descrip}}</h6>
+              <h6 class="card-subtitle mt-1"></span>{{datos_proyecto.proyecto.descrip}}</h6>
             </div>
 
             <div class="mr-2" id="actions-hover" style="display: none;">
@@ -88,11 +88,11 @@
                 aria-haspopup="true" aria-expanded="false" onmouseover="actionhoverover('actions-hover')"
                 onmouseout="actionhoverout('actions-hover')"></a>
               <div class="dropdown-menu dropdown-menu-right">
-                <a class="dropdown-item" href="{% url 'Creditos de proyectos' datos.0.0.id %}"><i
+                <a class="dropdown-item" href="{% url 'Creditos de proyectos' datos_proyecto.proyecto.id %}"><i
                     class="fa fa-angle-right mr-2"></i>Creditos</a>
-                <a class="dropdown-item" href="{% url 'Fondos de reparo' datos.0.0.id %}"><i
+                <a class="dropdown-item" href="{% url 'Fondos de reparo' datos_proyecto.proyecto.id %}"><i
                     class="fa fa-angle-right mr-2"></i>F.D.R.</a>
-                <a class="dropdown-item" href="{% url 'Anticipos' datos.0.0.id %}"><i
+                <a class="dropdown-item" href="{% url 'Anticipos' datos_proyecto.proyecto.id %}"><i
                     class="fa fa-angle-right mr-2"></i>Anticipos</a>
               </div>
             </div>
@@ -105,7 +105,7 @@
   <div class="row mb-1">
 
     <div class="col-6 col-md-6 col-lg-3 my-2" style="height: 130px;">
-      <a href="{% url 'Presupuesto de reposición abierto' datos.0.0.id %}">
+      <a href="{% url 'Presupuesto de reposición abierto' datos_proyecto.proyecto.id %}">
       <div class="card p-3 h-100 card1">
         <div class="go-corner" >
           <div class="go-arrow" >
@@ -130,7 +130,7 @@
 
 
     <div class="col-6 col-md-6 col-lg-3 my-2" style="height: 130px;">
-      <a href="{% url 'Panel de presupuestos por capitulo' datos.0.0.id %}">
+      <a href="{% url 'Panel de presupuestos por capitulo' datos_proyecto.proyecto.id %}">
       <div class="card p-3 h-100 card1">
         <div class="go-corner" >
           <div class="go-arrow" >
@@ -148,7 +148,7 @@
           </div>  
           <div class="col-9 col-lg-8 p-0 pl-2">
             <h6 class="text-muted">Valor reposición</h6>
-            <h4 class="m-t-0">${{datos.0.1|floatformat:0|intcomma}}</h4>
+            <h4 class="m-t-0">${{datos_proyecto.valor_reposicion|floatformat:0|intcomma}}</h4>
           </div>
         </div>
       </div>
@@ -156,7 +156,7 @@
     </div>
 
     <div class="col-6 col-md-6 col-lg-3 my-2" style="height: 130px;">
-      <a href="{% url 'Saldo por capitulo' datos.0.0.id %}">
+      <a href="{% url 'Saldo por capitulo' datos_proyecto.proyecto.id %}">
       <div class="card p-3 h-100 card1">
         <div class="go-corner" >
           <div class="go-arrow" >
@@ -174,7 +174,7 @@
           </div>  
           <div class="col-9 col-lg-8 p-0 pl-2">
             <h6 class="text-muted">Saldo del proyecto</h6>
-            <h4 class="m-t-0">${{datos.0.2|floatformat:0|intcomma}}</h4>
+            <h4 class="m-t-0">${{datos_proyecto.valor_saldo|floatformat:0|intcomma}}</h4>
           </div>
         </div>
       </div>
@@ -192,16 +192,54 @@
             <div class="col-12">
 
               <div class="row mt-1">
-                <div class="col-6" style="text-align: end;">
+                <div class="col-3" style="text-align: end;">
+                  {% if datos_proyecto.proyecto.presupuesto == "BASE" %}
                   <form method="POST">{% csrf_token %}
-                    <input type="hidden" name="proyecto" value="{{datos.0.0.id}}">
-                    <button type="submit" name="action" value="1" class="btn btn-sm fa fa-refresh text-secondary"></button>
+  
+                    <button
+                    data-toggle="tooltip" data-placement="left" title="Proyecto BASE"
+                    type="submit" name="base" value="1" class="btn btn-sm fa fa-flag-checkered text-success"></button>
+                  </form>
+                  {% else %}
+                  <form method="POST">{% csrf_token %}
+  
+                    <button
+                    data-toggle="tooltip" data-placement="left" title="Proyexto no BASE"
+                    type="submit" name="base" value="2" class="btn btn-sm fa fa-flag-checkered text-secondary"></button>
+                  </form>
+                  {% endif %}
+                </div>
+                <div class="col-3" style="text-align: end;">
+                  {% if datos_proyecto.proyecto.presupuesto == "EXTRAPOLADO" %}
+                  <form method="POST">{% csrf_token %}
+
+                    <button
+                    data-toggle="tooltip" data-placement="left" title="Extrapolado"
+                    type="submit" name="extrapolado" value="1" class="btn btn-sm fa fa-check-circle text-secondary"></button>
+                  </form>
+                  {% else %}
+                  <form method="POST">{% csrf_token %}
+
+                    <button
+                    data-toggle="tooltip" data-placement="left" title="Activo"
+                    type="submit" name="extrapolado" value="0" class="btn btn-sm fa fa-check-circle text-success"></button>
+                  </form>
+                  {% endif %}
+                </div>
+                <div class="col-3" style="text-align: end;">
+                  <form method="POST">{% csrf_token %}
+                    <input type="hidden" name="proyecto" value="{{datos_proyecto.proyecto.id}}">
+                    <button
+                    data-toggle="tooltip" data-placement="left" title="Actualizar"
+                    type="submit" name="recalcular" value="1" class="btn btn-sm fa fa-refresh text-secondary"></button>
                   </form>
                 </div>
-                <div class="col-6" style="text-align: start;">
+                <div class="col-3" style="text-align: start;">
                   <form method="POST">{% csrf_token %}
-                    <input type="hidden" name="proyecto" value="{{datos.0.0.id}}">
-                    <button type="submit" name="action" value="2" class="btn btn-sm fa fa-cloud text-secondary"></button>
+                    <input type="hidden" name="proyecto" value="{{datos_proyecto.proyecto.id}}">
+                    <button
+                    data-toggle="tooltip" data-placement="left" title="Guardar una copia sin actualizar"
+                    type="submit" name="almacenar" value="1" class="btn btn-sm fa fa-cloud text-secondary"></button>
                   </form>
                 </div>
               </div>
@@ -237,7 +275,7 @@
           </div>
 
           <div>
-            <canvas id="myChart2" height="350px"></canvas>
+            <canvas id="myChart2" height="300px"></canvas>
 
           </div>
         </div>
@@ -319,7 +357,7 @@
     // The data for our dataset
     data: {
       labels: [
-        {% for i in valor %}
+        {% for i in registro_valor_proyecto %}
                 '{{i.0}}',                   
                 {% endfor %}
   'Hoy',],
@@ -330,10 +368,10 @@
       borderColor: 'rgb({{datos.0.0.color}})',
       fill: true,
       data: [
-        {% for i in valor %}
+        {% for i in registro_valor_proyecto %}
                 {{ i.1|floatformat:0}},
     {% endfor %}
-    Math.round({{ datos.0.1|floatformat:0}}/1000000),
+    Math.round({{ datos_proyecto.valor_reposicion|floatformat:0}}/1000000),
                 
 
                 ]
@@ -389,8 +427,8 @@
     // The data for our dataset
     data: {
       datasets: [{
-        data: [{{ datos.0.3|floatformat:0}}, {{ datos.0.4|floatformat:0}}],
-    backgroundColor: ['rgba({{datos.0.0.color}}, 0.5)', 'rgba(152, 165, 194, 0.5)'],
+        data: [{{ datos_proyecto.avance|floatformat:0}}, {{ datos_proyecto.pendiente|floatformat:0}}],
+    backgroundColor: ['rgba({{datos_proyecto.avance.proyecto.color}}, 0.5)', 'rgba(152, 165, 194, 0.5)'],
   }],
 
     labels: ['Avance', 'Pendiente']

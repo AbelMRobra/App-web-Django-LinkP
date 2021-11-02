@@ -112,7 +112,11 @@ def ventas_agregar(request):
             # try:
                 m2 = unidades_calculo_m2(unidad.id)
                 precio_pricing = unidades_calculo_precio_final(unidad.id)
-                precio_desde = unidades_calculo_precio_desde(unidad.id)*f_desde.presupuestos_precio_desde(unidad.proyecto.id)
+                try:
+                    precio_desde = unidades_calculo_precio_desde(unidad.id)*f_desde.presupuestos_precio_desde(unidad.proyecto.id)
+
+                except:
+                    precio_desde = 0
 
                 if not "COCHERA" in unidad.tipo:
                     tipo_unidad = "DTO"

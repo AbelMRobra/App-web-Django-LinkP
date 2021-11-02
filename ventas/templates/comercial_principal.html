@@ -96,16 +96,11 @@
                             style="max-width:85px; margin: 5px; height:auto; ">
                     </div>
     
-                    {% if request.user|has_group:"VENTAS NIVEL 2" %}
     
                     <a href="{% url 'Variacion H'%}"><button class="btn btn-info">
                             Ingresar</button></a>
     
-                    {% else %}
-    
-                    <a href="#"><button class="btn btn-secondary">
-                            Sin permisos</button></a>
-                    {% endif %}
+
     
                 </div>
             </div>

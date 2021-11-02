@@ -1,6 +1,6 @@
 from django.urls import path
 from django.conf.urls import url
-from presupuestos.views import views, views_articulos, views_constantes,views_creditos,views_analisis
+from presupuestos.views import views, views_articulos, views_constantes,views_creditos,views_analisis, views_presupuestos
 from django.contrib.auth.decorators import login_required
 
 urlpatterns = [
@@ -23,9 +23,12 @@ urlpatterns = [
     url(r'^crearanalisis/$', login_required(views_analisis.analisis_crear), name = 'Crear analisis'),
     url(r'^crearanalisis/(?P<id_analisis>\d+)/$', login_required(views_analisis.analisis_modificar), name = 'Modificar analisis'),
     url(r'^veranalisis/(?P<id_analisis>\d+)/$', login_required(views_analisis.analisis_individual_ver), name = 'Composición Analisis'),
+    
     #----------------URL PARA PRESPUESTOS -----------------------------------------  
-    path('panelpresupuestos',login_required(views.panel_presupuestos),name="Panel de presupuestos"),
-    path('presupuestoproyecto/<int:id>/',login_required(views.presupuestostotal),name="presupuesto_proyecto"),
+    
+    path('presupuesto_principal',login_required(views_presupuestos.presupuesto_principal),name="Panel de presupuestos"),
+    
+    path('presupuesto_panel_control/<int:id>/',login_required(views_presupuestos.presupuestos_panel_control),name="presupuesto_proyecto"),
     url(r'^presupuestos/auditor/$', login_required(views.presupuesto_auditor), name = 'Auditor de P'),
 
     url(r'^saldocap/(?P<id_proyecto>\d+)/$', login_required(views.saldocapitulo), name = 'Saldo por capitulo'),

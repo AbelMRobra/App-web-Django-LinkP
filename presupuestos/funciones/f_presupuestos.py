@@ -1,24 +1,32 @@
 from openpyxl import Workbook
 from presupuestos.models import Capitulos,CompoAnalisis,Modelopresupuesto,PresupuestosAlmacenados
 from django.conf import settings
-import requests
 from presupuestos.wabot import WABot
 import datetime as dt
 import pandas as pd
 from presupuestos.models import Capitulos, PresupuestosAlmacenados, Analisis, Articulos
+from computos.models import Computos
+
+def presupuestos_datos_bot():
+
+    diccionario_datos = {}
+    diccionario_datos['Telegram_grupo_presupuesto_id'] = '-455382561'
+    diccionario_datos['Telegram_grupo_presupuesto_token']= '1880193427:AAH-Ej5ColiocfDZrDxUpvsJi5QHWsASRxA'
+
+    return diccionario_datos
+
+
+def presupuestos_revision_registros(proyecto):
+
+    presupuestos_alm = PresupuestosAlmacenados.objects.filter(proyecto = proyecto)[1:0]
+
+    for presupuesto in presupuestos_alm:
+
+        presupuesto.nombre = str(dt.date.today())
+        presupuesto.save()
 
 
 
-def bot_telegram(send, id, token):
-    
-    url = "https://api.telegram.org/bot" + token + "/sendMessage"
-
-    params = {
-        'chat_id' : id,
-        'text' : send
-    }
-
-    requests.post(url, params=params)
 
 def auditor_presupuesto(proyecto,fecha_desde, fecha_hasta):
     #esta linea trae 29 objetos
@@ -230,7 +238,9 @@ def auditor_presupuesto_p(proyecto, fecha_desde, fecha_hasta):
    
     return [data_resultante_p, list_resultante_p]
 
-def generar_excel(computo,proyecto):
+def presupuesto_generar_xls_proyecto(proyecto):
+    
+    computo = Computos.objects.all()
     capitulo = Capitulos.objects.all()
     compo = CompoAnalisis.objects.all()
     

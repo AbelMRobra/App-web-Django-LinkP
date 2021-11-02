@@ -106,6 +106,7 @@ class DatosProyectos(models.Model):
 # Modelo para pasar presupuestos
 
 class Presupuestos(models.Model):
+
     proyecto = models.ForeignKey(Proyectos, on_delete=models.CASCADE, verbose_name = "Proyectos")
     valor = models.FloatField(verbose_name= "Valor del proyecto")
     saldo = models.FloatField(verbose_name= "Saldo del proyecto", blank=True, null=True)
@@ -119,6 +120,12 @@ class Presupuestos(models.Model):
     fecha_a = models.DateField(auto_now=True, verbose_name= "Fecha de actualización")
     presupuestador = models.CharField(verbose_name="Presupuestador", null=True, blank=True ,max_length=100)
 
+    def calculo_iva_compras(self):
+        
+        valor_a_pagar = (self.imprevisto + self.saldo_mat + self.saldo_mo + self.credito + self.fdr)*0.07875
+
+        return valor_a_pagar
+
 
     class Meta:
         verbose_name = "Presupuesto"
@@ -128,6 +135,7 @@ class Presupuestos(models.Model):
         return '{}'.format(self.proyecto)
 
 class Prametros(models.Model):
+
     proyecto = models.ForeignKey(Proyectos, on_delete=models.CASCADE, verbose_name = "Proyectos", blank=True, null=True)
     proyecto_no_est = models.CharField(verbose_name="Proyecto no estructurado", null=True, blank=True ,max_length=100)
     tasa_des_p = models.FloatField(verbose_name="Tasa de descuento del costo", default=0)
@@ -153,6 +161,7 @@ class Prametros(models.Model):
         return '{}'.format(self.proyecto)
 
 class Desde(models.Model):
+    
     parametros = models.ForeignKey(Prametros, on_delete=models.CASCADE, verbose_name = "Parametros")
     presupuesto = models.ForeignKey(Presupuestos, on_delete=models.CASCADE, verbose_name = "Presupuesto", null=True, blank=True)
     fecha_c = models.DateField(auto_now=True, blank=True, null=True, verbose_name="Fecha del informe")
