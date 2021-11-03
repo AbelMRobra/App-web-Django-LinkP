@@ -198,14 +198,14 @@
   
                     <button
                     data-toggle="tooltip" data-placement="left" title="Proyecto BASE"
-                    type="submit" name="base" value="1" class="btn btn-sm fa fa-flag-checkered text-success"></button>
+                    type="submit" name="base" value="1" class="btn fa fa-flag-checkered text-success"></button>
                   </form>
                   {% else %}
                   <form method="POST">{% csrf_token %}
   
                     <button
                     data-toggle="tooltip" data-placement="left" title="Proyexto no BASE"
-                    type="submit" name="base" value="2" class="btn btn-sm fa fa-flag-checkered text-secondary"></button>
+                    type="submit" name="base" value="2" class="btn fa fa-flag-checkered text-secondary"></button>
                   </form>
                   {% endif %}
                 </div>
@@ -215,14 +215,14 @@
 
                     <button
                     data-toggle="tooltip" data-placement="left" title="Extrapolado"
-                    type="submit" name="extrapolado" value="1" class="btn btn-sm fa fa-check-circle text-secondary"></button>
+                    type="submit" name="extrapolado" value="1" class="btn fa fa-check-circle text-secondary"></button>
                   </form>
                   {% else %}
                   <form method="POST">{% csrf_token %}
 
                     <button
                     data-toggle="tooltip" data-placement="left" title="Activo"
-                    type="submit" name="extrapolado" value="0" class="btn btn-sm fa fa-check-circle text-success"></button>
+                    type="submit" name="extrapolado" value="0" class="btn fa fa-check-circle text-success"></button>
                   </form>
                   {% endif %}
                 </div>
@@ -231,7 +231,7 @@
                     <input type="hidden" name="proyecto" value="{{datos_proyecto.proyecto.id}}">
                     <button
                     data-toggle="tooltip" data-placement="left" title="Actualizar"
-                    type="submit" name="recalcular" value="1" class="btn btn-sm fa fa-refresh text-secondary"></button>
+                    type="submit" name="recalcular" value="1" class="btn fa fa-refresh text-secondary"></button>
                   </form>
                 </div>
                 <div class="col-3" style="text-align: start;">
@@ -239,7 +239,7 @@
                     <input type="hidden" name="proyecto" value="{{datos_proyecto.proyecto.id}}">
                     <button
                     data-toggle="tooltip" data-placement="left" title="Guardar una copia sin actualizar"
-                    type="submit" name="almacenar" value="1" class="btn btn-sm fa fa-cloud text-secondary"></button>
+                    type="submit" name="almacenar" value="1" class="btn fa fa-cloud text-secondary"></button>
                   </form>
                 </div>
               </div>
@@ -364,8 +364,8 @@
   datasets: [
     {
       label: 'Valor de reposición',
-      backgroundColor: 'rgb({{datos.0.0.color}}, 0.3)',
-      borderColor: 'rgb({{datos.0.0.color}})',
+      backgroundColor: 'rgb({{datos_proyecto.proyecto.color}}, 0.3)',
+      borderColor: 'rgb({{datos_proyecto.proyecto.color}})',
       fill: true,
       data: [
         {% for i in registro_valor_proyecto %}
@@ -428,7 +428,7 @@
     data: {
       datasets: [{
         data: [{{ datos_proyecto.avance|floatformat:0}}, {{ datos_proyecto.pendiente|floatformat:0}}],
-    backgroundColor: ['rgba({{datos_proyecto.avance.proyecto.color}}, 0.5)', 'rgba(152, 165, 194, 0.5)'],
+    backgroundColor: ['rgba({{datos_proyecto.proyecto.color}}, 0.5)', 'rgba(152, 165, 194, 0.5)'],
   }],
 
     labels: ['Avance', 'Pendiente']

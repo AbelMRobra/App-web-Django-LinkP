@@ -22,141 +22,143 @@
             </ol>
         </div>
     </div>
-</div>
 
-<div class="row">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-body">
-
-                <div class="d-flex">
-                    <h4 class="card-title"><span class="lstick m-r-20"></span>Archivos generales de la empresa</h4>
-                    {% if request.user|has_group:"RRHH NIVEL 1" %}
-                    <div class="btn-group ml-auto">
-                        <a href="JavaScript:void(0)" class="icon-options-vertical link" data-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="false"></a>
-                        <div class="dropdown-menu dropdown-menu-right">
-                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#ModalArqueo"><i
-                                class="fa fa-plus mr-2"></i>Añadir</a>
-                                
-                        </div>
-                    </div>
-                    {% endif %}
-                </div>
-                <h6 class="card-subtitle">Aqui encontraras todos los archivos generales que necesites</h6>
-
-
-                <!-- Modal fecha estado Subitem -->
-                <div class="modal fade" id="ModalArqueo" tabindex="-1" role="dialog" aria-labelledby="ModalArqueo"
-                    aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header" style="background: rgb(33, 74, 99);
-                            background: linear-gradient(315deg, rgba(36,160,237,1) 0%, rgba(56,56,130,1) 22%, rgba(0,212,255,1) 100%);">
-                                <h5 class="modal-title text-light" id="exampleModalLongTitle">Cargar un archivo</h5>
-                                <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <form method="POST" style="margin: 15px;" enctype="multipart/form-data"
-                                    id="upload-image-form">
-
-                                    {% csrf_token %}
-
-                                    <h6>Nombre</h6>
-
-                                    <div class="input-group mb-3">
-
-                                        <input name="nombre" type="text" class="form-control form-control"
-                                            style="width: 300px;">
-                                    </div>
-
-                                    <h6>Descripción</h6>
-
-                                    <div class="input-group mb-3">
-
-                                        <input name="descrip" type="text" class="form-control form-control"
-                                            style="width: 300px;">
-                                    </div>
-
-                                    <h6>Archivo</h6>
-
-                                    <div class="input-group mb-3">
-
-                                        <input name="adjunto" type="file" class="form-control form-control"
-                                            style="width: 300px;">
-                                    </div>
-
-                                    <button type="submit" class="btn btn-light">
-                                        <img src="{% static 'img/upload.png' %}" alt=""
-                                            style="max-width:20px; height:auto;">
-                                        <b>Cargar</b></button>
-
-                                    {{ form.as_p }}
-
-                                </form>
-
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-info" data-dismiss="modal">Cerrar</button>
-
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+    
+                    <div class="d-flex">
+                        <h4 class="card-title"><span class="lstick m-r-20"></span>Archivos generales de la empresa</h4>
+                        {% if request.user|has_group:"RRHH NIVEL 1" %}
+                        <div class="btn-group ml-auto">
+                            <a href="JavaScript:void(0)" class="icon-options-vertical link" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false"></a>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#ModalArqueo"><i
+                                    class="fa fa-plus mr-2"></i>Añadir</a>
+                                    
                             </div>
                         </div>
+                        {% endif %}
                     </div>
-
-                </div>
-
-                <div class="table-responsive">
-
-                    <table id="exemple" class="table" width="99%">
-                        <tbody>
-                            {% for i in data %}
-                            <tr>
-                                <td style="width: 70px;">
-                                    <img src="{% static 'img/rrhh_files.png' %}" width="40" class="img-circle">
-                                </td>
-
-                                <td>
-                                    <h6><a href="{{i.adjunto.url}}" target="_blank">Nombre:
-                                            {{i.nombre}}</a></h6>
-                                    <h6 class="card-subtitle" style="margin-top: 5px;">Descripción:
-                                        "{{i.descrip}}"</h6>
-                                </td>
-                                <td style="width: 5px; vertical-align: top;">
-                                    {% if request.user|has_group:"RRHH NIVEL 1" %}
-                                    <div class="btn-group ml-auto">
-                                        <a href="JavaScript:void(0)" class="icon-options-vertical link"
-                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
-                                        <div class="dropdown-menu dropdown-menu-right">
-                                            <a class="dropdown-item" ><i
-                                                    class="fa fa-pencil-square-o mr-2"></i>Editar archivo</a>
-                                            <form method="POST">
-                                                {% csrf_token %}
-                                                <button class="dropdown-item" type="submit" name="delete" value="{{i.id}}">
-                                                    <i class="fa fa fa-trash text-danger mr-2"></i>
-                                                    Borrar archivo</button>
-                                            </form>
-
+                    <h6 class="card-subtitle">Aqui encontraras todos los archivos generales que necesites</h6>
+    
+    
+                    <!-- Modal fecha estado Subitem -->
+                    <div class="modal fade" id="ModalArqueo" tabindex="-1" role="dialog" aria-labelledby="ModalArqueo"
+                        aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header" style="background: rgb(33, 74, 99);
+                                background: linear-gradient(315deg, rgba(36,160,237,1) 0%, rgba(56,56,130,1) 22%, rgba(0,212,255,1) 100%);">
+                                    <h5 class="modal-title text-light" id="exampleModalLongTitle">Cargar un archivo</h5>
+                                    <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form method="POST" style="margin: 15px;" enctype="multipart/form-data"
+                                        id="upload-image-form">
+    
+                                        {% csrf_token %}
+    
+                                        <h6>Nombre</h6>
+    
+                                        <div class="input-group mb-3">
+    
+                                            <input name="nombre" type="text" class="form-control form-control"
+                                                style="width: 300px;">
                                         </div>
-                                    </div>
-                                    {% endif %}
-                                </td>
-
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-
-
+    
+                                        <h6>Descripción</h6>
+    
+                                        <div class="input-group mb-3">
+    
+                                            <input name="descrip" type="text" class="form-control form-control"
+                                                style="width: 300px;">
+                                        </div>
+    
+                                        <h6>Archivo</h6>
+    
+                                        <div class="input-group mb-3">
+    
+                                            <input name="adjunto" type="file" class="form-control form-control"
+                                                style="width: 300px;">
+                                        </div>
+    
+                                        <button type="submit" class="btn btn-light">
+                                            <img src="{% static 'img/upload.png' %}" alt=""
+                                                style="max-width:20px; height:auto;">
+                                            <b>Cargar</b></button>
+    
+                                        {{ form.as_p }}
+    
+                                    </form>
+    
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-info" data-dismiss="modal">Cerrar</button>
+    
+                                </div>
+                            </div>
+                        </div>
+    
+                    </div>
+    
+                    <div class="table-responsive">
+    
+                        <table id="exemple" class="table" width="99%">
+                            <tbody>
+                                {% for i in data %}
+                                <tr>
+                                    <td style="width: 70px;">
+                                        <img src="{% static 'img/rrhh_files.png' %}" width="40" class="img-circle">
+                                    </td>
+    
+                                    <td>
+                                        <h6><a href="{{i.adjunto.url}}" target="_blank">Nombre:
+                                                {{i.nombre}}</a></h6>
+                                        <h6 class="card-subtitle" style="margin-top: 5px;">Descripción:
+                                            "{{i.descrip}}"</h6>
+                                    </td>
+                                    <td style="width: 5px; vertical-align: top;">
+                                        {% if request.user|has_group:"RRHH NIVEL 1" %}
+                                        <div class="btn-group ml-auto">
+                                            <a href="JavaScript:void(0)" class="icon-options-vertical link"
+                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
+                                            <div class="dropdown-menu dropdown-menu-right">
+                                                <a class="dropdown-item" ><i
+                                                        class="fa fa-pencil-square-o mr-2"></i>Editar archivo</a>
+                                                <form method="POST">
+                                                    {% csrf_token %}
+                                                    <button class="dropdown-item" type="submit" name="delete" value="{{i.id}}">
+                                                        <i class="fa fa fa-trash text-danger mr-2"></i>
+                                                        Borrar archivo</button>
+                                                </form>
+    
+                                            </div>
+                                        </div>
+                                        {% endif %}
+                                    </td>
+    
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+    
+    
+                    </div>
+    
                 </div>
-
+    
+    
             </div>
-
-
         </div>
     </div>
+    
 </div>
+
 
 
 

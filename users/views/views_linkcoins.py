@@ -17,6 +17,8 @@ def perfil_movimientos_linkcoins(request):
 
     amor = 0
     rey = 0
+    rey_1 = 0
+    rey_2 = 0
     otros_datos = 0
     monedas_disponibles_canje = 0
 
@@ -86,7 +88,7 @@ def perfil_movimientos_linkcoins(request):
 
     
     
-    info_coins_entregadas,monedas_disponibles,recibidas,amor,monedas_disponibles_canje,list_usuarios,rey,rey_l,rey_2=calculos(datos_usuarios,monedas,monedas_entregadas,usuario,loged_user,canjemonedas)
+    info_coins_entregadas, monedas_disponibles, recibidas, amor, monedas_disponibles_canje, list_usuarios, rey, rey_l, rey_2=  calculos(datos_usuarios,monedas,monedas_entregadas,usuario,loged_user,canjemonedas)
     
     
 
