@@ -55,6 +55,7 @@ def calculos(datos_usuarios,monedas,monedas_entregadas,usuario,loged_user,canjem
                 rey = 2
         except:
             rey = 0
+            rey_2 = 0
         
         ########################################
         # Calculo de monedas recibidas 
