@@ -15,6 +15,8 @@ from finanzas.models import Almacenero
 from compras.models import Compras
 from registro.models import RegistroValorProyecto
 from rrhh.models import datosusuario
+from users.models import ActividadesUsuarios
+
 
 
 from presupuestos.funciones.functions_capitulos import PresupuestoPorCapitulo
@@ -867,10 +869,10 @@ def desde(request):
             costo_soft = costo_iva+(costo * parametros.soft)
             # Calculo del terreno
             costo_terreno = 0
-            porc_terreno =  parametros.terreno/m2_proyecto
+            porc_terreno =  parametros.terreno/parametros.proyecto.m2
             # Calculo del honorario
             costo_honorario = 0
-            porc_hon =  parametros.link/m2_proyecto
+            porc_hon =  parametros.link/parametros.proyecto.m2
             # Calculo del TEM
             costo_tem = 0
             aumento_tem =  parametros.tem_iibb*parametros.por_temiibb
@@ -883,9 +885,9 @@ def desde(request):
             # Valor con ganancia
             valor_ganancia = costo_completo*(1 + parametros.ganancia)
             # Recalculamos
-            costo_terreno = (valor_ganancia * porc_terreno - costo_completo*porc_terreno) + costo_soft
-            costo_honorario = (valor_ganancia * porc_hon - costo_completo*porc_hon)  + costo_terreno
-            costo_comer = costo_completo - valor_ganancia * aumento_comer * (1 - porc_terreno - porc_hon)
+            costo_terreno = costo_completo*porc_terreno + costo_soft
+            costo_honorario = costo_completo*porc_hon + costo_terreno
+            costo_comer = valor_ganancia * aumento_comer * (1 - porc_terreno - porc_hon) + costo_honorario
             costo_tem = costo_completo
             
             porc_terreno = porc_terreno*100
@@ -900,6 +902,11 @@ def desde(request):
             
 
             datos.append((datos_costo_m2, datos_porcentaje, datos_parametros, proyecto, costo_depto, parametros))
+
+        context = {}
+        context["datos"] = datos
+        context["actividades"] = ActividadesUsuarios.objects.filter(categoria = "pricing").order_by("-momento")
+
 
     return render(request, 'desde/desde.html', {'datos':datos})
 
