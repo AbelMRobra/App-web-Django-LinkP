@@ -30,7 +30,7 @@
                         <form method="post">
                             {% csrf_token %}
                             {{ form.as_p }}
-                            <p>{{f.mensaje}}</p>
+    
                             <div class="text-center mt-4">
                                 <button type='submit' class="btn btn-info">Guardar</button>
                             </div>
@@ -43,13 +43,9 @@
 </div>
 
 
+{% if mensaje %}
 
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-{% if mensaje == "no" %}
-
-{% elif mensaje == "ok" %}
-
 
 <script>
 
@@ -66,32 +62,13 @@
     })
 
     Toast.fire({
-        icon: 'success',
-        title: 'Articulo editado correctamente'
+        icon: '{% if mensaje.0 == 0 %} warning {% else %} success {% endif %}',
+        title: '{{mensaje.1}}'
     })
 
 </script>
-{% else %}
-<script>
 
-    const Toast = Swal.mixin({
-        toast: true,
-        position: 'top-end',
-        showConfirmButton: false,
-        timer: 10000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-            toast.addEventListener('mouseenter', Swal.stopTimer)
-            toast.addEventListener('mouseleave', Swal.resumeTimer)
-        }
-    })
-
-    Toast.fire({
-        icon: 'error',
-        title: '{{mensaje}}'
-    })
-
-</script>
 {% endif %}
+
 
 {% endblock %}
