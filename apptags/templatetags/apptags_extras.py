@@ -216,7 +216,7 @@ def chanchito_caja_consolidado_a_fecha(id):
 
     # return locale.currency(consolidado, grouping=True)
 
-    return round(consolidado, 2)
+    return '{:,.2f}'.format(consolidado).replace(",", "@").replace(".", ",").replace("@", ".")
 
 
 

@@ -391,7 +391,7 @@
                                                 ${% if i.estado != 'INGRESOS' %} - {% endif %}{{i.importe|floatformat:2|intcomma}}</td>
 
 
-                                            <td style="min-width: 100px;">{% chanchito_caja_consolidado_a_fecha i.id %}</td>
+                                            <td style="min-width: 100px;">$ {% chanchito_caja_consolidado_a_fecha i.id %}</td>
 
                                             
                                             <td class="{% if i.estado == 'INGRESOS' %} {% else %} text-danger {% endif %}" style="min-width: 100px;">
