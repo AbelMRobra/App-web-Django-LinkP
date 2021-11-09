@@ -212,7 +212,7 @@ def chanchito_caja_consolidado_a_fecha(id):
 
         consolidado = 0
     
-    locale.setlocale( locale.LC_MONETARY, "C.UTF-8")
+    locale.setlocale( locale.LC_ALL, "C.UTF-8")
 
     return locale.currency(consolidado, grouping=True)
 
