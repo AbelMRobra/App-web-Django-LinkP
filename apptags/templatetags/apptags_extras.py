@@ -3,10 +3,12 @@ from django import template
 import datetime
 from datetime import date
 from datetime import datetime, timedelta 
-from rrhh.models import datosusuario, Sugerencia
+from rrhh.models import datosusuario, Sugerencia, RegistroContable
 from tecnica.models import GerenPlanificacion
 from django.contrib.auth.models import User
 from presupuestos.models import Constantes, Registrodeconstantes
+import numpy as np
+import locale
 
 register = template.Library()
 
@@ -191,6 +193,31 @@ def usuario(identificacion):
     except:
 
         return "A"
+
+
+@register.simple_tag
+def chanchito_caja_consolidado_a_fecha(id):
+
+    try:
+
+
+        movimiento = RegistroContable.objects.get(id = id)
+
+        movimientos_totales_ingresos = sum(np.array(RegistroContable.objects.filter(estado = "INGRESOS", caja_vinculada = movimiento.caja_vinculada, id__lte = id).values_list("importe", flat=True)))
+        movimientos_totales_costos = sum(np.array(RegistroContable.objects.filter(estado = "GASTOS", caja_vinculada = movimiento.caja_vinculada, id__lte = id).values_list("importe", flat=True)))
+
+        consolidado = movimientos_totales_ingresos - movimientos_totales_costos
+
+    except:
+
+        consolidado = 0
+    
+    locale.setlocale( locale.LC_MONETARY, "en_US.UTF-8")
+
+    return locale.currency(consolidado, grouping=True)
+
+
+
 
 @register.simple_tag
 def fecha_final_planif(fecha, estado):

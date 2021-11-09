@@ -342,7 +342,7 @@ def registro_contable_caja(request, caja, estado, mes, year):
         data = data.filter(fecha__year = year)
 
     
-    context["data"] = data
+    context["data"] = data[:50]
     context["caja"] = caja
     context["user_caja"] = caja.usuario
     context["estado"] = estado

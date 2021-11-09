@@ -213,28 +213,33 @@
                             </div>
     
                             <div class="table-responsive mt-2">
-                                <table id="example1" class="table table-bordered " style="width:100%; font-size: 14px;">
+
+                                
+                                <table id="example1" class="table" style="width:100%; font-size: 14px;">
+                                    
                                     <thead style="font-size: 12px;">
                                         <tr>
-                                            <th> Dia </th>
-                                            <th> Caja </th>
-                                            <th> Cargo </th>
-                                            <th> Cuenta </th>
-                                            <th> Categoria </th>
-                                            <th> Nota </th>
-                                            <th> Importe </th>
+                                            <th>Cargo</th>
+                                            <th>Dia</th>
+                                            <th>Movimiento</th>
+                                            <th>Importe</th>
+                                            <th>Saldo</th>
                                             <th>USD</th>
                                         </tr>
                                     </thead>
         
-                                    <tbody style="font-size: 12px;">
+                                    <tbody style="font-size: 12px; font-weight: 350;">
                                         {% for i in data %}
                                         <tr>
-                                            <td>{{i.fecha|date:"Y/m/d"}}</td>
-                                            <td style="min-width: 150px;"><a href="#" data-toggle="modal"
-                                                data-target="#Modal{{i.id}}">{{i.caja}}</a></td>
-                                            <td style="min-width: 100px;">{{i.creador}}</td>
+                                            <td><img class="mr-2"
+                                                data-toggle="tooltip" data-placement="top" title="{{i.creador}}"
+                                                src="{% usuario i.creador %}" alt="usuario"
+                                                style="max-width:30px; height:auto;"></td>
         
+                                            
+                                                <td>{{i.fecha|date:"Y/m/d"}}</td>
+                                            
+                                            
                                             <!-- Modal  -->
                                             <div id="Modal{{i.id}}" class="modal fade" tabindex="-1" role="dialog"
                                             aria-labelledby="Modal{{i.id}}" aria-hidden="true">
@@ -351,16 +356,16 @@
                     
                                                                 </div>
                                                             </div>
-
+    
                                                             <hr>
-
+    
                                                             <div class="mt-2" style="text-align: center;">
-
+    
                                                                 <button type="submit" name="editar" value="{{i.id}}" class="btn btn-success btn-circle fa fa-cloud-upload"></button>
     
                                                                 <button type="submit" name="borrar" value="{{i.id}}" class="btn btn-danger btn-circle fa fa-trash"></button>
     
-
+    
                                                             </div>
     
                                                             
@@ -368,31 +373,38 @@
     
     
                                                     </div>
-
+    
                                                 </div>
                                             </div>
-                                        </div>
-                                            <td style="min-width: 100px;">{{i.cuenta}}</td>
-                                            <td style="min-width: 100px;">{{i.categoria}}</td>
-                                            <td style="min-width: 250px;">{{i.nota}}</td>
-                                            {% if i.estado == "INGRESOS" %}
-                                            <td style="min-width: 100px;"><b>${{i.importe|floatformat:2|intcomma}}</b></td>
-                                            {% else %}
-                                            <td style="min-width: 100px;"><b>-${{i.importe|floatformat:2|intcomma}}</b></td>
-                                            {% endif %}
-
-                                            {% if i.estado == "INGRESOS" %}
-                                            <td style="min-width: 100px;"><b class="text-success">{{i.importe_usd|floatformat:2|intcomma}}</b></td>
-                                            {% else %}
-                                            <td style="min-width: 100px;"><b class="text-success">-{{i.importe_usd|floatformat:2|intcomma}}</b></td>
-                                            {% endif %}
+                                            </div>
                                             
+                                            
+                                            
+                                            <td> <div class="d-flex" style="min-width: 250px;"><b class="mr-2">Categoria: </b> {{i.categoria}} / <b class="mr-2 ml-1">Cuenta: </b> {{i.cuenta}} </div> 
+                                                <div class="mt-1"><a href="#" data-toggle="modal" data-target="#Modal{{i.id}}"><b class="mr-2">Descripción: </b>{{i.nota}}</a></div> </td>
+                                            
+                                            
+                                            
+
+                                            
+                                            <td class="{% if i.estado == 'INGRESOS' %} {% else %} text-danger {% endif %}" style="min-width: 100px;">
+                                                ${% if i.estado != 'INGRESOS' %} - {% endif %}{{i.importe|floatformat:2|intcomma}}</td>
+
+
+                                            <td style="min-width: 100px;">{% chanchito_caja_consolidado_a_fecha i.id %}</td>
+
+                                            
+                                            <td class="{% if i.estado == 'INGRESOS' %} {% else %} text-danger {% endif %}" style="min-width: 100px;">
+                                                    {% if i.estado != 'INGRESOS' %} - {% endif %}{{i.importe_usd|floatformat:2|intcomma}} USD</td>
+                                                  
+                                        
                                         </tr>
         
                                         {% endfor %}
         
                                     </tbody>
-        
+                                    
+
                                 </table>
                             </div>
                         </div>
@@ -402,15 +414,18 @@
         </div>
 </div>
 
-<a id="add" href="#" data-toggle="modal" data-target="#ModalCuenta1" class="btn btn-lg btn-info btn-circle fa fa-5x fa-plus"></a>
+<a id="add" href="#" data-toggle="modal" data-target="#ModalCuenta1" class="btn btn-info btn-circle">
+    <i class="fa fa-plus" data-toggle="tooltip" data-placement="left" title="Agregar un registro"></i>
+</a>
 
 <style>
 
 
     #add{
         position: fixed;
-        bottom: 60px;
+        bottom: 40px;
         right: 20px;
+        z-index: 10;
     }
 
 </style>

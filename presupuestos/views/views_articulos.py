@@ -25,7 +25,7 @@ def articulos_listado_general(request):
   
 def articulos_crear(request):
 
-    mensaje = ""
+    context = {}
 
     if request.method == 'POST':
 
@@ -62,13 +62,16 @@ def articulos_crear(request):
                         if int(i.codigo) == int(codigo):
                             i.valor_aux = valor_aux
                             i.save()
-                            return redirect('Panel de cambios')
+                            
+                            context['mensaje'] = [1, "Articulo creado correctamente!"] 
         except:
-            mensaje = "Hay un error al cargar, cuidado con los puntos y comas"   
+            context['mensaje'] = [0, "Error en los datos"]  
+    
     else:
+        
         form = ArticulosForm()
 
-    context = {'form':form, 'mensaje':mensaje}
+    context['form'] = form
 
     return render(request, 'articulos/insum_create.html', context)
 
