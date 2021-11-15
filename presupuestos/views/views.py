@@ -949,7 +949,6 @@ def InformeArea(request):
                 proyecto_300 = proyecto
                 datos_presup = Presupuestos.objects.get(proyecto = proyecto)
                 valor_proyecto_300 = valor_proyecto_300 + datos_presup.valor
-                vr_M2_300 = vr_M2_300 + valor_proyecto_300/m2_300
                 valor_proyecto_materiales_300 = valor_proyecto_materiales_300 + datos_presup.saldo_mat
                 valor_proyecto_mo_300 = valor_proyecto_mo_300 + datos_presup.saldo_mo
                 total_creditos_300  = total_creditos_300 + datos_presup.credito
@@ -1000,6 +999,12 @@ def InformeArea(request):
                 proyecto.save()
             except:
                 pass
+
+    try:
+        vr_M2_300 = valor_proyecto_300/m2_300
+
+    except:
+        pass
     
     proy_presup.append((proyecto_300, valor_proyecto_300, vr_M2_300, valor_proyecto_materiales_300, valor_proyecto_mo_300, total_creditos_300, saldo_total_300, total_fdr_300, total_ant_300, imprevisto_300))
 
