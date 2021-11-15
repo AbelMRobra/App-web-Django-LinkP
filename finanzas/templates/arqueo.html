@@ -148,7 +148,7 @@
                                 </tr>
                             </thead>
     
-                            <tbody style="font-size: 12px;">
+                            <tbody style="font-size: 12px; font-weight: 450;">
     
                                 {% for i in datos %}
     
@@ -304,9 +304,23 @@
     </div>
 </div>
 
+<i id="add2" data-toggle="tooltip" data-placement="left" title="Cotización del dolar" class="btn btn-success">
+    ${{ cambio_usd|floatformat:2|intcomma }}
+</i>
+
+<style>
+
+
+    #add2{
+        position: fixed;
+        bottom: 40px;
+        right: 20px;
+        z-index: 10;
+    }
 
 
 
+</style>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
    
 <script>
