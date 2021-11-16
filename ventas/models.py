@@ -181,6 +181,17 @@ class ArchivoVariacionHormigon(models.Model):
     def __str__(self):
         return "Archivos de fecha de entrega"
 
+class ClasificacionReclamosPostventa(models.Model):
+
+    nombre = models.CharField(max_length=300, verbose_name = "Clasificacion del problema", unique=True)
+
+    class Meta:
+        verbose_name = "Clasificacion del reclamo"
+        verbose_name_plural = "Clasificaciones de los reclamos"
+
+    def __str__(self):
+        return self.nombre
+
 class ReclamosPostventa(models.Model):
 
     class Estado(models.TextChoices):

@@ -2,16 +2,39 @@ import numpy as np
 import datetime
 
 from django.shortcuts import render, redirect
-from ventas.models import ReclamosPostventa, AdjuntosReclamosPostventa
+from ventas.models import ReclamosPostventa, AdjuntosReclamosPostventa, ClasificacionReclamosPostventa
 from users.models import datosusuario
 
 def postventa_panel_principal(request):
 
     context = {}
 
+
     if request.method == 'POST':
 
         datos_post = request.POST.dict()
+
+        if 'crear_clasificacion' in datos_post:
+
+            try:
+
+                nuevo_reclamo = ClasificacionReclamosPostventa.objects.create(nombre = request.POST["crear_clasificacion"])
+                context['mensaje'] = [1, "Creado correctamente!"]
+            except:
+
+                context['mensaje'] = [0, "Ya existe el nombre"]
+
+        if 'borrar_clasificacion' in datos_post:
+
+            reclamo = ClasificacionReclamosPostventa.objects.get(nombre = request.POST["borrar_clasificacion"]).delete()
+            context['mensaje'] = [1, "Borrado correctamente!"]
+        if 'editar_clasificacion' in datos_post:
+
+            reclamo = ClasificacionReclamosPostventa.objects.get(nombre = request.POST["editar_clasificacion"])
+            reclamo.nombre =request.POST["nombre_nuevo"]
+            reclamo.save()
+
+            context['mensaje'] = [1, "Editado correctamente!"]
 
         if 'borrar_adjuntos' in datos_post:
 
@@ -148,10 +171,37 @@ def postventa_panel_principal(request):
                 
                 context['mensaje'] = [0, "No se pudo cambiar el estado"]
 
+    con = ReclamosPostventa.objects.all()
 
-    datos_reclamos = ReclamosPostventa.objects.all().order_by("-numero")
+    datos_proyectos = con.values_list("proyecto", flat= True).distinct()
+
+    context['proyectos'] = datos_proyectos
+
+    datos_clasificacion = con.values_list("clasificacion", flat= True).distinct()
+
+    context['clasificacion'] = datos_clasificacion
+
+    datos_reclamos = con.order_by("-numero")
+
+    if request.method == 'POST':
+
+        datos_post = request.POST.dict()
+
+        if 'filtro_proyecto' in datos_post:
+
+            context['filtro_proyecto'] = request.POST['filtro_proyecto']
+
+            datos_reclamos = con.filter(proyecto__icontains = request.POST['filtro_proyecto']).order_by("-numero")
+
+        if 'filtro_clasificacion' in datos_post:
+
+            context['filtro_clasificacion'] = request.POST['filtro_clasificacion']
+
+            datos_reclamos = datos_reclamos.filter(clasificacion__icontains = request.POST['filtro_clasificacion']).order_by("-numero")
 
     context['datos'] = [(dato, AdjuntosReclamosPostventa.objects.filter(reclamo = dato)) for dato in datos_reclamos]
+    context['datos_clasficacion'] = ClasificacionReclamosPostventa.objects.all()
+
 
     return render(request, 'postventa/postventa_principal.html', context)
 
@@ -242,6 +292,17 @@ def postventa_reclamo_detalle(request, id_reclamo):
     
 
     return render(request, 'postventa/postventa_reclamo_detalle.html', {'datos':datos})
+
+def postventa_formulario_1(request, id_reclamo):
+
+    context = {}
+    context["datos_reclamo"] = ReclamosPostventa.objects.get(id = id_reclamo)
+
+    return render(request, 'postventa/postventa_formulario_1.html', context)
+
+def postventa_formulario_2(request):
+
+    return render(request, 'postventa/postventa_formulario_2.html')
 
 def crearreclamo(request):
 

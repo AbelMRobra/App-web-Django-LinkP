@@ -1,0 +1,156 @@
+{% extends "users/inicio2.html" %}
+
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+
+<div class="container-fluid">
+    <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+            <h3 class="text-themecolor">Formulario</h3>
+        </div>
+
+        <div class="col-md-7 align-self-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'Reclamos Postventa' %}">Postventa</a></li>
+                <li class="breadcrumb-item">Formulario</li>
+
+            </ol>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex">
+                        <div>
+                            <h4 class="card-title"><span class="lstick"></span><b>Solucion del reclamo</b></h4>
+                            <h6 class="text-muted">Completar todos los datos</h6>
+                        </div>
+
+                    </div>
+
+                    <div class="row d-flex justify-content-center mt-3">
+                        <div class="col col-md-12 col-lg-10">
+                            <div class="row">
+                                <div class="col bg-light border rounded p-4 ">
+
+                                    <form role="form" method="POST">
+                                        {% csrf_token %}
+
+                                        <label for="descripcion">
+                                            <h6>Descripcion de la solucion</h6>
+                                        </label>
+
+                                        <div class="row d-flex justify-content-center my-3">
+                                            <div class="col">
+                                                    <textarea name="descripcion" cols="30" rows="5" class="form-control"></textarea>
+                                            </div>
+                                        </div>
+
+                                        <div class="row d-flex">
+                                            <div class="col col-lg-6">
+                                                <label for="responsable">
+                                                    <h6>Responsable de pago</h6>
+                                                </label>
+                                                
+                                                <div class="row d-flex justify-content-center my-3">
+                                                    <div class="col">
+                                                        <input type="text" name="responsable" class="form-control"placeholder="Responsable">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col col-lg-6">
+                                                <label for="pago">
+                                                    <h6>Forma de pago</h6>
+                                                </label>
+                                                
+                                                <div class="row d-flex justify-content-center my-3">
+                                                    <div class="col">
+                                                        <input type="text" name="pago" class="form-control"placeholder="Pago">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row d-flex">
+                                            <div class="col col-lg-6">
+                                                <label for="costo_mano_obra">
+                                                    <h6>Costo mano de obra</h6>
+                                                </label>
+
+                                                <div class="row d-flex justify-content-center my-3">
+                                                    <div class="col">
+                                                            <input type="number" name="costo_mano_obra" class="form-control" placeholder="Costo">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col col-lg-6">
+
+                                                <label for="costo_materiales">
+                                                    <h6>Costo materiales</h6>
+                                                </label>
+
+                                                <div class="row d-flex justify-content-center my-3">
+                                                    <div class="col">
+                                                            <input type="number" name="costo_materiales" class="form-control" placeholder="Costo">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                
+                                        <label for="observaciones">
+                                            <h6>Observaciones</h6>
+                                        </label>
+
+                                        <div class="row d-flex justify-content-center my-3">
+                                            <div class="col">
+                                                    <textarea name="observaciones" cols="30" rows="5" class="form-control"></textarea>
+                                            </div>
+                                        </div>
+
+                                        <div class="row d-flex justify-content-center mt-4">
+                                            <div class="col-lg-6 text-center">
+                                                <button type="submit" class="btn btn-primary">Subir</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<datalist id="proyectos_postventa">
+
+    {% for i in proyectos %}
+
+    <option value="{{i.0}}">({{i.0}})</option>
+
+    {% endfor %}
+
+</datalist>
+
+<datalist id="clasificacion">
+
+    {% for i in clasificacion %}
+
+    <option value="{{ i.0 }}">({{i.0}})</option>
+
+    {% endfor %}
+
+</datalist>
+
+
+
+{% endblock %}
