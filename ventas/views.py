@@ -450,9 +450,7 @@ def variacionh(request):
         variacion_anual = 0
 
         for i in range(12):
-
-            print(month)
-            
+           
             dia = datetime.date(year, month, 1)
 
             valor = Registrodeconstantes.objects.filter(constante__nombre = "Hº VIVIENDA", fecha = dia)
