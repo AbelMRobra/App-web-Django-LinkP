@@ -450,6 +450,8 @@ def variacionh(request):
         variacion_anual = 0
 
         for i in range(12):
+
+            print(month)
             
             dia = datetime.date(year, month, 1)
 
@@ -459,15 +461,18 @@ def variacionh(request):
 
             if len(valor) != 0:
 
-                # -> Esta es la parte de la variación anual
-
-                if valor_inicial != 0 and month !=12:
-
-                    variacion_anual = (valor[0].valor/valor_inicial-1)*100
+                # -> Primero seteamos la variable si es 0 con el primer registro que tengamos
 
                 if valor_inicial == 0:
 
                     valor_inicial = valor[0].valor
+
+                # -> Esta es la parte de la variación anual
+
+                if valor_inicial != 0:
+
+                    variacion_anual = (valor[0].valor/valor_inicial-1)*100
+
 
                 if valor_anterior == 0:
 
@@ -492,8 +497,6 @@ def variacionh(request):
                     if month == 12:
                         
                         valor_inicial = valor[0].valor
-
-                
 
             # -> Este es la parte del flujo en caso de no haber registros
 
