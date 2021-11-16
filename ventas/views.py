@@ -441,11 +441,13 @@ def variacionh(request):
 
     valor_inicial = 0
 
-    while year != (year_now+1):
+    while year != (year_now + 1):
 
         datos_year = []
 
         month = 1
+
+        variacion_anual = 0
 
         for i in range(12):
             
@@ -453,13 +455,8 @@ def variacionh(request):
 
             valor = Registrodeconstantes.objects.filter(constante__nombre = "Hº VIVIENDA", fecha = dia)
 
-            if month == 12:
 
-                if valor_inicial != 0 and len(valor) != 0:
-
-                    variacion_anual = (valor[0].valor/valor_inicial-1)*100
-                else:
-                    variacion_anual = 0
+            # -> Este es la parte del flujo en caso de haber registros
 
             if len(valor) != 0:
 
@@ -485,7 +482,18 @@ def variacionh(request):
                     if month == 12:
                         valor_inicial = valor[0].valor
 
+                # -> Esta es la parte de la variación anual
+
+                if valor_inicial != 0 and len(valor) != 0:
+
+                    variacion_anual = (valor[0].valor/valor_inicial-1)*100
+                else:
+                    variacion_anual = 0
+
+            # -> Este es la parte del flujo en caso de no haber registros
+
             else:
+                
                 datos_year.append((dia, 0, 0))
 
             if month == 12:
