@@ -170,7 +170,7 @@ def is_past_evaluacion2(prueba):
 
 @register.simple_tag
 def host():
-    return "http://www.linkp.online/"
+    return "http://www.linkp.online"
 
 @register.simple_tag
 def is_past_evaluacion3(prueba):
