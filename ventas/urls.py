@@ -1,17 +1,31 @@
 from django.contrib import admin
 from django.urls import path
 from django.conf.urls import url
+from django.conf.urls import include
 from . import views
 from . import views_flujo
 from .views_app import views_pricing, views_atributos, views_postventa, views_cotizador, views_ventas, views_archivos
 from .views import DescargaPricing
 from .views_app.views_cotizador import PDF_cotizacion
 from django.contrib.auth.decorators import login_required
+from rest_framework import routers
+from ventas.viewsets.viewsets import ReclamosViewset
+
+router = routers.DefaultRouter()
+router.register(r'postventa', ReclamosViewset)
 
 urlpatterns = [
 
     # ----------> URL principal
     url(r'^comercial_principal/$', login_required(views.comercial_principal), name = 'App comercial'),
+
+    # ----------> URL postventa
+    path("", include(router.urls)),
+    url(r'^postventaprincipal$', login_required(views_postventa.postventa_panel_principal), name = 'Reclamos Postventa'),
+    url(r'^reclamo/(?P<id_reclamo>\d+)/$', login_required(views_postventa.postventa_reclamo_detalle), name = 'Reclamo'),
+    url(r'^formulario_1/(?P<id_reclamo>\d+)/$', login_required(views_postventa.postventa_formulario_1), name = 'Formulario 1'),
+    url(r'^formulario_2/(?P<id_reclamo>\d+)/$', login_required(views_postventa.postventa_formulario_2), name = 'Formulario 2'),
+    url(r'^reportereclamo/$', login_required(views_postventa.postventa_reporte), name = 'Reporte Reclamo'),
 
     # ----------> URL archivos
     url(r'^archivos_principal/$', login_required(views_archivos.archivos_principal), name = 'Archivos comercial'),
@@ -55,16 +69,6 @@ urlpatterns = [
     
     url(r'^descargapricing/(?P<id_proyecto>\d+)/$', login_required(DescargaPricing.as_view()), name = 'Descargar del pricing'),
     
-   
-    url(r'^postventaprincipal$', login_required(views_postventa.postventa_panel_principal), name = 'Reclamos Postventa'),
-    url(r'^reclamo/(?P<id_reclamo>\d+)/$', login_required(views_postventa.postventa_reclamo_detalle), name = 'Reclamo'),
-    url(r'^formulario_1/(?P<id_reclamo>\d+)/$', login_required(views_postventa.postventa_formulario_1), name = 'Formulario 1'),
-    url(r'^formulario_2$', login_required(views_postventa.postventa_formulario_2), name = 'Formulario 2'),
-    url(r'^reportereclamo/$', login_required(views_postventa.postventa_reporte), name = 'Reporte Reclamo'),
-    url(r'^editarreclamo/(?P<id_reclamo>\d+)/$', login_required(views_postventa.editarreclamo), name = 'Editar reclamo'),
-    url(r'^crearreclamo$', login_required(views_postventa.crearreclamo), name = 'Crear reclamo'),
-
-
     path('flujoventas/',login_required(views_flujo.flujoventas),name='Flujo de ventas'),
     
 

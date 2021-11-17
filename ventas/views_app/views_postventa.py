@@ -2,7 +2,8 @@ import numpy as np
 import datetime
 
 from django.shortcuts import render, redirect
-from ventas.models import ReclamosPostventa, AdjuntosReclamosPostventa, ClasificacionReclamosPostventa
+from ventas.models import ReclamosPostventa, AdjuntosReclamosPostventa, ClasificacionReclamosPostventa, \
+    FormularioDetallePostventa, FormularioSolucionPostventa
 from users.models import datosusuario
 
 def postventa_panel_principal(request):
@@ -182,6 +183,7 @@ def postventa_panel_principal(request):
     context['clasificacion'] = datos_clasificacion
 
     datos_reclamos = con.order_by("-numero")
+    context['datos_completos'] = [(dato, AdjuntosReclamosPostventa.objects.filter(reclamo = dato)) for dato in datos_reclamos]
 
     if request.method == 'POST':
 
@@ -298,11 +300,38 @@ def postventa_formulario_1(request, id_reclamo):
     context = {}
     context["datos_reclamo"] = ReclamosPostventa.objects.get(id = id_reclamo)
 
+    if request.method == 'POST':
+
+        nuevo = FormularioSolucionPostventa.objects.create(
+            reclamo = context["datos_reclamo"],
+            fecha = datetime.date.today(),
+            responsable = request.POST["responsable"],
+            metodo_pago = request.POST["metodo_pago"],
+            costo_mo = float(request.POST["costo_mo"]),
+            costo_mat = float(request.POST["costo_mat"]),
+            descripcion = request.POST["descripcion"],
+            observacion = request.POST["observacion"],
+        )
+    
+
     return render(request, 'postventa/postventa_formulario_1.html', context)
 
-def postventa_formulario_2(request):
+def postventa_formulario_2(request, id_reclamo):
 
-    return render(request, 'postventa/postventa_formulario_2.html')
+    context = {}
+    context["datos_reclamo"] = ReclamosPostventa.objects.get(id = id_reclamo)
+
+    if request.method == 'POST':
+
+        nuevo = FormularioDetallePostventa.objects.create(
+            reclamo = context["datos_reclamo"],
+            fecha_incio = request.POST["fecha_inicio"],
+            fecha_final = request.POST["fecha_final"],
+            descripcion = request.POST["descripcion"],
+
+        )
+
+    return render(request, 'postventa/postventa_formulario_2.html', context)
 
 def crearreclamo(request):
 

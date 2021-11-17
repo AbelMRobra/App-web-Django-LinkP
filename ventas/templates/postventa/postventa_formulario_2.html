@@ -1,0 +1,129 @@
+{% extends "users/inicio2.html" %}
+
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+
+<div class="container-fluid r-aside">
+    <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+            <h3 class="text-themecolor">Formularios</h3>
+        </div>
+
+        <div class="col-md-7 align-self-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'Reclamos Postventa' %}">Postventa</a></li>
+                <li class="breadcrumb-item">Formularios</li>
+
+            </ol>
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex">
+                        <div>
+                            <h4 class="card-title"><span class="lstick"></span><b>Detalle de ejecución</b></h4>
+                            <h6 class="text-muted">Completar todos los datos</h6>
+                        </div>
+
+                    </div>
+                    <div class="row d-flex justify-content-center mt-3">
+                        <div class="col col-md-12 col-lg-10">
+                            <div class="row">
+                                <div class="col bg-light border rounded p-4 ">
+                                    <div class="row d-flex">
+                                        <div class="col col-lg-6">
+                                            <h6><b> Proyecto:</b></h6><p>{{datos_reclamo.proyecto}} - {{datos_reclamo.unidad}}</p>
+                                        </div>
+                                        <div class="col col-lg-6">
+                                            <h6><b> Solicitud de trabajo:</b></h6><p>(Tablero de Control) N° RFO {{datos_reclamo.numero}}</p>
+                                        </div>
+                                        <div class="col col-lg-6">
+                                            <h6><b> Responsable ejecución:</b></h6><p>{{datos_reclamo.responsable.nombre}}</p>
+                                        </div>
+                                        <div class="col col-lg-6">
+                                            <h6><b> Fecha de solicitud:</b></h6><p>{{datos_reclamo.fecha_reclamo|date:"d/m/Y"}}</p>
+                                        </div>
+                                        <div class="col col-lg-6">
+                                            <h6><b> Solicitado por:</b></h6><p>{{datos_reclamo.usuario}}</p>
+                                        </div>
+                                        <div class="col col-lg-6">
+                                            <h6><b> Teléfono de contacto:</b></h6><p>{{datos_reclamo.telefono}}</p>
+                                        </div>
+                                        <div class="col col-lg-12">
+                                            <h6><b> Detalle del trabajo solicitado:</b></h6><p>{{datos_reclamo.descripcion}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="row d-flex justify-content-center mt-3">
+                        <div class="col col-md-12 col-lg-10">
+                            <div class="row">
+                                <div class="col bg-light border rounded p-4 ">
+
+                                    <form role="form" method="POST">
+                                        {% csrf_token %}
+
+                                        <div class="row d-flex">
+                                            <div class="col col-lg-6">
+                                                <label for="fecha_inicio">
+                                                    <h6>Fecha de inicio</h6>
+                                                </label>
+                                                
+                                                <div class="row d-flex justify-content-center my-3">
+                                                    <div class="col">
+                                                        <input type="date"  required name="fecha_inicio" class="form-control">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col col-lg-6">
+                                                <label for="fecha_final">
+                                                    <h6>Fecha de finalización</h6>
+                                                </label>
+                                                
+                                                <div class="row d-flex justify-content-center my-3">
+                                                    <div class="col">
+                                                        <input type="date" required name="fecha_final" class="form-control">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                
+                                        <label for="personal">
+                                            <h6>Personal que realizó el trabajo(nombre y apellido)</h6>
+                                        </label>
+
+                                        <div class="row d-flex justify-content-center my-3">
+                                            <div class="col">
+                                                    <textarea required name="descripcion" cols="30" rows="5" class="form-control"></textarea>
+                                            </div>
+                                        </div>
+
+                                        <div class="row d-flex justify-content-center mt-4">
+                                            <div class="col-lg-6 text-center">
+                                                <button type="submit" class="btn btn-primary">Subir</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

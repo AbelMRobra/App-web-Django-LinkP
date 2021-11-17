@@ -1,7 +1,7 @@
 from django.contrib import admin
 from .models import DosierDeVenta, PricingResumen, VentasRealizadas, EstudioMercado, Pricing, ArchivosAreaVentas, ArchivoFechaEntrega, \
                 ArchivoVariacionHormigon, ReclamosPostventa, FeaturesProjects, Clientescontacto, ImgEnlacesProyecto, \
-                    ArchivosComercial, ClasificacionReclamosPostventa
+                    ArchivosComercial, ClasificacionReclamosPostventa, FormularioDetallePostventa, FormularioSolucionPostventa
 from import_export import resources
 from import_export.admin import ImportExportModelAdmin
 
@@ -109,3 +109,5 @@ admin.site.register(ArchivoVariacionHormigon, ArchivoVariacionHormigonAdmin)
 admin.site.register(ReclamosPostventa, ReclamosPostventaAdmin)
 admin.site.register(ImgEnlacesProyecto)
 admin.site.register(DosierDeVenta)
+admin.site.register(FormularioSolucionPostventa)
+admin.site.register(FormularioDetallePostventa)

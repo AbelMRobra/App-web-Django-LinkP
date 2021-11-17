@@ -223,6 +223,40 @@ class ReclamosPostventa(models.Model):
     def __str__(self):
         return self.propietario
 
+class FormularioSolucionPostventa(models.Model):
+
+    reclamo = models.ForeignKey(ReclamosPostventa, on_delete=models.CASCADE, verbose_name="Reclamo asociado")
+    fecha = models.DateField(verbose_name="Fecha del formulario")
+    responsable = models.CharField(max_length=100, verbose_name = "Responsable")
+    metodo_pago = models.CharField(max_length=100, verbose_name = "Metodo de pago")
+    costo_mo = models.FloatField(verbose_name="Costo de MO")
+    costo_mat = models.FloatField(verbose_name="Costo de materiales")
+    descripcion = models.TextField(verbose_name="Descripción")
+    observacion = models.TextField(verbose_name="Observación")
+
+    class Meta:
+        verbose_name = "Formulario de solución de postventa"
+        verbose_name_plural = "Formularios de solución de postventa"
+
+    def __str__(self):
+        return f" Reclamo nº {self.reclamo.numero}"
+
+class FormularioDetallePostventa(models.Model):
+
+    reclamo = models.ForeignKey(ReclamosPostventa, on_delete=models.CASCADE, verbose_name="Reclamo asociado")
+    fecha_inicio = models.DateField(verbose_name="Fecha inicio")
+    fecha_final = models.DateField(verbose_name="Fecha final")
+    descripcion = models.TextField(verbose_name="Descripción")
+
+
+    class Meta:
+        verbose_name = "Formulario de detalle de postventa"
+        verbose_name_plural = "Formularios de detalles de postventa"
+
+    def __str__(self):
+        return f" Reclamo nº {self.reclamo.numero}"
+
+
 class AdjuntosReclamosPostventa(models.Model):
 
     nombre = models.CharField(max_length=100, verbose_name = "Nombre del archivo", blank=True, null=True)

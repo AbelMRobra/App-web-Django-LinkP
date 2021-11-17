@@ -14,7 +14,7 @@
 
         <div class="col-md-7 align-self-center">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+                <li class="breadcrumb-item"><a href="#" onclick="request_data()">Inicio</a></li>
                 <li class="breadcrumb-item">Postventa</li>
 
             </ol>
@@ -27,7 +27,7 @@
         <div class="card-body">
             <div class="d-flex justify-content-between">
                 <div>
-                    <h4 class="card-title"><span class="lstick"></span>Listado de reclamos</h4>
+                    <h4 class="card-title"><span class="lstick"></span><b>Listado de reclamos</b> </h4>
                     <h6 class="card-subtitle">Seguimiento de los mismos</h6>
                 </div>
                 <div class="btn-group ml-auto">
@@ -163,23 +163,26 @@
                                 <td class="text-center">
                                     <i style="display: none;">{{i.0.visto}}</i>
                                     {% if i.0.visto %}
-                                    <i class="fa fa-lg fa-check-circle text-success" data-toggle="tooltip" data-placement="top" title="Visto por responsable"></i>
+                                    <button id = "estado_{{i.0.id}}" onclick="service_cambio_estado({{i.0.id}})" class="btn fa fa fa-lg fa-check-circle text-success" data-toggle="tooltip" data-placement="top" title="Visto por responsable"></button>
                                     {% else %}
-                                    <form  method="POST">
+                                    <button id = "estado_{{i.0.id}}" onclick="service_cambio_estado({{i.0.id}})" class="btn fa fa-lg fa-exclamation-circle text-warning"  data-toggle="tooltip" data-placement="top" title="Visto por responsable"></button>
+                                    
+                                
+                                    <!-- <form  method="POST">
                                     {% csrf_token %}
-                                    <button type="submit" name="cambio_estado" value="{{i.0.id}}" class="btn fa fa-lg fa-exclamation-circle text-warning"  data-toggle="tooltip" data-placement="top" title="Visto por responsable"></button></form>
+                                    <button type="submit" name="cambio_estado" value="{{i.0.id}}" class="btn fa fa-lg fa-exclamation-circle text-warning"  data-toggle="tooltip" data-placement="top" title="Visto por responsable"></button></form> -->
                                     {% endif %}
                                 </td>
                                 <td class="text-center">
                                     <i style="display: none;">{{i.0.responsable}}</i>
                                     {% if i.0.responsable %}
-                                    <img src="{{i.0.responsable.imagenlogo.url}}" alt="user" width="30" data-toggle="tooltip" data-placement="left" title="{{i.0.responsable.nombre}}">
+                                    <img src="{{i.0.responsable.imagenlogo.url}}" alt="user" width="30" data-toggle="tooltip" data-placement="top" title="{{i.0.responsable.nombre}}">
                                     {% else %}
-                                    <img src="{% static 'img/anonimo2.png' %}" alt="user" width="30" data-toggle="tooltip" data-placement="left" title="{{i.0.responsable.nombre}}">
+                                    <img src="{% static 'img/anonimo2.png' %}" alt="user" width="30" data-toggle="tooltip" data-placement="top" title="{{i.0.responsable.nombre}}">
                                     {% endif %}</td>
-                                <td class="font-bold" data-toggle="tooltip" data-placement="left" title="Codigo">{{i.0.numero}}</td>
+                                <td class="font-bold" data-toggle="tooltip" data-placement="top" title="Codigo">{{i.0.numero}}</td>
                                 <td class="font-bold">{{i.0.proyecto|lower|capfirst}}</td>
-                                <td class="font-bold text-info" data-toggle="tooltip" data-placement="left" title="Unidad">{{i.0.unidad}}</td>                               
+                                <td class="font-bold text-info" data-toggle="tooltip" data-placement="top" title="Unidad">{{i.0.unidad}}</td>                               
                                 <td><a href="{% url 'Reclamo' i.0.id %}">{{i.0.propietario|lower|capfirst}}
                                         <h6 class="card-subtitle mb-0 mt-1">Contacto: {{i.0.usuario|lower|capfirst}}</h6>
                                     </a>
@@ -198,13 +201,13 @@
                                 <td>
                                     <i style="display: none;">{{i.0.estado}}</i>
                                     {% if i.0.estado == 'LISTO' %}
-                                    <i data-toggle="tooltip" data-placement="left" title="Listo" class="fa fa-lg fa-check-circle text-success"></i>
+                                    <i data-toggle="tooltip" data-placement="top" title="Listo" class="fa fa-lg fa-check-circle text-success"></i>
                                     {% elif i.0.estado == 'TRABAJANDO' %}
-                                    <i data-toggle="tooltip" data-placement="left" title="Trabajando!" class="fa fa-lg fa-child text-warning"></i>
+                                    <i data-toggle="tooltip" data-placement="top" title="Trabajando!" class="fa fa-lg fa-child text-warning"></i>
                                     {% elif i.0.estado == 'PROBLEMAS' %}
-                                    <i data-toggle="tooltip" data-placement="left" title="Problemas" class="fa fa-lg fa-grav text-danger"></i>
+                                    <i data-toggle="tooltip" data-placement="top" title="Problemas" class="fa fa-lg fa-grav text-danger"></i>
                                     {% else %}
-                                    <i data-toggle="tooltip" data-placement="left" title="En espera" class="fa fa-lg fa-clock-o text-info"></i>
+                                    <i data-toggle="tooltip" data-placement="top" title="En espera" class="fa fa-lg fa-clock-o text-info"></i>
                                     {% endif %}
                                 </td>
                                 
@@ -222,11 +225,14 @@
                                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
                                         <div class="dropdown-menu dropdown-menu-right">
                                                    
+                                            
+                                            <a class="dropdown-item" href="{% url 'Formulario 1' i.0.id %}"><i
+                                                class="fa fa-angle-double-right mr-2"></i>Solucion de reclamo</a>
+                                            <a class="dropdown-item" href="{% url 'Formulario 2' i.0.id %}"><i
+                                                class="fa fa-angle-double-right mr-2"></i>Detalle de ejecución</a>
                                             <a class="dropdown-item" href="#" data-toggle="modal"
                                             data-target="#ModalEditarReclamo{{i.0.id}}"><i
-                                                class="fa fa-pencil-square-o mr-2"></i>Editar</a>
-                                                <a class="dropdown-item" href="{% url 'Formulario 1' i.0.id %}"><i
-                                                    class="fa fa-plus-circle mr-2"></i>Solucion de reclamo</a>
+                                                class="fa fa-angle-double-right mr-2"></i>Editar</a>
                                             <a class="dropdown-item" href="#" data-toggle="modal"
                                             data-target="#ModalBorrarAdjuntos{{i.0.id}}"><i
                                                 class="fa fa-file-pdf-o mr-2 text-danger"></i>Borrar adjuntos</a>
@@ -998,10 +1004,12 @@
 
 </style>
 
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <script>
 
     const data_backend = [
-        {% for dato in datos %}
+        {% for dato in datos_completos %}
 
         {'numero':{{dato.0.numero}}, 'proyecto':'{{dato.0.proyecto}}'},
         
@@ -1009,10 +1017,6 @@
     ];
 
     function numero_reclamo() {
-
-        var data_transform = "{{datos}}";
-
-        console.log(data_transform)
 
         var nombre_proyecto = document.getElementById("reclamo_nuevo_proyecto");
 
@@ -1034,6 +1038,27 @@
         
     }
 
+    function sweet_alert(mensaje, estado) {
+
+        const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 5000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+    })
+
+    Toast.fire({
+        icon: estado,
+        title: mensaje
+    })
+
+    }
+
 
     function clasificacion() {
 
@@ -1046,6 +1071,46 @@
         button_delete = document.getElementById("borrar_clas");
         button_delete.value = valor_clasificacion;
 
+    }
+
+    function cambio_estado(response, id_reclamo){
+        
+        if (response.mensaje == "Visto!"){
+            var id_objeto = "estado_" + new String(id_reclamo)
+            estado_seleccionado = document.getElementById(id_objeto);
+            estado_seleccionado.className = "btn fa fa fa-lg fa-check-circle text-success";
+            return sweet_alert(response.mensaje, "success")
+        } else if (response.mensaje == "Pendiente!") {
+
+            var id_objeto = "estado_" + new String(id_reclamo)
+            estado_seleccionado = document.getElementById(id_objeto);
+            estado_seleccionado.className = "btn fa fa fa-lg fa-exclamation-circle text-warning";
+            return sweet_alert(response.mensaje, "success")
+
+        } else {
+            return sweet_alert(response.mensaje, "warning")
+        }
+        
+    }
+
+    async function service_cambio_estado(id_reclamo){
+
+        
+        const url = `{% host %}/ventas/postventa/${id_reclamo}/cambio_estado/`
+
+        var respuesta = await fetch(url ,{
+            method: "POST",
+            headers: {
+                'X-CSRFToken' : "{{ csrf_token }}",
+                'Content-Type': 'application/json',
+            },
+
+            body: JSON.stringify({'check':1})
+        })
+        
+        var response = await respuesta.json()
+
+        return cambio_estado(response, id_reclamo)
     }
 
 
@@ -1088,7 +1153,7 @@
 
 {% if mensaje %}
 
-<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 
 <script>
 
