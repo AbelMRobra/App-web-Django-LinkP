@@ -226,7 +226,7 @@ class ReclamosPostventa(models.Model):
 class FormularioSolucionPostventa(models.Model):
 
     reclamo = models.ForeignKey(ReclamosPostventa, on_delete=models.CASCADE, verbose_name="Reclamo asociado")
-    fecha = models.DateField(verbose_name="Fecha del formulario")
+    fecha = models.DateField(verbose_name="Fecha del formulario", auto_now_add=True)
     responsable = models.CharField(max_length=100, verbose_name = "Responsable")
     metodo_pago = models.CharField(max_length=100, verbose_name = "Metodo de pago")
     costo_mo = models.FloatField(verbose_name="Costo de MO")

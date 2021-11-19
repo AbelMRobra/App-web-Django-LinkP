@@ -101,10 +101,14 @@
                                 <form method="POST"> {% csrf_token %}
                                     
                                     <h5 class="mt-2">Crear nueva categoria</h5>  
-                                    <input type="text" name="crear_clasificacion" class="form-control">
+                                    <input id="crear_clasificacion" 
+                                    type="text"
+                                    class="form-control">
                                     <div class="row d-flex mt-2">
                                         <div class="text-right">
-                                            <button type="submit" class="btn btn-success">Crear</button>
+                                            <button id="create_class"
+                                            onclick="service_create_clasificacion()"
+                                            class="btn btn-success">Crear</button>
                                         </div>
                                     </div>
                                 </form>
@@ -115,24 +119,40 @@
                                     
         
 
-                                    <select id="clasificacion_option" onchange = "clasificacion()" name="categoria"   class="form-control">
+                                    <select 
+                                        id="clasificacion_option" 
+                                        onchange = "clasificacion()"
+                                        class="form-control">
                                         {% for clasificacion in datos_clasficacion%}
-                                        <option  value="{{clasificacion}}">{{clasificacion}}</option>
+                                        <option id="gestion_{{clasificacion.id}}"  value="{{clasificacion.id}}">{{clasificacion}}</option>
                                         {% endfor %}
       
                                     </select>
+
+
+
                                     <h5 class="mt-2">Modificar categoria</h5>  
-                                    <input id="clasificacion_change" type="text" name="nombre_nuevo" class="form-control">
+                                    
+                                    <input id="clasificacion_change" type="text" class="form-control">
+                                    
+                                    
+                                    
                                     <div class="row d-flex mt-2">
                                         <div class="text-right">
-                                            <button type="submit" id ="editar_clas" name="editar_clasificacion" value="" class="btn"><i class="fa fa-lg fa-pencil-square-o text-info"></i></button>
-                                            
+                                            <button id ="upload_class" 
+                                            data-toggle="tooltip" data-placement="top" title="Editar clasificación"
+                                            onclick="service_upload_clasificacion()" 
+                                            class="btn btn-success btn-circle fa fa-pencil-square-o"></button>
+                                            <button id ="delete_class"
+                                            data-toggle="tooltip" data-placement="top" title="Eliminar clasificación"
+                                            onclick="service_borrar_clasificacion()" 
+                                            class="btn btn-danger btn-circle fa fa-trash"></button>
                                         </div>
                                     </div>
 
                                 </form>
 
-                                <button type="submit" name="borrar_clasificacion" value="" class="btn"><i class="fa fa-lg fa-trash text-danger"></i></button>
+                                
                             </div>
                         </div>
                     </div>
@@ -167,10 +187,6 @@
                                     {% else %}
                                     <button id = "estado_{{i.0.id}}" onclick="service_cambio_estado({{i.0.id}})" class="btn fa fa-lg fa-exclamation-circle text-warning"  data-toggle="tooltip" data-placement="top" title="Visto por responsable"></button>
                                     
-                                
-                                    <!-- <form  method="POST">
-                                    {% csrf_token %}
-                                    <button type="submit" name="cambio_estado" value="{{i.0.id}}" class="btn fa fa-lg fa-exclamation-circle text-warning"  data-toggle="tooltip" data-placement="top" title="Visto por responsable"></button></form> -->
                                     {% endif %}
                                 </td>
                                 <td class="text-center">
@@ -200,15 +216,34 @@
                                 
                                 <td>
                                     <i style="display: none;">{{i.0.estado}}</i>
+                                    
+                                    <i id="estado_reclamo_{{i.0.id}}" 
+
                                     {% if i.0.estado == 'LISTO' %}
-                                    <i data-toggle="tooltip" data-placement="top" title="Listo" class="fa fa-lg fa-check-circle text-success"></i>
+                                    class="pop btn fa fa-lg fa-check-circle text-success"
                                     {% elif i.0.estado == 'TRABAJANDO' %}
-                                    <i data-toggle="tooltip" data-placement="top" title="Trabajando!" class="fa fa-lg fa-child text-warning"></i>
+                                    class="pop btn fa fa-lg fa-child text-warning"
                                     {% elif i.0.estado == 'PROBLEMAS' %}
-                                    <i data-toggle="tooltip" data-placement="top" title="Problemas" class="fa fa-lg fa-grav text-danger"></i>
+                                    class="pop btn fa fa-lg fa-grav text-danger"
                                     {% else %}
-                                    <i data-toggle="tooltip" data-placement="top" title="En espera" class="fa fa-lg fa-clock-o text-info"></i>
+                                    class="pop btn fa fa-lg fa-clock-o text-info"
                                     {% endif %}
+
+                                    data-container="body" 
+                                    data-toggle="popover" 
+                                    data-placement="top" 
+                                    data-html="true" 
+                                    data-content='
+                                    
+                                    <ul class="nav">
+                                        <li class="d-flex flex-column"><a href="#" onclick="service_estado({{i.0.id}}, 1)"><i class="fa fa-lg fa-check-circle text-success"></i></a></li>
+                                        <li class="d-flex flex-column"><a href="#" onclick="service_estado({{i.0.id}}, 2)"><i class="fa fa-lg fa-child text-warning"></i></a></li>
+                                        <li class="d-flex flex-column"><a href="#" onclick="service_estado({{i.0.id}}, 3)"><i class="fa fa-lg fa-grav text-danger"></i></a></li>
+                                        <li class="d-flex flex-column"> <a href="#" onclick="service_estado({{i.0.id}}, 4)"><i class="fa fa-lg fa-clock-o text-info"></i></a></li>
+                                    </ul>'
+                                    
+                                    ></i>
+
                                 </td>
                                 
                                 <td style="min-width: 130px;">
@@ -283,8 +318,12 @@
                                                                 <div class="col">
                                                                     <div>
                             
-                                                                        <input name="numero_editar" type="number" class="form-control form-control"
-                                                                            value="{{i.0.numero}}" required="true">
+                                                                        <input 
+                                                                        name="numero_editar" 
+                                                                        type="number" 
+                                                                        class="form-control form-control"
+                                                                        value="{{i.0.numero}}" 
+                                                                        required>
                             
                                                                     </div>
                                                                 </div>
@@ -305,8 +344,17 @@
                                                                 <div class="col">
                                                                     <div>
                             
-                                                                        <input name="clasificacion_editar" type="search"
-                                                                            class="form-control form-control" list="clasificacion" value="{{i.0.clasificacion}}">
+
+                                                                        <select id="clasificacion_editar_{{i.0.id}}" 
+                                                                        name="clasificacion_editar" class="form-control">
+                                                                            <option hidden selected>Selecciona una opción</option>
+                                                                            
+                                                                            {% for clasificacion in datos_clasficacion %}
+                                
+                                                                            <option {% if i.0.clasificacion == clasificacion.nombre %} selected {% endif %} value="{{clasificacion.id}}">{{clasificacion}}</option>
+                                                                        
+                                                                            {% endfor %}
+                                                                        </select>
                             
                                                                     </div>
                                                                 </div>
@@ -326,8 +374,12 @@
                                                                 <div class="col">
                                                                     <div>
                             
-                                                                        <input name="fecha_editar" type="date" class="form-control form-control" value="{{i.0.fecha_reclamo|date:'Y-m-d'}}"
-                                                                            required="true">
+                                                                        <input 
+                                                                        name="fecha_editar" 
+                                                                        type="date" 
+                                                                        class="form-control form-control" 
+                                                                        value="{{i.0.fecha_reclamo|date:'Y-m-d'}}"
+                                                                        required>
                             
                                                                     </div>
                                                                 </div>
@@ -350,8 +402,12 @@
                                                                 <div class="col">
                                                                     <div>
                             
-                                                                        <input name="proyecto_editar" type="search" class="form-control form-control" value="{{i.0.proyecto|lower|capfirst}}"
-                                                                            list="proyectos_postventa">
+                                                                        <input 
+                                                                        name="proyecto_editar" 
+                                                                        type="search" 
+                                                                        class="form-control form-control" 
+                                                                        value="{{i.0.proyecto|lower|capfirst}}"
+                                                                        list="proyectos_postventa">
                             
                                                                     </div>
                                                                 </div>
@@ -476,8 +532,11 @@
                                                                 <div class="col">
                                                                     <div>
                             
-                                                                        <input name="responsable_editar" type="text" class="form-control form-control"
-                                                                            value="{{i.0.responsable}}">
+                                                                        <input name="responsable_editar" 
+                                                                        type="search" 
+                                                                        list="usuarios"
+                                                                        class="form-control form-control"
+                                                                        value="{{i.0.responsable}}">
                             
                                                                     </div>
                                                                 </div>
@@ -507,7 +566,12 @@
                             
                                                     <div class="row d-flex justify-content-center mt-2">
                                                         <div class="col-lg-6 text-center">
-                                                            <button type="submit" name="editar_reclamo" value="{{i.0.id}}" class="btn btn-primary">Editar</button>
+                                                            <!-- <button onclick="editar_reclamo({{i.0.id}})" class="btn btn-primary">Editar</button> -->
+                                                            <button 
+                                                            type="submit" 
+                                                            name="editar_reclamo" 
+                                                            value="{{i.0.id}}" 
+                                                            class="btn btn-primary">Editar</button>
                                                         </div>
                                                     </div>
                                                 </form>
@@ -702,8 +766,8 @@
                 </div>
                 
                 <div class="row p-4">
-                    <form role="form" action="" method="POST">
-                        {% csrf_token %}
+                    <form method="POST">
+                    {% csrf_token %}
 
                    <div class="row">
 
@@ -748,12 +812,12 @@
                            <div class="row d-flex justify-content-center mt-1 mb-2">
                                <div class="col">
                                    <div>
-                                       <select name="clasificacion_nuevo" class="form-control">
+                                       <select id="select_crear_clasificacion" name="clasificacion_nuevo" class="form-control">
                                             <option hidden selected>Selecciona una opción</option>
                                          
                                             {% for clasificacion in datos_clasficacion %}
 
-                                            <option value="{{clasificacion.id}}">{{clasificacion}}</option>
+                                            <option id="crear_{{clasificacion.id}}" value="{{clasificacion.id}}">{{clasificacion}}</option>
                                         
                                             {% endfor %}
                                        </select>
@@ -956,12 +1020,21 @@
     </div>
 </div>
 
-
 <datalist id="proyectos_postventa">
 
     {% for i in proyectos %}
 
     <option value="{{i}}">({{i}})</option>
+
+    {% endfor %}
+
+</datalist>
+
+<datalist id="usuarios">
+
+    {% for usuario in usuarios %}
+
+    <option value="{{usuario.id}}-{{usuario.identificacion}}-{{usuario.nombre}}">({{usuario.nombre}})</option>
 
     {% endfor %}
 
@@ -1004,9 +1077,53 @@
 
 </style>
 
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script data-require="bootstrap@*" data-semver="3.2.0" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.js"></script>
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+
 <script>
+ $(".pop").popover({
+    trigger: "manual",
+    html: true,
+    animation: false
+  })
+  .on("mouseenter", function() {
+    var _this = this;
+    $(this).popover("show");
+    $(".popover").on("mouseleave", function() {
+      $(_this).popover('hide');
+    });
+  }).on("mouseleave", function() {
+    var _this = this;
+    setTimeout(function() {
+      if (!$(".popover:hover").length) {
+        $(_this).popover("hide");
+      }
+    }, 300);
+  });
+    
+</script>
+
+
+
+<script>
+
+    // Deshabilitar refresh por form
+
+    document.getElementById("upload_class").addEventListener("click", function(event){
+    event.preventDefault()
+    });
+
+    document.getElementById("create_class").addEventListener("click", function(event){
+    event.preventDefault()
+    });
+
+    document.getElementById("delete_class").addEventListener("click", function(event){
+    event.preventDefault()
+    });
+
+    //
 
     const data_backend = [
         {% for dato in datos_completos %}
@@ -1050,26 +1167,30 @@
             toast.addEventListener('mouseenter', Swal.stopTimer)
             toast.addEventListener('mouseleave', Swal.resumeTimer)
         }
-    })
+        })
 
-    Toast.fire({
-        icon: estado,
-        title: mensaje
-    })
+        Toast.fire({
+            icon: estado,
+            title: mensaje
+        })
 
-    }
-
+    };
 
     function clasificacion() {
 
+        // Tomo el el ID de la clasificacion a traves del SELECT
         campo_seleccionado = document.getElementById("clasificacion_option");
         valor_clasificacion = campo_seleccionado.value;
+
+        // Tomo el nombre a traves del option
+
+        option_seleccion = document.getElementById(`gestion_${valor_clasificacion}`);
+        valor_clasificacion = option_seleccion.text
+
+        // Reemplazo en la selección
+
         field = document.getElementById("clasificacion_change");
         field.value = valor_clasificacion;
-        button_change = document.getElementById("editar_clas");
-        button_change.value = valor_clasificacion;
-        button_delete = document.getElementById("borrar_clas");
-        button_delete.value = valor_clasificacion;
 
     }
 
@@ -1087,11 +1208,219 @@
             estado_seleccionado.className = "btn fa fa fa-lg fa-exclamation-circle text-warning";
             return sweet_alert(response.mensaje, "success")
 
-        } else {
+        } 
+        
+        else if (response.mensaje == "Reclamo LISTO!") {
+
+            var id_objeto = "estado_reclamo_" + new String(id_reclamo)
+            estado_seleccionado = document.getElementById(id_objeto);
+            estado_seleccionado.className = "pop btn fa fa-lg fa-check-circle text-success";
+            return sweet_alert(response.mensaje, "success")
+
+            }
+
+            else if (response.mensaje == "Reclamo TRABAJANDO!") {
+
+                var id_objeto = "estado_reclamo_" + new String(id_reclamo)
+                estado_seleccionado = document.getElementById(id_objeto);
+                estado_seleccionado.className = "pop btn fa fa-lg fa-child text-warning";
+                return sweet_alert(response.mensaje, "success")
+
+                }
+
+            else if (response.mensaje == "Reclamo PROBLEMAS!") {
+
+                var id_objeto = "estado_reclamo_" + new String(id_reclamo)
+                estado_seleccionado = document.getElementById(id_objeto);
+                estado_seleccionado.className = "pop btn fa fa-lg fa-grav text-danger";
+                return sweet_alert(response.mensaje, "success")
+
+                }
+
+            else if (response.mensaje == "Reclamo ESPERA!") {
+
+                var id_objeto = "estado_reclamo_" + new String(id_reclamo)
+                estado_seleccionado = document.getElementById(id_objeto);
+                estado_seleccionado.className = "pop btn fa fa-lg fa-clock-o text-info";
+                return sweet_alert(response.mensaje, "success")
+
+                }
+        
+        else {
             return sweet_alert(response.mensaje, "warning")
         }
         
     }
+
+    // Sección API DELETE CLASIFICACIÓN - LISTA
+
+    async function service_borrar_clasificacion(){
+
+        id_clasificacion = document.getElementById("clasificacion_option").value;
+        
+        const url = `{% host %}/ventas/clasificacion/${id_clasificacion}/`
+
+        console.log(url)
+
+        var respuesta = await fetch(url ,{
+            method: "DELETE",
+            headers: {
+                'X-CSRFToken' : "{{ csrf_token }}",
+                'Content-Type': 'application/json',
+            },
+
+        })
+
+        var status = await respuesta.status
+
+        return validar_respuesta_delete(status, id_clasificacion)
+    }
+
+    function validar_respuesta_delete(status, id_clasificacion){
+
+        if (status >= 200 && status <300){
+
+        sweet_alert("Clasificacion eliminada", "success");
+
+        modificar_select_delete(id_clasificacion);
+
+        } else {
+        sweet_alert("Hubo un problema!", "warning")
+        }
+
+    }
+
+    function modificar_select_delete(id_clasificacion){
+
+        var option = document.getElementById(`gestion_${id_clasificacion}`);
+        option.remove()
+
+        var option = document.getElementById(`crear_${id_clasificacion}`);
+        option.remove()
+
+        clasificacion();
+    }
+
+    //
+
+    // Sección API EDITAR CLASIFICACIÓN - LISTA
+
+    async function service_upload_clasificacion(){
+
+        id_clasificacion = document.getElementById("clasificacion_option").value;
+        
+        const url = `{% host %}/ventas/clasificacion/${id_clasificacion}/`
+
+        var nombre = document.getElementById("clasificacion_change").value;
+
+        var respuesta = await fetch(url ,{
+            method: "PUT",
+            headers: {
+                'X-CSRFToken' : "{{ csrf_token }}",
+                'Content-Type': 'application/json',
+            },
+
+            body: JSON.stringify({
+                'nombre' : nombre,
+
+            })
+            });
+
+        var response = await respuesta.json();
+        var status = await respuesta.status
+        return validar_respuesta_update(response, status);
+
+    }
+
+    function validar_respuesta_update(response, status){
+
+        if (status >= 200 && status <300){
+
+        sweet_alert("Clasificacion editada", "success");
+
+        modificar_select_update(response);
+
+        } else {
+        sweet_alert("Hubo un problema!", "warning")
+        }
+
+    }
+
+    function modificar_select_update(response){
+
+        var option = document.getElementById(`gestion_${response.id}`);
+        option.text = response.nombre;
+
+
+        var option = document.getElementById(`crear_${response.id}`);
+        option.text = response.nombre;
+
+
+
+    }
+
+    //
+
+    // Sección API CREAR CLASIFICACIÓN - LISTA
+
+    async function service_create_clasificacion(){
+
+        const url = `{% host %}/ventas/clasificacion/`
+
+        var nombre = document.getElementById("crear_clasificacion").value;
+
+        var respuesta = await fetch(url ,{
+            method: "POST",
+            headers: {
+                'X-CSRFToken' : "{{ csrf_token }}",
+                'Content-Type': 'application/json',
+            },
+
+            body: JSON.stringify({
+                'nombre' : nombre,
+
+            })
+            });
+
+        var response = await respuesta.json();
+        var status = await respuesta.status
+        return validar_respuesta_create(response, status);
+
+    }
+
+    function validar_respuesta_create(response, status){
+
+        if (status >= 200 && status <300){
+
+        sweet_alert("Clasificacion creada", "success");
+
+        modificar_select_create(response);
+
+        } else {
+        sweet_alert("Hubo un problema!", "warning")
+        }
+
+    }
+
+    function modificar_select_create(response){
+
+        var select = document.getElementById('clasificacion_option');
+        var option = document.createElement('option');
+        option.id = `gestion_${response.id}`;
+        option.value = response.id;
+        option.text = response.nombre;
+        select.appendChild(option)
+
+        var select = document.getElementById('select_crear_clasificacion');
+        var option = document.createElement('option');
+        option.id = `crear_${response.id}`;
+        option.value = response.id;
+        option.text = response.nombre;
+        select.appendChild(option)
+
+    }
+
+    //
 
     async function service_cambio_estado(id_reclamo){
 
@@ -1113,10 +1442,64 @@
         return cambio_estado(response, id_reclamo)
     }
 
+    async function service_estado(id_reclamo, estado){
+    
+
+        var estado_str = () => {if (estado == 1) {
+            return "LISTO"
+        } else if (estado == 2){
+            return "TRABAJANDO"
+        }
+        else if (estado == 3){
+            return "PROBLEMAS"
+        }
+        else if (estado == 4){
+            return "ESPERA"
+        }}
+        
+        const url = `{% host %}/ventas/postventa/${id_reclamo}/estado/`
+
+        var respuesta = await fetch(url ,{
+            method: "POST",
+            headers: {
+                'X-CSRFToken' : "{{ csrf_token }}",
+                'Content-Type': 'application/json',
+            },
+
+            body: JSON.stringify({'estado':estado_str()})
+        })
+
+        var response = await respuesta.json()
+
+        return cambio_estado(response, id_reclamo)
+    }
+
+
+    async function editar_reclamo(id_reclamo){
+
+        
+    const url = `{% host %}/ventas/postventa/${id_reclamo}/`
+
+    var respuesta = await fetch(url ,{
+        method: "PUT",
+        headers: {
+            'X-CSRFToken' : "{{ csrf_token }}",
+            'Content-Type': 'application/json',
+        },
+
+        body: JSON.stringify(
+            {'clasificacion': document.getElementById("clasificacion_editar_" + new String(id_reclamo)).value}
+            )
+    })
+
+    var response = await respuesta.json()
+
+    return console.log(response)
+    }
+
 
 </script>
 
-<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 
 <script>
     $(document).ready(function () {
@@ -1152,8 +1535,6 @@
 </script>
 
 {% if mensaje %}
-
-
 
 <script>
 

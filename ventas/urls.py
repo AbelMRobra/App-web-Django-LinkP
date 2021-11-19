@@ -9,10 +9,14 @@ from .views import DescargaPricing
 from .views_app.views_cotizador import PDF_cotizacion
 from django.contrib.auth.decorators import login_required
 from rest_framework import routers
-from ventas.viewsets.viewsets import ReclamosViewset
+from ventas.viewsets.viewsets import ReclamosViewset, FormularioSolucionPostventaViewset, FormularioDetallePostventaViewset, ClasificacionReclamosPostventaViewset
+from ventas.funciones import f_postventa
 
 router = routers.DefaultRouter()
 router.register(r'postventa', ReclamosViewset)
+router.register(r'api_formulario_1', FormularioSolucionPostventaViewset)
+router.register(r'api_formulario_2', FormularioDetallePostventaViewset)
+router.register(r'clasificacion', ClasificacionReclamosPostventaViewset)
 
 urlpatterns = [
 
@@ -26,6 +30,9 @@ urlpatterns = [
     url(r'^formulario_1/(?P<id_reclamo>\d+)/$', login_required(views_postventa.postventa_formulario_1), name = 'Formulario 1'),
     url(r'^formulario_2/(?P<id_reclamo>\d+)/$', login_required(views_postventa.postventa_formulario_2), name = 'Formulario 2'),
     url(r'^reportereclamo/$', login_required(views_postventa.postventa_reporte), name = 'Reporte Reclamo'),
+    url(r'^formulario_1_pdf/(?P<id_reclamo>\d+)/$', f_postventa.Formulario_solucion.as_view(), name = "Formulario 1 en PDF"),
+    url(r'^formulario_2_pdf/(?P<id_reclamo>\d+)/$', f_postventa.Formulario_detalle.as_view(), name = "Formulario 2 en PDF"),
+
 
     # ----------> URL archivos
     url(r'^archivos_principal/$', login_required(views_archivos.archivos_principal), name = 'Archivos comercial'),

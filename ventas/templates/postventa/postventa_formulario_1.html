@@ -1,11 +1,11 @@
 {% extends "users/inicio2.html" %}
-
+{% load apptags_extras %}
 {% load static %}
 {% load humanize %}
 
 {% block content %}
 
-<div class="container-fluid">
+<div class="container-fluid" onload="variable_fomulario()">
     <div class="row page-titles">
         <div class="col-md-5 align-self-center">
             <h3 class="text-themecolor">Formularios</h3>
@@ -70,19 +70,22 @@
                             <div class="row">
                                 <div class="col bg-light border rounded p-4 ">
 
-                                    <form role="form" method="POST">
-                                        {% csrf_token %}
-
                                         <label for="descripcion">
                                             <h6>Descripcion de la solucion</h6>
                                         </label>
 
                                         <div class="row d-flex justify-content-center my-3">
                                             <div class="col">
-                                                    <textarea name="descripcion" required cols="30" rows="5" class="form-control"></textarea>
+                                                    <textarea 
+                                                    id = "descripcion"
+                                                    onkeyup="validar_formulario()"
+                                                    name="descripcion" 
+                                                    required cols="30" 
+                                                    rows="5" 
+                                                    class="form-control">{% if datos_formulario%}{{datos_formulario.0.descripcion}}{% endif %}</textarea>
                                             </div>
                                         </div>
-
+                                        <form>
                                         <div class="row d-flex">
                                             <div class="col col-lg-6">
                                                 <label for="responsable">
@@ -91,7 +94,13 @@
                                                 
                                                 <div class="row d-flex justify-content-center my-3">
                                                     <div class="col">
-                                                        <input type="text" required name="responsable" class="form-control" placeholder="Responsable">
+                                                        <input type="text" 
+                                                        id = "responsable"
+                                                        onkeyup="validar_formulario()"
+                                                        required name="responsable" 
+                                                        class="form-control" 
+                                                        placeholder="Responsable"
+                                                        value="{% if datos_formulario%}{{datos_formulario.0.responsable}}{% endif %}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -102,7 +111,13 @@
                                                 
                                                 <div class="row d-flex justify-content-center my-3">
                                                     <div class="col">
-                                                        <input type="text" required name="metodo_pago" class="form-control"placeholder="Pago">
+                                                        <input type="text" 
+                                                        id = "metodo_pago"
+                                                        onkeyup="validar_formulario()"
+                                                        required name="metodo_pago" 
+                                                        class="form-control"
+                                                        placeholder="Pago"
+                                                        value="{% if datos_formulario%}{{datos_formulario.0.metodo_pago}}{% endif %}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -115,7 +130,14 @@
 
                                                 <div class="row d-flex justify-content-center my-3">
                                                     <div class="col">
-                                                            <input type="number" required step="any" name="costo_mo" class="form-control" placeholder="Costo">
+                                                            <input type="number" 
+                                                            id = "costo_mo"
+                                                            onkeyup="validar_formulario()"
+                                                            required step="any" 
+                                                            name="costo_mo" 
+                                                            class="form-control" 
+                                                            placeholder="Costo"
+                                                            value="{% if datos_formulario%}{{datos_formulario.0.costo_mo}}{% endif %}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -127,7 +149,14 @@
 
                                                 <div class="row d-flex justify-content-center my-3">
                                                     <div class="col">
-                                                            <input type="number" required step="any" name="costo_mat" class="form-control" placeholder="Costo">
+                                                            <input type="number" 
+                                                            id = "costo_mat"
+                                                            onkeyup="validar_formulario()"
+                                                            required step="any" 
+                                                            name="costo_mat" 
+                                                            class="form-control" 
+                                                            placeholder="Costo"
+                                                            value="{% if datos_formulario%}{{datos_formulario.0.costo_mat}}{% endif %}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -139,13 +168,23 @@
 
                                         <div class="row d-flex justify-content-center my-3">
                                             <div class="col">
-                                                    <textarea name="observacion" required cols="30" rows="5" class="form-control"></textarea>
+                                                    <textarea 
+                                                    id = "observacion"
+                                                    onkeyup="validar_formulario()"
+                                                    name="observacion" 
+                                                    required cols="30" 
+                                                    rows="5" 
+                                                    class="form-control">{% if datos_formulario%}{{datos_formulario.0.observacion}}{% endif %}</textarea>
                                             </div>
                                         </div>
 
                                         <div class="row d-flex justify-content-center mt-4">
                                             <div class="col-lg-6 text-center">
-                                                <button type="submit" class="btn btn-primary">Subir</button>
+                                                <button id="upload"
+
+                                                data-toggle="tooltip" data-placement="left" title="Cargar cambios"
+                                                onclick="upload_formulario({{datos_reclamo.id}})"
+                                                class="btn btn-primary btn-circle fa fa-cloud-upload"></button>
                                             </div>
                                         </div>
                                     </form>
@@ -160,7 +199,9 @@
 </div>
 
 
-
+<a id="pdf" href="{% url 'Formulario 1 en PDF' datos_reclamo.id%}" target="_blank"
+data-toggle="tooltip" data-placement="left" title="Imprimir PDF"
+><i class="btn btn-danger btn-circle fa fa-file-pdf-o"></i></a>
 
 
 <datalist id="proyectos_postventa">
@@ -183,6 +224,161 @@
 
 </datalist>
 
+<style>
+       
+    #pdf {
+        position: fixed;
+        bottom: 40px;
+        right: 20px;
+        z-index: 10;
+    }
+
+    #upload {
+        position: fixed;
+        bottom: 40px;
+        right: 20px;
+        z-index: 10;
+
+    }
+</style>
+
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+
+    document.getElementById("upload").addEventListener("click", function(event){
+    event.preventDefault()
+    });
+
+    {% if datos_formulario %}
+
+    const formulario = [{
+        'id':{{datos_formulario.0.id}},
+        'descripcion':"{{datos_formulario.0.descripcion}}",
+        'observacion':"{{datos_formulario.0.observacion}}",
+        'costo_mat':{{datos_formulario.0.costo_mat}},
+        'costo_mo':{{datos_formulario.0.costo_mo}},
+        'metodo_pago':"{{datos_formulario.0.metodo_pago}}",
+        'responsable':"{{datos_formulario.0.responsable}}",
+    }]
+
+    {% else %}
+
+    const formulario = [{
+        'id':1,
+        'descripcion':1,
+        'observacion':1,
+        'costo_mat':1,
+        'costo_mo':1,
+        'metodo_pago':1,
+        'responsable':1,
+    }]
+
+    {% endif %}
+
+    window.load = validar_formulario()
+   
+    function sweet_alert(mensaje, estado) {
+
+        const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 5000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+        })
+
+        Toast.fire({
+        icon: estado,
+        title: mensaje
+        })
+
+    }
+
+    function validar_formulario() {
+
+        var descripcion = document.getElementById("descripcion").value;
+        var observacion = document.getElementById("observacion").value;
+        var costo_mat = document.getElementById("costo_mat").value;
+        var costo_mo = document.getElementById("costo_mo").value;
+        var metodo_pago = document.getElementById("metodo_pago").value;
+        var responsable = document.getElementById("responsable").value;
+
+
+        if (
+            descripcion == formulario[0].descripcion &&
+            observacion == formulario[0].observacion &&
+            costo_mat == formulario[0].costo_mat &&
+            costo_mo == formulario[0].costo_mo &&
+            metodo_pago == formulario[0].metodo_pago &&
+            responsable == formulario[0].responsable
+        ) {
+
+            var boton_pdf = document.getElementById("pdf");
+            boton_pdf.style = "display: content"
+
+            var boton_upload = document.getElementById("upload");
+            boton_upload.style = "display: none"
+
+        } else {
+
+            var boton_pdf = document.getElementById("pdf");
+            boton_pdf.style = "display: none"
+
+            var boton_upload = document.getElementById("upload");
+            boton_upload.style = "display: content"
+            
+        }
+
+    }
+
+    function completar_array(response, status){
+
+        if  (status >= 200 && status < 300){
+            sweet_alert("Perfecto!", "success");
+            formulario.unshift(response);
+            validar_formulario();
+ 
+        } else {
+            sweet_alert("Error!", "warning");
+        }
+        
+    }
+
+    async function upload_formulario(reclamo) {
+
+        const url = `{% host %}/ventas/api_formulario_1/`;
+
+        var respuesta = await fetch(url ,{
+            method: "POST",
+            headers: {
+                'X-CSRFToken' : "{{ csrf_token }}",
+                'Content-Type': 'application/json',
+            },
+
+            body: JSON.stringify({'reclamo':reclamo,
+                'responsable' : document.getElementById("responsable").value,
+                'metodo_pago' : document.getElementById("metodo_pago").value,
+                'costo_mo' : document.getElementById("costo_mo").value,
+                'costo_mat' : document.getElementById("costo_mat").value,
+                'descripcion' : document.getElementById("descripcion").value,
+                'observacion' : document.getElementById("observacion").value
+            })
+            });
+
+        var response = await respuesta.json();
+        var status = await respuesta.status
+        return completar_array(response, status);
+    }
+
+
+</script>
+
 
 
 {% endblock %}
+

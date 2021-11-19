@@ -129,8 +129,8 @@ def postventa_panel_principal(request):
 
                 try:
 
-                    usuario = datosusuario.objects.filter(identificacion = request.POST['responsable_editar'])
-                    reclamo.responsable = usuario[0]
+                    usuario = datosusuario.objects.get(id = int(request.POST['responsable_editar'].split("-")[0]))
+                    reclamo.responsable = usuario
                     reclamo.save()
    
                 except:
@@ -203,6 +203,7 @@ def postventa_panel_principal(request):
 
     context['datos'] = [(dato, AdjuntosReclamosPostventa.objects.filter(reclamo = dato)) for dato in datos_reclamos]
     context['datos_clasficacion'] = ClasificacionReclamosPostventa.objects.all()
+    context['usuarios'] = datosusuario.objects.all().exclude(estado = "BAJA").order_by("nombre")
 
 
     return render(request, 'postventa/postventa_principal.html', context)
@@ -298,11 +299,13 @@ def postventa_reclamo_detalle(request, id_reclamo):
 def postventa_formulario_1(request, id_reclamo):
 
     context = {}
+    
     context["datos_reclamo"] = ReclamosPostventa.objects.get(id = id_reclamo)
 
     if request.method == 'POST':
 
         nuevo = FormularioSolucionPostventa.objects.create(
+
             reclamo = context["datos_reclamo"],
             fecha = datetime.date.today(),
             responsable = request.POST["responsable"],
@@ -312,7 +315,13 @@ def postventa_formulario_1(request, id_reclamo):
             descripcion = request.POST["descripcion"],
             observacion = request.POST["observacion"],
         )
-    
+
+    if len(FormularioSolucionPostventa.objects.filter(reclamo = context["datos_reclamo"])) > 0:
+        context["datos_formulario"] = FormularioSolucionPostventa.objects.filter(reclamo = context["datos_reclamo"]).order_by("-id")
+
+    else:
+
+        context["datos_formulario"] = False
 
     return render(request, 'postventa/postventa_formulario_1.html', context)
 
@@ -330,6 +339,13 @@ def postventa_formulario_2(request, id_reclamo):
             descripcion = request.POST["descripcion"],
 
         )
+
+    if len(FormularioDetallePostventa.objects.filter(reclamo = context["datos_reclamo"])) > 0:
+        context["datos_formulario"] = FormularioDetallePostventa.objects.filter(reclamo = context["datos_reclamo"]).order_by("-id")
+
+    else:
+
+        context["datos_formulario"] = False
 
     return render(request, 'postventa/postventa_formulario_2.html', context)
 

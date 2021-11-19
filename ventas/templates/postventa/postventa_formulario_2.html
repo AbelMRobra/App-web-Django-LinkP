@@ -1,5 +1,5 @@
 {% extends "users/inicio2.html" %}
-
+{% load apptags_extras %}
 {% load static %}
 {% load humanize %}
 
@@ -82,7 +82,11 @@
                                                 
                                                 <div class="row d-flex justify-content-center my-3">
                                                     <div class="col">
-                                                        <input type="date"  required name="fecha_inicio" class="form-control">
+                                                        <input id="fecha_inicio" 
+                                                        onkeyup="validar_formulario()"
+                                                        type="date"  required
+                                                        value="{% if datos_formulario%}{{datos_formulario.0.fecha_inicio|date:'Y-m-d'}}{% endif %}"
+                                                        name="fecha_inicio" class="form-control">
                                                     </div>
                                                 </div>
                                             </div>
@@ -93,7 +97,12 @@
                                                 
                                                 <div class="row d-flex justify-content-center my-3">
                                                     <div class="col">
-                                                        <input type="date" required name="fecha_final" class="form-control">
+                                                        <input 
+                                                        id="fecha_final"
+                                                        onkeyup="validar_formulario()"
+                                                        type="date" required 
+                                                        value="{% if datos_formulario%}{{datos_formulario.0.fecha_final|date:'Y-m-d'}}{% endif %}"
+                                                        name="fecha_final" class="form-control">
                                                     </div>
                                                 </div>
                                             </div>
@@ -105,13 +114,20 @@
 
                                         <div class="row d-flex justify-content-center my-3">
                                             <div class="col">
-                                                    <textarea required name="descripcion" cols="30" rows="5" class="form-control"></textarea>
+                                                    <textarea
+                                                    id="descripcion" 
+                                                    onkeyup="validar_formulario()"
+                                                    required name="descripcion" 
+                                                    cols="30" rows="5" class="form-control">{% if datos_formulario%}{{datos_formulario.0.descripcion}}{% endif %}</textarea>
                                             </div>
                                         </div>
 
                                         <div class="row d-flex justify-content-center mt-4">
                                             <div class="col-lg-6 text-center">
-                                                <button type="submit" class="btn btn-primary">Subir</button>
+                                                <button id="upload"
+                                                data-toggle="tooltip" data-placement="left" title="Cargar cambios"
+                                                onclick="upload_formulario({{datos_reclamo.id}})"
+                                                class="btn btn-primary btn-circle fa fa-cloud-upload"></button>
                                             </div>
                                         </div>
                                     </form>
@@ -124,6 +140,155 @@
         </div>
     </div>
 </div>
+
+
+<a id="pdf" href="{% url 'Formulario 2 en PDF' datos_reclamo.id%}" target="_blank"
+data-toggle="tooltip" data-placement="left" title="Imprimir PDF"
+><i class="btn btn-danger btn-circle fa fa-file-pdf-o"></i></a>
+
+<style>
+       
+    #pdf {
+        position: fixed;
+        bottom: 40px;
+        right: 20px;
+        z-index: 10;
+    }
+
+    #upload {
+        position: fixed;
+        bottom: 40px;
+        right: 20px;
+        z-index: 10;
+
+    }
+</style>
+
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+
+    document.getElementById("upload").addEventListener("click", function(event){
+    event.preventDefault()
+    });
+
+
+    {% if datos_formulario %}
+
+    const formulario = [{
+        'id':{{datos_formulario.0.id}},
+        'fecha_inicio':"{{datos_formulario.0.fecha_inicio|date:'Y-m-d'}}",
+        'fecha_final':"{{datos_formulario.0.fecha_final|date:'Y-m-d'}}",
+        'descripcion':"{{datos_formulario.0.descripcion}}",
+
+    }]
+
+    {% else %}
+
+    const formulario = [{
+        'id':1,
+        'fecha_inicio':1,
+        'fecha_final':1,
+        'descripcion':1,
+
+    }]
+
+    {% endif %}
+
+    function sweet_alert(mensaje, estado) {
+
+        const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 5000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+        })
+
+        Toast.fire({
+        icon: estado,
+        title: mensaje
+        })
+
+    }
+
+    // window.load = validar_formulario()
+
+    function validar_formulario() {
+
+        console.log(formulario);
+
+        var fecha_inicio = document.getElementById("fecha_inicio").value;
+        var fecha_final = document.getElementById("fecha_final").value;
+        var descripcion = document.getElementById("descripcion").value;
+
+        if (
+            fecha_inicio == formulario[0].fecha_inicio &&
+            fecha_final == formulario[0].fecha_final &&
+            descripcion == formulario[0].descripcion 
+
+        ) {
+
+            var boton_pdf = document.getElementById("pdf");
+            boton_pdf.style = "display: content"
+
+            var boton_upload = document.getElementById("upload");
+            boton_upload.style = "display: none"
+
+        } else {
+
+            var boton_pdf = document.getElementById("pdf");
+            boton_pdf.style = "display: none"
+
+            var boton_upload = document.getElementById("upload");
+            boton_upload.style = "display: content"
+            
+        }
+
+    }
+
+    async function upload_formulario(reclamo) {
+
+        const url = `{% host %}/ventas/api_formulario_2/`;
+
+        var respuesta = await fetch(url ,{
+            method: "POST",
+            headers: {
+                'X-CSRFToken' : "{{ csrf_token }}",
+                'Content-Type': 'application/json',
+            },
+
+            body: JSON.stringify({'reclamo':reclamo,
+                'fecha_inicio' : document.getElementById("fecha_inicio").value,
+                'fecha_final' : document.getElementById("fecha_final").value,
+                'descripcion' : document.getElementById("descripcion").value,
+
+            })
+        });
+
+        var response = await respuesta.json();
+        var status = await respuesta.status
+        return completar_array(response, status);
+    }
+
+    function completar_array(response, status){
+
+        if  (status >= 200 && status < 300){
+            sweet_alert("Perfecto!", "success");
+            formulario.unshift(response);
+            validar_formulario();
+
+        } else {
+            sweet_alert("Error!", "warning");
+        }
+
+    }
+
+</script>
 
 
 {% endblock %}
