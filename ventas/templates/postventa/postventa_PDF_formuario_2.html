@@ -3,9 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 </head>
@@ -13,175 +11,158 @@
 <body>
 
 
-    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTeKciuVyeEzh9LJbNpei6_hYn1cl4GoEL_Cw&usqp=CAU"
-        class="img-fluid" alt="..." style="width:100%; height:150px;">
-    <div class="mx-4">
+    <img src="{{cabecera}}"
+     alt="..." class="w-100vw" style="height:200px;">
 
+     <div style="text-align: center; margin-top: 15px; margin-bottom: 20px;">
+         <h1>Formulario de solución del reclamo</h1>
+     </div>
+    <div class="mx-3">
+
+
+
+
+        <div class="my-2">
+            <h4 class="text-color"><b>{{datos_formulario.reclamo.proyecto}} - {{datos_formulario.reclamo.unidad}}</b> </h4>
+            <h5 class="text-color"><b>SOLICITUD: {{datos_formulario.reclamo.numero}}</b></h5>
+        </div>
+
+
+        <div class="my-1 w-100">
+
+            <table class="w-60vw">
+                <tbody class="w-100">
+                    <tr class="w-100">
+                        <td class="w-50 my-1">
+                            <h6><b>Responsable de ejecución:</b></h6>
+                            <p>{{datos_formulario.reclamo.responsable}}</p>
+                        </td>
+                        <td class="w-50 my-1">
+                            <h6><b>Fecha:</b></h6>
+                            <p>{{datos_formulario.reclamo.fecha_reclamo|date:"d/m/Y"}}</p>
+                        </td>
+                    </tr>
+                    <tr class="w-100">
+                        <td class="w-50 my-1">
+                            <h6><b>Cliente:</b></h6>
+                            <p>{{datos_formulario.reclamo.usuario}}</p>
+                        </td>
+                        <td class="w-50 my-1">
+                            <h6><b>Telefono:</b></h6>
+                            <p>{{datos_formulario.reclamo.telefono}}</p>
+                        </td>
+                    </tr>
+                  
+                </tbody>
+            </table>
+            <table>
+                <tbody>
+                    <tr class="w-100vw my-1">
+                        <td>
+                            <h6><b>Detalle del trabajo solicitado:</b></h6>
+                            <p style="white-space: pre-wrap;">{{datos_formulario.reclamo.descripcion}}</p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <hr class="w-100 my-3">
+        
 
         <div class="my-3">
-            <h4 class="text-primary"><b> LALALALA {{datos_formulario.reclamo.proyecto}} - {{datos_formulario.reclamo.unidad}}</b> </h4>
-            <h5 class="text-primary"><b>SOLICITUD: {{datos_formulario.reclamo.numero}}</b></h5>
+            <h5 class="text-color"><b>PROPUESTA DE PAGO</b></h5>
         </div>
 
 
-        <div class="row my-2 d-flex">
-
-            <div class="col-6 mt-1">
-                <h6><b>Responsable de ejecución:</b></h6>
-                <p>{{datos_formulario.reclamo.responsable}}</p>
-            </div>
-            <div class="col-6 mt-1">
-                <h6><b>Fecha:</b></h6>
-                <p>{{datos_formulario.reclamo.fecha_reclamo}}</p>
-            </div>
-            <div class="col-6 mt-1">
-                <h6><b>Cliente:</b></h6>
-                <p>{{datos_formulario.reclamo.usuario}}</p>
-            </div>
-            <div class="col-6 mt-1">
-                <h6><b>Telefono:</b></h6>
-                <p>{{datos_formulario.reclamo.telefono}}</p>
-            </div>
-            <div class="col mt-1">
-                <h6><b>Detalle del trabajo solicitado:</b></h6>
-                <p>{{datos_formulario.reclamo.descripcion}}
-                </p>
-            </div>
-        </div>
-
-
-        <b>
-            <hr class="my-2" style="width: 100%;">
-        </b>
-
-        <div class="my-3">
-            <h5 class="text-primary"><b>SOLUCION DEL RECLAMO</b></h5>
-        </div>
-
-
-        <div class="row d-flex" style="display: flex;">
-            <div class="col-12 my-1">
-                <h6><b>Solución:</b></h6>
-                <p>{{datos_formulario.descripcion}}</p>
-            </div>
-            <div class="col-6 my-1">
-                <h6><b>Responsabilidad de pago:</b></h6>
-                <p>{{datos_formulario.responsable}}</p>
-            </div>
-            <div class="col-6 my-1">
-                <h6><b>Forma de pago:</b></h6>
-                <p>{{datos_formulario.metodo_pago}}</p>
-            </div>
-            <div class="col-6 my-1">
-                <h6><b>Costo de mano de obra:</b></h6>
-                <p>{{datos_formulario.costo_mo}}</p>
-            </div>
-            <div class="col-6 my-1">
-                <h6><b>Costo de materiales:</b></h6>
-                <p>{{datos_formulario.costo_mat}}</p>
-            </div>
-           
-
-        </div>
-        <div class="my-3">
-            <h5 class="text-primary"><b>OBSERVACIONES</b></h5>
-        </div>
-
-
-        <div class="row d-flex">
-
-            <div class="col-12">
-                <p>{{datos_formulario.observacion}}</p>
-            </div>
-
-        </div>
-
-
-        <b>
-            <hr class="my-2" style="width: 100%;">
-        </b>
-
+        <table class="w-60vw">
+            <tbody class="w-100">
+                <tr class="w-100">
+                    <td class="w-50 my-1">
+                        <h6><b>Fecha de inicio:</b></h6>
+                        <p>{{datos_formulario.fecha_inicio|date:"d/m/Y"}}</p>
+                    </td>
+                    <td class="w-50 my-1">
+                        <h6><b>Fecha de finalizacion:</b></h6>
+                        <p>{{datos_formulario.fecha_final|date:"d/m/Y"}}</p>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
         <table>
             <tbody>
-                <tr>
-                    <td style="text-align: center;">
-
-                        <p ><b>{{datos_formulario.responsable}}</b></p>
-                        <p  class="mb-0"><small>Fecha y firma de responsable</small></p>
-                        <p ><small>ejecución de obra</small></p>
-                    </td>
-                    <td style="text-align: center;">
-                        <p ><b>Gerente de producción</b></p>
-                        <p  class="mb-0"><small>Fecha y firma de aprobación</small></p>
-                        <p ><small>coordinador de obra</small></p>
-
+                <tr class="w-100vw my-1">
+                    <td>
+                        <h6><b>Personal que realizó el trabajo:</b></h6>
+                        <p style="white-space: pre-wrap;">{{datos_formulario.descripcion}}</p>
                     </td>
                 </tr>
             </tbody>
         </table>
 
+        <hr class="w-100 my-3">
+        
 
+        <div class="m-xxl">
+
+            <table class="w-100vw text-center">
+                <tbody class="w-100">
+                    <tr class="w-100">
+                        <td class="w-50 my-1">
+                            <p><b>{{datos_formulario.reclamo.responsable}}</b></p>
+                            <p class="mb-0"><small>Fecha y firma de responsable</small></p>
+                            <p><small>ejecución de obra</small></p>
+                        </td>
+                        <td class="w-50 my-1">
+                            <p><b>Gerente de producción</b></p>
+                            <p class="mb-0"><small>Fecha y firma de aprobación</small></p>
+                            <p><small>coordinador de obra</small></p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </body>
 
+
 <style>
-    .img-fluid {
-        max-width: 100%;
-        height: auto;
+
+    .w-100vw{
+        width: 100vw;
     }
-
-    .mx-4 {
-        margin-right: 1.5rem !important;
-        margin-left: 1.5rem !important;
-        }
-
-    .my-3 {
-        margin-top: 1rem !important;
-        margin-bottom: 1rem !important;
-        }
-
-    .text-primary {
-        color: #0d6efd;
+    .w-60vw{
+        width: 60vw;
     }
-
-    
-
-    .row {
-        display: flex;
-        flex-wrap: wrap;
-        margin-top: 0;
-        margin-right: -0.75rem;
-        margin-left: -0.75rem;
-        }
-    .row > * {
-        flex-shrink: 0;
+    .w-100{
         width: 100%;
-        max-width: 100%;
-        padding-right: 0.75rem;
-        padding-left: 0.75rem;
-        margin-top: 0;
-        }
-
-        .col-6 {
-        flex: 0 0 auto;
+    }
+    .w-50{
         width: 50%;
-        }
-
-    .col {
-        flex: 1 0 0%;
     }
 
-    
-
-    .d-flex {
-        display: flex !important;
+    .m-xxl{
+        margin-top: 150px;
+    }
+    .mx-3{
+        margin: 0px 30px 0px 30px;
+    }
+    .my-2{
+        margin: 20px 0px 20px 0px;
+    }
+    .my-1{
+        margin: 10px 0px 10px 0px;
+    }
+    .mb-0{
+        margin-bottom: 3px;
     }
 
-    .mt-1 {
-        margin-top: 0.25rem !important;
+    .text-center{
+        text-align: center;
+    }
+    .text-color{
+        color: #73A123
     }
 
-    
+
 </style>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
