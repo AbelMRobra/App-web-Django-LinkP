@@ -536,11 +536,37 @@
                                                                         type="search" 
                                                                         list="usuarios"
                                                                         class="form-control form-control"
-                                                                        value="{{i.0.responsable}}">
+                                                                        value="{{i.0.id}}-{{i.0.responsable}}-{{i.0.nombre}}">
                             
                                                                     </div>
                                                                 </div>
                                                             </div>
+                                                        </div>
+
+                                                        <div class="col-4">
+                                                            <div>
+                            
+                                                                <label for="numero">
+                                                                    <h6>Fecha</h6>
+                                                                </label>
+                            
+                                                            </div>
+                            
+                                                            <div class="row d-flex justify-content-center mt-1 mb-2">
+                                                                <div class="col">
+                                                                    <div>
+                            
+                                                                        <input 
+                                                                        name="fecha_solucion_editar" 
+                                                                        type="date" 
+                                                                        class="form-control form-control" 
+                                                                        value="{{i.0.fecha_solucion|date:'Y-m-d'}}"
+                                                                        required>
+                            
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                            
                                                         </div>
                                                     </div>
                             
