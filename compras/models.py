@@ -6,7 +6,7 @@ from presupuestos.models import Capitulos
 # Create your models here.
 
 class Proveedores(models.Model):
-    name = models.CharField(max_length=200, verbose_name="Nombre")
+    name = models.CharField(max_length=200, verbose_name="Nombre", unique=True)
     descrip = models.TextField(verbose_name="Descripción")
     phone = models.IntegerField(verbose_name="Telefono")
     update = models.DateField(auto_now=True, verbose_name="Actualización")

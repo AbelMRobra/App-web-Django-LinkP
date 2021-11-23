@@ -45,4 +45,4 @@ def proveedores(request):
             if prov:
                 prov.save()
                 
-    return render(request, 'proveedores.html', {'datos':datos ,'mensaje':mensaje})
+    return render(request, 'proveedores/proveedores.html', {'datos':datos ,'mensaje':mensaje})

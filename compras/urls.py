@@ -1,19 +1,26 @@
 from django.urls import path, re_path
 from django.conf.urls import url
+from django.conf.urls import include
+from rest_framework import routers
+from compras.viewsets import viewsets_proveedores
 from . import views
 from .views import Reegistrodecompras, CompOCestado
 from .views_compras import views_api, views_generales, views_proveedores, views_circuito_compras
 from django.contrib.auth.decorators import login_required
 
 
+router = routers.DefaultRouter()
+router.register(r'api_proveedores', viewsets_proveedores.ProveedoresViewset)
+
+
 urlpatterns = [ 
+
+    path("", include(router.urls)),
 
     # templates de compras
 
-    url(r'^principalcompras$', login_required(views_generales.principalcompras), name = 'Principal compras'), 
-    
+    url(r'^principalcompras$', login_required(views_generales.principalcompras), name = 'Principal compras'),
     url(r'^proveedores$', login_required(views_proveedores.proveedores), name = 'Proveedores'),
-
 
     # URL -> Circuito de compras
     url(r'^comparativa_agregar$', login_required(views_circuito_compras.comparativas_agregar), name = 'Cargar O.C para autorizar'), 

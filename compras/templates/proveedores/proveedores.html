@@ -1,0 +1,234 @@
+{% extends "users/inicio2.html" %}
+
+{% load static %}
+{% load apptags_extras %}
+
+{% block content %}
+
+
+<div class="container-fluid">
+    <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+            <h3 class="text-themecolor">Proveedores</h3>
+        </div>
+
+        <div class="col-md-7 align-self-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'Principal compras' %}">Panel</a></li>
+                <li class="breadcrumb-item">Proveedores</li>
+            
+            </ol>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h4 class="card-title"><span class="lstick m-r-20"></span><b>Listado de proveedores</b></h4>
+                            <h6 class="card-subtitle">Base de datos</h6>
+                        </div>
+                      
+                    </div>
+                    <div class="col justify-content-center">
+                        <!-- Modal fecha estado Subitem -->
+                        <div class="modal fade" id="ModalProveedorCrear" tabindex="-1" role="dialog"
+                        aria-labelledby="ModalProveedorCrear" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                
+                                <div class="modal-body">
+                                    <form id="form_create">
+
+                                        <div class="modal-body">
+                                            <button type="button" class="close text-dark" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                        
+  
+                                            <div class="row">
+                                                <div class="col-2">
+                                                    <img src="{% static 'img/bot.png' %}" width="40px" alt="">
+                                                </div>
+                                                <div class="col-10 mb-3">
+                                                    <h4 class="my-2 text-title text-center">Agregar proveedor</h4>
+                                                </div>
+                                                
+                                                <span>Nombre</span>
+                                                <div class="mb-3">
+                                                    <input id="new_name" type="text"
+                                                        class="form-control form-control" placeholder="Ingresar un nombre" required>
+                                                </div>
+                                                <span>Telefono</span>
+                                                <div class="mb-3">
+                                                    <input id="new_phone" type="number"
+                                                    class="form-control form-control" placeholder="Ingresar un telefono" required>
+                                                </div>
+                                                
+                                                <span>Descripción</span>
+                                                <div class="mb-3">
+                                                    <textarea id="new_descrip" cols="30" rows="6"class="form-control form-control" placeholder="Ingresar una descripción o palabras claves" required></textarea>
+                                                    </div>
+                                   
+                                            </div>
+                                        </div>
+                                        <div class="text-center mb-3">
+                                            <button class="btn btn-info" onclick="service_crear_proveedor()" style="margin-top: 10px;">Crear</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                        {% if datos %}
+                        <div class="table-responsive">
+                            <table id="example" class="table table-striped table-bordered mt-4">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Nombre</th>
+                                        <th>Telefono</th>
+                                        <th>Descripcion</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody id = "body">
+                                    {% for i in datos %}
+                                    <tr id="fila_{{i.id}}">
+                                        <td>{{i.id}}</td>
+                                        {% if request.user|has_group:"PROVEEDORES NIVEL 1" %}
+                                        <td id="{{i.id}}_proveedor_name"><a href="#" 
+                                            data-toggle="modal" data-target="#Modalproveedores" 
+                                            onclick="modal_editar_proveedor({{i.id}})">{{i.name|lower|capfirst}}</a></td>                                       
+                                        {% else %}
+                                        <td>{{i.name|lower|capfirst}}</td>
+                                        {% endif %}
+                                        <td id="{{i.id}}_proveedor_phone">{{i.phone}}</td>
+                                        <td id="{{i.id}}_proveedor_descrip">{{i.descrip}}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+ <!-- modal -->
+ <div class="modal fade" id="Modalproveedores" tabindex="-1" role="dialog"
+ aria-labelledby="ModalproveedoresTitle" aria-hidden="true">
+ <div class="modal-dialog modal-dialog-centered" role="document">
+     <div class="modal-content">
+
+         <div class="modal-body">
+            <button type="button" class="close text-dark" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+
+
+            <div class="row">
+                <div class="col-2">
+                    <img src="{% static 'img/bot.png' %}" width="40px" alt="">
+                </div>
+                <div class="col-10 mb-3">
+                    <h4 class="my-2 text-title text-center">Editar proveedor</h4>
+                </div>
+
+                 <span>Nombre</span>
+                 
+                 <div class="mb-3">
+                     <input id="upload_proveedor_name" type="text"
+                         class="form-control form-control" >
+                 </div>
+                 <span>Telefono</span>
+                 <div class="mb-3">
+                     <input id="upload_proveedor_phone" type="text" required
+                     class="form-control form-control">
+                 </div>
+                 
+                 <span>Descripción</span>
+                 <div class="mb-3">
+                     <textarea id="upload_proveedor_descrip"  cols="30" rows="6"class="form-control form-control"></textarea>
+                 </div>
+                 
+                 <div>
+                     <button class="btn btn-info" type="submit" onclick="service_upload_proveedor()"
+                         style="margin-top: 10px;">Modificar</button>
+
+                 </div>
+             </form>
+            </div>
+         </div>
+         <div class="modal-footer">
+             <button type="button" class="btn btn-secondary"
+                 data-dismiss="modal">Cerrar</button>
+
+         </div>
+     </div>
+ </div>
+</div>
+
+<input type="hidden" id = "token" value="{{ csrf_token }}">
+<input type="hidden" id = "host" value="{% host %}">
+<input type="hidden" id = "upload_proveedor_id" value="">
+
+{% if request.user|has_group:"PROVEEDORES NIVEL 1" %}
+<a id="add" data-toggle="modal" data-target="#ModalProveedorCrear" 
+ class="btn btn-info btn-circle ">
+<i
+data-toggle="tooltip" data-placement="left" title="Subir una nueva orden"
+class="fa fa-plus text-light"
+>
+
+</i>
+</a>
+{% endif %}
+
+<style>
+
+    #add{
+        position: fixed;
+        bottom: 30px;
+        right: 20px;
+        z-index: 3;
+    }
+
+</style>
+
+<script>
+    
+</script>
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="{% static 'js/f_compras.js' %}"></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+<script>
+    $(document).ready(function () {
+        $('#example').DataTable({
+            "language": {
+                "lengthMenu": "Mostar _MENU_ documentos",
+                "zeroRecords": "No se encontro nada - perdon ",
+                "info": "Pagina _PAGE_ de _PAGES_",
+                "infoEmpty": "Sin registros disponibles",
+                "infoFiltered": "(filtrado de _MAX_ registros totales)",
+                "search": "Buscar"
+            },
+            "paging": false,
+            "ordering": false,
+            "info": false
+        });
+    });
+</script>
+
+{% endblock %}
