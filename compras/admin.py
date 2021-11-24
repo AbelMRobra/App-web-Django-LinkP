@@ -7,10 +7,12 @@ from import_export.admin import ImportExportModelAdmin
 # Register your models here.
 
 class ProveedoresResource(resources.ModelResource):
+
     class Meta:
         model = Proveedores
 
 class ProveedoresAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    search_fields = ('name','phone', 'descrip')
     resources_class = ProveedoresResource
 
 
