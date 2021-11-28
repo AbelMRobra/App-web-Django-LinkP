@@ -217,6 +217,9 @@ function validar_respuesta_consulta_compra(response, status){
             var tarjeta = document.getElementById('tarjeta');
             tarjeta.remove()
 
+            var fecha = document.getElementById("fecha_c")
+            fecha.value = ""
+
             if (response['data'].length > 0) {
             
                 modificar_template_compras(response)
@@ -235,6 +238,10 @@ function validar_respuesta_consulta_compra(response, status){
 }
 
 function modificar_template_compras(response){
+
+    var fecha = document.getElementById("fecha_c")
+    fecha.value = response['data'][0].fecha_c
+
     var contenedor = document.getElementById('list_articulos');
 
     var tarjeta = document.createElement('ol');
@@ -248,7 +255,7 @@ function modificar_template_compras(response){
         
         <div class="ms-2 me-auto">
             <div class="fw-bold">${response['data'][i]['articulo'].codigo} - ${response['data'][i]['articulo'].nombre}</div>
-            <small><b>Cantidad: </b> ${response['data'][i].cantidad} / <b>Precio: </b>$ ${response['data'][i].precio}</small> 
+            <small><b>Cantidad: </b> ${response['data'][i].cantidad} / <b>Precio: </b>$ ${response['data'][i].precio} / <b>Total: </b>$ ${response['data'][i].precio * response['data'][i].cantidad}</small> 
             </div>
             <span class="badge bg-danger rounded-pill"
             onclick="borrar_compra(${response['data'][i].id})"><i 
@@ -300,7 +307,7 @@ function validar_respuesta_consulta_articulo(response, status){
 }
 
 function modificar_template_consulta_articulo(response){
-    console.log(response)
+    
     var cantidad = document.getElementById("cantidad_presupuesto")
     cantidad.innerHTML = response.cantidad
 

@@ -16,7 +16,7 @@ class ComprasViewset(viewsets.ModelViewSet):
     permission_classes = (AllowAny,)
 
     def create(self, request, *args, **kwargs):
-        # try:
+        try:
 
             articulo = Articulos.objects.get(nombre = request.data['articulo'])
             proyecto = Proyectos.objects.get(id = int(request.data['proyecto']))
@@ -48,10 +48,10 @@ class ComprasViewset(viewsets.ModelViewSet):
             response = {'mensaje': 'Success'}
             return Response(response, status=status.HTTP_201_CREATED)
 
-        # except:
+        except:
 
-        #     response = {'mensaje': 'Error de carga'}
-        #     return Response(response, status=status.HTTP_406_NOT_ACCEPTABLE)
+            response = {'mensaje': 'Error de carga'}
+            return Response(response, status=status.HTTP_406_NOT_ACCEPTABLE)
 
 
     @action(detail=False, methods=["POST"])

@@ -14,7 +14,7 @@ class ComprasFullSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Compras
-        fields = ('id', 'proyecto', 'articulo', 'cantidad', 'precio')
+        fields = ('id', 'proyecto', 'articulo', 'cantidad', 'precio', 'fecha_c')
 
 class ComprasSerializer(serializers.ModelSerializer):
 
