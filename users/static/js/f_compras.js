@@ -8,6 +8,14 @@ document.getElementById("form_upload").addEventListener("click", function(event)
     event.preventDefault()
     });
 
+document.getElementById("cabeza_compra").addEventListener("click", function(event){
+    event.preventDefault()
+    });
+
+document.getElementById("form_create_compra").addEventListener("click", function(event){
+    event.preventDefault()
+    });
+
 function sweet_alert(mensaje, estado) {
 
     const Toast = Swal.mixin({
@@ -169,5 +177,234 @@ function modificar_template_upload(response){
 
 
 }
+
+// Carga de compras
+
+async function service_consulta_compra(){
+
+    host = document.getElementById("host").value;
+    token = document.getElementById("token").value;
+    
+    const url = `${host}/compras/api_compras/consulta_compras/`
+
+    var respuesta = await fetch(url ,{
+        method: "POST",
+        headers: {
+            'X-CSRFToken' : `${token}`,
+            'Content-Type': 'application/json',
+        },
+
+        body: JSON.stringify({
+            'proyecto' : document.getElementById("proyecto").value,
+            'proveedor' : document.getElementById("proveedor").value,
+            'documento' : document.getElementById("documento").value,
+
+        })
+
+    })
+
+    var response = await respuesta.json()
+    var status = await respuesta.status
+
+    return validar_respuesta_consulta_compra(response, status)
+}
+
+function validar_respuesta_consulta_compra(response, status){
+
+    if (status >= 200 && status <300){
+
+        if (document.getElementById('tarjeta')) {
+            var tarjeta = document.getElementById('tarjeta');
+            tarjeta.remove()
+
+            if (response['data'].length > 0) {
+            
+                modificar_template_compras(response)
+            } 
+        } else {
+            if (response['data'].length > 0) {
+                sweet_alert("OC existente", "info");
+                modificar_template_compras(response)
+            } 
+            
+        }
+
+        
+    
+    }
+}
+
+function modificar_template_compras(response){
+    var contenedor = document.getElementById('list_articulos');
+
+    var tarjeta = document.createElement('ol');
+    tarjeta.id = `tarjeta`;
+    contenedor.appendChild(tarjeta);
+    for (let i=0; i <= response['data'].length -1; i++){
+        var articulo = document.createElement('li');
+        articulo.id = `articulo_${response['data'][i].id}`;
+        articulo.className = 'list-group-item d-flex justify-content-between align-items-start'
+        articulo.innerHTML = `
+        
+        <div class="ms-2 me-auto">
+            <div class="fw-bold">${response['data'][i]['articulo'].codigo} - ${response['data'][i]['articulo'].nombre}</div>
+            <small><b>Cantidad: </b> ${response['data'][i].cantidad} / <b>Precio: </b>$ ${response['data'][i].precio}</small> 
+            </div>
+            <span class="badge bg-danger rounded-pill"
+            onclick="borrar_compra(${response['data'][i].id})"><i 
+            data-toggle="tooltip" data-placement="left" title="Borrar contacto"
+            class="fa fa-trash-o"></i> </span>
+        
+        `
+
+        tarjeta.appendChild(articulo);
+
+    }
+    
+}
+
+async function service_consulta_articulo(){
+
+    host = document.getElementById("host").value;
+    token = document.getElementById("token").value;
+    
+    const url = `${host}/compras/api_compras/consulta_articulo/`
+
+    var respuesta = await fetch(url ,{
+        method: "POST",
+        headers: {
+            'X-CSRFToken' : `${token}`,
+            'Content-Type': 'application/json',
+        },
+
+        body: JSON.stringify({
+            'proyecto' : document.getElementById("proyecto").value,
+            'articulo' : document.getElementById("articulo").value,
+
+        })
+
+    })
+
+    var response = await respuesta.json()
+    var status = await respuesta.status
+
+    return validar_respuesta_consulta_articulo(response, status)
+}
+
+function validar_respuesta_consulta_articulo(response, status){
+    if (status >= 200 && status <300){
+
+        modificar_template_consulta_articulo(response)
+    
+    }
+}
+
+function modificar_template_consulta_articulo(response){
+    console.log(response)
+    var cantidad = document.getElementById("cantidad_presupuesto")
+    cantidad.innerHTML = response.cantidad
+
+    var cantidad = document.getElementById("cantidad_comprada")
+    cantidad.innerHTML = response.comprado
+
+    var unidad = document.getElementById("unidad_articulo")
+    unidad.innerHTML = response.unidad
+
+    var partida = document.getElementById("partida_cargar")
+    partida.value = response.partida
+    
+
+    var precio_presupuesto = document.getElementById("precio_presupuesto_cargar")
+    precio_presupuesto.value = response.precio
+}
+
+async function service_crear_compra(){
+
+    host = document.getElementById("host").value;
+    token = document.getElementById("token").value;
+    
+    const url = `${host}/compras/api_compras/`
+
+    var respuesta = await fetch(url ,{
+        method: "POST",
+        headers: {
+            'X-CSRFToken' : `${token}`,
+            'Content-Type': 'application/json',
+        },
+
+        body: JSON.stringify({
+            'proyecto' : document.getElementById("proyecto").value,
+            'proveedor' : document.getElementById("proveedor").value,
+            'nombre' : document.getElementById("documento").value,
+            'documento' : document.getElementById("documento").value,
+            'articulo' : document.getElementById("articulo").value,
+            'tipo' : 'normal',
+            'cantidad' : document.getElementById("cantidad_cargar").value,
+            'precio' : document.getElementById("precio_cargar").value,
+            'precio_presup' : document.getElementById("precio_presupuesto_cargar").value,
+            'fecha_c' : document.getElementById("fecha_c").value,
+            'partida' : document.getElementById("partida_cargar").value,
+            'cantidad_presupuesto' : document.getElementById("cantidad_presupuesto").innerHTML,
+ 
+        })
+
+    })
+
+    var response = await respuesta.json()
+    var status = await respuesta.status
+
+    return validar_respuesta_consulta_compra_carga(response, status)
+}
+
+
+function validar_respuesta_consulta_compra_carga(response, status){
+    if (status >= 200 && status <300){
+
+        sweet_alert("Compra cargada", "success");
+        service_consulta_compra();
+        service_consulta_articulo();
+    
+    } else if (status == 406) {
+        sweet_alert("Error de carga", "warning");
+    } else {
+        sweet_alert("Prblemas de conexión", "warning");
+    }
+}
+
+async function borrar_compra(id_compra){
+
+    host = document.getElementById("host").value;
+    token = document.getElementById("token").value;
+    
+    const url = `${host}/compras/api_compras/${id_compra}/`
+
+    var respuesta = await fetch(url ,{
+        method: "DELETE",
+        headers: {
+            'X-CSRFToken' : `${token}`,
+            'Content-Type': 'application/json',
+        },
+
+    })
+
+    var status = await respuesta.status
+
+    return validar_respuesta_consulta_compra_delete(status)
+}
+
+
+function validar_respuesta_consulta_compra_delete(status){
+    if (status >= 200 && status <300){
+
+        sweet_alert("Compra borrda", "success");
+        service_consulta_compra();
+        service_consulta_articulo();
+    
+    } else {
+        sweet_alert("Prblemas de conexión", "warning");
+    }
+}
+
+
 
 
