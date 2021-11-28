@@ -2,7 +2,7 @@ from django.urls import path, re_path
 from django.conf.urls import url
 from django.conf.urls import include
 from rest_framework import routers
-from compras.viewsets import viewsets_proveedores
+from compras.viewsets import viewsets_proveedores, viewsets_compras
 from . import views
 from .views import Reegistrodecompras, CompOCestado
 from .views_compras import views_api, views_generales, views_proveedores, views_circuito_compras
@@ -11,6 +11,7 @@ from django.contrib.auth.decorators import login_required
 
 router = routers.DefaultRouter()
 router.register(r'api_proveedores', viewsets_proveedores.ProveedoresViewset)
+router.register(r'api_compras', viewsets_compras.ComprasViewset)
 
 
 urlpatterns = [ 

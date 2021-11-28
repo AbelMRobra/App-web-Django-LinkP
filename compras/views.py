@@ -479,7 +479,7 @@ def cargacompras(request):
         datos = {'proyectos': proyectos, 'proveedores':proveedores, 'compras':compras, 'articulos':articulos, 'mensaje':mensaje}
 
 
-    return render(request, 'cargacompras.html', {'datos':datos})
+    return render(request, 'registro_compras/compras_registro_carga.html', {'datos':datos})
 
 def principalautorizacion(request):
     # Saludo de bienvenida
@@ -1174,10 +1174,13 @@ def compras(request, id_proyecto):
 
         else:
             total = dato.cantidad*dato.precio
-            v = -((dato.precio/dato.precio_presup) - 1)*100
+            if dato.precio_presup != 0:
+                v = -((dato.precio/dato.precio_presup) - 1)*100
+            else:
+                v = 0
             compras.append((2,dato, total, v))
 
-    return render(request, 'compras.html', {'compras':compras, 'proyectos':proyectos, 'proyecto':proyecto,'id_proyecto':id_proyecto})
+    return render(request, 'registro_compras/compras_registro.html', {'compras':compras, 'proyectos':proyectos, 'proyecto':proyecto,'id_proyecto':id_proyecto})
 
 def certificados(request):
 

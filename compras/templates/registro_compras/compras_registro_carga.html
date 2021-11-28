@@ -1,0 +1,328 @@
+{% extends "users/inicio2.html" %}
+{% load apptags_extras %}
+{% load static %}
+
+{% block content %}
+
+
+<div class="container-fluid">
+
+    <div class="row page-titles">
+        <div class="col-md-5 align-self-center">
+            <h3 class="text-themecolor">Carga de compras</h3>
+        </div>
+
+        <div class="col-md-7 align-self-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'Inicio' %}">Inicio</a></li>
+                <li class="breadcrumb-item">Carga de compras</li>
+            </ol>
+        </div>
+    </div>
+
+    <div class="row bg-white">
+        <div class="col-12 justify-content-center">
+            <div class="row d-flex">
+                <div class="col-12 p-3">
+                    <form id="cabeza_compra" class="bg-light border rounded p-3" onchange="service_consulta_compra()">
+                        <h4 class="card-title"><span class="lstick m-r-20"></span>Datos generales</h4>
+
+                        <div class="row">
+                            <div class="col-3">
+                                <div class="mt-1">
+                                    <label for="obra">
+                                        <h5>Obra:</h5>
+                                    </label>
+                                </div>
+                                <div class="row d-flex justify-content-center mt-1">
+                                    <div class="col">
+                                        <div>
+                                            <select id="proyecto" class="custom-select bg-white">
+
+                                                {% for i in datos.proyectos %}
+                                                <option value="{{ i.id }}">{{ i.nombre }}</option>
+
+                                                {% endfor %}
+
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-3">
+                                <div class="mt-1">
+                                    <label for="proveedores">
+                                        <h5>Proveedor:</h5>
+                                    </label>
+                                </div>
+                                <div class="row d-flex justify-content-center mt-1">
+                                    <div class="col">
+                                        <div>
+                                            
+                                            <input id="proveedor" type="search"
+                                            class="form-control form-control"
+                                            placeholder="Nombre del proveedor" list="provee" required>
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-3">
+                                <div class="mt-1">
+                                    <label for="doc">
+                                        <h5>Documento asociado:</h5>
+                                    </label>
+                                </div>
+                                <div class="row d-flex justify-content-center mt-1">
+                                    <div class="col">
+                                        <div>
+                                            <input type="text" class="form-control form-control" id="documento"
+                                                placeholder="Preferentemente OC">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="mt-1">
+                                    <label for="fecha">
+                                        <h5>Fecha de la OC:</h5>
+                                    </label>
+                                </div>
+                                <div class="row d-flex justify-content-center mt-1">
+                                    <div class="col">
+                                        <div>
+                                            <input type="date" class="form-control form-control" id="fecha_c">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+                <div class="row d-flex justify-content-around">
+                    <div class="col-4 bg-light border rounded p-3 my-4 ml-3">
+                        <form id="form_create">
+
+
+                                <div>
+                                    <h4 class="card-title"><span class="lstick m-r-20"></span>Cargar un articulo</h4>
+                                </div>
+
+                                <div>
+                                    <div class="campoarticulos">
+
+                                        <div class="row">
+                                            <div class="col-12 mt-3">
+                                                <div class="row d-flex justify-content-center">
+                                                    <div class="col">
+                                                        <div>
+
+                                                            <input id="articulo" 
+                                                            onchange="service_consulta_articulo()"
+                                                            type="search" list="art"
+                                                            class="form-control form-control"
+                                                            placeholder="Nombre del articulo" >
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-12 mt-3">
+                                                <div><span>Cantidad presupuesto <b id="cantidad_presupuesto"></b></span></div>
+                                                <span>Cantidad comprada: <b id="cantidad_comprada"></b></span>
+                                                <div class="row d-flex justify-content-center">
+                                                    <div class="col">
+                                                        <div>
+
+                                                            <div class="input-group mb-3">
+                                                                <span class="input-group-text" id="unidad_articulo"></span>
+                                                                <input id="cantidad_cargar" type="number" step="any" class="form-control" placeholder="Cantidad de la compra" aria-label="precio" aria-describedby="precio" min="1" required>
+                                                            </div>
+
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 mt-3">
+                                                <div class="row d-flex justify-content-center">
+                                                    <div class="col">
+                                                        <div class="input-group mb-3">
+                                                            <span class="input-group-text" id="precio_signo">$</span>
+                                                            <input id="precio_cargar" step="any" type="number" class="form-control" placeholder="Precio" aria-label="precio" aria-describedby="precio" min="1" required>
+                                                        </div>
+                                                    </div>
+                                                </div>
+     
+                                            </div>
+                                            <div class="col-12 mt-3">
+                                                <div class="row d-flex justify-content-center">
+                                                    <div class="col">
+                                                        <div class="input-group mb-3">
+                                                            <span class="input-group-text" id="partida_cargar_signo">$</span>
+                                                            <input id="partida_cargar" readonly step="any" type="number" class="form-control" placeholder="Partida" aria-label="partida" aria-describedby="partida" min="1" required>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 mt-3">
+    
+                                                <div class="row d-flex justify-content-center">
+                                                    <div class="col">
+                                                        <div class="input-group mb-3">
+                                                            <span class="input-group-text" id="precio_presupuesto_cargar_signo">$</span>
+                                                            <input id="precio_presupuesto_cargar" readonly step="any" type="number" class="form-control" placeholder="Precio presupuesto" aria-label="precio_presupuesto" aria-describedby="precio_presupuesto" min="1" required>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        </div>
+                                    
+                                </div>
+
+                                <div class="row d-flex justify-content-center mt-3">
+                                    <div class="col-lg-6 text-center">
+                                        <li id="add"
+
+                                        class="btn btn-success btn-circle fa fa-plus"
+                                        onclick="service_crear_compra()"
+                                        data-toggle="tooltip" data-placement="left" title="Cargar el articulo"
+                                        ></li>
+
+                                    </div>
+                                </div>
+
+                                <datalist id="art">
+
+                                    {% for i in datos.articulos %}
+
+                                    <option value="{{ i.nombre }}"></option>
+
+                                    {% endfor %}
+
+                                </datalist>
+
+
+                                <datalist id="provee">
+
+                                    {% for i in datos.proveedores %}
+
+                                    <option value="{{ i.name }}">({{i.id}})</option>
+
+                                    {% endfor %}
+
+                                </datalist>
+                                <input type="number" name="contador" id="contador" value="1" hidden>
+                            
+                        </form>
+                </div>
+                
+                <div class="col-7 bg-light border rounded p-3 my-4 ml-5">
+                    <div>
+                        <h4 class="card-title"><span class="lstick m-r-20"></span>Lista articulos cargados</h4>
+                    </div>
+                    <div style="max-height: 400px; overflow-y: scroll;" id="list_articulos">
+
+
+                    </div>
+                </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<input type="hidden" id = "token" value="{{ csrf_token }}">
+<input type="hidden" id = "host" value="{% host %}">
+
+<style>
+
+    #add{
+        position: fixed;
+        bottom: 30px;
+        right: 20px;
+        z-index: 3;
+    }
+
+</style>
+
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="{% static 'js/f_compras.js' %}"></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+    let contador=document.getElementById('contador');
+
+
+    var i = 0;
+    
+    function myFunction() {
+
+        let check1=document.getElementById('ajustar').checked;
+        let check2=document.getElementById('noajustar').checked;
+
+        aux=parseInt(contador.value)
+        contador.value=aux+1;
+        
+        
+        
+        i++
+        $(".campo").clone().appendTo(".campoarticulos").attr("class", "campo-" + i).attr("id", "campo-" + i);
+    
+    
+        $(".campoarticulos").last().find('.campo-' + i).find('label, input').each(function (index) {
+
+            $(this).val("");
+            $(this).attr("name", $(this).attr("name") + i);
+            $(this).attr("for", $(this).attr("for") + i);
+            $(this).attr("id", $(this).attr("id") + i);
+
+        });
+
+        $("#ajustar"+i).val("ajustar").prop('checked', false);
+        $("#noajustar"+i).val("no-ajustar").prop('checked', true);
+
+
+    
+        $("#ajustar").prop('checked', check1);
+        $("#noajustar").prop('checked', check2);
+
+        
+    
+    }
+
+    function deleteItem(elem) {
+        var clase = elem.parentNode.id
+        var claseString = "#" + clase.toString();
+
+
+        $(claseString).remove();
+    };
+    function borrarItem() {
+        var claseString = document.getElementsByClassName("campo-"+i)
+
+        if (i>=1) {
+            $(claseString).remove();
+            i--
+            contador.value--;
+        
+        }
+    
+        
+        
+    };
+
+
+</script>
+
+
+
+
+
+{% endblock %}

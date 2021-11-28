@@ -129,7 +129,7 @@ class Compras(models.Model):
     proveedor = models.ForeignKey(Proveedores, on_delete=models.CASCADE, verbose_name="Proveedor")
     nombre = models.CharField(max_length=200, verbose_name="Nombre de la compra")
     tipo = models.CharField(choices=estados.choices, max_length=20, verbose_name="Tipo", blank=True, null=True)
-    articulo = models.ForeignKey(Articulos, on_delete=models.CASCADE, verbose_name="Articulo")
+    articulo = models.ForeignKey(Articulos, on_delete=models.CASCADE, verbose_name="Articulo", related_name="articulo")
     cantidad = models.FloatField(verbose_name="Cantidad")
     precio = models.FloatField(blank=True, null=True, verbose_name="Precio")
     precio_presup = models.FloatField(blank=True, null=True, verbose_name="Precio de presupuesto")
