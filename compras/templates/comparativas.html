@@ -206,53 +206,34 @@
                                             </td>
                                             
                                             <td>
+                                                
+                                                <i id = 'simbolo_{{i.2.id}}'
+                                                data-toggle="tooltip" data-placement="top" 
+
                                                 {% if i.2.estado == "ESPERA" %}
-                                                <i
-                                                data-toggle="tooltip" data-placement="top" title="A la espera de revisión"
-                                                class="fa fa-hourglass-end" aria-hidden="true" style="color: blue;"></i>
+                                                title="A la espera de revisión"
+                                                class="fa fa-hourglass-end" 
+                                                style="color: blue;"
+                                                
+                                                {% elif i.2.estado == "AUTORIZADA" %}
+                                                title="Todo listo!"
+                                                class="fa fa-check"
+                                                style="color: green;"
+
+                                                {% elif i.2.estado == "NO AUTORIZADA" %}
+                                                title="Rechazada!"
+                                                class="fa fa-times"
+                                                style="color: darkred;"
+
+                                                {% elif i.2.estado == "ADJUNTO ✓" %}
+                                                title="El adjunto fue revisado"
+                                                class="fa fa-check" 
+                                                style="color: orange;"
+
                                                 {% endif %}
-                                                {% if i.2.estado == "AUTORIZADA" %}
-                                                {% if i.2.comentario %}
-                                                <span class="hint--left hint--danger" aria-label="{{i.comentario}}">
-                                                    {% endif %}
-                                                    <i
-                                                    data-toggle="tooltip" data-placement="top" title="Todo listo!"
-                                                    class="fa fa-check" aria-hidden="true" style="color: green;"></i>
-                                                    {% if i.2.comentario %}
-                                                </span>
-                                                {% endif %}
-                                                {% endif %}
-                                                {% if i.2.estado == "NO AUTORIZADA" %}
-                                                {% if i.2.comentario %}
-                                                <span class="hint--left hint--danger" aria-label="{{i.2.comentario}}">
-        
-                                                    {% endif %}
-        
-                                                    <i
-                                                    data-toggle="tooltip" data-placement="top" title="Rechazada!"
-                                                    class="fa fa-times" aria-hidden="true" style="color: darkred;"></i>
-        
-                                                    {% if i.2.comentario %}
-        
-                                                </span>
-        
-                                                {% endif %}
-                                                {% endif %}
-        
-                                                {% if i.2.estado == "ADJUNTO ✓" %}
-                                                {% if i.2.comentario %}
-        
-                                                <span class="hint--left hint--danger" aria-label="{{i.2.comentario}}">
-        
-                                                    {% endif %}
-                                                    <i
-                                                    data-toggle="tooltip" data-placement="top" title="El adjunto fue revisado"
-                                                    class="fa fa-check" aria-hidden="true" style="color: orange;"></i>
-                                                    {% if i.2.comentario %}
-                                                </span>
-                                                {% endif %}
-                                                {% endif %}
-        
+
+                                                aria-hidden="true" ></i>
+     
         
                                                 <!-- Condicional para editar -->
         
@@ -296,38 +277,41 @@
         
         
                                             <td style="text-align: center;">
+
+                                                <div>
+                                                    <img
+                                                
+                                                    data-toggle="tooltip" data-placement="left" 
+                                                    
+                                                    {% if i.2.autoriza == "SP" %}
+                                                    title="SP autorizara esta OC" src="{% static 'img/SP.png' %}" 
+                                                    
+                                                    {% else %} title="PL autorizara esta OC" src="{% static 'img/PL.png' %}" 
+                                                    
+                                                    {% endif %} width="40" class="img-circle">
+                                                    
+                                                </div>
         
-                                                <img
                                                 
-                                                data-toggle="tooltip" data-placement="left" 
-                                                
-                                                {% if i.2.autoriza == "SP" %}
-                                                title="SP autorizara esta OC" src="{% static 'img/SP.png' %}" 
-                                                
-                                                {% else %} title="PL autorizara esta OC" src="{% static 'img/PL.png' %}" 
-                                                
-                                                {% endif %} width="40" class="img-circle">
         
                                                 {% if request.user.username == i.2.autoriza %}
         
-                                                <form action="" method="POST">
-                                                    {% csrf_token %}
         
-                                                    <div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
-                                                        {% if estado == "0" or estado == "1" or estado == "3" or estado == "5" or estado == "6" %}
-                                                        <button type="submit" class="btn" name="ADJAPROB" value="{{i.2.id}}"><i
-                                                                class="fa fa-check" style="color: orange;"></i></button>
-                                                        {% endif %}
-                                                        {% if estado == "0" or estado == "2" or estado == "3" or estado == "5" or estado == "6" %}
-                                                        <button type="submit" class="btn" name="APROBADA" value="{{i.2.id}}"><i
-                                                                class="fa fa-check" style="color: green;"></i></button>
-                                                        {% endif %}
-                                                        <button type="submit" class="btn" name="NO APROBADA"
-                                                            value="{{i.2.id}}"><i class="fa fa-times"
-                                                                style="color: darkred;"></i></button>
-                                                    </div>
+                                                <div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
+                                                    {% if estado == "0" or estado == "1" or estado == "3" or estado == "5" or estado == "6" %}
+                                                    <button type="button" class="btn" onclick="service_comparativa_change({{i.2.id}}, 'ADJUNTO ✓')"><i
+                                                            class="fa fa-check" style="color: orange;"></i></button>
+                                                    {% endif %}
+                                                    {% if estado == "0" or estado == "2" or estado == "3" or estado == "5" or estado == "6" %}
+                                                    <button type="button" class="btn" onclick="service_comparativa_change({{i.2.id}}, 'AUTORIZADA')"><i
+                                                            class="fa fa-check" style="color: green;"></i></button>
+                                                    {% endif %}
+                                                    <button type="button" class="btn"  onclick="service_comparativa_change({{i.2.id}}, 'NO AUTORIZADA')"><i 
+                                                        class="fa fa-times"
+                                                            style="color: darkred;"></i></button>
+                                                </div>
         
-                                                </form>
+              
         
                                                 {% endif %}
         
@@ -346,6 +330,10 @@
         </div>
     </div>
 </div>
+
+<input type="hidden" id = "token" value="{{ csrf_token }}">
+<input type="hidden" id = "username" value="{{ request.user.username }}">
+<input type="hidden" id = "host" value="{% host %}">
 
 <a id="add" href="{% url 'Cargar O.C para autorizar' %}"
 
@@ -366,6 +354,7 @@ class="btn btn-info btn-circle fa fa-plus"></a>
 
 </style>
 
+<script src="{% static 'js/f_comparativas.js' %}"></script>
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 {% if mensaje_s %}

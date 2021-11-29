@@ -255,7 +255,7 @@ function modificar_template_compras(response){
         
         <div class="ms-2 me-auto">
             <div class="fw-bold">${response['data'][i]['articulo'].codigo} - ${response['data'][i]['articulo'].nombre}</div>
-            <small><b>Cantidad: </b> ${response['data'][i].cantidad} / <b>Precio: </b>$ ${response['data'][i].precio} / <b>Total: </b>$ ${response['data'][i].precio * response['data'][i].cantidad}</small> 
+            <small><b>Cantidad: </b> ${response['data'][i].cantidad.toFixed(2)} / <b>Precio: </b>$ ${response['data'][i].precio.toFixed(2)} / <b>Total: </b>$ ${(response['data'][i].precio * response['data'][i].cantidad).toFixed(2)}</small> 
             </div>
             <span class="badge bg-danger rounded-pill"
             onclick="borrar_compra(${response['data'][i].id})"><i 
@@ -303,6 +303,23 @@ function validar_respuesta_consulta_articulo(response, status){
 
         modificar_template_consulta_articulo(response)
     
+    } else {
+        console.log("Aqui")
+        var cantidad = document.getElementById("cantidad_presupuesto")
+        cantidad.innerHTML = ""
+
+        var cantidad = document.getElementById("cantidad_comprada")
+        cantidad.innerHTML = ""
+
+        var unidad = document.getElementById("unidad_articulo")
+        unidad.innerHTML = ""
+
+        var partida = document.getElementById("partida_cargar")
+        partida.value = ""
+        
+
+        var precio_presupuesto = document.getElementById("precio_presupuesto_cargar")
+        precio_presupuesto.value = ""
     }
 }
 
