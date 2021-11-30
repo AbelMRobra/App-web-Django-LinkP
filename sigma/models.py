@@ -1,17 +1,51 @@
+import datetime
 from django.db import models
-from presupuestos.models import Articulos
+from presupuestos.models import Articulos, Constantes
 
 # Create your models here.
 
 class Inventario(models.Model):
+
     num_inv = models.CharField(max_length=200, verbose_name="Numero Inventario")
-    articulo = models.ForeignKey(Articulos, on_delete=models.CASCADE, verbose_name="Articulo")
-    fecha_compra = models.DateField(auto_now_add=True)
+    articulo = models.ForeignKey(Articulos, on_delete=models.CASCADE, verbose_name="Articulo", related_name='articulo_inventario')
+    precio_md = models.FloatField(blank=True, null=True, verbose_name="Precio en moneda dura")
+    constante = models.ForeignKey(Constantes, blank=True, null=True, on_delete=models.PROTECT)
+    fecha_compra = models.DateField(verbose_name="Fecha de compra")
     amortizacion = models.IntegerField(verbose_name="Amortización (años)")
+
+    def fecha_amortizacion(self):
+
+        fecha_amortizacion = self.fecha_compra + datetime.timedelta(days = (365*self.amortizacion))
+
+        return fecha_amortizacion
+
+    def valor_amortizacion(self):
+
+        fecha_amortizacion = self.fecha_amortizacion()
+
+        fecha_compra = self.fecha_compra
+
+        if datetime.date.today() >= fecha_amortizacion:
+            
+            valor_amortizacion = 0
+
+        elif fecha_amortizacion == fecha_compra:
+
+            valor_amortizacion = 0
+
+        else:
+
+            articulo = self.articulo
+
+            total_dias = (fecha_amortizacion- fecha_compra).days
+            total_transcurrido = (datetime.date.today() - fecha_compra).days
+            valor_amortizacion = articulo.valor - round((total_transcurrido/total_dias)*articulo.valor, 2)
+
+        return valor_amortizacion
 
     class Meta:
         verbose_name="Inventario"
-        verbose_name_plural="Inventario"
+        verbose_name_plural="Inventarios"
 
     def __str__(self):
         return self.num_inv
