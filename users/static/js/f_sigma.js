@@ -1,3 +1,8 @@
+window.onload = service_consulta_resumen()
+
+document.getElementById("crear_inventario").addEventListener("click", function(event){
+    event.preventDefault()
+    });
 
 function sweet_alert(mensaje, estado) {
 
@@ -19,6 +24,118 @@ function sweet_alert(mensaje, estado) {
     })
 
 };
+
+async function service_consulta_valor(){
+
+    host = document.getElementById("host").value;
+    token = document.getElementById("token").value;
+    
+    const url = `${host}/sigma/api_inventario/consulta_valor_inventario/`
+
+    var respuesta = await fetch(url ,{
+        method: "GET",
+        headers: {
+            'X-CSRFToken' : `${token}`,
+            'Content-Type': 'application/json',
+        },
+
+    })
+
+    var response = await respuesta.json()
+    var status = await respuesta.status
+
+    return validar_consulta_valor(response, status)
+
+}
+
+function validar_consulta_valor(response, status){
+
+    if (status >= 200 && status <300){
+        console.log("Valor")
+        console.log(response)
+        var valor = document.getElementById('valor_inventario');
+
+        valor.innerHTML = `$ ${response['data'].toFixed(2)}`
+
+        
+    }
+}
+
+async function service_consulta_resumen(nombre_articulo){
+
+    host = document.getElementById("host").value;
+    token = document.getElementById("token").value;
+    
+    const url = `${host}/sigma/api_inventario/consulta_resumen_articulos/`
+
+    var respuesta = await fetch(url ,{
+        method: "GET",
+        headers: {
+            'X-CSRFToken' : `${token}`,
+            'Content-Type': 'application/json',
+        },
+
+    })
+
+    var response = await respuesta.json()
+    var status = await respuesta.status
+
+    return validar_consulta_resumen(response, status)
+
+}
+
+function validar_consulta_resumen(response, status){
+
+    if (status >= 200 && status <300){
+        
+        if (document.getElementById('listado_resumen')) {
+            var listado = document.getElementById('listado_resumen');
+            listado.remove()
+
+            if (response['data'].length > 0) {
+            
+                modificar_template_consulta_resumen(response)
+            } 
+        } else {
+            sweet_alert("Consulta a la BBDD exitosa", "info");
+            if (response['data'].length > 0) {
+                
+                modificar_template_consulta_resumen(response)
+            } 
+            
+        }
+
+        
+    
+    }
+}
+
+function modificar_template_consulta_resumen(response){
+
+    var contenedor = document.getElementById('contenedor_resumen');
+
+    var listado= document.createElement('div');
+    listado.id = `listado_resumen`;
+    contenedor.appendChild(listado);
+
+    for (let i=0; i <= response['data'].length -1; i++){
+        var componente = document.createElement('div');
+        componente.id = `contedor_resumen_${response['data'][i].id}`
+        componente.innerHTML = `
+        
+        <small onclick="service_consulta_inventario('${response['data'][i].articulo}')">${response['data'][i].articulo}</small>
+        <p>Cantidad: <b>${response['data'][i].cantidad}</b></p>
+        
+        `
+
+        listado.appendChild(componente);
+
+    }
+
+    service_consulta_valor()
+    
+}
+
 
 async function service_consulta_inventario(nombre_articulo){
 
@@ -80,7 +197,7 @@ function modificar_template_consulta_inventario(response){
     var listado= document.createElement('div');
     listado.id = `padre_listado`;
     contenedor.appendChild(listado);
-    console.log(response['data'][0])
+
     for (let i=0; i <= response['data'].length -1; i++){
         var componente = document.createElement('div');
         componente.className = "bg-white shadow-sm mb-2 p-3"
@@ -101,8 +218,8 @@ function modificar_template_consulta_inventario(response){
                                 <p class="mb-0"><small><b>Amort:</b> ${response['data'][i].fecha_amortizacion}</small></p>
                             </div>
                             <div class="col-6">
-                                <p class="mb-0"><small><b>Valor:</b> $ ${response['data'][i]['articulo'].valor}</small></p>
-                                <p class="mb-0"><small><b>Amort:</b> $ ${response['data'][i].valor_amortizacion}</small></p>
+                                <p class="mb-0"><small><b>Valor:</b> $ ${response['data'][i]['articulo'].valor.toFixed(2)}</small></p>
+                                <p class="mb-0"><small><b>Amort:</b> $ ${response['data'][i].valor_amortizacion.toFixed(2)}</small></p>
                             </div>
                         </div>
                     </div>
@@ -125,7 +242,6 @@ function modificar_template_consulta_inventario(response){
     }
     
 }
-
 
 async function service_inventario_delete(id_inventario){
 
@@ -169,7 +285,7 @@ function modificar_template_inventario_delete(id_inventario){
     var componente = document.getElementById(`contedor_${id_inventario}`)
     componente.remove()
 
-    // Modificar el valor total del inventario y si es 0 eliminarlo de la lista
+    service_consulta_resumen()
 
 }
 
@@ -191,7 +307,7 @@ async function service_create_inventario(){
             "num_inv" : document.getElementById("new_num_inv").value,
             "articulo" : document.getElementById("new_articulo").value,
             "precio_md" : document.getElementById("new_precio_md").value,
-            "constante" : document.getElementById("new_constante").value,
+            // "constante" : document.getElementById("new_constante").value,
             "fecha_compra" : document.getElementById("new_fecha_compra").value,
             "amortizacion" : document.getElementById("new_amortizacion").value,
         })
@@ -209,7 +325,15 @@ function validar_respuesta_create_inventario(response, status){
     
     if (status >= 200 && status <300){
 
-        console.log(response)
+        sweet_alert("Inventado creado", "success");
+        modificar_template_inventario_create(response);
     
+    } else {
+        
+        sweet_alert("Problemas de conexión", "warning");
     }
+}
+
+function modificar_template_inventario_create(response){
+    service_consulta_resumen()
 }

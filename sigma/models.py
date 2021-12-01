@@ -6,7 +6,7 @@ from presupuestos.models import Articulos, Constantes
 
 class Inventario(models.Model):
 
-    num_inv = models.CharField(max_length=200, verbose_name="Numero Inventario")
+    num_inv = models.CharField(max_length=200, verbose_name="Numero Inventario", unique=True)
     articulo = models.ForeignKey(Articulos, on_delete=models.CASCADE, verbose_name="Articulo", related_name='articulo_inventario')
     precio_md = models.FloatField(blank=True, null=True, verbose_name="Precio en moneda dura")
     constante = models.ForeignKey(Constantes, blank=True, null=True, on_delete=models.PROTECT)

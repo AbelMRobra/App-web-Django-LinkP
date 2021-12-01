@@ -38,30 +38,25 @@
                             <h6
                                 style="text-align: center; color: rgb({{datos.proyecto.color}}); font-family: Arial, Helvetica, sans-serif;">
                                 Valor actual de los activos no corrientes:
-                                <small>${{datos.total|floatformat:0|intcomma}}</small>
+                                <b id="valor_inventario"></b>
                             </h6>
 
                         </div>
 
                         <div class="row d-flex justify-content-between">
 
-                            {% if datos %}
-                            <div class="col-12 col-lg-5 bg-light mt-4" style="max-height: 450px; overflow-y: auto;">
-                                <h4 class="card-title"><span class="lstick m-r-20"></span><b>Resumen del stock</b></h4>
-                
-                                {% for i in datos.listado %}
-                            
-                                    <div>
-                                        <h4 class="mb-2" 
-                                        data-toggle="tooltip" 
-                                        data-placement="top" 
-                                        title="{{i.0}}">
-                                        <a href="#" onclick="service_consulta_inventario('{{i.0}}')">
-                                            <small>{{i.0|truncatechars:30}} - unidades: <b>{{i.1}}</b></small></a>
-                                    </h4>
-                                    </div>
 
-                                {% endfor %}
+                            <div class="col-12 col-lg-5 bg-light mt-4" style="max-height: 450px; overflow-y: auto;">
+                                <h4 class="card-title" onclick="service_consulta_resumen()"><span class="lstick m-r-20"></span><b>Resumen del stock</b></h4>
+                
+                                <div id="contenedor_resumen">
+
+                
+
+                                    
+                                </div>
+
+                                
                             </div>
                             <div class="col-12 col-lg-6 bg-light mt-4" style="max-height: 450px; overflow-y: auto;">
                                 <h4 class="card-title"><span class="lstick m-r-20"></span><b>Listado del articulo</b></h4>
@@ -75,18 +70,6 @@
                             </div>
                         </div>
 
-                        {% else %}
-
-                        <div style="text-align: center;">
-                            <h6> Este presupuesto aun no esta cargado! </h6>
-                            <small> Para mas información consulte a <b>AR</b></small>
-                        </div>
-
-                        <div style="text-align: center; margin-top: 2%; margin-bottom: 10%;">
-                            <img src="{% static 'img/comunicaciones.png' %}" style="width: 10%; height: 10%;">
-                        </div>
-
-                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -125,11 +108,10 @@
                             
                             <span>Articulo</span>
                             <div class="mb-3">
-                                <select name="articulo" class="form-control"> 
-                                    <option value="1">madera</option>
-                                    <option value="2">hierro</option>
-                                </select>
+                                <input class="form-control" type="search" name="numero_inventario" list="lista_articulos">
                             </div>
+
+
                             
                             <span>Valor</span>
                             <div class="mb-3">
@@ -172,7 +154,7 @@
         <div class="modal-content">
 
             <div class="modal-body">
-                <form method="POST">
+                <form id="crear_inventario">
 
                     <div class="modal-body">
                         <button type="button" class="close text-dark"
@@ -180,7 +162,6 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
 
-                        {% csrf_token %}
                         <div class="row">
                             <div class="col-2">
                                 <img src="{% static 'img/bot.png' %}"
@@ -193,25 +174,27 @@
                             
                             <span>N° inventario</span>
                             <div class="mb-3">
-                                <input class="form-control" type="number" name="numero_inventario">
+                                <input class="form-control" 
+                                type="text" 
+                                id="new_num_inv">
                             </div>
                             
                             <span>Articulo</span>
                             <div class="mb-3">
-                                <select name="articulo" class="form-control"> 
-                                    <option value="1">madera</option>
-                                    <option value="2">hierro</option>
-                                </select>
+                                <input class="form-control" 
+                                type="search" id="new_articulo" 
+                                list="lista_articulos">
                             </div>
                             
                             <span>Valor</span>
                             <div class="mb-3">
-                                <input class="form-control" type="number" name="valor">
+                                <input class="form-control" 
+                                type="number" id="new_precio_md">
                             </div>
                             
                             <span>Moneda dura</span>
                             <div class="mb-3">
-                                <select name="moneda_dura" class="form-control"> 
+                                <select id="new_constante" class="form-control"> 
                                     <option value="1">USD</option>
                                     <option value="2">Hormigon</option>
                                 </select>
@@ -219,12 +202,12 @@
                             
                             <span>Fecha compra</span>
                             <div class="mb-3">
-                                <input class="form-control" type="date" name="fecha_compra">
+                                <input class="form-control" type="date" id="new_fecha_compra">
                             </div>
                             
                             <span>Amortizacion</span>
                             <div class="mb-3">
-                                <input class="form-control" type="number" name="amortizacion">
+                                <input class="form-control" type="number" id="new_amortizacion">
                             </div>
 
 
@@ -232,7 +215,7 @@
                         </div>
                     </div>
                     <div class="text-center mb-3">
-                        <button class="btn btn-info" type="submit"
+                        <button class="btn btn-info" onclick="service_create_inventario()"
                             style="margin-top: 10px;">Crear</button>
                     </div>
                 </form>
@@ -240,6 +223,13 @@
         </div>
     </div>
 </div>
+
+<datalist id="lista_articulos">
+    {% for articulo in articulos %}
+    <option value="{{articulo.codigo}}">{{articulo.nombre}}</option>
+    {% endfor %}
+</datalist>
+
 
 <input type="hidden" id = "token" value="{{ csrf_token }}">
 <input type="hidden" id = "host" value="{% host %}">
