@@ -6,7 +6,7 @@ class ArticulosSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Articulos
-        fields = ('codigo', 'nombre', 'unidad')
+        fields = ('codigo', 'nombre', 'unidad', 'valor')
 
 class ComprasFullSerializer(serializers.ModelSerializer):
 
