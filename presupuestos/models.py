@@ -107,7 +107,8 @@ class DatosProyectos(models.Model):
 
 class Presupuestos(models.Model):
 
-    proyecto = models.ForeignKey(Proyectos, on_delete=models.CASCADE, verbose_name = "Proyectos")
+    proyecto = models.OneToOneField(Proyectos, on_delete=models.CASCADE, verbose_name = "Proyectos", related_name="proyecto")
+    proyecto_base = models.ForeignKey(Proyectos, blank=True, null=True, on_delete=models.CASCADE, verbose_name = "Proyecto base", related_name="proyecto_base")
     valor = models.FloatField(verbose_name= "Valor del proyecto")
     saldo = models.FloatField(verbose_name= "Saldo del proyecto", blank=True, null=True)
     saldo_mat = models.FloatField(verbose_name= "Saldo del proyecto - Materiales", blank=True, null=True)
