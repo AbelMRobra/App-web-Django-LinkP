@@ -179,7 +179,7 @@
                         <tbody>
 
                             {% for i in datos %}
-                            <tr style="font-size: 14px;">
+                            <tr id="row_{{i.0.id}}" style="font-size: 14px;">
                                 <td class="text-center">
                                     <i style="display: none;">{{i.0.visto}}</i>
                                     {% if i.0.visto %}
@@ -560,8 +560,7 @@
                                                                         name="fecha_solucion_editar" 
                                                                         type="date" 
                                                                         class="form-control form-control" 
-                                                                        value="{{i.0.fecha_solucion|date:'Y-m-d'}}"
-                                                                        required>
+                                                                        value="{{i.0.fecha_solucion|date:'Y-m-d'}}">
                             
                                                                     </div>
                                                                 </div>
@@ -626,8 +625,8 @@
                                             </div>
                                             
                                             <div class="row p-4">
-                                                <form action="" method="POST">
-                                                                {% csrf_token %}
+                                                <!-- <form action="" method="POST">
+                                                                {% csrf_token %} -->
 
                                                     {% if i.1|length > 0 %}
                                                     <h4 class="mb-2">Seleccione los archivos</h4> 
@@ -650,13 +649,13 @@
                                                         
                                                         {% if i.1|length > 0 %}
                                                         <div class="col-lg-6 text-center">
-                                                            <button type="submit" name="borrar_adjuntos" value="{{i.0.id}}" class="btn btn-danger">Borrar</button>
+                                                            <button class="btn btn-danger">Borrar</button>
                                                         </div>
                                                         {% endif %}
                                                             
                                                    
                                                     </div>
-                                                </form>
+                                                <!-- </form> -->
                                             </div>
                                         </div>
                                     </div>
@@ -682,8 +681,8 @@
                                             </div>
                                             
                                             <div class="row p-4">
-                                                <form action="" method="POST">
-                                                                {% csrf_token %}
+                                                <!-- <form action="" method="POST">
+                                                                {% csrf_token %} -->
                                                     
                                                     <h4 class="text-danger font-bold">¿Seguro?</h4> 
                                                     
@@ -691,10 +690,10 @@
                             
                                                     <div class="row d-flex justify-content-center mt-2">
                                                         <div class="col-lg-6 text-center">
-                                                            <button type="submit" name="borrar_reclamo" value="{{i.0.id}}" class="btn btn-danger">Borrar</button>
+                                                            <button onclick="service_delete_reclamo({{i.0.id}})" class="btn btn-danger">Borrar</button>
                                                         </div>
                                                     </div>
-                                                </form>
+                                                <!-- </form> -->
                                             </div>
                                         </div>
                                     </div>
@@ -1447,6 +1446,117 @@
     }
 
     //
+
+    // Sección API BORRAR RECLAMO 
+
+    async function service_delete_reclamo(id_reclamo){
+
+        const url = `{% host %}/ventas/postventa/${id_reclamo}/`
+
+        var respuesta = await fetch(url ,{
+            method: "DELETE",
+            headers: {
+                'X-CSRFToken' : "{{ csrf_token }}",
+                'Content-Type': 'application/json',
+            },
+
+
+            });
+
+        var status = await respuesta.status
+
+        return validar_respuesta_delete(id_reclamo, status);
+
+    }
+
+    function validar_respuesta_delete(id_reclamo, status){
+
+        if (status >= 200 && status <300){
+
+            modificar_table_delete(id_reclamo);
+
+            sweet_alert("Reporte eliminado", "success");
+
+            
+
+        } else {
+            sweet_alert("Hubo un problema!", "warning")
+        }
+
+    }
+
+    function modificar_table_delete(id_reclamo){
+
+        var fila = document.getElementById(`row_${id_reclamo}`)
+        fila.style = "display: none" ;
+        
+    }
+
+    //
+
+       // Sección API BORRAR RECLAMO 
+
+    async function service_delete_reclamo(id_reclamo){
+
+        const url = `{% host %}/ventas/postventa/${id_reclamo}/`
+
+        var respuesta = await fetch(url ,{
+            method: "UPDATE",
+            headers: {
+                'X-CSRFToken' : "{{ csrf_token }}",
+                'Content-Type': 'application/json',
+            },
+
+            body: {
+                'numero' = models.IntegerField(verbose_name = "Numero de reclamo")
+                'propietario' = models.CharField(max_length=100, verbose_name = "Propietario")
+                'usuario' = models.CharField(max_length=100, verbose_name = "Usuario")
+                'telefono' = models.IntegerField(verbose_name = "Telefono", blank=True, null=True)
+                'email' = models.CharField(max_length=100, verbose_name = "Email", blank=True, null=True)
+                'proyecto' = models.CharField(max_length=100, verbose_name = "Proyecto")
+                'unidad' = models.CharField(max_length=100, verbose_name = "Unidad")
+                'fecha_reclamo' = models.DateField(verbose_name="Fecha del reclamo")
+                'fecha_solucion' = models.DateField(verbose_name="Fecha del reclamo", blank=True, null=True)
+                'estado' = models.CharField(choices=Estado.choices, max_length=40, verbose_name="Estado", default="ESPERA")
+                'responsable' =  models.ForeignKey(datosusuario, on_delete=models.CASCADE, verbose_name="Responsable", blank=True, null=True)
+                'clasificacion' = models.CharField(max_length=300, verbose_name = "Clasificacion del problema")
+                'descripcion' = models.TextField(verbose_name="Descripción del problema")
+                'visto' = models.BooleanField(default=False, verbose_name="Visto por responsable")
+            }
+
+
+            });
+
+        var status = await respuesta.status
+
+        return validar_respuesta_delete(id_reclamo, status);
+
+    }
+
+function validar_respuesta_delete(id_reclamo, status){
+
+if (status >= 200 && status <300){
+
+    modificar_table_delete(id_reclamo);
+
+    sweet_alert("Reporte eliminado", "success");
+
+    
+
+} else {
+    sweet_alert("Hubo un problema!", "warning")
+}
+
+}
+
+function modificar_table_delete(id_reclamo){
+
+var fila = document.getElementById(`row_${id_reclamo}`)
+fila.style = "display: none" ;
+
+}
+
+//
 
     async function service_cambio_estado(id_reclamo){
 
