@@ -1,9 +1,18 @@
 from django.urls import path
 from django.conf.urls import url
+from django.conf.urls import include
 from presupuestos.views import views, views_articulos, views_constantes,views_creditos,views_analisis, views_presupuestos
+from presupuestos.viewsets import viewset_presupuesto
 from django.contrib.auth.decorators import login_required
+from rest_framework import routers
+
+router = routers.DefaultRouter()
+router.register(r'api_presupuesto', viewset_presupuesto.PresupuestosViewset)
 
 urlpatterns = [
+
+    path("", include(router.urls)),
+
     #----------------URL PARA CONSTANTES -----------------------------------------
     url(r'^conslist/$', login_required(views_constantes.constantes_panel_maestro), name = 'Cons_list'),
     url(r'^conspanel/$', login_required(views_constantes.constantes_panel), name = 'Cons_panel'),

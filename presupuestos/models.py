@@ -1,3 +1,4 @@
+import datetime
 from django.db import models
 from proyectos.models import Proyectos
 from computos.models import Tipologias
@@ -121,6 +122,19 @@ class Presupuestos(models.Model):
     fecha_a = models.DateField(auto_now=True, verbose_name= "Fecha de actualización")
     presupuestador = models.CharField(verbose_name="Presupuestador", null=True, blank=True ,max_length=100)
 
+    def reset_presupuesto(self):
+        self.valor = 0
+        self.saldo = 0
+        self.saldo_mat = 0
+        self.saldo_mo = 0
+        self.credito = 0
+        self.fdr =  0
+        self.imprevisto = 0
+        self.anticipos = 0
+        self.proyecto_base = None
+
+
+
     def calculo_iva_compras(self):
         
         valor_a_pagar = (self.imprevisto + self.saldo_mat + self.saldo_mo + self.credito + self.fdr)*0.07875
@@ -233,8 +247,14 @@ class TareasProgramadas(models.Model):
         PROBLEMAS = "PROBLEMAS"
 
     tarea = models.CharField(max_length=200, verbose_name="Tareas programadas")
-    informe = models.ForeignKey(InformeMensual, on_delete=models.CASCADE, verbose_name="Informe")
-    estado = models.CharField(choices=Estado.choices, max_length=20, verbose_name="Estado de las tareas")
+    informe = models.ForeignKey(InformeMensual, on_delete=models.CASCADE, verbose_name="Informe", blank=True, null=True)
+    proyecto= models.ForeignKey(Proyectos, on_delete=models.CASCADE, verbose_name = "Proyecto", blank=True, null=True)
+    estado = models.CharField(choices=Estado.choices, max_length=20, verbose_name="Estado de las tareas", default=Estado.ESPERA)
+    fecha = models.DateField(verbose_name="Fecha de cumplimiento", blank=True, null=True, auto_now=True)
+
+    def terminar_tarea(self):
+        self.fecha = datetime.date.today()
+        self.estado = "LISTO"
 
     class Meta:
         verbose_name="Tarea"
@@ -242,6 +262,7 @@ class TareasProgramadas(models.Model):
 
 class Bitacoras(models.Model):
     fecha = models.DateField(verbose_name="Fecha del informe", auto_now=True)
+    hashtag = models.CharField(max_length=15, verbose_name="Hashtag", blank=True, null=True)
     titulo = models.CharField(max_length=200, verbose_name="Titulo", blank=True, null=True)
     proyecto= models.ForeignKey(Proyectos, on_delete=models.CASCADE, verbose_name = "Proyecto")
     informe = models.ForeignKey(InformeMensual, on_delete=models.CASCADE, verbose_name="Informe", blank=True, null=True)

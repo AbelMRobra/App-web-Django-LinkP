@@ -12,6 +12,7 @@ from registro.models import RegistroValorProyecto
 
 from funciones_generales import f_bots
 from presupuestos.funciones.f_presupuestos import *
+from rrhh.models import datosusuario
 
 
 def presupuesto_principal(request):
@@ -22,425 +23,431 @@ def presupuesto_principal(request):
 
         return redirect('presupuesto_proyecto',id_proyecto)
 
-    proyectos = Proyectos.objects.order_by("nombre")
+    presupuestos = Presupuestos.objects.order_by("proyecto__nombre")
 
-    proyectos = [proyecto for proyecto in proyectos if Modelopresupuesto.objects.filter(proyecto = proyecto).count() > 0]
-
-    return render(request, 'presupuestos/presupuesto_principal.html', {'proyectos':proyectos})
+    return render(request, 'presupuestos/presupuesto_principal.html', {'presupuestos':presupuestos})
 
 
-def presupuestos_panel_control(request,id):
+# def presupuestos_panel_control(request,id):
 
-    context = {}
+#     context = {}
     
-    proyecto = Proyectos.objects.get(pk=id)
+#     proyecto = Proyectos.objects.get(pk=id)
     
-    presupuestos_alm=PresupuestosAlmacenados.objects.all()
+#     presupuestos_alm=PresupuestosAlmacenados.objects.all()
 
-    #### --> PROCESOS DE RECALCULOS Y NOTIFICACIONES
+#     #### --> PROCESOS DE RECALCULOS Y NOTIFICACIONES
 
-    if request.method == "POST":
+#     if request.method == "POST":
 
-        datos_post = request.POST.dict()
+#         datos_post = request.POST.dict()
 
-        ## Almacena el archivo vigente sin recalcularlo
+#         ## Almacena el archivo vigente sin recalcularlo
 
-        if "extrapolado" in datos_post:
+#         if "extrapolado" in datos_post:
 
-            if request.POST["extrapolado"] == "1":
+#             if request.POST["extrapolado"] == "1":
 
-                proyecto.presupuesto = "ACTIVO"
-                proyecto.save()
+#                 proyecto.presupuesto = "ACTIVO"
+#                 proyecto.save()
 
-                try:
+#                 try:
 
-                    send = f"El proyecto {proyecto.nombre} paso a estar ACTIVO"
-                    id = presupuestos_datos_bot()['Telegram_grupo_presupuesto_id']
-                    token = presupuestos_datos_bot()['Telegram_grupo_presupuesto_token']
+#                     send = f"El proyecto {proyecto.nombre} paso a estar ACTIVO"
+#                     id = presupuestos_datos_bot()['Telegram_grupo_presupuesto_id']
+#                     token = presupuestos_datos_bot()['Telegram_grupo_presupuesto_token']
 
-                    f_bots.bot_telegram(send, id, token)
+#                     f_bots.bot_telegram(send, id, token)
 
-                except:
+#                 except:
 
-                    context["mensaje"] = [False, "Error inesperado al notificar"]
+#                     context["mensaje"] = [False, "Error inesperado al notificar"]
 
-            else:
+#             else:
 
-                proyecto.presupuesto = "EXTRAPOLADO"
-                proyecto.save()
+#                 proyecto.presupuesto = "EXTRAPOLADO"
+#                 proyecto.save()
 
-                try:
+#                 try:
 
-                    send = f"El proyecto {proyecto.nombre} paso a estar EXTRAPOLADO"
-                    id = presupuestos_datos_bot()['Telegram_grupo_presupuesto_id']
-                    token = presupuestos_datos_bot()['Telegram_grupo_presupuesto_token']
+#                     send = f"El proyecto {proyecto.nombre} paso a estar EXTRAPOLADO"
+#                     id = presupuestos_datos_bot()['Telegram_grupo_presupuesto_id']
+#                     token = presupuestos_datos_bot()['Telegram_grupo_presupuesto_token']
 
-                    f_bots.bot_telegram(send, id, token)
+#                     f_bots.bot_telegram(send, id, token)
 
-                except:
+#                 except:
 
-                    context["mensaje"] = [False, "Error inesperado al notificar"]
+#                     context["mensaje"] = [False, "Error inesperado al notificar"]
 
-        if "base" in datos_post:
+#         if "base" in datos_post:
 
-            if request.POST["base"] == "1":
+#             if request.POST["base"] == "1":
 
-                proyecto.presupuesto = "EXTRAPOLADO"
-                proyecto.save()
+#                 proyecto.presupuesto = "EXTRAPOLADO"
+#                 proyecto.save()
 
-                try:
+#                 try:
 
-                    send = f"El proyecto {proyecto.nombre} paso a estar EXTRAPOLADO"
-                    id = presupuestos_datos_bot()['Telegram_grupo_presupuesto_id']
-                    token = presupuestos_datos_bot()['Telegram_grupo_presupuesto_token']
+#                     send = f"El proyecto {proyecto.nombre} paso a estar EXTRAPOLADO"
+#                     id = presupuestos_datos_bot()['Telegram_grupo_presupuesto_id']
+#                     token = presupuestos_datos_bot()['Telegram_grupo_presupuesto_token']
 
-                    f_bots.bot_telegram(send, id, token)
+#                     f_bots.bot_telegram(send, id, token)
 
-                except:
+#                 except:
 
-                    context["mensaje"] = [False, "Error inesperado al notificar"]
+#                     context["mensaje"] = [False, "Error inesperado al notificar"]
 
-            else:
+#             else:
 
-                proyectos_base = Proyectos.objects.filter(presupuesto = "BASE")
+#                 proyectos_base = Proyectos.objects.filter(presupuesto = "BASE")
 
-                for proy_base in proyectos_base:
-                    proy_base.presupuesto = "EXTRAPOLADO"
-                    proy_base.save()
+#                 for proy_base in proyectos_base:
+#                     proy_base.presupuesto = "EXTRAPOLADO"
+#                     proy_base.save()
 
-                proyecto.presupuesto = "BASE"
-                proyecto.save()
+#                 proyecto.presupuesto = "BASE"
+#                 proyecto.save()
 
-                try:
+#                 try:
 
-                    send = f"El proyecto {proyecto.nombre} paso a ser la BASE"
-                    id = presupuestos_datos_bot()['Telegram_grupo_presupuesto_id']
-                    token = presupuestos_datos_bot()['Telegram_grupo_presupuesto_token']
+#                     send = f"El proyecto {proyecto.nombre} paso a ser la BASE"
+#                     id = presupuestos_datos_bot()['Telegram_grupo_presupuesto_id']
+#                     token = presupuestos_datos_bot()['Telegram_grupo_presupuesto_token']
 
-                    f_bots.bot_telegram(send, id, token)
+#                     f_bots.bot_telegram(send, id, token)
 
-                except:
+#                 except:
 
-                    context["mensaje"] = [False, "Error inesperado al notificar"]
+#                     context["mensaje"] = [False, "Error inesperado al notificar"]
 
+#         ## Almacena el archivo vigente sin recalcularlo
 
+#         if "almacenar" in datos_post:
 
-        ## Almacena el archivo vigente sin recalcularlo
+#             registro_vigente = presupuestos_alm.get(proyecto = proyecto, nombre = "vigente")
 
-        if "almacenar" in datos_post:
+#             try:
 
-            registro_vigente = presupuestos_alm.get(proyecto = proyecto, nombre = "vigente")
+#                 nuevo_registro = PresupuestosAlmacenados.objects.create(proyecto = proyecto,
+#                     nombre = str("{}".format(datetime.date.today())), archivo = registro_vigente.archivo)
 
-            try:
+#                 context["mensaje"] = [True, "Se guardo una copia con exito"]
 
-                nuevo_registro = PresupuestosAlmacenados.objects.create(proyecto = proyecto,
-                    nombre = str("{}".format(datetime.date.today())), archivo = registro_vigente.archivo)
+#             except:
 
-                context["mensaje"] = [True, "Se guardo una copia con exito"]
+#                 context["mensaje"] = [False, "Error inesperado al tratar de guardar"]
 
-            except:
+#         ### -> Recalcula el presupuesto y crea un archivo nuevo
 
-                context["mensaje"] = [False, "Error inesperado al tratar de guardar"]
-
-        ### -> Recalcula el presupuesto y crea un archivo nuevo
-
-        if "recalcular" in datos_post:
+#         if "recalcular" in datos_post:
             
-            try:
-                if len(presupuestos_alm.filter(proyecto = proyecto, nombre = "vigente")) > 1:
+#             try:
+#                 if len(presupuestos_alm.filter(proyecto = proyecto, nombre = "vigente")) > 1:
 
-                    presupuestos_revision_registros(proyecto)
+#                     presupuestos_revision_registros(proyecto)
 
-                registro_vigente = presupuestos_alm.get(proyecto = proyecto, nombre = "vigente")
-                registro_vigente.nombre = str("{}".format(datetime.date.today()))
-                registro_vigente.save()
+#                 registro_vigente = presupuestos_alm.get(proyecto = proyecto, nombre = "vigente")
+#                 registro_vigente.nombre = str("{}".format(datetime.date.today()))
+#                 registro_vigente.save()
 
-            except:
+#             except:
 
-                context["mensaje"] = [False, "Error inesperado al tratar de recalcular"]
+#                 context["mensaje"] = [False, "Error inesperado al tratar de recalcular"]
      
 
-    ## Revisamos si hay un fichero XLS del proyecto
-    ## En caso de no encontrar uno, lo creamos y asi queda almacenada una copia con el nombre "VIGENTE"
-    ## Actualmente la manera de trabajar es creando este archivo y almacenando copias con nombres de los dias o VIGENTE
+#     ## Revisamos si hay un fichero XLS del proyecto
+#     ## En caso de no encontrar uno, lo creamos y asi queda almacenada una copia con el nombre "VIGENTE"
+#     ## Actualmente la manera de trabajar es creando este archivo y almacenando copias con nombres de los dias o VIGENTE
 
-    if  presupuestos_alm.filter(proyecto = proyecto, nombre = "vigente").count() == 0:
+#     if  presupuestos_alm.filter(proyecto = proyecto, nombre = "vigente").count() == 0:
         
-
-        presupuesto_generar_xls_proyecto(proyecto)
+#         presupuesto_generar_xls_proyecto(proyecto)
         
-        # Utilizamos el BOT de Telegram para notificar al equipo el cambio
+#         # Utilizamos el BOT de Telegram para notificar al equipo el cambio
 
-        try:
+#         try:
 
-            # Buscaremos el archivo vigente y el anterior
+#             # Buscaremos el archivo vigente y el anterior
 
-            archivo = presupuestos_alm.get(proyecto = proyecto, nombre = "vigente").archivo
-            df = pd.read_excel(archivo)
-            repo_nuevo = sum(np.array(df['Monto'].values))
+#             archivo = presupuestos_alm.get(proyecto = proyecto, nombre = "vigente")
+#             df_1= pd.read_excel(archivo.archivo)
+#             repo_nuevo = sum(np.array(df_1['Monto'].values))
 
-            anterior_archivo = presupuestos_alm.filter(proyecto = proyecto).order_by("-id").exclude(nombre = "vigente")[0].archivo
-            df = pd.read_excel(anterior_archivo)
-            repo_anterior = sum(np.array(df['Monto'].values))
+#             anterior_archivo = presupuestos_alm.filter(proyecto = proyecto).order_by("-id").exclude(nombre = "vigente")[0]
+#             df_2 = pd.read_excel(anterior_archivo.archivo)
+#             repo_anterior = sum(np.array(df_2['Monto'].values))
 
-            var = round((repo_nuevo/repo_anterior-1)*100, 2)
+#             var = round((repo_nuevo/repo_anterior-1)*100, 2)
 
-            if var != 0:
+#             # print(f"El valor nuevo {repo_nuevo} {archivo.nombre}")
+#             # print(f"El valor viejo {repo_anterior} {anterior_archivo.nombre} {anterior_archivo.id}")
 
-                send = "Equipo!, se ha actualizado {} con una variación de {}%. Esta acción surge por el usuario {} ".format(proyecto.nombre, var, request.user.first_name)
+#             if var != 0:
+
+#                 send = "Equipo!, se ha actualizado {} con una variación de {}%. Esta acción surge por el usuario {} ".format(proyecto.nombre, var, request.user.first_name)
             
-            else:
+#             else:
 
-                send = "Equipo!, se guardo una copia de {} guardo una copia de {}".format(proyecto.nombre, request.user.first_name)
+#                 send = "Equipo!, se guardo una copia de {} guardo una copia de {}".format(proyecto.nombre, request.user.first_name)
 
                               
-            id = presupuestos_datos_bot()['Telegram_grupo_presupuesto_id']
-            token = presupuestos_datos_bot()['Telegram_grupo_presupuesto_token']
+#             id = presupuestos_datos_bot()['Telegram_grupo_presupuesto_id']
+#             token = presupuestos_datos_bot()['Telegram_grupo_presupuesto_token']
 
-            f_bots.bot_telegram(send, id, token)
+#             f_bots.bot_telegram(send, id, token)
 
-        except:
+#         except:
 
-            context["mensaje"] = [False, "Error inesperado al notificar la actualización"]
+#             context["mensaje"] = [False, "Error inesperado al notificar la actualización"]
 
-        ## Hay proyectos que no tienen un esquema de presupuesto, se consideran EXTRAPOLADOS y nacen del valor de otro proyecto 
-        ## Estos proyectos se denominan BASE, en caso de sufrir una variación, modificaremos a aquellos que tengan la denominación EXTRAPOLADO 
-        ## El siguiente bucle estudia y realiza esa acción
+#         ## Hay proyectos que no tienen un esquema de presupuesto, se consideran EXTRAPOLADOS y nacen del valor de otro proyecto 
+#         ## Estos proyectos se denominan BASE, en caso de sufrir una variación, modificaremos a aquellos que tengan la denominación EXTRAPOLADO 
+#         ## El siguiente bucle estudia y realiza esa acción
 
-        if proyecto.presupuesto == "BASE" and var != 0:
+#         if proyecto.presupuesto == "BASE" and var != 0:
 
-            proyectos_extrapolados = Proyectos.objects.filter(presupuesto = "EXTRAPOLADO")
+#             presupuestos_extrapolados = Presupuestos.objects.filter(proyecto_base = proyecto)
 
-            send_success = "Proyectos actualizados con el proyecto base: "
-            send_warning = "Proyectos sin actualizar: "
+#             send_success = f"Proyectos actualizados con el proyecto base: {proyecto.nombre}"
+#             send_warning = "Proyectos sin actualizar: "
 
-            for proyecto in proyectos_extrapolados:
+#             for presupuesto in presupuestos_extrapolados:
 
-                try:
+#                 try:
                     
-                    ### -> Actualizamos primero al presupuesto
+#                     ### -> Actualizamos primero al presupuesto
                 
-                    presupuesto_activo = Presupuestos.objects.get(proyecto = proyecto)
-                    presupuesto_activo.valor = presupuesto_activo.valor * (1+(var/100))
-                    presupuesto_activo.saldo = presupuesto_activo.saldo * (1+(var/100))
-                    presupuesto_activo.saldo_mat = presupuesto_activo.saldo_mat * (1+(var/100))
-                    presupuesto_activo.saldo_mo =  presupuesto_activo.saldo_mo * (1+(var/100))
-                    presupuesto_activo.save()
+#                     presupuesto.valor = presupuesto.valor * (1+(var/100))
+#                     presupuesto.saldo = presupuesto.saldo * (1+(var/100))
+#                     presupuesto.saldo_mat = presupuesto.saldo_mat * (1+(var/100))
+#                     presupuesto.saldo_mo =  presupuesto.saldo_mo * (1+(var/100))
+#                     presupuesto.save()
 
-                    ### -> Actualizamos despues al almacenero
+#                     ### -> Actualizamos despues al almacenero
 
-                    almacenero = Almacenero.objects.get(proyecto = proyecto)
-                    almacenero.pendiente_iva_ventas = presupuesto_activo.calculo_iva_compras()
-                    almacenero.save()
+#                     almacenero = Almacenero.objects.get(proyecto = presupuesto.proyecto)
+#                     almacenero.pendiente_iva_ventas = presupuesto.calculo_iva_compras()
+#                     almacenero.save()
 
-                    ### -> Sumamos el aviso al equipo
+#                     ### -> Sumamos el aviso al equipo
 
-                    send_success += "{} con {}% - ".format(proyecto, var)
+#                     send_success += "{} con {}% - ".format(proyecto, var)
 
+#                 except:
 
+#                     send_warning += "{} - ".format(proyecto)
 
-                except:
+#             try:
 
-                    send_warning += "{} - ".format(proyecto)
+#                 id = presupuestos_datos_bot()['Telegram_grupo_presupuesto_id']
+#                 token = presupuestos_datos_bot()['Telegram_grupo_presupuesto_token']
 
-            try:
-
-                id = presupuestos_datos_bot()['Telegram_grupo_presupuesto_id']
-                token = presupuestos_datos_bot()['Telegram_grupo_presupuesto_token']
-
-                send = "{}, actualizo el proyecto BASE, los extrapolados comenzaran a actualizarse".format(request.user.first_name)
+#                 send = "{}, actualizo el proyecto BASE, los extrapolados comenzaran a actualizarse".format(request.user.first_name)
                 
-                f_bots.bot_telegram(send, id, token)
-                f_bots.bot_telegram(send_success, id, token)
-                f_bots.bot_telegram(send_warning, id, token)
+#                 f_bots.bot_telegram(send, id, token)
+#                 f_bots.bot_telegram(send_success, id, token)
+#                 f_bots.bot_telegram(send_warning, id, token)
 
-                send_final = "Finalizo el proceso de actualización exitosamente"
+#                 send_final = "Finalizo el proceso de actualización exitosamente"
 
-                f_bots.bot_telegram(send_final, id, token)
+#                 f_bots.bot_telegram(send_final, id, token)
 
-            except:
+#             except:
 
-                context["mensaje"] = [False, "Error inesperado al notificar la actualización"]
+#                 context["mensaje"] = [False, "Error inesperado al notificar la actualización"]
 
-    #### --> CALCULOS DE DATOS NECESARIOS
+#     #### --> CALCULOS DE DATOS NECESARIOS
     
-    datos_proyecto = {}
-    datos_proyecto['proyecto'] = proyecto
+#     datos_proyecto = {}
+#     datos_proyecto['proyecto'] = proyecto
 
-    ## -> Información de abecera
+#     ## -> Información de abecera
 
-    try:
+#     try:
 
-        context['datos_presupuesto'] = Presupuestos.objects.get(proyecto = proyecto)
-        context['presupuestador'] = datosusuario.objects.get(identificacion = context['datos_presupuesto'].presupuestador)
+#         context['datos_presupuesto'] = Presupuestos.objects.get(proyecto = proyecto)
+#         context['presupuestador'] = datosusuario.objects.get(identificacion = context['datos_presupuesto'].presupuestador)
 
-    except:
+#     except:
         
-        context['datos_presupuesto'] = False
-        context['presupuestador'] = False
+#         context['datos_presupuesto'] = False
+#         context['presupuestador'] = False
 
-    ## -> Para los calculos necesarios utilizaremos las funciones de PANDAS
-    # Por lo cual primero transformaremos el archivo vigente en un Data Frame
+#     ## -> Para los calculos necesarios utilizaremos las funciones de PANDAS
+#     # Por lo cual primero transformaremos el archivo vigente en un Data Frame
 
-    archivo_vigente = PresupuestosAlmacenados.objects.filter(proyecto = proyecto, nombre = "vigente")[0].archivo
+#     archivo_vigente = PresupuestosAlmacenados.objects.filter(proyecto = proyecto, nombre = "vigente")[0].archivo
 
-    df = pd.read_excel(archivo_vigente)
+#     df = pd.read_excel(archivo_vigente)
 
-    ## -> Calculo del valor de reposición
+#     ## -> Calculo del valor de reposición
 
-    valor_reposicion = sum(np.array(df['Monto'].values))
-
-
-    ## -> Calculo del valor de saldo
+#     valor_reposicion = sum(np.array(df['Monto'].values))
 
 
-    listado_articulos = df['Articulo'].unique()
+#     ## -> Calculo del valor de saldo
 
-    valor_saldo_total = 0
-    valor_saldo_proyecto_materiales = 0
-    valor_saldo_proyecto_mo = 0
 
-    for articulo in listado_articulos:
+#     listado_articulos = df['Articulo'].unique()
 
-        cantidad_solicitada = sum(np.array(df[df['Articulo'] == articulo]['Cantidad Art Totales'].values))
+#     valor_saldo_total = 0
+#     valor_saldo_proyecto_materiales = 0
+#     valor_saldo_proyecto_mo = 0
 
-        valor_articulo = Articulos.objects.get(codigo = articulo).valor
+#     for articulo in listado_articulos:
 
-        articulos_comprados = sum(np.array(Compras.objects.filter(proyecto = proyecto, articulo__codigo = articulo).values_list("cantidad", flat = True)))
+#         cantidad_solicitada = sum(np.array(df[df['Articulo'] == articulo]['Cantidad Art Totales'].values))
+
+#         valor_articulo = Articulos.objects.get(codigo = articulo).valor
+
+#         articulos_comprados = sum(np.array(Compras.objects.filter(proyecto = proyecto, articulo__codigo = articulo).values_list("cantidad", flat = True)))
         
-        saldo_articulo = (cantidad_solicitada - articulos_comprados)*valor_articulo
+#         saldo_articulo = (cantidad_solicitada - articulos_comprados)*valor_articulo
         
-        ## -> Es importante entender que el saldo podria ser negativo si se compro mas de lo que se necesita
-        ## En tal caso el saldo solo seria la parte positiva, ya que lo comprado de mas entraria en concepto de credito
+#         ## -> Es importante entender que el saldo podria ser negativo si se compro mas de lo que se necesita
+#         ## En tal caso el saldo solo seria la parte positiva, ya que lo comprado de mas entraria en concepto de credito
 
-        if saldo_articulo > 0:
+#         if saldo_articulo > 0:
             
-            valor_saldo_total = valor_saldo_total + saldo_articulo
+#             valor_saldo_total = valor_saldo_total + saldo_articulo
 
-            ## En el esquema incial, los articulos iniciados con "3" en general son materiales
+#             ## En el esquema incial, los articulos iniciados con "3" en general son materiales
 
-            if str(articulo)[0] == "3":
+#             if str(articulo)[0] == "3":
                 
-                valor_saldo_proyecto_materiales += saldo_articulo
+#                 valor_saldo_proyecto_materiales += saldo_articulo
            
-            else:
+#             else:
                 
-                valor_saldo_proyecto_mo += saldo_articulo
+#                 valor_saldo_proyecto_mo += saldo_articulo
 
-    ### -> Actualizamos despues al almacenero
+#     ### -> Actualizamos despues al almacenero
 
-    try:
+#     try:
 
-        if proyecto.presupuesto != "EXTRAPOLADO":
+#         if proyecto.presupuesto != "EXTRAPOLADO":
 
-            Saldo_act = Presupuestos.objects.get(proyecto = proyecto)
-            Saldo_act.valor = valor_reposicion
-            Saldo_act.saldo = valor_saldo_total
-            Saldo_act.saldo_mat = valor_saldo_proyecto_materiales
-            Saldo_act.saldo_mo = valor_saldo_proyecto_mo
-            Saldo_act.save()
+#             Saldo_act = Presupuestos.objects.get(proyecto = proyecto)
+#             Saldo_act.valor = valor_reposicion
+#             Saldo_act.saldo = valor_saldo_total
+#             Saldo_act.saldo_mat = valor_saldo_proyecto_materiales
+#             Saldo_act.saldo_mo = valor_saldo_proyecto_mo
+#             Saldo_act.save()
 
-            almacenero = Almacenero.objects.get(proyecto = proyecto)
-            almacenero.pendiente_iva_ventas = presupuesto_activo.calculo_iva_compras()
-            almacenero.save()
+#             almacenero = Almacenero.objects.get(proyecto = proyecto)
+#             almacenero.pendiente_iva_ventas = presupuesto_activo.calculo_iva_compras()
+#             almacenero.save()
 
-    except:
+#     except:
 
-        context["mensaje"] = [False, "Error al almacenar datos en el almacenero o presupuesto"]
+#         context["mensaje"] = [False, "Error al almacenar datos en el almacenero o presupuesto"]
 
-    ## -> Calculamos el avance para el gradifo tipo PIE
+#     ## -> Calculamos el avance para el gradifo tipo PIE
 
 
-    if valor_reposicion != 0:
+#     if valor_reposicion != 0:
 
-        datos_proyecto['avance'] = (1 - (valor_saldo_total/valor_reposicion))*100
-        datos_proyecto['pendiente'] = 100 - datos_proyecto['avance']
+#         datos_proyecto['avance'] = (1 - (valor_saldo_total/valor_reposicion))*100
+#         datos_proyecto['pendiente'] = 100 - datos_proyecto['avance']
 
-    else:
+#     else:
 
-        datos_proyecto['avance'] = 0
-        datos_proyecto['pendiente'] = 0
+#         datos_proyecto['avance'] = 0
+#         datos_proyecto['pendiente'] = 0
 
-    datos_proyecto['proyecto'] = proyecto
-    datos_proyecto['valor_reposicion'] = valor_reposicion
-    datos_proyecto['valor_saldo'] = valor_saldo_total
+#     datos_proyecto['proyecto'] = proyecto
+#     datos_proyecto['valor_reposicion'] = valor_reposicion
+#     datos_proyecto['valor_saldo'] = valor_saldo_total
 
-    ## -> Crea el historico de valores del proyecto
+#     ## -> Crea el historico de valores del proyecto
 
-    valores_proyecto_registrados = RegistroValorProyecto.objects.filter(proyecto = proyecto)
+#     valores_proyecto_registrados = RegistroValorProyecto.objects.filter(proyecto = proyecto)
 
-    context['registro_valor_proyecto'] = [(valor_proyecto.fecha, valor_proyecto.precio_proyecto/1000000) for valor_proyecto in valores_proyecto_registrados]
+#     context['registro_valor_proyecto'] = [(valor_proyecto.fecha, valor_proyecto.precio_proyecto/1000000) for valor_proyecto in valores_proyecto_registrados]
 
-    ## -> Estudia las variaciones del proyecto
+#     ## -> Estudia las variaciones del proyecto
 
-    # try:
-    context['variacion'] = (((valor_reposicion/1000000)/context['registro_valor_proyecto'][-30][1]) -1)*100
+#     # try:
+#     context['variacion'] = (((valor_reposicion/1000000)/context['registro_valor_proyecto'][-30][1]) -1)*100
     
-    # except:
-    #     context['variacion'] = "Sin datos suficientes"
+#     # except:
+#     #     context['variacion'] = "Sin datos suficientes"
     
-    today = datetime.date.today()
+#     today = datetime.date.today()
     
-    ### -> Variación anual
-    inicio_year_inicio_month = datetime.date(today.year, 1, 1)
-    inicio_year_final_month = datetime.date(today.year, 1, 28)
+#     ### -> Variación anual
+#     inicio_year_inicio_month = datetime.date(today.year, 1, 1)
+#     inicio_year_final_month = datetime.date(today.year, 1, 28)
     
-    try:
+#     try:
 
-        datos_bases = RegistroValorProyecto.objects.filter(
-            Q(fecha__gte = inicio_year_inicio_month, proyecto = proyecto) & Q(fecha__lte = inicio_year_final_month, proyecto = proyecto)
-        ).values_list("precio_proyecto", flat=True)
+#         datos_bases = RegistroValorProyecto.objects.filter(
+#             Q(fecha__gte = inicio_year_inicio_month, proyecto = proyecto) & Q(fecha__lte = inicio_year_final_month, proyecto = proyecto)
+#         ).values_list("precio_proyecto", flat=True)
 
-        print(np.mean(sum(datos_bases)))
+#         # print(np.mean(sum(datos_bases)))
 
-        valor = (((valor_reposicion)/np.mean(datos_bases)) -1)*100
+#         valor = (((valor_reposicion)/np.mean(datos_bases)) -1)*100
 
-        variacion_year = [inicio_year_inicio_month, valor]
+#         variacion_year = [inicio_year_inicio_month, valor]
 
-        context['variacion_year'] = variacion_year
+#         context['variacion_year'] = variacion_year
 
-    except:
+#     except:
 
-        context['variacion_year'] = "Sin registros"
+#         context['variacion_year'] = "Sin registros"
 
     
 
-    ### -> Variación del año pasado
-    inicio_yaer_last_inicio_month = datetime.date((today.year - 1), 1, 1)
-    inicio_yaer_last_final_month = datetime.date((today.year - 1), 1, 28)
+#     ### -> Variación del año pasado
+#     inicio_yaer_last_inicio_month = datetime.date((today.year - 1), 1, 1)
+#     inicio_yaer_last_final_month = datetime.date((today.year - 1), 1, 28)
 
-    try:
+#     try:
 
-        datos_bases = RegistroValorProyecto.objects.filter(
-            Q(fecha__gte = inicio_yaer_last_inicio_month, proyecto = proyecto) & Q(fecha__lte = inicio_yaer_last_final_month, proyecto = proyecto)
-        ).values_list("precio_proyecto", flat=True)
+#         datos_bases = RegistroValorProyecto.objects.filter(
+#             Q(fecha__gte = inicio_yaer_last_inicio_month, proyecto = proyecto) & Q(fecha__lte = inicio_yaer_last_final_month, proyecto = proyecto)
+#         ).values_list("precio_proyecto", flat=True)
 
-        valor = (((valor_reposicion)/np.mean(datos_bases)) -1)*100
+#         valor = (((valor_reposicion)/np.mean(datos_bases)) -1)*100
 
-        variacion_year_2 = [inicio_yaer_last_inicio_month, valor]
+#         variacion_year_2 = [inicio_yaer_last_inicio_month, valor]
 
-        context['variacion_year_2'] = variacion_year_2
+#         context['variacion_year_2'] = variacion_year_2
 
-    except:
+#     except:
 
-        context['variacion_year_2'] = "Sin registros"
-
-
-
-    context['registro_valor_proyecto'] = context['registro_valor_proyecto'][-60:]
-
-    context['datos_proyecto'] = datos_proyecto
+#         context['variacion_year_2'] = "Sin registros"
 
 
-    ###-> Esta parte es para activar una ayuda al presupuestador dentro del panel
 
-    if context['presupuestador']:
+#     context['registro_valor_proyecto'] = context['registro_valor_proyecto'][-60:]
 
-        if request.user.username == context['presupuestador']:
-            context['que_hacer_general'] = True
-
-        else:
-            context['que_hacer_general'] = False
+#     context['datos_proyecto'] = datos_proyecto
 
 
+#     ###-> Esta parte es para activar una ayuda al presupuestador dentro del panel
+
+#     if context['presupuestador']:
+
+#         if request.user.username == context['presupuestador']:
+#             context['que_hacer_general'] = True
+
+#         else:
+#             context['que_hacer_general'] = False
+
+
+#     return render(request, 'presupuestos/presupuesto_proyecto.html', context)
+
+
+def presupuestos_panel_control(request, id):
+
+    context = {}
+    context['proyecto'] = Proyectos.objects.get(id = id)
+    context['proyectos_base'] = Proyectos.objects.filter(presupuesto = "BASE")
+    context['analisis'] = Analisis.objects.all()
+    context['presupuestadores'] = datosusuario.objects.filter(area = "PRESUPUESTO")
+    
     return render(request, 'presupuestos/presupuesto_proyecto.html', context)

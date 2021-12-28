@@ -1,11 +1,15 @@
 from openpyxl import Workbook
-from presupuestos.models import Capitulos,CompoAnalisis,Modelopresupuesto,PresupuestosAlmacenados
+from presupuestos.models import Capitulos,CompoAnalisis,Modelopresupuesto, Presupuestos,PresupuestosAlmacenados
 from django.conf import settings
 from presupuestos.wabot import WABot
 import datetime as dt
 import pandas as pd
+import numpy as np
+import statistics
 from presupuestos.models import Capitulos, PresupuestosAlmacenados, Analisis, Articulos
+from compras.models import Compras
 from computos.models import Computos
+from proyectos.models import Proyectos
 
 def presupuestos_datos_bot():
 
@@ -15,18 +19,92 @@ def presupuestos_datos_bot():
 
     return diccionario_datos
 
+def presupuesto_recalcular_presupuesto(proyecto):
+
+    archivo_vigente = PresupuestosAlmacenados.objects.filter(proyecto = proyecto, nombre = "vigente")[0].archivo
+    df = pd.read_excel(archivo_vigente)
+    datos_saldo = presupuesto_calculo_saldo(df, proyecto)
+    presupuesto = Presupuestos.objects.get(proyecto = proyecto)
+    valor_actual = presupuesto.valor
+    presupuesto.valor = sum(np.array(df['Monto'].values))
+    presupuesto.saldo = datos_saldo['saldo_total']
+    presupuesto.saldo_mat = datos_saldo['saldo_mo']
+    presupuesto.saldo_mo = datos_saldo['saldo_mat']
+    presupuesto.save()
+
+    if presupuesto.proyecto.presupuesto == "BASE" and valor_actual != 0:
+        presupuestos_actualizar = Presupuestos.objects.filter(proyecto_base = proyecto)
+        print(presupuestos_actualizar)
+        for presup_actualizar in presupuestos_actualizar:
+            print(presup_actualizar)
+            presup_actualizar.valor *= (presupuesto.valor/valor_actual)
+            presup_actualizar.saldo *= (presupuesto.valor/valor_actual)
+            presup_actualizar.saldo_mat *= (presupuesto.valor/valor_actual)
+            presup_actualizar.saldo_mo *= (presupuesto.valor/valor_actual)
+            presup_actualizar.save()
+
+    return "Calculate"
 
 def presupuestos_revision_registros(proyecto):
 
-    presupuestos_alm = PresupuestosAlmacenados.objects.filter(proyecto = proyecto)[1:0]
+    presupuestos_alm = PresupuestosAlmacenados.objects.filter(proyecto = proyecto, nombre = "vigente")[1:]
 
     for presupuesto in presupuestos_alm:
 
         presupuesto.nombre = str(dt.date.today())
         presupuesto.save()
 
+def presupuesto_datos_proyecto(proyecto):
+    presupuesto = Presupuestos.objects.get(proyecto = proyecto)
 
+    datos = {
+        'valor_reposicion': presupuesto.valor,
+        'saldo_total': presupuesto.saldo,
+        'saldo_material': presupuesto.saldo_mat,
+        'saldo_mo': presupuesto.saldo_mo,
+        'imprevisto': presupuesto.imprevisto,
+    }
 
+    return datos
+
+def presupuesto_calculo_saldo(df, proyecto):
+    
+    listado_articulos = df['Articulo'].unique()
+    compras = Compras.objects.filter(proyecto = proyecto)
+    articulos = Articulos.objects.all()
+    valor_saldo_total = 0
+    valor_saldo_proyecto_materiales = 0
+    valor_saldo_proyecto_mo = 0
+
+    for articulo in listado_articulos:
+
+        cantidad_solicitada = sum(np.array(df[df['Articulo'] == articulo]['Cantidad Art Totales'].values))
+        valor_articulo = articulos.get(codigo = articulo).valor
+        articulos_comprados = sum(np.array(compras.filter(articulo__codigo = articulo).values_list("cantidad", flat = True)))
+        saldo_articulo = (cantidad_solicitada - articulos_comprados)*valor_articulo
+        
+        ## -> Es importante entender que el saldo podria ser negativo si se compro mas de lo que se necesita
+        ## En tal caso el saldo solo seria la parte positiva, ya que lo comprado de mas entraria en concepto de credito
+
+        if saldo_articulo > 0:
+            valor_saldo_total = valor_saldo_total + saldo_articulo
+            ## En el esquema incial, los articulos iniciados con "3" en general son materiales
+
+            if str(articulo)[0] == "3":
+                
+                valor_saldo_proyecto_materiales += saldo_articulo
+           
+            else:
+                
+                valor_saldo_proyecto_mo += saldo_articulo
+
+    datos = {
+        "saldo_total": valor_saldo_total,
+        "saldo_mo": valor_saldo_proyecto_mo,
+        "saldo_mat": valor_saldo_proyecto_materiales,
+    }
+
+    return datos
 
 def auditor_presupuesto(proyecto,fecha_desde, fecha_hasta):
     #esta linea trae 29 objetos
@@ -341,6 +419,206 @@ def presupuesto_generar_xls_proyecto(proyecto):
 
     nuevo_presupuesto.save()
 
+    return "Save"
+
+def presupuestos_saldo_capitulo(id_proyecto):
+
+    # Traemos las compras y el presupuesto
+
+    proyecto = Proyectos.objects.get(id = id_proyecto)
+    archivo = PresupuestosAlmacenados.objects.get(proyecto = proyecto, nombre = "vigente").archivo
+    df = pd.read_excel(archivo)
+    compras = Compras.objects.filter(proyecto = proyecto)
+    articulos = Articulos.objects.all()
+    capitulos = Capitulos.objects.all()
+
+    # Primero hacemos el JSON con la dara sin tener en cuenta las compras
+
+    articulo_capitulo = []
+
+    for capitulo in capitulos:
+        info_saldo_capitulo = {
+            capitulo.nombre: {
+                'id': capitulo.id,
+                'valor_capitulo': float(sum(df[df['Capitulo'] == capitulo.nombre]['Monto'])),
+                'inc': float(sum(df[df['Capitulo'] == capitulo.nombre]['Monto'])/sum(df['Monto'])*100),
+                'saldo': float(sum(df[df['Capitulo'] == capitulo.nombre]['Monto'])),
+                'data': []
+                }  
+        }
+
+        listado_articulos_capitulo = df[df['Capitulo'] == capitulo.nombre]['Articulo'].unique()
+        for articulo in listado_articulos_capitulo:
+            cantidad_articulo = float(sum(df[df['Capitulo'] == capitulo.nombre]['Cantidad Art Totales']))
+            precio_articulo = float(statistics.mean(df[df['Capitulo'] == capitulo.nombre]['Precio']))
+            articulo_select = articulos.get(codigo = articulo)
+            dict_articulo = { 
+                str(articulo): {
+                    'articulo': articulo_select.nombre, 
+                    'cantidad': cantidad_articulo,
+                    'contante': str(articulo_select.constante),
+                    'comprado': 0, 
+                    'precio': precio_articulo
+                }
+            }
+            info_saldo_capitulo[capitulo.nombre]['data'].append(dict_articulo)
+        
+        articulo_capitulo.append(info_saldo_capitulo)
+
+    # Luego traemos todas las compras en una lista iterable
+    articulos_comprados = compras.values_list("articulo", flat=True).distinct()
+
+    #Armamos el stock con todas las compras realizadas de este proyecto
+    stock_articulos = []
+
+    for articulo in articulos_comprados:
+        cantidad = sum(np.array(compras.filter(articulo = articulo).values_list('cantidad', flat=True)))
+        stock_articulos.append([articulo, cantidad])
+
+    for stock in stock_articulos:
+        for capitulo in articulo_capitulo:
+            for key in capitulo.keys():
+                for i in range(len(capitulo[key]['data'])):
+                    if stock[0] in capitulo[key]['data'][i].keys():
+
+                        if stock[1] >= capitulo[key]['data'][i][stock[0]]['cantidad']:
+                            capitulo[key]['data'][i][stock[0]]['comprado'] = float(capitulo[key]['data'][i][stock[0]]['cantidad'])
+                            stock[1] = stock[1] - capitulo[key]['data'][i][stock[0]]['cantidad']
+                            capitulo[key]['saldo'] = float(capitulo[key]['saldo'] - (capitulo[key]['data'][i][stock[0]]['cantidad']*capitulo[key]['data'][i][stock[0]]['precio']))
+
+                        elif stock[1] > 0:
+                            capitulo[key]['data'][i][stock[0]]['comprado'] = float(stock[1])
+                            stock[1] = 0
+                            capitulo[key]['saldo'] = float(capitulo[key]['saldo'] - (stock[1]*capitulo[key]['data'][i][stock[0]]['precio']))
+
+                        else:
+                            pass 
+
+    return articulo_capitulo
+
+
+
+    # Ordenamos cada capitulo con una lista donde no se repitan los articulos
+
+    presupuesto_capitulo = []
+
+    contador = 0
+
+    for i in range(37):
+
+        dato = datos_viejos[contador]
+
+        nuevo_art_cant = []
+
+        lista_art_cap = []
+
+        for art_cant in dato[2]:
+
+            lista_art_cap.append(art_cant[0])
+
+        lista_art_cap = list(set(lista_art_cap))
+        
+        for articulo in lista_art_cap:
+
+            cantidad = 0
+
+            for articulo2 in dato[2]:
+
+                if articulo == articulo2[0]:
+
+                    cantidad = cantidad + articulo2[1]
+
+            nuevo_art_cant.append((articulo, cantidad))
+
+        presupuesto_capitulo.append((dato[0], dato[1], nuevo_art_cant))    
+        
+        contador += 1
+
+
+    # Ordenamos la compra para que sea una sola lista
+
+    articulos_comprados = []
+
+    for compra in compras:
+
+        articulos_comprados.append(compra.articulo)
+
+    articulos_comprados = list(set(articulos_comprados))
+
+    #Armamos el stock con todas las compras realizadas de este proyecto
+
+    stock_articulos = []
+
+    for articulo in articulos_comprados:
+
+        cantidad = sum(np.array(Compras.objects.values_list('cantidad').filter(proyecto = proyecto, articulo = articulo)))
+
+        stock_articulos.append((articulo, cantidad))
+
+    #Armamos el saldo --> Hay un error ya que al descartar menores a 0, olvidamos que restan consumo
+
+    saldo_capitulo = []
+
+    for capitulo_presupuesto in presupuesto_capitulo:
+
+        articulos_saldo = []
+
+        for articulos_presupuesto in capitulo_presupuesto[2]:
+
+            if articulos_presupuesto[0] in articulos_comprados and articulos_presupuesto[1]>=0:
+
+                contador = 0
+
+                for articulos_stock in stock_articulos:
+
+                    #Si encontramos el articulo del capitulo en el stock, activamos una de las 3 posibilidades
+
+                    if articulos_stock[0] == articulos_presupuesto[0]:
+
+                        articulos_stock = list(articulos_stock)
+
+                        if articulos_stock[1] > articulos_presupuesto[1]:
+
+                            articulos_stock[1] = float(articulos_stock[1]) - float(articulos_presupuesto[1])                           
+
+                            stock_articulos[contador] = list(stock_articulos[contador])
+                            stock_articulos[contador][1] = articulos_stock[1]
+
+                            articulos_stock = tuple(articulos_stock)
+                            stock_articulos[contador] = tuple(stock_articulos[contador])
+
+                        elif articulos_stock[1] == articulos_presupuesto[1]:
+
+                            articulos_stock[1] = 0
+                            stock_articulos[contador] = list(stock_articulos[contador])
+                            stock_articulos[contador][1] = articulos_stock[1]
+
+                            articulos_stock = tuple(articulos_stock)
+                            stock_articulos[contador] = tuple(stock_articulos[contador])
+
+                        elif articulos_stock[1] < articulos_presupuesto[1]:
+
+                            cantidad_saldo = float(articulos_presupuesto[1]) - float(articulos_stock[1])
+
+                            articulos_stock[1] = 0
+
+                            stock_articulos[contador] = list(stock_articulos[contador])
+                            stock_articulos[contador][1] = articulos_stock[1]
+
+                            articulos_saldo.append((articulos_presupuesto[0], cantidad_saldo))
+
+                            articulos_stock = tuple(articulos_stock)
+                            stock_articulos[contador] = tuple(stock_articulos[contador])
+                    contador += 1
+            else:
+                articulos_saldo.append(articulos_presupuesto)
+
+        #Modificado con el saldo
+                
+        saldo_capitulo.append((capitulo_presupuesto[0], capitulo_presupuesto[1], articulos_saldo))
+
+
+    return saldo_capitulo
 
 
 

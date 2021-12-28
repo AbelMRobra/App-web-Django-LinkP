@@ -21,12 +21,12 @@
   </div>
 
 
-  <div class="row col-12 col-lg-9">
-    <div class="col-6 col-lg-4 col-xlg-3">
+  <div class="row col-12">
+    <div class="col-6 col-lg-4 col-xlg-4">
       <div class="card">
         <div class="card-body text-center">
           <div>
-            <h6>Base de constantes</h6>
+            <h6><b>Base de constantes</b></h6>
           </div>
 
           <div>
@@ -48,11 +48,11 @@
       </div>
     </div>
 
-    <div class="col-6 col-lg-4 col-xlg-3">
+    <div class="col-6 col-lg-4 col-xlg-4">
       <div class="card">
         <div class="card-body text-center">
           <div>
-            <h6>Articulos</h6>
+            <h6><b>Articulos</b></h6>
           </div>
 
           <div>
@@ -78,7 +78,7 @@
       <div class="card">
         <div class="card-body text-center">
           <div>
-            <h6>Biblioteca de APU</h6>
+            <h6><b>Biblioteca de APU</b></h6>
           </div>
 
           <div>
@@ -101,12 +101,12 @@
       </div>
     </div>
 
-    <div class="col-6 col-lg-4 col-xlg-3">
+    <div class="col-6 col-lg-4 col-xlg-4">
       <div class="card">
         <div class="card-body text-center">
 
           <div>
-            <h6>Control de presupuesto</h6>
+            <h6><b>Control de presupuesto</b></h6>
           </div>
 
           {% if request.user|has_group:"PRESUPUESTO NIVEL 2" %}
@@ -114,41 +114,15 @@
           <form method="POST" style="margin-top: 30px;">
             {% csrf_token %}
 
-            <select style="width: 170px;" name="proyecto" class="form-control">
+            <select id="select_project" style="width: 170px;" name="proyecto" class="form-control" onchange="service_crear_presupuesto_modal()">
 
-              {% if request.user.username == "HC" %}
+              {% for i in presupuestos %}
 
-              {% for i in proyectos %}
-
-              {% if "DIANCO" in i.nombre %}
-
-              <option value="{{i.id}}">{{i.nombre}}</option>
-
-              {% endif %}
+              <option value="{{i.proyecto.id}}">{{i.proyecto.nombre}}</option>
 
               {% endfor %}
 
-              {% elif request.user.username == "AR" or request.user.username == "PL" %}
-
-              {% for i in proyectos %}
-
-              <option value="{{i.id}}">{{i.nombre}}</option>
-
-              {% endfor %}
-
-              {% else %}
-
-              {% for i in proyectos %}
-
-              {% if not "SEMINARIO" in i.nombre %}
-
-              <option value="{{i.id}}">{{i.nombre}}</option>
-
-              {% endif %}
-
-              {% endfor %}
-
-              {% endif %}
+              <option value="NEW">Nuevo proyecto</option>
 
             </select>
 
@@ -172,11 +146,11 @@
       </div>
     </div>
 
-    <div class="col-6 col-lg-4 col-xlg-3">
+    <div class="col-6 col-lg-4 col-xlg-4">
       <div class="card">
         <div class="card-body text-center">
           <div>
-            <h6>Indicador de precios</h6>
+            <h6><b>Indicador de precios</b></h6>
           </div>
 
           <div>
@@ -203,7 +177,7 @@
       <div class="card">
         <div class="card-body text-center">
           <div>
-            <h6>Analisis historico</h6>
+            <h6><b>Analisis historico</b></h6>
           </div>
 
           <div>
@@ -226,11 +200,11 @@
       </div>
     </div>
 
-    <div class="col-6 col-lg-4 col-xlg-3">
+    <div class="col-6 col-lg-4 col-xlg-4">
       <div class="card">
         <div class="card-body text-center">
           <div>
-            <h6>Informe de área</h6>
+            <h6><b>Informe de área</b></h6>
           </div>
 
           <div>
@@ -253,20 +227,97 @@
   </div>
 </div>
 
-<aside class="right-side-panel">
-  <h3 class="p-relative"><span class="lstick"></span>Presupuestos</h3>
-  <h5 class="p-relative">Aplicación</h5>
-  <div class="row">
-      
-      <div class="col-md-12 m-t-10">
-        <div class="card">
-          <div class="card-body">
-          <img src="{% static 'img/animation_500_kmv3afam.gif' %}" alt="Funny image" width="200px">
-          <p>La aplicación de presupuestos esta diseñada para la estimación, control y monitoreo de los presupuestos de los distintos proyectos </p>
-      </div>
+<div class="modal fade" id="modalProyecto" tabindex="-1" role="dialog" aria-labelledby="modalProyecto" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+
+          <div class="modal-body">
+              <form id="modal_asignacion">
+
+                  <div class="modal-body">
+                      <button type="button" class="close text-dark"
+                          data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                      </button>
+                      <div class="row">
+                          <div class="col-2">
+                              <img src="{% static 'img/bot.png' %}"
+                                  width="40px" alt="">
+                          </div>
+                          <div class="col-10 mb-3">
+                              <h4 class="my-2 text-title text-center">
+                                  Proyecto sin asignación</h4>
+                          </div>
+
+                          <div class="mt-2">
+                            <p>El proyecto <b id="proyecto"></b> no tiene asignado un proyecto base y se encuentra extrapolado, por favor asigne uno del listado</p>
+                          </div>
+
+                          
+
+                          <div class="mb-3 mt-3">
+                              <select id="select_modal" class="form-control"> 
+   
+                              </select>
+                          </div>
+
+                      </div>
+                  </div>
+                  <div class="text-center mb-3">
+                      <button class="btn btn-info" onclick="service_asignar_proyecto()"
+                          style="margin-top: 10px;">Asignar</button>
+                  </div>
+              </form>
           </div>
       </div>
   </div>
-</aside>
+</div>
+
+<div class="modal fade" id="modalCrearPresupuesto" tabindex="-1" role="dialog" aria-labelledby="modalCrearPresupuesto" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+
+          <div class="modal-body">
+              <div class="modal-body">
+                  <button type="button" class="close text-dark"
+                      data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                  </button>
+                  <div class="row">
+                      <div class="col-2">
+                          <img src="{% static 'img/bot.png' %}"
+                              width="40px" alt="">
+                      </div>
+                      <div class="col-10 mb-3">
+                          <h4 class="my-2 text-title text-center">
+                              Crear un nuevo proyecto</h4>
+                      </div>
+
+                      <div class="mt-2">
+                        <p>Estos son los proyectos que aun no tienen un presupuesto, elige uno para comenzar</p>
+                      </div>
+                      <div class="mb-3 mt-3">
+                          <select id="select_modal_create" class="form-control"> 
+
+                          </select>
+                      </div>
+
+                  </div>
+              </div>
+              <div class="text-center mb-3">
+                  <button class="btn btn-primary" onclick="service_crear_presupuesto()"
+                      style="margin-top: 10px;">Empezar!</button>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+
+
+<input type="hidden" id = "token" value="{{ csrf_token }}">
+<input type="hidden" id = "host" value="{% host %}">
+<input type="hidden" id = "proyecto_problemas" value="">
+
+<script src="{% static 'js/f_presupuestos.js' %}"></script>
 
 {% endblock %}

@@ -21,268 +21,615 @@
     </div>
   </div>
 
+  <div id="activo_off" {% if proyecto.presupuesto != 'SIN_MOVIMIENTO' %} style = "display: none;" {% endif %}>
 
-  <div class="row">
-    <div class="col-12">
-      <div class="card mb-2">
-        <div class="card-body">
-          <div class="d-flex align-items-center">
+    <div class="row">
+      <div class="col-12">
+        <div class="card mb-2">
+
+          <div class="card-body">
+            <h4 class="card-title"><span class="lstick m-r-20"></span><b
+              style="color: rgb({{proyecto.color}});">{{proyecto.nombre}}</b></h4>
+
+              <div style="height: 65vh; text-align: center; ">
+
+                <img class="mt-4" src="{% static 'img/bot.png' %}"
+                        width="80px" alt="">
+
+                        <p class="mt-3">Empecemos a configurar el proyecto</p>
+
+                  <button class="btn btn-lg btn-circle btn-outline-info fa fa-power-off" onclick="service_configurar_proyecto()"
+                  data-toggle="tooltip" data-placement="bottom" title="Activar el proyecto"></button>
+
+
+              </div>
+
+      
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+
+  <div id="activo_on" {% if proyecto.presupuesto == 'SIN_MOVIMIENTO' %} style = "display: none;" {% endif %}>
+
+    <div class="row">
+      <div class="col-12">
+        <div class="card mb-2">
+          <div class="card-body">
+            <div class="d-flex align-items-center">
+              <div class="col-6">
+                <h4 class="card-title"><span class="lstick m-r-20"></span><b
+                    style="color: rgb({{proyecto.color}});">{{proyecto.nombre}}</b></h4>
+   
+                <h6></span>Proyecto <b id="proyecto_estado_referencia">{{proyecto.presupuesto}}</b></h6>
+              </div>
+
+              <div class="col-6" style="text-align: center;">
+                <h4 class="card-title"><b>Opciones de consola</b></h4>
+   
+                <select id="consola" class="form-control" onchange="activar_consola()"> 
+                    <option style="display: none;" selected>Selecione una opción para inciar</option>
+                    <option value="GESTOR">Gestión del proyecto</option>
+                    <option value="DATOS">Consultar datos</option>
+                    <option value="TOOLS">Herramientas de presupuesto</option>
+                    <option>Reporte</option>
+                </select>
+              </div>
+  
+              <div class="mr-2" id="actions-hover" style="display: none;">
+                <span style="font-size: smaller;" class="bg-light p-2 rounded  border ">Opciones panel</span>
+                <div id="actions-hover-after"></div>
+              </div>
+  
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id = "presupuestos_home" class="row">
+      <div class="col-12 my-2" >
+        <div class="card h-100">
+          <div class="card-body">
+            <h4 class="card-title m-b-5"><b>Home de la consola</b></h4>
+            <p>Diseño pendiente</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id = "presupuestos_datos" style="display: none;" class="row">
+      <div class="col-6 my-2" >
+        <div class="card h-100">
+          <div class="card-body">
+            <h4 class="card-title m-b-5"><b>Desglose por capitulo</b></h4>
+            <div id="contenedor_CD_detalle">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-6 my-2" >
+        <div class="card h-100">
+          <div class="card-body" style="height: 75vh;">
+            <h4 class="card-title m-b-5"><b>Datos del presupuesto</b></h4>
+            <h6 class="mt-4">Valor del proyecto: <b id="valor_presupuesto_CD"></b></h6>
+            <h6>Saldo completo: <b id="saldo_total_CD"></b></h6>
+            <h6>Saldo solo de materiales: <b id="saldo_material_CD"></b></h6>
+            <h6>Saldo solo de mano de obra: <b id="saldo_mo_CD"></b></h6>
+            <h6>Imprevistos: <b id="imprevisto_CD"></b></h6>
             <div>
-              <h4 class="card-title"><span class="lstick m-r-20"></span><b
-                  style="color: rgb({{datos_proyecto.proyecto.color}});">{{datos_proyecto.proyecto.nombre}}</b></h4>
-
-              {% if datos_presupuesto %}<h5 style="color: rgb({{datos_proyecto.proyecto.color}});">Imprevisto: ${{datos_presupuesto.imprevisto|floatformat:0|intcomma}}</h5>{% endif %}
-
-              <h6></span>Variaciones de los ultimos 30 dias
-                {% if variacion > 0 %}
-                <b style="font-family: Arial, Helvetica, sans-serif; color: #34CE15;">+ {{variacion|floatformat:2}} %
-                </b>
-                {% elif variacion == 0 %}
-                <b style="font-family: Arial, Helvetica, sans-serif; color: #1563CE;">= {{variacion|floatformat:2}} %
-                </b>
-                {% else %}
-                <b style="font-family: Arial, Helvetica, sans-serif; color: #CE3115;">- {{variacion|floatformat:2}} %
-                </b>
-                {% endif %}
-              </h6>
-
-              {% if variacion_year != 0 %}
-              <h6></span>Desde el {{variacion_year.0|date:"m-Y"}}:
-
-                {% if variacion_year.1 > 0 %}
-                <b style="font-family: Arial, Helvetica, sans-serif; color: #34CE15;">+
-                  {{variacion_year.1|floatformat:2}} % </b>
-                {% else %}
-                <b style="font-family: Arial, Helvetica, sans-serif; color: #CE3115;">
-                  {{variacion_year.1|floatformat:2}} % </b>
-                {% endif %}
-              </h6>
-
-              {% endif %}
-
-              {% if variacion_year_2 != 0 %}
-
-              <h6></span>Desde el {{variacion_year_2.0|date:"m-Y"}}:
-
-                {% if variacion_year_2.1 > 0 %}
-                <b style="font-family: Arial, Helvetica, sans-serif; color: #34CE15;">+
-                  {{variacion_year_2.1|floatformat:2}} % </b>
-                {% else %}
-                <b style="font-family: Arial, Helvetica, sans-serif; color: #CE3115;">
-                  {{variacion_year_2.1|floatformat:2}}% </b>
-                {% endif %}
-              </h6>
-
-              {% endif %}
-
-              <h6 class="card-subtitle mt-1"></span>{{datos_proyecto.proyecto.descrip}}</h6>
+                <button class="btn btn-primary btn-xs m-1 fa fa-refresh" onclick="service_recalcular_presupuesto()"></button>
+                <a href="{% url 'Descarga Exp' proyecto.id %}" class="btn btn-success btn-xs m-1 fa fa-file-excel-o" ></a>
+                <a href="{% url 'Descarga Exp Cap' proyecto.id %}" class="btn btn-success btn-xs m-1 fa fa-sitemap" ></a>
             </div>
+            <hr>
+          </div>
+        </div>
+        
+      </div>
 
-            <div class="mr-2" id="actions-hover" style="display: none;">
-              <span style="font-size: smaller;" class="bg-light p-2 rounded  border ">Opciones panel</span>
-              <div id="actions-hover-after"></div>
+      
+      
+    </div>
+
+    <div id = "presupuestos_gestor" style="display: none;"  class="row">
+      <div class="col-6 my-2" >
+        <div class="card h-100">
+          <div class="card-body">
+            <h4 class="card-title m-b-5"><b>Gestión del proyecto</b></h4>
+            <div class="mt-3" style="height: 50vh;">
+              <h6>Estado del presupuesto: <b id="id_gp_estado" class="box" onclick="mostrar_select_estados()"></b></h6>
+                  <select id="select_estado_presupuesto" style="display: none;" class="form-control mt-1 mb-4" onchange="service_cambio_estado()">
+                    <option value="EXTRAPOLADO">Extrapolado</option> 
+                    <option value="ACTIVO">Activo</option>
+                    <option value="BASE">Activo y base</option>
+                </select>
+              <h6>Tamaño del proyecto: <b id="id_gp_tamaño" ></b></h6>
+              <h6>Proyecto base: <b id="id_gp_proyecto_base"  class="box" onclick="mostrar_select_proyecto_bases()"></b></h6>
+              <select id="select_proyecto_base" style="display: none;" class="form-control mt-1 mb-4" onchange="service_cambio_proyecto_base()">
+                <option value="" selected style="display: none;" >Seleccione un proyecto base</option>
+                <option value="" >Asignar mas tarde</option> 
+                {% for proyecto in proyectos_base %}
+                <option value="{{proyecto.id}}">{{proyecto.nombre}}</option> 
+                {% endfor %}
+              </select>
+              <h6>Presupuestador/a: <b id="id_gp_presupuestador" class="box" onclick="mostrar_select_presupuestadores()"></b></h6>
+              <div id="contenedor_select_estado_presupuesto" style="display: none;" >
+                <select id="select_presupuestador" class="form-control mt-1 mb-4" onchange="service_cambio_presupuestador()">
+                  <option value="" selected style="display: none;" >Seleccione un presupuestador</option>
+                  <option value="" >Sin asignar</option> 
+                  {% for presupuestador in presupuestadores %}
+                  <option value="{{presupuestador.identificacion}}">{{presupuestador.nombre}}</option> 
+                  {% endfor %}
+                </select>
+                <input type="checkbox" id="md_checkbox_9" class="chk-col-teal" />
+                    <label for="md_checkbox_9"><small>Notificar via email la asignación</small></label>
+              </div>
+              <hr>
+              <div class="col-sm-12 mt-4">
+                <div>Desactivar proyecto</div>
+                <div class="switch">
+                    <label>
+                        <input id="desactivar_proyecto" type="checkbox" onclick="service_desactivar_proyecto()" checked><span class="lever switch-col-indigo"></span></label>
+                </div>
             </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
-            <div class="btn-group ml-auto">
-              <a href="JavaScript:void(0)" class="icon-options-vertical link" data-toggle="dropdown"
-                aria-haspopup="true" aria-expanded="false" onmouseover="actionhoverover('actions-hover')"
-                onmouseout="actionhoverout('actions-hover')"></a>
-              <div class="dropdown-menu dropdown-menu-right">
-                <a class="dropdown-item" href="{% url 'Creditos de proyectos' datos_proyecto.proyecto.id %}"><i
-                    class="fa fa-angle-right mr-2"></i>Creditos</a>
-                <a class="dropdown-item" href="{% url 'Fondos de reparo' datos_proyecto.proyecto.id %}"><i
-                    class="fa fa-angle-right mr-2"></i>F.D.R.</a>
-                <a class="dropdown-item" href="{% url 'Anticipos' datos_proyecto.proyecto.id %}"><i
-                    class="fa fa-angle-right mr-2"></i>Anticipos</a>
+      <div class="col-6 my-2" >
+        <div class="card h-100">
+          <div class="card-body">
+            <h4 class="card-title m-b-5"><b>Pendientes a realizar <button id="create_task" data-toggle="modal" data-target="#modalAgregarTarea" class="btn btn-primary btn-rounded btn-xs">Agregar</button></b></h4>
+            <small>Solo figuran pendientes y realizadas en las ultimas 48hs</small>
+            <div id="contenedor_tareas" class="mt-3">
+            </div>
+            <hr>
+            <h4 class="card-title m-b-5"><b>Bitacoras del proyecto <button id="create_bitacora" data-toggle="modal" data-target="#modalAgregarBitacora" class="btn btn-primary btn-rounded btn-xs">Agregar</button></b></h4>
+            <small id="hashtag">Hashtag <button id="create_task" class="btn btn-danger btn-xs m-1">Proximamente</button></small>
+            <div class="mt-3">
+              <div id="contenedor_bitacoras">
+
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-
-  <div class="row mb-1">
-
-    <div class="col-6 col-md-6 col-lg-3 my-2" style="height: 130px;">
-      <a href="{% url 'Presupuesto de reposición abierto' datos_proyecto.proyecto.id %}">
-      <div class="card p-3 h-100 card1">
-        <div class="go-corner" >
-          <div class="go-arrow" >
-             →
-          </div>
-        </div>
-        
-        <p >El presupuesto abierto sirve para leer todos los componentes que componen un presupuesto de manera muy descriptiva y completa.</p>
-        <div class="p-1 d-flex align-items-center h-100">
-          <div class="col-2 col-lg-3 p-0 align-self-center ">
-            <a >
-              <img src="{% static 'img/expense-top.png' %}" alt="Income" width="40px"/>
-              </a> 
-          </div>  
-          <div class="col-9 col-lg-8 p-0 pl-2">
-            <h6 class="text-muted">Presup. abierto</h6>
-          </div>
-        </div>
-      </div>
-    </a> 
-    </div>
-
-
-    <div class="col-6 col-md-6 col-lg-3 my-2" style="height: 130px;">
-      <a href="{% url 'Panel de presupuestos por capitulo' datos_proyecto.proyecto.id %}">
-      <div class="card p-3 h-100 card1">
-        <div class="go-corner" >
-          <div class="go-arrow" >
-             →
-          </div>
-        </div>
-        
-        <p>El segmento de valor de reposición encontrarás el precio de cuanto costaría construir el edificio a valores actuales</p>
-            <p>Está organizado por análisis completos dentro de los capítulos del proyecto</p>
-        <div class="p-1 d-flex align-items-center h-100">
-          <div class="col-2 col-lg-3 p-0 align-self-center ">
-            <a>
-              <img src="{% static 'img/expense-center.png' %}" alt="Income" width="40px"/>
-              </a> 
-          </div>  
-          <div class="col-9 col-lg-8 p-0 pl-2">
-            <h6 class="text-muted">Valor reposición</h6>
-            <h4 class="m-t-0">${{datos_proyecto.valor_reposicion|floatformat:0|intcomma}}</h4>
-          </div>
-        </div>
-      </div>
-    </a> 
-    </div>
-
-    <div class="col-6 col-md-6 col-lg-3 my-2" style="height: 130px;">
-      <a href="{% url 'Saldo por capitulo' datos_proyecto.proyecto.id %}">
-      <div class="card p-3 h-100 card1">
-        <div class="go-corner" >
-          <div class="go-arrow" >
-             →
-          </div>
-        </div>
-        
-        <p>En saldo del proyecto encontrarás cuanto te queda aún por gastar</p>
-        <p>Está organizado por capítulos y artículos</p>
-        <div class="p-1 d-flex align-items-center h-100">
-          <div class="col-2 col-lg-3 p-0 align-self-center ">
-            <a>
-              <img src="{% static 'img/expense-bottom.png' %}" alt="Income" width="40px"/>
-              </a> 
-          </div>  
-          <div class="col-9 col-lg-8 p-0 pl-2">
-            <h6 class="text-muted">Saldo del proyecto</h6>
-            <h4 class="m-t-0">${{datos_proyecto.valor_saldo|floatformat:0|intcomma}}</h4>
-          </div>
-        </div>
-      </div>
-    </a> 
-    </div>
-
-    <div class="col-6 col-md-6 col-lg-3 my-2" style="height: 130px;">
-      <div class="card p-3 h-100">
-        <div class="p-1 text-center h-100">
-              <img
-                src="{% if presupuestador.imagenlogo.url %} {{presupuestador.imagenlogo.url}} {% else %} {% static 'img/anonimo2.png' %} {% endif %}"
-                width="40px" />
-
-              <h6 class="m-t-10">{{presupuestador.nombre|truncatechars:17}}</h6>
-            <div class="col-12">
-
-              <div class="row mt-1">
-                <div class="col-3" style="text-align: end;">
-                  {% if datos_proyecto.proyecto.presupuesto == "BASE" %}
-                  <form method="POST">{% csrf_token %}
   
-                    <button
-                    data-toggle="tooltip" data-placement="left" title="Proyecto BASE"
-                    type="submit" name="base" value="1" class="btn fa fa-flag-checkered text-success"></button>
-                  </form>
-                  {% else %}
-                  <form method="POST">{% csrf_token %}
-  
-                    <button
-                    data-toggle="tooltip" data-placement="left" title="Proyexto no BASE"
-                    type="submit" name="base" value="2" class="btn fa fa-flag-checkered text-secondary"></button>
-                  </form>
-                  {% endif %}
-                </div>
-                <div class="col-3" style="text-align: end;">
-                  {% if datos_proyecto.proyecto.presupuesto == "EXTRAPOLADO" %}
-                  <form method="POST">{% csrf_token %}
-
-                    <button
-                    data-toggle="tooltip" data-placement="left" title="Extrapolado"
-                    type="submit" name="extrapolado" value="1" class="btn fa fa-check-circle text-secondary"></button>
-                  </form>
-                  {% else %}
-                  <form method="POST">{% csrf_token %}
-
-                    <button
-                    data-toggle="tooltip" data-placement="left" title="Activo"
-                    type="submit" name="extrapolado" value="0" class="btn fa fa-check-circle text-success"></button>
-                  </form>
-                  {% endif %}
-                </div>
-                <div class="col-3" style="text-align: end;">
-                  <form method="POST">{% csrf_token %}
-                    <input type="hidden" name="proyecto" value="{{datos_proyecto.proyecto.id}}">
-                    <button
-                    data-toggle="tooltip" data-placement="left" title="Actualizar"
-                    type="submit" name="recalcular" value="1" class="btn fa fa-refresh text-secondary"></button>
-                  </form>
-                </div>
-                <div class="col-3" style="text-align: start;">
-                  <form method="POST">{% csrf_token %}
-                    <input type="hidden" name="proyecto" value="{{datos_proyecto.proyecto.id}}">
-                    <button
-                    data-toggle="tooltip" data-placement="left" title="Guardar una copia sin actualizar"
-                    type="submit" name="almacenar" value="1" class="btn fa fa-cloud text-secondary"></button>
-                  </form>
-                </div>
-              </div>
-            </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-
-  <div class="row">
-    <div class="col-12 col-lg-9 my-2" style="height: 330px;">
-      <div class="card h-100">
-        <div class="card-body">
-          <div class="d-flex">
+    <div id = "presupuestos_tools" style="display: none;" class="row">
+      <div class="col-4 my-2" >
+        <div class="card h-100">
+          <div class="card-body">
             <div>
-              <h3 class="card-title m-b-5"><span class="lstick"></span>Variación del precio de reposición</h3>
-              <h6 class="card-subtitle">Ultimos 60 dias</h6>
+              <h4 class="card-title m-b-5"><b>Desglose por capitulo</b></h4>
+            </div>
+            <div id="contenedor_capitulos" class="scrollbox mt-2" style="height: 75vh; overflow-y: auto;">
+
             </div>
           </div>
+        </div>
+      </div>
+  
+      <div class="col-8 my-2">
+        <div class="card h-100">
+          <div class="card-body">
+            <div>
+              <h4 class="card-title"><i class="fa fa-angle-double-right mr-2"></i> Composición<b id="titulo_composicion"></b></h4>
+            </div>
+              <div id="contenedor_detalle_capitulos" class="scrollbox mt-2" style="height: 35vh; overflow-y: auto;">
 
-          <canvas id="myChart" height="100px"></canvas>
+              </div>
 
+              <div id="contenedor_opciones_capitulos" style="height: 40vh;">
+                <hr>
+                <h4 class="card-title"><i class="fa fa-cog mr-2"></i> Herramienta de edición 
+                  <button id="button_create" style="display: none;" class="btn btn-primary btn-rounded btn-xs" onclick="mostrar_ventana_creacion()">Agregar</button>
+                  <button id="button_save" style="display: none;" class="btn btn-secondary btn-rounded btn-xs" onclick="service_editar_modelo()">Save</button>
+                  <button id="button_delete" style="display: none;" class="btn btn-danger btn-rounded btn-xs" onclick="service_delete_modelo()">Delete</button>
+                  <button id="button_create_mandar" style="display: none;" class="btn btn-success btn-rounded btn-xs" onclick="service_create_modelo()">Save</button></h4>
+                    <div id="editar_analisis" style="display: none;" class="row">
+                        <div class="col-4">
+                          <h6><b>Proyectos afectados</b></h6>
+                          <div id="contenedor_proyectos_afectados">
+        
+                          </div>
+                        </div>
+                        <div class="col-8">
+                          <h6><b>Editar</b></h6>
+                          <div>
+                            <input id="id_modelo" type="number" step="1" class="form-control form-control" style="display: none;">
+                            <input onkeyup="cambiar_boton_save()" id="order" type="number" step="1" class="form-control form-control" placeholder="Orden del analisis">
+                            <input onkeyup="cambiar_boton_save()" id="analisis" type="search" list="analisis_list" class="form-control form-control" placeholder="Analisis">
+                            <input onkeyup="cambiar_boton_save()" id="comentario" type="text" class="form-control form-control" placeholder="Comentarios">
+                            <input onkeyup="cambiar_boton_save()" id="cantidad" type="number" class="form-control form-control" placeholder="Cantidad">
+        
+                          </div>
+                        </div>
+                    </div>
+                    <div id="crear_analisis" style="display: none;" class="row">
+                      <h6><b>Cargar un componente</b></h6>
+                          <div>
+                            <input id="order_create" type="number" step="1" class="form-control form-control" placeholder="Orden del analisis">
+                            <input id="analisis_create" type="search" list="analisis_list" class="form-control form-control" placeholder="Analisis">
+                            <input id="comentario_create" type="text" class="form-control form-control" placeholder="Comentarios">
+                            <input id="cantidad_create" type="number" class="form-control form-control" placeholder="Cantidad">
+                          </div>
+                    </div>
+                
+
+              </div>
+
+            <div>
+   
+  
+            </div>
+          </div>
         </div>
       </div>
     </div>
 
-    <div class="col-6 col-md-6 col-lg-3 my-2" style="height: 100%;">
-      <div class="card h-100">
-        <div class="card-body">
-          <div>
-            <h4 class="card-title"><span class="lstick"></span> Avance del proyecto</h4>
-          </div>
 
-          <div>
-            <canvas id="myChart2" height="300px"></canvas>
+  </div>
 
+
+  
+</div>
+
+<div class="middle" id="loader_presupuestos" style="display: none;">
+  <div class="bar bar1"></div>
+  <div class="bar bar2"></div>
+  <div class="bar bar3"></div>
+  <div class="bar bar4"></div>
+  <div class="bar bar5"></div>
+  <div class="bar bar6"></div>
+  <div class="bar bar7"></div>
+  <div class="bar bar8"></div>
+</div>
+
+<div class="modal fade" id="modalVerBitacora" tabindex="-1" role="dialog" aria-labelledby="modalVerBitacora" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+
+          <div class="modal-body">
+            <div class="modal-body">
+              <button type="button" class="close text-dark"
+                  data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+              <div class="row">
+                  <div class="col-2">
+                      <img src="{% static 'img/registro.gif' %}"
+                          width="40px" alt="">
+                  </div>
+                  <div class="col-10 mb-3">
+                      <h4 class="my-2 text-title text-center">Bitacora “<b id="titulo_ver_bitacora"></b> ”</h4>
+                  </div>
+
+                  <div class="mt-2">
+                    <p>Los presupuestadores asentaron el <b id="fecha_ver_bitacora"></b> el siguiente registro:</p>
+                    <i id="descrip_ver_bitacora"></i>
+                  </div>
+
+              </div>
           </div>
-        </div>
+          </div>
       </div>
-    </div>
   </div>
 </div>
+
+<div class="modal fade" id="modalAgregarTarea" tabindex="-1" role="dialog" aria-labelledby="modalAgregarTarea" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+
+          <div class="modal-body">
+            <div class="modal-body">
+              <button type="button" class="close text-dark"
+                  data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+              <div class="row">
+                  <div class="col-2">
+                      <img src="{% static 'img/registro.gif' %}"
+                          width="40px" alt="">
+                  </div>
+                  <div class="col-10 mb-3">
+                      <h4 class="my-2 text-title text-center">Agregar una tarea</h4>
+                  </div>
+
+                  <div class="mt-2">
+                    <p>Anotar lo pendiente a realizar ayuda a un buen seguimiento</p>
+                  </div>
+
+                  <div class="mb-3 mt-3">
+                    <small>Tarea para este presupuesto</small>
+                    <input id="tarea_guardar" type="text" class="form-control form-control">
+                  </div>
+
+              </div>
+          </div>
+          <div class="text-center mb-3">
+              <button class="btn btn-info" onclick="service_guardar_tarea()"
+                  style="margin-top: 10px;">Guardar</button>
+          </div>
+          </div>
+      </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modalAgregarBitacora" tabindex="-1" role="dialog" aria-labelledby="modalAgregarBitacora" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+
+          <div class="modal-body">
+            <div class="modal-body">
+              <button type="button" class="close text-dark"
+                  data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+              <div class="row">
+                  <div class="col-2">
+                      <img src="{% static 'img/registro.gif' %}"
+                          width="40px" alt="">
+                  </div>
+                  <div class="col-10 mb-3">
+                      <h4 class="my-2 text-title text-center">Registrar en la bitacora</h4>
+                  </div>
+
+                  <div class="mt-2">
+                    <p>Las bitacoras son una buena herramienta para asentar sucesos que afectaron a tus decisiones</p>
+                    <p>Te recomendamos <b class="text-primary">ser claro</b>, ya que puede pasar un tiempo hasta volverla a leer</p>
+                  </div>
+
+                  <div class="mb-3 mt-3">
+                    <small>Empezamos con un titulo</small>
+                    <input id="titulo" type="text" class="form-control form-control">
+                  </div>
+
+                  <div class="mb-3 mt-3">
+                    <small>Un hashtag para facilitar busquedas, puede ser como "E.T"</small>
+                    <input id="hashtag_form" type="text" class="form-control form-control">
+                  </div>
+
+                  <div class="mb-3 mt-3">
+                    <small>Cuenta brevemente lo que quieras recordar</small>
+                    <textarea id="descrip" class="form-control form-control"></textarea>
+                  </div>
+
+
+              </div>
+          </div>
+          <div class="text-center mb-3">
+              <button class="btn btn-info" onclick="service_guardar_bitacora()"
+                  style="margin-top: 10px;">Registrar</button>
+          </div>
+          </div>
+      </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modalProyecto" tabindex="-1" role="dialog" aria-labelledby="modalProyecto" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+
+          <div class="modal-body">
+              <form id="modal_asignacion">
+
+                  <div class="modal-body">
+                      <button type="button" class="close text-dark"
+                          data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                      </button>
+                      <div class="row">
+                          <div class="col-2">
+                              <img src="{% static 'img/bot.png' %}"
+                                  width="40px" alt="">
+                          </div>
+                          <div class="col-10 mb-3">
+                              <h4 class="my-2 text-title text-center">
+                                  Configuración inicial</h4>
+                          </div>
+
+                          <div class="mt-2">
+                            <p>Los presupuestos pueden tener 2 configuraciones iniciales</p>
+                            <p><b>Extrapolado</b> que para esto tendras que definir los valores del proyecto y elegir un proyecto base para su actualización</p>
+                            <p><b>Activo sin extrapolar</b> aqui el valor del proyecto se calculara en función de lo que vayas definiendo</p>
+                            <p>Inicialmente, te recomendamos extrapolarlo y cuando lo tengas armado, pasarlo a activo sin extrapolar, te pasamos una lista de los proyectos base disponible</p>
+                          </div>
+
+                          
+
+                          <div class="mb-3 mt-3">
+                              <select id="select_modal" class="form-control"> 
+   
+                              </select>
+                          </div>
+
+                      </div>
+                  </div>
+                  <div class="text-center mb-3">
+                      <button class="btn btn-info" onclick="service_configurar_proyecto_extrapolado()"
+                          style="margin-top: 10px;">Asignar base</button>
+                        <button class="btn btn-primary" onclick="service_activar_proyecto()"
+                          style="margin-top: 10px;">Solo activar</button>
+                  </div>
+              </form>
+          </div>
+      </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modalProyectoExtrapolado" tabindex="-1" role="dialog" aria-labelledby="modalProyectoExtrapolado" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+
+          <div class="modal-body">
+              <div class="modal-body">
+                  <button type="button" class="close text-dark"
+                      data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                  </button>
+                  <div class="row">
+                      <div class="col-2">
+                          <img src="{% static 'img/bot.png' %}"
+                              width="40px" alt="">
+                      </div>
+                      <div class="col-10 mb-3">
+                          <h4 class="my-2 text-title text-center">
+                              Configuración inicial extrapolado</h4>
+                      </div>
+
+                      <div class="mt-2">
+                        <p>Perfecto, tenemos el proyecto base a usar, ahora hay que establecer los valores</p>
+                      </div>
+
+                    
+                      <div class="mb-3 mt-3">
+                        <small>Valor de reposición o el valor actual</small>
+                        <input id="valor" type="number" class="form-control form-control">
+                      </div>
+
+                      <div class="mb-3 mt-3">
+                        <small>Saldo total del proyecto</small>
+                        <input id="saldo" type="number" class="form-control form-control">
+                    </div>
+
+                    <div class="mb-3 mt-3">
+                      <small>¿Cuanto es material?</small>
+                      <input id="saldo_mat" type="number" class="form-control form-control">
+                  </div>
+                  <div class="mb-3 mt-3">
+                    <small>¿Y mano de obra o subcontratos?</small>
+                    <input id="saldo_mo" type="number" class="form-control form-control">
+                </div>
+
+                  </div>
+              </div>
+              <div class="text-center mb-3">
+                  <button class="btn btn-success" onclick="service_set_presupuesto_extrapolado()"
+                      style="margin-top: 10px;">Empecemos!</button>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+
+<datalist id="analisis_list">
+
+  {% for a in analisis %}
+
+  <option value="{{a.codigo}}-{{a.nombre}}"></option>
+
+  {% endfor %}
+
+</datalist>
+
+<input type="hidden" id = "token" value="{{ csrf_token }}">
+<input type="hidden" id = "host" value="{% host %}">
+<input type="hidden" id = "proyecto" value="{{proyecto.id}}">
+<input type="hidden" id = "capitulo_activo" value="">
+
+<style>
+  body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  background: #000;
+}
+.middle {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  position: absolute;
+}
+.bar {
+  width: 10px;
+  height: 70px;
+  background: #fff;
+  display: inline-block;
+  transform-origin: bottom center;
+  border-top-right-radius: 20px;
+  border-top-left-radius: 20px;
+  /*   box-shadow:5px 10px 20px inset rgba(255,23,25.2); */
+  animation: loader 1.2s linear infinite;
+}
+.bar1 {
+  animation-delay: 0.1s;
+}
+.bar2 {
+  animation-delay: 0.2s;
+}
+.bar3 {
+  animation-delay: 0.3s;
+}
+.bar4 {
+  animation-delay: 0.4s;
+}
+.bar5 {
+  animation-delay: 0.5s;
+}
+.bar6 {
+  animation-delay: 0.6s;
+}
+.bar7 {
+  animation-delay: 0.7s;
+}
+.bar8 {
+  animation-delay: 0.8s;
+}
+
+@keyframes loader {
+  0% {
+    transform: scaleY(0.1);
+    background: ;
+  }
+  50% {
+    transform: scaleY(1);
+    background: #289EAF;
+  }
+  100% {
+    transform: scaleY(0.1);
+    background: transparent;
+  }
+}
+</style>
+
+<style>
+  #add{
+      position: fixed;
+      bottom: 60px;
+      right: 20px;
+  }
+
+  .box:hover {
+  cursor: pointer;
+
+  }
+
+  .scrollbox {
+
+  overflow: hidden;
+  }
+
+  .scrollbox:hover {
+  overflow: auto;
+  }
+
+  .scrollbox::-webkit-scrollbar {
+  width: 6px;
+  }
+
+  .scrollbox::-webkit-scrollbar-thumb {
+  background-color: rgb(201, 201, 201);
+  border-radius: 100px;
+  }
+
+</style>
 
 <style>
     .go-corner {
@@ -347,6 +694,7 @@
   }
 </style>
 
+<script src="{% static 'js/f_presupuestos.js' %}"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 <script>
   var ctx = document.getElementById('myChart').getContext('2d');
@@ -414,9 +762,6 @@
   },
     });
 </script>
-
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 <script>
 
   var ctx = document.getElementById('myChart2').getContext('2d');
@@ -449,7 +794,7 @@
 
 <a id="add" href="#" class="btn btn-lg btn-info btn-circle fa fa-5x fa-question-circle"></a>
 
-<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 
 <script>
@@ -467,14 +812,7 @@
 
 </script>
 
-<style>
-    #add{
-        position: fixed;
-        bottom: 60px;
-        right: 20px;
-    }
 
-</style>
 
 {% endif %}
 

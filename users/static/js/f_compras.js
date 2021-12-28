@@ -304,7 +304,13 @@ function validar_respuesta_consulta_articulo(response, status){
         modificar_template_consulta_articulo(response)
     
     } else {
-        console.log("Aqui")
+
+        var boton = document.getElementById("editar_precio")
+        boton.style = 'display: none;';
+
+        var input_precio = document.getElementById("precio_a_modificar")
+        input_precio.style = 'display: none;';
+
         var cantidad = document.getElementById("cantidad_presupuesto")
         cantidad.innerHTML = ""
 
@@ -317,13 +323,24 @@ function validar_respuesta_consulta_articulo(response, status){
         var partida = document.getElementById("partida_cargar")
         partida.value = ""
         
-
         var precio_presupuesto = document.getElementById("precio_presupuesto_cargar")
+        precio_presupuesto.style = " "
         precio_presupuesto.value = ""
     }
 }
 
 function modificar_template_consulta_articulo(response){
+
+    
+    var boton = document.getElementById("editar_precio")
+    boton.className = 'btn btn-primary btn-rounded btn-xs'
+    boton.style = ' ';
+    boton.onclick = function(){
+        armar_seccion_edicion(response.id);
+    }
+
+    var input_precio = document.getElementById("precio_a_modificar")
+    input_precio.style = 'display: none;';
     
     var cantidad = document.getElementById("cantidad_presupuesto")
     cantidad.innerHTML = response.cantidad
@@ -337,9 +354,56 @@ function modificar_template_consulta_articulo(response){
     var partida = document.getElementById("partida_cargar")
     partida.value = response.partida
     
-
     var precio_presupuesto = document.getElementById("precio_presupuesto_cargar")
+    precio_presupuesto.style = " "
     precio_presupuesto.value = response.precio
+}
+function armar_seccion_edicion(id){
+    var precio_presupuesto = document.getElementById("precio_presupuesto_cargar")
+    precio_presupuesto.style = "display: none;"
+    var input_precio = document.getElementById("precio_a_modificar")
+    input_precio.style = ' ';
+
+    var boton = document.getElementById("editar_precio")
+    boton.className = 'btn btn-success btn-rounded btn-xs'
+    boton.onclick = function(){
+        service_editar_precio_articulo(id);
+    }
+
+}
+
+async function service_editar_precio_articulo(id){
+
+    host = document.getElementById("host").value;
+    token = document.getElementById("token").value;
+    
+    const url = `${host}/compras/api_compras/modificar_precio_articulo/`
+
+    var respuesta = await fetch(url ,{
+        method: "POST",
+        headers: {
+            'X-CSRFToken' : `${token}`,
+            'Content-Type': 'application/json',
+        },
+
+        body: JSON.stringify({
+            'id' : id,
+            'valor' : document.getElementById("precio_a_modificar").value,
+        })
+    })
+
+    var response = await respuesta.json()
+    var status = await respuesta.status
+    return validar_edicion_articulo(response, status)
+}
+function validar_edicion_articulo(response, status){
+    if (status >= 200 && status <300){
+        sweet_alert("Articulo editado", "success");
+        service_consulta_articulo();
+
+    } else {
+        sweet_alert("Prblema inesperado", "warning");
+    }
 }
 
 async function service_crear_compra(){

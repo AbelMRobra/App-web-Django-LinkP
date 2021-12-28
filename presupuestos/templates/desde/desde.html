@@ -24,40 +24,77 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="card-title"><span class="lstick m-r-20"></span>Precio de referencia</h4>
-                    <h6 class="card-subtitle">Modelo utilizando valores de costo y parametros</h6>
+
+                    <div class="row d-flex">
+                        
+
+                        <div class="col-12 col-lg-8">
+
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 class="card-title font-bold"></span>Precio de referencia</h4>
+                                    <div class="scrollbox" style="font-size: 12px; height: 150px; max-height: 150px;">
     
-                    <div>
-                        <table class="table table-bordered">
-                            <thead style="font-size: 16px;">
-                                <tr>
-                                    <th>Proyecto</th>
-                                    {% for i in datos %}
-                                    <th style="font-size: 12px; color: rgb({{i.3.color}});">{{i.3.nombre}}</th>
-                                    {% endfor %}
-                                </tr>
-                            
-                            </thead>
-    
-                            <tbody>
-                                <tr style="font-size: 14px;">
-                                    <td> Costo minimo </td>
-                                    {% for i in datos %}
-                                    <td>${{i.0.8|floatformat:2|intcomma}}</td>
-                                    {% endfor %}
-                                </tr>
-                                <tr style="font-size: 14px;">
-                                    <td> Precio objetivo </td>
-                                    {% for i in datos %}
-                                    <td>${{i.0.9|floatformat:2|intcomma}}</td>
-                                    {% endfor %}
-                                </tr>
-                            </tbody>
-                        </table>
+                                        <table class="table">
+  
+                    
+                                            <tbody>
+                                                {% for i in datos %}
+                                                <tr style="font-size: 14px;">
+                                                    <td style="width: 160px;">
+                                                        <div class="arrow_box">
+                                                            <h5 class="text-light position-relative"
+                                                                style="margin-top: 5px; margin-left: 10px;">
+                                                                {{i.3.nombre}}
+                                                            </h5>
+            
+                                                        </div>
+                                                    </td>
+                                                    <td>Min: <b>${{i.0.8|floatformat:2|intcomma}}</b>  / Objetivo: <b>${{i.0.9|floatformat:2|intcomma}}</b> </td>
+
+
+                                                </tr>
+                                                {% endfor %}
+      
+                                            </tbody>
+                                        </table>
+
+                
+                
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-lg-4">
+
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 class="card-title font-bold"></span>Actividad</h4>
+                                    <ul class="feeds scrollbox" style="font-size: 12px; height: 150px; max-height: 150px;">
+                
+                                        {% for actividad in actividades %}
+                
+                                        <li class="bg-proyecto-color">
+                                            <div class="justify-content-between align-items-center w-100">
+                                                <div class="d-flex text-left">
+                                                    <img src="{{actividad.usuario.imagenlogo.url}}" width="25px" height="25px"
+                                                        alt="user" class="mr-2"><span class="font-bold">{{actividad.accion}}</span>
+                                                </div>
+                                                <div><span class="text-muted font-bold" id="{{actividad.id}}"></span</div>>
+                                            </div>
+                                        </li>
+                
+                                        {% endfor %}
+                
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <hr>
     
-                    <h4 class="card-title"><span class="lstick m-r-20"></span>Evolución por parametros</h4>
+                    <h4 class="card-title font-bold"></span>Detalle de los calculos</h4>
                 
                     <div class="table-responsive">
     
@@ -66,15 +103,33 @@
                     
                                 <tr>
                                     <th>Proyecto</th>
-                                    <th>Costo</th>
-                                    <th>Imp</th>
-                                    <th>IVA</th>
-                                    <th>Soft</th>
-                                    <th>Terreno </th>
-                                    <th>Hon. Link</th>
-                                    <th>Comer.</th>
-                                    <th>TEM e IIBB </th>
-                                    <th>Ganancia </th>
+                                    <th
+                                    data-toggle="tooltip" data-placement="top" title="Costo estimado por área de presupuestos"
+                                    >Costo</th>
+                                    <th
+                                    data-toggle="tooltip" data-placement="top" title="Imprevistos sobre el costo"
+                                    >Imp</th>
+                                    <th
+                                    data-toggle="tooltip" data-placement="top" title="Estimación de IVA a pagar"
+                                    >IVA</th>
+                                    <th
+                                    data-toggle="tooltip" data-placement="top" title="Costo del área administrativa"
+                                    >Soft</th>
+                                    <th
+                                    data-toggle="tooltip" data-placement="top" title="Costo por metros de aporte del terreno"
+                                    >Terreno </th>
+                                    <th
+                                    data-toggle="tooltip" data-placement="top" title="Honorarios de Link como desarrolladora"
+                                    >Hon. Link</th>
+                                    <th
+                                    data-toggle="tooltip" data-placement="top" title="Costo de comercialización"
+                                    >Comer.</th>
+                                    <th
+                                    data-toggle="tooltip" data-placement="top" title="Otros impuestos"
+                                    >TEM e IIBB </th>
+                                    <th
+                                    data-toggle="tooltip" data-placement="top" title="Ganancia solicitada"
+                                    >Ganancia </th>
                     
                     
                                 </tr>
@@ -93,8 +148,14 @@
                                                     class="fa fa-pencil-square-o mr-2"></i>Modificar parametros</a>
                                             </div>
                                         </div>
-                                        <small style="font-size: 12px; color: rgb({{i.3.color}});">{{i.3.nombre}}</small>
-                                        <h6 style="font-size: 12px; margin-top: 15px;"><i class="fa fa-building"></i>  ${{i.4|floatformat:2|intcomma}}</h6>
+                                        <small
+                                        data-toggle="tooltip" data-placement="right" title="Proyecto {{i.3.presupuesto|lower}}"
+                                        style="font-size: 12px; color: rgb({{i.3.color}});">{{i.3.nombre}}</small>
+                                        <h6 
+                                        
+                                        data-toggle="tooltip" data-placement="right" title="Valor estimado del departamento"
+                                        style="font-size: 12px; margin-top: 15px;">
+                                        <i class="fa fa-building mr-2"></i>  ${{i.4|floatformat:2|intcomma}}</h6>
                                     </td>
                                     <div class="modal fade" id="Modalprecio{{i.3.id}}" tabindex="-1" role="dialog" aria-labelledby="Modalprecio{{i.3.id}}" aria-hidden="true">
                                         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -241,7 +302,101 @@
     </div>
 </div>
 
+<style>
+    @keyframes example {
+        0% {
+            transform: scale(0.9);
+        }
 
+        50% {
+            transform: scale(1);
+        }
+
+        100% {
+            transform: scale(0.9);
+        }
+    }
+
+    #add {
+        position: fixed;
+        bottom: 90px;
+        right: 20px;
+        animation: example 1s ease-in-out infinite;
+    }
+
+    #add2{
+        position: fixed;
+        bottom: 40px;
+        right: 20px;
+        z-index: 10;
+    }
+
+
+    .scrollbox {
+
+        overflow: hidden;
+    }
+
+    .scrollbox:hover {
+        overflow: auto;
+    }
+
+    .scrollbox::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .scrollbox::-webkit-scrollbar-thumb {
+        background-color: rgb(201, 201, 201);
+        border-radius: 100px;
+    }
+
+
+    .arrow_box:hover {
+        transform: scaleX(1.07);
+
+    }
+
+    .arrow_box {
+        position: absolute;
+        transform: scaleX(1);
+        transform-origin: left center;
+        transition: transform 0.7s;
+
+        background: rgba(139, 63, 220, 0.8);
+        width: 130px;
+        height: 30px;
+        margin-top:-5px;
+    }
+
+    .arrow_box:after {
+        left: 100%;
+        top: 50%;
+        border: solid transparent;
+        content: "";
+        height: 0;
+        width: 0;
+        position: absolute;
+        pointer-events: none;
+        border-color: rgba(136, 183, 213, 0);
+
+        border-left-color: rgba(139, 63, 220, 0.8);
+        border-width: 14px;
+        margin-top: -14px;
+    }
+
+    .bg-proyecto-color:nth-child(odd) {
+        border-bottom: white solid 2px;
+        background-color: rgba(160, 160, 160, 0.25);
+    }
+
+    .bg-proyecto-color:nth-child(even) {
+        border-bottom: white solid 2px;
+        background-color: rgba(160, 160, 160, 0.1);
+    }
+    tbody {
+        font-weight: 450;
+    }
+</style>
 
     
 {% endblock %}

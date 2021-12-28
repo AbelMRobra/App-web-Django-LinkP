@@ -153,6 +153,7 @@
                                                 <div class="row d-flex justify-content-center">
                                                     <div class="col">
                                                         <div class="input-group mb-3">
+                                                            
                                                             <span class="input-group-text" id="precio_signo">$</span>
                                                             <input id="precio_cargar" step="any" type="number" class="form-control" placeholder="Precio" aria-label="precio" aria-describedby="precio" min="1" required>
                                                         </div>
@@ -163,7 +164,9 @@
                                             <div class="col-12 mt-3">
                                                 <div class="row d-flex justify-content-center">
                                                     <div class="col">
-                                                        <div class="input-group mb-3">
+                                                        <small>Partida en presupuesto</small>
+                                                        <div class="input-group mb-3 mt-1">
+                                                            
                                                             <span class="input-group-text" id="partida_cargar_signo">$</span>
                                                             <input id="partida_cargar" readonly step="any" type="number" class="form-control" placeholder="Partida" aria-label="partida" aria-describedby="partida" min="1" required>
                                                         </div>
@@ -174,9 +177,12 @@
     
                                                 <div class="row d-flex justify-content-center">
                                                     <div class="col">
-                                                        <div class="input-group mb-3">
+                                                        <small>Precio actual <button id="editar_precio" style="display: none;" data-toggle="modal" data-target="#modalAgregarTarea" class="btn btn-primary btn-rounded btn-xs">Editar</button></small>
+                                                        <div class="input-group mb-3 mt-1">
+                                                            
                                                             <span class="input-group-text" id="precio_presupuesto_cargar_signo">$</span>
-                                                            <input id="precio_presupuesto_cargar" readonly step="any" type="number" class="form-control" placeholder="Precio presupuesto" aria-label="precio_presupuesto" aria-describedby="precio_presupuesto" min="1" required>
+                                                            <input id="precio_presupuesto_cargar" readonly step="any" type="number" class="form-control" placeholder="Precio presupuesto" aria-label="precio_presupuesto" aria-describedby="precio_presupuesto" required>
+                                                            <input id="precio_a_modificar" style="display: none;" step="any" type="number" class="form-control">
                                                         </div>
                                                     </div>
                                                 </div>

@@ -1,6 +1,5 @@
 from django.contrib import admin
-from .models import Constantes, Articulos, DatosProyectos, Presupuestos, Prametros, Desde, Analisis, CompoAnalisis, Capitulos, Modelopresupuesto, Registrodeconstantes, InformeMensual, Bitacoras, PresupuestosAlmacenados
-from .models import DocumentacionProyectoPresupuesto
+from .models import *
 from import_export import resources
 from import_export.admin import ImportExportModelAdmin
 
@@ -128,4 +127,5 @@ admin.site.register(Modelopresupuesto, ModelopresupuestoAdmin)
 admin.site.register(InformeMensual, InformeMensualAdmin)
 admin.site.register(Bitacoras, BitacorasAdmin)
 admin.site.register(DocumentacionProyectoPresupuesto, DocumentacionProyectoPresupuestoAdmin)
+admin.site.register(TareasProgramadas)
 

@@ -109,6 +109,14 @@ class ComprasViewset(viewsets.ModelViewSet):
         return Response(response, status=status.HTTP_200_OK)
 
     @action(detail=False, methods=["POST"])
+    def modificar_precio_articulo(self, request):
+        articulo = Articulos.objects.get(id = request.data['id'])
+        articulo.valor = request.data['valor']
+        articulo.save()
+        response = {'mensaje': 'Success'}
+        return Response(response, status=status.HTTP_200_OK)
+
+    @action(detail=False, methods=["POST"])
     def consulta_articulo(self, request):
 
         try:
@@ -126,7 +134,7 @@ class ComprasViewset(viewsets.ModelViewSet):
             comprado = sum(np.array(Compras.objects.filter(proyecto = request.data['proyecto'], articulo = articulo).values_list("cantidad", flat=True)))
             partida = (cantidad_presupuesto - comprado)*articulo.valor
 
-            response = {'cantidad' : round(cantidad_presupuesto, 2), 
+            response = {'id': articulo.id,'cantidad' : round(cantidad_presupuesto, 2), 
             'comprado': round(comprado, 2), 'precio': round(articulo.valor, 2), 'partida': round(partida, 2), 'unidad': articulo.unidad}
 
             return Response(response, status=status.HTTP_200_OK)

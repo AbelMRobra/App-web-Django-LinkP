@@ -1377,6 +1377,7 @@ class ReporteExplosion(TemplateView):
                 ws["G"+str(cont)] = "COMPRADO"
                 ws["H"+str(cont)] = "PENDIENTE"
                 ws["I"+str(cont)] = "SALDO PENDIENTE"
+                ws["J"+str(cont)] = "CONSTANTE"
 
                 ws["A"+str(cont)].alignment = Alignment(horizontal = "center")
                 ws["B"+str(cont)].alignment = Alignment(horizontal = "center")
@@ -1387,6 +1388,7 @@ class ReporteExplosion(TemplateView):
                 ws["G"+str(cont)].alignment = Alignment(horizontal = "center")
                 ws["H"+str(cont)].alignment = Alignment(horizontal = "center")
                 ws["I"+str(cont)].alignment = Alignment(horizontal = "center")
+                ws["J"+str(cont)].alignment = Alignment(horizontal = "center")
 
                 ws["A"+str(cont)].font = Font(bold = True)
                 ws["B"+str(cont)].font = Font(bold = True)
@@ -1397,6 +1399,7 @@ class ReporteExplosion(TemplateView):
                 ws["G"+str(cont)].font = Font(bold = True)
                 ws["H"+str(cont)].font = Font(bold = True)
                 ws["I"+str(cont)].font = Font(bold = True)
+                ws["J"+str(cont)].font = Font(bold = True)
 
                 ws.column_dimensions['A'].width = 11.29
                 ws.column_dimensions['B'].width = 58.57
@@ -1407,6 +1410,7 @@ class ReporteExplosion(TemplateView):
                 ws.column_dimensions['G'].width = 12
                 ws.column_dimensions['H'].width = 11.86
                 ws.column_dimensions['I'].width = 17.57
+                ws.column_dimensions['J'].width = 17.57
 
                 ws["A"+str(cont+1)] = d[0].codigo
                 ws["B"+str(cont+1)] = d[0].nombre
@@ -1417,6 +1421,10 @@ class ReporteExplosion(TemplateView):
                 ws["G"+str(cont+1)] = d[2]
                 ws["H"+str(cont+1)] = d[3]
                 ws["I"+str(cont+1)] = d[4]
+                if d[0].constante:
+                    ws["J"+str(cont+1)] = d[0].constante.nombre
+                else:
+                    ws["J"+str(cont+1)] = 'Sin asignar'
 
                 ws["A"+str(cont+1)].font = Font(bold = True)
                 ws["A"+str(cont+1)].alignment = Alignment(horizontal = "center")
@@ -1442,6 +1450,10 @@ class ReporteExplosion(TemplateView):
                 ws["G"+str(cont+1)] = d[2]
                 ws["H"+str(cont+1)] = d[3]
                 ws["I"+str(cont+1)] = d[4]
+                if d[0].constante:
+                    ws["J"+str(cont+1)] = d[0].constante.nombre
+                else:
+                    ws["J"+str(cont+1)] = 'Sin asignar'
 
                 ws["A"+str(cont+1)].font = Font(bold = True)
                 ws["A"+str(cont+1)].alignment = Alignment(horizontal = "center")
