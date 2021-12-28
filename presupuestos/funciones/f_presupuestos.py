@@ -437,11 +437,15 @@ def presupuestos_saldo_capitulo(id_proyecto):
     articulo_capitulo = []
 
     for capitulo in capitulos:
+        if float(sum(df[df['Capitulo'] == capitulo.nombre]['Monto'])) > 0:
+            inc = float(sum(df[df['Capitulo'] == capitulo.nombre]['Monto'])/sum(df['Monto'])*100)
+        else:
+            inc = 0
         info_saldo_capitulo = {
             capitulo.nombre: {
                 'id': capitulo.id,
                 'valor_capitulo': float(sum(df[df['Capitulo'] == capitulo.nombre]['Monto'])),
-                'inc': float(sum(df[df['Capitulo'] == capitulo.nombre]['Monto'])/sum(df['Monto'])*100),
+                'inc': inc,
                 'saldo': float(sum(df[df['Capitulo'] == capitulo.nombre]['Monto'])),
                 'data': []
                 }  
