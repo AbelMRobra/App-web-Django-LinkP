@@ -76,6 +76,10 @@ def presupuesto_capitulo_detalle(id_proyecto, id_capitulo):
             comentario = modelo.comentario.lower().capitalize()
         else:
             comentario = "Sin comentario"
+        try:
+            valor_analisis = round((modelo.cantidad*valor_analisis), 2)
+        except:
+            valor_analisis = 0
         datos.append({
             'id': modelo.id,
             'orden': modelo.orden,
@@ -84,7 +88,7 @@ def presupuesto_capitulo_detalle(id_proyecto, id_capitulo):
             'comentario': comentario,
             'valor': round(valor_analisis, 2),
             'cantidad': modelo.cantidad,
-            'valor_analisis': round((modelo.cantidad*valor_analisis), 2)
+            'valor_analisis': valor_analisis
         })
     return datos
 
