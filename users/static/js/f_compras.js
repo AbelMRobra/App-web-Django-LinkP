@@ -362,6 +362,7 @@ function armar_seccion_edicion(id){
     var precio_presupuesto = document.getElementById("precio_presupuesto_cargar")
     precio_presupuesto.style = "display: none;"
     var input_precio = document.getElementById("precio_a_modificar")
+    input_precio.value = precio_presupuesto.value
     input_precio.style = ' ';
 
     var boton = document.getElementById("editar_precio")

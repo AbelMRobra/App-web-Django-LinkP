@@ -62,10 +62,10 @@
           <div class="card-body">
             <div class="d-flex align-items-center">
               <div class="col-6">
-                <h4 class="card-title"><span class="lstick m-r-20"></span><b
+                <h4 class="card-title"><span class="lstick m-r-20"></span>Proyecto: <b
                     style="color: rgb({{proyecto.color}});">{{proyecto.nombre}}</b></h4>
    
-                <h6></span>Proyecto <b id="proyecto_estado_referencia">{{proyecto.presupuesto}}</b></h6>
+                <h6></span>Estado: <b id="proyecto_estado_referencia">{{proyecto.presupuesto}}</b></h6>
               </div>
 
               <div class="col-6" style="text-align: center;">
@@ -96,7 +96,23 @@
         <div class="card h-100">
           <div class="card-body">
             <h4 class="card-title m-b-5"><b>Home de la consola</b></h4>
-            <p>Diseño pendiente</p>
+            <div class="row col-12">
+              <div class="col-5 p-2" style="height: 30vh;">
+                <img src="{% static 'img/rocket.gif' %}"
+                          width="200px" alt="">
+
+              </div>
+
+              <div class="col-7 p-3 text-center" style="height: 30vh;">
+                <p><b class="text-primary font-bold">Consola de presupuestos</b></p>
+                <i>La consola esta diseñada para tener multiples herramientras inegradas en una <b class="text-success font-bold">unica pantaña</b>
+                  , las distintas operaciones te permitiran manipular y controlar los datos del presupuesto. Si necesitas una guia puedes ingresar <a href="https://docs.google.com/document/d/1OTutkJ7f5PFQ6TGARM3QGdOLnwA6YJbbFvFzsxIIzgk/edit?usp=sharing" class="text-info font-bold">aqui</a>
+
+                </i>
+
+              </div>
+
+            </div>
           </div>
         </div>
       </div>
