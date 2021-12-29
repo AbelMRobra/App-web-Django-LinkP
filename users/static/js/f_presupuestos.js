@@ -607,6 +607,7 @@ async function service_datos_proyecto(id){
     var status = await respuesta.status
     return validar_respuesta_datos_proyecto(response, status)
 }
+
 // PRESUPUESTOS - MODIFICACIONES DE TEMPLATE POR SERVICES DE CONSULTA
 function validar_respuesta_datos_proyecto(response, status){
 
@@ -787,6 +788,33 @@ async function service_consultar_datos_presupuesto(){
     var status = await respuesta.status
     return validar_datos_proyecto(response, status)
 }
+async function service_actualizar_valores_proyecto(){
+
+    var host = document.getElementById("host").value;
+    var token = document.getElementById("token").value;  
+    const url = `${host}/presupuestos/api_presupuesto/actualizar_valores/`
+    var respuesta = await fetch(url ,{
+        method: "POST",
+        headers: {
+            'X-CSRFToken' : `${token}`,
+            'Content-Type': 'application/json',
+        },
+
+        body: JSON.stringify({
+            "proyecto": document.getElementById("proyecto").value,
+            "valor": document.getElementById("CD_valor").value,
+            "saldo": document.getElementById("CD_saldo").value,
+            "saldo_mo": document.getElementById("CD_saldo_mo").value,
+            "saldo_mat": document.getElementById("CD_saldo_mat").value,
+            "imprevisto": document.getElementById("CD_imprevisto").value,
+        })
+    })
+
+    var response = await respuesta.json()
+    var status = await respuesta.status
+    console.log(response)
+    return validar_respuesta_actualizacion_datos(response, status)
+}
 async function service_recalcular_presupuesto(){
 
     var loader = document.getElementById("loader_presupuestos")
@@ -832,6 +860,13 @@ async function service_saldo_detallado_presupuesto(){
     var response = await respuesta.json()
     var status = await respuesta.status
     return validar_saldo_detalle(response, status)
+}
+function validar_respuesta_actualizacion_datos(response, status){
+    if (status >= 200 && status <300){
+        service_consultar_datos_presupuesto();
+    } else {
+        sweet_alert("Problemas de conexión", "warning")
+    }
 }
 function validar_saldo_detalle(response, status){
     if (status >= 200 && status <300){
@@ -886,16 +921,116 @@ function armar_detalle_saldo_presupuesto(){
  
 }
 function armar_encabezado(response){
-    var valor = document.getElementById("valor_presupuesto_CD")
-    valor.innerHTML = `$ ${Intl.NumberFormat().format(response.valor_reposicion)}`
+    var valor = document.getElementById("valor_presupuesto_CD");
+    valor.innerHTML = `$ ${Intl.NumberFormat().format(response.valor_reposicion)}`;
+    var input = document.getElementById("CD_valor");
+    input.value = response.valor_reposicion;
     var saldo = document.getElementById("saldo_total_CD")
     saldo.innerHTML = `$ ${Intl.NumberFormat().format(response.saldo_total)}`
+    var input = document.getElementById("CD_saldo");
+    input.value = response.saldo_total;
     var saldo_mo = document.getElementById("saldo_material_CD")
     saldo_mo.innerHTML = `$ ${Intl.NumberFormat().format(response.saldo_material)}`
+    var input = document.getElementById("CD_saldo_mat");
+    input.value = response.saldo_material;
     var saldo_mat = document.getElementById("saldo_mo_CD")
     saldo_mat.innerHTML = `$ ${Intl.NumberFormat().format(response.saldo_mo)}`
+    var input = document.getElementById("CD_saldo_mo");
+    input.value = response.saldo_mo;
     var imprevisto = document.getElementById("imprevisto_CD")
     imprevisto.innerHTML = `$ ${Intl.NumberFormat().format(response.imprevisto)}`
+    var input = document.getElementById("CD_imprevisto");
+    input.value = response.imprevisto;
+}
+function mostrar_input_CD_valor(){
+    var field = document.getElementById("valor_presupuesto_CD")
+    field.onclick = function(){
+        ocultar_input_CD_valor();
+    }
+    var input = document.getElementById("CD_valor")
+    input.style = ' '
+
+}
+function ocultar_input_CD_valor(){
+    var input = document.getElementById("CD_valor")
+    input.style = 'display: none;'
+
+    var field = document.getElementById("valor_presupuesto_CD")
+    field.onclick = function(){
+        mostrar_input_CD_valor();
+    }
+}
+function mostrar_input_CD_saldo(){
+    var field = document.getElementById("saldo_total_CD")
+    field.onclick = function(){
+        ocultar_input_CD_saldo();
+    }
+    var input = document.getElementById("CD_saldo")
+    input.style = ' '
+
+}
+function ocultar_input_CD_saldo(){
+    var input = document.getElementById("CD_saldo")
+    input.style = 'display: none;'
+
+    var field = document.getElementById("saldo_total_CD")
+    field.onclick = function(){
+        mostrar_input_CD_saldo();
+    }
+}
+function mostrar_input_CD_saldo_mat(){
+    var field = document.getElementById("saldo_material_CD")
+    field.onclick = function(){
+        ocultar_input_CD_saldo_mat();
+    }
+    var input = document.getElementById("CD_saldo_mat")
+    input.style = ' '
+
+}
+function ocultar_input_CD_saldo_mat(){
+    var input = document.getElementById("CD_saldo_mat")
+    input.style = 'display: none;'
+
+    var field = document.getElementById("saldo_material_CD")
+    field.onclick = function(){
+        mostrar_input_CD_saldo_mat();
+    }
+}
+function mostrar_input_CD_saldo_mo(){
+    var field = document.getElementById("saldo_mo_CD")
+    field.onclick = function(){
+        ocultar_input_CD_saldo_mo();
+    }
+    var input = document.getElementById("CD_saldo_mo")
+    input.style = ' '
+
+}
+function ocultar_input_CD_saldo_mo(){
+    var input = document.getElementById("CD_saldo_mo")
+    input.style = 'display: none;'
+
+    var field = document.getElementById("saldo_mo_CD")
+    field.onclick = function(){
+        mostrar_input_CD_saldo_mo();
+    }
+}
+function mostrar_input_CD_imprevisto(){
+    var field = document.getElementById("imprevisto_CD")
+    field.onclick = function(){
+        ocultar_input_CD_imprevisto();
+    }
+    var input = document.getElementById("CD_imprevisto")
+    input.style = ' '
+
+}
+function ocultar_input_CD_imprevisto(){
+    var input = document.getElementById("CD_imprevisto")
+    input.style = 'display: none;'
+
+    var field = document.getElementById("imprevisto_CD")
+    field.onclick = function(){
+        mostrar_input_CD_imprevisto();
+    }
 }
 // PRESUPUESTOS - SERVICE GESTION DE PROYECTO
 async function service_cambio_estado(){

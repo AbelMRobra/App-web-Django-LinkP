@@ -132,11 +132,16 @@
         <div class="card h-100">
           <div class="card-body" style="height: 75vh;">
             <h4 class="card-title m-b-5"><b>Datos del presupuesto</b></h4>
-            <h6 class="mt-4">Valor del proyecto: <b id="valor_presupuesto_CD"></b></h6>
-            <h6>Saldo completo: <b id="saldo_total_CD"></b></h6>
-            <h6>Saldo solo de materiales: <b id="saldo_material_CD"></b></h6>
-            <h6>Saldo solo de mano de obra: <b id="saldo_mo_CD"></b></h6>
-            <h6>Imprevistos: <b id="imprevisto_CD"></b></h6>
+            <h6 class="mt-4">Valor del proyecto: <b class="box" onclick="mostrar_input_CD_valor()" id="valor_presupuesto_CD"></b></h6>
+            <input id="CD_valor" onblur="service_actualizar_valores_proyecto()" style="display: none;" step="any" type="number" class="form-control mb-2 mt-1">
+            <h6>Saldo completo: <b class="box" onclick="mostrar_input_CD_saldo()" id="saldo_total_CD"></b></h6>
+            <input id="CD_saldo" onchange="service_actualizar_valores_proyecto()" style="display: none;" step="any" type="number" class="form-control">
+            <h6>Saldo solo de materiales: <b class="box" onclick="mostrar_input_CD_saldo_mat()" id="saldo_material_CD"></b></h6>
+            <input id="CD_saldo_mat" onchange="service_actualizar_valores_proyecto()" style="display: none;" step="any" type="number" class="form-control">
+            <h6>Saldo solo de mano de obra: <b class="box" onclick="mostrar_input_CD_saldo_mo()" id="saldo_mo_CD"></b></h6>
+            <input id="CD_saldo_mo" onchange="service_actualizar_valores_proyecto()" style="display: none;" step="any" type="number" class="form-control">
+            <h6>Imprevistos: <b class="box" onclick="mostrar_input_CD_imprevisto()" id="imprevisto_CD"></b></h6>
+            <input id="CD_imprevisto" onblur="service_actualizar_valores_proyecto()" style="display: none;" step="any" type="number" class="form-control">
             <div>
                 <button class="btn btn-primary btn-xs m-1 fa fa-refresh" onclick="service_recalcular_presupuesto()"></button>
                 <a href="{% url 'Descarga Exp' proyecto.id %}" class="btn btn-success btn-xs m-1 fa fa-file-excel-o" ></a>

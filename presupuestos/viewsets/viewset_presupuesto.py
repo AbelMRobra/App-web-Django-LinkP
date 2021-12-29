@@ -323,4 +323,17 @@ class PresupuestosViewset(viewsets.ModelViewSet):
 
         return Response(datos_saldo, status=status.HTTP_200_OK)
 
+    @action(detail=False, methods=["POST"])
+    def actualizar_valores(self, request):
+        proyecto = Proyectos.objects.get(id = request.data['proyecto'])
+        presupuesto = Presupuestos.objects.get(proyecto = proyecto)
+        presupuesto.valor = request.data['valor']
+        presupuesto.saldo = request.data['saldo']
+        presupuesto.saldo_mat = request.data['saldo_mat']
+        presupuesto.saldo_mo = request.data['saldo_mo']
+        presupuesto.imprevisto = request.data['imprevisto']
+        presupuesto.save()
+        response = {"message": "Success"}
+        return Response(response, status=status.HTTP_200_OK)
+
 
