@@ -913,7 +913,7 @@ function armar_detalle_saldo_presupuesto(){
         var elemento = document.createElement("li")
         var nombre_capitulo = Object.keys(presupuesto_detallado[i])
         elemento.className = "mt-2"
-        elemento.innerHTML = `${nombre_capitulo}<div><small>inc: <b>${Intl.NumberFormat().format(presupuesto_detallado[i][nombre_capitulo].inc)}%</b>
+        elemento.innerHTML = `Capitulo ${presupuesto_detallado[i][nombre_capitulo].id}: ${nombre_capitulo}<div><small>inc: <b>${Intl.NumberFormat().format(presupuesto_detallado[i][nombre_capitulo].inc)}%</b>
         Valor: <b>$${Intl.NumberFormat().format(presupuesto_detallado[i][nombre_capitulo].valor_capitulo)}</b> - 
         Saldo <b>$${Intl.NumberFormat().format(presupuesto_detallado[i][nombre_capitulo].saldo)}</b></small></div>`
         lista.appendChild(elemento)

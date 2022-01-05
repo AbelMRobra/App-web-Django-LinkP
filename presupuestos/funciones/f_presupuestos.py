@@ -454,7 +454,7 @@ def presupuestos_saldo_capitulo(id_proyecto):
         listado_articulos_capitulo = df[df['Capitulo'] == capitulo.nombre]['Articulo'].unique()
         for articulo in listado_articulos_capitulo:
             cantidad_articulo = float(sum(df[df['Capitulo'] == capitulo.nombre]['Cantidad Art Totales']))
-            precio_articulo = float(statistics.mean(df[df['Capitulo'] == capitulo.nombre]['Precio']))
+            precio_articulo = float(statistics.mean(df[df['Articulo'] == articulo]['Precio']))
             articulo_select = articulos.get(codigo = articulo)
             dict_articulo = { 
                 str(articulo): {
@@ -483,17 +483,19 @@ def presupuestos_saldo_capitulo(id_proyecto):
         for capitulo in articulo_capitulo:
             for key in capitulo.keys():
                 for i in range(len(capitulo[key]['data'])):
-                    if stock[0] in capitulo[key]['data'][i].keys():
 
-                        if stock[1] >= capitulo[key]['data'][i][stock[0]]['cantidad']:
-                            capitulo[key]['data'][i][stock[0]]['comprado'] = float(capitulo[key]['data'][i][stock[0]]['cantidad'])
-                            stock[1] = stock[1] - capitulo[key]['data'][i][stock[0]]['cantidad']
-                            capitulo[key]['saldo'] = float(capitulo[key]['saldo'] - (capitulo[key]['data'][i][stock[0]]['cantidad']*capitulo[key]['data'][i][stock[0]]['precio']))
+                    if str(stock[0]) in list(capitulo[key]['data'][i].keys()):
+
+                        if stock[1] >= capitulo[key]['data'][i][str(stock[0])]['cantidad']:
+                            capitulo[key]['data'][i][str(stock[0])]['comprado'] = float(capitulo[key]['data'][i][str(stock[0])]['cantidad'])
+                            stock[1] = stock[1] - capitulo[key]['data'][i][str(stock[0])]['cantidad']
+                            capitulo[key]['saldo'] = float(capitulo[key]['saldo'] - (capitulo[key]['data'][i][str(stock[0])]['cantidad']*capitulo[key]['data'][i][str(stock[0])]['precio']))
+
 
                         elif stock[1] > 0:
-                            capitulo[key]['data'][i][stock[0]]['comprado'] = float(stock[1])
+                            capitulo[key]['data'][i][str(stock[0])]['comprado'] = float(stock[1])
                             stock[1] = 0
-                            capitulo[key]['saldo'] = float(capitulo[key]['saldo'] - (stock[1]*capitulo[key]['data'][i][stock[0]]['precio']))
+                            capitulo[key]['saldo'] = float(capitulo[key]['saldo'] - (stock[1]*capitulo[key]['data'][i][str(stock[0])]['precio']))
 
                         else:
                             pass 
