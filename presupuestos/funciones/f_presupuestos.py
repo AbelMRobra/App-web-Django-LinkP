@@ -496,7 +496,7 @@ def presupuestos_saldo_capitulo(id_proyecto):
         compras_articulo = compras.filter(articulo = stock[0])
 
         for compra in compras_articulo:
-            dicc_stock[stock[0]]["compras"].append(f"Compra {compra.documento}, al proveedor {compra.proveedor.name}, cantidad {compra.cantidad}")
+            dicc_stock[stock[0]]["compras"].append(f"Compra {compra.documento}, al proveedor {compra.proveedor.name}, cantidad {round(compra.cantidad, 2)}")
 
 
         for capitulo in articulo_capitulo:
