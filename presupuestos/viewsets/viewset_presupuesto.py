@@ -302,6 +302,7 @@ class PresupuestosViewset(viewsets.ModelViewSet):
             registro_vigente.save()
 
         recalcular_proyecto = presupuesto_generar_xls_proyecto(proyecto)
+        recalcular_saldo = presupuestos_saldo_capitulo(proyecto.id)
 
         if proyecto.presupuesto == "ACTIVO" or proyecto.presupuesto == "BASE":
             recalcular_presupuesto = presupuesto_recalcular_presupuesto(proyecto)
@@ -319,7 +320,15 @@ class PresupuestosViewset(viewsets.ModelViewSet):
 
     @action(detail=False, methods=["POST"])
     def saldo_presupuesto_detallado(self, request):
-        datos_saldo = presupuestos_saldo_capitulo(request.data['proyecto'])
+        presupuesto = Presupuestos.objects.get(proyecto__id = request.data['proyecto'])
+        datos_saldo = json.loads(presupuesto.balance_details)
+
+        return Response(datos_saldo, status=status.HTTP_200_OK)
+
+    @action(detail=False, methods=["POST"])
+    def saldo_detalle_asignacion(self, request):
+        presupuesto = Presupuestos.objects.get(proyecto__id = request.data['proyecto'])
+        datos_saldo = json.loads(presupuesto.consumption_details)
 
         return Response(datos_saldo, status=status.HTTP_200_OK)
 

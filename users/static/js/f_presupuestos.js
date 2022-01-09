@@ -9,6 +9,7 @@ document.getElementById("modal_asignacion").addEventListener("click", function(e
 let bitacoras = false;
 let tareas = false;
 let presupuesto_detallado = false;
+let detalle_asignacion = false;
 
 function sweet_alert(mensaje, estado) {
 
@@ -30,7 +31,6 @@ function sweet_alert(mensaje, estado) {
     })
 
 };
-
 async function service_datos_presupuesto(){
 
     host = document.getElementById("host").value;
@@ -51,7 +51,6 @@ async function service_datos_presupuesto(){
 
     return validar_respuesta_consulta(response, status)
 }
-
 function validar_respuesta_consulta(response, status){
 
     if (status >= 200 && status <300){
@@ -63,13 +62,10 @@ function validar_respuesta_consulta(response, status){
     }
 
 }
-
 function validar_presupuestos(response, status){
     
-
     for (let i=0; i <= response.length -1; i++){
-        console.log(response[i])
-        
+      
         if (response[i].proyecto.presupuesto == 'EXTRAPOLADO' && response[i].proyecto_base == null){
 
             sweet_alert("Se necesita definir", "info");
@@ -812,7 +808,6 @@ async function service_actualizar_valores_proyecto(){
 
     var response = await respuesta.json()
     var status = await respuesta.status
-    console.log(response)
     return validar_respuesta_actualizacion_datos(response, status)
 }
 async function service_recalcular_presupuesto(){
@@ -861,9 +856,60 @@ async function service_saldo_detallado_presupuesto(){
     var status = await respuesta.status
     return validar_saldo_detalle(response, status)
 }
+async function service_consultar_detalle_asignacion(){
+
+    var host = document.getElementById("host").value;
+    var token = document.getElementById("token").value;  
+    const url = `${host}/presupuestos/api_presupuesto/saldo_detalle_asignacion/`
+    var respuesta = await fetch(url ,{
+        method: "POST",
+        headers: {
+            'X-CSRFToken' : `${token}`,
+            'Content-Type': 'application/json',
+        },
+
+        body: JSON.stringify({
+            "proyecto": document.getElementById("proyecto").value,
+        })
+    })
+    var response = await respuesta.json()
+    var status = await respuesta.status
+    return validar_detalle_asignacion(response, status)
+}
+async function service_saldo_detallado_consumo_articulo(){
+
+    var loader = document.getElementById("loader_presupuestos")
+    loader.style = ' ';
+
+    var host = document.getElementById("host").value;
+    var token = document.getElementById("token").value;  
+    const url = `${host}/presupuestos/api_presupuesto/saldo_presupuesto_detallado/`
+    var respuesta = await fetch(url ,{
+        method: "POST",
+        headers: {
+            'X-CSRFToken' : `${token}`,
+            'Content-Type': 'application/json',
+        },
+
+        body: JSON.stringify({
+            "proyecto": document.getElementById("proyecto").value,
+        })
+    })
+    var response = await respuesta.json()
+    var status = await respuesta.status
+    return validar_saldo_detalle(response, status)
+}
 function validar_respuesta_actualizacion_datos(response, status){
     if (status >= 200 && status <300){
         service_consultar_datos_presupuesto();
+    } else {
+        sweet_alert("Problemas de conexión", "warning")
+    }
+}
+function validar_detalle_asignacion(response, status){
+    if (status >= 200 && status <300){
+        detalle_asignacion = response;
+
     } else {
         sweet_alert("Problemas de conexión", "warning")
     }
@@ -882,6 +928,8 @@ function validar_saldo_detalle(response, status){
 function validar_recalcular_presupuesto(response, status){
     if (status >= 200 && status <300){
         service_consultar_datos_presupuesto();
+        service_saldo_detallado_presupuesto();
+        service_consultar_detalle_asignacion();
         var loader = document.getElementById("loader_presupuestos")
         loader.style = 'display: none;';  
         sweet_alert("Proyecto guardado", "success");
@@ -897,7 +945,7 @@ function validar_datos_proyecto(response, status){
     }
 }
 function armar_detalle_saldo_presupuesto(){
-    console.log(presupuesto_detallado)
+
     var contenedor = document.getElementById("contenedor_CD_detalle")
     if (document.getElementById("detalle_saldo_lista")){
         var lista = document.getElementById("detalle_saldo_lista")
@@ -913,9 +961,14 @@ function armar_detalle_saldo_presupuesto(){
         var elemento = document.createElement("li")
         var nombre_capitulo = Object.keys(presupuesto_detallado[i])
         elemento.className = "mt-2"
-        elemento.innerHTML = `Capitulo ${presupuesto_detallado[i][nombre_capitulo].id}: ${nombre_capitulo}<div><small>inc: <b>${Intl.NumberFormat().format(presupuesto_detallado[i][nombre_capitulo].inc)}%</b>
+
+        elemento.innerHTML = `<h6 class="box text-primary" onclick="mostrar_analisis_capitulo(${presupuesto_detallado[i][nombre_capitulo].id})">Capitulo N: ${presupuesto_detallado[i][nombre_capitulo].id}: ${nombre_capitulo}
+        <div class = "text-dark"><small>inc: <b>${Intl.NumberFormat().format(presupuesto_detallado[i][nombre_capitulo].inc)}%</b>
         Valor: <b>$${Intl.NumberFormat().format(presupuesto_detallado[i][nombre_capitulo].valor_capitulo)}</b> - 
-        Saldo <b>$${Intl.NumberFormat().format(presupuesto_detallado[i][nombre_capitulo].saldo)}</b></small></div>`
+        Saldo <b>$${Intl.NumberFormat().format(presupuesto_detallado[i][nombre_capitulo].saldo)}</b></small></div>
+        </h6> 
+        `
+
         lista.appendChild(elemento)
     }
  
@@ -1031,6 +1084,166 @@ function ocultar_input_CD_imprevisto(){
     field.onclick = function(){
         mostrar_input_CD_imprevisto();
     }
+}
+function mostrar_datos_generales(){
+    var display_general = document.getElementById("datos_generales")
+    display_general.style = " "
+    var display_analisis = document.getElementById("datos_analisis")
+    display_analisis.style = "display: none;"
+
+}
+function mostrar_datos_anteriores(){
+    var display_analisis = document.getElementById("datos_analisis")
+    display_analisis.style = " "
+    var display_consumo = document.getElementById("detalle_consumo")
+    display_consumo.style = "display: none;"
+
+}
+function mostrar_detalle_articulo(codigo){
+
+    var display_consumo = document.getElementById("detalle_consumo")
+    display_consumo.style = " "
+    var display_analisis = document.getElementById("datos_analisis")
+    display_analisis.style = "display: none;"
+    var contenedor_general = document.getElementById("logs_consumo")
+
+    if (document.getElementById("contenedor_log")){
+        contenedor = document.getElementById("contenedor_log");
+        contenedor.remove();
+
+    }
+
+    var contenedor = document.createElement("div");
+    contenedor.id = "contenedor_log"
+    contenedor_general.append(contenedor)
+
+    for (let i=0; i <= detalle_asignacion.length -1; i++) {
+        if (Object.keys(detalle_asignacion[i]) == codigo) {
+
+            var compras = detalle_asignacion[i][codigo]['compras']
+            var detalle = detalle_asignacion[i][codigo]['detalle']
+
+            for (let c=0; c <= compras.length -1; c++) {
+                var log = document.createElement("p");
+                log.innerHTML = compras[c]
+                contenedor.appendChild(log);
+            };
+
+            for (let d=0; d <= detalle.length -1; d++) {
+                var log = document.createElement("p");
+                log.innerHTML = detalle[d]
+                contenedor.appendChild(log);
+            };
+
+            break;
+        }
+
+    }
+
+}
+function mostrar_analisis_capitulo(capitulo){
+    var display_general = document.getElementById("datos_generales")
+    display_general.style = "display: none;"
+
+    var display_analisis = document.getElementById("datos_analisis")
+    display_analisis.style = " "
+    
+    if (document.getElementById("tabla_detalle_saldo")){
+        table = document.getElementById("tabla_detalle_saldo");
+        table.remove();
+
+        filter = document.getElementById("tabla_detalle_saldo_filter");
+        filter.remove();
+
+        wrapper = document.getElementById("tabla_detalle_saldo_wrapper");
+        wrapper.remove();
+    }
+
+    var tabla_articulos_saldo = document.getElementById("tabla_articulos_saldo")
+
+    var tabla = document.createElement("table");
+    tabla.className = 'table table-bordered';
+    tabla.id = 'tabla_detalle_saldo';
+    
+    var tabla_head = document.createElement("thead");
+    tabla.appendChild(tabla_head);
+
+    var tabla_cuerpo = document.createElement("tbody");
+    tabla.appendChild(tabla_cuerpo);
+
+    var fila = document.createElement("tr");
+    fila.id = 'cabeza_tabla_saldo';
+    fila.className = "font-bold";
+    
+    var celda_articulo = document.createElement("td");
+    celda_articulo.innerHTML = 'Articulo';
+    
+    var celda_solicitado = document.createElement("td");
+    celda_solicitado.innerHTML = 'Solicitado';
+   
+    var celda_comprado = document.createElement("td");
+    celda_comprado.innerHTML = 'Comprado';
+    
+    var celda_saldo = document.createElement("td");
+    celda_saldo.innerHTML = 'Saldo';
+
+
+    fila.appendChild(celda_articulo);
+    fila.appendChild(celda_solicitado);
+    fila.appendChild(celda_comprado);
+    fila.appendChild(celda_saldo);
+
+    tabla_head.appendChild(fila);
+
+    var object_capitulo = presupuesto_detallado[capitulo -1]
+    var key_capitulo = Object.keys(object_capitulo)[0]
+
+    for (let i=0; i <= object_capitulo[key_capitulo].data.length -1; i++) {
+        
+        var object = object_capitulo[key_capitulo].data[i]
+        var id_articulo = Object.keys(object)[0]
+        var fila = document.createElement("tr");
+        fila.id = id_articulo;
+        fila.style = "font-size: 13px"
+
+        var celda_articulo = document.createElement("td")
+        if (object[id_articulo].comprado > 0){
+            celda_articulo.innerHTML = `<b class = "box text-primary" onclick="mostrar_detalle_articulo(${id_articulo})">${object[id_articulo].articulo}</b>`
+        } else {
+            celda_articulo.innerHTML = `<b class = "text-dark">${object[id_articulo].articulo}</b>`
+        }
+        
+        var celda_solicitado = document.createElement("td")
+        celda_solicitado.innerHTML = Intl.NumberFormat().format(object[id_articulo].cantidad)
+        var celda_comprado = document.createElement("td")
+        celda_comprado.innerHTML = Intl.NumberFormat().format(object[id_articulo].comprado)
+        var celda_saldo = document.createElement("td")
+        celda_saldo.innerHTML = `$${Intl.NumberFormat().format((object[id_articulo].cantidad - object[id_articulo].comprado) * object[id_articulo].precio)}`
+
+        fila.appendChild(celda_articulo)
+        fila.appendChild(celda_solicitado)
+        fila.appendChild(celda_comprado)
+        fila.appendChild(celda_saldo)
+ 
+        tabla_cuerpo.appendChild(fila)
+
+    }
+    tabla_articulos_saldo.appendChild(tabla)
+
+    $(document).ready(function () {
+        $('#tabla_detalle_saldo').DataTable({
+            "language": {
+                "lengthMenu": "Mostar _MENU_ documentos",
+                "zeroRecords": "Sin resultados ",
+                "info": "Pagina _PAGE_ de _PAGES_",
+                "infoEmpty": "Sin registros disponibles",
+                "infoFiltered": "(filtrado de _MAX_ registros totales)",
+                "search": "Buscar"
+            },
+            "paging": false,
+            "info": false
+        });
+    });
 }
 // PRESUPUESTOS - SERVICE GESTION DE PROYECTO
 async function service_cambio_estado(){
@@ -1353,7 +1566,7 @@ function armar_seccion_tareas(){
     listado.className = "scrollbox mt-2"
     listado.style = "height: 30vh; overflow-y: auto;"
     contenedor.append(listado)
-    console.log(tareas)
+
     for (let i=0; i <= tareas.length -1; i++) {
         if (tareas[i].estado == "LISTO"){
             var tarea = document.createElement("li")
@@ -1592,6 +1805,7 @@ function mostrar_consola_datos(){
     consola.style = " ";
     service_consultar_datos_presupuesto();
     service_saldo_detallado_presupuesto();
+    service_consultar_detalle_asignacion();
 }
 function ocultar_consola_datos(){
     var consola = document.getElementById('presupuestos_datos');

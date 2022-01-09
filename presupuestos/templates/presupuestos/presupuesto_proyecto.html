@@ -119,7 +119,7 @@
     </div>
 
     <div id = "presupuestos_datos" style="display: none;" class="row">
-      <div class="col-6 my-2" >
+      <div class="col-5 my-2" >
         <div class="card h-100">
           <div class="card-body">
             <h4 class="card-title m-b-5"><b>Desglose por capitulo</b></h4>
@@ -129,7 +129,7 @@
           </div>
         </div>
       </div>
-      <div class="col-6 my-2" >
+      <div id="datos_generales" class="col-7 my-2" >
         <div class="card h-100">
           <div class="card-body" style="height: 75vh;">
             <h4 class="card-title m-b-5"><b>Datos del presupuesto</b></h4>
@@ -149,6 +149,35 @@
                 <a href="{% url 'Descarga Exp Cap' proyecto.id %}" class="btn btn-success btn-xs m-1 fa fa-sitemap" ></a>
             </div>
             <hr>
+          </div>
+        </div>
+        
+      </div>
+
+      <div id="datos_analisis" class="col-7 my-2" style="display: none;" >
+        <div class="card h-100">
+          <div class="card-body" style="height: 75vh;">
+            <h4 class="card-title m-b-5"><button class="btn btn-primary btn-xs mr-2 fa fa-arrow-left" onclick="mostrar_datos_generales()"></button>  <b>Saldo de articulos</b></h4>
+
+            <div id="tabla_articulos_saldo" class="scrollbox mt-2 p-2" style="height: 75vh; overflow-y: auto;">
+
+            </div>
+
+          </div>
+        </div>
+        
+      </div>
+
+
+      <div id="detalle_consumo" class="col-7 my-2" style="display: none;" >
+        <div class="card h-100">
+          <div class="card-body" style="height: 75vh;">
+            <h4 class="card-title m-b-5"><button class="btn btn-primary btn-xs mr-2 fa fa-arrow-left" onclick="mostrar_datos_anteriores()"></button>  <b>Detalle del consumo del articulo</b></h4>
+
+            <div id="logs_consumo" class="scrollbox mt-4 p-2" style="height: 75vh; overflow-y: auto;">
+
+            </div>
+
           </div>
         </div>
         
@@ -716,6 +745,7 @@
   }
 </style>
 
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <script src="{% static 'js/f_presupuestos.js' %}"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 <script>
@@ -817,7 +847,7 @@
 <a id="add" href="#" class="btn btn-lg btn-info btn-circle fa fa-5x fa-question-circle"></a>
 
 
-<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+
 
 <script>
   $( "#add" ).click(function() {

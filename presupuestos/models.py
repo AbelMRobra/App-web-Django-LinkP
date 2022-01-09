@@ -119,6 +119,8 @@ class Presupuestos(models.Model):
     imprevisto = models.FloatField(verbose_name= "Saldo del imprevisto", null=True, blank=True)
     anticipos = models.FloatField(verbose_name= "Anticipos", null=True, blank=True)
     saldo_cap = models.FileField(verbose_name="Archivo Saldo Capitulo", null=True, blank=True)
+    balance_details = models.TextField(verbose_name="Detalle del saldo", blank=True, null=True)
+    consumption_details = models.TextField(verbose_name="Detalle del consumo", blank=True, null=True)
     fecha_a = models.DateField(auto_now=True, verbose_name= "Fecha de actualización")
     presupuestador = models.CharField(verbose_name="Presupuestador", null=True, blank=True ,max_length=100)
 

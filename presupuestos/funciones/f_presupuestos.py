@@ -6,6 +6,7 @@ import datetime as dt
 import pandas as pd
 import numpy as np
 import statistics
+import json
 from presupuestos.models import Capitulos, PresupuestosAlmacenados, Analisis, Articulos
 from compras.models import Compras
 from computos.models import Computos
@@ -426,6 +427,7 @@ def presupuestos_saldo_capitulo(id_proyecto):
     # Traemos las compras y el presupuesto
 
     proyecto = Proyectos.objects.get(id = id_proyecto)
+    presupuesto = Presupuestos.objects.get(proyecto = proyecto)
     archivo = PresupuestosAlmacenados.objects.get(proyecto = proyecto, nombre = "vigente").archivo
     df = pd.read_excel(archivo)
     compras = Compras.objects.filter(proyecto = proyecto)
@@ -469,6 +471,9 @@ def presupuestos_saldo_capitulo(id_proyecto):
         
         articulo_capitulo.append(info_saldo_capitulo)
 
+    # Detalle del consumo
+    consumption_details = []
+
     # Luego traemos todas las compras en una lista iterable
     articulos_comprados = compras.values_list("articulo", flat=True).distinct()
 
@@ -480,6 +485,20 @@ def presupuestos_saldo_capitulo(id_proyecto):
         stock_articulos.append([articulo, cantidad])
 
     for stock in stock_articulos:
+
+        dicc_stock = {
+            stock[0]: {
+                "compras": [],
+                "detalle": []
+                }
+            }
+        
+        compras_articulo = compras.filter(articulo = stock[0])
+
+        for compra in compras_articulo:
+            dicc_stock[stock[0]]["compras"].append(f"Compra {compra.documento}, al proveedor {compra.proveedor.name}, cantidad {compra.cantidad}")
+
+
         for capitulo in articulo_capitulo:
             for key in capitulo.keys():
                 for i in range(len(capitulo[key]['data'])):
@@ -506,138 +525,144 @@ def presupuestos_saldo_capitulo(id_proyecto):
 
                             else:
                                 capitulo[key]['data'][i][str(stock[0])]['comprado'] += stock[1]
+                                necesidad_a_cubirir = stock[1]
+                                capitulo[key]['saldo'] = float(capitulo[key]['saldo'] - (necesidad_a_cubirir*capitulo[key]['data'][i][str(stock[0])]['precio']))
                                 stock[1] = 0
-                                capitulo[key]['saldo'] = float(capitulo[key]['saldo'] - (stock[1]*capitulo[key]['data'][i][str(stock[0])]['precio']))
-
-
+                                
                         else:
                             pass 
 
-    return articulo_capitulo
-
-
-
-    # Ordenamos cada capitulo con una lista donde no se repitan los articulos
-
-    presupuesto_capitulo = []
-
-    contador = 0
-
-    for i in range(37):
-
-        dato = datos_viejos[contador]
-
-        nuevo_art_cant = []
-
-        lista_art_cap = []
-
-        for art_cant in dato[2]:
-
-            lista_art_cap.append(art_cant[0])
-
-        lista_art_cap = list(set(lista_art_cap))
+                        dicc_stock[stock[0]]["detalle"].append(f"Capitulo {key}, se asigno {round(necesidad_a_cubirir, 2)}")
         
-        for articulo in lista_art_cap:
+        consumption_details.append(dicc_stock)
 
-            cantidad = 0
+    presupuesto.balance_details = json.dumps(articulo_capitulo)
+    presupuesto.consumption_details = json.dumps(consumption_details)
+    presupuesto.save()
 
-            for articulo2 in dato[2]:
 
-                if articulo == articulo2[0]:
 
-                    cantidad = cantidad + articulo2[1]
+    # # Ordenamos cada capitulo con una lista donde no se repitan los articulos
 
-            nuevo_art_cant.append((articulo, cantidad))
+    # presupuesto_capitulo = []
 
-        presupuesto_capitulo.append((dato[0], dato[1], nuevo_art_cant))    
+    # contador = 0
+
+    # for i in range(37):
+
+    #     dato = datos_viejos[contador]
+
+    #     nuevo_art_cant = []
+
+    #     lista_art_cap = []
+
+    #     for art_cant in dato[2]:
+
+    #         lista_art_cap.append(art_cant[0])
+
+    #     lista_art_cap = list(set(lista_art_cap))
         
-        contador += 1
+    #     for articulo in lista_art_cap:
+
+    #         cantidad = 0
+
+    #         for articulo2 in dato[2]:
+
+    #             if articulo == articulo2[0]:
+
+    #                 cantidad = cantidad + articulo2[1]
+
+    #         nuevo_art_cant.append((articulo, cantidad))
+
+    #     presupuesto_capitulo.append((dato[0], dato[1], nuevo_art_cant))    
+        
+    #     contador += 1
 
 
-    # Ordenamos la compra para que sea una sola lista
+    # # Ordenamos la compra para que sea una sola lista
 
-    articulos_comprados = []
+    # articulos_comprados = []
 
-    for compra in compras:
+    # for compra in compras:
 
-        articulos_comprados.append(compra.articulo)
+    #     articulos_comprados.append(compra.articulo)
 
-    articulos_comprados = list(set(articulos_comprados))
+    # articulos_comprados = list(set(articulos_comprados))
 
-    #Armamos el stock con todas las compras realizadas de este proyecto
+    # #Armamos el stock con todas las compras realizadas de este proyecto
 
-    stock_articulos = []
+    # stock_articulos = []
 
-    for articulo in articulos_comprados:
+    # for articulo in articulos_comprados:
 
-        cantidad = sum(np.array(Compras.objects.values_list('cantidad').filter(proyecto = proyecto, articulo = articulo)))
+    #     cantidad = sum(np.array(Compras.objects.values_list('cantidad').filter(proyecto = proyecto, articulo = articulo)))
 
-        stock_articulos.append((articulo, cantidad))
+    #     stock_articulos.append((articulo, cantidad))
 
-    #Armamos el saldo --> Hay un error ya que al descartar menores a 0, olvidamos que restan consumo
+    # #Armamos el saldo --> Hay un error ya que al descartar menores a 0, olvidamos que restan consumo
 
-    saldo_capitulo = []
+    # saldo_capitulo = []
 
-    for capitulo_presupuesto in presupuesto_capitulo:
+    # for capitulo_presupuesto in presupuesto_capitulo:
 
-        articulos_saldo = []
+    #     articulos_saldo = []
 
-        for articulos_presupuesto in capitulo_presupuesto[2]:
+    #     for articulos_presupuesto in capitulo_presupuesto[2]:
 
-            if articulos_presupuesto[0] in articulos_comprados and articulos_presupuesto[1]>=0:
+    #         if articulos_presupuesto[0] in articulos_comprados and articulos_presupuesto[1]>=0:
 
-                contador = 0
+    #             contador = 0
 
-                for articulos_stock in stock_articulos:
+    #             for articulos_stock in stock_articulos:
 
-                    #Si encontramos el articulo del capitulo en el stock, activamos una de las 3 posibilidades
+    #                 #Si encontramos el articulo del capitulo en el stock, activamos una de las 3 posibilidades
 
-                    if articulos_stock[0] == articulos_presupuesto[0]:
+    #                 if articulos_stock[0] == articulos_presupuesto[0]:
 
-                        articulos_stock = list(articulos_stock)
+    #                     articulos_stock = list(articulos_stock)
 
-                        if articulos_stock[1] > articulos_presupuesto[1]:
+    #                     if articulos_stock[1] > articulos_presupuesto[1]:
 
-                            articulos_stock[1] = float(articulos_stock[1]) - float(articulos_presupuesto[1])                           
+    #                         articulos_stock[1] = float(articulos_stock[1]) - float(articulos_presupuesto[1])                           
 
-                            stock_articulos[contador] = list(stock_articulos[contador])
-                            stock_articulos[contador][1] = articulos_stock[1]
+    #                         stock_articulos[contador] = list(stock_articulos[contador])
+    #                         stock_articulos[contador][1] = articulos_stock[1]
 
-                            articulos_stock = tuple(articulos_stock)
-                            stock_articulos[contador] = tuple(stock_articulos[contador])
+    #                         articulos_stock = tuple(articulos_stock)
+    #                         stock_articulos[contador] = tuple(stock_articulos[contador])
 
-                        elif articulos_stock[1] == articulos_presupuesto[1]:
+    #                     elif articulos_stock[1] == articulos_presupuesto[1]:
 
-                            articulos_stock[1] = 0
-                            stock_articulos[contador] = list(stock_articulos[contador])
-                            stock_articulos[contador][1] = articulos_stock[1]
+    #                         articulos_stock[1] = 0
+    #                         stock_articulos[contador] = list(stock_articulos[contador])
+    #                         stock_articulos[contador][1] = articulos_stock[1]
 
-                            articulos_stock = tuple(articulos_stock)
-                            stock_articulos[contador] = tuple(stock_articulos[contador])
+    #                         articulos_stock = tuple(articulos_stock)
+    #                         stock_articulos[contador] = tuple(stock_articulos[contador])
 
-                        elif articulos_stock[1] < articulos_presupuesto[1]:
+    #                     elif articulos_stock[1] < articulos_presupuesto[1]:
 
-                            cantidad_saldo = float(articulos_presupuesto[1]) - float(articulos_stock[1])
+    #                         cantidad_saldo = float(articulos_presupuesto[1]) - float(articulos_stock[1])
 
-                            articulos_stock[1] = 0
+    #                         articulos_stock[1] = 0
 
-                            stock_articulos[contador] = list(stock_articulos[contador])
-                            stock_articulos[contador][1] = articulos_stock[1]
+    #                         stock_articulos[contador] = list(stock_articulos[contador])
+    #                         stock_articulos[contador][1] = articulos_stock[1]
 
-                            articulos_saldo.append((articulos_presupuesto[0], cantidad_saldo))
+    #                         articulos_saldo.append((articulos_presupuesto[0], cantidad_saldo))
 
-                            articulos_stock = tuple(articulos_stock)
-                            stock_articulos[contador] = tuple(stock_articulos[contador])
-                    contador += 1
-            else:
-                articulos_saldo.append(articulos_presupuesto)
+    #                         articulos_stock = tuple(articulos_stock)
+    #                         stock_articulos[contador] = tuple(stock_articulos[contador])
+    #                 contador += 1
+    #         else:
+    #             articulos_saldo.append(articulos_presupuesto)
 
-        #Modificado con el saldo
+    #     #Modificado con el saldo
                 
-        saldo_capitulo.append((capitulo_presupuesto[0], capitulo_presupuesto[1], articulos_saldo))
+    #     saldo_capitulo.append((capitulo_presupuesto[0], capitulo_presupuesto[1], articulos_saldo))
 
 
-    return saldo_capitulo
+    # return saldo_capitulo
 
 
 
