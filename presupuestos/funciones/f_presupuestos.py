@@ -495,9 +495,13 @@ def presupuestos_saldo_capitulo(id_proyecto):
         
         compras_articulo = compras.filter(articulo = stock[0])
 
+        total_comprado = 0
+        total_asignado = 0
         for compra in compras_articulo:
             dicc_stock[stock[0]]["compras"].append(f"Compra {compra.documento}, al proveedor {compra.proveedor.name}, cantidad {round(compra.cantidad, 2)}")
+            total_comprado += compra.cantidad
 
+        dicc_stock[stock[0]]["compras"].append(f"Total comprado al cierre {round(total_comprado, 2)}")
 
         for capitulo in articulo_capitulo:
             for key in capitulo.keys():
@@ -533,6 +537,10 @@ def presupuestos_saldo_capitulo(id_proyecto):
                             pass 
 
                         dicc_stock[stock[0]]["detalle"].append(f"Capitulo {key}, se asigno {round(necesidad_a_cubirir, 2)}")
+                        total_asignado += necesidad_a_cubirir
+
+        dicc_stock[stock[0]]["detalle"].append(f"Total asignado {round(total_asignado, 2)}")
+        dicc_stock[stock[0]]["detalle"].append(f"Total sobrante/pendiente de comprar {round((total_comprado - total_asignado), 2)}")
         
         consumption_details.append(dicc_stock)
 
