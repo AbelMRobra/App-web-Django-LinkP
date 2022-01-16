@@ -76,7 +76,7 @@
                     <option value="GESTOR">Gestión del proyecto</option>
                     <option value="DATOS">Consultar datos</option>
                     <option value="TOOLS">Herramientas de presupuesto</option>
-                    <option>Reporte</option>
+                    <option value="REPORTE">Reporte</option>
                 </select>
               </div>
   
@@ -325,6 +325,53 @@
       </div>
     </div>
 
+    <div id = "presupuestos_reporte" class="row" style="display: none;">
+      <div class="col-12 my-2" >
+        <div class="card h-100">
+          <div class="card-body">
+            <div>
+              <h4 class="card-title m-b-5"><b>Reporte del proyecto</b></h4>
+            </div>
+            <div id="contenedor_capitulos" class="mt-2">
+
+              <div class="row mt-4">
+                <div class="col-5">
+                  <h6 class="m-3 font-bold">Evolución historica</h6>
+                  <canvas id="ChartReposicion" height="150vh" ></canvas>
+                  <div class="mt-1">
+                    <button class="btn btn-info btn-sm" onclick="service_datos_graficos('reposicion', '30D')">30D</button>
+                    <button class="btn btn-info btn-sm" onclick="service_datos_graficos('reposicion', '6M')">6M</button>
+                    <button class="btn btn-info btn-sm" onclick="service_datos_graficos('reposicion', '12M')">12M</button>
+                    <button class="btn btn-info btn-sm" onclick="service_datos_graficos()">L10V</button>
+                  </div>
+                  
+                </div>
+  
+                <div class="col-5">
+                  <h6 class="m-3 font-bold">Composición interna</h6>
+                  <canvas id="ChartConstantes" height="150vh" ></canvas>
+                  <button class="btn btn-primary btn-sm" onclick="service_datos_graficos_constante()">Pull data</button>
+                </div>
+              </div>
+              
+              <div class="row mt-4">
+                <div class="col-5">
+                  <h6 class="m-3 font-bold">Analisis del avance/saldo</h6>
+                  <canvas id="ChartSaldo" height="150vh" ></canvas>
+                  <button class="btn btn-primary btn-sm" onclick="service_datos_graficos_saldo()">Pull data</button>
+                </div>
+  
+                <div class="col-5">
+                  <canvas id="ChartImprevisto4" height="150vh" ></canvas>
+                  
+                </div>
+              </div>
+              
+            </div>
+          </div>
+        </div>
+      </div>
+  
 
   </div>
 
@@ -745,101 +792,106 @@
   }
 </style>
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+<script>
+  var ctx_valor_proyecto = document.getElementById('ChartReposicion').getContext('2d');
+  var chart_valor_proyecto = new Chart(ctx_valor_proyecto, {
+      // The type of chart we want to create
+      type: 'line',
+      // The data for our dataset
+      data: {
+
+          labels: ["Dia 1", "Dia 2", "Dia 3"],
+          datasets: [
+            {
+              label: 'Evolución del valor de reposición',
+              backgroundColor: 'rgb({{proyecto.color}}, 0.2)',
+              borderColor: 'rgb({{proyecto.color}}, 65)',
+              fill: true,
+              borderWidth: 1,
+              lineTension: 0,
+              data: [1, 10, 20]
+          }],
+      },
+      // Configuration options go here
+      options: {
+          scales: {
+              xAxes: [
+                  {
+                    stacked: true,
+                    display: false
+                  }
+              ],
+              yAxes: [
+                  {
+                    ticks: {
+                        min: 0,
+                      },
+                    scaleLabel: {
+                        display: true,
+                        labelString: '1M = $1.000.000'
+                      },
+                    stacked: false
+                  }
+              ],
+          },
+      }
+
+  });
+
+
+  var data_constantes = {
+    labels: [
+      'VAR1',
+      'VAR2',
+      'VAR3',
+      'VAR4',
+      'VAR5'
+    ],
+    datasets: [{
+      label: 'Constantes',
+      data: [20, 20, 20, 20, 20],
+      backgroundColor: [
+        'rgb(47, 203, 122 )',
+        'rgb(203, 66, 47 )',
+        'rgb(203, 189, 47 )',
+        'rgb(162, 52, 167)',
+        'rgb(47, 196, 203 )'
+      ],
+      hoverOffset: 4
+    }]
+};
+  var ctx_constantes = document.getElementById('ChartConstantes').getContext('2d');
+  var chart_constantes = new Chart(ctx_constantes, {type: 'pie', data: data_constantes})
+
+  var data_saldo = {
+    labels: [
+      'Avance',
+      'Saldo Materiales',
+      'Saldo de MO',
+      'Imprevisto',
+    ],
+    datasets: [{
+      label: 'Saldo',
+      data: [70, 10, 20, 5],
+      backgroundColor: [
+        'rgb(82, 203, 47 )',
+        'rgb(47, 203, 158 )',
+        'rgb(47, 170, 203 )',
+        'rgb(68, 47, 203 )',
+      ],
+      hoverOffset: 4
+    }]
+};
+  var ctx_saldo = document.getElementById('ChartSaldo').getContext('2d');
+  var chart_saldo = new Chart(ctx_saldo, {type: 'pie', data: data_saldo})
+
+  
+
+</script>
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <script src="{% static 'js/f_presupuestos.js' %}"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
-<script>
-  var ctx = document.getElementById('myChart').getContext('2d');
-  var chart = new Chart(ctx, {
-    // The type of chart we want to create
-    type: 'line',
-
-    // The data for our dataset
-    data: {
-      labels: [
-        {% for i in registro_valor_proyecto %}
-                '{{i.0}}',                   
-                {% endfor %}
-  'Hoy',],
-  datasets: [
-    {
-      label: 'Valor de reposición',
-      backgroundColor: 'rgb({{datos_proyecto.proyecto.color}}, 0.3)',
-      borderColor: 'rgb({{datos_proyecto.proyecto.color}})',
-      fill: true,
-      data: [
-        {% for i in registro_valor_proyecto %}
-                {{ i.1|floatformat:0}},
-    {% endfor %}
-    Math.round({{ datos_proyecto.valor_reposicion|floatformat:0}}/1000000),
-                
-
-                ]
-            },
-            ],
-
-        },
-
-  // Configuration options go here
-  options: {
-
-    scales: {
-
-      xAxes: [
-        {
-
-
-          display: false,
-
-        }
-      ],
-        yAxes: [
-          {
-            ticks: {
-              callback: function (label, index, labels) {
-                return '$ ' + label + ' M';
-
-              }
-            },
-            scaleLabel: {
-              display: true,
-              labelString: '1 M = $1.000.000'
-            },
-
-            stacked: false
-          }
-        ],
-
-          },
-  },
-    });
-</script>
-<script>
-
-  var ctx = document.getElementById('myChart2').getContext('2d');
-
-  var chart = new Chart(ctx, {
-    // The type of chart we want to create
-    type: 'doughnut',
-    // The data for our dataset
-    data: {
-      datasets: [{
-        data: [{{ datos_proyecto.avance|floatformat:0}}, {{ datos_proyecto.pendiente|floatformat:0}}],
-    backgroundColor: ['rgba({{datos_proyecto.proyecto.color}}, 0.5)', 'rgba(152, 165, 194, 0.5)'],
-  }],
-
-    labels: ['Avance', 'Pendiente']
-        },
-  options: {
-    cutoutPercentage: 80,
-    legend: {
-      position: 'bottom'
-    },
-    },
-
-        });
-
-</script>
 
 
 {% if que_hacer_general %}

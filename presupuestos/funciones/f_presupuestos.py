@@ -337,6 +337,7 @@ def presupuesto_generar_xls_proyecto(proyecto):
     ws["G1"] = "Precio"
     ws["H1"] = "Cantidad Art Totales"
     ws["I1"] = "Monto"
+    ws["J1"] = "Constante"
 
     contador = 2
 
@@ -362,6 +363,10 @@ def presupuesto_generar_xls_proyecto(proyecto):
                             ws["G{}".format(contador)] = e.articulo.valor
                             ws["H{}".format(contador)] = e.cantidad * cantidad
                             ws["I{}".format(contador)] = e.cantidad * e.articulo.valor * cantidad
+                            if e.articulo.constante:
+                                ws["J{}".format(contador)] = e.articulo.constante.nombre
+                            else:
+                                ws["J{}".format(contador)] = "SIN ASIGNAR"
                             contador += 1
 
                 else:
@@ -387,6 +392,10 @@ def presupuesto_generar_xls_proyecto(proyecto):
                             ws["G{}".format(contador)] = e.articulo.valor
                             ws["H{}".format(contador)] = e.cantidad * cantidad
                             ws["I{}".format(contador)] = e.cantidad * e.articulo.valor * cantidad
+                            if e.articulo.constante:
+                                ws["J{}".format(contador)] = e.articulo.constante.nombre
+                            else:
+                                ws["J{}".format(contador)] = "SIN ASIGNAR"
                             contador += 1
                     
             else:
@@ -404,6 +413,10 @@ def presupuesto_generar_xls_proyecto(proyecto):
                         ws["G{}".format(contador)] = e.articulo.valor
                         ws["H{}".format(contador)] = e.cantidad * cantidad
                         ws["I{}".format(contador)] = e.cantidad * e.articulo.valor * cantidad
+                        if e.articulo.constante:
+                                ws["J{}".format(contador)] = e.articulo.constante.nombre
+                        else:
+                            ws["J{}".format(contador)] = "SIN ASIGNAR"
                         contador += 1
 
     #Establecer el nombre del archivo
@@ -496,7 +509,7 @@ def presupuestos_saldo_capitulo(id_proyecto):
         compras_articulo = compras.filter(articulo = stock[0])
 
         total_comprado = 0
-        total_asignado = 0
+        
         for compra in compras_articulo:
             dicc_stock[stock[0]]["compras"].append(f"Compra {compra.documento}, al proveedor {compra.proveedor.name}, cantidad {round(compra.cantidad, 2)}")
             total_comprado += compra.cantidad
@@ -504,6 +517,7 @@ def presupuestos_saldo_capitulo(id_proyecto):
         dicc_stock[stock[0]]["compras"].append(f"Total comprado al cierre {round(total_comprado, 2)}")
 
         for capitulo in articulo_capitulo:
+            total_asignado = 0
             for key in capitulo.keys():
                 for i in range(len(capitulo[key]['data'])):
 

@@ -12,6 +12,7 @@ class RegistroInformeRedes(models.Model):
         verbose_name="Registro informe redes"
         verbose_name_plural="Registros de informes de redes"
 
+
 class RegistroLeccionesAprendidasPresup(models.Model):
 
     class areas(models.TextChoices):
@@ -30,6 +31,7 @@ class RegistroLeccionesAprendidasPresup(models.Model):
         verbose_name="Leccion aprendida presupuesto"
         verbose_name_plural="Lecciones aprendidas presupuesto"
 
+
 class RegistroConstantes(models.Model):
     constante = models.CharField(max_length=200, verbose_name = "Nombre")
     valor = models.FloatField(verbose_name="Valor")
@@ -39,6 +41,7 @@ class RegistroConstantes(models.Model):
         verbose_name="Registro de contantes"
         verbose_name_plural="Registros de constantes"
 
+
 class RegistroConstantesUltimo(models.Model):
     constante = models.ForeignKey(Constantes, on_delete=models.CASCADE, verbose_name = "Constante")
     valor = models.FloatField(verbose_name="Valor")
@@ -47,6 +50,7 @@ class RegistroConstantesUltimo(models.Model):
     class Meta:
         verbose_name="Registro de contantes ultimo"
         verbose_name_plural="Registros de constantes ultimo"
+
 
 class RegistroValorProyecto(models.Model):
     proyecto = models.ForeignKey(Proyectos, on_delete=models.CASCADE, verbose_name = "Proyecto")

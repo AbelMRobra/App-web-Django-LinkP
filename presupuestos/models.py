@@ -17,6 +17,7 @@ class Capitulos(models.Model):
     def __str__(self):
         return self.nombre
 
+
 class Constantes(models.Model):
     nombre = models.CharField(max_length=200)
     valor = models.FloatField()
@@ -31,7 +32,6 @@ class Constantes(models.Model):
     def __str__(self):
         return '{}'.format(self.nombre)
 
-# Modelo para articulos
 
 class Articulos(models.Model):
 
@@ -60,6 +60,7 @@ class Articulos(models.Model):
     def __str__(self):
         return self.nombre
 
+
 class Analisis(models.Model):
     id = models.IntegerField(auto_created=True)
     codigo = models.IntegerField(primary_key=True, verbose_name="Codigo")
@@ -72,6 +73,7 @@ class Analisis(models.Model):
 
     def __str__(self):
         return self.nombre
+
 
 class CompoAnalisis(models.Model):
     id = models.IntegerField(primary_key=True, auto_created=True)
@@ -86,7 +88,6 @@ class CompoAnalisis(models.Model):
     def __str__(self):
         return '{}'.format(self.analisis)
 
-# Modelo para pasar datos
 
 class DatosProyectos(models.Model):
     proyecto = models.ForeignKey(Proyectos, on_delete=models.CASCADE, verbose_name = "Proyecto")
@@ -103,8 +104,6 @@ class DatosProyectos(models.Model):
     def __str__(self):
         return '{}'.format(self.proyecto)
 
-
-# Modelo para pasar presupuestos
 
 class Presupuestos(models.Model):
 
@@ -151,6 +150,7 @@ class Presupuestos(models.Model):
     def __str__(self):
         return '{}'.format(self.proyecto)
 
+
 class Prametros(models.Model):
 
     proyecto = models.ForeignKey(Proyectos, on_delete=models.CASCADE, verbose_name = "Proyectos", blank=True, null=True)
@@ -177,6 +177,7 @@ class Prametros(models.Model):
     def __str__(self):
         return '{}'.format(self.proyecto)
 
+
 class Desde(models.Model):
     
     parametros = models.ForeignKey(Prametros, on_delete=models.CASCADE, verbose_name = "Parametros")
@@ -195,6 +196,7 @@ class Desde(models.Model):
     def __str__(self):
         return '{}'.format(self.parametros)
 
+
 class Modelopresupuesto(models.Model):
     proyecto= models.ForeignKey(Proyectos, on_delete=models.CASCADE, verbose_name="Proyecto")
     capitulo= models.ForeignKey(Capitulos, on_delete=models.CASCADE, verbose_name="Capitulo")
@@ -211,6 +213,7 @@ class Modelopresupuesto(models.Model):
     def __str__(self):
         return '{}'.format(self.capitulo)
 
+
 class Registrodeconstantes(models.Model):
     constante = models.ForeignKey(Constantes, on_delete=models.CASCADE, verbose_name = "Constante")
     valor = models.FloatField(verbose_name="Valor", blank=True, null=True)
@@ -220,6 +223,7 @@ class Registrodeconstantes(models.Model):
         verbose_name="Registro de contantes ultimo"
         verbose_name_plural="Registros de constantes ultimo"
 
+
 class PorcentajeCapitulo(models.Model):
     proyecto= models.ForeignKey(Proyectos, on_delete=models.CASCADE, verbose_name = "Proyecto")
     capitulo = models.ForeignKey(Capitulos, on_delete=models.CASCADE, verbose_name="Capitulo")
@@ -228,6 +232,7 @@ class PorcentajeCapitulo(models.Model):
     class Meta:
         verbose_name="Incidencia del capitulo"
         verbose_name_plural="incidencia del capitulo"
+
 
 class InformeMensual(models.Model):
 
@@ -239,6 +244,7 @@ class InformeMensual(models.Model):
     class Meta:
         verbose_name="Informe mensual"
         verbose_name_plural="Informes mensuales"
+
 
 class TareasProgramadas(models.Model):
 
@@ -262,6 +268,7 @@ class TareasProgramadas(models.Model):
         verbose_name="Tarea"
         verbose_name_plural="Tareas"
 
+
 class Bitacoras(models.Model):
     fecha = models.DateField(verbose_name="Fecha del informe", auto_now=True)
     hashtag = models.CharField(max_length=15, verbose_name="Hashtag", blank=True, null=True)
@@ -274,6 +281,7 @@ class Bitacoras(models.Model):
         verbose_name="Bitacora"
         verbose_name_plural="Bitacoras"
 
+
 class PresupuestosAlmacenados(models.Model):
     proyecto = models.ForeignKey(Proyectos, on_delete=models.CASCADE, verbose_name = "Proyecto")
     nombre = models.CharField(max_length=200, verbose_name="Nombre")
@@ -282,6 +290,7 @@ class PresupuestosAlmacenados(models.Model):
     class Meta:
         verbose_name="Almacen"
         verbose_name_plural="Almacenes"
+
 
 class DocumentacionProyectoPresupuesto(models.Model):
 

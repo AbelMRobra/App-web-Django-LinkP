@@ -471,17 +471,26 @@ function activar_consola(){
         ocultar_home();
         ocultar_consola_gestor();
         ocultar_consola_datos();
+        ocultar_consola_reporte();
         mostrar_consola_tools();
     } else if (consola == "GESTOR"){
         ocultar_home();
         ocultar_consola_tools();
         ocultar_consola_datos();
+        ocultar_consola_reporte();
         mostrar_consola_gestor();
     } else if (consola == "DATOS"){
         ocultar_home();
         ocultar_consola_tools();
         ocultar_consola_gestor();
+        ocultar_consola_reporte();
         mostrar_consola_datos();
+    } else if (consola == "REPORTE"){
+        ocultar_home();
+        ocultar_consola_tools();
+        ocultar_consola_gestor();
+        ocultar_consola_datos();
+        mostrar_consola_reporte();
     }
 }
 
@@ -1681,6 +1690,105 @@ function ocultar_select_presupuestadores(){
         mostrar_select_presupuestadores();
     }
 }
+// PRESUPUESTOS - REPORTE
+
+async function service_datos_graficos(grafico, value){
+
+    var host = document.getElementById("host").value;
+    var token = document.getElementById("token").value;  
+    const url = `${host}/presupuestos/api_presupuesto/grafico_valor_proyecto/`
+    var respuesta = await fetch(url ,{
+        method: "POST",
+        headers: {
+            'X-CSRFToken' : `${token}`,
+            'Content-Type': 'application/json',
+        },
+
+        body: JSON.stringify({
+            "proyecto": document.getElementById("proyecto").value,
+            "grafico": grafico,
+            "value": value,
+
+        })
+    })
+
+    var response = await respuesta.json()
+    var status = await respuesta.status
+    return modificar_grafico_valor_proyecto(response, status)
+}
+async function service_datos_graficos_constante(){
+
+    var host = document.getElementById("host").value;
+    var token = document.getElementById("token").value;  
+    const url = `${host}/presupuestos/api_presupuesto/grafico_constantes/`
+    var respuesta = await fetch(url ,{
+        method: "POST",
+        headers: {
+            'X-CSRFToken' : `${token}`,
+            'Content-Type': 'application/json',
+        },
+
+        body: JSON.stringify({
+            "proyecto": document.getElementById("proyecto").value,
+        })
+    })
+
+    var response = await respuesta.json()
+    var status = await respuesta.status
+    return modificar_grafico_constantes(response, status)
+}
+async function service_datos_graficos_saldo(){
+
+    var host = document.getElementById("host").value;
+    var token = document.getElementById("token").value;  
+    const url = `${host}/presupuestos/api_presupuesto/grafico_saldo/`
+    var respuesta = await fetch(url ,{
+        method: "POST",
+        headers: {
+            'X-CSRFToken' : `${token}`,
+            'Content-Type': 'application/json',
+        },
+
+        body: JSON.stringify({
+            "proyecto": document.getElementById("proyecto").value,
+        })
+    })
+
+    var response = await respuesta.json()
+    var status = await respuesta.status
+    return modificar_grafico_saldo(response, status)
+}
+function modificar_grafico_saldo(response, status){
+
+    if (status >= 200 && status <300){
+        var data = response.data
+        chart_saldo.data.datasets[0].data = data
+        chart_saldo.update();
+    }
+    
+}
+function modificar_grafico_constantes(response, status){
+
+    if (status >= 200 && status <300){
+        var label = response.labels
+        var data = response.data
+        chart_constantes.data.labels = label
+        chart_constantes.data.datasets[0].data = data
+        chart_constantes.update();
+    }
+    
+}
+function modificar_grafico_valor_proyecto(response, status){
+    console.log(response);
+    if (status >= 200 && status <300){
+        var label = response.labels
+        var data = response.data
+        chart_valor_proyecto.data.labels = label
+        chart_valor_proyecto.data.datasets[0].data = data
+        chart_valor_proyecto.update();
+    }
+    
+}
 // PRESUPUESTOS - HERRAMIENTAS EDICION DE COMPOSICIÓN
 async function service_editar_modelo(){
 
@@ -1807,6 +1915,10 @@ function mostrar_consola_datos(){
     service_saldo_detallado_presupuesto();
     service_consultar_detalle_asignacion();
 }
+function mostrar_consola_reporte(){
+    var consola = document.getElementById('presupuestos_reporte');
+    consola.style = " ";
+}
 function ocultar_consola_datos(){
     var consola = document.getElementById('presupuestos_datos');
     consola.style = "display: none;";
@@ -1820,6 +1932,10 @@ function ocultar_consola_gestor(){
     var consola = document.getElementById('presupuestos_gestor');
     consola.style = "display: none;";
     service_valor_capitulos();
+}
+function ocultar_consola_reporte(){
+    var consola = document.getElementById('presupuestos_reporte');
+    consola.style = "display: none;";
 }
 function ocultar_home(){
     var home = document.getElementById('presupuestos_home');

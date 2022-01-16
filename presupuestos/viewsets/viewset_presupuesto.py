@@ -1,4 +1,5 @@
 import datetime
+import pandas as pd
 from django.http import response
 from django.db import transaction
 from django.db.models import Q
@@ -10,7 +11,9 @@ from presupuestos.models import Bitacoras, Capitulos, Presupuestos, TareasProgra
 from presupuestos.funciones.functions_capitulos import *
 from proyectos.models import Proyectos
 from presupuestos.serializers import PresupuestosSerializer, ProyectosSerializer, BitacorasSerializer, TareasSerializer
+from registro.models import RegistroValorProyecto
 from rrhh.models import datosusuario
+from finanzas.models import RegistroAlmacenero
 from presupuestos.funciones.f_presupuestos import *
 
 class PresupuestosViewset(viewsets.ModelViewSet):
@@ -29,7 +32,6 @@ class PresupuestosViewset(viewsets.ModelViewSet):
         response = {'data' : serializer_proyectos.data}
         return Response(response, status=status.HTTP_200_OK)
 
-
     @transaction.atomic
     @action(detail=False, methods=["POST"])
     def set_proyecto_extrapolado(self, request):
@@ -47,7 +49,6 @@ class PresupuestosViewset(viewsets.ModelViewSet):
         response = {'messaje' : 'Success'}
         return Response(response, status=status.HTTP_200_OK)
     
-
     @action(detail=False, methods=["GET"])
     def proyectos_disponibles(self, request):
         proyectos = Proyectos.objects.all()
@@ -96,14 +97,12 @@ class PresupuestosViewset(viewsets.ModelViewSet):
             response = {'message' : 'Problem'}
             return Response(response, status=status.HTTP_400_BAD_REQUEST)
 
-
     @action(detail=False, methods=["POST"])
     def capitulos_presupuesto(self, request):
 
         data = presupuesto_capitulo(request.data['proyecto'])
         response = {'data' : data}
         return Response(response, status=status.HTTP_200_OK)
-
 
     @action(detail=False, methods=["POST"])
     def capitulos_presupuesto_detalle(self, request):
@@ -112,7 +111,6 @@ class PresupuestosViewset(viewsets.ModelViewSet):
         response = {'data' : data, 'title': Capitulos.objects.get(id = request.data['capitulo']).nombre, 'id_capitulo': request.data['capitulo']}
         return Response(response, status=status.HTTP_200_OK)
 
-
     @action(detail=False, methods=["POST"])
     def proyectos_afectados(self, request):
 
@@ -120,14 +118,12 @@ class PresupuestosViewset(viewsets.ModelViewSet):
         response = {'data' : data}
         return Response(response, status=status.HTTP_200_OK)
 
-
     @action(detail=False, methods=["POST"])
     def modelo_editar(self, request):
 
         data = datos_modelo(request.data['modelo'])
         response = {'data' : data}
         return Response(response, status=status.HTTP_200_OK)
-
 
     @action(detail=False, methods=["POST"])
     def modelo_editar_guardar(self, request):
@@ -139,7 +135,6 @@ class PresupuestosViewset(viewsets.ModelViewSet):
         modelo.save()
         response = {'message' : 'Success', 'capitulo': modelo.capitulo.id}
         return Response(response, status=status.HTTP_200_OK)
-
 
     @action(detail=False, methods=["POST"])
     def crear_modelo(self, request):
@@ -181,7 +176,6 @@ class PresupuestosViewset(viewsets.ModelViewSet):
             
             }
         return Response(response, status=status.HTTP_200_OK)
-
 
     @action(detail=False, methods=["POST"])
     def cambiar_estado_proyecto(self, request):
@@ -310,7 +304,6 @@ class PresupuestosViewset(viewsets.ModelViewSet):
         response = {"message": "Success"}
         return Response(response, status=status.HTTP_200_OK)
 
-
     @action(detail=False, methods=["POST"])
     def datos_presupuesto(self, request):
         proyecto = Proyectos.objects.get(id = request.data['proyecto'])
@@ -344,5 +337,108 @@ class PresupuestosViewset(viewsets.ModelViewSet):
         presupuesto.save()
         response = {"message": "Success"}
         return Response(response, status=status.HTTP_200_OK)
+
+    @action(detail=False, methods=["POST"])
+    def grafico_valor_proyecto(self, request):
+        proyecto = Proyectos.objects.get(id = request.data['proyecto'])
+        if request.data['grafico'] == 'reposicion':
+
+            registros = RegistroValorProyecto.objects.filter(proyecto = proyecto).order_by("fecha")
+
+            if request.data['value'] == '30D':
+                today = datetime.date.today()
+                last_td = today - datetime.timedelta(days = 30)
+                registros = registros.filter(fecha__gte = last_td)
+                data = [ round(data_p/1000000, 2) for data_p in registros.values_list("precio_proyecto", flat=True)]
+                response = {
+                    'labels': registros.values_list("fecha", flat=True),
+                    'data': data,
+                }
+
+            if request.data['value'] == '6M' or request.data['value'] == '12M':
+
+                today = datetime.date.today()
+                
+                year = today.year
+                dates = []
+                if request.data['value'] == '6M':
+                    months = 6
+                else:
+                    months = 12
+
+                month = today.month
+                for i in range(months):
+                    if month == 1:
+                        month = 12
+                        year = year - 1
+                        dates.append((month, year))
+                    else:
+                        month = month - 1
+                        dates.append((month, year))
+                labels = []
+                data = []
+                dates.reverse()
+
+                for date in dates:
+
+                    mean = np.mean(np.array(registros.filter(fecha__year = date[1]).filter(fecha__month = date[0]).values_list("precio_proyecto", flat=True)))
+                    labels.append(str(date[0])+"/"+str(date[1]))
+                    data.append(round(mean/1000000, 2))
+                
+                response = {
+                    'labels': labels,
+                    'data': data,
+                }
+
+        return Response(response, status=status.HTTP_200_OK)
+
+    @action(detail=False, methods=["POST"])
+    def grafico_constantes(self, request):
+        proyecto = Proyectos.objects.get(id = request.data['proyecto'])
+        excel_proyecto = PresupuestosAlmacenados.objects.get(proyecto = proyecto, nombre = "vigente").archivo
+        df = pd.read_excel(excel_proyecto)
+        total = sum(df['Monto'])
+        usd = round(((sum(df[df['Constante'] == 'USD']['Monto']) + sum(df[df['Constante'] == 'USD_BLUE']['Monto']))/total)*100, 0) 
+        uocra = round((sum(df[df['Constante'] == 'UOCRA']['Monto'])/total)*100, 0) 
+        cac = round(((sum(df[df['Constante'] == 'CAC_GENERAL']['Monto']) + sum(df[df['Constante'] == 'CAC_MAT']['Monto']) + sum(df[df['Constante'] == 'CAC_MO']['Monto']))/total)*100, 0) 
+        uva = round((sum(df[df['Constante'] == 'UVA']['Monto'])/total)*100, 0) 
+        otro = 100 - uva - cac - uocra - usd
+        labels = ['USD', 'UOCRA', 'CAC', 'UVA', 'OTRO']
+        data = [usd, uocra, cac, uva, otro]
+                
+        response = {
+            'labels': labels,
+            'data': data,
+        }
+
+        return Response(response, status=status.HTTP_200_OK)
+
+    @action(detail=False, methods=["POST"])
+    def grafico_saldo(self, request):
+        proyecto = Proyectos.objects.get(id = request.data['proyecto'])
+        presupuesto = Presupuestos.objects.get(proyecto = proyecto)
+
+        if presupuesto.valor != 0:
+            valor = presupuesto.valor + presupuesto.imprevisto
+            saldo_mat = round((presupuesto.saldo_mat / valor)*100, 0) 
+            saldo_mo = round((presupuesto.saldo_mo / valor)*100, 0) 
+            imprevisto = round((presupuesto.imprevisto / valor)*100, 0) 
+            avance = 100 - saldo_mat - saldo_mo -  imprevisto
+        else:
+            saldo_mat = 0
+            saldo_mo = 0
+            imprevisto = 0
+            avance = 1 - saldo_mat - saldo_mo -  imprevisto
+
+        data = [avance, saldo_mat, saldo_mo, imprevisto]
+
+        response = {
+            'data': data
+        }
+
+        return Response(response, status=status.HTTP_200_OK)
+
+
+
 
 
