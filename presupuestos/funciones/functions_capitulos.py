@@ -71,13 +71,13 @@ def presupuesto_capitulo_detalle(id_proyecto, id_capitulo):
 
         array_precios = np.array(compo_analisis.filter(analisis = modelo.analisis).values_list("articulo__valor", flat=True))
         array_cantidades = np.array(compo_analisis.filter(analisis = modelo.analisis).values_list("cantidad", flat=True))
-        valor_analisis = sum(array_precios*array_cantidades)
+        precio_unitario_analisis = sum(array_precios*array_cantidades)
         if modelo.comentario:
             comentario = modelo.comentario.lower().capitalize()
         else:
             comentario = "Sin comentario"
         try:
-            valor_analisis = round((modelo.cantidad*valor_analisis), 2)
+            valor_analisis = round((modelo.cantidad*precio_unitario_analisis), 2)
         except:
             valor_analisis = 0
         datos.append({
@@ -86,9 +86,9 @@ def presupuesto_capitulo_detalle(id_proyecto, id_capitulo):
             'nombre': modelo.analisis.nombre.lower().capitalize(),
             'unidad': modelo.analisis.unidad,
             'comentario': comentario,
-            'valor': round(valor_analisis, 2),
+            'valor': round(precio_unitario_analisis, 2),
             'cantidad': modelo.cantidad,
-            'valor_analisis': valor_analisis
+            'valor_analisis': round(valor_analisis, 2)
         })
     return datos
 
