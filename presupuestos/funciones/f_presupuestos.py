@@ -35,9 +35,8 @@ def presupuesto_recalcular_presupuesto(proyecto):
 
     if presupuesto.proyecto.presupuesto == "BASE" and valor_actual != 0:
         presupuestos_actualizar = Presupuestos.objects.filter(proyecto_base = proyecto)
-        print(presupuestos_actualizar)
+
         for presup_actualizar in presupuestos_actualizar:
-            print(presup_actualizar)
             presup_actualizar.valor *= (presupuesto.valor/valor_actual)
             presup_actualizar.saldo *= (presupuesto.valor/valor_actual)
             presup_actualizar.saldo_mat *= (presupuesto.valor/valor_actual)
