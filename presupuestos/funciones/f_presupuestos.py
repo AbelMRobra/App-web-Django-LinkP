@@ -516,8 +516,9 @@ def presupuestos_saldo_capitulo(id_proyecto):
 
         dicc_stock[stock[0]]["compras"].append(f"Total comprado al cierre {round(total_comprado, 2)}")
 
+        total_asignado = 0
         for capitulo in articulo_capitulo:
-            total_asignado = 0
+            
             for key in capitulo.keys():
                 for i in range(len(capitulo[key]['data'])):
 
