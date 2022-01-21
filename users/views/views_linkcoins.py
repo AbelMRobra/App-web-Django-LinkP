@@ -17,19 +17,12 @@ def perfil_movimientos_linkcoins(request):
 
     amor = 0
     rey = 0
-    rey_1 = 0
-    rey_2 = 0
     otros_datos = 0
     monedas_disponibles_canje = 0
-
     loged_user=request.user.username
-
     datos_usuarios=datosusuario.objects.all()
-
     monedas_entregadas=EntregaMoneda.objects.all()
-
     monedas=MonedaLink.objects.all()
-
     canjemonedas=CanjeMonedas.objects.all()
 
     
@@ -86,19 +79,14 @@ def perfil_movimientos_linkcoins(request):
 
             return redirect('Guia')
 
-    
-    
+
     info_coins_entregadas, monedas_disponibles, recibidas, amor, monedas_disponibles_canje, list_usuarios, rey, rey_l, rey_2=  calculos(datos_usuarios,monedas,monedas_entregadas,usuario,loged_user,canjemonedas)
-    
     
 
     try:
         datos = datos_usuarios.get(identificacion = request.user)
-
         if datos:
-
             areas = datos_usuarios.values_list("area").exclude(estado = "NO ACTIVO").distinct()
-
             otros_datos = [(a , datos_usuarios.filter(area = a[0]).order_by("identificacion").exclude(estado = "NO ACTIVO")) for a in areas]
 
     except:
@@ -106,7 +94,6 @@ def perfil_movimientos_linkcoins(request):
         datos = 0
 
     try:
-
         usuario = datos_usuarios.get(identificacion = loged_user)
 
     except:
@@ -132,11 +119,19 @@ def perfil_movimientos_linkcoins(request):
         logros = 0  
 
 
-    conten = {"argentino":argentino, "logros":logros, "rey":rey, "amor":amor, "datos":datos, "otros_datos":otros_datos, "recibidas":recibidas, "monedas_recibidas":monedas_recibidas, "monedas_disponibles":monedas_disponibles, "monedas_disponibles_canje":monedas_disponibles_canje, "list_usuarios":list_usuarios, "info_coins_entregadas":info_coins_entregadas}
+    conten = {"argentino":argentino, 
+    "logros":logros, 
+    "rey":rey, 
+    "amor":amor, 
+    "datos":datos, 
+    "otros_datos":otros_datos, 
+    "recibidas":recibidas, 
+    "monedas_recibidas":monedas_recibidas, 
+    "monedas_disponibles":monedas_disponibles, 
+    "monedas_disponibles_canje":monedas_disponibles_canje, 
+    "list_usuarios":list_usuarios, "info_coins_entregadas":info_coins_entregadas}
 
     return render(request, "linkcoins/linkcoins_perfil_movimientos.html", conten)
-
-
 
 def canjes_realizados(request):
 
@@ -230,64 +225,45 @@ def generador_linkcoins(request):
 
     return render(request, "linkcoins/linkcoins_generarmonedas.html", context)
 
-
-
 def canjear_monedas(request):
 
     context = {}
-
     canjes=CanjeMonedas.objects.all()
     premios=PremiosMonedas.objects.all()
-
     usuario = datosusuario.objects.get(identificacion = request.user)
-
     monedas_recibidas = EntregaMoneda.objects.filter(usuario_recibe = usuario).count()
-
     monedas_canjear = monedas_recibidas - sum(canjes.filter(usuario = usuario).values_list("monedas", flat=True))
-
     mensaje = ''
     
     if request.method == 'POST':
         datos=request.POST.dict()
-    
-
         today = date.today()
 
         if 'premio' in datos:
             premio=datos['premio']
 
-            if today.day == 40:
-
+            if today.day <= 10 or request.user.username == "PM" or request.user.username == "AR":
                 premio_solicitado = premios.get(id = int(premio))
 
                 if monedas_canjear >= premio_solicitado.cantidad:
-
                     canje = CanjeMonedas(
                         usuario = usuario,
                         fecha = date.today(),
                         premio = str(premio_solicitado.nombre),
                         monedas = int(premio_solicitado.cantidad),
                     )
-
                     canje.save()
 
                     email_canje_rrhh(usuario, canje.premio, canje.monedas)
                     email_canje_usuario(usuario.email, usuario, canje.premio, canje.monedas)
-
-
                     context['canje_realizado'] = True 
 
                 else:
                     mensaje="No tienes suficientes monedas para canjear el premio seleccionado"
-              
-  
-
+        
             else:
                 mensaje="No se encuentra habilitado para canjear"
   
-
-        
-
         if  'id' in datos:
             
             if datos['id'] != "0":
@@ -296,40 +272,28 @@ def canjear_monedas(request):
                 premio.cantidad = datos['cantidad']
                 premio.save()
 
-        
-
             else:
                 b = PremiosMonedas(
                     nombre = datos['nombre'],
                     cantidad = int(datos['cantidad']),
                 )
-
                 b.save()
 
         
 
         if 'borrar' in datos:
             premio=datos['borrar']
-
             premio = premios.get(id = int(premio))
             premio.delete()
 
 
 
     premios = premios.order_by("nombre")
-
     monedas = MonedaLink.objects.filter(usuario_portador = usuario)
-
     monedas_recibidas = EntregaMoneda.objects.filter(usuario_recibe = usuario).count()
-
     monedas_canjear = monedas_recibidas - sum(canjes.filter(usuario = usuario).values_list("monedas", flat=True))
-    
-    
     monedas_disponibles = sum([1 for m in monedas if EntregaMoneda.objects.filter(moneda = m).count() == 0])
-
-
     dato_monedas = {'monedas_recibidas':monedas_recibidas, 'monedas_disponibles':monedas_disponibles, 'monedas':monedas, 'monedas_canjear':monedas_canjear}
-  
     context['premios'] = premios
     context['dato_monedas'] = dato_monedas
     context['mensaje'] = mensaje

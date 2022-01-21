@@ -112,7 +112,7 @@ def estadisticasLinkcoin():
 
 def email_canje_rrhh(usuario, premio, monedas):
 
-    rrhh = "am@linkinversiones.com.ar"
+    rrhh = "rrhh@linkinversiones.com.ar"
 
     #rrhh = "abel.robra.93@gmail.com"
 
