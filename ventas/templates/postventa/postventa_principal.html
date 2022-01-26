@@ -177,6 +177,7 @@
                                 <th class='notexport'>Adjuntos</th>
                                 <th style="display: none;">Fecha inicio</th>
                                 <th style="display: none;">Fecha final</th>
+                                <th style="display: none;">Clasificacion</th>
                                 <th style="display: none;">Descripción completa</th>
                                 <th class='notexport'></th>
                             </tr>
@@ -262,7 +263,8 @@
                                 </td>
 
                                 <td style="display: none;">{{i.0.fecha_reclamo}}</td>
-                                <td style="display: none;">{{i.0.fecha_solucion}}</td>
+                                <td style="display: none;">{% if i.0.fecha_solucion %}{{i.0.fecha_solucion}}{% else %}Sin cerrar{% endif %}</td>
+                                <td style="display: none;">{{i.0.clasificacion}}</td>
                                 <td style="display: none;">{{i.0.descripcion}}</td>
                                 <td>
                                     <div class="btn-group ml-auto">
