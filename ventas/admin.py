@@ -84,7 +84,8 @@ class ReclamosPostventaResource(resources.ModelResource):
         model = ReclamosPostventa
         
 class ReclamosPostventaAdmin(ImportExportModelAdmin, admin.ModelAdmin):
-    list_display = ('numero', 'proyecto', 'propietario', 'usuario', 'unidad')
+    list_display = ('numero', 'proyecto', 'propietario', 'usuario', 'unidad', 'clasificacion')
+    search_fields = ('proyecto', 'propietario', 'clasificacion')
     resources_class = ReclamosPostventaResource
 
 class FeaturesProjectsResource(resources.ModelResource):
