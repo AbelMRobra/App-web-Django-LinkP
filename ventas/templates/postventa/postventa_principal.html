@@ -169,11 +169,16 @@
                                 <th>Nº</th>
                                 <th>Proyecto</th>
                                 <th>Unidad</th>
-                                <th>Detalle</th>
-                                <th>Fechas</th>
+                                <th style="display: none;">Propietario</th>
+                                <th style="display: none;">Contacto</th>
+                                <th class='notexport'>Detalle</th>
+                                <th class='notexport'>Fechas</th>
                                 <th>Estado</th>
-                                <th>Adjuntos</th>
-                                <th></th>
+                                <th class='notexport'>Adjuntos</th>
+                                <th style="display: none;">Fecha inicio</th>
+                                <th style="display: none;">Fecha final</th>
+                                <th style="display: none;">Descripción completa</th>
+                                <th class='notexport'></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -198,7 +203,9 @@
                                     {% endif %}</td>
                                 <td class="font-bold" data-toggle="tooltip" data-placement="top" title="Codigo">{{i.0.numero}}</td>
                                 <td class="font-bold">{{i.0.proyecto|lower|capfirst}}</td>
-                                <td class="font-bold text-info" data-toggle="tooltip" data-placement="top" title="Unidad">{{i.0.unidad}}</td>                               
+                                <td class="font-bold text-info" data-toggle="tooltip" data-placement="top" title="Unidad">{{i.0.unidad}}</td>      
+                                <td style="display: none;">{{i.0.propietario}}</td>
+                                <td style="display: none;">{{i.0.usuario}}</td>                         
                                 <td><a href="{% url 'Reclamo' i.0.id %}">{{i.0.propietario|lower|capfirst}}
                                         <h6 class="card-subtitle mb-0 mt-1">Contacto: {{i.0.usuario|lower|capfirst}}</h6>
                                     </a>
@@ -254,6 +261,9 @@
                                 
                                 </td>
 
+                                <td style="display: none;">{{i.0.fecha_reclamo}}</td>
+                                <td style="display: none;">{{i.0.fecha_solucion}}</td>
+                                <td style="display: none;">{{i.0.descripcion}}</td>
                                 <td>
                                     <div class="btn-group ml-auto">
                                         <a href="JavaScript:void(0)" class="icon-options-vertical link"
@@ -351,7 +361,7 @@
                                                                             
                                                                             {% for clasificacion in datos_clasficacion %}
                                 
-                                                                            <option {% if i.0.clasificacion == clasificacion.nombre %} selected {% endif %} value="{{clasificacion.id}}">{{clasificacion}}</option>
+                                                                            <option {% if i.0.clasificacion == clasificacion.nombre %} selected {% endif %} value="{{clasificacion.nombre}}">{{clasificacion.nombre}}</option>
                                                                         
                                                                             {% endfor %}
                                                                         </select>
@@ -842,7 +852,7 @@
                                          
                                             {% for clasificacion in datos_clasficacion %}
 
-                                            <option id="crear_{{clasificacion.id}}" value="{{clasificacion.id}}">{{clasificacion}}</option>
+                                            <option id="crear_{{clasificacion.id}}" value="{{clasificacion.nombre}}">{{clasificacion}}</option>
                                         
                                             {% endfor %}
                                        </select>
@@ -1595,6 +1605,9 @@
                     extend: 'excelHtml5',
                     title: 'Reclamos',
                     className: "btn btn-success",
+                    exportOptions: {
+                        columns: ':not(.notexport)'
+                    },
 
                 init: function(api, node, config) {
                     $(node).removeClass('dt-button buttons-excel buttons-html5')

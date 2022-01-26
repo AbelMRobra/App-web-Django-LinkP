@@ -84,7 +84,7 @@ class ReclamosPostventaResource(resources.ModelResource):
         model = ReclamosPostventa
         
 class ReclamosPostventaAdmin(ImportExportModelAdmin, admin.ModelAdmin):
-    list_display = ('numero', 'propietario', 'usuario', 'unidad')
+    list_display = ('numero', 'proyecto', 'propietario', 'usuario', 'unidad')
     resources_class = ReclamosPostventaResource
 
 class FeaturesProjectsResource(resources.ModelResource):
@@ -95,7 +95,15 @@ class FeaturesProjectsAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = ('proyecto', 'nombre')
     resources_class = FeaturesProjectsResource
 
-admin.site.register(ClasificacionReclamosPostventa)
+class ClasificacionReclamosPostventaResource(resources.ModelResource):
+    class Meta:
+        model = ClasificacionReclamosPostventa
+
+class ClasificacionReclamosPostventaAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    list_display = ('id', 'nombre')
+    resources_class = ClasificacionReclamosPostventaResource
+
+admin.site.register(ClasificacionReclamosPostventa, ClasificacionReclamosPostventaAdmin)
 admin.site.register(Clientescontacto, ClientescontactoAdmin)
 admin.site.register(FeaturesProjects, FeaturesProjectsAdmin)
 admin.site.register(PricingResumen, PricingResumenAdmin)
