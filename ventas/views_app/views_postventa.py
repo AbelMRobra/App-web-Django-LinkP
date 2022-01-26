@@ -174,11 +174,11 @@ def postventa_panel_principal(request):
 
     con = ReclamosPostventa.objects.all()
 
-    datos_proyectos = con.values_list("proyecto", flat= True).distinct()
+    datos_proyectos = con.values_list("proyecto", flat= True).distinct().order_by("clasificacion")
 
     context['proyectos'] = datos_proyectos
 
-    datos_clasificacion = con.values_list("clasificacion", flat= True).distinct()
+    datos_clasificacion = con.values_list("clasificacion", flat= True).distinct().order_by("clasificacion")
 
     context['clasificacion'] = datos_clasificacion
 
