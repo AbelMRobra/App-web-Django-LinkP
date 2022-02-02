@@ -20,12 +20,11 @@ class ComparativasViewset(viewsets.GenericViewSet):
 
             response = {}
             comparativa = Comparativas.objects.get(id = request.data['id'])
-            if comparativa.autoriza == request.data['username']:
+            if comparativa.autoriza == request.data['username'] or comparativa.gerente_autoriza.identificacion == request.data['username']:
                 comparativa.estado = request.data['estado']
                 comparativa.save()
                 
                 if comparativa.estado == "AUTORIZADA":
-                    
                     mandarEmail(comparativa, 1)
 
                     if comparativa.publica == "NO":
@@ -106,6 +105,28 @@ class ComprasViewset(viewsets.ModelViewSet):
 
         response = {'data' : serializer_proyectos.data}
 
+        return Response(response, status=status.HTTP_200_OK)
+
+    @action(detail=False, methods=["POST"])
+    def consulta_compras_completa(self, request):
+        proyectos_seleccionados = request.data['proyectos_seleccionados']
+        articulos_seleccionados = request.data['articulos_seleccionados']
+        proveedores_seleccionados = request.data['proveedores_seleccionados']
+
+        if len(request.data['proyectos_seleccionados']) != 0:
+            compras = Compras.objects.filter(proyecto__nombre__in = proyectos_seleccionados)
+        else:
+            compras = Compras.objects.all()
+        
+        print(len(request.data['articulos_seleccionados']))
+        if len(request.data['articulos_seleccionados']) != 0:
+            compras = Compras.objects.filter(articulo__nombre__in = articulos_seleccionados)
+
+        if len(request.data['proveedores_seleccionados']) != 0:
+            compras = Compras.objects.filter(proveedor__name__in = proveedores_seleccionados)
+
+        serializer = ComprasFullSerializer(compras, many=True)
+        response = {'data' : serializer.data}
         return Response(response, status=status.HTTP_200_OK)
 
     @action(detail=False, methods=["POST"])
