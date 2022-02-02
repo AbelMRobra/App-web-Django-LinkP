@@ -1,4 +1,5 @@
 from compras.models import Proveedores, Contratos, Comparativas
+from rrhh.models import datosusuario
 
 def comparativas_agregar_validaciones(proveedor, numero_oc):
 
@@ -14,12 +15,14 @@ def comparativas_agregar_validaciones(proveedor, numero_oc):
 
         return True
 
-def comparativas_agregar_metodo(proveedor, proyecto, referencia, valor, imagen, numerooc, autoriza, publica, creador, tipo_oc, contrato):
+def comparativas_agregar_metodo(proveedor, proyecto, referencia, valor, imagen, numerooc, autoriza, publica, creador, tipo_oc, contrato, gerente):
 
     try:
-
         proveedor = Proveedores.objects.get(name=proveedor)
-
+        if gerente != "":
+            gerente_autoriza = datosusuario.objects.get(identificacion = gerente)
+        else:
+            gerente_autoriza = None
         nueva_comparativa = Comparativas(
 
             proveedor = proveedor,
@@ -32,6 +35,7 @@ def comparativas_agregar_metodo(proveedor, proyecto, referencia, valor, imagen, 
             publica = publica,
             creador = str(creador),
             tipo_oc = tipo_oc,
+            gerente_autoriza = gerente_autoriza
         )
 
         nueva_comparativa.save()
@@ -46,9 +50,7 @@ def comparativas_agregar_metodo(proveedor, proyecto, referencia, valor, imagen, 
         return [True, nueva_comparativa.id]
     
     except UnicodeEncodeError:
-                
         return [False, "Algún documento adjunto tiene tildes, 'ñ' o simbolos no permitidos"]
 
     except:
-        
         return [False, "Surgio un error inesperado"]

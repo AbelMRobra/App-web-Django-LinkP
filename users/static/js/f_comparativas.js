@@ -67,7 +67,7 @@ function editar_comparativa_change(response){
 
     var icono = document.getElementById(`simbolo_${response.id}`)
 
-    console.log(response.action)
+    console.log(response)
 
     if (response.action == "Compra autorizada") {
 
@@ -90,6 +90,18 @@ function editar_comparativa_change(response){
         icono.style = "color: darkred;";
         icono.className = "fa fa-times";
         icono.title = "Rechazada!";
+    }
+
+}
+function habilitar_autorizacion_gerente(){
+
+    var valor_compra = document.getElementById(`valor_compra`).value
+    var contenedor = document.getElementById('contenedor_gerentes')
+
+    if (valor_compra <= 50000){
+        contenedor.style = " "
+    } else {
+        contenedor.style = "display: none;"
     }
 
 }

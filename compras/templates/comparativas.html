@@ -161,7 +161,7 @@
     
                                     </tr>
                                 </thead>
-                                <tbody style="font-size: 14px;">
+                                <tbody style="font-size: 14px; font-weight: 450;">
     
                                     {% for i in datos %}
     
@@ -196,13 +196,11 @@
                                                 {% endif %}
                                             </td>
                                             <td style="text-align: center;">
-                                                <img
+                                                <img data-toggle="tooltip" data-placement="top" title="Usuario {{i.0.identificacion}}" 
+                                                src="{{i.0.imagenlogo.url}}" width="40" class="img-circle solicita">
                                                 
-                                                data-toggle="tooltip" data-placement="top" title="Usuario {{i.0.identificacion}}" 
-
-                                                src="{{i.0.imagenlogo.url}}" width="40" class="img-circle">
-                                                <h6 class="card-subtitle" style="font-size: 12px; margin-top: 2px;"><span
-                                                        class="text-muted"> {{i.2.fecha_c|date:"d/m/Y"}}</span></h6>
+                                                <h6 class="card-subtitle" style="font-size: 12px; margin-top: 2px;">
+                                                    <span class="text-muted"> {{i.2.fecha_c|date:"d/m/Y"}}</span></h6>
                                             </td>
                                             
                                             <td>
@@ -245,7 +243,7 @@
                                                 {% endif %}
         
                                                 <!-- Iconos y otros datos -->
-                                                <h6 class="card-subtitle" style="font-size: 14px; margin-top: 2px;">
+                                                <h6 class="card-subtitle" style="font-size: 14px; margin-top: 2px; font-weight: 450;">
         
                                                     {% if i.2.contrato %}
                                                     <a href="{% url 'Contratos descripcion' i.2.contrato.id %}"
@@ -264,7 +262,7 @@
                                                     {{i.2.proyecto|lower|capfirst}} - {{i.2.numero|lower|capfirst}}
                                                 </h6>
                                             </td>
-                                            <td  style="font-size: 14px;"><b>${{i.2.monto|floatformat:2|intcomma}}</b></td>
+                                            <td>${{i.2.monto|floatformat:2|intcomma}}</td>
                                             {% if i.2.o_c %}<td class="text-center">
                                                 <div
                                                 data-toggle="tooltip" data-placement="top" title="Este es el numero de OC"
@@ -279,23 +277,25 @@
                                             <td style="text-align: center;">
 
                                                 <div>
-                                                    <img
-                                                
-                                                    data-toggle="tooltip" data-placement="left" 
+                                                    <span class="image-list m-t-10">
+                                                        <img
                                                     
-                                                    {% if i.2.autoriza == "SP" %}
-                                                    title="SP autorizara esta OC" src="{% static 'img/SP.png' %}" 
-                                                    
-                                                    {% else %} title="PL autorizara esta OC" src="{% static 'img/PL.png' %}" 
-                                                    
-                                                    {% endif %} width="40" class="img-circle">
-                                                    
+                                                        data-toggle="tooltip" data-placement="left" 
+                                                        
+                                                        {% if i.2.autoriza == "SP" %}
+                                                        title="SP autorizara esta OC" src="{% static 'img/SP.png' %}"                                
+                                                        {% else %} title="PL autorizara esta OC" src="{% static 'img/PL.png' %}"                                                    
+                                                        {% endif %} width="40" class="img-circle autoriza">
+    
+                                                        {% if i.2.gerente_autoriza %}
+                                                        <img data-toggle="tooltip" data-placement="bottom" width="40" class="img-circle autoriza"                                         
+                                                        title="{{i.2.gerente_autoriza.identificacion}} puede autorizar" src="{{i.2.gerente_autoriza.imagenlogo.url}}">
+                                                        {% endif %}
+                                                        
+                                                    </span>
                                                 </div>
-        
-                                                
-        
-                                                {% if request.user.username == i.2.autoriza %}
-        
+
+                                                {% if request.user.username == i.2.autoriza or request.user.username == i.2.gerente_autoriza.identificacion %}
         
                                                 <div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
                                                     {% if estado == "0" or estado == "1" or estado == "3" or estado == "5" or estado == "6" %}
@@ -343,6 +343,15 @@ class="btn btn-info btn-circle fa fa-plus"></a>
 
 <style>
 
+    .autoriza {
+        margin-left: -10px;
+        border: 2px solid #2FCBAF;
+    }
+
+    .solicita {
+        border: 2px solid #9C2FCB;
+    }
+
 
     #add{
         position: fixed;
@@ -383,6 +392,7 @@ class="btn btn-info btn-circle fa fa-plus"></a>
 {% endif %}
 
 <style>
+
     #actions-hover{
         position: absolute;
         right: 35px;

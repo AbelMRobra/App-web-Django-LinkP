@@ -822,17 +822,12 @@ def comparativas(request, estado, creador, autoriza):
     con_comparativas = Comparativas.objects.all()
 
     usuarios=datosusuario.objects.all()
-    sp=usuarios.get(identificacion='PL')
-    pl=usuarios.get(identificacion='SP')
-
-    list_autoriza=[sp,pl]
+    list_autoriza = usuarios.filter(Q(identificacion='PL') | Q(identificacion='SP') | Q(cargo = "GERENTE"))
 
     # Codigo para fecha de pagos
 
     fecha_inicial = datetime.date.today()
-
     fecha_pago = datetime.date(2021, 4, 16)
-
     mensaje_PL_SP='Autoriza'
 
     while fecha_pago <= fecha_inicial:
@@ -999,21 +994,18 @@ def comparativas(request, estado, creador, autoriza):
         mensaje_aux = "Totales"
 
     if estado == "1":
-
         consulta = con_comparativas.filter(estado = "ESPERA")
         mensaje_aux = "Espera" 
-    if estado == "2":
 
+    if estado == "2":
         consulta = con_comparativas.filter(estado = "ADJUNTO ✓")
         mensaje_aux = "Adjunto ✓" 
 
     if estado == "3":
-        
         consulta = con_comparativas.filter(estado = "NO AUTORIZADA")
         mensaje_aux = "Rechazadas"
 
     if estado == "4":
-
         consulta = con_comparativas.filter(estado = "AUTORIZADA")
         mensaje_aux = "Autorizadas"
 
@@ -1022,56 +1014,39 @@ def comparativas(request, estado, creador, autoriza):
         mensaje_aux = "Estado SP"
 
     if estado == "6":
-
         consulta = con_comparativas.exclude(estado = "AUTORIZADA").exclude(adj_oc = '').order_by("-fecha_c")
         consulta = consulta.exclude(estado = "NO AUTORIZADA")
         mensaje_aux = "Comp con OC"
 
     if estado == "7":
-
         consulta = con_comparativas.order_by("-fecha_c")
         mensaje_aux = "Sin filtro"
 
     if autoriza=='0':
-            
-            mensaje_PL_SP = 'Todos'
+            mensaje_PL_SP = 'Autoriza'
             consult_totales = con_comparativas
             
     else:
+        usuario = usuarios.get(pk=autoriza)
+        consulta=consulta.filter(Q(autoriza = usuario.identificacion) | Q(gerente_autoriza = usuario.id))
+        mensaje_aux = f"{mensaje_aux}: {str(len(consulta))}, Privadas: {len(consulta.filter(publica = 'NO'))}"
         
-        usuario=usuarios.get(pk=autoriza)
+        consult_totales = con_comparativas.filter(Q(autoriza = usuario.identificacion) | Q(gerente_autoriza = usuario.id))
+        mensaje_PL_SP = usuario.identificacion
         
-        if usuario.identificacion=='SP':
-            consulta=consulta.filter(autoriza = "SP")
-            mensaje_aux = f"{mensaje_aux}: {str(len(consulta))}, Privadas: {len(consulta.filter(publica = 'NO'))}"
-            consult_totales = con_comparativas.filter(autoriza = "SP")
-            mensaje_PL_SP =' SP'
-            
-        
-        elif usuario.identificacion=='PL':
-            consulta=consulta.filter(autoriza = "PL")
-            mensaje_aux = f"{mensaje_aux}: {str(len(consulta))}, Privadas: {len(consulta.filter(publica = 'NO'))}"
-            consult_totales = con_comparativas.filter(autoriza = "PL")
-            mensaje_PL_SP = 'PL'
-            
-
         if estado=='0':
             mensaje_aux=mensaje_aux
 
     datos_base = consulta.order_by("-fecha_c")
     
     if creador != "0":
-       
         datos_base = consulta.filter(creador = mensaje_creador).order_by("-fecha_c")
         
     creadores = list(set(consulta.values_list('creador').order_by('creador')))   
-
     list_creadores = []
 
     for c in creadores:
-
         try:
-
             usuario = datosusuario.objects.get(identificacion = c[0])
             list_creadores.append(usuario)
 
@@ -1081,7 +1056,6 @@ def comparativas(request, estado, creador, autoriza):
     datos = []
 
     for d in datos_base:
-
         mensajes = ComparativasMensaje.objects.filter(comparativa = d)
 
         if d.creador:
@@ -1137,50 +1111,56 @@ def comparativas(request, estado, creador, autoriza):
 
 def compras(request, id_proyecto):
 
-    if id_proyecto == "0":
-        proyecto = 0
-    else:
-        proyecto = Proyectos.objects.get(id = id_proyecto)
+    # if id_proyecto == "0":
+    #     proyecto = 0
+    # else:
+    #     proyecto = Proyectos.objects.get(id = id_proyecto)
 
-    #Aqui armamos un listado
+    # #Aqui armamos un listado
 
-    if request.user.username == "HC":
-        proyectos = Proyectos.objects.filter(nombre = "DIANCO - LAMADRID 1137")
-    else:
-        proyectos = Proyectos.objects.order_by("nombre")
+    # if request.user.username == "HC":
+    #     proyectos = Proyectos.objects.filter(nombre = "DIANCO - LAMADRID 1137")
+    # else:
+    #     proyectos = Proyectos.objects.order_by("nombre")
 
-    if id_proyecto == "0":
+    # if id_proyecto == "0":
 
-        if request.user.username == "HC":
-            datos = Compras.objects.filter(proyecto__nombre = "DIANCO - LAMADRID 1137").order_by("-fecha_c")
-        else:
-            datos = Compras.objects.all().order_by("-fecha_c")[0:500]
-    else:
+    #     if request.user.username == "HC":
+    #         datos = Compras.objects.filter(proyecto__nombre = "DIANCO - LAMADRID 1137").order_by("-fecha_c")
+    #     else:
+    #         datos = Compras.objects.all().order_by("-fecha_c")[0:500]
+    # else:
         
-        datos = Compras.objects.filter(proyecto = id_proyecto).order_by("-fecha_c")
+    #     datos = Compras.objects.filter(proyecto = id_proyecto).order_by("-fecha_c")
 
-    compras = []
+    # compras = []
     
-    #proyectos filtrados por id
-    for dato in datos:
-        if dato.precio_presup > dato.precio:
-            total = dato.cantidad*dato.precio
-            v = (1 - (dato.precio/dato.precio_presup))*100 
-            compras.append((0,dato, total, -v ))
+    # #proyectos filtrados por id
+    # for dato in datos:
+    #     if dato.precio_presup > dato.precio:
+    #         total = dato.cantidad*dato.precio
+    #         v = (1 - (dato.precio/dato.precio_presup))*100 
+    #         compras.append((0,dato, total, -v ))
 
-        elif dato.precio_presup == dato.precio:
-            total = dato.cantidad*dato.precio
-            compras.append((1,dato, total, 0))
+    #     elif dato.precio_presup == dato.precio:
+    #         total = dato.cantidad*dato.precio
+    #         compras.append((1,dato, total, 0))
 
-        else:
-            total = dato.cantidad*dato.precio
-            if dato.precio_presup != 0:
-                v = -((dato.precio/dato.precio_presup) - 1)*100
-            else:
-                v = 0
-            compras.append((2,dato, total, v))
+    #     else:
+    #         total = dato.cantidad*dato.precio
+    #         if dato.precio_presup != 0:
+    #             v = -((dato.precio/dato.precio_presup) - 1)*100
+    #         else:
+    #             v = 0
+            # compras.append((2,dato, total, v))
 
-    return render(request, 'registro_compras/compras_registro.html', {'compras':compras, 'proyectos':proyectos, 'proyecto':proyecto,'id_proyecto':id_proyecto})
+
+    context = {}
+    context['proveedores'] = Proveedores.objects.all()
+    context['articulos'] = Articulos.objects.all()
+    context['proyectos'] = Proyectos.objects.all()
+
+    return render(request, 'registro_compras/compras_registro.html', context)
 
 def certificados(request):
 
