@@ -199,9 +199,9 @@
                                 <td class="text-center">
                                     <i style="display: none;">{{i.0.responsable}}</i>
                                     {% if i.0.responsable %}
-                                    <img src="{{i.0.responsable.imagenlogo.url}}" class="creador" alt="user" width="30" data-toggle="tooltip" data-placement="top" title="{{i.0.responsable.nombre}}">
+                                    <img src="{{i.0.responsable.imagenlogo.url}}" class="img-circle creador" alt="user" width="30" data-toggle="tooltip" data-placement="top" title="{{i.0.responsable.nombre}}">
                                     {% else %}
-                                    <img src="{% static 'img/anonimo2.png' %}" class="creador" alt="user" width="30" data-toggle="tooltip" data-placement="top" title="{{i.0.responsable.nombre}}">
+                                    <img src="{% static 'img/anonimo2.png' %}" class="img-circle creador" alt="user" width="30" data-toggle="tooltip" data-placement="top" title="{{i.0.responsable.nombre}}">
                                     {% endif %}</td>
                                 <td class="font-bold" data-toggle="tooltip" data-placement="top" title="Codigo">{{i.0.numero}}</td>
                                 <td class="font-bold">{{i.0.proyecto|lower|capfirst}}</td>
