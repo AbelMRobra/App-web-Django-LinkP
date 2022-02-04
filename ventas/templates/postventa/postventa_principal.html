@@ -199,9 +199,9 @@
                                 <td class="text-center">
                                     <i style="display: none;">{{i.0.responsable}}</i>
                                     {% if i.0.responsable %}
-                                    <img src="{{i.0.responsable.imagenlogo.url}}" alt="user" width="30" data-toggle="tooltip" data-placement="top" title="{{i.0.responsable.nombre}}">
+                                    <img src="{{i.0.responsable.imagenlogo.url}}" class="creador" alt="user" width="30" data-toggle="tooltip" data-placement="top" title="{{i.0.responsable.nombre}}">
                                     {% else %}
-                                    <img src="{% static 'img/anonimo2.png' %}" alt="user" width="30" data-toggle="tooltip" data-placement="top" title="{{i.0.responsable.nombre}}">
+                                    <img src="{% static 'img/anonimo2.png' %}" class="creador" alt="user" width="30" data-toggle="tooltip" data-placement="top" title="{{i.0.responsable.nombre}}">
                                     {% endif %}</td>
                                 <td class="font-bold" data-toggle="tooltip" data-placement="top" title="Codigo">{{i.0.numero}}</td>
                                 <td class="font-bold">{{i.0.proyecto|lower|capfirst}}</td>
@@ -1139,6 +1139,11 @@
 <a id="add2" href="#" data-toggle="modal" data-target="#ModalReclamo"><i class="btn btn-info btn-circle fa fa-plus" data-toggle="tooltip" data-placement="left" title="Nuevo reclamo"></i></a>
 
 <style>
+
+    #creador {
+        margin-left: -10px;
+        border: 2px solid #2FCBAF;
+    }
 
     #add{
         position: fixed;
