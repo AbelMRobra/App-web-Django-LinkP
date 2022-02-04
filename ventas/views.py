@@ -309,15 +309,10 @@ def resumenprecio(request):
 def panelunidades(request):
 
     datos = Unidades.objects.all().order_by("orden")
-
     proyectos = []
-
     datos_unidades = 0
-
     mensaje = 0
-
     otros_datos = 0
-
 
     for dato in datos:
         proyectos.append(dato.proyecto)
@@ -325,10 +320,8 @@ def panelunidades(request):
     proyectos = list(set(proyectos))
 
     if request.method == 'POST':
-
         #Trae los datos elegidos
         datos_elegidos = request.POST.items()
-
         list_proyectos = []
         aisgnacion = []
         disponibilidad = []
@@ -366,27 +359,20 @@ def panelunidades(request):
                         
                         for dato in datos_unidades:
                             if dato.sup_equiv > 0:
-
                                 m2 = round(dato.sup_equiv, 2)
 
                             else:
-
                                 m2 = round((dato.sup_propia + dato.sup_balcon + dato.sup_comun + dato.sup_patio), 2)
                             
                             contado = m2*dato.proyecto.desde
-
                             features_unidad = FeaturesUni.objects.filter(unidad = dato)
 
                             for f2 in features_unidad:
-
                                 contado = contado*f2.feature.inc
 
                             monto_total = monto_total + contado
-
                             desde = round((contado/m2), 4)
-
                             datos_tabla_unidad.append((dato, m2, contado, dato.id))
-                            
                             m2_totales = m2_totales + m2
                             
                             if dato.tipo == "COCHERA":
@@ -394,13 +380,9 @@ def panelunidades(request):
                             
 
             cantidad = len(datos_tabla_unidad)
-
             departamentos = cantidad - cocheras
-
             otros_datos.append((m2_totales, cantidad, departamentos, cocheras, monto_total))
-
             datos_unidades = datos_tabla_unidad
-
             datos_unidades.sort(key=lambda datos_unidades: datos_unidades[3], reverse=False)
 
 
@@ -411,77 +393,53 @@ def panelunidades(request):
 def variacionh(request):
 
     datos = ArchivoVariacionHormigon.objects.order_by("-fecha")
-
     busqueda = 0
 
     if request.method == 'POST':
 
         try:
-
             b = ArchivoVariacionHormigon(
-
                 archivo = request.FILES['adjunto'],
             )
-
             b.save()
 
         except:
-            
             busqueda = ArchivoVariacionHormigon.objects.get(id = request.POST['fecha']) 
 
     datos_hormigon = Registrodeconstantes.objects.filter(constante__nombre = "Hº VIVIENDA").order_by('fecha')
-
     year = datos_hormigon[0].fecha.year
-
     year_now = datetime.date.today().year
-
     datos_h = []
-
     valor_anterior = 0
-
     valor_inicial = 0
 
     while year != (year_now + 1):
 
         datos_year = []
-
         month = 1
-
         variacion_anual = 0
 
         for i in range(12):
-           
             dia = datetime.date(year, month, 1)
-
             valor = Registrodeconstantes.objects.filter(constante__nombre = "Hº VIVIENDA", fecha = dia)
 
             # -> Este es la parte del flujo en caso de haber registros
-
             if len(valor) != 0:
-
                 # -> Primero seteamos la variable si es 0 con el primer registro que tengamos
-
                 if valor_inicial == 0:
-
                     valor_inicial = valor[0].valor
 
                 # -> Esta es la parte de la variación anual
-
                 if valor_inicial != 0:
-
                     variacion_anual = (valor[0].valor/valor_inicial-1)*100
 
 
                 if valor_anterior == 0:
-
                     variacion = 0
-
                     datos_year.append((dia, valor[0].valor, variacion))
-
                     valor_anterior = valor[0].valor
 
                     if month == 12:
-                        
                         valor_inicial = valor[0].valor
 
                 else:

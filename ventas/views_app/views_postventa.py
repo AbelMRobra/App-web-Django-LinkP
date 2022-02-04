@@ -83,10 +83,11 @@ def postventa_panel_principal(request):
                     usuario = request.POST['usuario_nuevo'],
                     telefono = request.POST['telefono_nuevo'],
                     email = request.POST['email_nuevo'],
-                    proyecto = request.POST['proyecto_nuevo'],
+                    proyecto = str(request.POST['proyecto_nuevo']).upper(),
                     unidad = request.POST['unidad_nuevo'],
-                    clasificacion = request.POST['clasificacion_nuevo'],
+                    clasificacion = str(request.POST['clasificacion_nuevo']).upper(),
                     descripcion = request.POST['descripcion_nuevo'],
+                    monto = request.POST['monto_nuevo'],
                     responsable=usuario,
                 )
                 
@@ -110,10 +111,11 @@ def postventa_panel_principal(request):
                 reclamo.usuario = request.POST['usuario_editar']
                 reclamo.telefono = request.POST['telefono_editar']
                 reclamo.email = request.POST['email_editar']
-                reclamo.proyecto = request.POST['proyecto_editar']
+                reclamo.proyecto = str(request.POST['proyecto_editar']).upper()
                 reclamo.unidad = request.POST['unidad_editar']
-                reclamo.clasificacion = request.POST['clasificacion_editar']
+                reclamo.clasificacion = str(request.POST['clasificacion_editar']).upper()
                 reclamo.descripcion = request.POST['descripcion_editar']
+                reclamo.monto = request.POST['monto_editar']
 
                 reclamo.save()
 
@@ -173,15 +175,10 @@ def postventa_panel_principal(request):
                 context['mensaje'] = [0, "No se pudo cambiar el estado"]
 
     con = ReclamosPostventa.objects.all()
-
     datos_proyectos = con.values_list("proyecto", flat= True).distinct().order_by("proyecto")
-
     context['proyectos'] = datos_proyectos
-
     datos_clasificacion = con.values_list("clasificacion", flat= True).distinct().order_by("clasificacion")
-
     context['clasificacion'] = datos_clasificacion
-
     datos_reclamos = con.order_by("-numero")
     context['datos_completos'] = [(dato, AdjuntosReclamosPostventa.objects.filter(reclamo = dato)) for dato in datos_reclamos]
 

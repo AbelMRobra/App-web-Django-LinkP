@@ -175,6 +175,7 @@
                                 <th class='notexport'>Fechas</th>
                                 <th>Estado</th>
                                 <th class='notexport'>Adjuntos</th>
+                                <th style="display: none;">Monto</th>
                                 <th style="display: none;">Fecha inicio</th>
                                 <th style="display: none;">Fecha final</th>
                                 <th style="display: none;">Clasificacion</th>
@@ -262,8 +263,9 @@
                                 
                                 </td>
 
-                                <td style="display: none;">{{i.0.fecha_reclamo}}</td>
-                                <td style="display: none;">{% if i.0.fecha_solucion %}{{i.0.fecha_solucion}}{% else %}Sin cerrar{% endif %}</td>
+                                <td style="display: none;">{{i.0.monto}}</td>
+                                <td style="display: none;">{% if i.0.fecha_reclamo %}{{i.0.fecha_reclamo|date:"d/m/Y"}}{% else %}No se registro{% endif %}</td>
+                                <td style="display: none;">{% if i.0.fecha_solucion %}{{i.0.fecha_solucion|date:"d/m/Y"}}{% else %}Sin cerrar{% endif %}</td>
                                 <td style="display: none;">{{i.0.clasificacion}}</td>
                                 <td style="display: none;">{{i.0.descripcion}}</td>
                                 <td>
@@ -573,6 +575,31 @@
                                                                         type="date" 
                                                                         class="form-control form-control" 
                                                                         value="{{i.0.fecha_solucion|date:'Y-m-d'}}">
+                            
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                            
+                                                        </div>
+                                                        <div class="col-4">
+                                                            <div>
+                            
+                                                                <label for="numero">
+                                                                    <h6>Monto del reclamo</h6>
+                                                                </label>
+                            
+                                                            </div>
+                            
+                                                            <div class="row d-flex justify-content-center mt-1 mb-2">
+                                                                <div class="col">
+                                                                    <div>
+                            
+                                                                        <input 
+                                                                        name="monto_editar" 
+                                                                        type="number"
+                                                                        step="any" 
+                                                                        class="form-control form-control" 
+                                                                        value="{{i.0.monto}}">
                             
                                                                     </div>
                                                                 </div>
@@ -1023,6 +1050,35 @@
                                </div>
                            </div>
                        </div>
+                   </div>
+
+                   <div class="row">
+
+                    <div class="col-4">
+                        <div>
+
+                            <label for="email">
+                                <h6>Monto estimado</h6>
+                            </label>
+
+                        </div>
+
+                        <div class="row d-flex justify-content-center mt-1 mb-2">
+                            <div class="col">
+                                <div>
+    
+                                    <input 
+                                    name="monto_nuevo" 
+                                    type="number"
+                                    step="any" 
+                                    class="form-control form-control" 
+                                    value="0">
+    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
                    </div>
 
                    <div>

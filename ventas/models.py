@@ -215,6 +215,7 @@ class ReclamosPostventa(models.Model):
     clasificacion = models.CharField(max_length=300, verbose_name = "Clasificacion del problema")
     descripcion = models.TextField(verbose_name="Descripción del problema")
     visto = models.BooleanField(default=False, verbose_name="Visto por responsable")
+    monto = models.FloatField(default=0, verbose_name="Monto del reclamo")
 
     class Meta:
         verbose_name = "Reclamo de Postventa"
@@ -255,7 +256,6 @@ class FormularioDetallePostventa(models.Model):
 
     def __str__(self):
         return f" Reclamo nº {self.reclamo.numero}"
-
 
 class AdjuntosReclamosPostventa(models.Model):
 
