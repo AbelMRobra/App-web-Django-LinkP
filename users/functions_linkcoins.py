@@ -149,7 +149,7 @@ def mandar_email(mensaje, cabeza, recibe):
 
 def email_canje_rrhh(usuario, premio, monedas):
 
-    rrhh = "pm@linkinversiones.com.ar"
+    rrhh = "rrhh@linkinversiones.com.ar"
 
     #rrhh = "abel.robra.93@gmail.com"
 

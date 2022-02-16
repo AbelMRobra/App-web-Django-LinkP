@@ -129,7 +129,7 @@
 
             <h4 class="card-title"><span class="lstick m-r-20"></span>Linkcoins</h4>
 
-            {% if datos and datos.estado == "ACTIVO" %}
+            {% if datos and datos.estado == "ACTIVO" or request.user.username == "AR" %}
             <h6 class="text-muted m-t-10 m-b-0">Recibidas de tus compañeros: <b>{{monedas_recibidas}}</b> <img
                     src="{% static 'img/monedalink2.png' %}" alt="moneda link"
                     style="max-width:17px; height:auto; vertical-align: top;"></h6>
