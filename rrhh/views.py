@@ -36,7 +36,7 @@ def archivosrrhh(request):
 
 def personal_principal(request):
 
-    usuarios_datos = datosusuario.objects.all()
+    usuarios_datos = datosusuario.objects.all().order_by('identificacion')
 
     usuarios = []
 

@@ -34,7 +34,7 @@
                         </div>
 
                         <div class="table-responsive">
-                            <table id="demo-foo-addrow" class="table m-t-30 table-hover no-wrap contact-list" data-page-size="10">
+                            <table id="users" class="table m-t-30 table-hover no-wrap contact-list" data-page-size="10">
                                 <thead>
                                     <tr>
                                         <th>Usuario</th>
@@ -110,5 +110,28 @@
     }
 
 </style>
+
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $('#users').DataTable({
+            "language": {
+            "lengthMenu": "Mostar _MENU_ documentos",
+            "zeroRecords": "Sin coincidencias",
+            "info": "Pagina _PAGE_ de _PAGES_",
+            "infoEmpty": "Sin registros disponibles",
+            "infoFiltered": "(filtrado de _MAX_ registros totales)",
+            "search": "Buscar"
+        },
+
+            "ordering": false,
+            "info": false,
+            "paging": false,
+        });
+    });
+
+
+</script>
 
   {% endblock %}
