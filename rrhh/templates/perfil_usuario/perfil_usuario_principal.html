@@ -30,70 +30,9 @@
                             <div class="col-11">
                                 <h4 class="card-title"><span class="lstick m-r-20"></span>Perfil de los usuarios</h4>
                             </div>
-                            <div class="col-1 align-self-center">
-                                <div class="btn-group ml-auto">
-                                    <a href="JavaScript:void(0)" class="icon-options-vertical link" data-toggle="dropdown"
-                                        aria-haspopup="true" aria-expanded="false"></a>
-                                    <div class="dropdown-menu dropdown-menu-right">
+ 
+                        </div>
 
-                                    
-                                    {% if user|has_group:'RRHH NIVEL 10' %}
-                                    <a class="dropdown-item" href="{% url 'Crear usuario' %}"><i
-                                        class="fa fa-plus mr-2"></i>Crear usuario</a>
-                                        
-                                    {% endif %}
-                                        
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row m-t-40">
-                            <!-- Column -->
-                            <div class="col-md-6 col-lg-3 col-xlg-3">
-                                <div class="card">
-                                    <div class="box bg-info text-center">
-                                        <h1 class="font-light text-white">{{datos.0}}</h1>
-                                        <h6 class="text-white">Usuarios totales</h6>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Column -->
-                            <div class="col-md-6 col-lg-3 col-xlg-3">
-                                <div class="card">
-                                    <div class="box bg-success text-center">
-                                        <h1 class="font-light text-white">{{datos.1}}</h1>
-                                        <h6 class="text-white">Activos</h6>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Column -->
-                            <div class="col-md-6 col-lg-3 col-xlg-3">
-                                <div class="card">
-                                    <div class="box bg-primary text-center">
-                                        <h1 class="font-light text-white">{% for u in usuarios %} {% if u.0.fecha_nacimiento|este_mes %} <img 
-                                        {% if u.0.imagen_logo %}
-                                        src="{{u.0.imagenlogo.url}}"
-                                        
-                                        {% else %}
-                                        src="#"
-                                        {% endif %}
-                                            alt="user" class="img-circle" style="width: 35px;"/>{% endif %}{% endfor %}</h1>
-                                        <h6 class="text-white">Cumples del mes</h6>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <!-- Column -->
-                            <div class="col-md-6 col-lg-3 col-xlg-3">
-                                <div class="card">
-                                    <div class="box bg-dark text-center">
-                                        <h1 class="font-light text-white">X?</h1>
-                                        <h6 class="text-white">Emm 2</h6>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Column -->
-                        </div>
                         <div class="table-responsive">
                             <table id="demo-foo-addrow" class="table m-t-30 table-hover no-wrap contact-list" data-page-size="10">
                                 <thead>
@@ -103,7 +42,6 @@
                                         <th>Email</th>
                                         <th>Área</th>
                                         <th>Puesto</th>
-                                        <th>Estado</th>
                                         <th>Ingreso</th>
                                         <th style="text-align: center;"> <img src="{% static 'img/monedalink2.png' %}" alt="user" class="img-circle" style="width: 20px;"/></th>
                 
@@ -142,6 +80,15 @@
         </div>
   </div>
 
+  {% if user|has_group:'RRHH NIVEL 10' %}
+  <a id="add" href="{% url 'Crear usuario' %}"
+
+    data-toggle="tooltip" data-placement="left" title="Crear nuevo usuario"
+
+    class="btn btn-info btn-circle fa fa-plus"></a>
+
+    {% endif %}
+
   <style>
 
     .img-activo {
@@ -152,6 +99,14 @@
     .img-desactivado {
       margin-left: -10px;
       border: 2px solid #BE5653;
+    }
+
+    #add{
+        position: fixed;
+        bottom: 60px;
+        right: 20px;
+        animation: scale 1.2s infinite ;
+
     }
 
 </style>
