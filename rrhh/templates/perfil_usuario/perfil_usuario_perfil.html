@@ -163,10 +163,10 @@
                                                        
                                                     {% if data|has_perm:perm %}
                                                     <input type="checkbox" name="{{perm}}" id="{{perm}}" class="form-control"  checked>
-                                                    <label for="{{perm}}">{{perm}}</label>
+                                                    <label for="{{perm}}">{{perm|lower|capfirst}}: {{perm.description|lower|capfirst}}</label>
                                                     {% else %}
                                                     <input type="checkbox" name="{{perm}}" id="{{perm}}" class="form-control">
-                                                    <label for="{{perm}}">{{perm}}</label>
+                                                    <label for="{{perm}}">{{perm|lower|capfirst}}: {{perm.description|lower|capfirst}}</label>
                                                     {% endif %}
 
                                                     

@@ -10,8 +10,24 @@ from presupuestos.models import Articulos, CompoAnalisis, Modelopresupuesto
 from proyectos.models import Proyectos
 from compras.serializers.serializers_compras import ComprasSerializer, ComprasFullSerializer
 from compras.functions_comparativas import mensajeCierreOc, mandarEmail
+from users.models import VariablesGenerales
 
 class ComparativasViewset(viewsets.GenericViewSet):
+
+
+    @transaction.atomic
+    def upload_monto_minimo(self, request):
+        try:
+            monto_minimo = VariablesGenerales.objects.get(id = 1)
+            monto_minimo.monto_minimo = request.data['monto_minimo']
+            monto_minimo.save()
+
+            response = {'message' : 'Success'}
+            return Response(response, status=status.HTTP_200_OK)
+
+        except:
+            response = {'message' : 'Error'}
+            return Response(response, status=status.HTTP_400_BAD_REQUEST)
 
     @transaction.atomic
     def change_status(self, request):

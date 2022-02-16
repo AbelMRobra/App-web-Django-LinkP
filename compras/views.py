@@ -5,6 +5,7 @@ from django.http import HttpResponse
 from .models import Proveedores, Certificados
 from .models import StockComprasAnticipadas, Compras, Proyectos, Proveedores, Retiros, Comparativas, ComparativasMensaje, Contratos, AdjuntosContratos
 from rrhh.models import datosusuario
+from users.models import VariablesGenerales
 from .form import StockAntForm
 from .filters import CertificadoFilter
 from presupuestos.models import Articulos, Constantes, Presupuestos, Analisis, Modelopresupuesto
@@ -1094,6 +1095,7 @@ def comparativas(request, estado, creador, autoriza):
     context['fecha_cierre'] = mensajeCierreOc()[1]
     context['mensaje_PL_SP']=mensaje_PL_SP
     context['list_autoriza']=list_autoriza
+    context['monto_minimo'] = VariablesGenerales.objects.get(id = 1).monto_minimo
 
     try:
 

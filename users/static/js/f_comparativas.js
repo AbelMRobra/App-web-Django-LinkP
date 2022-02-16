@@ -51,6 +51,44 @@ async function service_comparativa_change(id, estado){
     return validar_respuesta_comparativa_change(response, status)
 }
 
+async function service_monto_minimo_upload(){
+
+    sweet_alert("Procesando, espere ..", "info");
+
+    host = document.getElementById("host").value;
+    token = document.getElementById("token").value;
+    
+    const url = `${host}/compras/api_comparativas/upload_monto_minimo/`
+
+    var respuesta = await fetch(url ,{
+        method: "PUT",
+        headers: {
+            'X-CSRFToken' : `${token}`,
+            'Content-Type': 'application/json',
+        },
+
+        body: JSON.stringify({
+            'monto_minimo' : document.getElementById("monto_minimo").value,
+
+        })
+
+    })
+
+    var response = await respuesta.json()
+    var status = await respuesta.status
+
+    return validar_respuesta_monto_minimo_upload(response, status)
+}
+
+function validar_respuesta_monto_minimo_upload(response, status){
+    if (status >= 200 && status <300){
+        sweet_alert("Listo!", "success");
+        
+    } else {
+        sweet_alert("Error", "error");
+    }
+}
+
 function validar_respuesta_comparativa_change(response, status){
     if (status >= 200 && status <300){
 
@@ -95,10 +133,11 @@ function editar_comparativa_change(response){
 }
 function habilitar_autorizacion_gerente(){
 
+    var monto_minimo = document.getElementById(`monto_minimo`).value
     var valor_compra = document.getElementById(`valor_compra`).value
     var contenedor = document.getElementById('contenedor_gerentes')
 
-    if (valor_compra <= 50000){
+    if (valor_compra <= monto_minimo){
         contenedor.style = " "
     } else {
         contenedor.style = "display: none;"

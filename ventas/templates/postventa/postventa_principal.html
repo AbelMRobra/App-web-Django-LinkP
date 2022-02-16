@@ -75,8 +75,9 @@
                         </div>
                     </div>
                 </form>
-
+                {% if request.user|has_group:"POSTVENTA NIVEL 3" %}
                 <a href="#" onclick="clasificacion()" data-toggle="modal" data-target="#gestionarCategoria" ><i data-toggle="tooltip" data-placement="right" title="Gestor de categorias" class="fa fa-plus text-info"></i></a>
+                {% endif %}
             </div>
 
             <div class="modal fade" id="gestionarCategoria" tabindex="-1" role="dialog" aria-labelledby="gestionarCategoria" aria-hidden="true">

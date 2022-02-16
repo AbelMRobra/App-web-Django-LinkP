@@ -18,6 +18,7 @@ urlpatterns = [
 
     path("", include(router.urls)),
     path('api_comparativas/', viewsets_compras.ComparativasViewset.as_view({'post':'change_status'})),
+    path('api_comparativas/upload_monto_minimo/', viewsets_compras.ComparativasViewset.as_view({'put':'upload_monto_minimo'})),
 
     # templates de compras
 

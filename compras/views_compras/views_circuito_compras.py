@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from compras.models import Proveedores, Contratos, Comparativas
 from rrhh.models import datosusuario
+from users.models import VariablesGenerales
 from ..funciones.comparativas_agregar import *
 
 def comparativas_agregar(request):
@@ -40,5 +41,6 @@ def comparativas_agregar(request):
     context['proveedores'] = Proveedores.objects.all()
     context['contratos'] = Contratos.objects.all()
     context['gerentes'] = datosusuario.objects.filter(cargo = "GERENTE").exclude(estado = "NO ACTIVO")
+    context['monto_minimo'] = VariablesGenerales.objects.get(id = 1).monto_minimo
         
     return render(request, 'comparativas/comparativa_agregar.html', context)

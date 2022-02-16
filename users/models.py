@@ -28,3 +28,12 @@ class Atajos(models.Model):
 
     def __str__(self):
         return self.nombre
+
+
+class VariablesGenerales(models.Model):
+
+    monto_minimo = models.FloatField(default=0, verbose_name="Valor minimo a autorizar por gerentes")
+
+    class Meta:
+        verbose_name="Variable general"
+        verbose_name_plural="Variables generales"

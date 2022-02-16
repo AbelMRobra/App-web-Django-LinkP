@@ -35,24 +35,47 @@
                             <h6 class="font-bold">La proxima fecha de <b class="text-info">cierre</b> es <b class="text-info">{{fecha_cierre|date:"d/m/Y"}}</b> </h6>
                             
                         </div>
-                        <div class="mr-2" id="actions-hover" style="display: none;" >
-                            <span style="font-size: smaller;" class="bg-light p-2 rounded  border ">Opciones panel</span>
-                            <div id="actions-hover-after"></div>
-                        </div>
-
+   
                         <div class="btn-group ml-auto">
                             <a  href="JavaScript:void(0)" class="icon-options-vertical link" data-toggle="dropdown" 
                             aria-haspopup="true" aria-expanded="false" onmouseover="actionhoverover()" onmouseout="actionhoverout()"></a>
                             <div class="dropdown-menu dropdown-menu-right">
-                                {% if request.user|has_group:"COMPRAS NIVEL 2" %}
-                                <a class="dropdown-item" href="{% url 'Cargar O.C para autorizar' %}"><i
-                                        class="fa fa-plus-circle mr-2"></i>Añadir</a>
+                                {% if request.user|has_group:"COMPRAS NIVEL 8" %}
+                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#MontoMinimo"><i
+                                        class="fa fa-angle-right mr-2"></i>Monto minimo</a>
                                 {% endif %}
                                 {% if request.user|has_group:"COMPRAS NIVEL 7" %}
-                                <a class="dropdown-item" href="{% url 'Descarga Comparativas' %}"><i
-                                        class="fa fa-file-excel-o mr-2"></i>Excel</a>
+                                <a class="dropdown-item text-success" href="{% url 'Descarga Comparativas' %}"><i
+                                        class="fa fa-angle-right text-success mr-2"></i>Excel</a>
                                 {% endif %}
     
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal fade" id="MontoMinimo" tabindex="-1" role="dialog" aria-labelledby="MontoMinimo"
+                        aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header" style="background-color: #2a3e52;">
+                                    <h5 class="modal-title text-light" id="exampleModalLongTitle">Modificar el monto minimo</h5>
+                                    <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <p class="font-bold">Ten presente:</p>
+                                    <p>* Este valor es el monto maximo que los gerentes pueden gestionar sin la dirección</p>
+                                    <p>* Modificarlo no cambiara las OC realizadas</p>
+                                    <p>* El monto que se toma es el cargado en el formulario</p>
+
+                                    <input id="monto_minimo" class="form-control" type="number" step="any" value="{{monto_minimo}}">
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-success" onclick="service_monto_minimo_upload()">Cargar</button>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                </div>
                             </div>
                         </div>
                     </div>

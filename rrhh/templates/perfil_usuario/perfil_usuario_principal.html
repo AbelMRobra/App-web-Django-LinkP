@@ -28,8 +28,7 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-11">
-                                <h4 class="card-title">Información general</h4>
-                                <h6 class="card-subtitle">Estadisticas y datos generales</h6>
+                                <h4 class="card-title"><span class="lstick m-r-20"></span>Perfil de los usuarios</h4>
                             </div>
                             <div class="col-1 align-self-center">
                                 <div class="btn-group ml-auto">
@@ -105,28 +104,29 @@
                                         <th>Área</th>
                                         <th>Puesto</th>
                                         <th>Estado</th>
-                                        <th style="text-align: center;">Ingreso</th>
+                                        <th>Ingreso</th>
                                         <th style="text-align: center;"> <img src="{% static 'img/monedalink2.png' %}" alt="user" class="img-circle" style="width: 20px;"/></th>
                 
                                     </tr>
                                 </thead>
-                                <tbody style="font-size: 14px;">
+                                <tbody style="font-size: 14px; font-weight: 400;">
                                     {% for u in usuarios %}
                                     <tr>
                                         <td>
                                             <a href="{% url 'Perfil personal' u.0.id %}">
-                                            {% if u.0.imagenlogo %}
-                                            <img src="{{u.0.imagenlogo.url}}" class="img-circle" style="width: 35px;" /> 
-                                            {% else %}
-                                            <img src="{% static 'img/anonimo2.png' %}" class="img-circle" style="width: 35px;" />
-                                            {% endif %} - {{u.0.nombre}}</a>
+                                            
+                                            <img {% if u.0.imagenlogo %} src="{{u.0.imagenlogo.url}}" {% else %} src="{% static 'img/anonimo2.png' %}"{% endif %} 
+                                            {% if u.0.estado == 'ACTIVO' %} class="img-circle img-activo" {% else %} class="img-circle img-desactivado" {% endif %}
+                                            style="width: 35px;" /> 
+                                            
+                                            - {{u.0.nombre}}</a>
                                         </td>
                                         <td>{{u.0.identificacion}}</td>
                                         <td>{{u.0.email}}</td>
                                         <td>{{u.0.area|lower|capfirst}}</td>
                                         <td>{{u.0.cargo|lower|capfirst}}</td>
-                                        <td><span {% if u.0.estado == 'ACTIVO' %}class="label label-success"{% else %}class="label label-danger"{% endif %}>{{u.0.estado}}</span> </td>
-                                        <td>{{u.0.fecha_ingreso|date:"d-m-Y"}} <span class="label label-rouded label-info pull-right">{{u.0.fecha_ingreso|years}}</span></td>
+                                        <td>{{u.0.fecha_ingreso|date:"d-m-Y"}}
+                                            <div>Años trabajando: {{u.0.fecha_ingreso|years}}</div></td>
                                         <td style="text-align: center;">{{u.1}}</td>
         
                                     </tr>
@@ -142,6 +142,18 @@
         </div>
   </div>
 
-  
+  <style>
+
+    .img-activo {
+      margin-left: -10px;
+      border: 2px solid #72BE53;
+    }
+
+    .img-desactivado {
+      margin-left: -10px;
+      border: 2px solid #BE5653;
+    }
+
+</style>
 
   {% endblock %}

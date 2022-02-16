@@ -586,7 +586,7 @@
 
                         {% if avisos_comparativas.no_conformes %}
                         <div class="col-lg-6 d-flex  mt-4">
-                          <img src="{% static 'img/SP.png' %}" width="50" height="auto">
+                          <img class="img-circle img-profile" src="{% static 'img/SP.png' %}" width="50" height="auto">
 
                           <p class="ml-2 mt-2"> Tienes <a href="#" data-toggle="modal"
                               data-target="#ModalSPcompras">{{avisos_comparativas.no_conformes.1}}</a> OC observadas. </p>
@@ -597,7 +597,7 @@
                         {% if avisos_comparativas.no_autorizadas %}
 
                         <div class="col-lg-6 d-flex mt-4">
-                          <img src="{% static 'img/PL.png' %}" width="50" height="auto">
+                          <img class="img-circle img-profile" src="{% static 'img/PL.png' %}" width="50" height="auto">
 
                           <p class="ml-2 mt-2"> Tienes <a href="#" data-toggle="modal"
                               data-target="#ModalPLcompras">{{avisos_comparativas.no_autorizadas.1}}</a> OC rechazadas.
@@ -702,12 +702,7 @@
   
                     {% for m in miembros %}
                     <tr>
-                      {% if m.imagenlogo %}
-                      <td><span class="round"><img src="{{m.imagenlogo.url}}" alt="user" width="50"></span></td>
-                      {% else %}
-                      <td><span class="round"><img src="{% static 'img/anonimo2.png' %}" alt="user" width="50"></span>
-                      </td>
-                      {% endif %}
+                      <td><img class="img-circle img-profile" {% if m.imagenlogo %}src="{{m.imagenlogo.url}}"{% else %}src="{% static 'img/anonimo2.png' %}"{% endif %} alt="user" width="50"></td>
                       <td>
                         <h6><b>{{m.identificacion}}</b> - {{m.nombre}} </h6><small
                           class="text-muted">{{m.area|lower|capfirst}}: {{m.cargo|lower}} - {{m.email}}</small>
@@ -798,6 +793,10 @@
         #pulse:hover{
             transform: scale(1.05);
 
+        }
+        .img-profile {
+          margin-left: -10px;
+          border: 2px solid #AFAFB4;
         }
 
   </style>

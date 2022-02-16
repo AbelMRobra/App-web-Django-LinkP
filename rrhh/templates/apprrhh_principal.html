@@ -24,7 +24,7 @@
             <div class="card">
                 <div class="card-body text-center">
                     <div>
-                        <h6>Datos del personal</h6>
+                        <h6><b>Perfil de los usuarios </b></h6>
                     </div>
     
                     <div>
@@ -51,7 +51,7 @@
             <div class="card">
                 <div class="card-body text-center">
                     <div>
-                        <h6>Linkcoins</h6>
+                        <h6><b>Canjes de Linkcoins</b></h6>
                     </div>
     
                     <div>
@@ -59,15 +59,13 @@
                     </div>
     
                     {% if request.user|has_group:"RRHH NIVEL 1" %}
-    
-    
                     <a href="{% url 'Canjes realizados' %}"><button class="btn btn-success">
                             Ingresar</button></a>
     
                     {% else %}
     
-                    <a href="#"><button class="btn btn-secondary">
-                        Sin permisos</button></a>
+                    <a href="#">
+                        <button class="btn btn-secondary">Sin permisos</button></a>
                     {% endif %}
     
                 </div>
@@ -79,51 +77,22 @@
             <div class="card">
                 <div class="card-body text-center">
                     <div>
-                        <h6>Planificación del área</h6>
+                        <h6><b>Archivos generales</b></h6>
                     </div>
     
                     <div>
-                        <img src="{% static 'img/PlanificacionArea.png' %}" alt="" style="max-width:100px; height:auto; margin: 5px;">
-                    </div>
+                        <img src="{% static 'img/rrhh_files.png' %}" alt="" style="max-width:100px; height:auto; margin: 5px;">
+                    </div>                   
     
-                    {% if request.user|has_group:"RRHH NIVEL 1" %}
+                    <a href="{% url 'Archivos RRHH' %}">
+                        <button class="btn btn-primary">Ingresar</button></a>
     
-                    <a href="#"><button class="btn btn-primary">
-                            Ingresar</button></a>
-    
-                    {% else %}
-    
-                    <a href="#"><button class="btn btn-secondary">
-                        Sin permisos</button></a>
-                    {% endif %}
-    
+
                 </div>
     
             </div>
         </div>
 
-        <div class="row">
-            <div class="col-lg-3 col-xlg-3">
-                <div class="card">
-                    <div class="card-body text-center">
-                        <div>
-                            <h6>Archivos generales</h6>
-                        </div>
-        
-                        <div>
-                            <img src="{% static 'img/rrhh_files.png' %}" alt="" style="max-width:100px; height:auto; margin: 5px;">
-                        </div>                   
-        
-                        <a href="{% url 'Archivos RRHH' %}"><button class="btn btn-dark">
-                                Ingresar</button></a>
-        
-    
-                    </div>
-        
-                </div>
-            </div>
-        
-        </div>
     </div>
 </div>
 
@@ -131,14 +100,14 @@
 <aside class="right-side-panel">
 
 
-    <h3 class="p-relative"><span class="lstick"></span>Sobre el espacio ..</h3>
+    <h3 class="p-relative"><span class="lstick"></span>APP RRHH</h3>
     <div class="row">
         
         <div class="col-md-12 m-t-10">
           <div class="card">
             <div class="card-body">
             <img src="{% static 'img/33635-worker-have-an-idea.gif' %}" alt="Funny image" width="200px">
-            <p>Este espacio esta destino a para las acciones de RRHH.</p>
+            <p>Esta aplicación esta orientada a la gestión de perfiles, almacen de archivos comunitarios y gestión de beneficios </p>
         </div>
             </div>
         </div>
