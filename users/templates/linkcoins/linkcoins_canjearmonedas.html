@@ -56,12 +56,14 @@
                         <div class="col-12 col-md-12 col-lg-11">
     
                             <div class="table-responsive m-t-4">
-                                <table class="table stylish-table">
+                                <table id="tabla" class="table stylish-table">
                                     <thead>
                                         <tr>
-                                            <th style="width: min-width: 150px; ;">Premios</th>
+                                            {% if request.user|has_group:"RRHH NIVEL 10" %}
+                                            <th class='notexport'>Opciones</th>{% endif %}
+                                            <th style="min-width: 150px;">Premios</th>
                                             <th style="text-align: right;">Linkcoins</th>
-                                            <th style="text-align: center;">Canjear</th>
+                                            <th class='notexport' style="text-align: center;">Canjear</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -69,8 +71,9 @@
     
                                         {% for i in premios %}
                                         <tr>
+                                            {% if request.user|has_group:"RRHH NIVEL 10" %}
                                             <td>
-                                                {% if request.user|has_group:"RRHH NIVEL 10" %}
+                                                
                                                 <a href="#" class="fa fa-trash text-danger my-2" data-toggle="modal"
                                                     data-target="#modalBorrar{{i.id}}"></a>
                                                 <!-- Modal borrar -->
@@ -154,7 +157,11 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                {% endif %}
+                                                
+                                            </td>
+                                            {% endif %}
+
+                                            <td>
                                                 {{i.nombre}}
                                             </td>
                                             <td style="text-align: right;">{{i.cantidad}} <img
@@ -209,6 +216,49 @@
         </div>
     </div>
 </aside>
+
+{% if request.user|has_group:"RRHH NIVEL 10" %}
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#tabla').DataTable({
+            "language": {
+            "lengthMenu": "Mostar _MENU_ documentos",
+            "zeroRecords": "Sin coincidencias",
+            "info": "Pagina _PAGE_ de _PAGES_",
+            "infoEmpty": "Sin registros disponibles",
+            "infoFiltered": "(filtrado de _MAX_ registros totales)",
+            "search": "Buscar"
+        },
+
+            "ordering": false,
+            "info": false,
+            "paging": false,
+            "searching": false,
+
+            dom: 'Bfrtip',
+            buttons: [
+            {
+                extend: 'excelHtml5',
+                title: 'Listado de canje',
+                className: "btn btn-primary",
+                exportOptions: {
+                        columns: ':not(.notexport)'
+                    },
+
+                init: function(api, node, config) {
+                    $(node).removeClass('dt-button buttons-excel buttons-html5')
+                    }
+            },
+            ] 
+        });
+    });
+
+
+</script>
+
+{% endif %}
 
 
 {% if canje_realizado %}
