@@ -220,6 +220,10 @@
                 <input type="checkbox" id="md_checkbox_9" class="chk-col-teal" />
                     <label for="md_checkbox_9"><small>Notificar via email la asignación</small></label>
               </div>
+
+              <a href="{% url 'Fondos de reparo' proyecto.id %}" class="btn btn-primary btn-rounded btn-xs">Fondos DR</a>
+              <a href="{% url 'Anticipos' proyecto.id %}" class="btn btn-primary btn-rounded btn-xs">Anticipos</a>
+              <a href="{% url 'Creditos de proyectos' proyecto.id %}" class="btn btn-primary btn-rounded btn-xs">Creditos</a>
               <hr>
               <div class="col-sm-12 mt-4">
                 <div>Desactivar proyecto</div>
@@ -259,6 +263,7 @@
           <div class="card-body">
             <div>
               <h4 class="card-title m-b-5"><b>Desglose por capitulo</b></h4>
+              <small>Descargue un excel del presupuesto de reposición <a href="{% url 'Descarga presupuesto reposición' proyecto.id %}" class="text-primary font-bolt">aqui</a></small>
             </div>
             <div id="contenedor_capitulos" class="scrollbox mt-2" style="height: 75vh; overflow-y: auto;">
 

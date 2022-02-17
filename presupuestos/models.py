@@ -1,8 +1,10 @@
 import datetime
+import numpy as np
 from django.db import models
 from proyectos.models import Proyectos
 from computos.models import Tipologias
 from rrhh.models import datosusuario
+from django.core.validators import MinValueValidator
 # Modelo para constantes
 
 
@@ -45,7 +47,7 @@ class Articulos(models.Model):
     codigo = models.IntegerField(primary_key=True)
     nombre = models.CharField(max_length=200)
     constante = models.ForeignKey(Constantes, null=True, blank=True, on_delete=models.CASCADE)
-    valor = models.FloatField()
+    valor = models.FloatField(validators=[MinValueValidator(0.0)], default=0)
     valor_aux = models.FloatField(null=True)
     descrip = models.TextField()
     unidad = models.CharField(max_length=10, blank=True,)
@@ -62,10 +64,16 @@ class Articulos(models.Model):
 
 
 class Analisis(models.Model):
+
     id = models.IntegerField(auto_created=True)
     codigo = models.IntegerField(primary_key=True, verbose_name="Codigo")
     nombre = models.CharField(max_length=200, verbose_name="Nombre")
     unidad = models.CharField(max_length=10, verbose_name="Unidad")
+
+    def valor_analisis(self):
+        instances = CompoAnalisis.objects.filter(analisis = self)
+        valor_analisis = sum(np.array(instances.values_list('articulo__valor', flat=True)*np.array(instances.values_list('cantidad', flat=True))))
+        return valor_analisis
 
     class Meta:
         verbose_name="Analisis"
@@ -198,13 +206,26 @@ class Desde(models.Model):
 
 
 class Modelopresupuesto(models.Model):
+
     proyecto= models.ForeignKey(Proyectos, on_delete=models.CASCADE, verbose_name="Proyecto")
     capitulo= models.ForeignKey(Capitulos, on_delete=models.CASCADE, verbose_name="Capitulo")
     analisis= models.ForeignKey(Analisis, on_delete=models.CASCADE, verbose_name="Analisis")
     vinculacion= models.ForeignKey(Tipologias, on_delete=models.CASCADE, null=True, blank=True, verbose_name="Vinculación")
-    cantidad= models.FloatField(verbose_name="Cantidad", null=True, blank=True)
+    cantidad= models.FloatField(verbose_name="Cantidad", null=True, validators=[MinValueValidator(0.0)], default=0)
     orden = models.IntegerField(verbose_name="Orden", null=True, blank=True)
     comentario = models.CharField(verbose_name="Comentario" ,max_length=200, null=True, blank=True)
+
+    def corregir_componente(self):
+        if self.cantidad == None:
+            self.cantidad = 0
+            self.save()
+
+        return "Ok"
+
+    def valor_componente(self):
+        instances = CompoAnalisis.objects.filter(analisis = self.analisis)
+        valor_analisis = sum(np.array(instances.values_list('articulo__valor', flat=True)*np.array(instances.values_list('cantidad', flat=True))))
+        return valor_analisis* self.cantidad
 
     class Meta:
         verbose_name="Modelo presupuesto"

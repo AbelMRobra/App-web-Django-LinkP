@@ -3,6 +3,7 @@ import numpy as np
 import datetime
 from openpyxl import Workbook
 from openpyxl.styles import Alignment,Font, PatternFill
+from openpyxl.styles.borders import Border, Side
 from rest_framework.generics import ListAPIView
 from django.views.generic.base import TemplateView  
 from django.shortcuts import render, redirect
@@ -1693,6 +1694,126 @@ class ReporteExplosionCap(TemplateView):
         response["Content-Disposition"] = contenido
         wb.save(response)
         return response
+
+
+class PresupuestoReposicion(TemplateView):
+
+    def get(self, request, id_proyecto, *args, **kwargs):
+        
+        wb = Workbook()
+        
+        capitulos = Capitulos.objects.all()
+        proyecto = Proyectos.objects.get(id = id_proyecto)
+        analisis = Modelopresupuesto.objects.filter(proyecto = proyecto)
+
+        ws = wb.active
+        ws.title = "Detalle"
+
+        ws["A2"] = f"Presupuesto aperturado {proyecto.nombre}"
+        ws["A2"].font = Font(bold = True, size = 18)
+
+        ws.column_dimensions['A'].width = 60
+        ws.column_dimensions['B'].width = 20
+        ws.column_dimensions['C'].width = 20
+        ws.column_dimensions['D'].width = 30
+
+        celda_inicial = 6
+        total = 0
+
+        for capitulo in capitulos:
+
+            ws["A"+str(celda_inicial)] = f"Capitulo {capitulo.nombre}"
+            ws["A"+str(celda_inicial)].font = Font(bold = True, size = 14)
+
+            celda_inicial += 1
+
+            border = Border(top=Side(style='thin'),  bottom=Side(style='thin'))
+
+            ws["A"+str(celda_inicial)] = f"Analisis"
+            ws["B"+str(celda_inicial)] = f"Precio Un"
+            ws["C"+str(celda_inicial)] = f"Cantidad"
+            ws["D"+str(celda_inicial)] = f"Total"
+
+            ws["A"+str(celda_inicial)].border = border
+            ws["B"+str(celda_inicial)].border = border
+            ws["C"+str(celda_inicial)].border = border
+            ws["D"+str(celda_inicial)].border = border
+
+            ws["A"+str(celda_inicial)].font = Font(bold = True, size = 12)
+            ws["B"+str(celda_inicial)].font = Font(bold = True, size = 12)
+            ws["C"+str(celda_inicial)].font = Font(bold = True, size = 12)
+            ws["D"+str(celda_inicial)].font = Font(bold = True, size = 12)
+
+
+            ws["B"+str(celda_inicial)].alignment = Alignment(horizontal = "center")
+            ws["C"+str(celda_inicial)].alignment = Alignment(horizontal = "center")
+            ws["D"+str(celda_inicial)].alignment = Alignment(horizontal = "center")
+
+            analisis_capitulo = analisis.filter(capitulo = capitulo).order_by('orden')
+            total_capitulo = 0
+
+            for componente in analisis_capitulo:
+                celda_inicial += 1
+                ws["A"+str(celda_inicial)] = f"{str(componente.analisis.nombre).capitalize()}"
+                ws["B"+str(celda_inicial)] = componente.analisis.valor_analisis()
+                ws["C"+str(celda_inicial)] = componente.cantidad
+                ws["D"+str(celda_inicial)] = componente.valor_componente()
+                componente.corregir_componente()
+                ws["A"+str(celda_inicial)].font = Font(size = 11)
+                ws["B"+str(celda_inicial)].font = Font(size = 11)
+                ws["C"+str(celda_inicial)].font = Font(size = 11)
+                ws["D"+str(celda_inicial)].font = Font(size = 11)
+
+                ws["B"+str(celda_inicial)].number_format = '"$"#,##0.00_-'
+                ws["D"+str(celda_inicial)].number_format = '"$"#,##0.00_-'
+
+                total_capitulo += componente.valor_componente()
+
+            total += total_capitulo
+
+
+            celda_inicial += 1
+
+            ws["A"+str(celda_inicial)] = f"Total"
+            ws["D"+str(celda_inicial)] = total_capitulo
+
+            ws["A"+str(celda_inicial)].font = Font(bold = True, size = 12)
+            ws["D"+str(celda_inicial)].font = Font(bold = True, size = 12)
+
+            ws["D"+str(celda_inicial)].number_format = '"$"#,##0.00_-'
+
+            ws["A"+str(celda_inicial)].border = border
+            ws["B"+str(celda_inicial)].border = border
+            ws["C"+str(celda_inicial)].border = border
+            ws["D"+str(celda_inicial)].border = border
+
+            celda_inicial += 2
+
+        ws["A"+str(celda_inicial)] = f"Total del presupuesto"
+        ws["D"+str(celda_inicial)] = total_capitulo
+
+        ws["A"+str(celda_inicial)].font = Font(bold = True, size = 14)
+        ws["D"+str(celda_inicial)].font = Font(bold = True, size = 14)
+
+        ws["D"+str(celda_inicial)].number_format = '"$"#,##0.00_-'
+
+        ws["A"+str(celda_inicial)].border = border
+        ws["B"+str(celda_inicial)].border = border
+        ws["C"+str(celda_inicial)].border = border
+        ws["D"+str(celda_inicial)].border = border
+
+
+
+        #Establecer el nombre del archivo
+        nombre_archivo = "Presupuesto-{0}.xls".format(str(proyecto.nombre))
+        #Definir tipo de respuesta que se va a dar
+        response = HttpResponse(content_type = "application/ms-excel")
+        contenido = "attachment; filename = {0}".format(nombre_archivo)
+        response["Content-Disposition"] = contenido
+        wb.save(response)
+        return response
+
+
 
 def debugsaldo(id_proyecto):
 
