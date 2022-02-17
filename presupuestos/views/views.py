@@ -1791,7 +1791,7 @@ class PresupuestoReposicion(TemplateView):
             celda_inicial += 2
 
         ws["A"+str(celda_inicial)] = f"Total del presupuesto"
-        ws["D"+str(celda_inicial)] = total_capitulo
+        ws["D"+str(celda_inicial)] = total
 
         ws["A"+str(celda_inicial)].font = Font(bold = True, size = 14)
         ws["D"+str(celda_inicial)].font = Font(bold = True, size = 14)
