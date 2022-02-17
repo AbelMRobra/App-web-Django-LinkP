@@ -1757,8 +1757,9 @@ class PresupuestoReposicion(TemplateView):
                 ws["A"+str(celda_inicial)] = f"{str(componente.analisis.nombre).capitalize()}"
                 ws["B"+str(celda_inicial)] = componente.analisis.valor_analisis()
                 ws["C"+str(celda_inicial)] = componente.cantidad
-                ws["D"+str(celda_inicial)] = componente.valor_componente()
                 componente.corregir_componente()
+                ws["D"+str(celda_inicial)] = componente.valor_componente()
+
                 ws["A"+str(celda_inicial)].font = Font(size = 11)
                 ws["B"+str(celda_inicial)].font = Font(size = 11)
                 ws["C"+str(celda_inicial)].font = Font(size = 11)
