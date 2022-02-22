@@ -1,4 +1,5 @@
 import numpy as np
+import datetime
 from django.http import response
 from django.db import transaction
 from rest_framework import viewsets, status
@@ -48,6 +49,9 @@ class ComparativasViewset(viewsets.GenericViewSet):
 
                     if comparativa.autoriza == "SP":
                         comparativa.visto = "VISTO"
+
+                    date = datetime.datetime.now() - datetime.timedelta(hours=3)
+                    comparativa.fecha_autorizacion = date
 
                     response['action'] = "Compra autorizada"
 

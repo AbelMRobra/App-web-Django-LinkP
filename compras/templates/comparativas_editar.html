@@ -1,8 +1,6 @@
 {% extends "users/inicio2.html" %}
-
 {% load static %}
 {% load humanize %}
-
 {% block content %}
 
 <div class="container-fluid">
@@ -98,7 +96,7 @@
                                         <div class="row d-flex justify-content-center my-4">
                                             <div class="col col-md-8 col-lg-8">
 
-                                                <input name="valor" step="0.01" type="number"
+                                                <input id="valor_compra" name="valor" step="0.01" type="number" onchange="habilitar_autorizacion_gerente()"
                                                     class="form-control form-control" value="{{comparativa.monto}}">
 
                                             </div>
@@ -219,6 +217,33 @@
                                         </div>
                                     </div>
 
+                                    <div id="contenedor_gerentes" style="display: none;">
+
+                                        <div class="my-4">
+                                            <label for="gerente">
+                                                <h6>¿Qué gerente puede autorizar?</h6>
+        
+                                            </label>
+                                        </div>
+
+                                        <div class="row justify-content-center my-4">
+                                            <div class="col col-md-12 col-lg-8">
+
+                                                <input type="radio" name="gerente" value="" id="gerente" class="filled-in chk-col-blue" checked />
+                                                <label for="gerente">Nadie</label>
+
+                                                {% for gerente in gerentes %}
+ 
+                                                <input type="radio" name="gerente" value="{{ gerente.identificacion }}" 
+                                                id="gerente-{{ gerente.identificacion }}" class="filled-in chk-col-blue" {% if gerente.identificacion == comparativa.gerente_autoriza.identificacion %} checked {% endif %} />
+                                                <label for="gerente-{{ gerente.identificacion }}">{{ gerente.identificacion }}</label>
+                                                {% endfor %}
+                                                
+                                            </div>
+                                        </div>
+
+                                    </div>
+
                                 <div class="mb-4">
                                         <label for="numerooc">
                                             <h6>¿Vincular con un contrato?</h6>
@@ -296,7 +321,10 @@
     </div>
 </div>
 
+<input type="hidden" id = "monto_minimo" value="{{monto_minimo}}">
 
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="{% static 'js/f_comparativas.js' %}"></script>
 
 
 {% endblock %}

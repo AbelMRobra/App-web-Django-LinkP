@@ -85,6 +85,10 @@ def editarcomparativas(request, id_comp):
             comparativa.autoriza = request.POST['autoriza']
             comparativa.publica = request.POST['publica']
             comparativa.tipo_oc = request.POST['tipo_oc']
+            if request.POST['gerente'] != "":
+                comparativa.gerente_autoriza = datosusuario.objects.get(identificacion = request.POST['gerente']) 
+            else:
+                comparativa.gerente_autoriza = None
             try:
                 comparativa.contrato = Contratos.objects.get(id=request.POST['contrato'])
             except:
@@ -108,8 +112,14 @@ def editarcomparativas(request, id_comp):
         
         return redirect(f'/compras/comparativas/{20}/{0}/{0}#{comparativa.id}')
 
-        
-    return render(request, 'comparativas_editar.html', {'contratos':contratos, 'proveedores':proveedores, 'comparativa':comparativa})
+    context = {}
+    context['contratos'] = contratos
+    context['proveedores'] = proveedores
+    context['comparativa'] = comparativa
+    context['gerentes'] = datosusuario.objects.filter(cargo = "GERENTE").exclude(estado = "NO ACTIVO")
+    context['monto_minimo'] = VariablesGenerales.objects.get(id = 1).monto_minimo
+
+    return render(request, 'comparativas_editar.html', context)
 
 def funcionstock():
 
@@ -1771,6 +1781,7 @@ class CompOCestado(TemplateView):
                 ws["I"+str(cont)] = "ESTADO SP"
                 ws["J"+str(cont)] = "AUTORIZADO EL"
                 ws["K"+str(cont)] = "OBSERVACIONES"
+                ws["L"+str(cont)] = "GERENTE SELECCIONADO"
 
 
                 ws["A"+str(cont)].alignment = Alignment(horizontal = "center")
@@ -1784,6 +1795,7 @@ class CompOCestado(TemplateView):
                 ws["I"+str(cont)].alignment = Alignment(horizontal = "center")
                 ws["J"+str(cont)].alignment = Alignment(horizontal = "center")
                 ws["K"+str(cont)].alignment = Alignment(horizontal = "center")
+                ws["L"+str(cont)].alignment = Alignment(horizontal = "center")
 
 
                 ws["A"+str(cont)].font = Font(bold = True, color= "FDFFFF")
@@ -1808,6 +1820,8 @@ class CompOCestado(TemplateView):
                 ws["J"+str(cont)].fill =  PatternFill("solid", fgColor= "23346D")
                 ws["K"+str(cont)].font = Font(bold = True, color= "FDFFFF")
                 ws["K"+str(cont)].fill =  PatternFill("solid", fgColor= "23346D")
+                ws["L"+str(cont)].font = Font(bold = True, color= "FDFFFF")
+                ws["L"+str(cont)].fill =  PatternFill("solid", fgColor= "23346D")
 
 
                 ws.column_dimensions['A'].width = 15
@@ -1820,7 +1834,8 @@ class CompOCestado(TemplateView):
                 ws.column_dimensions['H'].width = 17
                 ws.column_dimensions['I'].width = 17
                 ws.column_dimensions['J'].width = 20
-                ws.column_dimensions['K'].width = 66
+                ws.column_dimensions['K'].width = 60
+                ws.column_dimensions['L'].width = 30
 
                 ws["A"+str(cont+1)] = d.fecha_c
                 ws["B"+str(cont+1)] = d.creador
@@ -1833,6 +1848,10 @@ class CompOCestado(TemplateView):
                 ws["I"+str(cont+1)] = d.visto
                 ws["J"+str(cont+1)] = d.fecha_autorizacion
                 ws["K"+str(cont+1)] = d.comentario
+                if d.gerente_autoriza:
+                    ws["L"+str(cont+1)] = d.gerente_autoriza.identificacion
+                else:
+                    ws["L"+str(cont+1)] = "No asignado"
 
 
                 ws["A"+str(cont+1)].font = Font(bold = True)
@@ -1894,6 +1913,10 @@ class CompOCestado(TemplateView):
                 ws["I"+str(cont+1)] = d.visto
                 ws["J"+str(cont+1)] = d.fecha_autorizacion
                 ws["K"+str(cont+1)] = d.comentario
+                if d.gerente_autoriza:
+                    ws["L"+str(cont+1)] = d.gerente_autoriza.identificacion
+                else:
+                    ws["L"+str(cont+1)] = "No asignado"
 
 
                 ws["A"+str(cont+1)].font = Font(bold = True)

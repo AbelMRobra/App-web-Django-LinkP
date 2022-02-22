@@ -1,4 +1,6 @@
 
+window.onload = habilitar_autorizacion_gerente()
+
 function sweet_alert(mensaje, estado) {
 
     const Toast = Swal.mixin({
@@ -131,15 +133,27 @@ function editar_comparativa_change(response){
     }
 
 }
+
 function habilitar_autorizacion_gerente(){
 
     var monto_minimo = document.getElementById(`monto_minimo`).value
     var valor_compra = document.getElementById(`valor_compra`).value
     var contenedor = document.getElementById('contenedor_gerentes')
 
-    if (valor_compra <= monto_minimo){
+    var buttoms = document.getElementById('gerente')
+    buttoms.checked = true
+
+    console.log("Monto minimo")
+    console.log(parseInt(monto_minimo))
+
+    console.log("valor_compra")
+    console.log(parseInt(valor_compra))
+
+    if (parseInt(valor_compra) <= parseInt(monto_minimo)){
+        console.log("Mostrar")
         contenedor.style = " "
     } else {
+        console.log("Ocultar")
         contenedor.style = "display: none;"
     }
 
