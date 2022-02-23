@@ -51,6 +51,7 @@ class ComparativasViewset(viewsets.GenericViewSet):
                         comparativa.visto = "VISTO"
 
                     date = datetime.datetime.now() - datetime.timedelta(hours=3)
+                    comparativa.quien_autorizo = request.data['username']
                     comparativa.fecha_autorizacion = date
 
                     response['action'] = "Compra autorizada"

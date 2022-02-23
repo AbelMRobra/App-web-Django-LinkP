@@ -18,307 +18,308 @@
             </ol>
         </div>
     </div>
-</div>
 
-<div class="row">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-body row">
-                <div class="col-12 justify-content-center">
-                    <div>
-                        <h2>Comparativa nº {{comparativa.id}}</h2>
-                        <small>Modifique los datos que necesite</small>
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body row">
+                    <div class="col-12 justify-content-center">
+                        <div>
+                            <h2>Comparativa nº {{comparativa.id}}</h2>
+                            <small>Modifique los datos que necesite</small>
 
-                    </div>
+                        </div>
 
-                    <div class="row d-flex justify-content-center mt-4">
-                        <div class="col col-md-12 col-lg-6">
-                            <div class="row">
-                                <div class="col bg-light border rounded p-4 ">
-                                    <form role="form" enctype="multipart/form-data" action="" method="POST"
-                                        id="upload-image-form">
-                                        {% csrf_token %}
+                        <div class="row d-flex justify-content-center mt-4">
+                            <div class="col col-md-12 col-lg-6" >
+                                <div class="row">
+                                    <div class="col bg-light border rounded p-4 ">
+                                        <form role="form" enctype="multipart/form-data" action="" method="POST"
+                                            id="upload-image-form">
+                                            {% csrf_token %}
 
 
-                                        <div>
-                                            <label for="proveedor">
-                                                <h6>Proveedor</h6>
-                                            </label>
-                                        </div>
+                                            <div>
+                                                <label for="proveedor">
+                                                    <h6>Proveedor</h6>
+                                                </label>
+                                            </div>
 
-                                        <div class="row d-flex justify-content-center my-3">
-                                            <div class="col col-md-8 col-lg-8">
+                                            <div class="row d-flex justify-content-center my-3">
+                                                <div class="col col-md-8 col-lg-8">
 
-                                                <input name="proveedor" type="search" class="form-control form-control"
-                                                    value="{{comparativa.proveedor.name}}" list="provee">
+                                                    <input name="proveedor" type="search" class="form-control form-control"
+                                                        value="{{comparativa.proveedor.name}}" list="provee">
+
+                                                </div>
+                                            </div>
+
+                                            <div>
+                                                <label for="proyecto">
+                                                    <h6>Proyecto</h6>
+                                                </label>
 
                                             </div>
-                                        </div>
 
-                                        <div>
-                                            <label for="proyecto">
-                                                <h6>Proyecto</h6>
-                                            </label>
-
-                                        </div>
-
-                                        <div class="row d-flex justify-content-center my-3">
-                                            <div class="col col-md-8 col-lg-8">
+                                            <div class="row d-flex justify-content-center my-3">
+                                                <div class="col col-md-8 col-lg-8">
 
 
-                                                <input name="proyecto" type="text" class="form-control form-control"
-                                                    value="{{comparativa.proyecto}}">
+                                                    <input name="proyecto" type="text" class="form-control form-control"
+                                                        value="{{comparativa.proyecto}}">
 
+                                                </div>
                                             </div>
-                                        </div>
 
-                                        <div>
-                                            <label for="referencia">
-                                                <h6>Referencia</h6>
+                                            <div>
+                                                <label for="referencia">
+                                                    <h6>Referencia</h6>
+                                                </label>
+                                            </div>
+
+                                            <div class="row d-flex justify-content-center my-4">
+                                                <div class="col col-md-8 col-lg-8">
+
+                                                    <input name="referencia" type="text" class="form-control form-control"
+                                                        value="{{comparativa.numero}}">
+
+                                                </div>
+                                            </div>
+
+                                            <div>
+                                                <label for="valor">
+                                                    <h6>Valor final de la solicitud</h6>
+                                                </label>
+                                            </div>
+
+                                            <div class="row d-flex justify-content-center my-4">
+                                                <div class="col col-md-8 col-lg-8">
+
+                                                    <input id="valor_compra" name="valor" step="0.01" type="number" onchange="habilitar_autorizacion_gerente()"
+                                                        class="form-control form-control" value="{{comparativa.monto}}">
+
+                                                </div>
+                                            </div>
+
+                                            <div class="my-4">
+                                                <label for="imagen">
+                                                    <h6>Adjunto (PNG o JPEG): {{comparativa.adjunto}}</h6>
+                                                </label>
+                                            </div>
+                                            <div class="row d-flex justify-content-center my-3">
+                                                <div class="col col-md-8 col-lg-8">
+
+                                                    <input type="file" class="form-control-file" name="imagen"
+                                                        aria-describedby="fileHelp">
+
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <label for="numerooc">
+                                                    <h6>Tipo de OC</h6>
+            
+                                                </label>
+                                            </div>
+
+                                            <div class="row justify-content-center my-3">
+                                                <div class="col col-md-12 col-lg-8">
+                                                    
+                                                    <input type="radio" name="tipo_oc" value="MATERIALES" id="tipo-oc" class="filled-in chk-col-blue" {% if comparativa.tipo_oc == "MATERIALES" %}checked{% endif %} />
+                                                    <label for="tipo-oc">Materiales</label>
+                                                    
+                                                    <input type="radio" name="tipo_oc" value="SERVICIOS"  id="tipo-oc-2" class="filled-in chk-col-blue" {% if comparativa.tipo_oc == "SERVICIOS" %}checked{% endif %}/>
+                                                    <label for="tipo-oc-2">Servicios</label> 
+                                                    
+                                                    <input type="radio" name="tipo_oc" value="CONTRATOS"  id="tipo-oc-3" class="filled-in chk-col-blue" {% if comparativa.tipo_oc == "CONTRATOS" %}checked{% endif %}/>
+
+                                                    <label for="tipo-oc-3">Contratos</label> 
+
+                                                </div>
+                                            </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col col-md-12 col-lg-6">
+                                <div class="row  d-flex justify-content-center">
+                                    <div class="col bg-light border rounded p-4 ">
+
+                                    <div class="mb-4">
+                                            <label for="numerooc">
+                                                <h6>Numero de O.C</h6>
                                             </label>
                                         </div>
 
                                         <div class="row d-flex justify-content-center my-4">
                                             <div class="col col-md-8 col-lg-8">
 
-                                                <input name="referencia" type="text" class="form-control form-control"
-                                                    value="{{comparativa.numero}}">
+                                                <input name="numerooc" type="text" class="form-control form-control"
+                                                    value="{{comparativa.o_c}}">
 
                                             </div>
                                         </div>
 
-                                        <div>
-                                            <label for="valor">
-                                                <h6>Valor final de la solicitud</h6>
+                                    <div class="mb-4">
+                                            <label for="oc">
+                                                <h6>Orden de compra: {{comparativa.adj_oc}}</h6>
                                             </label>
                                         </div>
 
                                         <div class="row d-flex justify-content-center my-4">
                                             <div class="col col-md-8 col-lg-8">
 
-                                                <input id="valor_compra" name="valor" step="0.01" type="number" onchange="habilitar_autorizacion_gerente()"
-                                                    class="form-control form-control" value="{{comparativa.monto}}">
-
-                                            </div>
-                                        </div>
-
-                                        <div class="my-4">
-                                            <label for="imagen">
-                                                <h6>Adjunto (PNG o JPEG): {{comparativa.adjunto}}</h6>
-                                            </label>
-                                        </div>
-                                        <div class="row d-flex justify-content-center my-3">
-                                            <div class="col col-md-8 col-lg-8">
-
-                                                <input type="file" class="form-control-file" name="imagen"
+                                                <input type="file" class="form-control-file" name="oc"
                                                     aria-describedby="fileHelp">
 
                                             </div>
                                         </div>
-                                        <div>
+
+                                    <div class="mb-4">
                                             <label for="numerooc">
-                                                <h6>Tipo de OC</h6>
-        
+                                                <h6>¿És una solicitud publica?</h6>
+                                                <small>Si colocas no, solo la vera el creador y quien autorice</small>
                                             </label>
                                         </div>
 
-                                        <div class="row justify-content-center my-3">
+                                        <div class="row justify-content-center  my-4">
                                             <div class="col col-md-12 col-lg-8">
-                                                
-                                                <input type="radio" name="tipo_oc" value="MATERIALES" id="tipo-oc" class="filled-in chk-col-blue" {% if comparativa.tipo_oc == "MATERIALES" %}checked{% endif %} />
-                                                <label for="tipo-oc">Materiales</label>
-                                                
-                                                <input type="radio" name="tipo_oc" value="SERVICIOS"  id="tipo-oc-2" class="filled-in chk-col-blue" {% if comparativa.tipo_oc == "SERVICIOS" %}checked{% endif %}/>
-                                                <label for="tipo-oc-2">Servicios</label> 
-                                                
-                                                <input type="radio" name="tipo_oc" value="CONTRATOS"  id="tipo-oc-3" class="filled-in chk-col-blue" {% if comparativa.tipo_oc == "CONTRATOS" %}checked{% endif %}/>
 
-                                                <label for="tipo-oc-3">Contratos</label> 
+                                                <input type="radio" name="publica" value="SI" id="publica"
+                                                    class="filled-in chk-col-blue" {% if comparativa.publica == "SI" %} checked {% endif %} />
+                                                <label for="publica">Si</label>
+
+                                                <input type="radio" name="publica" value="NO" id="publica2"
+                                                    class="filled-in chk-col-blue" {% if comparativa.publica == "NO" %} checked {% endif %} />
+                                                <label for="publica2">No</label>
 
                                             </div>
                                         </div>
 
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col col-md-12 col-lg-5">
-                            <div class="row  d-flex justify-content-center">
-                                <div class="col bg-light border rounded p-4 ">
+                                    <div class="mb-4">
+                                            <label for="numerooc">
+                                                <h6>¿Quién autoriza?</h6>
 
-                                <div class="mb-4">
-                                        <label for="numerooc">
-                                            <h6>Numero de O.C</h6>
-                                        </label>
-                                    </div>
-
-                                    <div class="row d-flex justify-content-center my-4">
-                                        <div class="col col-md-8 col-lg-8">
-
-                                            <input name="numerooc" type="text" class="form-control form-control"
-                                                value="{{comparativa.o_c}}">
-
-                                        </div>
-                                    </div>
-
-                                <div class="mb-4">
-                                        <label for="oc">
-                                            <h6>Orden de compra: {{comparativa.adj_oc}}</h6>
-                                        </label>
-                                    </div>
-
-                                    <div class="row d-flex justify-content-center my-4">
-                                        <div class="col col-md-8 col-lg-8">
-
-                                            <input type="file" class="form-control-file" name="oc"
-                                                aria-describedby="fileHelp">
-
-                                        </div>
-                                    </div>
-
-                                <div class="mb-4">
-                                        <label for="numerooc">
-                                            <h6>¿És una solicitud publica?</h6>
-                                            <small>Si colocas no, solo la vera el creador y quien autorice</small>
-                                        </label>
-                                    </div>
-
-                                    <div class="row justify-content-center  my-4">
-                                        <div class="col col-md-12 col-lg-8">
-
-                                            <input type="radio" name="publica" value="SI" id="publica"
-                                                class="filled-in chk-col-blue" {% if comparativa.publica == "SI" %} checked {% endif %} />
-                                            <label for="publica">Si</label>
-
-                                            <input type="radio" name="publica" value="NO" id="publica2"
-                                                class="filled-in chk-col-blue" {% if comparativa.publica == "NO" %} checked {% endif %} />
-                                            <label for="publica2">No</label>
-
-                                        </div>
-                                    </div>
-
-                                <div class="mb-4">
-                                        <label for="numerooc">
-                                            <h6>¿Quién autoriza?</h6>
-
-                                        </label>
-                                    </div>
-
-                                    <div class="row justify-content-center my-4">
-                                        <div class="col col-md-12 col-lg-8">
-
-                                            <input type="radio" name="autoriza" value="PL" id="autoriza"
-                                                class="filled-in chk-col-blue" {% if comparativa.autoriza == "PL" %} checked {% endif %} />
-                                            <label for="autoriza">PL</label>
-
-                                            <input type="radio" name="autoriza" value="SP" id="autoriza2"
-                                                class="filled-in chk-col-blue" {% if comparativa.autoriza == "SP" %} checked {% endif %} />
-                                            <label for="autoriza2">SP</label>
-
-                                        </div>
-                                    </div>
-
-                                    <div id="contenedor_gerentes" style="display: none;">
-
-                                        <div class="my-4">
-                                            <label for="gerente">
-                                                <h6>¿Qué gerente puede autorizar?</h6>
-        
                                             </label>
                                         </div>
 
                                         <div class="row justify-content-center my-4">
                                             <div class="col col-md-12 col-lg-8">
 
-                                                <input type="radio" name="gerente" value="" id="gerente" class="filled-in chk-col-blue" checked />
-                                                <label for="gerente">Nadie</label>
+                                                <input type="radio" name="autoriza" value="PL" id="autoriza"
+                                                    class="filled-in chk-col-blue" {% if comparativa.autoriza == "PL" %} checked {% endif %} />
+                                                <label for="autoriza">PL</label>
 
-                                                {% for gerente in gerentes %}
- 
-                                                <input type="radio" name="gerente" value="{{ gerente.identificacion }}" 
-                                                id="gerente-{{ gerente.identificacion }}" class="filled-in chk-col-blue" {% if gerente.identificacion == comparativa.gerente_autoriza.identificacion %} checked {% endif %} />
-                                                <label for="gerente-{{ gerente.identificacion }}">{{ gerente.identificacion }}</label>
-                                                {% endfor %}
-                                                
+                                                <input type="radio" name="autoriza" value="SP" id="autoriza2"
+                                                    class="filled-in chk-col-blue" {% if comparativa.autoriza == "SP" %} checked {% endif %} />
+                                                <label for="autoriza2">SP</label>
+
                                             </div>
                                         </div>
 
-                                    </div>
+                                        <div id="contenedor_gerentes" style="display: none;">
 
-                                <div class="mb-4">
-                                        <label for="numerooc">
-                                            <h6>¿Vincular con un contrato?</h6>
-                                            <small>Esto hará que sea parte de un legajo</small>
+                                            <div class="my-4">
+                                                <label for="gerente">
+                                                    <h6>¿Qué gerente puede autorizar?</h6>
+            
+                                                </label>
+                                            </div>
 
-                                        </label>
-                                    </div>
+                                            <div class="row justify-content-center my-4">
+                                                <div class="col col-md-12 col-lg-8">
 
-                                    <div class="row justify-content-center my-4">
-                                        <div class="col col-md-12 col-lg-8">
+                                                    <input type="radio" name="gerente" value="" id="gerente" class="filled-in chk-col-blue" checked />
+                                                    <label for="gerente">Nadie</label>
 
-                                            <input name="contrato" type="search" class="form-control form-control"
-                                                list="contratos" value="{{comparativa.contrato.id}}">
+                                                    {% for gerente in gerentes %}
+    
+                                                    <input type="radio" name="gerente" value="{{ gerente.identificacion }}" 
+                                                    id="gerente-{{ gerente.identificacion }}" class="filled-in chk-col-blue" {% if gerente.identificacion == comparativa.gerente_autoriza.identificacion %} checked {% endif %} />
+                                                    <label for="gerente-{{ gerente.identificacion }}">{{ gerente.identificacion }}</label>
+                                                    {% endfor %}
+                                                    
+                                                </div>
+                                            </div>
 
                                         </div>
+
+                                    <div class="mb-4">
+                                            <label for="numerooc">
+                                                <h6>¿Vincular con un contrato?</h6>
+                                                <small>Esto hará que sea parte de un legajo</small>
+
+                                            </label>
+                                        </div>
+
+                                        <div class="row justify-content-center my-4">
+                                            <div class="col col-md-12 col-lg-8">
+
+                                                <input name="contrato" type="search" class="form-control form-control"
+                                                    list="contratos" value="{{comparativa.contrato.id}}">
+
+                                            </div>
+                                        </div>
+                                        <br>
+
+
                                     </div>
-                                    <br>
-
-
                                 </div>
                             </div>
-                        </div>
-                        <div class="row d-flex justify-content-center mt-4">
-                            <div class="col-lg-6 text-center">
-                                <button type="submit" class="btn btn-primary">Subir</button>
+                            <div class="row d-flex justify-content-center mt-4">
+                                <div class="col-lg-6 text-center">
+                                    <button type="submit" class="btn btn-primary">Subir</button>
+                                </div>
                             </div>
-                        </div>
 
 
-                        {{ form.as_p }}
-                        </form>
+                            {{ form.as_p }}
+                            </form>
 
-                        <form role="form" enctype="multipart/form-data" action="" method="POST"
-                                        id="upload-image-form">
-                                        {% csrf_token %}
+                            <form role="form" enctype="multipart/form-data" action="" method="POST"
+                                            id="upload-image-form">
+                                            {% csrf_token %}
 
-                        {% if comparativa.estado != "AUTORIZADA" %}
-                        <div class="row d-flex justify-content-center mt-4">
-                            <div class="col-lg-6 text-center">
-                                <button type="submit" name="borrar"
-                                value = "{{comparativa.id}}" class="btn"><i class="fa fa-trash-o text-danger"></i></button>
+                            {% if comparativa.estado != "AUTORIZADA" %}
+                            <div class="row d-flex justify-content-center mt-4">
+                                <div class="col-lg-6 text-center">
+                                    <button type="submit" name="borrar"
+                                    value = "{{comparativa.id}}" class="btn"><i class="fa fa-trash-o text-danger"></i></button>
+                                </div>
                             </div>
+                            {% endif %}
+
+                            {{ form.as_p }}
+                            </form>
+
+
                         </div>
-                        {% endif %}
 
-                        {{ form.as_p }}
-                        </form>
+                        <datalist id="provee">
 
+                            {% for i in proveedores %}
+
+                            <option value="{{ i.name }}">({{i.id}})</option>
+
+                            {% endfor %}
+
+                        </datalist>
+
+                        <datalist id="contratos">
+
+                            {% for i in contratos %}
+
+                            <option value="{{ i.id }}">({{i.nombre}})</option>
+
+                            {% endfor %}
+
+                        </datalist>
 
                     </div>
-
-                    <datalist id="provee">
-
-                        {% for i in proveedores %}
-
-                        <option value="{{ i.name }}">({{i.id}})</option>
-
-                        {% endfor %}
-
-                    </datalist>
-
-                    <datalist id="contratos">
-
-                        {% for i in contratos %}
-
-                        <option value="{{ i.id }}">({{i.nombre}})</option>
-
-                        {% endfor %}
-
-                    </datalist>
-
                 </div>
             </div>
         </div>
     </div>
+
 </div>
 
 <input type="hidden" id = "monto_minimo" value="{{monto_minimo}}">

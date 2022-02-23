@@ -91,6 +91,7 @@ class Comparativas(models.Model):
     visto = models.CharField(choices=visto.choices, default=visto.NO_VISTO, editable=False, max_length=20, verbose_name="Revisado por SP", blank=True, null=True)
     autoriza = models.CharField(choices=autoriza.choices, max_length=20, verbose_name="Autoriza", blank=True, null=True)
     gerente_autoriza = models.ForeignKey(datosusuario, on_delete=models.CASCADE, verbose_name="Gerente que autoriza", blank=True, null=True)
+    quien_autorizo = models.CharField(max_length=5, verbose_name="Quien autorizo", blank=True, null=True)
     publica = models.CharField(choices=publica.choices, default=publica.SI, max_length=20, verbose_name="Es publica?", blank=True, null=True)
     creador = models.CharField(verbose_name="Crador", blank=True, null=True, max_length=200) 
     tipo_oc = models.CharField(choices=tipo_compra.choices, max_length=40, verbose_name="Tipo de OC", blank=True, null=True)
@@ -140,7 +141,7 @@ class Compras(models.Model):
     documento = models.CharField(max_length=200, verbose_name="Documento de referencia", blank=True, null=True)
     partida = models.FloatField(blank=True, null=True, verbose_name="Partida")
     imprevisto = models.CharField(choices=imprevisto.choices, max_length=200, verbose_name="Imprevisto", blank=True, null=True)
-    capitulo=models.ForeignKey(Capitulos ,null=True, on_delete=models.SET_NULL)
+    capitulo = models.ForeignKey(Capitulos ,null=True, on_delete=models.SET_NULL)
 
     class Meta:
         verbose_name="Compra"
