@@ -531,7 +531,6 @@ def presupuestos_saldo_capitulo(id_proyecto):
         total_comprado_des = total_comprado
         dicc_stock[stock[0]]["compras"].append(f"** Total comprado al cierre {round(total_comprado, 2)}")
         total_asignado = 0
-        modelo = False
         analisis_ajuste = False
 
         for capitulo in articulo_capitulo: ## Aqui recorro todos los capitulos
@@ -596,7 +595,6 @@ def presupuestos_saldo_capitulo(id_proyecto):
                         dicc_stock[stock[0]]["detalle"].append(f"*** Capitulo {key}, se asigno {round(total_asignado_capitulo, 2)}")
 
                 if cantidad_especifica > 0:
-                    modelo = True
                     nombre = f'AUTO-AJUSTE-{proyecto.nombre}-{key}'
 
                     if not analisis_ajuste:
@@ -611,12 +609,16 @@ def presupuestos_saldo_capitulo(id_proyecto):
                             unidad = 'GL'
                             analisis_ajuste = Analisis.objects.create(id = 99, codigo=int(codigo), nombre = nombre, unidad = unidad)
 
-                    articulo = Articulos.objects.get(codigo = stock[0])
-                    compo_analisis = CompoAnalisis.objects.create(articulo = articulo, analisis = analisis_ajuste, cantidad = cantidad_especifica)
-                    modelo = Modelopresupuesto.objects.create(analisis = analisis_ajuste, capitulo = qy_capitulo, proyecto = proyecto, cantidad = 1, orden = 99,
-                    comentario = "Analisis automatico")
-                    modelo = False
-                    analisis_ajuste  = False
+                        articulo = Articulos.objects.get(codigo = stock[0])
+                        compo_analisis = CompoAnalisis.objects.create(articulo = articulo, analisis = analisis_ajuste, cantidad = cantidad_especifica)
+
+
+                    modelo_filter = Modelopresupuesto.objects.filter(analisis = analisis_ajuste, capitulo = qy_capitulo, proyecto = proyecto, cantidad = 1, orden = 99)
+                    if not len(modelo_filter):
+                        modelo = Modelopresupuesto.objects.create(analisis = analisis_ajuste, capitulo = qy_capitulo, proyecto = proyecto, cantidad = 1, orden = 99,
+                        comentario = "Analisis automatico")
+                        modelo = False
+                        analisis_ajuste  = False
 
             total_asignado += total_asignado_capitulo
 
