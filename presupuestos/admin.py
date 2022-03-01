@@ -67,6 +67,7 @@ class CapituloResource(resources.ModelResource):
         model = Modelopresupuesto
 
 class CapituloAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    list_display = ('id', 'nombre')
     resources_class = ModeloPreResource
 
 class RegistrodeConstanteResource(resources.ModelResource):

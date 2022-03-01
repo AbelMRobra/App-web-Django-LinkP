@@ -12,6 +12,7 @@ class ProveedoresResource(resources.ModelResource):
         model = Proveedores
 
 class ProveedoresAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    list_display = ('id', 'name')
     search_fields = ('name','phone', 'descrip')
     resources_class = ProveedoresResource
 
