@@ -492,7 +492,6 @@ def presupuestos_saldo_capitulo(id_proyecto):
         total_comprado_des = total_comprado
         dicc_stock[stock[0]]["compras"].append(f"** Total comprado al cierre {round(total_comprado, 2)}")
         total_asignado = 0
-        analisis_ajuste = False
 
         for capitulo in articulo_capitulo: ## Aqui recorro todos los capitulos
         
@@ -574,34 +573,28 @@ def presupuestos_saldo_capitulo(id_proyecto):
                                 necesidad_a_cubirir -= total_comprado_des
                                 total_comprado_des = 0
 
-
                     dicc_stock[stock[0]]["detalle"].append(f"*** Capitulo {key}, se asigno {round(total_asignado_capitulo, 2)}")
 
                 if cantidad_especifica > 0:
                     nombre = f'AUTO-AJUSTE-{proyecto.nombre}-{key}'
+                    analisis_ajuste = Analisis.objects.filter(nombre = nombre)
 
-                    if not analisis_ajuste:
-                        analisis_ajuste = Analisis.objects.filter(nombre = nombre)
+                    if len(analisis_ajuste):
+                        analisis_ajuste = analisis_ajuste.first()
 
-                        if len(analisis_ajuste):
-                            analisis_ajuste = analisis_ajuste.first()
+                    else:
+                        now = dt.datetime.now()
+                        codigo = "80"+str(qy_capitulo.id)+str(now.year)+str(now.month)+str(now.day)+str(now.hour)+str(now.minute)+str(now.second)
+                        unidad = 'GL'
+                        analisis_ajuste = Analisis.objects.create(id = 99, codigo=int(codigo), nombre = nombre, unidad = unidad)
 
-                        else:
-                            now = dt.datetime.now()
-                            codigo = "80"+str(qy_capitulo.id)+str(now.year)+str(now.month)+str(now.day)+str(now.hour)+str(now.minute)+str(now.second)
-                            unidad = 'GL'
-                            analisis_ajuste = Analisis.objects.create(id = 99, codigo=int(codigo), nombre = nombre, unidad = unidad)
-
-                        articulo = Articulos.objects.get(codigo = stock[0])
-                        compo_analisis = CompoAnalisis.objects.create(articulo = articulo, analisis = analisis_ajuste, cantidad = cantidad_especifica)
-
+                    articulo = Articulos.objects.get(codigo = stock[0])
+                    compo_analisis = CompoAnalisis.objects.create(articulo = articulo, analisis = analisis_ajuste, cantidad = cantidad_especifica)
 
                     modelo_filter = Modelopresupuesto.objects.filter(analisis = analisis_ajuste, capitulo = qy_capitulo, proyecto = proyecto, cantidad = 1, orden = 99)
                     if not len(modelo_filter):
                         modelo = Modelopresupuesto.objects.create(analisis = analisis_ajuste, capitulo = qy_capitulo, proyecto = proyecto, cantidad = 1, orden = 99,
                         comentario = "Analisis automatico")
-                        modelo = False
-                        analisis_ajuste  = False
 
             total_asignado += total_asignado_capitulo
 
