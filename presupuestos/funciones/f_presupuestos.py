@@ -421,7 +421,6 @@ def destruir_analisis_ajuste(id_proyecto):
     analisis = Analisis.objects.filter(nombre__icontains = 'AUTO-AJUSTE-' + str(proyecto.nombre))
 
     for analisis_in in analisis:
-        print("Analisis detectado ", analisis_in)
         analisis_in.delete()
 
 def presupuestos_saldo_capitulo(id_proyecto):
