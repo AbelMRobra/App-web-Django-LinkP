@@ -464,13 +464,13 @@ def presupuestos_saldo_capitulo(id_proyecto):
     consumption_details = []
 
     # Luego traemos todas las compras en una lista iterable
-    articulos_comprados = compras.filter(capitulo = None).values_list("articulo", flat=True).distinct()
+    articulos_comprados = compras.values_list("articulo", flat=True).distinct()
 
     #Armamos el stock con todas las compras realizadas de este proyecto
     stock_articulos = []
 
     for articulo in articulos_comprados:
-        cantidad = sum(np.array(compras.filter(articulo = articulo).values_list('cantidad', flat=True)))
+        cantidad = sum(np.array(compras.filter(articulo = articulo, capitulo = None).values_list('cantidad', flat=True)))
         stock_articulos.append([articulo, cantidad])
 
     for stock in stock_articulos:
