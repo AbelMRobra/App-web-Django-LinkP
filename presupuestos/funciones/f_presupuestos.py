@@ -24,13 +24,13 @@ def presupuesto_recalcular_presupuesto(proyecto):
 
     archivo_vigente = PresupuestosAlmacenados.objects.filter(proyecto = proyecto, nombre = "vigente")[0].archivo
     df = pd.read_excel(archivo_vigente)
-    datos_saldo = presupuesto_calculo_saldo(df, proyecto)
+    datos_saldo = presupuesto_calculo_saldo(proyecto)
     presupuesto = Presupuestos.objects.get(proyecto = proyecto)
     valor_actual = presupuesto.valor
     presupuesto.valor = sum(np.array(df['Monto'].values))
     presupuesto.saldo = datos_saldo['saldo_total']
-    presupuesto.saldo_mat = datos_saldo['saldo_mo']
-    presupuesto.saldo_mo = datos_saldo['saldo_mat']
+    presupuesto.saldo_mat = datos_saldo['saldo_mat']
+    presupuesto.saldo_mo = datos_saldo['saldo_mo']
     presupuesto.save()
 
     if presupuesto.proyecto.presupuesto == "BASE" and valor_actual != 0:
@@ -67,41 +67,22 @@ def presupuesto_datos_proyecto(proyecto):
 
     return datos
 
-def presupuesto_calculo_saldo(df, proyecto):
-    
-    listado_articulos = df['Articulo'].unique()
-    compras = Compras.objects.filter(proyecto = proyecto)
-    articulos = Articulos.objects.all()
-    valor_saldo_total = 0
-    valor_saldo_proyecto_materiales = 0
+def presupuesto_calculo_saldo(proyecto):
+
+    presupuesto = Presupuestos.objects.get(proyecto = proyecto)
+    presupuesto_detalle = json.loads(presupuesto.balance_details)
     valor_saldo_proyecto_mo = 0
+    valor_saldo_proyecto_materiales = 0
 
-    for articulo in listado_articulos:
-
-        cantidad_solicitada = sum(np.array(df[df['Articulo'] == articulo]['Cantidad Art Totales'].values))
-        valor_articulo = articulos.get(codigo = articulo).valor
-        articulos_comprados = sum(np.array(compras.filter(articulo__codigo = articulo).values_list("cantidad", flat = True)))
-        saldo_articulo = (cantidad_solicitada - articulos_comprados)*valor_articulo
-        
-        ## -> Es importante entender que el saldo podria ser negativo si se compro mas de lo que se necesita
-        ## En tal caso el saldo solo seria la parte positiva, ya que lo comprado de mas entraria en concepto de credito
-
-        if saldo_articulo > 0:
-            valor_saldo_total = valor_saldo_total + saldo_articulo
-            ## En el esquema incial, los articulos iniciados con "3" en general son materiales
-
-            if str(articulo)[0] == "3":
-                
-                valor_saldo_proyecto_materiales += saldo_articulo
-           
-            else:
-                
-                valor_saldo_proyecto_mo += saldo_articulo
-
+    for detalle in presupuesto_detalle:
+        key = list(detalle.keys())[0]
+        valor_saldo_proyecto_mo += detalle[key]['saldo_mo']
+        valor_saldo_proyecto_materiales += detalle[key]['saldo_mat']
+    
     datos = {
-        "saldo_total": valor_saldo_total,
         "saldo_mo": valor_saldo_proyecto_mo,
         "saldo_mat": valor_saldo_proyecto_materiales,
+        "saldo_total": valor_saldo_proyecto_mo + valor_saldo_proyecto_materiales,
     }
 
     return datos
@@ -317,11 +298,12 @@ def auditor_presupuesto_p(proyecto, fecha_desde, fecha_hasta):
     return [data_resultante_p, list_resultante_p]
 
 def presupuesto_generar_xls_proyecto(proyecto):
+
+    destruir_analisis_ajuste(proyecto.id)
     
     computo = Computos.objects.all()
     capitulo = Capitulos.objects.all()
     compo = CompoAnalisis.objects.all()
-    
     
     today = dt.date.today()
     wb = Workbook()
@@ -434,10 +416,42 @@ def presupuesto_generar_xls_proyecto(proyecto):
 
     return "Save"
 
+def destruir_analisis_ajuste(id_proyecto):
+    proyecto = Proyectos.objects.get(id = id_proyecto)
+    analisis = Analisis.objects.filter(nombre__icontains = 'AUTO-AJUSTE-' + str(proyecto.nombre))
+
+    for analisis_in in analisis:
+        print("Analisis detectado ", analisis_in)
+        analisis_in.delete()
+
 def presupuestos_saldo_capitulo(id_proyecto):
 
-    # Traemos las compras y el presupuesto
+    '''
+    1 - Destruyo todos los analisis de AUTO-AJUSTE (Esto lo hago antes de generar el Excel)
+    2 - Traemos datos generales (Compras, Articulos, Capitulos, Presupuestos, Proyecto) y el EXCEL que usaremos como base para calcular
+    3 - Armamos un OBJETO de la necesidad de cada capitulo, tendra este formato:
+        CAPITULO: {
+            'id': ..,
+            'valor_capitulo': ..,
+            'inc': ..,
+            'saldo': ..,
+            'data': [
+                'CODIGO ART': {
+                    'articulo', ..,
+                    'cantidad': ..,
+                    'contante': ..,
+                    'comprado': .., 
+                    'precio': ..
+                }
+            ],
+        }
+    4 - Armamos el STOCK de las compras
+    1 - Recorro todos los capitulos buscando un listado de todos los articulos comprados especificamente para ese capitulo
+    2 - Creo una clave para ese articulo, para especificar su detalle de consumo
+    
+    '''
 
+    ##########################################################################################################
     proyecto = Proyectos.objects.get(id = id_proyecto)
     presupuesto = Presupuestos.objects.get(proyecto = proyecto)
     archivo = PresupuestosAlmacenados.objects.get(proyecto = proyecto, nombre = "vigente").archivo
@@ -461,6 +475,8 @@ def presupuestos_saldo_capitulo(id_proyecto):
                 'valor_capitulo': float(sum(df[df['Capitulo'] == capitulo.nombre]['Monto'])),
                 'inc': inc,
                 'saldo': float(sum(df[df['Capitulo'] == capitulo.nombre]['Monto'])),
+                'saldo_mat': 0,
+                'saldo_mo': 0,
                 'data': []
                 }  
         }
@@ -487,7 +503,7 @@ def presupuestos_saldo_capitulo(id_proyecto):
     consumption_details = []
 
     # Luego traemos todas las compras en una lista iterable
-    articulos_comprados = compras.values_list("articulo", flat=True).distinct()
+    articulos_comprados = compras.filter(capitulo = None).values_list("articulo", flat=True).distinct()
 
     #Armamos el stock con todas las compras realizadas de este proyecto
     stock_articulos = []
@@ -505,62 +521,113 @@ def presupuestos_saldo_capitulo(id_proyecto):
                 }
             }
         
-        compras_articulo = compras.filter(articulo = stock[0])
-
+        compras_articulo = compras.filter(articulo = stock[0], capitulo = None)
         total_comprado = 0
         
         for compra in compras_articulo:
             dicc_stock[stock[0]]["compras"].append(f"Compra {compra.documento}, al proveedor {compra.proveedor.name}, cantidad {round(compra.cantidad, 2)}")
             total_comprado += compra.cantidad
 
-        dicc_stock[stock[0]]["compras"].append(f"Total comprado al cierre {round(total_comprado, 2)}")
-
+        total_comprado_des = total_comprado
+        dicc_stock[stock[0]]["compras"].append(f"** Total comprado al cierre {round(total_comprado, 2)}")
         total_asignado = 0
-        for capitulo in articulo_capitulo:
-            
-            for key in capitulo.keys():
-                for i in range(len(capitulo[key]['data'])):
+        modelo = False
+        analisis_ajuste = False
 
-                    if str(stock[0]) in list(capitulo[key]['data'][i].keys()):
+        for capitulo in articulo_capitulo: ## Aqui recorro todos los capitulos
+        
+            total_asignado_capitulo = 0
 
-                        if stock[1] >= capitulo[key]['data'][i][str(stock[0])]['cantidad']:
-                            
-                            # Comprado 
-                            necesidad_a_cubirir = float(capitulo[key]['data'][i][str(stock[0])]['cantidad']) - float(capitulo[key]['data'][i][str(stock[0])]['comprado'])
-                            capitulo[key]['data'][i][str(stock[0])]['comprado'] += necesidad_a_cubirir
-                            stock[1] = stock[1] - necesidad_a_cubirir
-                            capitulo[key]['saldo'] = float(capitulo[key]['saldo'] - (necesidad_a_cubirir*capitulo[key]['data'][i][str(stock[0])]['precio']))
+            for key in capitulo.keys(): ## Aqui solo acceso al nombre del cap
+                qy_capitulo = Capitulos.objects.get(nombre = key)
+                compras_espeficias = compras.filter(capitulo__nombre = key, articulo = stock[0])
+                cantidad_especifica = 0
+                
+                if len(compras_espeficias) > 0:
+                    dicc_stock[stock[0]]["compras"].append(f"-> Compras especficias del capitulo {key}")
 
+                    for c_esp in compras_espeficias:
+                        dicc_stock[stock[0]]["compras"].append(f"-- Compra {c_esp.documento}, al proveedor {c_esp.proveedor.name}, cantidad {round(c_esp.cantidad, 2)}")
+                        cantidad_especifica += c_esp.cantidad
 
-                        elif stock[1] > 0:
-                            necesidad_a_cubirir = float(capitulo[key]['data'][i][str(stock[0])]['cantidad']) - float(capitulo[key]['data'][i][str(stock[0])]['comprado'])
-                            
-                            if stock[1] > necesidad_a_cubirir: 
-                            
+                for i in range(len(capitulo[key]['data'])): ## Aqui recorrdo todos los articulos de ese capitulo
+                    if str(stock[0]) in list(capitulo[key]['data'][i].keys()): ## Aqui pregunto si el articulo que estoy recorriendo del stock, esta qui
+                        necesidad_a_cubirir = float(capitulo[key]['data'][i][str(stock[0])]['cantidad']) - float(capitulo[key]['data'][i][str(stock[0])]['comprado'])
+
+                        if necesidad_a_cubirir > 0:
+                        
+                            if cantidad_especifica:
+                                if cantidad_especifica >= necesidad_a_cubirir:
+                                    total_asignado_capitulo += necesidad_a_cubirir
+                                    capitulo[key]['data'][i][str(stock[0])]['comprado'] = necesidad_a_cubirir
+                                    capitulo[key]['saldo'] = float(capitulo[key]['saldo'] - (necesidad_a_cubirir*capitulo[key]['data'][i][str(stock[0])]['precio']))
+                                    necesidad_a_cubirir = 0
+
+                                    
+                                else:
+                                    total_asignado_capitulo += cantidad_especifica
+                                    capitulo[key]['data'][i][str(stock[0])]['comprado'] = necesidad_a_cubirir
+                                    capitulo[key]['saldo'] = float(capitulo[key]['saldo'] - (cantidad_especifica*capitulo[key]['data'][i][str(stock[0])]['precio']))
+                                    necesidad_a_cubirir -= cantidad_especifica
+                                    cantidad_especifica = 0
+
+                            if total_comprado_des >= necesidad_a_cubirir:
+                                total_asignado_capitulo += necesidad_a_cubirir
                                 capitulo[key]['data'][i][str(stock[0])]['comprado'] += necesidad_a_cubirir
-                                stock[1] = stock[1] - necesidad_a_cubirir
                                 capitulo[key]['saldo'] = float(capitulo[key]['saldo'] - (necesidad_a_cubirir*capitulo[key]['data'][i][str(stock[0])]['precio']))
+                                total_comprado_des = total_comprado_des - necesidad_a_cubirir
+                                necesidad_a_cubirir = 0
+
 
                             else:
-                                capitulo[key]['data'][i][str(stock[0])]['comprado'] += stock[1]
-                                necesidad_a_cubirir = stock[1]
-                                capitulo[key]['saldo'] = float(capitulo[key]['saldo'] - (necesidad_a_cubirir*capitulo[key]['data'][i][str(stock[0])]['precio']))
-                                stock[1] = 0
-                                
-                        else:
-                            pass 
+                                total_asignado_capitulo += total_comprado_des                                
+                                capitulo[key]['data'][i][str(stock[0])]['comprado'] += total_comprado_des
+                                capitulo[key]['saldo'] = float(capitulo[key]['saldo'] - (total_comprado_des*capitulo[key]['data'][i][str(stock[0])]['precio']))
+                                necesidad_a_cubirir -= total_comprado_des
+                                total_comprado_des = 0
 
-                        dicc_stock[stock[0]]["detalle"].append(f"Capitulo {key}, se asigno {round(necesidad_a_cubirir, 2)}")
-                        total_asignado += necesidad_a_cubirir
+                        if necesidad_a_cubirir > 0:
+                            if str(stock[0])[0] == "3":
+                                capitulo[key]['saldo_mat'] += (necesidad_a_cubirir*capitulo[key]['data'][i][str(stock[0])]['precio'])
+
+                            else:
+                                capitulo[key]['saldo_mo'] += (necesidad_a_cubirir*capitulo[key]['data'][i][str(stock[0])]['precio'])
+                                
+                        dicc_stock[stock[0]]["detalle"].append(f"*** Capitulo {key}, se asigno {round(total_asignado_capitulo, 2)}")
+
+                if cantidad_especifica > 0:
+                    modelo = True
+                    nombre = f'AUTO-AJUSTE-{proyecto.nombre}-{key}'
+
+                    if not analisis_ajuste:
+                        analisis_ajuste = Analisis.objects.filter(nombre = nombre)
+
+                        if len(analisis_ajuste):
+                            analisis_ajuste = analisis_ajuste.first()
+
+                        else:
+                            now = dt.datetime.now()
+                            codigo = "80"+str(qy_capitulo.id)+str(now.year)+str(now.month)+str(now.day)+str(now.hour)+str(now.minute)+str(now.second)
+                            unidad = 'GL'
+                            analisis_ajuste = Analisis.objects.create(id = 99, codigo=int(codigo), nombre = nombre, unidad = unidad)
+
+                    articulo = Articulos.objects.get(codigo = stock[0])
+                    compo_analisis = CompoAnalisis.objects.create(articulo = articulo, analisis = analisis_ajuste, cantidad = cantidad_especifica)
+                    modelo = Modelopresupuesto.objects.create(analisis = analisis_ajuste, capitulo = qy_capitulo, proyecto = proyecto, cantidad = 1, orden = 99,
+                    comentario = "Analisis automatico")
+                    modelo = False
+                    analisis_ajuste  = False
+
+            total_asignado += total_asignado_capitulo
 
         dicc_stock[stock[0]]["detalle"].append(f"Total asignado {round(total_asignado, 2)}")
         dicc_stock[stock[0]]["detalle"].append(f"Total sobrante/pendiente de comprar {round((total_comprado - total_asignado), 2)}")
-        
         consumption_details.append(dicc_stock)
 
     presupuesto.balance_details = json.dumps(articulo_capitulo)
     presupuesto.consumption_details = json.dumps(consumption_details)
     presupuesto.save()
+
 
 
 

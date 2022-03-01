@@ -198,9 +198,7 @@ async function service_consulta_compra(){
             'proyecto' : document.getElementById("proyecto").value,
             'proveedor' : document.getElementById("proveedor").value,
             'documento' : document.getElementById("documento").value,
-
         })
-
     })
 
     var response = await respuesta.json()
@@ -231,13 +229,12 @@ function validar_respuesta_consulta_compra(response, status){
             } 
             
         }
-
-        
-    
     }
 }
 
 function modificar_template_compras(response){
+
+    console.log(response)
 
     var fecha = document.getElementById("fecha_c")
     fecha.value = response['data'][0].fecha_c
@@ -247,22 +244,42 @@ function modificar_template_compras(response){
     var tarjeta = document.createElement('ol');
     tarjeta.id = `tarjeta`;
     contenedor.appendChild(tarjeta);
+
     for (let i=0; i <= response['data'].length -1; i++){
         var articulo = document.createElement('li');
         articulo.id = `articulo_${response['data'][i].id}`;
         articulo.className = 'list-group-item d-flex justify-content-between align-items-start'
-        articulo.innerHTML = `
-        
-        <div class="ms-2 me-auto">
-            <div class="fw-bold">${response['data'][i]['articulo'].codigo} - ${response['data'][i]['articulo'].nombre}</div>
-            <small><b>Cantidad: </b> ${response['data'][i].cantidad.toFixed(2)} / <b>Precio: </b>$ ${response['data'][i].precio.toFixed(2)} / <b>Total: </b>$ ${(response['data'][i].precio * response['data'][i].cantidad).toFixed(2)}</small> 
-            </div>
-            <span class="badge bg-danger rounded-pill"
-            onclick="borrar_compra(${response['data'][i].id})"><i 
-            data-toggle="tooltip" data-placement="left" title="Borrar contacto"
-            class="fa fa-trash-o"></i> </span>
-        
-        `
+
+        if (response['data'][i]['capitulo']) {
+            articulo.innerHTML = `
+            
+            <div class="ms-2 me-auto">
+                <div class="fw-bold">${response['data'][i]['articulo'].codigo} - ${response['data'][i]['articulo'].nombre}</div>
+                <small><b>Cantidad: </b> ${response['data'][i].cantidad.toFixed(2)} / <b>Precio: </b>$ ${response['data'][i].precio.toFixed(2)} / <b>Total: </b>$ ${(response['data'][i].precio * response['data'][i].cantidad).toFixed(2)}</small>
+                <div><small><b onclick="modal_editar_capitulo(${response['data'][i].id})" class="text-warning box">Cap: ${response['data'][i]['capitulo'].nombre}</b></small> </div> 
+                </div>
+                <span class="badge bg-danger rounded-pill"
+                onclick="borrar_compra(${response['data'][i].id})"><i 
+                data-toggle="tooltip" data-placement="left" title="Borrar contacto"
+                class="fa fa-trash-o"></i> </span>
+            
+            `
+        } else {
+            articulo.innerHTML = `
+            
+            <div class="ms-2 me-auto">
+                <div class="fw-bold">${response['data'][i]['articulo'].codigo} - ${response['data'][i]['articulo'].nombre}</div>
+                <small><b>Cantidad: </b> ${response['data'][i].cantidad.toFixed(2)} / <b>Precio: </b>$ ${response['data'][i].precio.toFixed(2)} / <b>Total: </b>$ ${(response['data'][i].precio * response['data'][i].cantidad).toFixed(2)}</small> 
+                <div><small><b onclick="modal_editar_capitulo(${response['data'][i].id})" class="text-primary box">Cap: Sin asignar</b></small> </div>
+                </div>
+                <span class="badge bg-danger rounded-pill"
+                onclick="borrar_compra(${response['data'][i].id})"><i 
+                data-toggle="tooltip" data-placement="left" title="Borrar contacto"
+                class="fa fa-trash-o"></i> </span>
+            
+            `
+
+        }
 
         tarjeta.appendChild(articulo);
 
@@ -397,6 +414,7 @@ async function service_editar_precio_articulo(id){
     var status = await respuesta.status
     return validar_edicion_articulo(response, status)
 }
+
 function validar_edicion_articulo(response, status){
     if (status >= 200 && status <300){
         sweet_alert("Articulo editado", "success");
@@ -491,6 +509,80 @@ function validar_respuesta_consulta_compra_delete(status){
     
     } else {
         sweet_alert("Prblemas de conexión", "warning");
+    }
+}
+
+function modal_editar_capitulo(id = false){
+
+    var texto_informativo = document.getElementById('texto_informativo')
+    var boton_asignar_capitulo = document.getElementById('boton_asignar_cap')
+
+    if (id) {
+        texto_informativo.innerHTML = 'Se asignara un capitulo a <b>está</b> compra. Esto acción le permite al sistema trabajar mejor el descuento de los saldos'
+        boton_asignar_capitulo.onclick = function(){ service_asignar_capitulo(id) }
+    } else {
+        texto_informativo.innerHTML = 'Se asignara un capitulo a <b>todas</b> las compras hasta ahora registradas. Esto acción le permite al sistema trabajar mejor el descuento de los saldos'
+        boton_asignar_capitulo.onclick = function(){ service_asignar_capitulo() }
+    }
+
+    $( document ).ready(function() {
+        $('#modalCap').modal('toggle')
+    });
+    
+}
+
+async function service_asignar_capitulo(id = false){
+
+    var host = document.getElementById("host").value;
+    var token = document.getElementById("token").value;
+    var capitulo = document.getElementById("capitulo_id").value;
+
+    sweet_alert("Espere un momento ..", "info");
+
+    if (id) {
+        var body = {
+            'id': id,
+            'capitulo': capitulo
+        }
+    } else {
+        var body = {
+            'proyecto__nombre': document.getElementById("proyecto").value,
+            'proveedor__nombre': document.getElementById("proveedor").value,
+            'documento': document.getElementById("documento").value,
+            'capitulo': capitulo
+        }
+    }
+    
+    const url = `${host}/compras/api_compras/asignar_capitulo/`
+
+    var respuesta = await fetch(url ,{
+        method: "POST",
+        headers: {
+            'X-CSRFToken' : `${token}`,
+            'Content-Type': 'application/json',
+        },
+
+        body: JSON.stringify(body)
+
+    })
+
+    var response = await respuesta.json()
+    var status = await respuesta.status
+
+    console.log(response)
+
+    return validar_respuesta_asignacion(response, status)
+}
+
+function validar_respuesta_asignacion(response, status){
+    if (status >= 200 && status <300){
+
+        sweet_alert("Asignación completa!", "success");
+        service_consulta_compra();
+        service_consulta_articulo();
+    
+    } else {
+        sweet_alert(response.message, "danger");
     }
 }
 

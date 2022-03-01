@@ -1,7 +1,9 @@
 from django.shortcuts import render, redirect
-from compras.models import Proveedores, Contratos, Comparativas
+from compras.models import Proveedores, Contratos, Comparativas, Compras
+from proyectos.models import Proyectos
 from rrhh.models import datosusuario
 from users.models import VariablesGenerales
+from presupuestos.models import Capitulos, Articulos
 from ..funciones.comparativas_agregar import *
 
 def comparativas_agregar(request):
@@ -44,3 +46,15 @@ def comparativas_agregar(request):
     context['monto_minimo'] = VariablesGenerales.objects.get(id = 1).monto_minimo
         
     return render(request, 'comparativas/comparativa_agregar.html', context)
+
+def rdc_carga(request):
+
+    context = {}
+    context['capitulos'] = Capitulos.objects.all()
+    context['proyectos'] = Proyectos.objects.all()
+    context['proveedores'] = Proveedores.objects.all()
+    context['compras'] = Compras.objects.all()
+    context['articulos'] = Articulos.objects.all()
+
+
+    return render(request, 'registro_compras/compras_registro_carga.html', context)

@@ -7,7 +7,7 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 from compras.models import Compras, Proveedores, Comparativas
-from presupuestos.models import Articulos, CompoAnalisis, Modelopresupuesto
+from presupuestos.models import Articulos, Capitulos, CompoAnalisis, Modelopresupuesto
 from proyectos.models import Proyectos
 from compras.serializers.serializers_compras import ComprasSerializer, ComprasFullSerializer
 from compras.functions_comparativas import mensajeCierreOc, mandarEmail
@@ -157,6 +157,26 @@ class ComprasViewset(viewsets.ModelViewSet):
         articulo.save()
         response = {'mensaje': 'Success'}
         return Response(response, status=status.HTTP_200_OK)
+
+    @action(detail=False, methods=["POST"])
+    def asignar_capitulo(self, request):
+        # try:
+            capitulo = request.data.pop('capitulo')
+            capitulo = Capitulos.objects.get(id = int(capitulo))
+            filter = request.data
+            compras = Compras.objects.filter(**filter)
+            
+            for compra in compras:
+                compra.capitulo = capitulo
+                compra.save()
+
+            response = {'mensaje': 'Success'}
+            return Response(response, status=status.HTTP_200_OK)
+
+        # except:
+
+        #     response = {'mensaje': 'Server problem'}
+        #     return Response(response, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     @action(detail=False, methods=["POST"])
     def consulta_articulo(self, request):

@@ -15,7 +15,8 @@ def comparativas_agregar_validaciones(proveedor, numero_oc):
 
         return True
 
-def comparativas_agregar_metodo(proveedor, proyecto, referencia, valor, imagen, numerooc, autoriza, publica, creador, tipo_oc, contrato, gerente):
+def comparativas_agregar_metodo(proveedor, proyecto, referencia, valor, imagen, numerooc, autoriza, publica, 
+    creador, tipo_oc, contrato, gerente):
 
     try:
         proveedor = Proveedores.objects.get(name=proveedor)
@@ -36,6 +37,7 @@ def comparativas_agregar_metodo(proveedor, proyecto, referencia, valor, imagen, 
             creador = str(creador),
             tipo_oc = tipo_oc,
             gerente_autoriza = gerente_autoriza
+ 
         )
 
         nueva_comparativa.save()

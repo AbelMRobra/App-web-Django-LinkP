@@ -141,7 +141,7 @@ class Compras(models.Model):
     documento = models.CharField(max_length=200, verbose_name="Documento de referencia", blank=True, null=True)
     partida = models.FloatField(blank=True, null=True, verbose_name="Partida")
     imprevisto = models.CharField(choices=imprevisto.choices, max_length=200, verbose_name="Imprevisto", blank=True, null=True)
-    capitulo = models.ForeignKey(Capitulos ,null=True, on_delete=models.SET_NULL)
+    capitulo = models.ForeignKey(Capitulos, null=True, blank=True, on_delete=models.SET_NULL)
 
     class Meta:
         verbose_name="Compra"

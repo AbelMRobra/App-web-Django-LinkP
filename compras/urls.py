@@ -31,7 +31,7 @@ urlpatterns = [
     path('comparativas_oc_sp/<str:estado>/<str:creador>', login_required(views.ocautorizargerente1), name = "Comparativas G1"),
     path('comparativas_op_sp/<str:estado>/<str:creador>', login_required(views.panelvisto), name = 'OC autorizadas'),
   
-    url(r'^cargacompras$', login_required(views.cargacompras), name = 'Carga compras'),
+    url(r'^cargacompras$', login_required(views_circuito_compras.rdc_carga), name = 'Carga compras'),
     url(r'^compras/(?P<id_proyecto>\d+)/$', login_required(views.compras), name = 'Compras'),
     #url(r'^modificarpreciocompra/(?P<id_proyecto>\d+)/$', login_required(views.modificar_precio_articulo_compra), name = 'modificar_precio_compra'),
     

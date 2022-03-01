@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from compras.models import Compras, Proveedores
-from presupuestos.models import Articulos
+from presupuestos.models import Articulos, Capitulos
 from proyectos.models import Proyectos
 
 class ArticulosSerializer(serializers.ModelSerializer):
@@ -21,15 +21,23 @@ class ProyectosSerializer(serializers.ModelSerializer):
         model = Proyectos
         fields = ('id', 'nombre')
 
+class CapitulosSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Capitulos
+        fields = ('id', 'nombre')
+
 class ComprasFullSerializer(serializers.ModelSerializer):
 
     articulo = ArticulosSerializer(many = False)
     proveedor = ProveedoresSerializer(many = False)
     proyecto = ProyectosSerializer(many = False)
+    capitulo = CapitulosSerializer(many = False)
+
     
     class Meta:
         model = Compras
-        fields = ('id', 'proyecto', 'articulo', 'cantidad', 'precio', 'fecha_c', 'documento', 'proveedor')
+        fields = ('id', 'proyecto', 'articulo', 'cantidad', 'precio', 'fecha_c', 'documento', 'proveedor', 'capitulo')
 
 class ComprasSerializer(serializers.ModelSerializer):
 

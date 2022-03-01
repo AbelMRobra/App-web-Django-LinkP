@@ -4,6 +4,7 @@
 
 {% block content %}
 
+<link href="{% static 'adminpro/main/css/pages/footable-page.css' %}" rel="stylesheet">
 
 <div class="container-fluid">
 
@@ -40,7 +41,7 @@
                                         <div>
                                             <select id="proyecto" class="custom-select bg-white">
 
-                                                {% for i in datos.proyectos %}
+                                                {% for i in proyectos %}
                                                 <option value="{{ i.id }}">{{ i.nombre }}</option>
 
                                                 {% endfor %}
@@ -206,7 +207,7 @@
 
                                 <datalist id="art">
 
-                                    {% for i in datos.articulos %}
+                                    {% for i in articulos %}
 
                                     <option value="{{ i.nombre }}"></option>
 
@@ -217,7 +218,7 @@
 
                                 <datalist id="provee">
 
-                                    {% for i in datos.proveedores %}
+                                    {% for i in proveedores %}
 
                                     <option value="{{ i.name }}">({{i.id}})</option>
 
@@ -245,6 +246,52 @@
     </div>
 </div>
 
+<div class="modal fade" id="modalCap" tabindex="-1" role="dialog" aria-labelledby="modalCap" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+  
+            <div class="modal-body">
+                <div class="modal-body">
+                        <button type="button" class="close text-dark"
+                            data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <div class="row">
+                            <div class="col-2">
+                                <img src="{% static 'img/bot.png' %}"
+                                    width="40px" alt="">
+                            </div>
+                            <div class="col-10 mb-3">
+                                <h4 class="my-2 text-title text-center">Asignar un capitulo</h4>
+                            </div>
+  
+                            <div class="mt-2">
+                              <p id="texto_informativo"></p>
+                            </div>
+  
+                            <div class="mb-3 mt-3">
+                                <select id="capitulo_id" class="form-control"> 
+                                    
+                                    {% for capitulo in capitulos %}
+                                    <option value="{{ capitulo.id }}">{{ capitulo.nombre }}</option>
+                                    {% endfor %}
+     
+                                </select>
+                            </div>
+  
+                        </div>
+                    </div>
+                    <div class="text-center mb-3">
+                        <button id="boton_asignar_cap" class="btn btn-info"
+                            style="margin-top: 10px;">Asignar</button>
+                    </div>
+
+            </div>
+        </div>
+    </div>
+  </div>
+
+<input type="hidden" id = "id_capitulo" value="">
 <input type="hidden" id = "token" value="{{ csrf_token }}">
 <input type="hidden" id = "host" value="{% host %}">
 
@@ -256,6 +303,12 @@
         right: 20px;
         z-index: 3;
     }
+
+    .box:hover {
+        cursor: pointer;
+
+    }
+
 
 </style>
 

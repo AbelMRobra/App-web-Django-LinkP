@@ -8,7 +8,7 @@ from rrhh.models import datosusuario
 from users.models import VariablesGenerales
 from .form import StockAntForm
 from .filters import CertificadoFilter
-from presupuestos.models import Articulos, Constantes, Presupuestos, Analisis, Modelopresupuesto
+from presupuestos.models import Articulos, Constantes, Capitulos
 import sqlite3
 import operator
 import datetime
@@ -367,130 +367,6 @@ def comprasdisponibles(request):
     datos = list(set(lista))
 
     return render(request, 'retiros.html', {"datos":datos})
-
-def cargacompras(request):
-
-    proyectos = Proyectos.objects.all()
-    proveedores = Proveedores.objects.all()
-    compras = Compras.objects.all()
-    articulos = Articulos.objects.all()
-
-    mensaje = ""
-
-    if request.method == 'POST':
-        
-        response=request.POST
-        
-        datos_compra={}
-    
-        
-        for dato in response:
-            if dato!='csrfmiddlewaretoken' and dato!='contador':
-                datos_compra[dato]=response[dato]
-            elif dato=='contador':
-                cant_forms=int(response['contador'])
-
-        proyecto_id=datos_compra['proyecto']
-        proyecto=Proyectos.objects.get(pk=proyecto_id)
-        proveedor=Proveedores.objects.get(name=datos_compra['proveedor'])
-        doc=datos_compra['doc']
-        fecha=datos_compra['fecha']
-
-        if datos_compra['tipo']==1:
-             tipo = "ANT"
-        else:
-            tipo = "NORMAL"
-
-        for n in range(cant_forms):
-            if n==0:
-                cantidad=float(datos_compra['cantidad'])
-                articulo=Articulos.objects.get(nombre=datos_compra['articulo'])
-                precio=float(datos_compra['precio'])
-                ajustar=datos_compra['ajustar']
-                partida=datos_compra['partida']
-            else:
-                ajustar_k='ajustar{}'.format(n)
-                precio_k='precio{}'.format(n)
-                cantidad_k='cantidad{}'.format(n)
-                partida_k='partida{}'.format(n)
-                articulo_k='articulo{}'.format(n)
-                cantidad=float(datos_compra[cantidad_k])
-                articulo=Articulos.objects.get(nombre=datos_compra[articulo_k])
-                precio=float(datos_compra[precio_k])
-                ajustar=datos_compra[ajustar_k]
-                partida=datos_compra[partida_k]
-
-            if partida!='':
-                partida_original=float(partida)
-                
-            else:
-                partida_original=0
-
-            partida=partida_original
-            if ajustar=='ajustar':
-            
-                porcentaje=0.05
-        
-                if precio>0 and porcentaje>0:
-                    monto_ajustado=precio*porcentaje
-                    precio_ajustado=precio+monto_ajustado
-
-                    articulo.valor=precio_ajustado
-                    articulo.save()
-                else:
-                    mensaje='Ingrese un precio valido'
-
-            try:
-                presupuesto_imprevisto = Presupuestos.objects.get(proyecto__id = proyecto_id)
-                
-
-                if partida_original > 0 and cantidad>0:
-                    partida = partida - cantidad*articulo.valor
-                    if partida > 0:
-                        imprevisto = "PREVISTO"
-                    else:
-                        imprevisto = "IMPREVISTO"
-                        partida = presupuesto_imprevisto.imprevisto + partida
-                        presupuesto_imprevisto.imprevisto = partida
-                        presupuesto_imprevisto.save()
-                else:
-                        imprevisto = "IMPREVISTO"
-                        partida = presupuesto_imprevisto.imprevisto - cantidad*precio
-                        presupuesto_imprevisto.imprevisto = partida
-                        presupuesto_imprevisto.save()
-            except:
-                #si el proyecto no tiene presupuestos asociados..
-                imprevisto='PREVISTO'
-
-        
-            b = Compras(
-                proyecto = proyecto,
-                proveedor =proveedor,
-                nombre = doc,
-                tipo = tipo,
-                documento = doc,
-                articulo = articulo,
-                cantidad = cantidad,
-                precio = precio,
-                precio_presup = articulo.valor,
-                fecha_c = fecha,
-                fecha_a = fecha,
-                partida = partida,
-                imprevisto = imprevisto,
-                )
-            if b:
-                b.save()
-            else:
-                mensaje='No se pudo cargar la compra, revise los campos ingresados'
-            
-        return redirect('Compras', id_proyecto = 0)
-            
-    else:
-
-        datos = {'proyectos': proyectos, 'proveedores':proveedores, 'compras':compras, 'articulos':articulos, 'mensaje':mensaje}
-
-
-    return render(request, 'registro_compras/compras_registro_carga.html', {'datos':datos})
 
 def principalautorizacion(request):
     # Saludo de bienvenida
