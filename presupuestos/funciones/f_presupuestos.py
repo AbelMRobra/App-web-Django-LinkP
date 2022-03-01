@@ -319,86 +319,40 @@ def presupuesto_generar_xls_proyecto(proyecto):
     ws["H1"] = "Cantidad Art Totales"
     ws["I1"] = "Monto"
     ws["J1"] = "Constante"
+    ws["K1"] = "Tipo"
 
     contador = 2
 
-  
     for c in capitulo:
         modelo = Modelopresupuesto.objects.filter(proyecto = proyecto, capitulo = c ).order_by("orden")
         for d in modelo:
             cantidad = d.cantidad
-            if d.cantidad == None:
-                if "SOLO MANO DE OBRA" in str(d.analisis): 
-                    cantidad = 0
-                    for h in computo:
-                        if h.proyecto == proyecto and h.tipologia == d.vinculacion:
-                            cantidad = cantidad + h.valor_vacio                      
-                    for e in compo:
-                        if e.analisis == d.analisis:
-                            ws["A{}".format(contador)] = c.nombre
-                            ws["B{}".format(contador)] = d.id
-                            ws["C{}".format(contador)] = d.analisis.codigo
-                            ws["D{}".format(contador)] = cantidad
-                            ws["E{}".format(contador)] = e.articulo.codigo
-                            ws["F{}".format(contador)] = e.cantidad
-                            ws["G{}".format(contador)] = e.articulo.valor
-                            ws["H{}".format(contador)] = e.cantidad * cantidad
-                            ws["I{}".format(contador)] = e.cantidad * e.articulo.valor * cantidad
-                            if e.articulo.constante:
-                                ws["J{}".format(contador)] = e.articulo.constante.nombre
-                            else:
-                                ws["J{}".format(contador)] = "SIN ASIGNAR"
-                            contador += 1
 
-                else:
+            for e in compo:
 
-                    cantidad = 0
+                if e.analisis == d.analisis:
 
-                    for h in computo:
+                    ws["A{}".format(contador)] = c.nombre
+                    ws["B{}".format(contador)] = d.id
+                    ws["C{}".format(contador)] = d.analisis.codigo
+                    ws["D{}".format(contador)] = cantidad
+                    ws["E{}".format(contador)] = e.articulo.codigo
+                    ws["F{}".format(contador)] = e.cantidad
+                    ws["G{}".format(contador)] = e.articulo.valor
+                    ws["H{}".format(contador)] = e.cantidad * cantidad
+                    ws["I{}".format(contador)] = e.cantidad * e.articulo.valor * cantidad
+                    if e.articulo.constante:
+                            ws["J{}".format(contador)] = e.articulo.constante.nombre
+                    else:
+                        ws["J{}".format(contador)] = "SIN ASIGNAR"
 
-                        if h.proyecto == proyecto and h.tipologia == d.vinculacion:
-                            
-                            cantidad = cantidad + h.valor_lleno
+                    if str(e.articulo.codigo)[0] == "3":
+                        ws["K{}".format(contador)] = "MATERIALES"
 
-                    for e in compo:
+                    else:
+                        ws["K{}".format(contador)] = "MANO DE OBRA/SUB"
 
-                        if e.analisis == d.analisis:
-
-                            ws["A{}".format(contador)] = c.nombre
-                            ws["B{}".format(contador)] = d.id
-                            ws["C{}".format(contador)] = d.analisis.codigo
-                            ws["D{}".format(contador)] = cantidad
-                            ws["E{}".format(contador)] = e.articulo.codigo
-                            ws["F{}".format(contador)] = e.cantidad
-                            ws["G{}".format(contador)] = e.articulo.valor
-                            ws["H{}".format(contador)] = e.cantidad * cantidad
-                            ws["I{}".format(contador)] = e.cantidad * e.articulo.valor * cantidad
-                            if e.articulo.constante:
-                                ws["J{}".format(contador)] = e.articulo.constante.nombre
-                            else:
-                                ws["J{}".format(contador)] = "SIN ASIGNAR"
-                            contador += 1
-                    
-            else:
-
-                for e in compo:
-
-                    if e.analisis == d.analisis:
-
-                        ws["A{}".format(contador)] = c.nombre
-                        ws["B{}".format(contador)] = d.id
-                        ws["C{}".format(contador)] = d.analisis.codigo
-                        ws["D{}".format(contador)] = cantidad
-                        ws["E{}".format(contador)] = e.articulo.codigo
-                        ws["F{}".format(contador)] = e.cantidad
-                        ws["G{}".format(contador)] = e.articulo.valor
-                        ws["H{}".format(contador)] = e.cantidad * cantidad
-                        ws["I{}".format(contador)] = e.cantidad * e.articulo.valor * cantidad
-                        if e.articulo.constante:
-                                ws["J{}".format(contador)] = e.articulo.constante.nombre
-                        else:
-                            ws["J{}".format(contador)] = "SIN ASIGNAR"
-                        contador += 1
+                    contador += 1
 
     #Establecer el nombre del archivo
     nombre_archivo = "{}.{}Almacen.xls".format(str(proyecto.nombre).replace(" ", ""),str(today))
@@ -468,14 +422,22 @@ def presupuestos_saldo_capitulo(id_proyecto):
             inc = float(sum(df[df['Capitulo'] == capitulo.nombre]['Monto'])/sum(df['Monto'])*100)
         else:
             inc = 0
+
+        saldo = float(sum(df[df['Capitulo'] == capitulo.nombre]['Monto']))
+        mask_1 = df['Capitulo'] == capitulo.nombre 
+        mask_2 = df['Tipo'] == 'MATERIALES'
+        saldo_mat = float(sum(df[mask_1&mask_2]['Monto']))
+
+        saldo_mo = saldo - saldo_mat
+
         info_saldo_capitulo = {
             capitulo.nombre: {
                 'id': capitulo.id,
                 'valor_capitulo': float(sum(df[df['Capitulo'] == capitulo.nombre]['Monto'])),
                 'inc': inc,
-                'saldo': float(sum(df[df['Capitulo'] == capitulo.nombre]['Monto'])),
-                'saldo_mat': 0,
-                'saldo_mo': 0,
+                'saldo': saldo,
+                'saldo_mat': saldo_mat,
+                'saldo_mo': saldo_mo,
                 'data': []
                 }  
         }
@@ -560,13 +522,26 @@ def presupuestos_saldo_capitulo(id_proyecto):
                                     total_asignado_capitulo += necesidad_a_cubirir
                                     capitulo[key]['data'][i][str(stock[0])]['comprado'] = necesidad_a_cubirir
                                     capitulo[key]['saldo'] = float(capitulo[key]['saldo'] - (necesidad_a_cubirir*capitulo[key]['data'][i][str(stock[0])]['precio']))
+
+                                    if str(stock[0])[0] == "3":
+                                        capitulo[key]['saldo_mat'] -= (necesidad_a_cubirir*capitulo[key]['data'][i][str(stock[0])]['precio'])
+
+                                    else:
+                                        capitulo[key]['saldo_mo'] -= (necesidad_a_cubirir*capitulo[key]['data'][i][str(stock[0])]['precio'])
+
                                     necesidad_a_cubirir = 0
 
-                                    
                                 else:
                                     total_asignado_capitulo += cantidad_especifica
                                     capitulo[key]['data'][i][str(stock[0])]['comprado'] = necesidad_a_cubirir
                                     capitulo[key]['saldo'] = float(capitulo[key]['saldo'] - (cantidad_especifica*capitulo[key]['data'][i][str(stock[0])]['precio']))
+
+                                    if str(stock[0])[0] == "3":
+                                        capitulo[key]['saldo_mat'] -= (cantidad_especifica*capitulo[key]['data'][i][str(stock[0])]['precio'])
+
+                                    else:
+                                        capitulo[key]['saldo_mo'] -= (cantidad_especifica*capitulo[key]['data'][i][str(stock[0])]['precio'])
+
                                     necesidad_a_cubirir -= cantidad_especifica
                                     cantidad_especifica = 0
 
@@ -574,6 +549,13 @@ def presupuestos_saldo_capitulo(id_proyecto):
                                 total_asignado_capitulo += necesidad_a_cubirir
                                 capitulo[key]['data'][i][str(stock[0])]['comprado'] += necesidad_a_cubirir
                                 capitulo[key]['saldo'] = float(capitulo[key]['saldo'] - (necesidad_a_cubirir*capitulo[key]['data'][i][str(stock[0])]['precio']))
+
+                                if str(stock[0])[0] == "3":
+                                    capitulo[key]['saldo_mat'] -= (necesidad_a_cubirir*capitulo[key]['data'][i][str(stock[0])]['precio'])
+
+                                else:
+                                    capitulo[key]['saldo_mo'] -= (necesidad_a_cubirir*capitulo[key]['data'][i][str(stock[0])]['precio'])
+
                                 total_comprado_des = total_comprado_des - necesidad_a_cubirir
                                 necesidad_a_cubirir = 0
 
@@ -582,22 +564,17 @@ def presupuestos_saldo_capitulo(id_proyecto):
                                 total_asignado_capitulo += total_comprado_des                                
                                 capitulo[key]['data'][i][str(stock[0])]['comprado'] += total_comprado_des
                                 capitulo[key]['saldo'] = float(capitulo[key]['saldo'] - (total_comprado_des*capitulo[key]['data'][i][str(stock[0])]['precio']))
+
+                                if str(stock[0])[0] == "3":
+                                    capitulo[key]['saldo_mat'] -= (total_comprado_des*capitulo[key]['data'][i][str(stock[0])]['precio'])
+
+                                else:
+                                    capitulo[key]['saldo_mo'] -= (total_comprado_des*capitulo[key]['data'][i][str(stock[0])]['precio'])
+
                                 necesidad_a_cubirir -= total_comprado_des
                                 total_comprado_des = 0
 
-                        if necesidad_a_cubirir > 0:
 
-                            if key == 'SEGURIDAD E HIGIENE':
-
-                                print(str(stock[0]))
-                                print(necesidad_a_cubirir*capitulo[key]['data'][i][str(stock[0])]['precio'])
-
-                            if str(stock[0])[0] == "3":
-                                capitulo[key]['saldo_mat'] += (necesidad_a_cubirir*capitulo[key]['data'][i][str(stock[0])]['precio'])
-
-                            else:
-                                capitulo[key]['saldo_mo'] += (necesidad_a_cubirir*capitulo[key]['data'][i][str(stock[0])]['precio'])
-                            
                     dicc_stock[stock[0]]["detalle"].append(f"*** Capitulo {key}, se asigno {round(total_asignado_capitulo, 2)}")
 
                 if cantidad_especifica > 0:
