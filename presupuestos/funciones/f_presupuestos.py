@@ -585,18 +585,18 @@ def presupuestos_saldo_capitulo(id_proyecto):
                                 necesidad_a_cubirir -= total_comprado_des
                                 total_comprado_des = 0
 
-                    if necesidad_a_cubirir > 0:
+                        if necesidad_a_cubirir > 0:
 
-                        if key == 'SEGURIDAD E HIGIENE':
+                            if key == 'SEGURIDAD E HIGIENE':
 
-                            print(str(stock[0]))
-                            print(necesidad_a_cubirir*capitulo[key]['data'][i][str(stock[0])]['precio'])
+                                print(str(stock[0]))
+                                print(necesidad_a_cubirir*capitulo[key]['data'][i][str(stock[0])]['precio'])
 
-                        if str(stock[0])[0] == "3":
-                            capitulo[key]['saldo_mat'] += (necesidad_a_cubirir*capitulo[key]['data'][i][str(stock[0])]['precio'])
+                            if str(stock[0])[0] == "3":
+                                capitulo[key]['saldo_mat'] += (necesidad_a_cubirir*capitulo[key]['data'][i][str(stock[0])]['precio'])
 
-                        else:
-                            capitulo[key]['saldo_mo'] += (necesidad_a_cubirir*capitulo[key]['data'][i][str(stock[0])]['precio'])
+                            else:
+                                capitulo[key]['saldo_mo'] += (necesidad_a_cubirir*capitulo[key]['data'][i][str(stock[0])]['precio'])
                             
                     dicc_stock[stock[0]]["detalle"].append(f"*** Capitulo {key}, se asigno {round(total_asignado_capitulo, 2)}")
 
