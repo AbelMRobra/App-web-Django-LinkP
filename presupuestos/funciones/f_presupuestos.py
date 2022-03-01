@@ -549,9 +549,10 @@ def presupuestos_saldo_capitulo(id_proyecto):
                         cantidad_especifica += c_esp.cantidad
 
                 for i in range(len(capitulo[key]['data'])): ## Aqui recorrdo todos los articulos de ese capitulo
-                    necesidad_a_cubirir = float(capitulo[key]['data'][i][str(stock[0])]['cantidad']) - float(capitulo[key]['data'][i][str(stock[0])]['comprado'])
-                    if str(stock[0]) in list(capitulo[key]['data'][i].keys()): ## Aqui pregunto si el articulo que estoy recorriendo del stock, esta qui
-                
+                    
+                    if str(stock[0]) in list(capitulo[key]['data'][i].keys()): ## Pregunto si el articuo se necesita en el capitulo
+                        necesidad_a_cubirir = float(capitulo[key]['data'][i][str(stock[0])]['cantidad']) - float(capitulo[key]['data'][i][str(stock[0])]['comprado'])
+                        
                         if necesidad_a_cubirir > 0:
                         
                             if cantidad_especifica:
@@ -585,6 +586,12 @@ def presupuestos_saldo_capitulo(id_proyecto):
                                 total_comprado_des = 0
 
                     if necesidad_a_cubirir > 0:
+
+                        if key == 'SEGURIDAD E HIGIENE':
+
+                            print(str(stock[0]))
+                            print(necesidad_a_cubirir*capitulo[key]['data'][i][str(stock[0])]['precio'])
+
                         if str(stock[0])[0] == "3":
                             capitulo[key]['saldo_mat'] += (necesidad_a_cubirir*capitulo[key]['data'][i][str(stock[0])]['precio'])
 
