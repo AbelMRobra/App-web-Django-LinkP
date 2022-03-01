@@ -462,11 +462,7 @@ def presupuestos_saldo_capitulo(id_proyecto):
 
     # Detalle del consumo
     consumption_details = []
-
-    # Luego traemos todas las compras en una lista iterable
     articulos_comprados = compras.values_list("articulo", flat=True).distinct()
-
-    #Armamos el stock con todas las compras realizadas de este proyecto
     stock_articulos = []
 
     for articulo in articulos_comprados:
