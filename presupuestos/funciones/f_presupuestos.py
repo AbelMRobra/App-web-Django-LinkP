@@ -572,8 +572,8 @@ def presupuestos_saldo_capitulo(id_proyecto):
                                 necesidad_a_cubirir -= total_comprado_des
                                 total_comprado_des = 0
 
-                    if total_asignado_capitulo > 0:
-                        dicc_stock[stock[0]]["detalle"].append(f"*** Capitulo {key}, se asigno {round(total_asignado_capitulo, 2)}")
+                if total_asignado_capitulo > 0:
+                    dicc_stock[stock[0]]["detalle"].append(f"*** Capitulo {key}, se asigno {round(total_asignado_capitulo, 2)}")
 
                 if cantidad_especifica > 0:
                     capitulo[key]['valor_capitulo'] += (cantidad_especifica*valor_articulo)
