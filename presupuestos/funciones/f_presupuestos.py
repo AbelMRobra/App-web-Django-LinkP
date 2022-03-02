@@ -518,7 +518,7 @@ def presupuestos_saldo_capitulo(id_proyecto):
                             if cantidad_especifica:
                                 if cantidad_especifica >= necesidad_a_cubirir:
                                     total_asignado_capitulo += necesidad_a_cubirir
-                                    capitulo[key]['data'][i][str(stock[0])]['comprado'] = necesidad_a_cubirir
+                                    capitulo[key]['data'][i][str(stock[0])]['comprado'] += necesidad_a_cubirir
                                     capitulo[key]['saldo'] = float(capitulo[key]['saldo'] - (necesidad_a_cubirir*valor_articulo))
 
                                     if str(stock[0])[0] == "3":
@@ -531,7 +531,7 @@ def presupuestos_saldo_capitulo(id_proyecto):
 
                                 else:
                                     total_asignado_capitulo += cantidad_especifica
-                                    capitulo[key]['data'][i][str(stock[0])]['comprado'] = necesidad_a_cubirir
+                                    capitulo[key]['data'][i][str(stock[0])]['comprado'] += cantidad_especifica
                                     capitulo[key]['saldo'] = float(capitulo[key]['saldo'] - (cantidad_especifica*valor_articulo))
 
                                     if str(stock[0])[0] == "3":
