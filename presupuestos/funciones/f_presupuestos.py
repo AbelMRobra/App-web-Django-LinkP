@@ -527,9 +527,9 @@ def presupuestos_saldo_capitulo(id_proyecto):
                                     else:
                                         capitulo[key]['saldo_mo'] -= (necesidad_a_cubirir*valor_articulo)
 
-                                    necesidad_a_cubirir = 0
                                     cantidad_especifica -= necesidad_a_cubirir
-
+                                    necesidad_a_cubirir = 0
+                                    
                                 else:
                                     total_asignado_capitulo += cantidad_especifica
                                     capitulo[key]['data'][i][str(stock[0])]['comprado'] += cantidad_especifica
