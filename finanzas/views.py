@@ -67,73 +67,52 @@ class PdfPrueba(View):
     def get(self, request, id_cuenta, *args, **kwargs):
 
         #Creamos la información
-
         ctacte = CuentaCorriente.objects.get(id = id_cuenta)
-
         cuotas = Cuota.objects.filter(cuenta_corriente = ctacte)
-
-        nombre_conceptos = []
-
+        pagos = Pago.objects.filter(cuota__cuenta_corriente = ctacte)
+        nombre_conceptos = cuotas.values_list("concepto", flat=True).distinct()
         datos = []
-
-        for cuota in cuotas:
-
-            nombre_conceptos.append(cuota.concepto)
-
-        nombre_conceptos = set(nombre_conceptos)
 
         saldo_total_pesos = 0
   
         for nombre in nombre_conceptos:
-
             moneda = cuotas.filter(concepto__contains = nombre).exclude(concepto__contains = "FROZEN").values_list("constante__id", flat = True)
 
             if len(moneda) == 0:
-
                 moneda = Constantes.objects.get(id = 7)
 
             else:
-
                 id_moneda = stat.mode(moneda)
-
                 moneda = Constantes.objects.get(id = id_moneda)
             
             total_moneda = 0
-            
             cuotas_t = 0
-            
             total_pagado = 0
 
-            for cuota in cuotas:
+            cuotas_filter = cuotas.filter(concepto = nombre)
 
-                if nombre == cuota.concepto:
-
-                    moneda = cuota.constante
-                    
-                    total_moneda = total_moneda + cuota.precio*cuota.constante.valor
-
-                    cuotas_t = (cuotas_t + 1)
-                    
-                    if cuota.pagada == 'SI':
-                        
-                        total_pagado = total_pagado + cuota.precio*cuota.constante.valor
-                    
-                    else:  
-                        
-                        total_pagado = total_pagado + (sum(np.array(Pago.objects.filter(cuota = cuota).values_list("pago", flat = True)))*sum(np.array(Pago.objects.filter(cuota = cuota).values_list("cuota__constante__valor", flat = True))))
+            for cuota in cuotas_filter:
+                moneda = cuota.constante
+                total_moneda = total_moneda + cuota.precio*cuota.constante.valor
+                cuotas_t = (cuotas_t + 1)
+                
+                if cuota.pagada == 'SI':
+                    total_pagado = total_pagado + cuota.precio*cuota.constante.valor
+                
+                else:  
+                    instances_pago = pagos.filter(cuota = cuota)
+                    total_pagado = total_pagado + (sum(np.array(instances_pago.values_list("pago", flat = True))*np.array(instances_pago.values_list("cuota__constante__valor", flat = True))))
 
             total_moneda = total_moneda/moneda.valor
             total_pagado = total_pagado/moneda.valor
             saldo_moneda = total_moneda - total_pagado
-            
             saldo_pesos = saldo_moneda*moneda.valor
             saldo_total_pesos = saldo_total_pesos + saldo_pesos
             
             if total_moneda == 0:
-
                 avance = 0
+            
             else:
-
                 avance = total_pagado/total_moneda
 
             datos.append((nombre, moneda, total_moneda, cuotas_t, total_pagado, saldo_moneda, saldo_pesos, avance))
@@ -145,16 +124,12 @@ class PdfPrueba(View):
         fechas = []
 
         for cuota in cuotas:
-
             fecha_nueva = date(cuota.fecha.year, cuota.fecha.month, 1 )
             fechas.append(fecha_nueva)
 
         fechas = list(set(fechas))
-
         fechas.sort()
-
         datos_cuotas = []
-
         deuda_md = 0
         pago_md = 0
 
@@ -162,11 +137,9 @@ class PdfPrueba(View):
 
             deuda_md = 0
             pago_md = 0
-
             hoy = datetime.date.today()
 
             if fecha < hoy:
-
                 basura = 1
 
             else:
@@ -174,31 +147,25 @@ class PdfPrueba(View):
                 if fecha.month == 12:
 
                     año = fecha.year + 1
-
                     fecha_final = date(año, 1, fecha.day)
 
                 else:
 
                     mes = fecha.month + 1
-
                     fecha_final = date(fecha.year, mes, fecha.day)
 
                 fecha_final = fecha_final + timedelta(days = -1)
-
                 cuotas = Cuota.objects.filter(fecha__range = (fecha, fecha_final), cuenta_corriente  = ctacte)
 
                 for cuota in cuotas:
-
                     pagos = Pago.objects.filter(cuota = cuota)
 
                     for pago in pagos:
-
                         pago_md = pago_md + pago.pago*pago.cuota.constante.valor 
 
                     deuda_md = deuda_md + cuota.precio*cuota.constante.valor 
 
                 saldo_md = deuda_md - pago_md
-
                 datos_cuotas.append((fecha, saldo_md))
 
         
@@ -662,29 +629,22 @@ def crearcuenta(request, id_proyecto):
                 b.save()
 
             if  'fecha' in i[0]:
-
                 fecha = i[1]
 
             if  'concepto' in i[0]:
-
                 concepto = i[1]
 
             if  'precio' in i[0]:
-
                 precio = i[1]
 
             if  'cuotas' in i[0]:
 
                 cuotas = i[1]
-
                 constante = Constantes.objects.get(nombre = "Hº VIVIENDA")
-
                 precio_pesos = float(precio)/constante.valor
 
                 for i in range(int(cuotas)):
-
                     c = Cuota(
-
                         cuenta_corriente = b,
                         fecha = fecha,
                         precio = float(precio),
@@ -694,21 +654,16 @@ def crearcuenta(request, id_proyecto):
                         )
 
                     c.save()
-
                     fecha_objeto = datetime.datetime.strptime(str(fecha), '%Y-%m-%d')
-
                     fecha_dia = fecha_objeto.day
 
                     if fecha_objeto.month == 12:
-
                         fecha_mes = 1
-
                         fecha_ano = (fecha_objeto.year + 1)
 
                     else:
 
                         fecha_mes = (fecha_objeto.month + 1)
-
                         fecha_ano = fecha_objeto.year
 
                     hoy = date.today()
@@ -4360,28 +4315,18 @@ class DescargarControlUnidades(TemplateView):
 class DescargarTotalCuentas(TemplateView):
 
     def get(self, request, *args, **kwargs):
-
-
-        #color = '#%02x%02x%02x' % (0, 128, 64)
-        
         wb = Workbook()
-        #Establecemos una lista
-
         proyectos = Proyectos.objects.all()
-
         datos_primeros = []
-
         listado = []
 
         for proyecto in proyectos:
-
             cuotas = Cuota.objects.filter(cuenta_corriente__venta__proyecto = proyecto)
 
             if len(cuotas)>0:
                 datos_primeros.append(proyecto)
                 
                 for c in cuotas:
-
                     listado.append(c.cuenta_corriente.venta.proyecto)
 
         listado = set(list(listado))
@@ -4449,46 +4394,34 @@ class DescargarTotalCuentas(TemplateView):
         total_acobrar= 0
 
         for cuo in cuotas_anteriores:
-
             total_original = total_original + cuo.precio
 
         for pag in pagos_anteriores:
-
             total_cobrado = total_cobrado +  pag.pago
 
         for cuot in cuotas_posteriores:
-
             total_acobrar= total_acobrar + cuot.precio
 
         total_pendiente = total_original - total_cobrado
-
         otros_datos = [total_cobrado, total_pendiente, total_acobrar]
 
         #Aqui buscamos agrupar proyecto - sumatorias de cuotas y pagos - mes
         
         datos_segundos = []
-
         total_fecha = []
-
         fecha_inicial = 0
 
         for f in fechas:
-
             total = 0
             total_link = 0
-
             datos_terceros = []
 
             if fecha_inicial == 0:
-
                     fecha_inicial = fecha_inicial_hoy
 
             else:
-
                 cuotas = Cuota.objects.filter(fecha__range = (fecha_inicial, f))
-                    
                 pagos = Pago.objects.filter(fecha__range = (fecha_inicial, f))
-
                 total_cuotas = 0
                 total_cuotas_link = 0
                 total_pagado = 0
@@ -4497,45 +4430,30 @@ class DescargarTotalCuentas(TemplateView):
                 saldo_link = 0
 
                 if len(cuotas)>0:
-
                     for c in cuotas:
-
                         total_cuotas = total_cuotas + c.precio*c.constante.valor
 
                         if c.cuenta_corriente.venta.unidad.asig == "HON. LINK" or c.cuenta_corriente.venta.unidad.asig == "TERRENO":
-
                             total_cuotas_link = total_cuotas_link + c.precio*c.constante.valor 
 
                 if len(pagos)>0:
-
                     for p in pagos:
-
                         total_pagado = total_pagado + p.pago*p.cuota.constante.valor
 
                         if p.cuota.cuenta_corriente.venta.unidad.asig == "HON. LINK" or p.cuota.cuenta_corriente.venta.unidad.asig == "TERRENO":
-
                             total_pagado_link = total_pagado_link + p.pago*p.cuota.constante.valor 
 
                 saldo = total_cuotas-total_pagado
-
                 total = total + saldo
 
                 #Aqui calculamos el saldo de cuotas de LINK
-
                 saldo_link = total_cuotas_link-total_pagado_link
-
                 total_link = total_link + saldo_link
-                
                 datos_terceros.append((fecha_inicial, saldo, saldo_link))
-
                 fecha_inicial = f
-
                 horm = Constantes.objects.get(nombre = "Hº VIVIENDA")
-                
                 total_horm = total/horm.valor
-
                 total_horm_link = total_link/horm.valor
-
                 datos_segundos.append((datos_terceros, total, total_horm, total_link, total_horm_link))
 
 
