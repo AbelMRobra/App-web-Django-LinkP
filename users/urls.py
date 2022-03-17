@@ -2,10 +2,8 @@ from django.contrib import admin
 from django.urls import path
 from django.conf.urls import url
 from django.contrib.auth.decorators import login_required
-
-
+from rrhh.views_rrhh import views_reportes_excel
 from users.views import views , views_sugerencias ,views_chanchito ,views_linkcoins
-
 
 
 urlpatterns = [
@@ -54,6 +52,7 @@ urlpatterns = [
     url(r'^canjemoneda$', login_required(views_linkcoins.canjear_monedas), name = 'Canje de monedas'),
     url(r'^canjesrealizados$', login_required(views_linkcoins.canjes_realizados), name = 'Canjes realizados'),
     url(r'^generador$', login_required(views_linkcoins.generador_linkcoins), name = 'Generador'),
+    url(r'^reporte-linkcoins$', login_required(views_reportes_excel.ExcelReporteLinkcoins.as_view()), name = 'Reporte Linkcoins Excel'),
 
 ]
 
