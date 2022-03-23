@@ -402,7 +402,6 @@ def ocautorizargerente1(request, estado, creador):
     if request.method == 'POST':
 
         datos_post = request.POST.items()
-
         id_selec = 0
 
         for d in datos_post:
@@ -410,18 +409,13 @@ def ocautorizargerente1(request, estado, creador):
             if d[0] == 'APROBADA':
 
                 id_selec = d[1]
-
                 comparativa = Comparativas.objects.get(id = id_selec)
-
                 comparativa.estado = "AUTORIZADA"
                 comparativa.visto = "VISTO"
-
-                # El servidor no esta ubicado en el mismo lugar que los trabajadores, por lo cual debo ajustarlo
-
+                comparativa.quien_autorizo = request.user.username
+                
                 date = datetime.datetime.now() - datetime.timedelta(hours=3)
-
                 comparativa.fecha_autorizacion = date
-
                 comparativa.save()
 
                 try:
@@ -430,20 +424,17 @@ def ocautorizargerente1(request, estado, creador):
                     subject = f"Tu O.C {comparativa.o_c} para {comparativa.proveedor.name} esta autorizada!"
                     mandar_email(1, recibe, subject)
 
-
                 except:
 
                     pass
 
             if d[0] == 'NO APROBADA':
-
                 id_selec = d[1]
                 comparativa = Comparativas.objects.get(id = id_selec)
                 comparativa.estado = "NO AUTORIZADA"
                 comparativa.save()
                 
                 try:
-
                     recibe = datosusuario.objects.get(identificacion = comparativa.creador).email
                     subject = f"Atención! La OC {comparativa.o_c} para {comparativa.proveedor.name} fue rechazada!"
                     mandar_email(2, recibe, subject)
@@ -453,9 +444,7 @@ def ocautorizargerente1(request, estado, creador):
                     pass
 
     context = {}
-
     con_principal = Comparativas.objects.filter(autoriza = "SP")
-
     dic_estados = {
         '0':'Todas',
         '1':'Autorizada',
@@ -502,13 +491,11 @@ def ocautorizargerente1(request, estado, creador):
     context["creador"] = creador
 
     if creador != "0":
-
         con_filtro_estado = con_filtro_estado.filter(creador = creador)
     
     datos_render = []
 
     for d in con_filtro_estado:
-
         mensajes = ComparativasMensaje.objects.filter(comparativa = d)
 
         if d.creador:
