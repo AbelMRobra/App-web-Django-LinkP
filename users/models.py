@@ -33,6 +33,9 @@ class Atajos(models.Model):
 class VariablesGenerales(models.Model):
 
     monto_minimo = models.FloatField(default=0, verbose_name="Valor minimo a autorizar por gerentes")
+    canje_activo = models.BooleanField(default=True, verbose_name="Canje activo")
+    linkcoins_inicial = models.IntegerField(default=1, verbose_name="Inicial de los canjes")
+    linkcoins_final = models.IntegerField(default=10, verbose_name="Final de los canjes")
 
     class Meta:
         verbose_name="Variable general"

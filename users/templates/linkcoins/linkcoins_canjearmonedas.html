@@ -25,12 +25,31 @@
                     {% if request.user|has_group:"RRHH NIVEL 10" %}
                     <div class="row">
                         <div class="col-12 col-md-12 col-lg-11">
-                            <h4 class="card-title"><span class="lstick m-r-20"></span>Gestor de canjes</h4>
+                            <h4 class="card-title  font-bold"><span class="lstick m-r-20"></span>Gestor de canjes</h4>
                             <form method="POST" class="mb-3">
                                 {% csrf_token %}
                                 <div class="p-4 bg-light">
-    
+
                                     <div class="row">
+                                        <div class="col-4 col-lg-4">
+                                            <label for="desde" class="form-label">Desde</label>
+                                            <input type="input" name="desde" value="{{canje_desde}}" class="form-control">
+                                        </div>
+
+                                        <div class="col-4 col-lg-4">
+                                            <label for="hasta" class="form-label">Hasta</label>
+                                            <input type="input" name="hasta" value="{{canje_hasta}}" class="form-control">
+                                        </div>
+
+                                        <div class="col-4 col-lg-4">
+                                            <input type="checkbox" name="canje_activo" id="canje_activo" 
+                                            class="filled-in chk-col-blue" {% if canje_activo %} checked {% endif %} />
+                                            <label for="canje_activo">Habilitar canje</label>
+                                        </div>
+
+                                    </div>
+    
+                                    <div class="row mt-2">
                                         <div class="col-12 col-md-8 col-lg-9">
                                             <label for="inputCanje" class="form-label">Premios</label>
                                             <input type="text" name="nombre" class="form-control">
@@ -40,7 +59,7 @@
                                             <input type="number" name="cantidad" class="form-control">
                                         </div>
                                     </div>
-                                    <button class="btn btn-info mt-4" name="id" value="0">Crear</button>
+                                    <button class="btn btn-info mt-4" name="id" value="0">Cargar</button>
                                 </div>
                             </form>
                         </div>
@@ -48,10 +67,10 @@
     
                     {% endif %}
     
-                    <h4 class="card-title"><span class="lstick m-r-20"></span>Tabla de canjes</h4>
+                    <h4 class="card-title font-bold"><span class="lstick m-r-20"></span>Tabla de canjes</h4>
                     <h6>Monedas recibidas: {{dato_monedas.monedas_recibidas}} | Monedas disponibles:
                         {{dato_monedas.monedas_canjear}}</h6>
-                    <h6 class="text-danger">{{mensaje}}</h6>
+                    <h6 class="text-danger font-bold">{{mensaje}}</h6>
                     <div class="row">
                         <div class="col-12 col-md-12 col-lg-11">
     
@@ -59,11 +78,10 @@
                                 <table id="tabla" class="table stylish-table">
                                     <thead>
                                         <tr>
-                                            {% if request.user|has_group:"RRHH NIVEL 10" %}
-                                            <th class='notexport'>Opciones</th>{% endif %}
+                                            {% if request.user|has_group:"RRHH NIVEL 10" %}<th class='notexport'>Opciones</th>{% endif %}
                                             <th style="min-width: 150px;">Premios</th>
                                             <th style="text-align: right;">Linkcoins</th>
-                                            <th class='notexport' style="text-align: center;">Canjear</th>
+                                            {% if canje_activo %}<th class='notexport' style="text-align: center;">Canjear</th>{% endif %}
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -164,10 +182,12 @@
                                             <td>
                                                 {{i.nombre}}
                                             </td>
-                                            <td style="text-align: right;">{{i.cantidad}} <img
+                                            <td class="font-bold" style="text-align: right;">{{i.cantidad}} <img
                                                     src="{% static 'img/monedalink2.png' %}" alt=""
                                                     style="max-width:21px; height:auto; vertical-align: top;"></td>
     
+                                            
+                                            {% if canje_activo %}
                                             <td style="text-align: center;">
                                                 <form
                                                     onsubmit="return confirm('¿Estás seguro de que deseas canjear tus puntos?. No puedes cambiar tus canjes una vez realizados.');"
@@ -177,7 +197,7 @@
                                                         class="btn fa fa-lg fa-gift text-info"
                                                         style="padding: 0%;"></button>
                                                 </form>
-                                            </td>
+                                            </td> {% endif %}
     
                                         </tr>
                                         {% endfor %}
@@ -204,11 +224,15 @@
             <div class="card">
                 <div class="card-body">
                     <img src="{% static 'img/33635-worker-have-an-idea.gif' %}" alt="Funny image" width="200px">
-                    <p>🎁 Canjeá hasta el día 10 de cada mes tus puntos</p>
-                    <p><b class="text-dark">Retiro</b> Recibirás un mail con la confirmación de tu canje.
+                    {% if canje_activo %}
+                    <p class="font-bold">🎁 Canjeá hasta desde {{canje_desde}} al {{canje_hasta}} de cada mes tus puntos</p>
+                    <p class="font-bold">🚀 Recibirás un mail con la confirmación de tu canje.
 
                         Luego desde el equipo de RR.HH. se comunicarán con vos para la entrega. Recordá que tu premio puede ser entregado hasta el último día hábil del mes.</p>
                     <p>¡Disfrutá tu premio!</p>
+                    {% else %}
+                    <p class="font-bold">⛔ Actualmente no están habilitados los canjes, consulte a la oficina de rrhh por mas información</p>
+                    {% endif %}
 
 
                 </div>

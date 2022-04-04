@@ -7,9 +7,10 @@ from datetime import date
 
 from funciones_generales.f_mandar_email import mandar_email
 from funciones_generales.f_saludo import saludo
-from rrhh.models import EntregaMoneda, datosusuario, CanjeMonedas, PremiosMonedas, MonedaLink,Logros
+from rrhh.models import EntregaMoneda, datosusuario, CanjeMonedas, PremiosMonedas, MonedaLink, Logros
 
 from users.funciones.functions_linkcoins import estadisticasLinkcoin, email_canje_rrhh, email_canje_usuario,calculos
+from users.models import VariablesGenerales
 
 
 
@@ -43,13 +44,8 @@ def perfil_movimientos_linkcoins(request):
 
         if 'regalar' in datos:
             usuario_destino=datos_usuarios.get(id = int(datos["usuario"]))
-
             mens=datos["mensaje"]
-
-
             cantidad=int(datos['cantidad'])
-
-
             monedas_para_entregar = [EntregaMoneda(
                                     moneda = monedas_disponibles[c],
                                     usuario_recibe = usuario_destino,
@@ -82,7 +78,6 @@ def perfil_movimientos_linkcoins(request):
 
     info_coins_entregadas, monedas_disponibles, recibidas, amor, monedas_disponibles_canje, list_usuarios, rey, rey_l, rey_2=  calculos(datos_usuarios,monedas,monedas_entregadas,usuario,loged_user,canjemonedas)
     
-
     try:
         datos = datos_usuarios.get(identificacion = request.user)
         if datos:
@@ -226,11 +221,11 @@ def generador_linkcoins(request):
     return render(request, "linkcoins/linkcoins_generarmonedas.html", context)
 
 def canjear_monedas(request):
-
     context = {}
     canjes=CanjeMonedas.objects.all()
     premios=PremiosMonedas.objects.all()
     usuario = datosusuario.objects.get(identificacion = request.user)
+    variables_sistema = VariablesGenerales.objects.get(id = 1)
     monedas_recibidas = EntregaMoneda.objects.filter(usuario_recibe = usuario).count()
     monedas_canjear = monedas_recibidas - sum(canjes.filter(usuario = usuario).values_list("monedas", flat=True))
     mensaje = ''
@@ -241,8 +236,21 @@ def canjear_monedas(request):
 
         if 'premio' in datos:
             premio=datos['premio']
+            canje_activo = True
+            
+            if not variables_sistema.canje_activo:
+                canje_activo = False
 
-            if today.day <= 10 or request.user.username == "PM" or request.user.username == "AR":
+            if today.day < variables_sistema.linkcoins_inicial:
+                canje_activo = False
+
+            if today.day > variables_sistema.linkcoins_final:
+                canje_activo = False
+
+            if request.user.username == "PM":
+                canje_activo = True
+
+            if canje_activo:
                 premio_solicitado = premios.get(id = int(premio))
 
                 if monedas_canjear >= premio_solicitado.cantidad:
@@ -259,13 +267,12 @@ def canjear_monedas(request):
                     context['canje_realizado'] = True 
 
                 else:
-                    mensaje="No tienes suficientes monedas para canjear el premio seleccionado"
+                    mensaje = "No tienes suficientes monedas para canjear el premio seleccionado"
         
             else:
-                mensaje="No se encuentra habilitado para canjear"
+                mensaje = f"Actualmente no puede realizar el canje, recuerde que las fechas son desde el {variables_sistema.linkcoins_inicial} al {variables_sistema.linkcoins_final}"
   
         if  'id' in datos:
-            
             if datos['id'] != "0":
                 premio = premios.get(id = int(datos['id']))
                 premio.nombre = datos['nombre']
@@ -273,13 +280,21 @@ def canjear_monedas(request):
                 premio.save()
 
             else:
-                b = PremiosMonedas(
-                    nombre = datos['nombre'],
-                    cantidad = int(datos['cantidad']),
-                )
-                b.save()
+                variables_sistema.linkcoins_inicial = datos['desde']
+                variables_sistema.linkcoins_final = datos['hasta']
+                
+                if "canje_activo" in datos:
+                    variables_sistema.canje_activo = True
+                else:
+                    variables_sistema.canje_activo = False
 
-        
+                variables_sistema.save()
+
+                if datos['nombre'] != "" and datos['cantidad'] > 0:
+                    nuevo_canje = PremiosMonedas.objects.create(
+                        nombre = datos['nombre'],
+                        cantidad = int(datos['cantidad']),
+                    )
 
         if 'borrar' in datos:
             premio=datos['borrar']
@@ -297,6 +312,9 @@ def canjear_monedas(request):
     context['premios'] = premios
     context['dato_monedas'] = dato_monedas
     context['mensaje'] = mensaje
+    context['canje_activo'] = variables_sistema.canje_activo
+    context['canje_desde'] = variables_sistema.linkcoins_inicial
+    context['canje_hasta'] = variables_sistema.linkcoins_final
 
     return render(request, "linkcoins/linkcoins_canjearmonedas.html", context)
 

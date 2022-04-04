@@ -1,12 +1,13 @@
-from rrhh.models import EntregaMoneda, datosusuario, CanjeMonedas
-from statistics import mode
-
 import smtplib
+from agenda import settings
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from email.mime.base import MIMEBase
 from email import encoders
-from agenda import settings
+from statistics import mode
+
+from rrhh.models import EntregaMoneda, datosusuario
+
 
 def aviso_regalo_link(destino,cantidad,mensaje):
     mailServer = smtplib.SMTP(settings.EMAIL_HOST, settings.EMAIL_PORT)
@@ -121,7 +122,6 @@ def estadisticasLinkcoin():
 
     return resultados
 
-
 def mandar_email(mensaje, cabeza, recibe):
 
     # Establecemos conexion con el servidor smtp de gmail
@@ -145,7 +145,6 @@ def mandar_email(mensaje, cabeza, recibe):
     mailServer.sendmail(settings.EMAIL_HOST_USER,
                     recibe,
                     mensaje.as_string())
-
 
 def email_canje_rrhh(usuario, premio, monedas):
 
