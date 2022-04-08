@@ -19,7 +19,7 @@ def validacion_cuotas_pagadas(id_cta_cte):
 
     for cuota in cuotas:
         valor_cuota = cuota.precio*cuota.constante.valor
-        pagado = sum(np.array(pagos.filter(cuota = cuota).values_list('pago', flat=True))*np.array(pagos.filter(cuota = cuota).values_list('pago__cuota__constante__valor', flat=True)))
+        pagado = sum(np.array(pagos.filter(cuota = cuota).values_list('pago', flat=True))*np.array(pagos.filter(cuota = cuota).values_list('cuota__constante__valor', flat=True)))
         saldo = valor_cuota - pagado
 
         if  saldo < 5:
