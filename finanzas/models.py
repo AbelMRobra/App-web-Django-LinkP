@@ -186,6 +186,7 @@ class CuentaCorriente(models.Model):
     def __str__(self):
         return self.venta.comprador
 
+
 class Cuota(models.Model):
 
     class Estado(models.TextChoices):
@@ -274,6 +275,7 @@ class Cuota(models.Model):
     class Meta:
         verbose_name="Cuota"
         verbose_name_plural="Cuotas"
+
 
 class Pago(models.Model):
 

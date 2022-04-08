@@ -11,6 +11,20 @@ from proyectos.models import Unidades, Proyectos
 from ventas.models import FeaturesUni
 from rrhh.models import datosusuario
 
+
+def validacion_cuotas_pagadas(id_cta_cte):
+    ctacte = CuentaCorriente.objects.get(id = id_cta_cte)
+    cuotas = Cuota.objects.filter(cuenta_corriente = ctacte)
+    pagos = Pago.objects.filter(cuota__cuenta_corriente = ctacte)
+
+    for cuota in cuotas:
+        valor_cuota = cuota.precio
+        pagado = sum(pagos.filter(cuota = cuota).values_list('pago', flat=True))
+
+        if pagado/valor_cuota < 0.97:
+            cuota.pagada = 'NO'
+            cuota.save()
+
 def fechas_cc(id):
 
     proyecto = Proyectos.objects.get(id = id)

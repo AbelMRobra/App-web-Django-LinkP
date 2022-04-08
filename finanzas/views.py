@@ -30,7 +30,7 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.base import MIMEBase
 from email import encoders
 from rrhh.models import datosusuario, RegistroContable
-from .functions import fechas_cc, flujo_ingreso_cliente, flujo_ingreso_proyecto, promedio_almacenero, registroemail, resumen_cuentas
+from .functions import fechas_cc, flujo_ingreso_cliente, flujo_ingreso_proyecto, promedio_almacenero, registroemail, resumen_cuentas, validacion_cuotas_pagadas
 
 
 # Create your views here.
@@ -68,6 +68,7 @@ class PdfPrueba(View):
 
         #Creamos la información
         ctacte = CuentaCorriente.objects.get(id = id_cuenta)
+        validacion_cuotas_pagadas(id_cuenta)
         cuotas = Cuota.objects.filter(cuenta_corriente = ctacte)
         pagos = Pago.objects.filter(cuota__cuenta_corriente = ctacte)
         nombre_conceptos = cuotas.values_list("concepto", flat=True).distinct()

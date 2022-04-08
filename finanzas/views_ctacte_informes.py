@@ -1,9 +1,8 @@
 import datetime
-from datetime import date
 import pandas as pd
 import numpy as np
 import random
-
+from datetime import date
 
 from django.shortcuts import render,redirect
 from presupuestos.models import Proyectos, Presupuestos, Constantes, Modelopresupuesto, Registrodeconstantes
@@ -15,22 +14,17 @@ from .functions import fechas_cc, flujo_ingreso_proyecto_cliente, flujo_ingreso_
 
 
 def cuentacte_resumen(request):
-
-
     if len(Cuota.objects.values_list("cuenta_corriente__venta__proyecto__id", flat = True)) > 0:
-
         list_p = Cuota.objects.values_list("cuenta_corriente__venta__proyecto__id", flat = True)
         list_p = list(set(list_p))
-
         id_proyecto = random.choice(list_p)
-
         lista_proyecto = []
+
         for l in list_p:
             aux = Proyectos.objects.get(id = int(l))
             lista_proyecto.append(aux)
 
         if request.method == 'POST':
-
             proyecto_elegido = request.POST["proyecto"].split("-")
             id_proyecto = proyecto_elegido[0]
             
@@ -44,14 +38,10 @@ def cuentacte_resumen(request):
         context = {}
         context["sin_data"] = 1
 
-
     return render(request, 'ctacte_resumen.html', context)
 
 def totalcuentacte(request, id_proyecto):
-
-    
     # Listado de los proyectos que tienen cuenta corrientes
-
     proyectos = Proyectos.objects.all()
     context = {}
     cliente = "0"
