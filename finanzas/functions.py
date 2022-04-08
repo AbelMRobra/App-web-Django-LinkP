@@ -20,10 +20,19 @@ def validacion_cuotas_pagadas(id_cta_cte):
     for cuota in cuotas:
         valor_cuota = cuota.precio
         pagado = sum(pagos.filter(cuota = cuota).values_list('pago', flat=True))
+        saldo = valor_cuota - pagado
 
-        if pagado/valor_cuota < 0.97:
-            cuota.pagada = 'NO'
-            cuota.save()
+        if  valor_cuota != 0:
+            if pagado/valor_cuota < 0.98:
+                cuota.pagada = 'NO'
+
+            elif saldo < 10:
+                cuota.pagada = 'SI'
+
+        else:
+             cuota.pagada = 'SI'   
+                
+        cuota.save()
 
 def fechas_cc(id):
 
