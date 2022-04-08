@@ -18,19 +18,15 @@ def validacion_cuotas_pagadas(id_cta_cte):
     pagos = Pago.objects.filter(cuota__cuenta_corriente = ctacte)
 
     for cuota in cuotas:
-        valor_cuota = cuota.precio
-        pagado = sum(pagos.filter(cuota = cuota).values_list('pago', flat=True))
+        valor_cuota = cuota.precio*cuota.constante.valor
+        pagado = sum(pagos.filter(cuota = cuota).values_list('pago', flat=True)*pagos.filter(cuota = cuota).values_list('pago__cuota__constante__valor', flat=True))
         saldo = valor_cuota - pagado
 
-        if  valor_cuota != 0:
-            if pagado/valor_cuota < 0.98:
-                cuota.pagada = 'NO'
-
-            elif saldo < 10:
-                cuota.pagada = 'SI'
+        if  saldo < 5:
+            cuota.pagada = 'SI'
 
         else:
-             cuota.pagada = 'SI'   
+             cuota.pagada = 'NO'   
                 
         cuota.save()
 
