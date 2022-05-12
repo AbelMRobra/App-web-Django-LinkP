@@ -94,27 +94,20 @@ def auditor_presupuesto(proyecto,fecha_desde, fecha_hasta):
     #esta linea trae 29 objetos
     mensaje = ""
     data_almacenada_desde_objects = PresupuestosAlmacenados.objects.filter(nombre = fecha_desde,proyecto=proyecto)
-    
     #esta linea da error porque el queryset se encuentra vacio
     data_almacenada_hasta_objects = PresupuestosAlmacenados.objects.filter(nombre = fecha_hasta,proyecto=proyecto)
     
     if data_almacenada_desde_objects.exists() and data_almacenada_hasta_objects.exists():
-
         try:
-        
             data_almacenada_desde=data_almacenada_desde_objects[0]
             data_almacenada_hasta=data_almacenada_hasta_objects.latest("id")
 
             df_desde = pd.read_excel(data_almacenada_desde.archivo)
             df_hasta = pd.read_excel(data_almacenada_hasta.archivo)
 
-            
             # Estudio de diferencia de cantidades
-
             valor_proyecto_desde=sum(list(df_desde['Monto'].values))
             valor_proyecto_hasta=sum(list(df_hasta['Monto'].values))
-
-            
 
             df_desde_Q = df_desde.drop(['Precio', 'Monto'], axis = 1) #se eliminan
             df_hasta_Q = df_hasta.drop(['Precio', 'Monto'], axis = 1) #se eliminan
@@ -232,18 +225,13 @@ def auditor_presupuesto_p(proyecto, fecha_desde, fecha_hasta):
 
     cont=0
     data_almacenada_desde_objects = PresupuestosAlmacenados.objects.filter(nombre = fecha_desde,proyecto=proyecto)
-    
     #esta linea da error porque el queryset se encuentra vacio
     data_almacenada_hasta_objects = PresupuestosAlmacenados.objects.filter(nombre = fecha_hasta,proyecto=proyecto)
     
     if data_almacenada_desde_objects.exists() and data_almacenada_hasta_objects.exists():
-        
-        
         data_almacenada_desde=data_almacenada_desde_objects[0]
         data_almacenada_hasta=data_almacenada_hasta_objects.latest("id")
-
         df_desde = pd.read_excel(data_almacenada_desde.archivo)
-
         valor_desde=sum(list(df_desde['Monto'].values))
         df_hasta = pd.read_excel(data_almacenada_hasta.archivo)
 
@@ -417,7 +405,6 @@ def presupuestos_saldo_capitulo(id_proyecto):
     capitulos = Capitulos.objects.all()
 
     # Primero hacemos el JSON con la dara sin tener en cuenta las compras
-
     articulo_capitulo = []
 
     for capitulo in capitulos:
@@ -467,10 +454,16 @@ def presupuestos_saldo_capitulo(id_proyecto):
     articulos_comprados = compras.values_list("articulo", flat=True).distinct()
     stock_articulos = []
 
+    '''
+    Aqui busc todos los articulos / precios de los mismos comprados / vigentes
+    '''
     for articulo in articulos_comprados:
         precio = articulos.get(codigo = articulo).valor
         stock_articulos.append([articulo, precio])
 
+    '''
+    Aqui creo una variable que se llama STOCK -> Y la misma tiene un detalle de lo que se va asignando
+    '''
     for stock in stock_articulos:
 
         dicc_stock = {

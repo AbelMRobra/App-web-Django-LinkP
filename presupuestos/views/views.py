@@ -1269,17 +1269,12 @@ class ReporteExplosion(TemplateView):
         crudo_analisis = []
 
         for i in modelo:
-
             if i.cantidad != None:
-
                 crudo_analisis.append((i.analisis, i.cantidad))
 
             else:
-
                 if "SOLO MANO DE OBRA" in str(i.analisis.nombre):
-
                     computos = Computos.objects.filter(tipologia = i.vinculacion, proyecto = proyecto)
-
                     cantidad = 0
 
                     for r in computos:
@@ -1288,9 +1283,7 @@ class ReporteExplosion(TemplateView):
                     crudo_analisis.append((i.analisis, cantidad))
 
                 else:
-
                     computos = Computos.objects.filter(tipologia = i.vinculacion, proyecto = proyecto)
-
                     cantidad = 0
 
                     for r in computos:
@@ -1300,15 +1293,10 @@ class ReporteExplosion(TemplateView):
 
         crudo_articulos = []
 
-
         for c in crudo_analisis:
-
             analisis = CompoAnalisis.objects.filter(analisis = c[0])
-
             for d in analisis:
-
                 cantidad = d.cantidad*c[1]
-
                 crudo_articulos.append((d.articulo, cantidad))
 
         datos = []
@@ -1330,29 +1318,22 @@ class ReporteExplosion(TemplateView):
 
 
         compras = Compras.objects.filter(proyecto = proyecto)
-
         comprado_aux = ""
 
         for dato in datos:
             comprado_aux = comprado_aux + str(dato[0])
 
         datos_viejos = datos
-        
         datos = []
 
         for i in datos_viejos:
-
             comprado = 0
             for c in compras:
-
                 if c.proyecto == proyecto and c.articulo == i[0]:
-
                     comprado = comprado + c.cantidad
             
             cantidad_saldo = i[1] - comprado
-
             saldo = cantidad_saldo * i[0].valor
-            
             datos.append((i[0], i[1], comprado, cantidad_saldo, saldo ))
 
         #Esta parte arma los articulos que no estan en el presupuesto
@@ -1365,7 +1346,6 @@ class ReporteExplosion(TemplateView):
 
         cont = 1
         for d in datos:
-
             if cont == 1:
                 ws = wb.active
                 ws.title = "Explosion"

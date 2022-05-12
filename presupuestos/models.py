@@ -145,11 +145,8 @@ class Presupuestos(models.Model):
 
 
     def calculo_iva_compras(self):
-        
         valor_a_pagar = (self.imprevisto + self.saldo_mat + self.saldo_mo + self.credito + self.fdr)*0.07875
-
         return valor_a_pagar
-
 
     class Meta:
         verbose_name = "Presupuesto"
