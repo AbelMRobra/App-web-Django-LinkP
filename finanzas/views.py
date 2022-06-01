@@ -2868,21 +2868,22 @@ def arqueo_diario(request, id_arqueo):
             elif "BANCO" in n:
                 banco = banco + data_frame.loc[numero, n]
                 bancos = bancos + data_frame.loc[numero, n]
+
                 if data_frame.loc[numero, n] != 0:
                     list_bank_proj_info.append((n, data_frame.loc[numero, n]))
 
-        try:    
-            consolidado = data_frame.loc[numero, 'EFECTIVO'] + data_frame.loc[numero, 'CHEQUES'] + data_frame.loc[numero, 'MONEDA EXTRANJERA'] + banco
+        try:
+            moneda_extranjera = data_frame.loc[numero, 'MONEDA EXTRANJERA']
         except:
-            consolidado = data_frame.loc[numero, 'EFECTIVO'] + data_frame.loc[numero, 'CHEQUES'] + data_frame.loc[numero, 'USD- USD VIRTUAL'] + banco
+            moneda_extranjera = data_frame.loc[numero, 'USD- USD VIRTUAL']
 
+        consolidado = data_frame.loc[numero, 'EFECTIVO'] + data_frame.loc[numero, 'CHEQUES'] + moneda_extranjera+ banco
         consolidados = consolidados + consolidado
         moneda_extranjera_actual = moneda_extranjera_actual + data_frame.loc[numero, 'USD']*cambio_usd + data_frame.loc[numero, 'EUROS']*cambio_euro
-        consolidado_actual = consolidado_actual + consolidado - data_frame.loc[numero, 'MONEDA EXTRANJERA'] + data_frame.loc[numero, 'USD']*cambio_usd + data_frame.loc[numero, 'EUROS']*cambio_euro
+        consolidado_actual = consolidado_actual + consolidado - moneda_extranjera + data_frame.loc[numero, 'USD']*cambio_usd + data_frame.loc[numero, 'EUROS']*cambio_euro
 
         try:
             inversion = data_frame.loc[numero, 'INVERSIONES']
-            
         except:
             inversion = 0
         
@@ -2921,7 +2922,7 @@ def arqueo_diario(request, id_arqueo):
 
         datos.append((proyecto, data_frame.loc[numero, 'PROYECTO'], \
             data_frame.loc[numero, 'EFECTIVO'], data_frame.loc[numero, 'USD'], data_frame.loc[numero, 'EUROS'], \
-            data_frame.loc[numero, 'CHEQUES'], data_frame.loc[numero, 'MONEDA EXTRANJERA'], banco, \
+            data_frame.loc[numero, 'CHEQUES'], moneda_extranjera, banco, \
             consolidado, list_bank_proj_info, info_cheque, \
             inversion, inversion_usd, list_bancos_usd, banco_usd, \
             moneda_virtual))
