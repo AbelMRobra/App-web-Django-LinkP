@@ -51,7 +51,7 @@ async function service_crear_proveedor(){
             'Content-Type': 'application/json',
         },
 
-        body: JSON.stringify({
+        data: JSON.stringify({
             'name' : document.getElementById("new_name").value,
             'descrip' : document.getElementById("new_descrip").value,
             'phone' : document.getElementById("new_phone").value,
