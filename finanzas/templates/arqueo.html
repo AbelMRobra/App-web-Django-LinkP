@@ -138,6 +138,7 @@
                                     <th>Banco</th>
                                     <th>Banco USD</th>
                                     <th>Cheques</th>
+                                    <th>Moneda Vir.</th>
                                     <th>Moneda Ext.</th>
                                     <th>Caja Historica</th>
                                     <th>Dolares</th>
@@ -156,9 +157,7 @@
     
                                     <td style="max-width: 150px;"
                                         {% if i.0 %} class="text-success" {% else %} class="text-info" {% endif %}>
-    
                                         {{ i.1|lower|capfirst }}
-          
                                     </td>
     
                                     <td>${{ i.2|floatformat:0|intcomma }}</td>
@@ -168,6 +167,7 @@
                                         data-target="#ModalUSD{{i.1|cut:' '|cut:'('|cut:')'}}">${{ i.14|floatformat:0|intcomma }}</a></td>
                                     <td><a type="button" class="text-info" data-toggle="modal"
                                             data-target="#ModalCheques{{i.1|cut:' '|cut:'('|cut:')'}}">${{ i.5|floatformat:0|intcomma }}</a></td>
+                                    <td>${{ i.15|floatformat:0|intcomma }}</td>
                                     <td>${{ i.6|floatformat:0|intcomma }}</td>
                                     <td>${{ i.8|floatformat:0|intcomma }}</td>
                                     <td style="color: rgb(89, 171, 70);">U$S{{ i.3|floatformat:0|intcomma }}</td>

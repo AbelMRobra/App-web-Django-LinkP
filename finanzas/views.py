@@ -2795,18 +2795,13 @@ def retirodesocios(request):
 def arqueo_diario(request, id_arqueo):
 
     context = {}
-
     data_cruda = Arqueo.objects.get(id = id_arqueo)
     context["data_cruda"] = data_cruda
-    
     data = data_cruda
-
     data_frame = pd.read_excel(data.arqueo)
-
     lista_proyecto = list(data_frame['PROYECTO'])
 
     datos = []
-
     pesos = sum(np.array(data_frame['EFECTIVO']))
     cheques = sum(np.array(data_frame['CHEQUES']))
     usd = sum(np.array(data_frame['USD']))
@@ -2814,9 +2809,9 @@ def arqueo_diario(request, id_arqueo):
     
     try:
         inversiones = sum(np.array(data_frame['INVERSIONES']))
-       
     except:
         inversiones = 0
+
     try:
         inversiones_usd = sum(np.array(data_frame['INVERSIONES USD']))
     except:
@@ -2830,7 +2825,6 @@ def arqueo_diario(request, id_arqueo):
 
     pesos_usd = usd*Constantes.objects.get(nombre = "USD_BLUE").valor
     pesos_euros = euro*Constantes.objects.get(nombre = "EURO_BLUE").valor
-
     pesos_pesos = pesos - pesos_usd - pesos_euros
 
     porcentaje_usd = pesos_usd/pesos*100
@@ -2840,9 +2834,7 @@ def arqueo_diario(request, id_arqueo):
     bancos = 0
     total_bancos_usd=0
     consolidados = 0
-
     consolidado_actual = 0
-
     moneda_extranjera_actual = 0
   
     datos_grafico = [porcentaje_usd, porcentaje_euros, porcentaje_pesos]
@@ -2851,9 +2843,7 @@ def arqueo_diario(request, id_arqueo):
     inversiones=0
     inversiones_usd=0
     for i in lista_proyecto:
-
         try:
-
             proyecto = Proyectos.objects.get(id = data_frame.loc[numero, 'ID LINK-P'])
 
         except:
@@ -2861,17 +2851,12 @@ def arqueo_diario(request, id_arqueo):
             proyecto = 0
 
         nombre_columnas = data_frame.columns
-
         banco = 0
-        
-        
         list_bank_proj_info = []
-        
-        
         list_bancos_usd=[]
         banco_usd=0
+        
         for n in nombre_columnas:
-    
             if "BANCO" in n and "USD" in n:
                 #totalizador de los bancos por fila
                 banco_usd= banco_usd + data_frame.loc[numero, n]
@@ -2880,19 +2865,19 @@ def arqueo_diario(request, id_arqueo):
                 if data_frame.loc[numero, n] != 0:
                     list_bancos_usd.append((n, data_frame.loc[numero, n]))
               
-            
             elif "BANCO" in n:
                 banco = banco + data_frame.loc[numero, n]
                 bancos = bancos + data_frame.loc[numero, n]
                 if data_frame.loc[numero, n] != 0:
                     list_bank_proj_info.append((n, data_frame.loc[numero, n]))
-            
-        consolidado = data_frame.loc[numero, 'EFECTIVO'] + data_frame.loc[numero, 'CHEQUES'] + data_frame.loc[numero, 'MONEDA EXTRANJERA'] + banco
+
+        try:    
+            consolidado = data_frame.loc[numero, 'EFECTIVO'] + data_frame.loc[numero, 'CHEQUES'] + data_frame.loc[numero, 'MONEDA EXTRANJERA'] + banco
+        except:
+            consolidado = data_frame.loc[numero, 'EFECTIVO'] + data_frame.loc[numero, 'CHEQUES'] + data_frame.loc[numero, 'USD- USD VIRTUAL'] + banco
 
         consolidados = consolidados + consolidado
-
         moneda_extranjera_actual = moneda_extranjera_actual + data_frame.loc[numero, 'USD']*cambio_usd + data_frame.loc[numero, 'EUROS']*cambio_euro
-
         consolidado_actual = consolidado_actual + consolidado - data_frame.loc[numero, 'MONEDA EXTRANJERA'] + data_frame.loc[numero, 'USD']*cambio_usd + data_frame.loc[numero, 'EUROS']*cambio_euro
 
         try:
@@ -2902,26 +2887,24 @@ def arqueo_diario(request, id_arqueo):
             inversion = 0
         
         inversiones += inversion
+        
         try:
             inversion_usd = data_frame.loc[numero, 'INVERSIONES USD']
         except:
             inversion_usd = 0
+        
         inversiones_usd += inversion_usd
         
         try:
             # ----> Armemos lo de los cheques
-
             nombre_proyecto = data_frame.loc[numero, 'PROYECTO']
-
             cheque_numero = list(data_frame[data_frame["CHEQUE PROYECTO"] == nombre_proyecto]["CHEQUE NUMERO"])
             cheque_cliente = list(data_frame[data_frame["CHEQUE PROYECTO"] == nombre_proyecto]["CHEQUE CLIENTE"])
             cheque_emitido = list(data_frame[data_frame["CHEQUE PROYECTO"] == nombre_proyecto]["CHEQUE EMITIDO"])
             cheque_vencimiento = list(data_frame[data_frame["CHEQUE PROYECTO"] == nombre_proyecto]["CHEQUE VENCIMIENTO"])
             cheque_monto = list(data_frame[data_frame["CHEQUE PROYECTO"] == nombre_proyecto]["CHEQUE MONTO"])
             cheque_tipo = list(data_frame[data_frame["CHEQUE PROYECTO"] == nombre_proyecto]["CHEQUE TIPO"])
-
             info_cheque = []
-
             cont_info = 0
 
             for i in cheque_numero:
@@ -2930,24 +2913,30 @@ def arqueo_diario(request, id_arqueo):
         except:
             info_cheque = []
 
-        datos.append((proyecto, data_frame.loc[numero, 'PROYECTO'], data_frame.loc[numero, 'EFECTIVO'], data_frame.loc[numero, 'USD'], data_frame.loc[numero, 'EUROS'], data_frame.loc[numero, 'CHEQUES'], data_frame.loc[numero, 'MONEDA EXTRANJERA'], banco, consolidado, list_bank_proj_info, info_cheque, inversion, inversion_usd,list_bancos_usd,banco_usd))
+        try:
+            moneda_virtual = data_frame.loc[numero, 'MONEDA VIRTUAL']
 
+        except:
+            moneda_virtual = 0
+
+        datos.append((proyecto, data_frame.loc[numero, 'PROYECTO'], \
+            data_frame.loc[numero, 'EFECTIVO'], data_frame.loc[numero, 'USD'], data_frame.loc[numero, 'EUROS'], \
+            data_frame.loc[numero, 'CHEQUES'], data_frame.loc[numero, 'MONEDA EXTRANJERA'], banco, \
+            consolidado, list_bank_proj_info, info_cheque, \
+            inversion, inversion_usd, list_bancos_usd, banco_usd, \
+            moneda_virtual))
+        
         numero += 1
     
    
     #AQUI SE SUMA EL TOTAL DE INVERSIONES EN PESOS Y EN DOLARES AL TOTAL
     precio_dolar=data_frame.loc[0, 'CAMBIO USD']
-   
     banco_usd_pesificado=total_bancos_usd*precio_dolar
-
     consolidado_actual=consolidado_actual + inversiones + (inversiones_usd * precio_dolar) + banco_usd_pesificado
     otros_datos = [usd, euro, pesos, cheques, bancos, consolidados, consolidado_actual, moneda_extranjera_actual, inversiones, inversiones_usd,total_bancos_usd,banco_usd_pesificado]
-
     context["datos"] = datos
     context["otros_datos"] = otros_datos
-
     grafico = []
-
     n = data_cruda
 
     frame = pd.read_excel(n.arqueo)
@@ -2969,7 +2958,6 @@ def arqueo_diario(request, id_arqueo):
     cheque = sum(array_cheque)
     grafico.append((n.fecha, extranjera, efectivo, banco, cheque))
     grafico = sorted(grafico, key=lambda tup: tup[0])
-    
     context["grafico"] = grafico
     
 
