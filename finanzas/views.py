@@ -221,13 +221,9 @@ def appfinanzas(request):
     return render(request, 'app_finanzas.html')
 
 def mandarmail(request, id_cuenta):
-
     datos = CuentaCorriente.objects.get(id = id_cuenta)
-
     registro_emails=RegistroEmail.objects.filter(destino__id=id_cuenta)
-
     mensaje = 0
-
 
     if request.method == 'POST':
 
@@ -238,7 +234,6 @@ def mandarmail(request, id_cuenta):
 
             hoy = datetime.date.today()
             h = Constantes.objects.get(nombre = "Hº VIVIENDA")
-
 
             # Establecemos conexion con el servidor smtp de gmail
             mailServer = smtplib.SMTP(settings.EMAIL_HOST, settings.EMAIL_PORT)
@@ -275,7 +270,6 @@ Saludos cordiales
             mensaje['Subject']="ESTADO DE CUENTA {}-{}".format(str(hoy.month), str(hoy.year))
 
             # Esta es la parte para adjuntar (prueba)
-
             adjunto_MIME = MIMEBase('application', "octet-stream")
             pdf_adjunto = PdfPrueba()
             pdf_adjunto = pdf_adjunto.get(request = request, id_cuenta = id_cuenta).content
@@ -285,7 +279,6 @@ Saludos cordiales
             mensaje.attach(adjunto_MIME)
 
             # Envio del mensaje
-
             response=mailServer.sendmail(settings.EMAIL_HOST_USER,
                             venta.email,
                             mensaje.as_string())
@@ -293,10 +286,28 @@ Saludos cordiales
             datos = CuentaCorriente.objects.get(id = id_cuenta)
             mensaje = "ok"
             usuario = request.user
-            
             registroemail(id_cuenta, hoy, usuario, pdf_adjunto)
 
-        except:
+        except Exception as e:
+            # Establecemos conexion con el servidor smtp de gmail
+            mailServer = smtplib.SMTP(settings.EMAIL_HOST, settings.EMAIL_PORT)
+            mailServer.ehlo()
+            mailServer.starttls()
+            mailServer.ehlo()
+            mailServer.login(settings.EMAIL_HOST_USER, settings.EMAIL_HOST_PASSWORD)
+
+            # Construimos el mensaje simple
+            mensaje = MIMEMultipart()
+            mensaje.attach(MIMEText(str(e.args), 'plain'))
+            mensaje['From']=settings.EMAIL_HOST_USER
+            mensaje['To']='abel.robra.93@gmail.com'
+            mensaje['Subject']="Error del sistema"
+
+             # Envio del mensaje
+            response=mailServer.sendmail(settings.EMAIL_HOST_USER,
+                            venta.email,
+                            mensaje.as_string())
+
             mensaje = 'error'
             
     return render(request, 'mandarmail.html', {"datos":datos, "mensaje":mensaje,'registro_emails':registro_emails})
