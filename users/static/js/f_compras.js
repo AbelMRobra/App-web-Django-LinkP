@@ -372,6 +372,7 @@ function modificar_template_consulta_articulo(response){
     precio_presupuesto.style = " "
     precio_presupuesto.value = response.precio
 }
+
 function armar_seccion_edicion(id){
     var precio_presupuesto = document.getElementById("precio_presupuesto_cargar")
     precio_presupuesto.style = "display: none;"

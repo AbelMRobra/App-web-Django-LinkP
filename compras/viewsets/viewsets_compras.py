@@ -15,14 +15,12 @@ from users.models import VariablesGenerales
 
 class ComparativasViewset(viewsets.GenericViewSet):
 
-
     @transaction.atomic
     def upload_monto_minimo(self, request):
         try:
             monto_minimo = VariablesGenerales.objects.get(id = 1)
             monto_minimo.monto_minimo = request.data['monto_minimo']
             monto_minimo.save()
-
             response = {'message' : 'Success'}
             return Response(response, status=status.HTTP_200_OK)
 
@@ -32,7 +30,6 @@ class ComparativasViewset(viewsets.GenericViewSet):
 
     @transaction.atomic
     def change_status(self, request):
-        
         try:
 
             response = {}
@@ -42,8 +39,6 @@ class ComparativasViewset(viewsets.GenericViewSet):
                 comparativa.save()
                 
                 if comparativa.estado == "AUTORIZADA":
-                    mandarEmail(comparativa, 1)
-
                     if comparativa.publica == "NO":
                         comparativa.visto = "VISTO"
 
@@ -57,20 +52,17 @@ class ComparativasViewset(viewsets.GenericViewSet):
                     response['action'] = "Compra autorizada"
 
                 elif comparativa.estado == "NO AUTORIZADA":
-                    mandarEmail(comparativa, 2)
                     response['action'] = "Compra rechazada"
 
                 else:
                     response['action'] = "Adjunto chequeado"
 
                 comparativa.save()
-
             response['messege'] = 'Success'
             response['id'] = comparativa.id
             return Response(response, status=status.HTTP_201_CREATED)
 
         except:
-
             response = {'mensaje': 'Error de carga'}
             return Response(response, status=status.HTTP_406_NOT_ACCEPTABLE)
 

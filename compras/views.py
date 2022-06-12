@@ -706,7 +706,6 @@ def comparativas(request, estado, creador, autoriza):
 
     if request.method == 'POST':
         datos_post = request.POST.dict()
-
         if 'visto_bueno_gerente' in datos_post:
             try:
                 comparativa_modificar = Comparativas.objects.get(id = int(request.POST['visto_bueno_gerente']))
@@ -716,57 +715,6 @@ def comparativas(request, estado, creador, autoriza):
 
             except:
                 context['mensaje_accion'] = [0, "Error inesperado"]
-
-        datos_post = request.POST.items()
-        id_selec = 0
-
-        for d in datos_post:
-
-            if d[0] == 'APROBADA':
-                id_selec = d[1]
-                comparativa = Comparativas.objects.get(id = id_selec)
-                comparativa.estado = "AUTORIZADA"
-
-                if request.user.username == "SP" or comparativa.publica == "NO":
-                    comparativa.visto = "VISTO"
-
-                # El servidor no esta ubicado en el mismo lugar que los trabajadores, por lo cual debo ajustarlo
-                date = datetime.datetime.now() - datetime.timedelta(hours=3)
-                comparativa.fecha_autorizacion = date
-                comparativa.save()
-
-            if d[0] == 'NO APROBADA':
-                id_selec = d[1]
-                comparativa = Comparativas.objects.get(id = id_selec)
-                comparativa.estado = "NO AUTORIZADA"
-                comparativa.save()
-                
-            if d[0] == 'ADJAPROB':
-                id_selec = d[1]
-                comparativa = Comparativas.objects.get(id = id_selec)
-                comparativa.estado = "ADJUNTO ✓"
-                comparativa.save()
-
-            if d[0] == 'MENSAJE':
-                if d[1] != "":
-                    comparativa = Comparativas.objects.get(id = id_selec)
-                    comparativa.comentario = str(request.user.username) + ": " + str(d[1])
-                    comparativa.save()
-                    mensaje = str(d[0]) + ": " + str(d[1])
-
-                    nuevo_mensaje = ComparativasMensaje(
-                            usuario=datosusuario.objects.get(identificacion = request.user),
-                            comparativa=Comparativas.objects.get(id = comparativa.id),
-                            mensaje=mensaje,
-                            )
-
-                    nuevo_mensaje.save()
-
-                else:
-                    comparativa = Comparativas.objects.get(id = id_selec)
-                    comparativa.comentario = str((request.user.username) + ": Sin motivo")
-                    comparativa.save()
-
 
     if estado == "0":
         consulta = con_comparativas
