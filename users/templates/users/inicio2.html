@@ -327,28 +327,11 @@
             </ul>
           </li>
           <li class="nav-devider"></li>
-
           <li><a href="/proyectos"><i class="mdi mdi-chart-bubble"></i><span class="hide-menu">Proyectos</span></a>
           </li>
-
-          {% if request.user|has_group:"REGA NIVEL 1" %}
-
-          <li class="nav-small-cap">TABLEROS</li>
-
-          <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i
-                class="mdi mdi-gauge"></i><span class="hide-menu">Seguimiento</span></a>
-            <ul aria-expanded="false" class="collapse">
-              <li><a href="{% url 'Tablero Rega' 0 0 1 %}">Tablero</a></li>
-            </ul>
-          </li>
-
-          {% endif %}
           <li class="nav-small-cap">ESPACIOS DE TRABAJO</li>
           <li><a href="{% url 'App de rrhh' %}"><i class="zmdi zmdi-accounts"></i><span class="hide-menu">Recursos
                 Humanos</span></a>
-          </li>
-          <li><a href="{% url 'Panel del gerenciador' %}"><i class="fa fa-area-chart"></i><span
-                class="hide-menu">Gerenciamiento</span></a>
           </li>
           <li><a href="{% url 'Panel de presupuestos' %}"><i class="zmdi zmdi-chart"></i><span
                 class="hide-menu">Presupuestos</span></a>
@@ -373,37 +356,14 @@
           <li><a href="{% url 'Principal compras' %}"><i class="zmdi zmdi-card"></i><span
                 class="hide-menu">Compras</span></a>
           </li>
-          <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i
-                class="zmdi zmdi-city"></i><span class="hide-menu">Oficina tecnica</span></a>
-            <ul aria-expanded="false" class="collapse">
-              <li><a href="{% url 'Principal Tecnica' %}">Panel principal</a></li>
-            </ul>
-          </li>
           <li><a href="{% url 'App comercial' %}"><i class="zmdi zmdi-mall"></i><span
                 class="hide-menu">Comercialización</span></a>
-
           </li>
           {% if request.user|has_group:"POSTVENTA NIVEL 1" %}
           <li><a href="{% url 'Reclamos Postventa' %}"><i class="zmdi zmdi-calendar"></i><span
             class="hide-menu">Postventa</span></a>
           </li>
           {% endif %}
-
-          <li class="nav-small-cap">SIGMA</li>
-
-          <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i
-                class="zmdi zmdi-city-alt"></i><span class="hide-menu">Generales</span></a>
-            <ul aria-expanded="false" class="collapse">
-              {% if perms.sigma.view_inventario %}
-              <li><a href="/sigma/inventario">Inventario</a></li>
-              <li><a href="/sigma/tareas">Tareas de la constructora</a></li>
-
-              {% else %}
-              <li>No tienes permisos para ver este espacio</li>
-              {% endif %}
-
-            </ul>
-          </li>
         </ul>
 
       </nav>
