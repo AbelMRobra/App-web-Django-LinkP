@@ -29,6 +29,7 @@ from django.views.generic.base import TemplateView
 from rest_framework.generics import ListAPIView
 from .functions_comparativas import mensajeCierreOc, mandarEmail
 from .funciones.f_g_mandar_email import *
+from core.functions import send_email
 from django.db.models import Q
 
 
@@ -400,32 +401,27 @@ def principalautorizacion(request):
 def ocautorizargerente1(request, estado, creador):
 
     if request.method == 'POST':
-
         datos_post = request.POST.items()
         id_selec = 0
 
         for d in datos_post:
 
             if d[0] == 'APROBADA':
-
                 id_selec = d[1]
                 comparativa = Comparativas.objects.get(id = id_selec)
                 comparativa.estado = "AUTORIZADA"
                 comparativa.visto = "VISTO"
                 comparativa.quien_autorizo = request.user.username
-                
                 date = datetime.datetime.now() - datetime.timedelta(hours=3)
                 comparativa.fecha_autorizacion = date
                 comparativa.save()
 
                 try:
-
                     recibe = datosusuario.objects.get(identificacion = comparativa.creador).email
                     subject = f"Tu O.C {comparativa.o_c} para {comparativa.proveedor.name} esta autorizada!"
                     mandar_email(1, recibe, subject)
 
                 except:
-
                     pass
 
             if d[0] == 'NO APROBADA':
@@ -683,23 +679,18 @@ def comparativas(request, estado, creador, autoriza):
         estado = str(int(estado) - 10)
 
     elif 20 <= int(estado) < 30:
-
         mensaje = 2
         estado = str(int(estado) - 20)
 
     else:
-
         estado = estado
 
     # Consultas necesarias
-
     con_comparativas = Comparativas.objects.all()
-
     usuarios=datosusuario.objects.all()
     list_autoriza = usuarios.filter(Q(identificacion='PL') | Q(identificacion='SP') | Q(cargo = "GERENTE"))
 
     # Codigo para fecha de pagos
-
     fecha_inicial = datetime.date.today()
     fecha_pago = datetime.date(2021, 4, 16)
     mensaje_PL_SP='Autoriza'
@@ -711,155 +702,69 @@ def comparativas(request, estado, creador, autoriza):
         mensaje_creador = "Creador"
 
     else:
-
         mensaje_creador = datosusuario.objects.get(id = creador).identificacion
 
     if request.method == 'POST':
-
         datos_post = request.POST.dict()
 
         if 'visto_bueno_gerente' in datos_post:
-
             try:
-
                 comparativa_modificar = Comparativas.objects.get(id = int(request.POST['visto_bueno_gerente']))
                 comparativa_modificar.visto_gerente = True
                 comparativa_modificar.save()
-
                 context['mensaje_accion'] = [1, "Todo listo!"]
 
             except:
-
                 context['mensaje_accion'] = [0, "Error inesperado"]
 
         datos_post = request.POST.items()
-
         id_selec = 0
 
         for d in datos_post:
 
             if d[0] == 'APROBADA':
-
                 id_selec = d[1]
-
                 comparativa = Comparativas.objects.get(id = id_selec)
-
                 comparativa.estado = "AUTORIZADA"
 
-                if request.user.username == "SP":
-
-                    comparativa.visto = "VISTO"
-
-                if comparativa.publica == "NO":
-
+                if request.user.username == "SP" or comparativa.publica == "NO":
                     comparativa.visto = "VISTO"
 
                 # El servidor no esta ubicado en el mismo lugar que los trabajadores, por lo cual debo ajustarlo
-
                 date = datetime.datetime.now() - datetime.timedelta(hours=3)
-
                 comparativa.fecha_autorizacion = date
-
                 comparativa.save()
-
-                try:
-
-                    mandarEmail(comparativa, 1)
-
-                    if comparativa.creador == "AT" or comparativa.creador == "LG":
-
-                        send = "Han aprobado la OC {} de {}".format(comparativa.creador, comparativa.o_c)
-
-                        id = "-455382561"
-
-                        token = "1880193427:AAH-Ej5ColiocfDZrDxUpvsJi5QHWsASRxA"
-
-                        url = "https://api.telegram.org/bot" + token + "/sendMessage"
-
-                        params = {
-                            'chat_id' : id,
-                            'text' : send
-                        }
-
-                        requests.post(url, params=params)
-
-                except:
-
-                    pass
 
             if d[0] == 'NO APROBADA':
                 id_selec = d[1]
-
                 comparativa = Comparativas.objects.get(id = id_selec)
-
                 comparativa.estado = "NO AUTORIZADA"
-
                 comparativa.save()
                 
-                try:
-
-                    mandarEmail(comparativa, 2)
-
-                    if comparativa.creador == "AT" or comparativa.creador == "LG":
-
-                        send = "Han rechazado la OC {} de {}".format(comparativa.creador, comparativa.o_c)
-
-                        id = "-455382561"
-
-                        token = "1880193427:AAH-Ej5ColiocfDZrDxUpvsJi5QHWsASRxA"
-
-                        url = "https://api.telegram.org/bot" + token + "/sendMessage"
-
-                        params = {
-                            'chat_id' : id,
-                            'text' : send
-                        }
-
-                        requests.post(url, params=params)
-
-                except:
-
-                    pass
-
             if d[0] == 'ADJAPROB':
-
                 id_selec = d[1]
-
                 comparativa = Comparativas.objects.get(id = id_selec)
-
                 comparativa.estado = "ADJUNTO ✓"
-
                 comparativa.save()
 
             if d[0] == 'MENSAJE':
-                
-
                 if d[1] != "":
-
                     comparativa = Comparativas.objects.get(id = id_selec)
-
                     comparativa.comentario = str(request.user.username) + ": " + str(d[1])
-
                     comparativa.save()
-
                     mensaje = str(d[0]) + ": " + str(d[1])
 
-
-                    b = ComparativasMensaje(
-                            usuario = datosusuario.objects.get(identificacion = request.user),
-                            comparativa = Comparativas.objects.get(id = comparativa.id),
-                            mensaje = mensaje,
-
+                    nuevo_mensaje = ComparativasMensaje(
+                            usuario=datosusuario.objects.get(identificacion = request.user),
+                            comparativa=Comparativas.objects.get(id = comparativa.id),
+                            mensaje=mensaje,
                             )
 
-                    b.save()
+                    nuevo_mensaje.save()
 
                 else:
-
                     comparativa = Comparativas.objects.get(id = id_selec)
-
                     comparativa.comentario = str((request.user.username) + ": Sin motivo")
-
                     comparativa.save()
 
 
@@ -941,14 +846,11 @@ def comparativas(request, estado, creador, autoriza):
         datos.append((usuario, mensajes, d))
             
     # Reordenar la lista
-  
     list_creadores = sorted(list_creadores, key=lambda creador : creador.identificacion)
 
     # Recortamos para evitar problemas para renderizar
-
     if estado != "7":
         datos = datos[0:150]
-    
     
     context['mensaje_creador'] = mensaje_creador
     context['list_creadores'] = list_creadores

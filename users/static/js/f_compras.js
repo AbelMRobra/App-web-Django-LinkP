@@ -38,10 +38,8 @@ function sweet_alert(mensaje, estado) {
 };
 
 async function service_crear_proveedor(){
-
-    host = document.getElementById("host").value;
-    token = document.getElementById("token").value;
-    
+    var host = document.getElementById("host").value;
+    var token = document.getElementById("token").value;
     const url = `${host}/compras/api_proveedores/`
 
     var respuesta = await fetch(url ,{
@@ -62,7 +60,6 @@ async function service_crear_proveedor(){
 
     var response = await respuesta.json()
     var status = await respuesta.status
-
     return validar_respuesta_create(response, status)
 }
 
