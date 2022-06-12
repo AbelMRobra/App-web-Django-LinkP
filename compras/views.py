@@ -687,7 +687,7 @@ def comparativas(request, estado, creador, autoriza):
 
     # Consultas necesarias
     con_comparativas = Comparativas.objects.all()
-    usuarios=datosusuario.objects.all()
+    usuarios = datosusuario.objects.all()
     list_autoriza = usuarios.filter(Q(identificacion='PL') | Q(identificacion='SP') | Q(cargo = "GERENTE"))
 
     # Codigo para fecha de pagos
@@ -798,7 +798,7 @@ def comparativas(request, estado, creador, autoriza):
 
     # Recortamos para evitar problemas para renderizar
     if estado != "7":
-        datos = datos[0:150]
+        datos = datos[0:50]
     
     context['mensaje_creador'] = mensaje_creador
     context['list_creadores'] = list_creadores
