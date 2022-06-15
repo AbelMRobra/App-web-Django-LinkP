@@ -7,6 +7,7 @@ from rrhh.models import MonedaLink, EntregaMoneda, CanjeMonedas
 
 
 class LinkcoinsViewset(viewsets.GenericViewSet):
+    queryset = MonedaLink.objects.all()
     permission_classes = (AllowAny,)
 
     @action(detail=True, methods=["GET"])
