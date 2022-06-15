@@ -5,10 +5,10 @@ from django.contrib.auth.decorators import login_required
 from rest_framework import routers
 from rrhh.views_rrhh import views_reportes_excel
 from users.views import views , views_sugerencias ,views_chanchito ,views_linkcoins
-from users.viewsets import LinkcoinsViewset
+from users.viewsets import viewsets_linkcoins
 
 router = routers.DefaultRouter()
-router.register(r'api_linkcoins', LinkcoinsViewset)
+router.register(r'api_linkcoins', viewsets_linkcoins.LinkcoinsViewset)
 
 urlpatterns = [
     path("", include(router.urls)),
