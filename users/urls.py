@@ -1,12 +1,17 @@
-from django.contrib import admin
 from django.urls import path
 from django.conf.urls import url
+from django.conf.urls import include
 from django.contrib.auth.decorators import login_required
+from rest_framework import routers
 from rrhh.views_rrhh import views_reportes_excel
 from users.views import views , views_sugerencias ,views_chanchito ,views_linkcoins
+from users.viewsets import LinkcoinsViewset
 
+router = routers.DefaultRouter()
+router.register(r'api_linkcoins', LinkcoinsViewset)
 
 urlpatterns = [
+    path("", include(router.urls)),
     url(r'^$', views.welcome, name = 'Bienvenido'),
     url(r'^register$', views.register, name = 'Registro'),
     url(r'^login$', views.login, name = 'Login'),
