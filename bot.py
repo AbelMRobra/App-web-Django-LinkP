@@ -56,7 +56,7 @@ def pizza(update, context):
 
     if '/BOT:REPORTE_LC_' in message and  message != '/BOT:REPORTE_LC_GENERAL':
         user = message.split("_")[-1]
-        api_url = f'http://www.linkp.online/api_linkcoins/{user}/reporte/'
+        api_url = f'http://www.linkp.online/api/v1/api_linkcoins/{user}/reporte/'
         response = requests.request('GET', api_url)
         if response.status_code == 200:
             user_data = response.json()
@@ -64,17 +64,20 @@ def pizza(update, context):
         else:
             update.message.reply_text(f"Problemas con la Api")
 
-    if '/BOT:REPORTE_LC_ENTREGAS_' in message:
-        user = message.split("_")[-2]
-        number = message.split("_")[-1]
-        api_url = f'http://www.linkp.online/api_linkcoins/{user}/reporte_entregas/'
-        response = requests.request('GET', api_url)
-        if response.status_code == 200:
-            entregas = response.json()
-            for n in range(number):
-                update.message.reply_text(f"Entrego {entregas['entrega'][n]['cantidad']} monedas a {entregas['entrega'][n]['destino']} el {entregas['entrega'][n]['fecha']}")
-        else:
-            update.message.reply_text(f"Problemas con la Api")
+    if '/BOT:REPORTE_LCENTREGAS_' in message:
+        try:
+            user = message.split("_")[-2]
+            number = int(message.split("_")[-1])
+            api_url = f'http://www.linkp.online/api/v1/api_linkcoins/{user}/reporte_entrega/'
+            response = requests.request('GET', api_url)
+            if response.status_code == 200:
+                entregas = response.json()
+                for n in range(number):
+                    update.message.reply_text(f"Entrego {entregas['entrega'][n]['cantidad']} monedas a {entregas['entrega'][n]['destino']} el {entregas['entrega'][n]['fecha']}")
+            else:
+                update.message.reply_text(f"Problemas con la Api")
+        except:
+            update.message.reply_text(f"Tu pedido tiene un error")
 
     if message == '/BOT:REPORTE_LC_GENERAL':
         update.message.reply_text("Listo para consultar")
@@ -84,7 +87,7 @@ def pizza(update, context):
 """
 Okey:
 - /bot:reporte_lc_{user} para reporte de un usuario
-- /bot:reporte_lc_entregas_{user}_{n} para reporte de las ultimas n entregas que hizo un usuario
+- /bot:reporte_lcentregas_{user}_{n} para reporte de las ultimas n entregas que hizo un usuario
 - /bot:reporte_lc_general para datos generales
 """)
 

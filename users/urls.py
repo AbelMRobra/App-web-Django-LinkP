@@ -11,7 +11,7 @@ router = routers.DefaultRouter()
 router.register(r'api_linkcoins', viewsets_linkcoins.LinkcoinsViewset)
 
 urlpatterns = [
-    path("", include(router.urls)),
+    path("api/v1/", include(router.urls)),
     url(r'^$', views.welcome, name = 'Bienvenido'),
     url(r'^register$', views.register, name = 'Registro'),
     url(r'^login$', views.login, name = 'Login'),
