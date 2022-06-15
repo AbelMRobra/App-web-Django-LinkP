@@ -72,7 +72,7 @@ def pizza(update, context):
         if response.status_code == 200:
             entregas = response.json()
             for n in range(number):
-                update.message.reply_text(f"Entrego {entregas['entrega'][n]['cantidad']} monedas a {entregas['entrega'][n]['destino']}")
+                update.message.reply_text(f"Entrego {entregas['entrega'][n]['cantidad']} monedas a {entregas['entrega'][n]['destino']} el {entregas['entrega'][n]['fecha']}")
         else:
             update.message.reply_text(f"Problemas con la Api")
 

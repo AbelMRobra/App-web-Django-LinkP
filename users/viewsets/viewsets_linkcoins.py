@@ -34,7 +34,7 @@ class LinkcoinsViewset(viewsets.GenericViewSet):
 
     @action(detail=True, methods=["GET"])
     def reporte_entrega(self, request, pk=None):
-        quey_canje = EntregaMoneda.objects.filter(usuario__identificacion=pk).annotate(cantidad=Count('mensaje'))
+        quey_canje = EntregaMoneda.objects.filter(usuario_recibe__identificacion=pk).annotate(cantidad=Count('mensaje')).order_by('-fecha')
         serializer = linkcoins_serializers(quey_canje, many=True)
         response = {'entrega':serializer.data}
         return Response(response, status=status.HTTP_200_OK)
