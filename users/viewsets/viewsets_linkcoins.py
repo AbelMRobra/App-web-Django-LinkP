@@ -1,9 +1,11 @@
 import numpy as np
+from django.db.models import Count
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 from rrhh.models import MonedaLink, EntregaMoneda, CanjeMonedas
+from users.serializers import linkcoins_serializers
 
 
 class LinkcoinsViewset(viewsets.GenericViewSet):
@@ -28,4 +30,11 @@ class LinkcoinsViewset(viewsets.GenericViewSet):
             'ultimo_canje' : ultimo_canje,
         }
 
+        return Response(response, status=status.HTTP_200_OK)
+
+    @action(detail=True, methods=["GET"])
+    def reporte_entrega(self, request, pk=None):
+        quey_canje = EntregaMoneda.objects.filter(usuario__identificacion=pk).annotate(cantidad=Count('mensaje'))
+        serializer = linkcoins_serializers(quey_canje, many=True)
+        response = {'entrega':serializer.data}
         return Response(response, status=status.HTTP_200_OK)

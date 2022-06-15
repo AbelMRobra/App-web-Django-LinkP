@@ -19,6 +19,7 @@ bot.
 
 import logging
 import requests
+import json
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 
 # Enable logging
@@ -53,21 +54,38 @@ def pizza(update, context):
     if message == 'OKEY VAMOS PROGRESANDO':
         update.message.reply_text("Gracias")
 
-    if '/BOT:REPORTE_LINKCOINS_' in message and  message != '/BOT:REPORTE_LINKCOINS_GENERAL':
+    if '/BOT:REPORTE_LC_' in message and  message != '/BOT:REPORTE_LC_GENERAL':
         user = message.split("_")[-1]
-        api_url = 
+        api_url = f'http://www.linkp.online/api_linkcoins/{user}/reporte/'
         response = requests.request('GET', api_url)
-        update.message.reply_text(f"Listo para consultar {user}")
+        if response.status_code == 200:
+            user_data = response.json()
+            update.message.reply_text(f"{user} genero {user_data['monedas_generadas']} monedas, recibio {user_data['monedas_recibidas']} monedas y canjeo {user_data['monedas_canjeadas']} monedas. Tiene pendiente {user_data['canjes_pendientes']} canjes y el ultimo realizado fue {user_data['ultimo_canje']}")
+        else:
+            update.message.reply_text(f"Problemas con la Api")
 
-    if message == '/BOT:REPORTE_LINKCOINS_GENERAL':
+    if '/BOT:REPORTE_LC_ENTREGAS_' in message:
+        user = message.split("_")[-2]
+        number = message.split("_")[-1]
+        api_url = f'http://www.linkp.online/api_linkcoins/{user}/reporte_entregas/'
+        response = requests.request('GET', api_url)
+        if response.status_code == 200:
+            entregas = response.json()
+            for n in range(number):
+                update.message.reply_text(f"Entrego {entregas['entrega'][n]['cantidad']} monedas a {entregas['entrega'][n]['destino']}")
+        else:
+            update.message.reply_text(f"Problemas con la Api")
+
+    if message == '/BOT:REPORTE_LC_GENERAL':
         update.message.reply_text("Listo para consultar")
     
     if message == '/BOT:REPORTE':
         update.message.reply_text(
 """
 Okey:
-- /bot:reporte_linkcoins_{user} para reporte de un usuario
-- /bot:reporte_linkcoins_general para datos generales
+- /bot:reporte_lc_{user} para reporte de un usuario
+- /bot:reporte_lc_entregas_{user}_{n} para reporte de las ultimas n entregas que hizo un usuario
+- /bot:reporte_lc_general para datos generales
 """)
 
 def saldo(update,context):
