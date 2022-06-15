@@ -12,7 +12,7 @@ class LinkcoinsViewset(viewsets.GenericViewSet):
 
     @action(detail=True, methods=["GET"])
     def reporte(self, request, pk=None):
-        quey_canje = CanjeMonedas.objects.filter(usuario__identificacion=pk).count()
+        quey_canje = CanjeMonedas.objects.filter(usuario__identificacion=pk)
         monedas_generadas = MonedaLink.objects.filter(usuario_portador__identificacion=pk).count()
         monedas_recibidas = EntregaMoneda.objects.filter(usuario_recibe__identificacion=pk).count()
         monedas_canjeadas = sum(np.array(quey_canje.values_list('monedas', flat=True)))
