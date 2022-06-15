@@ -234,13 +234,9 @@ def constantes_editar(request, id_cons):
                         var = round((float(cons_valor_nuevo)/cons_valor-1)*100,2)
 
                         if var != 0:
-
                             send = "{} ha modificado la constante {}. Variación: {}%".format(request.user.username, cons_nombre, var)
-
                             id = "-455382561"
-
                             token = "1880193427:AAH-Ej5ColiocfDZrDxUpvsJi5QHWsASRxA"
-
                             bot_telegram(send, id, token)
 
             datos_insumos = Articulos.objects.filter(constante__nombre = nombre)

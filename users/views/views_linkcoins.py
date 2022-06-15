@@ -7,6 +7,7 @@ from datetime import date
 
 from funciones_generales.f_mandar_email import mandar_email
 from funciones_generales.f_saludo import saludo
+from funciones_generales.f_bots import bot_telegram
 from rrhh.models import EntregaMoneda, datosusuario, CanjeMonedas, PremiosMonedas, MonedaLink, Logros
 
 from users.funciones.functions_linkcoins import estadisticasLinkcoin, email_canje_rrhh, email_canje_usuario,calculos
@@ -15,7 +16,6 @@ from users.models import VariablesGenerales
 
 
 def perfil_movimientos_linkcoins(request):
-
     amor = 0
     rey = 0
     otros_datos = 0
@@ -36,10 +36,7 @@ def perfil_movimientos_linkcoins(request):
 
     if request.method == 'POST':
         datos = request.POST.dict()
-        #monedas del usuario en sesion
         monedas_usuario = monedas.filter(usuario_portador = usuario)
-
-        #de las monedas del usuario en sesion , agregar las disponibles
         monedas_disponibles = [m for m in monedas_usuario if monedas_entregadas.filter(moneda = m).count() == 0]
 
         if 'regalar' in datos:
@@ -95,24 +92,13 @@ def perfil_movimientos_linkcoins(request):
         usuario = 0
 
     monedas_recibidas = monedas_entregadas.filter(usuario_recibe = usuario).count()
-
-    ########################################
-    # Logros Argentino
-    ########################################
-
     argentino = monedas_entregadas.filter(moneda__usuario_portador__identificacion = loged_user, mensaje__icontains = "bolud").count()
-
-
-    ########################################
-    # Logros
-    ########################################
 
     try:
         logros = Logros.objects.filter(usuario = datos_usuarios.get(identificacion = loged_user))
     
     except:
         logros = 0  
-
 
     conten = {"argentino":argentino, 
     "logros":logros, 
@@ -129,7 +115,6 @@ def perfil_movimientos_linkcoins(request):
     return render(request, "linkcoins/linkcoins_perfil_movimientos.html", conten)
 
 def canjes_realizados(request):
-
     # Listado de los datos de los premios
     context = {}
     context['mensaje_bievenida'] = saludo().format(request.user.first_name)
@@ -142,14 +127,9 @@ def canjes_realizados(request):
             canje = CanjeMonedas.objects.get(id = int(datos['ENTREGADO']))
             canje.entregado = "SI"
             canje.save()
-
             return redirect('Canjes realizados')
 
-    
     context['data'] = CanjeMonedas.objects.all().order_by("entregado")
-
-
-
     return render(request, "linkcoins/linkcoins_listarcanjes.html", context)
 
 def generador_linkcoins(request):
@@ -262,8 +242,10 @@ def canjear_monedas(request):
                     )
                     canje.save()
 
-                    email_canje_rrhh(usuario, canje.premio, canje.monedas)
-                    email_canje_usuario(usuario.email, usuario, canje.premio, canje.monedas)
+                    send = f"Buenas!, el usuario {usuario} ha canjeado {canje.monedas} por el premio: {canje.premio}"
+                    id = "-755393879"
+                    token = "1880193427:AAH-Ej5ColiocfDZrDxUpvsJi5QHWsASRxA"
+                    bot_telegram(send, id, token)
                     context['canje_realizado'] = True 
 
                 else:
@@ -301,8 +283,6 @@ def canjear_monedas(request):
             premio = premios.get(id = int(premio))
             premio.delete()
 
-
-
     premios = premios.order_by("nombre")
     monedas = MonedaLink.objects.filter(usuario_portador = usuario)
     monedas_recibidas = EntregaMoneda.objects.filter(usuario_recibe = usuario).count()
@@ -315,7 +295,6 @@ def canjear_monedas(request):
     context['canje_activo'] = variables_sistema.canje_activo
     context['canje_desde'] = variables_sistema.linkcoins_inicial
     context['canje_hasta'] = variables_sistema.linkcoins_final
-
     return render(request, "linkcoins/linkcoins_canjearmonedas.html", context)
 
 
