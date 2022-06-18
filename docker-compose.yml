@@ -1,0 +1,58 @@
+version: '3'
+
+services:
+  postgres:
+    restart: always
+    image: postgres:11.6
+    container_name: mom-postgres
+    volumes:
+      - ./volumenes/postgresql:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+  
+  web:
+    restart: always
+    env_file:
+      - .env
+    image: web
+    container_name: mom-web
+    build: ./
+    command: >
+      bash -c "python wait_for_postgres.py &&
+                ./manage.py migrate &&
+                ./manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - ./:/code
+    ports:
+      - "8100:8000"
+    depends_on:
+      - postgres
+      - celery
+
+  celery:
+    build: ./
+    env_file:
+      - .env
+    command: celery -A ordermanagement worker -l INFO -c 4 
+    volumes:
+      - ./:/code
+    depends_on:
+      - redis
+
+  node:
+    restart: always
+    build: ./node_app
+    volumes:
+      - ./node_app:/node_app
+      - ./node_app/node_modules
+    depends_on:
+      - redis
+    ports:
+      - "3000:3000"
+
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
+  
+ 
