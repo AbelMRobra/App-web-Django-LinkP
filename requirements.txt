@@ -1,31 +1,35 @@
-PyAutoGUI==0.9.52
-PyGetWindow==0.0.9
-pylint==2.4.4
-PyMsgBox==1.0.9
-pyparsing==2.4.7
-PyPDF2==1.26.0
-pyperclip==1.8.1
-PyRect==0.1.4
-PyScreeze==0.1.26
-python-bidi==0.4.2
-python-dateutil==2.8.1
-python-decouple==3.3
-PyTweening==1.0.3
-pytz==2019.3
-PyYAML==5.3.1
-reportlab==3.5.56
-schedule==0.6.0
-scipy==1.5.4
-seaborn==0.11.0
-six==1.14.0
-sqlparse==0.3.1
-static3==0.7.0
-tablib==1.1.0
-webencodings==0.5.1
-whitenoise==5.0.1
-wrapt==1.11.2
-xhtml2pdf==0.2.5
-xlrd==1.2.0
-xlwt==1.3.0
+# Core
+pytz==2020.1
+Django==3.1.7
+django-configurations==2.2
+gunicorn==20.0.4
+newrelic==5.22.0.151
+whitenoise==5.2.0
+
+# For the persistence stores
 psycopg2-binary==2.8.6
 dj-database-url==0.5.0
+
+# Model Tools
+django-model-utils==4.1.1
+django_unique_upload==0.2.1
+
+# Rest apis
+djangorestframework==3.12.2
+django-filter==2.4.0
+
+# Celery Async tasks
+celery[redis]
+redis
+
+# Other libreries
+requests==2.24.0
+pandas
+numpy
+numpy-financial
+django-import-export
+django-cors-headers
+xhtml2pdf
+openpyxl
+django-userforeignkey
+django-session-timeout

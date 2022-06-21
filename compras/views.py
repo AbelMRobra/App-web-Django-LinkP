@@ -9,20 +9,11 @@ from users.models import VariablesGenerales
 from .form import StockAntForm
 from .filters import CertificadoFilter
 from presupuestos.models import Articulos, Constantes, Capitulos
-import sqlite3
-import operator
 import datetime
-import smtplib
 import requests
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
-from email.mime.base import MIMEBase
-from email import encoders
 import dateutil.parser
-from agenda import settings
+from app import settings
 from datetime import date
-from dateutil.relativedelta import relativedelta
-import matplotlib.pyplot as plt
 from openpyxl import Workbook
 from openpyxl.styles import Alignment, Border, Font, PatternFill, Side 
 from django.views.generic.base import TemplateView 

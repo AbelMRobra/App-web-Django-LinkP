@@ -4,7 +4,7 @@ services:
   postgres:
     restart: always
     image: postgres:11.6
-    container_name: mom-postgres
+    container_name: linkp-postgres
     volumes:
       - ./volumenes/postgresql:/var/lib/postgresql/data
     ports:
@@ -15,7 +15,7 @@ services:
     env_file:
       - .env
     image: web
-    container_name: mom-web
+    container_name: linkp-web
     build: ./
     command: >
       bash -c "python wait_for_postgres.py &&
@@ -33,7 +33,8 @@ services:
     build: ./
     env_file:
       - .env
-    command: celery -A ordermanagement worker -l INFO -c 4 
+    command: celery -A app worker -l INFO -c 4 
+    container_name: linkp-celery
     volumes:
       - ./:/code
     depends_on:
@@ -42,6 +43,7 @@ services:
   node:
     restart: always
     build: ./node_app
+    container_name: linkp-node
     volumes:
       - ./node_app:/node_app
       - ./node_app/node_modules
@@ -52,6 +54,7 @@ services:
 
   redis:
     image: redis
+    container_name: linkp-redis
     ports:
       - "6379:6379"
   

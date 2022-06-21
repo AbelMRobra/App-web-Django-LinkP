@@ -18,13 +18,29 @@
     <!-- <link href="{% static 'adminpro/assets/plugins/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet"> -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
-
-    <link href="{% static 'adminpro/main/css/spinners.css' %}" rel="stylesheet">
+        <link rel="stylesheet" href="{% static 'css/login-style.css' %}">
 
 
 </head>
 
-<body class="card-no-border">
+<body style="background:url({% static 'img/background.jpeg' %})">
+  
+    <div class="loginbox">
+      <img src="{% static 'img/logologin.png' %}" alt="" class="avatar">
+      <img src="{% static 'img/Linkpblanco.png' %}" alt="" width="70px" style="margin-top: 5px; margin-bottom: 10px;">
+      <form action="">
+        <p>Username</p>
+        <input type="text" placeholder="Username">
+        <p>Password</p>
+        <input type="password" placeholder="Password">
+        <input type="submit" value="Login">
+        <a href="#">Lost your password</a><br>
+      </form>
+    </div>
+
+</body>
+
+<!-- <body class="card-no-border">
     <div class="preloader">
         <div class="loader">
             <div class="loader__figure"></div>
@@ -33,7 +49,7 @@
     </div>
 
     <div
-        style="background:url({% static 'img/link-fondo.png' %}) 10% 25% ; background-size: cover;  height: 100vh; opacity: 90%;">
+        style="background:url({% static 'img/background.jpeg' %})">
         <div class="d-flex justify-content-end align-self-center p-4" style="height: 100vh;">
 
             <div class="bg-dark-blue rounded col-8 col-md-6 col-lg-3">
@@ -82,66 +98,8 @@
         </div>
     </div>
 
-</body>
+</body> -->
 
-<style>
-    .bg-dark-blue {
-        background-color: #18232E;
-    }
-
-    input[type=text] {
-        background-color: rgba(0, 0, 0, 0);
-        border-top: none;
-        border-left: none;
-        border-right: none;
-        border-bottom: white 1px linear;
-        color: white;
-        width: 100%;
-
-    }
-
-    input[type=password] {
-        background-color: rgba(0, 0, 0, 0);
-        border-top: none;
-        border-left: none;
-        border-right: none;
-        border-bottom: white 1px linear;
-        color: white;
-        width: 100%;
-
-    }
-    input:-webkit-autofill {
-        -webkit-box-shadow: 0 0 0px 1000px #18232E inset;
-        -webkit-text-fill-color: white;
-    }
-
-    input::placeholder {
-        color: rgba(255, 255, 255, 0.6);
-    }
-    input:focus {
-        outline: none !important;
-    }
-
-    .recuerdame{
-        color: white;
-        margin-left: 8px;
-    }
-
-    .recuperar{
-        color: rgba(255, 255, 255, 0.7);
-    }
-
-    .fondo{
-        background: url("linkp.html") center top cover ;
-    }
-
-</style>
-
-<script src="{% static 'adminpro/assets/plugins/jquery/jquery.min.js' %}"></script>
-<!-- Bootstrap tether Core JavaScript -->
-<script src="{% static 'adminpro/assets/plugins/bootstrap/js/popper.min.js' %}"></script>
-<script src="{% static 'adminpro/assets/plugins/bootstrap/js/bootstrap.min.js' %}"></script>
-<!--Custom JavaScript -->
 <script type="text/javascript">
     $(function () {
         $(".preloader").fadeOut();
@@ -178,7 +136,5 @@
         }
     }
 </script>
-
-
 
 </html>

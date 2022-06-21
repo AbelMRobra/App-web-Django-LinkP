@@ -1,6 +1,6 @@
 import smtplib
 from email.mime.text import MIMEText
-from agenda import settings
+from app import settings
 
 def mandar_email(mensaje, email, titulo):
 

@@ -24,7 +24,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import models
 
 
-from agenda import settings
+from app import settings
 
 from finanzas.models import Almacenero, RegistroAlmacenero, Arqueo, RetirodeSocios, Honorarios
 from presupuestos.models import Presupuestos, InformeMensual, TareasProgramadas, Bitacoras

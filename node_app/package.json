@@ -1,0 +1,16 @@
+{
+    "name": "celery_notify",
+    "version": "1.0.0",
+    "description": "Celere realtime with socket.io",
+    "main": "server.js",
+    "scripts": {
+      "prestart": "npm install",
+      "start": "node server.js"
+    },
+    "dependencies": {
+      "http": "^0.0.1-security",
+      "jquery": "^3.1.0",
+      "redis": "^2.6.2",
+      "socket.io": "^4.5.0"
+    }
+  }

@@ -6,7 +6,7 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.base import MIMEBase
 import smtplib
 import requests
-from agenda import settings
+from app import settings
 
 def mandarEmail(comparativa, mensaje):
 

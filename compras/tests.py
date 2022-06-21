@@ -1,4 +1,4 @@
-from agenda import settings
+from app import settings
 import smtplib
 
 # Create your tests here.

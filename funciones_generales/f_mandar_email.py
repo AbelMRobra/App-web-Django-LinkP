@@ -1,5 +1,5 @@
 import smtplib
-from agenda import settings
+from app import settings
 
 
 def mandar_email(msg, email, titulo):

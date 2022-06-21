@@ -2,7 +2,8 @@ env/
 __pycache__/
 *.sqlite3
 static/
-agenda/
+app/
+volumenes/
 staticfiles/
 /settings.+y
 /blue.png
