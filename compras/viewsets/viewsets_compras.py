@@ -79,7 +79,6 @@ class ComprasViewset(viewsets.ModelViewSet):
             proyecto = Proyectos.objects.get(id = int(request.data['proyecto']))
             proveedor = Proveedores.objects.get(name = request.data['proveedor'])
 
-
             if float(request.data['cantidad_presupuesto']) <= 0 or float(request.data["partida"]) <= 0:
                 imprevisto = "IMPREVISTO"
             else:

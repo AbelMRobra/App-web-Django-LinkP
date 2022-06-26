@@ -2,7 +2,6 @@ env/
 __pycache__/
 *.sqlite3
 static/
-app/
 volumenes/
 staticfiles/
 /settings.+y
